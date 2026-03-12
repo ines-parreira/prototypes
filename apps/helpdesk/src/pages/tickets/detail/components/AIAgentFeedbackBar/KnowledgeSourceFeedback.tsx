@@ -87,6 +87,7 @@ const KnowledgeSourceFeedback = ({
         helpCenterId: resource.resource.resourceSetId,
         shopName,
         shopType,
+        resourceVersionId: resource.metadata?.versionId,
     }
 
     const onClick = () => {

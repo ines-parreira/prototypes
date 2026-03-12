@@ -15,12 +15,14 @@ import { useMultipleStoreWebsiteQuestions } from 'pages/aiAgent/hooks/useMultipl
 import { useMultiplePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyIntegrationAndScope'
 
+import { useGetVersionedArticles } from './useGetVersionedArticles'
 import {
     DEFAULT_CACHE_TIME,
     DEFAULT_STALE_TIME,
     useActionResources,
     useExtractDistinctHelpCenterFromResources,
     useExtractDistinctProductIdsFromResources,
+    useExtractFeedbackResourcesForVersioning,
     useProcessResources,
 } from './utils'
 
@@ -217,14 +219,22 @@ export const useEnrichFeedbackData = ({
         ...relatedHelpCenterData,
     })
 
+    const feedbackResources = useExtractFeedbackResourcesForVersioning(
+        data?.executions,
+    )
+
+    const { isLoading: isVersionedLoading, versionedArticlesMap } =
+        useGetVersionedArticles(feedbackResources, queriesEnabled)
+
     const enrichedData = useProcessResources(
         data?.executions,
         shopName,
         resourceData,
+        versionedArticlesMap,
     )
 
     return {
-        isLoading: resourceData?.isLoading,
+        isLoading: resourceData?.isLoading || isVersionedLoading,
         enrichedData,
         helpCenters: resourceData?.helpCenters,
         resourceArticles: resourceData?.articles,

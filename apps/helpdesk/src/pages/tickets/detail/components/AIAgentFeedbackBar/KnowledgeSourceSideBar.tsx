@@ -92,6 +92,7 @@ const KnowledgeSourceSideBar = ({
                 onClose: closeModal,
                 guidanceMode: 'read',
                 isOpen: isEditorOpen,
+                initialVersionId: selectedResource.resourceVersionId,
                 onDelete: () => closeModal(),
                 onUpdate: () => {
                     onKnowledgeResourceSaved(
@@ -116,6 +117,7 @@ const KnowledgeSourceSideBar = ({
                     type: 'existing',
                     initialArticleMode: 'read',
                     articleId: selectedResourceIdAsNumber,
+                    initialVersionId: selectedResource.resourceVersionId,
                     onDeleted: () => closeModal(),
                     onUpdated: () => {
                         onKnowledgeResourceSaved(

@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useGetArticleTranslationVersion } from 'models/helpCenter/queries'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
@@ -13,6 +14,7 @@ type UseKnowledgeEditorGuidanceDataParams = {
     guidanceArticleId?: number
     guidanceMode: GuidanceModeType
     isOpen?: boolean
+    initialVersionId?: number
 }
 
 export const useKnowledgeEditorGuidanceData = ({
@@ -20,6 +22,7 @@ export const useKnowledgeEditorGuidanceData = ({
     guidanceArticleId,
     guidanceMode,
     isOpen = true,
+    initialVersionId,
 }: UseKnowledgeEditorGuidanceDataParams) => {
     const {
         helpCenter: guidanceHelpCenter,
@@ -65,6 +68,32 @@ export const useKnowledgeEditorGuidanceData = ({
                 guidanceMode !== 'create',
         })
 
+    const {
+        data: initialVersionData,
+        isLoading: isVersionQueryLoading,
+        isError: isInitialVersionError,
+    } = useGetArticleTranslationVersion(
+        {
+            help_center_id: guidanceHelpCenter?.id ?? 0,
+            article_id: guidanceArticle?.id ?? 0,
+            locale: guidanceHelpCenter?.default_locale ?? 'en-US',
+            version_id: initialVersionId ?? 0,
+        },
+        {
+            enabled:
+                !!initialVersionId &&
+                !!guidanceHelpCenter?.id &&
+                !!guidanceArticle,
+            staleTime: 10 * 60 * 1000,
+            refetchOnWindowFocus: false,
+        },
+    )
+
+    const isCurrentVersion =
+        !!initialVersionData &&
+        (guidanceArticle?.publishedVersionId === initialVersionData.id ||
+            guidanceArticle?.draftVersionId === initialVersionData.id)
+
     return {
         guidanceHelpCenter,
         isGuidanceHelpCenterLoading,
@@ -73,5 +102,8 @@ export const useKnowledgeEditorGuidanceData = ({
         isGuidanceArticleLoading,
         isError,
         error,
+        initialVersionData: isCurrentVersion ? undefined : initialVersionData,
+        isInitialVersionLoading: !!initialVersionId && isVersionQueryLoading,
+        isInitialVersionError,
     }
 }

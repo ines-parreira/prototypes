@@ -1235,7 +1235,7 @@
             "get": {
                 "operationId": "listArticleTranslationVersions",
                 "summary": "List all versions for an article translation",
-                "description": "Returns all versions for an article translation, optionally filtered to only published versions.",
+                "description": "Returns all versions for an article translation, optionally filtered to only published versions. When the \"number\" query parameter is provided, returns a single version by its version number instead of a paginated list.",
                 "parameters": [
                     {
                         "name": "help_center_id",
@@ -1263,6 +1263,13 @@
                         "schema": { "type": "boolean" }
                     },
                     {
+                        "name": "number",
+                        "required": false,
+                        "in": "query",
+                        "description": "When provided, returns a single version matching this version number instead of a paginated list.",
+                        "schema": { "type": "number" }
+                    },
+                    {
                         "name": "per_page",
                         "required": false,
                         "in": "query",
@@ -1279,7 +1286,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Paginated list of versions",
+                        "description": "Paginated list of versions, or a single version when \"number\" is provided",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -6285,6 +6292,11 @@
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },
+                    "customer_visibility": {
+                        "description": "The customer-facing visibility of the article.\n\nWhen provided, this value is used directly instead of being derived\nfrom `visibility_status` and the article's `sourceType`.\nWhen omitted, `customer_visibility` is derived automatically.",
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
                     "category_id": {
                         "type": "number",
                         "nullable": true,
@@ -6928,6 +6940,11 @@
                     },
                     "visibility_status": {
                         "description": "The visibility status of the article.",
+                        "enum": ["PUBLIC", "UNLISTED"],
+                        "type": "string"
+                    },
+                    "customer_visibility": {
+                        "description": "The customer-facing visibility of the article.\n\nWhen provided, this value is used directly instead of being derived\nfrom `visibility_status` and the article's `sourceType`.\nWhen omitted, `customer_visibility` is derived automatically.",
                         "enum": ["PUBLIC", "UNLISTED"],
                         "type": "string"
                     },

@@ -1979,6 +1979,10 @@ declare namespace Components {
                 visibility_status?: 'PUBLIC' | 'UNLISTED'
                 /**
                  * The customer-facing visibility of the article.
+                 *
+                 * When provided, this value is used directly instead of being derived
+                 * from `visibility_status` and the article's `sourceType`.
+                 * When omitted, `customer_visibility` is derived automatically.
                  */
                 customer_visibility?: 'PUBLIC' | 'UNLISTED'
                 /**
@@ -2156,6 +2160,10 @@ declare namespace Components {
             visibility_status?: 'PUBLIC' | 'UNLISTED'
             /**
              * The customer-facing visibility of the article.
+             *
+             * When provided, this value is used directly instead of being derived
+             * from `visibility_status` and the article's `sourceType`.
+             * When omitted, `customer_visibility` is derived automatically.
              */
             customer_visibility?: 'PUBLIC' | 'UNLISTED'
             /**
@@ -2335,10 +2343,6 @@ declare namespace Components {
                      */
                     description: string | null
                 }
-                /**
-                 * The visibility of the category. Can be either `PUBLIC` or `UNLISTED`.
-                 */
-                visibility_status?: 'PUBLIC' | 'UNLISTED'
                 /**
                  * The customer-facing visibility of the category.
                  */
@@ -3985,6 +3989,10 @@ declare namespace Components {
             visibility_status?: 'PUBLIC' | 'UNLISTED'
             /**
              * The customer-facing visibility of the article.
+             *
+             * When provided, this value is used directly instead of being derived
+             * from `visibility_status` and the article's `sourceType`.
+             * When omitted, `customer_visibility` is derived automatically.
              */
             customer_visibility?: 'PUBLIC' | 'UNLISTED'
             /**
@@ -5903,6 +5911,7 @@ declare namespace Paths {
             export type ArticleId = number
             export type HelpCenterId = number
             export type Locale = string
+            export type Number = number
             export type Page = any
             export type PerPage = any
             export type Published = boolean
@@ -5914,6 +5923,7 @@ declare namespace Paths {
         }
         export interface QueryParameters {
             published?: Parameters.Published
+            number?: Parameters.Number
             per_page?: Parameters.PerPage
             page?: Parameters.Page
         }
@@ -6308,17 +6318,6 @@ declare namespace Paths {
             export type $200 = Components.Schemas.RedirectDto[]
         }
     }
-    namespace PurgeCache {
-        namespace Parameters {
-            export type ShopName = string
-        }
-        export interface PathParameters {
-            shop_name: Parameters.ShopName
-        }
-        namespace Responses {
-            export interface $201 {}
-        }
-    }
     namespace PublishAndRebaseArticleTranslation {
         namespace Parameters {
             export type ArticleId = number
@@ -6333,6 +6332,17 @@ declare namespace Paths {
         export type RequestBody = Components.Schemas.RebaseArticleTranslationDto
         namespace Responses {
             export type $201 = Components.Schemas.ArticleTranslationResponseDto
+        }
+    }
+    namespace PurgeCache {
+        namespace Parameters {
+            export type ShopName = string
+        }
+        export interface PathParameters {
+            shop_name: Parameters.ShopName
+        }
+        namespace Responses {
+            export interface $201 {}
         }
     }
     namespace SetArticlesPositionsInCategory {
@@ -6944,7 +6954,7 @@ export interface OperationMethods {
     /**
      * listArticleTranslationVersions - List all versions for an article translation
      *
-     * Returns all versions for an article translation, optionally filtered to only published versions.
+     * Returns all versions for an article translation, optionally filtered to only published versions. When the "number" query parameter is provided, returns a single version by its version number instead of a paginated list.
      */
     'listArticleTranslationVersions'(
         parameters: Parameters<
@@ -8267,7 +8277,7 @@ export interface PathsDictionary {
         /**
          * listArticleTranslationVersions - List all versions for an article translation
          *
-         * Returns all versions for an article translation, optionally filtered to only published versions.
+         * Returns all versions for an article translation, optionally filtered to only published versions. When the "number" query parameter is provided, returns a single version by its version number instead of a paginated list.
          */
         'get'(
             parameters: Parameters<

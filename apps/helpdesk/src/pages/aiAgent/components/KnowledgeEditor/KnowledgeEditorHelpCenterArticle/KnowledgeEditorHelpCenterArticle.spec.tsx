@@ -15,13 +15,35 @@ let articleEditorCloseHandler: (() => void) | null = null
 
 const mockHelpCenter = getHelpCentersResponseFixture.data[0]
 
-jest.mock('./useFaqHelpCenterData', () => ({
-    useFaqHelpCenterData: jest.fn(() => ({
-        helpCenter: mockHelpCenter,
-        categories: [],
-        locales: [{ code: 'en-US', name: 'en-US' }],
-        isLoading: false,
-    })),
+const defaultArticleData = {
+    helpCenter: mockHelpCenter,
+    categories: [],
+    locales: [{ code: 'en-US', name: 'en-US' }],
+    isHelpCenterDataLoading: false,
+    article: {
+        id: 1,
+        translation: {
+            title: 'Test Article',
+            content: 'Test Content',
+            locale: 'en-US',
+        },
+    },
+    isArticleLoading: false,
+    isArticleError: false,
+    articleError: null,
+    initialVersionData: undefined,
+    isInitialVersionLoading: false,
+    isInitialVersionError: false,
+}
+
+const mockUseKnowledgeEditorArticleData = jest.fn(
+    () => defaultArticleData as any,
+)
+
+jest.mock('./useKnowledgeEditorArticleData', () => ({
+    useKnowledgeEditorArticleData: (
+        ...args: Parameters<typeof mockUseKnowledgeEditorArticleData>
+    ) => mockUseKnowledgeEditorArticleData(...args),
 }))
 
 jest.mock('@gorgias/axiom', () => ({
@@ -78,22 +100,6 @@ jest.mock('hooks/useNotify', () => ({
 jest.mock('models/api/types', () => ({
     ...jest.requireActual('models/api/types'),
     isGorgiasApiError: jest.fn(),
-}))
-
-jest.mock('models/helpCenter/queries', () => ({
-    useGetHelpCenterArticle: jest.fn(() => ({
-        data: {
-            id: 1,
-            translation: {
-                title: 'Test Article',
-                content: 'Test Content',
-                locale: 'en-US',
-            },
-        },
-        isLoading: false,
-        isError: false,
-        error: null,
-    })),
 }))
 
 jest.mock('pages/settings/helpCenter/providers/SupportedLocales', () => ({
@@ -216,6 +222,7 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         lastConfig = null
         articleEditorCloseHandler = null
         mockNotifyError.mockClear()
+        mockUseKnowledgeEditorArticleData.mockReturnValue(defaultArticleData)
     })
 
     it('renders existing article with ArticleEditorContent', () => {
@@ -249,13 +256,11 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
     })
 
     describe('loading state', () => {
-        it('shows KnowledgeEditorLoadingShell when isLoading is true', () => {
-            const mockUseGetHelpCenterArticle = jest.requireMock(
-                'models/helpCenter/queries',
-            ).useGetHelpCenterArticle
-            mockUseGetHelpCenterArticle.mockReturnValue({
-                data: undefined,
-                isLoading: true,
+        it('shows KnowledgeEditorLoadingShell when article is loading', () => {
+            mockUseKnowledgeEditorArticleData.mockReturnValue({
+                ...defaultArticleData,
+                article: undefined,
+                isArticleLoading: true,
             })
 
             renderComponent({
@@ -264,31 +269,13 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 articleId: 1,
             })
 
-            // Verify KnowledgeEditorLoadingShell is shown (line 73)
             expect(screen.getByTestId('loading-shell')).toBeInTheDocument()
-
-            // Verify ArticleEditorContent is NOT shown when loading
             expect(
                 screen.queryByTestId('article-editor-content'),
             ).not.toBeInTheDocument()
         })
 
         it('shows ArticleEditorContent when data is loaded and not loading', () => {
-            const mockUseGetHelpCenterArticle = jest.requireMock(
-                'models/helpCenter/queries',
-            ).useGetHelpCenterArticle
-            mockUseGetHelpCenterArticle.mockReturnValue({
-                data: {
-                    id: 1,
-                    translation: {
-                        title: 'Test Article',
-                        content: 'Test Content',
-                        locale: 'en-US',
-                    },
-                },
-                isLoading: false,
-            })
-
             render(
                 <KnowledgeEditorHelpCenterArticle
                     {...baseProps}
@@ -300,12 +287,9 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 />,
             )
 
-            // Verify ArticleEditorContent is shown when loaded
             expect(
                 screen.getByTestId('article-editor-content'),
             ).toBeInTheDocument()
-
-            // Verify KnowledgeEditorLoadingShell is NOT shown
             expect(
                 screen.queryByTestId('loading-shell'),
             ).not.toBeInTheDocument()
@@ -460,23 +444,6 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
     })
 
     it('renders existing article in edit mode', () => {
-        const mockUseGetHelpCenterArticle = jest.requireMock(
-            'models/helpCenter/queries',
-        ).useGetHelpCenterArticle
-        mockUseGetHelpCenterArticle.mockReturnValue({
-            data: {
-                id: 1,
-                translation: {
-                    title: 'Test Article',
-                    content: 'Test Content',
-                    locale: 'en-US',
-                },
-            },
-            isFetching: false,
-            isError: false,
-            error: null,
-        })
-
         renderComponent({
             type: 'existing',
             initialArticleMode: 'edit' as InitialArticleModeValue,
@@ -490,11 +457,7 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
     })
 
     describe('query configuration', () => {
-        it('passes existing article versionStatus to useGetHelpCenterArticle', () => {
-            const mockUseGetHelpCenterArticle = jest.requireMock(
-                'models/helpCenter/queries',
-            ).useGetHelpCenterArticle
-
+        it('passes existing article versionStatus to data hook', () => {
             renderComponent({
                 type: 'existing',
                 initialArticleMode: 'read' as InitialArticleModeValue,
@@ -502,16 +465,12 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 versionStatus: GetArticleVersionStatus.Current,
             })
 
-            expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
-                1,
-                baseProps.helpCenterId,
-                mockHelpCenter.default_locale,
-                GetArticleVersionStatus.Current,
-                {
-                    enabled: true,
-                    throwOn404: true,
-                    refetchOnWindowFocus: false,
-                },
+            expect(mockUseKnowledgeEditorArticleData).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    articleId: 1,
+                    versionStatus: GetArticleVersionStatus.Current,
+                    isExisting: true,
+                }),
             )
             expect(lastConfig?.versionStatus).toBe(
                 GetArticleVersionStatus.Current,
@@ -519,35 +478,21 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         })
 
         it('defaults to latest_draft when versionStatus is not provided', () => {
-            const mockUseGetHelpCenterArticle = jest.requireMock(
-                'models/helpCenter/queries',
-            ).useGetHelpCenterArticle
-
             renderComponent({
                 type: 'existing',
                 initialArticleMode: 'read' as InitialArticleModeValue,
                 articleId: 1,
             })
 
-            expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
-                1,
-                baseProps.helpCenterId,
-                mockHelpCenter.default_locale,
-                'latest_draft',
-                {
-                    enabled: true,
-                    throwOn404: true,
-                    refetchOnWindowFocus: false,
-                },
+            expect(mockUseKnowledgeEditorArticleData).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    versionStatus: 'latest_draft',
+                }),
             )
             expect(lastConfig?.versionStatus).toBe('latest_draft')
         })
 
-        it('disables article query for new article mode', () => {
-            const mockUseGetHelpCenterArticle = jest.requireMock(
-                'models/helpCenter/queries',
-            ).useGetHelpCenterArticle
-
+        it('passes isExisting=false for new article mode', () => {
             renderComponent({
                 type: 'new',
                 template: {
@@ -558,24 +503,15 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 onCreated: () => {},
             })
 
-            expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
-                0,
-                baseProps.helpCenterId,
-                mockHelpCenter.default_locale,
-                'latest_draft',
-                {
-                    enabled: false,
-                    throwOn404: true,
-                    refetchOnWindowFocus: false,
-                },
+            expect(mockUseKnowledgeEditorArticleData).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    articleId: 0,
+                    isExisting: false,
+                }),
             )
         })
 
-        it('disables article query when editor is closed', () => {
-            const mockUseGetHelpCenterArticle = jest.requireMock(
-                'models/helpCenter/queries',
-            ).useGetHelpCenterArticle
-
+        it('passes isOpen=false when editor is closed', () => {
             render(
                 <KnowledgeEditorHelpCenterArticle
                     {...baseProps}
@@ -588,25 +524,16 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 />,
             )
 
-            expect(mockUseGetHelpCenterArticle).toHaveBeenCalledWith(
-                1,
-                baseProps.helpCenterId,
-                mockHelpCenter.default_locale,
-                'latest_draft',
-                {
-                    enabled: false,
-                    throwOn404: true,
-                    refetchOnWindowFocus: false,
-                },
+            expect(mockUseKnowledgeEditorArticleData).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    isOpen: false,
+                }),
             )
         })
     })
 
     describe('Error handling', () => {
         it('shows error notification and closes panel on 404 error', async () => {
-            const mockUseGetHelpCenterArticle = jest.requireMock(
-                'models/helpCenter/queries',
-            ).useGetHelpCenterArticle
             const mockIsGorgiasApiError =
                 jest.requireMock('models/api/types').isGorgiasApiError
 
@@ -621,11 +548,11 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 },
             }
 
-            mockUseGetHelpCenterArticle.mockReturnValue({
-                data: null,
-                isFetching: false,
-                isError: true,
-                error: mockError,
+            mockUseKnowledgeEditorArticleData.mockReturnValue({
+                ...defaultArticleData,
+                article: null,
+                isArticleError: true,
+                articleError: mockError,
             })
 
             mockIsGorgiasApiError.mockReturnValue(true)
@@ -644,9 +571,6 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         })
 
         it('shows generic error notification on non-404 error', async () => {
-            const mockUseGetHelpCenterArticle = jest.requireMock(
-                'models/helpCenter/queries',
-            ).useGetHelpCenterArticle
             const mockIsGorgiasApiError =
                 jest.requireMock('models/api/types').isGorgiasApiError
 
@@ -661,11 +585,11 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
                 },
             }
 
-            mockUseGetHelpCenterArticle.mockReturnValue({
-                data: null,
-                isFetching: false,
-                isError: true,
-                error: mockError,
+            mockUseKnowledgeEditorArticleData.mockReturnValue({
+                ...defaultArticleData,
+                article: null,
+                isArticleError: true,
+                articleError: mockError,
             })
 
             mockIsGorgiasApiError.mockReturnValue(true)
@@ -684,15 +608,11 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
         })
 
         it('does not show error notification for new articles', () => {
-            const mockUseGetHelpCenterArticle = jest.requireMock(
-                'models/helpCenter/queries',
-            ).useGetHelpCenterArticle
-
-            mockUseGetHelpCenterArticle.mockReturnValue({
-                data: null,
-                isFetching: false,
-                isError: true,
-                error: new Error('Some error'),
+            mockUseKnowledgeEditorArticleData.mockReturnValue({
+                ...defaultArticleData,
+                article: null,
+                isArticleError: true,
+                articleError: new Error('Some error'),
             })
 
             renderComponent({
@@ -706,6 +626,120 @@ describe('KnowledgeEditorHelpCenterArticle', () => {
             })
 
             expect(mockNotifyError).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('initialVersionId', () => {
+        it('passes initialVersionId to data hook for existing article', () => {
+            renderComponent({
+                type: 'existing',
+                initialArticleMode: 'read' as InitialArticleModeValue,
+                articleId: 1,
+                initialVersionId: 42,
+            })
+
+            expect(mockUseKnowledgeEditorArticleData).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    initialVersionId: 42,
+                }),
+            )
+        })
+
+        it('does not pass initialVersionId for new articles', () => {
+            renderComponent({
+                type: 'new',
+                template: {
+                    title: 'Test Article',
+                    content: 'Test Content',
+                    key: 'test-template',
+                },
+                onCreated: () => {},
+            })
+
+            expect(mockUseKnowledgeEditorArticleData).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    initialVersionId: undefined,
+                }),
+            )
+        })
+
+        it('shows loading state when version is loading', () => {
+            mockUseKnowledgeEditorArticleData.mockReturnValue({
+                ...defaultArticleData,
+                isInitialVersionLoading: true,
+            })
+
+            renderComponent({
+                type: 'existing',
+                initialArticleMode: 'read' as InitialArticleModeValue,
+                articleId: 1,
+                initialVersionId: 42,
+            })
+
+            expect(screen.getByTestId('loading-shell')).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('article-editor-content'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders article content when initial version fetch fails', () => {
+            mockUseKnowledgeEditorArticleData.mockReturnValue({
+                ...defaultArticleData,
+                initialVersionData: undefined,
+                isInitialVersionError: true,
+            })
+
+            renderComponent({
+                type: 'existing',
+                initialArticleMode: 'read' as InitialArticleModeValue,
+                articleId: 1,
+                initialVersionId: 42,
+            })
+
+            expect(
+                screen.getByTestId('article-editor-content'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('loading-shell'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('passes initialVersionData to config when version data is available', () => {
+            mockUseKnowledgeEditorArticleData.mockReturnValue({
+                ...defaultArticleData,
+                initialVersionData: {
+                    id: 42,
+                    version: 3,
+                    title: 'Historical Title',
+                    content: 'Historical Content',
+                    published_datetime: '2024-01-15T00:00:00Z',
+                    publisher_user_id: 5,
+                    commit_message: 'Fix typo',
+                },
+                isInitialVersionError: false,
+            })
+
+            renderComponent({
+                type: 'existing',
+                initialArticleMode: 'read' as InitialArticleModeValue,
+                articleId: 1,
+                initialVersionId: 42,
+            })
+
+            expect(
+                screen.getByTestId('article-context-provider'),
+            ).toBeInTheDocument()
+            expect(lastConfig?.initialVersionData).toEqual(
+                expect.objectContaining({
+                    versionId: 42,
+                    version: 3,
+                    title: 'Historical Title',
+                    content: 'Historical Content',
+                    publishedDatetime: '2024-01-15T00:00:00Z',
+                    publisherUserId: 5,
+                    commitMessage: 'Fix typo',
+                }),
+            )
         })
     })
 })

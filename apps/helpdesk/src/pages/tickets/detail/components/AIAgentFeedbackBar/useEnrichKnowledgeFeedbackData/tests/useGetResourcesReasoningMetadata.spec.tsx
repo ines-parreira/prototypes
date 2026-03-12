@@ -9,6 +9,7 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import { useGetResourceData } from '../useEnrichFeedbackData'
 import { useGetResourcesReasoningMetadata } from '../useGetResourcesReasoningMetadata'
+import { useGetVersionedArticles } from '../useGetVersionedArticles'
 import { getResourceMetadata, getResourceType } from '../utils'
 
 jest.mock('../useEnrichFeedbackData', () => ({
@@ -22,6 +23,10 @@ jest.mock('pages/common/hooks/useShopifyIntegrationAndScope', () => ({
 jest.mock('../utils', () => ({
     getResourceMetadata: jest.fn(),
     getResourceType: jest.fn(),
+}))
+
+jest.mock('../useGetVersionedArticles', () => ({
+    useGetVersionedArticles: jest.fn(),
 }))
 
 const queryClient = new QueryClient({
@@ -81,6 +86,10 @@ describe('useGetResourcesReasoningMetadata', () => {
         ;(getResourceType as jest.Mock).mockImplementation(
             (_resourceId, type) => type,
         )
+        ;(useGetVersionedArticles as jest.Mock).mockReturnValue({
+            isLoading: false,
+            versionedArticlesMap: new Map(),
+        })
     })
 
     it('should process resources correctly and call useGetResourceData with proper parameters when all resource types are present', () => {
@@ -837,5 +846,499 @@ describe('useGetResourcesReasoningMetadata', () => {
 
         expect(result.current?.isLoading).toBe(false)
         expect(result.current?.data).toHaveLength(1)
+    })
+
+    describe('versioned data', () => {
+        it('should return versioned title/content and versionId when content differs from current', () => {
+            const versionedMap = new Map([
+                [
+                    '1',
+                    {
+                        title: 'Old Title',
+                        content: 'Old Content',
+                        helpCenterId: 100,
+                        updatedDatetime: '2024-01-01T00:00:00Z',
+                        versionId: 42,
+                    },
+                ],
+            ])
+            ;(useGetVersionedArticles as jest.Mock).mockReturnValue({
+                isLoading: false,
+                versionedArticlesMap: versionedMap,
+            })
+            ;(getResourceMetadata as jest.Mock).mockReturnValue({
+                title: 'Current Title',
+                content: 'Current Content',
+                url: '/mock/ARTICLE/1',
+            })
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.data[0]).toEqual({
+                title: 'Old Title',
+                content: 'Old Content',
+                helpCenterId: 100,
+                url: '/mock/ARTICLE/1',
+                versionId: 42,
+            })
+        })
+
+        it('should always return versionId regardless of whether content matches current', () => {
+            const versionedMap = new Map([
+                [
+                    '1',
+                    {
+                        title: 'Same Title',
+                        content: 'Same Content',
+                        helpCenterId: 100,
+                        updatedDatetime: '2024-01-01T00:00:00Z',
+                        versionId: 42,
+                    },
+                ],
+            ])
+            ;(useGetVersionedArticles as jest.Mock).mockReturnValue({
+                isLoading: false,
+                versionedArticlesMap: versionedMap,
+            })
+            ;(getResourceMetadata as jest.Mock).mockReturnValue({
+                title: 'Same Title',
+                content: 'Same Content',
+                url: '/mock/ARTICLE/1',
+            })
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.data[0]).toHaveProperty('versionId', 42)
+        })
+
+        it('should include versionId when fallback resource is deleted', () => {
+            const versionedMap = new Map([
+                [
+                    '1',
+                    {
+                        title: 'Old Title',
+                        content: 'Old Content',
+                        helpCenterId: 100,
+                        updatedDatetime: '2024-01-01T00:00:00Z',
+                        versionId: 55,
+                    },
+                ],
+            ])
+            ;(useGetVersionedArticles as jest.Mock).mockReturnValue({
+                isLoading: false,
+                versionedArticlesMap: versionedMap,
+            })
+            ;(getResourceMetadata as jest.Mock).mockReturnValue({
+                title: '',
+                content: '',
+                isDeleted: true,
+                isLoading: false,
+            })
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.data[0]).toHaveProperty('versionId', 55)
+        })
+
+        it('should return draft title/content when content differs from current', () => {
+            const publishedData = { ...mockResourceData }
+            const draftData = { ...mockResourceData }
+            ;(useGetResourceData as jest.Mock)
+                .mockReturnValueOnce(publishedData)
+                .mockReturnValueOnce(draftData)
+            ;(getResourceMetadata as jest.Mock).mockImplementation(
+                (_resource, _shopName, resourceData) => {
+                    if (resourceData === draftData) {
+                        return {
+                            title: 'Old Title',
+                            content: 'Old Content',
+                            helpCenterId: 100,
+                            url: '/mock/ARTICLE/1',
+                        }
+                    }
+                    return {
+                        title: 'Current Title',
+                        content: 'Current Content',
+                        url: '/mock/ARTICLE/1',
+                    }
+                },
+            )
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                    resourceIsDraft: true,
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.data[0]).toEqual({
+                title: 'Old Title',
+                content: 'Old Content',
+                helpCenterId: 100,
+                url: '/mock/ARTICLE/1',
+            })
+        })
+
+        it('should return draft data regardless of whether content matches current', () => {
+            const publishedData = { ...mockResourceData }
+            const draftData = { ...mockResourceData }
+            ;(useGetResourceData as jest.Mock)
+                .mockReturnValueOnce(publishedData)
+                .mockReturnValueOnce(draftData)
+            ;(getResourceMetadata as jest.Mock).mockImplementation(
+                (_resource, _shopName, resourceData) => {
+                    if (resourceData === draftData) {
+                        return {
+                            title: 'Same Title',
+                            content: 'Same Content',
+                            url: '/mock/ARTICLE/1',
+                        }
+                    }
+                    return {
+                        title: 'Same Title',
+                        content: 'Same Content',
+                        url: '/mock/ARTICLE/1',
+                    }
+                },
+            )
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                    resourceIsDraft: true,
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(getResourceMetadata).toHaveBeenCalledWith(
+                expect.objectContaining({ id: '1' }),
+                'test-store',
+                draftData,
+            )
+            expect(result.current?.data[0]).toEqual({
+                title: 'Same Title',
+                content: 'Same Content',
+                url: '/mock/ARTICLE/1',
+            })
+        })
+
+        it('should fall back to published data when draft resource is deleted', () => {
+            const publishedData = { ...mockResourceData }
+            const draftData = { ...mockResourceData }
+            ;(useGetResourceData as jest.Mock)
+                .mockReturnValueOnce(publishedData)
+                .mockReturnValueOnce(draftData)
+            ;(getResourceMetadata as jest.Mock).mockImplementation(
+                (_resource, _shopName, resourceData) => {
+                    if (resourceData === draftData) {
+                        return {
+                            title: '',
+                            content: '',
+                            isDeleted: true,
+                            isLoading: false,
+                        }
+                    }
+                    return {
+                        title: 'Published Title',
+                        content: 'Published Content',
+                        url: '/mock/ARTICLE/1',
+                    }
+                },
+            )
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                    resourceIsDraft: true,
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.data[0]).toEqual({
+                title: 'Published Title',
+                content: 'Published Content',
+                url: '/mock/ARTICLE/1',
+            })
+        })
+    })
+
+    describe('isVersionedLoading', () => {
+        it('should set isLoading to true when versioned articles are loading', () => {
+            ;(useGetVersionedArticles as jest.Mock).mockReturnValue({
+                isLoading: true,
+                versionedArticlesMap: new Map(),
+            })
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.isLoading).toBe(true)
+        })
+
+        it('should set isLoading to true when draft articles are loading', () => {
+            const publishedData = { ...mockResourceData }
+            const draftData = { ...mockResourceData, isLoading: true }
+            ;(useGetResourceData as jest.Mock)
+                .mockReturnValueOnce(publishedData)
+                .mockReturnValueOnce(draftData)
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                    resourceIsDraft: true,
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.isLoading).toBe(true)
+        })
+    })
+
+    describe('draft resource metadata', () => {
+        it('should use draft metadata when available for draft resources', () => {
+            const draftResourceData = {
+                ...mockResourceData,
+                articles: [
+                    {
+                        id: 1,
+                        translation: {
+                            title: 'Draft Title',
+                            content: 'Draft Content',
+                        },
+                        helpCenterId: 100,
+                    },
+                ],
+            }
+            ;(useGetResourceData as jest.Mock)
+                .mockReturnValueOnce(mockResourceData)
+                .mockReturnValueOnce(draftResourceData)
+            ;(getResourceMetadata as jest.Mock).mockReturnValueOnce({
+                title: 'Draft Title',
+                content: 'Draft Content',
+                url: '/mock/ARTICLE/1',
+            })
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                    resourceIsDraft: true,
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.data[0]).toEqual({
+                title: 'Draft Title',
+                content: 'Draft Content',
+                url: '/mock/ARTICLE/1',
+            })
+        })
+
+        it('should fall back to published data when draft metadata is deleted', () => {
+            const draftResourceData = {
+                ...mockResourceData,
+            }
+            ;(useGetResourceData as jest.Mock)
+                .mockReturnValueOnce(mockResourceData)
+                .mockReturnValueOnce(draftResourceData)
+            ;(getResourceMetadata as jest.Mock)
+                .mockReturnValueOnce({
+                    title: '',
+                    content: '',
+                    isDeleted: true,
+                    isLoading: false,
+                })
+                .mockReturnValueOnce({
+                    title: 'Published Title',
+                    content: 'Published Content',
+                    url: '/mock/ARTICLE/1',
+                })
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                    resourceIsDraft: true,
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.data[0]).toEqual({
+                title: 'Published Title',
+                content: 'Published Content',
+                url: '/mock/ARTICLE/1',
+            })
+        })
+
+        it('should use published data for non-draft resources', () => {
+            ;(getResourceMetadata as jest.Mock).mockReturnValue({
+                title: 'Published Title',
+                content: 'Published Content',
+                url: '/mock/ARTICLE/1',
+            })
+
+            const storeConfiguration = createMockStoreConfiguration()
+            const resources: KnowledgeReasoningResource[] = [
+                {
+                    resourceId: '1',
+                    resourceSetId: '100',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceTitle: 'Article 1',
+                },
+            ]
+
+            const { result } = renderHook(
+                () =>
+                    useGetResourcesReasoningMetadata({
+                        resources,
+                        storeConfiguration,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current?.data[0]).toEqual({
+                title: 'Published Title',
+                content: 'Published Content',
+                url: '/mock/ARTICLE/1',
+            })
+        })
     })
 })

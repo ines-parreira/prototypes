@@ -1994,4 +1994,178 @@ describe('KnowledgeEditorGuidance', () => {
             })
         })
     })
+
+    describe('initialVersionId', () => {
+        it('calls useGetArticleTranslationVersion when initialVersionId is provided', () => {
+            const mockUseGetArticleTranslationVersion = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetArticleTranslationVersion
+
+            render(
+                <Wrapper>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen
+                        onDelete={jest.fn()}
+                        initialVersionId={42}
+                    />
+                </Wrapper>,
+            )
+
+            expect(mockUseGetArticleTranslationVersion).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    version_id: 42,
+                }),
+                expect.objectContaining({
+                    enabled: true,
+                }),
+            )
+        })
+
+        it('disables version fetch when initialVersionId is not provided', () => {
+            const mockUseGetArticleTranslationVersion = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetArticleTranslationVersion
+
+            render(
+                <Wrapper>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen
+                        onDelete={jest.fn()}
+                    />
+                </Wrapper>,
+            )
+
+            expect(mockUseGetArticleTranslationVersion).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    version_id: 0,
+                }),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
+
+        it('shows loading state when version is loading', async () => {
+            const mockUseGetArticleTranslationVersion = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetArticleTranslationVersion
+            mockUseGetArticleTranslationVersion.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            })
+
+            render(
+                <Wrapper>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen
+                        onDelete={jest.fn()}
+                        initialVersionId={42}
+                    />
+                </Wrapper>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByLabelText(/Guidance name/i),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('renders content when initial version fetch fails', async () => {
+            const mockUseGetArticleTranslationVersion = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetArticleTranslationVersion
+            mockUseGetArticleTranslationVersion.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: true,
+            })
+
+            render(
+                <Wrapper>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen
+                        onDelete={jest.fn()}
+                        initialVersionId={42}
+                    />
+                </Wrapper>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByTestId('loading-shell'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('renders with version data when initial version is loaded', async () => {
+            const mockUseGetArticleTranslationVersion = jest.requireMock(
+                'models/helpCenter/queries',
+            ).useGetArticleTranslationVersion
+            mockUseGetArticleTranslationVersion.mockReturnValue({
+                data: {
+                    id: 42,
+                    version: 3,
+                    title: 'Historical Title',
+                    content: '<p>Historical Content</p>',
+                    published_datetime: '2024-01-15T00:00:00Z',
+                    publisher_user_id: 5,
+                    commit_message: 'Fix typo',
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            render(
+                <Wrapper>
+                    <KnowledgeEditorGuidance
+                        shopName="Test Shop"
+                        shopType="Test Shop Type"
+                        guidanceArticleId={1}
+                        onClose={jest.fn()}
+                        onClickPrevious={jest.fn()}
+                        onClickNext={jest.fn()}
+                        guidanceMode="edit"
+                        isOpen
+                        onDelete={jest.fn()}
+                        initialVersionId={42}
+                    />
+                </Wrapper>,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByTestId('loading-shell'),
+                ).not.toBeInTheDocument()
+            })
+        })
+    })
 })

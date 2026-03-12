@@ -366,6 +366,7 @@ const AIAgentSimplifiedFeedback = () => {
                         resourceType: resource.resourceType,
                         resourceSetId: resource.resourceSetId,
                         resourceLocale: resource.resourceLocale,
+                        resourceVersion: resource.resourceVersion,
                         resourceTitle: resource.resourceTitle,
                         feedback: resource.feedback,
                     },

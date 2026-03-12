@@ -146,6 +146,8 @@ export type GuidanceContextConfig = {
     onEditFn?: () => void
     handleVisibilityUpdate?: (visibility: string) => void
     showMissingKnowledgeCheckbox?: boolean
+    initialVersionId?: number
+    initialVersionData?: HistoricalVersionState
 }
 
 export type PlaygroundState = {
@@ -181,6 +183,7 @@ export const createInitialState = (
     template?: GuidanceTemplate,
     article?: GuidanceArticle,
     initialMode: GuidanceModeType = 'create',
+    initialVersionData?: HistoricalVersionState,
 ): GuidanceState => {
     // For existing articles, use their visibility
     // For new articles, default to false if at limit
@@ -191,7 +194,7 @@ export const createInitialState = (
         defaultVisibility = false
     }
 
-    return {
+    const state: GuidanceState = {
         guidanceMode: initialMode,
         isFullscreen: false,
         isDetailsView: true,
@@ -214,4 +217,16 @@ export const createInitialState = (
         activeModal: null,
         isUpdating: false,
     }
+
+    if (initialVersionData) {
+        return {
+            ...state,
+            historicalVersion: initialVersionData,
+            title: initialVersionData.title,
+            content: initialVersionData.content,
+            guidanceMode: 'read',
+        }
+    }
+
+    return state
 }

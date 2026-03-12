@@ -137,6 +137,7 @@ const createResource = (
         resourceType: type as any,
         resourceSetId: 'set1',
         resourceLocale: 'en-US',
+        resourceVersion: null,
         resourceTitle: `${type} Title`,
         feedback: null,
     },

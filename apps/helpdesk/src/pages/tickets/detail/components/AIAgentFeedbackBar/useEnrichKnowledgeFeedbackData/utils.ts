@@ -7,6 +7,7 @@ import type {
 
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
 import type { StoreConfiguration } from 'models/aiAgent/types'
+import type { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import type {
     useGetMultipleFileIngestionSnippets,
     useGetMultipleHelpCenter,
@@ -578,6 +579,16 @@ export const useProcessResources = (
             ReturnType<typeof useGetProductsByIdsFromIntegration>['data']
         >
     } | null,
+    versionedArticlesMap?: Map<
+        string,
+        {
+            title: string
+            content: string
+            helpCenterId: number
+            updatedDatetime: string | null
+            versionId: number
+        }
+    >,
 ) => {
     const previousValueRef = useRef<{
         knowledgeResources: KnowledgeResource[]
@@ -618,21 +629,58 @@ export const useProcessResources = (
                 )
 
                 resource.resourceType = type as typeof resource.resourceType
-                let metadata = getResourceMetadata(
-                    {
-                        id: resource.resourceId,
-                        title: resource.resourceTitle,
-                        type: resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
-                    },
-                    shopName,
-                    resourceData,
+
+                const versionedData = versionedArticlesMap?.get(
+                    resource.resourceId,
                 )
+                let metadata = versionedData
+                    ? (() => {
+                          const fallback = getResourceMetadata(
+                              {
+                                  id: resource.resourceId,
+                                  title: resource.resourceTitle,
+                                  type: resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                              },
+                              shopName,
+                              resourceData,
+                          )
+                          const isLatestVersion =
+                              fallback &&
+                              !('isDeleted' in fallback) &&
+                              fallback.title === versionedData.title &&
+                              fallback.content === versionedData.content
+                          return {
+                              title: versionedData.title,
+                              content: versionedData.content,
+                              helpCenterId: versionedData.helpCenterId,
+                              url:
+                                  fallback && 'url' in fallback
+                                      ? fallback.url
+                                      : undefined,
+                              versionId: isLatestVersion
+                                  ? undefined
+                                  : versionedData.versionId,
+                          }
+                      })()
+                    : getResourceMetadata(
+                          {
+                              id: resource.resourceId,
+                              title: resource.resourceTitle,
+                              type: resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                          },
+                          shopName,
+                          resourceData,
+                      )
 
                 if (!metadata) {
                     return
                 }
 
-                if (resourceData.isLoading && 'isDeleted' in metadata) {
+                if (
+                    !versionedData &&
+                    resourceData.isLoading &&
+                    'isDeleted' in metadata
+                ) {
                     metadata.isDeleted = false
                     metadata.isLoading = true
                 }
@@ -727,7 +775,31 @@ export const useProcessResources = (
             previousResourceDataRef.current = resourceData
         }
         return output
-    }, [executions, shopName, resourceData])
+    }, [executions, shopName, resourceData, versionedArticlesMap])
+}
+
+export const useExtractFeedbackResourcesForVersioning = (
+    executions?: FeedbackExecutionsItem[],
+): KnowledgeReasoningResource[] => {
+    return useMemo(() => {
+        const resources: KnowledgeReasoningResource[] = []
+        for (const execution of executions ?? []) {
+            for (const resource of execution.resources ?? []) {
+                if (resource.resourceVersion && resource.resourceLocale) {
+                    resources.push({
+                        resourceId: resource.resourceId,
+                        resourceType:
+                            resource.resourceType as AiAgentKnowledgeResourceTypeEnum,
+                        resourceSetId: resource.resourceSetId,
+                        resourceTitle: resource.resourceTitle,
+                        resourceVersion: resource.resourceVersion,
+                        resourceLocale: resource.resourceLocale,
+                    })
+                }
+            }
+        }
+        return resources
+    }, [executions])
 }
 
 export const useExtractDistinctProductIdsFromResources = (

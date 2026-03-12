@@ -20,6 +20,7 @@ const createTestResource = (
         resourceSetId: 'default-set-id',
         resourceTitle: '',
         resourceLocale: '',
+        resourceVersion: null,
         taskIds: [],
         ...overrides,
     } as AiReasoningResource
@@ -167,6 +168,8 @@ describe('parseReasoningResources', () => {
                         resourceSetId: setId,
                         resourceId,
                         resourceTitle: title,
+                        resourceVersion: null,
+                        resourceLocale: '',
                     },
                 ])
             },
@@ -184,6 +187,8 @@ describe('parseReasoningResources', () => {
                     resourceSetId: '100',
                     resourceId: '13608',
                     resourceTitle: undefined,
+                    resourceVersion: undefined,
+                    resourceLocale: undefined,
                 },
             ])
         })
@@ -206,6 +211,8 @@ describe('parseReasoningResources', () => {
                     resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
                     resourceId: 'action456',
                     resourceTitle: 'Send Email',
+                    resourceVersion: null,
+                    resourceLocale: '',
                 },
             ])
         })
@@ -221,6 +228,8 @@ describe('parseReasoningResources', () => {
                     resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
                     resourceId: '',
                     resourceTitle: undefined,
+                    resourceVersion: undefined,
+                    resourceLocale: undefined,
                 },
             ])
         })
@@ -266,6 +275,8 @@ describe('parseReasoningResources', () => {
                         resourceType: type,
                         resourceId,
                         resourceTitle: title,
+                        resourceVersion: null,
+                        resourceLocale: '',
                     },
                 ])
             },
@@ -282,6 +293,8 @@ describe('parseReasoningResources', () => {
                     resourceType: AiAgentKnowledgeResourceTypeEnum.ORDER,
                     resourceId: 'order456',
                     resourceTitle: undefined,
+                    resourceVersion: undefined,
+                    resourceLocale: undefined,
                 },
             ])
         })

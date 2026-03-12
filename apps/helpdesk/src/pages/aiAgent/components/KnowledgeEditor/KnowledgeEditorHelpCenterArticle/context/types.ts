@@ -188,6 +188,9 @@ export type ArticleContextConfig = {
     // Template (for new)
     template?: { title: string; content: string; key: string }
 
+    // Initial version to auto-select (e.g. from AI feedback)
+    initialVersionId?: number
+
     // Mode
     initialMode: ArticleModeType
 
@@ -205,6 +208,9 @@ export type ArticleContextConfig = {
 
     // UI options
     showMissingKnowledgeCheckbox?: boolean
+
+    // Pre-fetched initial version data
+    initialVersionData?: HistoricalVersionState
 }
 
 export type PlaygroundState = {
@@ -238,14 +244,20 @@ export type ArticleContextValue = {
 export const createInitialState = (
     config: ArticleContextConfig,
 ): ArticleState => {
-    const { initialArticle, template, helpCenter, versionStatus, initialMode } =
-        config
+    const {
+        initialArticle,
+        template,
+        helpCenter,
+        versionStatus,
+        initialMode,
+        initialVersionData,
+    } = config
 
     const title = initialArticle?.translation.title ?? template?.title ?? ''
     const content =
         initialArticle?.translation.content ?? template?.content ?? ''
 
-    return {
+    const state: ArticleState = {
         articleMode: initialMode,
         isFullscreen: false,
         isDetailsView: true,
@@ -266,4 +278,16 @@ export const createInitialState = (
         isUpdating: false,
         templateKey: template?.key,
     }
+
+    if (initialVersionData) {
+        return {
+            ...state,
+            historicalVersion: initialVersionData,
+            title: initialVersionData.title,
+            content: initialVersionData.content,
+            articleMode: 'read',
+        }
+    }
+
+    return state
 }

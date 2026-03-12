@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 import cn from 'classnames'
 
 import { Card } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
+import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
-import { useGetHelpCenterArticle } from 'models/helpCenter/queries'
 import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
@@ -16,9 +16,13 @@ import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
 import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { ArticleEditorContent } from './ArticleEditorContent'
-import type { ArticleContextConfig, ArticleModeType } from './context'
+import type {
+    ArticleContextConfig,
+    ArticleModeType,
+    HistoricalVersionState,
+} from './context'
 import { ArticleContextProvider, useArticleContext } from './context'
-import { useFaqHelpCenterData } from './useFaqHelpCenterData'
+import { useKnowledgeEditorArticleData } from './useKnowledgeEditorArticleData'
 
 import css from '../shared.less'
 
@@ -36,6 +40,7 @@ type Props = {
               initialArticleMode: 'read' | 'edit'
               articleId: number
               versionStatus?: GetArticleVersionStatus
+              initialVersionId?: number
           }
         | {
               type: 'new'
@@ -124,30 +129,45 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         helpCenter,
         categories,
         locales,
-        isLoading: isHelpCenterDataLoading,
-    } = useFaqHelpCenterData(props.helpCenterId, isOpen)
-
-    const getArticle = useGetHelpCenterArticle(
+        isHelpCenterDataLoading,
+        article: fetchedArticle,
+        isArticleLoading,
+        isArticleError,
+        articleError,
+        initialVersionData: rawInitialVersionData,
+        isInitialVersionLoading,
+    } = useKnowledgeEditorArticleData({
+        helpCenterId: props.helpCenterId,
         articleId,
-        helpCenter?.id ?? 0,
-        helpCenter?.default_locale ?? 'en-US',
         versionStatus,
-        {
-            enabled: isOpen && isExisting && !!helpCenter && articleId > 0,
-            throwOn404: true,
-            refetchOnWindowFocus: false,
-        },
-    )
+        initialVersionId: isExisting ? article.initialVersionId : undefined,
+        isOpen,
+        isExisting,
+    })
+
+    const computedInitialVersionData = useMemo<
+        HistoricalVersionState | undefined
+    >(() => {
+        if (!rawInitialVersionData) return undefined
+        return {
+            versionId: rawInitialVersionData.id,
+            version: rawInitialVersionData.version,
+            title: rawInitialVersionData.title,
+            content: rawInitialVersionData.content,
+            publishedDatetime: rawInitialVersionData.published_datetime,
+            publisherUserId: rawInitialVersionData.publisher_user_id,
+            commitMessage: rawInitialVersionData.commit_message,
+            impactDateRange: getLast28DaysDateRange(),
+        }
+    }, [rawInitialVersionData])
 
     const { error: notifyError } = useNotify()
 
     useEffect(() => {
-        // Only show error if editor is actually open and attempting to display content
-        if (isOpen && getArticle.isError && isExisting && getArticle.error) {
-            // Check if it's a 404 error
+        if (isOpen && isArticleError && isExisting && articleError) {
             const is404 =
-                isGorgiasApiError(getArticle.error) &&
-                getArticle.error.response.status === 404
+                isGorgiasApiError(articleError) &&
+                articleError.response.status === 404
 
             const message = is404
                 ? 'This FAQ article is no longer available. It may have been deleted.'
@@ -156,14 +176,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
             notifyError(message)
             onClose()
         }
-    }, [
-        isOpen,
-        getArticle.isError,
-        isExisting,
-        getArticle.error,
-        notifyError,
-        onClose,
-    ])
+    }, [isOpen, isArticleError, isExisting, articleError, notifyError, onClose])
 
     if (isHelpCenterDataLoading) {
         return <KnowledgeEditorLoadingShell />
@@ -186,8 +199,9 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         categories,
         shopName: props.shopName,
         articleId: isExisting ? article.articleId : undefined,
-        initialArticle: getArticle.data ?? undefined,
+        initialArticle: fetchedArticle ?? undefined,
         versionStatus,
+        initialVersionId: isExisting ? article.initialVersionId : undefined,
         template: article.type === 'new' ? article.template : undefined,
         initialMode,
         onClose,
@@ -198,6 +212,11 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
         onDeletedFn: article.onDeleted,
         onEditFn: article.onEdit,
         showMissingKnowledgeCheckbox: props.showMissingKnowledgeCheckbox,
+        initialVersionData: computedInitialVersionData,
+    }
+
+    if (isInitialVersionLoading) {
+        return <KnowledgeEditorLoadingShell />
     }
 
     return (
@@ -205,7 +224,7 @@ export const KnowledgeEditorHelpCenterArticle = (props: Props) => {
             <CurrentHelpCenterContext.Provider value={helpCenter}>
                 <ArticleContextProvider config={config}>
                     <ArticleEditorInner
-                        isLoading={!!articleId && getArticle.isLoading}
+                        isLoading={isExisting && isArticleLoading}
                         onSharedPanelStateChange={
                             props.onSharedPanelStateChange
                         }

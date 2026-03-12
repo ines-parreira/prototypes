@@ -71,6 +71,8 @@ export type KnowledgeReasoningResource = {
     resourceSetId?: string
     resourceTitle?: string
     resourceIsDraft?: boolean
+    resourceVersion?: string | null
+    resourceLocale?: string | null
 }
 
 export type NoteFeedbackOnMessage = {

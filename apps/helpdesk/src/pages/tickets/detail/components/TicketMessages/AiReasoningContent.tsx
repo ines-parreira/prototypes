@@ -101,6 +101,8 @@ export type AiAgentReasoningContentProps = {
         content: string
         knowledgeResourceType: AiAgentKnowledgeResourceTypeEnum
         helpCenterId?: string
+        resourceVersion?: string | null
+        resourceVersionId?: number
     }) => void
 
     onKnowledgeResourceClick?: (
@@ -239,6 +241,10 @@ export const AiAgentReasoningContent = ({
                                           content: resourceData.content,
                                           knowledgeResourceType: resourceType,
                                           helpCenterId: resource.resourceSetId,
+                                          resourceVersionId:
+                                              'versionId' in resourceData
+                                                  ? (resourceData.versionId as number)
+                                                  : undefined,
                                       })
                                   }
                               }

@@ -20,6 +20,7 @@ import {
     useActionResources,
     useExtractDistinctHelpCenterFromResources,
     useExtractDistinctProductIdsFromResources,
+    useExtractFeedbackResourcesForVersioning,
     useProcessResources,
 } from '../utils'
 
@@ -198,6 +199,7 @@ describe('utils', () => {
                             resourceSetId: '350',
                             resourceTitle: 'External Snippet',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -207,6 +209,7 @@ describe('utils', () => {
                             resourceSetId: '',
                             resourceTitle: 'Action 2',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -384,6 +387,7 @@ describe('utils', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Duplicate Article',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -497,6 +501,7 @@ describe('utils', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Article 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -506,6 +511,7 @@ describe('utils', () => {
                             resourceSetId: '200',
                             resourceTitle: 'Guidance 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -515,6 +521,7 @@ describe('utils', () => {
                             resourceSetId: '300',
                             resourceTitle: 'Snippet 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -524,6 +531,7 @@ describe('utils', () => {
                             resourceSetId: '400',
                             resourceTitle: 'Unknown Resource',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -571,6 +579,7 @@ describe('utils', () => {
                             resourceSetId: '500',
                             resourceTitle: 'Article 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -580,6 +589,7 @@ describe('utils', () => {
                             resourceSetId: '600',
                             resourceTitle: 'Guidance 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -589,6 +599,7 @@ describe('utils', () => {
                             resourceSetId: '700',
                             resourceTitle: 'File Snippet 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -784,6 +795,7 @@ describe('utils', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Article 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -793,6 +805,7 @@ describe('utils', () => {
                             resourceSetId: '200',
                             resourceTitle: 'Guidance 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -802,6 +815,7 @@ describe('utils', () => {
                             resourceSetId: '300',
                             resourceTitle: 'Snippet 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -859,6 +873,7 @@ describe('utils', () => {
                             resourceSetId: '',
                             resourceTitle: 'Action Resource',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -926,6 +941,7 @@ describe('utils', () => {
                             resourceSetId: '',
                             resourceTitle: 'Resource Action 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -935,6 +951,7 @@ describe('utils', () => {
                             resourceSetId: '',
                             resourceTitle: 'Resource Action 2',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -1974,6 +1991,7 @@ describe('utils', () => {
                         resourceSetId: '200',
                         resourceTitle: 'Guidance Resource',
                         resourceLocale: null,
+                        resourceVersion: null,
                         feedback: null,
                     },
                     {
@@ -1983,6 +2001,7 @@ describe('utils', () => {
                         resourceSetId: '',
                         resourceTitle: 'Action Resource',
                         resourceLocale: null,
+                        resourceVersion: null,
                         feedback: {
                             id: 3,
                             objectType: 'TICKET',
@@ -2034,6 +2053,7 @@ describe('utils', () => {
                             resourceSetId: '',
                             resourceTitle: 'Product 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -2043,6 +2063,7 @@ describe('utils', () => {
                             resourceSetId: '200',
                             resourceTitle: 'Guidance 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -2169,6 +2190,7 @@ describe('utils', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Article 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -2178,6 +2200,7 @@ describe('utils', () => {
                             resourceSetId: '200',
                             resourceTitle: 'Guidance 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -2187,6 +2210,7 @@ describe('utils', () => {
                             resourceSetId: '',
                             resourceTitle: 'Action 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -2313,6 +2337,7 @@ describe('utils', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Non-existent Article',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -2354,6 +2379,7 @@ describe('utils', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Non-existent Article',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -2449,6 +2475,7 @@ describe('utils', () => {
                                 resourceSetId: '100',
                                 resourceTitle: 'Unknown Resource',
                                 resourceLocale: null,
+                                resourceVersion: null,
                                 feedback: null,
                             },
                         ],
@@ -2489,6 +2516,7 @@ describe('utils', () => {
                                 resourceSetId: '100',
                                 resourceTitle: 'Unknown Resource',
                                 resourceLocale: null,
+                                resourceVersion: null,
                                 feedback: null,
                             },
                         ],
@@ -2564,6 +2592,7 @@ describe('utils', () => {
                                 resourceSetId: '100',
                                 resourceTitle: 'Test Article',
                                 resourceLocale: null,
+                                resourceVersion: null,
                                 feedback: null,
                             },
                         ],
@@ -2697,6 +2726,7 @@ describe('utils', () => {
                             resourceSetId: '400',
                             resourceTitle: 'Article 4',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -2706,6 +2736,7 @@ describe('utils', () => {
                             resourceSetId: '500',
                             resourceTitle: 'Guidance 5',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -2715,6 +2746,7 @@ describe('utils', () => {
                             resourceSetId: '600',
                             resourceTitle: 'Snippet 6',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -2968,6 +3000,7 @@ describe('utils', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Article 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -2984,6 +3017,7 @@ describe('utils', () => {
                             resourceSetId: '200',
                             resourceTitle: 'Guidance 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -3000,6 +3034,7 @@ describe('utils', () => {
                             resourceSetId: '300',
                             resourceTitle: 'Snippet 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -3169,6 +3204,7 @@ describe('utils', () => {
                                         resourceSetId: '100',
                                         resourceTitle: 'Article 1',
                                         resourceLocale: null,
+                                        resourceVersion: null,
                                         feedback: null,
                                     },
                                 ],
@@ -3196,6 +3232,7 @@ describe('utils', () => {
                                         resourceSetId: '200',
                                         resourceTitle: 'Guidance 1',
                                         resourceLocale: null,
+                                        resourceVersion: null,
                                         feedback: null,
                                     },
                                 ],
@@ -3223,6 +3260,7 @@ describe('utils', () => {
                                         resourceSetId: '300',
                                         resourceTitle: 'Snippet 1',
                                         resourceLocale: null,
+                                        resourceVersion: null,
                                         feedback: null,
                                     },
                                 ],
@@ -3309,6 +3347,7 @@ describe('utils', () => {
                             resourceSetId: '10000',
                             resourceTitle: 'Max Article',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -3318,6 +3357,7 @@ describe('utils', () => {
                             resourceSetId: '20000',
                             resourceTitle: 'Max Guidance',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -3327,6 +3367,7 @@ describe('utils', () => {
                             resourceSetId: '30000',
                             resourceTitle: 'Max Snippet',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -3405,6 +3446,7 @@ describe('utils', () => {
                             resourceSetId: '9999',
                             resourceTitle: 'Edge Article',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -3421,6 +3463,7 @@ describe('utils', () => {
                             resourceSetId: '8888',
                             resourceTitle: 'Edge Guidance',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -3437,6 +3480,7 @@ describe('utils', () => {
                             resourceSetId: '7777',
                             resourceTitle: 'Edge Snippet',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -3480,6 +3524,7 @@ describe('utils', () => {
                             resourceSetId: '',
                             resourceTitle: 'Product 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -3489,6 +3534,7 @@ describe('utils', () => {
                             resourceSetId: '',
                             resourceTitle: 'Product 2',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -3498,6 +3544,7 @@ describe('utils', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Article 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -3544,6 +3591,7 @@ describe('utils', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Article 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -3572,6 +3620,7 @@ describe('utils', () => {
                             resourceSetId: '',
                             resourceTitle: 'Product 1',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -3612,6 +3661,340 @@ describe('utils', () => {
                 isDeleted: true,
                 isLoading: false,
             })
+        })
+    })
+
+    describe('useExtractFeedbackResourcesForVersioning', () => {
+        it('should return empty array for undefined executions', () => {
+            const { result } = renderHook(
+                () => useExtractFeedbackResourcesForVersioning(undefined),
+                { wrapper },
+            )
+
+            expect(result.current).toEqual([])
+        })
+
+        it('should return empty array for resources without version or locale', () => {
+            const executions: FeedbackExecutionsItem[] = [
+                {
+                    executionId: 'exec-1',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '1',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Article 1',
+                            resourceLocale: null,
+                            resourceVersion: null,
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-2',
+                            resourceId: '2',
+                            resourceType: 'GUIDANCE',
+                            resourceSetId: '200',
+                            resourceTitle: 'Guidance 1',
+                            resourceLocale: 'en-US',
+                            resourceVersion: null,
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-3',
+                            resourceId: '3',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Article 2',
+                            resourceLocale: null,
+                            resourceVersion: '5',
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {} as any,
+                },
+            ]
+
+            const { result } = renderHook(
+                () => useExtractFeedbackResourcesForVersioning(executions),
+                { wrapper },
+            )
+
+            expect(result.current).toEqual([])
+        })
+
+        it('should return resources that have both version and locale', () => {
+            const executions: FeedbackExecutionsItem[] = [
+                {
+                    executionId: 'exec-1',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '1',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Article 1',
+                            resourceLocale: 'en-US',
+                            resourceVersion: '5',
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-2',
+                            resourceId: '2',
+                            resourceType: 'GUIDANCE',
+                            resourceSetId: '200',
+                            resourceTitle: 'Guidance 1',
+                            resourceLocale: 'fr-FR',
+                            resourceVersion: '3',
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {} as any,
+                },
+            ]
+
+            const { result } = renderHook(
+                () => useExtractFeedbackResourcesForVersioning(executions),
+                { wrapper },
+            )
+
+            expect(result.current).toEqual([
+                {
+                    resourceId: '1',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ARTICLE,
+                    resourceSetId: '100',
+                    resourceTitle: 'Article 1',
+                    resourceVersion: '5',
+                    resourceLocale: 'en-US',
+                },
+                {
+                    resourceId: '2',
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.GUIDANCE,
+                    resourceSetId: '200',
+                    resourceTitle: 'Guidance 1',
+                    resourceVersion: '3',
+                    resourceLocale: 'fr-FR',
+                },
+            ])
+        })
+
+        it('should only include resources with both version and locale from mixed set', () => {
+            const executions: FeedbackExecutionsItem[] = [
+                {
+                    executionId: 'exec-1',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '1',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Versioned',
+                            resourceLocale: 'en-US',
+                            resourceVersion: '5',
+                            feedback: null,
+                        },
+                        {
+                            id: 'res-2',
+                            resourceId: '2',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'No version',
+                            resourceLocale: 'en-US',
+                            resourceVersion: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {} as any,
+                },
+            ]
+
+            const { result } = renderHook(
+                () => useExtractFeedbackResourcesForVersioning(executions),
+                { wrapper },
+            )
+
+            expect(result.current).toHaveLength(1)
+            expect(result.current[0].resourceId).toBe('1')
+        })
+    })
+
+    describe('useProcessResources with versionedArticlesMap', () => {
+        const baseResourceData = {
+            articles: [
+                {
+                    id: 1,
+                    translation: {
+                        title: 'Current Title',
+                        content: 'Current Content',
+                    },
+                    helpCenterId: 100,
+                },
+            ],
+            guidanceArticles: [],
+            sourceItems: [],
+            ingestedFiles: [],
+            actions: [],
+            helpCenters: [],
+            storeWebsiteQuestions: [],
+            products: [],
+        } as any
+
+        it('should use versioned data when resource matches versionedArticlesMap', () => {
+            const executions: FeedbackExecutionsItem[] = [
+                {
+                    executionId: 'exec-1',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '1',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Article 1',
+                            resourceLocale: null,
+                            resourceVersion: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {} as any,
+                },
+            ]
+
+            const versionedArticlesMap = new Map([
+                [
+                    '1',
+                    {
+                        title: 'Old Title',
+                        content: 'Old Content',
+                        helpCenterId: 100,
+                        updatedDatetime: '2024-01-01T00:00:00Z',
+                        versionId: 42,
+                    },
+                ],
+            ])
+
+            const { result } = renderHook(
+                () =>
+                    useProcessResources(
+                        executions,
+                        'test-store',
+                        baseResourceData,
+                        versionedArticlesMap,
+                    ),
+                { wrapper },
+            )
+
+            const metadata = result.current.knowledgeResources[0].metadata
+            expect(metadata.title).toBe('Old Title')
+            expect(metadata.content).toBe('Old Content')
+            expect(metadata.versionId).toBe(42)
+        })
+
+        it('should not include versionId when versioned content matches current content', () => {
+            const executions: FeedbackExecutionsItem[] = [
+                {
+                    executionId: 'exec-1',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '1',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Article 1',
+                            resourceLocale: null,
+                            resourceVersion: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {} as any,
+                },
+            ]
+
+            const versionedArticlesMap = new Map([
+                [
+                    '1',
+                    {
+                        title: 'Current Title',
+                        content: 'Current Content',
+                        helpCenterId: 100,
+                        updatedDatetime: '2024-01-01T00:00:00Z',
+                        versionId: 42,
+                    },
+                ],
+            ])
+
+            const { result } = renderHook(
+                () =>
+                    useProcessResources(
+                        executions,
+                        'test-store',
+                        baseResourceData,
+                        versionedArticlesMap,
+                    ),
+                { wrapper },
+            )
+
+            const metadata = result.current.knowledgeResources[0].metadata
+            expect(metadata.title).toBe('Current Title')
+            expect(metadata.versionId).toBeUndefined()
+        })
+
+        it('should include versionId when fallback resource is deleted', () => {
+            const resourceDataWithNoArticle = {
+                ...baseResourceData,
+                articles: [],
+            }
+
+            const executions: FeedbackExecutionsItem[] = [
+                {
+                    executionId: 'exec-1',
+                    feedback: [],
+                    resources: [
+                        {
+                            id: 'res-1',
+                            resourceId: '999',
+                            resourceType: 'ARTICLE',
+                            resourceSetId: '100',
+                            resourceTitle: 'Deleted Article',
+                            resourceLocale: null,
+                            resourceVersion: null,
+                            feedback: null,
+                        },
+                    ],
+                    storeConfiguration: {} as any,
+                },
+            ]
+
+            const versionedArticlesMap = new Map([
+                [
+                    '999',
+                    {
+                        title: 'Old Title',
+                        content: 'Old Content',
+                        helpCenterId: 100,
+                        updatedDatetime: '2024-01-01T00:00:00Z',
+                        versionId: 55,
+                    },
+                ],
+            ])
+
+            const { result } = renderHook(
+                () =>
+                    useProcessResources(
+                        executions,
+                        'test-store',
+                        resourceDataWithNoArticle,
+                        versionedArticlesMap,
+                    ),
+                { wrapper },
+            )
+
+            const metadata = result.current.knowledgeResources[0].metadata
+            expect(metadata.title).toBe('Old Title')
+            expect(metadata.versionId).toBe(55)
         })
     })
 })

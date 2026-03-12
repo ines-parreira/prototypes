@@ -91,6 +91,7 @@ const createGuidanceStore = (config: GuidanceContextConfig) => {
         config.guidanceTemplate,
         config.guidanceArticle,
         config.initialMode,
+        config.initialVersionData,
     )
 
     return createStore<GuidanceStoreValue>()((set) => ({

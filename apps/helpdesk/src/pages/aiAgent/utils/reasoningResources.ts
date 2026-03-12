@@ -88,6 +88,8 @@ export const parseReasoningResources = (
                         resourceSetId: stringParts[1],
                         resourceTitle: metadata?.resourceTitle,
                         resourceIsDraft: metadata?.resourceIsDraft,
+                        resourceVersion: metadata?.resourceVersion,
+                        resourceLocale: metadata?.resourceLocale,
                     }
                 case AiAgentKnowledgeResourceTypeEnum.ACTION:
                     metadata = resources.find(
@@ -100,6 +102,8 @@ export const parseReasoningResources = (
                         resourceId: metadata?.resourceId || '',
                         resourceTitle: metadata?.resourceTitle,
                         resourceIsDraft: metadata?.resourceIsDraft,
+                        resourceVersion: metadata?.resourceVersion,
+                        resourceLocale: metadata?.resourceLocale,
                     }
                 case AiAgentKnowledgeResourceTypeEnum.ORDER:
                 case AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE:
@@ -114,6 +118,8 @@ export const parseReasoningResources = (
                         resourceId: stringParts[1],
                         resourceTitle: metadata?.resourceTitle,
                         resourceIsDraft: metadata?.resourceIsDraft,
+                        resourceVersion: metadata?.resourceVersion,
+                        resourceLocale: metadata?.resourceLocale,
                     }
                 default:
                     return null

@@ -1,11 +1,19 @@
 import { renderHook } from '@testing-library/react'
 
+import { useGetArticleTranslationVersion } from 'models/helpCenter/queries'
 import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 
 import { useKnowledgeEditorGuidanceData } from './useKnowledgeEditorGuidanceData'
 
+jest.mock('models/helpCenter/queries', () => ({
+    ...jest.requireActual('models/helpCenter/queries'),
+    useGetArticleTranslationVersion: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
+}))
 jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter')
 jest.mock('pages/aiAgent/hooks/useGuidanceArticle')
 jest.mock('pages/aiAgent/hooks/useGuidanceArticles')
@@ -13,6 +21,9 @@ jest.mock('pages/aiAgent/hooks/useGuidanceArticles')
 const useAiAgentHelpCenterStateMock = jest.mocked(useAiAgentHelpCenterState)
 const useGuidanceArticleMock = jest.mocked(useGuidanceArticle)
 const useGuidanceArticlesMock = jest.mocked(useGuidanceArticles)
+const useGetArticleTranslationVersionMock = jest.mocked(
+    useGetArticleTranslationVersion,
+)
 
 const mockHelpCenter = {
     id: 10,
@@ -624,7 +635,242 @@ describe('useKnowledgeEditorGuidanceData', () => {
                 isGuidanceArticleLoading: false,
                 isError: false,
                 error: null,
+                initialVersionData: undefined,
+                isInitialVersionLoading: false,
+                isInitialVersionError: undefined,
             })
+        })
+    })
+
+    describe('initial version fetching', () => {
+        it('calls useGetArticleTranslationVersion with correct params when initialVersionId is provided', () => {
+            renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 1,
+                    guidanceMode: 'edit',
+                    initialVersionId: 42,
+                }),
+            )
+
+            expect(useGetArticleTranslationVersionMock).toHaveBeenCalledWith(
+                {
+                    help_center_id: 10,
+                    article_id: 1,
+                    locale: 'en-US',
+                    version_id: 42,
+                },
+                expect.objectContaining({
+                    enabled: true,
+                    staleTime: 10 * 60 * 1000,
+                    refetchOnWindowFocus: false,
+                }),
+            )
+        })
+
+        it('disables version fetch when initialVersionId is not provided', () => {
+            renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 1,
+                    guidanceMode: 'edit',
+                }),
+            )
+
+            expect(useGetArticleTranslationVersionMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    version_id: 0,
+                }),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
+
+        it('disables version fetch when help center is not available', () => {
+            useAiAgentHelpCenterStateMock.mockReturnValue({
+                helpCenter: undefined,
+                isLoading: false,
+            })
+
+            renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 1,
+                    guidanceMode: 'edit',
+                    initialVersionId: 42,
+                }),
+            )
+
+            expect(useGetArticleTranslationVersionMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    help_center_id: 0,
+                }),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
+
+        it('disables version fetch when guidance article is not loaded', () => {
+            useGuidanceArticleMock.mockReturnValue({
+                guidanceArticle: undefined,
+                isGuidanceArticleLoading: true,
+                refetch: jest.fn(),
+                isError: false,
+                error: null,
+            } as any)
+
+            renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 1,
+                    guidanceMode: 'edit',
+                    initialVersionId: 42,
+                }),
+            )
+
+            expect(useGetArticleTranslationVersionMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    article_id: 0,
+                }),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
+
+        it('returns initialVersionData when version is fetched and differs from current', () => {
+            const mockVersionData = {
+                id: 42,
+                version: 3,
+                title: 'Historical Title',
+                content: 'Historical Content',
+                published_datetime: '2024-01-15T00:00:00Z',
+            }
+
+            useGetArticleTranslationVersionMock.mockReturnValue({
+                data: mockVersionData,
+                isLoading: false,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 1,
+                    guidanceMode: 'edit',
+                    initialVersionId: 42,
+                }),
+            )
+
+            expect(result.current.initialVersionData).toBe(mockVersionData)
+            expect(result.current.isInitialVersionLoading).toBe(false)
+        })
+
+        it('returns undefined initialVersionData when version matches publishedVersionId', () => {
+            const mockVersionData = {
+                id: 200,
+                version: 5,
+                title: 'Current Title',
+                content: 'Current Content',
+                published_datetime: '2024-06-01T00:00:00Z',
+            }
+
+            useGetArticleTranslationVersionMock.mockReturnValue({
+                data: mockVersionData,
+                isLoading: false,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 1,
+                    guidanceMode: 'edit',
+                    initialVersionId: 200,
+                }),
+            )
+
+            expect(result.current.initialVersionData).toBeUndefined()
+        })
+
+        it('returns undefined initialVersionData when version matches draftVersionId', () => {
+            const mockVersionData = {
+                id: 100,
+                version: 4,
+                title: 'Draft Title',
+                content: 'Draft Content',
+                published_datetime: '2024-05-01T00:00:00Z',
+            }
+
+            useGetArticleTranslationVersionMock.mockReturnValue({
+                data: mockVersionData,
+                isLoading: false,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 1,
+                    guidanceMode: 'edit',
+                    initialVersionId: 100,
+                }),
+            )
+
+            expect(result.current.initialVersionData).toBeUndefined()
+        })
+
+        it('returns isInitialVersionLoading true when version is loading and initialVersionId is set', () => {
+            useGetArticleTranslationVersionMock.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 1,
+                    guidanceMode: 'edit',
+                    initialVersionId: 42,
+                }),
+            )
+
+            expect(result.current.isInitialVersionLoading).toBe(true)
+        })
+
+        it('returns isInitialVersionError when version fetch fails', () => {
+            useGetArticleTranslationVersionMock.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: true,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 1,
+                    guidanceMode: 'edit',
+                    initialVersionId: 42,
+                }),
+            )
+
+            expect(result.current.isInitialVersionError).toBe(true)
+        })
+
+        it('returns isInitialVersionLoading false when query is loading but no initialVersionId', () => {
+            useGetArticleTranslationVersionMock.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    shopName: 'my-shop',
+                    guidanceArticleId: 1,
+                    guidanceMode: 'edit',
+                }),
+            )
+
+            expect(result.current.isInitialVersionLoading).toBe(false)
         })
     })
 })

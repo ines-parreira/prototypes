@@ -13,7 +13,7 @@
             transform: scale(1);
         }
     }
-    @keyframes shimmer {
+    @keyframes shimmer-reasoning {
         0% {
             background-position: 0% 0;
         }
@@ -185,7 +185,7 @@
                 -webkit-text-fill-color: transparent;
 
                 :global {
-                    animation: shimmer 1.5s infinite ease-in-out;
+                    animation: shimmer-reasoning 1.5s infinite ease-in-out;
                 }
             }
         }
@@ -429,23 +429,23 @@
         color: var(--content-neutral-default);
     }
 
-    .loading {
-        color: var(--content-neutral-default) !important;
-        background: linear-gradient(
-            90deg,
-            var(--content-neutral-default) 0%,
-            var(--content-neutral-secondary) 50%,
-            var(--content-neutral-default) 100%
-        ) !important;
-        background-size: 200% 100% !important;
-        background-clip: text !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-    }
-
     .title {
         .text {
-            color: var(--content-neutral-default);
+            color: var(--content-neutral-default) !important;
+
+            &.loading {
+                color: var(--content-neutral-default) !important;
+                background-image: linear-gradient(
+                    90deg,
+                    var(--content-neutral-default) 0%,
+                    var(--neutral-grey-1) 50%,
+                    var(--content-neutral-default) 100%
+                ) !important;
+                background-size: 200% 100% !important;
+                background-clip: text !important;
+                -webkit-background-clip: text !important;
+                -webkit-text-fill-color: transparent !important;
+            }
         }
 
         .expandIcon {

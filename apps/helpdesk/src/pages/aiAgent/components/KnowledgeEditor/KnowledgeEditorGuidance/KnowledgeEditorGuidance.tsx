@@ -5,6 +5,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { Card } from '@gorgias/axiom'
 
+import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
@@ -13,7 +14,11 @@ import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
 import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { KnowledgeEditorGuidanceProvider, useGuidanceStore } from './context'
-import type { GuidanceContextConfig, GuidanceModeType } from './context'
+import type {
+    GuidanceContextConfig,
+    GuidanceModeType,
+    HistoricalVersionState,
+} from './context'
 import { KnowledgeEditorGuidanceContent } from './KnowledgeEditorGuidanceContent'
 import { useKnowledgeEditorGuidanceData } from './useKnowledgeEditorGuidanceData'
 
@@ -43,6 +48,7 @@ type Props = {
     handleVisibilityUpdate?: (visibility: string) => void
     onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
     showMissingKnowledgeCheckbox?: boolean
+    initialVersionId?: number
 }
 
 const KnowledgeEditorGuidanceInner = ({
@@ -141,6 +147,7 @@ export const KnowledgeEditorGuidance = ({
     handleVisibilityUpdate,
     onSharedPanelStateChange,
     showMissingKnowledgeCheckbox,
+    initialVersionId,
 }: Props) => {
     const {
         guidanceHelpCenter,
@@ -150,12 +157,31 @@ export const KnowledgeEditorGuidance = ({
         isGuidanceArticleLoading,
         isError,
         error,
+        initialVersionData: rawInitialVersionData,
+        isInitialVersionLoading,
     } = useKnowledgeEditorGuidanceData({
         shopName,
         guidanceArticleId,
         guidanceMode,
         isOpen,
+        initialVersionId,
     })
+
+    const computedInitialVersionData = useMemo<
+        HistoricalVersionState | undefined
+    >(() => {
+        if (!rawInitialVersionData) return undefined
+        return {
+            versionId: rawInitialVersionData.id,
+            version: rawInitialVersionData.version,
+            title: rawInitialVersionData.title,
+            content: rawInitialVersionData.content,
+            publishedDatetime: rawInitialVersionData.published_datetime,
+            publisherUserId: rawInitialVersionData.publisher_user_id,
+            commitMessage: rawInitialVersionData.commit_message,
+            impactDateRange: getLast28DaysDateRange(),
+        }
+    }, [rawInitialVersionData])
     const { error: notifyError } = useNotify()
 
     useEffect(() => {
@@ -196,6 +222,8 @@ export const KnowledgeEditorGuidance = ({
             onEditFn: onEdit,
             handleVisibilityUpdate,
             showMissingKnowledgeCheckbox,
+            initialVersionId,
+            initialVersionData: computedInitialVersionData,
         }
     }, [
         shopName,
@@ -215,6 +243,8 @@ export const KnowledgeEditorGuidance = ({
         onEdit,
         handleVisibilityUpdate,
         showMissingKnowledgeCheckbox,
+        initialVersionId,
+        computedInitialVersionData,
     ])
 
     if (!isOpen) {
@@ -227,6 +257,10 @@ export const KnowledgeEditorGuidance = ({
 
     if (!memoizedConfig) {
         return null
+    }
+
+    if (isInitialVersionLoading) {
+        return <KnowledgeEditorLoadingShell />
     }
 
     return (

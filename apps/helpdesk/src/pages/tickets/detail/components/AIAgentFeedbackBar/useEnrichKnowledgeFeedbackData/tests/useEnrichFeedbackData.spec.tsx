@@ -697,6 +697,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Article Title',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -706,6 +707,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '200',
                             resourceTitle: 'Guidance Title',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -715,6 +717,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '300',
                             resourceTitle: 'External Snippet',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -724,6 +727,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '300',
                             resourceTitle: 'File Snippet',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -733,6 +737,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '',
                             resourceTitle: 'Action',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -742,6 +747,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '',
                             resourceTitle: 'Order',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -751,6 +757,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '300',
                             resourceTitle: 'External Snippet',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -760,6 +767,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '300',
                             resourceTitle: 'External Snippet',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -769,6 +777,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '300',
                             resourceTitle: 'External Snippet',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -778,6 +787,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '',
                             resourceTitle: 'Product Knowledge',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -787,6 +797,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '',
                             resourceTitle: 'Product Recommendation',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -962,6 +973,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Non-existent Article',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -1015,6 +1027,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Non-existent Article',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -1144,6 +1157,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '300',
                             resourceTitle: 'Store Website Question',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -1153,6 +1167,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '300',
                             resourceTitle: 'File Snippet',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -1162,6 +1177,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '300',
                             resourceTitle: 'Regular Snippet',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -1171,6 +1187,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '300',
                             resourceTitle: 'Failed File',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -1180,6 +1197,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '300',
                             resourceTitle: 'Missing Question',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                         {
@@ -1189,6 +1207,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Unknown Resource',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],
@@ -1275,6 +1294,7 @@ describe('useEnrichFeedbackData', () => {
                             resourceSetId: '100',
                             resourceTitle: 'Test Article',
                             resourceLocale: null,
+                            resourceVersion: null,
                             feedback: null,
                         },
                     ],

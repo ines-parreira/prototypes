@@ -533,6 +533,7 @@ describe('useUpsertFeedback', () => {
                                 resourceId: 'article-123',
                                 resourceType: 'ARTICLE',
                                 resourceLocale: 'en-US',
+                                resourceVersion: null,
                                 resourceSetId: 'set-1',
                                 resourceTitle: 'Test Article',
                                 feedback: {
@@ -617,6 +618,7 @@ describe('useUpsertFeedback', () => {
                                 resourceId: 'article-123',
                                 resourceType: 'ARTICLE',
                                 resourceLocale: 'en-US',
+                                resourceVersion: null,
                                 resourceSetId: 'set-1',
                                 resourceTitle: 'Test Article',
                                 feedback: null,
@@ -718,6 +720,7 @@ describe('useUpsertFeedback', () => {
                                 resourceId: 'article-123',
                                 resourceType: 'ARTICLE',
                                 resourceLocale: 'en-US',
+                                resourceVersion: null,
                                 resourceSetId: 'set-1',
                                 resourceTitle: 'Test Article',
                                 feedback: {

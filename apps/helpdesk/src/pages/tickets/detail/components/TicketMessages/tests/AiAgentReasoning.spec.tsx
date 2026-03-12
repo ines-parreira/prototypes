@@ -10,6 +10,8 @@ import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
+import type { AiReasoningResourcesItem } from '@gorgias/knowledge-service-types'
+
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
@@ -2159,13 +2161,14 @@ describe('AiAgentReasoning', () => {
     })
 
     describe('parseReasoningResources function', () => {
-        const mockResources = [
+        const mockResources: AiReasoningResourcesItem[] = [
             {
                 resourceType: 'ARTICLE' as const,
                 resourceId: '13608',
                 resourceSetId: '16',
                 resourceTitle: 'Test Article',
                 resourceLocale: 'en',
+                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2176,6 +2179,7 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '26665',
                 resourceTitle: 'Test Guidance',
                 resourceLocale: 'en',
+                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2186,6 +2190,7 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: 'uuid',
                 resourceTitle: 'Test Action',
                 resourceLocale: 'en',
+                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2197,6 +2202,7 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '78',
                 resourceTitle: 'Test File Snippet',
                 resourceLocale: 'en',
+                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2207,6 +2213,7 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '89',
                 resourceTitle: 'Test External Snippet',
                 resourceLocale: 'en',
+                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2217,6 +2224,7 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '',
                 resourceTitle: '#98765',
                 resourceLocale: 'en',
+                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2227,6 +2235,7 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '',
                 resourceTitle: 'Product Knowledge',
                 resourceLocale: 'en',
+                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2237,6 +2246,7 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '',
                 resourceTitle: 'Product Recommendation',
                 resourceLocale: 'en',
+                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2249,6 +2259,8 @@ describe('AiAgentReasoning', () => {
             resourceSetId: '16',
             resourceTitle: 'Test Article',
             resourceIsDraft: false,
+            resourceVersion: null,
+            resourceLocale: 'en',
         }
 
         const expectedGuidanceResource = {
@@ -2257,6 +2269,8 @@ describe('AiAgentReasoning', () => {
             resourceSetId: '26665',
             resourceTitle: 'Test Guidance',
             resourceIsDraft: false,
+            resourceVersion: null,
+            resourceLocale: 'en',
         }
 
         const expectedActionResource = {
@@ -2264,6 +2278,8 @@ describe('AiAgentReasoning', () => {
             resourceId: '01J7KWHHMDY3H5S174D89VG7S3',
             resourceTitle: 'Test Action',
             resourceIsDraft: false,
+            resourceVersion: null,
+            resourceLocale: 'en',
         }
 
         const expectedFileExternalSnippetResource = {
@@ -2272,6 +2288,8 @@ describe('AiAgentReasoning', () => {
             resourceSetId: '78',
             resourceTitle: 'Test File Snippet',
             resourceIsDraft: false,
+            resourceVersion: null,
+            resourceLocale: 'en',
         }
 
         const expectedExternalSnippetResource = {
@@ -2280,6 +2298,8 @@ describe('AiAgentReasoning', () => {
             resourceSetId: '89',
             resourceTitle: 'Test External Snippet',
             resourceIsDraft: false,
+            resourceVersion: null,
+            resourceLocale: 'en',
         }
 
         const expectedOrderResource = {
@@ -2287,6 +2307,8 @@ describe('AiAgentReasoning', () => {
             resourceId: '98765',
             resourceTitle: '#98765',
             resourceIsDraft: false,
+            resourceVersion: null,
+            resourceLocale: 'en',
         }
 
         const expectedProductKnowledgeResource = {
@@ -2294,6 +2316,8 @@ describe('AiAgentReasoning', () => {
             resourceId: '12345',
             resourceTitle: 'Product Knowledge',
             resourceIsDraft: false,
+            resourceVersion: null,
+            resourceLocale: 'en',
         }
 
         const expectedProductRecommendationResource = {
@@ -2301,6 +2325,8 @@ describe('AiAgentReasoning', () => {
             resourceId: '67890',
             resourceTitle: 'Product Recommendation',
             resourceIsDraft: false,
+            resourceVersion: null,
+            resourceLocale: 'en',
         }
 
         it.each([

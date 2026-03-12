@@ -225,6 +225,7 @@ describe('KnowledgeSourcesWrapper', () => {
                                 resourceTitle: 'Deleted Article',
                                 resourceId: 'set-1',
                                 resourceLocale: 'en',
+                                resourceVersion: null,
                                 resourceSetId: 'set-1',
                             },
                         ],

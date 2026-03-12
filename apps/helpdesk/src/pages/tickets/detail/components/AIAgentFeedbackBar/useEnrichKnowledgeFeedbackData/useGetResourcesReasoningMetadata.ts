@@ -5,6 +5,7 @@ import { useShopifyIntegrationAndScope } from 'pages/common/hooks/useShopifyInte
 
 import { AiAgentKnowledgeResourceTypeEnum } from '../types'
 import { useGetResourceData } from './useEnrichFeedbackData'
+import { useGetVersionedArticles } from './useGetVersionedArticles'
 import { getResourceMetadata, getResourceType } from './utils'
 
 type HelpCenterMetadata = {
@@ -192,13 +193,17 @@ export const useGetResourcesReasoningMetadata = ({
         versionStatus: 'latest_draft',
     })
 
+    const { isLoading: isVersionedLoading, versionedArticlesMap } =
+        useGetVersionedArticles(resources, queriesEnabled)
+
     if (!publishedResourceData) {
         return null
     }
 
     const isLoading =
         publishedResourceData.isLoading ||
-        (hasDraftArticlesOrGuidance && draftResourceData?.isLoading)
+        (hasDraftArticlesOrGuidance && draftResourceData?.isLoading) ||
+        isVersionedLoading
 
     return {
         isLoading,
@@ -214,6 +219,29 @@ export const useGetResourcesReasoningMetadata = ({
             )
 
             resource.resourceType = type as typeof resource.resourceType
+
+            const versionedData = versionedArticlesMap.get(resource.resourceId)
+            if (versionedData) {
+                const fallbackMetadata = getResourceMetadata(
+                    {
+                        id: resource.resourceId,
+                        title: resource.resourceTitle,
+                        type: resource.resourceType,
+                    },
+                    shopName,
+                    publishedResourceData,
+                )
+                return {
+                    title: versionedData.title,
+                    content: versionedData.content,
+                    helpCenterId: versionedData.helpCenterId,
+                    url:
+                        fallbackMetadata && 'url' in fallbackMetadata
+                            ? fallbackMetadata.url
+                            : undefined,
+                    versionId: versionedData.versionId,
+                }
+            }
 
             // For draft resources, try to get metadata from draftResourceData first
             // Fall back to publishedResourceData if draft data is not available
