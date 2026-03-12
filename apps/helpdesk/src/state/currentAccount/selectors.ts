@@ -341,6 +341,16 @@ export const is2FAEnforcedSelector = createSelector(
     (twoFAEnforcedDatetime) => !!twoFAEnforcedDatetime,
 )
 
+export const getSsoEnforcedDatetime = createSelector(
+    getAccessSettings,
+    (setting) =>
+        setting.getIn(['data', 'sso_enforced_datetime']) as string | null,
+)
+export const isSsoEnforcedSelector = createSelector(
+    getSsoEnforcedDatetime,
+    (ssoEnforcedDatetime) => !!ssoEnforcedDatetime,
+)
+
 export const getInTicketSuggestionSettings = createSelector(
     createSettingByTypeSelector(AccountSettingType.InTicketSuggestion),
     (setting) =>

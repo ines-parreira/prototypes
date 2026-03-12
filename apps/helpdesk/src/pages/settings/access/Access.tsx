@@ -1,6 +1,7 @@
 import type { FormEvent } from 'react'
 import { useCallback, useState } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import classnames from 'classnames'
 import type { List } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
@@ -15,11 +16,13 @@ import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import SsoEnforcement from 'pages/settings/access/SsoEnforcement'
 import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
 import { submitSetting } from 'state/currentAccount/actions'
 import { UPDATE_ACCOUNT_SETTING } from 'state/currentAccount/constants'
 import {
     getAccessSettings,
+    getSsoEnforcedDatetime,
     getTwoFAEnforcedDatetime,
 } from 'state/currentAccount/selectors'
 import type {
@@ -44,6 +47,7 @@ enum LoadingKey {
     GoogleSSO = 'sso_google',
     Office365SSO = 'sso_office_365',
     TwoFAEnforcement = 'two_fa_enforcement',
+    SsoEnforcement = 'sso_enforcement',
     CustomSSO = 'custom_sso',
 }
 
@@ -91,6 +95,10 @@ function hasDispatchResultType(value: unknown): value is { type: string } {
 
 export const AccessContainer = (props: Props) => {
     const { accountDomain, accessSettings, submitSetting } = props
+    const { value: isSsoEnforcementEnabled } = useFlagWithLoading(
+        FeatureFlagKey.SsoEnforcement,
+        false,
+    )
 
     const allowedDomainsSetting: string[] =
         (
@@ -110,10 +118,11 @@ export const AccessContainer = (props: Props) => {
         .getIn(['data', 'custom_sso_providers'], {})
         .toJS()
     const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
+    const ssoEnforcedDatetime = useAppSelector(getSsoEnforcedDatetime)
 
     const [isLoading, setIsLoading] = useState<LoadingKey>()
     const [signupMode, setSignupMode] = useState(signupModeSetting)
-    const [allowedDomains, setAllowedDomains] = useState(
+    const [allowedDomains, setAllowedDomains] = useState(() =>
         allowedDomainsSetting.join('\n'),
     )
     const [showCustomSSOModal, setShowCustomSSOModal] = useState(false)
@@ -138,6 +147,7 @@ export const AccessContainer = (props: Props) => {
                 google_sso_enabled: googleSsoEnabled,
                 office365_sso_enabled: office365SsoEnabled,
                 two_fa_enforced_datetime: twoFAEnforcedDatetime,
+                sso_enforced_datetime: ssoEnforcedDatetime,
                 custom_sso_providers: customSsoProviders,
             }
 
@@ -164,6 +174,7 @@ export const AccessContainer = (props: Props) => {
             googleSsoEnabled,
             office365SsoEnabled,
             twoFAEnforcedDatetime,
+            ssoEnforcedDatetime,
             customSsoProviders,
         ],
     )
@@ -213,6 +224,23 @@ export const AccessContainer = (props: Props) => {
                     val
                         ? 'successfully enforced for all users.'
                         : 'has successfully been made optional.'
+                }`,
+            )
+        },
+        [saveSettings],
+    )
+
+    const toggleSsoEnforcement = useCallback(
+        (val: string | null) => {
+            return saveSettings(
+                LoadingKey.SsoEnforcement,
+                {
+                    sso_enforced_datetime: val,
+                },
+                `SSO ${
+                    val
+                        ? 'successfully enforced for all users.'
+                        : 'enforcement has been disabled.'
                 }`,
             )
         },
@@ -291,6 +319,26 @@ export const AccessContainer = (props: Props) => {
                             showModal={showCustomSSOModal}
                             setShowModal={setShowCustomSSOModal}
                         />
+
+                        {(isSsoEnforcementEnabled || !!ssoEnforcedDatetime) && (
+                            <SsoEnforcement
+                                ssoEnforcedDatetime={ssoEnforcedDatetime}
+                                loading={
+                                    isLoading === LoadingKey.SsoEnforcement
+                                }
+                                disabled={
+                                    !showCustomSSOModal &&
+                                    !!isLoading &&
+                                    isLoading !== LoadingKey.SsoEnforcement
+                                }
+                                googleSsoEnabled={googleSsoEnabled}
+                                office365SsoEnabled={office365SsoEnabled}
+                                hasCustomSsoProviders={
+                                    Object.keys(customSsoProviders).length > 0
+                                }
+                                onSsoEnforced={toggleSsoEnforcement}
+                            />
+                        )}
 
                         <h4 className="mt-5 mb-2">Auto-join helpdesk</h4>
                         <p className="mb-1">

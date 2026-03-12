@@ -186,6 +186,7 @@ export enum FeatureFlagKey {
     SendCallsToVoicemailPreference = 'send-calls-to-voicemail-preference',
     SendgridMigrationSingleSender = 'sendgrid-migration-single-sender-verification',
     SmartFollowUps = 'linear.task_AIEXP-7399.smart-follow-ups-on-helpdesk',
+    SsoEnforcement = 'linear.task_HELP-5610.sso-enforcement',
     ShopifyCustomerTimeline = 'linear.project_add-shopify-to-customer-timeline',
     ShopifyHideActionButtons = 'shopify-widget-hide-action-buttons',
     ShopifyIntegrationScopeScriptTag = 'shopify-integration-scope-script-tag',

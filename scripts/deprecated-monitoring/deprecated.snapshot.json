@@ -2291,7 +2291,7 @@
       "nodeType": "VariableDeclaration",
       "nodeName": "ToggleInput",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ToggleField />` from @gorgias/axiom instead.\n * @date 2025-03-25\n * @type ui-kit-migration\n ",
-      "count": 21,
+      "count": 22,
       "filePath": "apps/helpdesk/src/pages/common/forms/ToggleInput.tsx",
       "usages": [
         {
@@ -2301,6 +2301,7 @@
             "apps/helpdesk/src/pages/common/forms/tests/ToggleInputField.spec.tsx",
             "apps/helpdesk/src/pages/common/forms/ToggleInputField.tsx",
             "apps/helpdesk/src/pages/settings/access/Access.tsx",
+            "apps/helpdesk/src/pages/settings/access/SsoEnforcement.tsx",
             "apps/helpdesk/src/pages/settings/access/SsoToggleButton.tsx",
             "apps/helpdesk/src/pages/settings/access/TwoFactorAuthenticationEnforcement.tsx",
             "apps/helpdesk/src/pages/settings/conditionalFields/components/ConditionalFieldRow.tsx",
