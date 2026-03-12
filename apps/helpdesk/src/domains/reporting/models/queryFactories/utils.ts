@@ -95,8 +95,6 @@ export const hasFilter = (filter: OptionalFilter) => {
     if (isFilterWithLogicalOperator(filter)) {
         if (filter.operator === ApiOnlyOperatorEnum.SET) {
             return filter.values.length === 0
-        } else if (filter.operator === LogicalOperatorEnum.NOT_ONE_OF) {
-            return filter.values.length >= 0
         } else if (filter.operator === ApiOnlyOperatorEnum.IN_DATE_RANGE) {
             return filter.values.length === 2
         }

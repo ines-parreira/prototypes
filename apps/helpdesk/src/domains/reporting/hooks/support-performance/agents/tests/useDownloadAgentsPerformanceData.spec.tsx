@@ -230,33 +230,6 @@ describe('useDownloadAgentsPerformanceData', () => {
         })
     })
 
-    it('Should pass agents filter to exclude unassigned tickets from totals', () => {
-        const report = {
-            files: { ['file']: 'data' },
-        }
-
-        saveReportMock.mockReturnValue(report)
-
-        renderHook(() => useDownloadAgentsPerformanceData(), {
-            wrapper: ({ children }) => (
-                <Provider store={mockStore(state)}>{children}</Provider>
-            ),
-        })
-
-        expect(useTableReportDataMock).toHaveBeenNthCalledWith(
-            3,
-            expect.objectContaining({
-                period,
-                agents: {
-                    operator: 'not-one-of',
-                    values: [],
-                },
-            }),
-            'UTC',
-            expect.any(Object),
-        )
-    })
-
     describe('fetchAgentsTableReportData', () => {
         const filters = { period }
         const userTimezone = 'UTC'

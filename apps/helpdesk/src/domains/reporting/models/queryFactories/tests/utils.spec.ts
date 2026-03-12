@@ -451,14 +451,6 @@ describe('utils', () => {
             }
             expect(hasFilter(filter)).toBe(false)
         })
-
-        it('should return true for NOT_ONE_OF operator with empty values', () => {
-            const filter = {
-                values: [],
-                operator: LogicalOperatorEnum.NOT_ONE_OF,
-            }
-            expect(hasFilter(filter)).toBe(true)
-        })
     })
 
     describe('withDefaultLogicalOperator', () => {
