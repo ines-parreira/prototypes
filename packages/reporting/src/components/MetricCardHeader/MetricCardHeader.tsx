@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
-import { Icon, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { TooltipData } from '../../types'
 
@@ -38,8 +38,7 @@ export function MetricCardHeader({
         <div className={css.wrapper}>
             <div className={css.title}>
                 {isTitleTruncated && typeof title === 'string' ? (
-                    <Tooltip delay={0}>
-                        <TooltipTrigger>{titleElement}</TooltipTrigger>
+                    <Tooltip delay={0} trigger={titleElement}>
                         <TooltipContent title={title} />
                     </Tooltip>
                 ) : (
@@ -47,10 +46,7 @@ export function MetricCardHeader({
                 )}
                 {hint && (
                     <span className={css.infoIcon}>
-                        <Tooltip delay={0}>
-                            <TooltipTrigger>
-                                <Icon name="info" />
-                            </TooltipTrigger>
+                        <Tooltip delay={0} trigger={<Icon name="info" />}>
                             <TooltipContent {...hint} />
                         </Tooltip>
                     </span>

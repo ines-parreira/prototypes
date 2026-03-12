@@ -6,7 +6,6 @@ import {
     LegacyToggleField as ToggleField,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import css from './UserMenu.less'
@@ -15,8 +14,8 @@ export function HelpdeskV2BetaToggle() {
     const { hasUIVisionBeta, onToggle } = useHelpdeskV2BaselineFlag()
 
     return (
-        <Tooltip>
-            <TooltipTrigger>
+        <Tooltip
+            trigger={
                 <button
                     className={cn(
                         css['dropdown-item-user-menu'],
@@ -27,7 +26,8 @@ export function HelpdeskV2BetaToggle() {
                     <span>New UI</span>
                     <ToggleField value={hasUIVisionBeta} />
                 </button>
-            </TooltipTrigger>
+            }
+        >
             <TooltipContent>
                 Gorgias has a refreshed look! If anything isn&apos;t working as
                 expected, you can switch back temporarily with this toggle.

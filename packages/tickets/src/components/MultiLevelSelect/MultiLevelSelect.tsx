@@ -157,76 +157,83 @@ export function MultiLevelSelect(props: Props) {
     )
 
     return (
-        <Tooltip isDisabled={!showTooltip || !tooltipContent} placement="left">
-            <Select
-                aria-labelledby={id}
-                items={selectOptions}
-                placeholder={placeholder}
-                isDisabled={isDisabled}
-                isLoading={isLoading}
-                isSearchable={isSearchable}
-                searchValue={searchValue}
-                onSearchChange={handleSearchChange}
-                aria-label={ariaLabel}
-                isOpen={isOpen}
-                onOpenChange={handleOpenChange}
-                trigger={trigger}
-                keyName="id"
-                selectedItem={selectedOption ?? null}
-                onSelect={handleSelect}
-                minWidth={256}
-                maxWidth={256}
-                maxHeight={258}
-                size="sm"
-                header={
-                    navigationState.canGoBack && (
-                        <ListHeader>
-                            <Button
-                                size="sm"
-                                variant="tertiary"
-                                onClick={handleGoBack}
-                                leadingSlot={IconName.ArrowChevronLeft}
-                            >
-                                {navigationState.parentLevelName}
-                            </Button>
-                        </ListHeader>
-                    )
-                }
-                footer={
-                    !!selectedValue && (
-                        <ListFooter>
-                            <Button
-                                size="sm"
-                                variant="tertiary"
-                                onClick={handleClear}
-                            >
-                                Clear selection
-                            </Button>
-                        </ListFooter>
-                    )
-                }
-            >
-                {(option: TreeOption) => (
-                    <ListItem
-                        key={option.id}
-                        textValue={option.label}
-                        label={
-                            <OverflowTooltip placement="right">
-                                <Text overflow="ellipsis">{option.label}</Text>
-                            </OverflowTooltip>
-                        }
-                        caption={option.caption}
-                        trailingSlot={
-                            option.hasChildren && !searchValue ? (
-                                <Icon
-                                    name={IconName.ArrowChevronRight}
+        <Tooltip
+            isDisabled={!showTooltip || !tooltipContent}
+            placement="left"
+            trigger={
+                <Select
+                    aria-labelledby={id}
+                    items={selectOptions}
+                    placeholder={placeholder}
+                    isDisabled={isDisabled}
+                    isLoading={isLoading}
+                    isSearchable={isSearchable}
+                    searchValue={searchValue}
+                    onSearchChange={handleSearchChange}
+                    aria-label={ariaLabel}
+                    isOpen={isOpen}
+                    onOpenChange={handleOpenChange}
+                    trigger={trigger}
+                    keyName="id"
+                    selectedItem={selectedOption ?? null}
+                    onSelect={handleSelect}
+                    minWidth={256}
+                    maxWidth={256}
+                    maxHeight={258}
+                    size="sm"
+                    header={
+                        navigationState.canGoBack && (
+                            <ListHeader>
+                                <Button
                                     size="sm"
-                                />
-                            ) : undefined
-                        }
-                    />
-                )}
-            </Select>
+                                    variant="tertiary"
+                                    onClick={handleGoBack}
+                                    leadingSlot={IconName.ArrowChevronLeft}
+                                >
+                                    {navigationState.parentLevelName}
+                                </Button>
+                            </ListHeader>
+                        )
+                    }
+                    footer={
+                        !!selectedValue && (
+                            <ListFooter>
+                                <Button
+                                    size="sm"
+                                    variant="tertiary"
+                                    onClick={handleClear}
+                                >
+                                    Clear selection
+                                </Button>
+                            </ListFooter>
+                        )
+                    }
+                >
+                    {(option: TreeOption) => (
+                        <ListItem
+                            key={option.id}
+                            textValue={option.label}
+                            label={
+                                <OverflowTooltip placement="right">
+                                    <Text overflow="ellipsis">
+                                        {option.label}
+                                    </Text>
+                                </OverflowTooltip>
+                            }
+                            caption={option.caption}
+                            trailingSlot={
+                                option.hasChildren && !searchValue ? (
+                                    <Icon
+                                        name={IconName.ArrowChevronRight}
+                                        size="sm"
+                                    />
+                                ) : undefined
+                            }
+                        />
+                    )}
+                </Select>
+            }
+        >
             <TooltipContent title={tooltipContent || undefined} />
         </Tooltip>
     )

@@ -109,30 +109,37 @@ export default function MonitoringPhoneCall({ call }: Props): JSX.Element {
                     >
                         Stop Listening
                     </Button>
-                    <Tooltip>
-                        <DynamicSoundWaveIcon
-                            audioLevel={isWhispering ? audioLevel : 0}
-                            hide={!isWhispering}
-                        >
-                            <Button
-                                variant="secondary"
-                                icon={isWhispering ? 'user-mute' : 'user-voice'}
-                                onClick={() => {
-                                    handleCallWhispering({
-                                        data: {
-                                            monitoring_call_sid:
-                                                monitoringCallSid,
-                                            whisper: !isWhispering,
-                                        },
-                                    })
-                                }}
-                                isLoading={isLoading}
+                    <Tooltip
+                        trigger={
+                            <DynamicSoundWaveIcon
+                                audioLevel={isWhispering ? audioLevel : 0}
+                                hide={!isWhispering}
                             >
-                                {isWhispering
-                                    ? 'Stop whispering'
-                                    : 'Whisper to agent'}
-                            </Button>
-                        </DynamicSoundWaveIcon>
+                                <Button
+                                    variant="secondary"
+                                    icon={
+                                        isWhispering
+                                            ? 'user-mute'
+                                            : 'user-voice'
+                                    }
+                                    onClick={() => {
+                                        handleCallWhispering({
+                                            data: {
+                                                monitoring_call_sid:
+                                                    monitoringCallSid,
+                                                whisper: !isWhispering,
+                                            },
+                                        })
+                                    }}
+                                    isLoading={isLoading}
+                                >
+                                    {isWhispering
+                                        ? 'Stop whispering'
+                                        : 'Whisper to agent'}
+                                </Button>
+                            </DynamicSoundWaveIcon>
+                        }
+                    >
                         <TooltipContent
                             title={
                                 isWhispering

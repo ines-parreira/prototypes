@@ -197,20 +197,23 @@ const HelpCenterArticleModalBasicViewContent = ({
                 }
                 onCopyLinkToClipboard={onCopyLinkToClipboard}
                 toggleModalBtn={
-                    <Tooltip>
-                        <Button
-                            onClick={() =>
-                                setEditModal({
-                                    isOpened: true,
-                                    view: HelpCenterArticleModalView.ADVANCED,
-                                })
-                            }
-                            isDisabled={!canUpdateArticle}
-                            variant="tertiary"
-                            size="md"
-                            icon="settings"
-                            aria-label="advanced editor modal"
-                        />
+                    <Tooltip
+                        trigger={
+                            <Button
+                                onClick={() =>
+                                    setEditModal({
+                                        isOpened: true,
+                                        view: HelpCenterArticleModalView.ADVANCED,
+                                    })
+                                }
+                                isDisabled={!canUpdateArticle}
+                                variant="tertiary"
+                                size="md"
+                                icon="settings"
+                                aria-label="advanced editor modal"
+                            />
+                        }
+                    >
                         <TooltipContent title="View settings" />
                     </Tooltip>
                 }

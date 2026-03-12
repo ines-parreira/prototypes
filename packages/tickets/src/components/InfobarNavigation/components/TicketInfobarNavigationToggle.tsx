@@ -1,4 +1,4 @@
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 export function InfobarToggle({
     isExpanded,
@@ -8,8 +8,9 @@ export function InfobarToggle({
     onToggle: () => void
 }) {
     return (
-        <Tooltip placement="left">
-            <TooltipTrigger>
+        <Tooltip
+            placement="left"
+            trigger={
                 <Button
                     icon={
                         isExpanded ? 'system-bar-collapse' : 'system-bar-expand'
@@ -18,7 +19,8 @@ export function InfobarToggle({
                     variant="tertiary"
                     onClick={onToggle}
                 />
-            </TooltipTrigger>
+            }
+        >
             <TooltipContent
                 title={isExpanded ? 'Collapse' : 'Expand'}
                 shortcut={']'}

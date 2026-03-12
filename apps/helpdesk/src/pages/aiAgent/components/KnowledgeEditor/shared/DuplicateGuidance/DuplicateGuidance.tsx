@@ -11,7 +11,6 @@ import {
     MultiSelect,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -226,10 +225,11 @@ export const DuplicateGuidance = ({
     if (renderMode === ButtonRenderMode.DisabledWithTooltip && tooltipMessage) {
         return (
             <>
-                <Tooltip placement="top" delay={0}>
-                    <TooltipTrigger>
-                        <span id={buttonId}>{multiSelect}</span>
-                    </TooltipTrigger>
+                <Tooltip
+                    placement="top"
+                    delay={0}
+                    trigger={<span id={buttonId}>{multiSelect}</span>}
+                >
                     <TooltipContent caption={tooltipMessage} />
                 </Tooltip>
             </>

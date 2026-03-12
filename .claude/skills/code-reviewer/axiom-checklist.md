@@ -16,7 +16,7 @@
 | Check | Status |
 |-------|--------|
 | Using `Button` not `LegacyButton` | ⬜ |
-| Using `Tooltip`/`TooltipTrigger`/`TooltipContent` not `LegacyTooltip` | ⬜ |
+| Using `Tooltip`/`TooltipContent` with `trigger` prop, not `LegacyTooltip` | ⬜ |
 | Using `Badge` not `LegacyBadge` | ⬜ |
 | Using `Icon` not `LegacyIcon` | ⬜ |
 
@@ -246,11 +246,8 @@ import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 </Tooltip>
 
 // After
-import { Tooltip, TooltipTrigger, TooltipContent } from '@gorgias/axiom'
-<Tooltip>
-    <TooltipTrigger>
-        <button>Hover me</button>
-    </TooltipTrigger>
+import { Tooltip, TooltipContent } from '@gorgias/axiom'
+<Tooltip trigger={<button>Hover me</button>}>
     <TooltipContent>Help text</TooltipContent>
 </Tooltip>
 ```

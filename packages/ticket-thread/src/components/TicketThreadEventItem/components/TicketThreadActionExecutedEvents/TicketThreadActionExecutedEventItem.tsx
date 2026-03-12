@@ -1,13 +1,6 @@
 import { useMemo } from 'react'
 
-import {
-    Box,
-    Icon,
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { TicketThreadActionExecutedEventItem as TicketThreadActionExecutedEventItemType } from '../../../../hooks/events/types'
 import { useListAllIntegrations } from '../../../../hooks/shared/useListAllIntegrations'
@@ -89,12 +82,13 @@ export function TicketThreadActionExecutedEventItem({
                 <TicketThreadEventAuthor authorId={event.user_id} />
             )}
             {hasDetails && (
-                <Tooltip>
-                    <TooltipTrigger>
+                <Tooltip
+                    trigger={
                         <span role="button" aria-label="Show action details">
                             <Icon name="info" />
                         </span>
-                    </TooltipTrigger>
+                    }
+                >
                     <TooltipContent>
                         <Box flexDirection="column" gap="xxs">
                             {errorMessage && (

@@ -1,10 +1,5 @@
 import type { LegacyColorType as ColorType } from '@gorgias/axiom'
-import {
-    LegacyBadge as Badge,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { LegacyBadge as Badge, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { EditingStateEnum } from '../../constants'
 
@@ -32,13 +27,14 @@ const EditingState = ({ state }: EditingStateProps) => {
     }
 
     return (
-        <Tooltip>
-            <TooltipTrigger>
+        <Tooltip
+            trigger={
                 <Badge type={options[state].badgeType as ColorType}>
                     <i className={'material-icons'}>{options[state].icon}</i>
                     {state}
                 </Badge>
-            </TooltipTrigger>
+            }
+        >
             <TooltipContent caption={options[state].tooltip} />
         </Tooltip>
     )

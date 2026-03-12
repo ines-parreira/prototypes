@@ -40,20 +40,22 @@ export default function Toggle() {
 
     if (hasUIVisionMS1) {
         return (
-            <Tooltip>
-                <Button
-                    variant="secondary"
-                    size="sm"
-                    onClick={handleClick}
-                    id={buttonId}
-                    isDisabled={!isToggleEnabled}
-                    data-candu-id="dtp-toggle"
-                    icon="system-bar-left-collapse"
-                    aria-describedby={
-                        isEnabled ? Labels.FullWidth : Labels.SplitTicket
-                    }
-                />
-
+            <Tooltip
+                trigger={
+                    <Button
+                        variant="secondary"
+                        size="sm"
+                        onClick={handleClick}
+                        id={buttonId}
+                        isDisabled={!isToggleEnabled}
+                        data-candu-id="dtp-toggle"
+                        icon="system-bar-left-collapse"
+                        aria-describedby={
+                            isEnabled ? Labels.FullWidth : Labels.SplitTicket
+                        }
+                    />
+                }
+            >
                 <TooltipContent
                     title={
                         !isToggleEnabled
@@ -68,36 +70,41 @@ export default function Toggle() {
     }
 
     return (
-        <Tooltip>
-            <button
-                className={cn(
-                    showGlobalNav ? css.showGlobalNavToggle : css.toggle,
-                    {
-                        [css.active]: isEnabled,
-                        [css.disabled]: !isToggleEnabled,
-                    },
-                )}
-                type="button"
-                onClick={handleClick}
-                id={buttonId}
-                disabled={!isToggleEnabled}
-                data-candu-id="dtp-toggle"
-                {...(showGlobalNav && {
-                    'aria-describedby': isEnabled
-                        ? Labels.FullWidth
-                        : Labels.SplitTicket,
-                })}
-            >
-                {showGlobalNav ? (
-                    <div
-                        className={cn(css.mask, { [css.active]: isEnabled })}
-                    />
-                ) : (
-                    <span>
-                        {isEnabled ? Labels.FullWidth : Labels.SplitTicket}
-                    </span>
-                )}
-            </button>
+        <Tooltip
+            trigger={
+                <button
+                    className={cn(
+                        showGlobalNav ? css.showGlobalNavToggle : css.toggle,
+                        {
+                            [css.active]: isEnabled,
+                            [css.disabled]: !isToggleEnabled,
+                        },
+                    )}
+                    type="button"
+                    onClick={handleClick}
+                    id={buttonId}
+                    disabled={!isToggleEnabled}
+                    data-candu-id="dtp-toggle"
+                    {...(showGlobalNav && {
+                        'aria-describedby': isEnabled
+                            ? Labels.FullWidth
+                            : Labels.SplitTicket,
+                    })}
+                >
+                    {showGlobalNav ? (
+                        <div
+                            className={cn(css.mask, {
+                                [css.active]: isEnabled,
+                            })}
+                        />
+                    ) : (
+                        <span>
+                            {isEnabled ? Labels.FullWidth : Labels.SplitTicket}
+                        </span>
+                    )}
+                </button>
+            }
+        >
             <TooltipContent
                 title={
                     !isToggleEnabled

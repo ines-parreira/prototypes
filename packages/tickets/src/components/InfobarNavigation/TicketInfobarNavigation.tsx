@@ -60,7 +60,7 @@ export function TicketInfobarNavigation({
                 {hasUIVisionMilestone2 && (
                     <InfobarNavigationItem
                         name={TicketInfobarTab.Shopify}
-                        icon="vendor-shopify-colored"
+                        icon="app-shopify"
                         tooltip={{
                             title: 'Shopify',
                         }}
@@ -97,12 +97,16 @@ export function TicketInfobarNavigation({
                     aria-label="Edit widget data"
                     placement="bottom left"
                     trigger={
-                        <Tooltip placement="left">
-                            <Button
-                                variant="tertiary"
-                                icon="settings"
-                                aria-label="Edit Widget data"
-                            />
+                        <Tooltip
+                            placement="left"
+                            trigger={
+                                <Button
+                                    variant="tertiary"
+                                    icon="settings"
+                                    aria-label="Edit Widget data"
+                                />
+                            }
+                        >
                             <TooltipContent title="Edit Widget data" />
                         </Tooltip>
                     }
@@ -110,7 +114,7 @@ export function TicketInfobarNavigation({
                     <MenuSection id="edit-widget-data" name="Edit widget data">
                         <MenuItem
                             label="Shopify"
-                            leadingSlot="vendor-shopify-colored"
+                            leadingSlot="app-shopify"
                             onAction={() => onToggleEditShopifyFields(true)}
                         />
                         <MenuItem

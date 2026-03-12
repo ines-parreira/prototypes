@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 import _find from 'lodash/find'
 import moment from 'moment-timezone'
 
-import { IconName } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 
 import type { IntegrationConfig } from 'config'
 import { INTEGRATION_TYPE_CONFIG } from 'config'
@@ -47,13 +47,13 @@ export const getIconFromType = (type: IntegrationType): string => {
 export const getStoreIconNameFromType = (type: IntegrationType): IconName => {
     switch (type) {
         case IntegrationType.Shopify:
-            return IconName.VendorShopifyColored
+            return 'app-shopify'
         case IntegrationType.BigCommerce:
-            return IconName.VendorBicommerceColored
+            return 'app-bicommerce'
         case IntegrationType.Magento2:
-            return IconName.VendorMagentoColored
+            return 'app-magento'
         default:
-            return IconName.ShoppingBag
+            return 'shopping-bag'
     }
 }
 

@@ -3,7 +3,7 @@ import { isValidElement } from 'react'
 
 import classnames from 'classnames'
 
-import { Icon, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
@@ -37,8 +37,7 @@ export function DrillDownHeaderCellWithTooltip({
 
                             if (typeof tooltip === 'string') {
                                 return (
-                                    <Tooltip placement="top">
-                                        <TooltipTrigger>{icon}</TooltipTrigger>
+                                    <Tooltip placement="top" trigger={icon}>
                                         <TooltipContent caption={tooltip} />
                                     </Tooltip>
                                 )
@@ -56,8 +55,7 @@ export function DrillDownHeaderCellWithTooltip({
                                         linkText?: string
                                     }
                                 return (
-                                    <Tooltip placement="top">
-                                        <TooltipTrigger>{icon}</TooltipTrigger>
+                                    <Tooltip placement="top" trigger={icon}>
                                         <TooltipContent
                                             title={
                                                 typeof title === 'string'
@@ -83,8 +81,7 @@ export function DrillDownHeaderCellWithTooltip({
 
                             // Fallback for other ReactNode types
                             return (
-                                <Tooltip placement="top">
-                                    <TooltipTrigger>{icon}</TooltipTrigger>
+                                <Tooltip placement="top" trigger={icon}>
                                     <TooltipContent caption={String(tooltip)} />
                                 </Tooltip>
                             )

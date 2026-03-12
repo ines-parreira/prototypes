@@ -12,7 +12,6 @@ import {
     SubMenu,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 import type { Team, TicketPriority, TicketTag } from '@gorgias/helpdesk-queries'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
@@ -100,10 +99,9 @@ export function MoreActionsMenu({
 
     const renderOverflowLabel = useCallback((label: string) => {
         return (
-            <Tooltip>
-                <TooltipTrigger>
-                    <span className={css.overflowLabel}>{label}</span>
-                </TooltipTrigger>
+            <Tooltip
+                trigger={<span className={css.overflowLabel}>{label}</span>}
+            >
                 <TooltipContent title={label} />
             </Tooltip>
         )
@@ -117,8 +115,8 @@ export function MoreActionsMenu({
             isOpen={isMenuOpen}
             onOpenChange={handleMenuOpenChange}
             trigger={
-                <Tooltip>
-                    <TooltipTrigger>
+                <Tooltip
+                    trigger={
                         <Button
                             variant="tertiary"
                             size="sm"
@@ -126,7 +124,8 @@ export function MoreActionsMenu({
                             aria-label="More actions"
                             isDisabled={isDisabled}
                         />
-                    </TooltipTrigger>
+                    }
+                >
                     <TooltipContent
                         title={
                             isDisabled

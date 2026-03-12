@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useDonutChartHover } from '../context/DonutChartHoverContext'
 
@@ -81,8 +81,7 @@ export const DonutChartLegendItem = ({
                             opacity: isHidden ? 0.3 : 1,
                         }}
                     />
-                    <Tooltip isDisabled={!isTruncated}>
-                        <TooltipTrigger>{textSpan}</TooltipTrigger>
+                    <Tooltip isDisabled={!isTruncated} trigger={textSpan}>
                         <TooltipContent title={name} />
                     </Tooltip>
                     <span

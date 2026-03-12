@@ -7,7 +7,6 @@ import {
     toast,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 import type { MetafieldType } from '@gorgias/helpdesk-types'
 
@@ -67,8 +66,7 @@ export function FieldWithCopyButton({
 
     if (isTrimmed && tooltip) {
         return (
-            <Tooltip>
-                <TooltipTrigger>{content}</TooltipTrigger>
+            <Tooltip trigger={content}>
                 <TooltipContent>
                     <pre className={css.tooltip}>{value}</pre>
                 </TooltipContent>

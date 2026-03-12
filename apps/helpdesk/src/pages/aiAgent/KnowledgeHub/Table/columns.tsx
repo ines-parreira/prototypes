@@ -9,7 +9,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { DrillDownModalTrigger } from 'domains/reporting/pages/common/drill-down/DrillDownModalTrigger'
@@ -68,10 +67,10 @@ const createSelectableColumnWithTooltip =
 
                 if (shouldShowTooltip) {
                     return (
-                        <Tooltip placement="top left">
-                            <TooltipTrigger>
-                                <div>{checkboxContent}</div>
-                            </TooltipTrigger>
+                        <Tooltip
+                            placement="top left"
+                            trigger={<div>{checkboxContent}</div>}
+                        >
                             <TooltipContent
                                 caption="This is a folder of snippets created from an
                                     external source. Click the folder to manage

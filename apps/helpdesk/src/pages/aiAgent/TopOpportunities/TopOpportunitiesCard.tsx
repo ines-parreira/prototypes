@@ -3,14 +3,7 @@ import { useCallback, useState } from 'react'
 import classNames from 'classnames'
 import { useHistory } from 'react-router'
 
-import {
-    Box,
-    Button,
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Box, Button, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { OpportunityTicketDrillDownModal } from 'pages/aiAgent/opportunities/components/OpportunityTicketDrillDownModal'
@@ -165,8 +158,11 @@ export const TopOpportunityCard = ({
     return (
         <>
             {isRestricted ? (
-                <Tooltip placement="top" isOpen={isHovered}>
-                    <TooltipTrigger>{cardContent}</TooltipTrigger>
+                <Tooltip
+                    placement="top"
+                    isOpen={isHovered}
+                    trigger={cardContent}
+                >
                     <TooltipContent>
                         Upgrade to access {totalRestrictedOpportunities} more
                         <br />

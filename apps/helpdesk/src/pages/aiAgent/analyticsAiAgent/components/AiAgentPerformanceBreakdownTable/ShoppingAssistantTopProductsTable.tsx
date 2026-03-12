@@ -15,7 +15,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
     useTable,
 } from '@gorgias/axiom'
 
@@ -163,10 +162,10 @@ export const ShoppingAssistantTopProductsTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Times recommended</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Times recommended"
                                     caption="The total number of times Shopping Assistant recommended a product."
@@ -215,10 +214,10 @@ export const ShoppingAssistantTopProductsTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Click-through rate</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Click-through rate"
                                     caption="The percentage of a product recommendation that customers click."
@@ -267,10 +266,10 @@ export const ShoppingAssistantTopProductsTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Buy through rate</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Buy through rate"
                                     caption="The percentage of a product recommendation that result in a purchase."

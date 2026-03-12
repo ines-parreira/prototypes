@@ -1,12 +1,6 @@
 import classnames from 'classnames'
 
-import {
-    Icon,
-    Skeleton,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Icon, Skeleton, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { TREND_BADGE_FORMAT } from '../../constants'
 import type {
@@ -89,8 +83,7 @@ export function TrendBadge({
     const tooltipTitle = `Compared to ${formattedPrevValue} on ${tooltipData.period}`
 
     return (
-        <Tooltip delay={0}>
-            <TooltipTrigger>{badgeElement}</TooltipTrigger>
+        <Tooltip delay={0} trigger={badgeElement}>
             <TooltipContent title={tooltipTitle} />
         </Tooltip>
     )

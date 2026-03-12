@@ -16,7 +16,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
     useTable,
 } from '@gorgias/axiom'
 
@@ -146,10 +145,10 @@ export const ChannelPerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Handover interactions</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Handover interactions"
                                     caption="The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent."
@@ -198,10 +197,10 @@ export const ChannelPerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Snoozed interactions</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Snoozed interactions"
                                     caption="Total number of interactions where AI Agent has asked the customer a question and is waiting for their reply, temporarily pausing the ticket for a channel-dependent delay (24h for email, 10min for chat) before it closes and triggers the billing workflow."
@@ -250,10 +249,10 @@ export const ChannelPerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Total sales</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Total sales"
                                     caption="The revenue influenced by a Shopping Assistant interaction, measured from orders placed within 3 days of the interaction."
@@ -302,10 +301,10 @@ export const ChannelPerformanceBreakdownTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>% automated by Shopping assistant</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="% automated by Shopping assistant"
                                     caption="The percentage of AI Agent automated interactions handled by the Shopping Assistant."

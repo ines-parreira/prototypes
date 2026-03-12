@@ -3,7 +3,7 @@ import { useLayoutEffect, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 
-import { Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/TruncateMultilineCellContent.less'
 
@@ -79,8 +79,7 @@ export function DrillDownTruncateMultilineCellContent({
     }
 
     return (
-        <Tooltip placement="top">
-            <TooltipTrigger>{contentElement}</TooltipTrigger>
+        <Tooltip placement="top" trigger={contentElement}>
             <TooltipContent caption={tooltipContent} />
         </Tooltip>
     )

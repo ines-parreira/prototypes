@@ -1,7 +1,7 @@
 import type { KeyboardEvent, MouseEvent } from 'react'
 import React, { useCallback, useEffect, useRef } from 'react'
 
-import { Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { FindReplaceStore } from './index'
 
@@ -178,8 +178,10 @@ const FindReplaceDialog = ({
                                 onKeyDown={handleKeyDown}
                             />
                         </div>
-                        <Tooltip delay={0} placement="bottom">
-                            <TooltipTrigger>
+                        <Tooltip
+                            delay={0}
+                            placement="bottom"
+                            trigger={
                                 <button
                                     className={css.iconButton}
                                     onClick={onReplace}
@@ -190,11 +192,14 @@ const FindReplaceDialog = ({
                                         find_replace
                                     </span>
                                 </button>
-                            </TooltipTrigger>
+                            }
+                        >
                             <TooltipContent caption="Replace" />
                         </Tooltip>
-                        <Tooltip delay={0} placement="bottom">
-                            <TooltipTrigger>
+                        <Tooltip
+                            delay={0}
+                            placement="bottom"
+                            trigger={
                                 <button
                                     className={css.iconButton}
                                     onClick={onReplaceAll}
@@ -205,7 +210,8 @@ const FindReplaceDialog = ({
                                         swap_horiz
                                     </span>
                                 </button>
-                            </TooltipTrigger>
+                            }
+                        >
                             <TooltipContent caption="Replace all" />
                         </Tooltip>
                     </div>

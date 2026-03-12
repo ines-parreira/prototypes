@@ -44,8 +44,10 @@ export function TextFieldMetafield({ metafield }: TextFieldMetafieldProps) {
         const truncatedValue = truncate(value, { length: 80 })
         return (
             <div className={css.field}>
-                <Tooltip placement="top">
-                    <span>{truncatedValue}</span>
+                <Tooltip
+                    placement="top"
+                    trigger={<span>{truncatedValue}</span>}
+                >
                     <TooltipContent title={value} />
                 </Tooltip>
                 <span className={css.copyButton}>

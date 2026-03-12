@@ -4,13 +4,7 @@ import {
 } from '@repo/reporting'
 import classNames from 'classnames'
 
-import {
-    Box,
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Box, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import type { AgentAvailabilityColumn } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
@@ -87,8 +81,7 @@ export function AgentAvailabilityTableCell({
             innerClassName={css.BodyCellContent}
         >
             {hasBreakdown && value && value > 0 ? (
-                <Tooltip>
-                    <TooltipTrigger>{cellContent}</TooltipTrigger>
+                <Tooltip trigger={cellContent}>
                     <TooltipContent>
                         <StatusBreakdownTooltip breakdown={columnData} />
                     </TooltipContent>

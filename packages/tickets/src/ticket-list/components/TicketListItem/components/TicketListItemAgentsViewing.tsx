@@ -5,7 +5,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import type { Agent } from '../hooks/useTicketListItemData'
@@ -19,8 +18,8 @@ export function TicketListItemAgentsViewing({ agents }: Props) {
 
     return (
         <Box flexShrink={0}>
-            <Tooltip>
-                <TooltipTrigger>
+            <Tooltip
+                trigger={
                     <div>
                         <AvatarGroup max={3}>
                             {agents.map((agent) => (
@@ -32,7 +31,8 @@ export function TicketListItemAgentsViewing({ agents }: Props) {
                             ))}
                         </AvatarGroup>
                     </div>
-                </TooltipTrigger>
+                }
+            >
                 <TooltipContent>
                     {agents.length === 1 ? (
                         `${agents[0].name ?? agents[0].email} is viewing`

@@ -3,12 +3,7 @@ import { useRef, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import {
-    LegacyButton as Button,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { LegacyButton as Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
@@ -44,8 +39,8 @@ const GuidanceActionPicker = ({
     return (
         <>
             {isDisabled ? (
-                <Tooltip>
-                    <TooltipTrigger>
+                <Tooltip
+                    trigger={
                         <Button
                             size="small"
                             intent="secondary"
@@ -57,7 +52,8 @@ const GuidanceActionPicker = ({
                         >
                             Actions
                         </Button>
-                    </TooltipTrigger>
+                    }
+                >
                     <TooltipContent>
                         <div className={css.tooltipDisabled}>
                             To use <Link to={routes.actions}>Actions</Link> in

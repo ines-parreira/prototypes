@@ -174,26 +174,28 @@ export function EditableField<T extends string | number = string | number>(
             <Tooltip
                 isDisabled={!showTooltip || isFocused || !tooltipContent}
                 placement="left"
+                trigger={
+                    <NumberField
+                        aria-label={ariaLabel ?? placeholder}
+                        id={id}
+                        className={className}
+                        value={value as number}
+                        formatOptions={{ useGrouping: false }}
+                        onChange={(value) => handleChange(value as T)}
+                        placeholder={placeholder}
+                        size="sm"
+                        variant="secondary"
+                        autoFocus={autoFocus}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                        onPaste={handleNumberPaste}
+                        error={error}
+                        minValue={minValue}
+                        maxValue={maxValue}
+                        isInvalid={isInvalid}
+                    />
+                }
             >
-                <NumberField
-                    aria-label={ariaLabel ?? placeholder}
-                    id={id}
-                    className={className}
-                    value={value as number}
-                    formatOptions={{ useGrouping: false }}
-                    onChange={(value) => handleChange(value as T)}
-                    placeholder={placeholder}
-                    size="sm"
-                    variant="secondary"
-                    autoFocus={autoFocus}
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={() => setIsFocused(false)}
-                    onPaste={handleNumberPaste}
-                    error={error}
-                    minValue={minValue}
-                    maxValue={maxValue}
-                    isInvalid={isInvalid}
-                />
                 <TooltipContent title={tooltipContent} />
             </Tooltip>
         )
@@ -204,25 +206,27 @@ export function EditableField<T extends string | number = string | number>(
             <Tooltip
                 isDisabled={!showTooltip || isFocused || !tooltipContent}
                 placement="left"
+                trigger={
+                    <TextAreaField
+                        id={id}
+                        className={className}
+                        aria-label={ariaLabel ?? placeholder}
+                        value={value as string}
+                        onChange={(value) => handleChange(value as T)}
+                        placeholder={placeholder}
+                        size="sm"
+                        variant="secondary"
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={handleFieldBlur}
+                        onKeyDown={handleKeyDown}
+                        autoFocus={autoFocus}
+                        error={error}
+                        isInvalid={isInvalid}
+                        autoResize
+                        maxRows={3}
+                    />
+                }
             >
-                <TextAreaField
-                    id={id}
-                    className={className}
-                    aria-label={ariaLabel ?? placeholder}
-                    value={value as string}
-                    onChange={(value) => handleChange(value as T)}
-                    placeholder={placeholder}
-                    size="sm"
-                    variant="secondary"
-                    onFocus={() => setIsFocused(true)}
-                    onBlur={handleFieldBlur}
-                    onKeyDown={handleKeyDown}
-                    autoFocus={autoFocus}
-                    error={error}
-                    isInvalid={isInvalid}
-                    autoResize
-                    maxRows={3}
-                />
                 <TooltipContent>
                     <Text className={css.textAreaTooltipContent} size="sm">
                         {tooltipContent}
@@ -236,24 +240,26 @@ export function EditableField<T extends string | number = string | number>(
         <Tooltip
             isDisabled={!showTooltip || isFocused || !tooltipContent}
             placement="left"
+            trigger={
+                <TextField
+                    id={id}
+                    className={className}
+                    aria-label={ariaLabel ?? placeholder}
+                    type="text"
+                    value={value as string}
+                    onChange={(value) => handleChange(value as T)}
+                    placeholder={placeholder}
+                    size="sm"
+                    variant="secondary"
+                    onFocus={() => setIsFocused(true)}
+                    onBlur={handleFieldBlur}
+                    onKeyDown={handleKeyDown}
+                    autoFocus={autoFocus}
+                    error={error}
+                    isInvalid={isInvalid}
+                />
+            }
         >
-            <TextField
-                id={id}
-                className={className}
-                aria-label={ariaLabel ?? placeholder}
-                type="text"
-                value={value as string}
-                onChange={(value) => handleChange(value as T)}
-                placeholder={placeholder}
-                size="sm"
-                variant="secondary"
-                onFocus={() => setIsFocused(true)}
-                onBlur={handleFieldBlur}
-                onKeyDown={handleKeyDown}
-                autoFocus={autoFocus}
-                error={error}
-                isInvalid={isInvalid}
-            />
             <TooltipContent title={tooltipContent} />
         </Tooltip>
     )

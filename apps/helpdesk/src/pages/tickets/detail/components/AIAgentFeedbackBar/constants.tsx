@@ -68,8 +68,8 @@ export const KNOWLEDGE_SOURCE_TYPE: Record<
     macro: { icon: 'zap', label: 'Macro' },
     link: { icon: 'link-horizontal', label: 'URL' },
     external_snippet: { icon: 'paperclip-attachment', label: 'Document' },
-    order: { icon: 'vendor-shopify-colored', label: 'Order' },
-    product: { icon: 'vendor-shopify-colored', label: 'Product' },
+    order: { icon: 'app-shopify', label: 'Order' },
+    product: { icon: 'app-shopify', label: 'Product' },
 }
 
 export type KnowledgeSourceType = keyof typeof KNOWLEDGE_SOURCE_TYPE

@@ -8,12 +8,20 @@ import EditingState from '../EditingState'
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    Tooltip: ({
+        trigger,
+        children,
+    }: {
+        trigger: React.ReactNode
+        children: React.ReactNode
+    }) => (
+        <>
+            {trigger}
+            {children}
+        </>
+    ),
     TooltipContent: ({ caption }: { caption: string }) => (
         <span>{caption}</span>
-    ),
-    TooltipTrigger: ({ children }: { children: React.ReactNode }) => (
-        <>{children}</>
     ),
 }))
 

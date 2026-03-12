@@ -1,4 +1,4 @@
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { BulkActionButtonProps } from './types'
 import { ButtonRenderMode } from './types'
@@ -35,8 +35,7 @@ export const DeleteButton = ({
     if (renderMode === ButtonRenderMode.DisabledWithTooltip && tooltipMessage) {
         return (
             <div>
-                <Tooltip delay={0}>
-                    <TooltipTrigger>{button}</TooltipTrigger>
+                <Tooltip delay={0} trigger={button}>
                     <TooltipContent caption={tooltipMessage} />
                 </Tooltip>
             </div>

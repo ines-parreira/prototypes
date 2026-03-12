@@ -9,7 +9,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 import type { TicketPriority as TicketPriorityType } from '@gorgias/helpdesk-queries'
 
@@ -67,30 +66,32 @@ export function TicketListItemTrailingSlot({
         <Box flexDirection="row" alignItems="center" gap="xxs">
             <Box flexDirection="row" alignItems="center" gap="xxxxs">
                 {status && (
-                    <Tooltip>
-                        <TooltipTrigger>
+                    <Tooltip
+                        trigger={
                             <Tag size="sm">
                                 <Icon
                                     name={STATUS_ICON_MAP[status]}
                                     color={STATUS_COLOR_MAP[status]}
                                 />
                             </Tag>
-                        </TooltipTrigger>
+                        }
+                    >
                         <TooltipContent>
                             {STATUS_LABEL_MAP[status]}
                         </TooltipContent>
                     </Tooltip>
                 )}
                 {priority && PRIORITY_ICON_MAP[priority] && (
-                    <Tooltip>
-                        <TooltipTrigger>
+                    <Tooltip
+                        trigger={
                             <Tag size="sm">
                                 <Icon
                                     name={PRIORITY_ICON_MAP[priority]!}
                                     color={PRIORITY_COLOR_MAP[priority]}
                                 />
                             </Tag>
-                        </TooltipTrigger>
+                        }
+                    >
                         <TooltipContent>
                             {PRIORITY_LABEL_MAP[priority]}
                         </TooltipContent>

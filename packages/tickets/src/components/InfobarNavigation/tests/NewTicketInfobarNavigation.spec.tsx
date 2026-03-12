@@ -66,7 +66,7 @@ describe('NewTicketInfobarNavigation', () => {
         mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
         render(<NewTicketInfobarNavigation />)
 
-        const button = screen.getByLabelText('vendor-shopify-colored')
+        const button = screen.getByLabelText('app-shopify')
         expect(button).toBeInTheDocument()
     })
 
@@ -74,7 +74,7 @@ describe('NewTicketInfobarNavigation', () => {
         mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
         render(<NewTicketInfobarNavigation />)
 
-        const button = screen.queryByLabelText('vendor-shopify-colored')
+        const button = screen.queryByLabelText('app-shopify')
         expect(button).not.toBeInTheDocument()
     })
 
@@ -82,9 +82,7 @@ describe('NewTicketInfobarNavigation', () => {
         mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
         const { user } = render(<NewTicketInfobarNavigation />)
 
-        const button = screen
-            .getByLabelText('vendor-shopify-colored')
-            .closest('button')
+        const button = screen.getByLabelText('app-shopify').closest('button')
 
         await act(() => user.click(button!))
 

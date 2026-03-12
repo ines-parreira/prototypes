@@ -16,7 +16,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
     useTable,
 } from '@gorgias/axiom'
 
@@ -159,10 +158,10 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Automation rate</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Automation rate"
                                     caption="The percentage of conversations that were resolved without a handover to a human agent."
@@ -216,10 +215,10 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>AI Agent interactions share</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="AI Agent interactions share"
                                     caption="The percentage of total AI agent automated interactions attributed to a specific segment (such as channel, skill, or intent)."
@@ -276,10 +275,10 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Automated interactions</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Automated interactions"
                                     caption="The number of fully automated interactions by Shopping Assistant solved without any human agent intervention."
@@ -328,10 +327,10 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Handover</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Handover"
                                     caption="The number of interactions AI Agent transferred to a human because it couldn’t confidently resolve the customer’s request or because the customer explicitly requested to speak with a human agent."
@@ -380,10 +379,10 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Success rate</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Success rate"
                                     caption="The percentage of interactions handled by the AI Agent that are fully resolved without any human escalation."
@@ -437,10 +436,10 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Total sales</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Total sales"
                                     caption="The total revenue from orders placed within 3 days of a Shopping Assistant interaction without human help."
@@ -489,10 +488,10 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Orders influenced</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Orders influenced"
                                     caption="The number of orders placed within 3 days of a Shopping Assistant conversation without a direct handover."
@@ -541,10 +540,10 @@ export const ShoppingAssistantChannelTable = () => {
                     return (
                         <Box className={css.headerWithIcon}>
                             <span>Revenue per interaction</span>
-                            <Tooltip delay={0}>
-                                <TooltipTrigger>
-                                    <Icon name="info" size="xs" />
-                                </TooltipTrigger>
+                            <Tooltip
+                                delay={0}
+                                trigger={<Icon name="info" size="xs" />}
+                            >
                                 <TooltipContent
                                     title="Revenue per interaction"
                                     caption="The average revenue generated per Shopping Assistant interaction in this channel."

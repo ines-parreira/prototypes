@@ -1,8 +1,6 @@
 import { fromJS } from 'immutable'
 import moment from 'moment-timezone'
 
-import { IconName } from '@gorgias/axiom'
-
 import {
     GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS,
     GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
@@ -500,33 +498,33 @@ describe('integrations helpers', () => {
         it('should return VendorShopifyColored icon for Shopify integration', () => {
             expect(
                 helpers.getStoreIconNameFromType(IntegrationType.Shopify),
-            ).toBe(IconName.VendorShopifyColored)
+            ).toBe('app-shopify')
         })
 
-        it('should return VendorBicommerceColored icon for BigCommerce integration', () => {
+        it('should return app-bicommerce icon for BigCommerce integration', () => {
             expect(
                 helpers.getStoreIconNameFromType(IntegrationType.BigCommerce),
-            ).toBe(IconName.VendorBicommerceColored)
+            ).toBe('app-bicommerce')
         })
 
-        it('should return VendorMagentoColored icon for Magento2 integration', () => {
+        it('should return app-magento icon for Magento2 integration', () => {
             expect(
                 helpers.getStoreIconNameFromType(IntegrationType.Magento2),
-            ).toBe(IconName.VendorMagentoColored)
+            ).toBe('app-magento')
         })
 
-        it('should return ShoppingBag icon for unknown integration types', () => {
+        it('should return shopping-bag icon for unknown integration types', () => {
             expect(
                 helpers.getStoreIconNameFromType(IntegrationType.Email),
-            ).toBe(IconName.ShoppingBag)
+            ).toBe('shopping-bag')
             expect(
                 helpers.getStoreIconNameFromType(IntegrationType.Facebook),
-            ).toBe(IconName.ShoppingBag)
+            ).toBe('shopping-bag')
             expect(
                 helpers.getStoreIconNameFromType(
                     'unknown-type' as IntegrationType,
                 ),
-            ).toBe(IconName.ShoppingBag)
+            ).toBe('shopping-bag')
         })
     })
 })

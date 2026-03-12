@@ -1,10 +1,4 @@
-import {
-    Box,
-    Icon,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Box, Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 type Props = {
     label: string
@@ -24,10 +18,7 @@ export const SortableHeaderCell = ({
     <Box className={className}>
         <span>{label}</span>
         {tooltipTitle && (
-            <Tooltip delay={0}>
-                <TooltipTrigger>
-                    <Icon name="info" size="xs" />
-                </TooltipTrigger>
+            <Tooltip delay={0} trigger={<Icon name="info" size="xs" />}>
                 <TooltipContent title={tooltipTitle} caption={tooltipCaption} />
             </Tooltip>
         )}

@@ -4,7 +4,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { formatIntentLabel } from '../../utils/formatIntentLabel'
@@ -48,12 +47,14 @@ export const IntentRow = ({
     return (
         <div className={css.intentRow}>
             {isLinkedElsewhere ? (
-                <Tooltip placement="bottom">
-                    <TooltipTrigger>
+                <Tooltip
+                    placement="bottom"
+                    trigger={
                         <div className={css.intentRowTooltipTrigger}>
                             {checkboxField}
                         </div>
-                    </TooltipTrigger>
+                    }
+                >
                     <TooltipContent>
                         <div className={css.linkedElsewhereTooltip}>
                             <Text

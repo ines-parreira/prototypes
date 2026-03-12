@@ -8,7 +8,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { KnowledgeEditorSidePanelSection } from '../KnowledgeEditorSidePanelSection'
@@ -64,12 +63,14 @@ export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
 
     const linkIntentsButtonWithTooltip: ReactNode =
         linkIntentsDisabledTooltip ? (
-            <Tooltip placement="top">
-                <TooltipTrigger>
+            <Tooltip
+                placement="top"
+                trigger={
                     <span className={css.linkIntentsButtonWrapper} tabIndex={0}>
                         {linkIntentsButton}
                     </span>
-                </TooltipTrigger>
+                }
+            >
                 <TooltipContent>{linkIntentsDisabledTooltip}</TooltipContent>
             </Tooltip>
         ) : (

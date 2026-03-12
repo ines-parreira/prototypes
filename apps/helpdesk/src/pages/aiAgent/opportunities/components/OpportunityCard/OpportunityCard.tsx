@@ -2,13 +2,7 @@ import { useCallback, useState } from 'react'
 
 import classNames from 'classnames'
 
-import {
-    Icon,
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
 
 import { OpportunityType } from '../../enums'
@@ -74,8 +68,7 @@ export const OpportunityCard = ({
         }
 
         return (
-            <Tooltip placement="top">
-                <TooltipTrigger>{titleElement}</TooltipTrigger>
+            <Tooltip placement="top" trigger={titleElement}>
                 <TooltipContent caption={title} />
             </Tooltip>
         )
@@ -99,8 +92,10 @@ export const OpportunityCard = ({
         >
             <div className={css.header}>
                 {isRestricted ? (
-                    <Tooltip placement="top" isOpen={isHovered}>
-                        <TooltipTrigger>
+                    <Tooltip
+                        placement="top"
+                        isOpen={isHovered}
+                        trigger={
                             <div className={css.infoSection}>
                                 <Icon
                                     name={infoContent.icon as IconName}
@@ -111,7 +106,8 @@ export const OpportunityCard = ({
                                     {infoContent.text}
                                 </Text>
                             </div>
-                        </TooltipTrigger>
+                        }
+                    >
                         <TooltipContent>
                             Upgrade to access all
                             <br />
@@ -148,8 +144,9 @@ export const OpportunityCard = ({
                             </Text>
                         </span>
                     ) : (
-                        <Tooltip placement="top">
-                            <TooltipTrigger>
+                        <Tooltip
+                            placement="top"
+                            trigger={
                                 <span className={css.ticketCount}>
                                     <Icon
                                         name="comm-chat-conversation"
@@ -160,7 +157,8 @@ export const OpportunityCard = ({
                                         {ticketCount}
                                     </Text>
                                 </span>
-                            </TooltipTrigger>
+                            }
+                        >
                             <TooltipContent
                                 title={`${ticketCount} related ${ticketCount > 1 ? 'tickets' : 'ticket'}`}
                             />

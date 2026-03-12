@@ -6,7 +6,6 @@ import {
     CheckBoxField,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { useTicketListActions } from '../../hooks/useTicketListActions'
@@ -89,8 +88,8 @@ export function TicketListActions({
                 />
             </Box>
             <Box flexDirection="row" alignItems="center" gap="xs">
-                <Tooltip>
-                    <TooltipTrigger>
+                <Tooltip
+                    trigger={
                         <Button
                             variant="tertiary"
                             size="sm"
@@ -99,7 +98,8 @@ export function TicketListActions({
                             isDisabled={isDisabled || isLoading}
                             onClick={handleCloseTickets}
                         />
-                    </TooltipTrigger>
+                    }
+                >
                     <TooltipContent
                         title={
                             isDisabled

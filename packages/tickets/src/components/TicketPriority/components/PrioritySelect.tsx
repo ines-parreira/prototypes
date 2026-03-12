@@ -64,29 +64,37 @@ export function PrioritySelect({
                 const { icon, color } = PRIORITY_ICON_MAP[priority]
 
                 return (
-                    <Tooltip placement="bottom">
-                        <StatusButton
-                            ref={ref}
-                            leadingSlot={
-                                isLoading ? (
-                                    <LoadingSpinner size={16} />
-                                ) : (
-                                    <Icon name={icon} size="sm" color={color} />
-                                )
-                            }
-                            trailingSlot={
-                                <Icon
-                                    name={
-                                        isOpen
-                                            ? 'arrow-chevron-up'
-                                            : 'arrow-chevron-down'
-                                    }
-                                    size="xs"
-                                />
-                            }
-                        >
-                            {isPlaceholder ? 'Normal' : selectedText}
-                        </StatusButton>
+                    <Tooltip
+                        placement="bottom"
+                        trigger={
+                            <StatusButton
+                                ref={ref}
+                                leadingSlot={
+                                    isLoading ? (
+                                        <LoadingSpinner size={16} />
+                                    ) : (
+                                        <Icon
+                                            name={icon}
+                                            size="sm"
+                                            color={color}
+                                        />
+                                    )
+                                }
+                                trailingSlot={
+                                    <Icon
+                                        name={
+                                            isOpen
+                                                ? 'arrow-chevron-up'
+                                                : 'arrow-chevron-down'
+                                        }
+                                        size="xs"
+                                    />
+                                }
+                            >
+                                {isPlaceholder ? 'Normal' : selectedText}
+                            </StatusButton>
+                        }
+                    >
                         <TooltipContent title="Change priority" />
                     </Tooltip>
                 )

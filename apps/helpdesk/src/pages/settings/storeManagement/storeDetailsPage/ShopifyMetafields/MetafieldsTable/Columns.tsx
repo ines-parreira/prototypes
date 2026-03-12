@@ -53,16 +53,19 @@ export const columns: ColumnDef<Field>[] = [
             const isVisible = info.row.original.isVisible ?? true
             return (
                 <Box gap="xs">
-                    <Tooltip placement="top right">
-                        <Button
-                            id="metafield-visibility-toggle"
-                            variant="tertiary"
-                            icon={isVisible ? 'show' : 'hide'}
-                            onClick={() =>
-                                onVisibilityToggle(metafieldId, isVisible)
-                            }
-                        />
-
+                    <Tooltip
+                        placement="top right"
+                        trigger={
+                            <Button
+                                id="metafield-visibility-toggle"
+                                variant="tertiary"
+                                icon={isVisible ? 'show' : 'hide'}
+                                onClick={() =>
+                                    onVisibilityToggle(metafieldId, isVisible)
+                                }
+                            />
+                        }
+                    >
                         <TooltipContent>
                             <Text size="sm">
                                 Show metafield data when viewing <br /> a
@@ -71,13 +74,17 @@ export const columns: ColumnDef<Field>[] = [
                         </TooltipContent>
                     </Tooltip>
 
-                    <Tooltip placement="top right">
-                        <Button
-                            variant="tertiary"
-                            id={metafieldId}
-                            icon="remove-minus-circle"
-                            onClick={() => onRemoveClick(metafieldId)}
-                        />
+                    <Tooltip
+                        placement="top right"
+                        trigger={
+                            <Button
+                                variant="tertiary"
+                                id={metafieldId}
+                                icon="remove-minus-circle"
+                                onClick={() => onRemoveClick(metafieldId)}
+                            />
+                        }
+                    >
                         <TooltipContent>
                             <Text size="sm">
                                 Remove metafield from Gorgias. <br />

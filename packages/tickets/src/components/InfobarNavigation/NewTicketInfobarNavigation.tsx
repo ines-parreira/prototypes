@@ -36,7 +36,7 @@ export function NewTicketInfobarNavigation() {
                 {hasUIVisionMilestone2 && (
                     <InfobarNavigationItem
                         name={TicketInfobarTab.Shopify}
-                        icon="vendor-shopify-colored"
+                        icon="app-shopify"
                         tooltip={{
                             title: 'Shopify',
                         }}

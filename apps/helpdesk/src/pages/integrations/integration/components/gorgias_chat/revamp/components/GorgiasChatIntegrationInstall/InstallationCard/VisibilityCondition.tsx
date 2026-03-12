@@ -12,7 +12,6 @@ import {
     TextField,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import type { GorgiasChatInstallationVisibilityCondition } from 'models/integration/types'
@@ -46,10 +45,7 @@ const errorByUrlValidationResult: Record<
     unsupported: (
         <span className={css.unsupportedError}>
             That URL is not supported.
-            <Tooltip delay={100}>
-                <TooltipTrigger>
-                    <Icon name={IconName.CircleHelp} />
-                </TooltipTrigger>
+            <Tooltip delay={100} trigger={<Icon name={IconName.CircleHelp} />}>
                 <TooltipContent>
                     Hash mark separators (e.g. &quot;#example&quot;) in URLs are
                     notsupported.
@@ -119,8 +115,11 @@ const VisibilityCondition: React.FC<Props> = ({
                 }
             ></TextField>
 
-            <Tooltip placement="top" isDisabled={isDeletable} delay={100}>
-                <TooltipTrigger>
+            <Tooltip
+                placement="top"
+                isDisabled={isDeletable}
+                delay={100}
+                trigger={
                     <Button
                         isDisabled={!isDeletable}
                         icon={IconName.Close}
@@ -133,7 +132,8 @@ const VisibilityCondition: React.FC<Props> = ({
                         ref={deleteButtonRef}
                         onClick={onDelete}
                     ></Button>
-                </TooltipTrigger>
+                }
+            >
                 <TooltipContent>
                     At least one condition is required to show or hide the chat
                     on specific pages.

@@ -8,10 +8,10 @@ export const channelToCommunicationIcon = (
     channel?: ChannelLike,
 ): Extract<
     IconName,
-    | 'vendor-shopify-colored'
-    | 'vendor-magento-colored'
-    | 'vendor-woo-colored'
-    | 'vendor-bicommerce-colored'
+    | 'app-shopify'
+    | 'app-magento'
+    | 'app-woo'
+    | 'app-bicommerce'
     | 'channel-facebook'
     | 'channel-fb-messenger'
     | 'channel-instagram'
@@ -25,15 +25,15 @@ export const channelToCommunicationIcon = (
     switch (channel) {
         case IntegrationType.Shopify:
         case 'shopify':
-            return 'vendor-shopify-colored'
+            return 'app-shopify'
         case IntegrationType.Magento2:
         case 'magento2':
-            return 'vendor-magento-colored'
+            return 'app-magento'
         case 'woocommerce':
-            return 'vendor-woo-colored'
+            return 'app-woo'
         case IntegrationType.BigCommerce:
         case 'bigcommerce':
-            return 'vendor-bicommerce-colored'
+            return 'app-bicommerce'
         case TicketChannel.Facebook:
         case TicketChannel.FacebookMention:
         case TicketMessageSourceType.Facebook:

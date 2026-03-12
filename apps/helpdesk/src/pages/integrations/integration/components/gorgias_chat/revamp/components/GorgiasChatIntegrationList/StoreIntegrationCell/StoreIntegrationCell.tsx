@@ -14,7 +14,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
@@ -74,15 +73,18 @@ export const StoreIntegrationCell = ({
                     {storeIntegration.get('name')}
                 </Text>
                 {isStoreDisconnected && (
-                    <Tooltip delay={100} placement="top">
-                        <TooltipTrigger>
+                    <Tooltip
+                        delay={100}
+                        placement="top"
+                        trigger={
                             <span role="img">
                                 <Icon
                                     color={Color.Orange}
                                     name={IconName.TriangleWarning}
                                 ></Icon>
                             </span>
-                        </TooltipTrigger>
+                        }
+                    >
                         <TooltipContent>
                             <Text size="md" variant="medium">
                                 This store is currently disconnected

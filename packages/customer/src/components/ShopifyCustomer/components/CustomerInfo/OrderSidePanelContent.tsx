@@ -127,11 +127,7 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
                     marginBottom={'xxs'}
                 >
                     <Box flexShrink={0}>
-                        <Icon
-                            name="vendor-shopify-colored"
-                            size="lg"
-                            intent="regular"
-                        />
+                        <Icon name="app-shopify" size="lg" intent="regular" />
                     </Box>
 
                     <Box flex={1} minWidth={0} alignItems="center" gap="xs">

@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { Text, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { MAX_FIELDS_PER_CATEGORY } from '../../constants'
 
@@ -12,10 +12,7 @@ export default function LimitReachedTooltip({
     children,
 }: LimitReachedTooltipProps) {
     return (
-        <Tooltip placement="top left">
-            <TooltipTrigger>
-                <div>{children}</div>
-            </TooltipTrigger>
+        <Tooltip placement="top left" trigger={<div>{children}</div>}>
             <TooltipContent>
                 <Text size="sm">
                     Limit reached: you can only import <br />

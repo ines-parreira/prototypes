@@ -362,7 +362,7 @@ All UI components should use `@gorgias/axiom` - our internal design system - ins
 | `Skeleton` | `import { Skeleton } from '@gorgias/axiom'`                                | Loading states                                  |
 | `Dialog`   | `import { Dialog } from '@gorgias/axiom'`                                  | Modal dialogs                                   |
 | `Icon`     | `import { Icon } from '@gorgias/axiom'`                                    | Icons                                           |
-| `Tooltip`  | `import { Tooltip, TooltipTrigger, TooltipContent } from '@gorgias/axiom'` | Tooltips                                        |
+| `Tooltip`  | `import { Tooltip, TooltipContent } from '@gorgias/axiom'`                 | Tooltips                                        |
 | `Input`    | `import { Input } from '@gorgias/axiom'`                                   | Text inputs                                     |
 | `Select`   | `import { Select } from '@gorgias/axiom'`                                  | Dropdowns                                       |
 
@@ -406,49 +406,28 @@ import { Box } from '@gorgias/axiom'
 
 ### Tooltips (New API)
 
-**When `TooltipTrigger` is NOT needed:**
-
-For focusable Axiom components (Button, Link, etc.), you can omit `TooltipTrigger`:
+Tooltip uses a `trigger` prop for the trigger element. `TooltipContent` is passed as children:
 
 ```tsx
 import { Tooltip, TooltipContent } from '@gorgias/axiom'
 
-<Tooltip>
-    <Button>Hover me</Button>
-    <TooltipContent>Helpful information</TooltipContent>
-</Tooltip>
-```
-
-**When `TooltipTrigger` IS needed:**
-
-For custom elements (div, span) or when customizing component children with render props:
-
-```tsx
-import { Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
-
-// Custom div element
-<Tooltip>
-    <TooltipTrigger>
-        <div role="button">Custom trigger</div>
-    </TooltipTrigger>
-    <TooltipContent>Helpful information</TooltipContent>
+// Basic usage with a focusable Axiom component
+<Tooltip trigger={<Button>Hover me</Button>}>
+    <TooltipContent title="Helpful information" />
 </Tooltip>
 
-// Component with render prop that returns custom content
-<OverflowListShowMore>
-    {({ hiddenCount }) => (
-        <Tooltip>
-            <TooltipTrigger>
-                <div>+{hiddenCount}</div>
-            </TooltipTrigger>
-            <TooltipContent>Content here</TooltipContent>
-        </Tooltip>
-    )}
-</OverflowListShowMore>
-```
+// With a custom element
+<Tooltip trigger={<div role="button">Custom trigger</div>}>
+    <TooltipContent title="Helpful information" />
+</Tooltip>
 
-**Why use `TooltipTrigger`?**
-Without it on custom elements, tooltips may flash at position (0,0) before repositioning. `TooltipTrigger` provides proper refs and accessibility attributes for immediate, correct positioning.
+// With render function trigger (receives { isOpen, isDisabled })
+<Tooltip trigger={({ isOpen }) => (
+    <Button variant={isOpen ? 'primary' : 'secondary'}>Hover me</Button>
+)}>
+    <TooltipContent title="Tooltip content" />
+</Tooltip>
+```
 
 ### Design Tokens in CSS
 

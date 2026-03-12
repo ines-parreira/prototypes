@@ -1,12 +1,6 @@
 import { useRef } from 'react'
 
-import {
-    Button,
-    Heading,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Button, Heading, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
@@ -148,8 +142,9 @@ export const OpportunityDetailsHeader = ({
 
                     {isKnowledgeGap &&
                         (shouldShowMaxGuidancesTooltip ? (
-                            <Tooltip placement="top">
-                                <TooltipTrigger>
+                            <Tooltip
+                                placement="top"
+                                trigger={
                                     <Button
                                         ref={approveButtonRef}
                                         variant="primary"
@@ -164,7 +159,8 @@ export const OpportunityDetailsHeader = ({
                                     >
                                         Resolve
                                     </Button>
-                                </TooltipTrigger>
+                                }
+                            >
                                 <TooltipContent>
                                     <div>
                                         You currently have {MAX_GUIDANCES}{' '}

@@ -75,9 +75,7 @@ export function StorePicker({
                     }
                     value={selectedText}
                     leadingSlot={
-                        selectedIntegrationId
-                            ? 'vendor-shopify-colored'
-                            : undefined
+                        selectedIntegrationId ? 'app-shopify' : undefined
                     }
                 />
             </SelectTrigger>
@@ -114,7 +112,7 @@ export function StorePicker({
             {(store) => (
                 <ListItem
                     id={store.id}
-                    leadingSlot="vendor-shopify-colored"
+                    leadingSlot="app-shopify"
                     label={store.name}
                     textValue={store.name}
                 />

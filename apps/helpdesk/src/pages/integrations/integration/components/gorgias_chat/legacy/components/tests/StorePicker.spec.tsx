@@ -100,7 +100,7 @@ describe('<StorePicker />', () => {
         render(<StorePicker {...defaultProps} selectedStoreIntegrationId={1} />)
 
         expect(
-            screen.getByRole('img', { name: 'vendor-shopify-colored' }),
+            screen.getByRole('img', { name: 'app-shopify' }),
         ).toBeInTheDocument()
     })
 

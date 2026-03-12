@@ -13,7 +13,6 @@ import {
     ToggleField,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { DEFAULT_LOCALE } from 'domains/reporting/pages/common/utils'
@@ -83,12 +82,13 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
                 </LegacyTooltip>
             )}
             {showMultiLanguageInfo && multiLanguageTooltip && (
-                <Tooltip>
-                    <TooltipTrigger>
+                <Tooltip
+                    trigger={
                         <span role="button" tabIndex={0}>
                             <Icon name="info" color="ai" />
                         </span>
-                    </TooltipTrigger>
+                    }
+                >
                     {typeof multiLanguageTooltip === 'string' ? (
                         <TooltipContent caption={multiLanguageTooltip} />
                     ) : (
@@ -147,15 +147,16 @@ export const KnowledgeEditorSidePanelFieldURL = ({ url }: { url?: string }) => {
                 {url}
             </a>
 
-            <Tooltip>
-                <TooltipTrigger>
+            <Tooltip
+                trigger={
                     <Button
                         onClick={handleCopyCode}
                         icon={showCheckmark ? 'check-all' : 'copy'}
                         size="sm"
                         variant="tertiary"
                     />
-                </TooltipTrigger>
+                }
+            >
                 <TooltipContent caption="Copy URL" />
             </Tooltip>
         </span>
@@ -175,8 +176,8 @@ export const KnowledgeEditorSidePanelFieldSourceDocument = ({
     const id = useId()
 
     return (
-        <Tooltip>
-            <TooltipTrigger>
+        <Tooltip
+            trigger={
                 <a
                     href={sourceDocument.downloadUrl}
                     className={css.documentField}
@@ -191,7 +192,8 @@ export const KnowledgeEditorSidePanelFieldSourceDocument = ({
                         <Icon name="download" size={IconSize.Xs} />
                     </span>
                 </a>
-            </TooltipTrigger>
+            }
+        >
             <TooltipContent caption="Click to download" />
         </Tooltip>
     )

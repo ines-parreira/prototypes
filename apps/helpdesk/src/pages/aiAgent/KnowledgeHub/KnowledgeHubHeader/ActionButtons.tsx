@@ -1,4 +1,4 @@
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { GroupedKnowledgeItem } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeType } from 'pages/aiAgent/KnowledgeHub/types'
@@ -73,8 +73,9 @@ export const HeaderActions = ({
                         </Button>
                     )}
                     {syncTooltipMessage ? (
-                        <Tooltip placement="top">
-                            <TooltipTrigger>
+                        <Tooltip
+                            placement="top"
+                            trigger={
                                 <Button
                                     onClick={onSync}
                                     isDisabled={isSyncButtonDisabled}
@@ -83,7 +84,8 @@ export const HeaderActions = ({
                                 >
                                     Sync store website
                                 </Button>
-                            </TooltipTrigger>
+                            }
+                        >
                             <TooltipContent caption={syncTooltipMessage} />
                         </Tooltip>
                     ) : (
@@ -112,8 +114,9 @@ export const HeaderActions = ({
                         </Button>
                     )}
                     {syncTooltipMessage ? (
-                        <Tooltip placement="top">
-                            <TooltipTrigger>
+                        <Tooltip
+                            placement="top"
+                            trigger={
                                 <Button
                                     onClick={onSync}
                                     isDisabled={isSyncButtonDisabled}
@@ -122,7 +125,8 @@ export const HeaderActions = ({
                                 >
                                     Sync URL
                                 </Button>
-                            </TooltipTrigger>
+                            }
+                        >
                             <TooltipContent caption={syncTooltipMessage} />
                         </Tooltip>
                     ) : (

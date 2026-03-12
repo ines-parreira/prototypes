@@ -12,7 +12,6 @@ import {
     Select,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 import type { ColorValue } from '@gorgias/axiom'
 import { THEME_NAME } from '@gorgias/design-tokens'
@@ -207,15 +206,17 @@ export default function StoreSelector({
                         />
                     </div>
                     {isInlineTruncated ? (
-                        <Tooltip placement="top">
-                            <TooltipTrigger>
+                        <Tooltip
+                            placement="top"
+                            trigger={
                                 <span
                                     ref={inlineNameRef}
                                     className={css.inlineStoreName}
                                 >
                                     {selected.name || ''}
                                 </span>
-                            </TooltipTrigger>
+                            }
+                        >
                             <TooltipContent title={selected.name} />
                         </Tooltip>
                     ) : (
@@ -293,15 +294,15 @@ export default function StoreSelector({
                             <Tooltip
                                 placement="top"
                                 isDisabled={!isButtonTextTruncated}
-                            >
-                                <TooltipTrigger>
+                                trigger={
                                     <span
                                         ref={buttonTextRef}
                                         className={css.buttonTextContent}
                                     >
                                         {displayName}
                                     </span>
-                                </TooltipTrigger>
+                                }
+                            >
                                 <TooltipContent title={displayName} />
                             </Tooltip>
                             <span className={css.trailingSlot}>

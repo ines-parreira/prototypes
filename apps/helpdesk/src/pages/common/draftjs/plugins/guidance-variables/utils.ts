@@ -155,8 +155,6 @@ export const pickCategoryLogo = (
 
 export const pickCategoryIconName = (
     category: string,
-): 'gorgias-logo' | 'vendor-shopify-colored' => {
-    return category.toLowerCase() === 'ticket'
-        ? 'gorgias-logo'
-        : 'vendor-shopify-colored'
+): 'gorgias-logo' | 'app-shopify' => {
+    return category.toLowerCase() === 'ticket' ? 'gorgias-logo' : 'app-shopify'
 }

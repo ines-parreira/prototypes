@@ -10,7 +10,6 @@ import {
     TextField,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { GuidanceEditor } from 'pages/aiAgent/components/GuidanceEditor/GuidanceEditor'
@@ -66,8 +65,8 @@ export const OpportunityArticleEditor = ({
                         Help Center article
                     </Heading>
                     <Box flexDirection="row" gap="xs">
-                        <Tooltip>
-                            <TooltipTrigger>
+                        <Tooltip
+                            trigger={
                                 <Button
                                     size="sm"
                                     variant="secondary"
@@ -81,7 +80,8 @@ export const OpportunityArticleEditor = ({
                                         ? 'Disable'
                                         : 'Enable'}
                                 </Button>
-                            </TooltipTrigger>
+                            }
+                        >
                             <TooltipContent>
                                 {formFields.isVisible
                                     ? 'Disable knowledge for AI Agent'

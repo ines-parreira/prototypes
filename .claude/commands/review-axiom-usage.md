@@ -40,7 +40,7 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 ```typescript
 // GOOD - New API imports
 import { Button } from '@gorgias/axiom'
-import { Tooltip, TooltipTrigger, TooltipContent } from '@gorgias/axiom'
+import { Tooltip, TooltipContent } from '@gorgias/axiom'
 import { Badge } from '@gorgias/axiom'
 import { Label } from '@gorgias/axiom'
 ```
@@ -186,7 +186,7 @@ HIGH PRIORITY - Legacy Imports:
 
 2. src/pages/settings/profile/ProfileHeader.tsx:5
    Found: import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
-   Suggest: import { Tooltip, TooltipTrigger, TooltipContent } from '@gorgias/axiom'
+   Suggest: import { Tooltip, TooltipContent } from '@gorgias/axiom' (use trigger prop)
 
 HIGH PRIORITY - Custom Components:
 

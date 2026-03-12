@@ -4,13 +4,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useCopyToClipboard } from '@repo/hooks'
 import classnames from 'classnames'
 
-import {
-    Icon,
-    IconName,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Icon, IconName, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import css from './CopyButton.less'
 
@@ -51,8 +45,10 @@ export function CopyButton({ value, isVisible }: CopyButtonProps) {
     }, [])
 
     return (
-        <Tooltip isOpen={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
-            <TooltipTrigger>
+        <Tooltip
+            isOpen={isTooltipOpen}
+            onOpenChange={setIsTooltipOpen}
+            trigger={
                 <span
                     role="button"
                     onPointerDown={handleCopyClick}
@@ -63,7 +59,8 @@ export function CopyButton({ value, isVisible }: CopyButtonProps) {
                 >
                     <Icon name={IconName.Copy} size="sm" />
                 </span>
-            </TooltipTrigger>
+            }
+        >
             <TooltipContent title="Copied to clipboard" />
         </Tooltip>
     )

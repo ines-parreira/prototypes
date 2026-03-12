@@ -23,9 +23,17 @@ vi.mock('@gorgias/axiom', async (importOriginal) => {
 
     return {
         ...actual,
-        Tooltip: ({ children }: { children: ReactNode }) => <>{children}</>,
-        TooltipTrigger: ({ children }: { children: ReactNode }) => (
-            <>{children}</>
+        Tooltip: ({
+            trigger,
+            children,
+        }: {
+            trigger: ReactNode
+            children: ReactNode
+        }) => (
+            <>
+                {trigger}
+                {children}
+            </>
         ),
         TooltipContent: ({ children }: { children: ReactNode }) => (
             <>{children}</>
@@ -144,9 +152,7 @@ describe('TicketThreadActionExecutedEventItem', () => {
         )
         expect(await screen.findByText('Alex Agent')).toBeInTheDocument()
         expect(screen.getByText('2024-03-21')).toBeInTheDocument()
-        expect(
-            getIconUseElement(container, 'vendor-shopify-colored'),
-        ).toBeTruthy()
+        expect(getIconUseElement(container, 'app-shopify')).toBeTruthy()
     })
 
     it('renders tooltip details with payload and error information', async () => {

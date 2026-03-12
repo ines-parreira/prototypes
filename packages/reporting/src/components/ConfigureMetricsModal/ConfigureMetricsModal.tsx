@@ -21,7 +21,6 @@ import {
     ToggleField,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import type { MetricConfigItem } from './types'
@@ -98,10 +97,7 @@ const DraggableRow = ({
                 <Text>{metric.label}</Text>
                 {metric.hint && (
                     <span className={css.infoIcon}>
-                        <Tooltip delay={0}>
-                            <TooltipTrigger>
-                                <Icon name="info" />
-                            </TooltipTrigger>
+                        <Tooltip delay={0} trigger={<Icon name="info" />}>
                             <TooltipContent title={metric.hint} />
                         </Tooltip>
                     </span>

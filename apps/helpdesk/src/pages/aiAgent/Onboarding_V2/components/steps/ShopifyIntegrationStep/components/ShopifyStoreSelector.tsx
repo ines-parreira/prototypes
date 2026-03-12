@@ -26,7 +26,7 @@ export const ShopifyStoreSelector = ({
 }: ShopifyStoreSelectorProps) => {
     return (
         <IntegrationCard
-            icon={<Icon name="vendor-shopify-colored" size="lg" />}
+            icon={<Icon name="app-shopify" size="lg" />}
             title="Connect Shopify"
             description="Empower your AI Agent with access to customer orders and data, enabling it to answer questions and perform actions seamlessly."
             status={

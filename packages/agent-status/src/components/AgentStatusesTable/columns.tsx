@@ -1,11 +1,4 @@
-import {
-    Box,
-    Button,
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Box, Button, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { formatDuration } from '../../utils'
 import type { GetColumnsFunction } from './types'
@@ -61,8 +54,8 @@ export const getColumns: GetColumnsFunction = ({ onEdit, onDelete }) => [
 
             return (
                 <Box gap="xs">
-                    <Tooltip>
-                        <TooltipTrigger>
+                    <Tooltip
+                        trigger={
                             <Button
                                 variant="tertiary"
                                 icon="edit-pencil"
@@ -74,8 +67,8 @@ export const getColumns: GetColumnsFunction = ({ onEdit, onDelete }) => [
                                         : `Edit ${name} status`
                                 }
                             />
-                        </TooltipTrigger>
-
+                        }
+                    >
                         <TooltipContent
                             title={
                                 is_system
@@ -85,8 +78,8 @@ export const getColumns: GetColumnsFunction = ({ onEdit, onDelete }) => [
                         />
                     </Tooltip>
 
-                    <Tooltip>
-                        <TooltipTrigger>
+                    <Tooltip
+                        trigger={
                             <Button
                                 variant="tertiary"
                                 icon="trash-empty"
@@ -98,7 +91,8 @@ export const getColumns: GetColumnsFunction = ({ onEdit, onDelete }) => [
                                         : `Delete ${name} status`
                                 }
                             />
-                        </TooltipTrigger>
+                        }
+                    >
                         <TooltipContent
                             title={
                                 is_system

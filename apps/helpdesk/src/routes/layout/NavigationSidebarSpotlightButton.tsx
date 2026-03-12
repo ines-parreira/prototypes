@@ -14,13 +14,17 @@ export function NavigationSidebarSpotlightButton() {
     }
 
     return (
-        <Tooltip placement="bottom">
-            <Button
-                variant="tertiary"
-                onClick={handleClick}
-                icon="search-magnifying-glass"
-                size="sm"
-            />
+        <Tooltip
+            placement="bottom"
+            trigger={
+                <Button
+                    variant="tertiary"
+                    onClick={handleClick}
+                    icon="search-magnifying-glass"
+                    size="sm"
+                />
+            }
+        >
             <TooltipContent shortcut={(isMacOs ? '⌘' : 'ctrl') + 'k'} />
         </Tooltip>
     )

@@ -1,4 +1,4 @@
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 export const withTooltip = (
     button: React.ReactElement<React.DOMAttributes<HTMLElement>, string>,
@@ -10,8 +10,7 @@ export const withTooltip = (
     // Show tooltip if disabled with caption
     if (isDisabled && caption) {
         return (
-            <Tooltip placement="bottom">
-                <TooltipTrigger>{button}</TooltipTrigger>
+            <Tooltip placement="bottom" trigger={button}>
                 <TooltipContent caption={caption} />
             </Tooltip>
         )
@@ -23,8 +22,7 @@ export const withTooltip = (
     }
 
     return (
-        <Tooltip placement="bottom">
-            <TooltipTrigger>{button}</TooltipTrigger>
+        <Tooltip placement="bottom" trigger={button}>
             <TooltipContent title={title} shortcut={shortcut} />
         </Tooltip>
     )

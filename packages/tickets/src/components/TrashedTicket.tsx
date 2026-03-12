@@ -5,7 +5,6 @@ import {
     Tag,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import css from './TrashedTicket.less'
@@ -17,8 +16,9 @@ export function TrashedTicket({
 }) {
     if (!trashedDatetime) return null
     return (
-        <Tooltip placement="bottom">
-            <TooltipTrigger>
+        <Tooltip
+            placement="bottom"
+            trigger={
                 <Tag
                     // eslint-disable-next-line jsx-a11y/prefer-tag-over-role
                     role="button"
@@ -28,7 +28,8 @@ export function TrashedTicket({
                 >
                     Trash
                 </Tag>
-            </TooltipTrigger>
+            }
+        >
             <TooltipContent
                 title={`Moved to trash on ${new Date(trashedDatetime).toLocaleString()}`}
             />

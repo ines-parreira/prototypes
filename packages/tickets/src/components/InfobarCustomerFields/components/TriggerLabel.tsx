@@ -1,4 +1,4 @@
-import { Text, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import css from '../InfobarCustomerFields.less'
 
@@ -19,10 +19,7 @@ export function TriggerLabel({ label, tooltipText }: TriggerLabelProps) {
     }
 
     return (
-        <Tooltip>
-            <TooltipTrigger>
-                <span role="button">{textElement}</span>
-            </TooltipTrigger>
+        <Tooltip trigger={<span role="button">{textElement}</span>}>
             <TooltipContent title={tooltipText} />
         </Tooltip>
     )

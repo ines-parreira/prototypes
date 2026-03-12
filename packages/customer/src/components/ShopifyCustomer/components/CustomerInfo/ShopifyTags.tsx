@@ -15,7 +15,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { useShopifyShopTags } from '../../hooks/useShopifyShopTags'
@@ -184,8 +183,9 @@ export function ShopifyTags({
                                 : []
 
                         return (
-                            <Tooltip placement="bottom">
-                                <TooltipTrigger>
+                            <Tooltip
+                                placement="bottom"
+                                trigger={
                                     <div
                                         className={css.overflowButtonContent}
                                         tabIndex={0}
@@ -193,7 +193,8 @@ export function ShopifyTags({
                                         <span>+{hiddenCount}</span>
                                         <Icon name="arrow-chevron-down" />
                                     </div>
-                                </TooltipTrigger>
+                                }
+                            >
                                 <TooltipContent>
                                     <Box
                                         flexDirection="column"

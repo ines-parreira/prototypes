@@ -1,10 +1,4 @@
-import {
-    Box,
-    Button,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import type { DrillDownDataHook } from 'domains/reporting/hooks/useDrillDownData'
@@ -169,8 +163,8 @@ export const DrillDownInfoBar = ({
                       )}
             </div>
             {shouldDisplayDownloadButton && (
-                <Tooltip>
-                    <TooltipTrigger>
+                <Tooltip
+                    trigger={
                         <Button
                             variant="primary"
                             size="sm"
@@ -187,7 +181,8 @@ export const DrillDownInfoBar = ({
                         >
                             {getButtonText()}
                         </Button>
-                    </TooltipTrigger>
+                    }
+                >
                     {isDisabled && <TooltipContent caption={tooltipMessage} />}
                 </Tooltip>
             )}

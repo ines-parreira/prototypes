@@ -100,19 +100,22 @@ const HelpCenterArticleModalAdvancedViewContent = ({
                 title="Article Settings"
                 onClose={onArticleModalClose}
                 toggleModalBtn={
-                    <Tooltip>
-                        <Button
-                            onClick={() =>
-                                setEditModal({
-                                    isOpened: true,
-                                    view: HelpCenterArticleModalView.BASIC,
-                                })
-                            }
-                            variant="tertiary"
-                            size="md"
-                            icon="edit-pencil"
-                            aria-label="basic editor modal"
-                        />
+                    <Tooltip
+                        trigger={
+                            <Button
+                                onClick={() =>
+                                    setEditModal({
+                                        isOpened: true,
+                                        view: HelpCenterArticleModalView.BASIC,
+                                    })
+                                }
+                                variant="tertiary"
+                                size="md"
+                                icon="edit-pencil"
+                                aria-label="basic editor modal"
+                            />
+                        }
+                    >
                         <TooltipContent title="View editor" />
                     </Tooltip>
                 }

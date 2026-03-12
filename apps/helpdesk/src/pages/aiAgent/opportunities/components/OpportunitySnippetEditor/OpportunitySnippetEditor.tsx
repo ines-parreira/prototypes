@@ -11,7 +11,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -100,8 +99,8 @@ export const OpportunitySnippetEditor = ({
                     >
                         Snippet
                     </Heading>
-                    <Tooltip>
-                        <TooltipTrigger>
+                    <Tooltip
+                        trigger={
                             <Button
                                 size="sm"
                                 variant="secondary"
@@ -109,7 +108,8 @@ export const OpportunitySnippetEditor = ({
                             >
                                 {formFields.isVisible ? 'Disable' : 'Enable'}
                             </Button>
-                        </TooltipTrigger>
+                        }
+                    >
                         <TooltipContent>
                             {formFields.isVisible
                                 ? 'Disable knowledge for AI Agent'

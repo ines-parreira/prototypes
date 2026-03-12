@@ -9,7 +9,6 @@ import {
     TextField,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import type { SalesSettingsData } from 'models/aiAgent/types'
@@ -90,10 +89,7 @@ export const DiscountStrategySection = () => {
         <Card className={css.cardSection}>
             <Box alignItems="center" gap="xxs">
                 <Text variant="bold">Discount strategy</Text>
-                <Tooltip delay={0}>
-                    <TooltipTrigger>
-                        <Icon name="info" size="sm" />
-                    </TooltipTrigger>
+                <Tooltip delay={0} trigger={<Icon name="info" size="sm" />}>
                     <TooltipContent title="Define how often AI Agent should use discounts to encourage customers to complete a purchase." />
                 </Tooltip>
             </Box>
@@ -120,10 +116,7 @@ export const DiscountStrategySection = () => {
                     <Label htmlFor="percentage-discount">
                         Fixed discount (%)
                     </Label>
-                    <Tooltip delay={0}>
-                        <TooltipTrigger>
-                            <Icon name="info" size="sm" />
-                        </TooltipTrigger>
+                    <Tooltip delay={0} trigger={<Icon name="info" size="sm" />}>
                         <TooltipContent title="Choose the discount amount Shopping Assistant offers." />
                     </Tooltip>
                 </Box>

@@ -59,9 +59,9 @@ export function getActionExecutedSourceIconName(
 ): IconName {
     switch (sourceFamily) {
         case 'shopify':
-            return 'vendor-shopify-colored'
+            return 'app-shopify'
         case 'bigcommerce':
-            return 'vendor-bicommerce-colored'
+            return 'app-bicommerce'
         case 'recharge':
             return 'shopping-bag'
         case 'custom-http':

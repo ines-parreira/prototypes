@@ -13,7 +13,7 @@ const getIconName = (type: KnowledgeSourceType) => {
         case KnowledgeSourceType.DOMAIN:
             return 'nav-globe'
         case KnowledgeSourceType.SHOPIFY:
-            return 'vendor-shopify-colored'
+            return 'app-shopify'
         case KnowledgeSourceType.HELP_CENTER:
             return 'comm-chat-circle'
         default:

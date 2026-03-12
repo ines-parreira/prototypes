@@ -5,7 +5,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 import type { TicketTag } from '@gorgias/helpdesk-queries'
 
@@ -26,13 +25,15 @@ export function TagsMultiSelectShowMore({
                     safeCount > 0 ? value.slice(value.length - safeCount) : []
 
                 return (
-                    <Tooltip placement="bottom">
-                        <TooltipTrigger>
+                    <Tooltip
+                        placement="bottom"
+                        trigger={
                             <div className={css.overflowButtonContent}>
                                 <span>+{count}</span>
                                 <Icon name="arrow-chevron-down" />
                             </div>
-                        </TooltipTrigger>
+                        }
+                    >
                         <TooltipContent>
                             <Box
                                 flexDirection="column"

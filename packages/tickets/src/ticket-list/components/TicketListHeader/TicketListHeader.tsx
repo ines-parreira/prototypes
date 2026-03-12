@@ -30,14 +30,17 @@ export function TicketListHeader({ viewId, onCollapse, onEditView }: Props) {
             justifyContent="space-between"
         >
             <Box flexDirection="row" alignItems="center" gap="xs">
-                <Tooltip>
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        icon="system-bar-left-collapse"
-                        aria-label="Hide ticket panel"
-                        onClick={onCollapse}
-                    />
+                <Tooltip
+                    trigger={
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            icon="system-bar-left-collapse"
+                            aria-label="Hide ticket panel"
+                            onClick={onCollapse}
+                        />
+                    }
+                >
                     <TooltipContent title="Hide ticket panel" />
                 </Tooltip>
                 <SelectTrigger isDisabled>
@@ -45,14 +48,17 @@ export function TicketListHeader({ viewId, onCollapse, onEditView }: Props) {
                 </SelectTrigger>
             </Box>
             <Box flexDirection="row" alignItems="center" gap="xs">
-                <Tooltip>
-                    <Button
-                        variant="tertiary"
-                        size="sm"
-                        icon="slider-filter"
-                        aria-label="Edit view"
-                        onClick={onEditView}
-                    />
+                <Tooltip
+                    trigger={
+                        <Button
+                            variant="tertiary"
+                            size="sm"
+                            icon="slider-filter"
+                            aria-label="Edit view"
+                            onClick={onEditView}
+                        />
+                    }
+                >
                     <TooltipContent title="Edit view" />
                 </Tooltip>
                 <SortOrderDropdown viewId={viewId} />

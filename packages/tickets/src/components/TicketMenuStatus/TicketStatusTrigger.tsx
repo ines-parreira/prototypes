@@ -24,16 +24,20 @@ export const TicketStatusTrigger = forwardRef<
     switch (status) {
         case TicketStatus.Closed:
             return (
-                <Tooltip placement="bottom">
-                    <StatusButton
-                        ref={ref}
-                        aria-label="Ticket status menu"
-                        leadingSlot="circle-check"
-                        trailingSlot="arrow-chevron-down"
-                        color="grey"
-                    >
-                        Closed
-                    </StatusButton>
+                <Tooltip
+                    placement="bottom"
+                    trigger={
+                        <StatusButton
+                            ref={ref}
+                            aria-label="Ticket status menu"
+                            leadingSlot="circle-check"
+                            trailingSlot="arrow-chevron-down"
+                            color="grey"
+                        >
+                            Closed
+                        </StatusButton>
+                    }
+                >
                     <TooltipContent
                         title={getClosedDateTitle(ticket.closed_datetime)}
                         caption="Click to change status"
@@ -42,16 +46,20 @@ export const TicketStatusTrigger = forwardRef<
             )
         case TicketStatus.Snoozed:
             return (
-                <Tooltip placement="bottom">
-                    <StatusButton
-                        ref={ref}
-                        aria-label="Ticket status menu"
-                        leadingSlot="timer-snooze"
-                        trailingSlot="arrow-chevron-down"
-                        color="blue"
-                    >
-                        {getRemainingSnoozeTime(ticket.snooze_datetime)}
-                    </StatusButton>
+                <Tooltip
+                    placement="bottom"
+                    trigger={
+                        <StatusButton
+                            ref={ref}
+                            aria-label="Ticket status menu"
+                            leadingSlot="timer-snooze"
+                            trailingSlot="arrow-chevron-down"
+                            color="blue"
+                        >
+                            {getRemainingSnoozeTime(ticket.snooze_datetime)}
+                        </StatusButton>
+                    }
+                >
                     <TooltipContent
                         title={getSnoozeTooltipTitle(ticket.snooze_datetime)}
                         caption="Click to change status"
@@ -60,16 +68,20 @@ export const TicketStatusTrigger = forwardRef<
             )
         default:
             return (
-                <Tooltip placement="bottom">
-                    <StatusButton
-                        ref={ref}
-                        aria-label="Ticket status menu"
-                        leadingSlot="inbox"
-                        trailingSlot="arrow-chevron-down"
-                        color="purple"
-                    >
-                        Open
-                    </StatusButton>
+                <Tooltip
+                    placement="bottom"
+                    trigger={
+                        <StatusButton
+                            ref={ref}
+                            aria-label="Ticket status menu"
+                            leadingSlot="inbox"
+                            trailingSlot="arrow-chevron-down"
+                            color="purple"
+                        >
+                            Open
+                        </StatusButton>
+                    }
+                >
                     <TooltipContent title="Change status" />
                 </Tooltip>
             )

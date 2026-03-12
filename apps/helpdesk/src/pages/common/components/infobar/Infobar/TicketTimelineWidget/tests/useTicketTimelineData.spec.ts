@@ -326,25 +326,25 @@ describe('useTicketTimelineData', () => {
         describe('E-commerce platforms', () => {
             it('should return shopify icon for shopify channel', () => {
                 expect(channelToCommunicationIcon('shopify')).toBe(
-                    'vendor-shopify-colored',
+                    'app-shopify',
                 )
             })
 
             it('should return magento icon for magento2 channel', () => {
                 expect(channelToCommunicationIcon('magento2')).toBe(
-                    'vendor-magento-colored',
+                    'app-magento',
                 )
             })
 
             it('should return woocommerce icon for woocommerce channel', () => {
                 expect(channelToCommunicationIcon('woocommerce')).toBe(
-                    'vendor-woo-colored',
+                    'app-woo',
                 )
             })
 
             it('should return bigcommerce icon for bigcommerce channel', () => {
                 expect(channelToCommunicationIcon('bigcommerce')).toBe(
-                    'vendor-bicommerce-colored',
+                    'app-bicommerce',
                 )
             })
         })
@@ -474,7 +474,7 @@ describe('useTicketTimelineData', () => {
                 )
 
                 expect(result.current.displayedTickets[0].iconName).toBe(
-                    'vendor-shopify-colored',
+                    'app-shopify',
                 )
             })
 

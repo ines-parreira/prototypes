@@ -10,7 +10,18 @@ import { SortOrderDropdown } from '../SortOrderDropdown'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => ({
     ...(await importOriginal()),
-    Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
+    Tooltip: ({
+        trigger,
+        children,
+    }: {
+        trigger: React.ReactNode
+        children: React.ReactNode
+    }) => (
+        <>
+            {trigger}
+            {children}
+        </>
+    ),
     TooltipContent: ({ title }: { title?: string }) => <div>{title}</div>,
 }))
 

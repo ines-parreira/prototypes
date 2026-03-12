@@ -12,7 +12,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -185,10 +184,11 @@ export const KnowledgeStep: React.FC<StepProps> = ({
                     <Text variant="bold">
                         {`We're syncing these knowledge sources`}
                     </Text>
-                    <Tooltip placement="top left" delay={0}>
-                        <TooltipTrigger>
-                            <Icon name="info" size="sm" />
-                        </TooltipTrigger>
+                    <Tooltip
+                        placement="top left"
+                        delay={0}
+                        trigger={<Icon name="info" size="sm" />}
+                    >
                         <TooltipContent title="These knowledge sources were pulled from your initial Gorgias setup. They will be used to provide context for AI Agent to respond to customer inquiries." />
                     </Tooltip>
                 </Box>

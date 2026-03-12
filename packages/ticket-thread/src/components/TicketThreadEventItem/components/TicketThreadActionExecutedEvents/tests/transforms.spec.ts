@@ -124,8 +124,8 @@ describe('getActionExecutedSourceFamily', () => {
 
 describe('getActionExecutedSourceIconName', () => {
     it.each<[ActionExecutedSourceFamily, string]>([
-        ['shopify', 'vendor-shopify-colored'],
-        ['bigcommerce', 'vendor-bicommerce-colored'],
+        ['shopify', 'app-shopify'],
+        ['bigcommerce', 'app-bicommerce'],
         ['recharge', 'shopping-bag'],
         ['custom-http', 'webhook'],
     ])('returns icon for %s', (sourceFamily, expectedIconName) => {

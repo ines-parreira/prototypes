@@ -16,8 +16,11 @@ export function InfobarNavigationItem({
     tooltip,
 }: InfobarNavigationItemProps) {
     return (
-        <Tooltip key={name} placement="left">
-            <ButtonGroupItem id={name} icon={icon} />
+        <Tooltip
+            key={name}
+            placement="left"
+            trigger={<ButtonGroupItem id={name} icon={icon} />}
+        >
             <TooltipContent
                 title={tooltip.title ?? ''}
                 shortcut={tooltip.shortcut}

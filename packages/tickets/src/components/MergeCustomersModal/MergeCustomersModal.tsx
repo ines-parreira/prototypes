@@ -15,7 +15,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 import type { Customer } from '@gorgias/helpdesk-types'
 
@@ -300,8 +299,8 @@ export function MergeCustomersModal({
                             className={css.radioGroup}
                         >
                             <Box width="50%">
-                                <Tooltip>
-                                    <TooltipTrigger>
+                                <Tooltip
+                                    trigger={
                                         <RadioCard
                                             value={
                                                 CustomerSelection.Destination
@@ -320,7 +319,8 @@ export function MergeCustomersModal({
                                                     EMPTY_FIELD_PLACEHOLDER}
                                             </Text>
                                         </RadioCard>
-                                    </TooltipTrigger>
+                                    }
+                                >
                                     <TooltipContent>
                                         This is the email address which will be
                                         used to fetch data for the customer
@@ -328,8 +328,8 @@ export function MergeCustomersModal({
                                 </Tooltip>
                             </Box>
                             <Box width="50%">
-                                <Tooltip>
-                                    <TooltipTrigger>
+                                <Tooltip
+                                    trigger={
                                         <RadioCard
                                             value={CustomerSelection.Source}
                                             title="Primary email"
@@ -346,7 +346,8 @@ export function MergeCustomersModal({
                                                     EMPTY_FIELD_PLACEHOLDER}
                                             </Text>
                                         </RadioCard>
-                                    </TooltipTrigger>
+                                    }
+                                >
                                     <TooltipContent>
                                         This is the email address which will be
                                         used to fetch data for the customer

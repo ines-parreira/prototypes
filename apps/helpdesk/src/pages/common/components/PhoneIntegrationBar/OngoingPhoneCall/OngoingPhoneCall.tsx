@@ -7,15 +7,7 @@ import classNames from 'classnames'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 
-import {
-    Box,
-    Dot,
-    Icon,
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Box, Dot, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import whisperingNotification from 'assets/audio/phone/whispering-notification.mp3'
@@ -365,10 +357,7 @@ export function OngoingPhoneCall({
                           : 'Connected'}
                 </Text>
                 {isBeingWhispered && (
-                    <Tooltip>
-                        <TooltipTrigger>
-                            <Icon name="headset" size="md" />
-                        </TooltipTrigger>
+                    <Tooltip trigger={<Icon name="headset" size="md" />}>
                         <TooltipContent title="This call is currently being monitored." />
                     </Tooltip>
                 )}

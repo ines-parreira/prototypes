@@ -69,14 +69,20 @@ describe('OpportunityCard', () => {
         expect(onSelect).not.toHaveBeenCalled()
     })
 
-    it('should wrap info section in tooltip when restricted', () => {
+    it('should wrap info section in tooltip when restricted', async () => {
+        const user = userEvent.setup()
         const { container } = render(
             <OpportunityCard {...defaultProps} isRestricted />,
         )
 
-        const tooltipTrigger = container.querySelector('[tabindex="0"]')
-        expect(tooltipTrigger).toBeInTheDocument()
-        expect(tooltipTrigger).toHaveTextContent('Fill knowledge gap')
+        expect(screen.getByText('Fill knowledge gap')).toBeInTheDocument()
+
+        const card = container.querySelector('[aria-disabled="true"]')!
+        await user.hover(card)
+
+        expect(
+            await screen.findByText(/Upgrade to access all/),
+        ).toBeInTheDocument()
     })
 
     it('should have aria-disabled attribute when restricted', () => {

@@ -53,25 +53,31 @@ export function TicketFieldsOverflowList({
                 <CustomFieldItem key={field.id} field={field} />
             ))}
 
-            <Tooltip>
-                <OverflowListShowMore className={css.overflowListShowMore}>
-                    {({ hiddenCount: count }) => {
-                        if (count !== hiddenCount) {
-                            setHiddenCount(count)
-                        }
-                        return (
-                            <Box
-                                flexDirection="row"
-                                alignItems="center"
-                                gap="xxxs"
-                            >
-                                <Text className={css.secondaryText} size="sm">
-                                    +{count} more
-                                </Text>
-                            </Box>
-                        )
-                    }}
-                </OverflowListShowMore>
+            <Tooltip
+                trigger={
+                    <OverflowListShowMore className={css.overflowListShowMore}>
+                        {({ hiddenCount: count }) => {
+                            if (count !== hiddenCount) {
+                                setHiddenCount(count)
+                            }
+                            return (
+                                <Box
+                                    flexDirection="row"
+                                    alignItems="center"
+                                    gap="xxxs"
+                                >
+                                    <Text
+                                        className={css.secondaryText}
+                                        size="sm"
+                                    >
+                                        +{count} more
+                                    </Text>
+                                </Box>
+                            )
+                        }}
+                    </OverflowListShowMore>
+                }
+            >
                 <TooltipContent>
                     <ShowMoreContent hiddenFields={hiddenFields} />
                 </TooltipContent>

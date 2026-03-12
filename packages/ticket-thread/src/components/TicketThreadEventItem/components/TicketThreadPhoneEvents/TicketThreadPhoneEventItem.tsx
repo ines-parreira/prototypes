@@ -3,14 +3,7 @@ import { useMemo } from 'react'
 import { useListAllHumanAgents } from '@repo/users'
 import { Link } from 'react-router-dom'
 
-import {
-    Box,
-    Icon,
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { TicketThreadPhoneEventItem as TicketThreadPhoneEventItemType } from '../../../../hooks/events/types'
 import { TicketThreadAuditLogEventAttribution } from '../TicketThreadAuditLogEventAttribution'
@@ -67,15 +60,16 @@ export function TicketThreadPhoneEventItem({
                 </Text>
             )}
             {hasDetails && (
-                <Tooltip>
-                    <TooltipTrigger>
+                <Tooltip
+                    trigger={
                         <span
                             role="button"
                             aria-label="Show phone event details"
                         >
                             <Icon name="info" />
                         </span>
-                    </TooltipTrigger>
+                    }
+                >
                     <TooltipContent>
                         <Box flexDirection="column" gap="xxs">
                             {detailsEntries.length === 0 && (

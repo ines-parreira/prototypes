@@ -81,35 +81,38 @@ export function SortOrderDropdown({ viewId }: Props) {
     )
 
     return (
-        <Tooltip>
-            <Menu
-                placement={MenuPlacement.BottomRight}
-                size={MenuSize.Sm}
-                aria-label="Sort view by"
-                selectionMode="single"
-                selectedKeys={new Set([currentSort.field?.id ?? ''])}
-                trigger={
-                    <Button
-                        variant="tertiary"
-                        size="sm"
-                        icon="arrow-down-up"
-                        aria-label="Sort view by"
-                    />
-                }
-            >
-                <MenuSection id="sort-options" name="Sort tickets">
-                    {SORT_FIELDS.map((field) => (
-                        <SortOrderMenuItem
-                            key={field.id}
-                            fieldId={field.id}
-                            fieldLabel={field.label}
-                            isSelected={field.id === currentSort.field?.id}
-                            isDescending={currentSort.direction === 'desc'}
-                            onAction={handleSortClick}
+        <Tooltip
+            trigger={
+                <Menu
+                    placement={MenuPlacement.BottomRight}
+                    size={MenuSize.Sm}
+                    aria-label="Sort view by"
+                    selectionMode="single"
+                    selectedKeys={new Set([currentSort.field?.id ?? ''])}
+                    trigger={
+                        <Button
+                            variant="tertiary"
+                            size="sm"
+                            icon="arrow-down-up"
+                            aria-label="Sort view by"
                         />
-                    ))}
-                </MenuSection>
-            </Menu>
+                    }
+                >
+                    <MenuSection id="sort-options" name="Sort tickets">
+                        {SORT_FIELDS.map((field) => (
+                            <SortOrderMenuItem
+                                key={field.id}
+                                fieldId={field.id}
+                                fieldLabel={field.label}
+                                isSelected={field.id === currentSort.field?.id}
+                                isDescending={currentSort.direction === 'desc'}
+                                onAction={handleSortClick}
+                            />
+                        ))}
+                    </MenuSection>
+                </Menu>
+            }
+        >
             <TooltipContent title="Sort view by" />
         </Tooltip>
     )

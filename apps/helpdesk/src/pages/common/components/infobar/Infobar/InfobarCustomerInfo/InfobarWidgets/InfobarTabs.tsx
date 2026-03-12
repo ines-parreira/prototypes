@@ -69,12 +69,15 @@ export function InfobarTabs({ widgetNames }: Props) {
                 })}
             </Nav>
             {hasUIVisionMS1 && (
-                <Tooltip>
-                    <Button
-                        icon="settings"
-                        variant="tertiary"
-                        onClick={toggleTicketWidgetEditionMode}
-                    />
+                <Tooltip
+                    trigger={
+                        <Button
+                            icon="settings"
+                            variant="tertiary"
+                            onClick={toggleTicketWidgetEditionMode}
+                        />
+                    }
+                >
                     <TooltipContent title="Edit widgets" />
                 </Tooltip>
             )}

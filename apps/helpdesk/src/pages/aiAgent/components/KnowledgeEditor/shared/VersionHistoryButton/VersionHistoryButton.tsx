@@ -11,7 +11,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -105,8 +104,11 @@ function VersionCaption({
     if (!fullText) return null
 
     return (
-        <Tooltip delay={300} placement="bottom left" isDisabled={!isTruncated}>
-            <TooltipTrigger>
+        <Tooltip
+            delay={300}
+            placement="bottom left"
+            isDisabled={!isTruncated}
+            trigger={
                 <div ref={textRef} className={css.caption}>
                     <Text size="sm" variant="regular">
                         <Text as="span" size="sm" variant="bold">
@@ -115,7 +117,8 @@ function VersionCaption({
                         {commitMessage ? `: ${commitMessage}` : ''}
                     </Text>
                 </div>
-            </TooltipTrigger>
+            }
+        >
             <TooltipContent title={fullText} />
         </Tooltip>
     )
@@ -215,8 +218,7 @@ export function VersionHistoryButton<V extends VersionItem>({
         }
 
         return (
-            <Tooltip placement="bottom">
-                <TooltipTrigger>{button}</TooltipTrigger>
+            <Tooltip placement="bottom" trigger={button}>
                 <TooltipContent title="Version history" />
             </Tooltip>
         )

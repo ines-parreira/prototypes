@@ -1,13 +1,6 @@
 import { useFormContext } from 'react-hook-form'
 
-import {
-    Box,
-    Icon,
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import type { SalesSettingsData } from 'models/aiAgent/types'
 import Card from 'pages/aiAgent/Onboarding_V2/components/Card/Card'
@@ -35,10 +28,7 @@ export const PurchaseGuidanceSection = () => {
         <Card className={css.cardSection}>
             <Box alignItems="center" gap="xxs">
                 <Text variant="bold">Purchase guidance</Text>
-                <Tooltip delay={0}>
-                    <TooltipTrigger>
-                        <Icon name="info" size="sm" />
-                    </TooltipTrigger>
+                <Tooltip delay={0} trigger={<Icon name="info" size="sm" />}>
                     <TooltipContent title="AI Agent will take into account your custom persuasion level in the way in interacts with customers." />
                 </Tooltip>
             </Box>

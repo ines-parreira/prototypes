@@ -41,43 +41,47 @@ export function TicketTranslationMenu({ ticket }: TicketTranslationMenuProps) {
     if (!shouldShowTranslationMenu) return null
 
     return (
-        <Tooltip placement="bottom">
-            <Menu
-                aria-label="Translation menu"
-                placement="bottom right"
-                trigger={
-                    <Button
-                        size="sm"
-                        variant="secondary"
-                        icon="translate"
-                        aria-label={helper}
-                    />
-                }
-            >
-                <MenuSection id="ticket-translations" name={helper}>
-                    {isTranslated && (
-                        <MenuItem
-                            id="show-original"
-                            label="Show original"
-                            leadingSlot={<Icon name="arrow-undo-up-left" />}
-                            onAction={setAllTicketMessagesToOriginal}
+        <Tooltip
+            placement="bottom"
+            trigger={
+                <Menu
+                    aria-label="Translation menu"
+                    placement="bottom right"
+                    trigger={
+                        <Button
+                            size="sm"
+                            variant="secondary"
+                            icon="translate"
+                            aria-label={helper}
                         />
-                    )}
-                    {!isTranslated && (
+                    }
+                >
+                    <MenuSection id="ticket-translations" name={helper}>
+                        {isTranslated && (
+                            <MenuItem
+                                id="show-original"
+                                label="Show original"
+                                leadingSlot={<Icon name="arrow-undo-up-left" />}
+                                onAction={setAllTicketMessagesToOriginal}
+                            />
+                        )}
+                        {!isTranslated && (
+                            <MenuItem
+                                id="show-translation"
+                                label="See translation"
+                                leadingSlot={<Icon name="translate" />}
+                                onAction={setAllTicketMessagesToTranslated}
+                            />
+                        )}
                         <MenuItem
-                            id="show-translation"
-                            label="See translation"
-                            leadingSlot={<Icon name="translate" />}
-                            onAction={setAllTicketMessagesToTranslated}
+                            label="Translation settings"
+                            leadingSlot={<Icon name="settings" />}
+                            onAction={handleTranslationSettingsClick}
                         />
-                    )}
-                    <MenuItem
-                        label="Translation settings"
-                        leadingSlot={<Icon name="settings" />}
-                        onAction={handleTranslationSettingsClick}
-                    />
-                </MenuSection>
-            </Menu>
+                    </MenuSection>
+                </Menu>
+            }
+        >
             <TooltipContent title={helper} />
         </Tooltip>
     )

@@ -6,13 +6,7 @@ import {
 } from '@repo/utils'
 
 import type { CellContext, ColumnDef } from '@gorgias/axiom'
-import {
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-    useTable,
-} from '@gorgias/axiom'
+import { Text, Tooltip, TooltipContent, useTable } from '@gorgias/axiom'
 import type { TicketsSearchListDataItem } from '@gorgias/helpdesk-types'
 
 import { TicketMessageSourceIcon } from '../../../TicketMessageSourceIcon/TicketMessageSourceIcon'
@@ -38,12 +32,13 @@ function SubjectCell(info: CellContext<TicketsSearchListDataItem, unknown>) {
     }
 
     return (
-        <Tooltip>
-            <TooltipTrigger>
+        <Tooltip
+            trigger={
                 <span role="button">
                     <Text>{shorten(subject, subjectMaxLength)}</Text>
                 </span>
-            </TooltipTrigger>
+            }
+        >
             <TooltipContent title={subject} caption={excerpt} />
         </Tooltip>
     )
@@ -70,12 +65,13 @@ function CustomerNameCell(
     }
 
     return (
-        <Tooltip>
-            <TooltipTrigger>
+        <Tooltip
+            trigger={
                 <span role="button">
                     <Text>{shorten(name, customerNameMaxLength)}</Text>
                 </span>
-            </TooltipTrigger>
+            }
+        >
             <TooltipContent title={name} />
         </Tooltip>
     )

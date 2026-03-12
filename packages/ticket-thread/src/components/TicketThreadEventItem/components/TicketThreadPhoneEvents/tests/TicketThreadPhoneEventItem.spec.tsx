@@ -21,9 +21,17 @@ vi.mock('@gorgias/axiom', async (importOriginal) => {
 
     return {
         ...actual,
-        Tooltip: ({ children }: { children: ReactNode }) => <>{children}</>,
-        TooltipTrigger: ({ children }: { children: ReactNode }) => (
-            <>{children}</>
+        Tooltip: ({
+            trigger,
+            children,
+        }: {
+            trigger: ReactNode
+            children: ReactNode
+        }) => (
+            <>
+                {trigger}
+                {children}
+            </>
         ),
         TooltipContent: ({ children }: { children: ReactNode }) => (
             <>{children}</>

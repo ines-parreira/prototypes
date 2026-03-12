@@ -7,7 +7,6 @@ import {
     ListHeaderItem,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 import type { TicketUser, User } from '@gorgias/helpdesk-queries'
 
@@ -47,8 +46,8 @@ export function AssignUserMenu({ value, isDisabled, onAssignUser }: Props) {
                 )
             }
             renderTrigger={({ ref }) => (
-                <Tooltip>
-                    <TooltipTrigger>
+                <Tooltip
+                    trigger={
                         <Button
                             ref={ref}
                             variant="tertiary"
@@ -57,7 +56,8 @@ export function AssignUserMenu({ value, isDisabled, onAssignUser }: Props) {
                             aria-label="Assign agent"
                             isDisabled={isDisabled}
                         />
-                    </TooltipTrigger>
+                    }
+                >
                     <TooltipContent
                         title={
                             isDisabled

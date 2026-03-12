@@ -9,7 +9,6 @@ import {
     Separator,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
@@ -108,10 +107,12 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                 )}
                 {isEditable && !props.isSaving && props.autoSaveError && (
                     <span className={css.savingIndicator} tabIndex={0}>
-                        <Tooltip placement="bottom">
-                            <TooltipTrigger>
+                        <Tooltip
+                            placement="bottom"
+                            trigger={
                                 <Icon name="cloud-off" size={IconSize.Md} />
-                            </TooltipTrigger>
+                            }
+                        >
                             <TooltipContent caption="Failed to save content." />
                         </Tooltip>
                     </span>
@@ -121,13 +122,15 @@ export const KnowledgeEditorTopBar = (props: Props) => {
                     !props.autoSaveError &&
                     props.lastUpdatedDatetime && (
                         <span className={css.savingIndicator} tabIndex={0}>
-                            <Tooltip placement="bottom">
-                                <TooltipTrigger>
+                            <Tooltip
+                                placement="bottom"
+                                trigger={
                                     <Icon
                                         name="cloud-check"
                                         size={IconSize.Md}
                                     />
-                                </TooltipTrigger>
+                                }
+                            >
                                 <TooltipContent
                                     caption={`Last saved: ${formatDatetime(
                                         props.lastUpdatedDatetime.toISOString(),

@@ -9,8 +9,12 @@ import VisibilityCondition from './VisibilityCondition'
 const mockButton = jest.fn((__props: any) => null)
 const mockSelectField = jest.fn((__props: any) => null)
 const mockTextField = jest.fn((__props: any) => null)
-const mockTooltip = jest.fn(({ children }: any) => children)
-const mockTooltipTrigger = jest.fn(({ children }: any) => children)
+const mockTooltip = jest.fn(({ trigger, children }: any) => (
+    <>
+        {trigger}
+        {children}
+    </>
+))
 const mockTooltipContent = jest.fn((__props: any) => null)
 const mockIcon = jest.fn((__props: any) => null)
 
@@ -24,7 +28,6 @@ jest.mock('@gorgias/axiom', () => ({
     SelectField: (props: any) => mockSelectField(props),
     TextField: (props: any) => mockTextField(props),
     Tooltip: (props: any) => mockTooltip(props),
-    TooltipTrigger: (props: any) => mockTooltipTrigger(props),
     TooltipContent: (props: any) => mockTooltipContent(props),
     ListItem: ({ label }: any) => <div>{label}</div>,
 }))

@@ -161,12 +161,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
                     <Box marginTop="lg" flexDirection="column" gap="md">
                         {isLoading ? (
                             <LoadingPulserIcon
-                                icon={
-                                    <Icon
-                                        name="vendor-shopify-colored"
-                                        size="lg"
-                                    />
-                                }
+                                icon={<Icon name="app-shopify" size="lg" />}
                             />
                         ) : (
                             <>
@@ -194,7 +189,7 @@ export const ShopifyIntegrationStep: React.FC<ShopifyIntegrationStepProps> = ({
                 </OnboardingContentContainer>
                 <OnboardingPreviewContainer
                     isLoading={true}
-                    icon={<Icon name="vendor-shopify-colored" size="lg" />}
+                    icon={<Icon name="app-shopify" size="lg" />}
                     showCaption={true}
                     caption="Connecting your Shopify store to Gorgias sends real-time product, customer, and transaction data to your AI Agent."
                 />

@@ -14,7 +14,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import {
@@ -178,10 +177,8 @@ export const StatusCell = ({ chat, loading }: StatusCellProps) => {
                         chatIsPublishedButNotInstalled
                     )
                 }
+                trigger={<span role="button">{getStatusTag(chatStatus)}</span>}
             >
-                <TooltipTrigger>
-                    <span role="button">{getStatusTag(chatStatus)}</span>
-                </TooltipTrigger>
                 <TooltipContent>
                     {chatIsHiddenOutsideBusinessHours && (
                         <Text size="md" variant="medium">

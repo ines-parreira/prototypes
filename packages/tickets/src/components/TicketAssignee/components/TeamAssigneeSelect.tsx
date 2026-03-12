@@ -104,32 +104,39 @@ export function TeamAssigneeSelect({
                     ? teamsMap.get(selectedOption?.id)?.decoration?.emoji
                     : null
                 return (
-                    <Tooltip placement="bottom">
-                        <StatusButton
-                            ref={ref}
-                            leadingSlot={
-                                !!emoji ? (
-                                    <Box>
-                                        <Emoji emoji={emoji} size={16} />{' '}
-                                    </Box>
-                                ) : (
-                                    <Icon name="users" size="sm" />
-                                )
-                            }
-                            trailingSlot={
-                                <Icon
-                                    name={
-                                        isOpen
-                                            ? 'arrow-chevron-up'
-                                            : 'arrow-chevron-down'
-                                    }
-                                    size="xs"
-                                />
-                            }
-                            className={css.trigger}
-                        >
-                            {isPlaceholder ? 'No team' : selectedText}
-                        </StatusButton>
+                    <Tooltip
+                        placement="bottom"
+                        trigger={
+                            <StatusButton
+                                ref={ref}
+                                leadingSlot={
+                                    !!emoji ? (
+                                        <Box>
+                                            <Emoji
+                                                emoji={emoji}
+                                                size={16}
+                                            />{' '}
+                                        </Box>
+                                    ) : (
+                                        <Icon name="users" size="sm" />
+                                    )
+                                }
+                                trailingSlot={
+                                    <Icon
+                                        name={
+                                            isOpen
+                                                ? 'arrow-chevron-up'
+                                                : 'arrow-chevron-down'
+                                        }
+                                        size="xs"
+                                    />
+                                }
+                                className={css.trigger}
+                            >
+                                {isPlaceholder ? 'No team' : selectedText}
+                            </StatusButton>
+                        }
+                    >
                         <TooltipContent
                             title={
                                 isPlaceholder ? 'Assign team' : 'Assigned team'

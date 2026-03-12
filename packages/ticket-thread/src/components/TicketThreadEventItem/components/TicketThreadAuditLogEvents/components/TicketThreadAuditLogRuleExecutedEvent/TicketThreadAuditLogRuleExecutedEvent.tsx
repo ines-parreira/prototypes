@@ -1,13 +1,6 @@
 import { Link } from 'react-router-dom'
 
-import {
-    Box,
-    Icon,
-    Text,
-    Tooltip,
-    TooltipContent,
-    TooltipTrigger,
-} from '@gorgias/axiom'
+import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { SYSTEM_RULE_TYPE } from '../../../../../../hooks/events/constants'
 import type { TicketThreadAuditLogEventByType } from '../../../../../../hooks/events/types'
@@ -59,8 +52,8 @@ export function TicketThreadAuditLogRuleExecutedEvent({
                 <Text size="sm">on {`"${triggeringEventType}"`}</Text>
             )}
             {failedActions.length > 0 && (
-                <Tooltip>
-                    <TooltipTrigger>
+                <Tooltip
+                    trigger={
                         <Icon
                             name="triangle-warning"
                             color={
@@ -69,7 +62,8 @@ export function TicketThreadAuditLogRuleExecutedEvent({
                                     : 'red'
                             }
                         />
-                    </TooltipTrigger>
+                    }
+                >
                     <TooltipContent>
                         {failedActions.map((action) => (
                             <Box

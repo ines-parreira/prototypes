@@ -14,11 +14,19 @@ import { StatusCell } from './StatusCell'
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     Skeleton: () => <span role="status" />,
-    Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    TooltipContent: ({ children }: { children: React.ReactNode }) => (
-        <>{children}</>
+    Tooltip: ({
+        trigger,
+        children,
+    }: {
+        trigger: React.ReactNode
+        children: React.ReactNode
+    }) => (
+        <>
+            {trigger}
+            {children}
+        </>
     ),
-    TooltipTrigger: ({ children }: { children: React.ReactNode }) => (
+    TooltipContent: ({ children }: { children: React.ReactNode }) => (
         <>{children}</>
     ),
 }))

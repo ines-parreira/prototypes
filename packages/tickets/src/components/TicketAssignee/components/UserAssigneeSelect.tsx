@@ -67,38 +67,45 @@ export function UserAssigneeSelect({
                         : null
 
                 return (
-                    <Tooltip placement="bottom">
-                        <StatusButton
-                            ref={ref}
-                            leadingSlot={
-                                user ? (
-                                    <div>
-                                        <Avatar
-                                            name={user.name || ''}
-                                            url={profilePictureUrl ?? undefined}
-                                            size="sm"
-                                        />
-                                    </div>
-                                ) : (
-                                    <Icon name="user" size="sm" />
-                                )
-                            }
-                            trailingSlot={
-                                <Icon
-                                    name={
-                                        open
-                                            ? 'arrow-chevron-up'
-                                            : 'arrow-chevron-down'
-                                    }
-                                    size="xs"
-                                />
-                            }
-                            className={css.trigger}
-                        >
-                            {isPlaceholder
-                                ? 'Unassigned'
-                                : (user?.name ?? selectedText)}
-                        </StatusButton>
+                    <Tooltip
+                        placement="bottom"
+                        trigger={
+                            <StatusButton
+                                ref={ref}
+                                leadingSlot={
+                                    user ? (
+                                        <div>
+                                            <Avatar
+                                                name={user.name || ''}
+                                                url={
+                                                    profilePictureUrl ??
+                                                    undefined
+                                                }
+                                                size="sm"
+                                            />
+                                        </div>
+                                    ) : (
+                                        <Icon name="user" size="sm" />
+                                    )
+                                }
+                                trailingSlot={
+                                    <Icon
+                                        name={
+                                            open
+                                                ? 'arrow-chevron-up'
+                                                : 'arrow-chevron-down'
+                                        }
+                                        size="xs"
+                                    />
+                                }
+                                className={css.trigger}
+                            >
+                                {isPlaceholder
+                                    ? 'Unassigned'
+                                    : (user?.name ?? selectedText)}
+                            </StatusButton>
+                        }
+                    >
                         <TooltipContent
                             title={
                                 isPlaceholder

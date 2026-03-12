@@ -18,7 +18,7 @@ describe('KnowledgeResourceLine', () => {
         expect(screen.getByText('My Shopify Store')).toBeInTheDocument()
         expect(screen.getByText('Ready')).toBeInTheDocument()
         expect(
-            screen.getByRole('img', { name: 'vendor-shopify-colored' }),
+            screen.getByRole('img', { name: 'app-shopify' }),
         ).toBeInTheDocument()
     })
 

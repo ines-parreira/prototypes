@@ -35,20 +35,22 @@ export function DTPTicketHeaderToggle() {
     }
 
     return (
-        <Tooltip>
-            <Button
-                variant="secondary"
-                size="sm"
-                onClick={handleClick}
-                id={buttonId}
-                isDisabled={!isToggleEnabled}
-                data-candu-id="dtp-toggle"
-                icon="system-bar-left-expand"
-                aria-describedby={
-                    isEnabled ? Labels.FullWidth : Labels.SplitTicket
-                }
-            />
-
+        <Tooltip
+            trigger={
+                <Button
+                    variant="secondary"
+                    size="sm"
+                    onClick={handleClick}
+                    id={buttonId}
+                    isDisabled={!isToggleEnabled}
+                    data-candu-id="dtp-toggle"
+                    icon="system-bar-left-expand"
+                    aria-describedby={
+                        isEnabled ? Labels.FullWidth : Labels.SplitTicket
+                    }
+                />
+            }
+        >
             <TooltipContent
                 title={
                     !isToggleEnabled

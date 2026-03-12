@@ -11,7 +11,7 @@ Always use Axiom components instead of custom implementations. This ensures cons
 import { Button, Box, Heading, Text, Skeleton, Banner, Icon } from '@gorgias/axiom'
 import { TextField, NumberField, SelectField, CheckBoxField, ToggleField } from '@gorgias/axiom'
 import { Modal, SidePanel } from '@gorgias/axiom'
-import { Tooltip, TooltipTrigger, TooltipContent } from '@gorgias/axiom'
+import { Tooltip, TooltipContent } from '@gorgias/axiom'
 
 // ❌ Avoid - Legacy imports in new code
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -229,25 +229,27 @@ import { Skeleton } from '@gorgias/axiom'
 ### Tooltip
 
 ```tsx
-import { Tooltip, TooltipTrigger, TooltipContent } from '@gorgias/axiom'
+import { Tooltip, TooltipContent } from '@gorgias/axiom'
 
-// With Axiom focusable components (automatic trigger)
-<Tooltip>
-    <Button>Hover me</Button>
+// Basic usage with trigger prop
+<Tooltip trigger={<Button>Hover me</Button>}>
     <TooltipContent title="Helpful information" />
 </Tooltip>
 
-// With custom trigger element (needs TooltipTrigger wrapper)
-<Tooltip>
-    <TooltipTrigger>
-        <span role="button">Custom trigger</span>
-    </TooltipTrigger>
+// With custom trigger element
+<Tooltip trigger={<span role="button">Custom trigger</span>}>
+    <TooltipContent title="Tooltip content" />
+</Tooltip>
+
+// With render function trigger (receives { isOpen, isDisabled })
+<Tooltip trigger={({ isOpen }) => (
+    <Button variant={isOpen ? 'primary' : 'secondary'}>Hover me</Button>
+)}>
     <TooltipContent title="Tooltip content" />
 </Tooltip>
 
 // Structured content
-<Tooltip>
-    <Button>Help</Button>
+<Tooltip trigger={<Button>Help</Button>}>
     <TooltipContent
         title="Keyboard Shortcut"
         caption="Quick action"
@@ -256,15 +258,15 @@ import { Tooltip, TooltipTrigger, TooltipContent } from '@gorgias/axiom'
 </Tooltip>
 
 // With placement
-<Tooltip placement="bottom">
-    <Button>Below</Button>
+<Tooltip placement="bottom" trigger={<Button>Below</Button>}>
     <TooltipContent title="Appears below" />
 </Tooltip>
 
 // Controlled
 const [isOpen, setIsOpen] = useState(false)
-<Tooltip isOpen={isOpen} onOpenChange={setIsOpen}>
+<Tooltip isOpen={isOpen} onOpenChange={setIsOpen} trigger={
     <Button onClick={() => setIsOpen(!isOpen)}>Click me</Button>
+}>
     <TooltipContent title="Click-triggered" />
 </Tooltip>
 ```

@@ -17,24 +17,32 @@ export function TicketViewNavigator() {
 
     return (
         <div className={css.ticketViewNavigatorContainer}>
-            <Tooltip placement="bottom">
-                <Button
-                    isDisabled={!ticketViewNavigation.isPreviousEnabled}
-                    variant="tertiary"
-                    icon="arrow-chevron-left"
-                    size="sm"
-                    onClick={handleGoToPreviousViewTicket}
-                />
+            <Tooltip
+                placement="bottom"
+                trigger={
+                    <Button
+                        isDisabled={!ticketViewNavigation.isPreviousEnabled}
+                        variant="tertiary"
+                        icon="arrow-chevron-left"
+                        size="sm"
+                        onClick={handleGoToPreviousViewTicket}
+                    />
+                }
+            >
                 <TooltipContent title="Previous ticket" shortcut="←" />
             </Tooltip>
-            <Tooltip placement="bottom">
-                <Button
-                    isDisabled={!ticketViewNavigation.isNextEnabled}
-                    variant="tertiary"
-                    icon="arrow-chevron-right"
-                    size="sm"
-                    onClick={handleGoToNextViewTicket}
-                />
+            <Tooltip
+                placement="bottom"
+                trigger={
+                    <Button
+                        isDisabled={!ticketViewNavigation.isNextEnabled}
+                        variant="tertiary"
+                        icon="arrow-chevron-right"
+                        size="sm"
+                        onClick={handleGoToNextViewTicket}
+                    />
+                }
+            >
                 <TooltipContent title="Next ticket" shortcut="→" />
             </Tooltip>
         </div>

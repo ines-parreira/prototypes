@@ -8,7 +8,6 @@ import {
     ButtonSize,
     ButtonVariant,
     Heading,
-    IconName,
     Menu,
     MenuItem,
     MenuSection,
@@ -70,7 +69,7 @@ export function InfobarTicketCustomerHeader({
                         variant={ButtonVariant.Tertiary}
                         size={ButtonSize.Sm}
                         aria-label="Customer menu"
-                        icon={IconName.DotsMeatballsHorizontal}
+                        icon="dots-meatballs-horizontal"
                     />
                 }
                 placement="bottom right"
@@ -78,7 +77,7 @@ export function InfobarTicketCustomerHeader({
                 <MenuSection id="customer-profile-actions">
                     <MenuItem
                         label="Edit Customer"
-                        leadingSlot={IconName.EditPencil}
+                        leadingSlot="edit-pencil"
                         onAction={() => {
                             handleActionSelect('edit')
                         }}
@@ -86,7 +85,7 @@ export function InfobarTicketCustomerHeader({
                     {hasShopifyIntegration && (
                         <MenuItem
                             label="Sync profile to Shopify"
-                            leadingSlot={IconName.VendorShopifyColored}
+                            leadingSlot="app-shopify"
                             onAction={() => {
                                 handleActionSelect('sync')
                             }}
@@ -96,7 +95,7 @@ export function InfobarTicketCustomerHeader({
                 <MenuSection id="customer-actions">
                     <MenuItem
                         label="Merge or switch customer"
-                        leadingSlot={IconName.UserArrow}
+                        leadingSlot="user-arrow"
                         onAction={onOpenMergePanel}
                     />
                 </MenuSection>

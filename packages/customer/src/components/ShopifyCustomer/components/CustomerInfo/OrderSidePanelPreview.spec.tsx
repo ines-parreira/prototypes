@@ -100,7 +100,7 @@ describe('OrderSidePanelPreview', () => {
         })
     })
 
-    it('should display vendor-shopify-colored icon', async () => {
+    it('should display app-shopify icon', async () => {
         render(
             <OrderSidePanelPreview
                 order={mockOrder}
@@ -111,7 +111,7 @@ describe('OrderSidePanelPreview', () => {
 
         await waitFor(() => {
             const icon = screen.getByRole('img', {
-                name: 'vendor-shopify-colored',
+                name: 'app-shopify',
             })
             expect(icon).toBeInTheDocument()
         })

@@ -34,10 +34,13 @@ const IconButtonTooltip = (
     }
 
     return (
-        <Tooltip>
-            <Button variant="secondary" {...rest} ref={ref}>
-                {children}
-            </Button>
+        <Tooltip
+            trigger={
+                <Button variant="secondary" {...rest} ref={ref}>
+                    {children}
+                </Button>
+            }
+        >
             <TooltipContent title={children} />
         </Tooltip>
     )

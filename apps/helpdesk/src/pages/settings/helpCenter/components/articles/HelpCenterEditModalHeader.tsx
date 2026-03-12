@@ -1,7 +1,7 @@
 import type { ChangeEvent, ReactChild } from 'react'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
-import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type {
@@ -112,16 +112,19 @@ export const HelpCenterEditModalHeader = ({
     }, [isParentUnlisted, selectedArticle?.translation.customer_visibility])
 
     const getResizeModalButton = () => (
-        <Tooltip>
-            <Button
-                onClick={onResize}
-                variant="tertiary"
-                size="md"
-                icon={isFullscreen ? 'arrow-collapse' : 'arrow-expand'}
-                aria-label={
-                    isFullscreen ? 'halfscreen modal' : 'fullscreen modal'
-                }
-            />
+        <Tooltip
+            trigger={
+                <Button
+                    onClick={onResize}
+                    variant="tertiary"
+                    size="md"
+                    icon={isFullscreen ? 'arrow-collapse' : 'arrow-expand'}
+                    aria-label={
+                        isFullscreen ? 'halfscreen modal' : 'fullscreen modal'
+                    }
+                />
+            }
+        >
             <TooltipContent
                 title={isFullscreen ? 'Exit full screen' : 'Enter full screen'}
             />
@@ -250,10 +253,7 @@ export const HelpCenterEditModalHeader = ({
                         {lastUpdate && (
                             <div className={css.lastUpdateTime}>
                                 Last updated on{' '}
-                                <Tooltip>
-                                    <TooltipTrigger>
-                                        <span>{lastUpdate}</span>
-                                    </TooltipTrigger>
+                                <Tooltip trigger={<span>{lastUpdate}</span>}>
                                     <TooltipContent
                                         caption={lastUpdateDetailed}
                                     />
@@ -278,42 +278,51 @@ export const HelpCenterEditModalHeader = ({
                     )}
                     {onResize && getResizeModalButton()}
                     {showPreviewArticleButton && (
-                        <Tooltip>
-                            <Button
-                                onClick={() =>
-                                    window
-                                        .open(publishedPreviewUrl, '_blank')
-                                        ?.focus()
-                                }
-                                variant="tertiary"
-                                size="md"
-                                icon="external-link"
-                                aria-label="preview article"
-                            />
+                        <Tooltip
+                            trigger={
+                                <Button
+                                    onClick={() =>
+                                        window
+                                            .open(publishedPreviewUrl, '_blank')
+                                            ?.focus()
+                                    }
+                                    variant="tertiary"
+                                    size="md"
+                                    icon="external-link"
+                                    aria-label="preview article"
+                                />
+                            }
+                        >
                             <TooltipContent title="Open article" />
                         </Tooltip>
                     )}
                     {showCopyURLButton && (
-                        <Tooltip>
-                            <Button
-                                onClick={handleCopyURL}
-                                variant="tertiary"
-                                size="md"
-                                icon="link-horizontal"
-                                aria-label="copy url"
-                            />
+                        <Tooltip
+                            trigger={
+                                <Button
+                                    onClick={handleCopyURL}
+                                    variant="tertiary"
+                                    size="md"
+                                    icon="link-horizontal"
+                                    aria-label="copy url"
+                                />
+                            }
+                        >
                             <TooltipContent title="Copy article URL" />
                         </Tooltip>
                     )}
                     {toggleModalBtn}
-                    <Tooltip>
-                        <Button
-                            onClick={onClose}
-                            variant="tertiary"
-                            size="md"
-                            icon="exit"
-                            aria-label="close edit modal"
-                        />
+                    <Tooltip
+                        trigger={
+                            <Button
+                                onClick={onClose}
+                                variant="tertiary"
+                                size="md"
+                                icon="exit"
+                                aria-label="close edit modal"
+                            />
+                        }
+                    >
                         <TooltipContent title="Close" />
                     </Tooltip>
                 </div>

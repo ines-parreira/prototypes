@@ -3,8 +3,6 @@ import type React from 'react'
 import { render, screen } from '@testing-library/react'
 import { Map } from 'immutable'
 
-import { IconName } from '@gorgias/axiom'
-
 import { IntegrationType } from 'models/integration/constants'
 
 import { StoreIntegrationCell } from './StoreIntegrationCell'
@@ -12,9 +10,9 @@ import { StoreIntegrationCell } from './StoreIntegrationCell'
 jest.mock('state/integrations/helpers', () => ({
     getStoreIconNameFromType: jest.fn((type: string) => {
         if (type === IntegrationType.Shopify) {
-            return IconName.VendorShopifyColored
+            return 'app-shopify'
         }
-        return IconName.VendorBicommerceColored
+        return 'app-bicommerce'
     }),
 }))
 
@@ -22,9 +20,6 @@ jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
     Tooltip: ({ children }: { children: React.ReactNode }) => <>{children}</>,
     TooltipContent: ({ children }: { children: React.ReactNode }) => (
-        <>{children}</>
-    ),
-    TooltipTrigger: ({ children }: { children: React.ReactNode }) => (
         <>{children}</>
     ),
 }))

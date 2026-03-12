@@ -4,7 +4,6 @@ import {
     Text,
     Tooltip,
     TooltipContent,
-    TooltipTrigger,
 } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
@@ -85,8 +84,8 @@ export const OpportunityTicketDrillDownInfoBar = ({
             </Text>
 
             {isDisabled && (
-                <Tooltip>
-                    <TooltipTrigger>
+                <Tooltip
+                    trigger={
                         <Button
                             size={ButtonSize.Sm}
                             isDisabled={true}
@@ -95,7 +94,8 @@ export const OpportunityTicketDrillDownInfoBar = ({
                         >
                             {getButtonText()}
                         </Button>
-                    </TooltipTrigger>
+                    }
+                >
                     <TooltipContent
                         title={
                             running !== false

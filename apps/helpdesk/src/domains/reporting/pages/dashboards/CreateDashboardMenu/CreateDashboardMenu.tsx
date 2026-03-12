@@ -23,13 +23,16 @@ export const CreateDashboardMenu = () => {
 
     if (!isCurrentUserTeamLead) {
         return (
-            <Tooltip>
-                <Button
-                    icon="info"
-                    variant="tertiary"
-                    size="sm"
-                    aria-label="Dashboard restriction info"
-                />
+            <Tooltip
+                trigger={
+                    <Button
+                        icon="info"
+                        variant="tertiary"
+                        size="sm"
+                        aria-label="Dashboard restriction info"
+                    />
+                }
+            >
                 <TooltipContent>{RESTRICTION_MESSAGE}</TooltipContent>
             </Tooltip>
         )
