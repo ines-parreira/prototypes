@@ -25,11 +25,9 @@ describe('<LauncherPositionPicker />', () => {
     it('should render the title and description', () => {
         render(<LauncherPositionPicker {...defaultProps} />)
 
-        expect(screen.getByText('Chat launcher position')).toBeInTheDocument()
+        expect(screen.getByText('Launcher position')).toBeInTheDocument()
         expect(
-            screen.getByText(
-                'Choose where the chat bubble appears on your site.',
-            ),
+            screen.getByText('Control where the launcher sits on your page.'),
         ).toBeInTheDocument()
     })
 

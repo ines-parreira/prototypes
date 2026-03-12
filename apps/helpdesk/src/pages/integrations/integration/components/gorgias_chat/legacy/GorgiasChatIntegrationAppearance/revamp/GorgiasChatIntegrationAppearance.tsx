@@ -23,6 +23,7 @@ import {
     Elevation,
     Heading,
     Radio,
+    RadioCard,
     RadioGroup,
     Text,
     TextField,
@@ -78,10 +79,24 @@ import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
 
 import useIntegrationPageViewLogEvent from '../../../../../hooks/useIntegrationPageViewLogEvent'
+import { LauncherPreview } from '../../../GorgiasChatIntegrationAppearance/revamp/components/LauncherPreview'
 import ImageField from '../components/ImageField'
 import { multiLanguageInitialTextsEmptyData } from '../GorgiasTranslateText/GorgiasTranslateText'
 
 import css from './GorgiasChatIntegrationAppearance.less'
+
+const LAUNCHER_LABEL_MAX_LENGTH = 20
+
+const LAUNCHER_TYPE_VALUES: ReadonlySet<string> = new Set(
+    Object.values(GorgiasChatLauncherType),
+)
+
+const isGorgiasChatLauncherType = (
+    value: string,
+): value is GorgiasChatLauncherType => LAUNCHER_TYPE_VALUES.has(value)
+
+const DEFAULT_LAUNCHER_LABEL =
+    GORGIAS_CHAT_WIDGET_TEXTS_DEFAULTS?.chatWithUs ?? 'Chat with us'
 
 export const defaultContent = {
     type: IntegrationType.GorgiasChat,
@@ -162,7 +177,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     isUpdate,
     actions,
     loading,
-    storeIntegrations: storeIntegrationsProp,
+    storeIntegrations,
     gorgiasChatIntegrations,
 }: Props & ConnectedProps<typeof connector>) => {
     const history = useHistory()
@@ -188,8 +203,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     const isControlUseMainColorOutsideBusinessHoursEnabled = useFlag(
         FeatureFlagKey.ChatControlOutsideBusinessHoursColor,
     )
-
-    const storeIntegrations = storeIntegrationsProp
 
     const [storeIntegrationId, setStoreIntegrationId] = useState(
         integration.getIn(['meta', 'shop_integration_id'], null),
@@ -411,10 +424,20 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     }
 
     const _canSubmit = () => {
+        const hasValidLauncherLabel =
+            state.launcher.type !== GorgiasChatLauncherType.ICON_AND_LABEL ||
+            (state.launcher.label != null &&
+                state.launcher.label.trim().length > 0)
+
+        if (isUpdate) {
+            return hasValidLauncherLabel
+        }
+
         // REVAMP: Chat title auto-generated for ecommerce, manual for other websites
         return (
-            (state.showSelectStoreField && !!storeIntegrationId) ||
-            (!state.showSelectStoreField && !!state.name)
+            hasValidLauncherLabel &&
+            ((state.showSelectStoreField && !!storeIntegrationId) ||
+                (!state.showSelectStoreField && !!state.name))
         )
     }
 
@@ -480,7 +503,7 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                 type: GorgiasChatLauncherType.ICON_AND_LABEL,
                 label: state.launcher.label,
             }
-        } else if (state.launcher.type === GorgiasChatLauncherType.ICON) {
+        } else {
             form.decoration.launcher = {
                 type: GorgiasChatLauncherType.ICON,
             }
@@ -564,6 +587,91 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
     }
 
     const { name, avatar, mainColor, position, headerPictureUrl } = state
+
+    const launcherLabel = state.launcher.label ?? DEFAULT_LAUNCHER_LABEL
+
+    function handleLauncherTypeChange(value: string): void {
+        if (!isGorgiasChatLauncherType(value)) {
+            return
+        }
+        setState((prevState) => ({
+            ...prevState,
+            launcher: {
+                ...prevState.launcher,
+                type: value,
+                label:
+                    value === GorgiasChatLauncherType.ICON_AND_LABEL
+                        ? (prevState.launcher.label ?? DEFAULT_LAUNCHER_LABEL)
+                        : prevState.launcher.label,
+            },
+        }))
+    }
+
+    function handleLauncherLabelChange(value: string): void {
+        setState((prevState) => ({
+            ...prevState,
+            launcher: {
+                ...prevState.launcher,
+                label: value,
+            },
+        }))
+    }
+
+    function handlePositionChange(newPosition: GorgiasChatPosition): void {
+        setState((prevState) => ({
+            ...prevState,
+            position: newPosition,
+        }))
+    }
+
+    const renderLauncherTypeSelector = () => (
+        <div className={css.fieldSection}>
+            <div className={css.sectionHeader}>
+                <Text variant="bold" size="md">
+                    Launcher appearance
+                </Text>
+                <Text size="sm" className={css.caption}>
+                    Show just the icon, or add a label to invite shoppers in.
+                </Text>
+            </div>
+            <div className={css.launcherTypeContainer}>
+                <RadioGroup
+                    value={state.launcher.type}
+                    onChange={handleLauncherTypeChange}
+                >
+                    <RadioCard
+                        value={GorgiasChatLauncherType.ICON}
+                        title="Icon"
+                    >
+                        <div className={css.launcherPreview}>
+                            <LauncherPreview fillColor={mainColor} />
+                        </div>
+                    </RadioCard>
+                    <RadioCard
+                        value={GorgiasChatLauncherType.ICON_AND_LABEL}
+                        title="Icon and label"
+                    >
+                        <div className={css.launcherPreview}>
+                            <LauncherPreview
+                                fillColor={mainColor}
+                                label={launcherLabel}
+                            />
+                        </div>
+                    </RadioCard>
+                </RadioGroup>
+            </div>
+            {state.launcher.type === GorgiasChatLauncherType.ICON_AND_LABEL && (
+                <TextField
+                    label="Label"
+                    value={launcherLabel}
+                    onChange={handleLauncherLabelChange}
+                    isRequired
+                    maxLength={LAUNCHER_LABEL_MAX_LENGTH}
+                    caption={`${launcherLabel.length}/${LAUNCHER_LABEL_MAX_LENGTH} characters · Short labels work best`}
+                />
+            )}
+        </div>
+    )
 
     const isSubmitting = _isSubmitting()
     const canSubmit = _canSubmit()
@@ -763,18 +871,6 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                             onChange={onHeaderLogoUrlChange}
                                         />
                                     </div>
-
-                                    <div className={css.fieldSection}>
-                                        <LauncherPositionPicker
-                                            value={position}
-                                            onChange={(newPosition) => {
-                                                setState((prevState) => ({
-                                                    ...prevState,
-                                                    position: newPosition,
-                                                }))
-                                            }}
-                                        />
-                                    </div>
                                 </div>
                             </Card>
 
@@ -916,26 +1012,46 @@ export const GorgiasChatIntegrationAppearanceComponent = ({
                                     </div>
                                 </div>
                             </Card>
+
+                            <Card
+                                className={css.card}
+                                elevation={Elevation.Mid}
+                            >
+                                <div className={css.cardContent}>
+                                    <div className={css.cardHeader}>
+                                        <Heading size="md">Launcher</Heading>
+                                        <Text size="md">
+                                            Customize how the chat launcher
+                                            appears on your website.
+                                        </Text>
+                                    </div>
+
+                                    {renderLauncherTypeSelector()}
+
+                                    <div className={css.fieldSection}>
+                                        <LauncherPositionPicker
+                                            value={position}
+                                            onChange={handlePositionChange}
+                                        />
+                                    </div>
+                                </div>
+                            </Card>
                         </div>
                     )}
 
                     {!isUpdate && (
                         <div className={css.formSection}>
+                            {renderLauncherTypeSelector()}
                             <LauncherPositionPicker
                                 value={position}
-                                onChange={(newPosition) => {
-                                    setState((prevState) => ({
-                                        ...prevState,
-                                        position: newPosition,
-                                    }))
-                                }}
+                                onChange={handlePositionChange}
                             />
                         </div>
                     )}
                     <div className={css.submitButton}>
                         <Button
                             type="submit"
-                            isDisabled={!isUpdate && !canSubmit}
+                            isDisabled={!canSubmit}
                             isLoading={isSubmitting}
                         >
                             {isUpdate ? 'Save changes' : 'Add new chat'}

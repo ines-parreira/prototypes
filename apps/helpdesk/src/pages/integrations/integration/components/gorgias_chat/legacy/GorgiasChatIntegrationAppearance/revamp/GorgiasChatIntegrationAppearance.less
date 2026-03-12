@@ -52,6 +52,12 @@
         gap: var(--spacing-xs);
     }
 
+    .sectionHeader {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxs);
+    }
+
     .caption {
         color: var(--content-neutral-secondary);
     }
@@ -72,5 +78,20 @@
 
     .submitButton {
         margin-top: var(--spacing-lg);
+    }
+
+    .launcherTypeContainer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: var(--spacing-md);
+    }
+
+    .launcherPreview {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 80px;
+        border-radius: var(--border-radius-xl, 8px);
+        background-color: var(--surface-neutral-secondary);
     }
 }

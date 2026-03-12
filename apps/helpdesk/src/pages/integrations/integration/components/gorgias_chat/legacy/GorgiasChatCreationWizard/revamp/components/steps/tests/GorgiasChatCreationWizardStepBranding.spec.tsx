@@ -87,7 +87,7 @@ describe('<GorgiasChatCreationWizardStepBranding />', () => {
                 expect(input).toHaveValue(GORGIAS_CHAT_DEFAULT_COLOR_REVAMP),
             )
 
-        expect(screen.getByText('Chat launcher position')).toBeInTheDocument()
+        expect(screen.getByText('Launcher position')).toBeInTheDocument()
         expect(screen.getByText('Home page logo')).toBeInTheDocument()
     })
 

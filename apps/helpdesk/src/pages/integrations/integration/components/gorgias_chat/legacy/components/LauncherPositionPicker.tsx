@@ -113,10 +113,10 @@ export function LauncherPositionPicker({
         <div className={css.wrapper}>
             <div className={css.header}>
                 <Text variant="bold" size="md">
-                    Chat launcher position
+                    Launcher position
                 </Text>
                 <Text size="sm" className={css.caption}>
-                    Choose where the chat bubble appears on your site.
+                    Control where the launcher sits on your page.
                 </Text>
             </div>
             <div className={css.fieldsRow}>

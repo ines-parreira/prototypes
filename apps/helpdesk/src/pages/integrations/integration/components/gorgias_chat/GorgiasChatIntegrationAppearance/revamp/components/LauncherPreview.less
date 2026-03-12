@@ -1,0 +1,66 @@
+:local {
+    .launcher {
+        position: relative;
+        overflow: visible;
+        border-radius: 100px;
+        box-shadow: 0 2px 4px rgba(22, 22, 22, 0.16);
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .launcherIconOnly {
+        width: 60px;
+        height: 60px;
+        justify-content: center;
+    }
+
+    .launcherPill {
+        height: 48px;
+        padding-inline: 20px;
+        gap: 10px;
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+    }
+
+    .gradientLayer {
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+    }
+
+    .bloomLayer {
+        position: absolute;
+        inset: 4px;
+        border-radius: inherit;
+    }
+
+    .iconContainerIconOnly {
+        position: absolute;
+        inset: 0;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .iconContainerPill {
+        position: relative;
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+
+    .label {
+        position: relative;
+        z-index: 3;
+        font-size: 14px;
+        font-weight: 500;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 20ch;
+    }
+}
