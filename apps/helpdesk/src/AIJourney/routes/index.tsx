@@ -32,7 +32,11 @@ function AiJourneyBaseRoutes() {
                             <Route
                                 path={`${path}/:shopName`}
                                 exact
-                                render={() => <Analytics />}
+                                render={() => (
+                                    <DefaultStatsFilters>
+                                        <Analytics />
+                                    </DefaultStatsFilters>
+                                )}
                             />
                             {AI_JOURNEY_ONBOARDING_STEPS.map(
                                 ({ journeyType, steps }) =>
@@ -88,7 +92,13 @@ function AiJourneyBaseRoutes() {
                                     </DefaultStatsFilters>
                                 )}
                             />
-                            <Route render={() => <Analytics />} />
+                            <Route
+                                render={() => (
+                                    <DefaultStatsFilters>
+                                        <Analytics />
+                                    </DefaultStatsFilters>
+                                )}
+                            />
                         </Switch>
                     </App>
                 </JourneyProvider>
