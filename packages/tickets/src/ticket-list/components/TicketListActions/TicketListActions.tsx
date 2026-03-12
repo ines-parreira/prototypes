@@ -4,7 +4,6 @@ import {
     Box,
     Button,
     CheckBoxField,
-    Text,
     Tooltip,
     TooltipContent,
     TooltipTrigger,
@@ -82,12 +81,12 @@ export function TicketListActions({
         >
             <Box flexDirection="row" alignItems="center" gap="xs">
                 <CheckBoxField
-                    aria-label={checkboxLabel}
+                    label={checkboxLabel}
                     value={hasSelectedAll}
                     isIndeterminate={!hasSelectedAll && selectionCount > 0}
                     onChange={handleCheckboxChange}
+                    isDisabled={visibleTicketIds.length === 0}
                 />
-                <Text size="md">{checkboxLabel}</Text>
             </Box>
             <Box flexDirection="row" alignItems="center" gap="xs">
                 <Tooltip>

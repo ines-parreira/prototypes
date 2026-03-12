@@ -31,6 +31,7 @@ export function useTicketsList(
     viewId: number,
     params?: UseTicketsListParams,
     pauseUpdates?: boolean,
+    enableStaleUpdates = true,
 ) {
     const query = useInfiniteQuery({
         queryKey: getTicketsListQueryKey(viewId, params),
@@ -72,7 +73,7 @@ export function useTicketsList(
         viewId,
         params,
         upToCursor,
-        enabled: !query.isLoading && !pauseUpdates,
+        enabled: enableStaleUpdates && !query.isLoading && !pauseUpdates,
     })
 
     return {
@@ -84,5 +85,6 @@ export function useTicketsList(
         isFetchingNextPage: query.isFetchingNextPage,
         error: query.error,
         data: query.data,
+        refetch: query.refetch,
     }
 }

@@ -4,7 +4,10 @@ import { Panels } from '@repo/layout'
 import { assumeMock } from '@repo/testing'
 import { useHelpdeskV2MS4Flag } from '@repo/tickets/feature-flags'
 import { act, render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { useParams } from 'react-router-dom'
+
+import { setViewEditMode } from 'state/views/actions'
 
 import TicketsListPanel from '../TicketsListPanel'
 
@@ -20,17 +23,21 @@ jest.mock('@repo/tickets', () => ({
     useCurrentUserId: jest.fn(() => ({ currentUserId: 999 })),
 }))
 
-jest.mock('@repo/tickets/ticket-list', () => ({
-    TicketList: ({
+const mockTicketListComponent = jest.fn(
+    ({
         activeTicketId,
         viewId,
         currentUserId,
         onApplyMacro,
+        onFixFilters,
+        onCollapse,
     }: {
         activeTicketId?: number
         viewId: number
         currentUserId: number
         onApplyMacro?: (ticketIds: number[]) => void
+        onFixFilters?: () => void
+        onCollapse?: () => void
     }) => (
         <div>
             <p>TicketList</p>
@@ -40,9 +47,11 @@ jest.mock('@repo/tickets/ticket-list', () => ({
             <button onClick={() => onApplyMacro?.([1, 2, 3])}>
                 Open macro
             </button>
+            <button onClick={onFixFilters}>Fix filters</button>
+            <button onClick={onCollapse}>Collapse</button>
         </div>
     ),
-}))
+)
 
 jest.mock('ticket-list-view/components/bulk-actions/ApplyMacro', () => ({
     __esModule: true,
@@ -59,6 +68,17 @@ jest.mock('ticket-list-view/components/bulk-actions/ApplyMacro', () => ({
             <button onClick={onApplyMacro}>Apply macro</button>
         </div>
     ),
+}))
+
+jest.mock('@repo/tickets/ticket-list', () => ({
+    TicketList: (props: {
+        activeTicketId?: number
+        viewId: number
+        currentUserId: number
+        onApplyMacro?: (ticketIds: number[]) => void
+        onFixFilters?: () => void
+        onCollapse?: () => void
+    }) => mockTicketListComponent(props),
 }))
 
 jest.mock('ticket-list-view', () => ({
@@ -79,13 +99,20 @@ jest.mock('ticket-list-view', () => ({
 jest.mock('tickets/core/hooks', () => ({ useViewId: () => 123456 }))
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView', () => ({
     __esModule: true,
-    default: jest.fn(() => ({ setIsEnabled: jest.fn() })),
+    default: jest.fn(),
 }))
+const setSplitTicketViewMock = jest.fn()
+const useSplitTicketViewMock = jest.requireMock(
+    'split-ticket-view-toggle/hooks/useSplitTicketView',
+).default as jest.Mock
 
 jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
-    default: jest.fn(() => jest.fn()),
+    default: jest.fn(),
 }))
+const dispatchMock = jest.fn()
+const useAppDispatchMock = jest.requireMock('hooks/useAppDispatch')
+    .default as jest.Mock
 
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
@@ -94,6 +121,13 @@ jest.mock('hooks/useAppSelector', () => ({
 
 describe('TicketsListPanel', () => {
     beforeEach(() => {
+        dispatchMock.mockReset()
+        setSplitTicketViewMock.mockReset()
+        mockTicketListComponent.mockClear()
+        useAppDispatchMock.mockReturnValue(dispatchMock)
+        useSplitTicketViewMock.mockReturnValue({
+            setIsEnabled: setSplitTicketViewMock,
+        })
         useParamsMock.mockReturnValue({})
         useHelpdeskV2MS4FlagMock.mockReturnValue(false)
     })
@@ -196,5 +230,52 @@ describe('TicketsListPanel', () => {
         )
         expect(screen.getByText('TicketListView')).toBeInTheDocument()
         expect(screen.queryByText('TicketList')).not.toBeInTheDocument()
+    })
+
+    it('should dispatch view edit mode and disable split ticket view when fix filters is clicked', async () => {
+        useHelpdeskV2MS4FlagMock.mockReturnValue(true)
+        const user = userEvent.setup()
+
+        render(
+            <Panels size={1000}>
+                <TicketsListPanel />
+            </Panels>,
+        )
+
+        await user.click(screen.getByRole('button', { name: 'Fix filters' }))
+
+        expect(dispatchMock).toHaveBeenCalledWith(setViewEditMode())
+        expect(setSplitTicketViewMock).toHaveBeenCalledWith(false)
+    })
+
+    it('should wire TicketList onFixFilters to edit mode and split view disable handlers', () => {
+        useHelpdeskV2MS4FlagMock.mockReturnValue(true)
+
+        render(
+            <Panels size={1000}>
+                <TicketsListPanel />
+            </Panels>,
+        )
+
+        const ticketListProps = mockTicketListComponent.mock.calls[0]?.[0]
+        ticketListProps?.onFixFilters?.()
+
+        expect(dispatchMock).toHaveBeenCalledWith(setViewEditMode())
+        expect(setSplitTicketViewMock).toHaveBeenCalledWith(false)
+    })
+
+    it('should disable split ticket view when TicketList is collapsed', () => {
+        useHelpdeskV2MS4FlagMock.mockReturnValue(true)
+
+        render(
+            <Panels size={1000}>
+                <TicketsListPanel />
+            </Panels>,
+        )
+
+        const ticketListProps = mockTicketListComponent.mock.calls[0]?.[0]
+        ticketListProps?.onCollapse?.()
+
+        expect(setSplitTicketViewMock).toHaveBeenCalledWith(false)
     })
 })

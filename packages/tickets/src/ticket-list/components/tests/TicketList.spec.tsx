@@ -1,13 +1,14 @@
 import * as React from 'react'
 
-import { act, screen, waitFor } from '@testing-library/react'
-import { HttpResponse } from 'msw'
+import { act, cleanup, screen, waitFor } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { VirtuosoMockContext } from 'react-virtuoso'
 
 import {
     mockGetCurrentUserHandler,
     mockGetViewHandler,
+    mockGetViewResponse,
     mockListTeamsHandler,
     mockListUsersHandler,
     mockListViewItemsHandler,
@@ -85,6 +86,7 @@ beforeEach(() => {
     testAppQueryClient.clear()
     vi.clearAllMocks()
     mockGetTicketActivity.mockReturnValue({ viewing: [] })
+
     server.use(
         mockListViewItems.handler,
         mockListViewItemsUpdatesNoOp.handler,
@@ -92,6 +94,13 @@ beforeEach(() => {
         mockGetView.handler,
         mockListTeams.handler,
         mockListUsers.handler,
+        http.get('*/api/users/:id', ({ params }) =>
+            HttpResponse.json({
+                id: Number(params.id),
+                name: `User ${params.id}`,
+                email: `user${params.id}@example.com`,
+            }),
+        ),
     )
 })
 
@@ -106,7 +115,9 @@ function renderWithVirtuoso(component: React.ReactElement) {
 }
 
 afterEach(() => {
+    cleanup()
     server.resetHandlers()
+    vi.restoreAllMocks()
 })
 
 afterAll(() => {
@@ -134,50 +145,176 @@ describe('TicketList', () => {
         expect(allSecondTickets).toHaveLength(1)
     })
 
-    it('should render error state', async () => {
-        const consoleErrorSpy = vi
-            .spyOn(console, 'error')
-            .mockImplementation(() => {})
-
-        server.use(
-            mockListViewItemsHandler(async () =>
-                HttpResponse.json({ error: 'Not found' } as any, {
-                    status: 404,
-                }),
-            ).handler,
-        )
+    it('should render network error state when the tickets request fails', async () => {
+        vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
+            tickets: [],
+            fetchNextPage: vi.fn(),
+            hasNextPage: false,
+            isLoading: false,
+            isFetching: false,
+            isFetchingNextPage: false,
+            error: new Error('Not found'),
+            data: undefined,
+            refetch: vi.fn(),
+        })
 
         renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
         await waitFor(() => {
             expect(
-                screen.getByText('Error loading tickets'),
+                screen.getByRole('heading', { name: 'Network error' }),
             ).toBeInTheDocument()
         })
 
-        consoleErrorSpy.mockRestore()
+        expect(
+            screen.getByText('Unable to load this view currently'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Refresh' }),
+        ).toBeInTheDocument()
     })
 
-    it('should render empty state', async () => {
-        server.use(
-            mockListViewItemsHandler(async () =>
-                HttpResponse.json({
-                    data: [],
-                    meta: {
-                        current_cursor: null,
-                        next_items: null,
-                        prev_items: null,
-                    },
-                    object: 'list',
-                    uri: `/api/views/${viewId}/items/`,
-                } as any),
-            ).handler,
-        )
+    describe('view-based empty states', () => {
+        const mockUseTicketsList = (error: Error | null = null) => {
+            vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
+                tickets: [],
+                fetchNextPage: vi.fn(),
+                hasNextPage: false,
+                isLoading: false,
+                isFetching: false,
+                isFetchingNextPage: false,
+                error,
+                data: undefined,
+                refetch: vi.fn(),
+            })
+        }
 
-        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
+        it('should render invalid filters state when the view is deactivated', async () => {
+            server.use(
+                http.get(/.*\/api\/views\/[^/]+\/?(?:\?.*)?$/, () =>
+                    HttpResponse.json(
+                        mockGetViewResponse({
+                            id: viewId,
+                            deactivated_datetime: '2024-01-01T00:00:00Z',
+                        }),
+                    ),
+                ),
+                mockListViewItemsHandler(async () =>
+                    HttpResponse.json({
+                        data: [],
+                        meta: {
+                            current_cursor: null,
+                            next_items: null,
+                            prev_items: null,
+                        },
+                        object: 'list',
+                        uri: `/api/views/${viewId}/items/`,
+                    } as any),
+                ).handler,
+            )
 
-        await waitFor(() => {
-            expect(screen.getByText('No tickets found')).toBeInTheDocument()
+            renderWithVirtuoso(
+                <TicketList viewId={viewId} onCollapse={vi.fn()} />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('Invalid filters')).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'This view is deactivated as at least one filter is invalid.',
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should call onFixFilters when the Fix filters button is clicked', async () => {
+            const onFixFilters = vi.fn()
+            mockUseTicketsList(
+                new Error(
+                    "We couldn't list ticket updates for a given view because View is deactivated.",
+                ),
+            )
+
+            server.use(
+                http.get(/.*\/api\/views\/[^/]+\/?(?:\?.*)?$/, () =>
+                    HttpResponse.json(
+                        mockGetViewResponse({
+                            id: viewId,
+                            deactivated_datetime: '2024-01-01T00:00:00Z',
+                        }),
+                    ),
+                ),
+            )
+
+            const { user } = renderWithVirtuoso(
+                <TicketList
+                    viewId={viewId}
+                    onCollapse={vi.fn()}
+                    onFixFilters={onFixFilters}
+                />,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: 'Fix filters' }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: 'Fix filters' }),
+            )
+
+            expect(onFixFilters).toHaveBeenCalledTimes(1)
+        })
+
+        it('should render inaccessible state when the view data is null', async () => {
+            server.use(
+                http.get(/.*\/api\/views\/[^/]+\/?(?:\?.*)?$/, () =>
+                    HttpResponse.json(null as any),
+                ),
+                mockListViewItemsHandler(async () =>
+                    HttpResponse.json({
+                        data: [],
+                        meta: {
+                            current_cursor: null,
+                            next_items: null,
+                            prev_items: null,
+                        },
+                        object: 'list',
+                        uri: `/api/views/${viewId}/items/`,
+                    } as any),
+                ).handler,
+            )
+
+            renderWithVirtuoso(
+                <TicketList viewId={viewId} onCollapse={vi.fn()} />,
+            )
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText("Can't access view"),
+                ).toBeInTheDocument()
+            })
+            expect(
+                screen.getByText(
+                    'This view does not exist or you do not have the correct permissions',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should render empty state', async () => {
+            mockUseTicketsList()
+
+            renderWithVirtuoso(
+                <TicketList viewId={viewId} onCollapse={vi.fn()} />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('No open tickets')).toBeInTheDocument()
+                expect(
+                    screen.getByText("You've closed all your tickets!"),
+                ).toBeInTheDocument()
+            })
         })
     })
 
@@ -475,6 +612,7 @@ describe('polling pause behaviour', () => {
             isFetchingNextPage: false,
             error: null,
             data: undefined,
+            refetch: vi.fn(),
         }))
 
         useTicketSelectionSpy.mockImplementation(() => {
@@ -502,6 +640,7 @@ describe('polling pause behaviour', () => {
                 viewId,
                 { order_by: 'last_received_message_datetime:asc' },
                 false,
+                expect.any(Boolean),
             )
         })
 
@@ -514,6 +653,7 @@ describe('polling pause behaviour', () => {
                 viewId,
                 { order_by: 'last_received_message_datetime:asc' },
                 true,
+                expect.any(Boolean),
             )
         })
 
@@ -526,7 +666,67 @@ describe('polling pause behaviour', () => {
                 viewId,
                 { order_by: 'last_received_message_datetime:asc' },
                 false,
+                expect.any(Boolean),
             )
         })
+    })
+})
+
+describe('Select all checkbox', () => {
+    it('is disabled when there are no tickets', () => {
+        vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
+            tickets: [],
+            fetchNextPage: vi.fn(),
+            hasNextPage: false,
+            isLoading: false,
+            isFetching: false,
+            isFetchingNextPage: false,
+            error: null,
+            data: undefined,
+            refetch: vi.fn(),
+        })
+
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
+
+        expect(screen.getByText('No open tickets')).toBeInTheDocument()
+        expect(
+            screen.getByRole('checkbox', { name: 'Select all' }),
+        ).toBeDisabled()
+    })
+
+    it('is disabled when there is a network error', async () => {
+        vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
+            tickets: [],
+            fetchNextPage: vi.fn(),
+            hasNextPage: false,
+            isLoading: false,
+            isFetching: false,
+            isFetchingNextPage: false,
+            error: new Error('Not found'),
+            data: undefined,
+            refetch: vi.fn(),
+        })
+
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
+
+        await waitFor(() => {
+            expect(screen.getByText('Network error')).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByRole('checkbox', { name: 'Select all' }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('is enabled when tickets are loaded', async () => {
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
+
+        await waitFor(() => {
+            expect(screen.getByText('First Ticket')).toBeInTheDocument()
+        })
+
+        expect(
+            screen.getByRole('checkbox', { name: 'Select all' }),
+        ).not.toBeDisabled()
     })
 })

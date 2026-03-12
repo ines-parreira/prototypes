@@ -4,7 +4,8 @@ import { usePrevious } from '@repo/hooks'
 import { Virtuoso } from 'react-virtuoso'
 import type { Components } from 'react-virtuoso'
 
-import { Box, Text } from '@gorgias/axiom'
+import { Box } from '@gorgias/axiom'
+import { useGetView } from '@gorgias/helpdesk-queries'
 import type {
     Language,
     TicketCompact,
@@ -20,6 +21,8 @@ import { useTicketSelection } from '../hooks/useTicketSelection'
 import { useTicketsList } from '../hooks/useTicketsList'
 import { useViewVisibleTickets } from '../hooks/useViewVisibleTickets'
 import { TicketListActions } from './TicketListActions/TicketListActions'
+import type { EmptyStateVariant } from './TicketListEmptyPlaceholder'
+import { TicketListEmptyPlaceholder } from './TicketListEmptyPlaceholder'
 import { TicketListHeader } from './TicketListHeader/TicketListHeader'
 import { TicketListItemSkeleton } from './TicketListItem/components/TicketListItemSkeleton'
 import { TicketListItem } from './TicketListItem/TicketListItem'
@@ -37,6 +40,8 @@ type ListContext = {
     selectedTicketIds: Set<number>
     onSelectTicket: (params: OnSelectTicketParams) => void
     hasSelectedAll: boolean
+    emptyStateVariant: EmptyStateVariant
+    onFixFilters?: () => void
 }
 
 const List: NonNullable<Components<TicketCompact, ListContext>['List']> =
@@ -63,16 +68,18 @@ const Item: NonNullable<Components<TicketCompact, ListContext>['Item']> = ({
 )
 
 function EmptyPlaceholder({ context }: { context?: ListContext }) {
-    if (context?.isLoading) {
-        return (
-            <>
-                {Array.from({ length: 10 }, (_, i) => (
-                    <TicketListItemSkeleton key={i} />
-                ))}
-            </>
-        )
-    }
-    return <Text color="content-neutral-secondary">No tickets found</Text>
+    const {
+        isLoading = false,
+        emptyStateVariant = 'default',
+        onFixFilters,
+    } = context ?? {}
+    return (
+        <TicketListEmptyPlaceholder
+            isLoading={isLoading}
+            emptyStateVariant={emptyStateVariant}
+            onFixFilters={onFixFilters}
+        />
+    )
 }
 
 function Footer({ context }: { context?: ListContext }) {
@@ -123,6 +130,7 @@ type Props = {
     activeTicketId?: number
     currentUserId?: number
     onApplyMacro?: (ticketIds: number[]) => void
+    onFixFilters?: () => void
 }
 
 export function TicketList({
@@ -131,13 +139,25 @@ export function TicketList({
     activeTicketId,
     currentUserId,
     onApplyMacro,
+    onFixFilters,
 }: Props) {
     const [sortOrder] = useSortOrder(viewId)
+
+    const { data: viewResponse } = useGetView(viewId)
+    const view = viewResponse?.data
+    const emptyStateVariant: EmptyStateVariant = view?.deactivated_datetime
+        ? 'invalidFilters'
+        : view === null
+          ? 'inaccessible'
+          : 'default'
+
     const [pauseUpdates, setPauseUpdates] = useState(false)
+
     const ticketsListParams = useMemo(
         () => ({ order_by: sortOrder }),
         [sortOrder],
     )
+    const shouldPollTicketUpdates = emptyStateVariant !== 'invalidFilters'
 
     const {
         tickets,
@@ -146,7 +166,13 @@ export function TicketList({
         isLoading,
         isFetchingNextPage,
         error,
-    } = useTicketsList(viewId, ticketsListParams, pauseUpdates)
+        refetch,
+    } = useTicketsList(
+        viewId,
+        ticketsListParams,
+        pauseUpdates,
+        shouldPollTicketUpdates,
+    )
 
     const {
         hasSelectedAll,
@@ -158,8 +184,6 @@ export function TicketList({
         clear,
     } = useTicketSelection(tickets)
 
-    // Temporary bridge to preserve legacy pause-on-selection behavior.
-    // Once selection is handled by the Axiom list component, this state/effect can be removed.
     useEffect(() => {
         setPauseUpdates(hasAnySelection)
     }, [hasAnySelection])
@@ -211,6 +235,8 @@ export function TicketList({
             selectedTicketIds,
             onSelectTicket: onSelect,
             hasSelectedAll,
+            emptyStateVariant,
+            onFixFilters,
         }),
         [
             viewId,
@@ -223,6 +249,8 @@ export function TicketList({
             selectedTicketIds,
             onSelect,
             hasSelectedAll,
+            emptyStateVariant,
+            onFixFilters,
         ],
     )
 
@@ -257,9 +285,17 @@ export function TicketList({
         }
     }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
-    if (error) {
-        return <div>Error loading tickets</div>
+    if (error && emptyStateVariant === 'default') {
+        return (
+            <TicketListEmptyPlaceholder
+                isLoading={false}
+                emptyStateVariant="error"
+                onRefresh={refetch}
+            />
+        )
     }
+
+    const showEmptyPlaceholder = !isLoading && tickets.length === 0
 
     return (
         <Box
@@ -268,7 +304,11 @@ export function TicketList({
             flexDirection="column"
             className={css.ticketListContainer}
         >
-            <TicketListHeader viewId={viewId} onCollapse={onCollapse} />
+            <TicketListHeader
+                viewId={viewId}
+                onCollapse={onCollapse}
+                onEditView={onFixFilters}
+            />
             <TicketListActions
                 viewId={viewId}
                 selectedTicketIds={selectedTicketIds}
@@ -279,16 +319,24 @@ export function TicketList({
                 onActionComplete={clear}
                 onApplyMacro={onApplyMacro}
             />
-            <Virtuoso<TicketCompact, ListContext>
-                className={css.ticketList}
-                data={isLoading ? [] : tickets}
-                context={context}
-                increaseViewportBy={{ top: 300, bottom: 1000 }}
-                components={virtuosoComponents}
-                itemContent={itemContent}
-                rangeChanged={handleRangeChanged}
-                endReached={handleEndReached}
-            />
+            {showEmptyPlaceholder ? (
+                <TicketListEmptyPlaceholder
+                    isLoading={false}
+                    emptyStateVariant={emptyStateVariant}
+                    onFixFilters={onFixFilters}
+                />
+            ) : (
+                <Virtuoso<TicketCompact, ListContext>
+                    className={css.ticketList}
+                    data={isLoading ? [] : tickets}
+                    context={context}
+                    increaseViewportBy={{ top: 300, bottom: 1000 }}
+                    components={virtuosoComponents}
+                    itemContent={itemContent}
+                    rangeChanged={handleRangeChanged}
+                    endReached={handleEndReached}
+                />
+            )}
         </Box>
     )
 }

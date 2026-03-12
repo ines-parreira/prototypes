@@ -9,6 +9,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
+import * as useRefreshStaleTicketsModule from '../useRefreshStaleTickets'
 import { useTicketsList } from '../useTicketsList'
 
 const viewId = 123
@@ -175,5 +176,25 @@ describe('useTicketsList', () => {
 
         expect(result.current.tickets).toHaveLength(0)
         expect(result.current.hasNextPage).toBe(false)
+    })
+
+    it('should disable stale updates polling when enableStaleUpdates is false', async () => {
+        const refreshSpy = vi.spyOn(
+            useRefreshStaleTicketsModule,
+            'useRefreshStaleTickets',
+        )
+
+        renderHook(() => useTicketsList(viewId, undefined, false, false))
+
+        await waitFor(() => {
+            expect(refreshSpy).toHaveBeenCalled()
+        })
+
+        expect(refreshSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+                viewId,
+                enabled: false,
+            }),
+        )
     })
 })

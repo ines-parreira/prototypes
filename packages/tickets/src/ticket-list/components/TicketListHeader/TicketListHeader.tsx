@@ -15,9 +15,10 @@ import css from './TicketListHeader.module.less'
 type Props = {
     viewId: number
     onCollapse: () => void
+    onEditView?: () => void
 }
 
-export function TicketListHeader({ viewId, onCollapse }: Props) {
+export function TicketListHeader({ viewId, onCollapse, onEditView }: Props) {
     const { data: viewResponse } = useGetView(viewId)
     const viewName = viewResponse?.data?.name
 
@@ -50,6 +51,7 @@ export function TicketListHeader({ viewId, onCollapse }: Props) {
                         size="sm"
                         icon="slider-filter"
                         aria-label="Edit view"
+                        onClick={onEditView}
                     />
                     <TooltipContent title="Edit view" />
                 </Tooltip>

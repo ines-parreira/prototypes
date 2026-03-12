@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { Panel } from '@repo/layout'
 import { useCurrentUserId } from '@repo/tickets'
@@ -10,7 +10,7 @@ import { useParams } from 'react-router-dom'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import useSplitTicketView from 'split-ticket-view-toggle/hooks/useSplitTicketView'
-import { setViewActive } from 'state/views/actions'
+import { setViewActive, setViewEditMode } from 'state/views/actions'
 import { getViewPlainJS } from 'state/views/selectors'
 import { TicketListView } from 'ticket-list-view'
 import ApplyMacro from 'ticket-list-view/components/bulk-actions/ApplyMacro'
@@ -45,6 +45,11 @@ export default function TicketsListPanel({ registerOnToggleUnread }: Props) {
 
     const [macroTicketIds, setMacroTicketIds] = useState<number[] | null>(null)
 
+    const handleFixFilters = useCallback(() => {
+        dispatch(setViewEditMode())
+        setSplitTicketView(false)
+    }, [dispatch, setSplitTicketView])
+
     const ticketId = urlTicketId ? parseInt(urlTicketId, 10) : undefined
     if (hasUIVisionMS4) {
         return (
@@ -55,6 +60,7 @@ export default function TicketsListPanel({ registerOnToggleUnread }: Props) {
                     currentUserId={currentUserId}
                     onCollapse={() => setSplitTicketView(false)}
                     onApplyMacro={setMacroTicketIds}
+                    onFixFilters={handleFixFilters}
                 />
                 {macroTicketIds !== null && (
                     <ApplyMacro

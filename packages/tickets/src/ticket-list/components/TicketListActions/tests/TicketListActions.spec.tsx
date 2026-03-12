@@ -217,7 +217,11 @@ describe('TicketListActions', () => {
     it('calls onSelectAll(true) when the checkbox is clicked while nothing is selected', async () => {
         const onSelectAll = vi.fn()
         const { user } = render(
-            <TicketListActions {...defaultProps} onSelectAll={onSelectAll} />,
+            <TicketListActions
+                {...defaultProps}
+                visibleTicketIds={[1]}
+                onSelectAll={onSelectAll}
+            />,
         )
 
         await user.click(screen.getByRole('checkbox', { name: 'Select all' }))
