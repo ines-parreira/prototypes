@@ -65,7 +65,7 @@ const mockListViewItems = mockListViewItemsHandler(async () =>
 const mockListViewItemsUpdatesNoOp = mockListViewItemsUpdatesHandler(async () =>
     HttpResponse.json({
         data: [],
-        meta: { next_cursor: null, prev_cursor: null },
+        meta: {},
     }),
 )
 

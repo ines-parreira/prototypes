@@ -29,7 +29,7 @@ const mockTicket2 = mockTicket({ id: 2, updated_datetime: OLD_DATETIME })
 const mockNoUpdates = mockListViewItemsUpdatesHandler(async () =>
     HttpResponse.json({
         data: [],
-        meta: { next_cursor: null, prev_cursor: null },
+        meta: {},
     }),
 )
 
@@ -178,7 +178,7 @@ describe('useRefreshStaleTickets', () => {
             const handler = mockListViewItemsUpdatesHandler(async () =>
                 HttpResponse.json({
                     data: updates,
-                    meta: { next_cursor: null, prev_cursor: null },
+                    meta: {},
                 }),
             )
             const waitForRequest = handler.waitForRequest(server)
@@ -210,7 +210,7 @@ describe('useRefreshStaleTickets', () => {
                                 customer: {},
                             },
                         ],
-                        meta: { next_cursor: null, prev_cursor: null },
+                        meta: {},
                     }),
                 ).handler,
             )
@@ -249,7 +249,7 @@ describe('useRefreshStaleTickets', () => {
                                 customer: {},
                             },
                         ],
-                        meta: { next_cursor: null, prev_cursor: null },
+                        meta: {},
                     }),
                 ).handler,
             )
@@ -296,7 +296,7 @@ describe('useRefreshStaleTickets', () => {
                                 customer: {},
                             },
                         ],
-                        meta: { next_cursor: null, prev_cursor: null },
+                        meta: {},
                     }),
                 ).handler,
             )
@@ -336,7 +336,7 @@ describe('useRefreshStaleTickets', () => {
                                 customer: {},
                             },
                         ],
-                        meta: { next_cursor: null, prev_cursor: null },
+                        meta: {},
                     }),
                 ).handler,
             )
@@ -373,7 +373,7 @@ describe('useRefreshStaleTickets', () => {
                                 customer: {},
                             },
                         ],
-                        meta: { next_cursor: null, prev_cursor: null },
+                        meta: {},
                     }),
                 ).handler,
             )

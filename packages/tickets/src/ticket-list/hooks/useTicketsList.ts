@@ -10,7 +10,6 @@ import type {
     TicketCompact,
 } from '@gorgias/helpdesk-types'
 
-import type { ListViewMetaWithCursors } from '../utils/cursors'
 import { getNextCursorFromMeta } from '../utils/cursors'
 import { useRefreshStaleTickets } from './useRefreshStaleTickets'
 
@@ -48,9 +47,7 @@ export function useTicketsList(
             return response.data
         },
         getNextPageParam: (lastPage) => {
-            const meta = lastPage.meta as typeof lastPage.meta &
-                ListViewMetaWithCursors
-            return getNextCursorFromMeta(meta)
+            return getNextCursorFromMeta(lastPage.meta)
         },
         staleTime: STALE_TIME_MS,
         refetchOnWindowFocus: true,
@@ -68,10 +65,7 @@ export function useTicketsList(
         if (!pages?.length) return undefined
 
         const lastPage = pages[pages.length - 1]
-        const meta = lastPage.meta as typeof lastPage.meta &
-            ListViewMetaWithCursors
-
-        return getNextCursorFromMeta(meta)
+        return getNextCursorFromMeta(lastPage.meta)
     }, [query.data])
 
     useRefreshStaleTickets({

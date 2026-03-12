@@ -1,10 +1,3 @@
-// The actual response includes next_items but the SDK type doesn't include it
-// This can be deleted when SDK updates
-export type ListViewMetaWithCursors = {
-    next_items?: string | null
-    prev_items?: string | null
-}
-
 export function getCursorFromItemsUrl(
     itemsUrl?: string | null,
 ): string | undefined {
@@ -23,7 +16,7 @@ export function getCursorFromItemsUrl(
 }
 
 export function getNextCursorFromMeta(
-    meta?: ListViewMetaWithCursors | null,
+    meta?: { next_items?: string | null } | null,
 ): string | undefined {
     return getCursorFromItemsUrl(meta?.next_items)
 }
