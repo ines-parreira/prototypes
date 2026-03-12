@@ -60,7 +60,11 @@ export const parseReasoningResources = (
         ReturnType<typeof useGetMessageAiReasoning>['data']
     >['resources'],
 ): KnowledgeReasoningResource[] => {
-    return (content.match(/<<<(.*?)>>>/g) || [])
+    const normalizedContent = content
+        .replace(/<{4,}/g, '<<<')
+        .replace(/>{4,}/g, '>>>')
+
+    return (normalizedContent.match(/<<<(.*?)>>>/g) || [])
         .map((resourceString) => {
             const stringParts = resourceString
                 .replace('<<<', '')
@@ -76,6 +80,7 @@ export const parseReasoningResources = (
                 case AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET:
                 case AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET:
                 case AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET:
+                case AiAgentKnowledgeResourceTypeEnum.MACRO:
                     metadata = resources.find(
                         (resource) =>
                             resource.resourceId === stringParts[2] &&

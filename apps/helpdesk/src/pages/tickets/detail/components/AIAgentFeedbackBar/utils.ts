@@ -121,6 +121,8 @@ export const mapToKnowledgeSourceType = (
         case AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE:
         case AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION:
             return 'product'
+        case AiAgentKnowledgeResourceTypeEnum.MACRO:
+            return 'macro'
         default:
             return 'article'
     }

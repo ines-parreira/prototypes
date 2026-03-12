@@ -1,5 +1,6 @@
 import React from 'react'
 
+import cn from 'classnames'
 import moment from 'moment'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
@@ -125,10 +126,14 @@ export const AiAgentReasoningContent = ({
 }: AiAgentReasoningContentProps) => {
     if (reasoningContent === null) return null
 
-    const allResourceMatches = reasoningContent.match(/<<<(.*?)>>>/g) || []
+    const normalizedContent = reasoningContent
+        .replace(/<{4,}/g, '<<<')
+        .replace(/>{4,}/g, '>>>')
+
+    const allResourceMatches = normalizedContent.match(/<<<(.*?)>>>/g) || []
     const resourceMatches = allResourceMatches.filter(isKnownResourceType)
 
-    let processedContent = reasoningContent
+    let processedContent = normalizedContent
 
     // remove all unknown resource markers
     allResourceMatches.forEach((match) => {
@@ -269,6 +274,15 @@ export const AiAgentReasoningContent = ({
                                 helpCenterId={resource.resourceSetId}
                                 shopName={storeConfiguration?.shopName ?? ''}
                                 shopType={storeConfiguration?.shopType ?? ''}
+                                className={cn(css.reasoningIconContainer, {
+                                    [css.reasoningIconContainerApp]:
+                                        resourceType ===
+                                            AiAgentKnowledgeResourceTypeEnum.ORDER ||
+                                        resourceType ===
+                                            AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE ||
+                                        resourceType ===
+                                            AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
+                                })}
                                 iconClassName={`${css.knowledgeSourceIcon} ${knowledgeSourceIconCss.reasoningBadge}`}
                                 onClick={handleClick}
                                 forceShowBody

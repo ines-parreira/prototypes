@@ -483,9 +483,10 @@ export const getResourceMetadata = (
                 : getEmptyMetadata()
         }
         case AiAgentKnowledgeResourceTypeEnum.ORDER: {
+            const orderTitle = title ? `Order ${title}` : `Order #${id}`
             return {
-                title: `Order ${title}`,
-                content: `Order ${title}`,
+                title: orderTitle,
+                content: orderTitle,
                 url: shopifyAdminBaseUrl(shopName) + `/orders/${id}`,
             }
         }
@@ -496,8 +497,8 @@ export const getResourceMetadata = (
             )
             return product
                 ? {
-                      title: title ?? '',
-                      content: title ?? '',
+                      title: title ?? product.title ?? '',
+                      content: title ?? product.title ?? '',
                       url: aiAgentRoutes?.productsDetail(idAsNumber),
                   }
                 : getEmptyMetadata()

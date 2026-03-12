@@ -24,7 +24,10 @@ const KnowledgeSourceIcon = ({
     return (
         <>
             <span className={cs(css.badge, badgeIconClassname)}>
-                <Icon name={KNOWLEDGE_SOURCE_TYPE[type].icon} size="xs" />
+                <Icon
+                    name={KNOWLEDGE_SOURCE_TYPE[type].icon}
+                    size={KNOWLEDGE_SOURCE_TYPE[type].size ?? 'xs'}
+                />
             </span>
             {withLabel && <span>{KNOWLEDGE_SOURCE_TYPE[type].label}</span>}
         </>

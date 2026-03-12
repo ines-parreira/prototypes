@@ -1,11 +1,11 @@
-import type { IconName } from '@gorgias/axiom'
+import type { IconName, IconSize } from '@gorgias/axiom'
 import { Icon } from '@gorgias/axiom'
 
 import { AiAgentKnowledgeResourceTypeEnum } from './types'
 
 export const RESOURCE_ICONS: Record<string, JSX.Element> = {
-    'Soft action': <Icon name="media-play-circle" size="xs" />,
-    'Hard action': <Icon name="media-play-circle" size="xs" />,
+    'Soft action': <Icon name="webhook" size="xs" />,
+    'Hard action': <Icon name="webhook" size="xs" />,
     'Help Center articles': <Icon name="file-document" size="xs" />,
     Macros: <Icon name="file-document" size="xs" />,
     'External websites': <Icon name="file-document" size="xs" />,
@@ -59,17 +59,17 @@ export const SIMPLIFIED_RESOURCE_LABELS: Record<string, string> = {
 
 export const KNOWLEDGE_SOURCE_TYPE: Record<
     string,
-    { icon: IconName; label: string }
+    { icon: IconName; label: string; size?: IconSize }
 > = {
-    action: { icon: 'media-play-circle', label: 'Action' },
+    action: { icon: 'webhook', label: 'Action' },
     guidance: { icon: 'nav-map', label: 'Guidance' },
     article: { icon: 'file-document', label: 'Help Center article' },
     website: { icon: 'nav-globe', label: 'Store website' },
     macro: { icon: 'zap', label: 'Macro' },
     link: { icon: 'link-horizontal', label: 'URL' },
     external_snippet: { icon: 'paperclip-attachment', label: 'Document' },
-    order: { icon: 'app-shopify', label: 'Order' },
-    product: { icon: 'app-shopify', label: 'Product' },
+    order: { icon: 'app-shopify', label: 'Order', size: 'sm' },
+    product: { icon: 'app-shopify', label: 'Product', size: 'sm' },
 }
 
 export type KnowledgeSourceType = keyof typeof KNOWLEDGE_SOURCE_TYPE
@@ -86,4 +86,8 @@ export const SIMPLIFIED_TO_DEFAULT_KNOWLEDGE_SOURCE_ICON_MAP: Record<
     [AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET]:
         'website',
     [AiAgentKnowledgeResourceTypeEnum.GUIDANCE]: 'guidance',
+    [AiAgentKnowledgeResourceTypeEnum.MACRO]: 'macro',
+    [AiAgentKnowledgeResourceTypeEnum.ORDER]: 'order',
+    [AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE]: 'product',
+    [AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION]: 'product',
 }

@@ -1246,6 +1246,23 @@ describe('utils', () => {
             })
         })
 
+        it('should fallback to Order #id when title is undefined for ORDER type', () => {
+            const result = getResourceMetadata(
+                {
+                    id: '456',
+                    type: AiAgentKnowledgeResourceTypeEnum.ORDER,
+                },
+                'test-store',
+                mockResourceData,
+            )
+
+            expect(result).toEqual({
+                title: 'Order #456',
+                content: 'Order #456',
+                url: 'https://admin.shopify.com/store/test-store/orders/456',
+            })
+        })
+
         it('should return correct metadata for PRODUCT_KNOWLEDGE type', () => {
             const result = getResourceMetadata(
                 {
@@ -1278,6 +1295,62 @@ describe('utils', () => {
             expect(result).toEqual({
                 title: 'Product Rec Title',
                 content: 'Product Rec Title',
+                url: '/products/content/7',
+            })
+        })
+
+        it('should fallback to product.title when title is undefined for PRODUCT_KNOWLEDGE', () => {
+            const result = getResourceMetadata(
+                {
+                    id: '7',
+                    type: AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+                },
+                'test-store',
+                mockResourceData,
+            )
+
+            expect(result).toEqual({
+                title: 'Product 1',
+                content: 'Product 1',
+                url: '/products/content/7',
+            })
+        })
+
+        it('should fallback to product.title when title is undefined for PRODUCT_RECOMMENDATION', () => {
+            const result = getResourceMetadata(
+                {
+                    id: '7',
+                    type: AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
+                },
+                'test-store',
+                mockResourceData,
+            )
+
+            expect(result).toEqual({
+                title: 'Product 1',
+                content: 'Product 1',
+                url: '/products/content/7',
+            })
+        })
+
+        it('should fallback to empty string when both title and product.title are undefined', () => {
+            const resourceDataWithProductNoTitle = {
+                ...mockResourceData,
+                products: [{ id: 7, title: undefined }],
+            }
+
+            const result = getResourceMetadata(
+                {
+                    id: '7',
+                    type: AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+                },
+                'test-store',
+                resourceDataWithProductNoTitle,
+            )
+
+            expect(result).toEqual({
+                title: '',
+                content: '',
                 url: '/products/content/7',
             })
         })

@@ -127,6 +127,9 @@ describe('mapToKnowledgeSourceType', () => {
             ),
         ).toBe('product')
         expect(
+            mapToKnowledgeSourceType(AiAgentKnowledgeResourceTypeEnum.MACRO),
+        ).toBe('macro')
+        expect(
             mapToKnowledgeSourceType(
                 'unknown' as AiAgentKnowledgeResourceTypeEnum,
             ),
