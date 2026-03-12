@@ -45,7 +45,10 @@ export const TopOpportunityCard = ({
         parseInt(opportunity.id, 10),
         {
             query: {
-                enabled: !!shopIntegrationId && !!isTopOpportunitiesEnabled,
+                enabled:
+                    !!shopIntegrationId &&
+                    !!isTopOpportunitiesEnabled &&
+                    !isRestricted,
                 refetchOnWindowFocus: false,
             },
         },

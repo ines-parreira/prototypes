@@ -588,5 +588,61 @@ describe('TopOpportunityCard', () => {
                 }),
             )
         })
+
+        it('should not fetch enriched opportunity when isRestricted is true', () => {
+            const useEnrichedOpportunity =
+                require('pages/aiAgent/opportunities/hooks/useEnrichedOpportunity').useEnrichedOpportunity
+
+            render(
+                <TestWrapper>
+                    <TopOpportunityCard
+                        opportunity={mockKnowledgeGapOpportunity}
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        isTopOpportunitiesEnabled={true}
+                        isRestricted={true}
+                        totalRestrictedOpportunities={5}
+                    />
+                </TestWrapper>,
+            )
+
+            expect(useEnrichedOpportunity).toHaveBeenCalledWith(
+                123,
+                1,
+                expect.objectContaining({
+                    query: expect.objectContaining({
+                        enabled: false,
+                    }),
+                }),
+            )
+        })
+
+        it('should fetch enriched opportunity when all conditions are met', () => {
+            const useEnrichedOpportunity =
+                require('pages/aiAgent/opportunities/hooks/useEnrichedOpportunity').useEnrichedOpportunity
+
+            render(
+                <TestWrapper>
+                    <TopOpportunityCard
+                        opportunity={mockKnowledgeGapOpportunity}
+                        shopName="test-shop"
+                        shopIntegrationId={123}
+                        isTopOpportunitiesEnabled={true}
+                        isRestricted={false}
+                        totalRestrictedOpportunities={undefined}
+                    />
+                </TestWrapper>,
+            )
+
+            expect(useEnrichedOpportunity).toHaveBeenCalledWith(
+                123,
+                1,
+                expect.objectContaining({
+                    query: expect.objectContaining({
+                        enabled: true,
+                    }),
+                }),
+            )
+        })
     })
 })
