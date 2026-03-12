@@ -126,7 +126,13 @@ export function mergeWithDefaults(
         const defaultSection = defaultSectionMap.get(savedSection.id)
         if (!defaultSection) return savedSection
 
-        const savedChartIds = new Set(savedSection.items.map((i) => i.chartId))
+        const defaultChartIds = new Set(
+            defaultSection.items.map((i) => i.chartId),
+        )
+        const validSavedItems = savedSection.items.filter((item) =>
+            defaultChartIds.has(item.chartId),
+        )
+        const savedChartIds = new Set(validSavedItems.map((i) => i.chartId))
         const missingItems = defaultSection.items.filter(
             (item) => !savedChartIds.has(item.chartId),
         )
@@ -134,7 +140,7 @@ export function mergeWithDefaults(
         return {
             ...savedSection,
             tableTitle: defaultSection.tableTitle,
-            items: [...savedSection.items, ...missingItems],
+            items: [...validSavedItems, ...missingItems],
         }
     })
 

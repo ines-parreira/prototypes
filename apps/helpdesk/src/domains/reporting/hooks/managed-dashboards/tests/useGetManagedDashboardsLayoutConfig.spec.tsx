@@ -14,6 +14,7 @@ import type { AnalyticsManagedDashboard } from '@gorgias/helpdesk-types'
 
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import {
     ManagedDashboardId,
     ManagedDashboardsTabId,
@@ -66,7 +67,12 @@ const mockDefaultLayoutConfig: DashboardLayoutConfig = {
             type: ChartType.Card,
             items: [
                 {
-                    chartId: 'default-kpi' as any,
+                    chartId: AnalyticsOverviewChart.AutomationRateCard,
+                    gridSize: 3,
+                    visibility: true,
+                },
+                {
+                    chartId: AnalyticsOverviewChart.AutomatedInteractionsCard,
                     gridSize: 3,
                     visibility: true,
                 },
@@ -91,8 +97,9 @@ const mockOverviewDashboard: AnalyticsManagedDashboard = {
                         type: ChartType.Card,
                         items: [
                             {
-                                chart_id: 'saved-kpi',
-                                metadata: { visible: true, grid_size: 3 },
+                                chart_id:
+                                    AnalyticsOverviewChart.AutomationRateCard,
+                                metadata: { visible: false, grid_size: 3 },
                             },
                         ],
                     },
@@ -120,8 +127,9 @@ const mockAnalyticsDashboard: AnalyticsManagedDashboard = {
                         type: ChartType.Card,
                         items: [
                             {
-                                chart_id: 'all-agents-saved-kpi',
-                                metadata: { visible: true, grid_size: 3 },
+                                chart_id:
+                                    AnalyticsOverviewChart.AutomationRateCard,
+                                metadata: { visible: true, grid_size: 6 },
                             },
                         ],
                     },
@@ -136,8 +144,9 @@ const mockAnalyticsDashboard: AnalyticsManagedDashboard = {
                         type: ChartType.Card,
                         items: [
                             {
-                                chart_id: 'support-agent-saved-kpi',
-                                metadata: { visible: false, grid_size: 6 },
+                                chart_id:
+                                    AnalyticsOverviewChart.AutomatedInteractionsCard,
+                                metadata: { visible: false, grid_size: 3 },
                             },
                         ],
                     },
@@ -225,16 +234,11 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
             const kpisSection = result.current.sections.find(
                 (s) => s.id === 'kpis',
             )
-            expect(
-                kpisSection?.items.some(
-                    (i) => i.chartId === ('saved-kpi' as any),
-                ),
-            ).toBe(true)
-            expect(
-                kpisSection?.items.some(
-                    (i) => i.chartId === ('default-kpi' as any),
-                ),
-            ).toBe(true)
+            const kpi = kpisSection?.items.find(
+                (i) => i.chartId === AnalyticsOverviewChart.AutomationRateCard,
+            )
+            expect(kpi).toBeDefined()
+            expect(kpi?.visibility).toBe(false)
         })
     })
 
@@ -286,11 +290,10 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
             const kpisSection = result.current.sections.find(
                 (s) => s.id === 'kpis',
             )
-            expect(
-                kpisSection?.items.some(
-                    (i) => i.chartId === ('all-agents-saved-kpi' as any),
-                ),
-            ).toBe(true)
+            const kpi = kpisSection?.items.find(
+                (i) => i.chartId === AnalyticsOverviewChart.AutomationRateCard,
+            )
+            expect(kpi?.gridSize).toBe(6)
         })
     })
 
@@ -319,11 +322,12 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
             const kpisSection = result.current.sections.find(
                 (s) => s.id === 'kpis',
             )
-            expect(
-                kpisSection?.items.some(
-                    (i) => i.chartId === ('support-agent-saved-kpi' as any),
-                ),
-            ).toBe(true)
+            const kpi = kpisSection?.items.find(
+                (i) =>
+                    i.chartId ===
+                    AnalyticsOverviewChart.AutomatedInteractionsCard,
+            )
+            expect(kpi?.visibility).toBe(false)
         })
     })
 })

@@ -10,6 +10,7 @@ import {
     layoutConfigToBackendConfig,
     mergeWithDefaults,
 } from 'domains/reporting/utils/managedDashboardMappers'
+import { AnalyticsAiAgentAllAgentsChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import {
@@ -741,6 +742,58 @@ describe('managedDashboardMappers', () => {
             expect(result.sections).toHaveLength(2)
             expect(result.sections[0]).toEqual(savedConfig.sections[0])
             expect(result.sections[1]).toEqual(defaultConfig.sections[0])
+        })
+
+        it('should drop stale chart IDs from saved config that no longer exist in default', () => {
+            const savedConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.PerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const defaultConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsAiAgentAllAgentsChart.ChannelPerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                            {
+                                chartId:
+                                    AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const result = mergeWithDefaults(savedConfig, defaultConfig)
+
+            expect(result.sections[0].items).toHaveLength(2)
+            expect(result.sections[0].items[0].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.ChannelPerformanceTable,
+            )
+            expect(result.sections[0].items[1].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable,
+            )
         })
 
         it('should handle empty saved config', () => {
