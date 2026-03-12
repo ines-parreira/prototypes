@@ -1,6 +1,6 @@
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
@@ -36,7 +36,7 @@ export function useGetOrCreateAccountConfiguration(
             try {
                 return await getAccountConfiguration(accountDomain)
             } catch (error) {
-                if (!axios.isAxiosError(error)) {
+                if (!isAxiosError(error)) {
                     throw error
                 }
 

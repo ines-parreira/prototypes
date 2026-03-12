@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn, useDebouncedEffect, usePrevious } from '@repo/hooks'
 import type { AxiosError, CancelToken } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import _isEmpty from 'lodash/isEmpty'
 import _isEqual from 'lodash/isEqual'
 import moment from 'moment-timezone'
@@ -95,7 +95,7 @@ const UserAuditList = () => {
                 setMeta(res.data.meta)
                 dispatch(auditLogEventsFetched(res.data.data))
             } catch (error) {
-                if (axios.isCancel(error)) {
+                if (isCancel(error)) {
                     return
                 }
                 const responseError = error as AxiosError<{

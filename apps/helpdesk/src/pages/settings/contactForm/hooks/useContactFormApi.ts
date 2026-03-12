@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
 
@@ -109,10 +109,7 @@ export const useContactFormApi = () => {
 
                 return contactForm
             } catch (error) {
-                if (
-                    axios.isAxiosError(error) &&
-                    error.response?.status === 404
-                ) {
+                if (isAxiosError(error) && error.response?.status === 404) {
                     return null
                 }
 
@@ -133,7 +130,7 @@ export const useContactFormApi = () => {
                 await client.checkContactFormNameExists({ input_name: name })
                 return false
             } catch (error) {
-                if (axios.isAxiosError(error) && error.response?.status === 404)
+                if (isAxiosError(error) && error.response?.status === 404)
                     return true
 
                 if (error instanceof Error) {
@@ -209,7 +206,7 @@ export const useContactFormApi = () => {
                 history.push(CONTACT_FORM_BASE_PATH)
                 return true
             } catch (error) {
-                if (axios.isAxiosError(error) && error.response?.status === 404)
+                if (isAxiosError(error) && error.response?.status === 404)
                     return true
 
                 if (error instanceof Error) {
@@ -238,10 +235,7 @@ export const useContactFormApi = () => {
                     }),
                 )
             } catch (error) {
-                if (
-                    axios.isAxiosError(error) &&
-                    error.response?.status === 404
-                ) {
+                if (isAxiosError(error) && error.response?.status === 404) {
                     return dispatch(
                         contactFormAutomationSettingsFetched({
                             contactFormId: contactFormId.toString(),

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 
 import type { HelpCenterClient } from 'rest_api/help_center_api/client'
 import type { Paths } from 'rest_api/help_center_api/client.generated'
@@ -68,7 +68,7 @@ export const getHelpCenterArticle = async (
         })
         return response.data
     } catch (error) {
-        if (axios.isAxiosError(error) && error.response?.status === 404) {
+        if (isAxiosError(error) && error.response?.status === 404) {
             if (options?.throwOn404) {
                 throw error
             }

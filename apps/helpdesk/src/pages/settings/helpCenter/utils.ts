@@ -1,8 +1,8 @@
 import type { AxiosError } from 'axios'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 
 export const getGenericMessageFromError = (err: unknown) => {
-    if (axios.isAxiosError(err) && err.response?.status === 400) {
+    if (isAxiosError(err) && err.response?.status === 400) {
         return isHelpCenterApiError(err)
             ? err.response.data.message
             : 'some fields are empty or invalid.'

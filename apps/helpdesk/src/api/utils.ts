@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 
 import {
     HTTP_STATUS_TOO_MANY_REQUESTS,
@@ -6,7 +6,7 @@ import {
 } from 'domains/reporting/models/resources'
 
 export const reportingRetryHandler = (failureCount: number, error: unknown) => {
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
         const statusCode = error?.response?.status
 
         // Retry up to 20 times for 202 (query still processing)
@@ -39,7 +39,7 @@ export const reportingRetryDelayHandler = (
     retryIndex: number,
     error: unknown,
 ) => {
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
         const statusCode = error?.response?.status
 
         // For 202: exponential backoff up to 16s
@@ -58,7 +58,7 @@ export const doNotRetry40XErrorsHandler = (
     failureCount: number,
     error: unknown,
 ) => {
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
         const statusCode = error?.response?.status
         if (statusCode && statusCode >= 400 && statusCode < 500) {
             return false

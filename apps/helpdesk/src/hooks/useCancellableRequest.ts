@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 
 import type { CancelToken, CancelTokenSource } from 'axios'
-import axios from 'axios'
+import axios, { isCancel } from 'axios'
 
 type FnReturningPromise = (...args: any[]) => Promise<unknown>
 
@@ -16,6 +16,7 @@ const useCancellableRequest = <T extends FnReturningPromise>(
     }, [])
     const request = useCallback(
         async (...args: Parameters<T>): Promise<ReturnType<T> | undefined> => {
+            // oxlint-disable-next-line import/no-named-as-default-member -- axios exposes CancelToken.source() on the default export at runtime.
             const cancelTokenSource = axios.CancelToken.source()
 
             cancel()
@@ -26,7 +27,7 @@ const useCancellableRequest = <T extends FnReturningPromise>(
                 )) as ReturnType<T>
                 return res
             } catch (error) {
-                if (!axios.isCancel(error)) {
+                if (!isCancel(error)) {
                     throw error
                 }
             }

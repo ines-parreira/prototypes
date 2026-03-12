@@ -1,5 +1,5 @@
 import { assumeMock } from '@repo/testing'
-import axios from 'axios'
+import { AxiosError, CanceledError } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -18,6 +18,7 @@ import {
 } from 'state/infobar/constants'
 import { initialState } from 'state/infobar/reducers'
 import type { StoreDispatch } from 'state/types'
+import { CancelToken } from 'tests/axiosRuntime'
 
 import { isCurrentlyOnTicket } from '../../../utils'
 
@@ -94,8 +95,8 @@ describe('infobar actions', () => {
         })
 
         it('should not dispatch results when cancelling the search', () => {
-            const source = axios.CancelToken.source()
-            searchCustomersMock.mockRejectedValue(new axios.CanceledError())
+            const source = CancelToken.source()
+            searchCustomersMock.mockRejectedValue(new CanceledError())
 
             return store
                 .dispatch(actions.searchWithHighlights('alex', source.token))
@@ -110,7 +111,7 @@ describe('infobar actions', () => {
 
         it('should dispatch an error', () => {
             searchCustomersMock.mockRejectedValue(
-                new axios.AxiosError('some error message'),
+                new AxiosError('some error message'),
             )
 
             return store
@@ -127,7 +128,7 @@ describe('infobar actions', () => {
                             reason: 'Failed to do the search. Please try again...',
                         }),
                     )
-                    expect(dispatched[1].error).toBeInstanceOf(axios.AxiosError)
+                    expect(dispatched[1].error).toBeInstanceOf(AxiosError)
                     expect(dispatched[1].error.message).toBe(
                         'some error message',
                     )

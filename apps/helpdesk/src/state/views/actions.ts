@@ -1,6 +1,6 @@
 import { history } from '@repo/routing'
 import type { AxiosError, CancelToken } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _chunk from 'lodash/chunk'
@@ -551,7 +551,7 @@ export function fetchViewItems(
                 })
             },
             (error: AxiosError) => {
-                if (axios.isCancel(error)) {
+                if (isCancel(error)) {
                     return Promise.resolve()
                 }
                 return dispatch({

@@ -1,6 +1,6 @@
 import { renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
-import axios from 'axios'
+import { AxiosError } from 'axios'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { HelpCenterAutomationSettings } from 'models/helpCenter/types'
@@ -165,7 +165,7 @@ describe('useHelpCentersAutomationSettings()', () => {
 
     describe('error handling', () => {
         it('should handle 404 errors by setting default automation settings', async () => {
-            const notFoundError = new axios.AxiosError('Not Found')
+            const notFoundError = new AxiosError('Not Found')
             notFoundError.response = {
                 status: 404,
                 data: {},

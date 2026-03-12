@@ -1,4 +1,3 @@
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
@@ -7,6 +6,7 @@ import {
     phoneNumbers as phoneNumbersFixtures,
 } from 'fixtures/phoneNumber'
 import client from 'models/api/resources'
+import { Cancel, CancelToken } from 'tests/axiosRuntime'
 
 import {
     createPhoneNumber,
@@ -55,11 +55,11 @@ describe('phone numbers resources', () => {
                         current_page: 2,
                     },
                 })
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await expect(fetchPhoneNumbers(source.token)).rejects.toEqual(
-                new axios.Cancel(),
+                new Cancel(),
             )
         })
     })

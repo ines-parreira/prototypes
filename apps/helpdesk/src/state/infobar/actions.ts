@@ -1,6 +1,6 @@
 import { history } from '@repo/routing'
 import type { AxiosError, AxiosResponse, CancelToken } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import _noop from 'lodash/noop'
 
 import client from 'models/api/resources'
@@ -34,7 +34,7 @@ export const searchWithHighlights =
                 })
             },
             (error: AxiosError) => {
-                if (axios.isCancel(error)) {
+                if (isCancel(error)) {
                     return Promise.resolve()
                 }
                 return dispatch({

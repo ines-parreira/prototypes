@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useMemo } from 'react'
 import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { AxiosError, CancelToken } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -91,7 +91,7 @@ export default function StatWrapper({
                 }
                 saveFileAsDownloaded(file.name, file.data, file.contentType)
             } catch (error) {
-                if (axios.isCancel(error)) {
+                if (isCancel(error)) {
                     return
                 }
 

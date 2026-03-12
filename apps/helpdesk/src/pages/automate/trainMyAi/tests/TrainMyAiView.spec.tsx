@@ -5,7 +5,8 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import routerDom, { BrowserRouter } from 'react-router-dom'
+import type * as ReactRouterDom from 'react-router-dom'
+import { BrowserRouter, useHistory, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { TicketChannel } from 'business/types/ticket'
@@ -54,7 +55,7 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    ...(jest.requireActual('react-router-dom') as typeof routerDom),
+    ...(jest.requireActual('react-router-dom') as typeof ReactRouterDom),
     useHistory: jest.fn(),
     useParams: jest.fn(),
 }))
@@ -127,13 +128,9 @@ const useApplicationsAutomationSettingsMock =
         typeof useApplicationsAutomationSettings
     >
 
-const useHistoryMock = routerDom.useHistory as jest.MockedFunction<
-    typeof routerDom.useHistory
->
+const useHistoryMock = useHistory as jest.MockedFunction<typeof useHistory>
 
-const useParamsMock = routerDom.useParams as jest.MockedFunction<
-    typeof routerDom.useParams
->
+const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
 const helpCenterArticleData = {
     available_locales: ['en-US'],

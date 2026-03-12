@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import classnames from 'classnames'
 import { produce } from 'immer'
 import _debounce from 'lodash/debounce'
@@ -150,10 +150,7 @@ const HelpCenterNewView = ({
 
                     setIsSubdomainAvailable(false)
                 } catch (err) {
-                    if (
-                        axios.isAxiosError(err) &&
-                        err.response?.status === 404
-                    ) {
+                    if (isAxiosError(err) && err.response?.status === 404) {
                         setIsSubdomainAvailable(true)
                     } else {
                         throw err

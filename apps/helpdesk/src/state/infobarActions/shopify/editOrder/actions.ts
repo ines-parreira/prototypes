@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import type { Map } from 'immutable'
 import { fromJS, List } from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -133,7 +133,7 @@ const _initEditOrder =
             const calculatedEditOrder = _initEditOrderPayload(beginEditOrder)
             dispatch(setCalculatedEditOrder(calculatedEditOrder))
         } catch (error) {
-            if (axios.isCancel(error)) {
+            if (isCancel(error)) {
                 return
             }
             onError && onError()
@@ -306,7 +306,7 @@ export const onPayloadChange =
             )
             dispatch(setPayload(updatedPayload))
         } catch (error) {
-            if (axios.isCancel(error)) {
+            if (isCancel(error)) {
                 return
             }
             onError && onError()

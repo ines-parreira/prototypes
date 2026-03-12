@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import classNames from 'classnames'
 import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
@@ -145,7 +145,7 @@ const ContactFormPreferences = (): JSX.Element => {
         const isDeleted = !error && result
 
         const errorMessage =
-            (axios.isAxiosError(error) &&
+            (isAxiosError(error) &&
                 get(error, 'response.status') === 400 &&
                 get(error, 'response.data.message')) ||
             'Failed to delete the Contact Form'

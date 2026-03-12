@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import axios from 'axios'
+import { isCancel } from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import type {
@@ -132,7 +132,7 @@ export const usePlaygroundMessages = () => {
                 })
             } catch (error) {
                 // skip if request canceled
-                if (axios.isCancel(error)) {
+                if (isCancel(error)) {
                     return
                 }
 

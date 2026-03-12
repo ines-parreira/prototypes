@@ -1,4 +1,3 @@
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
@@ -7,6 +6,7 @@ import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
 import { tags as tagsFixtures } from 'fixtures/tag'
 import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
+import { Cancel, CancelToken } from 'tests/axiosRuntime'
 
 import {
     createTag,
@@ -50,7 +50,7 @@ describe('tag resources', () => {
                 data: tagsFixtures,
                 meta,
             })
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await expect(
@@ -60,7 +60,7 @@ describe('tag resources', () => {
                     },
                     { cancelToken: source.token },
                 ),
-            ).rejects.toEqual(new axios.Cancel())
+            ).rejects.toEqual(new Cancel())
         })
 
         it.each([OrderDirection.Asc, OrderDirection.Desc])(

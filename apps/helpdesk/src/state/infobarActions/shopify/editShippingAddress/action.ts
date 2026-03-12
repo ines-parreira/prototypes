@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { isCancel } from 'axios'
 import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 
@@ -49,7 +49,7 @@ export const onInit =
             )
             dispatch(setAddresses(addresses))
         } catch (error) {
-            if (axios.isCancel(error)) {
+            if (isCancel(error)) {
                 return
             }
             onError && onError()

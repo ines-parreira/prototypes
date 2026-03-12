@@ -3,7 +3,8 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import routerDom from 'react-router-dom'
+import type * as ReactRouterDom from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { abTest } from 'fixtures/abTest'
@@ -25,13 +26,11 @@ const useUpdateABTestMock = assumeMock(useUpdateABTest)
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    ...(jest.requireActual('react-router-dom') as typeof routerDom),
+    ...(jest.requireActual('react-router-dom') as typeof ReactRouterDom),
     useParams: jest.fn(),
 }))
 
-const useParamsMock = routerDom.useParams as jest.MockedFunction<
-    typeof routerDom.useParams
->
+const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

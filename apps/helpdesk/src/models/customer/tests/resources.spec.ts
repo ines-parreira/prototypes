@@ -1,5 +1,4 @@
 import { assumeMock } from '@repo/testing'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import { searchCustomers as apiSearchCustomers } from '@gorgias/helpdesk-client'
@@ -14,6 +13,7 @@ import {
 } from 'models/customer/resources'
 import type { Customer } from 'models/customer/types'
 import type { CustomerWithHighlightsResponse } from 'models/search/types'
+import { Cancel, CancelToken } from 'tests/axiosRuntime'
 
 const mockedServer = new MockAdapter(client)
 
@@ -79,7 +79,7 @@ describe('Customer resources', () => {
         })
 
         it('should cancel the request on cancel token cancel', async () => {
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await searchCustomers({
@@ -172,12 +172,12 @@ describe('Customer resources', () => {
         })
 
         it('should cancel the request on cancel token cancel', async () => {
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             const res = getCustomer(customer.id, source.token)
 
-            await expect(res).rejects.toBeInstanceOf(axios.Cancel)
+            await expect(res).rejects.toBeInstanceOf(Cancel)
         })
     })
 })

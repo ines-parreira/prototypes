@@ -1,5 +1,5 @@
 import type { AxiosError, AxiosRequestConfig } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import type { List } from 'immutable'
 
 import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
@@ -51,7 +51,7 @@ export function fetchTags(
                 resp: { data: result },
             })
         } catch (error) {
-            if (!axios.isCancel(error)) {
+            if (!isCancel(error)) {
                 dispatch({
                     type: constants.FETCH_TAG_LIST_ERROR,
                     error,

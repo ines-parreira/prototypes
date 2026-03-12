@@ -1,7 +1,5 @@
 // sort-imports-ignore
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { ContentState } from 'draft-js'
 import type { Map } from 'immutable'
@@ -65,6 +63,7 @@ import {
 } from 'state/ticket/tests/fixtures'
 import { getLastSenderChannel, getPreferredChannel } from 'state/ticket/utils'
 import type { RootState, StoreDispatch } from 'state/types'
+import { CancelToken } from 'tests/axiosRuntime'
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
 import * as LDUtils from '@repo/feature-flags'
@@ -72,7 +71,6 @@ import * as LDUtils from '@repo/feature-flags'
 import { getReplyAreaStateSnapshot } from './testUtils'
 
 const getLDClientSpy = jest.spyOn(LDUtils, 'getLDClient')
-
 type MockedRootState = {
     integrations?: Map<any, any>
     ticket?: Map<any, any>
@@ -2083,7 +2081,7 @@ describe('actions', () => {
                 meta: {},
             })
             store = mockStore({})
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             return store

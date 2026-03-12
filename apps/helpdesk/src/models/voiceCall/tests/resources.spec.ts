@@ -1,5 +1,4 @@
 import { assumeMock } from '@repo/testing'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/helpdesk-client'
@@ -7,6 +6,7 @@ import type { SearchVoiceCalls200 } from '@gorgias/helpdesk-types'
 
 import { voiceCall } from 'fixtures/voiceCalls'
 import client from 'models/api/resources'
+import { CancelToken } from 'tests/axiosRuntime'
 
 import {
     listVoiceCallEvents,
@@ -146,7 +146,7 @@ describe('list voice calls resources', () => {
         })
 
         it('should pass cancel token', async () => {
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await searchVoiceCalls({

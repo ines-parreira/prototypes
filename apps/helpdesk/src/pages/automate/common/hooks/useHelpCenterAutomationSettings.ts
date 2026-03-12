@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -48,7 +48,7 @@ const useHelpCentersAutomationSettings = (
                 }),
             )
         } catch (error) {
-            if (axios.isAxiosError(error) && error.response?.status === 404) {
+            if (isAxiosError(error) && error.response?.status === 404) {
                 return dispatch(
                     helpCenterAutomationSettingsFetched({
                         helpCenterId: helpCenterId.toString(),

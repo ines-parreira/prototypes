@@ -1,5 +1,5 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import type { Map } from 'immutable'
 import { List } from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -115,7 +115,7 @@ export const onInit =
                 dispatch(setLineItems(lineItems)),
             ])
         } catch (error) {
-            if (axios.isCancel(error)) {
+            if (isCancel(error)) {
                 return
             }
 
@@ -222,7 +222,7 @@ export const calculateRefund = _debounce(
 
             return Promise.all(promises)
         } catch (error) {
-            if (axios.isCancel(error)) {
+            if (isCancel(error)) {
                 return
             }
 

@@ -3,7 +3,7 @@ import React, { memo, useCallback, useEffect, useState } from 'react'
 
 import { getMoneySymbol } from '@repo/utils'
 import type { AxiosError } from 'axios'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import type { Map } from 'immutable'
 import moment from 'moment-timezone'
 import {
@@ -166,7 +166,7 @@ function DiscountCodeCreateModal({ onSubmit, onClose, integration }: Props) {
                 .catch(function (
                     error: AxiosError<{ error?: { data?: any } }>,
                 ) {
-                    if (axios.isAxiosError(error)) {
+                    if (isAxiosError(error)) {
                         setFormErrors(error.response?.data?.error?.data)
                     }
 

@@ -4,7 +4,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
-import axios from 'axios'
+import { AxiosError } from 'axios'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -393,7 +393,7 @@ describe('useTopQuestionsArticles', () => {
         const mockCreateArticle = jest
             .fn()
             .mockReturnValue(
-                Promise.reject(new axios.AxiosError('some error message')),
+                Promise.reject(new AxiosError('some error message')),
             )
 
         mockUseCreateAIArticle.mockReturnValue({

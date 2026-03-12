@@ -1,5 +1,5 @@
 import type { AxiosError } from 'axios'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
@@ -94,7 +94,7 @@ export const isGorgiasApiError = (
     error: unknown,
 ): error is GorgiasApiError<unknown> => {
     return (
-        axios.isAxiosError(error) &&
+        isAxiosError(error) &&
         isGorgiasApiResponseDataError(error.response?.data)
     )
 }

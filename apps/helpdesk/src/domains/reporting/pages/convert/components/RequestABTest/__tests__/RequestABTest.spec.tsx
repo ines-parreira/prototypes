@@ -5,7 +5,8 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import routerDom from 'react-router-dom'
+import type * as ReactRouterDom from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import RequestABTest from 'domains/reporting/pages/convert/components/RequestABTest/RequestABTest'
@@ -34,13 +35,11 @@ jest.mock('domains/reporting/pages/convert/hooks/stats/useCanRequestABTest')
 const useCanRequestABTestMock = assumeMock(useCanRequestABTest)
 
 jest.mock('react-router-dom', () => ({
-    ...(jest.requireActual('react-router-dom') as typeof routerDom),
+    ...(jest.requireActual('react-router-dom') as typeof ReactRouterDom),
     useParams: jest.fn(),
 }))
 
-const useParamsMock = routerDom.useParams as jest.MockedFunction<
-    typeof routerDom.useParams
->
+const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 

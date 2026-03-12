@@ -1,6 +1,5 @@
 import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -44,6 +43,7 @@ import * as types from 'state/views/constants'
 import { initialState } from 'state/views/reducers'
 import * as viewsSelectors from 'state/views/selectors'
 import { ViewNavDirection } from 'state/views/types'
+import { Cancel, CancelToken } from 'tests/axiosRuntime'
 import { getAST } from 'utils'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -192,7 +192,7 @@ describe('actions', () => {
 
         it('should reject when cancelled', async () => {
             mockServer.onPost(SEARCH_ENDPOINT).reply(200, {})
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await expect(
@@ -203,7 +203,7 @@ describe('actions', () => {
                         source.token,
                     ),
                 ),
-            ).rejects.toEqual(new axios.Cancel())
+            ).rejects.toEqual(new Cancel())
         })
     })
 
@@ -557,7 +557,7 @@ describe('actions', () => {
         ])(
             'should set the %s of the requested direction when using elasticsearch ticket endpoint',
             async (_, args) => {
-                const cancelToken = axios.CancelToken.source().token
+                const cancelToken = CancelToken.source().token
 
                 const store = mockStore({
                     views: fromJS({
@@ -750,7 +750,7 @@ describe('actions', () => {
                     },
                 }),
             })
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             mockServer
                 .onPut(`/api/views/${viewId}/items/`)
                 .reply(200, baseReply)
@@ -858,7 +858,7 @@ describe('actions', () => {
 
             it('should search tickets', async () => {
                 const cursor = 'test_cursor'
-                const cancelToken = axios.CancelToken.source().token
+                const cancelToken = CancelToken.source().token
                 const store = mockStore({
                     views: fromJS({
                         active: ticketSearchView,

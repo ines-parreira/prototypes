@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAsyncFn, useEffectOnce } from '@repo/hooks'
 import type { AxiosError, CancelToken } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
@@ -102,7 +102,7 @@ const ManageTags = () => {
                 setSort(orderBy || ListTagsOrderBy.UsageDescNameDesc)
                 setReverse(orderDir === OrderDirection.Asc ? false : true)
             } catch (error) {
-                if (axios.isCancel(error)) {
+                if (isCancel(error)) {
                     return
                 }
                 const responseError = error as AxiosError<{

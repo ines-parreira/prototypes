@@ -1,4 +1,3 @@
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -8,6 +7,7 @@ import thunk from 'redux-thunk'
 
 import client from 'models/api/resources'
 import type { StoreDispatch } from 'state/types'
+import { CancelToken } from 'tests/axiosRuntime'
 
 import * as actions from '../actions'
 import * as constants from '../constants'
@@ -42,10 +42,7 @@ describe('macro actions', () => {
 
             return store
                 .dispatch(
-                    actions.fetchAllMacros(
-                        {},
-                        axios.CancelToken.source().token,
-                    ),
+                    actions.fetchAllMacros({}, CancelToken.source().token),
                 )
                 .then((res) => {
                     expect(res).toEqual(fromJS(macros))

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 
 import type {
     AlertNotification,
@@ -147,7 +147,7 @@ export const parseSessionStats = (
 }
 
 export const getErrorMessage = (error: unknown): string | undefined => {
-    if (!axios.isAxiosError<ErrorResponse>(error)) return
+    if (!isAxiosError<ErrorResponse>(error)) return
     if (!error.response) return
 
     const errorData = error.response.data

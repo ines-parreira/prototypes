@@ -1,5 +1,4 @@
 import { waitFor } from '@testing-library/react'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -20,6 +19,7 @@ import * as actions from 'state/tags/actions'
 import * as types from 'state/tags/constants'
 import { initialState } from 'state/tags/reducers'
 import type { StoreDispatch } from 'state/types'
+import { Cancel, CancelToken } from 'tests/axiosRuntime'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
@@ -153,14 +153,14 @@ describe('tags actions', () => {
                 data: [],
                 meta: { prev_cursor: null, next_cursor: null },
             })
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await expect(
                 store.dispatch(
                     actions.fetchTags(undefined, { cancelToken: source.token }),
                 ),
-            ).rejects.toEqual(new axios.Cancel())
+            ).rejects.toEqual(new Cancel())
         })
     })
 

@@ -1,6 +1,6 @@
 import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _capitalize from 'lodash/capitalize'
@@ -582,7 +582,7 @@ export function createGorgiasChatIntegration(
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,
-                        message: axios.isAxiosError(error)
+                        message: isAxiosError(error)
                             ? (error as GorgiasApiError).response?.data.error
                                   ?.msg
                             : 'Failed to install the chat to the store',

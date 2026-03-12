@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { isCancel } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
@@ -71,7 +71,7 @@ describe('services', () => {
                 } catch (error) {
                     errorCaught = error
                 }
-                expect(axios.isCancel(errorCaught)).toEqual(true)
+                expect(isCancel(errorCaught)).toEqual(true)
             })
 
             it('should cancel pending requests and refresh token', async () => {
@@ -94,7 +94,7 @@ describe('services', () => {
                 } catch (error) {
                     errorCaught = error
                 }
-                expect(axios.isCancel(errorCaught)).toEqual(true)
+                expect(isCancel(errorCaught)).toEqual(true)
 
                 const data = await gorgiasApi.payInvoice('123')
                 expect(data).toEqual(fromJS(expectedData))

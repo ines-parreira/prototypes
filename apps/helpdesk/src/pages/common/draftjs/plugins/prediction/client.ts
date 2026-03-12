@@ -1,5 +1,5 @@
 import type { AxiosInstance, CancelTokenSource } from 'axios'
-import axios, { AxiosError } from 'axios'
+import axios, { AxiosError, isAxiosError, isCancel } from 'axios'
 
 import { createClient } from 'models/api/resources'
 import { reportError } from 'utils/errors'
@@ -40,7 +40,9 @@ export class PhrasePredictionClient {
 
     async requestPrediction(query: string, context: QueryContext) {
         this.cancelPredictionRequest()
-        this.cancelTokenSource = axios.CancelToken.source()
+        // oxlint-disable-next-line import/no-named-as-default-member -- axios exposes CancelToken.source() on the default export at runtime.
+        const cancelTokenSource = axios.CancelToken.source()
+        this.cancelTokenSource = cancelTokenSource
 
         try {
             const response = await this.client.post<{ prediction: string }>(
@@ -48,19 +50,16 @@ export class PhrasePredictionClient {
                 { query, context },
                 {
                     timeout: PREDICTION_REQUEST_TIMEOUT,
-                    cancelToken: this.cancelTokenSource.token,
+                    cancelToken: cancelTokenSource.token,
                 },
             )
             return response.data.prediction
         } catch (error) {
-            if (axios.isCancel(error)) {
+            if (isCancel(error)) {
                 return ''
             }
 
-            if (
-                axios.isAxiosError(error) &&
-                error.code === AxiosError.ECONNABORTED
-            ) {
+            if (isAxiosError(error) && error.code === AxiosError.ECONNABORTED) {
                 return ''
             }
 

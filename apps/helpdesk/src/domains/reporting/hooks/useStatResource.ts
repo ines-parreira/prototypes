@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { useDebouncedEffect } from '@repo/hooks'
 import type { AxiosError, CancelToken } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import _isEqual from 'lodash/isEqual'
 
 import { fetchStat } from 'domains/reporting/models/stat/resources'
@@ -76,7 +76,7 @@ export default function useStatResource<T>({
                     )
                     dispatch(fetchStatEnded({ statName, resourceName }))
                 } catch (error) {
-                    if (axios.isCancel(error)) {
+                    if (isCancel(error)) {
                         return
                     }
                     const notification: Notification = {

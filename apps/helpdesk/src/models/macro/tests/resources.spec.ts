@@ -1,10 +1,10 @@
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
 import { macros as macrosFixtures } from 'fixtures/macro'
 import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
+import { Cancel, CancelToken } from 'tests/axiosRuntime'
 
 import {
     createMacro,
@@ -50,7 +50,7 @@ describe('macro resources', () => {
                     next_cursor: null,
                 },
             })
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await expect(
@@ -60,7 +60,7 @@ describe('macro resources', () => {
                     },
                     { cancelToken: source.token },
                 ),
-            ).rejects.toEqual(new axios.Cancel())
+            ).rejects.toEqual(new Cancel())
         })
     })
 

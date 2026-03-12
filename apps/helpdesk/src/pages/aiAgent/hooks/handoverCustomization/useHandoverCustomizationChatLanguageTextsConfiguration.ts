@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { AxiosError } from 'axios'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 
 import {
     getPrimaryLanguageFromChatConfig,
@@ -82,7 +82,7 @@ export const useHandoverCustomizationChatLanguageTextsConfiguration = (
 
             setMultiLanguageTexts(texts)
         } catch (err) {
-            if (axios.isAxiosError(err)) {
+            if (isAxiosError(err)) {
                 const axiosError = err as AxiosError
 
                 throw new Error(parseToFriendlyErrorMessage(axiosError))

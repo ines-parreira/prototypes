@@ -1,5 +1,5 @@
 import { useId } from '@repo/hooks'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -32,7 +32,7 @@ export default function VoiceCallAgentLabel({
     const generatedId = useId()
     const id = `voice-call-agent-label-${generatedId}`
 
-    if (axios.isAxiosError(error) && error.response?.status === 404) {
+    if (isAxiosError(error) && error.response?.status === 404) {
         return (
             <>
                 {withTooltip && (

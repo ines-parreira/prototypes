@@ -64,6 +64,7 @@ export default class GorgiasApi {
     }
 
     _refreshCancellationToken() {
+        // oxlint-disable-next-line import/no-named-as-default-member -- axios exposes CancelToken.source() on the default export at runtime.
         this._requestCanceller = axios.CancelToken.source()
         this._api.defaults.cancelToken = this._requestCanceller.token
     }

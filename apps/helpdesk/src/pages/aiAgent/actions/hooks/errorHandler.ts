@@ -1,4 +1,4 @@
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -9,7 +9,7 @@ export function handleError(
     defaultMsg: string,
     dispatch: StoreDispatch,
 ) {
-    if (axios.isAxiosError(error)) {
+    if (isAxiosError(error)) {
         if (error.response?.status === 409) {
             void dispatch(
                 notify({

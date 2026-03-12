@@ -3,7 +3,7 @@ import { createRef, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import { FormGroup, FormText } from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
 
@@ -195,7 +195,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 )
             } catch (err) {
                 const errorMessage =
-                    axios.isAxiosError(err) && err.response?.status === 413
+                    isAxiosError(err) && err.response?.status === 413
                         ? 'one or more files are larger than the size limit.'
                         : 'please try again later.'
 
@@ -274,7 +274,7 @@ export const HelpCenterAppearanceView: React.FC = () => {
                 )
             } catch (err) {
                 const errorMessage =
-                    axios.isAxiosError(err) && err.response?.status === 413
+                    isAxiosError(err) && err.response?.status === 413
                         ? 'one or more files are larger than the size limit.'
                         : 'please try again later.'
 

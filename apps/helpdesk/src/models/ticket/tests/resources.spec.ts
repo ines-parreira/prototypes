@@ -1,5 +1,4 @@
 import { assumeMock } from '@repo/testing'
-import axios from 'axios'
 
 import { searchTickets as apiSearchTickets } from '@gorgias/helpdesk-client'
 
@@ -10,6 +9,7 @@ import {
     searchTicketsWithHighlights,
 } from 'models/ticket/resources'
 import type { Ticket } from 'models/ticket/types'
+import { CancelToken } from 'tests/axiosRuntime'
 
 jest.mock('@gorgias/helpdesk-client')
 const searchTicketsMock = assumeMock(apiSearchTickets)
@@ -72,7 +72,7 @@ describe('ticket resources', () => {
         })
 
         it('should pass cancel token', async () => {
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await searchTickets({

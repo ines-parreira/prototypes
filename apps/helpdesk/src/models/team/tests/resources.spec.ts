@@ -1,4 +1,3 @@
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import { Set } from 'immutable'
 import _pick from 'lodash/pick'
@@ -6,6 +5,7 @@ import _pick from 'lodash/pick'
 import { teams as teamsFixtures } from 'fixtures/teams'
 import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
+import { Cancel, CancelToken } from 'tests/axiosRuntime'
 
 import {
     addTeamMember,
@@ -54,7 +54,7 @@ describe('team resources', () => {
                 data: teamsFixtures,
                 meta,
             })
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await expect(
@@ -64,7 +64,7 @@ describe('team resources', () => {
                     },
                     { cancelToken: source.token },
                 ),
-            ).rejects.toEqual(new axios.Cancel())
+            ).rejects.toEqual(new Cancel())
         })
 
         it.each([OrderDirection.Asc, OrderDirection.Desc])(

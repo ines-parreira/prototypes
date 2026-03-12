@@ -5,7 +5,8 @@ import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
 import _omit from 'lodash/omit'
 import { Provider } from 'react-redux'
-import routerDom from 'react-router-dom'
+import type * as ReactRouterDom from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -40,7 +41,7 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
 jest.mock('react-router-dom', () => ({
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    ...(jest.requireActual('react-router-dom') as typeof routerDom),
+    ...(jest.requireActual('react-router-dom') as typeof ReactRouterDom),
     useParams: jest.fn(),
 }))
 
@@ -49,9 +50,7 @@ jest.mock('ulidx', () => ({
     ulid: jest.fn(() => mockUlid),
 }))
 
-const useParamsMock = routerDom.useParams as jest.MockedFunction<
-    typeof routerDom.useParams
->
+const useParamsMock = useParams as jest.MockedFunction<typeof useParams>
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)

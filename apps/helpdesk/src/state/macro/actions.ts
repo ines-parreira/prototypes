@@ -1,5 +1,5 @@
 import type { AxiosError, CancelToken } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 
@@ -31,7 +31,7 @@ export function fetchMacros(
                 meta: data.meta,
             }
         } catch (error) {
-            if (axios.isCancel(error)) {
+            if (isCancel(error)) {
                 return Promise.resolve()
             }
             await dispatch(
@@ -72,7 +72,7 @@ export function fetchAllMacros(
                     a.get('relevance_rank') - b.get('relevance_rank'),
             ) as List<any>
         } catch (error) {
-            if (axios.isCancel(error)) {
+            if (isCancel(error)) {
                 return Promise.resolve()
             }
             await dispatch(
@@ -101,7 +101,7 @@ export const getMacro =
             })
             return macro
         } catch (error) {
-            if (!axios.isCancel(error)) {
+            if (!isCancel(error)) {
                 void dispatch(
                     notify({
                         status: NotificationStatus.Error,

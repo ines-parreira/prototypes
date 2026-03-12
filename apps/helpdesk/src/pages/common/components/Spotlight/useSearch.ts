@@ -17,7 +17,7 @@ import {
 import { history } from '@repo/routing'
 import { isMacOs } from '@repo/utils'
 import type { CancelToken } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import _isEmpty from 'lodash/isEmpty'
 
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
@@ -433,7 +433,7 @@ export const useSearch = () => {
                         )
                     }
                 } catch (e) {
-                    if (!axios.isCancel(e)) {
+                    if (!isCancel(e)) {
                         void dispatch(
                             notify({
                                 message: 'Failed to fetch search results',

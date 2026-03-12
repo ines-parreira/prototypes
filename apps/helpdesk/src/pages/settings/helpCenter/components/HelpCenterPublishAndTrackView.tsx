@@ -3,7 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import { get } from 'lodash'
 import _debounce from 'lodash/debounce'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
@@ -144,10 +144,7 @@ export const HelpCenterInstallationView: React.FC = () => {
 
                     setIsSubdomainAvailable(false)
                 } catch (err) {
-                    if (
-                        axios.isAxiosError(err) &&
-                        err.response?.status === 404
-                    ) {
+                    if (isAxiosError(err) && err.response?.status === 404) {
                         setIsSubdomainAvailable(true)
                     } else {
                         throw err
@@ -178,7 +175,7 @@ export const HelpCenterInstallationView: React.FC = () => {
                 })
                 .catch((err) => {
                     const errorMessage =
-                        (axios.isAxiosError(err) &&
+                        (isAxiosError(err) &&
                             get(err, 'response.status') === 400 &&
                             get(err, 'response.data.message')) ||
                         'Could not delete the Help Center'

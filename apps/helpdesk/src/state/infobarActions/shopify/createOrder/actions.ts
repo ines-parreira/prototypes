@@ -1,6 +1,6 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import type { AxiosResponse } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import { fromJS, List } from 'immutable'
 import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -164,7 +164,7 @@ export const calculateDraftOrder =
 
             dispatch(setCalculatedDraftOrder(calculatedDraftOrder))
         } catch (error) {
-            if (axios.isCancel(error)) {
+            if (isCancel(error)) {
                 return
             }
 

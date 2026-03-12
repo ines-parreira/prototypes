@@ -1,4 +1,3 @@
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import client from 'models/api/resources'
@@ -9,6 +8,7 @@ import {
 } from 'models/search/resources'
 import type { SearchApiResponse, SearchParams } from 'models/search/types'
 import { SearchType } from 'models/search/types'
+import { Cancel, CancelToken } from 'tests/axiosRuntime'
 
 const mockedServer = new MockAdapter(client)
 
@@ -53,7 +53,7 @@ describe('search resource', () => {
         })
 
         it('should reject on cancel', async () => {
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await expect(
@@ -61,7 +61,7 @@ describe('search resource', () => {
                     ...defaultParams,
                     cancelToken: source.token,
                 }),
-            ).rejects.toEqual(new axios.Cancel())
+            ).rejects.toEqual(new Cancel())
         })
     })
 })

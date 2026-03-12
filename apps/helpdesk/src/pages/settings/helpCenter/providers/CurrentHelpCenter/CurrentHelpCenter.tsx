@@ -2,7 +2,7 @@ import type React from 'react'
 import { useEffect } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import axios from 'axios'
+import { isAxiosError } from 'axios'
 import {
     Route,
     Switch,
@@ -79,7 +79,7 @@ const CurrentHelpCenter: React.FC = () => {
                     dispatch(helpCenterUpdated(helpCenter))
                 } catch (err) {
                     const errorMessage =
-                        axios.isAxiosError(err) && err.response?.status === 400
+                        isAxiosError(err) && err.response?.status === 400
                             ? 'Help Center not found'
                             : 'Something went wrong'
 

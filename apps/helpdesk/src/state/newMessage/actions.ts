@@ -3,7 +3,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import type { AxiosError, CancelToken } from 'axios'
-import axios from 'axios'
+import { isCancel } from 'axios'
 import { ContentState, convertFromHTML } from 'draft-js'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -676,7 +676,7 @@ export const updatePotentialCustomers =
                 }
             },
             (error: AxiosError) => {
-                if (axios.isCancel(error)) {
+                if (isCancel(error)) {
                     return Promise.resolve() as unknown
                 }
                 return dispatch({
