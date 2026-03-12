@@ -21,7 +21,7 @@ import {
     BILLING_BASE_PATH,
     BILLING_PAYMENT_CARD_PATH,
 } from '../../constants'
-import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../../types'
 
 import css from './SummaryFooter.less'
 

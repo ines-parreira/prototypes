@@ -22,8 +22,8 @@ import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 
+import type { SelectedPlans } from '../../types'
 import { getNextTier } from '../../utils/getNextTier'
-import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 
 import css from './AutoUpgradeToggle.less'
 

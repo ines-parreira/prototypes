@@ -9,7 +9,7 @@ import {
     getVoiceOrSmsPlanChanged,
 } from 'state/billing/selectors'
 
-import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../../types'
 
 import css from './VoiceOrSmsChangeReviewAlert.less'
 

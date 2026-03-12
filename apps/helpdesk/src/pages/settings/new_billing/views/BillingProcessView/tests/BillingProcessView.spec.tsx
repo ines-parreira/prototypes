@@ -31,7 +31,7 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 import ScheduledCancellationSummary from '../../../components/ScheduledCancellationSummary'
 import SummaryTotal from '../../../components/SummaryTotal'
 import useProductCancellations from '../../../hooks/useProductCancellations'
-import BillingProcessView from '../BillingProcessView'
+import { BillingProcessView } from '../BillingProcessView'
 
 jest.mock('billing/hooks/useBillingState')
 const mockUseBillingState = assumeMock(useBillingState)

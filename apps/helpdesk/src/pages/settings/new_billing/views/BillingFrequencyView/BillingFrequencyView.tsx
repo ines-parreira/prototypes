@@ -26,7 +26,7 @@ import { SummaryItem } from '../../components/SummaryItem/SummaryItem'
 import SummaryTotal from '../../components/SummaryTotal/SummaryTotal'
 import { BILLING_PAYMENT_PATH, PRICING_DETAILS_URL } from '../../constants'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
-import type { SelectedPlans } from '../BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../../types'
 
 import css from './BillingFrequencyView.less'
 

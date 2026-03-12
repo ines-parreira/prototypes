@@ -3,7 +3,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import _capitalize from 'lodash/capitalize'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { dismissNotification } from 'reapop'
 
@@ -12,19 +11,8 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import type {
-    AutomatePlan,
-    ConvertPlan,
-    HelpdeskPlan,
-    PlanId,
-    SMSOrVoicePlan,
-} from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
-import {
-    getProductInfo,
-    isEnterprise,
-    isYearlyContractPlan,
-} from 'models/billing/utils'
+import { getProductInfo, isYearlyContractPlan } from 'models/billing/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
@@ -48,8 +36,9 @@ import SummaryTotal from '../../components/SummaryTotal'
 import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
 import { BILLING_BASE_PATH, PRICING_DETAILS_URL } from '../../constants'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
-import useProductCancellations from '../../hooks/useProductCancellations'
-import { formatNumTickets } from '../../utils/formatAmount'
+import type { SelectedPlans } from '../../types'
+import { useCancellationSummary } from './hooks/useCancellationSummary'
+import { buildEnterpriseMessage } from './utils'
 
 import css from './BillingProcessView.less'
 
@@ -69,35 +58,7 @@ type BillingProcessViewProps = {
     setSessionSelectedPlans?: React.Dispatch<SelectedPlans>
 }
 
-export type SelectedPlans = {
-    [ProductType.Helpdesk]: {
-        plan?: HelpdeskPlan
-        isSelected: boolean
-        autoUpgrade?: false
-    }
-    [ProductType.Automation]: {
-        plan?: AutomatePlan
-        isSelected: boolean
-        autoUpgrade?: false
-    }
-    [ProductType.Voice]: {
-        plan?: SMSOrVoicePlan
-        isSelected: boolean
-        autoUpgrade?: false
-    }
-    [ProductType.SMS]: {
-        plan?: SMSOrVoicePlan
-        isSelected: boolean
-        autoUpgrade?: false
-    }
-    [ProductType.Convert]: {
-        plan?: ConvertPlan
-        isSelected: boolean
-        autoUpgrade?: boolean
-    }
-}
-
-const BillingProcessView = ({
+export const BillingProcessView = ({
     setIsModalOpen,
     contactBilling,
     setDefaultMessage,
@@ -171,53 +132,13 @@ const BillingProcessView = ({
 
     const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
 
-    const productCancellationsQuery = useProductCancellations()
-    const cancellationsByPlanId = useMemo(
-        () => productCancellationsQuery.data ?? new Map<string, string>(),
-        [productCancellationsQuery.data],
-    )
-    const getScheduledCancellationPlanId = (
-        cancellationsByPlanId: Map<PlanId, string>,
-        plan?: AutomatePlan | SMSOrVoicePlan | ConvertPlan,
-    ) => (plan ? cancellationsByPlanId.get(plan.plan_id) || null : null)
-    const { totalCancelledAmount, cancelledProducts } = useMemo(() => {
-        let result = 0
-        const automatePlanId = getScheduledCancellationPlanId(
-            cancellationsByPlanId,
+    const { cancellationDates, totalCancelledAmount, cancelledProducts } =
+        useCancellationSummary({
             currentAutomatePlan,
-        )
-        const voicePlanId = getScheduledCancellationPlanId(
-            cancellationsByPlanId,
             currentVoicePlan,
-        )
-        const smsPlanId = getScheduledCancellationPlanId(
-            cancellationsByPlanId,
             currentSmsPlan,
-        )
-        const convertPlanId = getScheduledCancellationPlanId(
-            cancellationsByPlanId,
             currentConvertPlan,
-        )
-        result += automatePlanId ? (currentAutomatePlan?.amount ?? 0) : 0
-        result += voicePlanId ? (currentVoicePlan?.amount ?? 0) : 0
-        result += smsPlanId ? (currentSmsPlan?.amount ?? 0) : 0
-        result += convertPlanId ? (currentConvertPlan?.amount ?? 0) : 0
-        const cancelledProducts: ProductType[] = []
-        automatePlanId ? cancelledProducts.push(ProductType.Automation) : null
-        voicePlanId ? cancelledProducts.push(ProductType.Voice) : null
-        smsPlanId ? cancelledProducts.push(ProductType.SMS) : null
-        convertPlanId ? cancelledProducts.push(ProductType.Convert) : null
-        return {
-            totalCancelledAmount: result,
-            cancelledProducts: cancelledProducts,
-        }
-    }, [
-        cancellationsByPlanId,
-        currentAutomatePlan,
-        currentVoicePlan,
-        currentSmsPlan,
-        currentConvertPlan,
-    ])
+        })
 
     // on page unload, remove error notification
     useEffect(() => {
@@ -236,31 +157,10 @@ const BillingProcessView = ({
         logEvent(SegmentEvent.BillingUsageAndPlansPendingChangesModalShown)
     }, [])
 
-    const messageForEnterprise = useMemo(() => {
-        let message =
-            "Hey Gorgias, I'd like to get a quote for the following bundle of products:\n"
-
-        // Get selected plans' details
-        Object.values(ProductType).map((key) => {
-            const productType = key as ProductType
-            const productName = _capitalize(key)
-            const selectedPlan = selectedPlans[productType].plan
-            const productInfo = getProductInfo(productType, selectedPlan)
-
-            if (selectedPlans[productType]?.isSelected) {
-                const isEnterprisePlan = isEnterprise(selectedPlan)
-                const tickets = `${formatNumTickets(
-                    selectedPlan?.num_quota_tickets ?? 0,
-                )}${isEnterprisePlan ? '+' : ''}`
-
-                message += `\n • ${productName} - ${tickets} ${
-                    productInfo.counter
-                }/${cadence} ${isEnterprisePlan ? '(Enterprise)' : ''}`
-            }
-        })
-
-        return message
-    }, [selectedPlans, cadence])
+    const messageForEnterprise = useMemo(
+        () => buildEnterpriseMessage(selectedPlans, cadence),
+        [selectedPlans, cadence],
+    )
 
     if (hasCreditCard.isLoading || billingState.isFetching) return <Loader />
 
@@ -347,10 +247,9 @@ const BillingProcessView = ({
                         currentPlan={currentAutomatePlan}
                         availablePlans={automateAvailablePlans}
                         selectedPlans={selectedPlans}
-                        scheduledToCancelAt={getScheduledCancellationPlanId(
-                            cancellationsByPlanId,
-                            currentAutomatePlan,
-                        )}
+                        scheduledToCancelAt={
+                            cancellationDates[ProductType.Automation]
+                        }
                     />
                     <SummaryItem
                         productType={ProductType.Voice}
@@ -358,10 +257,9 @@ const BillingProcessView = ({
                         currentPlan={currentVoicePlan}
                         availablePlans={voiceAvailablePlans}
                         selectedPlans={selectedPlans}
-                        scheduledToCancelAt={getScheduledCancellationPlanId(
-                            cancellationsByPlanId,
-                            currentVoicePlan,
-                        )}
+                        scheduledToCancelAt={
+                            cancellationDates[ProductType.Voice]
+                        }
                     />
                     <SummaryItem
                         productType={ProductType.SMS}
@@ -369,10 +267,7 @@ const BillingProcessView = ({
                         currentPlan={currentSmsPlan}
                         availablePlans={smsAvailablePlans}
                         selectedPlans={selectedPlans}
-                        scheduledToCancelAt={getScheduledCancellationPlanId(
-                            cancellationsByPlanId,
-                            currentSmsPlan,
-                        )}
+                        scheduledToCancelAt={cancellationDates[ProductType.SMS]}
                     />
                     <SummaryItem
                         productType={ProductType.Convert}
@@ -380,10 +275,9 @@ const BillingProcessView = ({
                         currentPlan={currentConvertPlan}
                         availablePlans={convertAvailablePlans}
                         selectedPlans={selectedPlans}
-                        scheduledToCancelAt={getScheduledCancellationPlanId(
-                            cancellationsByPlanId,
-                            currentConvertPlan,
-                        )}
+                        scheduledToCancelAt={
+                            cancellationDates[ProductType.Convert]
+                        }
                     />
                     <SummaryTotal
                         selectedPlans={selectedPlans}
@@ -492,9 +386,7 @@ const BillingProcessView = ({
                             scheduledToCancelAt={
                                 currentAutomatePlan
                                     ? currentSubscriptionScheduledToCancelAt ||
-                                      cancellationsByPlanId.get(
-                                          currentAutomatePlan.plan_id,
-                                      )
+                                      cancellationDates[ProductType.Automation]
                                     : null
                             }
                             cancelledProducts={cancelledProducts}
@@ -518,9 +410,7 @@ const BillingProcessView = ({
                             scheduledToCancelAt={
                                 currentVoicePlan
                                     ? currentSubscriptionScheduledToCancelAt ||
-                                      cancellationsByPlanId.get(
-                                          currentVoicePlan.plan_id,
-                                      ) ||
+                                      cancellationDates[ProductType.Voice] ||
                                       null
                                     : null
                             }
@@ -545,9 +435,7 @@ const BillingProcessView = ({
                             scheduledToCancelAt={
                                 currentSmsPlan
                                     ? currentSubscriptionScheduledToCancelAt ||
-                                      cancellationsByPlanId.get(
-                                          currentSmsPlan.plan_id,
-                                      ) ||
+                                      cancellationDates[ProductType.SMS] ||
                                       null
                                     : null
                             }
@@ -572,9 +460,7 @@ const BillingProcessView = ({
                             scheduledToCancelAt={
                                 currentConvertPlan
                                     ? currentSubscriptionScheduledToCancelAt ||
-                                      cancellationsByPlanId.get(
-                                          currentConvertPlan.plan_id,
-                                      ) ||
+                                      cancellationDates[ProductType.Convert] ||
                                       null
                                     : null
                             }
@@ -624,5 +510,3 @@ const BillingProcessView = ({
         </div>
     )
 }
-
-export default BillingProcessView

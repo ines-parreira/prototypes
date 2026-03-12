@@ -10,7 +10,7 @@ import {
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
 import { BILLING_BASE_PATH } from 'pages/settings/new_billing/constants'
-import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from 'pages/settings/new_billing/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import type { SummaryFooterProps } from '../SummaryFooter'

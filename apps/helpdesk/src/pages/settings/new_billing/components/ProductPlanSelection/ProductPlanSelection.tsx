@@ -38,8 +38,8 @@ import {
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
 } from '../../constants'
 import useIsCancellationAvailable from '../../hooks/useIsCancellationAvailable'
+import type { SelectedPlans } from '../../types'
 import { formatNumTickets } from '../../utils/formatAmount'
-import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
 import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'
 import CancelProductModal from '../CancelProductModal/CancelProductModal'

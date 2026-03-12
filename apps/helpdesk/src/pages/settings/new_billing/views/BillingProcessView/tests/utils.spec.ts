@@ -2,11 +2,17 @@ import {
     automationProduct,
     basicMonthlyAutomationPlan,
     basicMonthlyHelpdeskPlan,
+    customHelpdeskPlan,
 } from 'fixtures/plans'
 import type { AutomatePlan } from 'models/billing/types'
-import { Cadence } from 'models/billing/types'
+import { Cadence, ProductType } from 'models/billing/types'
+import type { SelectedPlans } from 'pages/settings/new_billing/types'
 
-import { setAutomationNotification, setHelpdeskNotification } from '../utils'
+import {
+    buildEnterpriseMessage,
+    setAutomationNotification,
+    setHelpdeskNotification,
+} from '../utils'
 
 describe('setHelpdeskNotification', () => {
     const onClick = jest.fn()
@@ -151,4 +157,53 @@ describe('setAutomationNotification', () => {
             expect(notification?.buttons?.length).toBe(0)
         },
     )
+})
+
+describe('buildEnterpriseMessage', () => {
+    const unselectedPlan = { isSelected: false } as const
+
+    it('should include only selected products with their ticket counts', () => {
+        const selectedPlans: SelectedPlans = {
+            [ProductType.Helpdesk]: {
+                plan: basicMonthlyHelpdeskPlan,
+                isSelected: true,
+            },
+            [ProductType.Automation]: {
+                plan: basicMonthlyAutomationPlan,
+                isSelected: true,
+            },
+            [ProductType.Voice]: unselectedPlan,
+            [ProductType.SMS]: unselectedPlan,
+            [ProductType.Convert]: unselectedPlan,
+        }
+
+        const message = buildEnterpriseMessage(selectedPlans, Cadence.Month)
+
+        expect(message).toContain('Helpdesk - 300 tickets/month')
+        expect(message).toContain(
+            'Automation - 30 automated interactions/month',
+        )
+        expect(message).not.toContain('Voice')
+        expect(message).not.toContain('SMS')
+        expect(message).not.toContain('Convert')
+    })
+
+    it('should append enterprise suffix for custom plans', () => {
+        const selectedPlans: SelectedPlans = {
+            [ProductType.Helpdesk]: {
+                plan: customHelpdeskPlan,
+                isSelected: true,
+            },
+            [ProductType.Automation]: unselectedPlan,
+            [ProductType.Voice]: unselectedPlan,
+            [ProductType.SMS]: unselectedPlan,
+            [ProductType.Convert]: unselectedPlan,
+        }
+
+        const message = buildEnterpriseMessage(selectedPlans, Cadence.Month)
+
+        expect(message).toContain(
+            'Helpdesk - 10,000+ tickets/month (Enterprise)',
+        )
+    })
 })

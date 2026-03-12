@@ -11,7 +11,7 @@ import { SummaryItem } from 'pages/settings/new_billing/components/SummaryItem'
 import SummaryTotal from 'pages/settings/new_billing/components/SummaryTotal'
 import { SELECTED_PRODUCTS_SESSION_STORAGE_KEY } from 'pages/settings/new_billing/constants'
 import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan'
-import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from 'pages/settings/new_billing/types'
 import { isTrialing as getIsTrialing } from 'state/currentAccount/selectors'
 
 import css from './SubscriptionSummary.less'

@@ -16,9 +16,9 @@ import {
 } from 'models/billing/utils'
 
 import warningIcon from '../../../../../assets/img/icons/warning.svg'
+import type { SelectedPlans } from '../../types'
 import { formatAmount } from '../../utils/formatAmount'
 import { getNextTier } from '../../utils/getNextTier'
-import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
 import { SummaryItemTitle } from './SummaryItemTitle'
 
 import css from './SummaryItem.less'

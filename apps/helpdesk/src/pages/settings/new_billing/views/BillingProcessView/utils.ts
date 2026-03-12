@@ -1,11 +1,16 @@
+import _capitalize from 'lodash/capitalize'
+
 import type { PlanForProductType } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
-import { getProductInfo } from 'models/billing/utils'
+import { getProductInfo, isEnterprise } from 'models/billing/utils'
 import type { AlertNotification } from 'state/notifications/types'
 import {
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
+
+import type { SelectedPlans } from '../../types'
+import { formatNumTickets } from '../../utils/formatAmount'
 
 export type setNotificationProps<T extends ProductType> = {
     oldPlan?: PlanForProductType<T>
@@ -173,4 +178,26 @@ export const setConvertNotification = ({
             : [],
         message,
     }
+}
+
+export function buildEnterpriseMessage(
+    selectedPlans: SelectedPlans,
+    cadence: Cadence,
+): string {
+    const header =
+        "Hey Gorgias, I'd like to get a quote for the following bundle of products:\n"
+
+    const productLines = Object.values(ProductType)
+        .filter((type) => selectedPlans[type]?.isSelected)
+        .map((type) => {
+            const selectedPlan = selectedPlans[type].plan
+            const productInfo = getProductInfo(type, selectedPlan)
+            const isEnterprisePlan = isEnterprise(selectedPlan)
+            const tickets = `${formatNumTickets(selectedPlan?.num_quota_tickets ?? 0)}${isEnterprisePlan ? '+' : ''}`
+            const suffix = isEnterprisePlan ? ' (Enterprise)' : ''
+
+            return ` • ${_capitalize(type)} - ${tickets} ${productInfo.counter}/${cadence}${suffix}`
+        })
+
+    return header + '\n' + productLines.join('\n')
 }

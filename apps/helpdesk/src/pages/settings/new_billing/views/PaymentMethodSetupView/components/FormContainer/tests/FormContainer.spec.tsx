@@ -26,7 +26,7 @@ import {
     BILLING_PAYMENT_PATH,
     SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
 } from 'pages/settings/new_billing/constants'
-import type { SelectedPlans } from 'pages/settings/new_billing/views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from 'pages/settings/new_billing/types'
 import { FormContainer } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
 import type { BillingContactDetailResponse } from 'state/billing/types'
 import type { RootState } from 'state/types'

@@ -8,7 +8,7 @@ import {
 import type { CouponSummary } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
 
-import type { SelectedPlans } from '../../views/BillingProcessView/BillingProcessView'
+import type { SelectedPlans } from '../../types'
 import { getTotalWithDiscounts } from '../getTotalWithDiscounts'
 
 describe('getTotalWithDiscounts', () => {

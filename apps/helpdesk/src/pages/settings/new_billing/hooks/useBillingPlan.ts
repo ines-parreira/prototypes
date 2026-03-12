@@ -62,8 +62,8 @@ import {
     DATE_FORMAT,
     ZAPIER_BILLING_HOOK,
 } from '../constants'
+import type { SelectedPlans } from '../types'
 import { sendSupportTicket } from '../utils/sendSupportTicket'
-import type { SelectedPlans } from '../views/BillingProcessView/BillingProcessView'
 import {
     setAutomationNotification,
     setConvertNotification,
