@@ -3,6 +3,8 @@ import {
     aiAgentAutomationRateQueryFactoryV2,
     automationRatePerFeature,
     automationRatePerFeatureQueryFactoryV2,
+    dynamicOverallAutomationRate,
+    dynamicOverallAutomationRateQueryFactoryV2,
     overallAutomationRate,
     overallAutomationRateQueryFactoryV2,
 } from 'domains/reporting/models/scopes/overallAutomationRate'
@@ -110,6 +112,66 @@ describe('overallAutomationRateScope', () => {
         })
     })
 
+    describe('dynamicOverallAutomationRate', () => {
+        it('creates query without dimensions when no dimension provided', () => {
+            const actual = dynamicOverallAutomationRate.build({
+                ...context,
+                dimensions: [],
+            })
+
+            const expected = {
+                metricName: 'ai-agent-dynamic-automation-rate-per-feature',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                dimensions: [],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+
+        it('creates query with the provided dimension', () => {
+            const actual = dynamicOverallAutomationRate.build({
+                ...context,
+                dimensions: ['automationFeatureType'],
+            })
+
+            const expected = {
+                metricName: 'ai-agent-dynamic-automation-rate-per-feature',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                dimensions: ['automationFeatureType'],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+    })
+
     describe('QueryV2Factory methods', () => {
         describe('overallAutomationRateQueryFactoryV2', () => {
             it('returns the same result as calling build directly', () => {
@@ -136,6 +198,41 @@ describe('overallAutomationRateScope', () => {
                 const factoryResult =
                     automationRatePerFeatureQueryFactoryV2(context)
                 const buildResult = automationRatePerFeature.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('dynamicOverallAutomationRateQueryFactoryV2', () => {
+            it('returns query with empty dimensions when no dimension provided', () => {
+                const factoryResult =
+                    dynamicOverallAutomationRateQueryFactoryV2(context)
+
+                expect(factoryResult.dimensions).toBeUndefined()
+            })
+
+            it('returns query with the provided dimension', () => {
+                const dimension = 'channel'
+                const factoryResult =
+                    dynamicOverallAutomationRateQueryFactoryV2({
+                        ...context,
+                        dimensions: [dimension],
+                    })
+
+                expect(factoryResult.dimensions).toEqual(['channel'])
+            })
+
+            it('returns the same result as calling build directly with the dimension', () => {
+                const dimension = 'aiAgentSkill'
+                const factoryResult =
+                    dynamicOverallAutomationRateQueryFactoryV2({
+                        ...context,
+                        dimensions: [dimension],
+                    })
+                const buildResult = dynamicOverallAutomationRate.build({
+                    ...context,
+                    dimensions: [dimension],
+                })
 
                 expect(factoryResult).toEqual(buildResult)
             })

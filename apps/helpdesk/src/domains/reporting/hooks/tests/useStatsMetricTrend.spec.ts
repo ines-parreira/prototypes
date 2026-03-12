@@ -8,8 +8,11 @@ import {
 } from 'domains/reporting/hooks/useStatsMetric'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
+    getStatsTrendHook,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
 import type { BuiltQuery } from 'domains/reporting/models/scopes/scope'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 jest.mock('domains/reporting/hooks/useStatsMetric')
 
@@ -178,6 +181,99 @@ describe('useStatsMetricTrend', () => {
             expect(useStatsMetricMock).toHaveBeenCalledTimes(2)
             expect(useStatsMetricMock).toHaveBeenNthCalledWith(1, currentQuery)
             expect(useStatsMetricMock).toHaveBeenNthCalledWith(2, prevQuery)
+        })
+    })
+
+    describe('getStatsTrendHook', () => {
+        const filters: StatsFilters = {
+            period: {
+                start_datetime: '2025-09-03T00:00:00.000',
+                end_datetime: '2025-09-03T23:59:59.000',
+            },
+        }
+        const timezone = 'utc'
+
+        const mockCurrentQuery: BuiltQuery = {
+            scope: MetricScope.TicketsClosed,
+            measures: ['ticketCount'],
+            filters: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
+        }
+
+        const mockPrevQuery: BuiltQuery = {
+            scope: MetricScope.TicketsClosed,
+            measures: ['ticketCount'],
+            filters: [],
+            metricName: METRIC_NAMES.TEST_METRIC,
+        }
+
+        const mockQuery = jest.fn()
+
+        beforeEach(() => {
+            jest.resetAllMocks()
+            useStatsMetricMock.mockReturnValue(defaultMetric)
+            mockQuery
+                .mockReturnValueOnce(mockCurrentQuery)
+                .mockReturnValueOnce(mockPrevQuery)
+        })
+
+        it('calls queryV2 with current period filters and timezone', () => {
+            const useTrend = getStatsTrendHook(mockQuery)
+            renderHook(() => useTrend(filters, timezone))
+
+            expect(mockQuery).toHaveBeenNthCalledWith(1, { filters, timezone })
+        })
+
+        it('calls queryV2 with previous period filters and timezone', () => {
+            const prevPeriod = getPreviousPeriod(filters.period)
+            const useTrend = getStatsTrendHook(mockQuery)
+            renderHook(() => useTrend(filters, timezone))
+
+            expect(mockQuery).toHaveBeenNthCalledWith(2, {
+                filters: { ...filters, period: prevPeriod },
+                timezone,
+            })
+        })
+
+        it('passes the built queries to useStatsMetricTrend', () => {
+            const useTrend = getStatsTrendHook(mockQuery)
+            renderHook(() => useTrend(filters, timezone))
+
+            expect(useStatsMetricMock).toHaveBeenCalledWith(mockCurrentQuery)
+            expect(useStatsMetricMock).toHaveBeenCalledWith(mockPrevQuery)
+        })
+
+        it('returns value from current period and prevValue from previous period', () => {
+            useStatsMetricMock
+                .mockReturnValueOnce({ ...defaultMetric, data: { value: 100 } })
+                .mockReturnValueOnce({ ...defaultMetric, data: { value: 75 } })
+
+            const useTrend = getStatsTrendHook(mockQuery)
+            const { result } = renderHook(() => useTrend(filters, timezone))
+
+            expect(result.current.data).toEqual({ value: 100, prevValue: 75 })
+        })
+
+        it('returns isError true when either metric has an error', () => {
+            useStatsMetricMock
+                .mockReturnValueOnce({ ...defaultMetric, isError: true })
+                .mockReturnValueOnce({ ...defaultMetric, isError: false })
+
+            const useTrend = getStatsTrendHook(mockQuery)
+            const { result } = renderHook(() => useTrend(filters, timezone))
+
+            expect(result.current.isError).toBe(true)
+        })
+
+        it('returns isFetching true when either metric is fetching', () => {
+            useStatsMetricMock
+                .mockReturnValueOnce({ ...defaultMetric, isFetching: true })
+                .mockReturnValueOnce({ ...defaultMetric, isFetching: false })
+
+            const useTrend = getStatsTrendHook(mockQuery)
+            const { result } = renderHook(() => useTrend(filters, timezone))
+
+            expect(result.current.isFetching).toBe(true)
         })
     })
 

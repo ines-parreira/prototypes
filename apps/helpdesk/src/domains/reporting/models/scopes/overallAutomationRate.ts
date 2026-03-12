@@ -63,3 +63,13 @@ export const automationRatePerFeature = overallAutomationRateScope
 
 export const automationRatePerFeatureQueryFactoryV2 = (ctx: Context) =>
     automationRatePerFeature.build(ctx)
+
+export const dynamicOverallAutomationRate = overallAutomationRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE)
+    .defineQuery(({ ctx }) => ({
+        measures: ['automationRate'],
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicOverallAutomationRateQueryFactoryV2 = (ctx: Context) =>
+    dynamicOverallAutomationRate.build(ctx)

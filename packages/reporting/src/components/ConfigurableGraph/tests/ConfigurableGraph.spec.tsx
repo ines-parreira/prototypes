@@ -52,9 +52,10 @@ describe('ConfigurableChart', () => {
         it('renders the initial metric title', () => {
             const metrics: ConfigurableGraphMetricConfig[] = [
                 {
-                    id: 'automation_rate',
+                    measure: 'automation_rate',
                     name: 'Automation Rate',
-                    groupings: [featureGrouping],
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
                 },
             ]
 
@@ -66,14 +67,16 @@ describe('ConfigurableChart', () => {
         it('shows a metric selector button when multiple metrics are provided', () => {
             const metrics: ConfigurableGraphMetricConfig[] = [
                 {
-                    id: 'automation_rate',
+                    measure: 'automation_rate',
                     name: 'Automation Rate',
-                    groupings: [featureGrouping],
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
                 },
                 {
-                    id: 'resolution_time',
+                    measure: 'resolution_time',
                     name: 'Resolution Time',
-                    groupings: [channelGrouping],
+                    metricFormat: 'duration',
+                    dimensions: [channelGrouping],
                 },
             ]
 
@@ -89,10 +92,10 @@ describe('ConfigurableChart', () => {
         it('renders trend value when useTrendData provides data', () => {
             const metrics: ConfigurableGraphMetricConfig[] = [
                 {
-                    id: 'automation_rate',
+                    measure: 'automation_rate',
                     name: 'Automation Rate',
                     metricFormat: 'decimal-to-percent',
-                    groupings: [featureGrouping],
+                    dimensions: [featureGrouping],
                     useTrendData: () => ({
                         isFetching: false,
                         isError: false,
@@ -109,9 +112,10 @@ describe('ConfigurableChart', () => {
         it('does not render a trend value when useTrendData is not provided', () => {
             const metrics: ConfigurableGraphMetricConfig[] = [
                 {
-                    id: 'automation_rate',
+                    measure: 'automation_rate',
                     name: 'Automation Rate',
-                    groupings: [featureGrouping],
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
                 },
             ]
 
@@ -125,9 +129,10 @@ describe('ConfigurableChart', () => {
         it('does not show grouping selector when there is a single grouping', () => {
             const metrics: ConfigurableGraphMetricConfig[] = [
                 {
-                    id: 'automation_rate',
+                    measure: 'automation_rate',
                     name: 'Automation Rate',
-                    groupings: [featureGrouping],
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
                 },
             ]
 
@@ -141,9 +146,10 @@ describe('ConfigurableChart', () => {
         it('shows grouping selector when there are multiple groupings', () => {
             const metrics: ConfigurableGraphMetricConfig[] = [
                 {
-                    id: 'automation_rate',
+                    measure: 'automation_rate',
                     name: 'Automation Rate',
-                    groupings: [featureGrouping, channelGrouping],
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping, channelGrouping],
                 },
             ]
 
@@ -159,9 +165,10 @@ describe('ConfigurableChart', () => {
         it('shows ChartTypeToggle when the active grouping is donut-or-bar', () => {
             const metrics: ConfigurableGraphMetricConfig[] = [
                 {
-                    id: 'automation_rate',
+                    measure: 'automation_rate',
                     name: 'Automation Rate',
-                    groupings: [featureGrouping],
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
                 },
             ]
 
@@ -177,9 +184,10 @@ describe('ConfigurableChart', () => {
             const onSelect = vi.fn()
             const metrics: ConfigurableGraphMetricConfig[] = [
                 {
-                    id: 'automation_rate',
+                    measure: 'automation_rate',
                     name: 'Automation Rate',
-                    groupings: [featureGrouping, channelGrouping],
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping, channelGrouping],
                 },
             ]
 
@@ -189,8 +197,8 @@ describe('ConfigurableChart', () => {
             await user.click(getVisualItem('Channel'))
 
             expect(onSelect).toHaveBeenCalledWith({
-                metricId: 'automation_rate',
-                groupingId: 'by_channel',
+                measure: 'automation_rate',
+                dimension: 'by_channel',
             })
         })
     })
@@ -201,14 +209,16 @@ describe('ConfigurableChart', () => {
             const onSelect = vi.fn()
             const metrics: ConfigurableGraphMetricConfig[] = [
                 {
-                    id: 'automation_rate',
+                    measure: 'automation_rate',
                     name: 'Automation Rate',
-                    groupings: [featureGrouping],
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
                 },
                 {
-                    id: 'resolution_time',
+                    measure: 'resolution_time',
                     name: 'Resolution Time',
-                    groupings: [channelGrouping],
+                    metricFormat: 'duration',
+                    dimensions: [channelGrouping],
                 },
             ]
 
@@ -220,8 +230,8 @@ describe('ConfigurableChart', () => {
             await user.click(getVisualItem('Resolution Time'))
 
             expect(onSelect).toHaveBeenCalledWith({
-                metricId: 'resolution_time',
-                groupingId: 'by_channel',
+                measure: 'resolution_time',
+                dimension: 'by_channel',
             })
         })
     })

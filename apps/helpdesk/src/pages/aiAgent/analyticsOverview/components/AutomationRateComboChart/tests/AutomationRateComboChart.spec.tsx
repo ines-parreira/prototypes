@@ -1,18 +1,22 @@
 import { useFlag } from '@repo/feature-flags'
+import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
+import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import * as automateHooks from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AutomationRateComboChart } from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
-import * as automationRateByFeatureHook from 'pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature'
+import { getBarChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
-jest.mock('domains/reporting/hooks/automate/useAutomationRateTrend')
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-jest.mock('pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature')
 jest.mock('@repo/feature-flags')
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/DEPRECATED_AutomationRateComboChart',
+    () => ({
+        DEPRECATED_AutomationRateComboChart: () => <div>Deprecated chart</div>,
+    }),
+)
 jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
     () => ({
@@ -21,6 +25,11 @@ jest.mock(
         ),
     }),
 )
+jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
+    ...jest.requireActual('pages/aiAgent/utils/aiAgentMetrics.utils'),
+    getBarChartGraphConfig: jest.fn(),
+}))
+const getBarChartGraphConfigMock = assumeMock(getBarChartGraphConfig)
 
 const useFlagMocked = assumeMock(useFlag)
 
@@ -31,6 +40,32 @@ describe('AutomationChart', () => {
         { name: 'Article Recommendation', value: 4 },
         { name: 'Order Management', value: 3 },
     ]
+    const defaultDimension = {
+        id: 'automationFeatureType',
+        name: 'Feature',
+        chartType: ConfigurableGraphType.Donut,
+        valueFormatter: (value: number) => `${value}%`,
+        useChartData: jest.fn().mockReturnValue({
+            data: mockChartData,
+            isLoading: false,
+        }),
+        period: {
+            start_datetime: '2024-01-01',
+            end_datetime: '2024-01-31',
+        },
+    }
+    const defaultMetricConfig: ConfigurableGraphMetricConfig = {
+        measure: 'automationRate',
+        name: 'Overall automation rate',
+        metricFormat: 'decimal-to-percent',
+        interpretAs: 'more-is-better',
+        useTrendData: jest.fn().mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: { value: 0.32, prevValue: 0.3 },
+        }),
+        dimensions: [defaultDimension],
+    }
 
     beforeAll(() => {
         global.ResizeObserver = class ResizeObserver {
@@ -56,23 +91,7 @@ describe('AutomationChart', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                value: 0.32,
-                prevValue: 0.3,
-            },
-        })
-
-        jest.spyOn(
-            automationRateByFeatureHook,
-            'useAutomationRateByFeature',
-        ).mockReturnValue({
-            data: mockChartData,
-            isLoading: false,
-            isError: false,
-        })
+        getBarChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
 
         useFlagMocked.mockReturnValue(true)
     })
@@ -150,14 +169,19 @@ describe('AutomationChart', () => {
     })
 
     it('should render with negative trend icon when trend is negative', () => {
-        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                value: 0.28,
-                prevValue: 0.3,
+        getBarChartGraphConfigMock.mockReturnValue([
+            {
+                ...defaultMetricConfig,
+                useTrendData: jest.fn().mockReturnValue({
+                    isFetching: false,
+                    isError: false,
+                    data: {
+                        value: 0.28,
+                        prevValue: 0.3,
+                    },
+                }),
             },
-        })
+        ])
 
         const { container } = render(<AutomationRateComboChart />)
 
@@ -193,14 +217,19 @@ describe('AutomationChart', () => {
     })
 
     it('should render loading skeleton when data is loading', () => {
-        jest.spyOn(
-            automationRateByFeatureHook,
-            'useAutomationRateByFeature',
-        ).mockReturnValue({
-            data: [],
-            isLoading: true,
-            isError: false,
-        })
+        getBarChartGraphConfigMock.mockReturnValue([
+            {
+                ...defaultMetricConfig,
+                dimensions: [
+                    {
+                        ...defaultDimension,
+                        useChartData: jest
+                            .fn()
+                            .mockReturnValue({ data: [], isLoading: true }),
+                    },
+                ],
+            },
+        ])
 
         render(<AutomationRateComboChart />)
 
@@ -208,11 +237,15 @@ describe('AutomationChart', () => {
     })
 
     it('should render loading skeleton when automation rate is fetching', () => {
-        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
-            isFetching: true,
-            isError: false,
-            data: undefined,
-        })
+        getBarChartGraphConfigMock.mockReturnValue([
+            {
+                ...defaultMetricConfig,
+                useTrendData: jest.fn().mockReturnValue({
+                    data: undefined,
+                    isFetching: true,
+                }),
+            },
+        ])
 
         render(<AutomationRateComboChart />)
 
@@ -226,14 +259,20 @@ describe('AutomationChart', () => {
             { name: 'Article Recommendation', value: 4 },
         ]
 
-        jest.spyOn(
-            automationRateByFeatureHook,
-            'useAutomationRateByFeature',
-        ).mockReturnValue({
-            data: mockDataWithZero,
-            isLoading: false,
-            isError: false,
-        })
+        getBarChartGraphConfigMock.mockReturnValue([
+            {
+                ...defaultMetricConfig,
+                dimensions: [
+                    {
+                        ...defaultDimension,
+                        useChartData: jest.fn().mockReturnValue({
+                            data: mockDataWithZero,
+                            isLoading: false,
+                        }),
+                    },
+                ],
+            },
+        ])
 
         render(<AutomationRateComboChart />)
 
@@ -243,26 +282,18 @@ describe('AutomationChart', () => {
     })
 
     it('should handle null automation rate value', () => {
-        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                value: null,
-                prevValue: null,
+        getBarChartGraphConfigMock.mockReturnValue([
+            {
+                ...defaultMetricConfig,
+                useTrendData: jest.fn().mockReturnValue({
+                    data: {
+                        value: null,
+                        prevValue: null,
+                    },
+                    isLoading: false,
+                }),
             },
-        })
-
-        render(<AutomationRateComboChart />)
-
-        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
-    })
-
-    it('should handle undefined automation rate data', () => {
-        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: undefined,
-        })
+        ])
 
         render(<AutomationRateComboChart />)
 
@@ -270,14 +301,19 @@ describe('AutomationChart', () => {
     })
 
     it('should render empty chart when chart data is empty array', () => {
-        jest.spyOn(
-            automationRateByFeatureHook,
-            'useAutomationRateByFeature',
-        ).mockReturnValue({
-            data: [],
-            isLoading: false,
-            isError: false,
-        })
+        getBarChartGraphConfigMock.mockReturnValue([
+            {
+                ...defaultMetricConfig,
+                dimensions: [
+                    {
+                        ...defaultDimension,
+                        useChartData: jest
+                            .fn()
+                            .mockReturnValue({ data: [], isLoading: false }),
+                    },
+                ],
+            },
+        ])
 
         render(<AutomationRateComboChart />)
 
@@ -288,15 +324,7 @@ describe('AutomationChart', () => {
         useFlagMocked.mockReturnValue(false)
         render(<AutomationRateComboChart />)
 
-        expect(
-            screen.getByRole('radio', { name: /chart-pie/i }),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByRole('radio', { name: /chart-bar-vertical/i }),
-        ).toBeInTheDocument()
-        expect(
-            screen.queryByLabelText('bar-or-donut-menu'),
-        ).not.toBeInTheDocument()
+        expect(screen.getByText('Deprecated chart')).toBeInTheDocument()
     })
 
     describe('ChartsActionMenu', () => {

@@ -47,6 +47,7 @@ function DonutOrBarWithToggleRenderer({
             containerHeight={280}
             isLoading={isLoading}
             valueFormatter={groupingConfig.valueFormatter}
+            yAxisFormatter={groupingConfig.valueFormatter}
             period={groupingConfig.period}
         />
     )

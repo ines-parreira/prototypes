@@ -3,6 +3,8 @@ export const METRIC_NAMES = {
     AI_AGENT_ALL_TICKETS_FOR_AI_AGENT_TOTAL_COUNT:
         'ai-agent-all-tickets-for-ai-agent-total-count',
     AI_AGENT_AUTOMATED_INTERACTIONS: 'ai-agent-automated-interactions',
+    AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS:
+        'ai-agent-dynamic-overall-automated-interactions',
     AI_AGENT_AUTOMATED_INTERACTIONS_TIME_SERIES:
         'ai-agent-automated-interactions-time-series',
     AI_AGENT_AUTOMATED_INTERACTIONS_TICKETS:
@@ -20,6 +22,8 @@ export const METRIC_NAMES = {
     AI_AGENT_TOUCHED_TICKET_TOTAL_COUNT: 'ai-agent-touched-ticket-total-count',
     AI_AGENT_AUTOMATION_RATE: 'ai-agent-automation-rate',
     AI_AGENT_OVERALL_AUTOMATION_RATE: 'ai-agent-overall-automation-rate',
+    AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE:
+        'ai-agent-dynamic-automation-rate-per-feature',
     AI_AGENT_AUTOMATION_RATE_PER_FEATURE:
         'ai-agent-automation-rate-per-feature',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
@@ -616,6 +620,7 @@ export enum MetricScope {
 
     // P5 - AI Agent Revamp
     OverallAutomationRate = 'overall-automation-rate',
+    OverallAutomatedInteractions = 'overall-automated-interactions',
 }
 
 export type MetricName = (typeof METRIC_NAMES)[keyof typeof METRIC_NAMES]
@@ -869,5 +874,9 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE,
         METRIC_NAMES.AI_AGENT_AUTOMATION_RATE,
         METRIC_NAMES.AI_AGENT_AUTOMATION_RATE_PER_FEATURE,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE,
+    ],
+    [MetricScope.OverallAutomatedInteractions]: [
+        METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE,
     ],
 }

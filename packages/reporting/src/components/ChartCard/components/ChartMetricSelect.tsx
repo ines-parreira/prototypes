@@ -29,6 +29,7 @@ export const ChartMetricSelect = ({
 
     return (
         <Select
+            aria-label={'chart-metric-select'}
             selectedItem={selectedItem}
             onSelect={(item) => onMetricChange(item.label)}
             items={metrics}
@@ -52,7 +53,7 @@ export const ChartMetricSelect = ({
                 </SelectTrigger>
             )}
         >
-            {(option) => <ListItem label={option.label} />}
+            {(option) => <ListItem id={option.id} label={option.label} />}
         </Select>
     )
 }

@@ -19,6 +19,7 @@ export function MetricGroupingSelect({
     return (
         <Select
             data-name={'metric-grouping-selector'}
+            aria-label={'metric-grouping-selector'}
             items={items}
             selectedItem={selectedItem}
             onSelect={onMetricGroupingSelect}
@@ -32,7 +33,7 @@ export function MetricGroupingSelect({
                 </Button>
             )}
         >
-            {(grouping) => <ListItem label={grouping.name} wrap={true} />}
+            {(grouping) => <ListItem id={grouping.id} label={grouping.name} />}
         </Select>
     )
 }

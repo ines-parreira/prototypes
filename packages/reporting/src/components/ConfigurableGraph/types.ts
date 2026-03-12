@@ -48,11 +48,11 @@ export type ConfigurableGraphGroupingConfig =
     | HorizontalBarGroupingConfig
 
 export type ConfigurableGraphMetricConfig = {
-    id: string
+    measure: string
     name: string
-    metricFormat?: MetricTrendFormat
+    metricFormat: MetricTrendFormat
     interpretAs?: TrendDirection
     tooltipData?: { period: string }
     useTrendData?: () => MetricTrend
-    groupings: ConfigurableGraphGroupingConfig[]
+    dimensions: ConfigurableGraphGroupingConfig[]
 }

@@ -2,6 +2,7 @@ import type { ReactNode } from 'react'
 import { useState } from 'react'
 
 import type { MetricTrend } from '../../types'
+import { formatMetricValue } from '../../utils/helpers'
 import { ChartCard } from '../ChartCard'
 import { ConfigurableGraphContent } from './components/ConfigurableGraphContent'
 import { MetricGroupingSelect } from './components/MetricGroupingSelect'
@@ -13,8 +14,8 @@ import type {
 export type { ConfigurableGraphGroupingConfig, ConfigurableGraphMetricConfig }
 
 type Selection = {
-    metricId: string
-    groupingId: string
+    measure: string
+    dimension: string
 }
 
 type Props = {
@@ -27,37 +28,37 @@ const NO_TREND: MetricTrend = { isFetching: false, isError: false }
 const useNoTrendData = () => NO_TREND
 
 export function ConfigurableGraph({ metrics, onSelect, actionMenu }: Props) {
-    const [selectedMetricId, setSelectedMetricId] = useState(metrics[0].id)
-    const [selectedGroupingId, setSelectedGroupingId] = useState(
-        metrics[0].groupings[0].id,
+    const [selectedMeasure, setSelectedMeasure] = useState(metrics[0].measure)
+    const [selectedDimension, setSelectedDimension] = useState(
+        metrics[0].dimensions[0].id,
     )
 
-    const selectedMetric = metrics.find((m) => m.id === selectedMetricId)!
-    const selectedGrouping = selectedMetric.groupings.find(
-        (g) => g.id === selectedGroupingId,
+    const selectedMetric = metrics.find((m) => m.measure === selectedMeasure)!
+    const selectedGrouping = selectedMetric.dimensions.find(
+        (g) => g.id === selectedDimension,
     )!
 
     const hasTrend = Boolean(selectedMetric.useTrendData)
     const trendData = (selectedMetric.useTrendData ?? useNoTrendData)()
 
-    const handleMetricChange = (metricId: string) => {
-        const newMetric = metrics.find((m) => m.id === metricId)!
-        const groupingId = newMetric.groupings[0].id
-        setSelectedMetricId(metricId)
-        setSelectedGroupingId(groupingId)
-        onSelect?.({ metricId, groupingId })
+    const handleMetricChange = (measure: string) => {
+        const newMetric = metrics.find((m) => m.measure === measure)!
+        const dimension = newMetric.dimensions[0].id
+        setSelectedMeasure(measure)
+        setSelectedDimension(dimension)
+        onSelect?.({ measure, dimension })
     }
 
-    const handleGroupingChange = (groupingId: string) => {
-        setSelectedGroupingId(groupingId)
-        onSelect?.({ metricId: selectedMetricId, groupingId })
+    const handleGroupingChange = (dimension: string) => {
+        setSelectedDimension(dimension)
+        onSelect?.({ measure: selectedMeasure, dimension })
     }
 
     const chartControls = (
         <>
-            {selectedMetric.groupings.length > 1 && (
+            {selectedMetric.dimensions.length > 1 && (
                 <MetricGroupingSelect
-                    items={selectedMetric.groupings}
+                    items={selectedMetric.dimensions}
                     selectedItem={selectedGrouping}
                     onMetricGroupingSelect={(item) =>
                         handleGroupingChange(item.id)
@@ -71,10 +72,10 @@ export function ConfigurableGraph({ metrics, onSelect, actionMenu }: Props) {
     return (
         <ChartCard
             title={selectedMetric.name}
-            metrics={metrics.map((m) => ({ id: m.id, label: m.name }))}
+            metrics={metrics.map((m) => ({ id: m.measure, label: m.name }))}
             onMetricChange={(label) => {
                 const metric = metrics.find((m) => m.name === label)
-                if (metric) handleMetricChange(metric.id)
+                if (metric) handleMetricChange(metric.measure)
             }}
             chartControls={chartControls}
             alwaysShowChartControls={true}
@@ -87,7 +88,13 @@ export function ConfigurableGraph({ metrics, onSelect, actionMenu }: Props) {
             tooltipData={selectedMetric.tooltipData}
             isLoading={trendData.isFetching}
         >
-            <ConfigurableGraphContent groupingConfig={selectedGrouping} />
+            <ConfigurableGraphContent
+                groupingConfig={{
+                    valueFormatter: (value) =>
+                        formatMetricValue(value, selectedMetric.metricFormat),
+                    ...selectedGrouping,
+                }}
+            />
         </ChartCard>
     )
 }

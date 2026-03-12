@@ -194,6 +194,7 @@ export type MeasureName =
     | 'ticketSales'
     | 'ticketSalesCount'
     | 'handoverInteractionsCount'
+    | 'automatedInteractionsCount'
 
 export type TimeDimensionName =
     | 'createdDatetime'
