@@ -16,12 +16,14 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
     const { journeyType } = useJourneyContext()
 
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
+    const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
     const smsImagesEnabled = useFlag(FeatureFlagKey.AiJourneySmsImagesEnabled)
     const campaignImageEnabled = useFlag(
         FeatureFlagKey.AiJourneyCampaignImageEnabled,
     )
 
-    const shouldRenderIncludeImage = !isCampaign && smsImagesEnabled
+    const shouldRenderIncludeImage =
+        !isCampaign && !isWelcome && smsImagesEnabled
     const shouldRenderImageUpload = isCampaign && campaignImageEnabled
 
     if (!isFormReady) {
@@ -39,7 +41,9 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
                 {isCampaign && <CampaignName />}
                 <SenderPhoneNumber />
                 {!isCampaign && <NumberOfMessages />}
-                {shouldRenderIncludeImage && <IncludeImage />}
+                {shouldRenderIncludeImage && (
+                    <IncludeImage journeyType={journeyType} />
+                )}
                 {shouldRenderImageUpload && <ImageUpload />}
             </Box>
         </Card>

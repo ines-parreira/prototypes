@@ -31,7 +31,7 @@ describe('<GeneralCard />', () => {
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
         mockUseJourneyContext.mockReturnValue({
-            journeyType: JOURNEY_TYPES.WELCOME,
+            journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
         })
     })
 
@@ -122,6 +122,19 @@ describe('<GeneralCard />', () => {
                 mockUseFlag.mockReturnValue(true)
                 mockUseJourneyContext.mockReturnValue({
                     journeyType: JOURNEY_TYPES.CAMPAIGN,
+                })
+
+                render(<GeneralCard isFormReady={true} />)
+
+                expect(
+                    screen.queryByText('IncludeImage'),
+                ).not.toBeInTheDocument()
+            })
+
+            it('does not render when journey type is WELCOME even if smsImagesEnabled is true', () => {
+                mockUseFlag.mockReturnValue(true)
+                mockUseJourneyContext.mockReturnValue({
+                    journeyType: JOURNEY_TYPES.WELCOME,
                 })
 
                 render(<GeneralCard isFormReady={true} />)
