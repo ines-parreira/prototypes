@@ -2168,7 +2168,6 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '16',
                 resourceTitle: 'Test Article',
                 resourceLocale: 'en',
-                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2179,7 +2178,6 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '26665',
                 resourceTitle: 'Test Guidance',
                 resourceLocale: 'en',
-                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2190,7 +2188,6 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: 'uuid',
                 resourceTitle: 'Test Action',
                 resourceLocale: 'en',
-                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2202,7 +2199,6 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '78',
                 resourceTitle: 'Test File Snippet',
                 resourceLocale: 'en',
-                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2213,7 +2209,6 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '89',
                 resourceTitle: 'Test External Snippet',
                 resourceLocale: 'en',
-                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2224,7 +2219,6 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '',
                 resourceTitle: '#98765',
                 resourceLocale: 'en',
-                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2235,7 +2229,6 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '',
                 resourceTitle: 'Product Knowledge',
                 resourceLocale: 'en',
-                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2246,7 +2239,6 @@ describe('AiAgentReasoning', () => {
                 resourceSetId: '',
                 resourceTitle: 'Product Recommendation',
                 resourceLocale: 'en',
-                resourceVersion: null,
                 taskIds: [],
                 resourceIsDraft: false,
                 resourceVersion: '1',
@@ -2259,7 +2251,7 @@ describe('AiAgentReasoning', () => {
             resourceSetId: '16',
             resourceTitle: 'Test Article',
             resourceIsDraft: false,
-            resourceVersion: null,
+            resourceVersion: '1',
             resourceLocale: 'en',
         }
 
@@ -2269,7 +2261,7 @@ describe('AiAgentReasoning', () => {
             resourceSetId: '26665',
             resourceTitle: 'Test Guidance',
             resourceIsDraft: false,
-            resourceVersion: null,
+            resourceVersion: '1',
             resourceLocale: 'en',
         }
 
@@ -2278,7 +2270,7 @@ describe('AiAgentReasoning', () => {
             resourceId: '01J7KWHHMDY3H5S174D89VG7S3',
             resourceTitle: 'Test Action',
             resourceIsDraft: false,
-            resourceVersion: null,
+            resourceVersion: '1',
             resourceLocale: 'en',
         }
 
@@ -2288,7 +2280,7 @@ describe('AiAgentReasoning', () => {
             resourceSetId: '78',
             resourceTitle: 'Test File Snippet',
             resourceIsDraft: false,
-            resourceVersion: null,
+            resourceVersion: '1',
             resourceLocale: 'en',
         }
 
@@ -2298,7 +2290,7 @@ describe('AiAgentReasoning', () => {
             resourceSetId: '89',
             resourceTitle: 'Test External Snippet',
             resourceIsDraft: false,
-            resourceVersion: null,
+            resourceVersion: '1',
             resourceLocale: 'en',
         }
 
@@ -2307,7 +2299,7 @@ describe('AiAgentReasoning', () => {
             resourceId: '98765',
             resourceTitle: '#98765',
             resourceIsDraft: false,
-            resourceVersion: null,
+            resourceVersion: '1',
             resourceLocale: 'en',
         }
 
@@ -2316,7 +2308,7 @@ describe('AiAgentReasoning', () => {
             resourceId: '12345',
             resourceTitle: 'Product Knowledge',
             resourceIsDraft: false,
-            resourceVersion: null,
+            resourceVersion: '1',
             resourceLocale: 'en',
         }
 
@@ -2325,7 +2317,7 @@ describe('AiAgentReasoning', () => {
             resourceId: '67890',
             resourceTitle: 'Product Recommendation',
             resourceIsDraft: false,
-            resourceVersion: null,
+            resourceVersion: '1',
             resourceLocale: 'en',
         }
 
