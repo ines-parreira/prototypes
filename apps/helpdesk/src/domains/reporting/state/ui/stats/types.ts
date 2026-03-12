@@ -44,6 +44,8 @@ export enum AgentsTableRow {
     Total = 'total',
 }
 
+export type AgentAvailabilityTableColumn = AgentAvailabilityColumn
+
 export enum AutoQAMetric {
     ReviewedClosedTickets = 'auto_qa_reviewed_closed_tickets',
     ResolutionCompleteness = 'auto_qa_resolution_completeness',

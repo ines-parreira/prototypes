@@ -20,6 +20,7 @@ import {
 } from 'fixtures/plans'
 import client from 'models/api/resources'
 import {
+    submitAgentAvailabilityTableConfigView,
     submitAgentTableConfigView,
     submitChannelsTableConfigView,
     submitProductInsightsTableConfigView,
@@ -355,6 +356,11 @@ describe('current account actions', () => {
                 AgentsTableColumn.ClosedTickets,
             ],
             [
+                AccountSettingType.AgentAvailabilityTableConfig,
+                submitAgentAvailabilityTableConfigView,
+                'agent_online_time',
+            ],
+            [
                 AccountSettingType.ChannelsTableConfig,
                 submitChannelsTableConfigView,
                 ChannelsTableColumns.ClosedTickets,
@@ -405,6 +411,12 @@ describe('current account actions', () => {
                 submitAgentTableConfigView,
                 AgentsTableColumn.ClosedTickets,
                 AgentsTableColumn.MessagesSentPerHour,
+            ],
+            [
+                AccountSettingType.AgentAvailabilityTableConfig,
+                submitAgentAvailabilityTableConfigView,
+                'agent_online_time',
+                'agent_name',
             ],
             [
                 AccountSettingType.ChannelsTableConfig,

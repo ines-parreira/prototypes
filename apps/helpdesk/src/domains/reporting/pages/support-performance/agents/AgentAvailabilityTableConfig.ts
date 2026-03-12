@@ -13,6 +13,10 @@ import {
     FIXED_AGENT_AVAILABILITY_COLUMN_CONFIG,
     ORDERED_FIXED_AGENT_AVAILABILITY_COLUMNS,
 } from 'domains/reporting/pages/support-performance/agents/constants'
+import type {
+    AgentsTableRow,
+    TableSetting,
+} from 'domains/reporting/state/ui/stats/types'
 import { isMediumOrSmallScreen } from 'pages/common/utils/mobile'
 
 export type OnlineTimeColumnKey = 'agent_online_time'
@@ -97,3 +101,11 @@ export const getColumnWidth = (column: AgentAvailabilityColumn) => {
 
 export const getColumnAlignment = (column: AgentAvailabilityColumn) =>
     column === AGENT_NAME_COLUMN ? 'left' : 'right'
+
+export const AgentAvailabilityTableViews: TableSetting<
+    AgentAvailabilityColumn,
+    AgentsTableRow
+> = {
+    active_view: 'default-view',
+    views: [],
+}

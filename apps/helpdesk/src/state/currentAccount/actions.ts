@@ -2,10 +2,12 @@ import type { AxiosError } from 'axios'
 import type { Map } from 'immutable'
 import _capitalize from 'lodash/capitalize'
 
+import { AgentAvailabilityTableViews } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import { AgentsTableViews } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { ChannelsTableViews } from 'domains/reporting/pages/support-performance/channels/ChannelsTableConfig'
 import { ProductInsightsTableViews } from 'domains/reporting/pages/voice-of-customer/components/ProductInsightsTable/ProductInsightsTableConfig'
 import type {
+    AgentAvailabilityTableColumn,
     AgentsTableColumn,
     AgentsTableRow,
     ChannelsTableColumns,
@@ -21,6 +23,7 @@ import GorgiasApi from 'services/gorgiasApi'
 import type { ProductToPlanId, Subscription } from 'state/billing/types'
 import * as constants from 'state/currentAccount/constants'
 import {
+    getAgentAvailabilityTableConfigSettingsJS,
     getAgentsTableConfigSettingsJS,
     getChannelsTableConfigSettingsJS,
     getProductInsightsTableConfigSettingsJS,
@@ -143,6 +146,47 @@ export function submitAgentTableConfigView(
                     )
                         ? currentSettings.views.map((view) =>
                               view.id === activeView.id ? activeView : view,
+                          )
+                        : [...currentSettings.views, activeView],
+                },
+            }),
+        )
+    }
+}
+
+export function submitAgentAvailabilityTableConfigView(
+    activeView: TableView<AgentAvailabilityTableColumn, AgentsTableRow>,
+) {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState,
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const settings = getAgentAvailabilityTableConfigSettingsJS(getState())
+        const currentSettings = settings
+            ? settings.data
+            : AgentAvailabilityTableViews
+        return dispatch(
+            submitSetting({
+                id: settings?.id,
+                type: AccountSettingType.AgentAvailabilityTableConfig,
+                data: {
+                    active_view: activeView.id,
+                    views: currentSettings.views.find(
+                        (
+                            view: TableView<
+                                AgentAvailabilityTableColumn,
+                                AgentsTableRow
+                            >,
+                        ) => view.id === activeView.id,
+                    )
+                        ? currentSettings.views.map(
+                              (
+                                  view: TableView<
+                                      AgentAvailabilityTableColumn,
+                                      AgentsTableRow
+                                  >,
+                              ) =>
+                                  view.id === activeView.id ? activeView : view,
                           )
                         : [...currentSettings.views, activeView],
                 },

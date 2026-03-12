@@ -2,6 +2,7 @@ import type { Map } from 'immutable'
 
 import type { TicketChannel } from 'business/types/ticket'
 import type {
+    AgentAvailabilityTableColumn,
     AgentsTableColumn,
     AgentsTableRow,
     ChannelsTableColumns,
@@ -23,6 +24,7 @@ export enum AccountSettingType {
     Access = 'access',
     AgentCosts = 'agent-costs',
     AgentsTableConfig = 'agents-table-config',
+    AgentAvailabilityTableConfig = 'agents-availability-table-config',
     ChannelsTableConfig = 'channels-table-config',
     ProductInsightsTableConfig = 'product-insights-table-config',
     BusinessHours = 'business-hours',
@@ -80,6 +82,7 @@ export type AccountSetting =
     | AccountSettingAutoMerge
     | AccountSettingAgentCosts
     | AccountSettingAgentsTableConfig
+    | AccountSettingAgentAvailabilityTableConfig
     | AccountSettingChannelsTableConfig
     | AccountSettingProductInsightsTableConfig
     | AccountSettingInTicketSuggestion
@@ -146,6 +149,12 @@ export type AccountSettingAgentsTableConfig = {
     data: TableSetting<AgentsTableColumn, AgentsTableRow>
 }
 
+export type AccountSettingAgentAvailabilityTableConfig = {
+    id: number
+    type: AccountSettingType.AgentAvailabilityTableConfig
+    data: TableSetting<AgentAvailabilityTableColumn, AgentsTableRow>
+}
+
 export type AccountSettingChannelsTableConfig = {
     id: number
     type: AccountSettingType.ChannelsTableConfig
@@ -165,6 +174,7 @@ export type AccountSettingTableConfig<
     id: number
     type:
         | AccountSettingType.AgentsTableConfig
+        | AccountSettingType.AgentAvailabilityTableConfig
         | AccountSettingType.ChannelsTableConfig
         | AccountSettingType.ProductInsightsTableConfig
     data: TableSetting<T, R>

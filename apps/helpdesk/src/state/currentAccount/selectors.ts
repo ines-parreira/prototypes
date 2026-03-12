@@ -6,6 +6,7 @@ import { createSelector } from 'reselect'
 
 import type {
     AccountFeature,
+    AccountSettingAgentAvailabilityTableConfig,
     AccountSettingAgentCosts,
     AccountSettingAgentsTableConfig,
     AccountSettingAutoMerge,
@@ -156,6 +157,17 @@ export const getAgentsTableConfigSettingsJS = createSelector(
         setting.isEmpty()
             ? undefined
             : (setting.toJS() as AccountSettingAgentsTableConfig),
+)
+
+export const getAgentAvailabilityTableConfigSettings =
+    createSettingByTypeSelector(AccountSettingType.AgentAvailabilityTableConfig)
+
+export const getAgentAvailabilityTableConfigSettingsJS = createSelector(
+    getAgentAvailabilityTableConfigSettings,
+    (setting) =>
+        setting.isEmpty()
+            ? undefined
+            : (setting.toJS() as AccountSettingAgentAvailabilityTableConfig),
 )
 
 export const getChannelsTableConfigSettings = createSettingByTypeSelector(

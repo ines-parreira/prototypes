@@ -9,19 +9,18 @@ import { Box, Skeleton, Text } from '@gorgias/axiom'
 import type { User } from 'config/types/user'
 import { useOnlineTimePerAgentAvailability } from 'domains/reporting/hooks/availability/useAvailabilityMetrics'
 import { useAgentAvailabilitySortingQuery } from 'domains/reporting/hooks/useAgentAvailabilitySortingQuery'
+import { useAgentAvailabilityTableConfigSetting } from 'domains/reporting/hooks/useAgentAvailabilityTableConfigSetting'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import css from 'domains/reporting/pages/common/components/Table/AnalyticsTable.less'
 import { AgentAvailabilityRow } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityRow'
 import { AgentAvailabilitySummaryRow } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilitySummaryRow'
 import type { AgentAvailabilityColumn } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import {
-    getAvailabilityTableColumnsOrder,
     getColumnAlignment,
     getColumnConfig,
     getColumnWidth,
 } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
 import { AgentsHeaderCellContent } from 'domains/reporting/pages/support-performance/agents/AgentsHeaderCellContent'
-import { TableRowsOrderWithTotal } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { useAgentAvailabilityData } from 'domains/reporting/pages/support-performance/agents/hooks/useAgentAvailabilityData'
 import { sortAgentAvailability } from 'domains/reporting/pages/support-performance/agents/sortAgentAvailability'
 import {
@@ -75,10 +74,9 @@ export const AgentAvailabilityTable = ({
         isError,
     } = useAgentAvailabilityData(allAgents, cleanStatsFilters, userTimezone)
 
-    const columnsOrder = useMemo(
-        () => getAvailabilityTableColumnsOrder(customStatuses),
-        [customStatuses],
-    )
+    const { columnsOrder, rowsOrder } =
+        useAgentAvailabilityTableConfigSetting(customStatuses)
+
     const columnConfig = useMemo(
         () => getColumnConfig(customStatuses),
         [customStatuses],
@@ -187,7 +185,7 @@ export const AgentAvailabilityTable = ({
                         ))}
                     </TableHead>
                     <TableBody>
-                        {TableRowsOrderWithTotal.map((row, index) => (
+                        {rowsOrder.map((row, index) => (
                             <AgentAvailabilitySummaryRow
                                 key={row}
                                 row={row}

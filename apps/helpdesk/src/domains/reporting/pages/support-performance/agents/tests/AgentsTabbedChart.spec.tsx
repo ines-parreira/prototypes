@@ -7,6 +7,7 @@ import { userEvent } from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom'
 
+import { AgentAvailabilityCardExtra } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityCardExtra'
 import { AgentsPerformanceCardExtra } from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra'
 import { AgentsTabbedChart } from 'domains/reporting/pages/support-performance/agents/AgentsTabbedChart'
 import { AgentsTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentsTable'
@@ -25,6 +26,11 @@ jest.mock(
 )
 const AgentsPerformanceCardExtraMock = assumeMock(AgentsPerformanceCardExtra)
 
+jest.mock(
+    'domains/reporting/pages/support-performance/agents/AgentAvailabilityCardExtra.tsx',
+)
+const AgentAvailabilityCardExtraMock = assumeMock(AgentAvailabilityCardExtra)
+
 jest.mock('domains/reporting/pages/support-performance/agents/AgentsTable.tsx')
 const AgentsTableWithDefaultStateMock = assumeMock(AgentsTableWithDefaultState)
 
@@ -40,15 +46,20 @@ jest.mock(
     'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
 )
 
+const PERFORMANCE_ROUTE = '/stats/support-performance-agents/performance'
+const AVAILABILITY_ROUTE = '/stats/support-performance-agents/availability'
+
 describe('AgentsTabbedChart', () => {
     beforeAll(() => {
-        // Mock getAnimations for Axiom Tabs component
         Element.prototype.getAnimations = jest.fn(() => [])
     })
 
     beforeEach(() => {
         AgentsPerformanceCardExtraMock.mockImplementation(() => (
             <div>Performance Extra Content</div>
+        ))
+        AgentAvailabilityCardExtraMock.mockImplementation(() => (
+            <div>Availability Extra Content</div>
         ))
         AgentsTableWithDefaultStateMock.mockImplementation(() => (
             <div>Performance Table Content</div>
@@ -63,9 +74,7 @@ describe('AgentsTabbedChart', () => {
         it('should render only performance table without tabs', () => {
             useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(false)
             const history = createMemoryHistory({
-                initialEntries: [
-                    '/stats/support-performance-agents/performance',
-                ],
+                initialEntries: [PERFORMANCE_ROUTE],
             })
 
             render(
@@ -88,11 +97,9 @@ describe('AgentsTabbedChart', () => {
             useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         })
 
-        it('should render tabs when feature flag is enabled', () => {
+        it('should render both tabs', () => {
             const history = createMemoryHistory({
-                initialEntries: [
-                    '/stats/support-performance-agents/performance',
-                ],
+                initialEntries: [PERFORMANCE_ROUTE],
             })
 
             render(
@@ -109,162 +116,125 @@ describe('AgentsTabbedChart', () => {
             ).toBeInTheDocument()
         })
 
-        it('should select performance tab when on /performance route', () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    '/stats/support-performance-agents/performance',
-                ],
-            })
+        it.each([
+            ['performance', PERFORMANCE_ROUTE, 'Agent Performance'],
+            ['availability', AVAILABILITY_ROUTE, 'Agent Availability'],
+        ])(
+            'should select %s tab when on its route',
+            (_, route, expectedTabName) => {
+                const history = createMemoryHistory({
+                    initialEntries: [route],
+                })
 
-            render(
-                <Router history={history}>
-                    <AgentsTabbedChart chartId="test-chart" />
-                </Router>,
-            )
+                render(
+                    <Router history={history}>
+                        <AgentsTabbedChart chartId="test-chart" />
+                    </Router>,
+                )
 
-            const performanceTab = screen.getByRole('tab', {
-                name: 'Agent Performance',
-            })
-            expect(performanceTab).toHaveAttribute('aria-selected', 'true')
-        })
+                expect(
+                    screen.getByRole('tab', { name: expectedTabName }),
+                ).toHaveAttribute('aria-selected', 'true')
+            },
+        )
 
-        it('should select availability tab when on /availability route', () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    '/stats/support-performance-agents/availability',
-                ],
-            })
+        it.each([
+            [
+                'availability',
+                PERFORMANCE_ROUTE,
+                'Agent Availability',
+                AVAILABILITY_ROUTE,
+            ],
+            [
+                'performance',
+                AVAILABILITY_ROUTE,
+                'Agent Performance',
+                PERFORMANCE_ROUTE,
+            ],
+        ])(
+            'should navigate to %s route when clicking its tab',
+            async (_, startRoute, tabName, expectedRoute) => {
+                const user = userEvent.setup()
+                const history = createMemoryHistory({
+                    initialEntries: [startRoute],
+                })
 
-            render(
-                <Router history={history}>
-                    <AgentsTabbedChart chartId="test-chart" />
-                </Router>,
-            )
+                render(
+                    <Router history={history}>
+                        <AgentsTabbedChart chartId="test-chart" />
+                    </Router>,
+                )
 
-            const availabilityTab = screen.getByRole('tab', {
-                name: 'Agent Availability',
-            })
-            expect(availabilityTab).toHaveAttribute('aria-selected', 'true')
-        })
+                await user.click(screen.getByRole('tab', { name: tabName }))
 
-        it('should navigate to availability route when clicking availability tab', async () => {
-            const user = userEvent.setup()
-            const history = createMemoryHistory({
-                initialEntries: [
-                    '/stats/support-performance-agents/performance',
-                ],
-            })
+                expect(history.location.pathname).toBe(expectedRoute)
+            },
+        )
 
-            render(
-                <Router history={history}>
-                    <AgentsTabbedChart chartId="test-chart" />
-                </Router>,
-            )
+        it.each([
+            [
+                'performance',
+                PERFORMANCE_ROUTE,
+                'Performance Table Content',
+                'Availability Table Content',
+            ],
+            [
+                'availability',
+                AVAILABILITY_ROUTE,
+                'Availability Table Content',
+                'Performance Table Content',
+            ],
+        ])(
+            'should render %s table content on its route',
+            (_, route, expectedContent, unexpectedContent) => {
+                const history = createMemoryHistory({
+                    initialEntries: [route],
+                })
 
-            const availabilityTab = screen.getByRole('tab', {
-                name: 'Agent Availability',
-            })
-            await user.click(availabilityTab)
+                render(
+                    <Router history={history}>
+                        <AgentsTabbedChart chartId="test-chart" />
+                    </Router>,
+                )
 
-            expect(history.location.pathname).toBe(
-                '/stats/support-performance-agents/availability',
-            )
-        })
+                expect(screen.getByText(expectedContent)).toBeInTheDocument()
+                expect(
+                    screen.queryByText(unexpectedContent),
+                ).not.toBeInTheDocument()
+            },
+        )
 
-        it('should navigate to performance route when clicking performance tab', async () => {
-            const user = userEvent.setup()
-            const history = createMemoryHistory({
-                initialEntries: [
-                    '/stats/support-performance-agents/availability',
-                ],
-            })
+        it.each([
+            [
+                'performance',
+                PERFORMANCE_ROUTE,
+                'Performance Extra Content',
+                'Availability Extra Content',
+            ],
+            [
+                'availability',
+                AVAILABILITY_ROUTE,
+                'Availability Extra Content',
+                'Performance Extra Content',
+            ],
+        ])(
+            'should render %s extra content only on its tab',
+            (_, route, expectedContent, unexpectedContent) => {
+                const history = createMemoryHistory({
+                    initialEntries: [route],
+                })
 
-            render(
-                <Router history={history}>
-                    <AgentsTabbedChart chartId="test-chart" />
-                </Router>,
-            )
+                render(
+                    <Router history={history}>
+                        <AgentsTabbedChart chartId="test-chart" />
+                    </Router>,
+                )
 
-            const performanceTab = screen.getByRole('tab', {
-                name: 'Agent Performance',
-            })
-            await user.click(performanceTab)
-
-            expect(history.location.pathname).toBe(
-                '/stats/support-performance-agents/performance',
-            )
-        })
-
-        it('should render performance table content when on /performance route', () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    '/stats/support-performance-agents/performance',
-                ],
-            })
-
-            render(
-                <Router history={history}>
-                    <AgentsTabbedChart chartId="test-chart" />
-                </Router>,
-            )
-
-            expect(
-                screen.getByText('Performance Table Content'),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByText('Availability Table Content'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should render availability table content when on /availability route', () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    '/stats/support-performance-agents/availability',
-                ],
-            })
-
-            render(
-                <Router history={history}>
-                    <AgentsTabbedChart chartId="test-chart" />
-                </Router>,
-            )
-
-            expect(
-                screen.getByText('Availability Table Content'),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByText('Performance Table Content'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should render performance extra content only on performance tab', () => {
-            const history = createMemoryHistory({
-                initialEntries: [
-                    '/stats/support-performance-agents/performance',
-                ],
-            })
-
-            const { rerender } = render(
-                <Router history={history}>
-                    <AgentsTabbedChart chartId="test-chart" />
-                </Router>,
-            )
-
-            expect(
-                screen.getByText('Performance Extra Content'),
-            ).toBeInTheDocument()
-
-            // Navigate to availability route
-            history.push('/stats/support-performance-agents/availability')
-            rerender(
-                <Router history={history}>
-                    <AgentsTabbedChart chartId="test-chart" />
-                </Router>,
-            )
-
-            expect(
-                screen.queryByText('Performance Extra Content'),
-            ).not.toBeInTheDocument()
-        })
+                expect(screen.getByText(expectedContent)).toBeInTheDocument()
+                expect(
+                    screen.queryByText(unexpectedContent),
+                ).not.toBeInTheDocument()
+            },
+        )
     })
 })

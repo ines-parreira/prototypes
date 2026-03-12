@@ -8,6 +8,7 @@ import { Box, TabItem, TabList, Tabs } from '@gorgias/axiom'
 
 import ChartCard from 'domains/reporting/pages/common/components/ChartCard'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import { AgentAvailabilityCardExtra } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityCardExtra'
 import { AgentAvailabilityTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableWithDefaultState'
 import { AgentsPerformanceCardExtra } from 'domains/reporting/pages/support-performance/agents/AgentsPerformanceCardExtra'
 import { AgentsTableWithDefaultState } from 'domains/reporting/pages/support-performance/agents/AgentsTable'
@@ -68,7 +69,9 @@ export const AgentsTabbedChart = ({
     const titleExtra =
         currentTab === AgentTab.Performance ? (
             <AgentsPerformanceCardExtra />
-        ) : null
+        ) : (
+            <AgentAvailabilityCardExtra />
+        )
 
     if (!isAgentAvailabilityEnabled) {
         return (

@@ -66,6 +66,9 @@ jest.mock(
 )
 const AgentsPerformanceCardExtraMock = assumeMock(AgentsPerformanceCardExtra)
 jest.mock(
+    'domains/reporting/pages/support-performance/agents/AgentAvailabilityCardExtra.tsx',
+)
+jest.mock(
     'domains/reporting/pages/support-performance/agents/DownloadAgentsPerformanceDataButton',
 )
 const DownloadAgentsPerformanceDataButtonMock = assumeMock(
