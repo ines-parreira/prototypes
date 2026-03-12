@@ -6,7 +6,6 @@ import {
     AiJourneyOnboarding,
     Analytics,
     Flows,
-    LandingPage,
     Playground,
 } from 'AIJourney/pages'
 import { Campaigns } from 'AIJourney/pages/Campaigns/Campaigns'
@@ -33,7 +32,7 @@ function AiJourneyBaseRoutes() {
                             <Route
                                 path={`${path}/:shopName`}
                                 exact
-                                render={() => <LandingPage />}
+                                render={() => <Analytics />}
                             />
                             {AI_JOURNEY_ONBOARDING_STEPS.map(
                                 ({ journeyType, steps }) =>
@@ -89,7 +88,7 @@ function AiJourneyBaseRoutes() {
                                     </DefaultStatsFilters>
                                 )}
                             />
-                            <Route render={() => <LandingPage />} />
+                            <Route render={() => <Analytics />} />
                         </Switch>
                     </App>
                 </JourneyProvider>

@@ -1,4 +1,3 @@
-export { LandingPage } from './LandingPage/LandingPage'
 export { AiJourneyOnboarding } from './AiJourneyOnboarding/AiJourneyOnboarding'
 export { Flows } from './Flows/Flows'
 export { Setup } from './Setup/Setup'

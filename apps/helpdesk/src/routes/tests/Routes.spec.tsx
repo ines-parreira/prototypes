@@ -1323,7 +1323,7 @@ describe('<Routes/>', () => {
             expect(mockHistory.location.pathname).toBe('/app')
         })
 
-        it('should redirect to landing page when no journey type is found in path', () => {
+        it('should redirect to analytics page when no journey type is found in path', () => {
             mockUseFlag.mockImplementation((key) => {
                 if (key === FeatureFlagKey.AiJourneyEnabled) {
                     return true
@@ -1347,9 +1347,7 @@ describe('<Routes/>', () => {
                 </QueryClientProvider>,
             )
 
-            expect(
-                screen.getByText('AI Journey Performance'),
-            ).toBeInTheDocument()
+            expect(screen.getByText('AI Journey Analytics')).toBeInTheDocument()
         })
 
         it('should render conversation setup page when feature flag is enabled', () => {
@@ -1427,31 +1425,6 @@ describe('<Routes/>', () => {
                 expect(history.location.pathname).toBe(
                     '/app/ai-journey/shopify-store',
                 )
-            })
-        })
-
-        it('should render performance page', async () => {
-            mockUseFlag.mockReturnValue(true)
-            const history = createMemoryHistory({
-                initialEntries: ['/app/ai-journey/shopify-store/performance'],
-            })
-
-            render(
-                <Provider store={mockStore}>
-                    <QueryClientProvider client={queryClient}>
-                        <Router history={history}>
-                            <SplitTicketViewProvider>
-                                <Routes />
-                            </SplitTicketViewProvider>
-                        </Router>
-                    </QueryClientProvider>
-                </Provider>,
-            )
-
-            await waitFor(() => {
-                expect(
-                    screen.getByText('AI Journey Performance'),
-                ).toBeInTheDocument()
             })
         })
 
