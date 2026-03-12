@@ -6,8 +6,6 @@ import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'
 
-import * as uiKit from '@gorgias/axiom'
-
 import { AiAgentNotificationType } from 'automate/notifications/types'
 import { useBillingState } from 'billing/hooks/useBillingState'
 import { account } from 'fixtures/account'
@@ -64,14 +62,6 @@ jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: jest.requireActual('@repo/logging').SegmentEvent,
 }))
-
-// Mock ui-kit as an ES module to enable spying
-jest.mock('@gorgias/axiom', () => {
-    return {
-        __esModule: true,
-        ...jest.requireActual('@gorgias/axiom'),
-    } as Record<string, unknown>
-})
 
 jest.mock('pages/settings/new_billing/components/ProductCard', () =>
     jest.fn((props: ProductCardProps) => {
@@ -164,8 +154,6 @@ describe('UsageAndPlansView', () => {
                 ? otherCadence
                 : cadence,
     )
-
-    const MockTooltip = jest.spyOn(uiKit, 'LegacyTooltip')
 
     const helpdeskBanner = {
         description: 'Helpdesk banner',
@@ -557,7 +545,7 @@ describe('UsageAndPlansView', () => {
             }),
         }
 
-        const { container } = renderWithStoreAndQueryClientAndRouter(
+        renderWithStoreAndQueryClientAndRouter(
             <UsageAndPlansView
                 contactBilling={jest.fn()}
                 periodEnd="2021-01-01"
@@ -574,28 +562,13 @@ describe('UsageAndPlansView', () => {
                 usage: alteredBilling.currentProductsUsage[
                     ProductType.Helpdesk
                 ],
-                isDisabled: true,
+                isDisabled: false,
                 scheduledToCancelAt: null,
                 tooltipDisabledCTACallback: expect.any(Function),
             },
             {},
         )
-        const updateBillingFrequencyButton = container.querySelector(
-            '#update-billing-frequency',
-        )
-        expect(updateBillingFrequencyButton).toHaveClass('disabledText')
-        expect(updateBillingFrequencyButton).toHaveTextContent('Update')
-        expect(MockTooltip).toHaveBeenCalledWith(
-            {
-                autohide: false,
-                children:
-                    'To change billing frequency, upgrade your Helpdesk plan to Basic or higher',
-                className: 'tooltip',
-                placement: 'top',
-                target: 'update-billing-frequency',
-            },
-            {},
-        )
+        expect(screen.getByText('Update')).toHaveClass('disabledText')
     })
 
     it('should pass yearly helpdesk plan and tooltipDisabledCTACallback to ProductCard', () => {

@@ -98,9 +98,6 @@ const UsageAndPlansView = ({
 
     const { pathname } = useLocation()
 
-    const isSubscribedToHelpdeskStarter =
-        currentHelpdeskPlan?.name === 'Starter'
-
     const billingState = useBillingState()
     const isBillingPaused = !!billingState.data?.subscription.is_paused
     const isTrialingSubscription = useAppSelector(isTrialing)
@@ -306,7 +303,6 @@ const UsageAndPlansView = ({
                         tooltipDisabledCTACallback={contactBilling}
                         isDisabled={
                             isBillingPaused ||
-                            isSubscribedToHelpdeskStarter ||
                             (!currentHelpdeskPlan && !!scheduledToCancelAt)
                         }
                         disabledTooltip={disabledTooltip}
