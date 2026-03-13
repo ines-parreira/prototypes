@@ -1288,6 +1288,73 @@ describe('AIJourneySettings', () => {
                 ),
             ).toBeInTheDocument()
         })
+
+        it('should render the returning customer toggle', () => {
+            const welcomeFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.Welcome,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: welcomeFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('switch', { name: /returning customer/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render the returning customer toggle for non-welcome journeys', () => {
+            const cartAbandonedFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.CartAbandoned,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: cartAbandonedFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                }),
+            )
+
+            renderComponent()
+
+            expect(
+                screen.queryByRole('switch', { name: /returning customer/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should toggle the returning customer setting', async () => {
+            const welcomeFlow = mockFlows.find(
+                (f) => f.type === JourneyTypeEnum.Welcome,
+            )
+            mockUseAIJourneyContext.mockReturnValue(
+                createMockAIJourneyContextValue({
+                    currentJourney: welcomeFlow,
+                    flows: mockFlows,
+                    campaigns: mockCampaigns,
+                    setAIJourneySettings: mockSetAIJourneySettings,
+                    aiJourneySettings: {
+                        ...AI_JOURNEY_DEFAULT_STATE,
+                        returningCustomer: false,
+                    },
+                }),
+            )
+
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('switch', { name: /returning customer/i }),
+            )
+
+            expect(mockSetAIJourneySettings).toHaveBeenCalledWith({
+                returningCustomer: true,
+            })
+        })
     })
 
     describe('RESET_CONVERSATION event', () => {

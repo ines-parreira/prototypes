@@ -53,6 +53,7 @@ const createAIJourneyPayload: (
         journeyType,
         followUpAttempt: followUpMessagesSent,
         testModeSessionId: sessionId,
+        returningCustomer: aiJourneySettings.returningCustomer,
         settings: {
             maxFollowUpMessages: aiJourneySettings.totalFollowUp,
             smsSenderNumber: journeyConfiguration?.sms_sender_number ?? null,

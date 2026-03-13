@@ -586,6 +586,17 @@ export const AIJourneySettings: React.FC = () => {
                     />
                 </div>
             )}
+
+            {isWelcome && (
+                <ToggleField
+                    value={aiJourneySettings.returningCustomer}
+                    onChange={(value: boolean) => {
+                        setAIJourneySettings({ returningCustomer: value })
+                    }}
+                    label="Returning customer"
+                />
+            )}
+
             <TextArea
                 className={css.messageInstructions}
                 label="Message instructions"

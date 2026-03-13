@@ -62,6 +62,7 @@ export type AIJourneySettings = {
     postPurchaseWaitInMinutes?: number
     waitTimeMinutes: number
     mediaUrls?: AttachmentDTO[]
+    returningCustomer: boolean
 }
 
 export type DraftKnowledge = {

@@ -50,6 +50,7 @@ export const AI_JOURNEY_DEFAULT_STATE: AIJourneySettings = {
     postPurchaseWaitInMinutes: 1,
     waitTimeMinutes: 1,
     mediaUrls: undefined,
+    returningCustomer: false,
 }
 
 const journeySettingsMapper = {
