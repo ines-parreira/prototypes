@@ -7,13 +7,13 @@ import type { ContactFormAutomationSettings } from 'models/contactForm/types'
 import useContactFormAutomationSettings from 'pages/automate/common/hooks/useContactFormAutomationSettings'
 import type { SelfServiceStandaloneContactFormChannel } from 'pages/automate/common/hooks/useSelfServiceStandaloneContactFormChannels'
 
-import useAppSelector from '../../../../hooks/useAppSelector'
-import { getHasAutomate } from '../../../../state/billing/selectors'
+import useAppSelector from '../../../../../hooks/useAppSelector'
+import { getHasAutomate } from '../../../../../state/billing/selectors'
 import {
     MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
-} from '../../common/components/constants'
-import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
+} from '../../../common/components/constants'
+import WorkflowsFeatureList from '../../../common/components/WorkflowsFeatureList'
 import { useConnectedChannelsViewContext } from '../ConnectedChannelsViewContext'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'

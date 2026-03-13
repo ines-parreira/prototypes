@@ -27,8 +27,8 @@ import {
 } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-import { initialState as articlesState } from '../../../../state/entities/helpCenter/articles'
-import { initialState as categoriesState } from '../../../../state/entities/helpCenter/categories'
+import { initialState as articlesState } from '../../../../../state/entities/helpCenter/articles'
+import { initialState as categoriesState } from '../../../../../state/entities/helpCenter/categories'
 import { ConnectedChannelsContactFormView } from '../components/ConnectedChannelsContactFormView'
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')

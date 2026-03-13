@@ -1,4 +1,4 @@
-import { ConnectedChannelsHelpCenterView } from 'pages/automate/connectedChannels/components/ConnectedChannelsHelpCenterView'
+import { ConnectedChannelsHelpCenterView } from 'pages/automate/connectedChannels/legacy/components/ConnectedChannelsHelpCenterView'
 
 import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import HelpCenterPageWrapper from './HelpCenterPageWrapper'

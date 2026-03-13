@@ -11,8 +11,8 @@ import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelf
 import {
     MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
-} from '../../../common/components/constants'
-import WorkflowsFeatureList from '../../../common/components/WorkflowsFeatureList'
+} from '../../../../common/components/constants'
+import WorkflowsFeatureList from '../../../../common/components/WorkflowsFeatureList'
 import { useConnectedChannelsViewContext } from '../../ConnectedChannelsViewContext'
 import ConnectedChannelAccordionBodyChat from '../ConnectedChannelAccordionBodyChat'
 import ConnectedChannelFeatureToggle from '../ConnectedChannelFeatureToggle'
@@ -27,7 +27,7 @@ jest.mock('state/billing/selectors', () => ({
 jest.mock('../../ConnectedChannelsViewContext', () => ({
     useConnectedChannelsViewContext: jest.fn(),
 }))
-jest.mock('../../../common/components/WorkflowsFeatureList', () =>
+jest.mock('../../../../common/components/WorkflowsFeatureList', () =>
     jest.fn(() => <div>WorkflowsFeatureList</div>),
 )
 jest.mock('../ConnectedChannelFeatureToggle', () =>

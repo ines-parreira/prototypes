@@ -41,7 +41,7 @@ jest.mock('react-router-dom', () => {
 })
 
 jest.mock(
-    'pages/automate/connectedChannels/components/ConnectedChannelsChatView',
+    'pages/automate/connectedChannels/legacy/components/ConnectedChannelsChatView',
     () => ({
         ConnectedChannelsChatView: ({
             shopType,

@@ -22,8 +22,8 @@ import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSett
 import type { RootState } from 'state/types'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-import { initialState as articlesState } from '../../../../state/entities/helpCenter/articles'
-import { initialState as categoriesState } from '../../../../state/entities/helpCenter/categories'
+import { initialState as articlesState } from '../../../../../state/entities/helpCenter/articles'
+import { initialState as categoriesState } from '../../../../../state/entities/helpCenter/categories'
 import { ConnectedChannelsView } from '../ConnectedChannelsView'
 
 const mockChannels = [
@@ -233,7 +233,7 @@ jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
 jest.mock('pages/automate/common/hooks/useSelfServiceChannels')
 jest.mock('pages/automate/common/hooks/useHelpCentersAutomationSettings')
 jest.mock(
-    'pages/automate/connectedChannels/components/ConnectedChannelsEmptyView',
+    'pages/automate/connectedChannels/legacy/components/ConnectedChannelsEmptyView',
     () => ({
         ConnectedChannelsEmptyView: jest.fn(() => (
             <div>ConnectedChannelsEmptyView</div>

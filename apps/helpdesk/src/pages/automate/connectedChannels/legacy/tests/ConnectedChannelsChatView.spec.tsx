@@ -32,8 +32,8 @@ import {
 } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-import { initialState as articlesState } from '../../../../state/entities/helpCenter/articles'
-import { initialState as categoriesState } from '../../../../state/entities/helpCenter/categories'
+import { initialState as articlesState } from '../../../../../state/entities/helpCenter/articles'
+import { initialState as categoriesState } from '../../../../../state/entities/helpCenter/categories'
 import { ConnectedChannelsChatView } from '../components/ConnectedChannelsChatView'
 
 jest.mock('settings/automate/hooks/useIsAutomateSettings')

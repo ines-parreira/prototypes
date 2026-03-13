@@ -16,12 +16,12 @@ import { getChatsApplicationAutomationSettings } from 'state/entities/chatsAppli
 import { getContactFormsAutomationSettings } from 'state/entities/contactForm/contactFormsAutomationSettings'
 import { getHelpCentersAutomationSettings } from 'state/entities/helpCenter/helpCentersAutomationSettings'
 
-import { PREVIEW_MODE_QUERY_PARAM } from '../../../constants/preview-mode'
-import { HELP_CENTER_DEFAULT_LOCALE } from '../../settings/helpCenter/constants'
+import { PREVIEW_MODE_QUERY_PARAM } from '../../../../constants/preview-mode'
+import { HELP_CENTER_DEFAULT_LOCALE } from '../../../settings/helpCenter/constants'
 import {
     getAbsoluteUrl,
     getHelpCenterDomain,
-} from '../../settings/helpCenter/utils/helpCenter.utils'
+} from '../../../settings/helpCenter/utils/helpCenter.utils'
 
 type Props = {
     channel?: SelfServiceChannel

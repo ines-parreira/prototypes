@@ -5,7 +5,7 @@ import { render } from '@testing-library/react'
 import { ContactFormAutomateView } from '../ContactFormAutomateView'
 
 jest.mock(
-    'pages/automate/connectedChannels/components/ConnectedChannelsContactFormView',
+    'pages/automate/connectedChannels/legacy/components/ConnectedChannelsContactFormView',
     () => ({
         ConnectedChannelsContactFormView: ({
             contactForm,

@@ -1,4 +1,4 @@
-import { ConnectedChannelsContactFormView } from 'pages/automate/connectedChannels/components/ConnectedChannelsContactFormView'
+import { ConnectedChannelsContactFormView } from 'pages/automate/connectedChannels/legacy/components/ConnectedChannelsContactFormView'
 
 import { useCurrentContactForm } from '../../hooks/useCurrentContactForm'
 

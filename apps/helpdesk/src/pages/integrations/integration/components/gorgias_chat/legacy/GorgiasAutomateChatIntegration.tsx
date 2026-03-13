@@ -6,7 +6,7 @@ import { IntegrationType } from '@gorgias/helpdesk-queries'
 
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { ConnectedChannelsChatView } from 'pages/automate/connectedChannels/components/ConnectedChannelsChatView'
+import { ConnectedChannelsChatView } from 'pages/automate/connectedChannels/legacy/components/ConnectedChannelsChatView'
 import PageHeader from 'pages/common/components/PageHeader'
 
 import { Tab } from '../../../types'

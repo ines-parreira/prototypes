@@ -5,7 +5,7 @@ import { render } from '@testing-library/react'
 import { HelpCenterAutomateView } from '../HelpCenterAutomateView'
 
 jest.mock(
-    'pages/automate/connectedChannels/components/ConnectedChannelsHelpCenterView',
+    'pages/automate/connectedChannels/legacy/components/ConnectedChannelsHelpCenterView',
     () => ({
         ConnectedChannelsHelpCenterView: ({
             helpCenter,

@@ -17,8 +17,8 @@ import {
     ARTICLE_RECOMMENDATION,
     MAX_ACTIVE_FLOWS,
     ORDER_MANAGEMENT,
-} from '../../common/components/constants'
-import WorkflowsFeatureList from '../../common/components/WorkflowsFeatureList'
+} from '../../../common/components/constants'
+import WorkflowsFeatureList from '../../../common/components/WorkflowsFeatureList'
 import { useConnectedChannelsViewContext } from '../ConnectedChannelsViewContext'
 import AutomateSubscriptionAction from './AutomateSubscriptionAction'
 import ConnectedChannelFeatureToggle from './ConnectedChannelFeatureToggle'

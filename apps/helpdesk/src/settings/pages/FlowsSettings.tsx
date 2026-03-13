@@ -1,9 +1,7 @@
-import { NavLink, Route, useRouteMatch } from 'react-router-dom'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { Route, useRouteMatch } from 'react-router-dom'
 
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import Header from 'pages/common/components/PageHeader'
-import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
-import StoreSelector from 'pages/common/components/StoreSelector/StoreSelector'
 import { useStoreSelector } from 'settings/automate'
 
 import { AutomateSettingsFlowsAnalyticsRoute } from './flows-routes/AutomateSettingsFlowsAnalysisRoute'
@@ -11,6 +9,8 @@ import { AutomateSettingsFlowsBaseRoute } from './flows-routes/AutomateSettingsF
 import { AutomateSettingsChannelsRoute } from './flows-routes/AutomateSettingsFlowsChannelsRoute'
 import { AutomateSettingsFlowsEditRoute } from './flows-routes/AutomateSettingsFlowsEditRoute'
 import { AutomateSettingsFlowsNewRoute } from './flows-routes/AutomateSettingsFlowsNewRoute'
+import { FlowsSettingsHeader } from './FlowsSettingsHeader'
+import { FlowsSettingsLegacyHeader } from './FlowsSettingsLegacyHeader'
 
 import css from './FlowsSettings.less'
 
@@ -18,7 +18,11 @@ export const BASE_PATH = '/app/settings/flows'
 
 export function FlowsSettings() {
     const { path } = useRouteMatch()
-    const { integrations, onChange, selected } = useStoreSelector(BASE_PATH)
+    const { selected } = useStoreSelector(BASE_PATH)
+
+    const { value: isRevamp } = useFlagWithLoading(
+        FeatureFlagKey.ChatSettingsScreensRevamp,
+    )
 
     const selectedName = selected
         ? getShopNameFromStoreIntegration(selected)
@@ -30,24 +34,10 @@ export function FlowsSettings() {
 
     return (
         <div className={css.container}>
-            <Header className={css.header} title="Flows">
-                <StoreSelector
-                    integrations={integrations}
-                    selected={selected}
-                    onChange={onChange}
-                />
-            </Header>
+            {isRevamp ? <FlowsSettingsHeader /> : <FlowsSettingsLegacyHeader />}
+
             {!!selected && !!selectedPath && (
                 <>
-                    <SecondaryNavbar>
-                        <NavLink exact to={`${selectedPath}`}>
-                            Configuration
-                        </NavLink>
-                        <NavLink exact to={`${selectedPath}/channels`}>
-                            Channels
-                        </NavLink>
-                    </SecondaryNavbar>
-
                     <Route
                         path={path}
                         component={AutomateSettingsFlowsBaseRoute}
@@ -67,7 +57,6 @@ export function FlowsSettings() {
                         exact
                         component={AutomateSettingsFlowsAnalyticsRoute}
                     />
-
                     <Route
                         path={`${path}/channels`}
                         component={AutomateSettingsChannelsRoute}

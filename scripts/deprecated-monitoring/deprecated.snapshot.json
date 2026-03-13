@@ -49,8 +49,8 @@
             "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformUseCaseTemplateCategory.tsx",
             "apps/helpdesk/src/pages/automate/common/components/HelpCenterSelect.tsx",
             "apps/helpdesk/src/pages/automate/common/components/preview/SelfServicePreviewChannelSelect.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/CurrentlyViewingDropdown.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/FlowsSettings.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/CurrentlyViewingDropdown.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FlowsSettings.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/cancelOrder/components/CancelOrderEligibility.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioConditionRule.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioConditions.tsx",
@@ -715,7 +715,7 @@
             "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformTemplatesTableRow.tsx",
             "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformTemplateVisualBuilderView.tsx",
             "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformUseCaseTemplatesTableRow.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/FlowSettingsItem.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FlowSettingsItem.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/cancelOrder/components/CancelOrderEligibility.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioConditionRule.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/returnOrder/components/ReturnOrderEligibility.tsx",
@@ -2231,7 +2231,7 @@
             "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/PostOnboardingTasksSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/CategoryContent.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioReason.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchItem.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/Accordion.stories.tsx",
@@ -2407,7 +2407,7 @@
             "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/PostOnboardingTasksSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/CategoryContent.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/Accordion.stories.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/SortableAccordionHeader.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/tests/Accordion.spec.tsx",
@@ -2440,7 +2440,7 @@
             "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/PostOnboardingTasksSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/CategoryContent.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/Accordion.stories.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/SortableAccordionItem.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/tests/Accordion.spec.tsx",
@@ -4634,13 +4634,13 @@
       "nodeName": "ConnectedChannelAccordionBodyChat",
       "comment": "*\n * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.\n * @date 2025-10-02\n * @type automate-deprecation\n ",
       "count": 2,
-      "filePath": "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionBodyChat.tsx",
+      "filePath": "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionBodyChat.tsx",
       "usages": [
         {
           "name": "default",
           "files": [
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/tests/ConnectedChannelAccordionBodyChat.spec.tsx"
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/tests/ConnectedChannelAccordionBodyChat.spec.tsx"
           ]
         }
       ]
@@ -4943,12 +4943,12 @@
       "nodeName": "ConnectedChannelAccordionBodyHelpCenter",
       "comment": "*\n * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.\n * @date 2025-10-02\n * @type automate-deprecation\n ",
       "count": 1,
-      "filePath": "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionBodyHelpCenter.tsx",
+      "filePath": "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionBodyHelpCenter.tsx",
       "usages": [
         {
           "name": "default",
           "files": [
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx"
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx"
           ]
         }
       ]
@@ -4958,12 +4958,12 @@
       "nodeName": "ConnectedChannelAccordionBodyStandaloneContactForm",
       "comment": "*\n * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.\n * @date 2025-10-02\n * @type automate-deprecation\n ",
       "count": 1,
-      "filePath": "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionBodyStandaloneContactForm.tsx",
+      "filePath": "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionBodyStandaloneContactForm.tsx",
       "usages": [
         {
           "name": "default",
           "files": [
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx"
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx"
           ]
         }
       ]
@@ -5202,7 +5202,7 @@
       "nodeName": "ConnectedChannelAccordionItem",
       "comment": "*\n * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.\n * @date 2025-10-02\n * @type automate-deprecation\n ",
       "count": 0,
-      "filePath": "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx",
+      "filePath": "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx",
       "usages": [
         {
           "name": "default",
@@ -5472,11 +5472,11 @@
             "apps/helpdesk/src/pages/automate/common/components/preview/SelfServiceHelpCenterReturnPortalPage.tsx",
             "apps/helpdesk/src/pages/automate/common/components/preview/SelfServicePreviewContainer.tsx",
             "apps/helpdesk/src/pages/automate/common/components/WorkflowsFeatureList.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionBodyChat.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelAccordionItem.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/CurrentlyViewingDropdown.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/FeatureSettings.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/FlowsSettings.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionBodyChat.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/CurrentlyViewingDropdown.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FeatureSettings.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FlowsSettings.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioConditionRule.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioConditions.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioReason.tsx",
@@ -6004,9 +6004,9 @@
             "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsTable.tsx",
             "apps/helpdesk/src/pages/automate/common/components/AutomateExploreDataModal.tsx",
             "apps/helpdesk/src/pages/automate/common/components/WorkflowItem.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelFeatureToggle.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/FlowSettingsItem.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/FlowsSettings.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelFeatureToggle.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FlowSettingsItem.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FlowsSettings.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioItem.tsx",
             "apps/helpdesk/src/pages/automate/workflows/analytics/visualBuilder/nodes/AnalyticsNode.tsx",
             "apps/helpdesk/src/pages/automate/workflows/analytics/visualBuilder/nodes/EndNode.tsx",
@@ -6253,9 +6253,9 @@
             "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformUseCaseTemplateCategory.tsx",
             "apps/helpdesk/src/pages/automate/articleRecommendation/ArticleRecommendationView.tsx",
             "apps/helpdesk/src/pages/automate/common/components/WorkflowsFeatureList.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/CurrentlyViewingDropdown.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/FeatureSettings.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/FlowSettingsItem.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/CurrentlyViewingDropdown.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FeatureSettings.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FlowSettingsItem.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioForm.tsx",
             "apps/helpdesk/src/pages/automate/workflows/analytics/visualBuilder/nodes/AnalyticsNode.tsx",
             "apps/helpdesk/src/pages/automate/workflows/analytics/visualBuilder/nodes/ChannelTriggerNode.tsx",
@@ -6555,10 +6555,10 @@
             "apps/helpdesk/src/pages/automate/common/components/AutomateListView.tsx",
             "apps/helpdesk/src/pages/automate/common/components/AutomateView.tsx",
             "apps/helpdesk/src/pages/automate/common/components/TopQuestions/TopQuestionCard.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelsChatView.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelsContactFormView.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelsEmailView.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelsHelpCenterView.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelsChatView.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelsContactFormView.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelsEmailView.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelsHelpCenterView.tsx",
             "apps/helpdesk/src/pages/automate/trainMyAi/components/PreviewSection.tsx",
             "apps/helpdesk/src/pages/automate/trainMyAi/TrainMyAiView.tsx",
             "apps/helpdesk/src/pages/automate/workflows/analytics/visualBuilder/WorkflowVisualBuilder.tsx",
@@ -6683,8 +6683,8 @@
             "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/HandoverCustomizationChatOfflineSettingsFields.tsx",
             "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundActionsToggle/PlaygroundActionsToggle.tsx",
             "apps/helpdesk/src/pages/automate/common/components/WorkflowItem.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/ConnectedChannelFeatureToggle.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/components/FeatureSettings.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelFeatureToggle.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FeatureSettings.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/components/OrderManagementFlowItem.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/reportOrderIssue/components/ReportOrderIssueScenarioReasonAction.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/publisher/channels/ChannelToggle.tsx",
