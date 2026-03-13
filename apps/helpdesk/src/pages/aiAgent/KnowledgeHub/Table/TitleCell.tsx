@@ -13,10 +13,13 @@ import { hasDraftEdits, isDraft } from '../utils/articleUtils'
 
 import css from './KnowledgeHubTable.less'
 
+const escapeRegExp = (string: string) =>
+    string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
 const highlightText = (text: string, searchTerm: string) => {
     if (!searchTerm) return text
 
-    const parts = text.split(new RegExp(`(${searchTerm})`, 'gi'))
+    const parts = text.split(new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi'))
     return (
         <>
             {parts.map((part, index) =>
