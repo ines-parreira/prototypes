@@ -201,6 +201,7 @@ export type MeasureName =
     | 'handoverInteractionsCount'
     | 'automatedInteractionsCount'
     | 'coverageRate'
+    | 'conversionRate'
 
 export type TimeDimensionName =
     | 'createdDatetime'
