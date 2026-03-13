@@ -36,6 +36,7 @@ interface DropdownButtonWithSearch {
      * Whether to display the dropdown menu with large width (272px)
      */
     withLargeMenu?: boolean
+    disabled?: boolean
     onSelectOptionChange: (option: Option) => void
 }
 
@@ -79,6 +80,7 @@ const DropdownButtonWithSearch: React.FC<DropdownButtonWithSearch> = (
                 }
                 type="button"
                 color={props.variant}
+                disabled={props.disabled}
             >
                 {props.materialIconLabel && (
                     <>
