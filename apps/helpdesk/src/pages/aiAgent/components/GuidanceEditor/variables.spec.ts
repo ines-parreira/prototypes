@@ -86,5 +86,17 @@ describe('guidanceVariables - branch changes', () => {
             expect(returnClosedVar.name).toBe('Return - Closed at')
             expect(returnClosedVar.category).toBe('order')
         })
+
+        it('should have Shipping method variable', () => {
+            const shippingMethodVar = shopifyGroup?.variables.find(
+                (v) =>
+                    'value' in v &&
+                    v.value === '&&&order.shipping_lines.title&&&',
+            ) as GuidanceVariable
+
+            expect(shippingMethodVar).toBeDefined()
+            expect(shippingMethodVar.name).toBe('Shipping method')
+            expect(shippingMethodVar.category).toBe('order')
+        })
     })
 })

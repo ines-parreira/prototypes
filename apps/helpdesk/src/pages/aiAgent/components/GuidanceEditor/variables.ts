@@ -105,6 +105,11 @@ export const guidanceVariables: GuidanceVariableGroup[] = [
                 category: 'order',
             },
             {
+                name: 'Shipping method',
+                value: '&&&order.shipping_lines.title&&&',
+                category: 'order',
+            },
+            {
                 name: 'Fulfillment - Name',
                 value: '&&&order.fulfillment.name&&&',
                 category: 'order',
