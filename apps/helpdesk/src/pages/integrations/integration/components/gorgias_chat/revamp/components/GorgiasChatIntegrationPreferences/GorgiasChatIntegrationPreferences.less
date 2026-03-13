@@ -1,0 +1,61 @@
+@import '~css/new/mixins';
+
+:local {
+    .preferencesTab {
+        width: 100%;
+    }
+
+    .cardsWrapper {
+        padding: var(--spacing-md) var(--spacing-lg);
+        display: flex;
+        flex-flow: column;
+        gap: var(--spacing-md);
+    }
+
+    .card {
+        padding: var(--spacing-lg);
+    }
+
+    .cardContent {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    .cardHeader {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxs);
+    }
+
+    .fieldSection {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .toggleHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+
+    .radioGroupWrapper {
+        contain: content;
+    }
+
+    .caption {
+        color: var(--content-neutral-secondary);
+    }
+
+    .selectFieldGroup {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .selectWrapper {
+        max-width: 320px;
+    }
+}

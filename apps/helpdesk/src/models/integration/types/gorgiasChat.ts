@@ -44,6 +44,12 @@ export type GorgiasChatIntegrationMeta = {
     languages?: LanguageItem[]
     preferences?: {
         live_chat_availability?: string
+        hide_outside_business_hours?: boolean
+        hide_on_mobile?: boolean
+        display_campaigns_hidden_chat?: boolean
+        send_chat_transcript?: boolean
+        offline_mode_enabled_datetime?: string | null
+        control_ticket_volume?: boolean
         email_capture_enabled?: boolean
         email_capture_enforcement: GorgiasChatEmailCaptureType
         auto_responder?: {
