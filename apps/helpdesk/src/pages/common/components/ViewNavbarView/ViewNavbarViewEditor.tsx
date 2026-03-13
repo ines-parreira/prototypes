@@ -51,8 +51,12 @@ class ViewNavbarViewEditor extends Component<Props, State> {
         )
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
-        this.setState(_merge(this._getSettings(nextProps.views), this.state))
+    componentDidUpdate(prevProps: Props) {
+        if (prevProps.views !== this.props.views) {
+            this.setState(
+                _merge(this._getSettings(this.props.views), this.state),
+            )
+        }
     }
 
     _getSettings = (views: List<any>) => {

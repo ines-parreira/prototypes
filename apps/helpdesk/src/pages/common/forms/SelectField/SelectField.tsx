@@ -124,20 +124,20 @@ export default class SelectField extends Component<Props, State> {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
-        const hasNewOptions = !_isEqual(this.props.options, nextProps.options)
+    componentDidUpdate(prevProps: Props) {
+        const hasNewOptions = !_isEqual(prevProps.options, this.props.options)
 
         if (
-            this.props.value !== nextProps.value ||
+            prevProps.value !== this.props.value ||
             hasNewOptions ||
-            nextProps.showSelectedOption !== this.props.showSelectedOption
+            this.props.showSelectedOption !== prevProps.showSelectedOption
         ) {
             this.setState({
                 filteredOptions: this._filterOptions(
-                    nextProps.options,
+                    this.props.options,
                     this.state.input,
-                    nextProps.value,
-                    nextProps.showSelectedOption,
+                    this.props.value,
+                    this.props.showSelectedOption,
                 ),
             })
         }

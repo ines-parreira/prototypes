@@ -73,7 +73,7 @@ export class FacebookIntegrationSetupContainer extends Component<Props, State> {
 
     fetchInterval: number | null = null
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         this._fetchPage(this.props.pagination.get('page') || 1)
 
         this.fetchInterval = window.setInterval(

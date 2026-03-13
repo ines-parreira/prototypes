@@ -87,8 +87,8 @@ export default class MergeCustomersModal extends Component<Props, State> {
         this.setState(_pick(initData, Object.keys(defaultContent)) as State)
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
-        if (!this.props.isOpen && nextProps.isOpen) {
+    componentDidUpdate(prevProps: Props) {
+        if (!prevProps.isOpen && this.props.isOpen) {
             // TODO(customers-migration): ask confirmation to update this event
             logEvent(SegmentEvent.ModalToggled, {
                 open: true,

@@ -36,7 +36,7 @@ export default class JSONBody extends Component<Props, State> {
         cachedForm: DEFAULT_FORM,
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         if (!this._formIsPresetOption(this.props?.form)) {
             this.setState({ cachedForm: this.props.form })
         }

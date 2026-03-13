@@ -184,6 +184,7 @@
                 "checkFragmentShorthand": true
             }
         ],
+        "react/no-unsafe": "error",
         "react/no-find-dom-node": "off",
         "react/no-unescaped-entities": "error",
         "unicorn/no-new-array": "error",

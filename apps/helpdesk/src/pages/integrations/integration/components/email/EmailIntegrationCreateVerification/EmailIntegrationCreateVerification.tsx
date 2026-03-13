@@ -66,7 +66,7 @@ export class EmailIntegrationCreateVerification extends Component<
         isVerificationLoading: false,
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         const { integration } = this.props
 
         if (integration.get('id')) {
@@ -74,26 +74,26 @@ export class EmailIntegrationCreateVerification extends Component<
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    componentDidUpdate(prevProps: Props) {
         if (
-            !this.props.integration.get('id') &&
-            nextProps.integration.get('id')
+            !prevProps.integration.get('id') &&
+            this.props.integration.get('id')
         ) {
             socketManager.join(
                 JoinEventType.Integration,
-                nextProps.integration.get('id'),
+                this.props.integration.get('id'),
             )
         }
 
         if (
-            !this.props.integration.getIn(['meta', 'verified']) &&
-            nextProps.integration.getIn(['meta', 'verified'])
+            !prevProps.integration.getIn(['meta', 'verified']) &&
+            this.props.integration.getIn(['meta', 'verified'])
         ) {
             history.push(
                 `/app/settings/channels/email/${
-                    nextProps.integration.get('id') as number
+                    this.props.integration.get('id') as number
                 }${
-                    isSendgridEmailIntegration(nextProps.integration.toJS())
+                    isSendgridEmailIntegration(this.props.integration.toJS())
                         ? '/outbound-verification'
                         : ''
                 }`,

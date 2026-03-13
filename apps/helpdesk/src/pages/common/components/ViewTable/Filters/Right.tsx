@@ -125,10 +125,6 @@ export class RightContainer extends Component<Props, State> {
         if (!empty && 'value' in node && node.value === '') {
             this._selectFirstOption()
         }
-    }
-
-    UNSAFE_componentWillReceiveProps(nextProps: Readonly<Props>) {
-        const { node } = nextProps
 
         if (
             this._isCustomFieldExpression() &&
@@ -136,7 +132,8 @@ export class RightContainer extends Component<Props, State> {
                 (typeof (node as Literal).value !== 'boolean' &&
                     !(node as Literal).value &&
                     !(node as ArrayExpression).elements) ||
-                (node as ArrayExpression).elements?.length === 0)
+                (node as ArrayExpression).elements?.length === 0) &&
+            this.state.renderedCustomFieldValue !== undefined
         ) {
             this.setState({ renderedCustomFieldValue: undefined })
         }

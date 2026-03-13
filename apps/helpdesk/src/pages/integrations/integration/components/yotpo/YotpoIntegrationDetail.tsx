@@ -70,39 +70,39 @@ export class YotpoIntegrationDetailComponent extends Component<Props, State> {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props): void {
+    componentDidUpdate(prevProps: Props): void {
         if (
-            this.props.integration.isEmpty() &&
-            !nextProps.integration.isEmpty()
+            prevProps.integration.isEmpty() &&
+            !this.props.integration.isEmpty()
         ) {
             this.setState({
-                integrationName: nextProps.integration.get('name'),
-                enable_yotpo_tickets: nextProps.integration.getIn(
+                integrationName: this.props.integration.get('name'),
+                enable_yotpo_tickets: this.props.integration.getIn(
                     ['meta', 'enable_yotpo_tickets'],
                     false,
                 ),
             })
             const authenticationRequired =
-                nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
+                this.props.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
             const isAuthenticating =
-                parse(nextProps.location.search, { ignoreQueryPrefix: true })
+                parse(this.props.location.search, { ignoreQueryPrefix: true })
                     ?.action === 'authentication'
 
             if (isAuthenticating) {
                 if (authenticationRequired) {
                     setTimeout(() => {
-                        nextProps.actions.fetchIntegration(
-                            nextProps.integration.get('id') as string,
-                            nextProps.integration.get(
+                        this.props.actions.fetchIntegration(
+                            this.props.integration.get('id') as string,
+                            this.props.integration.get(
                                 'type',
                             ) as IntegrationType,
                             true,
                         )
                     }, 3000)
                 } else {
-                    nextProps.actions.triggerCreateSuccess(
-                        nextProps.integration.toJS(),
+                    this.props.actions.triggerCreateSuccess(
+                        this.props.integration.toJS(),
                     )
                 }
             }

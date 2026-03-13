@@ -37,7 +37,8 @@ export default class InputField<
 
     id?: string
 
-    UNSAFE_componentWillMount() {
+    constructor(props: T) {
+        super(props)
         this.id = this._getId()
     }
 

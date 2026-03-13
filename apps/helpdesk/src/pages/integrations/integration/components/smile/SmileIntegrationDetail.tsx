@@ -51,26 +51,26 @@ export class SmileIntegrationDetailComponent extends Component<Props, State> {
         }
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    componentDidUpdate(prevProps: Props) {
         if (
-            this.props.integration.isEmpty() &&
-            !nextProps.integration.isEmpty()
+            prevProps.integration.isEmpty() &&
+            !this.props.integration.isEmpty()
         ) {
-            this.setState({ name: nextProps.integration.get('name') })
+            this.setState({ name: this.props.integration.get('name') })
 
             const authenticationRequired =
-                nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
+                this.props.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
             const isAuthenticating =
-                parse(nextProps.location.search, { ignoreQueryPrefix: true })
+                parse(this.props.location.search, { ignoreQueryPrefix: true })
                     .action === 'authentication'
 
             if (isAuthenticating) {
                 if (authenticationRequired) {
                     setTimeout(() => {
                         void this.props.fetchIntegration(
-                            nextProps.integration.get('id'),
-                            nextProps.integration.get('type'),
+                            this.props.integration.get('id'),
+                            this.props.integration.get('type'),
                             true,
                         )
                     }, 3000)

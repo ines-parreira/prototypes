@@ -92,12 +92,6 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         attachments: fromJS([]),
     }
 
-    UNSAFE_componentWillMount() {
-        // set the initial state of the editor - there might be drafts
-        const editorState = this.getEditorStateFromReducer(this.props)
-        editorState && this.updateEditorState(editorState)
-    }
-
     componentWillUnmount() {
         // prevent updating the newMessage state value with an old value.
         // without it on unmount the newMessage state is populated with the old editor value,
@@ -105,13 +99,13 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
         updateMessageText.cancel()
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    componentDidUpdate(prevProps: Props) {
         // only update if forceUpdate is true and it changed
-        const prevForceUpdate = this.props.newMessage.getIn([
+        const prevForceUpdate = prevProps.newMessage.getIn([
             'state',
             'forceUpdate',
         ])
-        const nextForceUpdate = nextProps.newMessage.getIn([
+        const nextForceUpdate = this.props.newMessage.getIn([
             'state',
             'forceUpdate',
         ])
@@ -119,7 +113,7 @@ export class TicketReplyEditorContainer extends Component<Props, State> {
             nextForceUpdate && prevForceUpdate !== nextForceUpdate
 
         if (shouldUpdate) {
-            const editorState = this.getEditorStateFromReducer(nextProps)
+            const editorState = this.getEditorStateFromReducer(this.props)
             editorState && this.updateEditorState(editorState)
         }
     }

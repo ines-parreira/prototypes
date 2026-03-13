@@ -53,19 +53,27 @@ export default class RichField extends Component<Props, State> {
             editorState,
             isFocused: false,
         } as State
+
+        if (this._didHTMLChanged(props.value.html, props.value.text)) {
+            const initializedEditorState = this._buildEditorState(
+                this.state.editorState,
+                props.value,
+            )
+            this.state = {
+                editorState: initializedEditorState,
+                isFocused: false,
+            }
+            this._latestEditorState = initializedEditorState
+        }
     }
 
-    UNSAFE_componentWillMount() {
-        this._updateEditorState(this.props.value)
-    }
-
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    componentDidUpdate(prevProps: Props) {
         // update editor state only if value has changed externally (display-only or allowExternalChanges)
         if (
-            !_isEqual(nextProps.value, this.props.value) &&
-            (this.props.displayOnly || this.props.allowExternalChanges)
+            !_isEqual(this.props.value, prevProps.value) &&
+            (prevProps.displayOnly || prevProps.allowExternalChanges)
         ) {
-            this._updateEditorState(nextProps.value)
+            this._updateEditorState(this.props.value)
         }
     }
 
@@ -117,7 +125,23 @@ export default class RichField extends Component<Props, State> {
             return
         }
 
-        let { editorState } = this.state
+        const editorState = this._buildEditorState(
+            this.state.editorState,
+            value,
+        )
+
+        this._latestEditorState = editorState
+        this.setState({ editorState }, callback)
+    }
+
+    _buildEditorState = (
+        currentEditorState: EditorState,
+        value: {
+            html?: string
+            text?: string
+        },
+    ) => {
+        let editorState = currentEditorState
 
         // Preserve current selection before updating content
         const currentSelection = editorState.getSelection()
@@ -144,8 +168,7 @@ export default class RichField extends Component<Props, State> {
             )
         }
 
-        this._latestEditorState = editorState
-        this.setState({ editorState }, callback)
+        return editorState
     }
 
     handleEditorChange = (editorState: EditorState) => {

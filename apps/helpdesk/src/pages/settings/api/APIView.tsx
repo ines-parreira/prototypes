@@ -49,7 +49,7 @@ export class APIViewContainer extends Component<Props, State> {
         this.clipboardData = fromJS({})
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         // Load postman js
         ;(function (
             p: Window & { _pm?: () => void; PostmanRunObject?: any[] },
@@ -81,9 +81,6 @@ export class APIViewContainer extends Component<Props, State> {
             'PostmanRunObject',
             'https://run.pstmn.io/button.js',
         )
-    }
-
-    componentDidMount() {
         void this.props.fetchCurrentAuths()
     }
 

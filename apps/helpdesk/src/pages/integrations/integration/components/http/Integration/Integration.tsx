@@ -112,21 +112,19 @@ export class Integration extends Component<Props, State> {
 
     isInitialized: boolean | undefined
 
-    UNSAFE_componentWillMount() {
-        const { integration, isUpdate } = this.props
+    componentDidMount() {
+        this.initializeState(this.props)
+    }
+
+    componentDidUpdate() {
+        this.initializeState(this.props)
+    }
+
+    initializeState = (props: Props) => {
+        const { integration, isUpdate } = props
 
         // populating the form when updating an integration
         if (!this.isInitialized && isUpdate && integration) {
-            this.setState(this._mapIntegrationToState(integration))
-            this.isInitialized = true
-        }
-    }
-
-    UNSAFE_componentWillUpdate(nextProps: Props) {
-        const { integration, isUpdate } = nextProps
-
-        // populating the form when updating an integration
-        if (integration && !this.isInitialized && isUpdate) {
             this.setState(this._mapIntegrationToState(integration))
             this.isInitialized = true
         }

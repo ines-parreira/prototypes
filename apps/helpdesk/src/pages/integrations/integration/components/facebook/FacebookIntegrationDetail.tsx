@@ -116,16 +116,16 @@ export class FacebookIntegrationDetail extends Component<Props, State> {
         this.setState(newState as State)
     }
 
-    UNSAFE_componentWillMount() {
+    componentDidMount() {
         this._updateState(this.props.integration)
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
+    componentDidUpdate(prevProps: Props) {
         if (
-            nextProps.integration &&
-            !isEqual(nextProps.integration, this.props.integration)
+            this.props.integration &&
+            !isEqual(this.props.integration, prevProps.integration)
         ) {
-            this._updateState(nextProps.integration)
+            this._updateState(this.props.integration)
         }
     }
 

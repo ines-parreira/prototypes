@@ -166,8 +166,16 @@ class KlaviyoIntegrationDetail extends Component<Props> {
         }
     }
 
-    UNSAFE_componentWillMount(): void {
-        const { integration, isUpdate, loading } = this.props
+    componentDidMount(): void {
+        this.initializeState(this.props)
+    }
+
+    componentDidUpdate(): void {
+        this.initializeState(this.props)
+    }
+
+    initializeState = (props: Props): void => {
+        const { integration, isUpdate, loading } = props
 
         if (
             !this.isInitialized &&
@@ -175,15 +183,6 @@ class KlaviyoIntegrationDetail extends Component<Props> {
             !loading.get('integration') &&
             !integration.isEmpty()
         ) {
-            this.setState(this._getIntegration(integration))
-            this.isInitialized = true
-        }
-    }
-
-    UNSAFE_componentWillUpdate(nextProps: Props): void {
-        const { integration, isUpdate, loading } = nextProps
-
-        if (!this.isInitialized && isUpdate && !loading.get('integration')) {
             this.setState(this._getIntegration(integration))
             this.isInitialized = true
         }

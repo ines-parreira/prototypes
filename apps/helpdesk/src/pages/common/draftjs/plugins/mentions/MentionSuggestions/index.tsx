@@ -54,7 +54,7 @@ type State = {
 }
 
 export default class MentionSuggestions extends Component<Props, State> {
-    key!: string
+    key = genKey()
     activeOffsetKey!: string
     lastSearchValue!: string
     popover!: HTMLElement | null
@@ -69,18 +69,16 @@ export default class MentionSuggestions extends Component<Props, State> {
         focusedOptionIndex: 0,
     }
 
-    UNSAFE_componentWillMount() {
-        this.key = genKey()
+    componentDidMount() {
         this.props.callbacks.onChange = this.onEditorStateChange
     }
 
-    UNSAFE_componentWillReceiveProps(nextProps: Props) {
-        if (nextProps.suggestions.size === 0 && this.state.isActive) {
-            this.closeDropdown()
-        }
-    }
-
     componentDidUpdate = (prevProps: Props, prevState: State) => {
+        if (this.props.suggestions.size === 0 && this.state.isActive) {
+            this.closeDropdown()
+            return
+        }
+
         if (this.popover) {
             // In case the list shrinks there should be still an option focused.
             // Note: this might run multiple times and deduct 1 until the condition is
