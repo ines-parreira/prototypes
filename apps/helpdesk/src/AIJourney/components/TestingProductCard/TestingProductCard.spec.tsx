@@ -6,17 +6,20 @@ import type { Product } from 'constants/integrations/types/shopify'
 import { TestingProductCard } from './TestingProductCard'
 
 jest.mock('AIJourney/components/ProductSelect/ProductSelect', () => ({
-    ProductSelect: jest.fn(({ setSelectedProduct }) => (
-        <button
-            onClick={() =>
-                setSelectedProduct({
-                    id: '1',
-                    title: 'Black Shirt',
-                } as unknown as Product)
-            }
-        >
-            Mock ProductSelect
-        </button>
+    ProductSelect: jest.fn(({ selectedProduct, setSelectedProduct }) => (
+        <div>
+            <button
+                onClick={() =>
+                    setSelectedProduct({
+                        id: '1',
+                        title: 'Black Shirt',
+                    } as unknown as Product)
+                }
+            >
+                Mock ProductSelect
+            </button>
+            {selectedProduct && <span>Selected: {selectedProduct.title}</span>}
+        </div>
     )),
 }))
 
@@ -47,6 +50,19 @@ describe('<TestingProductCard />', () => {
 
             expect(
                 screen.getByRole('button', { name: /mock productselect/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should pass selectedProduct to ProductSelect', () => {
+            const product = {
+                id: '2',
+                title: 'White Shirt',
+            } as unknown as Product
+
+            render(<TestingProductCard selectedProduct={product} />)
+
+            expect(
+                screen.getByText('Selected: White Shirt'),
             ).toBeInTheDocument()
         })
     })

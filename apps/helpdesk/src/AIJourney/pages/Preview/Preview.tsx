@@ -11,7 +11,10 @@ import {
     TestingProductCard,
 } from 'AIJourney/components'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
-import { useGeneratePlaygroundMessage } from 'AIJourney/hooks'
+import {
+    useGeneratePlaygroundMessage,
+    useLastSelectedProduct,
+} from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import type { SetupFormValues } from 'AIJourney/pages/Setup/Setup'
 import { useJourneyContext } from 'AIJourney/providers'
@@ -35,6 +38,9 @@ export const Preview = () => {
         setIsCollapsibleColumnOpen(true)
         return () => setIsCollapsibleColumnOpen(false)
     }, [setIsCollapsibleColumnOpen])
+
+    const { resolveProduct, setLastSelectedProductId } =
+        useLastSelectedProduct()
 
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
     const [currentProductImage, setCurrentProductImage] =
@@ -71,9 +77,10 @@ export const Preview = () => {
 
     useEffect(() => {
         if (!selectedProduct && productList.length > 0) {
-            setSelectedProduct(productList[0])
+            const resolved = resolveProduct(productList)
+            if (resolved) setSelectedProduct(resolved)
         }
-    }, [productList, selectedProduct])
+    }, [productList, selectedProduct, resolveProduct])
 
     const { handleGenerateMessages, playgroundMessages, isGeneratingMessages } =
         useGeneratePlaygroundMessage({
@@ -92,6 +99,14 @@ export const Preview = () => {
             setValue('message_instructions', journeyData.message_instructions)
         }
     }, [journeyData, setValue])
+
+    const handleProductChange = useCallback(
+        (product: Product) => {
+            setSelectedProduct(product)
+            setLastSelectedProductId(product.id)
+        },
+        [setLastSelectedProductId],
+    )
 
     const handleGenerateMessagesClick = useCallback(async () => {
         setCurrentProductImage(selectedProduct?.image)
@@ -117,7 +132,10 @@ export const Preview = () => {
     return (
         <Box flexDirection="column" gap="lg">
             {shouldRenderTestingProductCard && (
-                <TestingProductCard onProductChange={setSelectedProduct} />
+                <TestingProductCard
+                    selectedProduct={selectedProduct ?? undefined}
+                    onProductChange={handleProductChange}
+                />
             )}
             <MessageGuidanceCard
                 onReturningCustomerChange={setReturningCustomer}

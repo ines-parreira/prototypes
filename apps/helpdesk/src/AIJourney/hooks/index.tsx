@@ -1,4 +1,5 @@
 export { useAiJourneyPhoneList } from './useAiJourneyPhoneList/useAiJourneyPhoneList'
+export { useLastSelectedProduct } from './useLastSelectedProduct/useLastSelectedProduct'
 export { useLastSelectedStore } from './useLastSelectedStore/useLastSelectedStore'
 export { useJourneyUpdateHandler } from './useJourneyUpdateHandler/useUpdateJourneyHandler'
 export { useJourneyCreateHandler } from './useJourneyCreateHandler/useJourneyCreateHandler'

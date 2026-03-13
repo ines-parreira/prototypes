@@ -18,7 +18,7 @@ import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { CountryCodeSelect } from 'AIJourney/components/CountryCodeSelect/CountryCodeSelect'
 import { ProductSelect } from 'AIJourney/components/ProductSelect/ProductSelect'
-import { useHandleSendTestSMS } from 'AIJourney/hooks'
+import { useHandleSendTestSMS, useLastSelectedProduct } from 'AIJourney/hooks'
 import { useAIJourneyProductList } from 'AIJourney/hooks/useAIJourneyProductList/useAIJourneyProductList'
 import { useJourneyContext } from 'AIJourney/providers'
 import type { Product } from 'constants/integrations/types/shopify'
@@ -37,6 +37,9 @@ export const SendTestCard = ({
     onProductChange,
     onReturningCustomerChange,
 }: SendTestCardProps) => {
+    const { resolveProduct, setLastSelectedProductId } =
+        useLastSelectedProduct()
+
     const [returningCustomer, setReturningCustomer] = useState(false)
     const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(
         undefined,
@@ -63,9 +66,13 @@ export const SendTestCard = ({
     useEffect(() => {
         if (isWelcome) setSelectedFullProduct(null)
         else if (productList.length > 0 && !selectedFullProduct) {
-            setSelectedFullProduct(productList[0])
+            const resolved = resolveProduct(productList)
+            if (resolved) {
+                setSelectedFullProduct(resolved)
+                setSelectedProduct(resolved)
+            }
         }
-    }, [isWelcome, productList, selectedFullProduct])
+    }, [isWelcome, productList, selectedFullProduct, resolveProduct])
 
     const callingCode = selectedCountryCode
         ? getCountryCallingCodeFixed(selectedCountryCode)
@@ -106,6 +113,7 @@ export const SendTestCard = ({
         const fullProduct = productList.find((p) => p.id === item.id)
         if (fullProduct) {
             setSelectedFullProduct(fullProduct)
+            setLastSelectedProductId(fullProduct.id)
             onProductChange?.(fullProduct)
         }
     }

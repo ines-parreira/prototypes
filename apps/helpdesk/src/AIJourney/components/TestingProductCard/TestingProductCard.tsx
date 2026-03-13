@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { Box, Card, CardHeader, Text } from '@gorgias/axiom'
 
 import { ProductSelect } from 'AIJourney/components/ProductSelect/ProductSelect'
@@ -8,21 +6,14 @@ import type { Product } from 'constants/integrations/types/shopify'
 import css from './TestingProductCard.less'
 
 type TestingProductCardProps = {
+    selectedProduct?: Product
     onProductChange?: (product: Product) => void
 }
 
 export const TestingProductCard = ({
+    selectedProduct,
     onProductChange,
 }: TestingProductCardProps) => {
-    const [selectedProduct, setSelectedProduct] = useState<Product | undefined>(
-        undefined,
-    )
-
-    const handleSelect = (product: Product) => {
-        setSelectedProduct(product)
-        onProductChange?.(product)
-    }
-
     return (
         <Card minWidth={680}>
             <Box flexDirection="column" gap="xxs">
@@ -32,7 +23,9 @@ export const TestingProductCard = ({
                 </Text>
                 <ProductSelect
                     selectedProduct={selectedProduct}
-                    setSelectedProduct={handleSelect}
+                    setSelectedProduct={(product: Product) =>
+                        onProductChange?.(product)
+                    }
                 />
             </Box>
         </Card>
