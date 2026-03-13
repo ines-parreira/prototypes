@@ -3,34 +3,43 @@ import {
     calculateAverage,
     calculateTotal,
 } from 'domains/reporting/pages/support-performance/agents/utils/agentAvailabilityCalculations'
+import type { StatusBreakdown } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
 
 type AgentAvailabilityData = {
     id: number
     name: string
-    [key: string]: number | string | undefined
+    [key: string]: number | string | StatusBreakdown | undefined
 }
 
-const { AGENT_NAME_COLUMN, ONLINE_TIME_COLUMN, AVAILABLE_STATUS_COLUMN } =
-    AGENT_AVAILABILITY_COLUMNS
+const {
+    AGENT_NAME_COLUMN,
+    ONLINE_TIME_COLUMN,
+    AVAILABLE_STATUS_COLUMN,
+    UNAVAILABLE_STATUS_COLUMN,
+} = AGENT_AVAILABILITY_COLUMNS
 describe('agentAvailabilityCalculations', () => {
     const mockAgents: AgentAvailabilityData[] = [
         {
             id: 1,
             name: 'Alice',
             agent_online_time: 3600, // 1 hour in seconds
-            agent_status_available: 1800, // 30 min in seconds
+            agent_status_available: { total: 1800, online: 1200, offline: 600 },
         },
         {
             id: 2,
             name: 'Bob',
             agent_online_time: 7200, // 2 hours in seconds
-            agent_status_available: 3600, // 1 hour in seconds
+            agent_status_available: {
+                total: 3600,
+                online: 2400,
+                offline: 1200,
+            },
         },
         {
             id: 3,
             name: 'Charlie',
             agent_online_time: 5400, // 1.5 hours in seconds
-            agent_status_available: 2700, // 45 min in seconds
+            agent_status_available: { total: 2700, online: 1800, offline: 900 },
         },
     ]
 
@@ -42,13 +51,42 @@ describe('agentAvailabilityCalculations', () => {
                 expect(result).toBe(16200)
             })
 
-            it('should calculate total for status columns across multiple agents', () => {
-                // 1800 + 3600 + 2700 = 8100
+            it('should calculate total for Available column using online time only', () => {
+                // Uses online values: 1200 + 2400 + 1800 = 5400
                 const result = calculateTotal(
                     mockAgents,
                     AVAILABLE_STATUS_COLUMN,
                 )
-                expect(result).toBe(8100)
+                expect(result).toBe(5400)
+            })
+
+            it('should calculate total for non-Available status columns using total time', () => {
+                const agentsWithUnavailable: AgentAvailabilityData[] = [
+                    {
+                        id: 1,
+                        name: 'Alice',
+                        agent_status_unavailable: {
+                            total: 1000,
+                            online: 600,
+                            offline: 400,
+                        },
+                    },
+                    {
+                        id: 2,
+                        name: 'Bob',
+                        agent_status_unavailable: {
+                            total: 2000,
+                            online: 1200,
+                            offline: 800,
+                        },
+                    },
+                ]
+                // Uses total values: 1000 + 2000 = 3000
+                const result = calculateTotal(
+                    agentsWithUnavailable,
+                    UNAVAILABLE_STATUS_COLUMN,
+                )
+                expect(result).toBe(3000)
             })
 
             it('should calculate total for custom status columns', () => {
@@ -93,13 +131,21 @@ describe('agentAvailabilityCalculations', () => {
                         id: 2,
                         name: 'Bob',
                         agent_online_time: 7200,
-                        agent_status_available: 3600,
+                        agent_status_available: {
+                            total: 3600,
+                            online: 2400,
+                            offline: 1200,
+                        },
                     },
                     {
                         id: 3,
                         name: 'Charlie',
                         // agent_online_time is missing
-                        agent_status_available: 2700,
+                        agent_status_available: {
+                            total: 2700,
+                            online: 1800,
+                            offline: 900,
+                        },
                     },
                 ]
 
@@ -114,8 +160,8 @@ describe('agentAvailabilityCalculations', () => {
                     agentsWithMissingData,
                     AVAILABLE_STATUS_COLUMN,
                 )
-                // 0 (undefined) + 3600 + 2700 = 6300
-                expect(availableTotal).toBe(6300)
+                // Uses online values: 0 (undefined) + 2400 + 1800 = 4200
+                expect(availableTotal).toBe(4200)
             })
 
             it('should return 0 when column does not exist on any agent', () => {
@@ -301,13 +347,13 @@ describe('agentAvailabilityCalculations', () => {
                 expect(result).toBe(5400)
             })
 
-            it('should calculate average for status columns across agents', () => {
-                // (1800 + 3600 + 2700) / 3 = 2700
+            it('should calculate average for Available column using online time only', () => {
+                // Uses online values: (1200 + 2400 + 1800) / 3 = 1800
                 const result = calculateAverage(
                     mockAgents,
                     AVAILABLE_STATUS_COLUMN,
                 )
-                expect(result).toBe(2700)
+                expect(result).toBe(1800)
             })
 
             it('should handle decimal averages correctly', () => {
@@ -614,8 +660,9 @@ describe('agentAvailabilityCalculations', () => {
                 AVAILABLE_STATUS_COLUMN,
             )
 
-            expect(total).toBe(8100)
-            expect(average).toBe(2700)
+            // Uses online values: 1200 + 2400 + 1800 = 5400 total, 1800 average
+            expect(total).toBe(5400)
+            expect(average).toBe(1800)
             expect(average * mockAgents.length).toBe(total)
         })
     })

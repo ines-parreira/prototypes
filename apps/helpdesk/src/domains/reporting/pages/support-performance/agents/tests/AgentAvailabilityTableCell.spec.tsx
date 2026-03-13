@@ -2,7 +2,14 @@ import {
     getColumnValue,
     isStatusBreakdown,
 } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableCell'
+import { AGENT_AVAILABILITY_COLUMNS } from 'domains/reporting/pages/support-performance/agents/constants'
 import type { StatusBreakdown } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
+
+const {
+    AVAILABLE_STATUS_COLUMN,
+    UNAVAILABLE_STATUS_COLUMN,
+    ONLINE_TIME_COLUMN,
+} = AGENT_AVAILABILITY_COLUMNS
 
 describe('AgentAvailabilityTableCell Utilities', () => {
     describe('getColumnValue', () => {
@@ -18,13 +25,35 @@ describe('AgentAvailabilityTableCell Utilities', () => {
             expect(getColumnValue(0)).toBe(0)
         })
 
-        it('should return total from StatusBreakdown object', () => {
+        it('should return total from StatusBreakdown object by default', () => {
             const breakdown: StatusBreakdown = {
                 total: 1800,
                 online: 1000,
                 offline: 800,
             }
             expect(getColumnValue(breakdown)).toBe(1800)
+        })
+
+        it('should return total from StatusBreakdown for non-available columns', () => {
+            const breakdown: StatusBreakdown = {
+                total: 1800,
+                online: 1000,
+                offline: 800,
+            }
+            expect(getColumnValue(breakdown, UNAVAILABLE_STATUS_COLUMN)).toBe(
+                1800,
+            )
+        })
+
+        it('should return online from StatusBreakdown for Available column', () => {
+            const breakdown: StatusBreakdown = {
+                total: 1800,
+                online: 1000,
+                offline: 800,
+            }
+            expect(getColumnValue(breakdown, AVAILABLE_STATUS_COLUMN)).toBe(
+                1000,
+            )
         })
 
         it('should return zero total from StatusBreakdown with zero values', () => {
@@ -34,6 +63,10 @@ describe('AgentAvailabilityTableCell Utilities', () => {
                 offline: 0,
             }
             expect(getColumnValue(breakdown)).toBe(0)
+        })
+
+        it('should return number directly for online time column', () => {
+            expect(getColumnValue(3600, ONLINE_TIME_COLUMN)).toBe(3600)
         })
     })
 
