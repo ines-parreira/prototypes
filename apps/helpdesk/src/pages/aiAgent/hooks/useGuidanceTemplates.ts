@@ -84,13 +84,21 @@ export const GuidanceTemplatesData: GuidanceTemplate[] = [
         tag: 'Subscriptions',
         style: TAG_STYLES.Subscriptions,
     },
+    {
+        id: 'when-the-customer-asks-to-modify-their-subscription',
+        name: 'WHEN: The customer asks to modify their subscription (pause, skip or resume)',
+        content:
+            '<blockquote><strong>Hard handover rule:</strong> <strong>IF</strong> the customer wants to modify subscriptions tied to multiple accounts or emails, <strong>THEN:</strong></blockquote><ul><li>Acknowledge the concern.</li><li>Hand over the ticket immediately.</li></ul><figure style=\"display:inline-block;margin:0\"><hr /></figure><h2>1. Clarify the requested modification</h2><div><strong>IF</strong> the customer has clearly stated what they want, <strong>THEN</strong> confirm the request before executing: <em>\"Just to confirm — you’d like me to [specific change]. Is that correct?\"</em></div><div><strong>IF</strong> the customer’s request is vague, <strong>THEN</strong> clarify which option fits their needs:</div><ul><li><strong>Pause</strong> — temporarily stops all future orders until they choose to resume.</li><li><strong>Skip</strong> — skips the next upcoming shipment only, then deliveries continue as normal.</li><li><strong>Resume</strong> — reactivates a paused subscription so deliveries start again.</li></ul><figure style=\"display:inline-block;margin:0\"><hr /></figure><h2>2. Execute the modification</h2><div><strong>IF</strong> the customer wants to pause, <strong>THEN:</strong> <strong>[Insert Action — Pause Subscription]</strong></div><div><br /></div><div><strong>IF</strong> the customer wants to skip, <strong>THEN:</strong> <strong>[Insert Action — Skip Next Subscription Order]</strong></div><div><br /></div><div><strong>IF</strong> the customer wants to resume, <strong>THEN:</strong> <strong>[Insert Action — Resume Subscription]</strong></div><div><br /></div><div><strong>IF</strong> the action succeeds, <strong>THEN:</strong></div><ul><li>Confirm the change and explain what happens next (e.g., when deliveries resume, that no charges will occur while paused).</li><li>Provide the self-service portal link: <em>\"For any future changes, you can manage your subscription anytime at <strong>[subscription portal link]</strong>.\"</em></li></ul><div><br /></div><div><strong>IF</strong> the action could not be completed, <strong>THEN:</strong></div><ul><li>Apologize for the difficulty.</li><li>Hand over the ticket for manual investigation.</li></ul><figure style=\"display:inline-block;margin:0\"><hr /></figure><blockquote> <strong>Note:</strong> Ensure all computations and internal logic assessments are done in the backend. Do not communicate these technical details to the shopper.</blockquote>',
+        tag: 'Subscriptions',
+        style: TAG_STYLES.Subscriptions,
+    },
 ]
 
 // This is a custom hook that returns the GuidanceTemplatesData object.
 // In feature probably we want to fetch this data from the server.
 export const useGuidanceTemplates = () => {
     const guidanceTemplates = useMemo(
-        () => Object.values(GuidanceTemplatesData),
+        () => Object.values(GuidanceTemplatesData.slice(0, 9)),
         [],
     )
 
