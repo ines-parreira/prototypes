@@ -1,6 +1,8 @@
 import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import {
+    declinedCallsPerAgent,
+    declinedCallsPerAgentQueryV2Factory,
     declinedVoiceCallsCount,
     declinedVoiceCallsCountPerAgent,
     declinedVoiceCallsCountPerAgentQueryV2Factory,
@@ -9,6 +11,8 @@ import {
     transferredInboundVoiceCallsCountPerAgent,
     transferredInboundVoiceCallsCountPerAgentQueryV2Factory,
     transferredInboundVoiceCallsCountQueryV2Factory,
+    transferredInboundVoiceCallsPerAgent,
+    transferredInboundVoiceCallsPerAgentQueryV2Factory,
 } from 'domains/reporting/models/scopes/voiceAgentEvents'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
@@ -258,6 +262,144 @@ describe('voiceAgentEventsScope', () => {
 
                 expect(factoryResult).toEqual(buildResult)
             })
+        })
+    })
+
+    describe('transferredInboundVoiceCallsPerAgent', () => {
+        const expected = {
+            metricName: 'voice-transferred-inbound-calls-per-agent',
+            scope: 'voice-agent-events',
+            measures: ['voiceCallsCount'],
+            dimensions: [
+                'agentId',
+                'integrationId',
+                'createdDatetime',
+                'ticketId',
+                'transferType',
+                'transferTargetAgentId',
+                'transferTargetExternalNumber',
+                'transferTargetQueueId',
+                'duration',
+                'displayStatus',
+                'callRecordingAvailable',
+                'callRecordingUrl',
+            ],
+            filters: [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+                {
+                    member: 'transferredCalls',
+                    operator: 'one-of',
+                    values: ['1'],
+                },
+            ],
+            timezone: 'utc',
+        }
+
+        it('creates query', () => {
+            const actual = transferredInboundVoiceCallsPerAgent.build(context)
+
+            expect(actual).toEqual(expected)
+        })
+
+        it('applies sorting order', () => {
+            const actual = transferredInboundVoiceCallsPerAgent.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
+            })
+
+            expect(actual).toEqual({
+                ...expected,
+                order: [['createdDatetime', 'desc']],
+            })
+        })
+    })
+
+    describe('transferredInboundVoiceCallsPerAgentQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            const factoryResult =
+                transferredInboundVoiceCallsPerAgentQueryV2Factory(context)
+            const buildResult =
+                transferredInboundVoiceCallsPerAgent.build(context)
+
+            expect(factoryResult).toEqual(buildResult)
+        })
+    })
+
+    describe('declinedCallsPerAgent', () => {
+        const expected = {
+            metricName: 'voice-declined-calls-per-agent',
+            scope: 'voice-agent-events',
+            measures: ['voiceCallsCount'],
+            dimensions: [
+                'integrationId',
+                'createdDatetime',
+                'ticketId',
+                'status',
+                'assignedAgentId',
+                'customerId',
+                'callDirection',
+                'duration',
+                'voicemailAvailable',
+                'voicemailUrl',
+                'displayStatus',
+                'callRecordingAvailable',
+                'callRecordingUrl',
+                'source',
+            ],
+            filters: [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+                {
+                    member: 'declinedCalls',
+                    operator: 'one-of',
+                    values: ['1'],
+                },
+            ],
+            timezone: 'utc',
+        }
+
+        it('creates query', () => {
+            const actual = declinedCallsPerAgent.build(context)
+
+            expect(actual).toEqual(expected)
+        })
+
+        it('applies sorting order', () => {
+            const actual = declinedCallsPerAgent.build({
+                ...context,
+                sortDirection: OrderDirection.Desc,
+            })
+
+            expect(actual).toEqual({
+                ...expected,
+                order: [['createdDatetime', 'desc']],
+            })
+        })
+    })
+
+    describe('declinedCallsPerAgentQueryV2Factory', () => {
+        it('returns the same result as calling declinedCallsPerAgent build', () => {
+            const factoryResult = declinedCallsPerAgentQueryV2Factory(context)
+            const buildResult = declinedCallsPerAgent.build(context)
+
+            expect(factoryResult).toEqual(buildResult)
         })
     })
 })

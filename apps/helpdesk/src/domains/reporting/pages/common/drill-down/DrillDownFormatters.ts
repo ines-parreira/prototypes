@@ -314,13 +314,17 @@ export const formatVoiceDrillDownRowData = ({
         row[VoiceCallDimension.DisplayStatus] || row['displayStatus'],
     queueId: row[VoiceCallDimension.QueueId] || row['queueId'],
     queueName: row[VoiceCallDimension.QueueName] || row['queueName'],
-    transferType: row[VoiceEventsByAgentDimension.TransferType],
+    transferType:
+        row[VoiceEventsByAgentDimension.TransferType] || row['transferType'],
     transferTargetAgentId:
-        row[VoiceEventsByAgentDimension.TransferTargetAgentId],
+        row[VoiceEventsByAgentDimension.TransferTargetAgentId] ||
+        row['transferTargetAgentId'],
     transferTargetQueueId:
-        row[VoiceEventsByAgentDimension.TransferTargetQueueId],
+        row[VoiceEventsByAgentDimension.TransferTargetQueueId] ||
+        row['transferTargetQueueId'],
     transferTargetExternalNumber:
-        row[VoiceEventsByAgentDimension.TransferTargetExternalNumber],
+        row[VoiceEventsByAgentDimension.TransferTargetExternalNumber] ||
+        row['transferTargetExternalNumber'],
     callSid: 'undefined', // can be filled if we ever need it, by adding it to the dimensions
     metricValue: row[metricField],
     rowData: row,

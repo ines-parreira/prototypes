@@ -12,6 +12,8 @@ import {
     voiceCallsAchievedExposures,
     voiceCallsAchievedExposuresQueryFactoryV2,
     voiceCallsAverageTalkTime,
+    voiceCallsAverageTalkTimePerAgent,
+    voiceCallsAverageTalkTimePerAgentQueryFactoryV2,
     voiceCallsAverageTalkTimeQueryFactoryV2,
     voiceCallsAverageWaitTime,
     voiceCallsAverageWaitTimeQueryFactoryV2,
@@ -21,9 +23,17 @@ import {
     voiceCallsCountPerFilteringAgent,
     voiceCallsCountPerFilteringAgentQueryFactoryV2,
     voiceCallsCountQueryFactoryV2,
+    voiceCallsLiveDashboardConnectedAllDimensionsQueryFactoryV2,
     voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2,
     voiceCallsSlaAchievementRate,
     voiceCallsSlaAchievementRateQueryFactoryV2,
+    voiceCallsWithSlaStatusAllDimensions,
+    voiceCallsWithSlaStatusAllDimensionsQueryFactoryV2,
+    voiceConnectedAllDimensions,
+    voiceConnectedAllDimensionsQueryFactoryV2,
+    voiceLiveDashboardWaitTimeCallsAllDimensionsQueryFactoryV2,
+    voiceWaitTimeCallsAllDimensions,
+    voiceWaitTimeCallsAllDimensionsQueryFactoryV2,
 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getLiveVoicePeriodFilter } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
@@ -709,6 +719,247 @@ describe('voiceCallsScope', () => {
         })
     })
 
+    describe('voiceCallsAverageTalkTimePerAgent', () => {
+        it('creates query with correct metric name, measures and dimensions', () => {
+            const actual = voiceCallsAverageTalkTimePerAgent.build(context)
+
+            expect(actual).toMatchObject({
+                measures: ['averageTalkTimeInSeconds'],
+                dimensions: ['agentId'],
+                timezone: 'utc',
+                metricName: METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME_PER_AGENT,
+                scope: MetricScope.VoiceCalls,
+            })
+        })
+    })
+
+    describe('voiceCallsAverageTalkTimePerAgentQueryFactoryV2', () => {
+        it('returns query with agentId dimension', () => {
+            const result =
+                voiceCallsAverageTalkTimePerAgentQueryFactoryV2(context)
+
+            expect(result.dimensions).toContain('agentId')
+        })
+
+        it('applies segment filters when segment is provided', () => {
+            const result = voiceCallsAverageTalkTimePerAgentQueryFactoryV2(
+                context,
+                VoiceCallSegment.outboundCalls,
+            )
+
+            expect(result.filters).toContainEqual({
+                member: 'callDirection',
+                operator: 'one-of',
+                values: ['outbound'],
+            })
+        })
+
+        it('returns query without segment filters when no segment provided', () => {
+            const result =
+                voiceCallsAverageTalkTimePerAgentQueryFactoryV2(context)
+
+            const callDirectionFilter = result.filters?.find(
+                (f: { member: string }) => f.member === 'callDirection',
+            )
+            expect(callDirectionFilter).toBeUndefined()
+        })
+    })
+
+    describe('voiceConnectedAllDimensions', () => {
+        it('creates query with correct metric name, measures and dimensions', () => {
+            const actual = voiceConnectedAllDimensions.build(context)
+
+            expect(actual).toMatchObject({
+                measures: ['voiceCallsCount'],
+                dimensions: [
+                    'agentId',
+                    'customerId',
+                    'callDirection',
+                    'callSlaStatus',
+                    'integrationId',
+                    'createdDatetime',
+                    'status',
+                    'duration',
+                    'ticketId',
+                    'source',
+                    'destination',
+                    'talkTime',
+                    'waitTime',
+                    'voicemailAvailable',
+                    'voicemailUrl',
+                    'callRecordingAvailable',
+                    'callRecordingUrl',
+                    'displayStatus',
+                    'queueId',
+                    'queueName',
+                    'isPossibleSpam',
+                ],
+                timezone: 'utc',
+                metricName: METRIC_NAMES.VOICE_CONNECTED_CALLS_LIST,
+                scope: MetricScope.VoiceCalls,
+            })
+        })
+
+        it('includes talkTime set filter', () => {
+            const actual = voiceConnectedAllDimensions.build(context)
+
+            expect(actual.filters).toContainEqual({
+                member: 'talkTime',
+                operator: 'set',
+                values: [],
+            })
+        })
+    })
+
+    describe('voiceConnectedAllDimensionsQueryFactoryV2', () => {
+        it('returns query with all dimensions', () => {
+            const result = voiceConnectedAllDimensionsQueryFactoryV2(context)
+
+            expect(result.dimensions).toContain('agentId')
+            expect(result.dimensions).toContain('customerId')
+            expect(result.dimensions).toContain('callDirection')
+        })
+
+        it('includes talkTime set filter', () => {
+            const result = voiceConnectedAllDimensionsQueryFactoryV2(context)
+
+            expect(result.filters).toContainEqual({
+                member: 'talkTime',
+                operator: 'set',
+                values: [],
+            })
+        })
+    })
+
+    describe('voiceWaitTimeCallsAllDimensions', () => {
+        it('creates query with correct metric name, measures and dimensions', () => {
+            const actual = voiceWaitTimeCallsAllDimensions.build(context)
+
+            expect(actual).toMatchObject({
+                measures: ['voiceCallsCount'],
+                dimensions: [
+                    'agentId',
+                    'customerId',
+                    'callDirection',
+                    'callSlaStatus',
+                    'integrationId',
+                    'createdDatetime',
+                    'status',
+                    'duration',
+                    'ticketId',
+                    'source',
+                    'destination',
+                    'talkTime',
+                    'waitTime',
+                    'voicemailAvailable',
+                    'voicemailUrl',
+                    'callRecordingAvailable',
+                    'callRecordingUrl',
+                    'displayStatus',
+                    'queueId',
+                    'queueName',
+                    'isPossibleSpam',
+                ],
+                timezone: 'utc',
+                metricName: METRIC_NAMES.VOICE_WAITING_TIME_CALLS_LIST,
+                scope: MetricScope.VoiceCalls,
+            })
+        })
+    })
+
+    describe('voiceWaitTimeCallsAllDimensionsQueryFactoryV2', () => {
+        it('returns query with all dimensions', () => {
+            const result =
+                voiceWaitTimeCallsAllDimensionsQueryFactoryV2(context)
+
+            expect(result.dimensions).toContain('agentId')
+            expect(result.dimensions).toContain('customerId')
+        })
+
+        it('applies segment filters when segment is provided', () => {
+            const result = voiceWaitTimeCallsAllDimensionsQueryFactoryV2(
+                context,
+                VoiceCallSegment.inboundCalls,
+            )
+
+            expect(result.filters).toContainEqual({
+                member: 'callDirection',
+                operator: 'one-of',
+                values: ['inbound'],
+            })
+        })
+    })
+
+    describe('voiceCallsWithSlaStatusAllDimensions', () => {
+        it('creates query with correct metric name, measures and dimensions', () => {
+            const actual = voiceCallsWithSlaStatusAllDimensions.build(context)
+
+            expect(actual).toMatchObject({
+                measures: ['voiceCallsCount'],
+                dimensions: [
+                    'agentId',
+                    'customerId',
+                    'callDirection',
+                    'callSlaStatus',
+                    'integrationId',
+                    'createdDatetime',
+                    'status',
+                    'duration',
+                    'ticketId',
+                    'source',
+                    'destination',
+                    'talkTime',
+                    'waitTime',
+                    'voicemailAvailable',
+                    'voicemailUrl',
+                    'callRecordingAvailable',
+                    'callRecordingUrl',
+                    'displayStatus',
+                    'queueId',
+                    'queueName',
+                    'isPossibleSpam',
+                ],
+                timezone: 'utc',
+                metricName: METRIC_NAMES.VOICE_CALL_WITH_SLA_STATUS_LIST,
+                scope: MetricScope.VoiceCalls,
+            })
+        })
+
+        it('includes callSlaStatus set filter', () => {
+            const actual = voiceCallsWithSlaStatusAllDimensions.build(context)
+
+            expect(actual.filters).toContainEqual({
+                member: 'callSlaStatus',
+                operator: 'set',
+                values: [],
+            })
+        })
+    })
+
+    describe('voiceCallsWithSlaStatusAllDimensionsQueryFactoryV2', () => {
+        it('applies inboundCalls segment filter', () => {
+            const result =
+                voiceCallsWithSlaStatusAllDimensionsQueryFactoryV2(context)
+
+            expect(result.filters).toContainEqual({
+                member: 'callDirection',
+                operator: 'one-of',
+                values: ['inbound'],
+            })
+        })
+
+        it('includes callSlaStatus set filter', () => {
+            const result =
+                voiceCallsWithSlaStatusAllDimensionsQueryFactoryV2(context)
+
+            expect(result.filters).toContainEqual({
+                member: 'callSlaStatus',
+                operator: 'set',
+                values: [],
+            })
+        })
+    })
+
     describe('voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2', () => {
         const livePeriod = {
             start_datetime: '2025-09-03T00:00:00.000',
@@ -774,6 +1025,140 @@ describe('voiceCallsScope', () => {
         it('applies inbound segment filter when inboundCalls segment is provided', () => {
             const result =
                 voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2(
+                    context,
+                    VoiceCallSegment.inboundCalls,
+                )
+
+            expect(result.filters).toContainEqual({
+                member: 'callDirection',
+                operator: 'one-of',
+                values: ['inbound'],
+            })
+        })
+    })
+
+    describe('voiceCallsLiveDashboardConnectedAllDimensionsQueryFactoryV2', () => {
+        const livePeriod = {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        }
+        const liveTimezone = 'Europe/Paris'
+
+        beforeEach(() => {
+            getAccountBusinessHoursTimezoneMock.mockReturnValue(liveTimezone)
+            getLiveVoicePeriodFilterMock.mockReturnValue(livePeriod)
+        })
+
+        it('returns query with all dimensions', () => {
+            const result =
+                voiceCallsLiveDashboardConnectedAllDimensionsQueryFactoryV2(
+                    context,
+                )
+
+            expect(result.dimensions).toContain('agentId')
+            expect(result.dimensions).toContain('customerId')
+            expect(result.dimensions).toContain('callDirection')
+        })
+
+        it('uses timezone from getAccountBusinessHoursTimezone', () => {
+            const result =
+                voiceCallsLiveDashboardConnectedAllDimensionsQueryFactoryV2(
+                    context,
+                )
+
+            expect(result.timezone).toBe(liveTimezone)
+        })
+
+        it('calls getLiveVoicePeriodFilter with the business hours timezone', () => {
+            voiceCallsLiveDashboardConnectedAllDimensionsQueryFactoryV2(context)
+
+            expect(getLiveVoicePeriodFilterMock).toHaveBeenCalledWith(
+                liveTimezone,
+            )
+        })
+
+        it('uses live period from getLiveVoicePeriodFilter instead of context period', () => {
+            const result =
+                voiceCallsLiveDashboardConnectedAllDimensionsQueryFactoryV2(
+                    context,
+                )
+
+            expect(result.filters).toContainEqual({
+                member: 'periodStart',
+                operator: 'afterDate',
+                values: [livePeriod.start_datetime],
+            })
+            expect(result.filters).toContainEqual({
+                member: 'periodEnd',
+                operator: 'beforeDate',
+                values: [livePeriod.end_datetime],
+            })
+        })
+
+        it('includes talkTime set filter', () => {
+            const result =
+                voiceCallsLiveDashboardConnectedAllDimensionsQueryFactoryV2(
+                    context,
+                )
+
+            expect(result.filters).toContainEqual({
+                member: 'talkTime',
+                operator: 'set',
+                values: [],
+            })
+        })
+    })
+
+    describe('voiceLiveDashboardWaitTimeCallsAllDimensionsQueryFactoryV2', () => {
+        const livePeriod = {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        }
+        const liveTimezone = 'Europe/Paris'
+
+        beforeEach(() => {
+            getAccountBusinessHoursTimezoneMock.mockReturnValue(liveTimezone)
+            getLiveVoicePeriodFilterMock.mockReturnValue(livePeriod)
+        })
+
+        it('uses timezone from getAccountBusinessHoursTimezone', () => {
+            const result =
+                voiceLiveDashboardWaitTimeCallsAllDimensionsQueryFactoryV2(
+                    context,
+                )
+
+            expect(result.timezone).toBe(liveTimezone)
+        })
+
+        it('calls getLiveVoicePeriodFilter with the business hours timezone', () => {
+            voiceLiveDashboardWaitTimeCallsAllDimensionsQueryFactoryV2(context)
+
+            expect(getLiveVoicePeriodFilterMock).toHaveBeenCalledWith(
+                liveTimezone,
+            )
+        })
+
+        it('uses live period instead of context period', () => {
+            const result =
+                voiceLiveDashboardWaitTimeCallsAllDimensionsQueryFactoryV2(
+                    context,
+                )
+
+            expect(result.filters).toContainEqual({
+                member: 'periodStart',
+                operator: 'afterDate',
+                values: [livePeriod.start_datetime],
+            })
+            expect(result.filters).toContainEqual({
+                member: 'periodEnd',
+                operator: 'beforeDate',
+                values: [livePeriod.end_datetime],
+            })
+        })
+
+        it('applies segment filters when segment is provided', () => {
+            const result =
+                voiceLiveDashboardWaitTimeCallsAllDimensionsQueryFactoryV2(
                     context,
                     VoiceCallSegment.inboundCalls,
                 )

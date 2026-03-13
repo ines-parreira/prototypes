@@ -10,6 +10,7 @@ import {
 } from 'domains/reporting/models/queryFactories/voice/voiceCall'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import type {
     ApiStatsFilters,
     FilterKey,
@@ -52,7 +53,7 @@ const voiceCallsScope = defineScope({
         'isPossibleSpam',
     ],
     order: [
-        'averageTalkTimeInSeconds',
+        'talkTime',
         'createdDatetime',
         'duration',
         'waitTime',
@@ -73,6 +74,8 @@ const voiceCallsScope = defineScope({
         'tags',
         'customFields',
         'callSlaStatus',
+        'talkTime',
+        'waitTime',
     ],
 })
 
@@ -253,6 +256,30 @@ const withVoiceCallSegment = (
     }
 }
 
+const CALL_LIST_DIMENSIONS = [
+    'agentId',
+    'customerId',
+    'callDirection',
+    'callSlaStatus',
+    'integrationId',
+    'createdDatetime',
+    'status',
+    'duration',
+    'ticketId',
+    'source',
+    'destination',
+    'talkTime',
+    'waitTime',
+    'voicemailAvailable',
+    'voicemailUrl',
+    'callRecordingAvailable',
+    'callRecordingUrl',
+    'displayStatus',
+    'queueId',
+    'queueName',
+    'isPossibleSpam',
+] as const
+
 export const voiceCallsCount = voiceCallsScope
     .defineMetricName(METRIC_NAMES.VOICE_CALL_COUNT_TREND)
     .defineQuery(() => ({
@@ -292,29 +319,7 @@ export const voiceCallsCountAllDimensions = voiceCallsScope
     .defineMetricName(METRIC_NAMES.VOICE_CALL_LIST)
     .defineQuery(() => ({
         measures: ['voiceCallsCount'] as const,
-        dimensions: [
-            'agentId',
-            'customerId',
-            'callDirection',
-            'callSlaStatus',
-            'integrationId',
-            'createdDatetime',
-            'status',
-            'duration',
-            'ticketId',
-            'source',
-            'destination',
-            'talkTime',
-            'waitTime',
-            'voicemailAvailable',
-            'voicemailUrl',
-            'callRecordingAvailable',
-            'callRecordingUrl',
-            'displayStatus',
-            'queueId',
-            'queueName',
-            'isPossibleSpam',
-        ] as const,
+        dimensions: CALL_LIST_DIMENSIONS,
     }))
 
 export const voiceCallsCountAllDimensionsQueryFactoryV2 = (
@@ -413,6 +418,139 @@ export const voiceCallsAchievedExposuresQueryFactoryV2 = (
                     : ctx.filters.period,
             },
             segment,
+        ),
+    })
+}
+
+export const voiceCallsAverageTalkTimePerAgent = voiceCallsScope
+    .defineMetricName(METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME_PER_AGENT)
+    .defineQuery(() => ({
+        measures: ['averageTalkTimeInSeconds'] as const,
+        dimensions: ['agentId'] as const,
+    }))
+
+export const voiceCallsAverageTalkTimePerAgentQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+    segment?: VoiceCallSegment,
+) => {
+    // TODO(2026): remove getAdvancedVoicePeriodFilters as we won't be able to query data before 2024
+    return voiceCallsAverageTalkTimePerAgent.build({
+        ...ctx,
+        filters: withVoiceCallSegment(
+            {
+                ...ctx.filters,
+                period: getAdvancedVoicePeriodFilters(ctx.filters.period),
+            },
+            segment,
+        ),
+    })
+}
+
+export const voiceConnectedAllDimensions = voiceCallsScope
+    .defineMetricName(METRIC_NAMES.VOICE_CONNECTED_CALLS_LIST)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['voiceCallsCount'] as const,
+        dimensions: CALL_LIST_DIMENSIONS,
+        filters: createScopeFilters(
+            {
+                ...ctx.filters,
+                talkTime: withLogicalOperator([], ApiOnlyOperatorEnum.SET),
+            },
+            config,
+        ),
+    }))
+
+export const voiceConnectedAllDimensionsQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+) => voiceConnectedAllDimensions.build(ctx)
+
+export const voiceCallsLiveDashboardConnectedAllDimensionsQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+) => {
+    const timezone = getAccountBusinessHoursTimezone()
+    const period = getLiveVoicePeriodFilter(timezone)
+
+    return voiceConnectedAllDimensions.build({
+        ...ctx,
+        timezone,
+        filters: {
+            ...ctx.filters,
+            period,
+        },
+    })
+}
+
+export const voiceWaitTimeCallsAllDimensions = voiceCallsScope
+    .defineMetricName(METRIC_NAMES.VOICE_WAITING_TIME_CALLS_LIST)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['voiceCallsCount'] as const,
+        dimensions: CALL_LIST_DIMENSIONS,
+        filters: createScopeFilters(
+            {
+                ...ctx.filters,
+                waitTime: withLogicalOperator([], ApiOnlyOperatorEnum.SET),
+            },
+            config,
+        ),
+    }))
+
+export const voiceWaitTimeCallsAllDimensionsQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+    segment?: VoiceCallSegment,
+) => {
+    // TODO(2026): remove getAdvancedVoicePeriodFilters as we won't be able to query data before 2024
+    return voiceWaitTimeCallsAllDimensions.build({
+        ...ctx,
+        filters: withVoiceCallSegment(
+            {
+                ...ctx.filters,
+                period: getAdvancedVoicePeriodFilters(ctx.filters.period),
+            },
+            segment,
+        ),
+    })
+}
+
+export const voiceLiveDashboardWaitTimeCallsAllDimensionsQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+    segment?: VoiceCallSegment,
+) => {
+    const timezone = getAccountBusinessHoursTimezone()
+    const period = getLiveVoicePeriodFilter(timezone)
+
+    return voiceWaitTimeCallsAllDimensions.build({
+        ...ctx,
+        timezone,
+        filters: withVoiceCallSegment({ ...ctx.filters, period }, segment),
+    })
+}
+
+export const voiceCallsWithSlaStatusAllDimensions = voiceCallsScope
+    .defineMetricName(METRIC_NAMES.VOICE_CALL_WITH_SLA_STATUS_LIST)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['voiceCallsCount'] as const,
+        dimensions: CALL_LIST_DIMENSIONS,
+        filters: createScopeFilters(
+            {
+                ...ctx.filters,
+                callSlaStatus: withLogicalOperator([], ApiOnlyOperatorEnum.SET),
+            },
+            config,
+        ),
+    }))
+
+export const voiceCallsWithSlaStatusAllDimensionsQueryFactoryV2 = (
+    ctx: VoiceCallsContext,
+) => {
+    // TODO(2026): remove getAdvancedVoicePeriodFilters as we won't be able to query data before 2024
+    return voiceCallsWithSlaStatusAllDimensions.build({
+        ...ctx,
+        filters: withVoiceCallSegment(
+            {
+                ...ctx.filters,
+                period: getAdvancedVoicePeriodFilters(ctx.filters.period),
+            },
+            VoiceCallSegment.inboundCalls,
         ),
     })
 }

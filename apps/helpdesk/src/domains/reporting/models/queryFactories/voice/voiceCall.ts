@@ -166,6 +166,7 @@ export const connectedCallsListQueryFactory = (
     dimensions: voiceCallListDimensions,
     timezone,
     filters: [...voiceCallDefaultFilters(filters), connectedCallsFilter],
+    segments: withStatisticsDefaultSegment(),
     order: [[order, sorting]],
     metricName: METRIC_NAMES.VOICE_CONNECTED_CALLS_LIST,
 })
@@ -220,7 +221,7 @@ export const liveDashboardWaitingTimeCallsListQueryFactory = (
         segment,
         undefined,
         undefined,
-        true,
+        false, // give consistent results with the other reporting data
     )
 }
 

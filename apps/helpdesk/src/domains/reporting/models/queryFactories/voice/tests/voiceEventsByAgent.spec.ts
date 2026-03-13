@@ -296,6 +296,7 @@ describe('voice events by agent factories', () => {
                 VoiceCallDimension.CallRecordingAvailable,
                 VoiceCallDimension.CallRecordingUrl,
                 VoiceCallDimension.DisplayStatus,
+                VoiceCallDimension.PhoneNumberSource,
             ],
             filters: [
                 {

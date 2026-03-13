@@ -15,7 +15,12 @@ import type { BuiltQuery, Context } from 'domains/reporting/models/scopes/scope'
 import type { VoiceCallsContext } from 'domains/reporting/models/scopes/voiceCalls'
 import {
     voiceCallsCountAllDimensionsQueryFactoryV2,
+    voiceCallsLiveDashboardConnectedAllDimensionsQueryFactoryV2,
     voiceCallsLiveDashboardCountAllDimensionsQueryFactoryV2,
+    voiceCallsWithSlaStatusAllDimensionsQueryFactoryV2,
+    voiceConnectedAllDimensionsQueryFactoryV2,
+    voiceLiveDashboardWaitTimeCallsAllDimensionsQueryFactoryV2,
+    voiceWaitTimeCallsAllDimensionsQueryFactoryV2,
 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
@@ -53,6 +58,11 @@ export const VoiceMetricsConfig: Record<
                 timezone,
                 VoiceCallSegment.inboundCalls,
             ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceWaitTimeCallsAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
+                VoiceCallSegment.inboundCalls,
+            ),
         title: '',
     },
     [VoiceMetric.AverageTalkTime]: {
@@ -60,6 +70,8 @@ export const VoiceMetricsConfig: Record<
         domain: Domain.Voice,
         drillDownQuery: (statsFilters: StatsFilters, timezone: string) =>
             connectedCallsListQueryFactory(statsFilters, timezone),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceConnectedAllDimensionsQueryFactoryV2(ctx as VoiceCallsContext),
         title: '',
     },
     [VoiceMetric.QueueAverageWaitTime]: {
@@ -70,6 +82,11 @@ export const VoiceMetricsConfig: Record<
                 statsFilters,
                 VoiceCallSegment.inboundCalls,
             ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceLiveDashboardWaitTimeCallsAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
+                VoiceCallSegment.inboundCalls,
+            ),
         title: '',
     },
     [VoiceMetric.QueueAverageTalkTime]: {
@@ -77,6 +94,10 @@ export const VoiceMetricsConfig: Record<
         domain: Domain.Voice,
         drillDownQuery: (statsFilters: StatsFilters) =>
             liveDashboardConnectedCallsListQueryFactory(statsFilters),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsLiveDashboardConnectedAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
+            ),
         title: '',
     },
     [VoiceMetric.QueueInboundCalls]: {
@@ -194,6 +215,10 @@ export const VoiceMetricsConfig: Record<
                 statsFilters,
                 timezone,
                 VoiceCallSegment.inboundCalls,
+            ),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceCallsWithSlaStatusAllDimensionsQueryFactoryV2(
+                ctx as VoiceCallsContext,
             ),
         title: SLA_ACHIEVEMENT_RATE_METRIC_TITLE,
         hint: { title: SLA_ACHIEVEMENT_RATE_METRIC_HINT },

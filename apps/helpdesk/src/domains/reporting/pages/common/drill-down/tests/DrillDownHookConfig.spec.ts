@@ -178,24 +178,11 @@ describe('getDrillDownHook', () => {
     it.each(voiceMetrics)(
         `should return the correct hook for the voice metric: $metricName`,
         (metricData) => {
-            const noEquivalentV2QueryMetrics: (
-                | VoiceMetric
-                | VoiceAgentsMetric
-            )[] = [
-                VoiceMetric.AverageWaitTime,
-                VoiceMetric.AverageTalkTime,
-                VoiceMetric.QueueAverageWaitTime,
-                VoiceMetric.QueueAverageTalkTime,
-                VoiceAgentsMetric.AgentAverageTalkTime,
-            ]
-
             const hook = getDrillDownHook(metricData)
             hook(metricData)
             expect(useDrillDownDataV2Mock).toHaveBeenCalledWith(
                 expect.any(Function),
-                noEquivalentV2QueryMetrics.includes(metricData.metricName)
-                    ? undefined
-                    : expect.any(Function),
+                expect.any(Function),
                 metricData,
                 formatVoiceDrillDownRowData,
             )

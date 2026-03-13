@@ -21,7 +21,7 @@ import {
     transferredInboundVoiceCallsCountPerAgentQueryV2Factory,
 } from 'domains/reporting/models/scopes/voiceAgentEvents'
 import {
-    voiceCallsAverageTalkTimeQueryFactoryV2,
+    voiceCallsAverageTalkTimePerAgentQueryFactoryV2,
     voiceCallsCountPerFilteringAgentQueryFactoryV2,
 } from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -216,7 +216,7 @@ export const useAverageTalkTimeMetricPerAgent = (
             undefined,
             sorting,
         ),
-        voiceCallsAverageTalkTimeQueryFactoryV2({
+        voiceCallsAverageTalkTimePerAgentQueryFactoryV2({
             filters: statsFilters,
             timezone,
             sortDirection: sorting,
@@ -227,7 +227,7 @@ export const useAverageTalkTimeMetricPerAgent = (
 export const fetchAverageTalkTimeMetricPerAgent = createFetchMetricPerDimension(
     voiceCallAverageTalkTimePerAgentQueryFactory,
     (statsFilters, timezone) =>
-        voiceCallsAverageTalkTimeQueryFactoryV2({
+        voiceCallsAverageTalkTimePerAgentQueryFactoryV2({
             filters: statsFilters,
             timezone,
         }),

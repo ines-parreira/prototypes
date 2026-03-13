@@ -86,6 +86,7 @@ export const declinedVoiceCallsPerAgentQueryFactory = (
         VoiceCallDimension.CallRecordingAvailable,
         VoiceCallDimension.CallRecordingUrl,
         VoiceCallDimension.DisplayStatus,
+        VoiceCallDimension.PhoneNumberSource,
     ],
     timezone,
     segments: withVoiceEventsByAgentDefaultSegment(

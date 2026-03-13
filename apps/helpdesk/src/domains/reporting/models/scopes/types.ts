@@ -98,6 +98,11 @@ export type DimensionName =
     | 'waitTime'
     | 'filteringAgentId'
     | 'isPossibleSpam'
+    | 'transferType'
+    | 'transferTargetAgentId'
+    | 'transferTargetExternalNumber'
+    | 'transferTargetQueueId'
+    | 'assignedAgentId'
     | 'helpCenterId'
     | 'localeCodes'
     | 'articleId'
@@ -270,6 +275,8 @@ export type NumberFilterName =
     | 'customFieldId'
     | 'queueId'
     | 'storeIntegrationId'
+    | 'talkTime'
+    | 'waitTime'
 
 export type BooleanFilterName =
     | 'isAnsweredByAgent'

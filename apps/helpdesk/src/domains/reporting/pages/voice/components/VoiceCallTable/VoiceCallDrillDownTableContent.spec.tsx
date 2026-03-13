@@ -48,7 +48,7 @@ describe('VoiceCallDrillDownTableContent', () => {
 
         expect(useDrillDownDataMock).toHaveBeenCalledWith(
             expect.any(Function),
-            undefined,
+            expect.any(Function),
             {
                 metricName: VoiceMetric.AverageTalkTime,
             },

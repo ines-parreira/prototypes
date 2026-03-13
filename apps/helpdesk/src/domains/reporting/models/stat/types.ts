@@ -49,6 +49,8 @@ export enum APIOnlyFilterKey {
     StoreId = 'storeId',
     CallDirection = 'callDirection',
     CallTerminationStatus = 'callTerminationStatus',
+    TalkTime = 'talkTime',
+    WaitTime = 'waitTime',
     IsAnsweredByAgent = 'isAnsweredByAgent',
     AgentId = 'agentId',
     DisplayStatus = 'displayStatus',
@@ -316,6 +318,8 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.StoreId]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.CallDirection]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.CallTerminationStatus]?: WithExtendedLogicalOperator<string>
+    [APIOnlyFilterKey.TalkTime]?: WithExtendedLogicalOperator<string>
+    [APIOnlyFilterKey.WaitTime]?: WithExtendedLogicalOperator<string>
     [APIOnlyFilterKey.IsAnsweredByAgent]?: WithLogicalOperator<boolean>
     [APIOnlyFilterKey.ProductId]?: WithExtendedLogicalOperator<string>
     [APIOnlyFilterKey.AgentId]?: WithExtendedLogicalOperator<number>

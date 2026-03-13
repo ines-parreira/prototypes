@@ -524,11 +524,9 @@ export const METRIC_NAMES = {
     // VoiceCallsSummary scope
     VOICE_CALL_SUMMARY: 'voice-call-summary',
 
-    // TODO(new-stats-api): these 2 are drilldown queries
     VOICE_CONNECTED_CALLS_LIST: 'voice-connected-calls-list',
     VOICE_WAITING_TIME_CALLS_LIST: 'voice-waiting-time-calls-list',
 
-    // TODO(new-stats-api): this is a different scope (voice-agent-events)
     VOICE_DECLINED_CALLS_COUNT: 'voice-declined-calls-count',
     VOICE_DECLINED_CALLS_COUNT_PER_AGENT:
         'voice-declined-calls-count-per-agent',
@@ -758,10 +756,13 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT_PER_AGENT,
         METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT,
         METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_COUNT_PER_AGENT,
+        METRIC_NAMES.VOICE_TRANSFERRED_INBOUND_CALLS_PER_AGENT,
+        METRIC_NAMES.VOICE_DECLINED_CALLS_PER_AGENT,
     ],
     [MetricScope.VoiceCalls]: [
         METRIC_NAMES.VOICE_CALL_AVERAGE_WAIT_TIME,
         METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME,
+        METRIC_NAMES.VOICE_CALL_AVERAGE_TALK_TIME_PER_AGENT,
         METRIC_NAMES.VOICE_CALL_SLA_ACHIEVEMENT_RATE,
         METRIC_NAMES.VOICE_CALL_COUNT_TREND,
         METRIC_NAMES.VOICE_CALL_COUNT,
@@ -774,6 +775,10 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.VOICE_CALL_COUNT_INBOUND_TREND,
         METRIC_NAMES.VOICE_CALL_COUNT_PER_FILTERING_AGENT,
         METRIC_NAMES.VOICE_CALL_LIST,
+        METRIC_NAMES.VOICE_CALL_ACHIEVED_EXPOSURES_TREND,
+        METRIC_NAMES.VOICE_CALL_WITH_SLA_STATUS_LIST,
+        METRIC_NAMES.VOICE_CONNECTED_CALLS_LIST,
+        METRIC_NAMES.VOICE_WAITING_TIME_CALLS_LIST,
     ],
     [MetricScope.VoiceCallsSummary]: [METRIC_NAMES.VOICE_CALL_SUMMARY],
     [MetricScope.Tags]: [

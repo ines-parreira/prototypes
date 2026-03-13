@@ -283,6 +283,8 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'isAnsweredByAgent':
             case 'isDuringBusinessHours':
             case 'displayStatus':
+            case 'talkTime':
+            case 'waitTime':
             case 'helpCenterEventType':
             case 'isSearchRequestWithClick':
             case 'searchResultCount':

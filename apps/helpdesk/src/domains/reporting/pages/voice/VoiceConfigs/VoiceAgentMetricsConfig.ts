@@ -8,7 +8,15 @@ import {
     transferredInboundVoiceCallsPerAgentQueryFactory,
 } from 'domains/reporting/models/queryFactories/voice/voiceEventsByAgent'
 import type { BuiltQuery, Context } from 'domains/reporting/models/scopes/scope'
-import { voiceCallsCountAllDimensionsQueryFactoryV2 } from 'domains/reporting/models/scopes/voiceCalls'
+import type { VoiceAgentEventsContext } from 'domains/reporting/models/scopes/voiceAgentEvents'
+import {
+    declinedCallsPerAgentQueryV2Factory,
+    transferredInboundVoiceCallsPerAgentQueryV2Factory,
+} from 'domains/reporting/models/scopes/voiceAgentEvents'
+import {
+    voiceCallsCountAllDimensionsQueryFactoryV2,
+    voiceConnectedAllDimensionsQueryFactoryV2,
+} from 'domains/reporting/models/scopes/voiceCalls'
 import type { VoiceCallsContext } from 'domains/reporting/models/scopes/voiceCalls'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { DrillDownQueryFactory } from 'domains/reporting/pages/common/drill-down/types'
@@ -76,7 +84,10 @@ export const VoiceAgentsMetricsConfig: Record<
                 statsFilters,
                 timezone,
             ),
-
+        drillDownQueryV2: (ctx: Context) =>
+            transferredInboundVoiceCallsPerAgentQueryV2Factory(
+                ctx as VoiceAgentEventsContext,
+            ),
         title: '',
     },
     [VoiceAgentsMetric.AgentInboundDeclinedCalls]: {
@@ -84,6 +95,8 @@ export const VoiceAgentsMetricsConfig: Record<
         domain: Domain.Voice,
         drillDownQuery: (statsFilters: StatsFilters, timezone: string) =>
             declinedVoiceCallsPerAgentQueryFactory(statsFilters, timezone),
+        drillDownQueryV2: (ctx: Context) =>
+            declinedCallsPerAgentQueryV2Factory(ctx as VoiceAgentEventsContext),
         title: '',
     },
     [VoiceAgentsMetric.AgentOutboundCalls]: {
@@ -107,6 +120,8 @@ export const VoiceAgentsMetricsConfig: Record<
         domain: Domain.Voice,
         drillDownQuery: (statsFilters: StatsFilters, timezone: string) =>
             connectedCallsListQueryFactory(statsFilters, timezone),
+        drillDownQueryV2: (ctx: Context) =>
+            voiceConnectedAllDimensionsQueryFactoryV2(ctx as VoiceCallsContext),
         title: '',
     },
 }
