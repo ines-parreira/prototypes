@@ -38,6 +38,7 @@ type DefaultProps = {
     isDiffMode?: boolean
     onToggleDiff?: jest.Mock
     className?: string
+    isFromConversation?: boolean
 }
 
 const defaultProps: DefaultProps = {
@@ -445,6 +446,75 @@ describe('VersionBanner', () => {
                 })
 
                 expect(screen.getByRole('switch')).toBeDisabled()
+            })
+        })
+
+        describe('when isFromConversation is true', () => {
+            it('renders conversation-specific title', () => {
+                renderComponent({
+                    ...historicalVersionProps,
+                    isFromConversation: true,
+                })
+
+                expect(
+                    screen.getByText(
+                        /This is the version used in this conversation, published on Jan 1, 2024 12:00 PM\. A newer version is available\./i,
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            it('renders "View latest version" button without arrow', () => {
+                renderComponent({
+                    ...historicalVersionProps,
+                    isFromConversation: true,
+                })
+
+                expect(
+                    screen.getByRole('button', {
+                        name: /View latest version/i,
+                    }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('button', { name: /Back to latest/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        describe('when isFromConversation is false or undefined', () => {
+            it('renders default title when isFromConversation is false', () => {
+                renderComponent({
+                    ...historicalVersionProps,
+                    isFromConversation: false,
+                })
+
+                expect(
+                    screen.getByText(
+                        /You are viewing a previous version published on Jan 1, 2024 12:00 PM/i,
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            it('renders default title when isFromConversation is undefined', () => {
+                renderComponent(historicalVersionProps)
+
+                expect(
+                    screen.getByText(
+                        /You are viewing a previous version published on Jan 1, 2024 12:00 PM/i,
+                    ),
+                ).toBeInTheDocument()
+            })
+
+            it('renders "Back to latest" button with arrow', () => {
+                renderComponent(historicalVersionProps)
+
+                expect(
+                    screen.getByRole('button', { name: /Back to latest/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('button', {
+                        name: /View latest version/i,
+                    }),
+                ).not.toBeInTheDocument()
             })
         })
     })

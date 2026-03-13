@@ -30,6 +30,7 @@ export function KnowledgeEditorGuidanceVersionBanner() {
         historicalVersion,
         guidanceHelpCenterId,
         guidanceHelpCenterLocale,
+        initialVersionId,
     } = useGuidanceStore(
         useShallow((storeState) => ({
             guidanceMode: storeState.state.guidanceMode,
@@ -38,9 +39,13 @@ export function KnowledgeEditorGuidanceVersionBanner() {
             guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id ?? 0,
             guidanceHelpCenterLocale:
                 storeState.config.guidanceHelpCenter?.default_locale ?? 'en-US',
+            initialVersionId: storeState.config.initialVersionId,
         })),
     )
     const { client } = useHelpCenterApi()
+
+    const isFromConversation =
+        !!initialVersionId && historicalVersion?.versionId === initialVersionId
 
     const isDiffMode = guidanceMode === 'diff'
 
@@ -110,6 +115,7 @@ export function KnowledgeEditorGuidanceVersionBanner() {
             isDiffMode={isDiffMode}
             onToggleDiff={shouldShowDiffToggle ? onToggleDiff : undefined}
             className={css.guidanceBanner}
+            isFromConversation={isFromConversation}
         />
     )
 }

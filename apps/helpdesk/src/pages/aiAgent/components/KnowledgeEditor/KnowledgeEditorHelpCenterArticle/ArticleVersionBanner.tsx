@@ -40,6 +40,10 @@ export function ArticleVersionBanner() {
     const { state, dispatch, config } = useArticleContext()
     const fetchHelpCenterArticle = useFetchHelpCenterArticle()
 
+    const isFromConversation =
+        !!config.initialVersionId &&
+        state.historicalVersion?.versionId === config.initialVersionId
+
     const isDiffMode = state.articleMode === 'diff'
 
     const onToggleDiff = useCallback(async () => {
@@ -102,6 +106,7 @@ export function ArticleVersionBanner() {
             historicalVersion={state.historicalVersion}
             isDiffMode={isDiffMode}
             onToggleDiff={shouldShowDiffToggle ? onToggleDiff : undefined}
+            isFromConversation={isFromConversation}
         />
     )
 }

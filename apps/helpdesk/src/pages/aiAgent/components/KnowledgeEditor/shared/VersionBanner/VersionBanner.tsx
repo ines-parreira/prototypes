@@ -29,6 +29,7 @@ type VersionBannerProps = {
     isDiffMode?: boolean
     onToggleDiff?: () => void
     className?: string
+    isFromConversation?: boolean
 }
 
 const USER_STALE_TIME = 5 * 60 * 1000
@@ -45,6 +46,7 @@ export function VersionBanner({
     isDiffMode,
     onToggleDiff,
     className,
+    isFromConversation,
 }: VersionBannerProps) {
     const timezone = useAppSelector(getTimezone)
     const dateAndTimeFormatter = useAppSelector(getDateAndTimeFormatter)
@@ -97,7 +99,11 @@ export function VersionBanner({
                     intent="info"
                     size="sm"
                     isClosable={false}
-                    title={`You are viewing a previous version published on ${formattedDate}`}
+                    title={
+                        isFromConversation
+                            ? `This is the version used in this conversation, published on ${formattedDate}. A newer version is available.`
+                            : `You are viewing a previous version published on ${formattedDate}`
+                    }
                     description={
                         <>
                             {versionDescription && (
@@ -112,12 +118,16 @@ export function VersionBanner({
                             >
                                 <Button
                                     variant="secondary"
-                                    leadingSlot="arrow-left"
+                                    {...(!isFromConversation && {
+                                        leadingSlot: 'arrow-left' as const,
+                                    })}
                                     onClick={onGoToLatest}
                                     isDisabled={isDisabled}
                                     size="sm"
                                 >
-                                    Back to latest
+                                    {isFromConversation
+                                        ? 'View latest version'
+                                        : 'Back to latest'}
                                 </Button>
                                 {onToggleDiff && (
                                     <Box

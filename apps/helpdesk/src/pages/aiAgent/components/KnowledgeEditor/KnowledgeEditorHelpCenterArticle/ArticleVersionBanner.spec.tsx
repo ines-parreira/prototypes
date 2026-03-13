@@ -552,6 +552,77 @@ describe('ArticleVersionBanner', () => {
             ).toBeDisabled()
         })
 
+        describe('conversation copy', () => {
+            it('renders conversation-specific copy when initialVersionId matches historicalVersion', () => {
+                mockUseArticleContext.mockReturnValue({
+                    state: {
+                        articleMode: 'read',
+                        historicalVersion,
+                        currentLocale: 'en',
+                        article: { id: 123 } as any,
+                    },
+                    dispatch: mockDispatch,
+                    config: {
+                        helpCenter: { id: 1 },
+                        initialVersionId: 42,
+                    } as any,
+                })
+
+                renderComponent()
+
+                expect(
+                    screen.getByText(
+                        /This is the version used in this conversation/i,
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', {
+                        name: /View latest version/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            it('renders default copy when initialVersionId differs from viewed version', () => {
+                mockUseArticleContext.mockReturnValue({
+                    state: {
+                        articleMode: 'read',
+                        historicalVersion,
+                        currentLocale: 'en',
+                        article: { id: 123 } as any,
+                    },
+                    dispatch: mockDispatch,
+                    config: {
+                        helpCenter: { id: 1 },
+                        initialVersionId: 99,
+                    } as any,
+                })
+
+                renderComponent()
+
+                expect(
+                    screen.getByText(/You are viewing a previous version/i),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', {
+                        name: /Back to latest/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            it('renders default copy when no initialVersionId is set', () => {
+                renderComponent()
+
+                expect(
+                    screen.getByText(/You are viewing a previous version/i),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', {
+                        name: /Back to latest/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+        })
+
         describe('diff toggle', () => {
             it('should render unchecked toggle when not in diff mode', () => {
                 renderComponent()

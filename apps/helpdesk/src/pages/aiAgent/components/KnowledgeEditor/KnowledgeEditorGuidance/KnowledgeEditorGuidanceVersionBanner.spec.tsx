@@ -364,6 +364,87 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
             ).toBeDisabled()
         })
 
+        describe('conversation copy', () => {
+            it('renders conversation-specific copy when initialVersionId matches historicalVersion', () => {
+                mockUseGuidanceContext.mockReturnValue({
+                    state: {
+                        historicalVersion: {
+                            versionId: 42,
+                            version: 3,
+                            title: 'Old title',
+                            content: 'Old content',
+                            publishedDatetime: '2025-03-15T14:30:00Z',
+                        },
+                        guidanceMode: 'read' as const,
+                        guidance: { id: 1 },
+                    },
+                    dispatch: mockDispatch,
+                    config: {
+                        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                        initialVersionId: 42,
+                    },
+                })
+
+                renderComponent()
+
+                expect(
+                    screen.getByText(
+                        /This is the version used in this conversation/i,
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', {
+                        name: /View latest version/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            it('renders default copy when initialVersionId differs from viewed version', () => {
+                mockUseGuidanceContext.mockReturnValue({
+                    state: {
+                        historicalVersion: {
+                            versionId: 42,
+                            version: 3,
+                            title: 'Old title',
+                            content: 'Old content',
+                            publishedDatetime: '2025-03-15T14:30:00Z',
+                        },
+                        guidanceMode: 'read' as const,
+                        guidance: { id: 1 },
+                    },
+                    dispatch: mockDispatch,
+                    config: {
+                        guidanceHelpCenter: { id: 1, default_locale: 'en-US' },
+                        initialVersionId: 99,
+                    },
+                })
+
+                renderComponent()
+
+                expect(
+                    screen.getByText(/You are viewing a previous version/i),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', {
+                        name: /Back to latest/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+
+            it('renders default copy when no initialVersionId is set', () => {
+                renderComponent()
+
+                expect(
+                    screen.getByText(/You are viewing a previous version/i),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('button', {
+                        name: /Back to latest/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+        })
+
         describe('diff toggle', () => {
             it('renders unchecked toggle when not in diff mode', () => {
                 mockUseGuidanceContext.mockReturnValue({
