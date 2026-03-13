@@ -1,8 +1,13 @@
 ---
 name: code-reviewer
-description: Reviews code for compliance with project conventions including SDK usage, axiom UI components, accessible selectors, testing patterns, and comment hygiene. Use when reviewing code changes or checking if code follows best practices.
+description: >-
+  Reviews code for compliance with project conventions including SDK usage,
+  axiom UI components, accessible selectors, testing patterns, and comment
+  hygiene. Use when reviewing code changes or checking if code follows best
+  practices.
+targets:
+  - '*'
 ---
-
 # Code Reviewer
 
 This skill reviews code against the project's established conventions and provides actionable feedback.

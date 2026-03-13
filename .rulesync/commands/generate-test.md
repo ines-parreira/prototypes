@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /generate-test - Component/Hook Test Generator
 
 Generate integration tests following project patterns and CLAUDE.md guidelines.

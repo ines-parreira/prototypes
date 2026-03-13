@@ -1,8 +1,12 @@
 ---
 name: refactor
-description: Guides safe code refactoring with incremental changes, test verification, and migration patterns. Use when restructuring code, migrating patterns, or improving code quality.
+description: >-
+  Guides safe code refactoring with incremental changes, test verification, and
+  migration patterns. Use when restructuring code, migrating patterns, or
+  improving code quality.
+targets:
+  - '*'
 ---
-
 # Refactor
 
 This skill guides safe code refactoring with proper verification at each step.

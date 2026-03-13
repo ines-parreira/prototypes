@@ -7,6 +7,7 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
+        "ai:rulesync": "rulesync generate --targets=claudecode,codexcli,cursor,opencode --features=commands,rules,skills",
         "build": "pnpm --filter @repo/helpdesk build",
         "dev:proxy": "pnpm --filter @repo/helpdesk dev:proxy",
         "dev:local": "pnpm --filter @repo/helpdesk dev:local",
@@ -36,7 +37,8 @@
         "platform:deprecated-analysis": "pnpm static-analysis",
         "platform:check-node-engines": "tsx scripts/dependencies-management/dependencies-engines.ts",
         "platform:update:sdk": "scripts/update-sdk.sh",
-        "platform:test:memory-analysis": "tsx scripts/test-memory-analysis/analyze.ts"
+        "platform:test:memory-analysis": "tsx scripts/test-memory-analysis/analyze.ts",
+        "postinstall": "pnpm ai:rulesync"
     },
     "devDependencies": {
         "@gorgias/config": "^0.6.0",
@@ -54,6 +56,7 @@
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react-doctor": "^0.0.29",
+        "rulesync": "^7.18.0",
         "semver": "^7.7.1",
         "taze": "^19.1.0",
         "tsx": "^4.20.3",

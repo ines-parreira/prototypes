@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /migrate-to-sdk - Redux to SDK Migration Helper
 
 Help migrate Redux-based data fetching to rest-api-sdk patterns.

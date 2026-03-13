@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /review-api-usage - REST API SDK Compliance Review
 
 Review code for rest-api-sdk pattern compliance and identify areas needing migration.

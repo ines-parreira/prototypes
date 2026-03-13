@@ -1,8 +1,12 @@
 ---
 name: test-expert
-description: Creates comprehensive integration tests and debugs test failures using MSW patterns, accessible selectors, and project conventions. Use when writing tests, investigating failures, or improving test coverage.
+description: >-
+  Creates comprehensive integration tests and debugs test failures using MSW
+  patterns, accessible selectors, and project conventions. Use when writing
+  tests, investigating failures, or improving test coverage.
+targets:
+  - '*'
 ---
-
 # Test Expert
 
 This skill helps create robust integration tests and debug test failures following project conventions.

@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /review-axiom-usage - Axiom UI Kit Compliance Review
 
 Review code for @gorgias/axiom usage patterns and identify areas needing migration.

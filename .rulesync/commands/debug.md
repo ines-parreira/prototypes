@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /debug - Debug Assistant
 
 Analyze errors and suggest fixes based on project patterns.

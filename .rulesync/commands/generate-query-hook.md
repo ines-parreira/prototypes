@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /generate-query-hook - SDK Query Hook Generator
 
 Generate wrapper hooks for SDK queries following established patterns.

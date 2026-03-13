@@ -6,49 +6,50 @@ It's built using ReactJS + Redux + many other smaller tools.
 ## Table of Contents
 
 - [Gorgias JavaScript Application](#gorgias-javascript-application)
-  - [Table of Contents](#table-of-contents)
-  - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-    - [PNPM Catalogs](#pnpm-catalogs)
-    - [Updating SDKs](#updating-sdks)
-    - [Release Age Configuration](#release-age-configuration)
-  - [Development](#development)
-    - [Environment Configuration](#environment-configuration)
-      - [Initial Setup](#initial-setup)
-    - [Running the Development Server](#running-the-development-server)
-    - [Running the shared worker](#running-the-shared-worker)
-    - [Storybook](#storybook)
-      - [Story Guidelines](#story-guidelines)
-      - [Storybook Folder Structure](#storybook-folder-structure)
-    - [Design tokens](#design-tokens)
-  - [Testing](#testing)
-    - [General testing](#general-testing)
-  - [CI/CD Workflow](#cicd-workflow)
-    - [Overview](#overview)
-    - [Workflow Structure](#workflow-structure)
-    - [Quality Checks](#quality-checks)
-    - [Code Coverage](#code-coverage)
-    - [Deployment Pipeline](#deployment-pipeline)
-  - [Linting](#linting)
-    - [Running Linting](#running-linting)
-    - [Adding Linting rules](#adding-linting-rules)
-  - [Debugging tools](#debugging-tools)
-    - [ReactScan](#reactscan)
-    - [WhyDidYouRender](#whydidyourender)
-      - [How it's imported](#how-its-imported)
-      - [How to use it](#how-to-use-it)
-  - [Formatting](#formatting)
-  - [Platform](#platform)
-    - [Deprecated entries](#deprecated-entries)
-      - [Generate new snapshot](#generate-new-snapshot)
-      - [Deprecated entries lint check](#deprecated-entries-lint-check)
-      - [Add new deprecated entries](#add-new-deprecated-entries)
-    - [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
-  - [Contributing](#contributing)
-  - [Update gorgias-chat client](#update-gorgias-chat-client)
-  - [FAQ / Troubleshooting](#faq--troubleshooting)
-    - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
+    - [Table of Contents](#table-of-contents)
+    - [Setup NPM to access private packages](#setup-npm-to-access-private-packages)
+    - [Prerequisites](#prerequisites)
+    - [Installation](#installation)
+        - [AI Rules and Skills](#ai-rules-and-skills)
+        - [PNPM Catalogs](#pnpm-catalogs)
+        - [Updating SDKs](#updating-sdks)
+        - [Release Age Configuration](#release-age-configuration)
+    - [Development](#development)
+        - [Environment Configuration](#environment-configuration)
+            - [Initial Setup](#initial-setup)
+        - [Running the Development Server](#running-the-development-server)
+        - [Running the shared worker](#running-the-shared-worker)
+        - [Storybook](#storybook)
+            - [Story Guidelines](#story-guidelines)
+            - [Storybook Folder Structure](#storybook-folder-structure)
+        - [Design tokens](#design-tokens)
+    - [Testing](#testing)
+        - [General testing](#general-testing)
+    - [CI/CD Workflow](#cicd-workflow)
+        - [Overview](#overview)
+        - [Workflow Structure](#workflow-structure)
+        - [Quality Checks](#quality-checks)
+        - [Code Coverage](#code-coverage)
+        - [Deployment Pipeline](#deployment-pipeline)
+    - [Linting](#linting)
+        - [Running Linting](#running-linting)
+        - [Adding Linting rules](#adding-linting-rules)
+    - [Debugging tools](#debugging-tools)
+        - [ReactScan](#reactscan)
+        - [WhyDidYouRender](#whydidyourender)
+            - [How it's imported](#how-its-imported)
+            - [How to use it](#how-to-use-it)
+    - [Formatting](#formatting)
+    - [Platform](#platform)
+        - [Deprecated entries](#deprecated-entries)
+            - [Generate new snapshot](#generate-new-snapshot)
+            - [Deprecated entries lint check](#deprecated-entries-lint-check)
+            - [Add new deprecated entries](#add-new-deprecated-entries)
+        - [Dependencies NodeJS Engine check](#dependencies-nodejs-engine-check)
+    - [Contributing](#contributing)
+    - [Update gorgias-chat client](#update-gorgias-chat-client)
+    - [FAQ / Troubleshooting](#faq--troubleshooting)
+        - [Revert PR was blocked by Codecov](#revert-pr-was-blocked-by-codecov)
 
 ## Setup NPM to access private packages
 
@@ -72,6 +73,18 @@ cd helpdesk-web-app
 nvm install && nvm use # (This uses the node version specified in the .nvmrc file)
 pnpm install
 ```
+
+### AI Rules and Skills
+
+AI rules, commands, and skills are managed from `.rulesync/`. Edit the shared source files there instead of editing generated tool-specific files directly.
+
+- Repo-wide guidance lives in `.rulesync/rules/`
+- Shared commands live in `.rulesync/commands/`
+- Shared skills live in `.rulesync/skills/`
+
+Running `pnpm install` triggers `postinstall`, which runs `pnpm ai:rulesync` and regenerates the local files for Claude Code, Codex CLI, Cursor, and OpenCode. You can also run `pnpm ai:rulesync` manually after changing `.rulesync`.
+
+Generated files such as `AGENTS.md`, `CLAUDE.md`, `.claude/`, `.codex/`, `.cursor/`, and `.opencode/` are ignored by Git and should not be edited by hand.
 
 ### PNPM Catalogs
 

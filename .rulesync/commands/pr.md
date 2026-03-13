@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /pr - Pull Request Creator
 
 Generate or update pull request content that focuses on **what** changed and **why**, without technical implementation details.

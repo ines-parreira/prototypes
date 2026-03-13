@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /generate-mutation-hook - SDK Mutation Hook Generator
 
 Generate mutation hooks with cache management following established patterns.

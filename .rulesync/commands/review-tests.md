@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /review-tests - Test Review Against Guidelines
 
 Review test files for CLAUDE.md compliance and testing best practices.

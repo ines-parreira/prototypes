@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /generate-mock-setup - MSW Mock Setup Generator
 
 Generate MSW (Mock Service Worker) handler setup for test files.

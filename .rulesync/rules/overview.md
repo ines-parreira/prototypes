@@ -1,3 +1,10 @@
+---
+root: true
+targets:
+  - '*'
+globs:
+  - '**/*'
+---
 # Use pnpm for package management
 
 - **ALWAYS use pnpm** for all package management operations

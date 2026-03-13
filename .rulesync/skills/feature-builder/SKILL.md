@@ -1,8 +1,12 @@
 ---
 name: feature-builder
-description: Guides multi-step feature implementation with components, hooks, tests, and API integration following project conventions. Use when creating new features, components, or functionality.
+description: >-
+  Guides multi-step feature implementation with components, hooks, tests, and
+  API integration following project conventions. Use when creating new features,
+  components, or functionality.
+targets:
+  - '*'
 ---
-
 # Feature Builder
 
 This skill guides you through creating new features following the project's established patterns and conventions.

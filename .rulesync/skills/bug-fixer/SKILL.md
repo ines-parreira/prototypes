@@ -1,8 +1,12 @@
 ---
 name: bug-fixer
-description: Systematically debugs issues using error pattern recognition, root cause analysis, and verification. Use when fixing bugs, investigating errors, or troubleshooting failing tests.
+description: >-
+  Systematically debugs issues using error pattern recognition, root cause
+  analysis, and verification. Use when fixing bugs, investigating errors, or
+  troubleshooting failing tests.
+targets:
+  - '*'
 ---
-
 # Bug Fixer
 
 This skill provides a systematic approach to debugging issues in the codebase.

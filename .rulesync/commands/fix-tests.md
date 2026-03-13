@@ -1,3 +1,7 @@
+---
+targets:
+  - '*'
+---
 # /fix-tests - Test Fixer
 
 Analyze and fix failing tests based on common patterns.

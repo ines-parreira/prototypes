@@ -73,3 +73,13 @@ yalc.lock
 .nx/workspace-data
 
 .diagnostics
+
+# Generated AI tooling
+AGENTS.md
+CLAUDE.md
+.claude/commands/
+.claude/skills/
+.claude/settings.json
+.codex/
+.cursor/
+.opencode/
