@@ -7,7 +7,7 @@
     "license": "UNLICENSED",
     "private": true,
     "scripts": {
-        "ai:rulesync": "rulesync generate --targets=claudecode,codexcli,cursor,opencode --features=commands,rules,skills",
+        "ai:rulesync": "rulesync install --frozen && rulesync generate",
         "build": "pnpm --filter @repo/helpdesk build",
         "dev:proxy": "pnpm --filter @repo/helpdesk dev:proxy",
         "dev:local": "pnpm --filter @repo/helpdesk dev:local",

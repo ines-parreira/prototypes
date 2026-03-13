@@ -1,0 +1,25 @@
+{
+  "lockfileVersion": 1,
+  "sources": {
+    "git@github.com:gorgias/frontend": {
+      "requestedRef": "main",
+      "resolvedRef": "914e10760ef11648539672eeeeb26ad7b85cfc9d",
+      "resolvedAt": "2026-03-13T11:44:43.696Z",
+      "skills": {
+        "axiom": {
+          "integrity": "sha256-fd2385d3a5df39faff43ada0be8fbcc2b5c4da126199e36305a4489998d30348"
+        }
+      }
+    },
+    "git@github.com:gorgias/rest-api-sdk": {
+      "requestedRef": "main",
+      "resolvedRef": "09a3af2f46635c47f665debcbec6be75f1f74ad0",
+      "resolvedAt": "2026-03-13T11:44:50.034Z",
+      "skills": {
+        "rest-api-sdk": {
+          "integrity": "sha256-2479e831b8297ce4c877bd10c128f1c0f7b2ccbd008b07be49cb934611c6f6c2"
+        }
+      }
+    }
+  }
+}

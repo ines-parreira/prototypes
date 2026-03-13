@@ -1,0 +1,19 @@
+{
+    "$schema": "https://github.com/dyoshikawa/rulesync/releases/latest/download/config-schema.json",
+    "targets": ["claudecode", "codexcli", "cursor", "opencode"],
+    "features": ["commands", "rules", "skills"],
+    "sources": [
+        {
+            "source": "git@github.com:gorgias/frontend.git",
+            "transport": "git",
+            "path": "packages/axiom/.agents/skills",
+            "skills": ["axiom"]
+        },
+        {
+            "source": "git@github.com:gorgias/rest-api-sdk.git",
+            "transport": "git",
+            "path": ".agents/skills",
+            "skills": ["rest-api-sdk"]
+        }
+    ]
+}
