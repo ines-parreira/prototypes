@@ -293,6 +293,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'source':
             case 'eventType':
             case 'automationFeatureType':
+            case 'engagementType':
             case 'aiAgentSkill':
                 {
                     const filter = statFilters[filterKey]
