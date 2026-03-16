@@ -84,6 +84,8 @@ AI rules, commands, and skills are managed from `.rulesync/`. Edit the shared so
 
 Running `pnpm install` triggers `postinstall`, which runs `pnpm ai:rulesync` and regenerates the local files for Claude Code, Codex CLI, Cursor, and OpenCode. You can also run `pnpm ai:rulesync` manually after changing `.rulesync`.
 
+If you get an error about a missing skill in a given folder (`.curated` for example), removed said folder and reinstall: `rm -rf .rulesync/skills/{folder_name} && pnpm install`.
+
 Generated files such as `AGENTS.md`, `CLAUDE.md`, `.claude/`, `.codex/`, `.cursor/`, and `.opencode/` are ignored by Git and should not be edited by hand.
 
 ### PNPM Catalogs
