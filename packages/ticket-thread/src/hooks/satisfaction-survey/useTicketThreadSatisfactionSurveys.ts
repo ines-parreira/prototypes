@@ -1,32 +1,61 @@
 import { useMemo } from 'react'
 
 import type { Ticket } from '@gorgias/helpdesk-queries'
+import { useListSatisfactionSurveys } from '@gorgias/helpdesk-queries'
 
-import { TicketThreadItemTag } from '../types'
 import { isTicketSatisfactionSurvey } from './predicates'
+import { toSurveyItemFromEvent, toSurveyItemFromSurvey } from './transforms'
 import type { TicketThreadSatisfactionSurveyItem } from './types'
+import { useGetSatisfactionSurveyRespondedEvent } from './useGetSatisfactionSurveyRespondedEvent'
 
 type UseTicketThreadSatisfactionSurveysParams = {
+    ticketId: number
     ticket: Ticket | undefined
-    hasSatisfactionSurveyRespondedEvent: boolean
 }
 
 export function useTicketThreadSatisfactionSurveys({
+    ticketId,
     ticket,
-    hasSatisfactionSurveyRespondedEvent,
 }: UseTicketThreadSatisfactionSurveysParams): TicketThreadSatisfactionSurveyItem[] {
-    return useMemo(() => {
-        if (hasSatisfactionSurveyRespondedEvent) return []
-
-        const survey = ticket?.satisfaction_survey
-        if (!isTicketSatisfactionSurvey(survey)) return []
-
-        return [
-            {
-                _tag: TicketThreadItemTag.SatisfactionSurvey,
-                data: survey,
-                datetime: survey.scored_datetime ?? survey.created_datetime,
+    const shouldFetchFallbackSurvey =
+        !!ticketId && !ticket?.satisfaction_survey?.id
+    const { data: surveysResponse } = useListSatisfactionSurveys(
+        {
+            ticket_id: ticketId,
+            limit: 1,
+        },
+        {
+            query: {
+                enabled: shouldFetchFallbackSurvey,
+                refetchOnWindowFocus: false,
             },
-        ]
-    }, [ticket?.satisfaction_survey, hasSatisfactionSurveyRespondedEvent])
+        },
+    )
+
+    const fallbackSurvey = surveysResponse?.data?.data?.[0]
+    const survey = ticket?.satisfaction_survey ?? fallbackSurvey
+    const satisfactionSurveyId =
+        ticket?.satisfaction_survey?.id ?? fallbackSurvey?.id ?? null
+    const respondedEvent =
+        useGetSatisfactionSurveyRespondedEvent(satisfactionSurveyId)
+
+    return useMemo(() => {
+        const authorLabel =
+            ticket?.customer?.name || ticket?.customer?.email || ''
+
+        if (respondedEvent) {
+            return [toSurveyItemFromEvent(respondedEvent, authorLabel)]
+        }
+
+        if (isTicketSatisfactionSurvey(survey)) {
+            return [toSurveyItemFromSurvey(survey, authorLabel)]
+        }
+
+        return []
+    }, [
+        respondedEvent,
+        survey,
+        ticket?.customer?.email,
+        ticket?.customer?.name,
+    ])
 }

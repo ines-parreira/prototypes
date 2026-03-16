@@ -96,7 +96,10 @@ describe('useTicketThreadEvents', () => {
                 object_type: 'ticket',
                 created_datetime: '2024-03-21T11:00:00Z',
                 type: 'satisfaction-survey-responded',
-                data: {},
+                data: {
+                    score: 5,
+                    body_text: 'Great support',
+                },
             } as any),
             mockEvent({
                 object_type: 'ticket',
@@ -171,11 +174,10 @@ describe('useTicketThreadEvents', () => {
             expect(url.searchParams.get('object_id')).toBe('7')
         })
         await waitFor(() => {
-            expect(result.current.events).toHaveLength(4)
+            expect(result.current.events).toHaveLength(3)
         })
 
         expect(result.current.events.map((event) => event._tag)).toEqual([
-            TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent,
             TicketThreadItemTag.Events.PrivateReplyEvent,
             TicketThreadItemTag.Events.ActionExecutedEvent,
             TicketThreadItemTag.Events.ShoppingAssistantEvent,

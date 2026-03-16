@@ -11,8 +11,6 @@ import { assertNever } from '../../utils/assertNever'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
 import { TicketMessage } from '../TicketMessage/TicketMessage'
 
-import css from './TicketThreadMessageItem.less'
-
 const Placement = {
     Left: 'left',
     Right: 'right',
@@ -84,10 +82,10 @@ export function TicketThreadMessageItem({
 
     return (
         <Box
-            alignSelf={
+            width="100%"
+            justifyContent={
                 placement === Placement.Right ? 'flex-end' : 'flex-start'
             }
-            className={css.contentWrapper}
         >
             {content}
         </Box>

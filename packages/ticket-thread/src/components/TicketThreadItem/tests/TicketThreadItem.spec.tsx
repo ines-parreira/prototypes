@@ -76,7 +76,11 @@ const phoneEventData = {
     type: PHONE_EVENTS[0],
 } as const
 const voiceCallData = { id: 1, status: 'completed' }
-const satisfactionSurveyData = { score: 5 }
+const satisfactionSurveyData = {
+    authorLabel: 'Jane Customer',
+    body_text: 'Great support',
+    score: 4,
+}
 const ruleSuggestionData = { rule_suggestion: { id: 1 } }
 const actionExecutedEventData = {
     object_type: 'Ticket',
@@ -191,13 +195,12 @@ describe('TicketThreadItem', () => {
     it('renders a satisfaction survey item', () => {
         renderItem({
             _tag: TicketThreadItemTag.SatisfactionSurvey,
+            status: 'responded',
             data: satisfactionSurveyData,
             datetime: '2024-03-21T11:00:00Z',
         } as TicketThreadItem)
 
-        expect(
-            screen.getByText(JSON.stringify(satisfactionSurveyData)),
-        ).toBeInTheDocument()
+        expect(screen.getByText('4 stars CSAT review')).toBeInTheDocument()
     })
 
     it('renders a rule suggestion item', () => {

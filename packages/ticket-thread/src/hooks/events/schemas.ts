@@ -1,5 +1,6 @@
 import { z } from 'zod'
 
+import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '../satisfaction-survey/constants'
 import type { AUDIT_LOG_EVENT_TYPES } from './constants'
 import {
     ACTION_EXECUTED_EVENT_TYPE,
@@ -9,7 +10,6 @@ import {
     PHONE_EVENTS,
     PRIVATE_REPLY_ACTIONS,
     RENDERABLE_ACTION_EXECUTED_ACTIONS,
-    SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE,
     SYSTEM_RULE_TYPE,
 } from './constants'
 
@@ -552,6 +552,11 @@ export type ShopifyIntegrationSchema = z.infer<typeof shopifyIntegrationSchema>
 
 export const satisfactionSurveyRespondedEventSchema = ticketEventSchema.extend({
     type: z.literal(SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE),
+    created_datetime: z.string(),
+    data: z.object({
+        score: z.number(),
+        body_text: z.string().nullish(),
+    }),
 })
 export type SatisfactionSurveyRespondedEventSchema = z.infer<
     typeof satisfactionSurveyRespondedEventSchema

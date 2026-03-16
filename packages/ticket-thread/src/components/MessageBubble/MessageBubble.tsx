@@ -16,7 +16,7 @@ export function MessageBubble({ className, children }: MessageBubbleProps) {
         <Box
             padding="md"
             className={cn(css.messageBubble, className)}
-            flexGrow={1}
+            width="100%"
             flexDirection="column"
             gap="xs"
         >

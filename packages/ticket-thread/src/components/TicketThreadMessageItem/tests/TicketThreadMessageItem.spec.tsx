@@ -133,9 +133,9 @@ describe('TicketThreadMessageItem', () => {
         expect(
             screen
                 .getByText(messageData.body_text!)
-                .closest('[style*="align-self"]'),
+                .closest('[style*="justify-content"]'),
         ).toHaveStyle({
-            alignSelf: 'flex-end',
+            justifyContent: 'flex-end',
         })
     })
 
@@ -156,9 +156,9 @@ describe('TicketThreadMessageItem', () => {
         expect(
             screen
                 .getByText(messageData.body_text!)
-                .closest('[style*="align-self"]'),
+                .closest('[style*="justify-content"]'),
         ).toHaveStyle({
-            alignSelf: 'flex-start',
+            justifyContent: 'flex-start',
         })
     })
 

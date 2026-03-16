@@ -35,14 +35,11 @@ export function useTicketThread({
         ticketId,
         pendingMessages,
     })
-    const { events, hasSatisfactionSurveyRespondedEvent } =
-        useTicketThreadEvents({
-            ticketId,
-        })
+    const { events } = useTicketThreadEvents({ ticketId })
     const voiceCalls = useTicketThreadVoiceCalls({ ticketId })
     const satisfactionSurveys = useTicketThreadSatisfactionSurveys({
+        ticketId,
         ticket,
-        hasSatisfactionSurveyRespondedEvent,
     })
 
     const { insertRuleSuggestion } = useRuleSuggestion({ ticketId })

@@ -82,6 +82,7 @@ export function useTicketThreadEvents({
             .map((event): TicketThreadSingleEventItem => {
                 if (isSatisfactionSurveyRespondedEvent(event)) {
                     hasSatisfactionSurveyRespondedEvent = true
+                    return null as never
                 }
 
                 if (!isAuditLogEvent(event)) {
@@ -95,6 +96,7 @@ export function useTicketThreadEvents({
                     ),
                 })
             })
+            .filter((item): item is TicketThreadSingleEventItem => !!item)
 
         return { events: items, hasSatisfactionSurveyRespondedEvent }
     }, [events, ticketId, influencedOrders, shopifyOrders, shopifyIntegrations])

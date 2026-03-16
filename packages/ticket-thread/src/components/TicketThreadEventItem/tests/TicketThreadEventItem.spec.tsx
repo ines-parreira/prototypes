@@ -12,12 +12,12 @@ import {
     InfluencedOrderSource,
     PHONE_EVENTS,
     PRIVATE_REPLY_ACTIONS,
-    SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE,
 } from '../../../hooks/events/constants'
 import type {
     TicketThreadGroupedEventsItem as TicketThreadGroupedEventsItemType,
     TicketThreadSingleEventItem as TicketThreadSingleEventItemType,
 } from '../../../hooks/events/types'
+import { SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE } from '../../../hooks/satisfaction-survey/constants'
 import { TicketThreadItemTag } from '../../../hooks/types'
 import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
 import { render } from '../../../tests/render.utils'
@@ -33,6 +33,11 @@ const phoneEventData = { object_type: 'Ticket', type: PHONE_EVENTS[0] } as const
 const satisfactionSurveyRespondedEventData = {
     object_type: 'Ticket',
     type: SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE,
+    created_datetime: '2024-03-21T11:00:00Z',
+    data: {
+        score: 5,
+        body_text: 'Great support',
+    },
 } as const
 const privateReplyEventData = {
     object_type: 'Ticket',

@@ -5,7 +5,7 @@ import { TicketThreadCallItem } from '../TicketThreadCallItem/TicketThreadCallII
 import { TicketThreadSingleEventItem } from '../TicketThreadEventItem/TicketTheadEventItem'
 import { TicketThreadGroupedEventsItem } from '../TicketThreadEventItem/TicketTheadGroupedEventsItem'
 import { TicketThreadMessageItem } from '../TicketThreadMessageItem/TicketThreadMessageItem'
-import { TicketThreadSatisfactionSurvey } from '../TicketThreadSatisfactionSurveyItem/TicketTheadSatisfactionSurvey'
+import { TicketThreadSatisfactionSurveyItem } from '../TicketThreadSatisfactionSurveyItem/TicketTheadSatisfactionSurveyItem'
 import { TicketThreadSuggestionItem } from '../TicketThreadSuggestions/TicketThreadSuggestionItem'
 
 type TicketThreadItemProps = {
@@ -47,7 +47,7 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
         case TicketThreadItemTag.VoiceCalls.OutboundVoiceCall:
             return <TicketThreadCallItem item={item} />
         case TicketThreadItemTag.SatisfactionSurvey:
-            return <TicketThreadSatisfactionSurvey item={item} />
+            return <TicketThreadSatisfactionSurveyItem item={item} />
         case TicketThreadItemTag.RuleSuggestion:
         case TicketThreadItemTag.ContactReasonSuggestion:
             return <TicketThreadSuggestionItem item={item} />
