@@ -11,7 +11,7 @@ import {
     VoiceCallStatus,
 } from '@gorgias/helpdesk-queries'
 import * as apiQueries from '@gorgias/helpdesk-queries'
-import { useAccountId } from '@gorgias/realtime-ably'
+import { useAccountId } from '@gorgias/realtime'
 
 import { appQueryClient } from 'api/queryClient'
 import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLiveVoiceUpdates'
@@ -25,7 +25,7 @@ jest.mock('@gorgias/helpdesk-queries', () => {
         useListLiveCallQueueAgents: jest.fn(),
     }
 })
-jest.mock('@gorgias/realtime-ably', () => ({
+jest.mock('@gorgias/realtime', () => ({
     useAccountId: jest.fn(),
 }))
 const useListLiveCallQueueAgentsMock = assumeMock(

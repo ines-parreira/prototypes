@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { useAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity } from '@gorgias/realtime'
 
 import useAppSelector from 'hooks/useAppSelector'
 
@@ -10,7 +10,7 @@ import useAgentsViewing from '../useAgentsViewing'
 jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = useAppSelector as jest.Mock
 
-jest.mock('@gorgias/realtime-ably')
+jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
 const mockGetTicketActivity = jest.fn()
 

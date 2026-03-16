@@ -6,7 +6,7 @@ import { mockTicketCompact } from '@gorgias/helpdesk-mocks'
 import { render, testAppQueryClient } from '../../../../tests/render.utils'
 import { TicketListItem } from '../TicketListItem'
 
-vi.mock('@gorgias/realtime-ably', () => ({
+vi.mock('@gorgias/realtime', () => ({
     useAgentActivity: () => ({
         getTicketActivity: vi.fn().mockReturnValue({ viewing: [] }),
     }),

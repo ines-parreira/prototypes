@@ -29,7 +29,7 @@ import { useLocation, useParams } from 'react-router-dom'
 
 import type { DomainEvent } from '@gorgias/events'
 import type { Macro } from '@gorgias/helpdesk-types'
-import { useAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity } from '@gorgias/realtime'
 
 import {
     TicketChannel,

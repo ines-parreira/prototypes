@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import type { User } from '@gorgias/helpdesk-queries'
-import { useAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity } from '@gorgias/realtime'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'

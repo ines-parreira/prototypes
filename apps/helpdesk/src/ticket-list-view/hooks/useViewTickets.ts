@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDeepEffect } from '@repo/hooks'
 import _debounce from 'lodash/debounce'
 
-import { useAgentActivity as useAblyAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity as useAblyAgentActivity } from '@gorgias/realtime'
 
 import type { TicketPartial } from 'ticket-list-view/types'
 

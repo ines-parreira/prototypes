@@ -7,7 +7,7 @@ import {
     AgentActivityProvider,
     AgentOnlineStatusProvider,
     RealtimeProvider,
-} from '@gorgias/realtime-ably'
+} from '@gorgias/realtime'
 
 import { reportError } from 'utils/errors'
 

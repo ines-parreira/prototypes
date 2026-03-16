@@ -1,4 +1,4 @@
-import type { ChannelNameOptions } from '@gorgias/realtime-ably'
+import type { ChannelNameOptions } from '@gorgias/realtime'
 
 /**
  * Creates a user-specific realtime channel configuration.

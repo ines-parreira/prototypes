@@ -21,7 +21,7 @@
         "@gorgias/design-tokens": "catalog:axiom",
         "@gorgias/events": "catalog:events",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
-        "@gorgias/realtime-ably": "catalog:realtime-ably",
+        "@gorgias/realtime": "catalog:realtime",
         "@repo/feature-flags": "workspace:*",
         "@repo/forms": "workspace:*",
         "@repo/preferences": "workspace:*",

@@ -73,7 +73,7 @@ jest.mock('../VoiceIntegrationSettingCallTranscription', () => () => (
 jest.mock('../VoiceIntegrationSettingSpamPrevention', () => () => (
     <div>VoiceIntegrationSettingSpamPrevention</div>
 ))
-jest.mock('@gorgias/realtime-ably')
+jest.mock('@gorgias/realtime')
 
 describe('<VoiceIntegrationSettingsForm />', () => {
     const props = {

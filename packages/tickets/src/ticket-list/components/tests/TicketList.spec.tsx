@@ -32,7 +32,7 @@ const mockGetTicketActivity = vi.fn(() => ({
     viewing: [] as Array<{ id: number; name?: string; email?: string }>,
 }))
 
-vi.mock('@gorgias/realtime-ably', () => ({
+vi.mock('@gorgias/realtime', () => ({
     useAgentActivity: () => ({
         viewTickets: mockViewTickets,
         getTicketActivity: mockGetTicketActivity,

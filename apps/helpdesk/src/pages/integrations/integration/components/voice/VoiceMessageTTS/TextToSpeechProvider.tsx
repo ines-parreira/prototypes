@@ -5,7 +5,7 @@ import { useFormContext } from 'react-hook-form'
 import type { DomainEvent } from '@gorgias/events'
 import { isDomainEvent } from '@gorgias/events'
 import type { VoiceGender, VoiceLanguage } from '@gorgias/helpdesk-types'
-import { useChannel } from '@gorgias/realtime-ably'
+import { useChannel } from '@gorgias/realtime'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'

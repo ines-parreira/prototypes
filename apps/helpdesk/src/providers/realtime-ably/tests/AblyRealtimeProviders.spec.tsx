@@ -7,7 +7,7 @@ import AblyRealtimeProviders from '../AblyRealtimeProviders'
 
 let mockLogHandler: ((message: string) => void) | undefined
 
-jest.mock('@gorgias/realtime-ably', () => ({
+jest.mock('@gorgias/realtime', () => ({
     RealtimeProvider: ({
         children,
         enableLogging,

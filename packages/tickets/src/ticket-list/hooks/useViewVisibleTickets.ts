@@ -4,7 +4,7 @@ import { DurationInMs } from '@repo/utils'
 import _debounce from 'lodash/debounce'
 
 import type { TicketCompact } from '@gorgias/helpdesk-types'
-import { useAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity } from '@gorgias/realtime'
 
 const DEBOUNCED_VIEW_TICKETS_DELAY = DurationInMs.OneSecond
 

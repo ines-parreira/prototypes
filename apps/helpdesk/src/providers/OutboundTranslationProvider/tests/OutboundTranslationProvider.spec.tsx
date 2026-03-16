@@ -4,7 +4,7 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import { ContentState, EditorState } from 'draft-js'
 
 import type { DomainEvent } from '@gorgias/events'
-import { useChannel } from '@gorgias/realtime-ably'
+import { useChannel } from '@gorgias/realtime'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -19,7 +19,7 @@ import {
     useOutboundTranslationContext,
 } from '../OutboundTranslationProvider'
 
-jest.mock('@gorgias/realtime-ably')
+jest.mock('@gorgias/realtime')
 const mockUseChannel = useChannel as jest.Mock
 
 jest.mock('hooks/useAppSelector')

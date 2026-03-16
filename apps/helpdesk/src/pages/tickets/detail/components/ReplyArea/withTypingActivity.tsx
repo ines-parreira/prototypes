@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 
 import { debounce } from 'lodash'
 
-import { useAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity } from '@gorgias/realtime'
 
 import { TYPING_ACTIVITY_AGENT_TIMEOUT_MS } from 'state/newMessage/constants'
 

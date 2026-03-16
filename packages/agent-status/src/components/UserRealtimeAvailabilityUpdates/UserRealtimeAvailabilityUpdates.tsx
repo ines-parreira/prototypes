@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { useAccountId, useChannel } from '@gorgias/realtime-ably'
+import { useAccountId, useChannel } from '@gorgias/realtime'
 
 import { useUserAvailabilityRealtimeHandler } from '../../hooks/useUserAvailabilityRealtimeHandler'
 import { makeUserRealtimeChannel } from '../../utils/makeUserRealtimeChannel'

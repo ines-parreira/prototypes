@@ -1,12 +1,12 @@
 import { render } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { useAccountId, useChannels } from '@gorgias/realtime-ably'
+import { useAccountId, useChannels } from '@gorgias/realtime'
 
 import { useUserAvailabilityRealtimeHandler } from '../../../hooks/useUserAvailabilityRealtimeHandler'
 import { LiveAgentsRealtimeListener } from '../LiveAgentsRealtimeListener'
 
-vi.mock('@gorgias/realtime-ably', () => ({
+vi.mock('@gorgias/realtime', () => ({
     useAccountId: vi.fn(),
     useChannels: vi.fn(),
 }))

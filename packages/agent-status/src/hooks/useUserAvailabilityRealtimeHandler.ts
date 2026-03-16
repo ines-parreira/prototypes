@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 
 import { isDomainEvent } from '@gorgias/events'
 import type { UserAvailabilityStatus } from '@gorgias/helpdesk-types'
-import type { UseChannelProps } from '@gorgias/realtime-ably'
+import type { UseChannelProps } from '@gorgias/realtime'
 
 import { useUpdateUserAvailabilityInCache } from './useUpdateUserAvailabilityInCache'
 

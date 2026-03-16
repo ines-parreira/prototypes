@@ -17,7 +17,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity } from '@gorgias/realtime'
 
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { OBJECT_TYPES } from 'custom-fields/constants'
@@ -205,7 +205,7 @@ jest.mock(
     }),
 )
 
-jest.mock('@gorgias/realtime-ably')
+jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
 const mockJoinTicket = jest.fn()
 const mockLeaveTicket = jest.fn()

@@ -93,7 +93,7 @@
         "@gorgias/knowledge-service-queries": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-types": "catalog:rest-api-sdk",
         "@gorgias/knowledge-service-validators": "catalog:rest-api-sdk",
-        "@gorgias/realtime-ably": "catalog:realtime-ably",
+        "@gorgias/realtime": "catalog:realtime",
         "@hookform/resolvers": "^3.10.0",
         "@internationalized/date": "catalog:axiom",
         "@knocklabs/client": "^0.16.3",

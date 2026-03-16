@@ -13,8 +13,8 @@ import {
     VoiceCallStatus,
 } from '@gorgias/helpdesk-queries'
 import { AgentStatus } from '@gorgias/helpdesk-types'
-import type { ChannelNameOptions } from '@gorgias/realtime-ably'
-import { useAccountId } from '@gorgias/realtime-ably'
+import type { ChannelNameOptions } from '@gorgias/realtime'
+import { useAccountId } from '@gorgias/realtime'
 
 import {
     addVoiceCallToLiveCallsQueryCache,

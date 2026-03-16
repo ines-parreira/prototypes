@@ -78,7 +78,7 @@ jest.mock(
 jest.mock('@repo/logging')
 
 const mockViewTickets = jest.fn()
-jest.mock('@gorgias/realtime-ably', () => ({
+jest.mock('@gorgias/realtime', () => ({
     useAgentActivity: () => ({
         viewTickets: mockViewTickets,
     }),

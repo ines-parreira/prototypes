@@ -12,7 +12,7 @@ import { fromJS } from 'immutable'
 import { useLocation, useParams } from 'react-router-dom'
 
 import type { Ticket } from '@gorgias/helpdesk-queries'
-import { useAgentActivity as useAblyAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity as useAblyAgentActivity } from '@gorgias/realtime'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

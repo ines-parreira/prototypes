@@ -4,8 +4,8 @@ import type {
     TicketCompact,
     TicketTranslationCompact,
 } from '@gorgias/helpdesk-types'
-import type { useAgentActivity } from '@gorgias/realtime-ably'
-import { useAgentActivity as useAgentActivityHook } from '@gorgias/realtime-ably'
+import type { useAgentActivity } from '@gorgias/realtime'
+import { useAgentActivity as useAgentActivityHook } from '@gorgias/realtime'
 
 type AgentActivity = ReturnType<
     ReturnType<typeof useAgentActivity>['getTicketActivity']

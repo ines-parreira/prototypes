@@ -13,7 +13,7 @@ import { convertToRaw, EditorState } from 'draft-js'
 
 import { isDomainEvent } from '@gorgias/events'
 import type { DomainEvent, DomainEventWithType } from '@gorgias/events'
-import { useChannel } from '@gorgias/realtime-ably'
+import { useChannel } from '@gorgias/realtime'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

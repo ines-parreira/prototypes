@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { useAgentActivity } from '@gorgias/realtime-ably'
+import { useAgentActivity } from '@gorgias/realtime'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ACTION_TEMPLATES } from 'config'
@@ -32,7 +32,7 @@ jest.mock('@repo/feature-flags', () => ({
     withFeatureFlags: jest.fn((Component) => Component),
 }))
 
-jest.mock('@gorgias/realtime-ably')
+jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
 
 jest.mock('providers/OutboundTranslationProvider', () => ({

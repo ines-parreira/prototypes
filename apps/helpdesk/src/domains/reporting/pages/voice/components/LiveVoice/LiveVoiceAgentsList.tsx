@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
-import { useAgentsOnlineStatus } from '@gorgias/realtime-ably'
+import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
 import LiveVoiceAgentRow from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentRow'
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList.less'

@@ -2,7 +2,7 @@ import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
 import type { LiveCallQueueAgent } from '@gorgias/helpdesk-queries'
-import { useAgentsOnlineStatus } from '@gorgias/realtime-ably'
+import { useAgentsOnlineStatus } from '@gorgias/realtime'
 
 import LiveVoiceAgentsList from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceAgentsList'
 import {
@@ -10,7 +10,7 @@ import {
     groupAgentsByStatus,
 } from 'domains/reporting/pages/voice/components/LiveVoice/utils'
 
-jest.mock('@gorgias/realtime-ably')
+jest.mock('@gorgias/realtime')
 jest.mock('domains/reporting/pages/voice/components/LiveVoice/utils', () => ({
     ...jest.requireActual(
         'domains/reporting/pages/voice/components/LiveVoice/utils',

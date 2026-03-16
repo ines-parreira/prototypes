@@ -1,12 +1,12 @@
 import { act, renderHook } from '@testing-library/react'
 
 import { mockTicketCompact } from '@gorgias/helpdesk-mocks'
-import type { useAgentActivity } from '@gorgias/realtime-ably'
-import { useAgentActivity as useAgentActivityMock } from '@gorgias/realtime-ably'
+import type { useAgentActivity } from '@gorgias/realtime'
+import { useAgentActivity as useAgentActivityMock } from '@gorgias/realtime'
 
 import { useViewVisibleTickets } from '../useViewVisibleTickets'
 
-vi.mock('@gorgias/realtime-ably', () => ({
+vi.mock('@gorgias/realtime', () => ({
     useAgentActivity: vi.fn(),
 }))
 

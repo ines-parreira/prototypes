@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { useListLiveCallQueueVoiceCalls } from '@gorgias/helpdesk-queries'
-import { useChannel } from '@gorgias/realtime-ably'
+import { useChannel } from '@gorgias/realtime'
 
 import type { PaywallConfig } from 'config/paywalls'
 import { paywallConfigs } from 'config/paywalls'

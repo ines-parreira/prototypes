@@ -5,7 +5,7 @@ import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import * as apiQueries from '@gorgias/helpdesk-queries'
-import { useChannel } from '@gorgias/realtime-ably'
+import { useChannel } from '@gorgias/realtime'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
@@ -21,7 +21,7 @@ import { getTimezone } from 'state/currentUser/selectors'
 
 jest.mock('domains/reporting/state/ui/stats/selectors')
 jest.mock('@gorgias/helpdesk-queries')
-jest.mock('@gorgias/realtime-ably')
+jest.mock('@gorgias/realtime')
 jest.mock('domains/reporting/pages/voice/hooks/useLiveVoiceUpdates')
 jest.mock(
     'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceFilters',
