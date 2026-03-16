@@ -122,6 +122,8 @@ export type DimensionName =
     | 'customField'
     | 'engagementType'
     | 'orderManagementType'
+    | 'boughtProducts'
+    | 'productRecommended'
 
 export type MeasureName =
     | 'ticketCount'
@@ -202,6 +204,7 @@ export type MeasureName =
     | 'automatedInteractionsCount'
     | 'coverageRate'
     | 'conversionRate'
+    | 'buyThroughRate'
 
 export type TimeDimensionName =
     | 'createdDatetime'

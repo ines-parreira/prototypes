@@ -621,6 +621,7 @@ export enum MetricScope {
     OverallAutomatedInteractions = 'overall-automated-interactions',
     AiAgentCoverageRate = 'ai-agent-coverage-rate',
     AiSalesAgentConversionRate = 'ai-sales-agent-conversion-rate',
+    AiSalesAgentBuyThroughRate = 'ai-sales-agent-buy-through-rate',
 }
 
 export type MetricName = (typeof METRIC_NAMES)[keyof typeof METRIC_NAMES]
@@ -888,4 +889,5 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.AiAgentCoverageRate]: [],
     [MetricScope.AiSalesAgentConversionRate]: [],
+    [MetricScope.AiSalesAgentBuyThroughRate]: [],
 }
