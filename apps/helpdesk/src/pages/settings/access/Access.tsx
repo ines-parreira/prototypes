@@ -102,6 +102,10 @@ export const AccessContainer = (props: Props) => {
         FeatureFlagKey.SsoEnforcement,
         false,
     )
+    const { value: isSkip2faAfterSsoEnabled } = useFlagWithLoading(
+        FeatureFlagKey.Skip2faAfterSso,
+        false,
+    )
 
     const allowedDomainsSetting: string[] =
         (
@@ -420,21 +424,28 @@ export const AccessContainer = (props: Props) => {
                             on2FAEnforced={toggle2FAEnforcement}
                         />
 
-                        <Skip2faAfterSso
-                            skip2faAfterSsoDatetime={skip2faAfterSsoDatetime}
-                            loading={isLoading === LoadingKey.Skip2faAfterSso}
-                            disabled={
-                                !showCustomSSOModal &&
-                                !!isLoading &&
-                                isLoading !== LoadingKey.Skip2faAfterSso
-                            }
-                            googleSsoEnabled={googleSsoEnabled}
-                            office365SsoEnabled={office365SsoEnabled}
-                            hasCustomSsoProviders={
-                                Object.keys(customSsoProviders).length > 0
-                            }
-                            onToggle={toggleSkip2faAfterSso}
-                        />
+                        {(isSkip2faAfterSsoEnabled ||
+                            !!skip2faAfterSsoDatetime) && (
+                            <Skip2faAfterSso
+                                skip2faAfterSsoDatetime={
+                                    skip2faAfterSsoDatetime
+                                }
+                                loading={
+                                    isLoading === LoadingKey.Skip2faAfterSso
+                                }
+                                disabled={
+                                    !showCustomSSOModal &&
+                                    !!isLoading &&
+                                    isLoading !== LoadingKey.Skip2faAfterSso
+                                }
+                                googleSsoEnabled={googleSsoEnabled}
+                                office365SsoEnabled={office365SsoEnabled}
+                                hasCustomSsoProviders={
+                                    Object.keys(customSsoProviders).length > 0
+                                }
+                                onToggle={toggleSkip2faAfterSso}
+                            />
+                        )}
 
                         <Button
                             type="submit"

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -14,6 +15,8 @@ import {
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { AccessContainer } from '../Access'
+
+const useFlagWithLoadingMock = useFlagWithLoading as jest.Mock
 
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
@@ -105,6 +108,13 @@ describe('<Access/>', () => {
 
     const mockStore = () => createMockStore(mockState)
 
+    afterEach(() => {
+        useFlagWithLoadingMock.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+    })
+
     it('should render properly', () => {
         const { container } = render(
             <Provider store={mockStore()}>
@@ -179,6 +189,116 @@ describe('<Access/>', () => {
         )
 
         expect(container).toMatchSnapshot()
+    })
+
+    it('should render Skip 2FA section when feature flag is enabled and disable it while saving', async () => {
+        const user = userEvent.setup()
+        useFlagWithLoadingMock.mockImplementation((key: FeatureFlagKey) => ({
+            value: key === FeatureFlagKey.Skip2faAfterSso,
+            isLoading: false,
+        }))
+
+        let resolveSubmit: (v: unknown) => void
+        const submitSetting = jest.fn(
+            () =>
+                new Promise((resolve) => {
+                    resolveSubmit = resolve
+                }),
+        )
+
+        const { getByText } = render(
+            <Provider store={mockStore()}>
+                <AccessContainer
+                    accountDomain="acme"
+                    accessSettings={fromJS({
+                        data: { custom_sso_providers: {} },
+                    })}
+                    submitSetting={submitSetting}
+                />
+            </Provider>,
+        )
+
+        expect(
+            getByText('Skip two-factor authentication after SSO'),
+        ).toBeTruthy()
+
+        await user.click(getByText('Save changes'))
+        expect(submitSetting).toHaveBeenCalled()
+
+        resolveSubmit!({ type: 'UPDATE_ACCOUNT_SETTING' })
+    })
+
+    it('should not disable Skip 2FA section when custom SSO modal is open', () => {
+        useFlagWithLoadingMock.mockImplementation((key: FeatureFlagKey) => ({
+            value: key === FeatureFlagKey.Skip2faAfterSso,
+            isLoading: false,
+        }))
+
+        jest.spyOn(
+            require('../CustomSsoProviders'),
+            'default',
+        ).mockImplementation(({ setShowModal }: any) => {
+            React.useEffect(() => setShowModal(true), [setShowModal])
+            return null
+        })
+
+        const { getByText } = render(
+            <Provider store={mockStore()}>
+                <AccessContainer
+                    accountDomain="acme"
+                    accessSettings={fromJS({
+                        data: { custom_sso_providers: {} },
+                    })}
+                    submitSetting={jest.fn()}
+                />
+            </Provider>,
+        )
+
+        expect(
+            getByText('Skip two-factor authentication after SSO'),
+        ).toBeTruthy()
+
+        jest.restoreAllMocks()
+    })
+
+    it('should render Skip 2FA section when datetime is already set', () => {
+        const { getByText } = render(
+            <Provider
+                store={createMockStore({
+                    ...mockState,
+                    currentAccount: fromJS({
+                        subscription: {
+                            products: { helpdesk: '0' },
+                        },
+                        settings: [
+                            {
+                                type: 'access',
+                                data: {
+                                    custom_sso_providers: {},
+                                    skip_2fa_after_sso_datetime:
+                                        '2026-01-01T00:00:00Z',
+                                },
+                            },
+                        ],
+                    }),
+                })}
+            >
+                <AccessContainer
+                    accountDomain="acme"
+                    accessSettings={fromJS({
+                        data: {
+                            custom_sso_providers: {},
+                            skip_2fa_after_sso_datetime: '2026-01-01T00:00:00Z',
+                        },
+                    })}
+                    submitSetting={jest.fn()}
+                />
+            </Provider>,
+        )
+
+        expect(
+            getByText('Skip two-factor authentication after SSO'),
+        ).toBeTruthy()
     })
 
     it('should save the settings when the submit button is clicked', async () => {
