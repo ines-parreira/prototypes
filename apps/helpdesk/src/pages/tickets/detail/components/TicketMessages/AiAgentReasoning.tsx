@@ -17,6 +17,7 @@ import { getTicketState } from 'state/ticket/selectors'
 
 import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from '../AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
+import { useCanAccessAIFeedback } from '../TicketFeedback/hooks/useCanAccessAIFeedback'
 import { AiAgentReasoningFeedback } from './AiAgentReasoningFeedback'
 import { AiAgentReasoningContent } from './AiReasoningContent'
 import { useReasoningTracking } from './hooks/useReasoningTracking'
@@ -54,6 +55,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
 
     const account = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector((state) => state.currentUser)
+    const canAccessAIFeedback = useCanAccessAIFeedback()
     const { search } = useLocation()
 
     const isImpersonated = useMemo(() => isSessionImpersonated(), [])
@@ -265,7 +267,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         }
 
         const renderFeedbackSection = () => {
-            if (isError) {
+            if (isError || !canAccessAIFeedback) {
                 return null
             }
 
@@ -325,19 +327,21 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                 {renderBody()}
                 {!isEvoliTicket && renderFooter()}
             </div>
-            <Button
-                intent="secondary"
-                size="small"
-                fillStyle="fill"
-                isDisabled={activeTab === TicketInfobarTab.AIFeedback}
-                onClick={handleGiveFeedback}
-                className={classNames(css.reviewButton, {
-                    [css.activeButton]:
-                        activeTab === TicketInfobarTab.AIFeedback,
-                })}
-            >
-                Give Feedback
-            </Button>
+            {canAccessAIFeedback && (
+                <Button
+                    intent="secondary"
+                    size="small"
+                    fillStyle="fill"
+                    isDisabled={activeTab === TicketInfobarTab.AIFeedback}
+                    onClick={handleGiveFeedback}
+                    className={classNames(css.reviewButton, {
+                        [css.activeButton]:
+                            activeTab === TicketInfobarTab.AIFeedback,
+                    })}
+                >
+                    Give Feedback
+                </Button>
+            )}
         </>
     )
 }

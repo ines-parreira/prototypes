@@ -22,6 +22,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
 import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
 import type { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
+import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
@@ -75,6 +76,11 @@ const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
 jest.mock('@gorgias/helpdesk-queries')
 const useGetTicketMock = assumeMock(useGetTicket)
+
+jest.mock(
+    'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback',
+)
+const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
 
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({
     __esModule: true,
@@ -332,9 +338,10 @@ describe('<TicketInfobarContainer />', () => {
         getCurrentUserMock.mockReturnValue(
             fromJS({
                 id: 2,
-                role: { name: UserRole.BasicAgent },
+                role: { name: UserRole.Agent },
             }),
         )
+        useCanAccessAIFeedbackMock.mockReturnValue(true)
         useTicketIsAfterFeedbackCollectionPeriodMock.mockReturnValue(false)
         useAiAgentAccessMock.mockReturnValue({
             hasAccess: true,
@@ -445,6 +452,36 @@ describe('<TicketInfobarContainer />', () => {
             expect(
                 screen.queryByText(AI_FEEDBACK_TAB.LABEL),
             ).not.toBeInTheDocument()
+        })
+
+        it('does not show when user cannot access AI feedback', () => {
+            useCanAccessAIFeedbackMock.mockReturnValue(false)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/new' },
+            )
+
+            expect(
+                screen.queryByText(AI_FEEDBACK_TAB.LABEL),
+            ).not.toBeInTheDocument()
+        })
+
+        it('shows when user can access AI feedback', () => {
+            useCanAccessAIFeedbackMock.mockReturnValue(true)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/new' },
+            )
+
+            expect(
+                screen.queryByText(AI_FEEDBACK_TAB.LABEL),
+            ).toBeInTheDocument()
         })
 
         it('does not show on edit-widgets route', () => {

@@ -32,6 +32,7 @@ import { channelToCommunicationIcon } from 'pages/common/components/infobar/Info
 import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
+import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import RechargeTabContent from 'pages/tickets/detail/RechargeTabContent'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
@@ -55,7 +56,6 @@ import {
 } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { TimelineContent } from 'tickets/ticket-timeline'
-import { isTeamLead } from 'utils'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import ConnectedEditOrderShippingAddressModal from 'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal'
 import CancelOrderModalDefault from 'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal'
@@ -107,6 +107,7 @@ export const TicketInfobarContainer = ({
     const { notify: dispatchNotification } = useNotify()
     const accountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
+    const canAccessAIFeedback = useCanAccessAIFeedback()
     const ticket = useAppSelector(getTicket)
     const { hasAccess } = useAiAgentAccess()
     const location = useLocation()
@@ -178,7 +179,7 @@ export const TicketInfobarContainer = ({
         if (ticket.id && tabCheckId.current !== ticket.id) {
             tabCheckId.current = ticket.id
             const nextTab =
-                isTeamLead(currentUser) &&
+                canAccessAIFeedback &&
                 ticket.status === TicketStatus.Closed &&
                 preferredTab === TicketInfobarTab.AIFeedback
                     ? TicketInfobarTab.AIFeedback
@@ -194,7 +195,7 @@ export const TicketInfobarContainer = ({
         ticket.id,
         activeTab,
         preferredTab,
-        currentUser,
+        canAccessAIFeedback,
         dispatch,
         setPreferredTab,
         onChangeTab,
@@ -371,7 +372,7 @@ export const TicketInfobarContainer = ({
                 icon: CUSTOMER_DETAILS_TAB.ICON,
                 label: CUSTOMER_DETAILS_TAB.LABEL,
             },
-            ...(!isEditWidgetPage && hasAIAgent
+            ...(!isEditWidgetPage && hasAIAgent && canAccessAIFeedback
                 ? [
                       {
                           name: TicketInfobarTab.AIFeedback,
@@ -387,7 +388,7 @@ export const TicketInfobarContainer = ({
                 label: AUTO_QA_TAB.LABEL,
             },
         ]
-    }, [hasAIAgent, isEditWidgetPage, topOpportunity])
+    }, [canAccessAIFeedback, hasAIAgent, isEditWidgetPage, topOpportunity])
 
     return (
         <div
@@ -419,7 +420,9 @@ export const TicketInfobarContainer = ({
                     activeTicketId={params.ticketId}
                     channelToCommunicationIcon={channelToCommunicationIcon}
                 />
-            ) : activeTab === TicketInfobarTab.AIFeedback && hasAIAgent ? (
+            ) : activeTab === TicketInfobarTab.AIFeedback &&
+              hasAIAgent &&
+              canAccessAIFeedback ? (
                 <TicketFeedback key={ticket.id} />
             ) : activeTab === TicketInfobarTab.AutoQA ? (
                 <div className={css.autoQaContainer}>

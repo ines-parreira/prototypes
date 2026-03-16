@@ -6,6 +6,7 @@ import { MemoryRouter, Route } from 'react-router-dom'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
+import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
@@ -15,6 +16,10 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),
     useGetTicket: jest.fn(),
 }))
+
+jest.mock(
+    'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback',
+)
 
 jest.mock('pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent')
 
@@ -37,12 +42,14 @@ jest.mock('@repo/tickets', () => ({
 }))
 
 const useGetTicketMock = assumeMock(useGetTicket)
+const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
 const useHasAIAgentMock = assumeMock(useHasAIAgent)
 
 describe('InfobarNavigationPanel', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         useHasAIAgentMock.mockReturnValue(false)
+        useCanAccessAIFeedbackMock.mockReturnValue(true)
     })
 
     const renderComponent = (ticketId = '123') => {
@@ -185,6 +192,48 @@ describe('InfobarNavigationPanel', () => {
                         customer: {
                             id: 456,
                         },
+                    },
+                },
+                isLoading: false,
+                isError: false,
+            } as any)
+
+            renderComponent()
+
+            expect(screen.getByTestId('has-ai-feedback')).toHaveTextContent(
+                'true',
+            )
+        })
+
+        it('should pass hasAIFeedback=false when user cannot access AI feedback', () => {
+            useHasAIAgentMock.mockReturnValue(true)
+            useCanAccessAIFeedbackMock.mockReturnValue(false)
+            useGetTicketMock.mockReturnValue({
+                data: {
+                    data: {
+                        id: 123,
+                        customer: { id: 456 },
+                    },
+                },
+                isLoading: false,
+                isError: false,
+            } as any)
+
+            renderComponent()
+
+            expect(screen.getByTestId('has-ai-feedback')).toHaveTextContent(
+                'false',
+            )
+        })
+
+        it('should pass hasAIFeedback=true when user can access AI feedback', () => {
+            useHasAIAgentMock.mockReturnValue(true)
+            useCanAccessAIFeedbackMock.mockReturnValue(true)
+            useGetTicketMock.mockReturnValue({
+                data: {
+                    data: {
+                        id: 123,
+                        customer: { id: 456 },
                     },
                 },
                 isLoading: false,

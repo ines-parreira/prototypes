@@ -17,6 +17,7 @@ import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
+import { useCanAccessAIFeedback } from '../TicketFeedback/hooks/useCanAccessAIFeedback'
 
 export type SimplifiedAIAgentBannerProps = {
     message: TicketMessage
@@ -31,6 +32,7 @@ const SimplifiedAIAgentBanner = ({
         refetchOnWindowFocus: false,
     })
     const { activeTab, onChangeTab } = useTicketInfobarNavigation()
+    const canAccessAIFeedback = useCanAccessAIFeedback()
 
     const account = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector((state) => state.currentUser)
@@ -138,19 +140,21 @@ const SimplifiedAIAgentBanner = ({
                     )}
                 </div>
             </div>
-            <Button
-                intent="secondary"
-                size="small"
-                fillStyle="fill"
-                isDisabled={activeTab === TicketInfobarTab.AIFeedback}
-                onClick={handleClick}
-                className={classNames(css.reviewButton, {
-                    [css.activeButton]:
-                        activeTab === TicketInfobarTab.AIFeedback,
-                })}
-            >
-                Give Feedback
-            </Button>
+            {canAccessAIFeedback && (
+                <Button
+                    intent="secondary"
+                    size="small"
+                    fillStyle="fill"
+                    isDisabled={activeTab === TicketInfobarTab.AIFeedback}
+                    onClick={handleClick}
+                    className={classNames(css.reviewButton, {
+                        [css.activeButton]:
+                            activeTab === TicketInfobarTab.AIFeedback,
+                    })}
+                >
+                    Give Feedback
+                </Button>
+            )}
         </>
     )
 }

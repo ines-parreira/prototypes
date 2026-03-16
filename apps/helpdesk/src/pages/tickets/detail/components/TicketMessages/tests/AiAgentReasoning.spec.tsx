@@ -29,6 +29,7 @@ import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { knowledgeResourceShouldBeLink } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
+import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -182,6 +183,11 @@ jest.mock('react-markdown', () => {
     }
 })
 
+jest.mock(
+    'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback',
+)
+const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
+
 jest.mock('models/knowledgeService/queries', () => ({
     useGetMessageAiReasoning: jest.fn(),
     ReasoningResponseType: {
@@ -327,6 +333,8 @@ describe('AiAgentReasoning', () => {
     beforeEach(() => {
         jest.useFakeTimers()
         jest.clearAllMocks()
+
+        useCanAccessAIFeedbackMock.mockReturnValue(true)
 
         mockKnowledgeResourceShouldBeLink.mockReturnValue(true)
 
@@ -815,6 +823,26 @@ describe('AiAgentReasoning', () => {
                 .getByText('Give Feedback')
                 .closest('button')
             expect(feedbackButton).toHaveClass('reviewButton')
+        })
+    })
+
+    describe('Give Feedback role-based visibility', () => {
+        it('should hide Give Feedback button when user cannot access AI feedback', () => {
+            useCanAccessAIFeedbackMock.mockReturnValue(false)
+
+            renderComponent()
+            expandComponent()
+
+            expect(screen.queryByText('Give Feedback')).not.toBeInTheDocument()
+        })
+
+        it('should show Give Feedback button when user can access AI feedback', () => {
+            useCanAccessAIFeedbackMock.mockReturnValue(true)
+
+            renderComponent()
+            expandComponent()
+
+            expect(screen.getByText('Give Feedback')).toBeInTheDocument()
         })
     })
 

@@ -14,6 +14,7 @@ import {
     useSubmitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
 import type { TicketMessage } from 'models/ticket/types'
+import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -28,6 +29,11 @@ jest.mock('@repo/navigation', () => ({
     useTicketInfobarNavigation: jest.fn(),
 }))
 const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
+
+jest.mock(
+    'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback',
+)
+const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
 
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('hooks/useAppDispatch')
@@ -65,6 +71,8 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
     beforeEach(() => {
         const dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
+
+        useCanAccessAIFeedbackMock.mockReturnValue(true)
 
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
@@ -479,5 +487,60 @@ describe('SimplifiedSimplifiedAIAgentBanner', () => {
         expect(
             screen.queryByText(`Execution ID: ${executionId}`),
         ).not.toBeInTheDocument()
+    })
+
+    describe('Give Feedback role-based visibility', () => {
+        beforeEach(() => {
+            useGetAiAgentFeedbackMock.mockReturnValue({
+                data: {
+                    data: {
+                        messages: [
+                            {
+                                messageId: '1',
+                                summary: 'summary',
+                            },
+                        ],
+                        shopName: 'shopName',
+                        shopType: 'shopify',
+                    },
+                },
+                isLoading: false,
+                isError: false,
+            } as any)
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Customer,
+                onChangeTab: jest.fn(),
+            })
+        })
+
+        it('should hide Give Feedback button when user cannot access AI feedback', () => {
+            useCanAccessAIFeedbackMock.mockReturnValue(false)
+
+            render(
+                <Provider store={store}>
+                    <SimplifiedAIAgentBanner
+                        message={{ ...mockMessage, public: false }}
+                        messages={[mockMessage]}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.queryByText('Give Feedback')).not.toBeInTheDocument()
+        })
+
+        it('should show Give Feedback button when user can access AI feedback', () => {
+            useCanAccessAIFeedbackMock.mockReturnValue(true)
+
+            render(
+                <Provider store={store}>
+                    <SimplifiedAIAgentBanner
+                        message={{ ...mockMessage, public: false }}
+                        messages={[mockMessage]}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Give Feedback')).toBeInTheDocument()
+        })
     })
 })
