@@ -414,6 +414,14 @@ export const TicketInfobarContainer = ({
                             renderEditShippingAddressModal={
                                 renderEditShippingAddressModal
                             }
+                            currentUser={{
+                                name: currentUser.get('name') as string,
+                                firstname: currentUser.get(
+                                    'firstname',
+                                ) as string,
+                                lastname: currentUser.get('lastname') as string,
+                                email: currentUser.get('email') as string,
+                            }}
                         />
                     </ShopifyCustomerProvider>
                     <CustomerSyncForm

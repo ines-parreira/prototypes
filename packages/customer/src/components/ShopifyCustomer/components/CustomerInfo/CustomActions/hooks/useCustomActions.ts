@@ -123,47 +123,29 @@ export function useCustomActions() {
         ],
     )
 
-    const addLink = useCallback(
-        async (link: LinkConfig) => {
-            await saveCustomActions(addItem(links, link), buttons)
-        },
-        [links, buttons, saveCustomActions],
-    )
+    async function addLink(link: LinkConfig) {
+        await saveCustomActions(addItem(links, link), buttons)
+    }
 
-    const addButton = useCallback(
-        async (button: ButtonConfig) => {
-            await saveCustomActions(links, addItem(buttons, button))
-        },
-        [links, buttons, saveCustomActions],
-    )
+    async function addButton(button: ButtonConfig) {
+        await saveCustomActions(links, addItem(buttons, button))
+    }
 
-    const editLink = useCallback(
-        async (index: number, link: LinkConfig) => {
-            await saveCustomActions(editItem(links, index, link), buttons)
-        },
-        [links, buttons, saveCustomActions],
-    )
+    async function editLink(index: number, link: LinkConfig) {
+        await saveCustomActions(editItem(links, index, link), buttons)
+    }
 
-    const editButton = useCallback(
-        async (index: number, button: ButtonConfig) => {
-            await saveCustomActions(links, editItem(buttons, index, button))
-        },
-        [links, buttons, saveCustomActions],
-    )
+    async function editButton(index: number, button: ButtonConfig) {
+        await saveCustomActions(links, editItem(buttons, index, button))
+    }
 
-    const removeLink = useCallback(
-        async (index: number) => {
-            await saveCustomActions(removeItem(links, index), buttons)
-        },
-        [links, buttons, saveCustomActions],
-    )
+    async function removeLink(index: number) {
+        await saveCustomActions(removeItem(links, index), buttons)
+    }
 
-    const removeButton = useCallback(
-        async (index: number) => {
-            await saveCustomActions(links, removeItem(buttons, index))
-        },
-        [links, buttons, saveCustomActions],
-    )
+    async function removeButton(index: number) {
+        await saveCustomActions(links, removeItem(buttons, index))
+    }
 
     return {
         links,

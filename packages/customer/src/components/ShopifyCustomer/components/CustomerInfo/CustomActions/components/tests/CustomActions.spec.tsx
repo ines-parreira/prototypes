@@ -355,6 +355,215 @@ describe('CustomActions', () => {
         })
     })
 
+    it('resolves enriched integration data in link URLs', async () => {
+        const widgetWithIntegrationLink: Widget = {
+            id: 1,
+            type: 'shopify',
+            context: 'ticket',
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: 'customer',
+                        type: 'customer',
+                        meta: {
+                            custom: {
+                                links: [
+                                    {
+                                        label: 'Order {{customer.integrations.shopify.orders[0].name}}',
+                                        url: 'https://shop.example.com/orders/{{customer.integrations.shopify.orders[0].id}}',
+                                    },
+                                ],
+                                buttons: [],
+                            },
+                        },
+                    },
+                ],
+            },
+        }
+
+        setupHandlers([widgetWithIntegrationLink])
+
+        render(
+            <TemplateResolverProvider
+                customer={{
+                    name: 'Alice',
+                    id: '42',
+                    integrations: {
+                        shopify: {
+                            orders: [{ id: '1001', name: '#1001' }],
+                        },
+                    },
+                }}
+            >
+                <CustomActions
+                    integrationId={1}
+                    customerId={42}
+                    ticketId="100"
+                />
+            </TemplateResolverProvider>,
+        )
+
+        await vi.waitFor(() => {
+            expect(
+                screen.getByRole('link', { name: /order #1001/i }),
+            ).toBeInTheDocument()
+        })
+
+        const link = screen.getByRole('link', { name: /order #1001/i })
+        expect(link).toHaveAttribute(
+            'href',
+            'https://shop.example.com/orders/1001',
+        )
+    })
+
+    it('resolves $variable substitution in templates', async () => {
+        const widgetWithVariable: Widget = {
+            id: 1,
+            type: 'shopify',
+            context: 'ticket',
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: 'customer',
+                        type: 'customer',
+                        meta: {
+                            custom: {
+                                links: [
+                                    {
+                                        label: 'Integration Link',
+                                        url: 'https://example.com/integrations/$integrationId/customers/{{customer.id}}',
+                                    },
+                                ],
+                                buttons: [],
+                            },
+                        },
+                    },
+                ],
+            },
+        }
+
+        setupHandlers([widgetWithVariable])
+
+        render(
+            <TemplateResolverProvider
+                customer={{ id: '42', name: 'Alice' }}
+                variables={{ integrationId: '789' }}
+            >
+                <CustomActions
+                    integrationId={1}
+                    customerId={42}
+                    ticketId="100"
+                />
+            </TemplateResolverProvider>,
+        )
+
+        await vi.waitFor(() => {
+            expect(
+                screen.getByRole('link', { name: /integration link/i }),
+            ).toBeInTheDocument()
+        })
+
+        const link = screen.getByRole('link', { name: /integration link/i })
+        expect(link).toHaveAttribute(
+            'href',
+            'https://example.com/integrations/789/customers/42',
+        )
+    })
+
+    it('resolves $listIndex variable in link URLs and button action bodies', async () => {
+        const widgetWithListIndex: Widget = {
+            id: 1,
+            type: 'shopify',
+            context: 'ticket',
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: 'customer',
+                        type: 'customer',
+                        meta: {
+                            custom: {
+                                links: [
+                                    {
+                                        label: 'View Order',
+                                        url: 'https://shop.example.com/orders/{{customer.integrations.shopify.orders[$listIndex].id}}',
+                                    },
+                                ],
+                                buttons: [
+                                    {
+                                        label: 'Refund Order',
+                                        action: {
+                                            method: 'POST',
+                                            url: 'https://api.example.com/refund',
+                                            headers: [],
+                                            params: [],
+                                            body: {
+                                                contentType: 'application/json',
+                                                'application/json': {
+                                                    order_id:
+                                                        '{{customer.integrations.shopify.orders[$listIndex].id}}',
+                                                },
+                                                'application/x-www-form-urlencoded':
+                                                    [],
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                ],
+            },
+        }
+
+        const executeActionMock = mockExecuteActionHandler()
+        setupHandlers([widgetWithListIndex], executeActionMock)
+        const waitForRequest = executeActionMock.waitForRequest(server)
+
+        const { user } = render(
+            <TemplateResolverProvider
+                customer={{
+                    integrations: {
+                        shopify: {
+                            orders: [
+                                { id: '5001', name: '#5001' },
+                                { id: '5002', name: '#5002' },
+                            ],
+                        },
+                    },
+                }}
+                variables={{ listIndex: '1' }}
+            >
+                <CustomActions
+                    integrationId={1}
+                    customerId={42}
+                    ticketId="100"
+                />
+            </TemplateResolverProvider>,
+        )
+
+        await vi.waitFor(() => {
+            expect(
+                screen.getByRole('link', { name: /view order/i }),
+            ).toBeInTheDocument()
+        })
+
+        const link = screen.getByRole('link', { name: /view order/i })
+        expect(link).toHaveAttribute(
+            'href',
+            'https://shop.example.com/orders/5002',
+        )
+
+        await user.click(screen.getByRole('button', { name: /refund order/i }))
+
+        await waitForRequest(async (request) => {
+            const body = await request.json()
+            expect(body.payload.json).toEqual({ order_id: '5002' })
+        })
+    })
+
     it('disables action button while mutation is loading', async () => {
         let resolveRequest: (() => void) | undefined
         const executeActionMock = mockExecuteActionHandler(

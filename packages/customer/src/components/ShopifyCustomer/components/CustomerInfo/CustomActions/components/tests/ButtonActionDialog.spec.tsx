@@ -3,9 +3,9 @@ import { screen, waitFor } from '@testing-library/react'
 import { render } from '../../../../../../../tests/render.utils'
 import { INITIAL_ACTION } from '../../utils/customActionConstants'
 import type { ButtonConfig } from '../../utils/customActionTypes'
-import { AddButtonDialog } from '../AddButtonDialog'
+import { ButtonActionDialog } from '../ButtonActionDialog'
 
-describe('AddButtonDialog', () => {
+describe('ButtonActionDialog', () => {
     const defaultProps = {
         isOpen: true,
         onOpenChange: vi.fn(),
@@ -16,18 +16,18 @@ describe('AddButtonDialog', () => {
         vi.clearAllMocks()
     })
 
-    it('renders with "Configure HTTP action" title when no initialButton', () => {
-        render(<AddButtonDialog {...defaultProps} />)
+    it('renders with "Configure HTTP action" title when no editButton', () => {
+        render(<ButtonActionDialog {...defaultProps} />)
         expect(
             screen.getByRole('dialog', { name: /configure http action/i }),
         ).toBeInTheDocument()
     })
 
-    it('renders with "Edit HTTP action" title when initialButton is provided', () => {
+    it('renders with "Edit HTTP action" title when editButton is provided', () => {
         render(
-            <AddButtonDialog
+            <ButtonActionDialog
                 {...defaultProps}
-                initialButton={{
+                editButton={{
                     label: 'Test',
                     action: {
                         method: 'GET',
@@ -49,12 +49,12 @@ describe('AddButtonDialog', () => {
     })
 
     it('disables Save button when label is empty', () => {
-        render(<AddButtonDialog {...defaultProps} />)
+        render(<ButtonActionDialog {...defaultProps} />)
         expect(screen.getByRole('button', { name: /save/i })).toBeDisabled()
     })
 
     it('enables Save button when label and URL are filled', async () => {
-        const { user } = render(<AddButtonDialog {...defaultProps} />)
+        const { user } = render(<ButtonActionDialog {...defaultProps} />)
 
         await user.type(screen.getByLabelText(/button title/i), 'My Action')
         await user.type(screen.getByLabelText(/url/i), 'https://example.com')
@@ -63,7 +63,7 @@ describe('AddButtonDialog', () => {
     })
 
     it('calls onSubmit when Save is clicked with valid data', async () => {
-        const { user } = render(<AddButtonDialog {...defaultProps} />)
+        const { user } = render(<ButtonActionDialog {...defaultProps} />)
 
         await user.type(screen.getByLabelText(/button title/i), 'My Action')
         await user.type(screen.getByLabelText(/url/i), 'https://example.com')
@@ -80,7 +80,7 @@ describe('AddButtonDialog', () => {
     })
 
     it('calls onOpenChange(false) when Cancel is clicked', async () => {
-        const { user } = render(<AddButtonDialog {...defaultProps} />)
+        const { user } = render(<ButtonActionDialog {...defaultProps} />)
 
         await user.click(screen.getByRole('button', { name: /cancel/i }))
 
@@ -88,20 +88,20 @@ describe('AddButtonDialog', () => {
     })
 
     it('renders Headers and Query parameters sections', () => {
-        render(<AddButtonDialog {...defaultProps} />)
+        render(<ButtonActionDialog {...defaultProps} />)
 
         expect(screen.getByText('Headers')).toBeInTheDocument()
         expect(screen.getByText('Query parameters')).toBeInTheDocument()
     })
 
     it('renders URL field', () => {
-        render(<AddButtonDialog {...defaultProps} />)
+        render(<ButtonActionDialog {...defaultProps} />)
 
         expect(screen.getByLabelText(/url/i)).toBeInTheDocument()
     })
 
     it('does not show body section for GET method by default', () => {
-        render(<AddButtonDialog {...defaultProps} />)
+        render(<ButtonActionDialog {...defaultProps} />)
 
         expect(screen.queryByText('Content type')).not.toBeInTheDocument()
         expect(
@@ -111,9 +111,9 @@ describe('AddButtonDialog', () => {
 
     it('shows body section when method is POST', async () => {
         render(
-            <AddButtonDialog
+            <ButtonActionDialog
                 {...defaultProps}
-                initialButton={{
+                editButton={{
                     label: 'Test',
                     action: {
                         ...INITIAL_ACTION,
@@ -130,7 +130,7 @@ describe('AddButtonDialog', () => {
     })
 
     it('disables Save button when URL is invalid', async () => {
-        const { user } = render(<AddButtonDialog {...defaultProps} />)
+        const { user } = render(<ButtonActionDialog {...defaultProps} />)
 
         await user.type(screen.getByLabelText(/button title/i), 'My Action')
         await user.type(screen.getByLabelText(/url/i), 'not-a-valid-url')
@@ -140,9 +140,9 @@ describe('AddButtonDialog', () => {
 
     it('keeps Save enabled when URL contains template variables', async () => {
         render(
-            <AddButtonDialog
+            <ButtonActionDialog
                 {...defaultProps}
-                initialButton={{
+                editButton={{
                     label: 'My Action',
                     action: {
                         ...INITIAL_ACTION,
@@ -157,8 +157,8 @@ describe('AddButtonDialog', () => {
         })
     })
 
-    it('populates all fields from initialButton in edit mode', () => {
-        const initialButton: ButtonConfig = {
+    it('populates all fields from editButton in edit mode', () => {
+        const editButton: ButtonConfig = {
             label: 'Refund Order',
             action: {
                 method: 'POST',
@@ -175,9 +175,7 @@ describe('AddButtonDialog', () => {
             },
         }
 
-        render(
-            <AddButtonDialog {...defaultProps} initialButton={initialButton} />,
-        )
+        render(<ButtonActionDialog {...defaultProps} editButton={editButton} />)
 
         expect(screen.getByLabelText(/button title/i)).toHaveValue(
             'Refund Order',
@@ -189,9 +187,9 @@ describe('AddButtonDialog', () => {
 
     it('submits with updated JSON body when editing body in POST mode', async () => {
         const { user } = render(
-            <AddButtonDialog
+            <ButtonActionDialog
                 {...defaultProps}
-                initialButton={{
+                editButton={{
                     label: 'Post Action',
                     action: {
                         ...INITIAL_ACTION,
@@ -221,9 +219,9 @@ describe('AddButtonDialog', () => {
 
     it('submits with form body data when using form content type', async () => {
         const { user } = render(
-            <AddButtonDialog
+            <ButtonActionDialog
                 {...defaultProps}
-                initialButton={{
+                editButton={{
                     label: 'Form Action',
                     action: {
                         ...INITIAL_ACTION,
@@ -271,7 +269,7 @@ describe('AddButtonDialog', () => {
     })
 
     it('submits with header parameters', async () => {
-        const { user } = render(<AddButtonDialog {...defaultProps} />)
+        const { user } = render(<ButtonActionDialog {...defaultProps} />)
 
         await user.type(screen.getByLabelText(/button title/i), 'With Headers')
         await user.type(screen.getByLabelText(/url/i), 'https://example.com')
@@ -315,7 +313,7 @@ describe('AddButtonDialog', () => {
         )
 
         const { user } = render(
-            <AddButtonDialog {...defaultProps} onSubmit={slowSubmit} />,
+            <ButtonActionDialog {...defaultProps} onSubmit={slowSubmit} />,
         )
 
         await user.type(screen.getByLabelText(/button title/i), 'My Action')

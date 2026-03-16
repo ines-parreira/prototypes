@@ -99,6 +99,9 @@ jest.mock('@repo/customer', () => ({
     ShopifyCustomerProvider: ({ children }: { children: ReactNode }) => (
         <>{children}</>
     ),
+    TemplateResolverProvider: ({ children }: { children: ReactNode }) => (
+        <>{children}</>
+    ),
 }))
 
 jest.mock(

@@ -1,8 +1,39 @@
 :local {
+    .panel {
+        overflow: auto;
+        min-height: 0;
+    }
+
     .section {
         border: 1px dashed var(--border-neutral-default);
         border-radius: var(--spacing-xs);
         padding: var(--spacing-md);
         margin: var(--spacing-xs);
+    }
+
+    .actionRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-xxs) var(--spacing-xs);
+        border-radius: var(--spacing-xs);
+
+        .actionControls {
+            display: flex;
+            gap: var(--spacing-xxxs);
+            visibility: hidden;
+        }
+
+        &:hover {
+            cursor: pointer;
+        }
+        &:hover,
+        &:focus-within {
+            background-color: var(--surface-neutral-secondary);
+
+            .actionControls {
+                visibility: visible;
+            }
+        }
     }
 }

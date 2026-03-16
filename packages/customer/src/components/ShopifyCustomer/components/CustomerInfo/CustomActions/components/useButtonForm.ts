@@ -28,20 +28,20 @@ type UseButtonFormOptions = {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
     onSubmit: (button: ButtonConfig) => Promise<void>
-    initialButton?: ButtonConfig
+    editButton?: ButtonConfig
 }
 
 export function useButtonForm({
     isOpen,
     onOpenChange,
     onSubmit,
-    initialButton,
+    editButton,
 }: UseButtonFormOptions) {
-    const isEditing = !!initialButton
+    const isEditing = !!editButton
     const prevIsOpenRef = useRef(false)
 
     const methods = useForm<ButtonFormValues>({
-        defaultValues: toFormValues(initialButton),
+        defaultValues: toFormValues(editButton),
         mode: 'onChange',
     })
 
@@ -54,10 +54,10 @@ export function useButtonForm({
 
     useEffect(() => {
         if (isOpen && !prevIsOpenRef.current) {
-            reset(toFormValues(initialButton))
+            reset(toFormValues(editButton))
         }
         prevIsOpenRef.current = isOpen
-    }, [isOpen, initialButton, reset])
+    }, [isOpen, editButton, reset])
 
     const method = useWatch({ control, name: 'action.method' })
     const hasBody = METHODS_WITH_BODY.includes(method)

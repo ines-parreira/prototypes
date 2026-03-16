@@ -1,9 +1,9 @@
 import { screen, waitFor } from '@testing-library/react'
 
 import { render } from '../../../../../../../tests/render.utils'
-import { AddLinkDialog } from '../AddLinkDialog'
+import { LinkActionDialog } from '../LinkActionDialog'
 
-describe('AddLinkDialog', () => {
+describe('LinkActionDialog', () => {
     const defaultProps = {
         isOpen: true,
         onOpenChange: vi.fn(),
@@ -14,18 +14,18 @@ describe('AddLinkDialog', () => {
         vi.clearAllMocks()
     })
 
-    it('renders with "Add link" title when no initialLink', () => {
-        render(<AddLinkDialog {...defaultProps} />)
+    it('renders with "Add link" title when no editLink', () => {
+        render(<LinkActionDialog {...defaultProps} />)
         expect(
             screen.getByRole('dialog', { name: /add link/i }),
         ).toBeInTheDocument()
     })
 
-    it('renders with "Edit link" title when initialLink is provided', () => {
+    it('renders with "Edit link" title when editLink is provided', () => {
         render(
-            <AddLinkDialog
+            <LinkActionDialog
                 {...defaultProps}
-                initialLink={{ label: 'Test', url: 'https://example.com' }}
+                editLink={{ label: 'Test', url: 'https://example.com' }}
             />,
         )
         expect(
@@ -34,12 +34,12 @@ describe('AddLinkDialog', () => {
     })
 
     it('disables Save button when fields are empty', () => {
-        render(<AddLinkDialog {...defaultProps} />)
+        render(<LinkActionDialog {...defaultProps} />)
         expect(screen.getByRole('button', { name: /save/i })).toBeDisabled()
     })
 
     it('enables Save button when both fields are filled', async () => {
-        const { user } = render(<AddLinkDialog {...defaultProps} />)
+        const { user } = render(<LinkActionDialog {...defaultProps} />)
 
         await user.type(screen.getByLabelText(/title/i), 'My Link')
         await user.type(screen.getByLabelText(/url/i), 'https://example.com')
@@ -48,7 +48,7 @@ describe('AddLinkDialog', () => {
     })
 
     it('calls onSubmit with ensured HTTPS url on save', async () => {
-        const { user } = render(<AddLinkDialog {...defaultProps} />)
+        const { user } = render(<LinkActionDialog {...defaultProps} />)
 
         await user.type(screen.getByLabelText(/title/i), 'My Link')
         await user.type(screen.getByLabelText(/url/i), 'https://example.com')
@@ -63,18 +63,18 @@ describe('AddLinkDialog', () => {
     })
 
     it('calls onOpenChange(false) when Cancel is clicked', async () => {
-        const { user } = render(<AddLinkDialog {...defaultProps} />)
+        const { user } = render(<LinkActionDialog {...defaultProps} />)
 
         await user.click(screen.getByRole('button', { name: /cancel/i }))
 
         expect(defaultProps.onOpenChange).toHaveBeenCalledWith(false)
     })
 
-    it('populates fields from initialLink', () => {
+    it('populates fields from editLink', () => {
         render(
-            <AddLinkDialog
+            <LinkActionDialog
                 {...defaultProps}
-                initialLink={{
+                editLink={{
                     label: 'Existing Link',
                     url: 'https://existing.com',
                 }}
@@ -88,7 +88,7 @@ describe('AddLinkDialog', () => {
     })
 
     it('prepends https:// to URL on blur', async () => {
-        const { user } = render(<AddLinkDialog {...defaultProps} />)
+        const { user } = render(<LinkActionDialog {...defaultProps} />)
 
         const urlInput = screen.getByLabelText(/url/i)
         await user.type(urlInput, 'example.com')
@@ -98,7 +98,7 @@ describe('AddLinkDialog', () => {
     })
 
     it('disables Save button when URL is invalid', async () => {
-        const { user } = render(<AddLinkDialog {...defaultProps} />)
+        const { user } = render(<LinkActionDialog {...defaultProps} />)
 
         await user.type(screen.getByLabelText(/title/i), 'My Link')
         await user.type(screen.getByLabelText(/url/i), 'not a url at all')
@@ -116,7 +116,7 @@ describe('AddLinkDialog', () => {
         )
 
         const { user } = render(
-            <AddLinkDialog {...defaultProps} onSubmit={slowSubmit} />,
+            <LinkActionDialog {...defaultProps} onSubmit={slowSubmit} />,
         )
 
         await user.type(screen.getByLabelText(/title/i), 'My Link')

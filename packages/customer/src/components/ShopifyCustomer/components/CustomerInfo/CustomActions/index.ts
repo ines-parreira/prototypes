@@ -1,5 +1,5 @@
-export { AddButtonDialog } from './components/AddButtonDialog'
-export { AddLinkDialog } from './components/AddLinkDialog'
+export { ButtonActionDialog } from './components/ButtonActionDialog'
+export { LinkActionDialog } from './components/LinkActionDialog'
 export { CustomActions } from './components/CustomActions'
 export {
     TemplateResolverProvider,

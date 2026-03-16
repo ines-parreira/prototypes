@@ -47,6 +47,7 @@ jest.mock('@repo/tickets', () => ({
 jest.mock('@repo/customer', () => ({
     ShopifyCustomer: jest.fn(() => <div>ShopifyCustomer</div>),
     ShopifyCustomerProvider: jest.fn(({ children }) => <>{children}</>),
+    TemplateResolverProvider: jest.fn(({ children }) => <>{children}</>),
 }))
 
 const mockedPanel = jest.mocked(Panel)

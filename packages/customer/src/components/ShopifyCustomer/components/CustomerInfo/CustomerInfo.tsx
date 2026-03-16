@@ -6,6 +6,7 @@ import { useTicketInfobarNavigation } from '@repo/navigation'
 import { useUserDateTimePreferences } from '@repo/preferences'
 
 import { Box } from '@gorgias/axiom'
+import { useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { useGetOrderProducts, useIntegrationSelection } from '../../hooks'
 import { useGetDraftOrders } from '../../hooks/useGetDraftOrders'
@@ -20,6 +21,7 @@ import { CustomerLink } from '../CustomerLink'
 import { StorePicker } from '../StorePicker'
 import { createAddressFieldDefinitions } from './addressesFields'
 import { CollapsibleFieldSection } from './CollapsibleFieldSection'
+import { CustomActions, TemplateResolverProvider } from './CustomActions'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
 import { IntermediateEditPanel } from './IntermediateEditPanel'
 import { MetafieldsSection } from './MetafieldsSection'
@@ -41,6 +43,12 @@ type Props = {
     renderEditShippingAddressModal?: (
         props: EditShippingAddressModalRenderProps,
     ) => ReactNode
+    currentUser?: {
+        name?: string
+        firstname?: string
+        lastname?: string
+        email?: string
+    }
 }
 
 export function CustomerInfo({
@@ -52,6 +60,7 @@ export function CustomerInfo({
     ticketId,
     customerId,
     renderEditShippingAddressModal,
+    currentUser,
 }: Props) {
     const {
         filteredIntegrations,
@@ -104,6 +113,38 @@ export function CustomerInfo({
         externalId: selectedExternalId,
     })
 
+    const { data: ticketData } = useGetTicket(Number(ticketId), undefined, {
+        query: { enabled: !!ticketId },
+    })
+
+    const enrichedCustomer = useMemo(() => {
+        const baseCustomer = (ticketData?.data?.customer ?? {}) as Record<
+            string,
+            unknown
+        >
+        const integrationType = selectedIntegration?.type
+        if (!integrationType) return baseCustomer
+
+        const existingIntegrations = (baseCustomer.integrations ??
+            {}) as Record<string, unknown>
+
+        return {
+            ...baseCustomer,
+            integrations: {
+                ...existingIntegrations,
+                [integrationType]: {
+                    ...shopper?.data,
+                    orders: orders?.map((o) => o.data) ?? [],
+                },
+            },
+        }
+    }, [
+        ticketData?.data?.customer,
+        selectedIntegration?.type,
+        shopper?.data,
+        orders,
+    ])
+
     const { dateFormat, timeFormat } = useUserDateTimePreferences()
 
     const context: FieldRenderContext = {
@@ -135,6 +176,14 @@ export function CustomerInfo({
     const [selectedOrderIndex, setSelectedOrderIndex] = useState<number | null>(
         null,
     )
+
+    const ordersListIndex = useMemo(() => {
+        if (selectedOrderIndex === null) return undefined
+        const ordersLength = orders?.length ?? 0
+        if (selectedOrderIndex < ordersLength)
+            return selectedOrderIndex.toString()
+        return undefined
+    }, [selectedOrderIndex, orders?.length])
 
     const selectedOrder =
         selectedOrderIndex !== null
@@ -209,6 +258,7 @@ export function CustomerInfo({
                 preferences={preferences}
                 onSavePreferences={savePreferences}
                 onClose={() => onToggleEditShopifyFields(false)}
+                integrationName={selectedIntegration?.name}
             />
         )
     }
@@ -250,6 +300,29 @@ export function CustomerInfo({
                         shopper={shopper}
                         isLoading={isLoadingIntegrations}
                     />
+                    <TemplateResolverProvider
+                        ticket={
+                            ticketData?.data as
+                                | Record<string, unknown>
+                                | undefined
+                        }
+                        customer={
+                            enrichedCustomer as
+                                | Record<string, unknown>
+                                | undefined
+                        }
+                        currentUser={currentUser}
+                        variables={{
+                            integrationId: selectedIntegration?.id?.toString(),
+                            listIndex: ordersListIndex,
+                        }}
+                    >
+                        <CustomActions
+                            integrationId={selectedIntegration?.id}
+                            customerId={customerId}
+                            ticketId={ticketId}
+                        />
+                    </TemplateResolverProvider>
                     {hasData && (
                         <>
                             <CustomerInfoFieldList

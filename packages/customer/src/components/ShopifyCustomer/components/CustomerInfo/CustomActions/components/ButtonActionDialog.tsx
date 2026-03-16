@@ -46,10 +46,10 @@ type Props = {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
     onSubmit: (button: ButtonConfig) => Promise<void>
-    initialButton?: ButtonConfig
+    editButton?: ButtonConfig
 }
 
-export function AddButtonDialog(props: Props) {
+export function ButtonActionDialog(props: Props) {
     const {
         methods,
         isEditing,

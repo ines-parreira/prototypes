@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { Box, Button } from '@gorgias/axiom'
+import { Box, Button, Link } from '@gorgias/axiom'
 
 import { useExecuteCustomAction } from '../../../../hooks'
 import { useCustomActions } from '../hooks/useCustomActions'
@@ -10,10 +10,15 @@ import { useTemplateResolver } from './TemplateResolverContext'
 
 function safeParseResolvedJson(
     json: Record<string, unknown> | string,
-    resolve: (template: string) => string,
+    resolve: (
+        template: string,
+        options?: { keepTemplateWhenEmpty?: boolean },
+    ) => string,
 ): Record<string, unknown> | string {
     try {
-        return JSON.parse(resolve(JSON.stringify(json)))
+        return JSON.parse(
+            resolve(JSON.stringify(json), { keepTemplateWhenEmpty: true }),
+        )
     } catch {
         return json
     }
@@ -38,32 +43,35 @@ export function CustomActions({
     }
 
     return (
-        <Box flexWrap="wrap" gap="xxxs">
-            {links.map((link) => (
-                <Box key={`${link.label}-${link.url}`}>
-                    <Button
-                        as="a"
+        <Box marginTop="md" marginBottom="md" flexWrap="wrap" gap="sm">
+            <Box gap="xxxs">
+                {buttons.map((button, index) => (
+                    <Box
+                        key={`button-${index}-${button.label}-${button.action.url}`}
+                    >
+                        <ActionButton
+                            config={button}
+                            integrationId={integrationId}
+                            customerId={customerId}
+                            ticketId={ticketId}
+                        />
+                    </Box>
+                ))}
+            </Box>
+
+            <Box alignItems="flex-start" flexDirection="column" gap="sm">
+                {links.map((link, index) => (
+                    <Link
+                        key={`link-${index}-${link.label}-${link.url}`}
                         href={resolve(link.url)}
                         target="_blank"
-                        rel="noopener noreferrer"
                         trailingSlot="external-link"
-                        variant="tertiary"
                         size="sm"
                     >
                         {resolve(link.label)}
-                    </Button>
-                </Box>
-            ))}
-            {buttons.map((button) => (
-                <Box key={`${button.label}-${button.action.url}`}>
-                    <ActionButton
-                        config={button}
-                        integrationId={integrationId}
-                        customerId={customerId}
-                        ticketId={ticketId}
-                    />
-                </Box>
-            ))}
+                    </Link>
+                ))}
+            </Box>
         </Box>
     )
 }
@@ -85,17 +93,19 @@ function ActionButton({
     const { mutate, isLoading } = useExecuteCustomAction()
     const [isEditorOpen, setIsEditorOpen] = useState(false)
 
+    const keepTemplate = { keepTemplateWhenEmpty: true } as const
+
     const executeResolvedAction = (action: ButtonAction) => {
         const resolvedAction = {
             ...action,
-            url: resolve(action.url),
+            url: resolve(action.url, keepTemplate),
             headers: action.headers.map((h) => ({
                 ...h,
-                value: resolve(h.value),
+                value: resolve(h.value, keepTemplate),
             })),
             params: action.params.map((p) => ({
                 ...p,
-                value: resolve(p.value),
+                value: resolve(p.value, keepTemplate),
             })),
             body: {
                 ...action.body,
@@ -110,7 +120,7 @@ function ActionButton({
                     'application/x-www-form-urlencoded'
                 ].map((p) => ({
                     ...p,
-                    value: resolve(p.value),
+                    value: resolve(p.value, keepTemplate),
                 })),
             },
         }
@@ -140,7 +150,7 @@ function ActionButton({
     return (
         <>
             <Button
-                variant="tertiary"
+                variant="secondary"
                 size="sm"
                 onClick={handleAction}
                 isDisabled={isLoading}

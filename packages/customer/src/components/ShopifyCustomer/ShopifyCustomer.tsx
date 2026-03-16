@@ -22,11 +22,18 @@ type Props = {
     renderEditShippingAddressModal?: (
         props: EditShippingAddressModalRenderProps,
     ) => ReactNode
+    currentUser?: {
+        name?: string
+        firstname?: string
+        lastname?: string
+        email?: string
+    }
 }
 
 export function ShopifyCustomer({
     onSyncProfile,
     renderEditShippingAddressModal,
+    currentUser,
 }: Props) {
     const { ticketId } = useParams<{ ticketId: string }>()
     const { data: ticket, isLoading: isLoadingTicket } = useGetTicket(
@@ -66,6 +73,7 @@ export function ShopifyCustomer({
                 ticketId={ticketId}
                 customerId={customerId}
                 renderEditShippingAddressModal={renderEditShippingAddressModal}
+                currentUser={currentUser}
             />
         </Box>
     )

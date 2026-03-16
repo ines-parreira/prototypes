@@ -19,10 +19,10 @@ type Props = {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
     onSubmit: (link: LinkConfig) => Promise<void>
-    initialLink?: LinkConfig
+    editLink?: LinkConfig
 }
 
-export function AddLinkDialog(props: Props) {
+export function LinkActionDialog(props: Props) {
     const {
         methods,
         isEditing,

@@ -1,7 +1,12 @@
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
-import { render } from '../../../../../tests/render.utils'
+import { mockListWidgetsHandler } from '@gorgias/helpdesk-mocks'
+import type { Widget } from '@gorgias/helpdesk-types'
+
+import { render, testAppQueryClient } from '../../../../../tests/render.utils'
 import { FIELD_DEFINITIONS } from '../fields'
 import { IntermediateEditPanel } from '../IntermediateEditPanel'
 import type {
@@ -18,6 +23,23 @@ vi.mock('react-dnd', () => ({
 vi.mock('react-dnd-html5-backend', () => ({
     HTML5Backend: {},
 }))
+
+const defaultListWidgetsMock = mockListWidgetsHandler()
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    testAppQueryClient.clear()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 const mockContext: FieldRenderContext = {
     purchaseSummary: undefined,
@@ -57,6 +79,7 @@ describe('IntermediateEditPanel', () => {
 
     beforeEach(() => {
         vi.clearAllMocks()
+        server.use(defaultListWidgetsMock.handler)
     })
 
     it('renders customer metrics section with field list', () => {
@@ -122,5 +145,104 @@ describe('IntermediateEditPanel', () => {
 
         const toggles = screen.getAllByRole('switch')
         expect(toggles.length).toBeGreaterThan(0)
+    })
+
+    it('renders integration name when provided', () => {
+        render(
+            <IntermediateEditPanel
+                {...defaultProps}
+                integrationName="My Shopify Store"
+            />,
+        )
+
+        expect(screen.getByText('My Shopify Store')).toBeInTheDocument()
+    })
+
+    it('renders Add menu button', () => {
+        render(<IntermediateEditPanel {...defaultProps} />)
+
+        expect(screen.getByRole('button', { name: /add/i })).toBeInTheDocument()
+    })
+
+    it('shows Add button and Add link menu items when Add is clicked', async () => {
+        const listWidgetsMock = mockListWidgetsHandler(async () =>
+            HttpResponse.json({
+                data: [],
+                meta: { next_cursor: null, prev_cursor: null },
+                object: 'list',
+                uri: '/api/widgets',
+            }),
+        )
+        server.use(listWidgetsMock.handler)
+
+        const { user } = render(<IntermediateEditPanel {...defaultProps} />)
+
+        await user.click(screen.getByRole('button', { name: /add/i }))
+
+        await waitFor(() => {
+            expect(screen.getByText('Add button')).toBeInTheDocument()
+            expect(screen.getByText('Add link')).toBeInTheDocument()
+        })
+    })
+
+    it('displays existing links and buttons from widget data', async () => {
+        const shopifyWidget: Widget = {
+            id: 1,
+            type: 'shopify',
+            context: 'ticket',
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: 'customer',
+                        type: 'customer',
+                        meta: {
+                            custom: {
+                                links: [
+                                    {
+                                        label: 'Support Portal',
+                                        url: 'https://support.example.com',
+                                    },
+                                ],
+                                buttons: [
+                                    {
+                                        label: 'Refresh Data',
+                                        action: {
+                                            method: 'GET',
+                                            url: 'https://api.example.com/refresh',
+                                            headers: [],
+                                            params: [],
+                                            body: {
+                                                contentType: 'application/json',
+                                                'application/json': {},
+                                                'application/x-www-form-urlencoded':
+                                                    [],
+                                            },
+                                        },
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                ],
+            },
+        }
+
+        const listWidgetsMock = mockListWidgetsHandler(async () =>
+            HttpResponse.json({
+                data: [shopifyWidget],
+                meta: { next_cursor: null, prev_cursor: null },
+                object: 'list',
+                uri: '/api/widgets',
+            }),
+        )
+        server.use(listWidgetsMock.handler)
+
+        render(<IntermediateEditPanel {...defaultProps} />)
+
+        await waitFor(() => {
+            expect(screen.getByText('Support Portal')).toBeInTheDocument()
+            expect(screen.getByText('Refresh Data')).toBeInTheDocument()
+        })
     })
 })

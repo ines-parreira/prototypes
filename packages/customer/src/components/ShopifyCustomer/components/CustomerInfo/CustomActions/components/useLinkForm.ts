@@ -24,20 +24,20 @@ type UseLinkFormOptions = {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
     onSubmit: (link: LinkConfig) => Promise<void>
-    initialLink?: LinkConfig
+    editLink?: LinkConfig
 }
 
 export function useLinkForm({
     isOpen,
     onOpenChange,
     onSubmit,
-    initialLink,
+    editLink,
 }: UseLinkFormOptions) {
-    const isEditing = !!initialLink
+    const isEditing = !!editLink
     const prevIsOpenRef = useRef(false)
 
     const methods = useForm<LinkFormValues>({
-        defaultValues: toFormValues(initialLink),
+        defaultValues: toFormValues(editLink),
         mode: 'onChange',
     })
 
@@ -51,10 +51,10 @@ export function useLinkForm({
 
     useEffect(() => {
         if (isOpen && !prevIsOpenRef.current) {
-            reset(toFormValues(initialLink))
+            reset(toFormValues(editLink))
         }
         prevIsOpenRef.current = isOpen
-    }, [isOpen, initialLink, reset])
+    }, [isOpen, editLink, reset])
 
     async function onFormSubmit(values: LinkFormValues) {
         try {

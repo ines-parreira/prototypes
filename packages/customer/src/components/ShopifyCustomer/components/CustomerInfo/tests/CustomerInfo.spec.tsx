@@ -10,6 +10,7 @@ import {
     mockPaginatedDataEcommerceData,
 } from '@gorgias/ecommerce-storage-mocks'
 import {
+    mockGetTicketHandler,
     mockListIntegrationsHandler,
     mockListWidgetsHandler,
 } from '@gorgias/helpdesk-mocks'
@@ -184,6 +185,7 @@ const metafieldDefinitionsHandler = http.get(
 )
 
 const mockListWidgets = mockListWidgetsHandler()
+const mockGetTicket = mockGetTicketHandler()
 
 beforeEach(() => {
     mockUseTicketInfobarNavigation.mockReturnValue({
@@ -215,6 +217,7 @@ beforeEach(() => {
         shopOrderTagsHandler,
         metafieldDefinitionsHandler,
         mockListWidgets.handler,
+        mockGetTicket.handler,
     )
 })
 

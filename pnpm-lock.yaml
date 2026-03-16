@@ -1903,6 +1903,9 @@ importers:
       classnames:
         specifier: catalog:styles
         version: 2.2.6
+      moment:
+        specifier: catalog:moment
+        version: 2.29.4
       msw:
         specifier: catalog:test
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
