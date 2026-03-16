@@ -5,6 +5,7 @@ import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 const useGenericTrend = (
     hooks: { [key: string]: MetricTrend },
     transformer: (data: { [key: string]: any }) => any,
+    enabled: boolean = true,
 ) => {
     const data = Object.entries(hooks).reduce(
         (acc, [key, hook]) => {
@@ -45,11 +46,12 @@ const useGenericTrend = (
     )
 
     const memoizedData = useMemo(() => {
+        if (!enabled) return undefined
         return calculateValues(data)
-    }, [data, calculateValues])
+    }, [data, calculateValues, enabled])
 
-    const isFetching = Object.values(data).some((d) => d.isFetching)
-    const isError = Object.values(data).some((d) => d.isError)
+    const isFetching = enabled && Object.values(data).some((d) => d.isFetching)
+    const isError = enabled && Object.values(data).some((d) => d.isError)
 
     return {
         data: memoizedData,

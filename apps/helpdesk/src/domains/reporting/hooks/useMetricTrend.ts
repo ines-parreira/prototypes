@@ -99,14 +99,17 @@ export default function useMetricTrend<
     prevPeriodQuery?: ReportingQuery<TCube>,
     currentPeriodQueryV2?: BuiltQuery<TMeta>,
     prevPeriodQueryV2?: BuiltQuery<TMeta>,
+    enabled: boolean = true,
 ): MetricTrend {
     const currentPeriodMetric = useMetric<TCube, TMeta>(
         currentPeriodQuery,
         currentPeriodQueryV2,
+        enabled,
     )
     const prevPeriodMetric = useMetric<TCube, TMeta>(
         prevPeriodQuery,
         prevPeriodQueryV2,
+        enabled,
     )
 
     return {

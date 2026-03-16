@@ -41,6 +41,7 @@ export const METRIC_NAMES = {
     AI_AGENT_ALL_AGENTS_COST_SAVED: 'ai-agent-all-agents-cost-saved',
     AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS:
         'ai-agent-all-agents-automated-interactions',
+    AI_AGENT_ALL_AGENTS_COVERAGE_RATE: 'ai-agent-all-agents-coverage-rate',
 
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',
@@ -887,7 +888,9 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.OverallAutomatedInteractions]: [
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE,
     ],
-    [MetricScope.AiAgentCoverageRate]: [],
+    [MetricScope.AiAgentCoverageRate]: [
+        METRIC_NAMES.AI_AGENT_ALL_AGENTS_COVERAGE_RATE,
+    ],
     [MetricScope.AiSalesAgentConversionRate]: [],
     [MetricScope.AiSalesAgentBuyThroughRate]: [],
 }

@@ -1,4 +1,4 @@
-import { MetricScope } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 
@@ -21,3 +21,12 @@ export const aiAgentCoverageRateScope = defineScope({
 export type AiAgentCoverageRateContext = Context<
     typeof aiAgentCoverageRateScope.config
 >
+
+export const coverageRate = aiAgentCoverageRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_ALL_AGENTS_COVERAGE_RATE)
+    .defineQuery(() => ({
+        measures: ['coverageRate'] as const,
+    }))
+
+export const coverageRateQueryV2Factory = (ctx: AiAgentCoverageRateContext) =>
+    coverageRate.build(ctx)

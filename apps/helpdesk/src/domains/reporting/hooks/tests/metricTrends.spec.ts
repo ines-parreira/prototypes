@@ -57,10 +57,7 @@ import { ticketsCreatedQueryFactory } from 'domains/reporting/models/queryFactor
 import { ticketsRepliedQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/ticketsReplied'
 import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
 import { customerSatisfactionQueryV2Factory } from 'domains/reporting/models/scopes/customerSatisfaction'
-import {
-    medianFirstResponseTime,
-    medianFirstResponseTimeQueryV2Factory,
-} from 'domains/reporting/models/scopes/firstResponseTime'
+import { medianFirstResponseTime } from 'domains/reporting/models/scopes/firstResponseTime'
 import { humanResponseTimeAfterAiHandoffQueryV2Factory } from 'domains/reporting/models/scopes/humanResponseTimeAfterAiHandoff'
 import { messagesPerTicketCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesPerTicket'
 import { messagesReceivedCountQueryV2Factory } from 'domains/reporting/models/scopes/messagesReceived'
@@ -176,13 +173,6 @@ describe('metric trends', () => {
             customerSatisfactionQueryV2Factory,
         ],
         [
-            'useMedianFirstResponseTimeTrend',
-            useMedianFirstResponseTimeTrend,
-            medianFirstAgentResponseTimeQueryFactory,
-            medianFirstResponseTimeQueryV2Factory,
-        ],
-
-        [
             'useHumanResponseTimeAfterAiHandoffTrend',
             useHumanResponseTimeAfterAiHandoffTrend,
             humanResponseTimeAfterAiHandoffQueryFactory,
@@ -278,6 +268,7 @@ describe('metric trends', () => {
                     filters: prevStatsFilters,
                     timezone,
                 }),
+                true,
             )
         })
     })
@@ -396,6 +387,7 @@ describe('metric trends', () => {
                 openTicketsQueryFactory(prevStatsFilters, timezone),
                 undefined,
                 undefined,
+                true,
             )
         })
 

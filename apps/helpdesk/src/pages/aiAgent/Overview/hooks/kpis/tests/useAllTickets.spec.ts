@@ -54,6 +54,7 @@ describe('useAllTickets', () => {
                 },
                 timezone,
             }),
+            true,
         )
     })
 })

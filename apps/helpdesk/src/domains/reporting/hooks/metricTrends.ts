@@ -95,7 +95,7 @@ export const getTrendHook =
         query: QueryFactory<TCube>,
         queryV2?: MetricQueryFactory<TMeta, TMetricName>,
     ) =>
-    (filters: StatsFilters, timezone: string) =>
+    (filters: StatsFilters, timezone: string, enabled: boolean = true) =>
         useMetricTrend(
             query(filters, timezone),
             query(
@@ -116,6 +116,7 @@ export const getTrendHook =
                 },
                 timezone,
             }),
+            enabled,
         )
 
 export const useCustomerSatisfactionTrend = getTrendHook(

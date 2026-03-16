@@ -179,8 +179,16 @@ describe('useStatsMetricTrend', () => {
             renderHook(() => useStatsMetricTrend(currentQuery, prevQuery))
 
             expect(useStatsMetricMock).toHaveBeenCalledTimes(2)
-            expect(useStatsMetricMock).toHaveBeenNthCalledWith(1, currentQuery)
-            expect(useStatsMetricMock).toHaveBeenNthCalledWith(2, prevQuery)
+            expect(useStatsMetricMock).toHaveBeenNthCalledWith(
+                1,
+                currentQuery,
+                true,
+            )
+            expect(useStatsMetricMock).toHaveBeenNthCalledWith(
+                2,
+                prevQuery,
+                true,
+            )
         })
     })
 
@@ -239,8 +247,11 @@ describe('useStatsMetricTrend', () => {
             const useTrend = getStatsTrendHook(mockQuery)
             renderHook(() => useTrend(filters, timezone))
 
-            expect(useStatsMetricMock).toHaveBeenCalledWith(mockCurrentQuery)
-            expect(useStatsMetricMock).toHaveBeenCalledWith(mockPrevQuery)
+            expect(useStatsMetricMock).toHaveBeenCalledWith(
+                mockCurrentQuery,
+                true,
+            )
+            expect(useStatsMetricMock).toHaveBeenCalledWith(mockPrevQuery, true)
         })
 
         it('returns value from current period and prevValue from previous period', () => {

@@ -56,9 +56,13 @@ export async function fetchStatsMetricTrend<
 export default function useStatsMetricTrend<TMeta extends ScopeMeta>(
     currentPeriodQuery: BuiltQuery<TMeta>,
     prevPeriodQuery: BuiltQuery<TMeta>,
+    enabled: boolean = true,
 ): GenericMetricTrend {
-    const currentPeriodMetric = useStatsMetric<TMeta>(currentPeriodQuery)
-    const prevPeriodMetric = useStatsMetric<TMeta>(prevPeriodQuery)
+    const currentPeriodMetric = useStatsMetric<TMeta>(
+        currentPeriodQuery,
+        enabled,
+    )
+    const prevPeriodMetric = useStatsMetric<TMeta>(prevPeriodQuery, enabled)
 
     return {
         isFetching:
