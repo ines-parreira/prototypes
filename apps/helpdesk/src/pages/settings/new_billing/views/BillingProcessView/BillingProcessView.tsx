@@ -6,8 +6,6 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { dismissNotification } from 'reapop'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
-
 import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -15,28 +13,23 @@ import { ProductType } from 'models/billing/types'
 import { getProductInfo, isYearlyContractPlan } from 'models/billing/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
-import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import { useHasCreditCard } from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useHasCreditCard'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import type { CurrentProductsUsages } from 'state/billing/types'
 import { TicketPurpose } from 'state/billing/types'
-import {
-    getCurrentSubscription,
-    shouldPayWithShopify as getShouldPayWithShopify,
-} from 'state/currentAccount/selectors'
+import { getCurrentSubscription } from 'state/currentAccount/selectors'
 
 import BackLink from '../../components/BackLink'
 import Card from '../../components/Card'
 import ProductPlanSelection from '../../components/ProductPlanSelection'
 import ScheduledCancellationSummary from '../../components/ScheduledCancellationSummary'
-import SummaryFooter from '../../components/SummaryFooter'
-import { SummaryItem } from '../../components/SummaryItem'
-import SummaryTotal from '../../components/SummaryTotal'
 import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
 import { BILLING_BASE_PATH, PRICING_DETAILS_URL } from '../../constants'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
 import type { SelectedPlans } from '../../types'
+import { BillingSummaryCard } from './BillingSummaryCard'
+import { EnterprisePlanCard } from './EnterprisePlanCard'
 import { useCancellationSummary } from './hooks/useCancellationSummary'
 import { buildEnterpriseMessage } from './utils'
 
@@ -130,8 +123,6 @@ export const BillingProcessView = ({
         }
     }, [currentHelpdeskPlan, isBillingPaused, history])
 
-    const shouldPayWithShopify = useAppSelector(getShouldPayWithShopify)
-
     const { cancellationDates, totalCancelledAmount, cancelledProducts } =
         useCancellationSummary({
             currentAutomatePlan,
@@ -204,120 +195,48 @@ export const BillingProcessView = ({
 
         if (isEnterpriseHelpdeskPlanSelected) {
             return (
-                <Card title="Enterprise Plan">
-                    <div className={css.enterprisePlanText}>
-                        To subscribe to our Enterprise plan, please get in touch
-                        with our team.
-                    </div>
-                    <div className={css.enterprisePlanFooter}>
-                        <Button
-                            intent="primary"
-                            onClick={() => {
-                                logEvent(
-                                    SegmentEvent.BillingUsageAndPlansEnterprisePlanContactUsClicked,
-                                )
-                                setDefaultMessage(messageForEnterprise)
-                                setIsModalOpen(true)
-                            }}
-                        >
-                            Contact Us
-                        </Button>
-                    </div>
-                </Card>
+                <EnterprisePlanCard
+                    messageForEnterprise={messageForEnterprise}
+                    setDefaultMessage={setDefaultMessage}
+                    setIsModalOpen={setIsModalOpen}
+                />
             )
         }
 
         return (
-            <Card title={'Summary'}>
-                <div className={css.summary}>
-                    <div className={css.summaryHeader}>
-                        <div>PRODUCT</div>
-                        <div>PRICE</div>
-                    </div>
-                    <SummaryItem
-                        productType={ProductType.Helpdesk}
-                        cadence={cadence}
-                        currentPlan={currentHelpdeskPlan}
-                        availablePlans={helpdeskAvailablePlans}
-                        selectedPlans={selectedPlans}
-                    />
-                    <SummaryItem
-                        productType={ProductType.Automation}
-                        cadence={cadence}
-                        currentPlan={currentAutomatePlan}
-                        availablePlans={automateAvailablePlans}
-                        selectedPlans={selectedPlans}
-                        scheduledToCancelAt={
-                            cancellationDates[ProductType.Automation]
-                        }
-                    />
-                    <SummaryItem
-                        productType={ProductType.Voice}
-                        cadence={cadence}
-                        currentPlan={currentVoicePlan}
-                        availablePlans={voiceAvailablePlans}
-                        selectedPlans={selectedPlans}
-                        scheduledToCancelAt={
-                            cancellationDates[ProductType.Voice]
-                        }
-                    />
-                    <SummaryItem
-                        productType={ProductType.SMS}
-                        cadence={cadence}
-                        currentPlan={currentSmsPlan}
-                        availablePlans={smsAvailablePlans}
-                        selectedPlans={selectedPlans}
-                        scheduledToCancelAt={cancellationDates[ProductType.SMS]}
-                    />
-                    <SummaryItem
-                        productType={ProductType.Convert}
-                        cadence={cadence}
-                        currentPlan={currentConvertPlan}
-                        availablePlans={convertAvailablePlans}
-                        selectedPlans={selectedPlans}
-                        scheduledToCancelAt={
-                            cancellationDates[ProductType.Convert]
-                        }
-                    />
-                    <SummaryTotal
-                        selectedPlans={selectedPlans}
-                        totalProductAmount={totalProductAmount}
-                        totalCancelledAmount={totalCancelledAmount}
-                        cancelledProducts={cancelledProducts}
-                        cadence={cadence}
-                        currency={helpdeskAvailablePlans?.[0].currency}
-                    />
-                </div>
-                {!isTrialing && !isCurrentSubscriptionCanceled && (
-                    <NewSummaryPaymentSection trackingSource="subscription_update" />
-                )}
-                <SummaryFooter
-                    isPaymentEnabled={isPaymentEnabled}
-                    isTrialing={isTrialing}
-                    isCurrentSubscriptionCanceled={
-                        isCurrentSubscriptionCanceled
-                    }
-                    anyProductChanged={anyProductChanged}
-                    anyNewProductSelected={anyNewProductSelected}
-                    anyDowngradedPlanSelected={!!anyDowngradedPlanSelected}
-                    updateSubscription={() => {
-                        logEvent(
-                            SegmentEvent.BillingUsageAndPlansUpdateSubscriptionClicked,
-                        )
-                        return updateSubscription()
-                    }}
-                    startSubscription={startSubscription}
-                    periodEnd={periodEnd}
-                    selectedPlans={selectedPlans}
-                    ctaText={ctaText}
-                    hasCreditCard={hasCreditCard.data}
-                    shouldPayWithShopify={shouldPayWithShopify}
-                    isSubscriptionUpdating={isSubscriptionUpdating}
-                    setUpdateProcessStarted={setUpdateProcessStarted}
-                    autoUpgradeChanged={autoUpgradeChanged}
-                    setSessionSelectedPlans={setSessionSelectedPlans}
-                />
-            </Card>
+            <BillingSummaryCard
+                selectedPlans={selectedPlans}
+                cadence={cadence}
+                currentHelpdeskPlan={currentHelpdeskPlan}
+                helpdeskAvailablePlans={helpdeskAvailablePlans}
+                currentAutomatePlan={currentAutomatePlan}
+                automateAvailablePlans={automateAvailablePlans}
+                currentVoicePlan={currentVoicePlan}
+                voiceAvailablePlans={voiceAvailablePlans}
+                currentSmsPlan={currentSmsPlan}
+                smsAvailablePlans={smsAvailablePlans}
+                currentConvertPlan={currentConvertPlan}
+                convertAvailablePlans={convertAvailablePlans}
+                totalProductAmount={totalProductAmount}
+                anyProductChanged={anyProductChanged}
+                anyNewProductSelected={anyNewProductSelected}
+                anyDowngradedPlanSelected={!!anyDowngradedPlanSelected}
+                updateSubscription={updateSubscription}
+                startSubscription={startSubscription}
+                isSubscriptionUpdating={isSubscriptionUpdating}
+                autoUpgradeChanged={autoUpgradeChanged}
+                cancellationDates={cancellationDates}
+                totalCancelledAmount={totalCancelledAmount}
+                cancelledProducts={cancelledProducts}
+                isTrialing={isTrialing}
+                isCurrentSubscriptionCanceled={isCurrentSubscriptionCanceled}
+                periodEnd={periodEnd}
+                ctaText={ctaText}
+                hasCreditCard={hasCreditCard.data}
+                isPaymentEnabled={isPaymentEnabled}
+                setUpdateProcessStarted={setUpdateProcessStarted}
+                setSessionSelectedPlans={setSessionSelectedPlans}
+            />
         )
     }
 

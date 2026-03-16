@@ -1,5 +1,5 @@
 {
-  "date": "2026-03-11T13:35:26.572Z",
+  "date": "2026-03-12T16:20:00.475Z",
   "total": 5116,
   "deprecated": [
     {
@@ -2015,7 +2015,7 @@
             "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
             "apps/helpdesk/src/pages/standalone/tests/schemas.spec.ts",
             "apps/helpdesk/src/pages/tickets/detail/TicketInfobarContainer.tsx",
-            "apps/helpdesk/src/routes/layout/products/analytics.ts",
+            "apps/helpdesk/src/routes/layout/products/analytics.tsx",
             "apps/helpdesk/src/split-ticket-view-toggle/components/tests/useIsToggleEnabled.spec.ts",
             "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
             "apps/helpdesk/src/tests/utils.spec.ts"
@@ -3396,6 +3396,27 @@
       ]
     },
     {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "Card",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Card />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/pages/settings/new_billing/components/Card/Card.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/settings/new_billing/components/Card/tests/Card.spec.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/BillingFrequencyView/BillingFrequencyView.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/BillingProcessView/BillingProcessView.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/BillingProcessView/BillingSummaryCard.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/BillingProcessView/EnterprisePlanCard.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary.tsx"
+          ]
+        }
+      ]
+    },
+    {
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "DEPRECATED_getViewsOrderingSetting",
       "comment": "*\n * @deprecated\n * @date 2021-08-06\n * @type feature-helper-fn\n ",
@@ -3837,25 +3858,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/SingleSenderVerificationTable.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/StartMigrationIntegrationsTable.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "Card",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Card />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 5,
-      "filePath": "apps/helpdesk/src/pages/settings/new_billing/components/Card/Card.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/pages/settings/new_billing/components/Card/tests/Card.spec.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/views/BillingFrequencyView/BillingFrequencyView.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/views/BillingProcessView/BillingProcessView.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary.tsx"
           ]
         }
       ]
@@ -5348,11 +5350,11 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1434,
+      "count": 1432,
       "usages": [
         {
           "name": "LegacyButton",
-          "count": 574,
+          "count": 573,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
             "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
@@ -5838,7 +5840,6 @@
             "apps/helpdesk/src/pages/settings/new_billing/components/StripeElementsProvider/StripeElementsProvider.tsx",
             "apps/helpdesk/src/pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter.tsx",
             "apps/helpdesk/src/pages/settings/new_billing/components/UpcomingInvoiceCard/UpcomingInvoiceCard.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/views/BillingProcessView/BillingProcessView.tsx",
             "apps/helpdesk/src/pages/settings/rules/components/AutoresponderViewButton.tsx",
             "apps/helpdesk/src/pages/settings/rules/components/CreateCustomRuleFooter.tsx",
             "apps/helpdesk/src/pages/settings/rules/components/RuleItemButtons.tsx",
@@ -6502,13 +6503,12 @@
         },
         {
           "name": "LegacyLoadingSpinner",
-          "count": 104,
+          "count": 103,
           "files": [
             "apps/helpdesk/src/AIJourney/pages/Activation/Activation.tsx",
             "apps/helpdesk/src/AIJourney/pages/Analytics/Analytics.tsx",
             "apps/helpdesk/src/AIJourney/pages/Playground/Playground.tsx",
-            "apps/helpdesk/src/AIJourney/pages/Setup/Setup.tsx",
-            "apps/helpdesk/src/AIJourney/pages/Test/Test.tsx",
+            "apps/helpdesk/src/AIJourney/pages/Preview/Preview.tsx",
             "apps/helpdesk/src/auto_qa/components/SaveBadge.tsx",
             "apps/helpdesk/src/common/notifications/components/Settings.tsx",
             "apps/helpdesk/src/domains/reporting/pages/automate/AutomateStatsPaywall.tsx",

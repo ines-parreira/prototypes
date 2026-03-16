@@ -25,6 +25,7 @@ import {
 import client from 'models/api/resources'
 import { ProductType } from 'models/billing/types'
 import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
+import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
@@ -47,6 +48,7 @@ jest.mock(
         jest.fn(() => <div data-testid="scheduled-cancellation-summary"></div>),
 )
 jest.mock('pages/settings/new_billing/hooks/useProductCancellations')
+jest.mock('pages/settings/new_billing/hooks/useIsPaymentEnabled')
 jest.mock('../../../components/SummaryTotal/SummaryTotal', () =>
     jest.fn(() => <div data-testid="summary-total"></div>),
 )
@@ -55,6 +57,7 @@ const ScheduledCancellationSummaryMock = assumeMock(
     ScheduledCancellationSummary,
 )
 const mockUseProductCancellations = assumeMock(useProductCancellations)
+const mockUseIsPaymentEnabled = assumeMock(useIsPaymentEnabled)
 const SummaryTotalMock = assumeMock(SummaryTotal)
 
 // Mock PendingChangesModal to capture props
@@ -120,6 +123,7 @@ describe('BillingProcessView', () => {
         mockUseProductCancellations.mockReturnValue({
             data: new Map(),
         } as any)
+        mockUseIsPaymentEnabled.mockReturnValue(true)
         logEventMock.mockClear()
         SummaryTotalMock.mockClear()
         mockHistoryPush.mockClear()
@@ -127,6 +131,7 @@ describe('BillingProcessView', () => {
 
     afterEach(() => {
         mockUseProductCancellations.mockReset()
+        mockUseIsPaymentEnabled.mockReset()
         logEventMock.mockReset()
         SummaryTotalMock.mockReset()
     })
@@ -254,6 +259,45 @@ describe('BillingProcessView', () => {
         )
     })
 
+    it('should evaluate payment state when rendering scheduled cancellation summary', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        const alteredStore = {
+            ...storeInitialState,
+            currentAccount: fromJS({
+                ...storeInitialState.currentAccount,
+                current_subscription: fromJS({
+                    products: {
+                        [HELPDESK_PRODUCT_ID]: basicMonthlyHelpdeskPlan.plan_id,
+                    },
+                    scheduled_to_cancel_at: '2021-01-01T00:00:00Z',
+                }),
+            }),
+        } as Partial<RootState>
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            alteredStore,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.queryByTestId('scheduled-cancellation-summary'),
+            ).toBeInTheDocument()
+        })
+
+        expect(mockUseIsPaymentEnabled).toHaveBeenCalled()
+    })
+
     it('should track event when clicking See Plans Details link', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
@@ -338,6 +382,44 @@ describe('BillingProcessView', () => {
         )
         expect(logEventMock).toHaveBeenCalledTimes(1)
         expect(setIsModalOpenMock).toHaveBeenCalledWith(true)
+    })
+
+    it('should evaluate payment state when rendering enterprise plan summary', async () => {
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
+
+        renderWithStoreAndQueryClientAndRouter(
+            <BillingProcessView
+                currentUsage={currentProductsUsage}
+                contactBilling={jest.fn()}
+                dispatchBillingError={jest.fn()}
+                setDefaultMessage={jest.fn()}
+                setIsModalOpen={jest.fn()}
+                periodEnd="2021-01-01"
+                isTrialing={false}
+                isCurrentSubscriptionCanceled={false}
+            />,
+            storeInitialState,
+            { route: '/app/settings/billing/manage/helpdesk' },
+        )
+
+        await waitFor(() => {
+            expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
+        })
+
+        const priceSelector = screen.getByLabelText('Price value')
+        await act(() => userEvent.click(priceSelector))
+
+        const menuitems = screen.getAllByRole('menuitem')
+        const enterpriseItem = menuitems[menuitems.length - 1]
+        await act(() => userEvent.click(enterpriseItem))
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /Contact Us/i }),
+            ).toBeInTheDocument()
+        })
+
+        expect(mockUseIsPaymentEnabled).toHaveBeenCalled()
     })
 
     describe('Product cancellations hook integration', () => {
