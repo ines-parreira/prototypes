@@ -60,6 +60,7 @@ describe('convertCampaignEvents scope', () => {
                         values: CAMPAIGN_EVENTS,
                     },
                 ],
+                limit: 10_000,
                 timezone,
                 metricName: METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_PERFORMANCE,
                 scope: MetricScope.ConvertCampaignEvents,

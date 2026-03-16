@@ -45,6 +45,7 @@ export const convertCampaignEventsPerformance = convertCampaignEvents
             { ...ctx.filters, eventType: withLogicalOperator(CAMPAIGN_EVENTS) },
             config,
         ),
+        limit: 10_000,
     }))
 
 export const convertCampaignEventsPerformanceQueryFactoryV2 = (

@@ -33,6 +33,7 @@ export const convertCampaignEventsOrdersPerformance = convertCampaignOrderEvents
     .defineMetricName(METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_ORDERS_PERFORMANCE)
     .defineQuery(() => ({
         measures: ['engagement', 'totalConversionRate', 'campaignCTR'],
+        limit: 10_000,
     }))
 
 export const convertCampaignEventsOrdersPerformanceQueryFactoryV2 = (

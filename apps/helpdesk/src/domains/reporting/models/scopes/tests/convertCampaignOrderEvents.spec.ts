@@ -51,6 +51,7 @@ describe('convertCampaignOrderEvents scope', () => {
 
             expect(result).toEqual({
                 measures: ['engagement', 'totalConversionRate', 'campaignCTR'],
+                limit: 10_000,
                 filters: scopeFilters,
                 timezone,
                 time_dimensions: [

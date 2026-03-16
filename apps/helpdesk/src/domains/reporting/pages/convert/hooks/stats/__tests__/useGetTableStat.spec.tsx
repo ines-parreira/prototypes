@@ -189,6 +189,7 @@ describe('GetTableStat', () => {
                         values: CAMPAIGN_EVENTS,
                     },
                 ],
+                limit: 10_000,
                 metricName: METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_PERFORMANCE,
                 scope: MetricScope.ConvertCampaignEvents,
                 timezone: 'America/Los_Angeles',
@@ -321,6 +322,7 @@ describe('GetTableStat', () => {
                         values: ['campaign1', 'campaign2'],
                     },
                 ],
+                limit: 10_000,
                 measures: ['engagement', 'totalConversionRate', 'campaignCTR'],
                 metricName:
                     METRIC_NAMES.CONVERT_CAMPAIGN_EVENTS_ORDERS_PERFORMANCE,
