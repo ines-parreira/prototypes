@@ -125,6 +125,7 @@ export type DimensionName =
     | 'orderManagementType'
     | 'boughtProducts'
     | 'productRecommended'
+    | 'attributedRevenue'
 
 export type MeasureName =
     | 'ticketCount'
@@ -208,6 +209,8 @@ export type MeasureName =
     | 'buyThroughRate'
     | 'averageTimeSavedByAgent'
     | 'medianTimeSavedByAgent'
+    | 'recommendedProductCount'
+    | 'revenuePerInteraction'
 
 export type TimeDimensionName =
     | 'createdDatetime'
