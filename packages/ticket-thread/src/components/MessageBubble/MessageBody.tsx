@@ -10,12 +10,20 @@ import classNames from 'classnames'
 
 import { Banner, IconName } from '@gorgias/axiom'
 
-import type { TicketThreadRegularMessageItem } from '../../hooks/messages/types'
-
 import css from './MessageBody.less'
 
+type MessageBodyItem = {
+    data: {
+        body_html?: string | null
+        body_text?: string | null
+        stripped_html?: string | null
+        stripped_text?: string | null
+        meta?: unknown
+    }
+}
+
 type MessageBodyProps = {
-    item: TicketThreadRegularMessageItem
+    item: MessageBodyItem
 }
 
 export function MessageBody({ item }: MessageBodyProps) {

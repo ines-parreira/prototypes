@@ -2,11 +2,9 @@ import { render, screen } from '@testing-library/react'
 
 import { Avatar } from '@gorgias/axiom'
 import type * as Axiom from '@gorgias/axiom'
-import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
-import type { TicketThreadRegularMessageItem } from '../../../hooks/messages/types'
 import { useTicketThreadDateTimeFormat } from '../../../hooks/shared/useTicketThreadDateTimeFormat'
-import { TicketThreadItemTag } from '../../../hooks/types'
+import type { MessageHeaderProps } from '../MessageHeader'
 import { MessageHeader } from '../MessageHeader'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => {
@@ -27,26 +25,18 @@ const mockUseTicketThreadDateTimeFormat = vi.mocked(
     useTicketThreadDateTimeFormat,
 )
 
-const baseItem: TicketThreadRegularMessageItem = {
-    _tag: TicketThreadItemTag.Messages.Message,
-    data: mockTicketMessage({
-        sender: {
-            name: 'Jane Doe',
-            email: 'jane@example.com',
-            id: 1,
-            firstname: 'Jane',
-            lastname: 'Doe',
-            meta: null,
-        },
-        channel: 'chat',
-        created_datetime: '2024-03-21T00:00:00Z',
+const baseProps: MessageHeaderProps = {
+    senderName: 'Jane Doe',
+    senderAvatarUrl: undefined,
+    channelIcon: null,
+    createdDatetime: '2024-03-21T00:00:00Z',
+    shouldShowStatus: false,
+    deliveryStatus: {
         failed_datetime: null,
-        sent_datetime: null,
+        isPending: false,
         opened_datetime: null,
-        from_agent: true,
-    }),
-    datetime: '2024-03-21T00:00:00Z',
-    isPending: false,
+        sent_datetime: null,
+    },
 }
 
 beforeEach(() => {
@@ -56,13 +46,8 @@ beforeEach(() => {
     })
 })
 
-function renderHeader(
-    item: TicketThreadRegularMessageItem = baseItem,
-    shouldShowStatus = false,
-) {
-    return render(
-        <MessageHeader item={item} shouldShowStatus={shouldShowStatus} />,
-    )
+function renderHeader(props: Partial<MessageHeaderProps> = {}) {
+    return render(<MessageHeader {...baseProps} {...props} />)
 }
 
 describe('MessageHeader', () => {
@@ -73,15 +58,7 @@ describe('MessageHeader', () => {
     })
 
     it('falls back to sender email when name is not available', () => {
-        const item = {
-            ...baseItem,
-            data: mockTicketMessage({
-                ...baseItem.data,
-                sender: { ...baseItem.data.sender, name: null },
-            }),
-        }
-
-        renderHeader(item)
+        renderHeader({ senderName: 'jane@example.com' })
 
         expect(screen.getByText('jane@example.com')).toBeInTheDocument()
     })
@@ -105,18 +82,8 @@ describe('MessageHeader', () => {
 
     it('passes the sender profile picture url to Avatar', () => {
         const profilePictureUrl = 'https://example.com/avatar.jpg'
-        const item = {
-            ...baseItem,
-            data: mockTicketMessage({
-                ...baseItem.data,
-                sender: {
-                    ...baseItem.data.sender,
-                    meta: { profile_picture_url: profilePictureUrl },
-                },
-            }),
-        }
 
-        renderHeader(item)
+        renderHeader({ senderAvatarUrl: profilePictureUrl })
 
         expect(mockAvatar).toHaveBeenCalledWith(
             expect.objectContaining({ url: profilePictureUrl }),
@@ -131,29 +98,19 @@ describe('MessageHeader', () => {
     })
 
     it('shows a status icon when shouldShowStatus is true', () => {
-        const item = {
-            ...baseItem,
-            data: mockTicketMessage({
-                ...baseItem.data,
-                sent_datetime: '2024-03-21T11:00:00Z',
-            }),
-        }
-
-        renderHeader(item, true)
+        renderHeader({
+            shouldShowStatus: true,
+            deliveryStatus: { sent_datetime: '2024-03-21T11:00:00Z' },
+        })
 
         expect(screen.getByRole('img', { name: 'check' })).toBeInTheDocument()
     })
 
     it('does not show status icon when shouldShowStatus is false', () => {
-        const item = {
-            ...baseItem,
-            data: mockTicketMessage({
-                ...baseItem.data,
-                sent_datetime: '2024-03-21T11:00:00Z',
-            }),
-        }
-
-        renderHeader(item, false)
+        renderHeader({
+            shouldShowStatus: false,
+            deliveryStatus: { sent_datetime: '2024-03-21T11:00:00Z' },
+        })
 
         expect(
             screen.queryByRole('img', { name: 'check' }),

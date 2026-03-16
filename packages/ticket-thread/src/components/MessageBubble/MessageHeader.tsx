@@ -1,47 +1,95 @@
 import { formatDatetime } from '@repo/utils'
 
-import { Avatar, Box, Icon, Text, TextVariant } from '@gorgias/axiom'
+import {
+    Avatar,
+    Box,
+    Icon,
+    Text,
+    TextVariant,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 
-import type { TicketThreadRegularMessageItem } from '../../hooks/messages/types'
 import { useTicketThreadDateTimeFormat } from '../../hooks/shared/useTicketThreadDateTimeFormat'
-import { getDeliveryStatusIcon } from './getDeliveryStatusIcon'
+import type { DeliveryStatus } from './DeliveryStatusIcon'
+import { DeliveryStatusIcon } from './DeliveryStatusIcon'
 
 import css from './MessageHeader.less'
 
-type MessageHeaderProps = {
-    item: TicketThreadRegularMessageItem
-    shouldShowStatus: boolean
+export type MessageHeaderProps = {
+    senderName: string
+    senderAvatarUrl?: string
+    channelIcon?: string | null
+    channelName?: string
+    openedDatetime?: string | null
+    createdDatetime: string
+    shouldShowStatus?: boolean
+    deliveryStatus?: DeliveryStatus
 }
 
-export function MessageHeader({ item, shouldShowStatus }: MessageHeaderProps) {
+export function MessageHeader({
+    senderName,
+    senderAvatarUrl,
+    channelIcon,
+    channelName,
+    openedDatetime,
+    createdDatetime,
+    shouldShowStatus,
+    deliveryStatus,
+}: MessageHeaderProps) {
     const { datetimeFormat, timezone } = useTicketThreadDateTimeFormat()
-    const senderName = item.data.sender.name ?? item.data.sender.email ?? ''
-    const senderProfilePictureUrl = (
-        item.data.sender.meta as { profile_picture_url?: string } | null
-    )?.profile_picture_url
-    const channelIcon = item.data.channel === 'email' ? 'comm-mail' : null
 
     return (
         <Box justifyContent="space-between" alignItems="center">
             <Box alignItems="center" gap="xs">
-                <Avatar
-                    name={senderName}
-                    size="md"
-                    url={senderProfilePictureUrl}
-                />
+                <Avatar name={senderName} size="md" url={senderAvatarUrl} />
                 <Text size="md" variant={TextVariant.Bold}>
                     {senderName}
                 </Text>
             </Box>
             <Box alignItems="center" gap="xs" className={css.meta}>
-                {channelIcon && <Icon name={channelIcon} size="sm" />}
-                {shouldShowStatus && getDeliveryStatusIcon(item)}
+                {channelIcon && channelName ? (
+                    <Tooltip
+                        trigger={
+                            <Icon name={channelIcon as IconName} size="sm" />
+                        }
+                    >
+                        <TooltipContent>
+                            <Box flexDirection="column" gap="xxs">
+                                <Text size="xs">
+                                    Channel:{' '}
+                                    <Text size="xs" variant={TextVariant.Bold}>
+                                        {channelName}
+                                    </Text>
+                                </Text>
+                                {openedDatetime && (
+                                    <Text size="xs">
+                                        Date:{' '}
+                                        <Text
+                                            size="xs"
+                                            variant={TextVariant.Bold}
+                                        >
+                                            {formatDatetime(
+                                                openedDatetime,
+                                                datetimeFormat,
+                                            )}
+                                        </Text>
+                                    </Text>
+                                )}
+                            </Box>
+                        </TooltipContent>
+                    </Tooltip>
+                ) : (
+                    channelIcon && (
+                        <Icon name={channelIcon as IconName} size="sm" />
+                    )
+                )}
+                {shouldShowStatus && deliveryStatus && (
+                    <DeliveryStatusIcon status={deliveryStatus} />
+                )}
                 <Text size="sm">
-                    {formatDatetime(
-                        item.data.created_datetime,
-                        datetimeFormat,
-                        timezone,
-                    )}
+                    {formatDatetime(createdDatetime, datetimeFormat, timezone)}
                 </Text>
             </Box>
         </Box>
