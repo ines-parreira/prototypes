@@ -56,14 +56,15 @@ export function useCloseTicket(ticketId: number) {
         }
 
         try {
-            await mutateAsyncUpdateTicket({
-                id: ticketId,
-                data: { status: 'closed' },
-            })
-            patchTicketInViewListCache(queryClient, ticketId, {
+            const data = {
                 status: TicketStatus.Closed,
                 snooze_datetime: null,
+            }
+            await mutateAsyncUpdateTicket({
+                id: ticketId,
+                data,
             })
+            patchTicketInViewListCache(queryClient, ticketId, data)
             await queryClient.invalidateQueries({
                 queryKey,
             })

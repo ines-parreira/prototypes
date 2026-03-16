@@ -48,10 +48,7 @@ export function useSnoozeTicket(ticketId: number) {
                     id: ticketId,
                     data,
                 })
-                patchTicketInViewListCache(queryClient, ticketId, {
-                    status: TicketStatus.Closed,
-                    snooze_datetime: data.snooze_datetime ?? null,
-                })
+                patchTicketInViewListCache(queryClient, ticketId, data)
                 await queryClient.invalidateQueries({
                     queryKey,
                 })

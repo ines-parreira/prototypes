@@ -6,6 +6,7 @@ import * as useTicketViewNavigationModule from '../../../hooks/useTicketViewNavi
 import { renderHook } from '../../../tests/render.utils'
 import * as useTicketFieldsValidationModule from '../../InfobarTicketDetails/components/InfobarTicketFields/hooks/useTicketFieldsValidation'
 import { useCloseTicket } from '../useCloseTicket'
+import { TicketStatus } from '../utils'
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
     const actual = await vi.importActual('@gorgias/helpdesk-queries')
@@ -72,7 +73,7 @@ describe('useCloseTicket', () => {
         expect(mockValidateTicketFields).toHaveBeenCalledTimes(1)
         expect(mockMutateAsyncUpdateTicket).toHaveBeenCalledWith({
             id: ticketId,
-            data: { status: 'closed' },
+            data: { status: TicketStatus.Closed, snooze_datetime: null },
         })
     })
 
@@ -138,6 +139,35 @@ describe('useCloseTicket', () => {
         const { result } = renderHook(() => useCloseTicket(ticketId))
 
         expect(result.current.isValidating).toBe(true)
+    })
+
+    it('should close a snoozed ticket by setting status to closed and clearing snooze_datetime', async () => {
+        mockValidateTicketFields.mockReturnValue({
+            hasErrors: false,
+            invalidFieldIds: [],
+        })
+        mockMutateAsyncUpdateTicket.mockResolvedValue(undefined)
+
+        vi.spyOn(
+            useTicketFieldsValidationModule,
+            'useTicketFieldsValidation',
+        ).mockReturnValue({
+            validateTicketFields: mockValidateTicketFields,
+            isValidating: false,
+        })
+
+        const { result } = renderHook(() => useCloseTicket(ticketId))
+
+        await result.current.closeTicket()
+
+        expect(mockMutateAsyncUpdateTicket).toHaveBeenCalledWith({
+            id: ticketId,
+            data: {
+                status: TicketStatus.Closed,
+                snooze_datetime: null,
+            },
+        })
+        expect(mockHandleGoToNextViewTicket).toHaveBeenCalledTimes(1)
     })
 
     it('should not throw error when closing ticket with validation passing', async () => {

@@ -636,7 +636,10 @@ describe('TicketStatus', () => {
 
             await waitForUpdateTicketRequest(async (request) => {
                 const body = await request.json()
-                expect(body).toEqual({ status: 'closed' })
+                expect(body).toEqual({
+                    status: 'closed',
+                    snooze_datetime: null,
+                })
             })
         })
 
@@ -654,7 +657,10 @@ describe('TicketStatus', () => {
 
             await waitForUpdateTicketRequest(async (request) => {
                 const body = await request.json()
-                expect(body).toEqual({ status: 'closed' })
+                expect(body).toEqual({
+                    status: 'closed',
+                    snooze_datetime: null,
+                })
             })
         })
 
@@ -672,7 +678,10 @@ describe('TicketStatus', () => {
 
             await waitForUpdateTicketRequest(async (request) => {
                 const body = await request.json()
-                expect(body).toEqual({ status: 'closed' })
+                expect(body).toEqual({
+                    status: 'closed',
+                    snooze_datetime: null,
+                })
             })
         })
 

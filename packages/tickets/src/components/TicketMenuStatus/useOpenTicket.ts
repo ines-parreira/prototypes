@@ -40,17 +40,15 @@ export function useOpenTicket(ticketId: number) {
 
     const openTicket = useCallback(async () => {
         try {
-            await mutateAsyncUpdateTicket({
-                id: ticketId,
-                data: {
-                    status: 'open',
-                    snooze_datetime: null,
-                },
-            })
-            patchTicketInViewListCache(queryClient, ticketId, {
+            const data = {
                 status: TicketStatus.Open,
                 snooze_datetime: null,
+            }
+            await mutateAsyncUpdateTicket({
+                id: ticketId,
+                data,
             })
+            patchTicketInViewListCache(queryClient, ticketId, data)
             await queryClient.invalidateQueries({
                 queryKey,
             })
