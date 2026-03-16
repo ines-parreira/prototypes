@@ -217,6 +217,11 @@ jest.mock(
     }),
 )
 
+jest.mock('pages/tickets/detail/RechargeTabContent', () => ({
+    __esModule: true,
+    default: () => <div>RechargeTabContent</div>,
+}))
+
 jest.mock('state/integrations/selectors', () => ({
     getIntegrationsByType: jest.fn(() => () => []),
 }))
@@ -829,6 +834,81 @@ describe('<TicketInfobarContainer />', () => {
 
             expect(
                 screen.queryByLabelText('notification dot'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Recharge tab', () => {
+        it('should render RechargeTabContent when activeTab is Recharge and recharge integration exists', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Recharge,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockImplementation(
+                (type: string) => () => {
+                    if (type === 'recharge') return [{ id: 42 }]
+                    return []
+                },
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({ '42': {} }))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(screen.getByText('RechargeTabContent')).toBeInTheDocument()
+        })
+
+        it('should not render RechargeTabContent when tab is not Recharge', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Customer,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockImplementation(
+                (type: string) => () => {
+                    if (type === 'recharge') return [{ id: 42 }]
+                    return []
+                },
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({ '42': {} }))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.queryByText('RechargeTabContent'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render RechargeTabContent when no recharge integration matches customer', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Recharge,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockImplementation(
+                (type: string) => () => {
+                    if (type === 'recharge') return [{ id: 42 }]
+                    return []
+                },
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({}))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.queryByText('RechargeTabContent'),
             ).not.toBeInTheDocument()
         })
     })

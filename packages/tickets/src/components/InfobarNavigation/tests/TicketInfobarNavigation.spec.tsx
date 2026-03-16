@@ -1,7 +1,7 @@
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import * as repoNavigation from '@repo/navigation'
 import { shortcutManager } from '@repo/utils'
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import type { Mock, MockInstance } from 'vitest'
 
 import { render } from '../../../tests/render.utils'
@@ -35,21 +35,28 @@ describe('TicketInfobarNavigation', () => {
             isExpanded: true,
             onChangeTab,
             onToggle,
+            onSetEditingWidgetType: vi.fn(),
         })
     })
 
-    it('should render the infobar navigation', () => {
+    it('should render the infobar navigation', async () => {
         render(<TicketInfobarNavigation />)
 
-        const button = screen.getByLabelText('system-bar-collapse')
-        expect(button).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByLabelText('system-bar-collapse'),
+            ).toBeInTheDocument()
+        })
     })
 
-    it('should render the "AI Feedback" tab when the `hasAIFeedback` prop is true', () => {
+    it('should render the "AI Feedback" tab when the `hasAIFeedback` prop is true', async () => {
         render(<TicketInfobarNavigation hasAIFeedback />)
 
-        const button = screen.getByLabelText('ai-agent-feedback')
-        expect(button).toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.getByLabelText('ai-agent-feedback'),
+            ).toBeInTheDocument()
+        })
     })
 
     it('should change to the "Customer" tab when that icon is clicked', async () => {
@@ -57,7 +64,7 @@ describe('TicketInfobarNavigation', () => {
 
         const button = screen.getByLabelText('customer-info').closest('button')
 
-        await act(() => user.click(button!))
+        await user.click(button!)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
     })
@@ -69,7 +76,7 @@ describe('TicketInfobarNavigation', () => {
             .getByLabelText('ai-agent-feedback')
             .closest('button')
 
-        await act(() => user.click(button!))
+        await user.click(button!)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
     })
@@ -78,25 +85,29 @@ describe('TicketInfobarNavigation', () => {
         const { user } = render(<TicketInfobarNavigation />)
 
         const button = screen.getByLabelText('star').closest('button')
-        await act(() => user.click(button!))
+        await user.click(button!)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AutoQA)
     })
 
-    it('should render the "Shopify" tab when `useHelpdeskV2MS2Flag` returns true', () => {
+    it('should render the "Shopify" tab when `useHelpdeskV2MS2Flag` returns true', async () => {
         mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
         render(<TicketInfobarNavigation />)
 
-        const button = screen.getByLabelText('app-shopify')
-        expect(button).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByLabelText('app-shopify')).toBeInTheDocument()
+        })
     })
 
-    it('should not render the "Shopify" tab when `useHelpdeskV2MS2Flag` returns false', () => {
+    it('should not render the "Shopify" tab when `useHelpdeskV2MS2Flag` returns false', async () => {
         mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
         render(<TicketInfobarNavigation />)
 
-        const button = screen.queryByLabelText('app-shopify')
-        expect(button).not.toBeInTheDocument()
+        await waitFor(() => {
+            expect(
+                screen.queryByLabelText('app-shopify'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     it('should change to the "Shopify" tab when that icon is clicked', async () => {
@@ -105,23 +116,25 @@ describe('TicketInfobarNavigation', () => {
 
         const button = screen.getByLabelText('app-shopify').closest('button')
 
-        await act(() => user.click(button!))
+        await user.click(button!)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Shopify)
     })
 
-    it('should render the "Timeline" tab when the `hasTimeline` prop is true', () => {
+    it('should render the "Timeline" tab when the `hasTimeline` prop is true', async () => {
         render(<TicketInfobarNavigation hasTimeline />)
 
-        const button = screen.getByLabelText('history')
-        expect(button).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByLabelText('history')).toBeInTheDocument()
+        })
     })
 
-    it('should not render the "Timeline" tab when `hasTimeline` is false', () => {
+    it('should not render the "Timeline" tab when `hasTimeline` is false', async () => {
         render(<TicketInfobarNavigation />)
 
-        const button = screen.queryByLabelText('history')
-        expect(button).not.toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.queryByLabelText('history')).not.toBeInTheDocument()
+        })
     })
 
     it('should change to the "Timeline" tab when that icon is clicked', async () => {
@@ -129,9 +142,57 @@ describe('TicketInfobarNavigation', () => {
 
         const button = screen.getByLabelText('history').closest('button')
 
-        await act(() => user.click(button!))
+        await user.click(button!)
 
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Timeline)
+    })
+
+    describe('Recharge tab', () => {
+        it('should render the "Recharge" tab when useHelpdeskV2MS2Flag is true and hasRecharge is true', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            render(<TicketInfobarNavigation hasRecharge />)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByLabelText('app-recharge'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should not render the "Recharge" tab when useHelpdeskV2MS2Flag is true but hasRecharge is false', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            render(<TicketInfobarNavigation />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByLabelText('app-recharge'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should not render the "Recharge" tab when useHelpdeskV2MS2Flag is false even if hasRecharge is true', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+            render(<TicketInfobarNavigation hasRecharge />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByLabelText('app-recharge'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should change to the "Recharge" tab when the icon is clicked', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            const { user } = render(<TicketInfobarNavigation hasRecharge />)
+
+            const button = screen
+                .getByLabelText('app-recharge')
+                .closest('button')
+
+            await user.click(button!)
+
+            expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Recharge)
+        })
     })
 
     describe('Tab click when collapsed', () => {
@@ -147,7 +208,7 @@ describe('TicketInfobarNavigation', () => {
             const button = screen
                 .getByLabelText('customer-info')
                 .closest('button')
-            await act(() => user.click(button!))
+            await user.click(button!)
 
             expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
             expect(onToggle).toHaveBeenCalled()
@@ -159,7 +220,7 @@ describe('TicketInfobarNavigation', () => {
             const button = screen
                 .getByLabelText('customer-info')
                 .closest('button')
-            await act(() => user.click(button!))
+            await user.click(button!)
 
             expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
             expect(onToggle).not.toHaveBeenCalled()
@@ -167,7 +228,7 @@ describe('TicketInfobarNavigation', () => {
     })
 
     describe('Expand/Collapse button', () => {
-        it('should display the expand button when the infobar is collapsed', () => {
+        it('should display the expand button when the infobar is collapsed', async () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 activeTab: TicketInfobarTab.Customer,
                 isExpanded: false,
@@ -176,8 +237,11 @@ describe('TicketInfobarNavigation', () => {
             })
             render(<TicketInfobarNavigation />)
 
-            const button = screen.getByLabelText('system-bar-expand')
-            expect(button).toBeInTheDocument()
+            await waitFor(() => {
+                expect(
+                    screen.getByLabelText('system-bar-expand'),
+                ).toBeInTheDocument()
+            })
         })
 
         it('should call onToggle when the toggle button is pressed', async () => {
@@ -187,7 +251,7 @@ describe('TicketInfobarNavigation', () => {
                 .getByLabelText('system-bar-collapse')
                 .closest('button')
 
-            await act(() => user.click(button!))
+            await user.click(button!)
 
             expect(onToggle).toHaveBeenCalled()
         })
@@ -200,11 +264,14 @@ describe('TicketInfobarNavigation', () => {
             expect(onToggle).toHaveBeenCalled()
         })
 
-        it('should display the collapse button when the infobar is expanded', () => {
+        it('should display the collapse button when the infobar is expanded', async () => {
             render(<TicketInfobarNavigation />)
 
-            const button = screen.getByLabelText('system-bar-collapse')
-            expect(button).toBeInTheDocument()
+            await waitFor(() => {
+                expect(
+                    screen.getByLabelText('system-bar-collapse'),
+                ).toBeInTheDocument()
+            })
         })
     })
 })

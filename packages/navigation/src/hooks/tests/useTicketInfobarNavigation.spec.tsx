@@ -19,10 +19,10 @@ describe('useTicketInfobarNavigation', () => {
         expect(result.current).toEqual({
             activeTab: TicketInfobarTab.Customer,
             isExpanded: true,
-            isEditShopifyFieldsOpen: false,
+            editingWidgetType: null,
             onChangeTab: expect.any(Function),
             onToggle: expect.any(Function),
-            onToggleEditShopifyFields: expect.any(Function),
+            onSetEditingWidgetType: expect.any(Function),
         })
     })
 
@@ -53,6 +53,38 @@ describe('useTicketInfobarNavigation', () => {
 
         expect(result.current.activeTab).toEqual(TicketInfobarTab.Shopify)
         expect(result.current.shopifyIntegrationId).toEqual(42)
+    })
+
+    it('should set editingWidgetType when calling `onSetEditingWidgetType`', () => {
+        const { result } = renderHook(() => useTicketInfobarNavigation(), {
+            wrapper,
+        })
+
+        expect(result.current.editingWidgetType).toBeNull()
+
+        act(() => {
+            result.current.onSetEditingWidgetType('recharge')
+        })
+
+        expect(result.current.editingWidgetType).toEqual('recharge')
+    })
+
+    it('should clear editingWidgetType when calling `onChangeTab`', () => {
+        const { result } = renderHook(() => useTicketInfobarNavigation(), {
+            wrapper,
+        })
+
+        act(() => {
+            result.current.onSetEditingWidgetType('recharge')
+        })
+
+        expect(result.current.editingWidgetType).toEqual('recharge')
+
+        act(() => {
+            result.current.onChangeTab(TicketInfobarTab.Customer)
+        })
+
+        expect(result.current.editingWidgetType).toBeNull()
     })
 
     it('should update `isExpanded` when calling `onToggle`', () => {

@@ -182,6 +182,8 @@ type Props = {
             stopEditionMode: () => void
         }
     }
+    widgetTypeFilter?: string | null
+    onClose?: () => void
 }
 
 export default function SourceWrapper({
@@ -190,6 +192,8 @@ export default function SourceWrapper({
     identifier,
     sources,
     widgets,
+    widgetTypeFilter,
+    onClose,
 }: Props) {
     const [widgetsTemplate, setWidgetsTemplate] = useState<
         Map<string, unknown>[]
@@ -297,10 +301,18 @@ export default function SourceWrapper({
 
     const leaveEditionMode = () => {
         actions.widgets.stopEditionMode()
-        history.push(`/app/${context}/${identifier}${location.search}`)
+        if (onClose) {
+            onClose()
+        } else {
+            history.push(`/app/${context}/${identifier}${location.search}`)
+        }
     }
 
     const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
+
+    const filteredDataTypes = widgetTypeFilter
+        ? WIDGET_DATA_TYPES.filter((dt) => dt.type === widgetTypeFilter)
+        : WIDGET_DATA_TYPES
 
     return (
         <div className={classnames({ dragging: isDragging })}>
@@ -316,7 +328,7 @@ export default function SourceWrapper({
                 they will look like next to your tickets.
             </p>
 
-            {WIDGET_DATA_TYPES.map((widgetDataType, idx) =>
+            {filteredDataTypes.map((widgetDataType, idx) =>
                 availableTypes.has(widgetDataType.type) ? (
                     <section
                         className={classnames(

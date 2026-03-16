@@ -1,7 +1,11 @@
 export { NavigationProvider } from './components/NavigationProvider'
 export { useTicketInfobarNavigation } from './hooks/useTicketInfobarNavigation'
 
-export { TicketInfobarTab } from './constants'
+export {
+    EditFieldsType,
+    SOURCE_PANEL_WIDGET_TYPES,
+    TicketInfobarTab,
+} from './constants'
 export type {
     NavigationContextValue,
     NavigationState,

@@ -68,6 +68,29 @@
         gap: var(--layout-spacing-m);
         overflow: hidden;
     }
+
+    .rechargeContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        background-color: var(--neutral-grey-0); // legacy
+        overflow: hidden;
+    }
+
+    .rechargeContent {
+        flex: 1;
+        padding: var(--layout-spacing-s) 0;
+        overflow: auto;
+    }
+
+    .editionTools {
+        display: flex;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-xs);
+        background-color: var(--neutral-grey-1); // legacy
+        border-top: 1px solid var(--neutral-grey-3); // legacy
+        box-shadow: 1px 0 6px hsla(0, 0%, 0%, 0.1);
+    }
 }
 
 .axiom :local {
@@ -121,5 +144,16 @@
 
     .shopifyContainer {
         background-color: var(--elevation-neutral-default);
+    }
+
+    .rechargeContainer {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .editionTools {
+        background-color: var(--elevation-neutral-default);
+        border-top: 1px solid var(--border-neutral-default);
+        box-shadow: 1px 0 6px
+            color-mix(in srgb, var(--content-neutral-default) 10%, transparent);
     }
 }

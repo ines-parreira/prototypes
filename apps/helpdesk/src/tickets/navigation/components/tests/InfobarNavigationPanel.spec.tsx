@@ -1,6 +1,7 @@
 import { Panels } from '@repo/layout'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
+import { fromJS } from 'immutable'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
@@ -53,6 +54,9 @@ describe('InfobarNavigationPanel', () => {
                     </Panels>
                 </Route>
             </MemoryRouter>,
+            {
+                integrations: fromJS({ integrations: [] }),
+            } as any,
         )
     }
 

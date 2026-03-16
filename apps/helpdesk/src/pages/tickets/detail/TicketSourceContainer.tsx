@@ -14,12 +14,19 @@ import * as widgetsActions from '../../../state/widgets/actions'
 import { getSourcesWithCustomer } from '../../../state/widgets/selectors'
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 
+type OwnProps = {
+    widgetType?: string | null
+    onClose?: () => void
+}
+
 export const TicketSourceContainer = ({
     actions,
     sources,
     ticket,
     widgets,
-}: ConnectedProps<typeof connector>) => {
+    widgetType,
+    onClose,
+}: ConnectedProps<typeof connector> & OwnProps) => {
     const { customer } = useSearch<{ customer?: string }>()
     const params = useParams<{ ticketId: string }>()
 
@@ -47,6 +54,8 @@ export const TicketSourceContainer = ({
             sources={sources}
             widgets={widgets}
             actions={actions}
+            widgetTypeFilter={widgetType}
+            onClose={onClose}
         />
     )
 }

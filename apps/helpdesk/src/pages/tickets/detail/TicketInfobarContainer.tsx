@@ -23,6 +23,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import { useSearchParam } from 'hooks/useSearchParam'
+import useSyncWidgetEditSession from 'hooks/useSyncWidgetEditSession'
 import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
@@ -32,6 +33,7 @@ import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentF
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
+import RechargeTabContent from 'pages/tickets/detail/RechargeTabContent'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -120,12 +122,22 @@ export const TicketInfobarContainer = ({
     const shopifyIntegrations = useAppSelector(
         getIntegrationsByType(IntegrationType.Shopify),
     )
+    const rechargeIntegrations = useAppSelector(
+        getIntegrationsByType(IntegrationType.Recharge),
+    )
     const shopIntegrationId = useMemo(
         () =>
             shopifyIntegrations.find((integration) =>
                 customerIntegrations.has(String(integration.id)),
             )?.id,
         [shopifyIntegrations, customerIntegrations],
+    )
+    const rechargeIntegration = useMemo(
+        () =>
+            rechargeIntegrations.find((integration) =>
+                customerIntegrations.has(String(integration.id)),
+            ),
+        [rechargeIntegrations, customerIntegrations],
     )
 
     const { topOpportunity } = useFindTopOpportunityByTicketId(
@@ -143,6 +155,16 @@ export const TicketInfobarContainer = ({
         dispatch(actions.selectContext())
         void dispatch(actions.fetchWidgets())
     }, [dispatch])
+
+    const isWidgetEditSessionActive =
+        widgets.getIn(['_internal', 'isEditing']) === true
+    const isWidgetEditSessionRequested = Boolean(isEditingWidgets)
+
+    useSyncWidgetEditSession({
+        context: WidgetEnvironment.Ticket,
+        isEditSessionActive: isWidgetEditSessionActive,
+        isEditSessionRequested: isWidgetEditSessionRequested,
+    })
 
     const tabCheckId = useRef<number>()
 
@@ -319,7 +341,8 @@ export const TicketInfobarContainer = ({
 
             if (
                 tab === TicketInfobarTab.Customer ||
-                tab === TicketInfobarTab.Shopify
+                tab === TicketInfobarTab.Shopify ||
+                tab === TicketInfobarTab.Recharge
             ) {
                 resetTicketMessage()
             }
@@ -333,7 +356,6 @@ export const TicketInfobarContainer = ({
             onChangeTab,
         ],
     )
-
     const isEditWidgetPage = useMemo(
         () => location.pathname.includes('edit-widgets'),
         [location.pathname],
@@ -520,6 +542,14 @@ export const TicketInfobarContainer = ({
                         </IntegrationContext.Provider>
                     </CustomerContext.Provider>
                 </div>
+            ) : activeTab === TicketInfobarTab.Recharge ? (
+                rechargeIntegration ? (
+                    <RechargeTabContent
+                        sources={sources}
+                        widgets={widgets}
+                        rechargeIntegration={rechargeIntegration}
+                    />
+                ) : null
             ) : (
                 <div
                     className={classNames(css.infoBarContainer, {

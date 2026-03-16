@@ -121,7 +121,11 @@ describe('TicketDetailWithInfobar', () => {
         useHelpdeskV2MS1FlagMock.mockReturnValue(false)
         useParamsMock.mockReturnValue({ ticketId: '1234' })
         useLocationMock.mockReturnValue({ state: {} })
-        useTicketInfobarNavigationMock.mockReturnValue({ isExpanded: true })
+        useTicketInfobarNavigationMock.mockReturnValue({
+            isExpanded: true,
+            editingWidgetType: null,
+            onSetEditingWidgetType: jest.fn(),
+        })
     })
 
     describe('when component renders', () => {
@@ -227,6 +231,8 @@ describe('TicketDetailWithInfobar', () => {
             useHelpdeskV2MS1FlagMock.mockReturnValue(true)
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: false,
+                editingWidgetType: null,
+                onSetEditingWidgetType: jest.fn(),
             })
 
             render(<TicketDetailWithInfobar />)

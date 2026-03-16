@@ -126,8 +126,8 @@ beforeEach(() => {
         onChangeTab: mockOnChangeTab,
         onToggle: jest.fn(),
         isExpanded: true,
-        isEditShopifyFieldsOpen: false,
-        onToggleEditShopifyFields: jest.fn(),
+        editingWidgetType: null,
+        onSetEditingWidgetType: jest.fn(),
     })
     mockUseWidgetOrderProducts.mockReturnValue({
         productsMap: new Map(),
@@ -135,7 +135,7 @@ beforeEach(() => {
 })
 
 describe('ShopifyOrdersWidgetContainer', () => {
-    it('should render nothing when there are no orders', () => {
+    it('should render nothing when there are no orders', async () => {
         mockUseShopifyOrdersSummary.mockReturnValue({
             lastOrder: null,
             totalCount: 0,
@@ -145,10 +145,12 @@ describe('ShopifyOrdersWidgetContainer', () => {
 
         const { container } = renderComponent()
 
-        expect(container).toBeEmptyDOMElement()
+        await waitFor(() => {
+            expect(container).toBeEmptyDOMElement()
+        })
     })
 
-    it('should render the widget when there is a last order', () => {
+    it('should render the widget when there is a last order', async () => {
         mockUseShopifyOrdersSummary.mockReturnValue({
             lastOrder: createOrder(),
             totalCount: 3,
@@ -158,10 +160,12 @@ describe('ShopifyOrdersWidgetContainer', () => {
 
         renderComponent()
 
-        expect(screen.getByText('Orders')).toBeInTheDocument()
-        expect(screen.getByText('3')).toBeInTheDocument()
-        expect(screen.getByText('1 unfulfilled')).toBeInTheDocument()
-        expect(screen.getByText('#1001')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('Orders')).toBeInTheDocument()
+            expect(screen.getByText('3')).toBeInTheDocument()
+            expect(screen.getByText('1 unfulfilled')).toBeInTheDocument()
+            expect(screen.getByText('#1001')).toBeInTheDocument()
+        })
     })
 
     it('should open the order side panel when an order is clicked', async () => {

@@ -1,5 +1,5 @@
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -35,10 +35,10 @@ const mockUseTicketInfobarNavigation = vi.fn().mockReturnValue({
     shopifyIntegrationId: undefined,
     activeTab: undefined,
     isExpanded: true,
-    isEditShopifyFieldsOpen: false,
+    editingWidgetType: null,
     onChangeTab: vi.fn(),
     onToggle: vi.fn(),
-    onToggleEditShopifyFields: vi.fn(),
+    onSetEditingWidgetType: vi.fn(),
 })
 
 vi.mock('@repo/navigation', async (importOriginal) => ({
@@ -192,10 +192,10 @@ beforeEach(() => {
         shopifyIntegrationId: undefined,
         activeTab: undefined,
         isExpanded: true,
-        isEditShopifyFieldsOpen: false,
+        editingWidgetType: null,
         onChangeTab: vi.fn(),
         onToggle: vi.fn(),
-        onToggleEditShopifyFields: vi.fn(),
+        onSetEditingWidgetType: vi.fn(),
     })
 
     vi.mocked(useGetOrders).mockReturnValue({
@@ -305,16 +305,12 @@ describe('CustomerInfo', () => {
 
         onStoreChange.mockClear()
 
-        await act(() =>
-            user.click(
-                screen.getByRole('button', { name: /test shopify store/i }),
-            ),
+        await user.click(
+            screen.getByRole('button', { name: /test shopify store/i }),
         )
 
-        await act(() =>
-            user.click(
-                screen.getByRole('option', { name: /second shopify store/i }),
-            ),
+        await user.click(
+            screen.getByRole('option', { name: /second shopify store/i }),
         )
 
         expect(onStoreChange).toHaveBeenCalledWith(secondIntegration.id)
@@ -357,10 +353,8 @@ describe('CustomerInfo', () => {
             )
         })
 
-        await act(() =>
-            user.click(
-                screen.getByRole('button', { name: /test shopify store/i }),
-            ),
+        await user.click(
+            screen.getByRole('button', { name: /test shopify store/i }),
         )
 
         expect(
@@ -561,15 +555,15 @@ describe('CustomerInfo', () => {
         expect(onSyncProfile).toHaveBeenCalledTimes(1)
     })
 
-    it('renders IntermediateEditPanel when isEditShopifyFieldsOpen is true', async () => {
+    it('renders IntermediateEditPanel when editingWidgetType is shopify', async () => {
         mockUseTicketInfobarNavigation.mockReturnValue({
             shopifyIntegrationId: undefined,
             activeTab: undefined,
             isExpanded: true,
-            isEditShopifyFieldsOpen: true,
+            editingWidgetType: 'shopify',
             onChangeTab: vi.fn(),
             onToggle: vi.fn(),
-            onToggleEditShopifyFields: vi.fn(),
+            onSetEditingWidgetType: vi.fn(),
         })
 
         render(
@@ -827,16 +821,16 @@ describe('CustomerInfo', () => {
         })
     })
 
-    it('calls onToggleEditShopifyFields(false) when Confirm is clicked in IntermediateEditPanel', async () => {
-        const onToggleEditShopifyFields = vi.fn()
+    it('calls onSetEditingWidgetType(null) when Confirm is clicked in IntermediateEditPanel', async () => {
+        const onSetEditingWidgetType = vi.fn()
         mockUseTicketInfobarNavigation.mockReturnValue({
             shopifyIntegrationId: undefined,
             activeTab: undefined,
             isExpanded: true,
-            isEditShopifyFieldsOpen: true,
+            editingWidgetType: 'shopify',
             onChangeTab: vi.fn(),
             onToggle: vi.fn(),
-            onToggleEditShopifyFields,
+            onSetEditingWidgetType,
         })
 
         const { user } = render(
@@ -855,7 +849,7 @@ describe('CustomerInfo', () => {
 
         await user.click(screen.getByRole('button', { name: /confirm/i }))
 
-        expect(onToggleEditShopifyFields).toHaveBeenCalledWith(false)
+        expect(onSetEditingWidgetType).toHaveBeenCalledWith(null)
     })
 
     describe('Address sections', () => {
@@ -965,12 +959,11 @@ describe('CustomerInfo', () => {
                         name: /collapse address/i,
                     }),
                 ).toHaveLength(2)
+                expect(screen.getByText('123 Main St')).toBeInTheDocument()
+                expect(screen.getByText('New York')).toBeInTheDocument()
+                expect(screen.getByText('456 Oak Ave')).toBeInTheDocument()
+                expect(screen.getByText('Los Angeles')).toBeInTheDocument()
             })
-
-            expect(screen.getByText('123 Main St')).toBeInTheDocument()
-            expect(screen.getByText('New York')).toBeInTheDocument()
-            expect(screen.getByText('456 Oak Ave')).toBeInTheDocument()
-            expect(screen.getByText('Los Angeles')).toBeInTheDocument()
         })
 
         it('renders no address sections when addresses array is empty', async () => {
@@ -1122,10 +1115,10 @@ describe('CustomerInfo', () => {
             shopifyIntegrationId: undefined,
             activeTab: undefined,
             isExpanded: true,
-            isEditShopifyFieldsOpen: false,
+            editingWidgetType: null,
             onChangeTab: vi.fn(),
             onToggle: vi.fn(),
-            onToggleEditShopifyFields: vi.fn(),
+            onSetEditingWidgetType: vi.fn(),
         })
 
         const { user } = render(

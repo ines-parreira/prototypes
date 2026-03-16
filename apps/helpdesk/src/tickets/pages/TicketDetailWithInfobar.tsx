@@ -1,7 +1,10 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { Handle, Panel } from '@repo/layout'
-import { useTicketInfobarNavigation } from '@repo/navigation'
+import {
+    SOURCE_PANEL_WIDGET_TYPES,
+    useTicketInfobarNavigation,
+} from '@repo/navigation'
 import { TicketHeader } from '@repo/tickets'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { useLocation, useParams } from 'react-router-dom'
@@ -10,6 +13,7 @@ import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAge
 import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider'
 import KnowledgeSourceSidebarWrapper from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSidebarWrapper'
 import TicketInfobarContainer from 'pages/tickets/detail/TicketInfobarContainer'
+import TicketSourceContainer from 'pages/tickets/detail/TicketSourceContainer'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 import { InfobarNavigationPanel } from 'tickets/navigation'
 import { TicketDetailPanel } from 'tickets/ticket-detail'
@@ -25,6 +29,12 @@ const panelConfig = {
     defaultSize: 340,
     minSize: 340,
     maxSize: 0.33,
+}
+
+const editingPanelConfig = {
+    defaultSize: Infinity,
+    minSize: 300,
+    maxSize: Infinity,
 }
 
 const collapsedPanelConfig = {
@@ -44,11 +54,20 @@ export function TicketDetailWithInfobar({ onToggleUnread }: Props) {
 function TicketDetailContent({ onToggleUnread }: Props) {
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const { ticketId: ticketIdParam } = useParams<{ ticketId: string }>()
-    const { isExpanded } = useTicketInfobarNavigation()
+    const { isExpanded, editingWidgetType, onSetEditingWidgetType } =
+        useTicketInfobarNavigation()
     const { mode } = useKnowledgeSourceSideBar()
     const location = useLocation<{ _navigationKey?: number }>()
 
     const ticketId = parseInt(ticketIdParam, 10)
+
+    const isEditingWidgets =
+        editingWidgetType !== null &&
+        SOURCE_PANEL_WIDGET_TYPES.has(editingWidgetType)
+
+    const handleCloseEditing = useCallback(() => {
+        onSetEditingWidgetType(null)
+    }, [onSetEditingWidgetType])
 
     const name = `infobar-${isExpanded ? 'expanded' : 'collapsed'}`
     const config = useMemo(
@@ -64,10 +83,25 @@ function TicketDetailContent({ onToggleUnread }: Props) {
         <div className={css.container} key={containerKey}>
             {hasUIVisionMS1 && <TicketHeader ticketId={ticketId} />}
             <div className={css.content}>
-                <TicketDetailPanel
-                    key="ticket-detail-panel"
-                    onToggleUnread={onToggleUnread}
-                />
+                {isEditingWidgets ? (
+                    <Panel
+                        key="ticket-source-panel"
+                        name="ticket-detail"
+                        config={editingPanelConfig}
+                    >
+                        <div className={css.sourceContainer}>
+                            <TicketSourceContainer
+                                widgetType={editingWidgetType}
+                                onClose={handleCloseEditing}
+                            />
+                        </div>
+                    </Panel>
+                ) : (
+                    <TicketDetailPanel
+                        key="ticket-detail-panel"
+                        onToggleUnread={onToggleUnread}
+                    />
+                )}
                 {!hasUIVisionMS1 && (
                     <>
                         <Handle />
@@ -78,7 +112,10 @@ function TicketDetailContent({ onToggleUnread }: Props) {
                     <>
                         <Handle />
                         <Panel key={name} name={name} config={config}>
-                            <TicketInfobarContainer isOnNewLayout />
+                            <TicketInfobarContainer
+                                isOnNewLayout
+                                isEditingWidgets={isEditingWidgets}
+                            />
                         </Panel>
                     </>
                 )}

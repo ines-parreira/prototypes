@@ -1,5 +1,9 @@
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
-import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
+import {
+    EditFieldsType,
+    TicketInfobarTab,
+    useTicketInfobarNavigation,
+} from '@repo/navigation'
 
 import {
     Button,
@@ -18,11 +22,13 @@ import { InfobarToggle } from './components/TicketInfobarNavigationToggle'
 
 type TicketInfobarNavigationProps = {
     hasAIFeedback?: boolean
+    hasRecharge?: boolean
     hasTimeline?: boolean
 }
 
 export function TicketInfobarNavigation({
     hasAIFeedback,
+    hasRecharge,
     hasTimeline,
 }: TicketInfobarNavigationProps) {
     const {
@@ -30,7 +36,7 @@ export function TicketInfobarNavigation({
         isExpanded,
         onChangeTab,
         onToggle,
-        onToggleEditShopifyFields,
+        onSetEditingWidgetType,
     } = useTicketInfobarNavigation()
     useTicketInfobarNavigationShortcuts()
     const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
@@ -63,6 +69,15 @@ export function TicketInfobarNavigation({
                         icon="app-shopify"
                         tooltip={{
                             title: 'Shopify',
+                        }}
+                    />
+                )}
+                {hasUIVisionMilestone2 && hasRecharge && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.Recharge}
+                        icon="app-recharge"
+                        tooltip={{
+                            title: 'Recharge',
                         }}
                     />
                 )}
@@ -115,7 +130,18 @@ export function TicketInfobarNavigation({
                         <MenuItem
                             label="Shopify"
                             leadingSlot="app-shopify"
-                            onAction={() => onToggleEditShopifyFields(true)}
+                            onAction={() => {
+                                onChangeTab(TicketInfobarTab.Shopify)
+                                onSetEditingWidgetType(EditFieldsType.Shopify)
+                            }}
+                        />
+                        <MenuItem
+                            label="Recharge"
+                            leadingSlot="app-recharge"
+                            onAction={() => {
+                                onChangeTab(TicketInfobarTab.Recharge)
+                                onSetEditingWidgetType(EditFieldsType.Recharge)
+                            }}
                         />
                         <MenuItem
                             label="Yotpo"

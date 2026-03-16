@@ -2,7 +2,7 @@ import { useCallback, useContext, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { normalizeMetafields } from '@repo/ecommerce/shopify/components'
-import { useTicketInfobarNavigation } from '@repo/navigation'
+import { EditFieldsType, useTicketInfobarNavigation } from '@repo/navigation'
 import { useUserDateTimePreferences } from '@repo/preferences'
 
 import { Box } from '@gorgias/axiom'
@@ -165,7 +165,7 @@ export function CustomerInfo({
     const { customerFields, sections, preferences, savePreferences } =
         useCustomerFieldPreferences()
 
-    const { isEditShopifyFieldsOpen, onToggleEditShopifyFields } =
+    const { editingWidgetType, onSetEditingWidgetType } =
         useTicketInfobarNavigation()
 
     const allOrders = useMemo(
@@ -250,15 +250,14 @@ export function CustomerInfo({
         [selectedIntegration?.id, onCancelOrder],
     )
 
-    if (isEditShopifyFieldsOpen) {
+    if (editingWidgetType === EditFieldsType.Shopify) {
         return (
             <IntermediateEditPanel
                 customerFields={customerFields}
                 context={context}
                 preferences={preferences}
                 onSavePreferences={savePreferences}
-                onClose={() => onToggleEditShopifyFields(false)}
-                integrationName={selectedIntegration?.name}
+                onClose={() => onSetEditingWidgetType(null)}
             />
         )
     }

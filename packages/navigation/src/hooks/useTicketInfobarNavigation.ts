@@ -1,8 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
-import type { TicketInfobarTab } from '../constants'
+import type { EditFieldsType, TicketInfobarTab } from '../constants'
 import type { TicketInfobarNavigationContextValue } from '../types'
-import { toggleEditShopifyFields } from './ticketInfobarNavigation.utils'
 import { useNavigation } from './useNavigation'
 
 export function useTicketInfobarNavigation(): TicketInfobarNavigationContextValue {
@@ -18,6 +17,7 @@ export function useTicketInfobarNavigation(): TicketInfobarNavigationContextValu
                 ticketInfobar: {
                     ...s.ticketInfobar,
                     activeTab,
+                    editingWidgetType: null,
                     ...(options?.shopifyIntegrationId != null && {
                         shopifyIntegrationId: options.shopifyIntegrationId,
                     }),
@@ -37,9 +37,15 @@ export function useTicketInfobarNavigation(): TicketInfobarNavigationContextValu
         }))
     }, [setState])
 
-    const onToggleEditShopifyFields = useCallback(
-        (open: boolean) => {
-            setState((s) => toggleEditShopifyFields(s, open))
+    const onSetEditingWidgetType = useCallback(
+        (type: EditFieldsType | null) => {
+            setState((s) => ({
+                ...s,
+                ticketInfobar: {
+                    ...s.ticketInfobar,
+                    editingWidgetType: type,
+                },
+            }))
         },
         [setState],
     )
@@ -49,8 +55,8 @@ export function useTicketInfobarNavigation(): TicketInfobarNavigationContextValu
             ...state.ticketInfobar,
             onChangeTab,
             onToggle,
-            onToggleEditShopifyFields,
+            onSetEditingWidgetType,
         }),
-        [state.ticketInfobar, onChangeTab, onToggle, onToggleEditShopifyFields],
+        [state.ticketInfobar, onChangeTab, onToggle, onSetEditingWidgetType],
     )
 }
