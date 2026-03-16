@@ -58,6 +58,7 @@ type OwnProps = {
         customer?: Map<any, any>
     }
     defaultCurrency?: string
+    modalClassName?: string
 }
 
 export function DraftOrderModalContainer({
@@ -84,6 +85,7 @@ export function DraftOrderModalContainer({
     onReset,
     title,
     totalDraftOrderPrice,
+    modalClassName,
 }: Omit<InfobarModalProps, 'data'> &
     OwnProps &
     ConnectedProps<typeof connector>) {
@@ -242,6 +244,7 @@ export function DraftOrderModalContainer({
                     onClose()
                     handleReset()
                 }}
+                className={modalClassName}
             >
                 <ModalHeader title={title} />
                 <Alert type={AlertType.Error}>
@@ -264,6 +267,7 @@ export function DraftOrderModalContainer({
             size="huge"
             isOpen={isOpen}
             onClose={handleCancel('header')}
+            className={modalClassName}
         >
             <ModalHeader title={title} />
             <InventoryScopeMissingBanner integrationId={integrationId!} />

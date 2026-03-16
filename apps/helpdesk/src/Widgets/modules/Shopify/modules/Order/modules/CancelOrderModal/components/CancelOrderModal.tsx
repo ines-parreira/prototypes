@@ -41,6 +41,7 @@ type Props = Omit<InfobarModalProps, 'data'> & {
         actionName: string | null
         order: Map<any, any>
     }
+    modalClassName?: string
 } & ConnectedProps<typeof connector>
 
 export const CancelOrderModalContainer = ({
@@ -65,6 +66,7 @@ export const CancelOrderModalContainer = ({
     refund,
     setPayload,
     title,
+    modalClassName,
 }: Props) => {
     const { integrationId } = useContext(IntegrationContext)
 
@@ -161,6 +163,7 @@ export const CancelOrderModalContainer = ({
                 handleCancel('header')
             }}
             size="huge"
+            className={modalClassName}
         >
             <ModalHeader title={title} />
             <Form onSubmit={handleSubmit}>

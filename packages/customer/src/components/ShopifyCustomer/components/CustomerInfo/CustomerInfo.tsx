@@ -74,8 +74,13 @@ export function CustomerInfo({
         onStoreChange,
     })
 
-    const { onCreateOrder, onDuplicateOrder, onRefundOrder, onCancelOrder } =
-        useContext(ShopifyCustomerContext)
+    const {
+        onCreateOrder,
+        onEditOrder,
+        onDuplicateOrder,
+        onRefundOrder,
+        onCancelOrder,
+    } = useContext(ShopifyCustomerContext)
 
     const { shopper } = useGetShopper({
         integrationId: selectedIntegration?.id,
@@ -222,6 +227,15 @@ export function CustomerInfo({
     const hasPrevious = selectedOrderIndex !== null && selectedOrderIndex > 0
     const hasNext =
         selectedOrderIndex !== null && selectedOrderIndex < allOrders.length - 1
+
+    const handleEditOrder = useCallback(
+        (order: OrderEcommerceData['data']) => {
+            if (selectedIntegration?.id && onEditOrder) {
+                onEditOrder(selectedIntegration.id, order)
+            }
+        },
+        [selectedIntegration?.id, onEditOrder],
+    )
 
     const handleDuplicateOrder = useCallback(
         (order: OrderEcommerceData['data']) => {
@@ -387,6 +401,7 @@ export function CustomerInfo({
                 }}
                 productsMap={productsMap}
                 isDraftOrder={isDraftOrder}
+                onEdit={handleEditOrder}
                 onDuplicate={handleDuplicateOrder}
                 onRefund={handleRefundOrder}
                 onCancel={handleCancelOrder}

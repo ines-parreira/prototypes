@@ -13,18 +13,24 @@ import { fromJS } from 'immutable'
 import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { useCancelOrder } from 'pages/tickets/detail/hooks/useCancelOrder'
 import { useDuplicateOrder } from 'pages/tickets/detail/hooks/useDuplicateOrder'
+import { useEditOrder } from 'pages/tickets/detail/hooks/useEditOrder'
 import { useRefundOrder } from 'pages/tickets/detail/hooks/useRefundOrder'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import CancelOrderModalDefault from 'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal'
+import EditOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal'
 import RefundOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-const CancelOrderModal = CancelOrderModalDefault as ComponentType<
-    InfobarModalProps & { data: { actionName: string | null; order: unknown } }
->
+import css from './OrderSidePanelWithActions.less'
 
+const CancelOrderModal = CancelOrderModalDefault as ComponentType<
+    InfobarModalProps & {
+        data: { actionName: string | null; order: unknown }
+        modalClassName?: string
+    }
+>
 type Props<T extends OrderData = OrderData> = {
     order: T | null
     isOpen: boolean
@@ -60,9 +66,25 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
     onNavigatePrevious,
     onNavigateNext,
 }: Props<T>) {
+    const editOrder = useEditOrder()
     const duplicateOrder = useDuplicateOrder()
     const cancelOrder = useCancelOrder()
     const refundOrder = useRefundOrder()
+
+    const handleEdit = useCallback(
+        (order: T) => {
+            if (
+                integrationId &&
+                (order as unknown as { customer?: ShopperData }).customer
+            ) {
+                editOrder.open(
+                    integrationId,
+                    order as unknown as OrderData & { customer: ShopperData },
+                )
+            }
+        },
+        [integrationId, editOrder],
+    )
 
     const handleDuplicate = useCallback(
         (order: T) => {
@@ -105,6 +127,7 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
                 onOpenChange={onOpenChange}
                 productsMap={productsMap}
                 isDraftOrder={isDraftOrder}
+                onEdit={handleEdit}
                 onDuplicate={handleDuplicate}
                 onRefund={handleRefund}
                 onCancel={handleCancel}
@@ -122,6 +145,27 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
                 <IntegrationContext.Provider
                     value={{
                         integration: fromJS({}),
+                        integrationId: editOrder.data?.integrationId ?? null,
+                    }}
+                >
+                    <EditOrderModal
+                        isOpen={editOrder.isOpen}
+                        title="Edit order"
+                        onChange={editOrder.onChange}
+                        onBulkChange={editOrder.onBulkChange}
+                        onSubmit={editOrder.onSubmit}
+                        onClose={editOrder.onClose}
+                        modalClassName={css.aboveSidePanel}
+                        data={{
+                            actionName: ShopifyActionType.EditOrder,
+                            order: editOrder.data?.orderImmutable,
+                            customer: editOrder.data?.customerImmutable,
+                        }}
+                    />
+                </IntegrationContext.Provider>
+                <IntegrationContext.Provider
+                    value={{
+                        integration: fromJS({}),
                         integrationId:
                             duplicateOrder.data?.integrationId ?? null,
                     }}
@@ -133,6 +177,7 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
                         onBulkChange={duplicateOrder.onBulkChange}
                         onSubmit={duplicateOrder.onSubmit}
                         onClose={duplicateOrder.onClose}
+                        modalClassName={css.aboveSidePanel}
                         data={{
                             actionName: ShopifyActionType.DuplicateOrder,
                             order: duplicateOrder.data?.orderImmutable,
@@ -153,6 +198,7 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
                         onBulkChange={refundOrder.onBulkChange}
                         onSubmit={refundOrder.onSubmit}
                         onClose={refundOrder.onClose}
+                        modalClassName={css.aboveSidePanel}
                         data={{
                             actionName: ShopifyActionType.RefundOrder,
                             order: refundOrder.data?.orderImmutable,
@@ -172,6 +218,7 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
                         onBulkChange={cancelOrder.onBulkChange}
                         onSubmit={cancelOrder.onSubmit}
                         onClose={cancelOrder.onClose}
+                        modalClassName={css.aboveSidePanel}
                         data={{
                             actionName: ShopifyActionType.CancelOrder,
                             order: cancelOrder.data?.orderImmutable,

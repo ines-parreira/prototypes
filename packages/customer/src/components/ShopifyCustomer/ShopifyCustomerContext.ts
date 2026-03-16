@@ -17,6 +17,7 @@ export type NotificationParams = {
 export type ShopifyCustomerContextType = {
     dispatchNotification: (params: NotificationParams) => void
     onCreateOrder?: (integrationId: number, shopperData: ShopperData) => void
+    onEditOrder?: (integrationId: number, order: OrderData) => void
     onDuplicateOrder?: (integrationId: number, order: OrderData) => void
     onRefundOrder?: (integrationId: number, order: OrderData) => void
     onCancelOrder?: (integrationId: number, order: OrderData) => void

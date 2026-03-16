@@ -51,6 +51,7 @@ type OwnProps = {
         customer?: Map<any, any>
     }
     defaultCurrency?: string
+    modalClassName?: string
 }
 
 export function EditOrderModalContainer({
@@ -76,6 +77,7 @@ export function EditOrderModalContainer({
     onSubmit,
     onReset,
     title,
+    modalClassName,
 }: Omit<InfobarModalProps, 'data'> &
     OwnProps &
     ConnectedProps<typeof connector>) {
@@ -199,6 +201,7 @@ export function EditOrderModalContainer({
                     handleReset()
                 }}
                 size="huge"
+                className={modalClassName}
             >
                 <ModalHeader title={title} />
                 <Alert type={AlertType.Error}>
@@ -220,6 +223,7 @@ export function EditOrderModalContainer({
             onClose={handleCancel('header')}
             size="huge"
             ref={modalRef}
+            className={modalClassName}
         >
             <ModalHeader title={title} />
             <div className={css.formHeader}>

@@ -25,6 +25,7 @@ import type {
     ShippingAddress,
 } from './ShippingAddressSection'
 import { ShippingAddressSection } from './ShippingAddressSection'
+import { useCanEditOrder } from './useCanEditOrder'
 
 export type OrderData = {
     id: number | string
@@ -56,6 +57,7 @@ type Props<T extends OrderData = OrderData> = {
     onClose: () => void
     productsMap?: Map<number, OrderCardProduct>
     isDraftOrder?: boolean
+    onEdit?: (order: T) => void
     onDuplicate?: (order: T) => void
     onRefund?: (order: T) => void
     onCancel?: (order: T) => void
@@ -73,6 +75,7 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
     onClose,
     productsMap,
     isDraftOrder,
+    onEdit,
     onDuplicate,
     onRefund,
     onCancel,
@@ -82,6 +85,10 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
     customerId,
     renderEditShippingAddressModal,
 }: Props<T>) {
+    const handleEdit = useCallback(() => {
+        onEdit?.(order)
+    }, [order, onEdit])
+
     const handleDuplicate = useCallback(() => {
         onDuplicate?.(order)
     }, [order, onDuplicate])
@@ -110,6 +117,7 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
         order.financial_status,
     )
     const isCancelled = !!order.cancelled_at
+    const canEdit = useCanEditOrder(order)
 
     return (
         <OverlayContent>
@@ -163,6 +171,7 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
 
                 {!isDraftOrder && (
                     <OrderActions
+                        onEdit={canEdit && onEdit ? handleEdit : undefined}
                         onDuplicate={onDuplicate ? handleDuplicate : undefined}
                         onRefund={
                             isRefunded || !onRefund ? undefined : handleRefund

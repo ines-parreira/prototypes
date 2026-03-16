@@ -59,6 +59,7 @@ import { isTeamLead } from 'utils'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import ConnectedEditOrderShippingAddressModal from 'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal'
 import CancelOrderModalDefault from 'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal'
+import EditOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal'
 import RefundOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
@@ -66,6 +67,7 @@ import { useFeedbackTracking } from './components/AIAgentFeedbackBar/hooks/useFe
 import { useCancelOrder } from './hooks/useCancelOrder'
 import { useCreateOrder } from './hooks/useCreateOrder'
 import { useDuplicateOrder } from './hooks/useDuplicateOrder'
+import { useEditOrder } from './hooks/useEditOrder'
 import { useRefundOrder } from './hooks/useRefundOrder'
 
 import css from './TicketInfobarContainer.less'
@@ -269,6 +271,7 @@ export const TicketInfobarContainer = ({
         ),
         [dispatch],
     )
+    const editOrder = useEditOrder()
     const duplicateOrder = useDuplicateOrder()
     const cancelOrder = useCancelOrder()
     const refundOrder = useRefundOrder()
@@ -427,6 +430,7 @@ export const TicketInfobarContainer = ({
                     <ShopifyCustomerProvider
                         dispatchNotification={dispatchNotification}
                         onCreateOrder={createOrder.open}
+                        onEditOrder={editOrder.open}
                         onDuplicateOrder={duplicateOrder.open}
                         onRefundOrder={refundOrder.open}
                         onCancelOrder={cancelOrder.open}
@@ -474,6 +478,27 @@ export const TicketInfobarContainer = ({
                                     actionName: ShopifyActionType.CreateOrder,
                                     customer:
                                         createOrder.data?.customerImmutable,
+                                }}
+                            />
+                        </IntegrationContext.Provider>
+                        <IntegrationContext.Provider
+                            value={{
+                                integration: fromJS({}),
+                                integrationId:
+                                    editOrder.data?.integrationId ?? null,
+                            }}
+                        >
+                            <EditOrderModal
+                                isOpen={editOrder.isOpen}
+                                title="Edit order"
+                                onChange={editOrder.onChange}
+                                onBulkChange={editOrder.onBulkChange}
+                                onSubmit={editOrder.onSubmit}
+                                onClose={editOrder.onClose}
+                                data={{
+                                    actionName: ShopifyActionType.EditOrder,
+                                    order: editOrder.data?.orderImmutable,
+                                    customer: editOrder.data?.customerImmutable,
                                 }}
                             />
                         </IntegrationContext.Provider>

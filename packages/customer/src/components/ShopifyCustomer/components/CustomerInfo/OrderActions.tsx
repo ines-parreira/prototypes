@@ -1,14 +1,30 @@
 import { Box, Button } from '@gorgias/axiom'
 
 type Props = {
+    onEdit?: () => void
     onDuplicate?: () => void
     onRefund?: () => void
     onCancel?: () => void
 }
 
-export function OrderActions({ onDuplicate, onRefund, onCancel }: Props) {
+export function OrderActions({
+    onEdit,
+    onDuplicate,
+    onRefund,
+    onCancel,
+}: Props) {
     return (
         <Box flexDirection="row" alignItems="center" gap="xs" pt="xs" pb="md">
+            {onEdit && (
+                <Button
+                    variant="secondary"
+                    size="sm"
+                    leadingSlot="edit"
+                    onClick={onEdit}
+                >
+                    Edit
+                </Button>
+            )}
             {onDuplicate && (
                 <Button
                     variant="secondary"

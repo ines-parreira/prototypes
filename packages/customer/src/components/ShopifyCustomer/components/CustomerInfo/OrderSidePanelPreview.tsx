@@ -19,6 +19,7 @@ type Props<T extends OrderData = OrderData> = {
     onOpenChange: (isOpen: boolean) => void
     productsMap?: Map<number, OrderCardProduct>
     isDraftOrder?: boolean
+    onEdit?: (order: T) => void
     onDuplicate?: (order: T) => void
     onRefund?: (order: T) => void
     onCancel?: (order: T) => void
@@ -41,6 +42,7 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
     onOpenChange,
     productsMap,
     isDraftOrder,
+    onEdit,
     onDuplicate,
     onRefund,
     onCancel,
@@ -73,6 +75,7 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                 onClose={handleClose}
                 productsMap={productsMap}
                 isDraftOrder={isDraftOrder}
+                onEdit={onEdit}
                 onDuplicate={onDuplicate}
                 onRefund={onRefund}
                 onCancel={onCancel}

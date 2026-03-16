@@ -303,6 +303,116 @@ describe('OrderSidePanelPreview', () => {
     })
 })
 
+const mockEditableOrder = {
+    ...mockOrder,
+    created_at: new Date().toISOString(),
+    cancelled_at: null,
+}
+
+describe('OrderSidePanelPreview — Edit button', () => {
+    it('renders Edit button when onEdit provided and order is editable', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockEditableOrder}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                onEdit={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /edit/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('calls onEdit with order when Edit button is clicked', async () => {
+        const onEdit = vi.fn()
+
+        const { user } = render(
+            <OrderSidePanelPreview
+                order={mockEditableOrder}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                onEdit={onEdit}
+            />,
+        )
+
+        const editButton = await screen.findByRole('button', {
+            name: /edit/i,
+        })
+        await user.click(editButton)
+
+        expect(onEdit).toHaveBeenCalledWith(mockEditableOrder)
+    })
+
+    it('does not render Edit button when onEdit is not provided', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={mockEditableOrder}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText(/Order #3519/i)).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByRole('button', { name: /edit/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('does not render Edit button when order is cancelled', async () => {
+        render(
+            <OrderSidePanelPreview
+                order={{
+                    ...mockEditableOrder,
+                    cancelled_at: '2024-01-01T00:00:00Z',
+                }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                onEdit={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText(/Order #3519/i)).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByRole('button', { name: /edit/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('does not render Edit button when order is older than 60 days', async () => {
+        const oldDate = new Date()
+        oldDate.setDate(oldDate.getDate() - 61)
+
+        render(
+            <OrderSidePanelPreview
+                order={{
+                    ...mockEditableOrder,
+                    created_at: oldDate.toISOString(),
+                }}
+                isOpen={true}
+                onOpenChange={vi.fn()}
+                onEdit={vi.fn()}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText(/Order #3519/i)).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByRole('button', { name: /edit/i }),
+        ).not.toBeInTheDocument()
+    })
+})
+
 describe('OrderSidePanelPreview — footer View Order link', () => {
     it('renders View Order link with correct href when order_status_url is provided', async () => {
         const orderStatusUrl = 'https://example.myshopify.com/orders/abc123'

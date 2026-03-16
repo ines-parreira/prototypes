@@ -119,6 +119,18 @@ jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn().mockReturnValue({ type: 'MOCK_EXECUTE_ACTION' }),
 }))
 
+jest.mock('pages/tickets/detail/hooks/useEditOrder', () => ({
+    useEditOrder: jest.fn().mockReturnValue({
+        isOpen: false,
+        data: null,
+        open: jest.fn(),
+        onChange: jest.fn(),
+        onBulkChange: jest.fn(),
+        onSubmit: jest.fn(),
+        onClose: jest.fn(),
+    }),
+}))
+
 jest.mock('pages/tickets/detail/hooks/useCancelOrder', () => ({
     useCancelOrder: jest.fn().mockReturnValue({
         isOpen: false,
@@ -154,6 +166,14 @@ jest.mock('pages/tickets/detail/hooks/useDuplicateOrder', () => ({
         onClose: jest.fn(),
     }),
 }))
+
+jest.mock(
+    'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal',
+    () => ({
+        __esModule: true,
+        default: () => null,
+    }),
+)
 
 jest.mock('Widgets/modules/Shopify/modules/DraftOrderModal', () => ({
     __esModule: true,

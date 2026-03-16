@@ -11,6 +11,7 @@ type Props = ShopifyCustomerContextType & {
 export function ShopifyCustomerProvider({
     dispatchNotification,
     onCreateOrder,
+    onEditOrder,
     onDuplicateOrder,
     onRefundOrder,
     onCancelOrder,
@@ -20,6 +21,7 @@ export function ShopifyCustomerProvider({
         () => ({
             dispatchNotification,
             onCreateOrder,
+            onEditOrder,
             onDuplicateOrder,
             onRefundOrder,
             onCancelOrder,
@@ -27,6 +29,7 @@ export function ShopifyCustomerProvider({
         [
             dispatchNotification,
             onCreateOrder,
+            onEditOrder,
             onDuplicateOrder,
             onRefundOrder,
             onCancelOrder,
