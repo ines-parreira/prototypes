@@ -1,11 +1,11 @@
 import type React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import type { AxiosError } from 'axios'
 import { parse as parseQueryString } from 'qs'
 import { useHistory, useLocation } from 'react-router-dom'
 
-import { getAccessToken } from 'rest_api/auth'
+import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import type { CsvColumnPreview } from '../../../../models/helpCenter/types'
@@ -52,6 +52,7 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
     const history = useHistory()
     const dispatch = useAppDispatch()
     const [importInProgress, setImportInProgress] = useState(false)
+    const authServiceRef = useRef(new GorgiasAppAuthService())
 
     useEffect(() => {
         const queryString = parseQueryString(location.search, {
@@ -164,7 +165,11 @@ export const HelpCenterImportCsvColumnMatchingView: React.FC = () => {
                     provider: providerPayload,
                     receiver: {
                         type: 'Gorgias',
-                        access_token: (await getAccessToken(true)) || '',
+                        access_token:
+                            // the gorgias apps token is prefixed with Bearer, strip it for the payload
+                            (
+                                await authServiceRef.current.getAccessToken()
+                            )?.replace('Bearer ', '') || '',
                         help_center_id: helpCenter.id,
                     },
                 },

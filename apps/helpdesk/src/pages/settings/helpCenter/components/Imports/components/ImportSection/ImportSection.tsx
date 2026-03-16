@@ -19,9 +19,9 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
 import settingsCss from 'pages/settings/settings.less'
-import { getAccessToken } from 'rest_api/auth'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
 import { CSV_MIGRATION_PROVIDER_TYPE } from '../CsvColumnMatching/utils'
 import ImportArticlesModal from './components/ImportArticlesModal'
@@ -72,6 +72,7 @@ export const ImportSection: React.FC<Props> = ({
     const migrationClient = useMigrationApi()
     const currentHelpCenter = useCurrentHelpCenter()
     const history = useHistory()
+    const authServiceRef = useRef(new GorgiasAppAuthService())
 
     const _migrationConfig = useFlag<HelpCenterMigrationConfig>(
         FeatureFlagKey.HelpCenterMigrationConfig,
@@ -145,7 +146,10 @@ export const ImportSection: React.FC<Props> = ({
                                 type: selectedProviderType,
                                 ...data.toJS(),
                             },
-                            (await getAccessToken()) || '',
+                            // the gorgias apps token is prefixed with Bearer, strip it for the payload
+                            (
+                                await authServiceRef.current.getAccessToken()
+                            )?.replace('Bearer ', '') || '',
                         ),
                     )
 
@@ -183,7 +187,10 @@ export const ImportSection: React.FC<Props> = ({
                         getSessionCreateData(
                             currentHelpCenter.id,
                             migrationStartPayload,
-                            (await getAccessToken(true)) || '',
+                            // the gorgias apps token is prefixed with Bearer, strip it for the payload
+                            (
+                                await authServiceRef.current.getAccessToken()
+                            )?.replace('Bearer ', '') || '',
                         ),
                     )
 

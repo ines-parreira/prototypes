@@ -3,7 +3,7 @@ import memoize from 'memoize-one'
 import type { Document } from 'openapi-client-axios'
 import OpenAPIClientAxios from 'openapi-client-axios'
 
-import { getAccessToken, getBearerAuthorizationHeader } from 'rest_api/auth'
+import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
 import type { Client } from './client.generated'
 import OpenAPIDoc from './migration.openapi.json'
@@ -26,14 +26,11 @@ export const migrationAPI = new OpenAPIClientAxios({
 
 async function buildMigrationClient(): Promise<Client> {
     const client = await migrationAPI.getClient<Client>()
+    const authService = new GorgiasAppAuthService()
 
     client.interceptors.request.use(async (config) => {
-        const accessToken = await getAccessToken()
-
-        const bearerToken = getBearerAuthorizationHeader(accessToken || '')
-
-        config.headers.setAuthorization(bearerToken)
-
+        const accessToken = await authService.getAccessToken()
+        config.headers.setAuthorization(accessToken)
         return config
     })
 

@@ -1,23 +1,31 @@
+import axios from 'axios'
 import memoize from 'memoize-one'
 
-import { getAccessToken, getBearerAuthorizationHeader } from 'rest_api/auth'
+import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
 import { AbilityRules, AppAbility, createAbility } from './ability'
 import { helpCenterAPI } from './client'
 import { Client } from './client.generated'
+import { getHelpCenterApiBaseUrl } from './utils'
 
-function createAgentAbility(token: string | null) {
-    if (!token) return undefined
-    // update the ability of the user based on the rules defined in the JWT token
-    const rawPayload: string | undefined = token.split('.')[1]
-    if (!rawPayload) {
-        return undefined
-    }
-    const parsedToken: { rules?: AbilityRules } = JSON.parse(
-        window.atob(rawPayload),
-    )
-    if (parsedToken?.rules && Array.isArray(parsedToken.rules)) {
-        return createAbility(parsedToken.rules)
+async function fetchAgentAbility(
+    authService: GorgiasAppAuthService,
+): Promise<AppAbility | undefined> {
+    try {
+        const accessToken = await authService.getAccessToken()
+        const baseUrl = getHelpCenterApiBaseUrl()
+        const { data } = await axios.get<{ rules: AbilityRules }>(
+            `${baseUrl}/api/help-center/auth/abilities`,
+            {
+                headers: { Authorization: accessToken },
+            },
+        )
+
+        if (data?.rules && Array.isArray(data.rules)) {
+            return createAbility(data.rules)
+        }
+    } catch {
+        // Fall back to undefined ability if the endpoint is unavailable
     }
 
     return undefined
@@ -34,22 +42,18 @@ export async function buildHelpCenterClient(): Promise<{
         return { client, agentAbility }
     }
 
+    const authService = new GorgiasAppAuthService()
+
     client = await helpCenterAPI.init<Client>()
 
-    agentAbility = createAgentAbility(await getAccessToken())
-
     client.interceptors.request.use(async (config) => {
-        // Prevent recursion while doing auth calls
-        if (config.url === '/api/help-center/auth') {
-            return config
-        }
-
-        const accessToken = await getAccessToken()
-        const bearerToken = getBearerAuthorizationHeader(accessToken || '')
-
-        config.headers.setAuthorization(bearerToken)
+        const accessToken = await authService.getAccessToken()
+        config.headers.setAuthorization(accessToken)
         return config
     })
+
+    agentAbility = await fetchAgentAbility(authService)
+
     return { client, agentAbility }
 }
 

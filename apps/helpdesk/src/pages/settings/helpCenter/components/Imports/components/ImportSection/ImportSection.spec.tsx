@@ -14,7 +14,6 @@ import thunk from 'redux-thunk'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi'
-import { getAccessToken } from 'rest_api/auth'
 import { getMigrationClient } from 'rest_api/migration_api'
 import { initialState as articlesState } from 'state/entities/helpCenter/articles/reducer'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
@@ -92,10 +91,11 @@ jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
     getSingleHelpCenterResponseFixture,
 )
 
-// Migration client calls this function in an interceptor to set the access token
-// and as the data here is mocked we don't need auth calls
-jest.mock('rest_api/auth')
-;(getAccessToken as jest.Mock).mockImplementation(() => 'token')
+jest.mock('utils/gorgiasAppsAuth', () => ({
+    GorgiasAppAuthService: jest.fn().mockImplementation(() => ({
+        getAccessToken: jest.fn().mockResolvedValue('Bearer mock-token'),
+    })),
+}))
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock

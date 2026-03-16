@@ -283,9 +283,12 @@ jest.mock('domains/reporting/pages/DefaultStatsFilters', () => ({
     default: ({ children }: PropsWithChildren<any>) => <>{children}</>,
 }))
 
-jest.mock('rest_api/auth', () => ({
-    ...jest.requireActual('rest_api/auth'),
-    getAccessToken: jest.fn().mockResolvedValue('test-token'),
+jest.mock('utils/gorgiasAppsAuth', () => ({
+    GorgiasAppAuthService: jest.fn().mockImplementation(() => ({
+        accessToken: 'test-token',
+        getAccessToken: jest.fn().mockResolvedValue('Bearer test-token'),
+    })),
+    buildGorgiasAppsAuthInterceptor: jest.fn(),
 }))
 
 describe('<Routes/>', () => {
