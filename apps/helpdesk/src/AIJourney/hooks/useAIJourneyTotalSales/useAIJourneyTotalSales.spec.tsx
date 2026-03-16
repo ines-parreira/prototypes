@@ -6,7 +6,7 @@ import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
-import { useAIJourneyGmvInfluenced } from './useAIJourneyGmvInfluenced'
+import { useAIJourneyTotalSales } from './useAIJourneyTotalSales'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
 jest.mock('domains/reporting/hooks/useTimeSeries')
@@ -19,7 +19,7 @@ jest.mock(
     }),
 )
 
-describe('useAIJourneyGmvInfluenced', () => {
+describe('useAIJourneyTotalSales', () => {
     const mockUserTimezone = 'America/New_York'
     const mockFilters = {
         period: {
@@ -47,7 +47,7 @@ describe('useAIJourneyGmvInfluenced', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced(
+            useAIJourneyTotalSales(
                 '123',
                 mockUserTimezone,
                 mockFilters,
@@ -72,7 +72,7 @@ describe('useAIJourneyGmvInfluenced', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced(
+            useAIJourneyTotalSales(
                 '123',
                 mockUserTimezone,
                 mockFilters,
@@ -98,7 +98,7 @@ describe('useAIJourneyGmvInfluenced', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced(
+            useAIJourneyTotalSales(
                 '123',
                 mockUserTimezone,
                 mockFilters,
@@ -124,7 +124,7 @@ describe('useAIJourneyGmvInfluenced', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced(
+            useAIJourneyTotalSales(
                 '123',
                 mockUserTimezone,
                 mockFilters,
@@ -163,7 +163,7 @@ describe('useAIJourneyGmvInfluenced', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyGmvInfluenced(
+            useAIJourneyTotalSales(
                 '123',
                 mockUserTimezone,
                 mockFilters,

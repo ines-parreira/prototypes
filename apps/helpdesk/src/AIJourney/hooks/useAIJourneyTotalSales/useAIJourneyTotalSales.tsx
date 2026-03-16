@@ -5,15 +5,15 @@ import {
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import {
-    aiJourneyGmvInfluencedQueryFactory,
-    aiJourneyGmvInfluencedTimeSeriesQuery,
+    aiJourneyRevenueQueryFactory,
+    aiJourneyRevenueTimeSeriesQuery,
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-export const useAIJourneyGmvInfluenced = (
+export const useAIJourneyTotalSales = (
     integrationId: string,
     userTimezone: string,
     filters: FilterType,
@@ -22,13 +22,13 @@ export const useAIJourneyGmvInfluenced = (
     journeyIds?: string[],
 ): MetricProps => {
     const { data: trendData, isFetching: isFetchingTred } = useMetricTrend(
-        aiJourneyGmvInfluencedQueryFactory(
+        aiJourneyRevenueQueryFactory(
             integrationId,
             filters,
             userTimezone,
             journeyIds,
         ),
-        aiJourneyGmvInfluencedQueryFactory(
+        aiJourneyRevenueQueryFactory(
             integrationId,
             {
                 ...filters,
@@ -41,7 +41,7 @@ export const useAIJourneyGmvInfluenced = (
 
     const { data: gmvInfluencedTimeSeriesData, isFetching: isFetchingSeries } =
         useTimeSeries(
-            aiJourneyGmvInfluencedTimeSeriesQuery(
+            aiJourneyRevenueTimeSeriesQuery(
                 integrationId,
                 filters,
                 userTimezone,

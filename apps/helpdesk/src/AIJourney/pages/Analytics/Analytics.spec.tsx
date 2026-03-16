@@ -39,9 +39,9 @@ jest.mock('AIJourney/hooks', () => ({
 }))
 
 jest.mock(
-    'AIJourney/hooks/useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced',
+    'AIJourney/hooks/useAIJourneyTotalSales/useAIJourneyTotalSales',
     () => ({
-        useAIJourneyGmvInfluenced: jest.fn(),
+        useAIJourneyTotalSales: jest.fn(),
     }),
 )
 
@@ -77,6 +77,13 @@ jest.mock('AIJourney/hooks/useClickThroughRate/useClickThroughRate', () => ({
     useClickThroughRate: jest.fn(),
 }))
 
+jest.mock(
+    'AIJourney/hooks/useAIJourneyTotalOrders/useAIJourneyTotalOrders',
+    () => ({
+        useAIJourneyTotalOrders: jest.fn(),
+    }),
+)
+
 jest.mock('AIJourney/hooks/useAverageOrderValue/useAverageOrderValue', () => ({
     useAverageOrderValue: jest.fn(),
 }))
@@ -106,9 +113,9 @@ const mockUseJourneyContext =
     require('AIJourney/providers/JourneyProvider/JourneyProvider')
         .useJourneyContext as jest.Mock
 const mockUseFilters = require('AIJourney/hooks').useFilters as jest.Mock
-const mockUseAIJourneyGmvInfluenced =
-    require('AIJourney/hooks/useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced')
-        .useAIJourneyGmvInfluenced as jest.Mock
+const mockUseAIJourneyRevenue =
+    require('AIJourney/hooks/useAIJourneyTotalSales/useAIJourneyTotalSales')
+        .useAIJourneyTotalSales as jest.Mock
 const mockUseAIJourneyConversionRate =
     require('AIJourney/hooks/useAIJourneyConversionRate/useAIJourneyConversionRate')
         .useAIJourneyConversionRate as jest.Mock
@@ -124,6 +131,9 @@ const mockUseAIJourneyResponseRate =
 const mockUseClickThroughRate =
     require('AIJourney/hooks/useClickThroughRate/useClickThroughRate')
         .useClickThroughRate as jest.Mock
+const mockUseAIJourneyTotalOrders =
+    require('AIJourney/hooks/useAIJourneyTotalOrders/useAIJourneyTotalOrders')
+        .useAIJourneyTotalOrders as jest.Mock
 const mockUseAverageOrderValue =
     require('AIJourney/hooks/useAverageOrderValue/useAverageOrderValue')
         .useAverageOrderValue as jest.Mock
@@ -171,6 +181,7 @@ describe('<Analytics />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        localStorage.removeItem('ai-journey-analytics-metrics-preferences')
         FiltersPanelComponentMock.mockImplementation(() => <div />)
 
         mockUseStatsFilters.mockReturnValue({
@@ -215,7 +226,7 @@ describe('<Analytics />', () => {
             },
         })
 
-        mockUseAIJourneyGmvInfluenced.mockReturnValue({
+        mockUseAIJourneyRevenue.mockReturnValue({
             label: 'GMV Influenced',
             value: 0,
             prevValue: null,
@@ -223,6 +234,16 @@ describe('<Analytics />', () => {
             interpretAs: 'more-is-better',
             metricFormat: 'currency',
             currency: 'USD',
+            isLoading: false,
+        })
+
+        mockUseAIJourneyTotalOrders.mockReturnValue({
+            label: 'Orders',
+            value: 0,
+            prevValue: null,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'decimal-precision-1',
             isLoading: false,
         })
 
@@ -267,7 +288,7 @@ describe('<Analytics />', () => {
         })
 
         mockUseClickThroughRate.mockReturnValue({
-            label: 'Click Through Rate',
+            label: 'Click-through rate (CTR)',
             value: 0,
             prevValue: null,
             series: [],
@@ -361,8 +382,24 @@ describe('<Analytics />', () => {
     })
 
     it('should render key metrics with values', () => {
+        localStorage.setItem(
+            'ai-journey-analytics-metrics-preferences',
+            JSON.stringify([
+                {
+                    id: 'Click-through rate (CTR)',
+                    label: 'Click-through rate (CTR)',
+                    visibility: true,
+                },
+                {
+                    id: 'Messages sent',
+                    label: 'Messages sent',
+                    visibility: true,
+                },
+            ]),
+        )
+
         mockUseClickThroughRate.mockReturnValue({
-            label: 'Click Through Rate',
+            label: 'Click-through rate (CTR)',
             value: 25.5,
             prevValue: 20.3,
             series: [
@@ -376,7 +413,7 @@ describe('<Analytics />', () => {
         })
 
         mockUseAIJourneyTotalConversations.mockReturnValue({
-            label: 'Total Recipients',
+            label: 'Messages sent',
             value: 150,
             prevValue: 100,
             series: [
@@ -400,11 +437,9 @@ describe('<Analytics />', () => {
         )
 
         expect(
-            screen.getAllByText('Click Through Rate').length,
+            screen.getAllByText('Click-through rate (CTR)').length,
         ).toBeGreaterThan(0)
-        expect(screen.getAllByText('Total Recipients').length).toBeGreaterThan(
-            0,
-        )
+        expect(screen.getAllByText('Messages sent').length).toBeGreaterThan(0)
         expect(screen.getByText(/25\.5%/)).toBeInTheDocument()
         expect(screen.getByText('150')).toBeInTheDocument()
     })
@@ -460,7 +495,7 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
+        expect(mockUseAIJourneyRevenue).toHaveBeenCalledWith(
             expect.any(String),
             expect.any(String),
             expect.any(Object),
@@ -521,7 +556,7 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
+        expect(mockUseAIJourneyRevenue).toHaveBeenCalledWith(
             expect.any(String),
             expect.any(String),
             expect.any(Object),
@@ -571,7 +606,7 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        expect(mockUseAIJourneyGmvInfluenced).toHaveBeenCalledWith(
+        expect(mockUseAIJourneyRevenue).toHaveBeenCalledWith(
             expect.any(String),
             expect.any(String),
             expect.any(Object),
@@ -596,7 +631,7 @@ describe('<Analytics />', () => {
 
         await act(async () => {
             await user.click(
-                screen.getByRole('button', { name: /edit metrics/i }),
+                screen.getByRole('button', { name: /edit key metrics/i }),
             )
         })
 
@@ -645,6 +680,72 @@ describe('<Analytics />', () => {
         expect(mockDrillDownModal).toHaveBeenCalled()
     })
 
+    it('should render with non-null prevValues for revenue, orders, response rate and average order value, and null prevValue for messages sent', () => {
+        mockUseAIJourneyRevenue.mockReturnValue({
+            label: 'GMV Influenced',
+            value: 1000,
+            prevValue: 800,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'currency',
+            currency: 'USD',
+            isLoading: false,
+        })
+
+        mockUseAIJourneyTotalOrders.mockReturnValue({
+            label: 'Orders',
+            value: 50,
+            prevValue: 40,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'decimal-precision-1',
+            isLoading: false,
+        })
+
+        mockUseAIJourneyResponseRate.mockReturnValue({
+            label: 'Response Rate',
+            value: 0.5,
+            prevValue: 0.4,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'percent',
+            isLoading: false,
+        })
+
+        mockUseAverageOrderValue.mockReturnValue({
+            label: 'Average Order Value',
+            value: 200,
+            prevValue: 180,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'currency',
+            currency: 'USD',
+            isLoading: false,
+        })
+
+        mockUseAIJourneyTotalConversations.mockReturnValue({
+            label: 'Messages sent',
+            value: 100,
+            prevValue: null,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'decimal',
+            isLoading: false,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(screen.getByText('AI Journey Analytics')).toBeInTheDocument()
+    })
+
     it('should handle unknown metric IDs in saved preferences gracefully', async () => {
         const user = userEvent.setup()
 
@@ -653,8 +754,8 @@ describe('<Analytics />', () => {
             JSON.stringify([
                 { id: 'unknown-metric', label: 'Unknown', visibility: true },
                 {
-                    id: 'Click Through Rate',
-                    label: 'Click Through Rate',
+                    id: 'Click-through rate (CTR)',
+                    label: 'Click-through rate (CTR)',
                     visibility: true,
                 },
             ]),
@@ -671,7 +772,7 @@ describe('<Analytics />', () => {
         )
         await act(async () => {
             await user.click(
-                screen.getByRole('button', { name: /edit metrics/i }),
+                screen.getByRole('button', { name: /edit key metrics/i }),
             )
         })
         await waitFor(() => {

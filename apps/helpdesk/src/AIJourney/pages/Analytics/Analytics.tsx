@@ -11,17 +11,21 @@ import {
     Button,
     Heading,
     LegacyLoadingSpinner as LoadingSpinner,
+    SidePanelSize,
     Size,
 } from '@gorgias/axiom'
 
 import { DiscountCodesUsageSection } from 'AIJourney/components'
 import {
+    useAIJourneyConversionRate,
+    useAIJourneyResponseRate,
     useAIJourneyTotalConversations,
+    useAIJourneyTotalOrders,
+    useAIJourneyTotalSales,
     useAverageOrderValue,
+    useClickThroughRate,
     useRevenuePerRecipient,
 } from 'AIJourney/hooks'
-import { useAIJourneyConversionRate } from 'AIJourney/hooks/useAIJourneyConversionRate/useAIJourneyConversionRate'
-import { useAIJourneyGmvInfluenced } from 'AIJourney/hooks/useAIJourneyGmvInfluenced/useAIJourneyGmvInfluenced'
 import { useJourneyContext } from 'AIJourney/providers'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
 
@@ -31,9 +35,6 @@ import { DrillDownModal } from '../../../domains/reporting/pages/common/drill-do
 import FiltersPanelWrapper from '../../../domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { filterNonDraftCampaigns } from '../../../domains/reporting/pages/common/filters/JourneyCampaignsFilter'
 import { useGetNamespacedShopNameForStore } from '../../../domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore'
-import { useAIJourneyOptOutRate } from '../../hooks/useAIJourneyOptOutRate/useAIJourneyOptOutRate'
-import { useAIJourneyResponseRate } from '../../hooks/useAIJourneyResponseRate/useAIJourneyResponseRate'
-import { useClickThroughRate } from '../../hooks/useClickThroughRate/useClickThroughRate'
 
 import css from './Analytics.less'
 
@@ -93,7 +94,7 @@ export const Analytics = () => {
         allCampaignIds,
     ])
 
-    const gmvInfluenced = useAIJourneyGmvInfluenced(
+    const totalSales = useAIJourneyTotalSales(
         integrationId,
         userTimezone,
         filters,
@@ -101,6 +102,16 @@ export const Analytics = () => {
         granularity,
         journeysIdsToFilter,
     )
+
+    const orders = useAIJourneyTotalOrders(
+        integrationId,
+        userTimezone,
+        filters,
+        granularity,
+        shopName,
+        journeysIdsToFilter,
+    )
+
     const conversionRate = useAIJourneyConversionRate(
         integrationId,
         userTimezone,
@@ -109,14 +120,6 @@ export const Analytics = () => {
         journeysIdsToFilter,
     )
 
-    const optOutRate = useAIJourneyOptOutRate(
-        integrationId,
-        userTimezone,
-        filters,
-        granularity,
-        shopName,
-        journeysIdsToFilter,
-    )
     const clickThroughRate = useClickThroughRate(
         integrationId,
         userTimezone,
@@ -169,49 +172,51 @@ export const Analytics = () => {
 
     const metrics = [
         {
-            id: 'Total Recipients',
-            label: 'Total Recipients',
-            hint: 'Unique customers who received at least one message in this campaign. Shows audience size and helps normalise engagement metrics like CTR or reply rate.',
-            interpretAs: totalRecipients.interpretAs,
-            isLoading: totalRecipients.isLoading,
-            metricFormat: 'decimal' as MetricTrendFormat,
-            series: seriesToTwoDimensionalDataItem(totalRecipients.series, {
-                label: 'Total Recipients',
-                ...seriesBaseOptions,
-            }),
-            trend: {
-                prevValue: totalRecipients.prevValue ?? null,
-                value: totalRecipients.value,
-            },
-        },
-        {
-            id: 'GMV Influenced',
-            label: 'GMV Influenced',
-            currency: gmvInfluenced.currency,
-            hint: 'Total value of orders linked to customers who received messages during the campaign. Reflects the overall sales impact attributed to this flow.',
+            id: 'Total sales',
+            label: 'Total sales',
+            currency: totalSales.currency,
+            hint: 'Total value of orders placed within 5 days from receiving flow or campaign message.',
             withFixedWidth: true,
-            interpretAs: gmvInfluenced.interpretAs,
-            isLoading: gmvInfluenced.isLoading,
+            interpretAs: totalSales.interpretAs,
+            isLoading: totalSales.isLoading,
             metricFormat: 'currency' as MetricTrendFormat,
-            series: seriesToTwoDimensionalDataItem(gmvInfluenced.series, {
-                label: 'GMV Influenced',
+            series: seriesToTwoDimensionalDataItem(totalSales.series, {
+                label: 'Total sales',
                 ...seriesBaseOptions,
             }),
             trend: {
-                prevValue: gmvInfluenced.prevValue ?? null,
-                value: gmvInfluenced.value,
+                prevValue: totalSales.prevValue ?? null,
+                value: totalSales.value,
             },
         },
         {
-            id: 'Conversion Rate',
-            label: 'Conversion Rate',
-            hint: 'Percentage of recipients who completed a purchase after receiving a message. Connects message performance directly to revenue outcomes.',
+            id: 'Orders',
+            label: 'Orders',
+            currency: orders.currency,
+            hint: 'Total number of orders placed by a customers within 5 days from receiving flow or campaign message.',
+            withFixedWidth: true,
+            interpretAs: orders.interpretAs,
+            isLoading: orders.isLoading,
+            metricFormat: 'decimal-precision-1' as MetricTrendFormat,
+            series: seriesToTwoDimensionalDataItem(orders.series, {
+                label: 'Orders',
+                ...seriesBaseOptions,
+            }),
+            trend: {
+                prevValue: orders.prevValue ?? null,
+                value: orders.value,
+            },
+        },
+        {
+            id: 'Conversion rate',
+            label: 'Conversion rate',
+            hint: 'Percentage of recipients who completed a purchase after receiving a message.',
             withFixedWidth: true,
             interpretAs: conversionRate.interpretAs,
             isLoading: conversionRate.isLoading,
             metricFormat: 'percent' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(conversionRate.series, {
-                label: 'Conversion Rate',
+                label: 'Conversion rate',
                 ...seriesBaseOptions,
             }),
             trend: {
@@ -220,48 +225,14 @@ export const Analytics = () => {
             },
         },
         {
-            id: 'Average Order Value',
-            label: 'Average Order Value',
-            currency: averageOrderValue.currency,
-            hint: 'Average spend per order from customers influenced by this campaign. Used to understand purchasing behaviour and upsell effectiveness.',
-            interpretAs: averageOrderValue.interpretAs,
-            isLoading: averageOrderValue.isLoading,
-            metricFormat: 'currency' as MetricTrendFormat,
-            series: seriesToTwoDimensionalDataItem(averageOrderValue.series, {
-                label: 'Average Order Value',
-                ...seriesBaseOptions,
-            }),
-            trend: {
-                prevValue: averageOrderValue.prevValue ?? null,
-                value: averageOrderValue.value,
-            },
-        },
-        {
-            id: 'Revenue Per Recipient',
-            label: 'Revenue Per Recipient',
-            currency: revenuePerRecipient.currency,
-            hint: 'Total revenue attributed to this campaign divided by the number of recipients. Normalises impact—useful for comparing campaign performance.',
-            interpretAs: revenuePerRecipient.interpretAs,
-            isLoading: revenuePerRecipient.isLoading,
-            metricFormat: 'currency' as MetricTrendFormat,
-            series: seriesToTwoDimensionalDataItem(revenuePerRecipient.series, {
-                label: 'Revenue Per Recipient',
-                ...seriesBaseOptions,
-            }),
-            trend: {
-                prevValue: revenuePerRecipient.prevValue ?? null,
-                value: revenuePerRecipient.value,
-            },
-        },
-        {
-            id: 'Response Rate',
-            label: 'Response Rate',
-            hint: 'Percentage of recipients who replied to at least one message. Indicates engagement and how conversational the campaign felt.',
+            id: 'Reply rate',
+            label: 'Reply rate',
+            hint: 'Percentage of recipients who responded to at least one message.',
             interpretAs: responseRate.interpretAs,
             isLoading: responseRate.isLoading,
             metricFormat: 'percent' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(responseRate.series, {
-                label: 'Response Rate',
+                label: 'Reply rate',
                 ...seriesBaseOptions,
             }),
             trend: {
@@ -270,14 +241,14 @@ export const Analytics = () => {
             },
         },
         {
-            id: 'Click Through Rate',
-            label: 'Click Through Rate',
-            hint: 'Percentage of recipients who clicked a link in the message. Shows how compelling your message and offer are.',
+            id: 'Click-through rate (CTR)',
+            label: 'Click-through rate (CTR)',
+            hint: 'Percentage of recipients who clicked a link in the message.',
             interpretAs: clickThroughRate.interpretAs,
             isLoading: clickThroughRate.isLoading,
             metricFormat: 'percent' as MetricTrendFormat,
             series: seriesToTwoDimensionalDataItem(clickThroughRate.series, {
-                label: 'Click Through Rate',
+                label: 'Click-through rate (CTR)',
                 ...seriesBaseOptions,
             }),
             trend: {
@@ -286,19 +257,53 @@ export const Analytics = () => {
             },
         },
         {
-            id: 'Opt-out Rate',
-            label: 'Opt-out Rate',
-            hint: 'Percentage of recipients who unsubscribed after receiving a message. A leading indicator of audience fatigue or poor message relevance.',
-            interpretAs: optOutRate.interpretAs,
-            isLoading: optOutRate.isLoading,
-            metricFormat: 'percent' as MetricTrendFormat,
-            series: seriesToTwoDimensionalDataItem(optOutRate.series, {
-                label: 'Opt-out Rate',
+            id: 'Revenue per recipient',
+            label: 'Revenue per recipient',
+            currency: revenuePerRecipient.currency,
+            hint: 'Revenue divided by recipients.',
+            interpretAs: revenuePerRecipient.interpretAs,
+            isLoading: revenuePerRecipient.isLoading,
+            metricFormat: 'currency' as MetricTrendFormat,
+            series: seriesToTwoDimensionalDataItem(revenuePerRecipient.series, {
+                label: 'Revenue per recipient',
                 ...seriesBaseOptions,
             }),
             trend: {
-                prevValue: optOutRate.prevValue ?? null,
-                value: optOutRate.value,
+                prevValue: revenuePerRecipient.prevValue ?? null,
+                value: revenuePerRecipient.value,
+            },
+        },
+        {
+            id: 'Average Order Value (AOV)',
+            label: 'Average Order Value (AOV)',
+            currency: averageOrderValue.currency,
+            hint: 'Average value per order. Calculated as revenue divided by Orders.',
+            interpretAs: averageOrderValue.interpretAs,
+            isLoading: averageOrderValue.isLoading,
+            metricFormat: 'currency' as MetricTrendFormat,
+            series: seriesToTwoDimensionalDataItem(averageOrderValue.series, {
+                label: 'Average Order Value (AOV)',
+                ...seriesBaseOptions,
+            }),
+            trend: {
+                prevValue: averageOrderValue.prevValue ?? null,
+                value: averageOrderValue.value,
+            },
+        },
+        {
+            id: 'Messages sent',
+            label: 'Messages sent',
+            hint: 'The total number of messages successfully sent during the selected date range.',
+            interpretAs: totalRecipients.interpretAs,
+            isLoading: totalRecipients.isLoading,
+            metricFormat: 'decimal' as MetricTrendFormat,
+            series: seriesToTwoDimensionalDataItem(totalRecipients.series, {
+                label: 'Messages sent',
+                ...seriesBaseOptions,
+            }),
+            trend: {
+                prevValue: totalRecipients.prevValue ?? null,
+                value: totalRecipients.value,
             },
         },
     ]
@@ -311,10 +316,10 @@ export const Analytics = () => {
     const selectedData = metrics.find((m) => m.id === title)
 
     const defaultVisibleMetrics = new Set([
-        'Click Through Rate',
-        'Response Rate',
-        'Total Recipients',
-        'Revenue Per Recipient',
+        'Total sales',
+        'Orders',
+        'Conversion rate',
+        'Reply rate',
     ])
     const defaultMetricsConfig: MetricConfigItem[] = metrics.map(
         ({ id, label }) => ({
@@ -370,7 +375,7 @@ export const Analytics = () => {
                         as="button"
                         onClick={() => setIsEditModalOpen(true)}
                     >
-                        Edit metrics
+                        Edit key metrics
                     </Button>
                     <ConfigureMetricsModal
                         isOpen={isEditModalOpen}
@@ -380,6 +385,7 @@ export const Analytics = () => {
                             hint: metrics.find((m) => m.id === config.id)?.hint,
                         }))}
                         onSave={setKeyKpisConfig}
+                        size={SidePanelSize.Md}
                     />
                 </Box>
 

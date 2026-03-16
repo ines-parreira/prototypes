@@ -4,7 +4,7 @@ import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import type { MetricProps } from 'AIJourney/types/AIJourneyTypes'
 import { calculateRate } from 'AIJourney/utils'
 import {
-    aiJourneyGmvInfluencedQueryFactory,
+    aiJourneyRevenueQueryFactory,
     aiJourneyTotalNumberOfSalesConversationsQueryFactory,
 } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
@@ -17,13 +17,13 @@ export const useAIJourneyRevenuePerRecipient = (
     journeyIds?: string[],
 ): MetricProps => {
     const { data: revenueData, isFetching: isFetchingRevenue } = useMetricTrend(
-        aiJourneyGmvInfluencedQueryFactory(
+        aiJourneyRevenueQueryFactory(
             integrationId,
             filters,
             userTimezone,
             journeyIds,
         ),
-        aiJourneyGmvInfluencedQueryFactory(
+        aiJourneyRevenueQueryFactory(
             integrationId,
             {
                 ...filters,

@@ -3,8 +3,8 @@ import { useMemo } from 'react'
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import type { MetricProps } from 'AIJourney/types/AIJourneyTypes'
 import {
-    aiJourneyGmvInfluencedQueryFactory,
-    aiJourneyGmvInfluencedTimeSeriesQuery,
+    aiJourneyRevenueQueryFactory,
+    aiJourneyRevenueTimeSeriesQuery,
     aiJourneyTotalUniqueContactsQueryFactory,
     aiJourneyTotalUniqueContactsTimeSeriesQuery,
 } from 'AIJourney/utils/analytics-factories/factories'
@@ -35,13 +35,13 @@ export const useRevenuePerRecipient = (
     journeyIds?: string[],
 ): MetricProps => {
     const { data: gmvData, isFetching: isFetchingGmv } = useMetricTrend(
-        aiJourneyGmvInfluencedQueryFactory(
+        aiJourneyRevenueQueryFactory(
             integrationId,
             filters,
             userTimezone,
             journeyIds,
         ),
-        aiJourneyGmvInfluencedQueryFactory(
+        aiJourneyRevenueQueryFactory(
             integrationId,
             {
                 ...filters,
@@ -87,7 +87,7 @@ export const useRevenuePerRecipient = (
 
     const { data: gmvTimeSeriesData, isFetching: isFetchingGmvSeries } =
         useTimeSeries(
-            aiJourneyGmvInfluencedTimeSeriesQuery(
+            aiJourneyRevenueTimeSeriesQuery(
                 integrationId,
                 filters,
                 userTimezone,

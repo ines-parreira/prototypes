@@ -2,6 +2,8 @@ import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { vi } from 'vitest'
 
+import { SidePanelSize } from '@gorgias/axiom'
+
 import { ConfigureMetricsModal } from './ConfigureMetricsModal'
 import type { MetricConfigItem } from './types'
 
@@ -64,7 +66,7 @@ describe('ConfigureMetricsModal', () => {
     })
 
     it('should render all metrics', () => {
-        renderComponent()
+        renderComponent({ size: SidePanelSize.Md })
 
         expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
         expect(screen.getByText('Automated interactions')).toBeInTheDocument()

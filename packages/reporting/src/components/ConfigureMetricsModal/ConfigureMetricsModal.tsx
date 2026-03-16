@@ -12,6 +12,7 @@ import {
     OverlayFooter,
     OverlayHeader,
     SidePanel,
+    SidePanelSize,
     TableV1Body as TableBody,
     TableV1Cell as TableCell,
     TableV1Header as TableHeader,
@@ -34,6 +35,7 @@ type Props = {
     onSave: (metrics: MetricConfigItem[]) => void
     maxVisibleMetric?: number
     isLoading?: boolean
+    size?: SidePanelSize
 }
 
 type DraggableRowProps = {
@@ -121,6 +123,7 @@ export const ConfigureMetricsModal = ({
     onSave,
     maxVisibleMetric = 4,
     isLoading,
+    size = SidePanelSize.Sm,
 }: Props) => {
     const [localMetrics, setLocalMetrics] =
         useState<MetricConfigItem[]>(metrics)
@@ -188,7 +191,7 @@ export const ConfigureMetricsModal = ({
     }, [metrics, onClose])
 
     return (
-        <SidePanel isOpen={isOpen} onOpenChange={handleCancel} size="sm">
+        <SidePanel isOpen={isOpen} onOpenChange={handleCancel} size={size}>
             <OverlayHeader
                 title="Edit metrics"
                 description={`Choose the ${maxVisibleMetric} metrics you want to display and rearrange them as needed.`}

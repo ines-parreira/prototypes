@@ -27,7 +27,7 @@ import {
     statsFiltersToReportingFilters,
 } from 'domains/reporting/utils/reporting'
 
-export const aiJourneyGmvInfluencedQueryFactory = (
+export const aiJourneyRevenueQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
@@ -74,7 +74,7 @@ export const aiJourneyGmvInfluencedQueryFactory = (
     }
 }
 
-export const aiJourneyGmvInfluencedTimeSeriesQuery = (
+export const aiJourneyRevenueTimeSeriesQuery = (
     integrationId: string,
     filters: StatsFilters,
     timezone: string,
@@ -82,7 +82,7 @@ export const aiJourneyGmvInfluencedTimeSeriesQuery = (
     journeyIds?: string[],
 ): TimeSeriesQuery<AiSalesAgentOrdersCube> => {
     return {
-        ...aiJourneyGmvInfluencedQueryFactory(
+        ...aiJourneyRevenueQueryFactory(
             integrationId,
             filters,
             timezone,
