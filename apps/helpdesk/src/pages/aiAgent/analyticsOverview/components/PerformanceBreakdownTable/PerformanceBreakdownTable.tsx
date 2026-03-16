@@ -79,7 +79,10 @@ export const PerformanceBreakdownTable = () => {
                                 gap="xs"
                             >
                                 <Heading size="sm">No data found</Heading>
-                                <Text size="md" color="secondary">
+                                <Text
+                                    size="md"
+                                    color="content-neutral-secondary"
+                                >
                                     Try to adjust your report filters.
                                 </Text>
                             </Box>

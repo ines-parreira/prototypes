@@ -577,7 +577,7 @@ export default function SlashCommandSuggestions({
                                                                         : option.name,
                                                                 )}
                                                                 size="sm"
-                                                                color="gray"
+                                                                color="grey"
                                                             />
                                                         </span>
                                                         <span

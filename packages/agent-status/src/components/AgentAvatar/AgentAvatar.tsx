@@ -26,7 +26,7 @@ export const AgentAvatar = ({ userId, name, url }: AgentAvatarProps) => {
             <Avatar
                 name={name}
                 url={url}
-                statusSlot={
+                status={
                     statusIndicatorColor && (
                         <AvatarStatusIndicator color={statusIndicatorColor} />
                     )

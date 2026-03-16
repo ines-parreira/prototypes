@@ -30,10 +30,9 @@ export function UserInfoHeader({
                 <Avatar
                     name={userName}
                     url={avatarUrl}
-                    statusSlot={
+                    status={
                         indicatorColor && (
                             <AvatarStatusIndicator
-                                size="xl"
                                 color={indicatorColor}
                                 variant={isOffline ? 'secondary' : 'primary'}
                             />

@@ -30,7 +30,7 @@ const ShopifyWebsiteContent = ({
                 justifyContent="center"
                 className={css.fallback}
             >
-                <Text size="sm" color="text-tertiary">
+                <Text size="sm" color="content-neutral-tertiary">
                     Image unavailable
                 </Text>
             </Box>

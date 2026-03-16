@@ -10,6 +10,7 @@ import {
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
+import type { ColorValue } from '@gorgias/axiom'
 import type { TicketPriority as TicketPriorityType } from '@gorgias/helpdesk-queries'
 
 import type { TicketStatus } from '../../../../components/TicketMenuStatus/utils'
@@ -26,7 +27,7 @@ const STATUS_ICON_MAP: Record<TicketStatus, IconName> = {
     snoozed: IconName.TimerSnooze,
 }
 
-const STATUS_COLOR_MAP: Record<TicketStatus, string> = {
+const STATUS_COLOR_MAP: Record<TicketStatus, ColorValue> = {
     open: 'content-accent-default',
     closed: 'content-neutral-default',
     snoozed: 'content-additional-blue',
@@ -37,7 +38,7 @@ const PRIORITY_ICON_MAP: Partial<Record<TicketPriorityType, IconName>> = {
     critical: IconName.ArrowChevronUpDuo,
 }
 
-const PRIORITY_COLOR_MAP: Partial<Record<TicketPriorityType, string>> = {
+const PRIORITY_COLOR_MAP: Partial<Record<TicketPriorityType, ColorValue>> = {
     high: 'content-warning-default',
     critical: 'content-error-default',
 }

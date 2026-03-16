@@ -9,10 +9,10 @@ vi.mock('@gorgias/axiom', async () => {
     const actual = await vi.importActual('@gorgias/axiom')
     return {
         ...actual,
-        Avatar: vi.fn(({ name, statusSlot }) => (
+        Avatar: vi.fn(({ name, status }) => (
             <div data-testid="mock-avatar">
                 {name}
-                {statusSlot}
+                {status}
             </div>
         )),
         AvatarStatusIndicator: vi.fn(() => (
@@ -74,7 +74,6 @@ describe('UserInfoHeader', () => {
 
                 expect(MockAvatarStatusIndicator).toHaveBeenCalledWith(
                     expect.objectContaining({
-                        size: 'xl',
                         color: indicatorColor,
                         variant,
                     }),

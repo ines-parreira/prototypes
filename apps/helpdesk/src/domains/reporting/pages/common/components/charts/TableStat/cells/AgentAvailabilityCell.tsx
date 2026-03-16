@@ -52,7 +52,7 @@ export function AgentAvailabilityCell({ userId }: Props) {
         return (
             <Box gap="xs">
                 <Icon name="triangle-warning" color="red" />
-                <Text color="critical">Failed to load status</Text>
+                <Text color="content-error-default">Failed to load status</Text>
             </Box>
         )
     }

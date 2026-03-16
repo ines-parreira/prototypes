@@ -331,7 +331,7 @@ export const UploadDocumentModal = ({ helpCenterId, shopName }: Props) => {
                                 </Button>
                             </Box>
                             <Text
-                                color="secondary"
+                                color="content-neutral-secondary"
                                 align="center"
                                 className={css.supportedFiles}
                             >

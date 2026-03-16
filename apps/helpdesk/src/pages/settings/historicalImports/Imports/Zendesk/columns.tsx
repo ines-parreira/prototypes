@@ -39,7 +39,7 @@ export const columns: ColumnDef<Integration, unknown>[] = [
                 <Box flexDirection="column" gap="xs" className={css.status}>
                     <Text as="span">{status}</Text>
                     {updatedDatetime && (
-                        <Text as="p" size="xs" color="neutral-grey-5">
+                        <Text as="p" size="xs" color="content-neutral-tertiary">
                             {updatedDatetime}
                         </Text>
                     )}

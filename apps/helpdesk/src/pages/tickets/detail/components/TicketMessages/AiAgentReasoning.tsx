@@ -224,7 +224,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                             <Icon
                                 name="info"
                                 size="sm"
-                                color="--content-accent-default"
+                                color="content-accent-default"
                             />
                         )}
                         {isEvoliTicket ? EVOLI_STATIC_MESSAGE : staticMessage}

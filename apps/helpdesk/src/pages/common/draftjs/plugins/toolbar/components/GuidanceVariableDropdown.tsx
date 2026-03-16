@@ -256,7 +256,7 @@ const GuidanceVariableDropdown = ({
                                                     : option.name,
                                             )}
                                             size="sm"
-                                            color="gray"
+                                            color="grey"
                                         />
                                     </span>
                                     <span className={css.itemName}>
@@ -308,7 +308,7 @@ const GuidanceVariableDropdown = ({
                                                         variable.category,
                                                     )}
                                                     size="sm"
-                                                    color="gray"
+                                                    color="grey"
                                                 />
                                             </span>
                                             <span className={css.itemName}>

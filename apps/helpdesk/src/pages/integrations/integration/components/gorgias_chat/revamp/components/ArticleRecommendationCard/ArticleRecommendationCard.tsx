@@ -48,7 +48,11 @@ export function ArticleRecommendationCard({
                         />
                     </Box>
                 </Box>
-                <Text size="md" className={css.description} color="secondary">
+                <Text
+                    size="md"
+                    className={css.description}
+                    color="content-neutral-secondary"
+                >
                     Automatically send a Help Center article in response to
                     customer questions in Chat, if a relevant article exists. If
                     a customer requests more help, a ticket will be created for

@@ -89,7 +89,10 @@ export const PaymentHistoryTable = ({
                                         alignItems="center"
                                         flexDirection="row"
                                     >
-                                        <Text size="sm" color="secondary">
+                                        <Text
+                                            size="sm"
+                                            color="content-neutral-secondary"
+                                        >
                                             {invoices.length} items
                                         </Text>
                                         <Button

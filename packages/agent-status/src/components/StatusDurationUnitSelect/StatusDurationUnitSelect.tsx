@@ -76,7 +76,7 @@ export function StatusDurationUnitSelect({
                 {(item) => <ListItem id={item.id} label={item.name} />}
             </Select>
             {error && (
-                <Text size="sm" color="error">
+                <Text size="sm" color="content-error-default">
                     {error}
                 </Text>
             )}

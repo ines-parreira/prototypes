@@ -15,7 +15,7 @@ export function TicketThreadEventDateTime({
     return (
         <Box gap="xxxs" alignItems="center" justifyContent="flex-end">
             <Dot color="grey" size="sm" />
-            <Text size="sm">
+            <Text size="sm" color="content-neutral-tertiary">
                 {formatDatetime(datetime, datetimeFormat, timezone)}
             </Text>
         </Box>

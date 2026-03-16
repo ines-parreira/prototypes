@@ -147,7 +147,7 @@ export const AgentAvailabilityTable = ({
     if (isError) {
         return (
             <Box padding="md">
-                <Text color="error">
+                <Text color="content-error-default">
                     Error loading availability data. Please try again.
                 </Text>
             </Box>

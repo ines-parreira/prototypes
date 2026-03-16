@@ -256,7 +256,7 @@ export function VersionHistoryButton<V extends VersionItem>({
                     padding="sm"
                     paddingBottom="xs"
                 >
-                    <Text size="sm" color="secondary">
+                    <Text size="sm" color="content-neutral-secondary">
                         Select a version to preview
                     </Text>
                 </Box>

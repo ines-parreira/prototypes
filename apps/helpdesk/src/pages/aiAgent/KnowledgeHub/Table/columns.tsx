@@ -448,13 +448,13 @@ export const getColumns = (
                             <Icon
                                 name="check"
                                 size="md"
-                                color="--content-success-primary"
+                                color="content-success-primary"
                             />
                         ) : (
                             <Icon
                                 name="close"
                                 size="md"
-                                color="--content-neutral-tertiary"
+                                color="content-neutral-tertiary"
                             />
                         )}
                     </Box>

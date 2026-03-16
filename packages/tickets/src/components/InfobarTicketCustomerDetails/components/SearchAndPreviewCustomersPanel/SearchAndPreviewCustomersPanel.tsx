@@ -94,7 +94,7 @@ export function SearchAndPreviewCustomersPanel({
                             />
                         </Box>
                         {searchError && (
-                            <Text size="sm" color="error">
+                            <Text size="sm" color="content-error-default">
                                 <InfoSection
                                     icon="triangle-warning"
                                     description="Failed to search customers. Please try again."
