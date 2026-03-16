@@ -34,7 +34,7 @@ export type FeatureMetrics = {
     feature: FeatureName
     automationRate: number | null
     automatedInteractions: number | null
-    handoverCount: number | null
+    handoverInteractions: number | null
     costSaved: number | null
     timeSaved: number | null
 }
@@ -46,7 +46,7 @@ export type PerformanceMetricsPerFeature = {
     loadingStates: {
         automationRate: boolean
         automatedInteractions: boolean
-        handovers: boolean
+        handoverInteractions: boolean
         timeSaved: boolean
         costSaved: boolean
     }
@@ -101,14 +101,14 @@ export const buildPerformanceMetrics = (
         const automationRate =
             raw.automationRateByFeature?.find((item) => item.name === feature)
                 ?.value ?? null
-        const handoverCount =
+        const handoverInteractions =
             raw.handoversByFeature[FEATURE_TO_AUTOMATION_TYPE[feature]] ?? null
 
         return {
             feature,
             automationRate,
             automatedInteractions: interactionsValue,
-            handoverCount,
+            handoverInteractions,
             costSaved:
                 interactionsValue !== null
                     ? interactionsValue * raw.costSavedPerInteraction
@@ -250,7 +250,7 @@ export const usePerformanceMetricsPerFeature =
                     flowsInteractions.isFetching ||
                     articleRecommendationInteractions.isFetching ||
                     orderManagementInteractions.isFetching,
-                handovers: handoverInteractionsPerFeature.isFetching,
+                handoverInteractions: handoverInteractionsPerFeature.isFetching,
                 timeSaved: ticketHandleTime.isFetching,
                 costSaved:
                     aiAgentInteractions.isFetching ||

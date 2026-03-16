@@ -1,5 +1,8 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
-import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
+import {
+    AutomationFeatureType,
+    AutomationSkillType,
+} from 'domains/reporting/models/scopes/constants'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
@@ -15,6 +18,7 @@ const handoverInteractionsScope = defineScope({
         'customField',
         'engagementType',
         'storeIntegrationId',
+        'orderManagementType',
     ],
     timeDimensions: ['eventDatetime'],
     filters: [
@@ -56,6 +60,28 @@ export const handoverInteractionsPerFeatureQueryFactoryV2 = (
     ctx: HandoverInteractionsContext,
 ) => handoverInteractionsPerFeature.build(ctx)
 
+export const handoverInteractionsPerOrderManagementType =
+    handoverInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.HANDOVER_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['handoverInteractionsCount'],
+            dimensions: ['orderManagementType'],
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'automationFeatureType',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationFeatureType.OrderManagement],
+                },
+            ] as any,
+        }))
+
+export const handoverInteractionsPerOrderManagementTypeQueryFactoryV2 = (
+    ctx: HandoverInteractionsContext,
+) => handoverInteractionsPerOrderManagementType.build(ctx)
+
 export const aiAgentHandoverInteractions = handoverInteractionsScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS)
     .defineQuery(({ ctx, config }) => ({
@@ -83,7 +109,7 @@ export const aiSalesAgentHandoverInteractions = handoverInteractionsScope
             {
                 member: 'aiAgentSkill',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: [AutomationFeatureType.AiAgentSales],
+                values: [AutomationSkillType.AiAgentSales],
             },
         ] as any,
     }))
@@ -101,7 +127,7 @@ export const aiSupportHandoverInteractions = handoverInteractionsScope
             {
                 member: 'aiAgentSkill',
                 operator: LogicalOperatorEnum.ONE_OF,
-                values: [AutomationFeatureType.AiAgentSupport],
+                values: [AutomationSkillType.AiAgentSupport],
             },
         ] as any,
     }))

@@ -1,4 +1,6 @@
 import {
+    automatedInteractionsPerOrderManagementType,
+    automatedInteractionsPerOrderManagementTypeQueryFactoryV2,
     dynamicOverallAutomatedInteractions,
     dynamicOverallAutomatedInteractionsQueryFactoryV2,
 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
@@ -67,6 +69,42 @@ describe('overallAutomatedInteractionsScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('automatedInteractionsPerOrderManagementType', () => {
+        it('creates query with orderManagementType dimension and OrderManagement feature filter', () => {
+            const actual =
+                automatedInteractionsPerOrderManagementType.build(context)
+
+            expect(actual).toEqual({
+                metricName: 'automated-interactions-per-order-management-type',
+                scope: 'overall-automated-interactions',
+                measures: ['automatedInteractionsCount'],
+                dimensions: ['orderManagementType'],
+                timezone: 'utc',
+                filters: [
+                    ...periodFilters,
+                    {
+                        member: 'automationFeatureType',
+                        operator: 'one-of',
+                        values: ['order-management'],
+                    },
+                ],
+            })
+        })
+    })
+
+    describe('automatedInteractionsPerOrderManagementTypeQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            const factoryResult =
+                automatedInteractionsPerOrderManagementTypeQueryFactoryV2(
+                    context,
+                )
+            const buildResult =
+                automatedInteractionsPerOrderManagementType.build(context)
+
+            expect(factoryResult).toEqual(buildResult)
         })
     })
 

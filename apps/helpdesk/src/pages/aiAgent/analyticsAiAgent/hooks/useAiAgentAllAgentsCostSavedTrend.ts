@@ -3,7 +3,7 @@ import {
     useTrendFromMultipleMetricsTrend,
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { formatData } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
+import { formatCostSavedData } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
@@ -50,7 +50,10 @@ export const useAiAgentAllAgentsCostSavedTrend = (
 
     return {
         ...automatedInteractionTrend,
-        data: formatData(automatedInteractionTrend, costSavedPerInteraction),
+        data: formatCostSavedData(
+            automatedInteractionTrend,
+            costSavedPerInteraction,
+        ),
     }
 }
 
@@ -71,7 +74,10 @@ export const fetchAiAgentAllAgentsCostSavedTrend: MetricTrendFetch = async (
     )
 
     return {
-        data: formatData(automatedInteractionTrend, costSavedPerInteraction),
+        data: formatCostSavedData(
+            automatedInteractionTrend,
+            costSavedPerInteraction,
+        ),
         isFetching: false,
         isError: false,
     }

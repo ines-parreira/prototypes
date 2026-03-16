@@ -269,6 +269,10 @@ const reportConfigMock = {
             chartComponent: () => null,
             label: 'Performance Table',
         },
+        [AnalyticsOverviewChart.OrderManagementTable]: {
+            chartComponent: () => null,
+            label: 'Order Management Table',
+        },
         [AnalyticsOverviewChart.HandoverInteractionsCard]: {
             chartComponent: () => null,
             label: 'Handover Interactions',

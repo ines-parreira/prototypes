@@ -4,6 +4,7 @@ import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 const overallAutomationRateScope = defineScope({
     scope: MetricScope.OverallAutomationRate,
@@ -73,3 +74,25 @@ export const dynamicOverallAutomationRate = overallAutomationRateScope
 
 export const dynamicOverallAutomationRateQueryFactoryV2 = (ctx: Context) =>
     dynamicOverallAutomationRate.build(ctx)
+
+export const overallAutomationRatePerOrderManagementType =
+    overallAutomationRateScope
+        .defineMetricName(
+            METRIC_NAMES.OVERALL_AUTOMATION_RATE_PER_ORDER_MANAGEMENT_TYPE,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['automationRate'] as const,
+            dimensions: ['orderManagementType'],
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'automationFeatureType',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationFeatureType.OrderManagement],
+                },
+            ] as any,
+        }))
+
+export const overallAutomationRatePerOrderManagementTypeQueryFactoryV2 = (
+    ctx: Context,
+) => overallAutomationRatePerOrderManagementType.build(ctx)

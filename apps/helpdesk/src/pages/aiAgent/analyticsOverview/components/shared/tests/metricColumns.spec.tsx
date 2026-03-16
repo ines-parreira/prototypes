@@ -28,7 +28,7 @@ jest.mock(
 const defaultLoadingStates: MetricLoadingStates = {
     automationRate: false,
     automatedInteractions: false,
-    handovers: false,
+    handoverInteractions: false,
     timeSaved: false,
     costSaved: false,
 }

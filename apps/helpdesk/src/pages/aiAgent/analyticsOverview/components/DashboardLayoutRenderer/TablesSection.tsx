@@ -63,7 +63,7 @@ export const TablesSection = ({
             {hasMultipleTables && (
                 <ButtonGroup
                     selectedKey={activeTableId}
-                    onSelectionChange={(key) => {
+                    onSelectionChange={(key: string) => {
                         setActiveTableId(key)
                         onTabChange?.(key as ManagedDashboardsTabId)
                     }}

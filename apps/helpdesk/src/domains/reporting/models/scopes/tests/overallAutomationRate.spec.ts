@@ -6,6 +6,8 @@ import {
     dynamicOverallAutomationRate,
     dynamicOverallAutomationRateQueryFactoryV2,
     overallAutomationRate,
+    overallAutomationRatePerOrderManagementType,
+    overallAutomationRatePerOrderManagementTypeQueryFactoryV2,
     overallAutomationRateQueryFactoryV2,
 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -172,6 +174,39 @@ describe('overallAutomationRateScope', () => {
         })
     })
 
+    describe('overallAutomationRatePerOrderManagementType', () => {
+        it('creates query with orderManagementType dimension and OrderManagement feature filter', () => {
+            const actual =
+                overallAutomationRatePerOrderManagementType.build(context)
+
+            expect(actual).toEqual({
+                metricName:
+                    'overall-interaction-rate-per-order-management-type',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                dimensions: ['orderManagementType'],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'automationFeatureType',
+                        operator: 'one-of',
+                        values: ['order-management'],
+                    },
+                ],
+            })
+        })
+    })
+
     describe('QueryV2Factory methods', () => {
         describe('overallAutomationRateQueryFactoryV2', () => {
             it('returns the same result as calling build directly', () => {
@@ -198,6 +233,19 @@ describe('overallAutomationRateScope', () => {
                 const factoryResult =
                     automationRatePerFeatureQueryFactoryV2(context)
                 const buildResult = automationRatePerFeature.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('overallAutomationRatePerOrderManagementTypeQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    overallAutomationRatePerOrderManagementTypeQueryFactoryV2(
+                        context,
+                    )
+                const buildResult =
+                    overallAutomationRatePerOrderManagementType.build(context)
 
                 expect(factoryResult).toEqual(buildResult)
             })

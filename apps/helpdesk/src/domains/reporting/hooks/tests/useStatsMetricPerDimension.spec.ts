@@ -4,8 +4,13 @@ import { waitFor } from '@testing-library/react'
 import { appQueryClient } from 'api/queryClient'
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
+    assembleEntityRows,
+    fetchEntityMetrics,
     fetchStatsMetricPerDimension,
+    mapMetricValues,
     selectMeasurePerDimension,
+    toEntityMap,
+    useEntityMetrics,
     useStatsMetricPerDimension,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import { fetchPostStats, usePostStats } from 'domains/reporting/models/queries'
@@ -564,6 +569,464 @@ describe('useStatsMetricPerDimension', () => {
             expect(result.data?.allData.every((item) => 'decile' in item)).toBe(
                 true,
             )
+        })
+    })
+
+    describe('toEntityMap', () => {
+        it('returns empty object when data is null', () => {
+            const result = toEntityMap({ data: null })
+            expect(result).toEqual({})
+        })
+
+        it('maps allValues to a record of dimension to value', () => {
+            const result = toEntityMap({
+                data: {
+                    value: 100,
+                    decile: null,
+                    allData: [],
+                    allValues: [
+                        { dimension: 'cancel_order', value: 100, decile: null },
+                        { dimension: 'track_order', value: 200, decile: null },
+                    ],
+                    dimensions: [],
+                    measures: [],
+                },
+            })
+
+            expect(result).toEqual({ cancel_order: 100, track_order: 200 })
+        })
+
+        it('returns empty object when allValues is empty', () => {
+            const result = toEntityMap({
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: [],
+                    allValues: [],
+                    dimensions: [],
+                    measures: [],
+                },
+            })
+
+            expect(result).toEqual({})
+        })
+
+        it('includes null values in the map', () => {
+            const result = toEntityMap({
+                data: {
+                    value: null,
+                    decile: null,
+                    allData: [],
+                    allValues: [
+                        {
+                            dimension: 'cancel_order',
+                            value: null,
+                            decile: null,
+                        },
+                    ],
+                    dimensions: [],
+                    measures: [],
+                },
+            })
+
+            expect(result).toEqual({ cancel_order: null })
+        })
+    })
+
+    describe('mapMetricValues', () => {
+        const baseMetric = {
+            isFetching: false,
+            isError: false,
+            data: {
+                value: 100,
+                decile: null,
+                allData: [],
+                allValues: [
+                    { dimension: 'a', value: 100, decile: null },
+                    { dimension: 'b', value: 200, decile: null },
+                ],
+                dimensions: [],
+                measures: [],
+            },
+        }
+
+        it('transforms value and allValues using the transform function', () => {
+            const result = mapMetricValues(baseMetric, (v) =>
+                v !== null ? v * 2 : null,
+            )
+
+            expect(result.data?.value).toBe(200)
+            expect(result.data?.allValues).toEqual([
+                { dimension: 'a', value: 200, decile: null },
+                { dimension: 'b', value: 400, decile: null },
+            ])
+        })
+
+        it('returns null data when metric.data is null', () => {
+            const result = mapMetricValues(
+                { isFetching: false, isError: false, data: null },
+                (v) => v,
+            )
+
+            expect(result.data).toBeNull()
+        })
+
+        it('preserves isFetching and isError from the metric', () => {
+            const result = mapMetricValues(
+                { isFetching: true, isError: true, data: null },
+                (v) => v,
+            )
+
+            expect(result.isFetching).toBe(true)
+            expect(result.isError).toBe(true)
+        })
+
+        it('propagates isFetching from extra dependencies', () => {
+            const result = mapMetricValues(baseMetric, (v) => v, [
+                { isFetching: true, isError: false },
+            ])
+
+            expect(result.isFetching).toBe(true)
+        })
+
+        it('propagates isError from extra dependencies', () => {
+            const result = mapMetricValues(baseMetric, (v) => v, [
+                { isFetching: false, isError: true },
+            ])
+
+            expect(result.isError).toBe(true)
+        })
+
+        it('handles null transform result', () => {
+            const result = mapMetricValues(baseMetric, () => null)
+
+            expect(result.data?.value).toBeNull()
+            expect(result.data?.allValues).toEqual([
+                { dimension: 'a', value: null, decile: null },
+                { dimension: 'b', value: null, decile: null },
+            ])
+        })
+    })
+
+    describe('assembleEntityRows', () => {
+        const buildRow = (entity: string) => ({ entity })
+
+        it('returns empty array when all values are zero', () => {
+            const result = assembleEntityRows(
+                { metric1: { cancel_order: 0, track_order: 0 } },
+                ['cancel_order', 'track_order'],
+                buildRow,
+            )
+
+            expect(result).toEqual([])
+        })
+
+        it('returns empty array when all values are null', () => {
+            const result = assembleEntityRows(
+                { metric1: { cancel_order: null, track_order: null } },
+                ['cancel_order', 'track_order'],
+                buildRow,
+            )
+
+            expect(result).toEqual([])
+        })
+
+        it('returns rows for all entities when at least one value is non-zero', () => {
+            const result = assembleEntityRows(
+                { metric1: { cancel_order: 100, track_order: 0 } },
+                ['cancel_order', 'track_order'],
+                buildRow,
+            )
+
+            expect(result).toEqual([
+                { entity: 'cancel_order' },
+                { entity: 'track_order' },
+            ])
+        })
+
+        it('returns rows for all entities when data has values across multiple metrics', () => {
+            const result = assembleEntityRows(
+                {
+                    metric1: { cancel_order: 0, track_order: 0 },
+                    metric2: { cancel_order: 50, track_order: 0 },
+                },
+                ['cancel_order', 'track_order'],
+                buildRow,
+            )
+
+            expect(result).toEqual([
+                { entity: 'cancel_order' },
+                { entity: 'track_order' },
+            ])
+        })
+
+        it('skips empty check when skipEmptyCheck is true', () => {
+            const result = assembleEntityRows(
+                { metric1: { cancel_order: 0 } },
+                ['cancel_order'],
+                buildRow,
+                { skipEmptyCheck: true },
+            )
+
+            expect(result).toEqual([{ entity: 'cancel_order' }])
+        })
+
+        it('passes entity to buildRow', () => {
+            const buildRowSpy = jest.fn((entity: string) => ({ entity }))
+            assembleEntityRows(
+                { metric1: { cancel_order: 10 } },
+                ['cancel_order', 'track_order'],
+                buildRowSpy,
+            )
+
+            expect(buildRowSpy).toHaveBeenCalledWith(
+                'cancel_order',
+                expect.any(Number),
+                expect.any(Array),
+            )
+            expect(buildRowSpy).toHaveBeenCalledWith(
+                'track_order',
+                expect.any(Number),
+                expect.any(Array),
+            )
+        })
+    })
+
+    describe('useEntityMetrics', () => {
+        const filters = {
+            period: {
+                start_datetime: '2025-09-03T00:00:00.000',
+                end_datetime: '2025-09-03T23:59:59.000',
+            },
+        }
+
+        it('calls use function with filters and timezone for each config entry', async () => {
+            const mockUseResult = {
+                isFetching: false,
+                isError: false,
+                data: {
+                    value: 100,
+                    decile: null,
+                    allData: [],
+                    allValues: [
+                        { dimension: 'cancel_order', value: 100, decile: null },
+                    ],
+                    dimensions: [],
+                    measures: [],
+                },
+            }
+            const mockUseFn = jest.fn().mockReturnValue(mockUseResult)
+            const config = {
+                automationRate: { use: mockUseFn, fetch: jest.fn() },
+            }
+
+            const { result } = renderHook(
+                () => useEntityMetrics(config, filters, 'utc'),
+                { wrapper: mockQueryClientProvider().QueryClientProvider },
+            )
+
+            await waitFor(() => {
+                expect(mockUseFn).toHaveBeenCalledWith(filters, 'utc')
+                expect(result.current.data.automationRate).toEqual({
+                    cancel_order: 100,
+                })
+                expect(result.current.isLoading).toBe(false)
+                expect(result.current.isError).toBe(false)
+            })
+        })
+
+        it('reflects isLoading true when any metric is fetching', async () => {
+            const mockUseFn = jest.fn().mockReturnValue({
+                isFetching: true,
+                isError: false,
+                data: null,
+            })
+            const config = {
+                automationRate: { use: mockUseFn, fetch: jest.fn() },
+            }
+
+            const { result } = renderHook(
+                () => useEntityMetrics(config, filters, 'utc'),
+                { wrapper: mockQueryClientProvider().QueryClientProvider },
+            )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(true)
+            })
+        })
+
+        it('assembles data from multiple config entries', async () => {
+            const config = {
+                automationRate: {
+                    use: jest.fn().mockReturnValue({
+                        isFetching: false,
+                        isError: false,
+                        data: {
+                            value: 10,
+                            decile: null,
+                            allData: [],
+                            allValues: [
+                                {
+                                    dimension: 'cancel_order',
+                                    value: 10,
+                                    decile: null,
+                                },
+                            ],
+                            dimensions: [],
+                            measures: [],
+                        },
+                    }),
+                    fetch: jest.fn(),
+                },
+                handoverCount: {
+                    use: jest.fn().mockReturnValue({
+                        isFetching: false,
+                        isError: false,
+                        data: {
+                            value: 5,
+                            decile: null,
+                            allData: [],
+                            allValues: [
+                                {
+                                    dimension: 'cancel_order',
+                                    value: 5,
+                                    decile: null,
+                                },
+                            ],
+                            dimensions: [],
+                            measures: [],
+                        },
+                    }),
+                    fetch: jest.fn(),
+                },
+            }
+
+            const { result } = renderHook(
+                () => useEntityMetrics(config, filters, 'utc'),
+                { wrapper: mockQueryClientProvider().QueryClientProvider },
+            )
+
+            await waitFor(() => {
+                expect(result.current.data.automationRate).toEqual({
+                    cancel_order: 10,
+                })
+                expect(result.current.data.handoverCount).toEqual({
+                    cancel_order: 5,
+                })
+                expect(result.current.loadingStates).toEqual({
+                    automationRate: false,
+                    handoverCount: false,
+                })
+            })
+        })
+    })
+
+    describe('fetchEntityMetrics', () => {
+        const filters = {
+            period: {
+                start_datetime: '2025-09-03T00:00:00.000',
+                end_datetime: '2025-09-03T23:59:59.000',
+            },
+        }
+
+        it('calls fetch function with filters and timezone for each config entry', async () => {
+            const mockFetch = jest.fn().mockResolvedValue({
+                isFetching: false,
+                isError: false,
+                data: {
+                    value: 100,
+                    decile: null,
+                    allData: [],
+                    allValues: [
+                        { dimension: 'cancel_order', value: 100, decile: null },
+                    ],
+                    dimensions: [],
+                    measures: [],
+                },
+            })
+            const config = {
+                automationRate: { use: jest.fn(), fetch: mockFetch },
+            }
+
+            const result = await fetchEntityMetrics(config, filters, 'utc')
+
+            expect(mockFetch).toHaveBeenCalledWith(filters, 'utc')
+            expect(result.data.automationRate).toEqual({ cancel_order: 100 })
+            expect(result.isLoading).toBe(false)
+            expect(result.isError).toBe(false)
+        })
+
+        it('reflects isError true when any fetch result has isError', async () => {
+            const config = {
+                automationRate: {
+                    use: jest.fn(),
+                    fetch: jest.fn().mockResolvedValue({
+                        isFetching: false,
+                        isError: true,
+                        data: null,
+                    }),
+                },
+            }
+
+            const result = await fetchEntityMetrics(config, filters, 'utc')
+
+            expect(result.isError).toBe(true)
+        })
+
+        it('assembles data from multiple config entries in parallel', async () => {
+            const config = {
+                automationRate: {
+                    use: jest.fn(),
+                    fetch: jest.fn().mockResolvedValue({
+                        isFetching: false,
+                        isError: false,
+                        data: {
+                            value: 10,
+                            decile: null,
+                            allData: [],
+                            allValues: [
+                                {
+                                    dimension: 'cancel_order',
+                                    value: 10,
+                                    decile: null,
+                                },
+                            ],
+                            dimensions: [],
+                            measures: [],
+                        },
+                    }),
+                },
+                handoverCount: {
+                    use: jest.fn(),
+                    fetch: jest.fn().mockResolvedValue({
+                        isFetching: false,
+                        isError: false,
+                        data: {
+                            value: 5,
+                            decile: null,
+                            allData: [],
+                            allValues: [
+                                {
+                                    dimension: 'cancel_order',
+                                    value: 5,
+                                    decile: null,
+                                },
+                            ],
+                            dimensions: [],
+                            measures: [],
+                        },
+                    }),
+                },
+            }
+
+            const result = await fetchEntityMetrics(config, filters, 'utc')
+
+            expect(result.data.automationRate).toEqual({ cancel_order: 10 })
+            expect(result.data.handoverCount).toEqual({ cancel_order: 5 })
+            expect(result.loadingStates).toEqual({
+                automationRate: false,
+                handoverCount: false,
+            })
         })
     })
 })

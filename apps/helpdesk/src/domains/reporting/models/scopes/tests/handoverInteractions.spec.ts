@@ -8,6 +8,8 @@ import {
     handoverInteractions,
     handoverInteractionsPerFeature,
     handoverInteractionsPerFeatureQueryFactoryV2,
+    handoverInteractionsPerOrderManagementType,
+    handoverInteractionsPerOrderManagementTypeQueryFactoryV2,
     handoverInteractionsV2QueryFactory,
 } from 'domains/reporting/models/scopes/handoverInteractions'
 import type {
@@ -133,6 +135,30 @@ describe('handoverInteractionsScope', () => {
         })
     })
 
+    describe('handoverInteractionsPerOrderManagementType', () => {
+        it('creates query with orderManagementType dimension and automationFeatureType filter for order-management', () => {
+            const actual =
+                handoverInteractionsPerOrderManagementType.build(context)
+
+            expect(actual).toEqual({
+                metricName: 'handover-interactions-per-order-management-type',
+                scope: 'handover-interactions',
+                measures: ['handoverInteractionsCount'],
+                dimensions: ['orderManagementType'],
+                timezone: 'utc',
+                filters: [
+                    ...periodFilters,
+                    {
+                        member: 'automationFeatureType',
+                        operator: 'one-of',
+                        values: ['order-management'],
+                    },
+                ],
+                time_dimensions: timeDimensions,
+            })
+        })
+    })
+
     describe('handoverInteractionsPerFeature', () => {
         it('creates query with automationFeatureType dimension', () => {
             const actual = handoverInteractionsPerFeature.build(context)
@@ -187,6 +213,18 @@ describe('handoverInteractionsScope', () => {
                 expect(
                     handoverInteractionsPerFeatureQueryFactoryV2(context),
                 ).toEqual(handoverInteractionsPerFeature.build(context))
+            })
+        })
+
+        describe('handoverInteractionsPerOrderManagementTypeQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                expect(
+                    handoverInteractionsPerOrderManagementTypeQueryFactoryV2(
+                        context,
+                    ),
+                ).toEqual(
+                    handoverInteractionsPerOrderManagementType.build(context),
+                )
             })
         })
     })

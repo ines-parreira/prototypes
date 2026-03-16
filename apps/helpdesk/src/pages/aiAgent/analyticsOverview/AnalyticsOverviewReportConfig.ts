@@ -22,9 +22,12 @@ import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/ana
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
 import { AutomationLineChart } from 'pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart'
 import { AutomationRateComboChart } from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
+import { ORDER_MANAGEMENT_TABLE } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/columns'
+import { OrderManagementTable } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/OrderManagementTable'
 import { PERFORMANCE_BREAKDOWN_TABLE } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
 import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable'
 import { fetchPerformanceMetricsPerFeatureReport } from 'pages/aiAgent/analyticsOverview/hooks/fetchPerformanceBreakdownData'
+import { fetchOrderManagementReport } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
 import { STATS_ROUTES } from 'routes/constants'
 
 export enum AnalyticsOverviewChart {
@@ -37,6 +40,7 @@ export enum AnalyticsOverviewChart {
     AutomatedInteractionsComboChart = 'automated_interactions_combo_chart',
     AutomationLineChart = 'automation_line_chart',
     PerformanceTable = 'performance_table',
+    OrderManagementTable = 'order_management_table',
     HandoverInteractionsCard = 'handover_interactions_card',
     DecreaseInFRTCard = 'decrease_in_frt_card',
 }
@@ -197,6 +201,18 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     },
                 ],
                 description: PERFORMANCE_BREAKDOWN_TABLE.description,
+                chartType: ChartType.Table,
+            },
+            [AnalyticsOverviewChart.OrderManagementTable]: {
+                chartComponent: OrderManagementTable,
+                label: ORDER_MANAGEMENT_TABLE.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Table,
+                        fetch: fetchOrderManagementReport,
+                    },
+                ],
+                description: ORDER_MANAGEMENT_TABLE.description,
                 chartType: ChartType.Table,
             },
         },

@@ -31,13 +31,12 @@ import {
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportFetch } from 'domains/reporting/pages/dashboards/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
+import { PERFORMANCE_BREAKDOWN_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
 import { fetchHandoverInteractionsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/useHandoverInteractionsPerFeature'
 import type { FeatureMetrics } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
+import { buildPerformanceMetrics } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { createCsv } from 'utils/file'
-
-import { PERFORMANCE_BREAKDOWN_COLUMNS } from '../components/PerformanceBreakdownTable/columns'
-import { buildPerformanceMetrics } from './usePerformanceMetricsPerFeature'
 
 const PERFORMANCE_BREAKDOWN_FILENAME = 'performance-breakdown'
 

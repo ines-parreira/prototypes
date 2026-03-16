@@ -1,5 +1,7 @@
 import type { ColumnDef } from '@gorgias/axiom'
+import { Text } from '@gorgias/axiom'
 
+import css from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/OrderManagementTable.less'
 import type {
     MetricColumnConfig,
     MetricLoadingStates,
@@ -8,17 +10,25 @@ import {
     buildMetricColumnDefs as buildGenericMetricColumnDefs,
     buildNameColumnDef,
 } from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
-import type { FeatureMetrics } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
+import type {
+    OrderManagementEntityMetrics,
+    OrderManagementEntityName,
+} from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
 
-import css from './PerformanceBreakdownTable.less'
-
-export const PERFORMANCE_BREAKDOWN_TABLE = {
-    title: 'Performance breakdown',
-    description:
-        'Automation performance metrics per feature, including automation rate, automated interactions, handovers, cost saved, and time saved.',
+export const ENTITY_DISPLAY_NAMES: Record<OrderManagementEntityName, string> = {
+    cancel_order: 'Cancel order',
+    track_order: 'Track order',
+    loop_returns_started: 'Return orders',
+    automated_response_started: 'Report order issue',
 }
 
-export const PERFORMANCE_BREAKDOWN_COLUMNS: MetricColumnConfig[] = [
+export const ORDER_MANAGEMENT_TABLE = {
+    title: 'Order Management',
+    description:
+        'Automation performance metrics per order management entity, including automation rate, automated interactions, handovers, cost saved, and time saved.',
+}
+
+export const ORDER_MANAGEMENT_COLUMNS: MetricColumnConfig[] = [
     {
         accessorKey: 'automationRate',
         label: 'Overall automation rate',
@@ -63,26 +73,38 @@ export const PERFORMANCE_BREAKDOWN_COLUMNS: MetricColumnConfig[] = [
         tooltipCaption:
             'The time agent would have spent resolving customer inquiries without all automation features.',
         metricFormat: 'duration',
-        loadingStateKeys: ['automatedInteractions', 'timeSaved'],
+        loadingStateKeys: ['timeSaved'],
         skeletonWidth: '80px',
     },
 ]
 
-export function buildFeatureColumnDef(): ColumnDef<FeatureMetrics> {
-    return buildNameColumnDef<FeatureMetrics>(
-        'feature',
-        'Feature',
+export function buildEntityColumnDef(): ColumnDef<OrderManagementEntityMetrics> {
+    const base = buildNameColumnDef<OrderManagementEntityMetrics>(
+        'entity',
+        'Feature name',
         css.featureName,
     )
+    return {
+        ...base,
+        cell: (info) => (
+            <Text size="md" variant="bold" className={css.featureName}>
+                {
+                    ENTITY_DISPLAY_NAMES[
+                        info.getValue() as OrderManagementEntityName
+                    ]
+                }
+            </Text>
+        ),
+    }
 }
 
 export function buildMetricColumnDefs(
     loadingStates: MetricLoadingStates,
-): ColumnDef<FeatureMetrics>[] {
-    return buildGenericMetricColumnDefs<FeatureMetrics>(
-        PERFORMANCE_BREAKDOWN_COLUMNS,
+): ColumnDef<OrderManagementEntityMetrics>[] {
+    return buildGenericMetricColumnDefs<OrderManagementEntityMetrics>(
+        ORDER_MANAGEMENT_COLUMNS,
         loadingStates,
-        (row) => row.feature,
+        (row) => row.entity,
         css.headerWithIcon,
     )
 }

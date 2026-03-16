@@ -121,6 +121,7 @@ export type DimensionName =
     | 'automationFeatureType'
     | 'customField'
     | 'engagementType'
+    | 'flowId'
     | 'orderManagementType'
     | 'boughtProducts'
     | 'productRecommended'
@@ -205,6 +206,8 @@ export type MeasureName =
     | 'coverageRate'
     | 'conversionRate'
     | 'buyThroughRate'
+    | 'averageTimeSavedByAgent'
+    | 'medianTimeSavedByAgent'
 
 export type TimeDimensionName =
     | 'createdDatetime'

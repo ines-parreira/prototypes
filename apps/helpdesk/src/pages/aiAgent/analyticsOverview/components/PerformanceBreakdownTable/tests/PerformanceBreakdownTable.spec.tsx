@@ -25,7 +25,7 @@ const mockUsePerformanceMetricsPerFeature = jest.requireMock(
 const defaultLoadingStates: PerformanceMetricsPerFeature['loadingStates'] = {
     automationRate: false,
     automatedInteractions: false,
-    handovers: false,
+    handoverInteractions: false,
     timeSaved: false,
     costSaved: false,
 }
@@ -35,7 +35,7 @@ const defaultData: FeatureMetrics[] = [
         feature: 'AI Agent' as const,
         automationRate: 18,
         automatedInteractions: 2700,
-        handoverCount: 189,
+        handoverInteractions: 189,
         costSaved: 1200,
         timeSaved: 9900,
     },
@@ -43,7 +43,7 @@ const defaultData: FeatureMetrics[] = [
         feature: 'Flows' as const,
         automationRate: 7,
         automatedInteractions: 900,
-        handoverCount: 63,
+        handoverInteractions: 63,
         costSaved: 500,
         timeSaved: 4500,
     },
@@ -51,7 +51,7 @@ const defaultData: FeatureMetrics[] = [
         feature: 'Article Recommendation' as const,
         automationRate: 4,
         automatedInteractions: 450,
-        handoverCount: 10,
+        handoverInteractions: 10,
         costSaved: 450,
         timeSaved: 3600,
     },
@@ -59,7 +59,7 @@ const defaultData: FeatureMetrics[] = [
         feature: 'Order Management' as const,
         automationRate: 3,
         automatedInteractions: 350,
-        handoverCount: 5,
+        handoverInteractions: 5,
         costSaved: 250,
         timeSaved: 1800,
     },
@@ -266,10 +266,13 @@ describe('PerformanceBreakdownTable', () => {
         })
 
         it('should render skeleton for handovers when loading', () => {
-            renderComponent([{ ...defaultData[0], handoverCount: null }], {
-                ...defaultLoadingStates,
-                handovers: true,
-            })
+            renderComponent(
+                [{ ...defaultData[0], handoverInteractions: null }],
+                {
+                    ...defaultLoadingStates,
+                    handoverInteractions: true,
+                },
+            )
 
             expect(screen.getByText('AI Agent')).toBeInTheDocument()
             expect(screen.getAllByText('18%').length).toBeGreaterThan(0)
@@ -333,7 +336,7 @@ describe('PerformanceBreakdownTable', () => {
                         feature: 'AI Agent',
                         automationRate: null,
                         automatedInteractions: null,
-                        handoverCount: null,
+                        handoverInteractions: null,
                         costSaved: null,
                         timeSaved: null,
                     },
@@ -341,7 +344,7 @@ describe('PerformanceBreakdownTable', () => {
                         feature: 'Flows',
                         automationRate: null,
                         automatedInteractions: null,
-                        handoverCount: null,
+                        handoverInteractions: null,
                         costSaved: null,
                         timeSaved: null,
                     },
@@ -349,7 +352,7 @@ describe('PerformanceBreakdownTable', () => {
                 {
                     automationRate: true,
                     automatedInteractions: true,
-                    handovers: true,
+                    handoverInteractions: true,
                     timeSaved: true,
                     costSaved: true,
                 },

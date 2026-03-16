@@ -6,7 +6,7 @@ import {
 } from 'domains/reporting/hooks/automate/automationTrends'
 import {
     fetchAutomationCostSavedTrend,
-    formatData,
+    formatCostSavedData,
     useAutomationCostSavedTrend,
 } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -56,7 +56,7 @@ describe('AutomationCostSavedTrend', () => {
             )
 
             expect(result.current).toEqual({
-                data: formatData(
+                data: formatCostSavedData(
                     trendResponse,
                     moneySavedPerInteractionWithAutomate,
                 ),
@@ -106,7 +106,7 @@ describe('AutomationCostSavedTrend', () => {
             )
 
             expect(result).toEqual({
-                data: formatData(
+                data: formatCostSavedData(
                     trendResponse,
                     moneySavedPerInteractionWithAutomate,
                 ),

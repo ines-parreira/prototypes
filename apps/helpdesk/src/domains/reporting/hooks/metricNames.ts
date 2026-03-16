@@ -26,6 +26,12 @@ export const METRIC_NAMES = {
         'ai-agent-dynamic-automation-rate-per-feature',
     AI_AGENT_AUTOMATION_RATE_PER_FEATURE:
         'ai-agent-automation-rate-per-feature',
+    OVERALL_AUTOMATION_RATE_PER_ORDER_MANAGEMENT_TYPE:
+        'overall-interaction-rate-per-order-management-type',
+    AUTOMATED_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE:
+        'automated-interactions-per-order-management-type',
+    OVERALL_TIME_SAVED_BY_AGENT_PER_ORDER_MANAGEMENT_TYPE:
+        'overall-time-saved-by-agent-per-order-management-type',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
         'ai-agent-handover-interactions-per-intent',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
@@ -565,6 +571,8 @@ export const METRIC_NAMES = {
     // Handover Interactions
     HANDOVER_INTERACTIONS: 'handover-interactions',
     HANDOVER_INTERACTIONS_PER_FEATURE: 'handover-interactions-per-feature',
+    HANDOVER_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE:
+        'handover-interactions-per-order-management-type',
     AI_AGENT_HANDOVER_INTERACTIONS: 'ai-agent-handover-interactions',
     AI_AGENT_SALES_HANDOVER_INTERACTIONS:
         'ai-sales-agent-handover-interactions',
@@ -599,7 +607,6 @@ export enum MetricScope {
     MessagesReceived = 'messages-received',
     TicketFields = 'ticket-fields',
     AutomatedInteractions = 'automated-interactions',
-    HandoverInteractions = 'handover-interactions',
     VoiceAgentEvents = 'voice-agent-events',
     VoiceCalls = 'voice-calls',
     VoiceCallsSummary = 'voice-calls-summary',
@@ -623,6 +630,10 @@ export enum MetricScope {
     AiAgentCoverageRate = 'ai-agent-coverage-rate',
     AiSalesAgentConversionRate = 'ai-sales-agent-conversion-rate',
     AiSalesAgentBuyThroughRate = 'ai-sales-agent-buy-through-rate',
+
+    // No FF
+    HandoverInteractions = 'handover-interactions',
+    OverallTimeSavedByAgent = 'overall-time-saved-by-agent',
 }
 
 export type MetricName = (typeof METRIC_NAMES)[keyof typeof METRIC_NAMES]
@@ -753,6 +764,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AUTOMATE_FLOWS_HANDOVERS,
         METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_TIME_SERIES,
+        METRIC_NAMES.OVERALL_AUTOMATION_RATE_PER_ORDER_MANAGEMENT_TYPE,
     ],
     [MetricScope.VoiceAgentEvents]: [
         METRIC_NAMES.VOICE_DECLINED_CALLS_COUNT,
@@ -873,6 +885,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.HandoverInteractions]: [
         METRIC_NAMES.HANDOVER_INTERACTIONS,
         METRIC_NAMES.HANDOVER_INTERACTIONS_PER_FEATURE,
+        METRIC_NAMES.HANDOVER_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE,
         METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SALES_HANDOVER_INTERACTIONS,
@@ -887,6 +900,10 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.OverallAutomatedInteractions]: [
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE,
+        METRIC_NAMES.AUTOMATED_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE,
+    ],
+    [MetricScope.OverallTimeSavedByAgent]: [
+        METRIC_NAMES.OVERALL_TIME_SAVED_BY_AGENT_PER_ORDER_MANAGEMENT_TYPE,
     ],
     [MetricScope.AiAgentCoverageRate]: [
         METRIC_NAMES.AI_AGENT_ALL_AGENTS_COVERAGE_RATE,

@@ -1,0 +1,256 @@
+import { renderHook } from '@testing-library/react'
+
+import {
+    fetchCostSavedPerOrderManagementType,
+    useCostSavedPerOrderManagementType,
+} from '../useCostSavedPerOrderManagementType'
+
+jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
+    useStatsMetricPerDimension: jest.fn(),
+    fetchStatsMetricPerDimension: jest.fn(),
+    mapMetricValues: jest.fn((metric, transform) => ({
+        ...metric,
+        data: metric.data
+            ? {
+                  ...metric.data,
+                  value: transform(metric.data.value),
+                  allValues: (metric.data.allValues ?? []).map(
+                      (v: {
+                          dimension: string
+                          value: number | null
+                          decile: null
+                      }) => ({
+                          ...v,
+                          value: transform(v.value),
+                      }),
+                  ),
+              }
+            : null,
+    })),
+}))
+jest.mock(
+    'domains/reporting/models/scopes/overallAutomatedInteractions',
+    () => ({
+        automatedInteractionsPerOrderManagementTypeQueryFactoryV2: jest.fn(),
+    }),
+)
+jest.mock(
+    'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate',
+    () => ({
+        useMoneySavedPerInteractionWithAutomate: jest.fn(),
+    }),
+)
+jest.mock('pages/automate/automate-metrics/constants', () => ({
+    AGENT_COST_PER_TICKET: 3.1,
+}))
+
+const mockUseStatsMetricPerDimension = jest.requireMock(
+    'domains/reporting/hooks/useStatsMetricPerDimension',
+).useStatsMetricPerDimension as jest.Mock
+
+const mockFetchStatsMetricPerDimension = jest.requireMock(
+    'domains/reporting/hooks/useStatsMetricPerDimension',
+).fetchStatsMetricPerDimension as jest.Mock
+
+const mockUseMoneySaved = jest.requireMock(
+    'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate',
+).useMoneySavedPerInteractionWithAutomate as jest.Mock
+
+const mockQueryFactory = jest.requireMock(
+    'domains/reporting/models/scopes/overallAutomatedInteractions',
+).automatedInteractionsPerOrderManagementTypeQueryFactoryV2 as jest.Mock
+
+const MOCK_STATS_FILTERS = {
+    period: {
+        start_datetime: '2024-01-01T00:00:00Z',
+        end_datetime: '2024-01-31T23:59:59Z',
+    },
+}
+const MOCK_TIMEZONE = 'UTC'
+const MOCK_QUERY = {
+    metricName: 'ai-agent-automated-interactions-per-order-management-type',
+}
+const COST_PER_INTERACTION = 3.1
+
+const rawAllValues = [
+    { dimension: 'cancel_order', value: 10, decile: null },
+    { dimension: 'track_order', value: 25, decile: null },
+    { dimension: 'loop_returns_started', value: 5, decile: null },
+    { dimension: 'automated_response_started', value: 8, decile: null },
+]
+
+describe('useCostSavedPerOrderManagementType', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockQueryFactory.mockReturnValue(MOCK_QUERY)
+        mockUseMoneySaved.mockReturnValue(COST_PER_INTERACTION)
+        mockUseStatsMetricPerDimension.mockReturnValue({
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: rawAllValues,
+            },
+            isFetching: false,
+            isError: false,
+        })
+    })
+
+    it('calls the query factory with filters and timezone', () => {
+        renderHook(() =>
+            useCostSavedPerOrderManagementType(
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+            ),
+        )
+
+        expect(mockQueryFactory).toHaveBeenCalledWith({
+            filters: MOCK_STATS_FILTERS,
+            timezone: MOCK_TIMEZONE,
+        })
+    })
+
+    it('multiplies each entity value by costSavedPerInteraction', () => {
+        const { result } = renderHook(() =>
+            useCostSavedPerOrderManagementType(
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+            ),
+        )
+
+        const allValues = result.current.data?.allValues ?? []
+        expect(
+            allValues.find((v) => v.dimension === 'cancel_order')?.value,
+        ).toBe(10 * COST_PER_INTERACTION)
+        expect(
+            allValues.find((v) => v.dimension === 'track_order')?.value,
+        ).toBe(25 * COST_PER_INTERACTION)
+        expect(
+            allValues.find((v) => v.dimension === 'loop_returns_started')
+                ?.value,
+        ).toBe(5 * COST_PER_INTERACTION)
+        expect(
+            allValues.find((v) => v.dimension === 'automated_response_started')
+                ?.value,
+        ).toBe(8 * COST_PER_INTERACTION)
+    })
+
+    it('returns null for null values without multiplying', () => {
+        mockUseStatsMetricPerDimension.mockReturnValue({
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [
+                    { dimension: 'cancel_order', value: null, decile: null },
+                ],
+            },
+            isFetching: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(() =>
+            useCostSavedPerOrderManagementType(
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+            ),
+        )
+
+        const cancelOrder = result.current.data?.allValues?.find(
+            (v) => v.dimension === 'cancel_order',
+        )
+        expect(cancelOrder?.value).toBeNull()
+    })
+
+    it('returns isFetching true when data is loading', () => {
+        mockUseStatsMetricPerDimension.mockReturnValue({
+            data: null,
+            isFetching: true,
+            isError: false,
+        })
+
+        const { result } = renderHook(() =>
+            useCostSavedPerOrderManagementType(
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+            ),
+        )
+
+        expect(result.current.isFetching).toBe(true)
+    })
+
+    it('returns isError true when the request fails', () => {
+        mockUseStatsMetricPerDimension.mockReturnValue({
+            data: null,
+            isFetching: false,
+            isError: true,
+        })
+
+        const { result } = renderHook(() =>
+            useCostSavedPerOrderManagementType(
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+            ),
+        )
+
+        expect(result.current.isError).toBe(true)
+    })
+})
+
+describe('fetchCostSavedPerOrderManagementType', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockQueryFactory.mockReturnValue(MOCK_QUERY)
+        mockFetchStatsMetricPerDimension.mockResolvedValue({
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: rawAllValues,
+            },
+            isFetching: false,
+            isError: false,
+        })
+    })
+
+    it('calls the query factory with filters and timezone', async () => {
+        await fetchCostSavedPerOrderManagementType(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            COST_PER_INTERACTION,
+        )
+
+        expect(mockQueryFactory).toHaveBeenCalledWith({
+            filters: MOCK_STATS_FILTERS,
+            timezone: MOCK_TIMEZONE,
+        })
+    })
+
+    it('multiplies each entity value by the provided cost per interaction', async () => {
+        const result = await fetchCostSavedPerOrderManagementType(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            COST_PER_INTERACTION,
+        )
+
+        const allValues = result.data?.allValues ?? []
+        expect(
+            allValues.find((v) => v.dimension === 'cancel_order')?.value,
+        ).toBe(10 * COST_PER_INTERACTION)
+        expect(
+            allValues.find((v) => v.dimension === 'track_order')?.value,
+        ).toBe(25 * COST_PER_INTERACTION)
+    })
+
+    it('uses AGENT_COST_PER_TICKET as default cost per interaction', async () => {
+        const result = await fetchCostSavedPerOrderManagementType(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
+
+        const allValues = result.data?.allValues ?? []
+        expect(
+            allValues.find((v) => v.dimension === 'cancel_order')?.value,
+        ).toBe(10 * 3.1)
+    })
+})

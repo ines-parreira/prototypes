@@ -10,7 +10,7 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
-export const formatData = (
+export const formatCostSavedData = (
     automatedInteractionTrend: MetricTrend,
     costSavedPerInteraction: number,
 ) => {
@@ -39,7 +39,10 @@ export const useAutomationCostSavedTrend = (
 
     return {
         ...automatedInteractionTrend,
-        data: formatData(automatedInteractionTrend, costSavedPerInteraction),
+        data: formatCostSavedData(
+            automatedInteractionTrend,
+            costSavedPerInteraction,
+        ),
     }
 }
 
@@ -51,7 +54,7 @@ export const fetchAutomationCostSavedTrend: MetricTrendFetch = async (
 ) => {
     return fetchFilteredAutomatedInteractions(statsFilters, userTimezone).then(
         (result) => ({
-            data: formatData(result, costSavedPerInteraction),
+            data: formatCostSavedData(result, costSavedPerInteraction),
             isFetching: false,
             isError: false,
         }),

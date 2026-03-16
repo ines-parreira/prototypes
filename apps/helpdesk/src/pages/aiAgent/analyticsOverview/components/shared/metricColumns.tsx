@@ -10,7 +10,7 @@ type MetricFormat = Parameters<typeof formatMetricValue>[1]
 export type MetricLoadingStates = {
     automationRate: boolean
     automatedInteractions: boolean
-    handovers: boolean
+    handoverInteractions: boolean
     timeSaved: boolean
     costSaved: boolean
 }

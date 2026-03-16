@@ -131,9 +131,7 @@ describe('TablesSection', () => {
                 />,
             )
 
-            expect(
-                screen.queryByRole('button', { name: 'Table One' }),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByRole('group')).not.toBeInTheDocument()
         })
 
         it('should render the single table', () => {

@@ -68,11 +68,18 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<any> = {
         {
             id: 'breakdown',
             type: ChartType.Table,
+            tableTitle: 'Performance breakdown',
             items: [
                 {
                     chartId: AnalyticsOverviewChart.PerformanceTable,
                     gridSize: 12,
                     visibility: true,
+                },
+                {
+                    chartId: AnalyticsOverviewChart.OrderManagementTable,
+                    gridSize: 12,
+                    visibility: true,
+                    requiresFeatureFlag: true,
                 },
             ],
         },
