@@ -223,6 +223,48 @@ exports[`<Access/> should render properly 1`] = `
               </label>
             </div>
           </div>
+          <div
+            class="mt-5 mb-5"
+          >
+            <h4
+              class="mb-2"
+            >
+              Skip two-factor authentication after SSO
+            </h4>
+            <p>
+              When enabled, users who log in via SSO will not be asked for a two-factor authentication code.
+            </p>
+            <p
+              class="text-warning"
+            >
+              <i
+                class="material-icons mr-1"
+              >
+                warning
+              </i>
+              You must enable at least one SSO provider (Google, Microsoft 365, or a custom provider) before enabling this setting.
+            </p>
+            <div>
+              <label
+                aria-checked="false"
+                class="ui-label-label-a11c ui-label-isdisabled-a11c label disabledLabel"
+                for="skip2faAfterSsoToggle"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="skip2faAfterSsoToggle"
+                  name="skip2faAfterSsoToggle"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                Skip 2FA for SSO users
+              </label>
+            </div>
+          </div>
           <button
             class="btn btn-primary"
             type="submit"
@@ -276,14 +318,14 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
               <label
                 aria-checked="false"
                 class="ui-label-label-a11c label"
-                for="toggle-button-6"
+                for="toggle-button-7"
                 role="switch"
               >
                 <input
                   class="input"
                   disabled=""
-                  id="toggle-button-6"
-                  name="toggle-button-6"
+                  id="toggle-button-7"
+                  name="toggle-button-7"
                   type="checkbox"
                 />
                 <div
@@ -308,14 +350,14 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             <label
               aria-checked="false"
               class="ui-label-label-a11c label"
-              for="toggle-button-7"
+              for="toggle-button-8"
               role="switch"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-7"
-                name="toggle-button-7"
+                id="toggle-button-8"
+                name="toggle-button-8"
                 type="checkbox"
               />
               <div
@@ -367,15 +409,15 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
               <label
                 aria-checked="true"
                 class="ui-label-label-a11c label"
-                for="toggle-button-9"
+                for="toggle-button-10"
                 role="switch"
               >
                 <input
                   checked=""
                   class="input"
                   disabled=""
-                  id="toggle-button-9"
-                  name="toggle-button-9"
+                  id="toggle-button-10"
+                  name="toggle-button-10"
                   type="checkbox"
                 />
                 <div
@@ -462,6 +504,48 @@ gorgias.io
               </label>
             </div>
           </div>
+          <div
+            class="mt-5 mb-5"
+          >
+            <h4
+              class="mb-2"
+            >
+              Skip two-factor authentication after SSO
+            </h4>
+            <p>
+              When enabled, users who log in via SSO will not be asked for a two-factor authentication code.
+            </p>
+            <p
+              class="text-warning"
+            >
+              <i
+                class="material-icons mr-1"
+              >
+                warning
+              </i>
+              You must enable at least one SSO provider (Google, Microsoft 365, or a custom provider) before enabling this setting.
+            </p>
+            <div>
+              <label
+                aria-checked="false"
+                class="ui-label-label-a11c ui-label-isdisabled-a11c label disabledLabel"
+                for="skip2faAfterSsoToggle"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="skip2faAfterSsoToggle"
+                  name="skip2faAfterSsoToggle"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                Skip 2FA for SSO users
+              </label>
+            </div>
+          </div>
           <button
             class="btn btn-primary"
             type="submit"
@@ -515,14 +599,14 @@ exports[`<Access/> should show an error and block submit when using a generic do
               <label
                 aria-checked="false"
                 class="ui-label-label-a11c label"
-                for="toggle-button-21"
+                for="toggle-button-25"
                 role="switch"
               >
                 <input
                   class="input"
                   disabled=""
-                  id="toggle-button-21"
-                  name="toggle-button-21"
+                  id="toggle-button-25"
+                  name="toggle-button-25"
                   type="checkbox"
                 />
                 <div
@@ -547,14 +631,14 @@ exports[`<Access/> should show an error and block submit when using a generic do
             <label
               aria-checked="false"
               class="ui-label-label-a11c label"
-              for="toggle-button-22"
+              for="toggle-button-26"
               role="switch"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-22"
-                name="toggle-button-22"
+                id="toggle-button-26"
+                name="toggle-button-26"
                 type="checkbox"
               />
               <div
@@ -606,15 +690,15 @@ exports[`<Access/> should show an error and block submit when using a generic do
               <label
                 aria-checked="true"
                 class="ui-label-label-a11c label"
-                for="toggle-button-24"
+                for="toggle-button-28"
                 role="switch"
               >
                 <input
                   checked=""
                   class="input"
                   disabled=""
-                  id="toggle-button-24"
-                  name="toggle-button-24"
+                  id="toggle-button-28"
+                  name="toggle-button-28"
                   type="checkbox"
                 />
                 <div
@@ -697,6 +781,48 @@ exports[`<Access/> should show an error and block submit when using a generic do
                   class="slider"
                 />
                 Require 2FA for all users
+              </label>
+            </div>
+          </div>
+          <div
+            class="mt-5 mb-5"
+          >
+            <h4
+              class="mb-2"
+            >
+              Skip two-factor authentication after SSO
+            </h4>
+            <p>
+              When enabled, users who log in via SSO will not be asked for a two-factor authentication code.
+            </p>
+            <p
+              class="text-warning"
+            >
+              <i
+                class="material-icons mr-1"
+              >
+                warning
+              </i>
+              You must enable at least one SSO provider (Google, Microsoft 365, or a custom provider) before enabling this setting.
+            </p>
+            <div>
+              <label
+                aria-checked="false"
+                class="ui-label-label-a11c ui-label-isdisabled-a11c label disabledLabel"
+                for="skip2faAfterSsoToggle"
+                role="switch"
+              >
+                <input
+                  class="input"
+                  disabled=""
+                  id="skip2faAfterSsoToggle"
+                  name="skip2faAfterSsoToggle"
+                  type="checkbox"
+                />
+                <div
+                  class="slider"
+                />
+                Skip 2FA for SSO users
               </label>
             </div>
           </div>

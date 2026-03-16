@@ -2301,6 +2301,7 @@
             "apps/helpdesk/src/pages/common/forms/tests/ToggleInputField.spec.tsx",
             "apps/helpdesk/src/pages/common/forms/ToggleInputField.tsx",
             "apps/helpdesk/src/pages/settings/access/Access.tsx",
+            "apps/helpdesk/src/pages/settings/access/Skip2faAfterSso.tsx",
             "apps/helpdesk/src/pages/settings/access/SsoEnforcement.tsx",
             "apps/helpdesk/src/pages/settings/access/SsoToggleButton.tsx",
             "apps/helpdesk/src/pages/settings/access/TwoFactorAuthenticationEnforcement.tsx",

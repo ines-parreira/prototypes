@@ -341,6 +341,16 @@ export const is2FAEnforcedSelector = createSelector(
     (twoFAEnforcedDatetime) => !!twoFAEnforcedDatetime,
 )
 
+export const getSkip2faAfterSsoDatetime = createSelector(
+    getAccessSettings,
+    (setting) =>
+        setting.getIn(['data', 'skip_2fa_after_sso_datetime']) as string | null,
+)
+export const isSkip2faAfterSsoSelector = createSelector(
+    getSkip2faAfterSsoDatetime,
+    (skip2faAfterSsoDatetime) => !!skip2faAfterSsoDatetime,
+)
+
 export const getSsoEnforcedDatetime = createSelector(
     getAccessSettings,
     (setting) =>

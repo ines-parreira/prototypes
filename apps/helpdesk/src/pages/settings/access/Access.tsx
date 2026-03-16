@@ -16,12 +16,14 @@ import useAppSelector from 'hooks/useAppSelector'
 import PageHeader from 'pages/common/components/PageHeader'
 import DEPRECATED_InputField from 'pages/common/forms/DEPRECATED_InputField'
 import ToggleInput from 'pages/common/forms/ToggleInput'
+import Skip2faAfterSso from 'pages/settings/access/Skip2faAfterSso'
 import SsoEnforcement from 'pages/settings/access/SsoEnforcement'
 import TwoFactorAuthenticationEnforcement from 'pages/settings/access/TwoFactorAuthenticationEnforcement'
 import { submitSetting } from 'state/currentAccount/actions'
 import { UPDATE_ACCOUNT_SETTING } from 'state/currentAccount/constants'
 import {
     getAccessSettings,
+    getSkip2faAfterSsoDatetime,
     getSsoEnforcedDatetime,
     getTwoFAEnforcedDatetime,
 } from 'state/currentAccount/selectors'
@@ -47,6 +49,7 @@ enum LoadingKey {
     GoogleSSO = 'sso_google',
     Office365SSO = 'sso_office_365',
     TwoFAEnforcement = 'two_fa_enforcement',
+    Skip2faAfterSso = 'skip_2fa_after_sso',
     SsoEnforcement = 'sso_enforcement',
     CustomSSO = 'custom_sso',
 }
@@ -118,6 +121,7 @@ export const AccessContainer = (props: Props) => {
         .getIn(['data', 'custom_sso_providers'], {})
         .toJS()
     const twoFAEnforcedDatetime = useAppSelector(getTwoFAEnforcedDatetime)
+    const skip2faAfterSsoDatetime = useAppSelector(getSkip2faAfterSsoDatetime)
     const ssoEnforcedDatetime = useAppSelector(getSsoEnforcedDatetime)
 
     const [isLoading, setIsLoading] = useState<LoadingKey>()
@@ -147,6 +151,7 @@ export const AccessContainer = (props: Props) => {
                 google_sso_enabled: googleSsoEnabled,
                 office365_sso_enabled: office365SsoEnabled,
                 two_fa_enforced_datetime: twoFAEnforcedDatetime,
+                skip_2fa_after_sso_datetime: skip2faAfterSsoDatetime,
                 sso_enforced_datetime: ssoEnforcedDatetime,
                 custom_sso_providers: customSsoProviders,
             }
@@ -174,6 +179,7 @@ export const AccessContainer = (props: Props) => {
             googleSsoEnabled,
             office365SsoEnabled,
             twoFAEnforcedDatetime,
+            skip2faAfterSsoDatetime,
             ssoEnforcedDatetime,
             customSsoProviders,
         ],
@@ -224,6 +230,21 @@ export const AccessContainer = (props: Props) => {
                     val
                         ? 'successfully enforced for all users.'
                         : 'has successfully been made optional.'
+                }`,
+            )
+        },
+        [saveSettings],
+    )
+
+    const toggleSkip2faAfterSso = useCallback(
+        (val: string | null) => {
+            return saveSettings(
+                LoadingKey.Skip2faAfterSso,
+                {
+                    skip_2fa_after_sso_datetime: val,
+                },
+                `Skip 2FA after SSO ${
+                    val ? 'successfully enabled.' : 'has been disabled.'
                 }`,
             )
         },
@@ -397,6 +418,22 @@ export const AccessContainer = (props: Props) => {
                                 isLoading !== LoadingKey.TwoFAEnforcement
                             }
                             on2FAEnforced={toggle2FAEnforcement}
+                        />
+
+                        <Skip2faAfterSso
+                            skip2faAfterSsoDatetime={skip2faAfterSsoDatetime}
+                            loading={isLoading === LoadingKey.Skip2faAfterSso}
+                            disabled={
+                                !showCustomSSOModal &&
+                                !!isLoading &&
+                                isLoading !== LoadingKey.Skip2faAfterSso
+                            }
+                            googleSsoEnabled={googleSsoEnabled}
+                            office365SsoEnabled={office365SsoEnabled}
+                            hasCustomSsoProviders={
+                                Object.keys(customSsoProviders).length > 0
+                            }
+                            onToggle={toggleSkip2faAfterSso}
                         />
 
                         <Button

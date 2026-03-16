@@ -207,6 +207,7 @@ export type AccountSettingAccess = {
         google_sso_enabled: boolean
         office365_sso_enabled: boolean
         two_fa_enforced_datetime: string | null
+        skip_2fa_after_sso_datetime: string | null
         sso_enforced_datetime: string | null
         custom_sso_providers?: CustomSSOProviders
     }
