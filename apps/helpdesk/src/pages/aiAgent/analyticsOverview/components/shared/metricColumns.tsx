@@ -1,118 +1,53 @@
-import { formatMetricValue, NOT_AVAILABLE_PLACEHOLDER } from '@repo/reporting'
+import type { MetricColumnConfig } from '@repo/reporting'
 
-import type { ColumnDef } from '@gorgias/axiom'
-import { Box, Icon, Skeleton, Text } from '@gorgias/axiom'
+export type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 
-import { SortableHeaderCell } from 'pages/aiAgent/analyticsOverview/components/shared/SortableHeaderCell'
-
-type MetricFormat = Parameters<typeof formatMetricValue>[1]
-
-export type MetricLoadingStates = {
-    automationRate: boolean
-    automatedInteractions: boolean
-    handoverInteractions: boolean
-    timeSaved: boolean
-    costSaved: boolean
-}
-
-export type MetricColumnConfig = {
-    accessorKey: string
-    label: string
-    tooltipTitle: string
-    tooltipCaption: string
-    metricFormat: MetricFormat
-    loadingStateKeys: (keyof MetricLoadingStates)[]
-    skeletonWidth?: string
-    showNotAvailable?: boolean
-}
-
-export function buildNameColumnDef<TRow>(
-    accessor: string,
-    label: string,
-    className: string,
-): ColumnDef<TRow> {
-    return {
-        accessorKey: accessor,
-        header: (info) => {
-            const sortDirection = info.column.getIsSorted()
-            return (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    gap="xxxs"
-                    className={className}
-                >
-                    <Text size="sm" variant="bold">
-                        {label}
-                    </Text>
-                    <span
-                        style={{
-                            visibility: sortDirection ? 'visible' : 'hidden',
-                        }}
-                    >
-                        <Icon
-                            name={
-                                sortDirection === 'asc'
-                                    ? 'arrow-down'
-                                    : 'arrow-up'
-                            }
-                            size="xs"
-                        />
-                    </span>
-                </Box>
-            )
-        },
-        meta: { displayName: label },
-        cell: (info) => (
-            <Text size="md" variant="bold" className={className}>
-                {info.getValue() as string}
-            </Text>
-        ),
-        enableHiding: false,
-    }
-}
-
-export function buildMetricColumnDefs<TRow>(
-    columns: MetricColumnConfig[],
-    loadingStates: MetricLoadingStates,
-    getRowKey: (row: TRow) => string,
-    headerClassName: string,
-): ColumnDef<TRow>[] {
-    return columns.map((config) => ({
-        accessorKey: config.accessorKey,
-        enableHiding: true,
-        meta: { displayName: config.label },
-        header: (info) => {
-            const sortDirection = info.column.getIsSorted()
-            return (
-                <SortableHeaderCell
-                    label={config.label}
-                    sortDirection={sortDirection}
-                    tooltipTitle={config.tooltipTitle}
-                    tooltipCaption={config.tooltipCaption}
-                    className={headerClassName}
-                />
-            )
-        },
-        cell: (info) => {
-            const value = info.getValue() as number | null
-            const rowKey = getRowKey(info.row.original as TRow)
-            const isLoading = config.loadingStateKeys.some(
-                (key) => loadingStates[key],
-            )
-            if (isLoading && value === null) {
-                return (
-                    <Skeleton
-                        key={`${rowKey}-${config.accessorKey}`}
-                        width={config.skeletonWidth ?? '60px'}
-                        height="20px"
-                    />
-                )
-            }
-            if (config.showNotAvailable && value !== null && isNaN(value)) {
-                return NOT_AVAILABLE_PLACEHOLDER
-            }
-            return formatMetricValue(value, config.metricFormat, 'USD', true)
-        },
-    }))
-}
+export const STANDARD_METRIC_COLUMNS: MetricColumnConfig[] = [
+    {
+        accessorKey: 'automationRate',
+        label: 'Overall automation rate',
+        tooltipTitle: 'Overall automation rate',
+        tooltipCaption:
+            'The number of interactions automated by all automation features as a % of total customer interactions.',
+        metricFormat: 'decimal-to-percent',
+        loadingStateKeys: ['automationRate'],
+    },
+    {
+        accessorKey: 'automatedInteractions',
+        label: 'Automated interactions',
+        tooltipTitle: 'Automated interactions',
+        tooltipCaption:
+            'The number of fully automated interactions solved without any human agent intervention.',
+        metricFormat: 'decimal',
+        loadingStateKeys: ['automatedInteractions'],
+    },
+    {
+        accessorKey: 'handoverInteractions',
+        label: 'Handover interactions',
+        tooltipTitle: 'Handover interactions',
+        tooltipCaption:
+            "The number of interactions AI Agent transferred to a human because it couldn't confidently resolve the customer's request or because the customer explicitly requested to speak with a human agent.",
+        metricFormat: 'decimal',
+        loadingStateKeys: ['handoverInteractions'],
+    },
+    {
+        accessorKey: 'costSaved',
+        label: 'Cost saved',
+        tooltipTitle: 'Cost saved',
+        tooltipCaption:
+            'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
+        metricFormat: 'currency-precision-1',
+        loadingStateKeys: ['costSaved'],
+        showNotAvailable: true,
+    },
+    {
+        accessorKey: 'timeSaved',
+        label: 'Time saved by agents',
+        tooltipTitle: 'Time saved by agents',
+        tooltipCaption:
+            'The time agent would have spent resolving customer inquiries without all automation features.',
+        metricFormat: 'duration',
+        loadingStateKeys: ['automatedInteractions', 'timeSaved'],
+        skeletonWidth: '80px',
+    },
+]

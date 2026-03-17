@@ -1,19 +1,6 @@
-import type { ColumnDef } from '@gorgias/axiom'
-import { Text } from '@gorgias/axiom'
+import type { MetricColumnConfig } from '@repo/reporting'
 
-import css from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/OrderManagementTable.less'
-import type {
-    MetricColumnConfig,
-    MetricLoadingStates,
-} from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
-import {
-    buildMetricColumnDefs as buildGenericMetricColumnDefs,
-    buildNameColumnDef,
-} from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
-import type {
-    OrderManagementEntityMetrics,
-    OrderManagementEntityName,
-} from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
+import type { OrderManagementEntityName } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
 
 export const ENTITY_DISPLAY_NAMES: Record<OrderManagementEntityName, string> = {
     cancel_order: 'Cancel order',
@@ -77,34 +64,3 @@ export const ORDER_MANAGEMENT_COLUMNS: MetricColumnConfig[] = [
         skeletonWidth: '80px',
     },
 ]
-
-export function buildEntityColumnDef(): ColumnDef<OrderManagementEntityMetrics> {
-    const base = buildNameColumnDef<OrderManagementEntityMetrics>(
-        'entity',
-        'Feature name',
-        css.featureName,
-    )
-    return {
-        ...base,
-        cell: (info) => (
-            <Text size="md" variant="bold" className={css.featureName}>
-                {
-                    ENTITY_DISPLAY_NAMES[
-                        info.getValue() as OrderManagementEntityName
-                    ]
-                }
-            </Text>
-        ),
-    }
-}
-
-export function buildMetricColumnDefs(
-    loadingStates: MetricLoadingStates,
-): ColumnDef<OrderManagementEntityMetrics>[] {
-    return buildGenericMetricColumnDefs<OrderManagementEntityMetrics>(
-        ORDER_MANAGEMENT_COLUMNS,
-        loadingStates,
-        (row) => row.entity,
-        css.headerWithIcon,
-    )
-}

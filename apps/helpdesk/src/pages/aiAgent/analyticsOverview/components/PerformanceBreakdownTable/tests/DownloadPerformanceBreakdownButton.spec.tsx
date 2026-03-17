@@ -1,81 +1,72 @@
-import { render, screen, waitFor } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render } from '@testing-library/react'
 
 import { DownloadPerformanceBreakdownButton } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/DownloadPerformanceBreakdownButton'
-import * as downloadHook from 'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData'
-import * as fileUtils from 'utils/file'
+
+const mockDownloadTableButton = jest.fn((__props: unknown) => null)
+
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton',
+    () => ({
+        DownloadTableButton: (props: unknown) => mockDownloadTableButton(props),
+    }),
+)
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData',
 )
-jest.mock('utils/file', () => ({
-    ...jest.requireActual('utils/file'),
-    saveFileAsDownloaded: jest.fn(),
-}))
 
-const mockUseDownloadPerformanceBreakdownData =
-    downloadHook.useDownloadPerformanceBreakdownData as jest.Mock
+const mockUseDownloadPerformanceBreakdownData = jest.requireMock(
+    'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData',
+).useDownloadPerformanceBreakdownData as jest.Mock
+
+const mockFiles = { 'report.csv': '"Feature"\r\n"AI Agent"' }
+const mockFileName = '2024-01-01_2024-01-31-performance-breakdown.csv'
 
 beforeEach(() => {
-    jest.clearAllMocks()
+    mockUseDownloadPerformanceBreakdownData.mockReturnValue({
+        files: mockFiles,
+        fileName: mockFileName,
+        isLoading: false,
+    })
 })
 
-const renderComponent = () => {
-    return render(<DownloadPerformanceBreakdownButton />)
-}
-
 describe('DownloadPerformanceBreakdownButton', () => {
-    const mockCsvContent =
-        '"Feature","Overall automation rate"\r\n"AI Agent","18%"'
-    const mockFileName = '2024-01-01_2024-01-31-performance-breakdown.csv'
-
-    beforeEach(() => {
-        mockUseDownloadPerformanceBreakdownData.mockReturnValue({
-            files: {
-                [mockFileName]: mockCsvContent,
-            },
-            fileName: mockFileName,
-            isLoading: false,
-        })
+    afterEach(() => {
+        jest.clearAllMocks()
     })
 
-    it('should render download button', () => {
-        renderComponent()
+    it('passes files and fileName from the hook to DownloadTableButton', () => {
+        render(<DownloadPerformanceBreakdownButton />)
 
-        const button = screen.getByRole('button', { name: /download/i })
-        expect(button).toBeInTheDocument()
+        expect(mockDownloadTableButton).toHaveBeenCalledWith(
+            expect.objectContaining({
+                files: mockFiles,
+                fileName: mockFileName,
+            }),
+        )
     })
 
-    it('should be disabled when loading', () => {
+    it('passes isLoading from the hook to DownloadTableButton', () => {
         mockUseDownloadPerformanceBreakdownData.mockReturnValue({
             files: {},
             fileName: mockFileName,
             isLoading: true,
         })
 
-        renderComponent()
+        render(<DownloadPerformanceBreakdownButton />)
 
-        const button = screen.getByRole('button', { name: /download/i })
-        expect(button).toBeAriaDisabled()
+        expect(mockDownloadTableButton).toHaveBeenCalledWith(
+            expect.objectContaining({ isLoading: true }),
+        )
     })
 
-    it('should call saveFileAsDownloaded when clicked', async () => {
-        const user = userEvent.setup()
-        const saveFileSpy = jest.spyOn(fileUtils, 'saveFileAsDownloaded')
+    it('passes the correct segmentEventName to DownloadTableButton', () => {
+        render(<DownloadPerformanceBreakdownButton />)
 
-        renderComponent()
-
-        const button = screen.getByRole('button', { name: /download/i })
-
-        await user.click(button)
-
-        await waitFor(() => {
-            expect(saveFileSpy).toHaveBeenCalled()
-        })
-
-        const [fileName, csvContent, contentType] = saveFileSpy.mock.calls[0]
-        expect(fileName).toBe(mockFileName)
-        expect(csvContent).toBe(mockCsvContent)
-        expect(contentType).toBe('text/csv')
+        expect(mockDownloadTableButton).toHaveBeenCalledWith(
+            expect.objectContaining({
+                segmentEventName: 'performance-breakdown',
+            }),
+        )
     })
 })

@@ -64,3 +64,10 @@ export {
     type ConfigurableGraphGroupingConfig,
     type ConfigurableGraphMetricConfig,
 } from './components/ConfigurableGraph'
+export {
+    ReportingMetricBreakdownTable,
+    buildMetricColumnDefs,
+    type NameColumnConfig,
+    type MetricColumnConfig,
+    type MetricLoadingStates,
+} from './components/ReportingMetricBreakdownTable/ReportingMetricBreakdownTable'

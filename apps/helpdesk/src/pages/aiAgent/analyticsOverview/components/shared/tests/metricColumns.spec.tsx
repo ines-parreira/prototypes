@@ -1,12 +1,14 @@
-import { NOT_AVAILABLE_PLACEHOLDER } from '@repo/reporting'
+import {
+    buildMetricColumnDefs,
+    NOT_AVAILABLE_PLACEHOLDER,
+} from '@repo/reporting'
+import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 import { render, screen } from '@testing-library/react'
 
-import type { MetricColumnConfig, MetricLoadingStates } from '../metricColumns'
-import { buildMetricColumnDefs } from '../metricColumns'
+import { STANDARD_METRIC_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
 
 jest.mock('@repo/reporting', () => ({
-    NOT_AVAILABLE_PLACEHOLDER: '-',
-    formatMetricValue: jest.fn(() => 'formatted-value'),
+    ...jest.requireActual('@repo/reporting'),
 }))
 
 jest.mock('@gorgias/axiom', () => ({
@@ -16,14 +18,11 @@ jest.mock('@gorgias/axiom', () => ({
     Text: ({ children }: { children: React.ReactNode }) => (
         <span>{children}</span>
     ),
+    Tooltip: ({ children }: { children: React.ReactNode }) => (
+        <div>{children}</div>
+    ),
+    TooltipContent: () => null,
 }))
-
-jest.mock(
-    'pages/aiAgent/analyticsOverview/components/shared/SortableHeaderCell',
-    () => ({
-        SortableHeaderCell: () => null,
-    }),
-)
 
 const defaultLoadingStates: MetricLoadingStates = {
     automationRate: false,
@@ -47,6 +46,54 @@ const makeInfo = (value: number | null) => ({
     row: { original: { feature: 'test-feature' } },
 })
 
+describe('STANDARD_METRIC_COLUMNS', () => {
+    it('has 5 entries', () => {
+        expect(STANDARD_METRIC_COLUMNS).toHaveLength(5)
+    })
+
+    it('has the correct accessorKeys in order', () => {
+        expect(STANDARD_METRIC_COLUMNS.map((col) => col.accessorKey)).toEqual([
+            'automationRate',
+            'automatedInteractions',
+            'handoverInteractions',
+            'costSaved',
+            'timeSaved',
+        ])
+    })
+
+    it('has non-empty labels for all columns', () => {
+        STANDARD_METRIC_COLUMNS.forEach((col) => {
+            expect(col.label.length).toBeGreaterThan(0)
+        })
+    })
+
+    it('sets showNotAvailable only on costSaved', () => {
+        const withFlag = STANDARD_METRIC_COLUMNS.filter(
+            (col) => col.showNotAvailable,
+        )
+        expect(withFlag).toHaveLength(1)
+        expect(withFlag[0].accessorKey).toBe('costSaved')
+    })
+
+    it('sets skeletonWidth only on timeSaved', () => {
+        const withSkeleton = STANDARD_METRIC_COLUMNS.filter(
+            (col) => col.skeletonWidth,
+        )
+        expect(withSkeleton).toHaveLength(1)
+        expect(withSkeleton[0].accessorKey).toBe('timeSaved')
+    })
+
+    it('timeSaved uses both automatedInteractions and timeSaved as loadingStateKeys', () => {
+        const timeSaved = STANDARD_METRIC_COLUMNS.find(
+            (col) => col.accessorKey === 'timeSaved',
+        )
+        expect(timeSaved?.loadingStateKeys).toEqual([
+            'automatedInteractions',
+            'timeSaved',
+        ])
+    })
+})
+
 describe('buildMetricColumnDefs', () => {
     describe('cell renderer', () => {
         it('returns NOT_AVAILABLE_PLACEHOLDER when showNotAvailable is true and value is NaN', () => {
@@ -54,7 +101,6 @@ describe('buildMetricColumnDefs', () => {
                 [{ ...baseConfig, showNotAvailable: true }],
                 defaultLoadingStates,
                 (row: { feature: string }) => row.feature,
-                '',
             )
             const cellFn = column.cell as (
                 info: ReturnType<typeof makeInfo>,
@@ -67,7 +113,6 @@ describe('buildMetricColumnDefs', () => {
                 [{ ...baseConfig, showNotAvailable: false }],
                 defaultLoadingStates,
                 (row: { feature: string }) => row.feature,
-                '',
             )
             const cellFn = column.cell as (
                 info: ReturnType<typeof makeInfo>,
@@ -75,32 +120,11 @@ describe('buildMetricColumnDefs', () => {
             expect(cellFn(makeInfo(NaN))).not.toBe(NOT_AVAILABLE_PLACEHOLDER)
         })
 
-        it('falls through to formatMetricValue when showNotAvailable is true but value is null', () => {
-            const { formatMetricValue } = jest.requireMock('@repo/reporting')
-            const [column] = buildMetricColumnDefs(
-                [{ ...baseConfig, showNotAvailable: true }],
-                defaultLoadingStates,
-                (row: { feature: string }) => row.feature,
-                '',
-            )
-            const cellFn = column.cell as (
-                info: ReturnType<typeof makeInfo>,
-            ) => React.ReactNode
-            cellFn(makeInfo(null))
-            expect(formatMetricValue).toHaveBeenCalledWith(
-                null,
-                baseConfig.metricFormat,
-                'USD',
-                true,
-            )
-        })
-
         it('shows a skeleton when a loading state is active and value is null', () => {
             const [column] = buildMetricColumnDefs(
                 [baseConfig],
                 { ...defaultLoadingStates, costSaved: true },
                 (row: { feature: string }) => row.feature,
-                '',
             )
             const cellFn = column.cell as (
                 info: ReturnType<typeof makeInfo>,
@@ -114,7 +138,6 @@ describe('buildMetricColumnDefs', () => {
                 [{ ...baseConfig, showNotAvailable: true }],
                 defaultLoadingStates,
                 (row: { feature: string }) => row.feature,
-                '',
             )
             const cellFn = column.cell as (
                 info: ReturnType<typeof makeInfo>,

@@ -1,16 +1,4 @@
-import type { ColumnDef } from '@gorgias/axiom'
-
-import type {
-    MetricColumnConfig,
-    MetricLoadingStates,
-} from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
-import {
-    buildMetricColumnDefs as buildGenericMetricColumnDefs,
-    buildNameColumnDef,
-} from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
-import type { FeatureMetrics } from 'pages/aiAgent/analyticsOverview/hooks/usePerformanceMetricsPerFeature'
-
-import css from './PerformanceBreakdownTable.less'
+import type { MetricColumnConfig } from '@repo/reporting'
 
 export const PERFORMANCE_BREAKDOWN_TABLE = {
     title: 'Performance breakdown',
@@ -67,22 +55,3 @@ export const PERFORMANCE_BREAKDOWN_COLUMNS: MetricColumnConfig[] = [
         skeletonWidth: '80px',
     },
 ]
-
-export function buildFeatureColumnDef(): ColumnDef<FeatureMetrics> {
-    return buildNameColumnDef<FeatureMetrics>(
-        'feature',
-        'Feature',
-        css.featureName,
-    )
-}
-
-export function buildMetricColumnDefs(
-    loadingStates: MetricLoadingStates,
-): ColumnDef<FeatureMetrics>[] {
-    return buildGenericMetricColumnDefs<FeatureMetrics>(
-        PERFORMANCE_BREAKDOWN_COLUMNS,
-        loadingStates,
-        (row) => row.feature,
-        css.headerWithIcon,
-    )
-}
