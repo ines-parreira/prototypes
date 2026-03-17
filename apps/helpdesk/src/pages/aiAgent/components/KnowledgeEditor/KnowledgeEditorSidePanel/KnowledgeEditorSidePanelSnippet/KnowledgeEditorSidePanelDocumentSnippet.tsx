@@ -16,6 +16,7 @@ type Props = {
     snippetId?: number
     helpCenterId?: number
     locale?: string
+    executionId?: string
 }
 
 export const KnowledgeEditorSidePanelDocumentSnippet = ({
@@ -25,6 +26,7 @@ export const KnowledgeEditorSidePanelDocumentSnippet = ({
     snippetId,
     helpCenterId,
     locale,
+    executionId,
 }: Props): JSX.Element => {
     const initialExpandedSections: string[] = [
         'details',
@@ -41,6 +43,9 @@ export const KnowledgeEditorSidePanelDocumentSnippet = ({
     }
     if (locale) {
         backendIds['Locale'] = locale
+    }
+    if (executionId) {
+        backendIds['Execution ID'] = executionId
     }
 
     return (

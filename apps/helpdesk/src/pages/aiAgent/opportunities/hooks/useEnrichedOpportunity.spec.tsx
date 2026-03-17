@@ -269,6 +269,7 @@ describe('useEnrichedOpportunity', () => {
             ...mockOpportunity.resources[0],
             meta: {
                 articleIngestionLog: mockIngestionLog,
+                executionId: 'exec_123',
             },
         })
 
@@ -382,6 +383,7 @@ describe('useEnrichedOpportunity', () => {
             ...mockOpportunity.resources[0],
             meta: {
                 articleIngestionLog: mockIngestionLog1,
+                executionId: 'exec_123',
             },
         })
 
@@ -389,6 +391,7 @@ describe('useEnrichedOpportunity', () => {
             ...mockOpportunity.resources[1],
             meta: {
                 articleIngestionLog: mockIngestionLog2,
+                executionId: 'exec_456',
             },
         })
     })
@@ -452,6 +455,7 @@ describe('useEnrichedOpportunity', () => {
             ...mockOpportunity.resources[1],
             meta: {
                 articleIngestionLog: mockIngestionLog,
+                executionId: 'exec_123',
             },
         })
     })

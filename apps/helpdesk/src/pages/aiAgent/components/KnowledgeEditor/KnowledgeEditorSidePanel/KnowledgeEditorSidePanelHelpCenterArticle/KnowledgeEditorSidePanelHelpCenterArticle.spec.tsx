@@ -39,6 +39,14 @@ jest.mock(
     }),
 )
 
+jest.mock('../KnowledgeEditorSidePanelBackendIds', () => ({
+    KnowledgeEditorSidePanelBackendIds: ({
+        ids,
+    }: {
+        ids: Record<string, string | number>
+    }) => <div data-testid="backend-ids">{JSON.stringify(ids)}</div>,
+}))
+
 jest.mock('../KnowledgeEditorSidePanel', () => ({
     KnowledgeEditorSidePanel: ({
         children,

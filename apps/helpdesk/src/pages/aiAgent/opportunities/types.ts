@@ -33,6 +33,7 @@ export interface OpportunityResource {
     meta?: {
         articleIngestionLog?: Partial<ArticleIngestionLog> &
             Pick<ArticleIngestionLog, 'source' | 'source_name'>
+        executionId?: string
     }
 }
 

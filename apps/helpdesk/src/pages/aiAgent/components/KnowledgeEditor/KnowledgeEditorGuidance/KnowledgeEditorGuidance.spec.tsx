@@ -218,6 +218,7 @@ jest.mock('models/api/types', () => ({
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),
     useGetUser: () => ({ data: undefined }),
+    useGetCurrentUser: () => ({ data: undefined }),
 }))
 
 const queryClient = mockQueryClient()

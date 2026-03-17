@@ -13,6 +13,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
+import { ExecutionIdDisplay } from 'pages/aiAgent/components/ExecutionIdDisplay/ExecutionIdDisplay'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import type {
     OpportunityResource,
@@ -162,6 +163,7 @@ export const OpportunitySnippetEditor = ({
                     </Text>
                 </Box>
             </Box>
+            <ExecutionIdDisplay executionId={resource.meta?.executionId} />
         </Box>
     )
 }

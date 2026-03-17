@@ -60,6 +60,7 @@ type Props = {
     recentTickets?: Omit<RecentTicketsProps, 'sectionId'>
     helpCenterId?: number
     locale?: string
+    executionId?: string
 }
 
 export const KnowledgeEditorSnippetView = ({
@@ -77,6 +78,7 @@ export const KnowledgeEditorSnippetView = ({
     recentTickets,
     helpCenterId,
     locale,
+    executionId,
 }: Props) => {
     const [isDetailsView, setIsDetailsView] = useState(true)
     const onToggleDetailsView = () => {
@@ -121,6 +123,7 @@ export const KnowledgeEditorSnippetView = ({
                         snippetId={snippet.id}
                         helpCenterId={helpCenterId}
                         locale={locale}
+                        executionId={executionId}
                     />
                 )
             case SnippetType.Document:
@@ -136,6 +139,7 @@ export const KnowledgeEditorSnippetView = ({
                         snippetId={snippet.id}
                         helpCenterId={helpCenterId}
                         locale={locale}
+                        executionId={executionId}
                     />
                 )
             case SnippetType.Store:
@@ -150,6 +154,7 @@ export const KnowledgeEditorSnippetView = ({
                         snippetId={snippet.id}
                         helpCenterId={helpCenterId}
                         locale={locale}
+                        executionId={executionId}
                     />
                 )
         }

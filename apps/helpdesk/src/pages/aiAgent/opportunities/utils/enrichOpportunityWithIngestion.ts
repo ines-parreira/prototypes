@@ -64,6 +64,7 @@ export const enrichOpportunityWithIngestion = (
                 ...resource,
                 meta: {
                     articleIngestionLog: ingestionLog,
+                    executionId: ingestedResource.execution_id,
                 },
             }
         },

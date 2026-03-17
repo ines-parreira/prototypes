@@ -1,14 +1,36 @@
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 
+import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
+
+import { UserRole } from 'config/types/user'
 import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { KnowledgeEditorSidePanelStoreSnippet } from './KnowledgeEditorSidePanelStoreSnippet'
 
+const server = setupServer()
+const mockGetCurrentUser = mockGetCurrentUserHandler()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'warn' })
+})
+
+beforeEach(() => {
+    server.use(mockGetCurrentUser.handler)
+})
+
+afterEach(() => {
+    server.resetHandlers()
+    jest.clearAllMocks()
+})
+
+afterAll(() => {
+    server.close()
+})
+
 describe('KnowledgeEditorSidePanelStoreSnippet', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
     it('renders', () => {
         const testDate = new Date('2025-06-17')
         const testDateRange = {
@@ -64,5 +86,66 @@ describe('KnowledgeEditorSidePanelStoreSnippet', () => {
         expect(screen.getByText('Details')).toBeInTheDocument()
         expect(screen.getByText('Impact')).toBeInTheDocument()
         expect(screen.getByText('Recent tickets')).toBeInTheDocument()
+    })
+
+    it('renders execution ID in backend IDs when provided and user is Gorgias agent', async () => {
+        const { handler } = mockGetCurrentUserHandler(async () =>
+            HttpResponse.json({
+                ...mockGetCurrentUser.data,
+                role: { name: UserRole.GorgiasAgent },
+            }),
+        )
+        server.use(handler)
+
+        const testDate = new Date('2025-06-17')
+
+        renderWithStoreAndQueryClientAndRouter(
+            <KnowledgeEditorSidePanelStoreSnippet
+                details={{
+                    aiAgentStatus: { value: true, onChange: jest.fn() },
+                    createdDatetime: testDate,
+                    lastUpdatedDatetime: testDate,
+                    urls: ['https://www.google.com'],
+                }}
+                snippetId={42}
+                executionId="exec-abc-123"
+            />,
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Execution ID:')).toBeInTheDocument()
+            expect(screen.getByText('exec-abc-123')).toBeInTheDocument()
+        })
+    })
+
+    it('does not render execution ID in backend IDs when not provided', async () => {
+        const { handler } = mockGetCurrentUserHandler(async () =>
+            HttpResponse.json({
+                ...mockGetCurrentUser.data,
+                role: { name: UserRole.GorgiasAgent },
+            }),
+        )
+        server.use(handler)
+
+        const testDate = new Date('2025-06-17')
+
+        renderWithStoreAndQueryClientAndRouter(
+            <KnowledgeEditorSidePanelStoreSnippet
+                details={{
+                    aiAgentStatus: { value: true, onChange: jest.fn() },
+                    createdDatetime: testDate,
+                    lastUpdatedDatetime: testDate,
+                    urls: ['https://www.google.com'],
+                }}
+                snippetId={42}
+            />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Snippet ID (SourceId):'),
+            ).toBeInTheDocument()
+        })
+        expect(screen.queryByText('Execution ID:')).not.toBeInTheDocument()
     })
 })

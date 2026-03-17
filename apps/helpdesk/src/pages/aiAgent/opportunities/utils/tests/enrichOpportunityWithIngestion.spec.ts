@@ -132,7 +132,7 @@ describe('enrichOpportunityWithIngestion', () => {
         expect(result).toEqual(opportunity)
     })
 
-    it('should enrich external_snippet resource with article ingestion log', () => {
+    it('should enrich external_snippet resource with article ingestion log and execution ID', () => {
         const opportunity: Opportunity = {
             ...baseOpportunity,
             resources: [
@@ -164,6 +164,7 @@ describe('enrichOpportunityWithIngestion', () => {
             ...opportunity.resources[0],
             meta: {
                 articleIngestionLog: mockIngestionLog,
+                executionId: 'exec_123',
             },
         })
     })
@@ -267,6 +268,7 @@ describe('enrichOpportunityWithIngestion', () => {
             ...opportunity.resources[0],
             meta: {
                 articleIngestionLog: mockIngestionLog1,
+                executionId: 'exec_123',
             },
         })
 
@@ -276,6 +278,7 @@ describe('enrichOpportunityWithIngestion', () => {
             ...opportunity.resources[2],
             meta: {
                 articleIngestionLog: mockIngestionLog2,
+                executionId: 'exec_456',
             },
         })
     })

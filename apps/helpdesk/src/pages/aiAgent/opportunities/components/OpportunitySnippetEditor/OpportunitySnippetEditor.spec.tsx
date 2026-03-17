@@ -9,6 +9,11 @@ jest.mock('react-router', () => ({
     useHistory: jest.fn(),
 }))
 
+const mockUseShouldDisplayExecutionId = jest.fn()
+jest.mock('pages/aiAgent/hooks/useShouldDisplayExecutionId', () => ({
+    useShouldDisplayExecutionId: () => mockUseShouldDisplayExecutionId(),
+}))
+
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: jest.fn(),
 }))
@@ -45,6 +50,7 @@ describe('OpportunitySnippetEditor', () => {
     }
 
     beforeEach(() => {
+        mockUseShouldDisplayExecutionId.mockReturnValue(false)
         mockUseHistory.mockReturnValue({ push: mockPush })
         mockUseAiAgentNavigation.mockReturnValue({
             routes: {
@@ -249,5 +255,57 @@ describe('OpportunitySnippetEditor', () => {
         await user.click(sourceElement)
 
         expect(mockPush).not.toHaveBeenCalled()
+    })
+
+    it('should render execution ID when impersonated', () => {
+        mockUseShouldDisplayExecutionId.mockReturnValue(true)
+
+        const resourceWithExecutionId: OpportunityResource = {
+            ...mockResource,
+            meta: {
+                ...mockResource.meta,
+                articleIngestionLog: mockResource.meta?.articleIngestionLog ?? {
+                    source: 'url',
+                    source_name: 'https://url.com',
+                },
+                executionId: 'exec-test-456',
+            },
+        }
+
+        render(
+            <OpportunitySnippetEditor
+                {...defaultProps}
+                resource={resourceWithExecutionId}
+            />,
+        )
+
+        expect(
+            screen.getByText('Execution ID: exec-test-456'),
+        ).toBeInTheDocument()
+    })
+
+    it('should not render execution ID when not impersonated', () => {
+        const resourceWithExecutionId: OpportunityResource = {
+            ...mockResource,
+            meta: {
+                ...mockResource.meta,
+                articleIngestionLog: mockResource.meta?.articleIngestionLog ?? {
+                    source: 'url',
+                    source_name: 'https://url.com',
+                },
+                executionId: 'exec-test-456',
+            },
+        }
+
+        render(
+            <OpportunitySnippetEditor
+                {...defaultProps}
+                resource={resourceWithExecutionId}
+            />,
+        )
+
+        expect(
+            screen.queryByText('Execution ID: exec-test-456'),
+        ).not.toBeInTheDocument()
     })
 })

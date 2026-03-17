@@ -324,6 +324,7 @@ export const KnowledgeEditorSnippetLoader = ({
             recentTickets={recentTickets}
             helpCenterId={helpCenterId}
             locale={locale}
+            executionId={ingestedResourceData?.execution_id}
         />
     )
 }

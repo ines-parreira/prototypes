@@ -1,4 +1,5 @@
 import { Box, Text } from '@gorgias/axiom'
+import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
 import { UserRole } from 'config/types/user'
 
@@ -9,8 +10,9 @@ type Props = {
 }
 
 export const KnowledgeEditorSidePanelBackendIds = ({ ids }: Props) => {
-    const currentUser = window.GORGIAS_STATE?.currentUser
-    const isGorgiasAgent = currentUser?.role?.name === UserRole.GorgiasAgent
+    const { data: currentUser } = useGetCurrentUser()
+    const isGorgiasAgent =
+        currentUser?.data?.role?.name === UserRole.GorgiasAgent
 
     if (!isGorgiasAgent || Object.keys(ids).length === 0) {
         return null

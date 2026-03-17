@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
 import { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
+import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
 import { KnowledgeEditorSnippetView } from './KnowledgeEditorSnippetView'
@@ -24,8 +25,14 @@ const store = mockStore({
     },
 })
 
+const MockQueryClientProvider = mockQueryClientProvider().QueryClientProvider
+
 const renderWithProvider = (ui: React.ReactElement) => {
-    return render(<Provider store={store}>{ui}</Provider>)
+    return render(
+        <Provider store={store}>
+            <MockQueryClientProvider>{ui}</MockQueryClientProvider>
+        </Provider>,
+    )
 }
 
 describe('KnowledgeEditorSnippetView', () => {

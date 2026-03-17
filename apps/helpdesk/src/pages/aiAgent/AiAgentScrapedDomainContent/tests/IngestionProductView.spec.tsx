@@ -5,6 +5,11 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import IngestionProductView from '../IngestionProductView'
 import type { IngestedProduct } from '../types'
 
+const mockUseShouldDisplayExecutionId = jest.fn()
+jest.mock('pages/aiAgent/hooks/useShouldDisplayExecutionId', () => ({
+    useShouldDisplayExecutionId: () => mockUseShouldDisplayExecutionId(),
+}))
+
 const mockProduct: IngestedProduct = {
     account_id: 1,
     store_id: 1,
@@ -44,6 +49,27 @@ const mockProduct: IngestedProduct = {
 }
 
 describe('IngestionProductView', () => {
+    beforeEach(() => {
+        mockUseShouldDisplayExecutionId.mockReturnValue(false)
+    })
+
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('renders execution ID when impersonated', () => {
+        mockUseShouldDisplayExecutionId.mockReturnValue(true)
+        render(<IngestionProductView product={mockProduct} />)
+
+        expect(screen.getByText('Execution ID: 456')).toBeInTheDocument()
+    })
+
+    it('does not render execution ID when not impersonated', () => {
+        render(<IngestionProductView product={mockProduct} />)
+
+        expect(screen.queryByText('Execution ID: 456')).not.toBeInTheDocument()
+    })
+
     it('renders basic product information', () => {
         render(<IngestionProductView product={mockProduct} />)
 
