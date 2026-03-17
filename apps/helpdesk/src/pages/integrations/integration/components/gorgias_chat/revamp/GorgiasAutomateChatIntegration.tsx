@@ -3,7 +3,9 @@ import type { Map } from 'immutable'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout'
 
 import { ArticleRecommendationCard } from './components/ArticleRecommendationCard/ArticleRecommendationCard'
+import { OrderManagementCard } from './components/OrderManagementCard/OrderManagementCard'
 import { useArticleRecommendation } from './hooks/useArticleRecommendation'
+import { useOrderManagement } from './hooks/useOrderManagement'
 
 import css from './GorgiasAutomateChatIntegration.less'
 
@@ -15,24 +17,44 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
     integration,
 }: Props) => {
     const {
-        enabledInSettings,
+        enabledInSettings: articleRecommendationEnabledInSettings,
         isArticleRecommendationEnabled,
-        isDisabled,
-        isLoading,
+        isDisabled: isArticleRecommendationDisabled,
+        isLoading: isArticleRecommendationLoading,
         showHelpCenterRequired,
-        handleToggle,
+        handleToggle: handleArticleRecommendationToggle,
     } = useArticleRecommendation({ integration })
+
+    const {
+        enabledInSettings: orderManagementEnabledInSettings,
+        isOrderManagementEnabled,
+        isDisabled: isOrderManagementDisabled,
+        isLoading: isOrderManagementLoading,
+        showStoreRequired,
+        orderManagementUrl,
+        handleToggle: handleOrderManagementToggle,
+    } = useOrderManagement({ integration })
 
     return (
         <GorgiasChatRevampLayout integration={integration}>
             <div className={css.cardsWrapper}>
-                {enabledInSettings && (
+                {orderManagementEnabledInSettings && (
+                    <OrderManagementCard
+                        isEnabled={isOrderManagementEnabled}
+                        isDisabled={isOrderManagementDisabled}
+                        isLoading={isOrderManagementLoading}
+                        showStoreRequired={showStoreRequired}
+                        orderManagementUrl={orderManagementUrl}
+                        onChange={handleOrderManagementToggle}
+                    />
+                )}
+                {articleRecommendationEnabledInSettings && (
                     <ArticleRecommendationCard
                         isEnabled={isArticleRecommendationEnabled}
-                        isDisabled={isDisabled}
-                        isLoading={isLoading}
+                        isDisabled={isArticleRecommendationDisabled}
+                        isLoading={isArticleRecommendationLoading}
                         showHelpCenterRequired={showHelpCenterRequired}
-                        onChange={handleToggle}
+                        onChange={handleArticleRecommendationToggle}
                     />
                 )}
             </div>

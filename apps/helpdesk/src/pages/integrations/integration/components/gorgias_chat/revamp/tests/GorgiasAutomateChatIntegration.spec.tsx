@@ -3,13 +3,13 @@ import { fromJS } from 'immutable'
 
 import { GorgiasAutomateChatIntegrationRevamp } from '../GorgiasAutomateChatIntegration'
 import { useArticleRecommendation } from '../hooks/useArticleRecommendation'
+import { useOrderManagement } from '../hooks/useOrderManagement'
 
 jest.mock('../hooks/useArticleRecommendation')
 const mockUseArticleRecommendation = jest.mocked(useArticleRecommendation)
 
-jest.mock('../components/ChatPreviewPanel/hooks/useChatPreviewPanel', () => ({
-    useChatPreviewPanel: jest.fn(),
-}))
+jest.mock('../hooks/useOrderManagement')
+const mockUseOrderManagement = jest.mocked(useOrderManagement)
 
 jest.mock('../GorgiasChatRevampLayout', () => ({
     GorgiasChatRevampLayout: ({ children }: { children: React.ReactNode }) => (
@@ -26,12 +26,26 @@ jest.mock(
     }),
 )
 
-const defaultHookReturn = {
+jest.mock('../components/OrderManagementCard/OrderManagementCard', () => ({
+    OrderManagementCard: () => <div data-testid="order-management-card" />,
+}))
+
+const defaultArticleRecommendationHookReturn = {
     enabledInSettings: true,
     isArticleRecommendationEnabled: false,
     isDisabled: false,
     isLoading: false,
     showHelpCenterRequired: false,
+    handleToggle: jest.fn(),
+}
+
+const defaultOrderManagementHookReturn = {
+    enabledInSettings: true,
+    isOrderManagementEnabled: false,
+    isDisabled: false,
+    isLoading: false,
+    showStoreRequired: false,
+    orderManagementUrl: '/app/settings/order-management/shopify/test-shop',
     handleToggle: jest.fn(),
 }
 
@@ -42,7 +56,10 @@ const defaultProps = {
 describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-        mockUseArticleRecommendation.mockReturnValue(defaultHookReturn)
+        mockUseArticleRecommendation.mockReturnValue(
+            defaultArticleRecommendationHookReturn,
+        )
+        mockUseOrderManagement.mockReturnValue(defaultOrderManagementHookReturn)
     })
 
     it('should render within the revamp layout', () => {
@@ -53,7 +70,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
     it('should render article recommendation card when enabledInSettings is true', () => {
         mockUseArticleRecommendation.mockReturnValue({
-            ...defaultHookReturn,
+            ...defaultArticleRecommendationHookReturn,
             enabledInSettings: true,
         })
 
@@ -66,7 +83,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
     it('should not render article recommendation card when enabledInSettings is false', () => {
         mockUseArticleRecommendation.mockReturnValue({
-            ...defaultHookReturn,
+            ...defaultArticleRecommendationHookReturn,
             enabledInSettings: false,
         })
 
@@ -74,6 +91,30 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
         expect(
             screen.queryByTestId('article-recommendation-card'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render order management card when enabledInSettings is true', () => {
+        mockUseOrderManagement.mockReturnValue({
+            ...defaultOrderManagementHookReturn,
+            enabledInSettings: true,
+        })
+
+        render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+
+        expect(screen.getByTestId('order-management-card')).toBeInTheDocument()
+    })
+
+    it('should not render order management card when enabledInSettings is false', () => {
+        mockUseOrderManagement.mockReturnValue({
+            ...defaultOrderManagementHookReturn,
+            enabledInSettings: false,
+        })
+
+        render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+
+        expect(
+            screen.queryByTestId('order-management-card'),
         ).not.toBeInTheDocument()
     })
 })
