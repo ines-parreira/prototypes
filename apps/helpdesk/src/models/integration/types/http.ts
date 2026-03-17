@@ -21,10 +21,13 @@ export type OAuth2Config = {
     token_url: string
     client_id: string
     client_secret: string
+    has_client_secret?: boolean
     token_location: OAuth2TokenLocation
     token_key: string
     scopes?: string
 }
+
+export const OAUTH2_SECRET_SENTINEL = '__SECRET_SET__'
 
 export type HttpIntegrationMeta = {
     execution_order: number
@@ -35,7 +38,7 @@ export type HttpIntegrationMeta = {
     }
     id: number
     method: HttpMethod
-    oauth2?: OAuth2Config
+    oauth2?: OAuth2Config | null
     request_content_type: ContentType
     response_content_type: ContentType
     triggers: {

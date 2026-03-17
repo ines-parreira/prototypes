@@ -71,11 +71,23 @@ export default function reducer(
         case constants.FETCH_INTEGRATION_ERROR:
             return state.setIn(['state', 'loading', 'integration'], false)
 
-        case constants.FETCH_INTEGRATION_SUCCESS:
-            // The integration to edit.
+        case constants.FETCH_INTEGRATION_SUCCESS: {
+            const newIntegration = fromJS(action.integration) as Map<any, any>
+            const integrations = state.get('integrations') as List<any>
+            const integrationIndex = integrations.findIndex(
+                (integration: Map<any, any>) =>
+                    newIntegration.get('id') === integration.get('id'),
+            )
+
             return state
-                .set('integration', fromJS(action.integration))
+                .set('integration', newIntegration)
                 .setIn(['state', 'loading', 'integration'], false)
+                .update('integrations', (list: List<any>) =>
+                    ~integrationIndex
+                        ? list.set(integrationIndex, newIntegration)
+                        : list,
+                )
+        }
 
         case constants.FETCH_EMAIL_DOMAIN_START:
         case constants.CREATE_EMAIL_DOMAIN_START:
@@ -115,8 +127,27 @@ export default function reducer(
                 .sortBy((integration: Map<any, any>) =>
                     moment(integration.get('deactivated_datetime')),
                 ) as List<any>
+
+            const currentIntegration = state.get('integration') as
+                | Map<any, any>
+                | undefined
+            const currentIntegrationId = currentIntegration?.get('id')
+            let mergedIntegrations = integrations
+            if (currentIntegrationId) {
+                const idx = integrations.findIndex(
+                    (integration: Map<any, any>) =>
+                        integration.get('id') === currentIntegrationId,
+                )
+                if (~idx) {
+                    mergedIntegrations = integrations.set(
+                        idx,
+                        currentIntegration,
+                    )
+                }
+            }
+
             return state
-                .set('integrations', integrations)
+                .set('integrations', mergedIntegrations)
                 .setIn(['state', 'loading', 'integrations'], false)
         }
 

@@ -6,7 +6,11 @@ import { fromJS } from 'immutable'
 import { baseHttp, httpIntegration } from 'fixtures/integrations'
 import { ContentType, HttpMethod } from 'models/api/types'
 import type { HTTPForm } from 'models/integration/types'
-import { IntegrationType, OAuth2TokenLocation } from 'models/integration/types'
+import {
+    IntegrationType,
+    OAUTH2_SECRET_SENTINEL,
+    OAuth2TokenLocation,
+} from 'models/integration/types'
 import { Integration } from 'pages/integrations/integration/components/http/Integration/Integration'
 import { INTEGRATION_REMOVAL_CONFIGURATION_TEXT } from 'pages/integrations/integration/constants'
 
@@ -807,6 +811,82 @@ describe('HTTP Integration', () => {
             isHttpIntegrationOAuthEnabled: true,
         }
 
+        it('should ignore OAuth2 from props when flag is off', () => {
+            const integrationWithOAuth2 = {
+                ...httpIntegration,
+                http: {
+                    ...baseHttp,
+                    oauth2: {
+                        token_url: 'https://auth.example.com/token',
+                        client_id: 'existing-client-id',
+                        client_secret: '',
+                        has_client_secret: true,
+                        token_location: OAuth2TokenLocation.Header,
+                        token_key: 'Authorization',
+                        scopes: '',
+                    },
+                },
+            }
+
+            const component = React.createRef<Integration>()
+            render(
+                <Integration
+                    {...minProps}
+                    integration={integrationWithOAuth2}
+                    isUpdate={true}
+                    ref={component}
+                />,
+            )
+
+            expect(component.current?.state.oauth2Enabled).toBe(false)
+        })
+
+        it('should not re-sync OAuth2 on prop change when flag is off', () => {
+            const integrationWithoutOAuth2 = {
+                ...httpIntegration,
+                http: { ...baseHttp },
+            }
+
+            const component = React.createRef<Integration>()
+            const { rerender } = render(
+                <Integration
+                    {...minProps}
+                    integration={integrationWithoutOAuth2}
+                    isUpdate={true}
+                    ref={component}
+                />,
+            )
+
+            expect(component.current?.state.oauth2Enabled).toBe(false)
+
+            const integrationWithOAuth2 = {
+                ...httpIntegration,
+                http: {
+                    ...baseHttp,
+                    oauth2: {
+                        token_url: 'https://auth.example.com/token',
+                        client_id: 'resynced-client',
+                        client_secret: '',
+                        has_client_secret: true,
+                        token_location: OAuth2TokenLocation.Header,
+                        token_key: 'Authorization',
+                        scopes: '',
+                    },
+                },
+            }
+
+            rerender(
+                <Integration
+                    {...minProps}
+                    integration={integrationWithOAuth2}
+                    isUpdate={true}
+                    ref={component}
+                />,
+            )
+
+            expect(component.current?.state.oauth2Enabled).toBe(false)
+        })
+
         it('should render OAuth2 toggle in the creation form', () => {
             render(<Integration {...oauthMinProps} />)
 
@@ -1122,7 +1202,7 @@ describe('HTTP Integration', () => {
             const call = mockUpdateOrCreate.mock.calls[0][0]
             const payload = call.toJS()
 
-            expect(payload.http.oauth2).toBeUndefined()
+            expect(payload.http.oauth2).toBeNull()
         })
 
         it('should initialize OAuth2 state from existing integration with oauth2 config', () => {
@@ -1133,7 +1213,8 @@ describe('HTTP Integration', () => {
                     oauth2: {
                         token_url: 'https://auth.example.com/token',
                         client_id: 'existing-client-id',
-                        client_secret: 'existing-secret',
+                        client_secret: '',
+                        has_client_secret: true,
                         token_location: OAuth2TokenLocation.QueryString,
                         token_key: 'access_token',
                         scopes: 'read write',
@@ -1162,6 +1243,226 @@ describe('HTTP Integration', () => {
                 screen.getByRole('textbox', { name: /token key/i }),
             ).toHaveValue('access_token')
             expect(screen.getByLabelText('Scopes')).toHaveValue('read write')
+        })
+
+        it('should populate client_secret with sentinel when has_client_secret is true', () => {
+            const integrationWithOAuth2 = {
+                ...httpIntegration,
+                http: {
+                    ...baseHttp,
+                    oauth2: {
+                        token_url: 'https://auth.example.com/token',
+                        client_id: 'existing-client-id',
+                        client_secret: '',
+                        has_client_secret: true,
+                        token_location: OAuth2TokenLocation.Header,
+                        token_key: 'access_token',
+                        scopes: '',
+                    },
+                },
+            }
+
+            const component = React.createRef<Integration>()
+            render(
+                <Integration
+                    {...oauthMinProps}
+                    integration={integrationWithOAuth2}
+                    isUpdate={true}
+                    ref={component}
+                />,
+            )
+
+            expect(component.current?.state.oauth2Config.client_secret).toBe(
+                OAUTH2_SECRET_SENTINEL,
+            )
+            // The password field should have a non-empty value
+            expect(screen.getByLabelText(/client secret/i)).toHaveValue(
+                OAUTH2_SECRET_SENTINEL,
+            )
+        })
+
+        it('should omit client_secret from payload when sentinel is unchanged', () => {
+            const mockUpdateOrCreate = jest.fn()
+            render(
+                <Integration
+                    {...oauthMinProps}
+                    updateOrCreateIntegration={mockUpdateOrCreate}
+                />,
+            )
+
+            // Fill required fields
+            fireEvent.change(screen.getByLabelText('Integration name'), {
+                target: { value: 'OAuth2 Integration' },
+            })
+            fireEvent.change(screen.getByLabelText('URL'), {
+                target: { value: 'https://test.com/webhook' },
+            })
+            const checkbox = screen
+                .getByText('Ticket created')
+                .closest('label')
+                ?.querySelector('input')
+            if (checkbox) {
+                fireEvent.click(checkbox)
+            }
+
+            // Enable OAuth2 and fill fields
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /token url/i }),
+                { target: { value: 'https://auth.example.com/token' } },
+            )
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /client id/i }),
+                { target: { value: 'my-client-id' } },
+            )
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /token key/i }),
+                { target: { value: 'access_token' } },
+            )
+
+            // Set client_secret to sentinel (simulating pre-populated state)
+            fireEvent.change(screen.getByLabelText(/client secret/i), {
+                target: { value: OAUTH2_SECRET_SENTINEL },
+            })
+
+            fireEvent.click(screen.getByText('Add integration'))
+
+            const call = mockUpdateOrCreate.mock.calls[0][0]
+            const payload = call.toJS()
+
+            expect(payload.http.oauth2).toBeDefined()
+            expect(payload.http.oauth2.client_secret).toBeUndefined()
+            expect(payload.http.oauth2.has_client_secret).toBeUndefined()
+            expect(payload.http.oauth2.token_url).toBe(
+                'https://auth.example.com/token',
+            )
+        })
+
+        it('should include client_secret in payload when user types a new secret', () => {
+            const mockUpdateOrCreate = jest.fn()
+            render(
+                <Integration
+                    {...oauthMinProps}
+                    updateOrCreateIntegration={mockUpdateOrCreate}
+                />,
+            )
+
+            // Fill required fields
+            fireEvent.change(screen.getByLabelText('Integration name'), {
+                target: { value: 'OAuth2 Integration' },
+            })
+            fireEvent.change(screen.getByLabelText('URL'), {
+                target: { value: 'https://test.com/webhook' },
+            })
+            const checkbox = screen
+                .getByText('Ticket created')
+                .closest('label')
+                ?.querySelector('input')
+            if (checkbox) {
+                fireEvent.click(checkbox)
+            }
+
+            // Enable OAuth2 and fill fields
+            const toggle = screen
+                .getByText('Enable authentication method: OAuth2')
+                .closest('label')
+                ?.querySelector('input')
+            if (toggle) {
+                fireEvent.click(toggle)
+            }
+
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /token url/i }),
+                { target: { value: 'https://auth.example.com/token' } },
+            )
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /client id/i }),
+                { target: { value: 'my-client-id' } },
+            )
+            fireEvent.change(
+                screen.getByRole('textbox', { name: /token key/i }),
+                { target: { value: 'access_token' } },
+            )
+
+            // First set sentinel, then replace with new secret
+            fireEvent.change(screen.getByLabelText(/client secret/i), {
+                target: { value: OAUTH2_SECRET_SENTINEL },
+            })
+            fireEvent.change(screen.getByLabelText(/client secret/i), {
+                target: { value: 'new-secret-value' },
+            })
+
+            fireEvent.click(screen.getByText('Add integration'))
+
+            const call = mockUpdateOrCreate.mock.calls[0][0]
+            const payload = call.toJS()
+
+            expect(payload.http.oauth2.client_secret).toBe('new-secret-value')
+            expect(payload.http.oauth2.has_client_secret).toBeUndefined()
+        })
+
+        it('should re-sync OAuth2 fields when props gain oauth2 data after initial load', () => {
+            const integrationWithoutOAuth2 = {
+                ...httpIntegration,
+                http: {
+                    ...baseHttp,
+                },
+            }
+
+            const component = React.createRef<Integration>()
+            const { rerender } = render(
+                <Integration
+                    {...oauthMinProps}
+                    integration={integrationWithoutOAuth2}
+                    isUpdate={true}
+                    ref={component}
+                />,
+            )
+
+            expect(component.current?.state.oauth2Enabled).toBe(false)
+
+            const integrationWithOAuth2 = {
+                ...httpIntegration,
+                http: {
+                    ...baseHttp,
+                    oauth2: {
+                        token_url: 'https://auth.example.com/token',
+                        client_id: 'resynced-client',
+                        client_secret: '',
+                        has_client_secret: true,
+                        token_location: OAuth2TokenLocation.Header,
+                        token_key: 'Authorization',
+                        scopes: 'read',
+                    },
+                },
+            }
+
+            rerender(
+                <Integration
+                    {...oauthMinProps}
+                    integration={integrationWithOAuth2}
+                    isUpdate={true}
+                    ref={component}
+                />,
+            )
+
+            expect(component.current?.state.oauth2Enabled).toBe(true)
+            expect(component.current?.state.oauth2Config.client_id).toBe(
+                'resynced-client',
+            )
+            expect(component.current?.state.oauth2Config.client_secret).toBe(
+                OAUTH2_SECRET_SENTINEL,
+            )
+            expect(
+                screen.getByRole('textbox', { name: /client id/i }),
+            ).toHaveValue('resynced-client')
         })
 
         it('should default Token Location to Header', () => {

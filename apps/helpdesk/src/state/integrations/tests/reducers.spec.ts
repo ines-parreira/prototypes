@@ -1,12 +1,17 @@
 import type { Map, Seq } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { integrationsState } from '../../../fixtures/integrations'
+import {
+    baseHttp,
+    httpIntegration,
+    integrationsState,
+} from '../../../fixtures/integrations'
 import type { EmailMigrationInboundVerification } from '../../../models/integration/types'
 import {
     EmailMigrationInboundVerificationStatus,
     GorgiasChatStatusEnum,
     IntegrationType,
+    OAuth2TokenLocation,
 } from '../../../models/integration/types'
 import type { RootState } from '../../types'
 import * as types from '../constants'
@@ -386,6 +391,114 @@ describe('integrations reducers', () => {
             }
 
             expect(reducer(integrationsState, action)).toMatchSnapshot()
+        })
+    })
+
+    describe('FETCH_INTEGRATION_SUCCESS', () => {
+        it('should sync detail into the integrations list', () => {
+            const existingState = initialState.mergeDeep(
+                fromJS({
+                    integrations: [
+                        {
+                            ...httpIntegration,
+                            id: 100,
+                        },
+                    ],
+                }),
+            )
+
+            const detailIntegration = {
+                ...httpIntegration,
+                id: 100,
+                http: {
+                    ...baseHttp,
+                    oauth2: {
+                        token_url: 'https://auth.example.com/token',
+                        client_id: 'my-client',
+                        client_secret: '',
+                        has_client_secret: true,
+                        token_location: OAuth2TokenLocation.Header,
+                        token_key: 'Authorization',
+                    },
+                },
+            }
+
+            const newState = reducer(existingState, {
+                type: types.FETCH_INTEGRATION_SUCCESS,
+                integration: detailIntegration,
+            })
+
+            expect(newState.get('integration').toJS()).toEqual(
+                expect.objectContaining({ id: 100 }),
+            )
+            expect(
+                newState
+                    .get('integrations')
+                    .get(0)
+                    .getIn(['http', 'oauth2', 'client_id']),
+            ).toBe('my-client')
+        })
+    })
+
+    describe('FETCH_INTEGRATIONS_SUCCESS', () => {
+        it('should preserve loaded detail over list data', () => {
+            const detailData = fromJS({
+                id: 100,
+                name: 'HTTP Integration',
+                type: 'http',
+                deactivated_datetime: null,
+                http: {
+                    oauth2: {
+                        token_url: 'https://auth.example.com/token',
+                        client_id: 'my-client',
+                        has_client_secret: true,
+                    },
+                },
+            })
+
+            const integrationsState = initialState.set(
+                'integration',
+                detailData,
+            )
+
+            const listData = [
+                {
+                    id: 100,
+                    name: 'HTTP Integration',
+                    type: 'http',
+                    deactivated_datetime: null,
+                },
+            ]
+
+            const newState = reducer(integrationsState, {
+                type: types.FETCH_INTEGRATIONS_SUCCESS,
+                resp: listData,
+            })
+
+            expect(
+                newState
+                    .get('integrations')
+                    .get(0)
+                    .getIn(['http', 'oauth2', 'client_id']),
+            ).toBe('my-client')
+        })
+
+        it('should use list data when no detail is loaded', () => {
+            const listData = [
+                {
+                    id: 200,
+                    name: 'Another Integration',
+                    type: 'http',
+                    deactivated_datetime: null,
+                },
+            ]
+
+            const newState = reducer(initialState, {
+                type: types.FETCH_INTEGRATIONS_SUCCESS,
+                resp: listData,
+            })
+
+            expect(newState.get('integrations').get(0).get('id')).toBe(200)
         })
     })
 

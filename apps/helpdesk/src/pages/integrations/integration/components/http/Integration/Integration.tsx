@@ -30,7 +30,11 @@ import type {
     HttpIntegrationMeta,
     OAuth2Config,
 } from 'models/integration/types'
-import { IntegrationType, OAuth2TokenLocation } from 'models/integration/types'
+import {
+    IntegrationType,
+    OAUTH2_SECRET_SENTINEL,
+    OAuth2TokenLocation,
+} from 'models/integration/types'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -116,8 +120,25 @@ export class Integration extends Component<Props, State> {
         this.initializeState(this.props)
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps: Props) {
         this.initializeState(this.props)
+
+        if (
+            this.props.isHttpIntegrationOAuthEnabled &&
+            this.props.integration?.http?.oauth2 &&
+            !prevProps.integration?.http?.oauth2
+        ) {
+            const existingOAuth2 = this.props.integration.http.oauth2
+            this.setState({
+                oauth2Enabled: true,
+                oauth2Config: {
+                    ...existingOAuth2,
+                    client_secret: existingOAuth2.has_client_secret
+                        ? OAUTH2_SECRET_SENTINEL
+                        : '',
+                },
+            })
+        }
     }
 
     initializeState = (props: Props) => {
@@ -144,7 +165,9 @@ export class Integration extends Component<Props, State> {
         }
         const headers = integration.http?.headers
 
-        const existingOAuth2 = integration.http?.oauth2
+        const existingOAuth2 = this.props.isHttpIntegrationOAuthEnabled
+            ? integration.http?.oauth2
+            : undefined
 
         return {
             name: integration.name,
@@ -171,14 +194,21 @@ export class Integration extends Component<Props, State> {
                 integration.http?.triggers['ticket-status-updated'] ?? false,
             form: formData,
             oauth2Enabled: !!existingOAuth2,
-            oauth2Config: existingOAuth2 ?? {
-                token_url: '',
-                client_id: '',
-                client_secret: '',
-                token_location: OAuth2TokenLocation.Header,
-                token_key: '',
-                scopes: '',
-            },
+            oauth2Config: existingOAuth2
+                ? {
+                      ...existingOAuth2,
+                      client_secret: existingOAuth2.has_client_secret
+                          ? OAUTH2_SECRET_SENTINEL
+                          : '',
+                  }
+                : {
+                      token_url: '',
+                      client_id: '',
+                      client_secret: '',
+                      token_location: OAuth2TokenLocation.Header,
+                      token_key: '',
+                      scopes: '',
+                  },
         }
     }
 
@@ -294,8 +324,20 @@ export class Integration extends Component<Props, State> {
                         this.state.ticketStatusUpdated,
                 },
                 form,
-                oauth2: this.state.oauth2Enabled
-                    ? this.state.oauth2Config
+                oauth2: this.props.isHttpIntegrationOAuthEnabled
+                    ? this.state.oauth2Enabled
+                        ? ((() => {
+                              const {
+                                  has_client_secret: __has_client_secret,
+                                  client_secret,
+                                  ...rest
+                              } = this.state.oauth2Config
+                              return client_secret &&
+                                  client_secret !== OAUTH2_SECRET_SENTINEL
+                                  ? { ...rest, client_secret }
+                                  : rest
+                          })() as OAuth2Config)
+                        : null
                     : undefined,
             },
         }

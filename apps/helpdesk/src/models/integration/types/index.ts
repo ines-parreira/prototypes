@@ -109,7 +109,11 @@ export type {
     FacebookIntegrationMeta,
     FacebookIntegrationSettings,
 } from './facebook'
-export { isHttpIntegration, OAuth2TokenLocation } from './http'
+export {
+    isHttpIntegration,
+    OAuth2TokenLocation,
+    OAUTH2_SECRET_SENTINEL,
+} from './http'
 export type {
     HTTPForm,
     HttpIntegration,

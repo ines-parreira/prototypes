@@ -16,6 +16,7 @@ export type IntegrationsImmutableState = Map<any, any>
 
 export type IntegrationsState = {
     integrations: Integration[]
+    integration?: Integration
     authentication: Partial<{
         [K in IntegrationType]: IntegrationAuthentication<K>
     }>
