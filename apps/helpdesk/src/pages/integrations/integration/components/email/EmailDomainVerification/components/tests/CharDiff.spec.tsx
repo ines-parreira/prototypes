@@ -1,13 +1,15 @@
 import React from 'react'
 
 import { assumeMock } from '@repo/testing'
+import { diffChars } from '@repo/utils'
 import { render, screen } from '@testing-library/react'
-
-import { diffChars } from 'utils/diffCheck'
 
 import CharDiff from '../CharDiff'
 
-jest.mock('utils/diffCheck')
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    diffChars: jest.fn(),
+}))
 
 const diffCharsMock = assumeMock(diffChars)
 

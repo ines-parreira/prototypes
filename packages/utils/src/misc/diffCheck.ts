@@ -33,6 +33,8 @@
     CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
     OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Migrated from: apps/helpdesk/src/utils/diffCheck.ts
  */
 
 export type PathComponent = {
@@ -56,7 +58,7 @@ export type Options = {
     oneChangePerToken?: boolean
 }
 
-export default class Diff {
+export class Diff {
     useLongestToken = false
 
     diff(

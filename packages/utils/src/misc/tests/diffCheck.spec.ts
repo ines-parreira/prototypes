@@ -1,4 +1,4 @@
-import Diff, { diffChars } from '../diffCheck'
+import { Diff, diffChars } from '../diffCheck'
 
 describe('Diff', () => {
     let diffInstance: Diff
@@ -7,7 +7,7 @@ describe('Diff', () => {
         diffInstance = new Diff()
     })
 
-    test('should return added: false and remove: false for identical strings', () => {
+    it('should return added: false and remove: false for identical strings', () => {
         const oldStr = 'hello'
         const newStr = 'hello'
         const result = diffInstance.diff(oldStr, newStr)
@@ -16,7 +16,7 @@ describe('Diff', () => {
         ])
     })
 
-    test('should detect added characters', () => {
+    it('should detect added characters', () => {
         const oldStr = 'hello'
         const newStr = 'hello world'
         const result = diffInstance.diff(oldStr, newStr)
@@ -26,7 +26,7 @@ describe('Diff', () => {
         ])
     })
 
-    test('should detect removed characters', () => {
+    it('should detect removed characters', () => {
         const oldStr = 'hello world'
         const newStr = 'hello'
         const result = diffInstance.diff(oldStr, newStr)
@@ -36,7 +36,7 @@ describe('Diff', () => {
         ])
     })
 
-    test('should detect changed characters', () => {
+    it('should detect changed characters', () => {
         const oldStr = 'hello'
         const newStr = 'hallo'
         const result = diffInstance.diff(oldStr, newStr)
@@ -48,7 +48,7 @@ describe('Diff', () => {
         ])
     })
 
-    test('should respect ignoreCase option', () => {
+    it('should respect ignoreCase option', () => {
         const oldStr = 'Hello'
         const newStr = 'hello'
         const result = diffInstance.diff(oldStr, newStr, { ignoreCase: true })
@@ -57,21 +57,21 @@ describe('Diff', () => {
         ])
     })
 
-    test('should respect maxEditLength option', () => {
+    it('should respect maxEditLength option', () => {
         const oldStr = 'hello'
         const newStr = 'hello world'
         const result = diffInstance.diff(oldStr, newStr, { maxEditLength: 5 })
         expect(result).toBeUndefined()
     })
 
-    test('should respect timeout option', () => {
+    it('should respect timeout option', () => {
         const oldStr = 'a'.repeat(10000)
         const newStr = 'b'.repeat(10000)
         const result = diffInstance.diff(oldStr, newStr, { timeout: 1 })
         expect(result).toBeUndefined()
     })
 
-    test('diffChars function should work correctly', () => {
+    it('diffChars function should work correctly', () => {
         const oldStr = 'hello'
         const newStr = 'hello world'
         const result = diffChars(oldStr, newStr, {})

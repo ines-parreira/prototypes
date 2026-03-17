@@ -1,6 +1,5 @@
+import { diffChars } from '@repo/utils'
 import classNames from 'classnames'
-
-import { diffChars } from 'utils/diffCheck'
 
 import css from './CharDiff.less'
 

@@ -1,6 +1,6 @@
 {
-  "date": "2026-03-12T16:20:00.475Z",
-  "total": 5116,
+  "date": "2026-03-16T17:54:06.745Z",
+  "total": 5114,
   "deprecated": [
     {
       "nodeType": "VariableDeclaration",
@@ -157,7 +157,7 @@
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "default",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-01-05\n * @type ui-kit-migration\n ",
-      "count": 133,
+      "count": 132,
       "filePath": "apps/helpdesk/src/pages/common/components/modal/Modal.tsx",
       "usages": [
         {
@@ -289,7 +289,6 @@
             "apps/helpdesk/src/pages/tickets/navbar/DeleteSectionModal.tsx",
             "apps/helpdesk/src/pages/tickets/navbar/SectionFormModal.tsx",
             "apps/helpdesk/src/tickets/ticket-detail/components/MessageActions.tsx",
-            "apps/helpdesk/src/tickets/translations/TranslationsOnboardingModal.tsx",
             "apps/helpdesk/src/timeline/ticket-modal/components/TicketModal.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/DraftOrderModal.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal.tsx",
@@ -1561,56 +1560,6 @@
       ]
     },
     {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "ModalFooter",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 36,
-      "filePath": "apps/helpdesk/src/pages/common/components/modal/ModalFooter.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/domains/reporting/pages/convert/components/RequestABTestModal/RequestABTestModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Activation/components/EarlyAccessModal/EarlyAccessModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/HandoverTopicsModel/HandoverTopicsModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/AiAgentTasks/SuccessModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/GuidanceTemplatesModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/PostGoLiveModal.tsx",
-            "apps/helpdesk/src/pages/aiAgent/trial/components/TrialManageModal/TrialManageModal.tsx",
-            "apps/helpdesk/src/pages/common/components/ConfirmNavigationPrompt.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/CustomAddressModal.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/RefundOrderModal.tsx",
-            "apps/helpdesk/src/pages/common/components/modal/Modal.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/modal/ModalActionsFooter.tsx",
-            "apps/helpdesk/src/pages/common/components/OptOutModal/OptOutModal.tsx",
-            "apps/helpdesk/src/pages/common/components/RequestTrialModal/RequestTrialModal.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightModal.tsx",
-            "apps/helpdesk/src/pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal.tsx",
-            "apps/helpdesk/src/pages/common/components/ViewTable/Table/MissingBillingInformationRow.tsx",
-            "apps/helpdesk/src/pages/convert/onboarding/components/ConvertSimplifiedEditorModal/ConvertSimplifiedEditorModal.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatCreationWizard/components/DiscardNewChatPrompt.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationOnboarding/VoiceAddedSuccessModal.tsx",
-            "apps/helpdesk/src/pages/integrations/Store/RequestApp.tsx",
-            "apps/helpdesk/src/pages/settings/access/components/CustomSsoProviderModal.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/DiscardNewHelpCenterPrompt.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/ImportSection/components/ImportArticlesModal/ImportArticlesModal.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/components/AddSalesCouponModal/AddSalesCouponModal.tsx",
-            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/General/ShopifySettings/ConfirmationModal.tsx",
-            "apps/helpdesk/src/pages/tickets/common/macros/components/MacroModal.tsx",
-            "apps/helpdesk/src/tickets/translations/TranslationsOnboardingModal.tsx",
-            "apps/helpdesk/src/timeline/ticket-modal/components/TicketModal.tsx",
-            "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/DraftOrderModal.tsx",
-            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal.tsx",
-            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal/components/CancelOrderModal.tsx",
-            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/modules/EditOrderModal/components/EditOrderModal.tsx",
-            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal/components/RefundOrderModal.tsx"
-          ]
-        }
-      ]
-    },
-    {
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "ConfirmationPopover",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
@@ -1705,6 +1654,55 @@
             "apps/helpdesk/src/pages/aiAgent/insights/IntentTableWidget/IntentTableCells.tsx",
             "apps/helpdesk/src/pages/aiAgent/insights/widgets/IntentsPerformance/IntentsPerformance.tsx",
             "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/columns.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "ModalFooter",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 35,
+      "filePath": "apps/helpdesk/src/pages/common/components/modal/ModalFooter.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/convert/components/RequestABTestModal/RequestABTestModal.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Activation/components/EarlyAccessModal/EarlyAccessModal.tsx",
+            "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/SyncDomainConfirmationModal.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/HandoverTopicsModel/HandoverTopicsModal.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Overview/components/AiAgentTasks/SuccessModal.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/GuidanceTemplatesModal.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/PostGoLiveModal.tsx",
+            "apps/helpdesk/src/pages/aiAgent/trial/components/TrialManageModal/TrialManageModal.tsx",
+            "apps/helpdesk/src/pages/common/components/ConfirmNavigationPrompt.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/CustomAddressModal.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/RefundOrderModal.tsx",
+            "apps/helpdesk/src/pages/common/components/modal/Modal.stories.tsx",
+            "apps/helpdesk/src/pages/common/components/modal/ModalActionsFooter.tsx",
+            "apps/helpdesk/src/pages/common/components/OptOutModal/OptOutModal.tsx",
+            "apps/helpdesk/src/pages/common/components/RequestTrialModal/RequestTrialModal.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightModal.tsx",
+            "apps/helpdesk/src/pages/common/components/TrialFinishSetupModal/TrialFinishSetupModal.tsx",
+            "apps/helpdesk/src/pages/common/components/ViewTable/Table/MissingBillingInformationRow.tsx",
+            "apps/helpdesk/src/pages/convert/onboarding/components/ConvertSimplifiedEditorModal/ConvertSimplifiedEditorModal.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatCreationWizard/components/DiscardNewChatPrompt.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationOnboarding/VoiceAddedSuccessModal.tsx",
+            "apps/helpdesk/src/pages/integrations/Store/RequestApp.tsx",
+            "apps/helpdesk/src/pages/settings/access/components/CustomSsoProviderModal.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/DiscardNewHelpCenterPrompt.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/Imports/components/ImportSection/components/ImportArticlesModal/ImportArticlesModal.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/components/AddSalesCouponModal/AddSalesCouponModal.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/General/ShopifySettings/ConfirmationModal.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/MacroModal.tsx",
+            "apps/helpdesk/src/timeline/ticket-modal/components/TicketModal.tsx",
+            "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/DraftOrderModal.tsx",
+            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal.tsx",
+            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal/components/CancelOrderModal.tsx",
+            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/modules/EditOrderModal/components/EditOrderModal.tsx",
+            "apps/helpdesk/src/Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal/components/RefundOrderModal.tsx"
           ]
         }
       ]
@@ -1984,7 +1982,7 @@
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "isTeamLead",
       "comment": "*\n * @deprecated Use isTeamLead from @repo/utils package instead\n * @date 2025-11-18\n * @type permissions-migration\n ",
-      "count": 29,
+      "count": 28,
       "filePath": "apps/helpdesk/src/utils.ts",
       "usages": [
         {
@@ -2014,7 +2012,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/shopify/Create.tsx",
             "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
             "apps/helpdesk/src/pages/standalone/tests/schemas.spec.ts",
-            "apps/helpdesk/src/pages/tickets/detail/TicketInfobarContainer.tsx",
             "apps/helpdesk/src/routes/layout/products/analytics.tsx",
             "apps/helpdesk/src/split-ticket-view-toggle/components/tests/useIsToggleEnabled.spec.ts",
             "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
@@ -2139,6 +2136,43 @@
             "apps/helpdesk/src/state/widgets/actions.ts",
             "apps/helpdesk/src/Widgets/modules/Shopify/components/Customer.tsx",
             "apps/helpdesk/src/Widgets/modules/Template/modules/Wrapper/components/Wrapper.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "ToggleInput",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ToggleField />` from @gorgias/axiom instead.\n * @date 2025-03-25\n * @type ui-kit-migration\n ",
+      "count": 23,
+      "filePath": "apps/helpdesk/src/pages/common/forms/ToggleInput.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/common/forms/tests/ToggleInput.spec.tsx",
+            "apps/helpdesk/src/pages/common/forms/tests/ToggleInputField.spec.tsx",
+            "apps/helpdesk/src/pages/common/forms/ToggleInputField.tsx",
+            "apps/helpdesk/src/pages/settings/access/Access.tsx",
+            "apps/helpdesk/src/pages/settings/access/Skip2faAfterSso.tsx",
+            "apps/helpdesk/src/pages/settings/access/SsoEnforcement.tsx",
+            "apps/helpdesk/src/pages/settings/access/SsoToggleButton.tsx",
+            "apps/helpdesk/src/pages/settings/access/TwoFactorAuthenticationEnforcement.tsx",
+            "apps/helpdesk/src/pages/settings/conditionalFields/components/ConditionalFieldRow.tsx",
+            "apps/helpdesk/src/pages/settings/contactForm/components/ContactFormDisplayModeToggle/ContactFormDisplayModeToggle.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ChatApplication/ChatApplication.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/PhoneContactInfoSection/PhoneContactInfoSection.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardArticleRec/HelpCenterWizardArticleRec.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCustomizationView.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/UpdateToggle/UpdateToggle.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/components/AutoUpgradeToggle/AutoUpgradeToggle.tsx",
+            "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/ManagedRuleEditor.tsx",
+            "apps/helpdesk/src/pages/settings/rules/accountRules/components/RuleRow.tsx",
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_MetricsFieldArray.tsx",
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAList/views/ToggleCell.tsx",
+            "apps/helpdesk/src/pages/settings/yourProfile/components/ForwardingCallsPreferences.tsx"
           ]
         }
       ]
@@ -2283,43 +2317,6 @@
             "apps/helpdesk/src/pages/settings/yourProfile/components/DateAndTimeFormatting.tsx",
             "apps/helpdesk/src/pages/tickets/common/macros/components/actions/HttpAction.tsx",
             "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/ShippingPopover.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "ToggleInput",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ToggleField />` from @gorgias/axiom instead.\n * @date 2025-03-25\n * @type ui-kit-migration\n ",
-      "count": 22,
-      "filePath": "apps/helpdesk/src/pages/common/forms/ToggleInput.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/pages/common/forms/tests/ToggleInput.spec.tsx",
-            "apps/helpdesk/src/pages/common/forms/tests/ToggleInputField.spec.tsx",
-            "apps/helpdesk/src/pages/common/forms/ToggleInputField.tsx",
-            "apps/helpdesk/src/pages/settings/access/Access.tsx",
-            "apps/helpdesk/src/pages/settings/access/Skip2faAfterSso.tsx",
-            "apps/helpdesk/src/pages/settings/access/SsoEnforcement.tsx",
-            "apps/helpdesk/src/pages/settings/access/SsoToggleButton.tsx",
-            "apps/helpdesk/src/pages/settings/access/TwoFactorAuthenticationEnforcement.tsx",
-            "apps/helpdesk/src/pages/settings/conditionalFields/components/ConditionalFieldRow.tsx",
-            "apps/helpdesk/src/pages/settings/contactForm/components/ContactFormDisplayModeToggle/ContactFormDisplayModeToggle.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ChatApplication/ChatApplication.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/ContactFormInfoSection/ContactFormInfoSection.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterContactView/components/PhoneContactInfoSection/PhoneContactInfoSection.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardArticleRec/HelpCenterWizardArticleRec.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCreationWizard/components/HelpCenterWizardOrderManagement/HelpCenterWizardOrderManagement.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCustomizationView.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/UpdateToggle/UpdateToggle.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/components/AutoUpgradeToggle/AutoUpgradeToggle.tsx",
-            "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/ManagedRuleEditor.tsx",
-            "apps/helpdesk/src/pages/settings/rules/accountRules/components/RuleRow.tsx",
-            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_MetricsFieldArray.tsx",
-            "apps/helpdesk/src/pages/settings/SLAs/features/SLAList/views/ToggleCell.tsx",
-            "apps/helpdesk/src/pages/settings/yourProfile/components/ForwardingCallsPreferences.tsx"
           ]
         }
       ]
@@ -5351,7 +5348,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1432,
+      "count": 1431,
       "usages": [
         {
           "name": "LegacyButton",
@@ -6612,60 +6609,6 @@
           ]
         },
         {
-          "name": "LegacyIconButton",
-          "count": 48,
-          "files": [
-            "apps/helpdesk/src/AlertBanners/components/CarouselNavigation.tsx",
-            "apps/helpdesk/src/core/ui/flows/components/CustomFitViewControl.tsx",
-            "apps/helpdesk/src/core/ui/flows/components/CustomZoomInControl.tsx",
-            "apps/helpdesk/src/core/ui/flows/components/CustomZoomOutControl.tsx",
-            "apps/helpdesk/src/core/ui/flows/components/StepCardActionMenu.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/components/ActionMenu.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/PinSavedFilterButton.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardActionButton.tsx",
-            "apps/helpdesk/src/pages/aiAgent/actions/components/ActionFormInput.tsx",
-            "apps/helpdesk/src/pages/aiAgent/actions/components/StepListItem.tsx",
-            "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/components/ItemDrawer.tsx",
-            "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/components/RecommendationRuleCard.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardToggle.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/GuidanceList/GuidanceListRow.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/Knowledge/ExternalFilesSection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesItem.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/StoreCustomFieldList.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/StoreTagList.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/AiAgentTasks/SuccessModal.tsx",
-            "apps/helpdesk/src/pages/common/components/Drawer/Drawer.tsx",
-            "apps/helpdesk/src/pages/common/components/modal/ModalHeader.tsx",
-            "apps/helpdesk/src/pages/common/components/PromoCard/PromoCard.tsx",
-            "apps/helpdesk/src/pages/common/components/SettingsCard/SettingsFeatureRow.tsx",
-            "apps/helpdesk/src/pages/common/components/TimeScheduleField/TimeScheduleRow.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneDeviceDialerInput.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneSelectField.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/CustomerLookupActionsFieldItem.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/IvrMenuActionField.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/IvrMenuActionsFieldItem.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceQueueList.tsx",
-            "apps/helpdesk/src/pages/settings/businessHours/DefaultBusinessHours.tsx",
-            "apps/helpdesk/src/pages/settings/businessHours/DefaultBusinessHoursDrawer.tsx",
-            "apps/helpdesk/src/pages/settings/businessHours/ListCustomBusinessHoursTableRow.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCategoryEdit/HelpCenterCategoryEdit.tsx",
-            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/Channels/ChannelsList/ChannelItem.tsx",
-            "apps/helpdesk/src/pages/settings/teams/Form.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreview.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/ManageGuidanceForm.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketHeader.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/AiAgentReasoningFeedback.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketSummary.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketView.tsx",
-            "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
-            "apps/helpdesk/src/ticket-list-view/components/TicketListView.tsx",
-            "apps/helpdesk/src/tickets/translations/TranslationsOnboardingModal.tsx",
-            "apps/helpdesk/src/timeline/Sort.tsx",
-            "apps/helpdesk/src/timeline/ticket-modal/components/TicketModal.tsx"
-          ]
-        },
-        {
           "name": "LegacyToggleField",
           "count": 48,
           "files": [
@@ -6717,6 +6660,59 @@
             "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceQueueStatusToggle.tsx",
             "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/DefaultRuleEditor.tsx",
             "apps/helpdesk/src/pages/settings/yourProfile/components/YourProfileView.tsx"
+          ]
+        },
+        {
+          "name": "LegacyIconButton",
+          "count": 47,
+          "files": [
+            "apps/helpdesk/src/AlertBanners/components/CarouselNavigation.tsx",
+            "apps/helpdesk/src/core/ui/flows/components/CustomFitViewControl.tsx",
+            "apps/helpdesk/src/core/ui/flows/components/CustomZoomInControl.tsx",
+            "apps/helpdesk/src/core/ui/flows/components/CustomZoomOutControl.tsx",
+            "apps/helpdesk/src/core/ui/flows/components/StepCardActionMenu.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/components/ActionMenu.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/PinSavedFilterButton.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardActionButton.tsx",
+            "apps/helpdesk/src/pages/aiAgent/actions/components/ActionFormInput.tsx",
+            "apps/helpdesk/src/pages/aiAgent/actions/components/StepListItem.tsx",
+            "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/components/ItemDrawer.tsx",
+            "apps/helpdesk/src/pages/aiAgent/AiAgentProductRecommendations/components/RecommendationRuleCard.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardToggle.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/GuidanceList/GuidanceListRow.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/Knowledge/ExternalFilesSection.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/PublicSourcesSection/PublicSourcesItem.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/StoreCustomFieldList.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/StoreTagList.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Overview/components/AiAgentTasks/SuccessModal.tsx",
+            "apps/helpdesk/src/pages/common/components/Drawer/Drawer.tsx",
+            "apps/helpdesk/src/pages/common/components/modal/ModalHeader.tsx",
+            "apps/helpdesk/src/pages/common/components/PromoCard/PromoCard.tsx",
+            "apps/helpdesk/src/pages/common/components/SettingsCard/SettingsFeatureRow.tsx",
+            "apps/helpdesk/src/pages/common/components/TimeScheduleField/TimeScheduleRow.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneDeviceDialerInput.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneSelectField.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/CustomerLookupActionsFieldItem.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/IvrMenuActionField.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/IvrMenuActionsFieldItem.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceQueueList.tsx",
+            "apps/helpdesk/src/pages/settings/businessHours/DefaultBusinessHours.tsx",
+            "apps/helpdesk/src/pages/settings/businessHours/DefaultBusinessHoursDrawer.tsx",
+            "apps/helpdesk/src/pages/settings/businessHours/ListCustomBusinessHoursTableRow.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterCategoryEdit/HelpCenterCategoryEdit.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/Channels/ChannelsList/ChannelItem.tsx",
+            "apps/helpdesk/src/pages/settings/teams/Form.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreview.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/ManageGuidanceForm.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketHeader.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/AiAgentReasoningFeedback.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketSummary.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketView.tsx",
+            "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
+            "apps/helpdesk/src/ticket-list-view/components/TicketListView.tsx",
+            "apps/helpdesk/src/timeline/Sort.tsx",
+            "apps/helpdesk/src/timeline/ticket-modal/components/TicketModal.tsx"
           ]
         },
         {
