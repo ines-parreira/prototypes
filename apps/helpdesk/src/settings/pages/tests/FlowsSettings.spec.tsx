@@ -92,6 +92,8 @@ describe('FlowsSettings', () => {
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
     })
 

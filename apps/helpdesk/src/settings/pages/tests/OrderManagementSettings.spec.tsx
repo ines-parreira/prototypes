@@ -116,6 +116,8 @@ describe('OrderManagementSettings', () => {
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
     })
 
@@ -219,6 +221,8 @@ describe('OrderManagementSettings', () => {
                 shouldShowRevampWhenAiAgentEnabled: true,
                 shouldShowScreensRevampWhenAiAgentEnabled: true,
                 isLoading: false,
+                isChatSettingsRevampEnabled: false,
+                isChatSettingsScreensRevampEnabled: false,
             })
         })
 
