@@ -13,6 +13,7 @@ import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreSelector } from 'settings/automate'
 import { getHasAutomate } from 'state/billing/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -31,9 +32,17 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+)
+
 const getHasAutomateMock = assumeMock(getHasAutomate)
 const useStoreSelectorMock = assumeMock(useStoreSelector)
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
+const mockUseShouldShowChatSettingsRevamp =
+    useShouldShowChatSettingsRevamp as jest.MockedFunction<
+        typeof useShouldShowChatSettingsRevamp
+    >
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -77,6 +86,11 @@ describe('FlowsSettings', () => {
         })
         useAiAgentAccessMock.mockReturnValue({
             hasAccess: true,
+            isLoading: false,
+        })
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
         })
     })

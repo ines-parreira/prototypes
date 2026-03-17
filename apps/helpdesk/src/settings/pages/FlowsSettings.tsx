@@ -1,8 +1,10 @@
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { Route, useRouteMatch } from 'react-router-dom'
 
+import useAppSelector from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreSelector } from 'settings/automate'
+import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
 
 import { AutomateSettingsFlowsAnalyticsRoute } from './flows-routes/AutomateSettingsFlowsAnalysisRoute'
 import { AutomateSettingsFlowsBaseRoute } from './flows-routes/AutomateSettingsFlowsBaseRoute'
@@ -20,13 +22,17 @@ export function FlowsSettings() {
     const { path } = useRouteMatch()
     const { selected } = useStoreSelector(BASE_PATH)
 
-    const { value: isRevamp } = useFlagWithLoading(
-        FeatureFlagKey.ChatSettingsScreensRevamp,
-    )
-
     const selectedName = selected
         ? getShopNameFromStoreIntegration(selected)
         : undefined
+
+    const chatIntegration = useAppSelector(
+        getGorgiasChatIntegrationsByStoreName(selectedName ?? ''),
+    )
+    const chatId = chatIntegration?.id
+
+    const { shouldShowScreensRevampWhenAiAgentEnabled } =
+        useShouldShowChatSettingsRevamp(selected, chatId)
 
     const selectedPath = selected
         ? `${BASE_PATH}/${selected.type}/${selectedName}`
@@ -34,7 +40,11 @@ export function FlowsSettings() {
 
     return (
         <div className={css.container}>
-            {isRevamp ? <FlowsSettingsHeader /> : <FlowsSettingsLegacyHeader />}
+            {shouldShowScreensRevampWhenAiAgentEnabled ? (
+                <FlowsSettingsHeader />
+            ) : (
+                <FlowsSettingsLegacyHeader />
+            )}
 
             {!!selected && !!selectedPath && (
                 <>
