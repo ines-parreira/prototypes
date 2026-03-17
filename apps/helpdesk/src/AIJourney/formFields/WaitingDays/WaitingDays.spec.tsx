@@ -45,4 +45,13 @@ describe('<WaitingDays />', () => {
         expect(screen.getByText('60 days')).toBeInTheDocument()
         expect(screen.getByText('90 days')).toBeInTheDocument()
     })
+
+    it('should render without crashing when field value is undefined', () => {
+        renderComponent('cooldown', {})
+
+        expect(
+            screen.getByText('Shopper inactive for at least'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('30 days')).toBeInTheDocument()
+    })
 })

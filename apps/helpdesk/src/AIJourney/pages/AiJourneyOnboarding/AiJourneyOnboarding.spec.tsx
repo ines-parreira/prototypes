@@ -325,6 +325,55 @@ describe('<AiJourneyOnboarding />', () => {
         })
     })
 
+    describe('default form values for win-back journey', () => {
+        it('passes cooldown_days and inactive_days defaults when creating a win-back journey', async () => {
+            mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.WIN_BACK,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleCreate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        cooldownDays: 30,
+                        inactiveDays: undefined,
+                    }),
+                )
+            })
+        })
+
+        it('does not pass cooldown_days and inactive_days defaults for non-win-back journeys', async () => {
+            mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleCreate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        cooldownDays: undefined,
+                    }),
+                )
+            })
+        })
+    })
+
     describe('form submission - create path', () => {
         it('calls handleCreate when no journey id exists', async () => {
             mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })

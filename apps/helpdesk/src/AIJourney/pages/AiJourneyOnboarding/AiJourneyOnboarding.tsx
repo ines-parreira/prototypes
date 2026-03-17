@@ -46,6 +46,10 @@ export const AiJourneyOnboarding = ({
             include_image: false,
             offer_discount: false,
             message_instructions: '',
+            ...(journeyType === JOURNEY_TYPES.WIN_BACK && {
+                cooldown_days: 30,
+                inactive_days: 30,
+            }),
         },
     })
     const { handleSubmit } = methods

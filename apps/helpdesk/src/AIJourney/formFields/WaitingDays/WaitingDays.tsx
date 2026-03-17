@@ -27,7 +27,7 @@ const renderButtonGroup = (field: {
     onChange: (value: number) => void
 }) => (
     <ButtonGroup
-        selectedKey={field.value.toString()}
+        selectedKey={field.value?.toString()}
         onSelectionChange={(key) => field.onChange(Number(key))}
     >
         <WaitingDaysGroupItem />
