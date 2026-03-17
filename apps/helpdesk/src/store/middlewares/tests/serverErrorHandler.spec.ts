@@ -239,10 +239,36 @@ describe('middlewares', () => {
                 expect(window.location.href).toContain('/login')
             })
 
+            it('should include the current path as next parameter when redirecting to login', () => {
+                ldClientMock.variation.mockReturnValue(false)
+                getLDClientMock.mockReturnValue(ldClientMock)
+
+                Object.defineProperty(window, 'location', {
+                    configurable: true,
+                    enumerable: true,
+                    value: new URL(
+                        'https://example.gorgias.com/app/views/123/456',
+                    ),
+                })
+
+                store.dispatch(errorAction)
+                jest.advanceTimersByTime(3000)
+
+                expect(window.location.href).toBe(
+                    'https://example.gorgias.com/login?next=%2Fapp%2Fviews%2F123%2F456',
+                )
+            })
+
             it('should wait for the tab to be active to redirect when the feature flag is enabled', async () => {
                 ldClientMock.variation.mockReturnValue(true)
                 getLDClientMock.mockReturnValue(ldClientMock)
                 setDocumentHidden(true)
+
+                Object.defineProperty(window, 'location', {
+                    configurable: true,
+                    enumerable: true,
+                    value: new URL('https://example.gorgias.com/app/settings'),
+                })
 
                 store.dispatch(errorAction)
                 expect(window.location.href).not.toContain('/login')
@@ -254,7 +280,9 @@ describe('middlewares', () => {
                 document.dispatchEvent(new Event('visibilitychange'))
 
                 await waitFor(() => {
-                    expect(window.location.href).toContain('/login')
+                    expect(window.location.href).toBe(
+                        'https://example.gorgias.com/login?next=%2Fapp%2Fsettings',
+                    )
                 })
             })
         })

@@ -51,6 +51,12 @@ const serverErrorHandler: Middleware<
         }
 
         setTimeout(() => {
+            const nextPath =
+                window.location.pathname +
+                window.location.search +
+                window.location.hash
+            const loginUrl = `${window.location.origin}/login?next=${encodeURIComponent(nextPath)}`
+
             if (
                 getLDClient().variation(
                     FeatureFlagKey.DontTriggerLoginsOnInactiveTabs,
@@ -58,10 +64,10 @@ const serverErrorHandler: Middleware<
                 )
             ) {
                 void waitForDocumentVisible().then(() => {
-                    window.location.href = `${window.location.origin}/login`
+                    window.location.href = loginUrl
                 })
             } else {
-                window.location.href = `${window.location.origin}/login`
+                window.location.href = loginUrl
             }
         }, 3000)
 
