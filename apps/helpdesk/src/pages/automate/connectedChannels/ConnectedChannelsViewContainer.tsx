@@ -7,7 +7,7 @@ import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/
 import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
 
 import LegacyConnectedChannelsViewContainer from './legacy/ConnectedChannelsViewContainer'
-import RevampConnectedChannelsViewContainer from './revamp/ConnectedChannelsViewContainer'
+import { ConnectedChannelsViewContainerRevamp } from './revamp/ConnectedChannelsViewContainer'
 
 export const ConnectedChannelsViewContainer = () => {
     const { shopName } = useParams<{ shopName: string }>()
@@ -27,7 +27,7 @@ export const ConnectedChannelsViewContainer = () => {
         useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
     if (shouldShowScreensRevampWhenAiAgentEnabled) {
-        return <RevampConnectedChannelsViewContainer />
+        return <ConnectedChannelsViewContainerRevamp />
     }
 
     return <LegacyConnectedChannelsViewContainer />

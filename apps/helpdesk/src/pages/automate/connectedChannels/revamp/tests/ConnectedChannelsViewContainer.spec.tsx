@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 import { billingState } from 'fixtures/billing'
 import type { RootState } from 'state/types'
 
-import ConnectedChannelsViewContainer from '../ConnectedChannelsViewContainer'
+import { ConnectedChannelsViewContainerRevamp as ConnectedChannelsViewContainer } from '../ConnectedChannelsViewContainer'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),

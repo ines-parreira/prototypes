@@ -24,7 +24,9 @@ jest.mock('../legacy/ConnectedChannelsViewContainer', () => ({
 
 jest.mock('../revamp/ConnectedChannelsViewContainer', () => ({
     __esModule: true,
-    default: () => <div>RevampConnectedChannelsViewContainer</div>,
+    ConnectedChannelsViewContainerRevamp: () => (
+        <div>RevampConnectedChannelsViewContainer</div>
+    ),
 }))
 
 const mockUseParams = useParams as jest.MockedFunction<typeof useParams>

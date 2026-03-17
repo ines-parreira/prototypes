@@ -4,7 +4,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 
 import { ConnectedChannelsView } from './ConnectedChannelsView'
 
-const ConnectedChannelsViewContainer = () => {
+export const ConnectedChannelsViewContainerRevamp = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
@@ -16,5 +16,3 @@ const ConnectedChannelsViewContainer = () => {
 
     return <ConnectedChannelsView />
 }
-
-export default ConnectedChannelsViewContainer
