@@ -1,4 +1,5 @@
 import { SidebarContext } from '@repo/navigation'
+import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -6,10 +7,22 @@ import userEvent from '@testing-library/user-event'
 import { Product, productConfig } from 'routes/layout/productConfig'
 
 import { useCurrentRouteProduct } from '../../hooks/useCurrentRouteProduct'
+import { usePreviousProductNavigation } from '../../hooks/usePreviousProductNavigation'
 import { NavigationSidebar } from '../NavigationSidebar'
+
+jest.mock('@repo/routing', () => ({
+    history: {
+        push: jest.fn(),
+    },
+}))
 
 jest.mock('routes/hooks/useCurrentRouteProduct')
 const useCurrentRouteProductMock = assumeMock(useCurrentRouteProduct)
+
+jest.mock('routes/hooks/usePreviousProductNavigation')
+const usePreviousProductNavigationMock = assumeMock(
+    usePreviousProductNavigation,
+)
 
 jest.mock('common/navigation/components/UserItem', () => ({
     __esModule: true,
@@ -56,6 +69,11 @@ const wrapper = ({ children }: any) => (
 )
 
 describe('NavigationSidebar', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        usePreviousProductNavigationMock.mockReturnValue('/app/tickets')
+    })
+
     describe('non-sticky products', () => {
         beforeEach(() => {
             useCurrentRouteProductMock.mockReturnValue(
@@ -154,6 +172,55 @@ describe('NavigationSidebar', () => {
         it('should render SettingsSidebar content', () => {
             render(<NavigationSidebar />, { wrapper })
             expect(screen.getByText('SettingsSidebar')).toBeInTheDocument()
+        })
+
+        it('should render back button when sidebar is expanded', () => {
+            render(<NavigationSidebar />, { wrapper })
+            expect(
+                screen.getByRole('button', { name: /go back/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render back button when sidebar is collapsed', () => {
+            render(<NavigationSidebar />, {
+                wrapper: ({ children }) => (
+                    <SidebarContext.Provider
+                        value={{
+                            isCollapsed: true,
+                            toggleCollapse: mockToggleCollapse,
+                        }}
+                    >
+                        {children}
+                    </SidebarContext.Provider>
+                ),
+            })
+            expect(
+                screen.queryByRole('button', { name: /go back/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should navigate to previous non-sticky path when back button is clicked', async () => {
+            const user = userEvent.setup()
+            usePreviousProductNavigationMock.mockReturnValue('/app/tickets')
+
+            render(<NavigationSidebar />, { wrapper })
+
+            await user.click(screen.getByRole('button', { name: /go back/i }))
+
+            expect(history.push).toHaveBeenCalledWith('/app/tickets')
+        })
+
+        it('should navigate to home default path when no previous non-sticky path exists', async () => {
+            const user = userEvent.setup()
+            usePreviousProductNavigationMock.mockReturnValue(null)
+
+            render(<NavigationSidebar />, { wrapper })
+
+            await user.click(screen.getByRole('button', { name: /go back/i }))
+
+            expect(history.push).toHaveBeenCalledWith(
+                productConfig[Product.Home].defaultPath,
+            )
         })
     })
 

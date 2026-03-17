@@ -10,6 +10,7 @@ import { Box, Button } from '@gorgias/axiom'
 
 import UserItem from 'common/navigation/components/UserItem'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
+import { usePreviousProductNavigation } from 'routes/hooks/usePreviousProductNavigation'
 import { NavigationSidebarNotificationsButton } from 'routes/layout/NavigationSidebarNotificationsButton'
 import { NavigationSidebarSpotlightButton } from 'routes/layout/NavigationSidebarSpotlightButton'
 import {
@@ -22,6 +23,7 @@ import { toggleChat } from 'utils'
 
 export function NavigationSidebar() {
     const currentProduct = useCurrentRouteProduct()
+    const prevNonStickyPathname = usePreviousProductNavigation()
     const { isCollapsed, toggleCollapse } = useSidebar()
 
     const CurrentContent = currentProduct.sidebar
@@ -47,9 +49,12 @@ export function NavigationSidebar() {
                                 icon="arrow-left"
                                 size="sm"
                                 variant="secondary"
+                                aria-label="Go back"
                                 onClick={() =>
                                     history.push(
-                                        productConfig[Product.Home].defaultPath,
+                                        prevNonStickyPathname ??
+                                            productConfig[Product.Home]
+                                                .defaultPath,
                                     )
                                 }
                             />
