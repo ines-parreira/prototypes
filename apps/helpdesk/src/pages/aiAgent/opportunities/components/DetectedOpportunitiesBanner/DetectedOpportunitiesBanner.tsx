@@ -47,7 +47,6 @@ export const DetectedOpportunitiesBanner = ({
     const { onRedirectToOpportunityPage } = useOpportunitiesTracking()
 
     const ticketCount = topOpportunity?.ticketCount ?? 0
-    const resources = topOpportunity?.resources ?? []
     const isKnowledgeGap =
         topOpportunity?.type === OpportunityType.FILL_KNOWLEDGE_GAP
 
@@ -85,7 +84,7 @@ export const DetectedOpportunitiesBanner = ({
         switch (topOpportunity.type) {
             case OpportunityType.RESOLVE_CONFLICT:
                 return {
-                    title: `Resolve conflicting knowledge: "${resources[0]?.insight}" and "${resources[1]?.insight}"`,
+                    title: `Resolve conflicting knowledge: "${topOpportunity.insight}"`,
                     buttonText: 'Resolve conflict',
                     ticketCountText: (
                         <Text variant="regular" size="sm">

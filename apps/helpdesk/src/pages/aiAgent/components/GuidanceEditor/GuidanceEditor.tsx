@@ -117,14 +117,16 @@ export function GuidanceEditor({
                 {label}
             </Label>
 
-            <Text as="p" className={css.helperText} size="sm">
-                Describe the steps AI Agent should follow in clear, specific
-                phrases.
-            </Text>
-            <Text as="p" className={css.helperText} size="sm">
-                Type &apos;/&apos; or &apos;@&apos; to insert variables and
-                actions.
-            </Text>
+            <div className={css.textWrapper}>
+                <Text as="p" className={css.helperText} size="sm">
+                    Describe the steps AI Agent should follow in clear, specific
+                    phrases.
+                </Text>
+                <Text as="p" className={css.helperText} size="sm">
+                    Type &apos;/&apos; or &apos;@&apos; to insert variables and
+                    actions.
+                </Text>
+            </div>
 
             <div className={isOverLimit ? css.editorError : undefined}>
                 <ToolbarProvider

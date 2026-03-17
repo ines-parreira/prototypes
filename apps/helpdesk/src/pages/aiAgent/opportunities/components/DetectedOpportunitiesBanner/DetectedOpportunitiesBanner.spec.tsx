@@ -269,12 +269,12 @@ describe('DetectedOpportunitiesBanner', () => {
             })
         })
 
-        it('should render conflict title with resource insights', () => {
+        it('should render conflict title with top opportunity insight', () => {
             render(<DetectedOpportunitiesBanner {...defaultProps} />)
 
             expect(
                 screen.getByText(
-                    /Resolve conflicting knowledge:.*"First insight".*and.*"Second insight"/,
+                    /Resolve conflicting knowledge:.*"Test conflict insight"/,
                 ),
             ).toBeInTheDocument()
         })
