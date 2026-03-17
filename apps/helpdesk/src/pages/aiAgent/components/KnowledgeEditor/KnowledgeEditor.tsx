@@ -136,6 +136,7 @@ export const KnowledgeEditor = (props: Props) => {
                 }
             }}
             isDismissable
+            withoutOverlay
             withoutPadding
             width={width}
         >
