@@ -563,7 +563,7 @@ describe('useToggleVisibility', () => {
         mockGetGuidanceArticleTranslation
             .mockResolvedValueOnce({
                 locale: 'en-US',
-                intents: ['marketing::unsubscribe', 'returns::policy'],
+                intents: ['marketing::unsubscribe', 'return::status'],
             })
             .mockResolvedValueOnce({
                 locale: 'en-US',
@@ -589,7 +589,7 @@ describe('useToggleVisibility', () => {
         expect(mockRebasePublishGuidanceArticle).toHaveBeenNthCalledWith(
             1,
             {
-                intents: ['returns::policy'],
+                intents: ['return::status'],
             },
             {
                 articleId: 42,

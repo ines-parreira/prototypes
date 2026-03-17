@@ -24,11 +24,25 @@ type Props = {
 
 const COLLAPSED_VISIBLE_INTENTS_COUNT = 3
 
+function getIntentDiffColor(diffStatus: 'added' | 'removed' | null) {
+    if (diffStatus === 'added') {
+        return 'green'
+    }
+
+    if (diffStatus === 'removed') {
+        return 'red'
+    }
+
+    return 'grey'
+}
+
 export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
     sectionId,
 }: Props) => {
     const {
         guidanceIntentIds,
+        intentDiffParts,
+        isDiffMode,
         linkIntentsDisabledTooltip,
         isLinkIntentsButtonDisabled,
         canUnlinkIntentsFromSidebar,
@@ -42,11 +56,16 @@ export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
     >(null)
     const [areAllIntentsVisible, setAreAllIntentsVisible] = useState(false)
 
-    const hasOverflowingIntents =
-        guidanceIntentIds.length > COLLAPSED_VISIBLE_INTENTS_COUNT
-    const visibleIntentIds = areAllIntentsVisible
-        ? guidanceIntentIds
-        : guidanceIntentIds.slice(0, COLLAPSED_VISIBLE_INTENTS_COUNT)
+    const items = isDiffMode
+        ? intentDiffParts
+        : guidanceIntentIds.map((intentId) => ({
+              intentId,
+              diffStatus: null,
+          }))
+    const hasOverflowingIntents = items.length > COLLAPSED_VISIBLE_INTENTS_COUNT
+    const visibleItems = areAllIntentsVisible
+        ? items
+        : items.slice(0, COLLAPSED_VISIBLE_INTENTS_COUNT)
 
     const linkIntentsButton = (
         <Button
@@ -91,14 +110,20 @@ export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
                 }}
                 sectionId={sectionId}
             >
-                {guidanceIntentIds.length > 0 ? (
+                {items.length > 0 ? (
                     <div className={css.linkedIntentsContent}>
                         <div className={css.linkedIntentsList}>
-                            {visibleIntentIds.map((intentId) => (
+                            {visibleItems.map(({ intentId, diffStatus }) => (
                                 <Tag
-                                    key={intentId}
+                                    key={`${intentId}-${diffStatus ?? 'unchanged'}`}
                                     leadingSlot="link-horizontal"
+                                    color={
+                                        diffStatus
+                                            ? getIntentDiffColor(diffStatus)
+                                            : undefined
+                                    }
                                     onClose={
+                                        !isDiffMode &&
                                         canUnlinkIntentsFromSidebar
                                             ? () =>
                                                   setIntentPendingUnlink(
@@ -135,14 +160,14 @@ export const KnowledgeEditorSidePanelSectionLinkedIntents = ({
                                     : 'View all'}
                             </Button>
                         )}
-                        {linkIntentsButtonWithTooltip}
+                        {!isDiffMode && linkIntentsButtonWithTooltip}
                     </div>
                 ) : (
                     <div className={css.emptyState}>
                         <Text size="sm" className={css.emptyStateText}>
                             No intents linked
                         </Text>
-                        {linkIntentsButtonWithTooltip}
+                        {!isDiffMode && linkIntentsButtonWithTooltip}
                     </div>
                 )}
             </KnowledgeEditorSidePanelSection>

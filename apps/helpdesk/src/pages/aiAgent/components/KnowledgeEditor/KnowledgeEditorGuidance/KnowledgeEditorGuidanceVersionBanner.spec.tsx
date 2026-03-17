@@ -38,6 +38,7 @@ jest.mock('./context', () => ({
     fromArticleTranslation: (article: any) => ({
         title: article.translation?.title ?? article.title,
         content: article.translation?.content ?? article.content,
+        intents: article.translation?.intents ?? article.intents,
         id: article.id,
     }),
 }))
@@ -544,6 +545,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     translation: {
                         title: 'Current Published Title',
                         content: 'Current Published Content',
+                        intents: ['order::status', 'return::status'],
                     },
                 } as any)
 
@@ -585,6 +587,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     payload: {
                         title: 'Current Published Title',
                         content: 'Current Published Content',
+                        intents: ['order::status', 'return::status'],
                     },
                 })
             })
@@ -759,6 +762,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                         translation: {
                             title: 'Published Title',
                             content: 'Published Content',
+                            intents: ['shipping::delay'],
                         },
                     } as any)
 
@@ -796,6 +800,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                         payload: {
                             title: 'Published Title',
                             content: 'Published Content',
+                            intents: ['shipping::delay'],
                         },
                     })
                 })
@@ -811,6 +816,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                         translation: {
                             title: 'Published Title',
                             content: 'Published Content',
+                            intents: ['shipping::delay'],
                         },
                     } as any)
 

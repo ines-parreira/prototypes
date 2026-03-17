@@ -41,6 +41,7 @@ type MockGuidanceStoreState = {
     }
     dispatch: jest.Mock
     state: {
+        guidanceMode: 'read' | 'edit' | 'create' | 'diff'
         guidance: {
             id: number
             locale: string
@@ -58,6 +59,10 @@ type MockGuidanceStoreState = {
             title: string
             content: string
             publishedDatetime: string | null
+            intents?: string[] | null
+        } | null
+        comparisonVersion: {
+            intents?: string[] | null
         } | null
         isUpdating: boolean
         isAutoSaving: boolean
@@ -170,6 +175,7 @@ const createMockGuidanceStoreState = (): MockGuidanceStoreState => ({
     config: { guidanceHelpCenter: { id: 456 }, onUpdateFn: jest.fn() },
     dispatch: jest.fn(),
     state: {
+        guidanceMode: 'edit',
         guidance: {
             id: 123,
             locale: 'en',
@@ -182,6 +188,7 @@ const createMockGuidanceStoreState = (): MockGuidanceStoreState => ({
             intents: [],
         },
         historicalVersion: null,
+        comparisonVersion: null,
         isUpdating: false,
         isAutoSaving: false,
     },
@@ -271,6 +278,36 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
 
         expect(screen.getByText('order/status')).toBeInTheDocument()
         expect(screen.queryByText('No intents linked')).not.toBeInTheDocument()
+    })
+
+    it('renders compared intent tags in diff mode', () => {
+        mockGuidanceStoreState.state.guidanceMode = 'diff'
+        mockGuidanceStoreState.state.guidance.intents = [
+            'order::status',
+            'return::information',
+        ]
+        mockGuidanceStoreState.state.comparisonVersion = {
+            intents: ['shipping::delay', 'return::information'],
+        }
+
+        renderComponent()
+
+        const linkedIntentsSection = getLinkedIntentsSectionRegion()
+
+        expect(
+            within(linkedIntentsSection).getByText('shipping/delay'),
+        ).toBeInTheDocument()
+        expect(
+            within(linkedIntentsSection).getByText('order/status'),
+        ).toBeInTheDocument()
+        expect(
+            within(linkedIntentsSection).getByText('return/information'),
+        ).toBeInTheDocument()
+        expect(
+            within(linkedIntentsSection).queryByRole('button', {
+                name: /link intents/i,
+            }),
+        ).not.toBeInTheDocument()
     })
 
     it('shows only the first 3 intents and toggles the rest with see more/less', async () => {

@@ -1,7 +1,7 @@
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import { guidanceReducer } from '../KnowledgeEditorGuidanceReducer'
-import type { GuidanceState } from '../types'
+import type { GuidanceReducerAction, GuidanceState } from '../types'
 
 describe('guidanceReducer', () => {
     const mockGuidance: GuidanceArticle = {
@@ -1016,12 +1016,16 @@ describe('guidanceReducer', () => {
             end_datetime: '2024-02-15T00:00:00Z',
         }
 
-        const historicalVersionPayload = {
+        const historicalVersionPayload: Extract<
+            GuidanceReducerAction,
+            { type: 'VIEW_HISTORICAL_VERSION' }
+        >['payload'] = {
             id: 5,
             version: 3,
             title: 'Historical Title',
             excerpt: 'Historical Excerpt',
             content: 'Historical Content',
+            intents: ['order::status', 'shipping::delay'],
             slug: 'historical-title',
             seo_meta: null,
             created_datetime: '2024-01-05T00:00:00Z',
@@ -1042,6 +1046,7 @@ describe('guidanceReducer', () => {
                 version: 3,
                 title: 'Historical Title',
                 content: 'Historical Content',
+                intents: ['order::status', 'shipping::delay'],
                 publishedDatetime: '2024-01-10T00:00:00Z',
                 publisherUserId: 42,
                 commitMessage: 'Published version 3',
@@ -1172,6 +1177,7 @@ describe('guidanceReducer', () => {
                 version: 1,
                 title: 'Minimal Title',
                 content: 'Minimal Content',
+                intents: undefined,
                 publishedDatetime: null,
                 publisherUserId: undefined,
                 commitMessage: undefined,
@@ -1282,18 +1288,20 @@ describe('guidanceReducer', () => {
     })
 
     describe('SET_COMPARISON_VERSION', () => {
-        it('should set comparisonVersion with provided title and content', () => {
+        it('should set comparisonVersion with provided title, content, and intents', () => {
             const result = guidanceReducer(initialState, {
                 type: 'SET_COMPARISON_VERSION',
                 payload: {
                     title: 'Published Version Title',
                     content: 'Published Version Content',
+                    intents: ['return::status'],
                 },
             })
 
             expect(result.comparisonVersion).toEqual({
                 title: 'Published Version Title',
                 content: 'Published Version Content',
+                intents: ['return::status'],
             })
         })
 
@@ -1329,6 +1337,7 @@ describe('guidanceReducer', () => {
                 payload: {
                     title: 'Published Title',
                     content: 'Published Content',
+                    intents: ['shipping::delay'],
                 },
             })
 
@@ -1345,6 +1354,7 @@ describe('guidanceReducer', () => {
                     version: 3,
                     title: 'Old Historical Title',
                     content: 'Old Historical Content',
+                    intents: ['order::status'],
                     publishedDatetime: '2025-03-15T14:30:00Z',
                     commitMessage: 'Previous version',
                     impactDateRange: {
@@ -1359,12 +1369,14 @@ describe('guidanceReducer', () => {
                 payload: {
                     title: 'New Published Title',
                     content: 'New Published Content',
+                    intents: ['shipping::delay'],
                 },
             })
 
             expect(result.comparisonVersion).toEqual({
                 title: 'New Published Title',
                 content: 'New Published Content',
+                intents: ['shipping::delay'],
             })
             expect(result.historicalVersion).toEqual(
                 stateWithHistoricalVersion.historicalVersion,

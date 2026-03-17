@@ -78,6 +78,7 @@ export function KnowledgeEditorGuidanceVersionBanner() {
                             payload: {
                                 title: article.title,
                                 content: article.content,
+                                intents: article.intents,
                             },
                         })
                     }

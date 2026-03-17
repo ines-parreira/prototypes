@@ -185,6 +185,7 @@ export function guidanceReducer(
                     version: action.payload.version,
                     title: versionTitle,
                     content: versionContent,
+                    intents: action.payload.intents,
                     publishedDatetime: action.payload.published_datetime,
                     publisherUserId: action.payload.publisher_user_id,
                     commitMessage: action.payload.commit_message,
@@ -215,6 +216,7 @@ export function guidanceReducer(
                 comparisonVersion: {
                     title: action.payload.title,
                     content: action.payload.content,
+                    intents: action.payload.intents,
                 },
             }
         }

@@ -196,4 +196,23 @@ describe('KnowledgeEditorSidePanelGuidance', () => {
         expect(screen.getByText('Impact')).toBeInTheDocument()
         expect(screen.getByText('Recent tickets')).toBeInTheDocument()
     })
+
+    it('renders linked intents section in diff mode', () => {
+        mockUseGuidanceContext.mockReturnValue({
+            ...mockUseGuidanceContext(),
+            state: {
+                ...mockUseGuidanceContext().state,
+                guidanceMode: 'diff',
+            },
+        })
+
+        renderWithStoreAndQueryClientAndRouter(
+            <KnowledgeEditorSidePanelGuidance />,
+        )
+
+        expect(screen.getByText('Details')).toBeInTheDocument()
+        expect(screen.getByText('Linked intents')).toBeInTheDocument()
+        expect(screen.getByText('Impact')).toBeInTheDocument()
+        expect(screen.getByText('Recent tickets')).toBeInTheDocument()
+    })
 })

@@ -28,6 +28,7 @@ export type HistoricalVersionState = {
     version: number
     title: string
     content: string
+    intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
     publishedDatetime: string | null
     publisherUserId?: number
     commitMessage?: string
@@ -66,7 +67,11 @@ export type GuidanceState = {
     historicalVersion: HistoricalVersionState
 
     // Comparison version (used when comparing draft or historical to published)
-    comparisonVersion: { title: string; content: string } | null
+    comparisonVersion: {
+        title: string
+        content: string
+        intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
+    } | null
 
     // Modal state
     activeModal: ModalType
@@ -122,6 +127,7 @@ export type GuidanceReducerAction =
           payload: {
               title: string
               content: string
+              intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
           }
       }
 
