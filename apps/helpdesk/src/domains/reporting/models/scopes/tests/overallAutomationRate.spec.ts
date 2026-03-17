@@ -5,12 +5,17 @@ import {
     automationRatePerFeatureQueryFactoryV2,
     dynamicOverallAutomationRate,
     dynamicOverallAutomationRateQueryFactoryV2,
+    dynamicOverallAutomationRateTimeseries,
+    dynamicOverallAutomationRateTimeseriesQueryFactoryV2,
     overallAutomationRate,
     overallAutomationRatePerOrderManagementType,
     overallAutomationRatePerOrderManagementTypeQueryFactoryV2,
     overallAutomationRateQueryFactoryV2,
 } from 'domains/reporting/models/scopes/overallAutomationRate'
-import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import type {
+    AggregationWindow,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
 
 describe('overallAutomationRateScope', () => {
     const filters: StatsFilters = {
@@ -122,7 +127,7 @@ describe('overallAutomationRateScope', () => {
             })
 
             const expected = {
-                metricName: 'ai-agent-dynamic-automation-rate-per-feature',
+                metricName: 'ai-agent-dynamic-automation-rate',
                 scope: 'overall-automation-rate',
                 measures: ['automationRate'],
                 dimensions: [],
@@ -151,7 +156,7 @@ describe('overallAutomationRateScope', () => {
             })
 
             const expected = {
-                metricName: 'ai-agent-dynamic-automation-rate-per-feature',
+                metricName: 'ai-agent-dynamic-automation-rate',
                 scope: 'overall-automation-rate',
                 measures: ['automationRate'],
                 dimensions: ['automationFeatureType'],
@@ -207,6 +212,80 @@ describe('overallAutomationRateScope', () => {
         })
     })
 
+    describe('dynamicOverallAutomationRateTimeseries', () => {
+        it('creates query with time_dimensions using granularity from context', () => {
+            const actual = dynamicOverallAutomationRateTimeseries.build({
+                ...context,
+                granularity: 'day' as AggregationWindow,
+                dimensions: [],
+            })
+
+            const expected = {
+                metricName: 'ai-agent-dynamic-automation-rate-timeseries',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                time_dimensions: [
+                    {
+                        dimension: 'eventDatetime',
+                        granularity: 'day',
+                    },
+                ],
+                dimensions: [],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+
+        it('creates query with the provided dimensions', () => {
+            const actual = dynamicOverallAutomationRateTimeseries.build({
+                ...context,
+                granularity: 'week' as AggregationWindow,
+                dimensions: ['automationFeatureType'],
+            })
+
+            const expected = {
+                metricName: 'ai-agent-dynamic-automation-rate-timeseries',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                time_dimensions: [
+                    {
+                        dimension: 'eventDatetime',
+                        granularity: 'week',
+                    },
+                ],
+                dimensions: ['automationFeatureType'],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                ],
+            }
+
+            expect(actual).toEqual(expected)
+        })
+    })
+
     describe('QueryV2Factory methods', () => {
         describe('overallAutomationRateQueryFactoryV2', () => {
             it('returns the same result as calling build directly', () => {
@@ -248,6 +327,49 @@ describe('overallAutomationRateScope', () => {
                     overallAutomationRatePerOrderManagementType.build(context)
 
                 expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('dynamicOverallAutomationRateTimeseriesQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                const ctx = {
+                    ...context,
+                    granularity: 'day' as AggregationWindow,
+                    dimensions: ['automationFeatureType'] as const,
+                }
+
+                const factoryResult =
+                    dynamicOverallAutomationRateTimeseriesQueryFactoryV2(ctx)
+                const buildResult =
+                    dynamicOverallAutomationRateTimeseries.build(ctx)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+
+            it('returns query with time_dimensions when granularity is provided', () => {
+                const factoryResult =
+                    dynamicOverallAutomationRateTimeseriesQueryFactoryV2({
+                        ...context,
+                        granularity: 'month' as AggregationWindow,
+                        dimensions: [],
+                    })
+
+                expect(factoryResult.time_dimensions).toEqual([
+                    { dimension: 'eventDatetime', granularity: 'month' },
+                ])
+            })
+
+            it('returns query with the provided dimensions', () => {
+                const dimension = 'channel'
+
+                const factoryResult =
+                    dynamicOverallAutomationRateTimeseriesQueryFactoryV2({
+                        ...context,
+                        granularity: 'day' as AggregationWindow,
+                        dimensions: [dimension],
+                    })
+
+                expect(factoryResult.dimensions).toEqual([dimension])
             })
         })
 

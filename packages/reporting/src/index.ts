@@ -22,12 +22,14 @@ export {
     type ChartDataItem,
     type ChartType,
     type TimeSeriesDataItem,
+    type MultipleTimeSeriesDataItem,
 } from './components/ChartCard'
 export { HorizontalBarChart } from './components/HorizontalBarChart/HorizontalBarChart'
 export {
     TimeSeriesChart,
     renderTimeSeriesTooltipContent,
 } from './components/TimeSeriesChart/TimeSeriesChart'
+export { MultipleTimeSeriesChart } from './components/TimeSeriesChart/MultipleTimeSeriesChart'
 export { TrendChart } from './components/TrendChart/TrendChart'
 export { TrendCard } from './components/TrendCard/TrendCard'
 export {

@@ -96,3 +96,22 @@ export const overallAutomationRatePerOrderManagementType =
 export const overallAutomationRatePerOrderManagementTypeQueryFactoryV2 = (
     ctx: Context,
 ) => overallAutomationRatePerOrderManagementType.build(ctx)
+
+export const dynamicOverallAutomationRateTimeseries = overallAutomationRateScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE_TIMESERIES,
+    )
+    .defineQuery(({ ctx }) => ({
+        measures: ['automationRate'],
+        time_dimensions: [
+            {
+                dimension: 'eventDatetime',
+                granularity: ctx.granularity,
+            },
+        ],
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicOverallAutomationRateTimeseriesQueryFactoryV2 = (
+    ctx: Context,
+) => dynamicOverallAutomationRateTimeseries.build(ctx)

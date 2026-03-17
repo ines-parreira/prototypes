@@ -43,7 +43,7 @@ describe('AutomationChart', () => {
     const defaultDimension = {
         id: 'automationFeatureType',
         name: 'Feature',
-        chartType: ConfigurableGraphType.Donut,
+        configurableGraphType: ConfigurableGraphType.Donut,
         valueFormatter: (value: number) => `${value}%`,
         useChartData: jest.fn().mockReturnValue({
             data: mockChartData,

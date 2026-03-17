@@ -112,12 +112,9 @@ export type Context<TMeta extends ScopeMeta = ScopeMeta> = {
     filters: ApiStatsFilters
     sortDirection?: OrderDirection
     sortBy?: Values<TMeta['order']>
-    granularity?: TMeta['timeDimensions'] extends readonly [
-        infer __First,
-        ...infer __Rest,
-    ]
-        ? AggregationWindow
-        : never
+    granularity?: TMeta['timeDimensions'] extends undefined
+        ? never
+        : AggregationWindow
     offset?: number
     limit?: number
     total?: boolean

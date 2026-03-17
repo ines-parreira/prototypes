@@ -5,6 +5,8 @@ export const METRIC_NAMES = {
     AI_AGENT_AUTOMATED_INTERACTIONS: 'ai-agent-automated-interactions',
     AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS:
         'ai-agent-dynamic-overall-automated-interactions',
+    AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS_TIMESERIES:
+        'ai-agent-dynamic-overall-automated-interactions-timeseries',
     AI_AGENT_AUTOMATED_INTERACTIONS_TIME_SERIES:
         'ai-agent-automated-interactions-time-series',
     AI_AGENT_AUTOMATED_INTERACTIONS_TICKETS:
@@ -23,7 +25,9 @@ export const METRIC_NAMES = {
     AI_AGENT_AUTOMATION_RATE: 'ai-agent-automation-rate',
     AI_AGENT_OVERALL_AUTOMATION_RATE: 'ai-agent-overall-automation-rate',
     AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE:
-        'ai-agent-dynamic-automation-rate-per-feature',
+        'ai-agent-dynamic-automation-rate',
+    AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE_TIMESERIES:
+        'ai-agent-dynamic-automation-rate-timeseries',
     AI_AGENT_AUTOMATION_RATE_PER_FEATURE:
         'ai-agent-automation-rate-per-feature',
     OVERALL_AUTOMATION_RATE_PER_ORDER_MANAGEMENT_TYPE:
@@ -898,9 +902,11 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_AUTOMATION_RATE,
         METRIC_NAMES.AI_AGENT_AUTOMATION_RATE_PER_FEATURE,
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE_TIMESERIES,
     ],
     [MetricScope.OverallAutomatedInteractions]: [
-        METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS_TIMESERIES,
         METRIC_NAMES.AUTOMATED_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE,
     ],
     [MetricScope.OverallTimeSavedByAgent]: [

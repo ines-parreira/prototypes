@@ -1,56 +1,66 @@
+import { useFlag } from '@repo/feature-flags'
+import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
+import { ConfigurableGraphType } from '@repo/reporting'
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import * as automationRateTimeSeriesHooks from 'domains/reporting/hooks/automate/useAutomationRateTimeSeriesData'
-import * as automateHooks from 'domains/reporting/hooks/automate/useAutomationRateTrend'
 import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { AutomationLineChart } from 'pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart'
+import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
-import { AutomationLineChart } from '../AutomationLineChart'
+jest.mock('@repo/feature-flags')
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/AutomationLineChart/DEPRECATED_AutomationLineChart',
+    () => ({
+        DEPRECATED_AutomationLineChart: () => <div>Deprecated chart</div>,
+    }),
+)
+jest.mock(
+    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+    () => ({
+        ChartsActionMenu: () => (
+            <div aria-label="charts-action-menu">Charts Action Menu</div>
+        ),
+    }),
+)
+jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
+    ...jest.requireActual('pages/aiAgent/utils/aiAgentMetrics.utils'),
+    getLineChartGraphConfig: jest.fn(),
+}))
+const getLineChartGraphConfigMock = assumeMock(getLineChartGraphConfig)
 
-jest.mock('domains/reporting/hooks/automate/useAutomationRateTrend')
-jest.mock('domains/reporting/hooks/automate/useAutomationRateTimeSeriesData')
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
+const useFlagMocked = assumeMock(useFlag)
 
 describe('AutomationLineChart', () => {
     const mockTimeSeriesData = [
-        [
-            {
-                dateTime: '2024-06-01',
-                value: 0.3,
-                label: 'Overall automation rate',
-            },
-            {
-                dateTime: '2024-06-02',
-                value: 0.28,
-                label: 'Overall automation rate',
-            },
-            {
-                dateTime: '2024-06-03',
-                value: 0.32,
-                label: 'Overall automation rate',
-            },
-            {
-                dateTime: '2024-06-04',
-                value: 0.35,
-                label: 'Overall automation rate',
-            },
-            {
-                dateTime: '2024-06-05',
-                value: 0.33,
-                label: 'Overall automation rate',
-            },
-            {
-                dateTime: '2024-06-06',
-                value: 0.31,
-                label: 'Overall automation rate',
-            },
-            {
-                dateTime: '2024-06-07',
-                value: 0.34,
-                label: 'Overall automation rate',
-            },
-        ],
+        { date: 'Jun 1 2024', value: 0.3 },
+        { date: 'Jun 2 2024', value: 0.28 },
+        { date: 'Jun 3 2024', value: 0.32 },
     ]
+
+    const defaultDimension = {
+        id: 'overall',
+        name: 'Overall',
+        configurableGraphType: ConfigurableGraphType.TimeSeries,
+        useChartData: jest.fn().mockReturnValue({
+            data: mockTimeSeriesData,
+            isLoading: false,
+        }),
+    }
+
+    const defaultMetricConfig: ConfigurableGraphMetricConfig = {
+        measure: 'automationRate',
+        name: 'Overall automation rate',
+        metricFormat: 'decimal-to-percent',
+        interpretAs: 'more-is-better',
+        useTrendData: jest.fn().mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: { value: 0.32, prevValue: 0.3 },
+        }),
+        dimensions: [defaultDimension],
+    }
 
     beforeAll(() => {
         global.ResizeObserver = class ResizeObserver {
@@ -76,23 +86,9 @@ describe('AutomationLineChart', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                value: 0.32,
-                prevValue: 0.3,
-            },
-        })
+        getLineChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
 
-        jest.spyOn(
-            automationRateTimeSeriesHooks,
-            'useAutomationRateTimeSeriesData',
-        ).mockReturnValue({
-            data: mockTimeSeriesData,
-            isFetching: false,
-            isError: false,
-        })
+        useFlagMocked.mockReturnValue(true)
     })
 
     afterEach(() => {
@@ -105,7 +101,7 @@ describe('AutomationLineChart', () => {
         expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
     })
 
-    it('should render the metric value from automation rate hook', () => {
+    it('should render the metric value from trend data', () => {
         render(<AutomationLineChart />)
 
         expect(screen.getByText('32%')).toBeInTheDocument()
@@ -128,30 +124,17 @@ describe('AutomationLineChart', () => {
         expect(hasTrendIcon).toBe(true)
     })
 
-    it('should render responsive container for chart', () => {
-        const { container } = render(<AutomationLineChart />)
-
-        const responsiveContainer = container.querySelector(
-            '.recharts-responsive-container',
-        )
-        expect(responsiveContainer).toBeInTheDocument()
-    })
-
-    it('should render TimeSeriesChart component', () => {
-        render(<AutomationLineChart />)
-
-        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
-    })
-
     it('should render with negative trend icon when trend is negative', () => {
-        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                value: 0.28,
-                prevValue: 0.3,
+        getLineChartGraphConfigMock.mockReturnValue([
+            {
+                ...defaultMetricConfig,
+                useTrendData: jest.fn().mockReturnValue({
+                    isFetching: false,
+                    isError: false,
+                    data: { value: 0.28, prevValue: 0.3 },
+                }),
             },
-        })
+        ])
 
         const { container } = render(<AutomationLineChart />)
 
@@ -161,209 +144,70 @@ describe('AutomationLineChart', () => {
         expect(trendingDownIcon).toBeInTheDocument()
     })
 
-    it('should handle null automation rate value', () => {
-        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: {
-                value: null,
-                prevValue: null,
+    it('should render responsive container for chart', () => {
+        const { container } = render(<AutomationLineChart />)
+
+        const responsiveContainer = container.querySelector(
+            '.recharts-responsive-container',
+        )
+        expect(responsiveContainer).toBeInTheDocument()
+    })
+
+    it('should render loading skeleton when trend data is fetching', () => {
+        getLineChartGraphConfigMock.mockReturnValue([
+            {
+                ...defaultMetricConfig,
+                useTrendData: jest.fn().mockReturnValue({
+                    data: undefined,
+                    isFetching: true,
+                }),
             },
-        })
+        ])
 
         render(<AutomationLineChart />)
 
-        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
+        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 
-    it('should handle undefined automation rate data', () => {
-        jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue({
-            isFetching: false,
-            isError: false,
-            data: undefined,
-        })
-
+    it('should render the deprecated chart when the feature flag is off', () => {
+        useFlagMocked.mockReturnValue(false)
         render(<AutomationLineChart />)
 
-        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
+        expect(screen.getByText('Deprecated chart')).toBeInTheDocument()
     })
 
-    it('should handle empty time series data', () => {
-        jest.spyOn(
-            automationRateTimeSeriesHooks,
-            'useAutomationRateTimeSeriesData',
-        ).mockReturnValue({
-            data: [[]],
-            isFetching: false,
-            isError: false,
-        })
+    describe('ChartsActionMenu', () => {
+        const mockChartConfig = { label: 'Automation Rate' } as Parameters<
+            typeof AutomationLineChart
+        >[0]['chartConfig']
 
-        render(<AutomationLineChart />)
-
-        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
-    })
-
-    it('should handle undefined time series data', () => {
-        jest.spyOn(
-            automationRateTimeSeriesHooks,
-            'useAutomationRateTimeSeriesData',
-        ).mockReturnValue({
-            data: [[]],
-            isFetching: false,
-            isError: false,
-        })
-
-        render(<AutomationLineChart />)
-
-        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
-    })
-
-    it('should render chart with time series data', () => {
-        const { container } = render(<AutomationLineChart />)
-
-        const responsiveContainer = container.querySelector(
-            '.recharts-responsive-container',
-        )
-        expect(responsiveContainer).toBeInTheDocument()
-    })
-
-    it('should render skeleton when timeSeriesData is undefined', () => {
-        jest.spyOn(
-            automationRateTimeSeriesHooks,
-            'useAutomationRateTimeSeriesData',
-        ).mockReturnValue({
-            data: undefined as any,
-            isFetching: false,
-            isError: false,
-        })
-
-        const { container } = render(<AutomationLineChart />)
-
-        const areaChart = container.querySelector('.recharts-area')
-        expect(areaChart).not.toBeInTheDocument()
-
-        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
-    })
-
-    it('should render chart with empty data when timeSeriesData is empty array', () => {
-        jest.spyOn(
-            automationRateTimeSeriesHooks,
-            'useAutomationRateTimeSeriesData',
-        ).mockReturnValue({
-            data: [],
-            isFetching: false,
-            isError: false,
-        })
-
-        const { container } = render(<AutomationLineChart />)
-
-        const responsiveContainer = container.querySelector(
-            '.recharts-responsive-container',
-        )
-        expect(responsiveContainer).toBeInTheDocument()
-
-        expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
-    })
-
-    describe('Loading states', () => {
-        it('should render skeleton when automationRateTrend is fetching', () => {
-            jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue(
-                {
-                    isFetching: true,
-                    isError: false,
-                    data: undefined,
-                },
+        it('should render ChartsActionMenu when chartId and chartConfig are provided', () => {
+            render(
+                <AutomationLineChart
+                    chartId="automation-line-chart"
+                    chartConfig={mockChartConfig}
+                />,
             )
 
-            const { container } = render(<AutomationLineChart />)
-
             expect(
-                screen.getByText('Overall automation rate'),
+                screen.getByLabelText('charts-action-menu'),
             ).toBeInTheDocument()
-
-            const areaChart = container.querySelector('.recharts-area')
-            expect(areaChart).not.toBeInTheDocument()
         })
 
-        it('should render skeleton when timeSeriesData is null', () => {
-            jest.spyOn(
-                automationRateTimeSeriesHooks,
-                'useAutomationRateTimeSeriesData',
-            ).mockReturnValue({
-                data: null as any,
-                isFetching: false,
-                isError: false,
-            })
-
-            const { container } = render(<AutomationLineChart />)
+        it('should not render ChartsActionMenu when chartId is not provided', () => {
+            render(<AutomationLineChart chartConfig={mockChartConfig} />)
 
             expect(
-                screen.getByText('Overall automation rate'),
-            ).toBeInTheDocument()
-
-            const areaChart = container.querySelector('.recharts-area')
-            expect(areaChart).not.toBeInTheDocument()
+                screen.queryByLabelText('charts-action-menu'),
+            ).not.toBeInTheDocument()
         })
 
-        it('should render skeleton when both data sources are loading', () => {
-            jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue(
-                {
-                    isFetching: true,
-                    isError: false,
-                    data: undefined,
-                },
-            )
-
-            jest.spyOn(
-                automationRateTimeSeriesHooks,
-                'useAutomationRateTimeSeriesData',
-            ).mockReturnValue({
-                data: null as any,
-                isFetching: false,
-                isError: false,
-            })
-
-            const { container } = render(<AutomationLineChart />)
+        it('should not render ChartsActionMenu when chartConfig is not provided', () => {
+            render(<AutomationLineChart chartId="automation-line-chart" />)
 
             expect(
-                screen.getByText('Overall automation rate'),
-            ).toBeInTheDocument()
-
-            const areaChart = container.querySelector('.recharts-area')
-            expect(areaChart).not.toBeInTheDocument()
-        })
-
-        it('should render chart when both data sources are loaded', () => {
-            jest.spyOn(automateHooks, 'useAutomationRateTrend').mockReturnValue(
-                {
-                    isFetching: false,
-                    isError: false,
-                    data: {
-                        value: 0.32,
-                        prevValue: 0.3,
-                    },
-                },
-            )
-
-            jest.spyOn(
-                automationRateTimeSeriesHooks,
-                'useAutomationRateTimeSeriesData',
-            ).mockReturnValue({
-                data: mockTimeSeriesData,
-                isFetching: false,
-                isError: false,
-            })
-
-            const { container } = render(<AutomationLineChart />)
-
-            expect(
-                screen.getByText('Overall automation rate'),
-            ).toBeInTheDocument()
-
-            const responsiveContainer = container.querySelector(
-                '.recharts-responsive-container',
-            )
-            expect(responsiveContainer).toBeInTheDocument()
+                screen.queryByLabelText('charts-action-menu'),
+            ).not.toBeInTheDocument()
         })
     })
 })

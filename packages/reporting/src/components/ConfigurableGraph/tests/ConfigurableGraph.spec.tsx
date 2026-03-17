@@ -31,7 +31,7 @@ describe('ConfigurableChart', () => {
     const featureGrouping = {
         id: 'by_feature',
         name: 'Feature',
-        chartType: 'donut' as const,
+        configurableGraphType: 'donut' as const,
         useChartData: () => ({
             data: [{ name: 'Support', value: 10 }],
             isLoading: false,
@@ -41,7 +41,7 @@ describe('ConfigurableChart', () => {
     const channelGrouping = {
         id: 'by_channel',
         name: 'Channel',
-        chartType: 'bar' as const,
+        configurableGraphType: 'bar' as const,
         useChartData: () => ({
             data: [{ name: 'Email', value: 5 }],
             isLoading: false,

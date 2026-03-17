@@ -15,16 +15,23 @@ vi.mock('../../TimeSeriesChart/TimeSeriesChart', () => ({
     TimeSeriesChart: () => <div>TimeSeriesChart</div>,
 }))
 
+vi.mock('../../TimeSeriesChart/MultipleTimeSeriesChart', () => ({
+    MultipleTimeSeriesChart: () => <div>MultipleTimeSeriesChart</div>,
+}))
+
 describe('ConfigurableGraphContent', () => {
     const chartData = [{ name: 'Support', value: 10 }]
     const timeSeriesData = [{ date: '2024-01-01', value: 10 }]
+    const multipleTimeSeriesData = [
+        { label: 'Series A', values: [{ date: '2024-01-01', value: 10 }] },
+    ]
 
     describe('donut chart type', () => {
         it('renders DonutChart', () => {
             const groupingConfig = {
                 id: 'by_feature',
                 name: 'Feature',
-                chartType: 'donut' as const,
+                configurableGraphType: 'donut' as const,
                 useChartData: () => ({ data: chartData, isLoading: false }),
             }
 
@@ -38,7 +45,7 @@ describe('ConfigurableGraphContent', () => {
             const groupingConfig = {
                 id: 'by_feature',
                 name: 'Feature',
-                chartType: 'bar' as const,
+                configurableGraphType: 'bar' as const,
                 useChartData: () => ({ data: chartData, isLoading: false }),
             }
 
@@ -48,12 +55,12 @@ describe('ConfigurableGraphContent', () => {
         })
     })
 
-    describe('line chart type', () => {
+    describe('timeSeries chart type', () => {
         it('renders TimeSeriesChart', () => {
             const groupingConfig = {
                 id: 'over_time',
                 name: 'Over time',
-                chartType: 'line' as const,
+                configurableGraphType: 'timeSeries' as const,
                 useChartData: () => ({
                     data: timeSeriesData,
                     isLoading: false,
@@ -66,12 +73,32 @@ describe('ConfigurableGraphContent', () => {
         })
     })
 
+    describe('multipleTimeSeries chart type', () => {
+        it('renders MultipleTimeSeriesChart', () => {
+            const groupingConfig = {
+                id: 'over_time_multiple',
+                name: 'Over time',
+                configurableGraphType: 'multipleTimeSeries' as const,
+                useChartData: () => ({
+                    data: multipleTimeSeriesData,
+                    isLoading: false,
+                }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(
+                screen.getByText('MultipleTimeSeriesChart'),
+            ).toBeInTheDocument()
+        })
+    })
+
     describe('horizontal-bar chart type', () => {
         it('renders HorizontalBarChart', () => {
             const groupingConfig = {
                 id: 'by_agent',
                 name: 'By agent',
-                chartType: 'horizontal-bar' as const,
+                configurableGraphType: 'horizontal-bar' as const,
                 useChartData: () => ({ data: chartData, isLoading: false }),
             }
 

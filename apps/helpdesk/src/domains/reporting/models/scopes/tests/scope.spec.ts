@@ -668,16 +668,14 @@ describe('scope', () => {
 
             // This should compile - no granularity provided
             const result = metric.build(mockContextWithoutGranularity)
-
             expect(result.time_dimensions).toBeUndefined()
 
-            // NOTE: The following would be a TypeScript error
-            // oxlint-disable-next-line no-unused-vars
             const resultWithGranularity = metric.build({
                 ...mockContextWithoutGranularity,
-                // @ts-expect-error - Testing that granularity is not allowed when timeDimensions is undefined
                 granularity: 'day' as AggregationWindow,
             })
+            // no time_dimensions get added even if we pass granularity
+            expect(resultWithGranularity.time_dimensions).toBeUndefined()
         })
 
         it('should forbid granularity when timeDimensions is empty array', () => {

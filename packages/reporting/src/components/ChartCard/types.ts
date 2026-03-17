@@ -10,4 +10,9 @@ export type TimeSeriesDataItem = {
     value: number | null
 }
 
+export type MultipleTimeSeriesDataItem = {
+    label: string
+    values: TimeSeriesDataItem[]
+}
+
 export type ChartType = 'donut' | 'bar'

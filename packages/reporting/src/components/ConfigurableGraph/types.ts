@@ -3,29 +3,47 @@ import type {
     MetricTrendFormat,
     TrendDirection,
 } from '../../types'
-import type { ChartDataItem, TimeSeriesDataItem } from '../ChartCard'
+import type {
+    ChartDataItem,
+    MultipleTimeSeriesDataItem,
+    TimeSeriesDataItem,
+} from '../ChartCard'
 
 export enum ConfigurableGraphType {
     Donut = 'donut',
     Bar = 'bar',
-    Line = 'line',
+    TimeSeries = 'timeSeries',
+    MultipleTimeSeries = 'multipleTimeSeries',
     HorizontalBar = 'horizontal-bar',
 }
 
 type DonutOrBarGroupingConfig = {
     id: string
     name: string
-    chartType: 'bar' | 'donut'
+    configurableGraphType: 'bar' | 'donut'
     useChartData: () => { data: ChartDataItem[]; isLoading: boolean }
     valueFormatter?: (value: number) => string
     period?: { start_datetime: string; end_datetime: string }
 }
 
-type LineGroupingConfig = {
+type TimeSeriesGroupingConfig = {
     id: string
     name: string
-    chartType: 'line'
+    configurableGraphType: 'timeSeries'
     useChartData: () => { data: TimeSeriesDataItem[]; isLoading: boolean }
+    valueFormatter?: (value: number) => string
+    yAxisFormatter?: (value: number) => string
+    dateFormatter?: (date: string) => string
+}
+
+type MultipleTimeSeriesGroupingConfig = {
+    id: string
+    name: string
+    configurableGraphType: 'multipleTimeSeries'
+    useChartData: () => {
+        data: MultipleTimeSeriesDataItem[]
+        isLoading: boolean
+    }
     valueFormatter?: (value: number) => string
     yAxisFormatter?: (value: number) => string
     dateFormatter?: (date: string) => string
@@ -34,7 +52,7 @@ type LineGroupingConfig = {
 type HorizontalBarGroupingConfig = {
     id: string
     name: string
-    chartType: 'horizontal-bar'
+    configurableGraphType: 'horizontal-bar'
     useChartData: () => { data: ChartDataItem[]; isLoading: boolean }
     valueFormatter?: (value: number) => string
     initialItemsCount?: number
@@ -44,7 +62,8 @@ type HorizontalBarGroupingConfig = {
 
 export type ConfigurableGraphGroupingConfig =
     | DonutOrBarGroupingConfig
-    | LineGroupingConfig
+    | TimeSeriesGroupingConfig
+    | MultipleTimeSeriesGroupingConfig
     | HorizontalBarGroupingConfig
 
 export type ConfigurableGraphMetricConfig = {

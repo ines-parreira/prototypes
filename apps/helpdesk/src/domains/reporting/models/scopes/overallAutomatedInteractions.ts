@@ -60,3 +60,23 @@ export const automatedInteractionsPerOrderManagementType =
 export const automatedInteractionsPerOrderManagementTypeQueryFactoryV2 = (
     ctx: Context,
 ) => automatedInteractionsPerOrderManagementType.build(ctx)
+
+export const dynamicOverallAutomatedInteractionsTimeseries =
+    overallAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS_TIMESERIES,
+        )
+        .defineQuery(({ ctx }) => ({
+            measures: ['automatedInteractionsCount'],
+            time_dimensions: [
+                {
+                    dimension: 'eventDatetime',
+                    granularity: ctx.granularity,
+                },
+            ],
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2 = (
+    ctx: Context,
+) => dynamicOverallAutomatedInteractionsTimeseries.build(ctx)

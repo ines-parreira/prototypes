@@ -1,102 +1,90 @@
 import { useMemo } from 'react'
 
-import { ChartCard, TimeSeriesChart } from '@repo/reporting'
-import type { TimeSeriesDataItem } from '@repo/reporting'
-import moment from 'moment'
-
-import colors from '@gorgias/axiom/tokens/colors/semantic/light.json'
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { ConfigurableGraph } from '@repo/reporting'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
-import { useAutomationRateTimeSeriesData } from 'domains/reporting/hooks/automate/useAutomationRateTimeSeriesData'
-import { useAutomationRateTrend } from 'domains/reporting/hooks/automate/useAutomationRateTrend'
-import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { NUMBER_TICK_FORMATTER } from 'domains/reporting/pages/utils'
+import {
+    dynamicOverallAutomatedInteractionsQueryFactoryV2,
+    dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2,
+} from 'domains/reporting/models/scopes/overallAutomatedInteractions'
+import {
+    dynamicOverallAutomationRateQueryFactoryV2,
+    dynamicOverallAutomationRateTimeseriesQueryFactoryV2,
+} from 'domains/reporting/models/scopes/overallAutomationRate'
+import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
+import type {
+    ChartConfig,
+    DashboardSchema,
+} from 'domains/reporting/pages/dashboards/types'
+import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import type { LineChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
-import { DATE_FORMAT } from '../../constants'
-import { formatPreviousPeriod } from '../../utils/formatPreviousPeriod'
+import { DEPRECATED_AutomationLineChart } from './DEPRECATED_AutomationLineChart'
 
-const METRIC_TITLE = 'Overall automation rate'
-
-const CHART_COLOR = colors['Dataviz-purple'].$value
-
-const formatYAxisTick = (value: number) => {
-    const percentage = value * 100
-    return NUMBER_TICK_FORMATTER.format(percentage)
+type Props = {
+    chartId?: string
+    dashboard?: DashboardSchema
+    chartConfig?: ChartConfig
 }
 
-const formatTooltipValue = (value: number) => {
-    const percentage = (value * 100).toFixed(1)
-    return `${percentage}%`
-}
+const AUTOMATION_LINE_CHART_METRICS: LineChartMetricConfig[] = [
+    {
+        measure: 'automationRate',
+        name: 'Overall automation rate',
+        metricFormat: 'decimal-to-percent' as const,
+        interpretAs: 'more-is-better' as const,
+        trendQueryFactory: dynamicOverallAutomationRateQueryFactoryV2,
+        timeSeriesQueryFactory:
+            dynamicOverallAutomationRateTimeseriesQueryFactoryV2,
+        dimensions: ['overall', 'channel', 'automationFeatureType'],
+    },
+    {
+        measure: 'automatedInteractionsCount',
+        name: 'Automated interactions',
+        metricFormat: 'decimal' as const,
+        interpretAs: 'more-is-better' as const,
+        trendQueryFactory: dynamicOverallAutomatedInteractionsQueryFactoryV2,
+        timeSeriesQueryFactory:
+            dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2,
+        dimensions: ['overall', 'channel', 'automationFeatureType'],
+    },
+]
 
-export const AutomationLineChart = () => {
+export const AutomationLineChart = ({
+    chartId,
+    dashboard,
+    chartConfig,
+}: Props) => {
+    const isAnalyticsDashboardsNewChartsEnable = useFlag(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
+    )
     const { statsFilters, userTimezone, granularity } = useAutomateFilters()
-
-    const { data: timeSeriesData } = useAutomationRateTimeSeriesData(
-        statsFilters,
-        userTimezone,
-        granularity,
+    const metrics = useMemo(
+        () =>
+            getLineChartGraphConfig(
+                AUTOMATION_LINE_CHART_METRICS,
+                statsFilters,
+                userTimezone,
+                granularity,
+            ),
+        [statsFilters, userTimezone, granularity],
     )
 
-    const automationRateTrend = useAutomationRateTrend(
-        statsFilters,
-        userTimezone,
-    )
-
-    const tooltipPeriod = formatPreviousPeriod(statsFilters?.period)
-
-    const value =
-        automationRateTrend.data?.value !== null &&
-        automationRateTrend.data?.value !== undefined
-            ? automationRateTrend.data.value
-            : undefined
-
-    const prevValue =
-        automationRateTrend.data?.prevValue !== null &&
-        automationRateTrend.data?.prevValue !== undefined
-            ? automationRateTrend.data.prevValue
-            : undefined
-
-    const chartData = useMemo((): TimeSeriesDataItem[] => {
-        if (!timeSeriesData || !timeSeriesData[0]) {
-            return []
-        }
-
-        const series = seriesToTwoDimensionalDataItem(timeSeriesData[0], {
-            label: METRIC_TITLE,
-            dateFormatter: (date) =>
-                moment(date).format(DATE_FORMAT).replace(', ', ' '),
-        })
-
-        if (!series[0]) return []
-
-        return series[0].values.map((point) => ({
-            date: point.x,
-            value: point.y,
-        }))
-    }, [timeSeriesData])
-
-    const isLoading = automationRateTrend.isFetching || !timeSeriesData
-
-    return (
-        <ChartCard
-            title={METRIC_TITLE}
-            value={value}
-            prevValue={prevValue}
-            metricFormat="decimal-to-percent"
-            interpretAs="more-is-better"
-            tooltipData={{ period: tooltipPeriod }}
-            isLoading={isLoading}
-        >
-            <TimeSeriesChart
-                data={chartData}
-                isLoading={isLoading}
-                color={CHART_COLOR}
-                yAxisFormatter={formatYAxisTick}
-                valueFormatter={formatTooltipValue}
-                useGradient={true}
-                chartHeight={280}
-            />
-        </ChartCard>
+    return isAnalyticsDashboardsNewChartsEnable ? (
+        <ConfigurableGraph
+            metrics={metrics}
+            actionMenu={
+                chartId && chartConfig ? (
+                    <ChartsActionMenu
+                        chartId={chartId}
+                        dashboard={dashboard}
+                        chartName={chartConfig.label}
+                    />
+                ) : undefined
+            }
+        />
+    ) : (
+        <DEPRECATED_AutomationLineChart />
     )
 }

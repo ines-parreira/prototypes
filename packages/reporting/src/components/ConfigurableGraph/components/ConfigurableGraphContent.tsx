@@ -1,35 +1,40 @@
 import { BarChart, DonutChart } from '../../ChartCard'
 import type { ChartType } from '../../ChartCard'
 import { HorizontalBarChart } from '../../HorizontalBarChart'
+import { MultipleTimeSeriesChart } from '../../TimeSeriesChart/MultipleTimeSeriesChart'
 import { TimeSeriesChart } from '../../TimeSeriesChart/TimeSeriesChart'
 import type { ConfigurableGraphGroupingConfig } from '../types'
 import { ConfigurableGraphType } from '../types'
 
 type DonutOrBarWithToggleGroupingConfig = Extract<
     ConfigurableGraphGroupingConfig,
-    { chartType: 'bar' | 'donut' }
+    { configurableGraphType: 'bar' | 'donut' }
 >
-type LineGroupingConfig = Extract<
+type TimeSeriesGroupingConfig = Extract<
     ConfigurableGraphGroupingConfig,
-    { chartType: 'line' }
+    { configurableGraphType: 'timeSeries' }
+>
+type MultipleTimeSeriesGroupingConfig = Extract<
+    ConfigurableGraphGroupingConfig,
+    { configurableGraphType: 'multipleTimeSeries' }
 >
 type HorizontalBarGroupingConfig = Extract<
     ConfigurableGraphGroupingConfig,
-    { chartType: 'horizontal-bar' }
+    { configurableGraphType: 'horizontal-bar' }
 >
 
 // allow in the future a 'donut-or-bar' type
 function DonutOrBarWithToggleRenderer({
     groupingConfig,
-    activeChartType,
+    activeGraphType,
 }: {
     groupingConfig: DonutOrBarWithToggleGroupingConfig
-    activeChartType: ChartType
+    activeGraphType: ChartType
 }) {
     const { data, isLoading } = groupingConfig.useChartData()
     const filteredData = data?.filter((item) => item.value !== 0)
 
-    if (activeChartType === 'donut') {
+    if (activeGraphType === 'donut') {
         return (
             <DonutChart
                 data={filteredData}
@@ -53,15 +58,33 @@ function DonutOrBarWithToggleRenderer({
     )
 }
 
-function LineRenderer({
+function TimeSeriesRenderer({
     groupingConfig,
 }: {
-    groupingConfig: LineGroupingConfig
+    groupingConfig: TimeSeriesGroupingConfig
 }) {
     const { data, isLoading } = groupingConfig.useChartData()
 
     return (
         <TimeSeriesChart
+            data={data ?? []}
+            isLoading={isLoading}
+            valueFormatter={groupingConfig.valueFormatter}
+            yAxisFormatter={groupingConfig.yAxisFormatter}
+            dateFormatter={groupingConfig.dateFormatter}
+        />
+    )
+}
+
+function MultipleTimeSeriesRenderer({
+    groupingConfig,
+}: {
+    groupingConfig: MultipleTimeSeriesGroupingConfig
+}) {
+    const { data, isLoading } = groupingConfig.useChartData()
+
+    return (
+        <MultipleTimeSeriesChart
             data={data ?? []}
             isLoading={isLoading}
             valueFormatter={groupingConfig.valueFormatter}
@@ -95,23 +118,27 @@ type Props = {
 }
 
 export function ConfigurableGraphContent({ groupingConfig }: Props) {
-    switch (groupingConfig.chartType) {
+    switch (groupingConfig.configurableGraphType) {
         case ConfigurableGraphType.Bar:
             return (
                 <DonutOrBarWithToggleRenderer
                     groupingConfig={groupingConfig}
-                    activeChartType={ConfigurableGraphType.Bar}
+                    activeGraphType={ConfigurableGraphType.Bar}
                 />
             )
         case ConfigurableGraphType.Donut:
             return (
                 <DonutOrBarWithToggleRenderer
                     groupingConfig={groupingConfig}
-                    activeChartType={ConfigurableGraphType.Donut}
+                    activeGraphType={ConfigurableGraphType.Donut}
                 />
             )
-        case ConfigurableGraphType.Line:
-            return <LineRenderer groupingConfig={groupingConfig} />
+        case ConfigurableGraphType.TimeSeries:
+            return <TimeSeriesRenderer groupingConfig={groupingConfig} />
+        case ConfigurableGraphType.MultipleTimeSeries:
+            return (
+                <MultipleTimeSeriesRenderer groupingConfig={groupingConfig} />
+            )
         case ConfigurableGraphType.HorizontalBar:
             return <HorizontalBarRenderer groupingConfig={groupingConfig} />
     }
