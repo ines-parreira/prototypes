@@ -1,10 +1,9 @@
 import { assumeMock } from '@repo/testing'
 import { UserRole } from '@repo/utils'
 import { screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
-import { Route, StaticRouter, useHistory } from 'react-router-dom'
+import { Route, StaticRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -23,11 +22,6 @@ import { BASE_PATH, OrderManagementSettings } from '../OrderManagementSettings'
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
 )
-
-jest.mock('react-router-dom', () => ({
-    ...jest.requireActual('react-router-dom'),
-    useHistory: jest.fn(),
-}))
 
 jest.mock('settings/automate', () => ({
     ...jest.requireActual('settings/automate'),
@@ -59,7 +53,6 @@ const mockUseShouldShowChatSettingsRevamp =
     useShouldShowChatSettingsRevamp as jest.MockedFunction<
         typeof useShouldShowChatSettingsRevamp
     >
-const mockUseHistory = useHistory as jest.MockedFunction<typeof useHistory>
 const getHasAutomateMock = assumeMock(getHasAutomate)
 const useStoreSelectorMock = assumeMock(useStoreSelector)
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
@@ -96,12 +89,8 @@ const integrations = [
 describe('OrderManagementSettings', () => {
     let onChange: jest.Mock
 
-    let goBack: jest.Mock
-
     beforeEach(() => {
         onChange = jest.fn()
-        goBack = jest.fn()
-        mockUseHistory.mockReturnValue({ goBack } as any)
         getHasAutomateMock.mockReturnValue(true)
         useStoreSelectorMock.mockReturnValue({
             integrations,
@@ -272,25 +261,6 @@ describe('OrderManagementSettings', () => {
             )
             expect(screen.getByText('Configuration')).toBeInTheDocument()
             expect(screen.getByText('Channels')).toBeInTheDocument()
-        })
-
-        it('should navigate back when the back button is clicked', async () => {
-            const user = userEvent.setup()
-
-            renderWithQueryClientProvider(
-                <Provider store={mockStore(initialState)}>
-                    <StaticRouter location={BASE_PATH}>
-                        <Route path={`${BASE_PATH}/:shopType?/:shopName?`}>
-                            <OrderManagementSettings />
-                        </Route>
-                    </StaticRouter>
-                </Provider>,
-            )
-
-            await user.click(
-                screen.getByRole('button', { name: /arrow-left/i }),
-            )
-            expect(goBack).toHaveBeenCalledTimes(1)
         })
     })
 })

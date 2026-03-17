@@ -1,6 +1,4 @@
-import { NavLink, useHistory } from 'react-router-dom'
-
-import { Button, Icon } from '@gorgias/axiom'
+import { NavLink } from 'react-router-dom'
 
 import { IntegrationType } from 'models/integration/constants'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -12,8 +10,7 @@ import css from './OrderManagementSettingsHeader.less'
 
 const BASE_PATH = '/app/settings/order-management'
 
-export function OrderManagementSettingsHeader() {
-    const history = useHistory()
+export const OrderManagementSettingsHeader = () => {
     const { integrations, onChange, selected } = useStoreSelector(BASE_PATH, [
         IntegrationType.Shopify,
     ])
@@ -25,17 +22,7 @@ export function OrderManagementSettingsHeader() {
     return (
         <>
             <PageHeader
-                title={
-                    <div className={css.titleWrapper}>
-                        <Button
-                            variant="secondary"
-                            onClick={() => history.goBack()}
-                        >
-                            <Icon name="arrow-left" />
-                        </Button>
-                        Order Management
-                    </div>
-                }
+                title={<div className={css.titleWrapper}>Order Management</div>}
             >
                 <StoreSelector
                     integrations={integrations}

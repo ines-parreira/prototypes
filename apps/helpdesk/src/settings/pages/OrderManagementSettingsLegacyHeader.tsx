@@ -20,7 +20,7 @@ const PAGE_NAME = {
     'report-issue': 'Report order issue',
 }
 
-export function OrderManagementSettingsLegacyHeader() {
+export const OrderManagementSettingsLegacyHeader = () => {
     const match = useRouteMatch<{
         shopType?: string
         shopName: string

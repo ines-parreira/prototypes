@@ -1,6 +1,4 @@
-import { NavLink, useHistory } from 'react-router-dom'
-
-import { Button, Icon } from '@gorgias/axiom'
+import { NavLink } from 'react-router-dom'
 
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import PageHeader from 'pages/common/components/PageHeader'
@@ -13,7 +11,6 @@ import css from './FlowsSettingsHeader.less'
 const BASE_PATH = '/app/settings/flows'
 
 export const FlowsSettingsHeader = () => {
-    const history = useHistory()
     const { integrations, onChange, selected } = useStoreSelector(BASE_PATH)
 
     const selectedName = selected
@@ -26,19 +23,7 @@ export const FlowsSettingsHeader = () => {
 
     return (
         <>
-            <PageHeader
-                title={
-                    <div className={css.titleWrapper}>
-                        <Button
-                            variant="secondary"
-                            onClick={() => history.goBack()}
-                        >
-                            <Icon name="arrow-left" />
-                        </Button>
-                        Flows
-                    </div>
-                }
-            >
+            <PageHeader title={<div className={css.titleWrapper}>Flows</div>}>
                 <StoreSelector
                     integrations={integrations}
                     selected={selected}
