@@ -9,6 +9,7 @@ export enum Domain {
     Convert = 'convert',
     Ticket = 'ticket',
     AiSalesAgent = 'aiSalesAgent',
+    AiAgent = 'aiAgent',
     AIJourney = 'aiJourney',
     Knowledge = 'knowledge',
 }

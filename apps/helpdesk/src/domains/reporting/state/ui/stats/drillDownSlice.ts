@@ -10,6 +10,7 @@ import type {
     Sentiment,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
+import type { AiAgentDrillDownMetrics } from 'domains/reporting/pages/automate/aiAgent/AiAgentDrillDownConfig'
 import type { AiSalesAgentDrillDownMetrics } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import type { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import type { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
@@ -176,6 +177,10 @@ export type AiSalesAgentMetrics = {
     productId?: string
 } & CommonMetrics
 
+export type AiAgentMetrics = {
+    metricName: AiAgentDrillDownMetrics
+} & CommonMetrics
+
 export type AutoQAMetrics = {
     metricName: AutoQAMetric
 } & CommonMetrics
@@ -320,6 +325,7 @@ export type DrillDownMetric =
     | VoiceAgentsMetrics
     | TagsFieldsMetrics
     | AiSalesAgentMetrics
+    | AiAgentMetrics
     | ProductMetrics
     | VoiceOfCustomerMetrics
     | AIJourneyMetrics

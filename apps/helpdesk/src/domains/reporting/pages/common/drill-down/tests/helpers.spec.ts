@@ -15,6 +15,7 @@ import {
 import { VoiceCallSegment } from 'domains/reporting/models/cubes/VoiceCallCube'
 import {
     discountCodesOfferedDrillDownQueryFactory,
+    successRateV2DrillDownQueryFactory,
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
     totalNumberOfOrderDrillDownQueryFactory,
     totalNumberOfSalesOpportunityConvFromAIAgentDrillDownQueryFactory,
@@ -56,6 +57,7 @@ import {
     Sentiment,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { MetricsConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
@@ -90,6 +92,7 @@ import { VoiceOfCustomerMetricWithDrillDown } from 'domains/reporting/pages/voic
 import { MEDIAN_RESOLUTION_TIME_LABEL } from 'domains/reporting/services/constants'
 import type {
     AgentsMetrics,
+    AiAgentMetrics,
     AiSalesAgentMetrics,
     ChannelsMetrics,
     ConvertMetrics,
@@ -212,6 +215,9 @@ const aiSalesAgentTotalSalesConvDrillDownQueryFactoryMock = assumeMock(
 )
 const totalNumberOfAutomatedSalesDrillDownQueryFactoryMock = assumeMock(
     totalNumberOfAutomatedSalesDrillDownQueryFactory,
+)
+const successRateV2DrillDownQueryFactoryMock = assumeMock(
+    successRateV2DrillDownQueryFactory,
 )
 const discountCodesOfferedDrillDownQueryFactoryMock = assumeMock(
     discountCodesOfferedDrillDownQueryFactory,
@@ -1341,6 +1347,29 @@ describe('getDrillDownQuery', () => {
         ).toHaveBeenCalledWith(statsFilters, timezone)
     })
 
+    it('should be populated with ShoppingAssistantSuccessRateCard', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(successRateV2DrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+        )
+    })
+
     it('should be populated with AiSalesDiscountOffered', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -1977,6 +2006,29 @@ describe('getDrillDownMetric', () => {
                 metricTitle: 'Conversations',
                 showMetric: false,
                 metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName:
+                    AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard,
+                title: 'Success rate',
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: 'Success rate',
+                showMetric: false,
+                metricValueFormat: 'decimal-to-percent',
+            },
+        },
+        {
+            metricData: {
+                metricName:
+                    AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard,
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal-to-percent',
             },
         },
     ]

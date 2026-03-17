@@ -1,4 +1,5 @@
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { MetricsConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
 import { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
@@ -76,6 +77,7 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     VoiceAgentsMetric.AgentInboundTransferredCalls,
     VoiceAgentsMetric.AgentInboundDeclinedCalls,
     AiSalesAgentChart.AiSalesAgentSuccessRate,
+    AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard,
     AiSalesAgentChart.AiSalesAgentTotalNumberOfOrders,
     AiSalesAgentChart.AiSalesAgentTotalSalesConv,
     AiSalesAgentChart.AiSalesAgentTotalProductRecommendations,

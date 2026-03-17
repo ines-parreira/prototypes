@@ -11,7 +11,10 @@ import {
     AIJourneyMetric,
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
-import { totalNumberProductRecommendationsDrillDownQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
+import {
+    successRateV2DrillDownQueryFactory,
+    totalNumberProductRecommendationsDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import {
     knowledgeCSATDrillDownQueryFactory,
     knowledgeHandoverTicketsDrillDownQueryFactory,
@@ -32,6 +35,7 @@ import {
     FilterKey,
     TicketTimeReference,
 } from 'domains/reporting/models/stat/types'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { AiInsightsMetricConfig } from 'domains/reporting/pages/automate/AiInsightsMetricConfig'
 import {
     AiSalesAgentChart,
@@ -82,6 +86,7 @@ import {
 import { VoiceAgentsMetricsConfig } from 'domains/reporting/pages/voice/VoiceConfigs/VoiceAgentMetricsConfig'
 import { VoiceMetricsConfig } from 'domains/reporting/pages/voice/VoiceConfigs/VoiceMetricsConfig'
 import type {
+    AiAgentMetrics,
     AiSalesAgentMetrics,
     DrillDownMetric,
     KnowledgeMetrics,
@@ -416,6 +421,9 @@ export const getDrillDownQuery = (
             return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesAgentSuccessRate
             ].drillDownQuery
+        case AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard:
+            // Exhaustiveness stub, AiAgentDrillDownConfig.drillDownHook handles actual routing.
+            return successRateV2DrillDownQueryFactory
         case AiSalesAgentChart.AiSalesDiscountOffered:
             return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesDiscountOffered
@@ -707,6 +715,14 @@ const isAiSalesAgentMetric = (
     )
 }
 
+const isAiAgentMetric = (
+    metricData: DrillDownMetric,
+): metricData is AiAgentMetrics => {
+    return Object.values(AiAgentDrillDownMetricName).includes(
+        metricData.metricName as AiAgentDrillDownMetricName,
+    )
+}
+
 const isAIJourneyMetric = (
     metricData: DrillDownMetric,
 ): metricData is AIJourneyMetrics => {
@@ -877,6 +893,9 @@ export const getDrillDownMetricColumn = (
         metricValueFormat =
             AiSalesAgentMetricsWithDrillDownConfig[metricData.metricName]
                 .metricFormat
+    } else if (isAiAgentMetric(metricData)) {
+        metricTitle = metricData.title || ''
+        metricValueFormat = 'decimal-to-percent'
     } else if (isAIJourneyMetric(metricData)) {
         metricTitle = AIJourneyMetricsConfig[metricData.metricName].title
         metricValueFormat =

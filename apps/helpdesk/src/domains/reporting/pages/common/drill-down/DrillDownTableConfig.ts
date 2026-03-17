@@ -7,6 +7,7 @@ import {
     useEnrichedDrillDownData,
 } from 'domains/reporting/hooks/useDrillDownData'
 import { EnrichmentFields } from 'domains/reporting/models/types'
+import { AiAgentDrillDownConfig } from 'domains/reporting/pages/automate/aiAgent/AiAgentDrillDownConfig'
 import { AiInsightsMetricConfig } from 'domains/reporting/pages/automate/AiInsightsMetricConfig'
 import { AiSalesAgentDrillDownConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentDrillDownConfig'
 import type {
@@ -158,6 +159,7 @@ export const DomainsConfig = {
     [Domain.Ticket]: TicketDrillDownConfig,
     [Domain.Voice]: VoiceDrillDownConfig,
     [Domain.AiSalesAgent]: AiSalesAgentDrillDownConfig,
+    [Domain.AiAgent]: AiAgentDrillDownConfig,
     [Domain.AIJourney]: AIJourneyDrillDownConfig,
     [Domain.Knowledge]: KnowledgeDrillDownConfig,
 }
@@ -170,6 +172,7 @@ export const MetricsConfig: Record<
     ...ConvertDrillDownConfig.metricsConfig,
     ...VoiceDrillDownConfig.metricsConfig,
     ...AiSalesAgentDrillDownConfig.metricsConfig,
+    ...AiAgentDrillDownConfig.metricsConfig,
     ...AIJourneyDrillDownConfig.metricsConfig,
     ...KnowledgeDrillDownConfig.metricsConfig,
 }

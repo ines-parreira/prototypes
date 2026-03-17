@@ -13,6 +13,12 @@ import {
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import type { AiSalesAgentOrderCustomersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
 import { AiSalesAgentOrderCustomersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
+import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import type { SuccessRateCube } from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
+import {
+    SuccessRateDimension,
+    SuccessRateFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
 import type { ConvertTrackingEventsCube } from 'domains/reporting/models/cubes/convert/ConvertTrackingEventsCube'
 import {
     ConvertTrackingEventsDimension,
@@ -775,4 +781,34 @@ export const gmvByInfluencedProductQueryFactory = (
     limit: 10,
     timezone,
     metricName: METRIC_NAMES.AI_SALES_AGENT_GMV_BY_INFLUENCED_PRODUCT,
+})
+
+const successRateFiltersMembers = {
+    periodStart: SuccessRateFilterMember.PeriodStart,
+    periodEnd: SuccessRateFilterMember.PeriodEnd,
+    storeIntegrations: SuccessRateFilterMember.StoreIntegrationId,
+}
+
+export const successRateV2DrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<SuccessRateCube> => ({
+    measures: [],
+    dimensions: [SuccessRateDimension.TicketId],
+    filters: [
+        {
+            member: SuccessRateFilterMember.AiAgentSkill,
+            operator: ReportingFilterOperator.Equals,
+            values: [AIAgentSkills.AIAgentSales],
+        },
+        ...statsFiltersToReportingFilters(successRateFiltersMembers, filters),
+    ],
+    timezone,
+    metricName:
+        METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? { order: [[SuccessRateDimension.TicketId, sorting]] }
+        : { order: [] }),
 })

@@ -3,6 +3,7 @@ import type { MetricTrendFormat } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
+import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import type {
     ChartConfig,
@@ -39,6 +40,9 @@ import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOvervie
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
+
+jest.mock('domains/reporting/hooks/drill-down/useDrillDownModalTrigger')
+const mockUseDrillDownModalTrigger = assumeMock(useDrillDownModalTrigger)
 
 jest.mock('domains/reporting/hooks/useReportingTrendCardProps')
 const mockUseReportingTrendCardProps = assumeMock(useReportingTrendCardProps)
@@ -284,6 +288,7 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSuccessRateSalesCard',
             Component: AnalyticsAiAgentSuccessRateSalesCard,
+            hasDrillDown: true,
             config: {
                 label: 'Success rate',
                 description:
@@ -481,11 +486,17 @@ describe('Analytics Dynamic Trend Cards', () => {
         },
     ]
 
+    const mockDrillDownReturn = {
+        openDrillDownModal: jest.fn(),
+        tooltipText: 'Success rate',
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseDrillDownModalTrigger.mockReturnValue(mockDrillDownReturn)
     })
 
-    describe.each(testCases)('$name', ({ Component, config }) => {
+    describe.each(testCases)('$name', ({ Component, config, hasDrillDown }) => {
         const chartConfig = createChartConfig({
             Component,
             label: config.label,
@@ -526,7 +537,10 @@ describe('Analytics Dynamic Trend Cards', () => {
         it('should pass useReportingTrendCardProps result to TrendCard', () => {
             render(<Component chartConfig={chartConfig} />)
 
-            expect(mockTrendCard).toHaveBeenCalledWith(trendCardProps, {})
+            const expectedProps = hasDrillDown
+                ? { ...trendCardProps, drillDown: mockDrillDownReturn }
+                : trendCardProps
+            expect(mockTrendCard).toHaveBeenCalledWith(expectedProps, {})
         })
     })
 })
