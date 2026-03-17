@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
 import * as utils from '@repo/utils'
+import { isDeviceReady } from '@repo/voice'
 import classNames from 'classnames'
 
 import {
@@ -17,7 +18,6 @@ import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useHasPhone from 'hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
-import { isDesktopDevice, isDeviceReady } from 'utils/device'
 
 import ButtonIconLabel from './button/ButtonIconLabel'
 import DeactivatedViewIcon from './DeactivatedViewIcon'
@@ -34,7 +34,7 @@ export default function PlaceCallNavbarButton() {
 
     const buttonRef = React.useRef<HTMLButtonElement>(null)
 
-    const shouldDisplayButton = hasPhone && isDesktopDevice()
+    const shouldDisplayButton = hasPhone && utils.isDesktopDevice()
     const isDeviceActive = isDeviceReady(device)
 
     const { permissionDenied } = useMicrophonePermissions()

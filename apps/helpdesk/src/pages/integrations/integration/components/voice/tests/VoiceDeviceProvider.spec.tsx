@@ -2,6 +2,7 @@ import type React from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
+import { isDesktopDevice } from '@repo/utils'
 import { act, render, waitFor } from '@testing-library/react'
 import { Device } from '@twilio/voice-sdk'
 import { Provider } from 'react-redux'
@@ -10,17 +11,19 @@ import configureMockStore from 'redux-mock-store'
 import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import { connectDevice, disconnectDevice } from 'hooks/integrations/phone/utils'
 import useHasPhone from 'hooks/useHasPhone'
-import { isDesktopDevice } from 'utils/device'
 
 import type { VoiceDeviceContextState } from '../VoiceDeviceContext'
 import VoiceDeviceProvider from '../VoiceDeviceProvider'
 
 jest.mock('hooks/integrations/phone/utils')
 jest.mock('hooks/useHasPhone')
-jest.mock('utils/device')
 jest.mock('@repo/hooks', () => ({
     ...jest.requireActual('@repo/hooks'),
     useLocalStorage: jest.fn(),
+}))
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    isDesktopDevice: jest.fn(),
 }))
 
 const useHasPhoneMock = assumeMock(useHasPhone)

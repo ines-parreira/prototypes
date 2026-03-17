@@ -4,7 +4,7 @@ import { useEffect, useMemo, useReducer } from 'react'
 import type { Dispatch } from '@reduxjs/toolkit'
 import { bindActionCreators } from '@reduxjs/toolkit'
 import { useLocalStorage } from '@repo/hooks'
-import { registerCallStateCallback } from '@repo/utils'
+import { isDesktopDevice, registerCallStateCallback } from '@repo/utils'
 import { Device } from '@twilio/voice-sdk'
 
 import { useErrorHandling } from 'hooks/integrations/phone/useErrorHandling'
@@ -20,7 +20,6 @@ import { LAST_USED_INTEGRATION_STORAGE_KEY } from 'pages/integrations/integratio
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import { isActive } from 'state/currentUser/selectors'
 import { initialState } from 'state/twilio/voiceDevice'
-import { isDesktopDevice } from 'utils/device'
 
 import { Context } from './VoiceDeviceContext'
 

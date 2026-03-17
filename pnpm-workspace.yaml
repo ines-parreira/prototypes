@@ -145,6 +145,11 @@ catalogs:
     'push.js': '1.0.12'
   logging:
     '@types/segment-analytics': '^0.0.38'
+  voice:
+    '@twilio/voice-sdk': '^2.11.1'
+  ua-parser:
+    'ua-parser-js': '^1.0.37'
+    '@types/ua-parser-js': '^0.7.39'
   zod:
     'zod': '^3.24.2'
   react-dnd:

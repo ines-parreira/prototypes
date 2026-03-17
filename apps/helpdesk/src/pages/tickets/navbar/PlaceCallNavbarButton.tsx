@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import * as utils from '@repo/utils'
+import { isDeviceReady } from '@repo/voice'
 
 import {
     LegacyShortcutKey as ShortcutKey,
@@ -20,7 +21,6 @@ import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
 import DeactivatedViewIcon from 'pages/common/components/DeactivatedViewIcon'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
-import { isDesktopDevice, isDeviceReady } from 'utils/device'
 
 import css from './PlaceCallNavbarButton.less'
 
@@ -33,7 +33,7 @@ export function PlaceCallNavbarButton() {
 
     const buttonRef = React.useRef<HTMLButtonElement>(null)
 
-    const shouldDisplayButton = hasPhone && isDesktopDevice()
+    const shouldDisplayButton = hasPhone && utils.isDesktopDevice()
     const isDeviceActive = isDeviceReady(device)
 
     const { permissionDenied } = useMicrophonePermissions()

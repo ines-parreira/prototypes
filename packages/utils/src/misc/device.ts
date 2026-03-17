@@ -1,7 +1,4 @@
-import { Device } from '@twilio/voice-sdk'
 import { UAParser } from 'ua-parser-js'
-
-import * as utils from './device'
 
 type UADeviceType =
     | 'console'
@@ -11,20 +8,22 @@ type UADeviceType =
     | 'wearable'
     | 'embedded'
 
+const MOBILE_DEVICE_TYPES = new Set<UADeviceType>([
+    'console',
+    'mobile',
+    'tablet',
+    'smarttv',
+    'wearable',
+    'embedded',
+])
+
 export const getDeviceType = (): UADeviceType | 'desktop' => {
     const parser = new UAParser()
     const deviceType = parser.getDevice().type
 
     if (
         deviceType === undefined ||
-        ![
-            'console',
-            'mobile',
-            'tablet',
-            'smarttv',
-            'wearable',
-            'embedded',
-        ].includes(deviceType)
+        !MOBILE_DEVICE_TYPES.has(deviceType as UADeviceType)
     ) {
         return 'desktop'
     }
@@ -33,9 +32,5 @@ export const getDeviceType = (): UADeviceType | 'desktop' => {
 }
 
 export const isDesktopDevice = (): boolean => {
-    return utils.getDeviceType() === 'desktop'
-}
-
-export const isDeviceReady = (device?: Device | null): boolean => {
-    return device?.state === Device.State.Registered
+    return getDeviceType() === 'desktop'
 }

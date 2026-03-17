@@ -1,6 +1,7 @@
 import type { SyntheticEvent } from 'react'
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { isDeviceReady } from '@repo/voice'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import parsePhoneNumber from 'libphonenumber-js'
@@ -13,7 +14,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getNewMessageSource } from 'state/newMessage/selectors'
 import { DEPRECATED_getTicket } from 'state/ticket/selectors'
-import { isDeviceReady } from 'utils/device'
 
 import css from './PhoneTicketSubmitButtons.less'
 

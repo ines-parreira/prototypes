@@ -1,5 +1,6 @@
 import { assumeMock } from '@repo/testing'
-import { useConditionalShortcuts } from '@repo/utils'
+import { isDesktopDevice, useConditionalShortcuts } from '@repo/utils'
+import { isDeviceReady } from '@repo/voice'
 import {
     cleanup,
     fireEvent,
@@ -16,7 +17,6 @@ import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useHasPhone from 'hooks/useHasPhone'
 import PhoneDevice from 'pages/integrations/integration/components/phone/PhoneDevice'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
-import { isDesktopDevice, isDeviceReady } from 'utils/device'
 
 import PlaceCallNavbarButton from '../PlaceCallNavbarButton'
 
@@ -27,10 +27,12 @@ jest.mock('@repo/utils', () => ({
     get isMacOs() {
         return mockIsMacOs
     },
+    isDesktopDevice: jest.fn(),
     useConditionalShortcuts: jest.fn(),
 }))
-
-jest.mock('utils/device')
+jest.mock('@repo/voice', () => ({
+    isDeviceReady: jest.fn(),
+}))
 jest.mock('../DeactivatedViewIcon', () => ({ tooltipText }: any) => (
     <div>{tooltipText}</div>
 ))

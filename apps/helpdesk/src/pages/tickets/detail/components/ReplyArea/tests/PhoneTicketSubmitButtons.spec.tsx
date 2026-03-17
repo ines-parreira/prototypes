@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { assumeMock } from '@repo/testing'
+import { isDeviceReady } from '@repo/voice'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
@@ -11,11 +12,12 @@ import thunk from 'redux-thunk'
 
 import VoiceDeviceProvider from 'pages/integrations/integration/components/voice/VoiceDeviceProvider'
 import type { RootState, StoreDispatch } from 'state/types'
-import { isDeviceReady } from 'utils/device'
 
 import PhoneTicketSubmitButtons from '../PhoneTicketSubmitButtons'
 
-jest.mock('utils/device')
+jest.mock('@repo/voice', () => ({
+    isDeviceReady: jest.fn(),
+}))
 
 const isDeviceReadyMock = assumeMock(isDeviceReady)
 
