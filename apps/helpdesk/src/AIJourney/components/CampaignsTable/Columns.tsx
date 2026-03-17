@@ -1,8 +1,9 @@
 import { formatMetricValue } from '@repo/reporting'
+import classNames from 'classnames'
 
 import type { ColumnDef } from '@gorgias/axiom'
 import { Box, createSortableColumn } from '@gorgias/axiom'
-import type { JourneyCampaignStateEnum } from '@gorgias/convert-client'
+import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
 import { MetricCell } from 'AIJourney/components'
 
@@ -12,6 +13,8 @@ import CampaignName from './CampaignName/CampaignName'
 import CampaignStateBadge from './CampaignStateBadge/CampaignStateBadge'
 import { MoreOptions } from './MoreOptions/MoreOptions'
 import type { CampaignsTableMeta } from './types'
+
+import badgeCss from './CampaignStateBadge/CampaignStateBadge.less'
 
 export const columns: ColumnDef<TableRow>[] = [
     createSortableColumn<TableRow>('campaign.title', 'Title', (info) => {
@@ -31,9 +34,17 @@ export const columns: ColumnDef<TableRow>[] = [
     }),
     createSortableColumn<TableRow>('stateLabel', 'Status', (info) => {
         const state = info.row.original.campaign?.state
+        const isDraft = state === JourneyCampaignStateEnum.Draft
+        const hasAudiences =
+            info.row.original.campaign?.has_included_audiences ?? false
         return (
             <Box gap="xs">
                 <CampaignStateBadge state={state as JourneyCampaignStateEnum} />
+                {isDraft && !hasAudiences && (
+                    <span className={classNames(badgeCss.badge, badgeCss.grey)}>
+                        No audience
+                    </span>
+                )}
             </Box>
         )
     }),
@@ -181,12 +192,15 @@ export const actionColumns: ColumnDef<TableRow, unknown>[] = [
         id: 'actions',
         cell: (info) => {
             const meta = info.table.options.meta as CampaignsTableMeta
+            const hasIncludedAudiences =
+                info.row.original.campaign?.has_included_audiences ?? false
             return (
                 <Box gap="xs">
                     <MoreOptions
                         shopName={info.row.original.store_name}
                         journeyId={info.row.original.id}
                         state={info.row.original.campaign?.state!}
+                        hasIncludedAudiences={hasIncludedAudiences}
                         handleChangeStatus={(
                             status: UpdatableJourneyCampaignState,
                         ) => {
@@ -199,7 +213,10 @@ export const actionColumns: ColumnDef<TableRow, unknown>[] = [
                             meta.onRemoveClick(info.row.original.id)
                         }
                         handleSendClick={() =>
-                            meta.onSendClick(info.row.original.id)
+                            meta.onSendClick(
+                                info.row.original.id,
+                                hasIncludedAudiences,
+                            )
                         }
                         handleDuplicateClick={() =>
                             meta.onDuplicateClick(info.row.original)

@@ -60,6 +60,12 @@ jest.mock('AIJourney/queries/useDeleteJourney/useDeleteJourney', () => ({
     }),
 }))
 
+const mockUseFlag = jest.fn()
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: (key: string) => mockUseFlag(key),
+}))
+
 const mockFields: TableRow[] = [
     {
         id: '1',
@@ -73,6 +79,7 @@ const mockFields: TableRow[] = [
         campaign: {
             title: 'Welcome campaign',
             state: 'draft',
+            has_included_audiences: true,
         },
         metrics: DEFAULT_TABLE_METRICS,
     },
@@ -88,6 +95,7 @@ const mockFields: TableRow[] = [
         campaign: {
             title: 'Win back campaign',
             state: 'sent',
+            has_included_audiences: true,
         },
         metrics: DEFAULT_TABLE_METRICS,
     },
@@ -121,6 +129,7 @@ describe('CampaignsTable', () => {
         useLocationMock.mockReturnValue({
             pathname: '/app/ai-journey/test-shop/flows',
         } as Location)
+        mockUseFlag.mockImplementation(() => false)
 
         jest.clearAllMocks()
     })
@@ -294,6 +303,7 @@ describe('CampaignsTable', () => {
                 campaign: {
                     title: 'Active campaign',
                     state: 'active',
+                    has_included_audiences: true,
                 },
                 metrics: DEFAULT_TABLE_METRICS,
             },
@@ -334,6 +344,65 @@ describe('CampaignsTable', () => {
             expect(mockHandleUpdate).toHaveBeenCalledWith({
                 id: '1',
                 campaignState: 'canceled',
+            })
+        })
+    })
+
+    it('should show "No audience" badge for draft campaign without audiences', () => {
+        const draftWithoutAudience: TableRow[] = [
+            {
+                ...mockFields[0],
+                campaign: {
+                    title: 'Draft campaign',
+                    state: 'draft',
+                    has_included_audiences: false,
+                },
+            },
+        ]
+
+        renderWithRouter(
+            wrapper(
+                <CampaignsTable
+                    columns={columns}
+                    data={draftWithoutAudience}
+                />,
+            ),
+        )
+
+        expect(screen.getByText('No audience')).toBeInTheDocument()
+    })
+
+    it('should open send confirmation modal and send campaign when confirmed', async () => {
+        mockUseFlag.mockImplementation(() => true)
+
+        renderWithRouter(
+            wrapper(<CampaignsTable columns={allColumns} data={mockFields} />),
+        )
+
+        const user = userEvent.setup()
+
+        const moreOptionsButton = screen.getAllByLabelText('Open options')[0]
+        await act(() => user.click(moreOptionsButton))
+
+        const sendOption = screen
+            .getAllByText('Send')
+            .find((el) => el.closest('[role="option"]'))
+
+        if (sendOption) {
+            await act(() => user.click(sendOption))
+        }
+
+        await waitFor(() => {
+            expect(screen.getByText('Send Campaign?')).toBeInTheDocument()
+        })
+
+        const confirmButton = screen.getByRole('button', { name: 'Send' })
+        await act(() => user.click(confirmButton))
+
+        await waitFor(() => {
+            expect(mockHandleUpdate).toHaveBeenCalledWith({
+                id: '1',
+                campaignState: 'scheduled',
             })
         })
     })

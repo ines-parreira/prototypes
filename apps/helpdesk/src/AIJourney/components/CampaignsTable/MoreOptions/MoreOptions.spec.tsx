@@ -31,6 +31,7 @@ describe('<MoreOptions />', () => {
         handleSendClick: jest.fn(),
         handleCancelClick: jest.fn(),
         handleDuplicateClick: jest.fn(),
+        hasIncludedAudiences: true,
     }
 
     beforeEach(() => {
@@ -387,6 +388,41 @@ describe('<MoreOptions />', () => {
                 <MoreOptions
                     {...defaultProps}
                     state={JourneyCampaignStateEnum.Draft}
+                />,
+            )
+
+            const trigger = screen.getByLabelText('Open options')
+            await user.click(trigger)
+
+            expect(screen.getAllByText('Send').length).toBeGreaterThan(0)
+        })
+
+        it('should not show Send option when campaign has no included audiences', async () => {
+            const user = userEvent.setup()
+            renderWithRouter(
+                <MoreOptions
+                    {...defaultProps}
+                    state={JourneyCampaignStateEnum.Draft}
+                    hasIncludedAudiences={false}
+                />,
+            )
+
+            const trigger = screen.getByLabelText('Open options')
+            await user.click(trigger)
+
+            expect(screen.queryByText('Send')).not.toBeInTheDocument()
+            expect(screen.getAllByText('Edit').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Duplicate').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('Delete').length).toBeGreaterThan(0)
+        })
+
+        it('should show Send option when campaign has included audiences', async () => {
+            const user = userEvent.setup()
+            renderWithRouter(
+                <MoreOptions
+                    {...defaultProps}
+                    state={JourneyCampaignStateEnum.Draft}
+                    hasIncludedAudiences={true}
                 />,
             )
 

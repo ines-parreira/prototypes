@@ -14,9 +14,38 @@ type Props = {
     isOpen: boolean
     onClose: () => void
     onConfirm: () => void
+    hasIncludedAudiences: boolean
 }
 
-const SendCampaignConfirmation = ({ isOpen, onClose, onConfirm }: Props) => {
+const SendCampaignConfirmation = ({
+    isOpen,
+    onClose,
+    onConfirm,
+    hasIncludedAudiences,
+}: Props) => {
+    if (!hasIncludedAudiences) {
+        return (
+            <Modal size="sm" isOpen={isOpen} isDismissable={false}>
+                <OverlayHeader title="Cannot Send Campaign" />
+                <OverlayContent>
+                    <Box gap="xs">
+                        <Text>
+                            This campaign has no audience attached. Add at least
+                            one included audience before sending.
+                        </Text>
+                    </Box>
+                </OverlayContent>
+                <OverlayFooter>
+                    <Box gap="xs">
+                        <Button variant="secondary" onClick={onClose}>
+                            Close
+                        </Button>
+                    </Box>
+                </OverlayFooter>
+            </Modal>
+        )
+    }
+
     return (
         <Modal size="sm" isOpen={isOpen} isDismissable={false}>
             <OverlayHeader title="Send Campaign?" />

@@ -51,6 +51,8 @@ export default function CampaignsTable<TData, TValue>({
     const [selectedCampaignId, setSelectedCampaignId] = useState<
         string | undefined
     >()
+    const [selectedCampaignHasAudiences, setSelectedCampaignHasAudiences] =
+        useState(false)
 
     const history = useHistory()
     const { shopName, currency } = useJourneyContext()
@@ -84,8 +86,9 @@ export default function CampaignsTable<TData, TValue>({
 
     // send campaign
     const handleOpenSendModal = useCallback(
-        (id: string) => {
+        (id: string, hasIncludedAudiences: boolean) => {
             setSelectedCampaignId(id)
+            setSelectedCampaignHasAudiences(hasIncludedAudiences)
             setIsSendModalOpen(true)
         },
         [setSelectedCampaignId, setIsSendModalOpen],
@@ -286,6 +289,7 @@ export default function CampaignsTable<TData, TValue>({
                 isOpen={isSendModalOpen}
                 onClose={handleCloseSendModal}
                 onConfirm={handleConfirmSend}
+                hasIncludedAudiences={selectedCampaignHasAudiences}
             />
             <CancelCampaignConfirmation
                 isOpen={isCancelModalOpen}

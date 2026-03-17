@@ -57,6 +57,7 @@ export const MoreOptions = ({
     handleCancelClick,
     handleSendClick,
     handleDuplicateClick,
+    hasIncludedAudiences,
 }: {
     shopName: string
     journeyId: string
@@ -66,6 +67,7 @@ export const MoreOptions = ({
     handleCancelClick: () => void
     handleSendClick: () => void
     handleDuplicateClick: () => void
+    hasIncludedAudiences: boolean
 }) => {
     const history = useHistory()
     const isAiJourneyCampaignSendingEnabled = useFlag(
@@ -121,8 +123,9 @@ export const MoreOptions = ({
                 switch (option) {
                     case Options.Send:
                         if (
-                            isAiJourneyCampaignSendingEnabled ||
-                            window.USER_IMPERSONATED
+                            (isAiJourneyCampaignSendingEnabled ||
+                                window.USER_IMPERSONATED) &&
+                            hasIncludedAudiences
                         ) {
                             return {
                                 icon: 'comm-send',
@@ -172,7 +175,7 @@ export const MoreOptions = ({
                 }
             })
             .filter((option): option is OptionEntry => option !== null)
-    }, [state, isAiJourneyCampaignSendingEnabled])
+    }, [state, isAiJourneyCampaignSendingEnabled, hasIncludedAudiences])
 
     if (options.length === 0) {
         return null
