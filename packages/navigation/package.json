@@ -19,12 +19,16 @@
     "peerDependencies": {
         "@repo/hooks": "workspace:*",
         "@gorgias/axiom": "catalog:axiom",
+        "history": "catalog:react-router",
         "react": "catalog:react",
-        "react-dom": "catalog:react"
+        "react-dom": "catalog:react",
+        "react-router-dom": "catalog:react-router",
+        "react-router-dom-v5-compat": "catalog:react-router"
     },
     "devDependencies": {
         "@repo/config": "workspace:*",
         "@repo/testing": "workspace:*",
+        "@types/history": "catalog:react-router",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
@@ -32,6 +36,8 @@
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
+        "@types/react-router": "catalog:react-router",
+        "@types/react-router-dom": "catalog:react-router",
         "@vitest/coverage-v8": "catalog:test",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",

@@ -42,7 +42,7 @@ export const CreateDashboardMenu = () => {
         <Menu
             trigger={
                 <Button
-                    icon="add"
+                    icon="add-plus-circle"
                     variant="tertiary"
                     size="sm"
                     aria-label={CREATE_NEW_DASHBOARD}

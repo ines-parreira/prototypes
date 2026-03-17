@@ -1,0 +1,39 @@
+:local {
+    .link {
+        width: 100%;
+        color: var(--content-neutral-default) !important;
+        border-radius: 8px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        background-color: transparent;
+        box-shadow: none;
+        transition:
+            color 0.2s ease-out,
+            background-color 0.2s ease-out,
+            box-shadow 0.2s ease-out;
+        text-decoration: none;
+
+        &:hover {
+            outline: none;
+            background: var(--hover-default);
+            color: var(--content-neutral-default);
+        }
+
+        &:focus {
+            outline: none;
+            background: var(--hover-default);
+            color: var(--content-neutral-default);
+        }
+
+        &[aria-current='page'] {
+            background: var(--surface-accent-default);
+            border: none;
+            color: var(--content-accent-default) !important;
+        }
+
+        &[aria-current='page']:hover {
+            background: var(--surface-accent-default);
+        }
+    }
+}

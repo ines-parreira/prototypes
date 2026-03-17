@@ -5,12 +5,12 @@ import type { IconName } from '@gorgias/axiom'
 export const WORKFLOWS_DEFAULT_PATH = '/app/workflows'
 
 export enum WorkflowsSection {
-    Tools = 'Tools',
-    FieldsAndTags = 'Fields and Tags',
+    Tools = 'tools',
+    FieldsAndTags = 'fields-and-tags',
 }
 
 export type WorkflowsSectionConfig = {
-    id: string
+    id: WorkflowsSection
     label: string
     icon?: IconName
     requiredRole?: UserRole.Admin | UserRole.Agent
@@ -21,12 +21,12 @@ export const workflowsSections: Record<
     WorkflowsSectionConfig
 > = {
     [WorkflowsSection.Tools]: {
-        id: 'tools',
+        id: WorkflowsSection.Tools,
         label: 'Tools',
         icon: 'wrench',
     },
     [WorkflowsSection.FieldsAndTags]: {
-        id: 'fields-and-tags',
+        id: WorkflowsSection.FieldsAndTags,
         label: 'Fields and Tags',
         icon: 'tag',
         requiredRole: UserRole.Agent,

@@ -13,6 +13,7 @@ export {
     isAdmin,
     hasAgentPrivileges,
     isTeamLead,
+    filterUserByRole,
 } from './access-control/roles'
 export { sleep } from './misc/sleep'
 export { getMoneySymbol } from './misc/getMoneySymbol'

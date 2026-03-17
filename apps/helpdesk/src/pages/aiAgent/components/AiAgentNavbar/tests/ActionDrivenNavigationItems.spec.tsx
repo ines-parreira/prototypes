@@ -13,10 +13,13 @@ import { ActionDrivenNavigationItems } from '../ActionDrivenNavigationItems'
 
 const mockStore = configureStore([])
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Skeleton: () => <div data-testid="skeleton" />,
+jest.mock('@repo/feature-flags', () => ({
+    useHelpdeskV2WayfindingMS1Flag: jest.fn(() => false),
 }))
+
+const mockUseHelpdeskV2WayfindingMS1Flag = jest.requireMock(
+    '@repo/feature-flags',
+).useHelpdeskV2WayfindingMS1Flag as jest.Mock
 
 jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
     useAiAgentHelpCenter: jest.fn(() => ({
@@ -147,6 +150,7 @@ describe('ActionDrivenNavigationItems', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
         mockGetChannelStatus.mockReturnValue(false)
         mockUseOpportunitiesCount.mockReturnValue({
             count: 5,
@@ -168,7 +172,7 @@ describe('ActionDrivenNavigationItems', () => {
         props: Partial<Parameters<typeof ActionDrivenNavigationItems>[0]> = {},
         customStore = createStore(),
     ) => {
-        return render(
+        const { container, ...rest } = render(
             <Provider store={customStore}>
                 <MemoryRouter>
                     <Navigation.Root value={['analyze', 'deploy']}>
@@ -182,6 +186,7 @@ describe('ActionDrivenNavigationItems', () => {
                 </MemoryRouter>
             </Provider>,
         )
+        return { container, ...rest }
     }
 
     it('renders null when selectedStore is not provided', () => {
@@ -595,7 +600,7 @@ describe('ActionDrivenNavigationItems', () => {
                 },
             ]
 
-            render(
+            const { container } = render(
                 <Provider store={createStore()}>
                     <MemoryRouter>
                         <Navigation.Root>
@@ -609,7 +614,9 @@ describe('ActionDrivenNavigationItems', () => {
                 </Provider>,
             )
 
-            expect(screen.getByTestId('skeleton')).toBeInTheDocument()
+            expect(
+                container.querySelector('[data-name="skeleton"]'),
+            ).toBeInTheDocument()
             expect(screen.queryByText('10')).not.toBeInTheDocument()
         })
 
@@ -858,6 +865,127 @@ describe('ActionDrivenNavigationItems', () => {
             const statusIcon = screen.getByAltText('status icon')
             expect(statusIcon).toBeInTheDocument()
             expect(statusIcon).toHaveAttribute('src', 'test-file-stub')
+        })
+    })
+
+    describe('with wayfinding flag enabled', () => {
+        const renderWayfindingComponent = (
+            props: Partial<
+                Parameters<typeof ActionDrivenNavigationItems>[0]
+            > = {},
+            customStore = createStore(),
+        ) => {
+            const { container, ...rest } = render(
+                <Provider store={customStore}>
+                    <MemoryRouter>
+                        <ActionDrivenNavigationItems
+                            navigationItems={mockNavigationItems}
+                            selectedStore="test-store"
+                            getChannelStatus={mockGetChannelStatus}
+                            {...props}
+                        />
+                    </MemoryRouter>
+                </Provider>,
+            )
+            return { container, ...rest }
+        }
+
+        beforeEach(() => {
+            mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        })
+
+        it('renders null when selectedStore is not provided', () => {
+            const { container } = renderWayfindingComponent({
+                selectedStore: undefined,
+            })
+
+            expect(
+                screen.queryByTestId('navigation-section-group'),
+            ).not.toBeInTheDocument()
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('renders null when navigationItems is not provided', () => {
+            const { container } = renderWayfindingComponent({
+                navigationItems: undefined as any,
+            })
+
+            expect(
+                screen.queryByTestId('navigation-section-group'),
+            ).not.toBeInTheDocument()
+            expect(container.firstChild).toBeNull()
+        })
+
+        it('renders standalone items using NavigationSection with to prop', () => {
+            renderWayfindingComponent()
+
+            const overviewLink = screen.getByRole('link', { name: 'Overview' })
+            expect(overviewLink).toHaveAttribute(
+                'href',
+                '/app/ai-agent/shopify/test-store',
+            )
+        })
+
+        it('renders collapsible sections using NavigationSection', () => {
+            renderWayfindingComponent()
+
+            const analyzeSection = screen.getByRole('button', {
+                name: /Analyze/,
+            })
+            expect(analyzeSection).toBeInTheDocument()
+        })
+
+        it('renders Dot for active Chat channel', () => {
+            mockGetChannelStatus.mockImplementation(
+                (channel) => channel === 'chat',
+            )
+
+            const { container } = renderWayfindingComponent()
+
+            expect(
+                container.querySelector('[data-name="dot"]'),
+            ).toBeInTheDocument()
+            expect(mockGetChannelStatus).toHaveBeenCalledWith('chat')
+        })
+
+        it('renders Dot for inactive channels', () => {
+            mockGetChannelStatus.mockReturnValue(false)
+
+            const { container } = renderWayfindingComponent()
+
+            const dots = container.querySelectorAll('[data-name="dot"]')
+            expect(dots.length).toBeGreaterThan(0)
+            expect(mockGetChannelStatus).toHaveReturnedWith(false)
+        })
+
+        it('renders Opportunities BETA tag in nested items', () => {
+            renderWayfindingComponent()
+
+            expect(screen.getByText('Beta')).toBeInTheDocument()
+        })
+
+        it('does not render opportunities count in wayfinding path', () => {
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 42,
+                isLoading: false,
+            })
+
+            renderWayfindingComponent()
+
+            expect(screen.queryByText('42')).not.toBeInTheDocument()
+        })
+
+        it('does not render skeleton when opportunities are loading in wayfinding path', () => {
+            mockUseOpportunitiesCount.mockReturnValue({
+                count: 0,
+                isLoading: true,
+            })
+
+            const { container } = renderWayfindingComponent()
+
+            expect(
+                container.querySelector('[data-name="skeleton"]'),
+            ).not.toBeInTheDocument()
         })
     })
 })

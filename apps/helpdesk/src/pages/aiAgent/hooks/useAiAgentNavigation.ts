@@ -30,6 +30,16 @@ import {
     TRAIN,
 } from 'pages/aiAgent/constants'
 
+export enum AIAgentNavigationSection {
+    ActionsPlatform = 'actions-platform',
+    Analyze = 'analyze',
+    Train = 'train',
+    Test = 'test',
+    Deploy = 'deploy',
+    Settings = 'settings',
+    CollapsedSection = 'collapsed-section',
+}
+
 export const getAiAgentBasePath = (shopName: string) =>
     `/app/ai-agent/shopify/${shopName}`
 
@@ -140,6 +150,7 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
 }
 
 export type NavigationItem = {
+    id?: string
     route: string
     title: string
     exact?: boolean
@@ -194,6 +205,7 @@ const useNavigationItems = (
         return [
             {
                 title: ANALYZE,
+                id: AIAgentNavigationSection.Analyze,
                 dataCanduId: 'ai-agent-navbar-analyze',
                 icon: 'chart-line',
                 items: [
@@ -217,6 +229,7 @@ const useNavigationItems = (
             },
             {
                 title: TRAIN,
+                id: AIAgentNavigationSection.Train,
                 dataCanduId: 'ai-agent-navbar-train',
                 icon: 'graduated',
                 items: [
@@ -292,12 +305,14 @@ const useNavigationItems = (
             {
                 route: routes.test,
                 title: TEST,
+                id: AIAgentNavigationSection.Test,
                 dataCanduId: 'ai-agent-navbar-test',
                 exact: true,
                 icon: 'media-play-circle',
             },
             {
                 title: DEPLOY,
+                id: AIAgentNavigationSection.Deploy,
                 dataCanduId: 'ai-agent-navbar-deploy',
                 icon: 'rocket',
                 items: [
@@ -320,6 +335,7 @@ const useNavigationItems = (
             },
             {
                 title: SETTINGS,
+                id: AIAgentNavigationSection.Settings,
                 dataCanduId: 'ai-agent-navbar-settings',
                 route: routes.settings,
                 icon: 'slider-filter',

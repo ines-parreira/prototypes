@@ -1,7 +1,7 @@
 import { SidebarContext } from '@repo/navigation'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { Product, productConfig } from 'routes/layout/productConfig'
@@ -139,7 +139,7 @@ describe('NavigationSidebar', () => {
             const collapseButton = screen.getByRole('button', {
                 name: /collapse sidebar/i,
             })
-            await user.click(collapseButton)
+            await act(() => user.click(collapseButton))
 
             expect(mockToggleCollapse).toHaveBeenCalledTimes(1)
         })
@@ -151,7 +151,7 @@ describe('NavigationSidebar', () => {
             const toggleChatButton = screen.getByRole('button', {
                 name: /open chat/i,
             })
-            await user.click(toggleChatButton)
+            await act(() => user.click(toggleChatButton))
 
             expect(mockToggleChat).toHaveBeenCalledTimes(1)
         })

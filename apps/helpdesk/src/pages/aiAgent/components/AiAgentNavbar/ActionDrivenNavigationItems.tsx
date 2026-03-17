@@ -1,8 +1,10 @@
 import React from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import { NavigationSection, NavigationSectionItem } from '@repo/navigation'
 import { NavLink } from 'react-router-dom'
 
-import { Skeleton, Tag } from '@gorgias/axiom'
+import { Box, Dot, Skeleton, Tag } from '@gorgias/axiom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import dotSuccess from 'assets/img/icons/dot-success.svg'
@@ -55,6 +57,8 @@ export const ActionDrivenNavigationItems = ({
     const currentAccount = useAppSelector(getCurrentAccountState)
     const accountDomain = currentAccount.get('domain')
 
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
+
     const { data } = useGetStoresConfigurationForAccount(
         { accountDomain },
         {
@@ -76,6 +80,68 @@ export const ActionDrivenNavigationItems = ({
 
     if (!selectedStore || !navigationItems) {
         return null
+    }
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <>
+                {navigationItems.map((item) => {
+                    return item.items &&
+                        item.items.length > 0 &&
+                        // if the item doesn't have a route, it's a top level item
+                        !item.route ? (
+                        <NavigationSection
+                            key={item.title}
+                            label={item.title}
+                            leadingSlot={item.icon}
+                            id={item.id}
+                        >
+                            {item.items?.map((subItem) => (
+                                <NavigationSectionItem
+                                    key={subItem.route}
+                                    to={subItem.route}
+                                    exact={subItem.exact}
+                                    label={subItem.title}
+                                    trailingSlot={
+                                        subItem.title === 'Chat' ||
+                                        subItem.title === 'Email' ||
+                                        subItem.title === 'SMS' ? (
+                                            <Box
+                                                paddingLeft="xxxs"
+                                                paddingRight="xxxs"
+                                            >
+                                                <Dot
+                                                    color={
+                                                        getChannelStatus?.(
+                                                            subItem.title.toLowerCase() as
+                                                                | 'chat'
+                                                                | 'email',
+                                                        )
+                                                            ? 'green'
+                                                            : 'grey'
+                                                    }
+                                                />
+                                            </Box>
+                                        ) : subItem.title === OPPORTUNITIES ? (
+                                            <Tag color="grey">Beta</Tag>
+                                        ) : null
+                                    }
+                                />
+                            ))}
+                        </NavigationSection>
+                    ) : (
+                        <NavigationSection
+                            to={item.route}
+                            key={item.title}
+                            label={item.title}
+                            leadingSlot={item.icon}
+                            id={item.id}
+                            exact={item.exact}
+                        />
+                    )
+                })}
+            </>
+        )
     }
 
     return (

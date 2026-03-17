@@ -492,6 +492,42 @@ describe('ActionDrivenNavigation', () => {
                 screen.queryByTestId('collapsed-navigation-items'),
             ).not.toBeInTheDocument()
         })
+
+        it('does not render Actions platform when hasAccess is false in expanded state', () => {
+            mockedUseAiAgentAccess.mockReturnValue({
+                hasAccess: false,
+                isLoading: false,
+            })
+            mockUseFlag.mockImplementation(
+                (key) => key === FeatureFlagKey.ActionsInternalPlatform,
+            )
+
+            renderComponent(false)
+
+            expect(
+                screen.queryByText('Actions platform'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('does not render CollapsedActionDrivenNavigationItems when selectedStore is missing and sidebar is collapsed', () => {
+            mockUseActionDrivenNavbarSections.mockReturnValue({
+                selectedStore: undefined,
+                selectedStoreIntegration: undefined,
+                storeIntegrations: [],
+                handleStoreSelect: mockHandleStoreSelect,
+                getStoreActivationStatus: mockGetStoreActivationStatus,
+                getChannelStatus: mockGetChannelStatus,
+                navigationItems: [],
+                expandedSections: [],
+                handleExpandedSectionsChange: mockHandleExpandedSectionsChange,
+            })
+
+            renderComponent(true)
+
+            expect(
+                screen.queryByTestId('collapsed-navigation-items'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('without wayfinding flag', () => {

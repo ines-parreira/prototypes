@@ -1,8 +1,11 @@
 import { useMemo } from 'react'
 
 import type { UserRole } from '@repo/utils'
+import { filterUserByRole } from '@repo/utils'
 
 import type { IconName } from '@gorgias/axiom'
+import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-types'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
@@ -24,13 +27,15 @@ export type WorkflowsNavbarSection = {
         path: string
         label: string
         requiredRole?: UserRole.Admin | UserRole.Agent
-        shouldRender?: boolean
     }[]
 }
 
 export function useWorkflowsNavigation() {
     const { hasAccess: hasAIAgentAccess, isLoading } = useAiAgentAccess()
     const integrations = useStoreIntegrations()
+    const { data: currentUser } = useGetCurrentUser({
+        query: { select: (data: { data: User }) => data.data },
+    })
 
     const shouldRenderAiAgentRelatedItems = useMemo(
         () => hasAIAgentAccess && integrations.length > 0 && !isLoading,
@@ -42,23 +47,28 @@ export function useWorkflowsNavigation() {
 
     const sections = useMemo<WorkflowsNavbarSection[]>(() => {
         const toolsItems = [
-            {
-                id: WorkflowsRoute.Flows,
-                path: workflowsRoutes[WorkflowsRoute.Flows].path,
-                label: workflowsRoutes[WorkflowsRoute.Flows].label,
-                requiredRole:
-                    workflowsRoutes[WorkflowsRoute.Flows].requiredRole,
-                shouldRender: shouldRenderAiAgentRelatedItems,
-            },
-            {
-                id: WorkflowsRoute.OrderManagement,
-                path: workflowsRoutes[WorkflowsRoute.OrderManagement].path,
-                label: workflowsRoutes[WorkflowsRoute.OrderManagement].label,
-                requiredRole:
-                    workflowsRoutes[WorkflowsRoute.OrderManagement]
-                        .requiredRole,
-                shouldRender: shouldRenderAiAgentRelatedItems,
-            },
+            ...(shouldRenderAiAgentRelatedItems
+                ? [
+                      {
+                          id: WorkflowsRoute.Flows,
+                          path: workflowsRoutes[WorkflowsRoute.Flows].path,
+                          label: workflowsRoutes[WorkflowsRoute.Flows].label,
+                          requiredRole:
+                              workflowsRoutes[WorkflowsRoute.Flows]
+                                  .requiredRole,
+                      },
+                      {
+                          id: WorkflowsRoute.OrderManagement,
+                          path: workflowsRoutes[WorkflowsRoute.OrderManagement]
+                              .path,
+                          label: workflowsRoutes[WorkflowsRoute.OrderManagement]
+                              .label,
+                          requiredRole:
+                              workflowsRoutes[WorkflowsRoute.OrderManagement]
+                                  .requiredRole,
+                      },
+                  ]
+                : []),
             {
                 id: WorkflowsRoute.Rules,
                 path: workflowsRoutes[WorkflowsRoute.Rules].path,
@@ -102,7 +112,7 @@ export function useWorkflowsNavigation() {
             },
         ]
 
-        if (isArticleRecEnabledWhileSunset) {
+        if (isArticleRecEnabledWhileSunset && shouldRenderAiAgentRelatedItems) {
             toolsItems.push({
                 id: WorkflowsRoute.ArticleRecommendations,
                 path: workflowsRoutes[WorkflowsRoute.ArticleRecommendations]
@@ -112,7 +122,6 @@ export function useWorkflowsNavigation() {
                 requiredRole:
                     workflowsRoutes[WorkflowsRoute.ArticleRecommendations]
                         .requiredRole,
-                shouldRender: shouldRenderAiAgentRelatedItems,
             })
         }
 
@@ -172,5 +181,16 @@ export function useWorkflowsNavigation() {
         ]
     }, [shouldRenderAiAgentRelatedItems, isArticleRecEnabledWhileSunset])
 
-    return { sections }
+    const filteredSections = useMemo(() => {
+        return sections
+            .filter((section) => filterUserByRole(currentUser, section))
+            .map((section) => ({
+                ...section,
+                items: section.items.filter((item) =>
+                    filterUserByRole(currentUser, item),
+                ),
+            }))
+    }, [sections, currentUser])
+
+    return { sections: filteredSections }
 }

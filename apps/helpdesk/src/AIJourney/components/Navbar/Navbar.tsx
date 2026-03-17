@@ -5,7 +5,11 @@ import {
     useFlag,
     useHelpdeskV2WayfindingMS1Flag,
 } from '@repo/feature-flags'
-import { useSidebar } from '@repo/navigation'
+import {
+    NavigationSection,
+    NavigationSectionGroup,
+    useSidebar,
+} from '@repo/navigation'
 import { matchPath, NavLink, useHistory, useLocation } from 'react-router-dom'
 
 import type { IconName } from '@gorgias/axiom'
@@ -21,6 +25,8 @@ import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors
 import { CollapsedAiJourneyNavigation } from './CollapsedAiJourneyNavigation'
 
 import css from './Navbar.less'
+
+const AI_JOURNEY_STORAGE_KEY = 'ai-journey'
 
 export const AiJourneyNavbar = () => {
     const history = useHistory()
@@ -150,35 +156,30 @@ export const AiJourneyNavbar = () => {
         return isCollapsed && navigationItems.length > 0 ? (
             <CollapsedAiJourneyNavigation navigationItems={navigationItems} />
         ) : (
-            <Navbar activeContent={ActiveContent.AiJourney} title="AI Journey">
-                <Navigation.Root className={css.container}>
-                    <StoreSelector
-                        integrations={storeIntegrations}
-                        selected={selectedStoreIntegration}
-                        onChange={handleStoreChange}
-                        enableDynamicHeight
-                        fullWidth
-                        singleStoreInline
-                        buttonClassName={css.storeSelectorButton}
-                        hideSelectedFromDropdown
-                        applyClassicThemeOverride
-                    />
-                    <div className={css.navigationSections}>
-                        {navigationItems.map((item) => (
-                            <Navigation.SectionItem
-                                key={item.to}
-                                as={NavLink}
-                                icon={item.icon}
-                                to={item.to}
-                                exact={item.exact}
-                                isActive={item.isActive}
-                            >
-                                {item.label}
-                            </Navigation.SectionItem>
-                        ))}
-                    </div>
-                </Navigation.Root>
-            </Navbar>
+            <>
+                <StoreSelector
+                    integrations={storeIntegrations}
+                    selected={selectedStoreIntegration}
+                    onChange={handleStoreChange}
+                    enableDynamicHeight
+                    fullWidth
+                    singleStoreInline
+                    buttonClassName={css.storeSelectorButton}
+                    hideSelectedFromDropdown
+                    applyClassicThemeOverride
+                />
+                <NavigationSectionGroup storageKey={AI_JOURNEY_STORAGE_KEY}>
+                    {navigationItems.map((item) => (
+                        <NavigationSection
+                            key={item.to}
+                            to={item.to}
+                            label={item.label}
+                            leadingSlot={item.icon}
+                            exact={item.exact}
+                        />
+                    ))}
+                </NavigationSectionGroup>
+            </>
         )
     }
 

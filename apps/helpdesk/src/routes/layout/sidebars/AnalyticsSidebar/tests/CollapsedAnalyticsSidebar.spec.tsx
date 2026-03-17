@@ -1,5 +1,5 @@
 import { history } from '@repo/routing'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { StatsNavbarSection } from 'routes/layout/products/analytics'
@@ -79,7 +79,7 @@ describe('CollapsedAnalyticsSidebar', () => {
         renderWithRouter(<CollapsedAnalyticsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
-        await user.click(buttons[0])
+        await act(() => user.click(buttons[0]))
 
         expect(history.push).toHaveBeenCalledWith('/app/stats/live-overview')
     })
@@ -112,7 +112,7 @@ describe('CollapsedAnalyticsSidebar', () => {
         )
 
         const buttons = screen.getAllByRole('radio')
-        await user.click(buttons[0])
+        await act(() => user.click(buttons[0]))
 
         expect(history.push).not.toHaveBeenCalled()
     })
@@ -132,7 +132,7 @@ describe('CollapsedAnalyticsSidebar', () => {
         )
 
         const buttons = screen.getAllByRole('radio')
-        await user.click(buttons[0])
+        await act(() => user.click(buttons[0]))
 
         expect(history.push).not.toHaveBeenCalled()
     })
@@ -141,9 +141,11 @@ describe('CollapsedAnalyticsSidebar', () => {
         const user = userEvent.setup()
         renderWithRouter(<CollapsedAnalyticsSidebar sections={mockSections} />)
 
-        await user.click(screen.getAllByRole('radio')[0])
+        await act(() => user.click(screen.getAllByRole('radio')[0]))
         jest.clearAllMocks()
-        await user.click(screen.getByRole('menuitemradio', { name: 'Agents' }))
+        await act(() =>
+            user.click(screen.getByRole('menuitemradio', { name: 'Agents' })),
+        )
 
         expect(history.push).toHaveBeenCalledWith('/app/stats/live-agents')
     })
@@ -153,7 +155,7 @@ describe('CollapsedAnalyticsSidebar', () => {
         renderWithRouter(<CollapsedAnalyticsSidebar sections={mockSections} />)
 
         const buttons = screen.getAllByRole('radio')
-        await user.click(buttons[2])
+        await act(() => user.click(buttons[2]))
 
         expect(history.push).toHaveBeenCalledWith(
             '/app/stats/ticket-insights/ticket-fields',

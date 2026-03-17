@@ -25,6 +25,17 @@ export type {
 } from './components/Sidebar'
 
 export {
+    NavigationSection,
+    NavigationSectionItem,
+    NavigationSectionGroup,
+} from './components/NavigationSection'
+export type {
+    NavigationSectionProps,
+    NavigationSectionItemProps,
+    NavigationSectionGroupProps,
+} from './components/NavigationSection'
+
+export {
     SidebarContext,
     SidebarProvider,
     useSidebar,

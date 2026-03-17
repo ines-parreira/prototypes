@@ -2,21 +2,12 @@ import { SidebarContext } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router'
 
 import { renderWithRouter } from 'utils/testing'
 
 import { useStatsNavbarConfig } from '../products/analytics'
 import { AnalyticsSidebar } from '../sidebars/AnalyticsSidebar/AnalyticsSidebar'
-
-jest.mock(
-    'domains/reporting/pages/common/components/StatsNavbarView/useStatsNavbarSections',
-    () => ({
-        useStatsNavbarSections: () => ({
-            sections: [],
-            handleNavigationStateChange: jest.fn(),
-        }),
-    }),
-)
 
 jest.mock(
     'routes/layout/sidebars/AnalyticsSidebar/CollapsedAnalyticsSidebar',
@@ -70,11 +61,13 @@ const mockSections = [
 ]
 
 const wrapper = ({ children }: any) => (
-    <SidebarContext.Provider
-        value={{ isCollapsed: false, toggleCollapse: jest.fn() }}
-    >
-        {children}
-    </SidebarContext.Provider>
+    <MemoryRouter>
+        <SidebarContext.Provider
+            value={{ isCollapsed: false, toggleCollapse: jest.fn() }}
+        >
+            {children}
+        </SidebarContext.Provider>
+    </MemoryRouter>
 )
 
 describe('AnalyticsSidebar', () => {
@@ -97,7 +90,6 @@ describe('AnalyticsSidebar', () => {
         })
 
         it('renders upgrade icon only for items with requiresUpgrade', async () => {
-            const user = userEvent.setup()
             renderWithRouter(
                 <SidebarContext.Provider
                     value={{ isCollapsed: false, toggleCollapse: jest.fn() }}
@@ -105,8 +97,6 @@ describe('AnalyticsSidebar', () => {
                     <AnalyticsSidebar />
                 </SidebarContext.Provider>,
             )
-
-            await user.click(screen.getByText('Support Performance'))
 
             expect(
                 screen.getAllByRole('img', { name: 'arrow-circle-up' }),

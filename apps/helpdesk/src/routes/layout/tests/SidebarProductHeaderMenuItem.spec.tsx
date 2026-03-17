@@ -1,5 +1,5 @@
 import { history } from '@repo/routing'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { Button, Menu } from '@gorgias/axiom'
@@ -30,10 +30,10 @@ describe('SidebarProductHeaderMenuItem', () => {
         )
 
         const menuTrigger = screen.getByRole('button', { name: /Open Menu/i })
-        await user.click(menuTrigger)
+        await act(() => user.click(menuTrigger))
 
         const menuItem = screen.getByText('Inbox')
-        await user.click(menuItem)
+        await act(() => user.click(menuItem))
 
         expect(history.push).toHaveBeenCalledWith(
             productConfig[Product.Inbox].defaultPath,
@@ -53,7 +53,8 @@ describe('SidebarProductHeaderMenuItem', () => {
         const menuTrigger = screen.getByRole('button', {
             name: /Open Menu/i,
         })
-        await user.click(menuTrigger)
+
+        await act(() => user.click(menuTrigger))
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
         expect(screen.getByText('Upgrade')).toBeInTheDocument()
@@ -72,7 +73,8 @@ describe('SidebarProductHeaderMenuItem', () => {
         const menuTrigger = screen.getByRole('button', {
             name: /Open Menu/i,
         })
-        await user.click(menuTrigger)
+
+        await act(() => user.click(menuTrigger))
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
         expect(screen.queryByText('Upgrade')).not.toBeInTheDocument()

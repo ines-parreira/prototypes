@@ -3,10 +3,11 @@ import { useMemo } from 'react'
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import type { UserRole } from '@repo/utils'
-import { UserRole as UserRoleEnum } from '@repo/utils'
+import { filterUserByRole, UserRole } from '@repo/utils'
 
 import type { IconName } from '@gorgias/axiom'
+import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
+import type { User } from '@gorgias/helpdesk-types'
 
 import { IntegrationType } from 'models/integration/types'
 import {
@@ -18,12 +19,12 @@ export type SettingsNavbarSection = {
     id: string
     label: string
     icon?: IconName
-    requiredRole?: UserRole.Admin | UserRole.Agent
+    requiredRole?: UserRole
     items: {
         id: string
         to: string
         text: string
-        requiredRole?: UserRole.Admin | UserRole.Agent
+        requiredRole?: UserRole
         exact?: boolean
         onClick?: () => void
     }[]
@@ -32,20 +33,25 @@ export type SettingsNavbarSection = {
 export function useSettingsNavigation() {
     const isAgentUnavailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
     const isHistoricalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
+    const { data: currentUser } = useGetCurrentUser({
+        query: {
+            select: (data: { data: User }) => data.data,
+        },
+    })
 
-    const sections = useMemo<SettingsNavbarSection[]>(() => {
+    const sectionsWithoutRoleFilters = useMemo<SettingsNavbarSection[]>(() => {
         const accountItems: SettingsNavbarSection['items'] = [
             {
                 id: 'users',
                 to: 'users',
                 text: 'Users',
-                requiredRole: UserRoleEnum.Admin,
+                requiredRole: UserRole.Admin,
             },
             {
                 id: 'teams',
                 to: 'teams',
                 text: 'Teams',
-                requiredRole: UserRoleEnum.Admin,
+                requiredRole: UserRole.Admin,
             },
         ]
 
@@ -54,7 +60,7 @@ export function useSettingsNavigation() {
                 id: 'agent-statuses',
                 to: 'agent-statuses',
                 text: 'Agent unavailability',
-                requiredRole: UserRoleEnum.Admin,
+                requiredRole: UserRole.Admin,
             })
         }
 
@@ -63,13 +69,13 @@ export function useSettingsNavigation() {
                 id: 'access',
                 to: 'access',
                 text: 'Access management',
-                requiredRole: UserRoleEnum.Admin,
+                requiredRole: UserRole.Admin,
             },
             {
                 id: 'billing',
                 to: 'billing',
                 text: 'Billing & usage',
-                requiredRole: UserRoleEnum.Admin,
+                requiredRole: UserRole.Admin,
                 onClick: () =>
                     logEvent(
                         SegmentEvent.BillingAndUsageNavigationSideNavClicked,
@@ -79,20 +85,20 @@ export function useSettingsNavigation() {
                 id: 'http-integration',
                 to: `integrations/${IntegrationType.Http}`,
                 text: 'HTTP integration',
-                requiredRole: UserRoleEnum.Admin,
+                requiredRole: UserRole.Admin,
                 exact: true,
             },
             {
                 id: 'api',
                 to: 'api',
                 text: 'REST API',
-                requiredRole: UserRoleEnum.Admin,
+                requiredRole: UserRole.Admin,
             },
             {
                 id: 'audit',
                 to: 'audit',
                 text: 'Audit logs',
-                requiredRole: UserRoleEnum.Admin,
+                requiredRole: UserRole.Admin,
             },
         )
 
@@ -101,7 +107,7 @@ export function useSettingsNavigation() {
                 id: 'historical-imports',
                 to: 'historical-imports',
                 text: 'Imports',
-                requiredRole: UserRoleEnum.Admin,
+                requiredRole: UserRole.Admin,
             })
         } else {
             accountItems.push(
@@ -109,13 +115,13 @@ export function useSettingsNavigation() {
                     id: 'import-email',
                     to: 'import-email',
                     text: 'Email Import',
-                    requiredRole: UserRoleEnum.Admin,
+                    requiredRole: UserRole.Admin,
                 },
                 {
                     id: 'import-zendesk',
                     to: 'import-zendesk',
                     text: 'Zendesk import',
-                    requiredRole: UserRoleEnum.Admin,
+                    requiredRole: UserRole.Admin,
                 },
             )
         }
@@ -123,7 +129,7 @@ export function useSettingsNavigation() {
         accountItems.push({
             id: 'password-2fa',
             to: 'password-2fa',
-            text: 'Password & 2FA',
+            text: currentUser?.has_password ? '2FA' : 'Password & 2FA',
         })
 
         return [
@@ -138,14 +144,14 @@ export function useSettingsNavigation() {
                         id: 'installed-apps',
                         to: 'integrations/mine',
                         text: 'Installed apps',
-                        requiredRole: UserRoleEnum.Admin,
+                        requiredRole: UserRole.Admin,
                         exact: true,
                     },
                     {
                         id: 'app-store',
                         to: 'integrations',
                         text: 'App store',
-                        requiredRole: UserRoleEnum.Admin,
+                        requiredRole: UserRole.Admin,
                         exact: true,
                     },
                 ],
@@ -161,13 +167,13 @@ export function useSettingsNavigation() {
                         id: 'store',
                         to: 'store-management',
                         text: 'Store',
-                        requiredRole: UserRoleEnum.Admin,
+                        requiredRole: UserRole.Admin,
                     },
                     {
                         id: 'business-hours',
                         to: 'business-hours',
                         text: 'Business hours',
-                        requiredRole: UserRoleEnum.Admin,
+                        requiredRole: UserRole.Admin,
                     },
                 ],
             },
@@ -185,37 +191,37 @@ export function useSettingsNavigation() {
                         id: 'phone-numbers',
                         to: 'phone-numbers',
                         text: 'Phone numbers',
-                        requiredRole: UserRoleEnum.Admin,
+                        requiredRole: UserRole.Admin,
                     },
                     {
                         id: 'email',
                         to: `channels/${IntegrationType.Email}`,
                         text: 'Email',
-                        requiredRole: UserRoleEnum.Admin,
+                        requiredRole: UserRole.Admin,
                     },
                     {
                         id: 'voice',
                         to: `channels/${IntegrationType.Phone}`,
                         text: 'Voice',
-                        requiredRole: UserRoleEnum.Admin,
+                        requiredRole: UserRole.Admin,
                     },
                     {
                         id: 'sms',
                         to: `channels/${IntegrationType.Sms}`,
                         text: 'SMS',
-                        requiredRole: UserRoleEnum.Admin,
+                        requiredRole: UserRole.Admin,
                     },
                     {
                         id: 'chat',
                         to: `channels/${IntegrationType.GorgiasChat}`,
                         text: 'Chat',
-                        requiredRole: UserRoleEnum.Admin,
+                        requiredRole: UserRole.Admin,
                     },
                     {
                         id: 'contact-form',
                         to: 'contact-form',
                         text: 'Contact form',
-                        requiredRole: UserRoleEnum.Admin,
+                        requiredRole: UserRole.Admin,
                     },
                 ],
             },
@@ -228,7 +234,20 @@ export function useSettingsNavigation() {
                 items: accountItems,
             },
         ]
-    }, [isAgentUnavailabilityEnabled, isHistoricalImportsEnabled])
+    }, [isAgentUnavailabilityEnabled, isHistoricalImportsEnabled, currentUser])
+
+    const sections = useMemo(() => {
+        return sectionsWithoutRoleFilters
+            .filter((section) => filterUserByRole(currentUser, section))
+            .map((section) => {
+                return {
+                    ...section,
+                    items: section.items.filter((item) =>
+                        filterUserByRole(currentUser, item),
+                    ),
+                }
+            })
+    }, [sectionsWithoutRoleFilters, currentUser])
 
     return { sections }
 }

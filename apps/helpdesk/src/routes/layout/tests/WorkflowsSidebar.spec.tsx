@@ -2,6 +2,10 @@ import { SidebarContext } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
@@ -41,6 +45,12 @@ const mockUseIsArticleRecommendationsEnabledWhileSunset = assumeMock(
     useIsArticleRecommendationsEnabledWhileSunset,
 )
 
+const mockCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
+    HttpResponse.json({ ...data, role: { name: 'admin' } }),
+)
+
+const server = setupServer()
+
 describe('WorkflowsSidebar', () => {
     const defaultState = {
         currentUser: fromJS({
@@ -66,7 +76,12 @@ describe('WorkflowsSidebar', () => {
         )
     }
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
+        server.use(mockCurrentUser.handler)
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
@@ -80,12 +95,17 @@ describe('WorkflowsSidebar', () => {
     })
 
     afterEach(() => {
+        server.resetHandlers()
         jest.clearAllMocks()
     })
 
-    it('should render Tools section with workflow items', () => {
+    afterAll(() => {
+        server.close()
+    })
+
+    it('should render Tools section with workflow items', async () => {
         renderWorkflowsSidebar()
-        expect(screen.getByText('Flows')).toBeInTheDocument()
+        expect(await screen.findByText('Flows')).toBeInTheDocument()
         expect(screen.getByText('Order Management')).toBeInTheDocument()
         expect(screen.getByText('Rules')).toBeInTheDocument()
         expect(screen.getByText('Macros')).toBeInTheDocument()
@@ -95,15 +115,15 @@ describe('WorkflowsSidebar', () => {
         expect(screen.getByText('SLAs')).toBeInTheDocument()
     })
 
-    it('should render Fields and Tags section', () => {
+    it('should render Fields and Tags section', async () => {
         renderWorkflowsSidebar()
-        expect(screen.getByText('Ticket Fields')).toBeInTheDocument()
+        expect(await screen.findByText('Ticket Fields')).toBeInTheDocument()
         expect(screen.getByText('Customer Fields')).toBeInTheDocument()
         expect(screen.getByText('Field Conditions')).toBeInTheDocument()
         expect(screen.getByText('Tags')).toBeInTheDocument()
     })
 
-    it('should render AI Agent related items when hasAccess is true and integrations exist', () => {
+    it('should render AI Agent related items when hasAccess is true and integrations exist', async () => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
@@ -114,7 +134,7 @@ describe('WorkflowsSidebar', () => {
 
         renderWorkflowsSidebar()
 
-        expect(screen.getByText('Flows')).toBeInTheDocument()
+        expect(await screen.findByText('Flows')).toBeInTheDocument()
         expect(screen.getByText('Order Management')).toBeInTheDocument()
     })
 
@@ -161,7 +181,7 @@ describe('WorkflowsSidebar', () => {
         expect(screen.queryByText('Order Management')).not.toBeInTheDocument()
     })
 
-    it('should render Article Recommendations when enabled in settings and AI agent access is available', () => {
+    it('should render Article Recommendations when enabled in settings and AI agent access is available', async () => {
         mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
             enabledInSettings: true,
         } as any)
@@ -175,7 +195,9 @@ describe('WorkflowsSidebar', () => {
 
         renderWorkflowsSidebar()
 
-        expect(screen.getByText('Article Recommendations')).toBeInTheDocument()
+        expect(
+            await screen.findByText('Article Recommendations'),
+        ).toBeInTheDocument()
     })
 
     it('should not render Article Recommendations when not enabled in settings', () => {

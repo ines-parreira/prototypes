@@ -1,63 +1,67 @@
-import { useCallback } from 'react'
+import { logEvent, SegmentEvent } from '@repo/logging'
+import {
+    NavigationSection,
+    NavigationSectionGroup,
+    NavigationSectionItem,
+    useSidebar,
+} from '@repo/navigation'
 
-import { useLocalStorage } from '@repo/hooks'
-import { useSidebar } from '@repo/navigation'
+import { useGetAccount } from '@gorgias/helpdesk-queries'
 
-import type { AccordionValues } from 'components/Accordion/utils/types'
-import { Navigation } from 'components/Navigation/Navigation'
-import Item from 'pages/settings/common/SettingsNavbar/Item'
-import Section from 'pages/settings/common/SettingsNavbar/Section'
+import {
+    SETTINGS_DEFAULT_PATH,
+    SettingsSection,
+} from 'routes/layout/products/settings'
 import { CollapsedSettingsSidebar } from 'routes/layout/sidebars/SettingsSidebar/CollapsedSettingsSidebar'
 import { useSettingsNavigation } from 'routes/layout/sidebars/SettingsSidebar/useSettingsNavigation'
+
+const SETTINGS_STORAGE_KEY = 'settings'
 
 export function SettingsSidebar() {
     const { isCollapsed } = useSidebar()
     const { sections } = useSettingsNavigation()
-
-    const [expandedCategories, setExpandedCategories] =
-        useLocalStorage<AccordionValues>(
-            'navbar-settings-expanded-categories',
-            sections.map((section) => section.label),
-        )
-
-    const onCategoryChange = useCallback(
-        (values: AccordionValues) => {
-            setExpandedCategories(values)
+    const { data: account } = useGetAccount({
+        query: {
+            select: (data) => data?.data,
         },
-        [setExpandedCategories],
-    )
+    })
 
     if (isCollapsed) {
         return <CollapsedSettingsSidebar sections={sections} />
     }
 
     return (
-        <Navigation.Root
-            value={expandedCategories}
-            onValueChange={onCategoryChange}
+        <NavigationSectionGroup
+            storageKey={SETTINGS_STORAGE_KEY}
+            defaultExpandedKeys={Object.values(SettingsSection)}
         >
             {sections.map((section) => (
-                <Section
+                <NavigationSection
                     key={section.id}
                     id={section.id}
-                    value={section.label}
-                    icon={section.icon}
-                    requiredRole={section.requiredRole}
+                    label={section.label}
+                    leadingSlot={section.icon}
                 >
-                    <Navigation.SectionContent>
-                        {section.items.map((item) => (
-                            <Item
-                                key={item.id}
-                                to={item.to}
-                                text={item.text}
-                                requiredRole={item.requiredRole}
-                                exact={item.exact}
-                                onClick={item.onClick}
-                            />
-                        ))}
-                    </Navigation.SectionContent>
-                </Section>
+                    {section.items.map((item) => (
+                        <NavigationSectionItem
+                            key={item.id}
+                            to={`${SETTINGS_DEFAULT_PATH}/${item.to}`}
+                            label={item.text}
+                            exact={item.exact}
+                            onClick={() => {
+                                logEvent(
+                                    SegmentEvent.SettingsNavigationClicked,
+                                    {
+                                        title: item.text,
+                                        account_domain: account?.domain,
+                                    },
+                                )
+                                item.onClick?.()
+                            }}
+                        />
+                    ))}
+                </NavigationSection>
             ))}
-        </Navigation.Root>
+        </NavigationSectionGroup>
     )
 }

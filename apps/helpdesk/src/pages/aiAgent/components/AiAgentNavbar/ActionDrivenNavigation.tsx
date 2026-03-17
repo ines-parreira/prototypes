@@ -3,13 +3,18 @@ import {
     useFlag,
     useHelpdeskV2WayfindingMS1Flag,
 } from '@repo/feature-flags'
-import { useSidebar } from '@repo/navigation'
+import {
+    NavigationSection,
+    NavigationSectionGroup,
+    useSidebar,
+} from '@repo/navigation'
 import { NavLink } from 'react-router-dom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import {
+    AIAgentNavigationSection,
     aiAgentRoutes,
     getAiAgentBasePath,
 } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -26,6 +31,8 @@ import { useActionDrivenNavbarSections } from './useActionDrivenNavbarSections'
 import { getCollapsedSectionName } from './utils'
 
 import css from './AiAgentNavbar.less'
+
+const STORAGE_KEY = 'ai-agent-navigation'
 
 export const ActionDrivenNavigation = () => {
     const { isCollapsed: isSidebarCollapsed } = useSidebar()
@@ -91,6 +98,68 @@ export const ActionDrivenNavigation = () => {
             <CollapsedActionDrivenNavigationItems
                 navigationItems={navigationItems}
             />
+        )
+    }
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <NavigationSectionGroup
+                storageKey={STORAGE_KEY}
+                defaultExpandedKeys={Object.values(AIAgentNavigationSection)}
+            >
+                {hasAccess && isActionsInternalPlatformEnabled && (
+                    <NavigationSection
+                        to={aiAgentRoutes.actionsPlatform}
+                        id={AIAgentNavigationSection.ActionsPlatform}
+                        label="Actions platform"
+                    />
+                )}
+
+                <div className={css.storeSelector}>
+                    <StoreSelector
+                        key={String(isActivationDataReady)}
+                        integrations={storeIntegrations}
+                        selected={selectedStoreIntegration}
+                        onChange={(id) => {
+                            const integration = storeIntegrations.find(
+                                (i) => i.id === id,
+                            )
+                            if (!integration) return
+                            const shopName =
+                                getShopNameFromStoreIntegration(integration)
+                            handleStoreSelect(shopName)
+                        }}
+                        shouldShowActiveStatus={(integration) =>
+                            getStoreActivationStatus(
+                                getShopNameFromStoreIntegration(integration),
+                            )
+                        }
+                        enableDynamicHeight
+                        fullWidth
+                        singleStoreInline
+                        buttonClassName={css.storeSelectorButton}
+                        applyClassicThemeOverride
+                        withSearch={storeIntegrations.length > 10}
+                    />
+                </div>
+
+                {shouldRenderCollapsedItem && (
+                    <NavigationSection
+                        to={getAiAgentBasePath(selectedStore!)}
+                        id={AIAgentNavigationSection.CollapsedSection}
+                        exact
+                        label={collapsedSectionName}
+                    />
+                )}
+
+                {shouldRenderAIAgentItems && (
+                    <ActionDrivenNavigationItems
+                        navigationItems={navigationItems}
+                        selectedStore={selectedStore}
+                        getChannelStatus={getChannelStatus}
+                    />
+                )}
+            </NavigationSectionGroup>
         )
     }
 

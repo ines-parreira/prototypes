@@ -308,7 +308,7 @@ export function useStatsNavbarConfig() {
                                         route: STATS_ROUTES.ANALYTICS_OVERVIEW,
                                         label: PAGE_TITLE_OVERVIEW,
                                         trailingSlot: (
-                                            <Tag color="purple">Beta</Tag>
+                                            <Tag color="grey">Beta</Tag>
                                         ),
                                     },
                                     {
@@ -316,7 +316,7 @@ export function useStatsNavbarConfig() {
                                         route: STATS_ROUTES.ANALYTICS_AI_AGENT,
                                         label: PAGE_TITLE_AI_AGENT,
                                         trailingSlot: (
-                                            <Tag color="purple">Beta</Tag>
+                                            <Tag color="grey">Beta</Tag>
                                         ),
                                     },
                                 ]

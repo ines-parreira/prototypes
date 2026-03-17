@@ -4,6 +4,13 @@ import { SidebarContext } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
+
+import {
+    mockGetAccountHandler,
+    mockGetCurrentUserHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
@@ -36,6 +43,18 @@ const mockUseCustomAgentUnavailableStatusesFlag = assumeMock(
 
 const mockUseFlag = assumeMock(useFlag)
 
+const mockCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
+    HttpResponse.json({
+        ...data,
+        role: { name: 'admin' },
+        has_password: false,
+    }),
+)
+
+const mockAccount = mockGetAccountHandler()
+
+const server = setupServer()
+
 describe('SettingsSidebar', () => {
     const defaultState = {
         currentUser: fromJS({
@@ -61,30 +80,40 @@ describe('SettingsSidebar', () => {
         )
     }
 
+    beforeAll(() => {
+        server.listen({ onUnhandledRequest: 'error' })
+    })
+
     beforeEach(() => {
+        server.use(mockCurrentUser.handler, mockAccount.handler)
         mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(false)
     })
 
     afterEach(() => {
+        server.resetHandlers()
         jest.clearAllMocks()
     })
 
-    it('should render Apps section with items', () => {
+    afterAll(() => {
+        server.close()
+    })
+
+    it('should render Apps section with items', async () => {
         renderSettingsSidebar()
-        expect(screen.getByText('Installed apps')).toBeInTheDocument()
+        expect(await screen.findByText('Installed apps')).toBeInTheDocument()
         expect(screen.getByText('App store')).toBeInTheDocument()
     })
 
-    it('should render Workspace section with items', () => {
+    it('should render Workspace section with items', async () => {
         renderSettingsSidebar()
-        expect(screen.getByText('Store')).toBeInTheDocument()
+        expect(await screen.findByText('Store')).toBeInTheDocument()
         expect(screen.getByText('Business hours')).toBeInTheDocument()
     })
 
-    it('should render Channels section with items', () => {
+    it('should render Channels section with items', async () => {
         renderSettingsSidebar()
+        expect(await screen.findByText('Phone numbers')).toBeInTheDocument()
         expect(screen.getByText('Help Center')).toBeInTheDocument()
-        expect(screen.getByText('Phone numbers')).toBeInTheDocument()
         expect(screen.getByText('Email')).toBeInTheDocument()
         expect(screen.getByText('Voice')).toBeInTheDocument()
         expect(screen.getByText('SMS')).toBeInTheDocument()
@@ -92,9 +121,9 @@ describe('SettingsSidebar', () => {
         expect(screen.getByText('Contact form')).toBeInTheDocument()
     })
 
-    it('should render Account section with items', () => {
+    it('should render Account section with items', async () => {
         renderSettingsSidebar()
-        expect(screen.getByText('Users')).toBeInTheDocument()
+        expect(await screen.findByText('Users')).toBeInTheDocument()
         expect(screen.getByText('Teams')).toBeInTheDocument()
         expect(screen.getByText('Access management')).toBeInTheDocument()
         expect(screen.getByText('Billing & usage')).toBeInTheDocument()
@@ -104,23 +133,26 @@ describe('SettingsSidebar', () => {
         expect(screen.getByText('Password & 2FA')).toBeInTheDocument()
     })
 
-    it('should render Agent unavailability when feature flag is enabled', () => {
+    it('should render Agent unavailability when feature flag is enabled', async () => {
         mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(true)
 
         renderSettingsSidebar()
-        expect(screen.getByText('Agent unavailability')).toBeInTheDocument()
+        expect(
+            await screen.findByText('Agent unavailability'),
+        ).toBeInTheDocument()
     })
 
-    it('should not render Agent unavailability when feature flag is disabled', () => {
+    it('should not render Agent unavailability when feature flag is disabled', async () => {
         mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(false)
 
         renderSettingsSidebar()
+        expect(await screen.findByText('Installed apps')).toBeInTheDocument()
         expect(
             screen.queryByText('Agent unavailability'),
         ).not.toBeInTheDocument()
     })
 
-    it('should render Imports when historical imports flag is enabled', () => {
+    it('should render Imports when historical imports flag is enabled', async () => {
         mockUseFlag.mockImplementation((key) => {
             if (key === FeatureFlagKey.HistoricalImports) {
                 return true
@@ -129,16 +161,16 @@ describe('SettingsSidebar', () => {
         })
 
         renderSettingsSidebar()
-        expect(screen.getByText('Imports')).toBeInTheDocument()
+        expect(await screen.findByText('Imports')).toBeInTheDocument()
         expect(screen.queryByText('Email Import')).not.toBeInTheDocument()
         expect(screen.queryByText('Zendesk import')).not.toBeInTheDocument()
     })
 
-    it('should render Email Import and Zendesk import when historical imports flag is disabled', () => {
+    it('should render Email Import and Zendesk import when historical imports flag is disabled', async () => {
         mockUseFlag.mockReturnValue(false)
 
         renderSettingsSidebar()
-        expect(screen.getByText('Email Import')).toBeInTheDocument()
+        expect(await screen.findByText('Email Import')).toBeInTheDocument()
         expect(screen.getByText('Zendesk import')).toBeInTheDocument()
         expect(screen.queryByText('Imports')).not.toBeInTheDocument()
     })

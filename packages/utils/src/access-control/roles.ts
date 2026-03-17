@@ -57,3 +57,16 @@ export const isAdmin = <T extends Pick<User, 'role'>>(user: T): boolean => {
  * Including this alias for clarity, since `UserRole.Agent` is actually team lead
  */
 export const isTeamLead = hasAgentPrivileges
+
+export const filterUserByRole = <T extends { requiredRole?: UserRole }>(
+    currentUser: Pick<User, 'role'> | undefined,
+    item: T,
+): boolean => {
+    if (!item.requiredRole) {
+        return true
+    }
+    if (!currentUser) {
+        return false
+    }
+    return hasRole(currentUser, item.requiredRole)
+}
