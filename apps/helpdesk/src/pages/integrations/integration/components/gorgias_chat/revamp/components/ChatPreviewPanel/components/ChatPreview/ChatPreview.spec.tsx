@@ -208,40 +208,4 @@ describe('ChatPreview', () => {
             )
         })
     })
-
-    describe('displayPage imperative handle', () => {
-        it('should call GorgiasChat.open and setPage on the iframe contentWindow', () => {
-            mockUseGetInstallationSnippet.mockReturnValue({
-                data: { snippet: SNIPPET_WITH_SCRIPT },
-                isLoading: false,
-                isError: false,
-            })
-
-            const { ref } = renderComponent()
-
-            const mockOpen = jest.fn()
-            const mockSetPage = jest.fn()
-
-            const iframe = screen.getByTitle(
-                'helpdesk-chat-preview-iframe',
-            ) as HTMLIFrameElement
-
-            Object.defineProperty(iframe, 'contentWindow', {
-                value: {
-                    GorgiasChat: {
-                        open: mockOpen,
-                        setPage: mockSetPage,
-                    },
-                },
-                writable: true,
-            })
-
-            act(() => {
-                ref.current?.displayPage('homepage')
-            })
-
-            expect(mockOpen).toHaveBeenCalled()
-            expect(mockSetPage).toHaveBeenCalledWith('homepage')
-        })
-    })
 })

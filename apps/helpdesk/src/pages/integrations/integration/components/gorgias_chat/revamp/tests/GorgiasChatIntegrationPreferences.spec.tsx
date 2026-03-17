@@ -34,10 +34,9 @@ jest.mock(
     }),
 )
 
-jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useChatPreviewPanel',
-    () => ({ useChatPreviewPanel: jest.fn() }),
-)
+jest.mock('../components/ChatPreviewPanel/hooks/useChatPreviewPanel', () => ({
+    useChatPreviewPanel: jest.fn(),
+}))
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatAvailabilityCard/ChatAvailabilityCard',

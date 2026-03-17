@@ -22,7 +22,6 @@ import { ChatShopperExperienceCard } from 'pages/integrations/integration/compon
 import { ChatVisibilityCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatVisibilityCard/ChatVisibilityCard'
 import { ChatWaitTimeCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatWaitTimeCard/ChatWaitTimeCard'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout'
-import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useChatPreviewPanel'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getSurveysSettingsJS } from 'state/currentAccount/selectors'
 import { AccountSettingType } from 'state/currentAccount/types'
@@ -95,8 +94,6 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
     loading = fromJS({}),
     isAiAgentEnabled = false,
 }: Props) => {
-    useChatPreviewPanel()
-
     const dispatch = useAppDispatch()
     const surveysSettings = useAppSelector(getSurveysSettingsJS)
     const sendCsatGlobal = surveysSettings?.data?.send_survey_for_chat ?? false

@@ -1,5 +1,9 @@
 import { Middleware } from 'redux'
 
+import type {
+    GorgiasChatPosition,
+    GorgiasChatPreviewApplicationSettings,
+} from 'models/integration/types'
 import { Page } from 'services/statusPageManager/types'
 import { Account } from 'state/currentAccount/types'
 import { GorgiasInitialState, InitialReactQueryState } from 'types'
@@ -56,6 +60,10 @@ declare global {
                 flowId: string
             }) => void
             updateSSPTexts(param: Record<string, string>): void
+            setPosition(position: GorgiasChatPosition): void
+            updateSettings?: (
+                settings: GorgiasChatPreviewApplicationSettings,
+            ) => void
         }
         GorgiasCanduRouter?: {
             route: (url: string) => void

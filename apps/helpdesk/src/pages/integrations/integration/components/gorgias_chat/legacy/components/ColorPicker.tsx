@@ -35,6 +35,7 @@ export type ColorPickerProps = {
     value?: string | null
     defaultValue?: string
     onChange: (value: string) => void
+    onFocus?: () => void
     popupContainer?: HTMLElement | RefObject<HTMLElement> | string
     label?: string
 }
@@ -44,6 +45,7 @@ export function ColorPicker({
     value,
     defaultValue = DEFAULT_COLOR,
     onChange,
+    onFocus,
     label,
 }: ColorPickerProps) {
     const [isOpen, setIsOpen] = useState(false)
@@ -94,21 +96,23 @@ export function ColorPicker({
         : 'color-picker'
 
     const colorTrigger = (
-        <Button
-            ref={refs.setReference}
-            variant="secondary"
-            slot="button"
-            aria-label={ariaLabel}
-            icon={
-                <div
-                    className={css.colorSwatch}
-                    style={{
-                        backgroundColor: colorValue || '#FFFFFF',
-                    }}
-                />
-            }
-            {...getReferenceProps()}
-        />
+        <span onFocus={onFocus}>
+            <Button
+                ref={refs.setReference}
+                variant="secondary"
+                slot="button"
+                aria-label={ariaLabel}
+                icon={
+                    <div
+                        className={css.colorSwatch}
+                        style={{
+                            backgroundColor: colorValue || '#FFFFFF',
+                        }}
+                    />
+                }
+                {...getReferenceProps()}
+            />
+        </span>
     )
 
     return (
@@ -118,6 +122,7 @@ export function ColorPicker({
                 value={value ?? ''}
                 onChange={handleInputChange}
                 onBlur={handleBlur}
+                onFocus={onFocus}
                 placeholder="#000000"
                 size="md"
                 leadingSlot={colorTrigger}

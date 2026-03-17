@@ -1,13 +1,10 @@
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { SegmentEvent } from '@repo/logging'
 
-import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 import useIsIntersectingWithBrowserViewport from 'pages/common/hooks/useIsIntersectingWithBrowserViewport'
 import { StepperProgressHeader } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatCreationWizard/revamp/components/StepperProgressHeader'
-import { ChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/ChatPreviewPanel'
 
 import useLogWizardEvent from '../hooks/useLogWizardEvent'
 import { STEP_LABELS } from './constants'
@@ -21,9 +18,6 @@ type Props = {
 
 export const GorgiasChatCreationWizardStep = ({ children, footer }: Props) => {
     const logWizardEvent = useLogWizardEvent()
-    const showScreenRevamp = useFlag(FeatureFlagKey.ChatSettingsScreensRevamp)
-    const { setCollapsibleColumnChildren, setIsCollapsibleColumnOpen } =
-        useCollapsibleColumn()
 
     const contentRef = useRef<HTMLDivElement>(null)
     const contentIsIntersecting =
@@ -32,22 +26,6 @@ export const GorgiasChatCreationWizardStep = ({ children, footer }: Props) => {
     useEffectOnce(() => {
         logWizardEvent(SegmentEvent.ChatWidgetWizardStepStarted)
     })
-
-    useEffect(() => {
-        setIsCollapsibleColumnOpen(showScreenRevamp)
-        if (showScreenRevamp) {
-            setCollapsibleColumnChildren(<ChatPreviewPanel />)
-        }
-
-        return () => {
-            setIsCollapsibleColumnOpen(false)
-            setCollapsibleColumnChildren(null)
-        }
-    }, [
-        showScreenRevamp,
-        setCollapsibleColumnChildren,
-        setIsCollapsibleColumnOpen,
-    ])
 
     return (
         <div className={css.wizard}>

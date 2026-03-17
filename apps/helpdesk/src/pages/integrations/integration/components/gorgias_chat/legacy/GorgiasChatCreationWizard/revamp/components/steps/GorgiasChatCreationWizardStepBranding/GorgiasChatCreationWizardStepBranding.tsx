@@ -19,15 +19,16 @@ import {
     IntegrationType,
 } from 'models/integration/types'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/ColorPicker'
 import { LauncherPositionPicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LauncherPositionPicker'
-import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload'
+import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 
-import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
-import useLogWizardEvent from '../../hooks/useLogWizardEvent'
-import { GorgiasChatCreationWizardFooter } from '../GorgiasChatCreationWizardFooter'
-import SaveChangesPrompt from '../SaveChangesPrompt'
+import { GorgiasChatCreationWizardStep } from '../../../GorgiasChatCreationWizardStep'
+import useLogWizardEvent from '../../../hooks/useLogWizardEvent'
+import { GorgiasChatCreationWizardFooter } from '../../GorgiasChatCreationWizardFooter'
+import SaveChangesPrompt from '../../SaveChangesPrompt'
+import { BrandColorPicker } from './BrandColorPicker'
+import { BrandLogoUploader } from './BrandLogoUploader'
 
 import css from './GorgiasChatCreationWizardStepBranding.less'
 
@@ -47,6 +48,8 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
     integration,
     isSubmitting,
 }) => {
+    const { updateMainColor, updatePosition, updateHeaderPictureUrl } =
+        useGorgiasChatCreationWizardContext()
     const logWizardEvent = useLogWizardEvent()
 
     const dispatch = useAppDispatch()
@@ -84,6 +87,21 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
         currentMainColor === undefined &&
         currentHeaderPictureUrl === undefined &&
         currentPosition === undefined
+
+    const handleColorChange = (color: string) => {
+        setCurrentMainColor(color)
+        updateMainColor(color)
+    }
+
+    const handlePositionChange = (position: GorgiasChatPosition) => {
+        updatePosition(position)
+        setCurrentPosition(position)
+    }
+
+    const headerPictureUrlChange = (imageUrl: string | undefined) => {
+        setCurrentHeaderPictureUrl(imageUrl)
+        updateHeaderPictureUrl(imageUrl)
+    }
 
     const onSave = (shouldGoToNextStep = false, isContinueLater = false) => {
         const form: SubmitForm = {
@@ -170,43 +188,29 @@ const GorgiasChatCreationWizardStepBranding: React.FC<Props> = ({
                                 feel
                             </Text>
                         </div>
-                        <div className={css.section}>
-                            <Text variant="bold" size="md">
-                                Brand color
-                            </Text>
-                            <Text size="sm" className={css.caption}>
-                                Make your chat fit in with your brand color
-                            </Text>
-                            <ColorPicker
-                                className={css.colorPicker}
-                                value={mainColor}
-                                defaultValue={
-                                    integration.getIn(
-                                        ['decoration', 'main_color'],
-                                        GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
-                                    ) as string
-                                }
-                                onChange={setCurrentMainColor}
-                                label="Main color"
-                            />
-                        </div>
-                        <div className={css.section}>
-                            <Text variant="bold" size="md">
-                                Home page logo
-                            </Text>
-                            <Text size="sm" className={css.caption}>
-                                Add a PNG, JPG or GIF horizontal logo with a
-                                transparent background.
-                            </Text>
-                            <LogoUpload
-                                url={headerPictureUrl}
-                                onChange={setCurrentHeaderPictureUrl}
-                            />
-                        </div>
+                        <BrandColorPicker
+                            mainColor={mainColor}
+                            defaultMainColor={
+                                integration.getIn(
+                                    ['decoration', 'main_color'],
+                                    GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
+                                ) as string
+                            }
+                            onChange={handleColorChange}
+                            onFocus={() => handleColorChange(mainColor)}
+                        />
+                        <BrandLogoUploader
+                            headerPictureUrl={headerPictureUrl}
+                            onChange={headerPictureUrlChange}
+                            onFocus={() =>
+                                headerPictureUrlChange(headerPictureUrl)
+                            }
+                        />
                         <div className={css.section}>
                             <LauncherPositionPicker
                                 value={position}
-                                onChange={setCurrentPosition}
+                                onChange={handlePositionChange}
+                                onFocus={() => handlePositionChange(position)}
                             />
                         </div>
                     </div>

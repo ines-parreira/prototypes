@@ -19,7 +19,7 @@ import {
 import Wizard from 'pages/common/components/wizard/Wizard'
 import * as actions from 'state/integrations/actions'
 
-import GorgiasChatCreationWizardStepBasics from '../GorgiasChatCreationWizardStepBasics'
+import GorgiasChatCreationWizardStepBasics from './GorgiasChatCreationWizardStepBasics'
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
@@ -180,6 +180,7 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
         })
         expect(form.meta).toEqual({
             language: 'en-US',
+            languages: [{ language: 'en-US', primary: true }],
             preferences: {
                 live_chat_availability: 'auto-based-on-agent-availability',
                 privacy_policy_disclaimer_enabled: true,
@@ -422,27 +423,6 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
         )
 
         expect(getByText('Default language')).toBeInTheDocument()
-    })
-
-    it('should render Language dropdown when chatMultiLanguagesEnabled flag is false', () => {
-        mockUseFlag.mockImplementation((flagKey) => {
-            if (flagKey === FeatureFlagKey.ChatMultiLanguages) {
-                return false
-            }
-            return false
-        })
-
-        const { getByText } = render(
-            <MemoryRouter>
-                <Provider store={mockStore(mockStoreState)}>
-                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
-                        <GorgiasChatCreationWizardStepBasics {...minProps} />
-                    </Wizard>
-                </Provider>
-            </MemoryRouter>,
-        )
-
-        expect(getByText('Language')).toBeInTheDocument()
     })
 
     it('should submit with offline live chat availability', () => {

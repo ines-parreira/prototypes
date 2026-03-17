@@ -19,11 +19,22 @@ import {
 import Wizard from 'pages/common/components/wizard/Wizard'
 import * as actions from 'state/integrations/actions'
 
-import GorgiasChatCreationWizardStepBranding from '../GorgiasChatCreationWizardStepBranding'
+import GorgiasChatCreationWizardStepBranding from './GorgiasChatCreationWizardStepBranding'
 
 jest.mock(
     'pages/common/hooks/useIsIntersectingWithBrowserViewport',
     () => () => false,
+)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useGorgiasChatCreationWizardContext: () => ({
+            updateMainColor: jest.fn(),
+            updatePosition: jest.fn(),
+            updateHeaderPictureUrl: jest.fn(),
+        }),
+    }),
 )
 
 const mockStore = configureMockStore([thunk])

@@ -99,6 +99,7 @@ export type {
     GorgiasChatIntegrationMeta,
     GorgiasChatMetaInstallation,
     GorgiasChatPosition,
+    GorgiasChatPreviewApplicationSettings,
     SelfServiceConfiguration,
 } from './gorgiasChat'
 export { isFacebookIntegration } from './facebook'

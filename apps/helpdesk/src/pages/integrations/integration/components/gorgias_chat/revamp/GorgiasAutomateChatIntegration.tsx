@@ -1,7 +1,6 @@
 import type { Map } from 'immutable'
 
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout'
-import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useChatPreviewPanel'
 
 import { ArticleRecommendationCard } from './components/ArticleRecommendationCard/ArticleRecommendationCard'
 import { useArticleRecommendation } from './hooks/useArticleRecommendation'
@@ -15,8 +14,6 @@ type Props = {
 export const GorgiasAutomateChatIntegrationRevamp = ({
     integration,
 }: Props) => {
-    useChatPreviewPanel()
-
     const {
         enabledInSettings,
         isArticleRecommendationEnabled,

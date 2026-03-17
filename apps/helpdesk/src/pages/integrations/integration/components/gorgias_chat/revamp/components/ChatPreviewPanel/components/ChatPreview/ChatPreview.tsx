@@ -6,11 +6,12 @@ import {
     useRef,
     useState,
 } from 'react'
+import type { RefObject } from 'react'
 
 import { useGetInstallationSnippet } from 'models/integration/queries'
-import { ChatPreviewErrorState } from 'pages/integrations/integration/components/gorgias_chat/components/revamp/ChatPreview/ChatPreviewErrorState'
-import { ChatPreviewLoading } from 'pages/integrations/integration/components/gorgias_chat/components/revamp/ChatPreview/ChatPreviewLoading'
 
+import { ChatPreviewErrorState } from '../ChatPreviewErrorState/ChatPreviewErrorState'
+import { ChatPreviewLoading } from '../ChatPreviewLoading/ChatPreviewLoading'
 import iframeBootstrapScript from './ChatPreviewBootstrapScript.js?raw'
 
 import css from './ChatPreview.less'
@@ -20,13 +21,15 @@ type Props = {
 }
 
 export type ChatPreviewHandle = {
-    displayPage: (page: 'homepage' | 'conversation') => void
+    iframeRef: RefObject<HTMLIFrameElement>
+    isLoaded: boolean
+    hasError: boolean
 }
 
 export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
     ({ appId }, ref) => {
         const iframeRef = useRef<HTMLIFrameElement>(null)
-        const [isWidgetLoaded, setIsWidgetLoaded] = useState(false)
+        const [isLoaded, setIsWidgetLoaded] = useState(false)
         const [hasError, setHasError] = useState(false)
         const {
             data: installationSnippet,
@@ -40,8 +43,8 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
         )
 
         const isLoading = useMemo(() => {
-            return installationSnippetLoading || !isWidgetLoaded
-        }, [installationSnippetLoading, isWidgetLoaded])
+            return installationSnippetLoading || !isLoaded
+        }, [installationSnippetLoading, isLoaded])
 
         useEffect(() => {
             setIsWidgetLoaded(false)
@@ -102,10 +105,9 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
         ])
 
         useImperativeHandle(ref, () => ({
-            displayPage: (page: 'homepage' | 'conversation') => {
-                iframeRef.current?.contentWindow?.GorgiasChat?.open()
-                iframeRef.current?.contentWindow?.GorgiasChat?.setPage(page)
-            },
+            iframeRef,
+            isLoaded,
+            hasError,
         }))
 
         if (hasError) {
@@ -121,7 +123,7 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
                     srcDoc={iframeSourceDoc || ''}
                     title="helpdesk-chat-preview-iframe"
                     sandbox="allow-scripts allow-same-origin"
-                    style={{ display: isWidgetLoaded ? undefined : 'none' }}
+                    style={{ display: isLoaded ? undefined : 'none' }}
                 />
             </>
         )

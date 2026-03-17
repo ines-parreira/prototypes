@@ -85,6 +85,8 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: true,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -103,6 +105,8 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -118,6 +122,8 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             shouldShowRevampWhenAiAgentEnabled: true,
             shouldShowScreensRevampWhenAiAgentEnabled: true,
             isLoading: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -135,6 +141,8 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             shouldShowRevampWhenAiAgentEnabled: true,
             shouldShowScreensRevampWhenAiAgentEnabled: true,
             isLoading: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -153,6 +161,8 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
             shouldShowRevampWhenAiAgentEnabled: true,
             shouldShowScreensRevampWhenAiAgentEnabled: true,
             isLoading: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)

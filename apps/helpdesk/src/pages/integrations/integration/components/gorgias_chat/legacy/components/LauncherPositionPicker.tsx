@@ -23,6 +23,7 @@ type PositionOption = {
 export type LauncherPositionPickerProps = {
     value: GorgiasChatPosition
     onChange: (position: GorgiasChatPosition) => void
+    onFocus?: () => void
 }
 
 const positionOptions: PositionOption[] =
@@ -40,6 +41,7 @@ const positionOptions: PositionOption[] =
 export function LauncherPositionPicker({
     value,
     onChange,
+    onFocus,
 }: LauncherPositionPickerProps) {
     const position: GorgiasChatPosition = useMemo(
         () => ({
@@ -121,21 +123,23 @@ export function LauncherPositionPicker({
             </div>
             <div className={css.fieldsRow}>
                 <div className={css.field}>
-                    <SelectField
-                        items={positionOptions}
-                        value={selectedPositionOption}
-                        onChange={handleAlignmentChange}
-                        label="Position"
-                        aria-label="Select launcher position"
-                    >
-                        {(option: PositionOption) => (
-                            <ListItem
-                                id={option.id}
-                                label={option.label}
-                                textValue={option.label}
-                            />
-                        )}
-                    </SelectField>
+                    <span onFocus={onFocus}>
+                        <SelectField
+                            items={positionOptions}
+                            value={selectedPositionOption}
+                            onChange={handleAlignmentChange}
+                            label="Position"
+                            aria-label="Select launcher position"
+                        >
+                            {(option: PositionOption) => (
+                                <ListItem
+                                    id={option.id}
+                                    label={option.label}
+                                    textValue={option.label}
+                                />
+                            )}
+                        </SelectField>
+                    </span>
                 </div>
                 <div className={css.field}>
                     <div className={css.pixelInputWrapper}>
@@ -146,6 +150,7 @@ export function LauncherPositionPicker({
                                 handleOffsetChange(val, 'offsetX')
                             }
                             onKeyDown={(e) => handleOffsetKeyDown(e, 'offsetX')}
+                            onFocus={onFocus}
                             aria-label="Move launcher horizontally in pixels"
                         />
                         <span className={css.pixelSuffix}>px</span>
@@ -160,6 +165,7 @@ export function LauncherPositionPicker({
                                 handleOffsetChange(val, 'offsetY')
                             }
                             onKeyDown={(e) => handleOffsetKeyDown(e, 'offsetY')}
+                            onFocus={onFocus}
                             aria-label="Move launcher vertically in pixels"
                         />
                         <span className={css.pixelSuffix}>px</span>

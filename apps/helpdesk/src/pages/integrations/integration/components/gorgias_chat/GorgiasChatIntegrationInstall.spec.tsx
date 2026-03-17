@@ -75,6 +75,8 @@ describe('<GorgiasChatIntegrationInstall />', () => {
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
     })
 
@@ -83,6 +85,8 @@ describe('<GorgiasChatIntegrationInstall />', () => {
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: true,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationInstall {...minProps} />)
@@ -132,6 +136,8 @@ describe('<GorgiasChatIntegrationInstall />', () => {
             shouldShowRevampWhenAiAgentEnabled: true,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationInstall {...minProps} />)
@@ -148,6 +154,8 @@ describe('<GorgiasChatIntegrationInstall />', () => {
             shouldShowRevampWhenAiAgentEnabled: true,
             shouldShowScreensRevampWhenAiAgentEnabled: true,
             isLoading: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
         })
 
         render(<GorgiasChatIntegrationInstall {...minProps} />)

@@ -7,7 +7,7 @@ import { useArticleRecommendation } from '../hooks/useArticleRecommendation'
 jest.mock('../hooks/useArticleRecommendation')
 const mockUseArticleRecommendation = jest.mocked(useArticleRecommendation)
 
-jest.mock('../hooks/useChatPreviewPanel', () => ({
+jest.mock('../components/ChatPreviewPanel/hooks/useChatPreviewPanel', () => ({
     useChatPreviewPanel: jest.fn(),
 }))
 

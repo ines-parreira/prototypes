@@ -128,6 +128,14 @@ export interface GorgiasChatPosition {
     offsetY: number
 }
 
+export type GorgiasChatPreviewApplicationSettings = {
+    decoration?: {
+        mainColor?: string
+        headerPictureUrl?: string
+        position?: GorgiasChatPosition
+    }
+}
+
 export enum GorgiasChatStatusEnum {
     ONLINE = 'online',
     OFFLINE = 'offline',

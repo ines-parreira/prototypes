@@ -13,10 +13,14 @@ import {
 import PageHeader from 'pages/common/components/PageHeader'
 import Wizard from 'pages/common/components/wizard/Wizard'
 import WizardStep from 'pages/common/components/wizard/WizardStep'
+import {
+    ChatPreviewPanelContext,
+    useChatPreviewPanel,
+} from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import GorgiasChatCreationWizardStepAutomate from './components/steps/GorgiasChatCreationWizardStepAutomate'
-import GorgiasChatCreationWizardStepBasics from './components/steps/GorgiasChatCreationWizardStepBasics'
-import GorgiasChatCreationWizardStepBranding from './components/steps/GorgiasChatCreationWizardStepBranding'
+import GorgiasChatCreationWizardStepBasics from './components/steps/GorgiasChatCreationWizardStepBasics/GorgiasChatCreationWizardStepBasics'
+import GorgiasChatCreationWizardStepBranding from './components/steps/GorgiasChatCreationWizardStepBranding/GorgiasChatCreationWizardStepBranding'
 import { GorgiasChatCreationWizardStepInstallation } from './components/steps/GorgiasChatCreationWizardStepInstallation'
 
 import css from './GorgiasChatCreationWizard.less'
@@ -32,6 +36,8 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
     loading,
     isUpdate,
 }) => {
+    const { ...chatPreviewPanel } = useChatPreviewPanel()
+
     const steps = Object.values(GorgiasChatCreationWizardSteps)
 
     const integrationId = integration.get('id')
@@ -84,43 +90,51 @@ const GorgiasChatCreationWizard: React.FC<Props> = ({
                 />
                 <div className={css.wrapper}>
                     {hasIntegrationLoaded && (
-                        <Wizard steps={steps} startAt={initialStep}>
-                            <WizardStep
-                                name={GorgiasChatCreationWizardSteps.Basics}
-                            >
-                                <GorgiasChatCreationWizardStepBasics
-                                    isUpdate={isUpdate}
-                                    isSubmitting={isSubmitting}
-                                    integration={integration}
-                                />
-                            </WizardStep>
-                            <WizardStep
-                                name={GorgiasChatCreationWizardSteps.Branding}
-                            >
-                                <GorgiasChatCreationWizardStepBranding
-                                    isSubmitting={isSubmitting}
-                                    integration={integration}
-                                />
-                            </WizardStep>
-                            <WizardStep
-                                name={GorgiasChatCreationWizardSteps.Automate}
-                            >
-                                <GorgiasChatCreationWizardStepAutomate
-                                    isSubmitting={isSubmitting}
-                                    integration={integration}
-                                />
-                            </WizardStep>
-                            <WizardStep
-                                name={
-                                    GorgiasChatCreationWizardSteps.Installation
-                                }
-                            >
-                                <GorgiasChatCreationWizardStepInstallation
-                                    isSubmitting={isSubmitting}
-                                    integration={integration}
-                                />
-                            </WizardStep>
-                        </Wizard>
+                        <ChatPreviewPanelContext.Provider
+                            value={chatPreviewPanel}
+                        >
+                            <Wizard steps={steps} startAt={initialStep}>
+                                <WizardStep
+                                    name={GorgiasChatCreationWizardSteps.Basics}
+                                >
+                                    <GorgiasChatCreationWizardStepBasics
+                                        isUpdate={isUpdate}
+                                        isSubmitting={isSubmitting}
+                                        integration={integration}
+                                    />
+                                </WizardStep>
+                                <WizardStep
+                                    name={
+                                        GorgiasChatCreationWizardSteps.Branding
+                                    }
+                                >
+                                    <GorgiasChatCreationWizardStepBranding
+                                        isSubmitting={isSubmitting}
+                                        integration={integration}
+                                    />
+                                </WizardStep>
+                                <WizardStep
+                                    name={
+                                        GorgiasChatCreationWizardSteps.Automate
+                                    }
+                                >
+                                    <GorgiasChatCreationWizardStepAutomate
+                                        isSubmitting={isSubmitting}
+                                        integration={integration}
+                                    />
+                                </WizardStep>
+                                <WizardStep
+                                    name={
+                                        GorgiasChatCreationWizardSteps.Installation
+                                    }
+                                >
+                                    <GorgiasChatCreationWizardStepInstallation
+                                        isSubmitting={isSubmitting}
+                                        integration={integration}
+                                    />
+                                </WizardStep>
+                            </Wizard>
+                        </ChatPreviewPanelContext.Provider>
                     )}
                 </div>
             </div>

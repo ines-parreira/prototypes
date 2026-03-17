@@ -32,6 +32,8 @@ export const useShouldShowChatSettingsRevamp = (
         isAiAgentEnabled
 
     return {
+        isChatSettingsRevampEnabled,
+        isChatSettingsScreensRevampEnabled,
         shouldShowRevampWhenAiAgentEnabled,
         shouldShowScreensRevampWhenAiAgentEnabled,
         isLoading:
