@@ -26,7 +26,7 @@ export const GorgiasChatIntegrationPreferences = (props: Props) => {
         state.integrations.getIn(['state', 'loading']),
     )
 
-    if (isRevampLoading) {
+    if (isRevampLoading || !chatId) {
         return <ChatSettingsPreferencesSkeleton />
     }
 

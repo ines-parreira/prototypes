@@ -100,6 +100,31 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('should render the skeleton while the integration id is not yet available', () => {
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
+            shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowScreensRevampWhenAiAgentEnabled: false,
+            isLoading: false,
+        })
+
+        render(
+            <GorgiasChatIntegrationPreferences
+                {...minProps}
+                integration={fromJS({})}
+            />,
+        )
+
+        expect(screen.getByTestId('preferences-skeleton')).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('legacy-preferences'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('revamp-preferences'),
+        ).not.toBeInTheDocument()
+    })
+
     it('should render the legacy component when shouldShowScreensRevampWhenAiAgentEnabled is false', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,

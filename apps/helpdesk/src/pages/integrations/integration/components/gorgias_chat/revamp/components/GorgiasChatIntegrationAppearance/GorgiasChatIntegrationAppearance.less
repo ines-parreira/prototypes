@@ -1,0 +1,120 @@
+@import '~css/new/mixins';
+
+:local {
+    .appearanceTab {
+        width: 100%;
+    }
+
+    .cardsWrapper {
+        padding: var(--spacing-lg);
+        display: flex;
+        flex-flow: column;
+        gap: var(--spacing-md);
+    }
+
+    .pageContainer {
+        padding: var(--spacing-lg);
+        max-width: calc(680px + var(--spacing-lg) * 2);
+    }
+
+    .platformTypeContainer {
+        display: grid;
+        grid-auto-flow: column;
+        column-gap: var(--spacing-md);
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .connectStoreDescription {
+        margin-top: var(--spacing-xxxs);
+        margin-bottom: var(--spacing-lg);
+    }
+
+    .cancelButton {
+        margin-left: var(--spacing-xs);
+    }
+
+    .cardsContainer {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .card {
+        padding: var(--spacing-md) var(--spacing-lg);
+    }
+
+    .cardContent {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-lg);
+    }
+
+    .cardHeader {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxs);
+    }
+
+    .mainContent {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+    }
+
+    .launcherMainContent {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .legalMainContent {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+
+    .fieldSection {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .caption {
+        color: var(--content-neutral-secondary);
+    }
+
+    .helperText {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .brandColorPicker {
+        max-width: 191px;
+    }
+
+    .customNameInput {
+        margin-top: var(--spacing-xs);
+        margin-left: 22px;
+        width: 160px;
+    }
+
+    .radioGroupWrapper {
+        contain: content;
+    }
+
+    .submitButton {
+        margin-top: var(--spacing-lg);
+    }
+
+    .form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .formSection {
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .formGroup {
+        margin-bottom: var(--spacing-md);
+    }
+}

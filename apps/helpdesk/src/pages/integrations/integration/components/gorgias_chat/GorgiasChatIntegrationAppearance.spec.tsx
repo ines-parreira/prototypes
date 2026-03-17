@@ -9,8 +9,8 @@ import configureMockStore from 'redux-mock-store'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { entitiesInitialState } from 'fixtures/entities'
 import { user } from 'fixtures/users'
-import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -40,18 +40,24 @@ const defaultState = {
     }),
 } as unknown as RootState
 
-jest.mock('@repo/feature-flags')
-
 jest.mock('lodash/uniqueId', () => (id?: string) => `${id || ''}42`)
 
-jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
-    useAiAgentAccess: jest.fn(),
-}))
-
-const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
-const mockUseShouldShowChatSettingsRevamp = jest.mocked(
-    useShouldShowChatSettingsRevamp,
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
 )
+
+jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
+
+const mockUseShouldShowChatSettingsRevamp =
+    useShouldShowChatSettingsRevamp as jest.MockedFunction<
+        typeof useShouldShowChatSettingsRevamp
+    >
+
+const mockUseStoreIntegration = useStoreIntegration as jest.MockedFunction<
+    typeof useStoreIntegration
+>
+
+jest.mock('hooks/useAppSelector', () => jest.fn(() => fromJS({})))
 
 jest.mock('pages/common/forms/FileField', () => {
     type MockedProps = {
@@ -89,12 +95,12 @@ jest.mock(
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/revamp/GorgiasChatIntegrationAppearance',
     () => () => {
-        return <div data-testid="revamp-appearance" />
+        return <div data-testid="legacy-revamp-appearance" />
     },
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/ChatSettingsAppearanceSkeleton',
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/ChatSettingsAppearanceSkeleton',
     () => ({
         ChatSettingsAppearanceSkeleton: () => (
             <div data-testid="appearance-skeleton" />
@@ -103,10 +109,11 @@ jest.mock(
 )
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationAppearance',
     () => ({
-        __esModule: true,
-        default: jest.fn(),
+        GorgiasChatIntegrationAppearanceRevamp: () => {
+            return <div data-testid="new-revamp-appearance" />
+        },
     }),
 )
 
@@ -139,8 +146,17 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             escape: realCSS?.escape,
         }
 
-        mockUseAiAgentAccess.mockReturnValue({
-            hasAccess: false,
+        mockUseStoreIntegration.mockReturnValue({
+            storeIntegration: undefined,
+            isConnected: false,
+            isConnectedToShopify: false,
+        })
+
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
+            shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
         })
     })
@@ -149,36 +165,12 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
         global.CSS = realCSS
     })
 
-    it('should render the skeleton while loading', () => {
-        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: false,
-            shouldShowPreviewForRevamp: false,
-            shouldShowRevampWhenAiAgentEnabled: false,
-            isLoading: true,
-        })
-
-        render(
-            <Router history={history}>
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <GorgiasChatIntegrationAppearance {...minProps} />
-                    </Provider>
-                </QueryClientProvider>
-            </Router>,
-        )
-
-        expect(screen.getByTestId('appearance-skeleton')).toBeInTheDocument()
-        expect(
-            screen.queryByTestId('revamp-appearance'),
-        ).not.toBeInTheDocument()
-        expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
-    })
-
     it('should render the skeleton while the integration id is not yet available', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: false,
-            shouldShowPreviewForRevamp: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
         })
 
@@ -197,16 +189,49 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
 
         expect(screen.getByTestId('appearance-skeleton')).toBeInTheDocument()
         expect(
-            screen.queryByTestId('revamp-appearance'),
+            screen.queryByTestId('new-revamp-appearance'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('old-revamp-appearance'),
         ).not.toBeInTheDocument()
         expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
     })
 
-    it('should render the legacy component when ChatSettingsRevamp flag is disabled', () => {
+    it('should render the skeleton while the revamp hooks are loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: false,
-            shouldShowPreviewForRevamp: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowScreensRevampWhenAiAgentEnabled: false,
+            isLoading: true,
+        })
+
+        render(
+            <Router history={history}>
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearance {...minProps} />
+                    </Provider>
+                </QueryClientProvider>
+            </Router>,
+        )
+
+        expect(screen.getByTestId('appearance-skeleton')).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('new-revamp-appearance'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByTestId('legacy-revamp-appearance'),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
+    })
+
+    it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
+            shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
         })
 
@@ -221,50 +246,20 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
         )
 
         expect(
-            screen.queryByTestId('revamp-appearance'),
+            screen.queryByTestId('new-revamp-appearance'),
         ).not.toBeInTheDocument()
-        expect(screen.getByText('Chat title')).toBeInTheDocument()
-    })
-
-    it('should render the legacy component when flag is enabled but user has no AI Agent access', () => {
-        mockUseAiAgentAccess.mockReturnValue({
-            hasAccess: false,
-            isLoading: false,
-        })
-
-        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: false,
-            shouldShowPreviewForRevamp: false,
-            shouldShowRevampWhenAiAgentEnabled: false,
-            isLoading: false,
-        })
-
-        render(
-            <Router history={history}>
-                <QueryClientProvider client={mockClient}>
-                    <Provider store={mockStore(defaultState)}>
-                        <GorgiasChatIntegrationAppearance {...minProps} />
-                    </Provider>
-                </QueryClientProvider>
-            </Router>,
-        )
-
         expect(
-            screen.queryByTestId('revamp-appearance'),
+            screen.queryByTestId('legacy-revamp-appearance'),
         ).not.toBeInTheDocument()
         expect(screen.getByText('Chat title')).toBeInTheDocument()
     })
 
-    it('should render the revamp component when flag is enabled and user has AI Agent access', () => {
-        mockUseAiAgentAccess.mockReturnValue({
-            hasAccess: true,
-            isLoading: false,
-        })
-
+    it('should render the legacy revamp component when shouldShowRevampWhenAiAgentEnabled is true but shouldShowScreensRevampWhenAiAgentEnabled is false', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: true,
-            shouldShowPreviewForRevamp: true,
+            isChatSettingsRevampEnabled: true,
+            isChatSettingsScreensRevampEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: true,
+            shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
         })
 
@@ -278,7 +273,38 @@ describe('<GorgiasChatIntegrationAppearance />', () => {
             </Router>,
         )
 
-        expect(screen.getByTestId('revamp-appearance')).toBeInTheDocument()
+        expect(
+            screen.getByTestId('legacy-revamp-appearance'),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('new-revamp-appearance'),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
+    })
+
+    it('should render the new revamp component when shouldShowScreensRevampWhenAiAgentEnabled is true', () => {
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            isChatSettingsRevampEnabled: true,
+            isChatSettingsScreensRevampEnabled: true,
+            shouldShowRevampWhenAiAgentEnabled: true,
+            shouldShowScreensRevampWhenAiAgentEnabled: true,
+            isLoading: false,
+        })
+
+        render(
+            <Router history={history}>
+                <QueryClientProvider client={mockClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <GorgiasChatIntegrationAppearance {...minProps} />
+                    </Provider>
+                </QueryClientProvider>
+            </Router>,
+        )
+
+        expect(screen.getByTestId('new-revamp-appearance')).toBeInTheDocument()
+        expect(
+            screen.queryByTestId('legacy-revamp-appearance'),
+        ).not.toBeInTheDocument()
         expect(screen.queryByText('Chat title')).not.toBeInTheDocument()
     })
 })

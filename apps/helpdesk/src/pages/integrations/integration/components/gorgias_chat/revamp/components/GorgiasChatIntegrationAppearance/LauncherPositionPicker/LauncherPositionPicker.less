@@ -1,0 +1,44 @@
+:local {
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        gap: var(--xxxs, 4px);
+    }
+
+    .caption {
+        color: var(--content-neutral-secondary);
+    }
+
+    .fieldsRow {
+        display: flex;
+        gap: var(--spacing-xs);
+    }
+
+    .field {
+        width: 160px;
+    }
+
+    .pixelInputWrapper {
+        position: relative;
+
+        .pixelSuffix {
+            position: absolute;
+            right: 12px;
+            bottom: 6px;
+            color: var(--content-neutral-tertiary, #6e7686);
+            font-size: 14px;
+            line-height: 20px;
+            pointer-events: none;
+        }
+
+        input {
+            padding-right: 28px;
+        }
+    }
+}
