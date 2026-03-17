@@ -23,7 +23,7 @@ import { NewTicketPage } from 'tickets/pages/NewTicketPage/NewTicketPage'
 import { TicketDetailWithInfobar } from 'tickets/pages/TicketDetailWithInfobar'
 import { TicketEmptyPanel } from 'tickets/ticket-empty'
 import { TicketsListPanel } from 'tickets/tickets-list'
-import { ViewPanel } from 'tickets/view'
+import { ViewPanelEntrypoint } from 'tickets/view'
 
 import { MobileRoutes } from './MobileRoutes'
 
@@ -128,19 +128,19 @@ export default function PanelRoutes() {
             <ContentPanels key="content" subtractSize={10}>
                 <Switch>
                     <Route exact path="/app">
-                        <ViewPanel key="view-panel" />
+                        <ViewPanelEntrypoint key="view-panel" />
                     </Route>
                     <Route exact path="/app/tickets">
-                        <ViewPanel key="view-panel" />
+                        <ViewPanelEntrypoint key="view-panel" />
                     </Route>
                     <Route exact path="/app/tickets/new/:visibility?">
-                        <ViewPanel key="view-panel" />
+                        <ViewPanelEntrypoint key="view-panel" />
                     </Route>
                     <Route exact path="/app/tickets/search">
-                        <ViewPanel key="view-panel" />
+                        <ViewPanelEntrypoint key="view-panel" />
                     </Route>
                     <Route exact path="/app/tickets/:viewId/:viewSlug?">
-                        <ViewPanel key="view-panel" />
+                        <ViewPanelEntrypoint key="view-panel" />
                     </Route>
                     {hasUIVisionMS1Dot5 && (
                         <Route exact path="/app/ticket/new">

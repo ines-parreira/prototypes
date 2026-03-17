@@ -5,13 +5,17 @@ import { assumeMock } from '@repo/testing'
 import { useHelpdeskV2MS4Flag } from '@repo/tickets/feature-flags'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import { setViewEditMode } from 'state/views/actions'
 
 import TicketsListPanel from '../TicketsListPanel'
 
-jest.mock('react-router-dom', () => ({ useParams: jest.fn() }))
+jest.mock('react-router-dom', () => ({
+    useHistory: jest.fn(),
+    useParams: jest.fn(),
+}))
+const useHistoryMock = assumeMock(useHistory)
 const useParamsMock = assumeMock(useParams)
 
 jest.mock('@repo/tickets/feature-flags', () => ({
@@ -111,6 +115,7 @@ jest.mock('hooks/useAppDispatch', () => ({
     default: jest.fn(),
 }))
 const dispatchMock = jest.fn()
+const historyPushMock = jest.fn()
 const useAppDispatchMock = jest.requireMock('hooks/useAppDispatch')
     .default as jest.Mock
 
@@ -124,10 +129,12 @@ describe('TicketsListPanel', () => {
         dispatchMock.mockReset()
         setSplitTicketViewMock.mockReset()
         mockTicketListComponent.mockClear()
+        historyPushMock.mockReset()
         useAppDispatchMock.mockReturnValue(dispatchMock)
         useSplitTicketViewMock.mockReturnValue({
             setIsEnabled: setSplitTicketViewMock,
         })
+        useHistoryMock.mockReturnValue({ push: historyPushMock } as any)
         useParamsMock.mockReturnValue({})
         useHelpdeskV2MS4FlagMock.mockReturnValue(false)
     })
@@ -232,7 +239,7 @@ describe('TicketsListPanel', () => {
         expect(screen.queryByText('TicketList')).not.toBeInTheDocument()
     })
 
-    it('should dispatch view edit mode and disable split ticket view when fix filters is clicked', async () => {
+    it('should dispatch view edit mode, disable split ticket view and navigate when fix filters is clicked', async () => {
         useHelpdeskV2MS4FlagMock.mockReturnValue(true)
         const user = userEvent.setup()
 
@@ -246,9 +253,10 @@ describe('TicketsListPanel', () => {
 
         expect(dispatchMock).toHaveBeenCalledWith(setViewEditMode())
         expect(setSplitTicketViewMock).toHaveBeenCalledWith(false)
+        expect(historyPushMock).toHaveBeenCalledWith('/app/tickets/123456')
     })
 
-    it('should wire TicketList onFixFilters to edit mode and split view disable handlers', () => {
+    it('should wire TicketList onFixFilters to edit mode, split view disable and navigation handlers', () => {
         useHelpdeskV2MS4FlagMock.mockReturnValue(true)
 
         render(
@@ -262,6 +270,7 @@ describe('TicketsListPanel', () => {
 
         expect(dispatchMock).toHaveBeenCalledWith(setViewEditMode())
         expect(setSplitTicketViewMock).toHaveBeenCalledWith(false)
+        expect(historyPushMock).toHaveBeenCalledWith('/app/tickets/123456')
     })
 
     it('should disable split ticket view when TicketList is collapsed', () => {

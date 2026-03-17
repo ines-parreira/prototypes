@@ -17,6 +17,7 @@ import {
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import cn from 'classnames'
 import { fromJS } from 'immutable'
+import { useHistory } from 'react-router-dom'
 import type { CSSTransition } from 'react-transition-group'
 import { TransitionGroup } from 'react-transition-group'
 import type { Components, VirtuosoHandle } from 'react-virtuoso'
@@ -85,6 +86,7 @@ export default function TicketListView({
     viewId,
     registerToggleUnread,
 }: Props) {
+    const history = useHistory()
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
@@ -198,8 +200,15 @@ export default function TicketListView({
     const goToViewEdition = useCallback(() => {
         dispatch(setViewEditMode())
         setSplitTicketView(false)
-        setShouldRedirectToSplitView(true)
-    }, [dispatch, setShouldRedirectToSplitView, setSplitTicketView])
+        setShouldRedirectToSplitView(false)
+        history.push(`/app/tickets/${viewId}`)
+    }, [
+        dispatch,
+        history,
+        setShouldRedirectToSplitView,
+        setSplitTicketView,
+        viewId,
+    ])
 
     const onCompleteBulkAction = useCallback(
         (action?: Action) => {

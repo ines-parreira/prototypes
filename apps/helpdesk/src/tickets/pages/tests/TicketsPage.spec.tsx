@@ -37,7 +37,7 @@ jest.mock('tickets/tickets-list', () => ({
     TicketsListPanel: () => <div>TicketsListPanel</div>,
 }))
 jest.mock('tickets/view', () => ({
-    ViewPanel: () => <div>ViewPanel</div>,
+    ViewPanelEntrypoint: () => <div>ViewPanel</div>,
 }))
 jest.mock('../TicketDetailWithInfobar', () => ({
     TicketDetailWithInfobar: () => (

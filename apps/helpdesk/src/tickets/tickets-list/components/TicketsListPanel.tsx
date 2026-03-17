@@ -5,7 +5,7 @@ import { useCurrentUserId } from '@repo/tickets'
 import { useHelpdeskV2MS4Flag } from '@repo/tickets/feature-flags'
 import { TicketList } from '@repo/tickets/ticket-list'
 import { fromJS } from 'immutable'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -33,6 +33,7 @@ export default function TicketsListPanel({ registerOnToggleUnread }: Props) {
     const viewId = useViewId()
     const { currentUserId } = useCurrentUserId()
     const { setIsEnabled: setSplitTicketView } = useSplitTicketView()
+    const history = useHistory()
 
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
@@ -48,7 +49,8 @@ export default function TicketsListPanel({ registerOnToggleUnread }: Props) {
     const handleFixFilters = useCallback(() => {
         dispatch(setViewEditMode())
         setSplitTicketView(false)
-    }, [dispatch, setSplitTicketView])
+        history.push(`/app/tickets/${viewId}`)
+    }, [dispatch, history, setSplitTicketView, viewId])
 
     const ticketId = urlTicketId ? parseInt(urlTicketId, 10) : undefined
     if (hasUIVisionMS4) {

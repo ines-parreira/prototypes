@@ -5,6 +5,7 @@ import { assumeMock } from '@repo/testing'
 import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import { Virtuoso } from 'react-virtuoso'
 import configureMockStore from 'redux-mock-store'
 
@@ -25,6 +26,12 @@ import TicketListView, { listInfoProps } from '../TicketListView'
 
 jest.mock('react-virtuoso', () => ({ Virtuoso: jest.fn() }))
 const VirtuosoMock = Virtuoso as jest.Mock
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
+}))
+const useHistoryMock = assumeMock(useHistory)
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
@@ -92,9 +99,12 @@ describe('<TicketListView />', () => {
     const setShouldRedirectToSplitView = jest.fn()
     const dispatch = jest.fn()
     const clearMock = jest.fn()
+    const historyPush = jest.fn()
 
     beforeEach(() => {
+        historyPush.mockReset()
         useAppDispatchMock.mockReturnValue(dispatch)
+        useHistoryMock.mockReturnValue({ push: historyPush } as any)
         useSelectionMock.mockReturnValue({
             hasSelectedAll: false,
             onSelect: jest.fn(),
@@ -490,7 +500,8 @@ describe('<TicketListView />', () => {
 
         expect(dispatch).toHaveBeenCalledWith(setViewEditMode())
         expect(setIsEnabled).toHaveBeenCalledWith(false)
-        expect(setShouldRedirectToSplitView).toHaveBeenCalledWith(true)
+        expect(setShouldRedirectToSplitView).toHaveBeenCalledWith(false)
+        expect(historyPush).toHaveBeenCalledWith('/app/tickets/123')
     })
 
     it('should display bulk actions', () => {

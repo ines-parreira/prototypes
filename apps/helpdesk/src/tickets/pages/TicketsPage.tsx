@@ -7,7 +7,7 @@ import { useOnToggleUnread } from 'tickets/dtp'
 import { TicketsNavbarPanel } from 'tickets/navigation'
 import { TicketEmptyPanel } from 'tickets/ticket-empty'
 import { TicketsListPanel } from 'tickets/tickets-list'
-import { ViewPanel } from 'tickets/view'
+import { ViewPanelEntrypoint } from 'tickets/view'
 
 import { TicketDetailWithInfobar } from './TicketDetailWithInfobar'
 
@@ -26,10 +26,10 @@ export function TicketsPage() {
             <ContentPanels subtractSize={10}>
                 <Switch>
                     <Route exact path={`${path}/new/:visibility?`}>
-                        <ViewPanel key="view-panel" />
+                        <ViewPanelEntrypoint key="view-panel" />
                     </Route>
                     <Route exact path={`${path}/search`}>
-                        <ViewPanel key="view-panel" />
+                        <ViewPanelEntrypoint key="view-panel" />
                     </Route>
 
                     <Route path={`${path}/:viewId?`}>
@@ -54,7 +54,7 @@ export function TicketsPage() {
                                 {isEnabled ? (
                                     <TicketEmptyPanel />
                                 ) : (
-                                    <ViewPanel />
+                                    <ViewPanelEntrypoint />
                                 )}
                             </Route>
                         </Switch>
