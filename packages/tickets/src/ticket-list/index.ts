@@ -1,4 +1,5 @@
 export { TicketList } from './components/TicketList'
+export { TicketTable } from './components/TicketTable/TicketTable'
 export { TicketListHeader } from './components/TicketListHeader/TicketListHeader'
 export { TicketListItem } from './components/TicketListItem/TicketListItem'
 export { useTicketsList } from './hooks/useTicketsList'

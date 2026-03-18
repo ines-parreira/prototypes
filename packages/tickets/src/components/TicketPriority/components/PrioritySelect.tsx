@@ -23,7 +23,7 @@ export type PrioritySelectProps = {
     isDisabled?: boolean
 }
 
-const PRIORITY_ICON_MAP: Record<
+export const PRIORITY_ICON_MAP: Record<
     TicketPriorityType,
     { icon: IconName; color?: Color }
 > = {

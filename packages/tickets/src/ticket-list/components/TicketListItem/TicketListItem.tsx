@@ -20,10 +20,10 @@ import type {
 
 import { TicketMessageSourceIcon } from '../../../components/TicketMessageSourceIcon/TicketMessageSourceIcon'
 import type { TicketMessageSource } from '../../../components/TicketMessageSourceIcon/utils'
+import { useTicketDisplayData } from '../../hooks/useTicketDisplayData'
 import type { OnSelectTicketParams } from '../../hooks/useTicketSelection'
 import { TicketListItemAgentsViewing } from './components/TicketListItemAgentsViewing'
 import { TicketListItemTrailingSlot } from './components/TicketListItemTrailingSlot'
-import { useTicketListItemData } from './hooks/useTicketListItemData'
 
 import styles from './TicketListItem.module.less'
 
@@ -49,7 +49,7 @@ export const TicketListItem = memo(function TicketListItem({
     translation,
 }: Props) {
     const { otherAgentsViewing, customerName, displaySubject, displayExcerpt } =
-        useTicketListItemData({
+        useTicketDisplayData({
             ticket,
             currentUserId,
             showTranslatedContent,

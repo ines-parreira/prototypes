@@ -16,6 +16,10 @@ vi.mock('../ViewHeader', () => ({
     ViewHeader: () => <div>ViewHeader</div>,
 }))
 
+vi.mock('../../ticket-list', () => ({
+    TicketTable: () => <div>TicketTable</div>,
+}))
+
 describe('ViewPanel', () => {
     it('renders', () => {
         render(<ViewPanel viewId={42} />)

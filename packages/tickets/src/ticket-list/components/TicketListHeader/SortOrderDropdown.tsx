@@ -15,7 +15,7 @@ import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
 import { useSortOrder } from '../../hooks/useSortOrder'
 
-const SORT_FIELDS = [
+export const SORT_FIELDS = [
     {
         id: 'last_message_datetime',
         label: 'Last message',
@@ -48,7 +48,7 @@ const SORT_FIELDS = [
     },
 ]
 
-function parseSortOrder(sortOrder: ListViewItemsUpdatesOrderBy) {
+export function parseSortOrder(sortOrder: ListViewItemsUpdatesOrderBy) {
     const direction = sortOrder.endsWith(':asc') ? 'asc' : 'desc'
     const field = SORT_FIELDS.find(
         (f) => f.asc === sortOrder || f.desc === sortOrder,

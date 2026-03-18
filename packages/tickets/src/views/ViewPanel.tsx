@@ -1,5 +1,8 @@
 import { Panel } from '@repo/layout'
 
+import { Box } from '@gorgias/axiom'
+
+import { TicketTable } from '../ticket-list'
 import { ViewHeader } from './ViewHeader'
 
 const panelConfig = {
@@ -16,7 +19,10 @@ type ViewPanelProps = {
 export function ViewPanel({ viewId, onExpand }: ViewPanelProps) {
     return (
         <Panel name="views" config={panelConfig}>
-            <ViewHeader viewId={viewId} onExpand={onExpand} />
+            <Box height="100%" width="100%" flexDirection="column">
+                <ViewHeader viewId={viewId} onExpand={onExpand} />
+                <TicketTable viewId={viewId} />
+            </Box>
         </Panel>
     )
 }

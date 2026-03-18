@@ -7,7 +7,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
-import type { Agent } from '../hooks/useTicketListItemData'
+import type { Agent } from '../../../hooks/useTicketDisplayData'
 
 type Props = {
     agents: Agent[]

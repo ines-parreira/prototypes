@@ -15,9 +15,10 @@ import { useRefreshStaleTickets } from './useRefreshStaleTickets'
 
 export type UseTicketsListParams = {
     order_by?: ListViewItemsUpdatesOrderBy
+    limit?: number
 }
 
-const PAGE_SIZE = 25
+export const PAGE_SIZE = 25
 const STALE_TIME_MS = DurationInMs.ThirtySeconds
 
 export function getTicketsListQueryKey(
@@ -41,7 +42,7 @@ export function useTicketsList(
                 {
                     order_by: params?.order_by,
                     cursor: pageParam,
-                    limit: PAGE_SIZE,
+                    limit: params?.limit ?? PAGE_SIZE,
                 },
                 { signal },
             )

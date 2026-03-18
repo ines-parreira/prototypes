@@ -19,7 +19,7 @@ type Params = {
     translation?: TicketTranslationCompact
 }
 
-export function useTicketListItemData({
+export function useTicketDisplayData({
     ticket,
     currentUserId,
     showTranslatedContent,

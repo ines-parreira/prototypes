@@ -8,7 +8,7 @@ import {
 import type { useAgentActivity } from '@gorgias/realtime'
 import { useAgentActivity as useAgentActivityMock } from '@gorgias/realtime'
 
-import { useTicketListItemData } from '../useTicketListItemData'
+import { useTicketDisplayData } from '../useTicketDisplayData'
 
 vi.mock('@gorgias/realtime', () => ({
     useAgentActivity: vi.fn(),
@@ -43,14 +43,14 @@ afterEach(() => {
     vi.clearAllMocks()
 })
 
-describe('useTicketListItemData', () => {
+describe('useTicketDisplayData', () => {
     describe('otherAgentsViewing', () => {
         const alice = { id: 1, name: 'Alice', email: 'alice@example.com' }
         const bob = { id: 2, name: 'Bob', email: 'bob@example.com' }
 
         it('calls getTicketActivity with the ticket id when ticket.id is set', () => {
             const { result } = renderHook(() =>
-                useTicketListItemData({
+                useTicketDisplayData({
                     ticket: mockTicketCompact({ id: 42 }),
                 }),
             )
@@ -60,7 +60,7 @@ describe('useTicketListItemData', () => {
 
         it('does not call getTicketActivity and returns empty viewing list when ticket.id is falsy', () => {
             const { result } = renderHook(() =>
-                useTicketListItemData({
+                useTicketDisplayData({
                     ticket: mockTicketCompact({ id: 0 }),
                 }),
             )
@@ -85,7 +85,7 @@ describe('useTicketListItemData', () => {
         ])('%s', (_, viewing, currentUserId, expected) => {
             mockGetTicketActivity.mockReturnValue({ viewing })
             const { result } = renderHook(() =>
-                useTicketListItemData({
+                useTicketDisplayData({
                     ticket: mockTicketCompact(),
                     currentUserId,
                 }),
@@ -120,7 +120,7 @@ describe('useTicketListItemData', () => {
             ['returns empty string when there is no customer', undefined, ''],
         ])('%s', (_, customer, expected) => {
             const { result } = renderHook(() =>
-                useTicketListItemData({
+                useTicketDisplayData({
                     ticket: mockTicketCompact({ customer }),
                 }),
             )
@@ -160,7 +160,7 @@ describe('useTicketListItemData', () => {
             ],
         ])('%s', (_, showTranslatedContent, translation, expected) => {
             const { result } = renderHook(() =>
-                useTicketListItemData({
+                useTicketDisplayData({
                     ticket: mockTicketCompact({ subject: 'Help with order' }),
                     showTranslatedContent,
                     translation,
@@ -206,7 +206,7 @@ describe('useTicketListItemData', () => {
             ],
         ])('%s', (_, excerpt, showTranslatedContent, translation, expected) => {
             const { result } = renderHook(() =>
-                useTicketListItemData({
+                useTicketDisplayData({
                     ticket: mockTicketCompact({ excerpt }),
                     showTranslatedContent,
                     translation,
