@@ -11,6 +11,7 @@ export function TicketThreadEventContainer({
             alignItems="center"
             justifyContent="flex-end"
             flexWrap="wrap"
+            minHeight="24px"
         >
             {children}
         </Box>
