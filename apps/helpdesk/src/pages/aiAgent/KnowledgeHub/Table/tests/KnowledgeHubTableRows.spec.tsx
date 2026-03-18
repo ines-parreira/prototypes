@@ -223,6 +223,17 @@ describe('KnowledgeHubTable - Row Interactions', () => {
     })
 
     describe('row selection', () => {
+        const dataWithSelectableRows: KnowledgeItem[] = [
+            ...mockData,
+            {
+                id: '7',
+                type: KnowledgeType.Guidance,
+                title: 'Test Guidance',
+                lastUpdatedAt: '2025-01-07T00:00:00Z',
+                inUseByAI: KnowledgeVisibility.PUBLIC,
+            },
+        ]
+
         it('disables selection for grouped rows', () => {
             renderComponent()
 
@@ -232,9 +243,21 @@ describe('KnowledgeHubTable - Row Interactions', () => {
             expect(checkbox).toBeDisabled()
         })
 
+        it('disables header select-all checkbox when all rows are non-selectable', () => {
+            renderComponent()
+
+            const selectAllCheckbox = screen.getByRole('checkbox', {
+                name: /select all/i,
+            })
+
+            expect(selectAllCheckbox).toBeDisabled()
+        })
+
         it('should reset selection when entering a snippet folder', async () => {
             const user = userEvent.setup()
-            const { rerender } = renderComponent()
+            const { rerender } = renderComponent({
+                data: dataWithSelectableRows,
+            })
 
             const checkboxes = screen.getAllByRole('checkbox')
             const firstCheckbox = checkboxes.find(
@@ -243,9 +266,7 @@ describe('KnowledgeHubTable - Row Interactions', () => {
             expect(firstCheckbox).toBeDefined()
 
             if (firstCheckbox) {
-                await act(async () => {
-                    await user.click(firstCheckbox)
-                })
+                await user.click(firstCheckbox)
                 expect(firstCheckbox).toBeChecked()
             }
 
@@ -258,7 +279,10 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 source: 'document-source',
             }
 
-            await rerenderComponent(rerender, { selectedFolder: snippetFolder })
+            await rerenderComponent(rerender, {
+                data: dataWithSelectableRows,
+                selectedFolder: snippetFolder,
+            })
 
             const updatedCheckboxes = screen.getAllByRole('checkbox')
             updatedCheckboxes.forEach((cb) => {
@@ -270,7 +294,9 @@ describe('KnowledgeHubTable - Row Interactions', () => {
 
         it('should reset selection when entering a URL folder', async () => {
             const user = userEvent.setup()
-            const { rerender } = renderComponent()
+            const { rerender } = renderComponent({
+                data: dataWithSelectableRows,
+            })
 
             const checkboxes = screen.getAllByRole('checkbox')
             const firstCheckbox = checkboxes.find(
@@ -278,9 +304,7 @@ describe('KnowledgeHubTable - Row Interactions', () => {
             )
 
             if (firstCheckbox) {
-                await act(async () => {
-                    await user.click(firstCheckbox)
-                })
+                await user.click(firstCheckbox)
                 expect(firstCheckbox).toBeChecked()
             }
 
@@ -293,7 +317,10 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 source: 'url-source',
             }
 
-            await rerenderComponent(rerender, { selectedFolder: urlFolder })
+            await rerenderComponent(rerender, {
+                data: dataWithSelectableRows,
+                selectedFolder: urlFolder,
+            })
 
             const updatedCheckboxes = screen.getAllByRole('checkbox')
             updatedCheckboxes.forEach((cb) => {
@@ -305,7 +332,9 @@ describe('KnowledgeHubTable - Row Interactions', () => {
 
         it('should reset selection when entering a Domain folder', async () => {
             const user = userEvent.setup()
-            const { rerender } = renderComponent()
+            const { rerender } = renderComponent({
+                data: dataWithSelectableRows,
+            })
 
             const checkboxes = screen.getAllByRole('checkbox')
             const firstCheckbox = checkboxes.find(
@@ -313,9 +342,7 @@ describe('KnowledgeHubTable - Row Interactions', () => {
             )
 
             if (firstCheckbox) {
-                await act(async () => {
-                    await user.click(firstCheckbox)
-                })
+                await user.click(firstCheckbox)
                 expect(firstCheckbox).toBeChecked()
             }
 
@@ -328,7 +355,10 @@ describe('KnowledgeHubTable - Row Interactions', () => {
                 source: 'domain-source',
             }
 
-            await rerenderComponent(rerender, { selectedFolder: domainFolder })
+            await rerenderComponent(rerender, {
+                data: dataWithSelectableRows,
+                selectedFolder: domainFolder,
+            })
 
             const updatedCheckboxes = screen.getAllByRole('checkbox')
             updatedCheckboxes.forEach((cb) => {
@@ -359,15 +389,13 @@ describe('KnowledgeHubTable - Row Interactions', () => {
             )
 
             if (firstCheckbox) {
-                await act(async () => {
-                    await user.click(firstCheckbox)
-                })
+                await user.click(firstCheckbox)
                 expect(firstCheckbox).toBeChecked()
             }
 
             await rerenderComponent(rerender, { selectedFolder: null })
 
-            const updatedCheckboxes = screen.getAllByRole('checkbox')
+            const updatedCheckboxes = screen.queryAllByRole('checkbox')
             updatedCheckboxes.forEach((cb) => {
                 if (cb.getAttribute('aria-label') !== 'Select all rows') {
                     expect(cb).not.toBeChecked()

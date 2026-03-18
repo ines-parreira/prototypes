@@ -3,6 +3,7 @@ import { SegmentEvent } from '@repo/logging'
 import type { ColumnDef, SortingState } from '@gorgias/axiom'
 import {
     Box,
+    CheckBoxField,
     createSelectableColumn,
     Icon,
     Skeleton,
@@ -47,9 +48,29 @@ const createSelectableColumnWithTooltip =
         const baseSelectableColumn =
             createSelectableColumn<GroupedKnowledgeItem>()
         const originalCell = baseSelectableColumn.cell
+        const originalHeader = baseSelectableColumn.header
 
         return {
             ...baseSelectableColumn,
+            header: (info) => {
+                const hasSelectableRows = info.table
+                    .getRowModel()
+                    .rows.some((row) => row.getCanSelect())
+
+                if (!hasSelectableRows) {
+                    return (
+                        <CheckBoxField
+                            isDisabled
+                            value={false}
+                            aria-label="Select all rows"
+                        />
+                    )
+                }
+
+                return typeof originalHeader === 'function'
+                    ? originalHeader(info)
+                    : null
+            },
             cell: (info) => {
                 const isGrouped = info.row.original.isGrouped
                 const rowType = info.row.original.type
@@ -82,7 +103,7 @@ const createSelectableColumnWithTooltip =
 
                 return checkboxContent
             },
-        }
+        } as ColumnDef<GroupedKnowledgeItem>
     }
 
 // Helper component for custom sortable column headers
