@@ -12,6 +12,7 @@ import {
 import { userEvent } from '@testing-library/user-event'
 import { MemoryRouter, Route } from 'react-router-dom'
 
+import { ExpandedMessagesProvider } from '../contexts/ExpandedMessages'
 import { TicketThreadLegacyBridgeProvider } from '../utils/LegacyBridge'
 import type {
     CurrentTicketRuleSuggestionData,
@@ -87,11 +88,15 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         ...options,
         wrapper: ({ children }) => (
             <TicketThreadLegacyBridgeProvider {...legacyBridgeProps}>
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter initialEntries={mergedOptions.initialEntries}>
-                        <Route path={mergedOptions.path}>{children}</Route>
-                    </MemoryRouter>
-                </QueryClientProvider>
+                <ExpandedMessagesProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <MemoryRouter
+                            initialEntries={mergedOptions.initialEntries}
+                        >
+                            <Route path={mergedOptions.path}>{children}</Route>
+                        </MemoryRouter>
+                    </QueryClientProvider>
+                </ExpandedMessagesProvider>
             </TicketThreadLegacyBridgeProvider>
         ),
     })
@@ -126,11 +131,15 @@ export const renderHook = <TProps, TResult>(
         ...options,
         wrapper: ({ children }) => (
             <TicketThreadLegacyBridgeProvider {...legacyBridgeProps}>
-                <QueryClientProvider client={queryClient}>
-                    <MemoryRouter initialEntries={mergedOptions.initialEntries}>
-                        <Route path={mergedOptions.path}>{children}</Route>
-                    </MemoryRouter>
-                </QueryClientProvider>
+                <ExpandedMessagesProvider>
+                    <QueryClientProvider client={queryClient}>
+                        <MemoryRouter
+                            initialEntries={mergedOptions.initialEntries}
+                        >
+                            <Route path={mergedOptions.path}>{children}</Route>
+                        </MemoryRouter>
+                    </QueryClientProvider>
+                </ExpandedMessagesProvider>
             </TicketThreadLegacyBridgeProvider>
         ),
     })

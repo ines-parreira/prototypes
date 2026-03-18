@@ -11,7 +11,7 @@ import {
 } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
 
-import { useTicketThreadDateTimeFormat } from '../../hooks/shared/useTicketThreadDateTimeFormat'
+import { useTicketThreadDateTimeFormat } from '../../../hooks/shared/useTicketThreadDateTimeFormat'
 import type { DeliveryStatus } from './DeliveryStatusIcon'
 import { DeliveryStatusIcon } from './DeliveryStatusIcon'
 

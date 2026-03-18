@@ -1,7 +1,9 @@
 import type { TicketThreadRegularMessageItem } from '../../hooks/messages/types'
-import { MessageBody } from '../MessageBubble/MessageBody'
+import { MessageBody } from '../MessageBubble/components/MessageBody'
+import { MessageFooter } from '../MessageBubble/components/MessageFooter'
+import { MessageHeader } from '../MessageBubble/components/MessageHeader'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
-import { MessageHeader } from '../MessageBubble/MessageHeader'
+import { useDisplayedTicketMessage } from './hooks/useDisplayedTicketMessage'
 
 type TicketMessageProps = {
     item: TicketThreadRegularMessageItem
@@ -13,6 +15,7 @@ export function TicketMessage({ item }: TicketMessageProps) {
         item.data.sender.meta as { profile_picture_url?: string } | null
     )?.profile_picture_url
     const channelIcon = item.data.channel === 'email' ? 'comm-mail' : null
+    const displayedItem = useDisplayedTicketMessage({ item })
 
     return (
         <MessageBubble>
@@ -29,7 +32,8 @@ export function TicketMessage({ item }: TicketMessageProps) {
                     sent_datetime: item.data.sent_datetime,
                 }}
             />
-            <MessageBody item={item} />
+            <MessageBody item={displayedItem} />
+            <MessageFooter item={displayedItem} />
         </MessageBubble>
     )
 }

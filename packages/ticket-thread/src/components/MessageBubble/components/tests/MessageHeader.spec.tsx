@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { Avatar } from '@gorgias/axiom'
 import type * as Axiom from '@gorgias/axiom'
 
-import { useTicketThreadDateTimeFormat } from '../../../hooks/shared/useTicketThreadDateTimeFormat'
+import { useTicketThreadDateTimeFormat } from '../../../../hooks/shared/useTicketThreadDateTimeFormat'
 import type { MessageHeaderProps } from '../MessageHeader'
 import { MessageHeader } from '../MessageHeader'
 
@@ -16,7 +16,7 @@ vi.mock('@gorgias/axiom', async (importOriginal) => {
     }
 })
 
-vi.mock('../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
+vi.mock('../../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(),
 }))
 

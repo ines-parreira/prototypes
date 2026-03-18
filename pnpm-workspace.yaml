@@ -181,3 +181,7 @@ catalogs:
     '@types/sanitize-html': '1.27.0'
     'urlsafe-base64': '1.0.0'
     '@types/urlsafe-base64': '1.0.28'
+  images:
+    'react-images': "^0.5.19"
+    '@types/react-images': "0.5.3"
+    'yet-another-react-lightbox': '^3.29.1'

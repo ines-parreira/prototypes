@@ -10,15 +10,19 @@ import classNames from 'classnames'
 
 import { Banner, IconName } from '@gorgias/axiom'
 
+import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
+import { getMessageContent } from './utils/getMessageContent'
+
 import css from './MessageBody.less'
 
-type MessageBodyItem = {
+export type MessageBodyItem = {
     data: {
         body_html?: string | null
         body_text?: string | null
         stripped_html?: string | null
         stripped_text?: string | null
         meta?: unknown
+        id?: number | null
     }
 }
 
@@ -27,29 +31,20 @@ type MessageBodyProps = {
 }
 
 export function MessageBody({ item }: MessageBodyProps) {
-    const { body_html, body_text, stripped_html, stripped_text, meta } =
-        item.data
+    const { meta } = item.data
+    const {
+        messageId,
+        content,
+        strippedContent,
+        isHtml,
+        isStripped,
+        isStrippedContentHtml,
+    } = getMessageContent(item)
+    const { isMessageExpanded } = useExpandedMessages()
+    const isExpanded = isMessageExpanded(messageId)
 
-    const trimmedHtml = body_html?.trim() || ''
-    const trimmedText = body_text?.trim() || ''
-    const trimmedStrippedHtml = stripped_html?.trim() || ''
-    const trimmedStrippedText = stripped_text?.trim() || ''
-    const content = trimmedHtml || trimmedText
-    const isHtml = !!trimmedHtml
-
-    const strippedContent =
-        trimmedHtml && trimmedStrippedHtml
-            ? trimmedStrippedHtml
-            : trimmedStrippedText
-
-    const isStripped = useMemo(
-        () =>
-            !!strippedContent &&
-            strippedContent.replace(/\s+/g, '') !== content.replace(/\s+/g, ''),
-        [content, strippedContent],
-    )
-
-    const contentToRender = isStripped ? strippedContent : content
+    const showingStrippedContent = isStripped && !isExpanded
+    const contentToRender = showingStrippedContent ? strippedContent : content
 
     const sanitizedHtml = useMemo(() => {
         const parsedMedia = parseMedia(contentToRender, '1000x')
@@ -68,17 +63,17 @@ export function MessageBody({ item }: MessageBodyProps) {
         body_text_truncated?: boolean
     } | null
 
-    const isTruncated = isStripped
-        ? trimmedHtml && trimmedStrippedHtml
-            ? messageMeta?.body_html_truncated
-            : messageMeta?.body_text_truncated
-        : trimmedHtml
-          ? messageMeta?.body_html_truncated
-          : messageMeta?.body_text_truncated
-
     if (!displayedContent && !isStripped) {
         return null
     }
+
+    const isTruncated = showingStrippedContent
+        ? isStrippedContentHtml
+            ? messageMeta?.body_html_truncated
+            : messageMeta?.body_text_truncated
+        : isHtml
+          ? messageMeta?.body_html_truncated
+          : messageMeta?.body_text_truncated
 
     return (
         <>

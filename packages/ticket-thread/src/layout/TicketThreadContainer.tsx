@@ -3,6 +3,8 @@ import { forwardRef } from 'react'
 import type { BoxProps } from '@gorgias/axiom'
 import { Box } from '@gorgias/axiom'
 
+import { ExpandedMessagesProvider } from '../contexts/ExpandedMessages'
+
 import css from './TicketThreadContainer.less'
 
 type TicketThreadContainerProps = BoxProps & {
@@ -14,8 +16,10 @@ export const TicketThreadContainer = forwardRef<
     TicketThreadContainerProps
 >(function TicketThreadContainer({ children, ...props }, ref) {
     return (
-        <Box className={css.ticketThreadContainer} ref={ref} {...props}>
-            {children}
-        </Box>
+        <ExpandedMessagesProvider>
+            <Box className={css.ticketThreadContainer} ref={ref} {...props}>
+                {children}
+            </Box>
+        </ExpandedMessagesProvider>
     )
 })

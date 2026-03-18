@@ -24,10 +24,12 @@
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-validators": "catalog:rest-api-sdk",
         "libphonenumber-js": "catalog:libphonenumber",
+        "lodash": "catalog:lodash",
         "@repo/config": "workspace:*",
         "@repo/hooks": "workspace:*",
         "@repo/preferences": "workspace:*",
         "@repo/teams": "workspace:*",
+        "@repo/tickets": "workspace:*",
         "@repo/users": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
@@ -37,6 +39,7 @@
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
+        "yet-another-react-lightbox": "catalog:images",
         "zod": "catalog:zod"
     },
     "devDependencies": {
@@ -49,6 +52,7 @@
         "@repo/hooks": "workspace:*",
         "@repo/preferences": "workspace:*",
         "@repo/teams": "workspace:*",
+        "@repo/tickets": "workspace:*",
         "@repo/types": "workspace:*",
         "@repo/users": "workspace:*",
         "@repo/utils": "workspace:*",
@@ -67,6 +71,7 @@
         "@vitest/coverage-v8": "catalog:test",
         "classnames": "catalog:styles",
         "libphonenumber-js": "catalog:libphonenumber",
+        "lodash": "catalog:lodash",
         "msw": "catalog:test",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
@@ -77,6 +82,7 @@
         "react-router-dom-v5-compat": "catalog:react-router",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
+        "yet-another-react-lightbox": "catalog:images",
         "zod": "catalog:zod"
     }
 }

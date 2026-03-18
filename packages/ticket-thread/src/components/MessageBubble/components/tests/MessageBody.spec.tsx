@@ -1,9 +1,10 @@
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
 
-import type { TicketThreadRegularMessageItem } from '../../../hooks/messages/types'
-import { TicketThreadItemTag } from '../../../hooks/types'
+import type { TicketThreadRegularMessageItem } from '../../../../hooks/messages/types'
+import { TicketThreadItemTag } from '../../../../hooks/types'
+import { render } from '../../../../tests/render.utils'
 import { MessageBody } from '../MessageBody'
 
 function makeItem(

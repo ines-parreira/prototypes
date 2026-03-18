@@ -1,11 +1,14 @@
+import type * as TicketsModule from '@repo/tickets'
 import { screen } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
 import {
+    mockGetTicketHandler,
     mockListIntegrationsHandler,
     mockListIntegrationsResponse,
     mockListUsersHandler,
     mockListUsersResponse,
+    mockTicket,
     mockTicketMessage,
 } from '@gorgias/helpdesk-mocks'
 
@@ -18,6 +21,25 @@ import { server } from '../../../tests/server'
 import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { TicketThreadItem as TicketThreadItemComponent } from '../TicketThreadItem'
 
+vi.mock('../../MessageBubble/components/TranslationsDropdown', () => ({
+    TranslationsDropdown: () => null,
+}))
+vi.mock('@repo/tickets', async () => {
+    const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
+    return {
+        ...actual,
+        useCurrentUserLanguagePreferences: vi.fn(() => ({
+            shouldShowTranslatedContent: () => false,
+        })),
+        useTicketMessageTranslations: vi.fn(() => ({
+            getMessageTranslation: () => null,
+        })),
+        useTicketMessageDisplayState: vi.fn(() => ({
+            display: actual.DisplayedContent.Original,
+        })),
+    }
+})
+
 vi.mock('../../../utils/LegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
 }))
@@ -25,8 +47,21 @@ vi.mock('../../../utils/LegacyBridge', () => ({
 const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
 
 beforeEach(() => {
+    window.GORGIAS_STATE = {
+        currentAccount: {
+            domain: 'acme',
+        },
+    }
+
     server.use(
         getCurrentUserHandler().handler,
+        mockGetTicketHandler(async ({ params }) =>
+            HttpResponse.json(
+                mockTicket({
+                    id: Number(params?.id ?? 1),
+                }),
+            ),
+        ).handler,
         mockListIntegrationsHandler(async () =>
             HttpResponse.json(
                 mockListIntegrationsResponse({

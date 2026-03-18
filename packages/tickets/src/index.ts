@@ -43,6 +43,7 @@ export { isInternalNote } from './helpers/isInternalNote'
 
 export { useCurrentUserId } from './hooks/useCurrentUserId'
 
+export { TicketTranslationMenu } from './translations/components/TicketTranslationMenu'
 export { useLiveTicketTranslationsUpdates } from './translations/hooks/useLiveTicketTranslationsUpdates/useLiveTicketTranslationsUpdates'
 export {
     useTicketMessageTranslationDisplay,

@@ -1,9 +1,9 @@
 import type { ReactNode } from 'react'
 
 import type { GoToLink } from '../../utils/buildGoToLink'
-import type { DeliveryStatus } from '../MessageBubble/DeliveryStatusIcon'
+import type { DeliveryStatus } from '../MessageBubble/components/DeliveryStatusIcon'
+import { MessageHeader } from '../MessageBubble/components/MessageHeader'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
-import { MessageHeader } from '../MessageBubble/MessageHeader'
 import { GoToLinkFooter } from './GoToLinkFooter'
 
 export type SocialMessageBubbleProps = {

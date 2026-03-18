@@ -22,7 +22,7 @@ const config: Config = {
         customExportConditions: ['msw'],
     },
     transformIgnorePatterns: [
-        '/node_modules/(?!.pnpm|jsonpath-plus|@gorgias|lodash-es|react-dnd|react-dnd-html5-backend|dnd-core|@react-dnd|react-markdown|rehype-raw|@xyflow|d3-|marked)',
+        '/node_modules/(?!.pnpm|jsonpath-plus|@gorgias|lodash-es|react-dnd|react-dnd-html5-backend|dnd-core|@react-dnd|react-markdown|rehype-raw|@xyflow|d3-|marked|yet-another-react-lightbox)',
     ],
 }
 

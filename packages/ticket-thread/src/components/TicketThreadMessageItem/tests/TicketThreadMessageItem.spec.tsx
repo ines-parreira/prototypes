@@ -1,6 +1,12 @@
+import type * as TicketsModule from '@repo/tickets'
 import { screen } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
 
-import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetTicketHandler,
+    mockTicket,
+    mockTicketMessage,
+} from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadMessageItem } from '../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
@@ -10,6 +16,22 @@ import { server } from '../../../tests/server'
 import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { TicketThreadMessageItem as TicketThreadMessageItemComponent } from '../TicketThreadMessageItem'
 
+vi.mock('@repo/tickets', async () => {
+    const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
+    return {
+        ...actual,
+        useCurrentUserLanguagePreferences: vi.fn(() => ({
+            shouldShowTranslatedContent: () => false,
+        })),
+        useTicketMessageTranslations: vi.fn(() => ({
+            getMessageTranslation: () => null,
+        })),
+        useTicketMessageDisplayState: vi.fn(() => ({
+            display: actual.DisplayedContent.Original,
+        })),
+    }
+})
+
 vi.mock('../../../utils/LegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
 }))
@@ -18,6 +40,22 @@ const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
 
 beforeEach(() => {
     server.use(getCurrentUserHandler().handler)
+    window.GORGIAS_STATE = {
+        currentAccount: {
+            domain: 'acme',
+        },
+    }
+
+    server.use(
+        http.get('/api/users/:id', () => HttpResponse.json({})),
+        mockGetTicketHandler(async ({ params }) =>
+            HttpResponse.json(
+                mockTicket({
+                    id: Number(params?.id ?? 1),
+                }),
+            ),
+        ).handler,
+    )
     mockUseTicketThreadLegacyBridge.mockReturnValue({
         currentTicketShoppingAssistantData: {
             influencedOrders: [],
