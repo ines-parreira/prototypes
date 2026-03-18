@@ -68,5 +68,13 @@ export const AIJourneyDrillDownConfig: DomainConfig<AIJourneyMetric> = {
             AIJourneyMetricsConfig[AIJourneyMetric.DiscountCodesGenerated],
         [AIJourneyMetric.DiscountCodesUsed]:
             AIJourneyMetricsConfig[AIJourneyMetric.DiscountCodesUsed],
+        [AIJourneyMetric.TotalConversations]:
+            AIJourneyMetricsConfig[AIJourneyMetric.TotalConversations],
+        [AIJourneyMetric.TotalOptOuts]:
+            AIJourneyMetricsConfig[AIJourneyMetric.TotalOptOuts],
+        [AIJourneyMetric.TotalReplies]:
+            AIJourneyMetricsConfig[AIJourneyMetric.TotalReplies],
+        [AIJourneyMetric.OptOutAfterReply]:
+            AIJourneyMetricsConfig[AIJourneyMetric.OptOutAfterReply],
     },
 }

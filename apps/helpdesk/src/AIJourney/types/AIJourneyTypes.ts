@@ -1,3 +1,10 @@
+import type {
+    MetricTrend,
+    MetricTrendFormat,
+    TooltipData,
+    TrendDirection,
+} from '@repo/reporting'
+
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import type { MetricValueFormat } from 'domains/reporting/pages/common/utils'
@@ -10,6 +17,18 @@ export enum AIJourneyMetric {
     ClickThroughRate = 'aiJourneyClickThroughRate',
     DiscountCodesGenerated = 'aiJourneyDiscountCodesGenerated',
     DiscountCodesUsed = 'aiJourneyDiscountCodesUsed',
+    TotalConversations = 'aiJourneyTotalConversations',
+    TotalOptOuts = 'aiJourneyTotalOptOuts',
+    TotalReplies = 'aiJourneyTotalReplies',
+    OptOutAfterReply = 'aiJourneyOptOutAfterReply',
+}
+
+export type AIJourneyMetricResult = {
+    trend: MetricTrend
+    interpretAs: TrendDirection
+    metricFormat: MetricTrendFormat
+    hint: TooltipData
+    drilldownMetricName?: AIJourneyMetric
 }
 
 export type AIJourneyMetrics = {
@@ -61,6 +80,30 @@ export const AIJourneyMetricsConfig: Record<
     },
     [AIJourneyMetric.DiscountCodesUsed]: {
         title: 'Discount Codes Used',
+        metricFormat: 'decimal',
+        showMetric: false,
+        domain: Domain.AIJourney,
+    },
+    [AIJourneyMetric.TotalConversations]: {
+        title: 'Total Conversations',
+        metricFormat: 'decimal-precision-1',
+        showMetric: false,
+        domain: Domain.AIJourney,
+    },
+    [AIJourneyMetric.TotalOptOuts]: {
+        title: 'Total Opt-outs',
+        metricFormat: 'decimal',
+        showMetric: false,
+        domain: Domain.AIJourney,
+    },
+    [AIJourneyMetric.TotalReplies]: {
+        title: 'Total Replies',
+        metricFormat: 'decimal',
+        showMetric: false,
+        domain: Domain.AIJourney,
+    },
+    [AIJourneyMetric.OptOutAfterReply]: {
+        title: 'Opt-out After Reply',
         metricFormat: 'decimal',
         showMetric: false,
         domain: Domain.AIJourney,

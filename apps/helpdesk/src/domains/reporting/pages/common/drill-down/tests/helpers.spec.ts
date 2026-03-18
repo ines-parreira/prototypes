@@ -3,9 +3,13 @@ import moment from 'moment'
 
 import {
     aiJourneyClickThroughRateDrillDownQueryFactory,
+    aiJourneyOptOutAfterReplyDrillDownQueryFactory,
     aiJourneyOptOutRateDrillDownQueryFactory,
     aiJourneyOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
+    aiJourneyTotalConversationsDrillDownQueryFactory,
+    aiJourneyTotalOptOutsDrillDownQueryFactory,
+    aiJourneyTotalRepliesDrillDownQueryFactory,
 } from 'AIJourney/queries/aiJourneyDrillDownQueries'
 import type { AIJourneyMetrics } from 'AIJourney/types/AIJourneyTypes'
 import {
@@ -248,6 +252,18 @@ const aiJourneyOptOutRateDrillDownQueryFactoryMock = assumeMock(
 )
 const aiJourneyClickThroughRateDrillDownQueryFactoryMock = assumeMock(
     aiJourneyClickThroughRateDrillDownQueryFactory,
+)
+const aiJourneyTotalConversationsDrillDownQueryFactoryMock = assumeMock(
+    aiJourneyTotalConversationsDrillDownQueryFactory,
+)
+const aiJourneyTotalOptOutsDrillDownQueryFactoryMock = assumeMock(
+    aiJourneyTotalOptOutsDrillDownQueryFactory,
+)
+const aiJourneyTotalRepliesDrillDownQueryFactoryMock = assumeMock(
+    aiJourneyTotalRepliesDrillDownQueryFactory,
+)
+const aiJourneyOptOutAfterReplyDrillDownQueryFactoryMock = assumeMock(
+    aiJourneyOptOutAfterReplyDrillDownQueryFactory,
 )
 
 const knowledgeTicketsDrillDownQueryFactoryMock = assumeMock(
@@ -598,6 +614,28 @@ describe('getDrillDownQuery', () => {
             title: AIJourneyMetricsConfig[AIJourneyMetric.ClickThroughRate]
                 .title,
             metricName: AIJourneyMetric.ClickThroughRate,
+            integrationId: '123',
+        },
+        {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.TotalConversations]
+                .title,
+            metricName: AIJourneyMetric.TotalConversations,
+            integrationId: '123',
+        },
+        {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.TotalOptOuts].title,
+            metricName: AIJourneyMetric.TotalOptOuts,
+            integrationId: '123',
+        },
+        {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.TotalReplies].title,
+            metricName: AIJourneyMetric.TotalReplies,
+            integrationId: '123',
+        },
+        {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.OptOutAfterReply]
+                .title,
+            metricName: AIJourneyMetric.OptOutAfterReply,
             integrationId: '123',
         },
     ]
@@ -1561,6 +1599,112 @@ describe('getDrillDownQuery', () => {
             aiJourneyClickThroughRateDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(statsFilters, timezone, '789', undefined, [
             'click-through-journey-id',
+        ])
+    })
+
+    it('should be populated with AIJourneyMetric.TotalConversations', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AIJourneyMetrics = {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.TotalConversations]
+                .title,
+            metricName: AIJourneyMetric.TotalConversations,
+            integrationId: '123',
+            journeyIds: ['total-conversations-journey-id'],
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            aiJourneyTotalConversationsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone, '123', undefined, [
+            'total-conversations-journey-id',
+        ])
+    })
+
+    it('should be populated with AIJourneyMetric.TotalOptOuts', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AIJourneyMetrics = {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.TotalOptOuts].title,
+            metricName: AIJourneyMetric.TotalOptOuts,
+            integrationId: '456',
+            journeyIds: ['total-opt-outs-journey-id'],
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            aiJourneyTotalOptOutsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone, '456', undefined, [
+            'total-opt-outs-journey-id',
+        ])
+    })
+
+    it('should be populated with AIJourneyMetric.TotalReplies', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AIJourneyMetrics = {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.TotalReplies].title,
+            metricName: AIJourneyMetric.TotalReplies,
+            integrationId: '789',
+            journeyIds: ['total-replies-journey-id'],
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            aiJourneyTotalRepliesDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone, '789', undefined, [
+            'total-replies-journey-id',
+        ])
+    })
+
+    it('should be populated with AIJourneyMetric.OptOutAfterReply', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AIJourneyMetrics = {
+            title: AIJourneyMetricsConfig[AIJourneyMetric.OptOutAfterReply]
+                .title,
+            metricName: AIJourneyMetric.OptOutAfterReply,
+            integrationId: '321',
+            journeyIds: ['opt-out-after-reply-journey-id'],
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            aiJourneyOptOutAfterReplyDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone, '321', undefined, [
+            'opt-out-after-reply-journey-id',
         ])
     })
 

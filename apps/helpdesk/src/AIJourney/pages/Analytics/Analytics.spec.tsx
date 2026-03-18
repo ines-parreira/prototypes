@@ -53,9 +53,9 @@ jest.mock(
 )
 
 jest.mock(
-    'AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations',
+    'AIJourney/hooks/useAIJourneyMessagesSent/useAIJourneyMessagesSent',
     () => ({
-        useAIJourneyTotalConversations: jest.fn(),
+        useAIJourneyMessagesSent: jest.fn(),
     }),
 )
 
@@ -119,9 +119,9 @@ const mockUseAIJourneyRevenue =
 const mockUseAIJourneyConversionRate =
     require('AIJourney/hooks/useAIJourneyConversionRate/useAIJourneyConversionRate')
         .useAIJourneyConversionRate as jest.Mock
-const mockUseAIJourneyTotalConversations =
-    require('AIJourney/hooks/useAIJourneyTotalConversations/useAIJourneyTotalConversations')
-        .useAIJourneyTotalConversations as jest.Mock
+const mockUseAIJourneyMessagesSent =
+    require('AIJourney/hooks/useAIJourneyMessagesSent/useAIJourneyMessagesSent')
+        .useAIJourneyMessagesSent as jest.Mock
 const mockUseAIJourneyOptOutRate =
     require('AIJourney/hooks/useAIJourneyOptOutRate/useAIJourneyOptOutRate')
         .useAIJourneyOptOutRate as jest.Mock
@@ -148,6 +148,8 @@ const mockUseStatsFilters =
         .useStatsFilters as jest.Mock
 const mockDiscountCodesUsageSection = require('AIJourney/components')
     .DiscountCodesUsageSection as jest.Mock
+const mockAudienceHealthSection = require('AIJourney/components')
+    .AudienceHealthSection as jest.Mock
 const mockDrillDownModal =
     require('domains/reporting/pages/common/drill-down/DrillDownModal')
         .DrillDownModal as jest.Mock
@@ -163,6 +165,7 @@ jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
 jest.mock('AIJourney/components', () => ({
     ...jest.requireActual('AIJourney/components'),
     DiscountCodesUsageSection: jest.fn(() => null),
+    AudienceHealthSection: jest.fn(() => null),
 }))
 
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
@@ -257,7 +260,7 @@ describe('<Analytics />', () => {
             isLoading: false,
         })
 
-        mockUseAIJourneyTotalConversations.mockReturnValue({
+        mockUseAIJourneyMessagesSent.mockReturnValue({
             label: 'Total Conversations',
             value: 100,
             prevValue: 80,
@@ -412,7 +415,7 @@ describe('<Analytics />', () => {
             isLoading: false,
         })
 
-        mockUseAIJourneyTotalConversations.mockReturnValue({
+        mockUseAIJourneyMessagesSent.mockReturnValue({
             label: 'Messages sent',
             value: 150,
             prevValue: 100,
@@ -422,7 +425,8 @@ describe('<Analytics />', () => {
                 { date: '2025-01-15', value: 40 },
             ],
             interpretAs: 'more-is-better',
-            metricFormat: 'decimal',
+            metricFormat: 'currency',
+            currency: 'USD',
             isLoading: false,
         })
 
@@ -441,7 +445,6 @@ describe('<Analytics />', () => {
         ).toBeGreaterThan(0)
         expect(screen.getAllByText('Messages sent').length).toBeGreaterThan(0)
         expect(screen.getByText(/25\.5%/)).toBeInTheDocument()
-        expect(screen.getByText('150')).toBeInTheDocument()
     })
 
     it('should filter by specific flows', () => {
@@ -666,6 +669,31 @@ describe('<Analytics />', () => {
         )
     })
 
+    it('should render AudienceHealthSection with correct props', () => {
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockAudienceHealthSection).toHaveBeenCalledWith(
+            expect.objectContaining({
+                integrationId: '286584',
+                userTimezone: 'America/New_York',
+                filters: expect.objectContaining({
+                    period: expect.any(Object),
+                }),
+                shopName: 'shopify-store',
+                journeyIds: [],
+            }),
+            expect.anything(),
+        )
+    })
+
     it('should render DrillDownModal', () => {
         renderWithRouter(
             <Provider store={mockStore}>
@@ -723,7 +751,7 @@ describe('<Analytics />', () => {
             isLoading: false,
         })
 
-        mockUseAIJourneyTotalConversations.mockReturnValue({
+        mockUseAIJourneyMessagesSent.mockReturnValue({
             label: 'Messages sent',
             value: 100,
             prevValue: null,

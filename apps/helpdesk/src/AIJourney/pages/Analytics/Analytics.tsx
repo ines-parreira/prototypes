@@ -15,11 +15,14 @@ import {
     Size,
 } from '@gorgias/axiom'
 
-import { DiscountCodesUsageSection } from 'AIJourney/components'
+import {
+    AudienceHealthSection,
+    DiscountCodesUsageSection,
+} from 'AIJourney/components'
 import {
     useAIJourneyConversionRate,
+    useAIJourneyMessagesSent,
     useAIJourneyResponseRate,
-    useAIJourneyTotalConversations,
     useAIJourneyTotalOrders,
     useAIJourneyTotalSales,
     useAverageOrderValue,
@@ -137,7 +140,7 @@ export const Analytics = () => {
         journeysIdsToFilter,
     )
 
-    const totalRecipients = useAIJourneyTotalConversations(
+    const totalMessagesSent = useAIJourneyMessagesSent(
         integrationId,
         userTimezone,
         filters,
@@ -153,6 +156,7 @@ export const Analytics = () => {
         granularity,
         journeysIdsToFilter,
     )
+
     const revenuePerRecipient = useRevenuePerRecipient(
         integrationId,
         userTimezone,
@@ -294,16 +298,16 @@ export const Analytics = () => {
             id: 'Messages sent',
             label: 'Messages sent',
             hint: 'The total number of messages successfully sent during the selected date range.',
-            interpretAs: totalRecipients.interpretAs,
-            isLoading: totalRecipients.isLoading,
+            interpretAs: totalMessagesSent.interpretAs,
+            isLoading: totalMessagesSent.isLoading,
             metricFormat: 'decimal' as MetricTrendFormat,
-            series: seriesToTwoDimensionalDataItem(totalRecipients.series, {
+            series: seriesToTwoDimensionalDataItem(totalMessagesSent.series, {
                 label: 'Messages sent',
                 ...seriesBaseOptions,
             }),
             trend: {
-                prevValue: totalRecipients.prevValue ?? null,
-                value: totalRecipients.value,
+                prevValue: totalMessagesSent.prevValue ?? null,
+                value: totalMessagesSent.value,
             },
         },
     ]
@@ -448,6 +452,13 @@ export const Analytics = () => {
                     integrationId={integrationId}
                     userTimezone={userTimezone}
                     filters={filters}
+                    journeyIds={journeysIdsToFilter}
+                />
+                <AudienceHealthSection
+                    integrationId={integrationId}
+                    userTimezone={userTimezone}
+                    filters={filters}
+                    shopName={shopName}
                     journeyIds={journeysIdsToFilter}
                 />
                 <DrillDownModal />

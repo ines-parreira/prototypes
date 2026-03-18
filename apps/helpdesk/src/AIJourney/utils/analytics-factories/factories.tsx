@@ -148,6 +148,75 @@ export const aiJourneyTotalNumberOfOrderQueryFactory = (
     }
 }
 
+export const aiJourneyTotalMessagesQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const baseFilters = statsFiltersToReportingFilters(
+        aiSalesAgentConversationsDefaultFiltersMembers,
+        filters,
+    )
+
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_MESSAGES,
+        measures: [AiSalesAgentConversationsMeasure.AiJourneyTotalMessages],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
+            ...baseFilters,
+            ...journeyFilter,
+        ],
+        timezone,
+    }
+}
+
+export const aiJourneyTotalMessagesTimeSeriesQuery = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    journeyIds?: string[],
+): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
+    return {
+        ...aiJourneyTotalMessagesQueryFactory(
+            integrationId,
+            filters,
+            timezone,
+            journeyIds,
+        ),
+        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_MESSAGES_TIME_SERIES,
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentConversationsDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
+    }
+}
+
 export const aiJourneyOrderMeasuresPerJourneyQueryFactory = (
     integrationId: string,
     filters: StatsFilters,
@@ -436,6 +505,58 @@ export const aiJourneyOptedOutQueryFactory = (
     }
 }
 
+export const aiJourneyOptedOutAfterReplyQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_OPTED_OUT_AFTER_REPLY,
+        measures: [AiSalesAgentConversationsMeasure.Count],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.ReplyCount,
+                operator: ReportingFilterOperator.Gt,
+                values: ['1'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.JourneyCompleteReason,
+                operator: ReportingFilterOperator.Equals,
+                values: [JOURNEY_COMPLETE_REASON.OPTED_OUT],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentConversationsDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
+    }
+}
+
 export const aiJourneyOptedOutTimeSeriesQuery = (
     integrationId: string,
     filters: StatsFilters,
@@ -666,31 +787,6 @@ export const aiJourneyTotalConversationsQueryFactory = (
             ...journeyFilter,
         ],
         timezone,
-    }
-}
-
-export const aiJourneyTotalConversationsTimeSeriesQuery = (
-    integrationId: string,
-    filters: StatsFilters,
-    timezone: string,
-    granularity: ReportingGranularity,
-    journeyIds?: string[],
-): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
-    return {
-        ...aiJourneyTotalConversationsQueryFactory(
-            integrationId,
-            filters,
-            timezone,
-            journeyIds,
-        ),
-        metricName: METRIC_NAMES.AI_JOURNEY_TOTAL_CONVERSATIONS_TIME_SERIES,
-        timeDimensions: [
-            {
-                dimension: AiSalesAgentConversationsDimension.PeriodStart,
-                granularity,
-                dateRange: getFilterDateRange(filters.period),
-            },
-        ],
     }
 }
 

@@ -1,49 +1,26 @@
 import { useMemo } from 'react'
 
+import { useAIJourneyTotalOptOuts } from 'AIJourney/hooks/useAIJourneyTotalOptOuts/useAIJourneyTotalOptOuts'
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
-import {
-    AIJourneyMetric,
-    AIJourneyMetricsConfig,
-} from 'AIJourney/types/AIJourneyTypes'
-import type { MetricProps } from 'AIJourney/types/AIJourneyTypes'
+import type { AIJourneyMetricResult } from 'AIJourney/types/AIJourneyTypes'
 import { calculateRatiusToPercentage } from 'AIJourney/utils'
-import {
-    aiJourneyOptedOutQueryFactory,
-    aiJourneyOptedOutTimeSeriesQuery,
-    aiJourneyTotalNumberOfSalesConversationsQueryFactory,
-    aiJourneyTotalNumberOfSalesConversationsTimeSeriesQuery,
-} from 'AIJourney/utils/analytics-factories/factories'
+import { aiJourneyTotalNumberOfSalesConversationsQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
-import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 export const useAIJourneyOptOutRate = (
     integrationId: string,
     userTimezone: string,
     filters: FilterType,
-    granularity: ReportingGranularity,
     shopName: string,
     journeyIds?: string[],
-): MetricProps => {
-    const { data: optedOutData, isFetching: isFetchingOptedOutData } =
-        useMetricTrend(
-            aiJourneyOptedOutQueryFactory(
-                integrationId,
-                filters,
-                userTimezone,
-                journeyIds,
-            ),
-            aiJourneyOptedOutQueryFactory(
-                integrationId,
-                {
-                    ...filters,
-                    period: getPreviousPeriod(filters.period),
-                },
-                userTimezone,
-                journeyIds,
-            ),
-        )
+): AIJourneyMetricResult => {
+    const { trend: optedOutTrend } = useAIJourneyTotalOptOuts(
+        integrationId,
+        userTimezone,
+        filters,
+        journeyIds,
+    )
 
     const {
         data: totalContactsEnrolled,
@@ -66,84 +43,37 @@ export const useAIJourneyOptOutRate = (
         ),
     )
 
-    const {
-        data: optedOutTimeSeriesData,
-        isFetching: isFetchingOptedOutSeries,
-    } = useTimeSeries(
-        aiJourneyOptedOutTimeSeriesQuery(
-            integrationId,
-            filters,
-            userTimezone,
-            granularity,
-            journeyIds,
-        ),
-    )
-
-    const {
-        data: conversationsTimeSeriesData,
-        isFetching: isFetchingConversationsSeries,
-    } = useTimeSeries(
-        aiJourneyTotalNumberOfSalesConversationsTimeSeriesQuery(
-            integrationId,
-            filters,
-            userTimezone,
-            granularity,
-            journeyIds,
-        ),
-    )
+    const isFetching =
+        optedOutTrend.isFetching || isFetchingTotalContactsEnrolled
 
     const optOutRateValue = useMemo(() => {
         return calculateRatiusToPercentage({
-            numerator: optedOutData?.value,
+            numerator: optedOutTrend.data?.value,
             denominator: totalContactsEnrolled?.value,
         })
-    }, [optedOutData, totalContactsEnrolled])
+    }, [optedOutTrend.data, totalContactsEnrolled])
 
     const optOutRatePrevValue = useMemo(() => {
         return calculateRatiusToPercentage({
-            numerator: optedOutData?.prevValue,
+            numerator: optedOutTrend.data?.prevValue,
             denominator: totalContactsEnrolled?.prevValue,
         })
-    }, [optedOutData, totalContactsEnrolled])
-
-    const optOutRateTimeSeries = useMemo(() => {
-        if (
-            !optedOutTimeSeriesData?.length ||
-            !conversationsTimeSeriesData?.length
-        ) {
-            return []
-        }
-
-        return optedOutTimeSeriesData[0].map((optedOutData, index) => {
-            const conversationsData = conversationsTimeSeriesData[0][index]
-            return {
-                ...optedOutData,
-                value: calculateRatiusToPercentage({
-                    numerator: optedOutData.value,
-                    denominator: conversationsData?.value,
-                }),
-            }
-        })
-    }, [optedOutTimeSeriesData, conversationsTimeSeriesData])
+    }, [optedOutTrend.data, totalContactsEnrolled])
 
     return {
-        label: AIJourneyMetricsConfig[AIJourneyMetric.OptOutRate].title,
-        value: optOutRateValue,
-        prevValue: optOutRatePrevValue,
-        series: optOutRateTimeSeries,
+        trend: {
+            isFetching,
+            isError: false,
+            data: {
+                label: 'Opt-out rate',
+                value: isFetching ? null : optOutRateValue,
+                prevValue: optOutRatePrevValue ?? null,
+            },
+        },
         interpretAs: 'less-is-better',
-        metricFormat: 'percent-precision-1',
-        isLoading:
-            isFetchingOptedOutData ||
-            isFetchingTotalContactsEnrolled ||
-            isFetchingOptedOutSeries ||
-            isFetchingConversationsSeries,
-        drilldown: {
-            title: AIJourneyMetricsConfig[AIJourneyMetric.OptOutRate].title,
-            metricName: AIJourneyMetric.OptOutRate,
-            integrationId,
-            journeyIds,
-            shopName,
+        metricFormat: 'percent',
+        hint: {
+            title: 'Percentage of recipients who unsubscribed after receiving a message.',
         },
     }
 }

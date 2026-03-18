@@ -1,8 +1,10 @@
 import {
     AIJourneyDiscountCodesOfferedQueryFactory,
     AIJourneyDiscountCodesUsedQueryFactory,
+    aiJourneyOptedOutAfterReplyQueryFactory,
     aiJourneyOptedOutQueryFactory,
     aiJourneyRepliedMessagesQueryFactory,
+    aiJourneyTotalConversationsQueryFactory,
     aiJourneyTotalNumberOfOrderQueryFactory,
     aiJourneyUniqClicksQueryFactory,
 } from 'AIJourney/utils/analytics-factories/factories'
@@ -172,6 +174,106 @@ export const aiJourneyDiscountCodesUsedDrillDownQueryFactory = (
     ...(sorting
         ? {
               order: [[AiSalesAgentOrdersDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
+export const aiJourneyTotalConversationsDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    integrationId: string,
+    sorting?: OrderDirection,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...aiJourneyTotalConversationsQueryFactory(
+        integrationId,
+        filters,
+        timezone,
+        journeyIds,
+    ),
+    measures: [],
+    dimensions: [AiSalesAgentConversationsDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
+export const aiJourneyTotalOptOutsDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    integrationId: string,
+    sorting?: OrderDirection,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...aiJourneyOptedOutQueryFactory(
+        integrationId,
+        filters,
+        timezone,
+        journeyIds,
+    ),
+    measures: [],
+    dimensions: [AiSalesAgentConversationsDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
+export const aiJourneyTotalRepliesDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    integrationId: string,
+    sorting?: OrderDirection,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...aiJourneyRepliedMessagesQueryFactory(
+        integrationId,
+        filters,
+        timezone,
+        journeyIds,
+    ),
+    measures: [],
+    dimensions: [AiSalesAgentConversationsDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
+          }
+        : {
+              order: [],
+          }),
+})
+
+export const aiJourneyOptOutAfterReplyDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    integrationId: string,
+    sorting?: OrderDirection,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => ({
+    ...aiJourneyOptedOutAfterReplyQueryFactory(
+        integrationId,
+        filters,
+        timezone,
+        journeyIds,
+    ),
+    measures: [],
+    dimensions: [AiSalesAgentConversationsDimension.TicketId],
+    limit: DRILLDOWN_QUERY_LIMIT,
+    ...(sorting
+        ? {
+              order: [[AiSalesAgentConversationsDimension.TicketId, sorting]],
           }
         : {
               order: [],

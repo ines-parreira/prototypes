@@ -7,7 +7,7 @@ export { useAIJourneyProductList } from './useAIJourneyProductList/useAIJourneyP
 export { useGeneratePlaygroundMessage } from './useGeneratePlaygroundMessage/useGeneratePlaygroundMessage'
 export { useHandleSendTestSMS } from './useHandleSendTestSMS/useHandleSendTestSMS'
 export { useFilters } from './useFilters/useFilters'
-export { useAIJourneyTotalConversations } from './useAIJourneyTotalConversations/useAIJourneyTotalConversations'
+export { useAIJourneyMessagesSent } from './useAIJourneyMessagesSent/useAIJourneyMessagesSent'
 export { useAverageOrderValue } from './useAverageOrderValue/useAverageOrderValue'
 export { useRevenuePerRecipient } from './useRevenuePerRecipient/useRevenuePerRecipient'
 export { useAIJourneyTotalSales } from './useAIJourneyTotalSales/useAIJourneyTotalSales'
@@ -17,3 +17,4 @@ export { useAIJourneyResponseRate } from './useAIJourneyResponseRate/useAIJourne
 export { useClickThroughRate } from './useClickThroughRate/useClickThroughRate'
 export { useAIJourneyConversionRate } from './useAIJourneyConversionRate/useAIJourneyConversionRate'
 export { useAIJourneyDiscountCodeUsageMetrics } from './useAIJourneyDiscountCodeUsageMetrics/useAIJourneyDiscountCodeUsageMetrics'
+export { useAIJourneyTotalReplies } from './useAIJourneyTotalReplies/useAIJourneyTotalReplies'

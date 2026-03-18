@@ -2,9 +2,13 @@ import {
     aiJourneyClickThroughRateDrillDownQueryFactory,
     aiJourneyDiscountCodesGeneratedDrillDownQueryFactory,
     aiJourneyDiscountCodesUsedDrillDownQueryFactory,
+    aiJourneyOptOutAfterReplyDrillDownQueryFactory,
     aiJourneyOptOutRateDrillDownQueryFactory,
     aiJourneyOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
+    aiJourneyTotalConversationsDrillDownQueryFactory,
+    aiJourneyTotalOptOutsDrillDownQueryFactory,
+    aiJourneyTotalRepliesDrillDownQueryFactory,
 } from 'AIJourney/queries/aiJourneyDrillDownQueries'
 import type { AIJourneyMetrics } from 'AIJourney/types/AIJourneyTypes'
 import {
@@ -555,6 +559,62 @@ export const getDrillDownQuery = (
                 sorting?: OrderDirection,
             ) =>
                 aiJourneyDiscountCodesUsedDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyIds,
+                )
+        }
+        case AIJourneyMetric.TotalConversations: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneyTotalConversationsDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyIds,
+                )
+        }
+        case AIJourneyMetric.TotalOptOuts: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneyTotalOptOutsDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyIds,
+                )
+        }
+        case AIJourneyMetric.TotalReplies: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneyTotalRepliesDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyIds,
+                )
+        }
+        case AIJourneyMetric.OptOutAfterReply: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneyOptOutAfterReplyDrillDownQueryFactory(
                     statsFilters,
                     timezone,
                     metricData.integrationId,

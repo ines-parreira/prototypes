@@ -1,24 +1,24 @@
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import type { AIJourneyMetricResult } from 'AIJourney/types/AIJourneyTypes'
-import { aiJourneyTotalConversationsQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
+import { aiJourneyOptedOutQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-export const useAIJourneyTotalConversations = (
+export const useAIJourneyTotalOptOuts = (
     integrationId: string,
     userTimezone: string,
     filters: FilterType,
     journeyIds?: string[],
 ): AIJourneyMetricResult => {
     const { data: trendData, isFetching } = useMetricTrend(
-        aiJourneyTotalConversationsQueryFactory(
+        aiJourneyOptedOutQueryFactory(
             integrationId,
             filters,
             userTimezone,
             journeyIds,
         ),
-        aiJourneyTotalConversationsQueryFactory(
+        aiJourneyOptedOutQueryFactory(
             integrationId,
             {
                 ...filters,
@@ -34,16 +34,16 @@ export const useAIJourneyTotalConversations = (
             isFetching,
             isError: false,
             data: {
-                label: 'Recipients',
+                label: 'Total opted-out',
                 value: isFetching ? null : (trendData?.value ?? null),
                 prevValue: trendData?.prevValue ?? null,
             },
         },
-        interpretAs: 'more-is-better',
+        interpretAs: 'less-is-better',
         metricFormat: 'decimal',
         hint: {
-            title: 'Unique customers who received at least 1 message during the selected date range.',
+            title: 'Total number of recipients who unsubscribed after receiving a message.',
         },
-        drilldownMetricName: AIJourneyMetric.TotalConversations,
+        drilldownMetricName: AIJourneyMetric.TotalOptOuts,
     }
 }

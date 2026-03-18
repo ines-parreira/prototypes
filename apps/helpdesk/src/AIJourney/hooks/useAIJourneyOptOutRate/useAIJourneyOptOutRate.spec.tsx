@@ -1,14 +1,11 @@
 import { renderHook } from '@testing-library/react'
 
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
-import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
-import { ReportingGranularity } from 'domains/reporting/models/types'
 
 import { useAIJourneyOptOutRate } from './useAIJourneyOptOutRate'
 
 jest.mock('domains/reporting/hooks/useMetricTrend')
-jest.mock('domains/reporting/hooks/useTimeSeries')
 
 describe('useAIJourneyOptOutRate', () => {
     beforeEach(() => {
@@ -22,7 +19,7 @@ describe('useAIJourneyOptOutRate', () => {
         },
     }
 
-    it('should return correct data when values are available', () => {
+    it('should return correct trend data when values are available', () => {
         ;(useMetricTrend as jest.Mock).mockImplementation((args) => {
             if (
                 args.filters.find(
@@ -42,104 +39,45 @@ describe('useAIJourneyOptOutRate', () => {
                 isFetching: false,
             }
         })
-        ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
-            if (
-                args.filters.find(
-                    (f: any) =>
-                        f.member ===
-                        AiSalesAgentConversationsDimension.JourneyCompleteReason,
-                )
-            ) {
-                return {
-                    data: [
-                        [
-                            { dateTime: '2025-07-03', value: 10 },
-                            { dateTime: '2025-07-10', value: 20 },
-                        ],
-                    ],
-                    isFetching: false,
-                }
-            }
-
-            return {
-                data: [
-                    [
-                        { dateTime: '2025-07-03', value: 100 },
-                        { dateTime: '2025-07-10', value: 100 },
-                    ],
-                ],
-                isFetching: false,
-            }
-        })
-
-        const userTimezone = 'America/New_York'
 
         const { result } = renderHook(() =>
             useAIJourneyOptOutRate(
                 '123',
-                userTimezone,
+                'America/New_York',
                 mockFilters,
-                ReportingGranularity.Week,
                 'shopName',
             ),
         )
 
         expect(result.current).toEqual({
-            label: 'Opt Out Rate',
-            value: 50,
-            isLoading: false,
+            trend: {
+                isFetching: false,
+                isError: false,
+                data: {
+                    label: 'Opt-out rate',
+                    value: 50,
+                    prevValue: 40,
+                },
+            },
             interpretAs: 'less-is-better',
-            metricFormat: 'percent-precision-1',
-            prevValue: 40,
-            series: [
-                { dateTime: '2025-07-03', value: 10 },
-                { dateTime: '2025-07-10', value: 20 },
-            ],
-            drilldown: {
-                integrationId: '123',
-                journeyId: undefined,
-                metricName: 'aiJourneyOptOutRate',
-                shopName: 'shopName',
-                title: 'Opt Out Rate',
+            metricFormat: 'percent',
+            hint: {
+                title: 'Percentage of recipients who unsubscribed after receiving a message.',
             },
         })
     })
 
-    it('should handle loading state correctly', () => {
+    it('should return null values when loading', () => {
         ;(useMetricTrend as jest.Mock).mockReturnValue({
-            data: undefined,
-            isFetching: true,
-        })
-        ;(useTimeSeries as jest.Mock).mockReturnValue({
             data: undefined,
             isFetching: true,
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyOptOutRate(
-                '123',
-                'UTC',
-                mockFilters,
-                ReportingGranularity.Week,
-                'shopName',
-            ),
+            useAIJourneyOptOutRate('123', 'UTC', mockFilters, 'shopName'),
         )
 
-        expect(result.current).toEqual({
-            interpretAs: 'less-is-better',
-            isLoading: true,
-            label: 'Opt Out Rate',
-            metricFormat: 'percent-precision-1',
-            prevValue: 0,
-            value: 0,
-            series: [],
-            drilldown: {
-                integrationId: '123',
-                journeyId: undefined,
-                metricName: 'aiJourneyOptOutRate',
-                shopName: 'shopName',
-                title: 'Opt Out Rate',
-            },
-        })
+        expect(result.current.trend.isFetching).toBe(true)
+        expect(result.current.trend.data?.value).toBeNull()
     })
 })

@@ -1,14 +1,8 @@
 import { useMemo } from 'react'
 
-import type {
-    MetricTrend,
-    MetricTrendFormat,
-    TooltipData,
-    TrendDirection,
-} from '@repo/reporting'
-
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
+import type { AIJourneyMetricResult } from 'AIJourney/types/AIJourneyTypes'
 import { calculateRate } from 'AIJourney/utils'
 import {
     AIJourneyDiscountCodesOfferedQueryFactory,
@@ -17,18 +11,10 @@ import {
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-type DiscountMetric = {
-    trend: MetricTrend
-    interpretAs: TrendDirection
-    metricFormat: MetricTrendFormat
-    hint: TooltipData
-    drilldownMetricName?: AIJourneyMetric
-}
-
 const useDiscountCodesRateAppliedTrend = (
-    offeredMetric: DiscountMetric,
-    usedMetric: DiscountMetric,
-): DiscountMetric => {
+    offeredMetric: AIJourneyMetricResult,
+    usedMetric: AIJourneyMetricResult,
+): AIJourneyMetricResult => {
     const rateValue = useMemo(
         () =>
             calculateRate({
@@ -73,7 +59,7 @@ const useAIJourneyDiscountCodesOffered = (
     userTimezone: string,
     filters: FilterType,
     journeyIds: string[],
-): DiscountMetric => {
+): AIJourneyMetricResult => {
     const { data: trendData, isFetching: isFetchingTrend } = useMetricTrend(
         AIJourneyDiscountCodesOfferedQueryFactory(
             integrationId,
@@ -116,7 +102,7 @@ const useAIJourneyDiscountCodesUsed = (
     userTimezone: string,
     filters: FilterType,
     journeyIds: string[],
-): DiscountMetric => {
+): AIJourneyMetricResult => {
     const { data: trendData, isFetching: isFetchingTrend } = useMetricTrend(
         AIJourneyDiscountCodesUsedQueryFactory(
             integrationId,
