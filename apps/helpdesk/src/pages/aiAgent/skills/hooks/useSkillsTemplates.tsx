@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 import { GuidanceTemplatesData } from 'pages/aiAgent/hooks/useGuidanceTemplates'
-import type { ProcedureTemplate } from 'pages/aiAgent/procedures/types'
+import type { SkillTemplate } from 'pages/aiAgent/skills/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 const TAG_STYLES = {
@@ -36,7 +36,7 @@ const getGuidanceTemplate = (
     guidanceId: string,
 ) => guidanceTemplates.find(({ id }) => id === guidanceId)
 
-export const ProcedureTemplatesData: Omit<ProcedureTemplate, 'guidance'>[] = [
+export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
     {
         id: 'order-status-tracking-or-delivery-timing',
         name: 'Order status, tracking or delivery timing',
@@ -137,10 +137,10 @@ export const ProcedureTemplatesData: Omit<ProcedureTemplate, 'guidance'>[] = [
     },
 ]
 
-export const useProceduresTemplates = () => {
-    const proceduresTemplates = useMemo(
+export const useSkillsTemplates = () => {
+    const skillsTemplates = useMemo(
         () =>
-            ProcedureTemplatesData.map((template) => ({
+            SkillTemplatesData.map((template) => ({
                 ...template,
                 guidance: getGuidanceTemplate(
                     GuidanceTemplatesData,
@@ -150,5 +150,5 @@ export const useProceduresTemplates = () => {
         [],
     )
 
-    return { proceduresTemplates }
+    return { skillsTemplates }
 }

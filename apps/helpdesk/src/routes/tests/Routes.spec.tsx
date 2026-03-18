@@ -136,9 +136,9 @@ jest.mock('pages/aiAgent/AiAgentSales', () => ({
 }))
 
 jest.mock(
-    'pages/aiAgent/procedures/components/AiAgentProcedures/AiAgentProcedures',
+    'pages/aiAgent/skills/components/AiAgentSkills/AiAgentSkills',
     () => ({
-        AiAgentProcedures: () => <div>AiAgentProcedures</div>,
+        AiAgentSkills: () => <div>AiAgentSkills</div>,
     }),
 )
 
@@ -1085,7 +1085,7 @@ describe('<Routes/>', () => {
             expect(screen.getByText('ActionTemplatesView')).toBeInTheDocument()
         })
 
-        it('should render procedures page when KnowledgeIntentManagementSystem feature flag is enabled', () => {
+        it('should render skills page when KnowledgeIntentManagementSystem feature flag is enabled', () => {
             mockUseFlag.mockImplementation((key) => {
                 if (key === FeatureFlagKey.KnowledgeIntentManagementSystem) {
                     return true
@@ -1098,7 +1098,7 @@ describe('<Routes/>', () => {
                     <Provider store={mockStore(defaultState)}>
                         <MemoryRouter
                             initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/procedures',
+                                '/app/ai-agent/shopify/test-shop/skills',
                             ]}
                         >
                             <SplitTicketViewProvider>
@@ -1109,10 +1109,10 @@ describe('<Routes/>', () => {
                 </QueryClientProvider>,
             )
 
-            expect(screen.getByText('AiAgentProcedures')).toBeInTheDocument()
+            expect(screen.getByText('AiAgentSkills')).toBeInTheDocument()
         })
 
-        it('should not render procedures page when KnowledgeIntentManagementSystem feature flag is disabled', () => {
+        it('should not render skills page when KnowledgeIntentManagementSystem feature flag is disabled', () => {
             mockUseFlag.mockReturnValue(false)
 
             render(
@@ -1120,7 +1120,7 @@ describe('<Routes/>', () => {
                     <Provider store={mockStore(defaultState)}>
                         <MemoryRouter
                             initialEntries={[
-                                '/app/ai-agent/shopify/test-shop/procedures',
+                                '/app/ai-agent/shopify/test-shop/skills',
                             ]}
                         >
                             <SplitTicketViewProvider>
@@ -1131,9 +1131,7 @@ describe('<Routes/>', () => {
                 </QueryClientProvider>,
             )
 
-            expect(
-                screen.queryByText('AiAgentProcedures'),
-            ).not.toBeInTheDocument()
+            expect(screen.queryByText('AiAgentSkills')).not.toBeInTheDocument()
         })
     })
 

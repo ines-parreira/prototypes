@@ -1,6 +1,6 @@
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
-export type ProcedureTemplate = {
+export type SkillTemplate = {
     id: string
     name: string
     guidanceId: string

@@ -4,9 +4,9 @@ import { renderHook } from '@repo/testing'
 import {
     ANALYTICS,
     CUSTOMER_ENGAGEMENT,
-    PROCEDURES,
     PRODUCT_RECOMMENDATIONS,
     SALES,
+    SKILLS,
     STRATEGY,
     TONE_OF_VOICE,
     TRAIN,
@@ -228,12 +228,12 @@ describe('useAiAgentNavigation', () => {
         )
     })
 
-    it('should return correct path for procedures', () => {
+    it('should return correct path for skills', () => {
         const { result } = renderHook(() =>
             useAiAgentNavigation({ shopName: 'test' }),
         )
-        expect(result.current.routes.procedures).toBe(
-            '/app/ai-agent/shopify/test/procedures',
+        expect(result.current.routes.skills).toBe(
+            '/app/ai-agent/shopify/test/skills',
         )
     })
 
@@ -552,7 +552,7 @@ describe('useAiAgentNavigation', () => {
             expect(toneOfVoiceItem).toBeUndefined()
         })
 
-        it('should include Procedures in Train section when KnowledgeIntentManagementSystem feature flag is enabled', () => {
+        it('should include Skills in Train section when KnowledgeIntentManagementSystem feature flag is enabled', () => {
             mockUseFlag.mockImplementation((key) => {
                 if (key === FeatureFlagKey.KnowledgeIntentManagementSystem) {
                     return true
@@ -567,21 +567,19 @@ describe('useAiAgentNavigation', () => {
             const trainItem = result.current.navigationItems.find(
                 (item) => item.title === TRAIN,
             )
-            const proceduresItem = trainItem?.items?.find(
-                (item) => item.title === PROCEDURES,
+            const skillsItem = trainItem?.items?.find(
+                (item) => item.title === SKILLS,
             )
 
-            expect(proceduresItem).toBeDefined()
-            expect(proceduresItem?.route).toBe(
-                '/app/ai-agent/shopify/test-shop/procedures',
+            expect(skillsItem).toBeDefined()
+            expect(skillsItem?.route).toBe(
+                '/app/ai-agent/shopify/test-shop/skills',
             )
-            expect(proceduresItem?.dataCanduId).toBe(
-                'ai-agent-navbar-procedures',
-            )
-            expect(proceduresItem?.exact).toBe(true)
+            expect(skillsItem?.dataCanduId).toBe('ai-agent-navbar-skills')
+            expect(skillsItem?.exact).toBe(true)
         })
 
-        it('should not include Procedures when KnowledgeIntentManagementSystem feature flag is disabled', () => {
+        it('should not include Skills when KnowledgeIntentManagementSystem feature flag is disabled', () => {
             mockUseFlag.mockReturnValue(false)
 
             const { result } = renderHook(() =>
@@ -591,11 +589,11 @@ describe('useAiAgentNavigation', () => {
             const trainItem = result.current.navigationItems.find(
                 (item) => item.title === TRAIN,
             )
-            const proceduresItem = trainItem?.items?.find(
-                (item) => item.title === PROCEDURES,
+            const skillsItem = trainItem?.items?.find(
+                (item) => item.title === SKILLS,
             )
 
-            expect(proceduresItem).toBeUndefined()
+            expect(skillsItem).toBeUndefined()
         })
     })
 })

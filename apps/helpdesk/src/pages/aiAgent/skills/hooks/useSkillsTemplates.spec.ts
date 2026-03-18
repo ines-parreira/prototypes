@@ -1,20 +1,17 @@
 import { renderHook } from '@repo/testing'
 
-import {
-    ProcedureTemplatesData,
-    useProceduresTemplates,
-} from './useProceduresTemplates'
+import { SkillTemplatesData, useSkillsTemplates } from './useSkillsTemplates'
 
-describe('useProceduresTemplates', () => {
+describe('useSkillsTemplates', () => {
     beforeEach(() => {
         jest.resetAllMocks()
     })
 
-    it('should return all procedure templates', () => {
-        const { result } = renderHook(() => useProceduresTemplates())
+    it('should return all skill templates', () => {
+        const { result } = renderHook(() => useSkillsTemplates())
 
-        expect(result.current.proceduresTemplates).toHaveLength(
-            ProcedureTemplatesData.length,
+        expect(result.current.skillsTemplates).toHaveLength(
+            SkillTemplatesData.length,
         )
     })
 
@@ -56,11 +53,11 @@ describe('useProceduresTemplates', () => {
             'Subscription cancellations',
             'WHEN: The customer asks to cancel their subscription',
         ],
-    ])('should map "%s" to guidance "%s"', (procedureName, guidanceName) => {
-        const { result } = renderHook(() => useProceduresTemplates())
+    ])('should map "%s" to guidance "%s"', (skillName, guidanceName) => {
+        const { result } = renderHook(() => useSkillsTemplates())
 
-        const template = result.current.proceduresTemplates.find(
-            (t) => t.name === procedureName,
+        const template = result.current.skillsTemplates.find(
+            (t) => t.name === skillName,
         )
 
         expect(template?.guidance?.name).toBe(guidanceName)

@@ -71,10 +71,10 @@ import { AiAgentOpportunities } from 'pages/aiAgent/opportunities/AiAgentOpportu
 import { AiAgentOverview } from 'pages/aiAgent/Overview/AiAgentOverview'
 import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
 import { AiAgentPlaygroundPage } from 'pages/aiAgent/PlaygroundV2/AiAgentPlaygroundPage'
-import { AiAgentProcedures } from 'pages/aiAgent/procedures/components/AiAgentProcedures/AiAgentProcedures'
 import { AiAgentAccountConfigurationProvider } from 'pages/aiAgent/providers/AiAgentAccountConfigurationProvider'
 import { AiAgentErrorBoundary } from 'pages/aiAgent/providers/AiAgentErrorBoundary'
 import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentStoreConfigurationProvider'
+import { AiAgentSkills } from 'pages/aiAgent/skills/components/AiAgentSkills/AiAgentSkills'
 import App from 'pages/App'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
@@ -669,13 +669,13 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                     </AiAgentErrorBoundary>
                     {isKnowledgeIntentManagementSystemEnabled && (
                         <AiAgentErrorBoundary
-                            section="ai-agent-procedures"
+                            section="ai-agent-skills"
                             team={SentryTeam.CONVAI_KNOWLEDGE}
                         >
                             <Route
-                                path={`${path}/procedures`}
+                                path={`${path}/skills`}
                                 exact
-                                component={AiAgentProcedures}
+                                component={AiAgentSkills}
                             />
                         </AiAgentErrorBoundary>
                     )}

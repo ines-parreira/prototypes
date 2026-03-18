@@ -17,11 +17,11 @@ import {
     OPPORTUNITIES,
     OVERVIEW,
     PREVIEW,
-    PROCEDURES,
     PRODUCT_RECOMMENDATIONS,
     PRODUCTS,
     SALES,
     SETTINGS,
+    SKILLS,
     SOURCES,
     STRATEGY,
     SUPPORT_ACTIONS,
@@ -133,7 +133,7 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
             opportunityId
                 ? `${basePath}/opportunities/${opportunityId}`
                 : `${basePath}/opportunities`,
-        procedures: `${basePath}/procedures`,
+        skills: `${basePath}/skills`,
         products: `${basePath}/products`,
         productsDetail: (productId: number) =>
             `${basePath}/products/${productId}`,
@@ -240,9 +240,9 @@ const useNavigationItems = (
                             exact: true,
                         }, */
                     isKnowledgeIntentManagementSystemEnabled && {
-                        route: routes.procedures,
-                        title: PROCEDURES,
-                        dataCanduId: 'ai-agent-navbar-procedures',
+                        route: routes.skills,
+                        title: SKILLS,
+                        dataCanduId: 'ai-agent-navbar-skills',
                         exact: true,
                     },
                     {
