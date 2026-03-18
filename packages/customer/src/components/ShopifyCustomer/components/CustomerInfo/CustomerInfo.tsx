@@ -29,8 +29,9 @@ import { NoShopifyProfile } from './NoShopifyProfile'
 import type { EditShippingAddressModalRenderProps } from './OrderSidePanelPreview'
 import { OrderSidePanelPreview } from './OrderSidePanelPreview'
 import { OrdersList } from './OrdersList'
-import type { FieldRenderContext } from './types'
+import type { FieldRenderContext, OrderFieldRenderContext } from './types'
 import { useCustomerFieldPreferences } from './useCustomerFieldPreferences'
+import { useOrderFieldPreferences } from './useOrderFieldPreferences'
 
 type Props = {
     associatedShopifyCustomerIds: Set<number>
@@ -170,6 +171,11 @@ export function CustomerInfo({
     const { customerFields, sections, preferences, savePreferences } =
         useCustomerFieldPreferences()
 
+    const {
+        preferences: orderPreferences,
+        savePreferences: saveOrderPreferences,
+    } = useOrderFieldPreferences()
+
     const { editingWidgetType, onSetEditingWidgetType } =
         useTicketInfobarNavigation()
 
@@ -264,6 +270,19 @@ export function CustomerInfo({
         [selectedIntegration?.id, onCancelOrder],
     )
 
+    const firstOrder = allOrders[0]?.data
+    const orderContext: OrderFieldRenderContext = {
+        order: firstOrder ?? { id: '' },
+        isDraftOrder: firstOrder
+            ? draftOrders?.some((o) => o.data.id === firstOrder.id)
+            : undefined,
+        integrationId: selectedIntegration?.id,
+        ticketId,
+        storeName: selectedIntegration?.name,
+        dateFormat,
+        timeFormat,
+    }
+
     if (editingWidgetType === EditFieldsType.Shopify) {
         return (
             <IntermediateEditPanel
@@ -271,6 +290,9 @@ export function CustomerInfo({
                 context={context}
                 preferences={preferences}
                 onSavePreferences={savePreferences}
+                orderPreferences={orderPreferences}
+                onSaveOrderPreferences={saveOrderPreferences}
+                orderContext={orderContext}
                 onClose={() => onSetEditingWidgetType(null)}
             />
         )

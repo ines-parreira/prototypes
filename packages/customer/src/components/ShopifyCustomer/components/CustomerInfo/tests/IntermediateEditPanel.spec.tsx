@@ -12,6 +12,8 @@ import { IntermediateEditPanel } from '../IntermediateEditPanel'
 import type {
     FieldConfig,
     FieldRenderContext,
+    OrderFieldPreferences,
+    OrderFieldRenderContext,
     ShopifyFieldPreferences,
 } from '../types'
 
@@ -68,12 +70,42 @@ const fields: FieldConfig[] = [
     FIELD_DEFINITIONS.note,
 ]
 
+const mockOrderPreferences: OrderFieldPreferences = {
+    sections: {
+        orderDetails: {
+            fields: [
+                { id: 'tags', visible: true },
+                { id: 'store', visible: true },
+            ],
+        },
+        lineItems: { fields: [], sectionVisible: true },
+        shipping: {
+            fields: [{ id: 'tracking_url', visible: true }],
+        },
+        shippingAddress: { fields: [] },
+        billingAddress: { fields: [] },
+    },
+}
+
+const mockOrderContext: OrderFieldRenderContext = {
+    order: { id: '' },
+    isDraftOrder: undefined,
+    integrationId: undefined,
+    ticketId: undefined,
+    storeName: undefined,
+    dateFormat: DateFormatType.en_US,
+    timeFormat: TimeFormatType.TwentyFourHour,
+}
+
 describe('IntermediateEditPanel', () => {
     const defaultProps = {
         customerFields: fields,
         context: mockContext,
         preferences: defaultPreferences,
         onSavePreferences: vi.fn().mockResolvedValue(undefined),
+        orderPreferences: mockOrderPreferences,
+        onSaveOrderPreferences: vi.fn().mockResolvedValue(undefined),
+        orderContext: mockOrderContext,
         onClose: vi.fn(),
     }
 
@@ -98,14 +130,14 @@ describe('IntermediateEditPanel', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders orders section with disabled "Edit order details" button', () => {
+    it('renders orders section with "Edit order details" button', () => {
         render(<IntermediateEditPanel {...defaultProps} />)
 
         const editOrderButton = screen.getByRole('button', {
             name: /edit order details/i,
         })
         expect(editOrderButton).toBeInTheDocument()
-        expect(editOrderButton).toBeDisabled()
+        expect(editOrderButton).toBeEnabled()
     })
 
     it('renders Confirm button', () => {

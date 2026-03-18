@@ -8,7 +8,7 @@ import {
 import { Box, Button, Text } from '@gorgias/axiom'
 
 import { OrderTags } from './OrderTags'
-import type { FieldPreference, OrderFieldConfig } from './types'
+import type { OrderFieldConfig } from './types'
 
 import css from './OrderSidePanelPreview.less'
 
@@ -98,13 +98,14 @@ export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
                 <CheckoutUrlField url={ctx.order.invoice_url} />
             ) : null,
     },
+    discount_codes: {
+        id: 'discount_codes',
+        type: 'readonly',
+        label: 'Discount codes',
+        getValue: (ctx) => {
+            const codes = ctx.order.discount_codes
+            if (!codes || codes.length === 0) return undefined
+            return codes.map((c) => c.code).join(', ')
+        },
+    },
 }
-
-export const DEFAULT_FIELDS: FieldPreference[] = [
-    { id: 'tags', visible: true },
-    { id: 'store', visible: true },
-    { id: 'id', visible: true },
-    { id: 'created_at', visible: true },
-    { id: 'note', visible: true },
-    { id: 'invoice_url', visible: true },
-]

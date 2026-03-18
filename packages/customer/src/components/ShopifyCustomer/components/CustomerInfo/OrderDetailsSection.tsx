@@ -5,18 +5,13 @@ import { useUserDateTimePreferences } from '@repo/preferences'
 import { Box, Text } from '@gorgias/axiom'
 
 import { MetafieldsSection } from './MetafieldsSection'
-import type { OrderFieldRenderContext } from './types'
-import { useOrderDetailsFieldPreferences } from './useOrderDetailsFieldPreferences'
+import type { OrderDetailsData, OrderFieldRenderContext } from './types'
+import { useOrderFieldPreferences } from './useOrderFieldPreferences'
 
 import css from './OrderSidePanelPreview.less'
 
-type Props = {
-    order: {
-        id: number | string
-        tags?: string
-        note?: string
-        created_at?: string
-        invoice_url?: string
+type OrderDetailsSectionProps = {
+    order: OrderDetailsData & {
         metafields?: FullShopifyMetafield[]
     }
     isDraftOrder?: boolean
@@ -31,10 +26,17 @@ export function OrderDetailsSection({
     integrationId,
     ticketId,
     storeName,
-}: Props) {
+}: OrderDetailsSectionProps) {
     const { dateFormat, timeFormat } = useUserDateTimePreferences()
 
-    const { fields } = useOrderDetailsFieldPreferences()
+    const { preferences, getVisibleFields } = useOrderFieldPreferences()
+    const fields = getVisibleFields('orderDetails')
+
+    if (
+        preferences.sections.orderDetails?.sectionVisible === false ||
+        fields.length === 0
+    )
+        return null
 
     const context: OrderFieldRenderContext = {
         order,

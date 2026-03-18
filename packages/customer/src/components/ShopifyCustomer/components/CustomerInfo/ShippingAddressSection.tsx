@@ -7,16 +7,18 @@ import {
     NotificationStatus,
     ShopifyCustomerContext,
 } from '../../ShopifyCustomerContext'
+import { useOrderFieldPreferences } from './useOrderFieldPreferences'
 
 import css from './OrderSidePanelPreview.less'
 
 export type ShippingAddress = {
-    name: string
+    name?: string
     address1?: string | null
     address2?: string | null
     city?: string | null
     province_code?: string | null
-    country_code: string
+    country_code?: string
+    country?: string | null
     zip?: string | null
 }
 
@@ -50,7 +52,7 @@ function getShippingAddressParts(address: ShippingAddress): string[] {
         address.address1 ? `${address.address1},` : null,
         address.address2 ? `${address.address2},` : null,
         cityLine,
-        `${address.country_code} ${address.zip ?? ''}`.trim(),
+        `${address.country_code ?? address.country ?? ''} ${address.zip ?? ''}`.trim(),
     ].filter(Boolean) as string[]
 }
 
@@ -67,6 +69,10 @@ export function ShippingAddressSection({
     const [shippingAddressOverride, setShippingAddressOverride] = useState<
         ShippingAddress | undefined
     >(undefined)
+    const { preferences } = useOrderFieldPreferences()
+
+    const sectionPrefs = preferences.sections.shippingAddress
+    if (sectionPrefs?.sectionVisible === false) return null
 
     if (!shippingAddress) return null
 

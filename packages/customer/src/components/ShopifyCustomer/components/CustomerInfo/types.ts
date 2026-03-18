@@ -28,12 +28,57 @@ export type SectionPreferences = {
     fields: FieldPreference[]
 }
 
+export type OrderSectionKey =
+    | 'orderDetails'
+    | 'lineItems'
+    | 'shipping'
+    | 'shippingAddress'
+    | 'billingAddress'
+
+export type OrderSectionPreferences = {
+    fields: FieldPreference[]
+    sectionVisible?: boolean
+}
+
+export type OrderFieldPreferences = {
+    sections: Partial<Record<OrderSectionKey, OrderSectionPreferences>>
+}
+
 export type OrderDetailsData = {
     id: number | string
     tags?: string
     note?: string
     created_at?: string
     invoice_url?: string
+    discount_codes?: Array<{ code: string; amount: string; type: string }>
+    metafields?: unknown[]
+    fulfillments?: Array<{
+        tracking_url?: string | null
+        tracking_number?: string | null
+    }> | null
+    shipping_address?: {
+        name?: string
+        address1?: string | null
+        address2?: string | null
+        city?: string | null
+        country?: string | null
+        province?: string | null
+        province_code?: string | null
+        zip?: string | null
+    } | null
+    billing_address?: {
+        name?: string
+        address1?: string | null
+        address2?: string | null
+        city?: string | null
+        country?: string | null
+        province?: string | null
+        province_code?: string | null
+        zip?: string | null
+    } | null
+    shipping_lines?: Array<{ code?: string; [key: string]: unknown }> | null
+    total_shipping_price?: string
+    currency?: string
 }
 
 export type FieldRenderContext = {
@@ -113,6 +158,10 @@ export type ComponentOrderFieldConfig = BaseOrderFieldConfig & {
     type: 'component'
     render: (context: OrderFieldRenderContext) => ReactNode
     getValue: (context: OrderFieldRenderContext) => string | number | undefined
+    formatValue?: (
+        value: string | number | undefined,
+        context: OrderFieldRenderContext,
+    ) => ReactNode
 }
 
 export type OrderFieldConfig =

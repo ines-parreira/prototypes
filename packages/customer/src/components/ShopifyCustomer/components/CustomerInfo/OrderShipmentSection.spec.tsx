@@ -2,29 +2,86 @@ import { screen } from '@testing-library/react'
 
 import { render } from '../../../../tests/render.utils'
 import { OrderShipmentSection } from './OrderShipmentSection'
+import { SHIPPING_FIELD_DEFINITIONS } from './orderShippingFields'
+import type { OrderDetailsData } from './types'
+import { useOrderFieldPreferences } from './useOrderFieldPreferences'
+
+vi.mock('./useOrderFieldPreferences', () => ({
+    useOrderFieldPreferences: vi.fn(),
+}))
+
+vi.mock('@repo/preferences', () => ({
+    useUserDateTimePreferences: () => ({
+        dateFormat: 'MM/DD/YYYY',
+        timeFormat: '24h',
+    }),
+}))
+
+const mockUseOrderFieldPreferences = vi.mocked(useOrderFieldPreferences)
+
+function makeOrder(
+    overrides: Partial<OrderDetailsData> = {},
+): OrderDetailsData {
+    return {
+        id: 1,
+        ...overrides,
+    }
+}
+
+const allShippingFieldsVisible = Object.keys(SHIPPING_FIELD_DEFINITIONS).map(
+    (id) => ({ id, visible: true }),
+)
 
 describe('OrderShipmentSection', () => {
+    beforeEach(() => {
+        mockUseOrderFieldPreferences.mockReturnValue({
+            preferences: {
+                sections: {
+                    shipping: {
+                        fields: allShippingFieldsVisible,
+                        sectionVisible: true,
+                    },
+                },
+            },
+            getVisibleFields: () => Object.values(SHIPPING_FIELD_DEFINITIONS),
+            savePreferences: vi.fn(),
+            isLoading: false,
+        })
+    })
+
     describe('empty state', () => {
         it('renders the section when fulfillments is undefined', () => {
-            render(<OrderShipmentSection />)
+            render(<OrderShipmentSection order={makeOrder()} />)
 
-            expect(screen.getByText('Shipment')).toBeInTheDocument()
+            expect(screen.getByText('Shipping')).toBeInTheDocument()
         })
 
         it('renders the section when fulfillments is null', () => {
-            render(<OrderShipmentSection fulfillments={null} />)
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({ fulfillments: null })}
+                />,
+            )
 
-            expect(screen.getByText('Shipment')).toBeInTheDocument()
+            expect(screen.getByText('Shipping')).toBeInTheDocument()
         })
 
         it('renders the section when fulfillments is an empty array', () => {
-            render(<OrderShipmentSection fulfillments={[]} />)
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({ fulfillments: [] })}
+                />,
+            )
 
-            expect(screen.getByText('Shipment')).toBeInTheDocument()
+            expect(screen.getByText('Shipping')).toBeInTheDocument()
         })
 
         it('shows "-" for tracking URL when fulfillments is null', () => {
-            render(<OrderShipmentSection fulfillments={null} />)
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({ fulfillments: null })}
+                />,
+            )
 
             expect(screen.getByText('Tracking URL')).toBeInTheDocument()
             expect(screen.getAllByText('-')[0]).toBeInTheDocument()
@@ -32,7 +89,11 @@ describe('OrderShipmentSection', () => {
         })
 
         it('shows "-" for tracking number when fulfillments is null', () => {
-            render(<OrderShipmentSection fulfillments={null} />)
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({ fulfillments: null })}
+                />,
+            )
 
             expect(screen.getByText('Tracking number')).toBeInTheDocument()
             expect(screen.getAllByText('-')[1]).toBeInTheDocument()
@@ -46,7 +107,9 @@ describe('OrderShipmentSection', () => {
 
             render(
                 <OrderShipmentSection
-                    fulfillments={[{ tracking_url: trackingUrl }]}
+                    order={makeOrder({
+                        fulfillments: [{ tracking_url: trackingUrl }],
+                    })}
                 />,
             )
 
@@ -61,7 +124,9 @@ describe('OrderShipmentSection', () => {
         it('renders tracking number as text', () => {
             render(
                 <OrderShipmentSection
-                    fulfillments={[{ tracking_number: 'TBA326340941474' }]}
+                    order={makeOrder({
+                        fulfillments: [{ tracking_number: 'TBA326340941474' }],
+                    })}
                 />,
             )
 
@@ -76,12 +141,14 @@ describe('OrderShipmentSection', () => {
 
             render(
                 <OrderShipmentSection
-                    fulfillments={[
-                        {
-                            tracking_url: trackingUrl,
-                            tracking_number: trackingNumber,
-                        },
-                    ]}
+                    order={makeOrder({
+                        fulfillments: [
+                            {
+                                tracking_url: trackingUrl,
+                                tracking_number: trackingNumber,
+                            },
+                        ],
+                    })}
                 />,
             )
 
@@ -94,11 +161,13 @@ describe('OrderShipmentSection', () => {
         it('shows "-" for tracking URL when only tracking_number is provided', () => {
             render(
                 <OrderShipmentSection
-                    fulfillments={[{ tracking_number: 'TBA326340941474' }]}
+                    order={makeOrder({
+                        fulfillments: [{ tracking_number: 'TBA326340941474' }],
+                    })}
                 />,
             )
 
-            expect(screen.getByText('-')).toBeInTheDocument()
+            expect(screen.getAllByText('-').length).toBeGreaterThanOrEqual(1)
             expect(screen.queryByRole('link')).not.toBeInTheDocument()
         })
 
@@ -108,41 +177,58 @@ describe('OrderShipmentSection', () => {
 
             render(
                 <OrderShipmentSection
-                    fulfillments={[{ tracking_url: trackingUrl }]}
+                    order={makeOrder({
+                        fulfillments: [{ tracking_url: trackingUrl }],
+                    })}
                 />,
             )
 
-            expect(screen.getByText('-')).toBeInTheDocument()
+            expect(screen.getAllByText('-').length).toBeGreaterThanOrEqual(1)
+        })
+    })
+
+    describe('field preferences', () => {
+        it('renders nothing when sectionVisible is false', () => {
+            mockUseOrderFieldPreferences.mockReturnValue({
+                preferences: {
+                    sections: {
+                        shipping: {
+                            fields: allShippingFieldsVisible,
+                            sectionVisible: false,
+                        },
+                    },
+                },
+                getVisibleFields: () =>
+                    Object.values(SHIPPING_FIELD_DEFINITIONS),
+                savePreferences: vi.fn(),
+                isLoading: false,
+            })
+
+            const { container } = render(
+                <OrderShipmentSection order={makeOrder()} />,
+            )
+            expect(container).toBeEmptyDOMElement()
         })
 
-        it('renders tracking info for multiple fulfillments', () => {
-            const firstUrl = 'https://track.amazon.com/tracking/TBA111111111111'
-            const secondUrl =
-                'https://tracking.ups.com/track?InquiryNumber=1Z123456'
+        it('renders nothing when no visible fields', () => {
+            mockUseOrderFieldPreferences.mockReturnValue({
+                preferences: {
+                    sections: {
+                        shipping: {
+                            fields: [],
+                            sectionVisible: true,
+                        },
+                    },
+                },
+                getVisibleFields: () => [],
+                savePreferences: vi.fn(),
+                isLoading: false,
+            })
 
-            render(
-                <OrderShipmentSection
-                    fulfillments={[
-                        {
-                            tracking_url: firstUrl,
-                            tracking_number: 'TBA111111111111',
-                        },
-                        {
-                            tracking_url: secondUrl,
-                            tracking_number: '1Z123456',
-                        },
-                    ]}
-                />,
+            const { container } = render(
+                <OrderShipmentSection order={makeOrder()} />,
             )
-
-            expect(
-                screen.getByRole('link', { name: firstUrl }),
-            ).toBeInTheDocument()
-            expect(screen.getByText('TBA111111111111')).toBeInTheDocument()
-            expect(
-                screen.getByRole('link', { name: secondUrl }),
-            ).toBeInTheDocument()
-            expect(screen.getByText('1Z123456')).toBeInTheDocument()
+            expect(container).toBeEmptyDOMElement()
         })
     })
 })

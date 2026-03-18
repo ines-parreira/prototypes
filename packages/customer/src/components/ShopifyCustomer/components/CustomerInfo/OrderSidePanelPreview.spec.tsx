@@ -3,7 +3,10 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { vi } from 'vitest'
 
-import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetCurrentUserHandler,
+    mockListWidgetsHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import { render, testAppQueryClient } from '../../../../tests/render.utils'
 import { OrderSidePanelPreview } from './OrderSidePanelPreview'
@@ -17,9 +20,14 @@ vi.mock('@repo/feature-flags', () => ({
 }))
 
 const mockGetCurrentUser = mockGetCurrentUserHandler()
+const mockListWidgets = mockListWidgetsHandler()
 const usersHandler = http.get('/api/users/:id', () => HttpResponse.json({}))
 
-const server = setupServer(mockGetCurrentUser.handler, usersHandler)
+const server = setupServer(
+    mockGetCurrentUser.handler,
+    usersHandler,
+    mockListWidgets.handler,
+)
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'warn' })

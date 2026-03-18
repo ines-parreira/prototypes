@@ -8,6 +8,13 @@ import {
 } from '../../ShopifyCustomerContext'
 import type { ShippingAddress } from './ShippingAddressSection'
 import { ShippingAddressSection } from './ShippingAddressSection'
+import { useOrderFieldPreferences } from './useOrderFieldPreferences'
+
+vi.mock('./useOrderFieldPreferences', () => ({
+    useOrderFieldPreferences: vi.fn(),
+}))
+
+const mockUseOrderFieldPreferences = vi.mocked(useOrderFieldPreferences)
 
 const mockFullAddress: ShippingAddress = {
     name: 'Toni Lopez',
@@ -20,6 +27,19 @@ const mockFullAddress: ShippingAddress = {
 }
 
 describe('ShippingAddressSection', () => {
+    beforeEach(() => {
+        mockUseOrderFieldPreferences.mockReturnValue({
+            preferences: {
+                sections: {
+                    shippingAddress: { fields: [], sectionVisible: true },
+                },
+            },
+            savePreferences: vi.fn(),
+            getVisibleFields: vi.fn().mockReturnValue([]),
+            isLoading: false,
+        } as ReturnType<typeof useOrderFieldPreferences>)
+    })
+
     it('renders nothing when shippingAddress is null', () => {
         const { container } = render(
             <ShippingAddressSection shippingAddress={null} />,
@@ -343,6 +363,29 @@ describe('ShippingAddressSection', () => {
             expect(screen.getByText('Jane Smith')).toBeInTheDocument()
             expect(screen.getByText('5678 New Street,')).toBeInTheDocument()
             expect(screen.getByText('Los Angeles, CA,')).toBeInTheDocument()
+        })
+    })
+
+    describe('field preferences', () => {
+        it('renders nothing when sectionVisible is false', () => {
+            mockUseOrderFieldPreferences.mockReturnValue({
+                preferences: {
+                    sections: {
+                        shippingAddress: {
+                            fields: [],
+                            sectionVisible: false,
+                        },
+                    },
+                },
+                savePreferences: vi.fn(),
+                getVisibleFields: vi.fn().mockReturnValue([]),
+                isLoading: false,
+            } as ReturnType<typeof useOrderFieldPreferences>)
+
+            const { container } = render(
+                <ShippingAddressSection shippingAddress={mockFullAddress} />,
+            )
+            expect(container).toBeEmptyDOMElement()
         })
     })
 })

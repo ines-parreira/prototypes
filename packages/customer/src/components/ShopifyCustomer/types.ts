@@ -108,6 +108,18 @@ export type OrderFulfillment = {
     tracking_number?: string | null
 }
 
+export type OrderShippingAddress = {
+    name?: string
+    address1?: string | null
+    address2?: string | null
+    city?: string | null
+    country?: string | null
+    country_code?: string
+    province?: string | null
+    province_code?: string | null
+    zip?: string | null
+}
+
 export type OrderData = {
     id: number | string
     order_number: number | string
@@ -129,6 +141,11 @@ export type OrderData = {
     order_status_url?: string
     invoice_url?: string
     fulfillments?: OrderFulfillment[] | null
+    shipping_address?: OrderShippingAddress | null
+    billing_address?: OrderShippingAddress | null
+    discount_codes?: Array<{ code: string; amount: string; type: string }>
+    shipping_lines?: Array<{ code?: string; [key: string]: unknown }> | null
+    metafields?: FullShopifyMetafield[]
 }
 
 export type EmailMarketingConsent = {

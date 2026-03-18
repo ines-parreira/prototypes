@@ -20,7 +20,13 @@ const placeholderOrder: OrderCardOrder = {
     ],
 }
 
-export function OrdersPreviewSection() {
+type OrdersPreviewSectionProps = {
+    onEditOrderClick: () => void
+}
+
+export function OrdersPreviewSection({
+    onEditOrderClick,
+}: OrdersPreviewSectionProps) {
     return (
         <div className={css.section}>
             <Box flexDirection="column" gap="xs">
@@ -36,7 +42,7 @@ export function OrdersPreviewSection() {
                         size="sm"
                         variant="secondary"
                         leadingSlot="edit"
-                        isDisabled
+                        onClick={onEditOrderClick}
                     >
                         Edit order details
                     </Button>

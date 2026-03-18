@@ -16,6 +16,7 @@ import { getMoneySymbol } from '@repo/utils'
 
 import { Box, Button, Heading, Icon, OverlayContent, Tag } from '@gorgias/axiom'
 
+import { BillingAddressSection } from './BillingAddressSection'
 import { OrderActions } from './OrderActions'
 import { OrderDetailsSection } from './OrderDetailsSection'
 import { OrderLineItemsSection } from './OrderLineItemsSection'
@@ -26,9 +27,13 @@ import type {
 } from './ShippingAddressSection'
 import { ShippingAddressSection } from './ShippingAddressSection'
 import { useCanEditOrder } from './useCanEditOrder'
+import { useOrderFieldPreferences } from './useOrderFieldPreferences'
 
 export type OrderData = {
     id: number | string
+    order_number?: number | string
+    updated_at?: string
+    customer?: unknown
     name: string
     financial_status: FinancialStatusValue | string
     fulfillment_status: FulfillmentStatusValue | string | null
@@ -49,6 +54,18 @@ export type OrderData = {
         tracking_number?: string | null
     }> | null
     shipping_address?: ShippingAddress | null
+    billing_address?: {
+        name?: string
+        address1?: string | null
+        address2?: string | null
+        city?: string | null
+        province_code?: string | null
+        country_code?: string
+        country?: string | null
+        zip?: string | null
+    } | null
+    discount_codes?: Array<{ code: string; amount: string; type: string }>
+    shipping_lines?: Array<{ code?: string; [key: string]: unknown }> | null
     metafields?: FullShopifyMetafield[]
 }
 
@@ -113,10 +130,14 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
         ? getMoneySymbol(order.currency, true)
         : ''
 
+    const { preferences } = useOrderFieldPreferences()
+
     const isRefunded = ['refunded', 'partially_refunded', 'voided'].includes(
         order.financial_status,
     )
     const isCancelled = !!order.cancelled_at
+    const lineItemsVisible =
+        preferences.sections.lineItems?.sectionVisible !== false
     const canEdit = useCanEditOrder(order)
 
     return (
@@ -190,17 +211,25 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
                     storeName={storeName}
                 />
 
-                <OrderLineItemsSection
-                    lineItems={order.line_items ?? []}
-                    productsMap={productsMap}
-                    moneySymbol={moneySymbol}
-                    subtotalPrice={order.subtotal_price}
-                    totalShippingPrice={order.total_shipping_price}
-                    totalTax={order.total_tax}
-                    totalPrice={order.total_price}
-                />
+                {lineItemsVisible && (
+                    <OrderLineItemsSection
+                        lineItems={order.line_items ?? []}
+                        productsMap={productsMap}
+                        moneySymbol={moneySymbol}
+                        subtotalPrice={order.subtotal_price}
+                        totalShippingPrice={order.total_shipping_price}
+                        totalTax={order.total_tax}
+                        totalPrice={order.total_price}
+                    />
+                )}
 
-                <OrderShipmentSection fulfillments={order.fulfillments} />
+                <OrderShipmentSection
+                    order={order}
+                    storeName={storeName}
+                    integrationId={integrationId}
+                    ticketId={ticketId}
+                    isDraftOrder={isDraftOrder}
+                />
                 <Box mt="sm">
                     <ShippingAddressSection
                         key={String(order.id)}
@@ -211,6 +240,11 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
                         renderEditShippingAddressModal={
                             renderEditShippingAddressModal
                         }
+                    />
+                </Box>
+                <Box mt="sm">
+                    <BillingAddressSection
+                        billingAddress={order.billing_address}
                     />
                 </Box>
             </Box>
