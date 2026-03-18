@@ -126,6 +126,9 @@ export type DimensionName =
     | 'boughtProducts'
     | 'productRecommended'
     | 'attributedRevenue'
+    | 'discountAmount'
+    | 'discountCodeOffered'
+    | 'discountCodeUsed'
 
 export type MeasureName =
     | 'ticketCount'
@@ -211,6 +214,11 @@ export type MeasureName =
     | 'medianTimeSavedByAgent'
     | 'recommendedProductCount'
     | 'revenuePerInteraction'
+    | 'appliedDiscountCodesCount'
+    | 'averageDiscountAmount'
+    | 'discountUsage'
+    | 'medianDiscountAmount'
+    | 'offeredDiscountCodesCount'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -276,6 +284,7 @@ export type StringFilterName =
     | 'automationFeatureType'
     | 'customField'
     | 'engagementType'
+    | 'currency'
 
 export type NumberFilterName =
     | 'agentId'

@@ -68,6 +68,7 @@ export enum APIOnlyFilterKey {
     AutomationFeatureType = 'automationFeatureType',
     AiAgentSkill = 'aiAgentSkill',
     EngagementType = 'engagementType',
+    Currency = 'currency',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -338,6 +339,7 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.AutomationFeatureType]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.AiAgentSkill]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.EngagementType]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.Currency]?: WithLogicalOperator<string>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator
