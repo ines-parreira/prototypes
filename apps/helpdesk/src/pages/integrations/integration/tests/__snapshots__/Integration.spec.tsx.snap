@@ -42,12 +42,6 @@ exports[`<IntegrationDetail /> should display not available message if twitter i
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the campaign tab of a specific integration for %s 1`] = `
-<div>
-  GorgiasChatIntegrationCampaigns
-</div>
-`;
-
 exports[`<IntegrationDetail /> should render the creation page for aircall 1`] = `
 <div>
   AircallIntegrationCreate
@@ -78,18 +72,6 @@ exports[`<IntegrationDetail /> should render the creation page for sms 1`] = `
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the installation tab of a specific integration for %s 1`] = `
-<div>
-  GorgiasChatIntegrationInstall
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the list of campaigns of a specific integration for %s 1`] = `
-<div>
-  GorgiasChatIntegrationCampaigns
-</div>
-`;
-
 exports[`<IntegrationDetail /> should render the list or detail page of integrations for aircall 1`] = `
 <div>
   AircallIntegrationList
@@ -111,12 +93,6 @@ exports[`<IntegrationDetail /> should render the list or detail page of integrat
 exports[`<IntegrationDetail /> should render the list or detail page of integrations for facebook 1`] = `
 <div>
   FacebookIntegrationList
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the list or detail page of integrations for gorgias_chat 1`] = `
-<div>
-  GorgiasChatIntegrationList
 </div>
 `;
 
@@ -191,12 +167,6 @@ exports[`<IntegrationDetail /> should render the page of a specific integration 
 </div>
 `;
 
-exports[`<IntegrationDetail /> should render the page of a specific integration for gorgias_chat 1`] = `
-<div>
-  GorgiasChatIntegrationAppearance
-</div>
-`;
-
 exports[`<IntegrationDetail /> should render the page of a specific integration for klaviyo 1`] = `
 <div>
   KlaviyoIntegrationDetail
@@ -236,12 +206,6 @@ exports[`<IntegrationDetail /> should render the page of a specific integration 
 exports[`<IntegrationDetail /> should render the preferences tab of a specific integrations for facebook 1`] = `
 <div>
   FacebookIntegrationPreferences
-</div>
-`;
-
-exports[`<IntegrationDetail /> should render the preferences tab of a specific integrations for gorgias_chat 1`] = `
-<div>
-  GorgiasChatIntegrationPreferences
 </div>
 `;
 

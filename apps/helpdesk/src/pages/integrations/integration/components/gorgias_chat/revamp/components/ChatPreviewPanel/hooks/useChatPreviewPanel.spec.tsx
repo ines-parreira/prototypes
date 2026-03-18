@@ -17,19 +17,19 @@ jest.mock('../ChatPreviewPanel', () => ({
     ChatPreviewPanel: jest.fn().mockReturnValue(null),
 }))
 
-const mockSetCollapsibleColumnChildren = jest.fn()
+const mockWarpToCollapsibleColumn = jest.fn()
 const mockSetIsCollapsibleColumnOpen = jest.fn()
 
 beforeEach(() => {
     jest.clearAllMocks()
     ;(useCollapsibleColumn as jest.Mock).mockReturnValue({
-        setCollapsibleColumnChildren: mockSetCollapsibleColumnChildren,
+        warpToCollapsibleColumn: mockWarpToCollapsibleColumn,
         setIsCollapsibleColumnOpen: mockSetIsCollapsibleColumnOpen,
     })
 })
 
 describe('useChatPreviewPanel', () => {
-    it('opens the collapsible column and sets children when showPreviewPanel is called', () => {
+    it('opens the collapsible column when showPreviewPanel is called', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
         act(() => {
@@ -37,18 +37,22 @@ describe('useChatPreviewPanel', () => {
         })
 
         expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(true)
-        expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(
+    })
+
+    it('renders ChatPreviewPanel via warpToCollapsibleColumn', () => {
+        renderHook(() => useChatPreviewPanel())
+
+        expect(mockWarpToCollapsibleColumn).toHaveBeenCalledWith(
             expect.objectContaining({ type: ChatPreviewPanel }),
         )
     })
 
-    it('closes the collapsible column and clears children on unmount', () => {
+    it('closes the collapsible column on unmount', () => {
         const { unmount } = renderHook(() => useChatPreviewPanel())
 
         unmount()
 
         expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
-        expect(mockSetCollapsibleColumnChildren).toHaveBeenCalledWith(null)
     })
 
     it('passes the appId to ChatPreviewPanel when showPreviewPanel is called', () => {
@@ -58,8 +62,7 @@ describe('useChatPreviewPanel', () => {
             result.current.showPreviewPanel('test-app-id-1')
         })
 
-        const lastElement =
-            mockSetCollapsibleColumnChildren.mock.calls.at(-1)[0]
+        const lastElement = mockWarpToCollapsibleColumn.mock.calls.at(-1)[0]
         expect(lastElement.type).toBe(ChatPreviewPanel)
         expect(lastElement.props.appId).toBe('test-app-id-1')
     })
@@ -71,8 +74,18 @@ describe('useChatPreviewPanel', () => {
             result.current.showPreviewPanel(null)
         })
 
-        const element = mockSetCollapsibleColumnChildren.mock.calls[0][0]
-        expect(element.props.appId).toBeNull()
+        const lastElement = mockWarpToCollapsibleColumn.mock.calls.at(-1)[0]
+        expect(lastElement.props.appId).toBeNull()
+    })
+
+    it('closes the collapsible column when hidePreviewPanel is called', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        act(() => {
+            result.current.hidePreviewPanel()
+        })
+
+        expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(false)
     })
 
     it('updateMainColor does not throw when ref is unattached', () => {

@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn, useEffectOnce, useUpdateEffect } from '@repo/hooks'
-import { history } from '@repo/routing'
 import classNames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -12,8 +11,6 @@ import { useParams } from 'react-router-dom'
 import { Container } from 'reactstrap'
 import { bindActionCreators } from 'redux'
 
-import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { EmailProvider } from 'models/integration/constants'
 import { IntegrationType } from 'models/integration/types'
@@ -22,16 +19,8 @@ import {
     fetchPhoneNumbers,
 } from 'models/phoneNumber/resources'
 import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
-import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
-import { ErrorBoundary } from 'pages/ErrorBoundary'
-import { GorgiasChatIntegrationAppearance } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance'
-import { GorgiasChatIntegrationInstall } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationInstall'
 import { makeHasFeature } from 'state/billing/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
-import {
-    chatInstallationStatusFetched,
-    resetChatInstallationStatus,
-} from 'state/entities/chatInstallationStatus/actions'
 import {
     newPhoneNumbersFetched,
     phoneNumbersFetched,
@@ -45,7 +34,6 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
 import { compare } from 'utils'
-import { reportError } from 'utils/errors'
 
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate'
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
@@ -70,16 +58,7 @@ import FacebookIntegrationList from './components/facebook/FacebookIntegrationLi
 // oxlint-disable-next-line no-named-as-default
 import FacebookIntegrationPreferences from './components/facebook/FacebookIntegrationPreferences'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup/FacebookIntegrationSetup'
-import { GorgiasAutomateChatIntegration } from './components/gorgias_chat/GorgiasAutomateChatIntegration'
-import { GorgiasChatCreationWizard } from './components/gorgias_chat/GorgiasChatCreationWizard'
-import { GorgiasChatIntegrationLanguages } from './components/gorgias_chat/GorgiasChatIntegrationLanguages'
-import { GorgiasChatIntegrationList } from './components/gorgias_chat/GorgiasChatIntegrationList'
-import { GorgiasChatIntegrationPreferences } from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
-import GorgiasTranslateText from './components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
-import GorgiasChatIntegrationCampaignsLegacy from './components/gorgias_chat/legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
-import GorgiasChatIntegrationQuickRepliesLegacy from './components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies'
-import useIsQuickRepliesEnabled from './components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
-import useSelfServiceConfiguration from './components/gorgias_chat/legacy/hooks/useSelfServiceConfiguration'
+import { GorgiasChatIntegration } from './components/gorgias_chat/GorgiasChatIntegration'
 import HTTP from './components/http/HTTP'
 import KlaviyoIntegrationDetail from './components/klaviyo/KlaviyoIntegrationDetail'
 import KlaviyoIntegrationList from './components/klaviyo/KlaviyoIntegrationList'
@@ -105,21 +84,16 @@ export const IntegrationDetail = ({
     hasTwitterFeature,
     integrations,
 }: ConnectedProps<typeof connector>) => {
-    const { extra, integrationId, integrationType, subId } = useParams<{
+    const { extra, integrationId, integrationType } = useParams<{
         extra: string
         integrationId: string
         integrationType: IntegrationType
         subId: string
     }>()
 
-    const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
     const isNewDomainVerificationEnabled = useFlag(
         FeatureFlagKey.NewDomainVerification,
     )
-
-    const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
-        useState(false)
-    const { hasAccess } = useAiAgentAccess()
 
     const isIntegrationId = ![
         'new',
@@ -190,19 +164,6 @@ export const IntegrationDetail = ({
         [integrations],
     )
 
-    const editLinkDefaultTab = useMemo(() => {
-        return `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Appearance}`
-    }, [integrationId])
-
-    const goToDefaultTab = () => history.replace(editLinkDefaultTab)
-    if (
-        integrationType === IntegrationType.GorgiasChat &&
-        !extra &&
-        integrationId
-    ) {
-        goToDefaultTab()
-    }
-
     const [, handleFetchPhoneNumbers] = useAsyncFn(async () => {
         try {
             const numbers = await fetchPhoneNumbers()
@@ -239,64 +200,7 @@ export const IntegrationDetail = ({
         handleFetchPhoneNumbers,
     ])
 
-    const chatApplicationIds = useMemo(() => {
-        const appId: string = integration.getIn(['meta', 'app_id'])
-        if (appId && integrationType === IntegrationType.GorgiasChat) {
-            return [appId]
-        }
-        return []
-    }, [integration, integrationType])
-
-    const { applicationsAutomationSettings } =
-        useApplicationsAutomationSettings(chatApplicationIds)
-
-    useUpdateEffect(() => {
-        const appId = integration.getIn(['meta', 'app_id'])
-        if (integrationType === IntegrationType.GorgiasChat) {
-            if (appId) {
-                void handleFetchGorgiasChatInstallationStatus(appId)
-            } else {
-                dispatch(resetChatInstallationStatus())
-            }
-        }
-    }, [integration, integrationType])
-
-    const { selfServiceConfiguration, selfServiceConfigurationEnabled } =
-        useSelfServiceConfiguration(integration)
-
     const dispatch = useAppDispatch()
-
-    const [, handleFetchGorgiasChatInstallationStatus] = useAsyncFn(
-        async (applicationId: string) => {
-            try {
-                const installationStatus =
-                    await IntegrationsActions.getInstallationStatus(
-                        applicationId,
-                    )
-
-                if (installationStatus) {
-                    dispatch(chatInstallationStatusFetched(installationStatus))
-                }
-            } catch {
-                reportError(
-                    new Error(`Failed to fetch chat installation status`),
-                    {
-                        extra: { applicationId },
-                    },
-                )
-            }
-        },
-    )
-
-    useEffect(() => {
-        const appId = chatApplicationIds[0]
-        if (appId) {
-            setArticleRecommendationEnabled(
-                applicationsAutomationSettings[appId]?.articleRecommendation
-                    ?.enabled && hasAccess,
-            )
-        }
-    }, [hasAccess, chatApplicationIds, applicationsAutomationSettings])
 
     useUpdateEffect(() => {
         if (integrationId && isIntegrationId) {
@@ -359,113 +263,14 @@ export const IntegrationDetail = ({
             return <HTTP />
 
         case IntegrationType.GorgiasChat:
-            if (!!integrationId) {
-                if (extra === Tab.CreateWizard) {
-                    return (
-                        <ErrorBoundary
-                            sentryTags={{
-                                section: 'chat-wizard',
-                                team: SentryTeam.ACTIONS_AND_CHANNELS,
-                            }}
-                        >
-                            <GorgiasChatCreationWizard
-                                isUpdate={isUpdate}
-                                loading={loading}
-                                integration={integration}
-                            />
-                        </ErrorBoundary>
-                    )
-                }
-
-                if (extra === Tab.Installation) {
-                    return (
-                        <GorgiasChatIntegrationInstall
-                            actions={actions}
-                            integration={integration}
-                            isUpdate={isUpdate}
-                        />
-                    )
-                }
-
-                if (extra === Tab.Preferences) {
-                    return (
-                        <GorgiasChatIntegrationPreferences
-                            currentUser={currentUser}
-                            integration={integration}
-                            articleRecommendationEnabled={
-                                articleRecommendationEnabled
-                            }
-                            actions={actions}
-                            selfServiceConfiguration={selfServiceConfiguration}
-                            selfServiceConfigurationEnabled={
-                                selfServiceConfigurationEnabled
-                            }
-                        />
-                    )
-                }
-
-                if (extra === Tab.QuickReplies && isQuickRepliesEnabled) {
-                    return (
-                        <GorgiasChatIntegrationQuickRepliesLegacy
-                            integration={integration}
-                        />
-                    )
-                }
-
-                if (extra === Tab.Campaigns) {
-                    return (
-                        <GorgiasChatIntegrationCampaignsLegacy
-                            integration={integration}
-                        />
-                    )
-                }
-
-                if (extra === Tab.Appearance || !extra) {
-                    if (subId) {
-                        return (
-                            <GorgiasTranslateText integration={integration} />
-                        )
-                    }
-
-                    return (
-                        <GorgiasChatIntegrationAppearance
-                            actions={actions}
-                            integration={integration}
-                            isUpdate={isUpdate}
-                            loading={loading}
-                            currentUser={currentUser}
-                        />
-                    )
-                }
-
-                if (extra === Tab.Languages) {
-                    if (subId) {
-                        return (
-                            <GorgiasTranslateText integration={integration} />
-                        )
-                    }
-
-                    return (
-                        <GorgiasChatIntegrationLanguages
-                            integration={integration}
-                            loading={loading}
-                        />
-                    )
-                }
-
-                if (extra === Tab.Automate) {
-                    return (
-                        <GorgiasAutomateChatIntegration
-                            integration={integration}
-                        />
-                    )
-                }
-            }
-
             return (
-                <GorgiasChatIntegrationList
-                    integrations={integrationsProp}
+                <GorgiasChatIntegration
+                    actions={actions}
+                    currentUser={currentUser}
+                    integration={integration}
+                    integrationsProp={integrationsProp}
                     loading={loading}
+                    isUpdate={isUpdate}
                 />
             )
 

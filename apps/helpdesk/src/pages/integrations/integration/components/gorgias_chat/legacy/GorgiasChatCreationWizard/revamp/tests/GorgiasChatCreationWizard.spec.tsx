@@ -9,6 +9,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { GorgiasChatCreationWizardStatus } from 'models/integration/types/gorgiasChat'
+import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import GorgiasChatCreationWizard from '../GorgiasChatCreationWizard'
 
@@ -16,8 +17,16 @@ jest.mock(
     'pages/common/hooks/useIsIntersectingWithBrowserViewport',
     () => () => false,
 )
+jest.mock('pages/common/hooks/useCollapsibleColumn')
 
 const mockStore = configureMockStore([thunk])
+
+beforeEach(() => {
+    ;(useCollapsibleColumn as jest.Mock).mockReturnValue({
+        warpToCollapsibleColumn: jest.fn().mockReturnValue(null),
+        setIsCollapsibleColumnOpen: jest.fn(),
+    })
+})
 
 const mockStoreState = {
     currentUser: fromJS({

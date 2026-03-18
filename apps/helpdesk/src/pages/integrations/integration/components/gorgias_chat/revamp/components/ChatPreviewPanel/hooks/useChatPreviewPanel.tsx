@@ -1,11 +1,4 @@
-import {
-    createContext,
-    useContext,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from 'react'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 
 import type { GorgiasChatPosition } from 'models/integration/types'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
@@ -15,7 +8,7 @@ import type { ChatPreviewPanelHandle } from '../ChatPreviewPanel'
 
 type ChatPreviewPanelContextValue = Omit<
     ReturnType<typeof useChatPreviewPanel>,
-    'showPreviewPanel'
+    'showPreviewPanel' | 'hidePreviewPanel' | 'chatPreviewPortal'
 >
 
 export const ChatPreviewPanelContext =
@@ -33,31 +26,30 @@ export const useGorgiasChatCreationWizardContext =
     }
 
 export const useChatPreviewPanel = () => {
-    const { setCollapsibleColumnChildren, setIsCollapsibleColumnOpen } =
+    const { setIsCollapsibleColumnOpen, warpToCollapsibleColumn } =
         useCollapsibleColumn()
 
     const [appId, setAppId] = useState<string | null>(null)
     const chatPreviewPanelRef = useRef<ChatPreviewPanelHandle>(null)
 
-    const chatPreviewPanel = useMemo(() => {
-        return <ChatPreviewPanel ref={chatPreviewPanelRef} appId={appId} />
-    }, [appId])
+    const chatPreviewPortal = warpToCollapsibleColumn(
+        <ChatPreviewPanel ref={chatPreviewPanelRef} appId={appId} />,
+    )
 
     const showPreviewPanel = (appId: string | null) => {
         setAppId(appId)
         setIsCollapsibleColumnOpen(true)
     }
 
-    useEffect(() => {
-        setCollapsibleColumnChildren(chatPreviewPanel)
-    }, [chatPreviewPanel, setCollapsibleColumnChildren])
+    const hidePreviewPanel = () => {
+        setIsCollapsibleColumnOpen(false)
+    }
 
     useEffect(() => {
         return () => {
             setIsCollapsibleColumnOpen(false)
-            setCollapsibleColumnChildren(null)
         }
-    }, [setCollapsibleColumnChildren, setIsCollapsibleColumnOpen])
+    }, [setIsCollapsibleColumnOpen])
 
     const updateMainColor = (color: string) => {
         chatPreviewPanelRef.current?.openChat()
@@ -82,7 +74,9 @@ export const useChatPreviewPanel = () => {
     }
 
     return {
+        chatPreviewPortal,
         showPreviewPanel,
+        hidePreviewPanel,
         updateMainColor,
         updatePosition,
         updateHeaderPictureUrl,

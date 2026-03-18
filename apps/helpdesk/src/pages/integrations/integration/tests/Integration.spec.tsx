@@ -1,5 +1,4 @@
 import { useFlag } from '@repo/feature-flags'
-import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -7,9 +6,7 @@ import configureMockStore from 'redux-mock-store'
 
 import { EmailProvider } from '@gorgias/helpdesk-queries'
 
-import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
-import useIsQuickRepliesEnabled from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
@@ -98,57 +95,9 @@ jest.mock(
 
 jest.mock('../components/http/HTTP', () => () => <div>HTTPIntegration</div>)
 
-jest.mock('../components/gorgias_chat/GorgiasAutomateChatIntegration', () => ({
-    GorgiasAutomateChatIntegration: () => (
-        <div>GorgiasAutomateChatIntegration</div>
-    ),
+jest.mock('../components/gorgias_chat/GorgiasChatIntegration', () => ({
+    GorgiasChatIntegration: () => <div>GorgiasChatIntegration</div>,
 }))
-jest.mock('../components/gorgias_chat/GorgiasChatCreationWizard', () => ({
-    GorgiasChatCreationWizard: () => <div>GorgiasChatCreationWizard</div>,
-}))
-jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationAppearance',
-    () => ({
-        GorgiasChatIntegrationAppearance: () => (
-            <div>GorgiasChatIntegrationAppearance</div>
-        ),
-    }),
-)
-jest.mock(
-    '../components/gorgias_chat/legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns',
-    () => ({
-        __esModule: true,
-        default: () => <div>GorgiasChatIntegrationCampaigns</div>,
-    }),
-)
-jest.mock('../components/gorgias_chat/GorgiasChatIntegrationInstall', () => ({
-    GorgiasChatIntegrationInstall: () => (
-        <div>GorgiasChatIntegrationInstall</div>
-    ),
-}))
-jest.mock('../components/gorgias_chat/GorgiasChatIntegrationLanguages', () => ({
-    GorgiasChatIntegrationLanguages: () => (
-        <div>GorgiasChatIntegrationLanguages</div>
-    ),
-}))
-jest.mock('../components/gorgias_chat/GorgiasChatIntegrationList', () => ({
-    GorgiasChatIntegrationList: () => <div>GorgiasChatIntegrationList</div>,
-}))
-jest.mock(
-    '../components/gorgias_chat/GorgiasChatIntegrationPreferences',
-    () => ({
-        GorgiasChatIntegrationPreferences: () => (
-            <div>GorgiasChatIntegrationPreferences</div>
-        ),
-    }),
-)
-jest.mock(
-    '../components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies',
-    () => ({
-        __esModule: true,
-        default: () => <div>GorgiasChatIntegrationQuickReplies</div>,
-    }),
-)
 
 jest.mock('../components/sms/SmsIntegration', () => () => (
     <div>SmsIntegration</div>
@@ -190,34 +139,10 @@ jest.mock('../components/magento2/Magento2', () => () => (
     <div>Magento2Integration</div>
 ))
 
-jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
-    __esModule: true,
-    default: jest.fn(() => [
-        {
-            id: 1,
-            name: 'Integration 1',
-            type: 'shopify',
-        },
-    ]),
-}))
-jest.mock('hooks/useAppSelector', () => jest.fn(() => 'mocked'))
-
-jest.mock('hooks/aiAgent/useAiAgentAccess')
-const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
-
-jest.mock(
-    '../components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled',
-    () => ({
-        __esModule: true,
-        default: jest.fn(),
-    }),
-)
-
 const queryClient = mockQueryClient()
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({} as RootState)
 const useFlagMock = jest.mocked(useFlag)
-const useIsQuickRepliesEnabledMock = jest.mocked(useIsQuickRepliesEnabled)
 
 describe('<IntegrationDetail />', () => {
     const minProps = {
@@ -270,11 +195,6 @@ describe('<IntegrationDetail />', () => {
 
     beforeEach(() => {
         useFlagMock.mockReturnValue(false)
-        useAiAgentAccessMock.mockReturnValue({
-            hasAccess: true,
-            isLoading: false,
-        })
-        useIsQuickRepliesEnabledMock.mockReturnValue(false)
     })
 
     it.each([
@@ -282,7 +202,6 @@ describe('<IntegrationDetail />', () => {
         [IntegrationType.BigCommerce],
         [IntegrationType.Email],
         [IntegrationType.Facebook],
-        [IntegrationType.GorgiasChat],
         [IntegrationType.Http],
         [IntegrationType.Klaviyo],
         [IntegrationType.Phone],
@@ -371,7 +290,6 @@ describe('<IntegrationDetail />', () => {
     it.each([
         [IntegrationType.Email],
         [IntegrationType.Facebook],
-        [IntegrationType.GorgiasChat],
         [IntegrationType.Klaviyo],
         [IntegrationType.Recharge],
         [IntegrationType.Shopify],
@@ -403,26 +321,8 @@ describe('<IntegrationDetail />', () => {
         },
     )
 
-    fit('should render the installation tab of a specific integration for %s', () => {
-        const { container } = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>
-            </QueryClientProvider>,
-            {
-                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Installation}`,
-            },
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
     it.each([
         [IntegrationType.Facebook],
-        [IntegrationType.GorgiasChat],
         [IntegrationType.Phone],
         [IntegrationType.Sms],
     ])(
@@ -442,40 +342,6 @@ describe('<IntegrationDetail />', () => {
             expect(container.firstChild).toMatchSnapshot()
         },
     )
-
-    it('should render the list of campaigns of a specific integration for %s', () => {
-        const { container } = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>
-            </QueryClientProvider>,
-            {
-                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Campaigns}`,
-            },
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
-
-    it('should render the campaign tab of a specific integration for %s', () => {
-        const { container } = renderWithRouter(
-            <QueryClientProvider client={queryClient}>
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>
-            </QueryClientProvider>,
-            {
-                path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.Campaigns}/1`,
-            },
-        )
-        expect(container.firstChild).toMatchSnapshot()
-    })
 
     describe(`${IntegrationType.Email}`, () => {
         it('should render the onboarding page', () => {
@@ -731,10 +597,8 @@ describe('<IntegrationDetail />', () => {
         })
     })
 
-    describe(`${IntegrationType.GorgiasChat} - QuickReplies tab`, () => {
-        it('should render QuickReplies tab when feature is enabled', () => {
-            useIsQuickRepliesEnabledMock.mockReturnValue(true)
-
+    describe(`${IntegrationType.GorgiasChat}`, () => {
+        it('should render GorgiasChatIntegration', () => {
             const { getByText } = renderWithRouter(
                 <QueryClientProvider client={queryClient}>
                     <Provider store={store}>
@@ -743,33 +607,11 @@ describe('<IntegrationDetail />', () => {
                 </QueryClientProvider>,
                 {
                     path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.QuickReplies}`,
+                    route: `/integrations/${IntegrationType.GorgiasChat}`,
                 },
             )
 
-            expect(
-                getByText('GorgiasChatIntegrationQuickReplies'),
-            ).toBeInTheDocument()
-        })
-
-        it('should not render QuickReplies tab when feature is disabled', () => {
-            useIsQuickRepliesEnabledMock.mockReturnValue(false)
-
-            const { queryByText } = renderWithRouter(
-                <QueryClientProvider client={queryClient}>
-                    <Provider store={store}>
-                        <IntegrationDetail {...minProps} />
-                    </Provider>
-                </QueryClientProvider>,
-                {
-                    path: '/integrations/:integrationType/:integrationId?/:extra?/:subId?',
-                    route: `/integrations/${IntegrationType.GorgiasChat}/1/${Tab.QuickReplies}`,
-                },
-            )
-
-            expect(
-                queryByText('GorgiasChatIntegrationQuickReplies'),
-            ).not.toBeInTheDocument()
+            expect(getByText('GorgiasChatIntegration')).toBeInTheDocument()
         })
     })
 })
