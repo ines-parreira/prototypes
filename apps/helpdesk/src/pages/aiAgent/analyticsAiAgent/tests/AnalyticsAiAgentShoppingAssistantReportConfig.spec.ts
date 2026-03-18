@@ -337,6 +337,22 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         }
     })
 
+    it('should have conversion rate card config', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.ConversionRateCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Conversion rate')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('decimal-to-percent')
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+    })
+
     it('should have null csvProducer for channel performance table', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[

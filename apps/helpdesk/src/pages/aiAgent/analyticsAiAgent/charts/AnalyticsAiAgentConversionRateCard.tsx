@@ -1,8 +1,8 @@
 import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
-import { useConversionRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useConversionRateTrend'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import { useAiSalesAgentConversionRateTrend } from 'pages/aiAgent/analyticsAiAgent/charts/useAiSalesAgentConversionRateTrend'
 
 export const AnalyticsAiAgentConversionRateCard = ({
     chartId,
@@ -13,7 +13,7 @@ export const AnalyticsAiAgentConversionRateCard = ({
         chartConfig: chartConfig!,
         chartId,
         dashboard,
-        useTrend: useConversionRateTrend,
+        useTrend: useAiSalesAgentConversionRateTrend,
         isAiAgentTrendCard: true,
     })
 
