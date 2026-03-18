@@ -18,6 +18,7 @@ export const deprecatedEvents = [
     SegmentEvent.MacrosQuickReplySent,
     SegmentEvent.MacrosQuickReplyTooltip,
     SegmentEvent.MacroDefaultMacroToSearch,
+    SegmentEvent.AiAgentFeedbackTabOpened,
     SegmentEvent.CustomFieldTicketValueDropdownFocused,
     SegmentEvent.CustomFieldTicketValueRequiredMissingError,
     SegmentEvent.CustomFieldTicketValueInputFocused,
