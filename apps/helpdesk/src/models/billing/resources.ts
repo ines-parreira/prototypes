@@ -11,7 +11,6 @@ import type {
     BillingContactDetailResponse,
     BillingContactUpdatePayload,
     CurrentProductsUsages,
-    PaymentMethod,
 } from 'state/billing/types'
 
 import type { ApiListResponseCursorPagination } from '../api/types'
@@ -120,10 +119,5 @@ export async function getProductsUsage(): Promise<CurrentProductsUsages> {
     const res = await client.get<CurrentProductsUsages>(
         '/billing/products-usages',
     )
-    return res.data
-}
-
-export async function getPaymentMethod(): Promise<PaymentMethod> {
-    const res = await client.get<PaymentMethod>('/api/billing/payment-method/')
     return res.data
 }

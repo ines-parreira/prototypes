@@ -10,7 +10,6 @@ import {
     getBillingContact,
     getBillingState,
     getCouponsForSales,
-    getPaymentMethod,
     getProductsUsage,
     reactivateAccount,
     reactivateTrial,
@@ -191,22 +190,6 @@ export const useProductsUsage = (
 ) => {
     return useQuery({
         ...getProductsUsageQuery,
-        ...overrides,
-    })
-}
-
-export const getPaymentMethodQuery = {
-    queryKey: ['paymentMethod'] as const,
-    queryFn: getPaymentMethod,
-}
-
-export type UsePaymentMethod = Awaited<ReturnType<typeof getPaymentMethod>>
-
-export const usePaymentMethod = (
-    overrides?: UseQueryOptions<UsePaymentMethod>,
-) => {
-    return useQuery({
-        ...getPaymentMethodQuery,
         ...overrides,
     })
 }

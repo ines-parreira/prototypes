@@ -76,13 +76,6 @@ describe('billing selectors', () => {
         )
     })
 
-    it('paymentMethod', () => {
-        expect(selectors.paymentMethod({} as RootState)).toBe('')
-        expect(selectors.paymentMethod(state)).toEqualImmutable(
-            state.billing.get('paymentMethod'),
-        )
-    })
-
     it('getCurrentUsage', () => {
         expect(selectors.getCurrentUsage({} as RootState)).toEqualImmutable(
             fromJS({}),

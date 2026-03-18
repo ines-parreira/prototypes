@@ -7,13 +7,11 @@ import {
     aiAgentGen6PlanQuery,
     billingKeys,
     useBillingContact,
-    usePaymentMethod,
     useProductsUsage,
     useUpgradeAiAgentSubscriptionGeneration6Plan,
 } from 'models/billing/queries'
 import * as billingResources from 'models/billing/resources'
 import type { BillingContactDetailResponse } from 'state/billing/types'
-import { PaymentMethodType } from 'state/billing/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 jest.mock('models/billing/resources')
@@ -29,9 +27,6 @@ describe('billing queries', () => {
     let mockGetProductsUsage: jest.MockedFunction<
         typeof billingResources.getProductsUsage
     >
-    let mockGetPaymentMethod: jest.MockedFunction<
-        typeof billingResources.getPaymentMethod
-    >
 
     beforeEach(() => {
         mockUpgradeAiAgentSubscriptionGeneration6Plan = jest.mocked(
@@ -40,7 +35,6 @@ describe('billing queries', () => {
 
         mockGetBillingContact = jest.mocked(billingResources.getBillingContact)
         mockGetProductsUsage = jest.mocked(billingResources.getProductsUsage)
-        mockGetPaymentMethod = jest.mocked(billingResources.getPaymentMethod)
     })
 
     describe('useBillingContact', () => {
@@ -296,37 +290,6 @@ describe('billing queries', () => {
 
             const { result } = renderHookWithStoreAndQueryClientProvider(() =>
                 useProductsUsage(),
-            )
-
-            await waitFor(() => expect(result.current.isError).toBe(true))
-
-            expect(result.current.error).toEqual(mockError)
-        })
-    })
-
-    describe('usePaymentMethod', () => {
-        it('should successfully fetch payment method', async () => {
-            const mockPaymentMethod = {
-                active: true,
-                method: PaymentMethodType.Stripe,
-            }
-            mockGetPaymentMethod.mockResolvedValue(mockPaymentMethod)
-
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-                usePaymentMethod(),
-            )
-
-            await waitFor(() => expect(result.current.isSuccess).toBe(true))
-
-            expect(result.current.data).toEqual(mockPaymentMethod)
-        })
-
-        it('should handle errors correctly', async () => {
-            const mockError = new Error('Failed to fetch')
-            mockGetPaymentMethod.mockRejectedValue(mockError)
-
-            const { result } = renderHookWithStoreAndQueryClientProvider(() =>
-                usePaymentMethod(),
             )
 
             await waitFor(() => expect(result.current.isError).toBe(true))

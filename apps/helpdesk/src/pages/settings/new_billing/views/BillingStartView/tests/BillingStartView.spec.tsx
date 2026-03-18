@@ -513,32 +513,6 @@ describe('BillingStartView', () => {
             expect(screen.queryByText('contact us')).not.toBeInTheDocument()
         })
 
-        it('should show loader when payment method is loading', () => {
-            mockUseProductsUsage.mockReturnValue({
-                data: currentProductsUsageWithPhone,
-                isLoading: false,
-                error: null,
-            })
-            mockUsePaymentMethod.mockReturnValue({
-                data: undefined,
-                isLoading: true,
-                error: null,
-            })
-
-            const { container } = renderWithStoreAndQueryClientAndRouter(
-                <BillingStartView />,
-                storeWithActiveSubscriptionWithPhone,
-                {
-                    route: BILLING_BASE_PATH,
-                },
-            )
-
-            expect(
-                container.querySelector('.icon-circle-o-notch'),
-            ).toBeInTheDocument()
-            expect(screen.queryByText('contact us')).not.toBeInTheDocument()
-        })
-
         it('should show loader when products usage is loading even when payment method is also loading', () => {
             mockUseProductsUsage.mockReturnValue({
                 data: undefined,

@@ -10,7 +10,7 @@ import { NavLink, Redirect, Route, Switch } from 'react-router-dom'
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
-import { usePaymentMethod, useProductsUsage } from 'models/billing/queries'
+import { useProductsUsage } from 'models/billing/queries'
 import { isEnterprise } from 'models/billing/utils'
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import Loader from 'pages/common/components/Loader/Loader'
@@ -76,9 +76,8 @@ const BillingStartView = () => {
 
     // Parallel data fetching with React Query
     const { data: currentUsage, isLoading: isUsageLoading } = useProductsUsage()
-    const { isLoading: isPaymentMethodLoading } = usePaymentMethod()
 
-    const isLoading = isUsageLoading || isPaymentMethodLoading
+    const isLoading = isUsageLoading
 
     const subscriptionStartDatetime = currentSubscription
         ? moment(currentSubscription.get('start_datetime'))

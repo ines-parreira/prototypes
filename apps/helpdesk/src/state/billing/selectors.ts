@@ -330,11 +330,6 @@ export const creditCard = createSelector(
     (billing) => (billing.get('creditCard') as Map<any, any>) || fromJS({}),
 )
 
-export const paymentMethod = createSelector(
-    DEPRECATED_getBillingState,
-    (billing) => (billing.get('paymentMethod') as string) || '',
-)
-
 export const getCurrentUsage = createSelector(
     DEPRECATED_getBillingState,
     (billing) => (billing.get('currentUsage') as Map<any, any>) || fromJS({}),

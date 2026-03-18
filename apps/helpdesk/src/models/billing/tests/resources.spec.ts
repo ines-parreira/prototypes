@@ -6,7 +6,6 @@ import client from 'models/api/resources'
 import {
     getAiAgentGeneration6Plan,
     getBillingContact,
-    getPaymentMethod,
     getProductsUsage,
     trackBillingEvent,
     upgradeAiAgentSubscriptionGeneration6Plan,
@@ -165,33 +164,6 @@ describe('billing resources', () => {
 
             await expect(getProductsUsage()).rejects.toThrow(
                 'Request failed with status code 500',
-            )
-        })
-    })
-
-    describe('getPaymentMethod', () => {
-        it('should successfully fetch payment method', async () => {
-            const mockPaymentMethod = {
-                type: 'card',
-                last4: '4242',
-            }
-
-            mockedServer
-                .onGet('/api/billing/payment-method/')
-                .reply(200, mockPaymentMethod)
-
-            const result = await getPaymentMethod()
-
-            expect(result).toEqual(mockPaymentMethod)
-        })
-
-        it('should handle errors correctly', async () => {
-            mockedServer
-                .onGet('/api/billing/payment-method/')
-                .reply(404, { error: 'Not found' })
-
-            await expect(getPaymentMethod()).rejects.toThrow(
-                'Request failed with status code 404',
             )
         })
     })

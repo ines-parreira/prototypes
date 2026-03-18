@@ -1,17 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`billing actions fetch payment method 1`] = `
-[
-  {
-    "resp": {
-      "active": false,
-      "method": "stripe",
-    },
-    "type": "FETCH_PAYMENT_METHOD_SUCCESS",
-  },
-]
-`;
-
 exports[`billing actions updateInvoiceInList() should return a Redux action to update an invoice in a list of invoices. 1`] = `
 {
   "invoice": Immutable.Map {
