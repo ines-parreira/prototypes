@@ -31,7 +31,7 @@ minimumReleaseAgeExclude:
 
 catalogs:
   axiom:
-    '@gorgias/axiom': '0.205.3'
+    '@gorgias/axiom': '0.207.0'
     '@gorgias/design-tokens': '0.11.4'
     '@internationalized/date': '3.10.0'
   analytics-ui-kit:
@@ -182,6 +182,6 @@ catalogs:
     'urlsafe-base64': '1.0.0'
     '@types/urlsafe-base64': '1.0.28'
   images:
-    'react-images': "^0.5.19"
-    '@types/react-images': "0.5.3"
+    'react-images': '^0.5.19'
+    '@types/react-images': '0.5.3'
     'yet-another-react-lightbox': '^3.29.1'
