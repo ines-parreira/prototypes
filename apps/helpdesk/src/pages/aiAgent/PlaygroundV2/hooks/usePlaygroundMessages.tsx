@@ -15,6 +15,7 @@ import {
     AI_AGENT_SENDER,
     GREETING_MESSAGE_TEXT,
 } from 'pages/aiAgent/PlaygroundV2/constants'
+import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourneyContext'
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
@@ -65,8 +66,11 @@ export const usePlaygroundMessages = () => {
         channel,
     } = useCoreContext()
 
+    const { journeyConfiguration } = useAIJourneyContext()
+
     const channelIntegrationId =
-        channel === 'chat' ? chatIntegrationId : undefined
+        journeyConfiguration?.sms_sender_integration_id ??
+        (channel === 'chat' ? chatIntegrationId : undefined)
 
     const { submitMessage, isSubmitting, abortCurrentRequest } =
         usePlaygroundApi({
@@ -74,7 +78,6 @@ export const usePlaygroundMessages = () => {
             accountId,
             httpIntegrationId,
             channelIntegrationId,
-            isNewAgenticArchitectureEnabled,
             baseUrl,
         })
 

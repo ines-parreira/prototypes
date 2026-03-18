@@ -83,7 +83,7 @@ const createAIJourneyPlaygroundPayload = (
     const nowISO = new Date(now).toISOString()
     // Mock customer - hardcoded
     const mockCustomer = {
-        id: 1234567,
+        id: 0,
         phone: '+15551234567',
         timezone: 'America/New_York',
         language: 'en',
@@ -119,7 +119,7 @@ const createAIJourneyPlaygroundPayload = (
         journeyType: options.journeyType,
         storeName: options.storeName,
         storeType: options.storeType ?? 'shopify',
-        ticketId: '1234567',
+        ticketId: '123',
         marketingId: `marketing-${now}`,
         createdAt: nowISO,
         customer: mockCustomer,

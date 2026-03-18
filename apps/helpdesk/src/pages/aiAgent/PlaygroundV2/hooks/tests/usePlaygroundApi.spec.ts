@@ -49,7 +49,6 @@ const defaultParams = {
     accountId: 123,
     httpIntegrationId: 456,
     channelIntegrationId: 789,
-    isNewAgenticArchitectureEnabled: false,
 }
 
 describe('usePlaygroundApi', () => {
@@ -166,13 +165,38 @@ describe('usePlaygroundApi', () => {
         ])
     })
 
-    it('should create new test session when isNewAgenticArchitectureEnabled is true and it is the first customer message', async () => {
+    it('should create new test session when no session exists', async () => {
         const createTestSession = jest.fn().mockResolvedValue('new-session-id')
 
         const { result } = renderHook(() =>
             usePlaygroundApi({
                 ...defaultProps,
-                isNewAgenticArchitectureEnabled: true,
+            }),
+        )
+
+        await result.current.submitMessage({
+            messages: [playgroundCustomerMessage],
+            customer: DEFAULT_PLAYGROUND_CUSTOMER,
+            channel: 'email',
+            storeData: { storeName: 'Test Store' } as StoreConfiguration,
+            testSessionId: null,
+            createTestSession,
+        })
+
+        expect(createTestSession).toHaveBeenCalled()
+        expect(mockSubmitPlaygroundTicket).toHaveBeenCalledWith([
+            expect.any(Object),
+            'new-session-id',
+            expect.any(Object),
+        ])
+    })
+
+    it('should reuse existing test session when session already exists', async () => {
+        const createTestSession = jest.fn().mockResolvedValue('new-session-id')
+
+        const { result } = renderHook(() =>
+            usePlaygroundApi({
+                ...defaultProps,
             }),
         )
 
@@ -185,10 +209,10 @@ describe('usePlaygroundApi', () => {
             createTestSession,
         })
 
-        expect(createTestSession).toHaveBeenCalled()
+        expect(createTestSession).not.toHaveBeenCalled()
         expect(mockSubmitPlaygroundTicket).toHaveBeenCalledWith([
             expect.any(Object),
-            'new-session-id',
+            'existing-session-id',
             expect.any(Object),
         ])
     })
@@ -199,7 +223,6 @@ describe('usePlaygroundApi', () => {
         const { result } = renderHook(() =>
             usePlaygroundApi({
                 ...defaultProps,
-                isNewAgenticArchitectureEnabled: true,
             }),
         )
 

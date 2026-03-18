@@ -35,13 +35,13 @@ export const PlaygroundProvider = (props: PlaygroundProviderProps) => {
                     draftKnowledge={draftKnowledge}
                     arePlaygroundActionsAllowed={arePlaygroundActionsAllowed}
                 >
-                    <MessagesProvider>
-                        <AIJourneyProvider shopName={shopName}>
+                    <AIJourneyProvider shopName={shopName}>
+                        <MessagesProvider>
                             <SettingsProvider supportedModes={supportedModes}>
                                 {children}
                             </SettingsProvider>
-                        </AIJourneyProvider>
-                    </MessagesProvider>
+                        </MessagesProvider>
+                    </AIJourneyProvider>
                 </CoreProvider>
             </ConfigurationProvider>
         </EventsProvider>

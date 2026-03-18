@@ -39,14 +39,12 @@ export const usePlaygroundApi = ({
     accountId,
     httpIntegrationId,
     channelIntegrationId,
-    isNewAgenticArchitectureEnabled,
     baseUrl,
 }: {
     gorgiasDomain: string
     accountId: number
     httpIntegrationId: number
     channelIntegrationId?: number
-    isNewAgenticArchitectureEnabled: boolean
     baseUrl?: string
 }) => {
     const {
@@ -164,14 +162,8 @@ export const usePlaygroundApi = ({
             const abortController = new AbortController()
             abortControllerRef.current = abortController
 
-            // Check if it's an initial message and create test session
-            const isInitialMessage =
-                messages.filter((m) => m.sender !== AI_AGENT_SENDER).length ===
-                1
-            let testSessionIdToUse = testSessionId
-            if (isNewAgenticArchitectureEnabled && isInitialMessage) {
-                testSessionIdToUse = await createTestSession()
-            }
+            let testSessionIdToUse =
+                testSessionId || (await createTestSession())
 
             await submitPlaygroundTicket([
                 {
@@ -219,7 +211,6 @@ export const usePlaygroundApi = ({
             httpIntegrationId,
             submitPlaygroundTicket,
             channelIntegrationId,
-            isNewAgenticArchitectureEnabled,
             baseUrl,
             draftKnowledge,
             callSubmitMessage,

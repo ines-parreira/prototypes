@@ -230,11 +230,11 @@ describe('AI Journey Resource', () => {
                         storeName: 'artemisathletix',
                         storeType: 'shopify',
                         journeyType: journeyType,
-                        ticketId: '1234567',
+                        ticketId: '123',
                         marketingId: expect.stringMatching(/^marketing-\d+$/),
                         createdAt: expect.any(String),
                         customer: {
-                            id: 1234567,
+                            id: 0,
                             phone: '+15551234567',
                             timezone: 'America/New_York',
                             language: 'en',

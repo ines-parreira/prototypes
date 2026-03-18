@@ -47,6 +47,12 @@ jest.mock('../../contexts/EventsContext', () => ({
     useSubscribeToEvent: (...args: any[]) => mockUseRegisterEventFn(...args),
 }))
 
+const mockUseAIJourneyContextFn = jest.fn()
+
+jest.mock('../../contexts/AIJourneyContext', () => ({
+    useAIJourneyContext: () => mockUseAIJourneyContextFn(),
+}))
+
 const mockedUseConfigurationContext = mockUseConfigurationContextFn
 const mockedUseCoreContext = mockUseCoreContextFn
 
@@ -95,6 +101,10 @@ describe('usePlaygroundMessages hook', () => {
         )
 
         mockedUseCoreContext.mockReturnValue(defaultCoreContext as any)
+
+        mockUseAIJourneyContextFn.mockReturnValue({
+            journeyConfiguration: undefined,
+        })
 
         jest.useFakeTimers().setSystemTime(new Date('2020-01-01'))
     })
@@ -208,6 +218,75 @@ describe('usePlaygroundMessages hook', () => {
 
         const messageTypes = result.current.messages.map((m) => m.type)
         expect(messageTypes).not.toContain('INTERNAL_NOTE')
+    })
+
+    describe('channelIntegrationId resolution', () => {
+        it('should use sms_sender_integration_id from journey configuration when available', () => {
+            mockUseAIJourneyContextFn.mockReturnValue({
+                journeyConfiguration: {
+                    sms_sender_integration_id: 999,
+                },
+            })
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    channelIntegrationId: 999,
+                }),
+            )
+        })
+
+        it('should fall back to chatIntegrationId when channel is chat and no journey configuration', () => {
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                channel: 'chat',
+            } as any)
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    channelIntegrationId:
+                        defaultConfigurationContext.chatIntegrationId,
+                }),
+            )
+        })
+
+        it('should pass undefined channelIntegrationId for non-chat channel without journey configuration', () => {
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                channel: 'email',
+            } as any)
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    channelIntegrationId: undefined,
+                }),
+            )
+        })
+
+        it('should prefer journey configuration over chat channel integration id', () => {
+            mockUseAIJourneyContextFn.mockReturnValue({
+                journeyConfiguration: {
+                    sms_sender_integration_id: 777,
+                },
+            })
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                channel: 'chat',
+            } as any)
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    channelIntegrationId: 777,
+                }),
+            )
+        })
     })
 
     describe('test session logs', () => {
