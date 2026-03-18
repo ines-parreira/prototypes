@@ -10,6 +10,12 @@ import { UserRole } from 'config/types/user'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { hasRole } from 'utils'
 
+import { useStandaloneAiAccess } from '../../../hooks/useStandaloneAiAccess'
+import {
+    BASE_STATS_PATH,
+    STANDALONE_AI_AGENT_STATS_PATH,
+} from '../../../routes/constants'
+
 import mainNavigationCSS from '../components/MainNavigation.less'
 
 export enum MenuItemName {
@@ -40,6 +46,8 @@ export const useMainNavigationItems = (
 ): MenuItem[] => {
     const hasAiAgentMenu = useHasAiAgentMenu()
     const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled)
+
+    const { isStandaloneAiAgent } = useStandaloneAiAccess()
 
     return useMemo(() => {
         const menuItems: Array<MenuItem & { onlyIf?: boolean }> = [
@@ -88,7 +96,9 @@ export const useMainNavigationItems = (
                 segmentProp: { link: 'customers' },
             },
             {
-                url: '/app/stats',
+                url: isStandaloneAiAgent
+                    ? STANDALONE_AI_AGENT_STATS_PATH
+                    : BASE_STATS_PATH,
                 label: 'Statistics',
                 className: 'd-none d-md-block',
                 icon: 'bar_chart',
@@ -111,5 +121,5 @@ export const useMainNavigationItems = (
                     hasRole(currentUser, item.requiredRole),
             )
             .filter((item) => item.onlyIf !== false)
-    }, [currentUser, hasAiAgentMenu, isAiJourneyEnabled])
+    }, [currentUser, hasAiAgentMenu, isAiJourneyEnabled, isStandaloneAiAgent])
 }

@@ -18,9 +18,15 @@ import { useTheme } from 'core/theme'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import useAppSelector from 'hooks/useAppSelector'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
-import { BASE_STATS_PATH, BASE_VOICE_OF_CUSTOMER_PATH } from 'routes/constants'
+import {
+    BASE_STATS_PATH,
+    BASE_VOICE_OF_CUSTOMER_PATH,
+    STANDALONE_AI_AGENT_STATS_PATH,
+} from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
+
+import { useStandaloneAiAccess } from '../../../hooks/useStandaloneAiAccess'
 
 export default function GlobalNavigation() {
     const theme = useTheme()
@@ -42,6 +48,8 @@ export default function GlobalNavigation() {
     const hasAiAgentMenu = useHasAiAgentMenu()
 
     useNavBarShortcuts()
+
+    const { isStandaloneAiAgent } = useStandaloneAiAccess()
 
     return (
         <nav
@@ -145,7 +153,11 @@ export default function GlobalNavigation() {
                             label="Statistics"
                             isActive={activeItem === MenuItemName.Statistics}
                             tooltip={<span>Statistics</span>}
-                            to={BASE_STATS_PATH}
+                            to={
+                                isStandaloneAiAgent
+                                    ? STANDALONE_AI_AGENT_STATS_PATH
+                                    : BASE_STATS_PATH
+                            }
                             data-candu-id="global-navigation-menu-statistics-page"
                         />
                     )}

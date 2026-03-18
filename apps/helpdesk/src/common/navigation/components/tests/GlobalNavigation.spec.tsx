@@ -11,7 +11,12 @@ import {
 } from 'common/navigation/hooks/useNavBar/context'
 import { UserRole } from 'config/types/user'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
+import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
+import {
+    BASE_STATS_PATH,
+    STANDALONE_AI_AGENT_STATS_PATH,
+} from 'routes/constants'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { renderWithRouter } from 'utils/testing'
@@ -40,6 +45,11 @@ jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({
     useHasAiAgentMenu: jest.fn(),
 }))
 const useHasAiAgentMenuMock = assumeMock(useHasAiAgentMenu)
+
+jest.mock('hooks/useStandaloneAiAccess', () => ({
+    useStandaloneAiAccess: jest.fn(),
+}))
+const useStandaloneAiAccessMock = assumeMock(useStandaloneAiAccess)
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -78,6 +88,12 @@ describe('GlobalNavigation', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isModuleRestrictedToCurrentUser: () => false,
         } as any)
+        useStandaloneAiAccessMock.mockReturnValue({
+            isStandaloneAiAgent: false,
+            accessFeaturesMapped: {
+                statistics: { canRead: true, canWrite: true },
+            },
+        })
     })
 
     it('should render the menu icon when the nav is pinned', () => {
@@ -198,5 +214,27 @@ describe('GlobalNavigation', () => {
     it('should not render AI Journey icon if isAiJourneyEnabled feature flag is disabled', () => {
         const { queryByText } = renderWithContext()
         expect(queryByText('route')).not.toBeInTheDocument()
+    })
+
+    it('should link statistics to BASE_STATS_PATH when not a standalone AI agent', () => {
+        const { container } = renderWithContext()
+        const statsLink = container.querySelector(
+            `a[href="${BASE_STATS_PATH}"]`,
+        )
+        expect(statsLink).toBeInTheDocument()
+    })
+
+    it('should link statistics to STANDALONE_AI_AGENT_STATS_PATH when standalone AI agent', () => {
+        useStandaloneAiAccessMock.mockReturnValue({
+            isStandaloneAiAgent: true,
+            accessFeaturesMapped: {
+                statistics: { canRead: true, canWrite: true },
+            },
+        })
+        const { container } = renderWithContext()
+        const statsLink = container.querySelector(
+            `a[href="${STANDALONE_AI_AGENT_STATS_PATH}"]`,
+        )
+        expect(statsLink).toBeInTheDocument()
     })
 })

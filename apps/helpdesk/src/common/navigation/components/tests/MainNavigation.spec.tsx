@@ -9,6 +9,7 @@ import { StaticRouter } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
+import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -42,6 +43,11 @@ jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({
 }))
 const useHasAiAgentMenuMock = assumeMock(useHasAiAgentMenu)
 
+jest.mock('hooks/useStandaloneAiAccess', () => ({
+    useStandaloneAiAccess: jest.fn(),
+}))
+const useStandaloneAiAccessMock = assumeMock(useStandaloneAiAccess)
+
 const wrapper = ({ children }: { children?: ReactNode }) => (
     <StaticRouter location="/app">{children}</StaticRouter>
 )
@@ -57,6 +63,12 @@ describe('MainNavigation', () => {
         useAppDispatchMock.mockReturnValue(dispatch)
         getHasAutomateMock.mockReturnValue(true)
         useHasAiAgentMenuMock.mockReturnValue(true)
+        useStandaloneAiAccessMock.mockReturnValue({
+            accessFeaturesMapped: {
+                statistics: { canRead: false, canWrite: false },
+            },
+            isStandaloneAiAgent: false,
+        })
     })
 
     it('should log an event and close panels when a menu item is clicked', () => {

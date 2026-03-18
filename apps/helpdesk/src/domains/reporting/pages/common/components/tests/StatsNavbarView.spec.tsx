@@ -20,6 +20,7 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
 } from 'fixtures/plans'
+import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { IntegrationType } from 'models/integration/constants'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
@@ -32,6 +33,11 @@ const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 const useTrialAccessMock = assumeMock(useTrialAccess)
 useTrialAccessMock.mockReturnValue(createMockTrialAccess())
+
+jest.mock('hooks/useStandaloneAiAccess', () => ({
+    useStandaloneAiAccess: jest.fn(),
+}))
+const useStandaloneAiAccessMock = assumeMock(useStandaloneAiAccess)
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
@@ -78,6 +84,12 @@ describe('StatsNavbarViewV2', () => {
         useDashboardActionsMock.mockReturnValue({
             getDashboardsHandler: () => mockData,
         } as any)
+        useStandaloneAiAccessMock.mockReturnValue({
+            isStandaloneAiAgent: false,
+            accessFeaturesMapped: {
+                statistics: { canRead: true, canWrite: true },
+            },
+        })
     })
 
     it('should render the link to new busiest times of days', () => {
@@ -315,6 +327,26 @@ describe('StatsNavbarViewV2', () => {
             qualityManagementNavBarBlock?.textContent?.includes('Auto QA')
         expect(autoQATextInclusion).toBe(true)
         expect(autoQANavbarLinks.length).toBe(1)
+    })
+
+    it('should render only AutomateStatsNavbar when standalone AI agent', () => {
+        useStandaloneAiAccessMock.mockReturnValue({
+            isStandaloneAiAgent: true,
+            accessFeaturesMapped: {
+                statistics: { canRead: true, canWrite: true },
+            },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <StatsNavbarView />
+            </Provider>,
+        )
+
+        expect(
+            screen.getByRole('button', { name: /AI Agent/i }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('Busiest Times')).not.toBeInTheDocument()
     })
 
     it('should render the Auto QA link exclusively within Support Performance section when NewSatisfactionReport feature flag is disabled', () => {

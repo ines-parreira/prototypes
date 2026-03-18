@@ -4,8 +4,12 @@ import { fromJS } from 'immutable'
 
 import { useMainNavigationItems } from 'common/navigation/hooks/useMainNavigationItems'
 import { UserRole } from 'config/types/user'
+import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
-import { BASE_STATS_PATH } from 'routes/constants'
+import {
+    BASE_STATS_PATH,
+    STANDALONE_AI_AGENT_STATS_PATH,
+} from 'routes/constants'
 
 jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 
@@ -13,6 +17,11 @@ jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({
     useHasAiAgentMenu: jest.fn(),
 }))
 const useHasAiAgentMenuMock = assumeMock(useHasAiAgentMenu)
+
+jest.mock('hooks/useStandaloneAiAccess', () => ({
+    useStandaloneAiAccess: jest.fn(),
+}))
+const useStandaloneAiAccessMock = assumeMock(useStandaloneAiAccess)
 
 jest.mock('@repo/feature-flags')
 const mockUseFlag = useFlag as jest.Mock
@@ -24,6 +33,12 @@ describe('MainNavigation', () => {
 
     beforeEach(() => {
         mockUseFlag.mockImplementation(() => false)
+        useStandaloneAiAccessMock.mockReturnValue({
+            isStandaloneAiAgent: false,
+            accessFeaturesMapped: {
+                statistics: { canRead: true, canWrite: true },
+            },
+        })
     })
 
     it('should render the tickets menu item', () => {
@@ -101,6 +116,29 @@ describe('MainNavigation', () => {
         const { result } = renderHook(() => useMainNavigationItems(basicUser))
         expect(result.current.map((item) => item.url)).toContain(
             '/app/ai-journey',
+        )
+    })
+
+    it('should use BASE_STATS_PATH for statistics when not a standalone AI agent', () => {
+        const { result } = renderHook(() => useMainNavigationItems(basicUser))
+        expect(result.current.map((item) => item.url)).toContain(
+            BASE_STATS_PATH,
+        )
+    })
+
+    it('should use STANDALONE_AI_AGENT_STATS_PATH for statistics when standalone AI agent', () => {
+        useStandaloneAiAccessMock.mockReturnValue({
+            isStandaloneAiAgent: true,
+            accessFeaturesMapped: {
+                statistics: { canRead: true, canWrite: true },
+            },
+        })
+        const { result } = renderHook(() => useMainNavigationItems(basicUser))
+        expect(result.current.map((item) => item.url)).toContain(
+            STANDALONE_AI_AGENT_STATS_PATH,
+        )
+        expect(result.current.map((item) => item.url)).not.toContain(
+            BASE_STATS_PATH,
         )
     })
 })

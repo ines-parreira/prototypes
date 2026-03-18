@@ -9,6 +9,7 @@ export const CUSTOM_FIELD_CONDITIONS_ROUTE = 'ticket-field-conditions'
 
 export const BASE_STATS_PATH = '/app/stats'
 export const BASE_VOICE_OF_CUSTOMER_PATH = '/app/voice-of-customer'
+export const STANDALONE_AI_AGENT_STATS_PATH = '/app/stats/ai-agent'
 
 export const STATS_ROUTES = {
     AI_SALES_AGENT_OVERVIEW: 'ai-sales-agent/overview',

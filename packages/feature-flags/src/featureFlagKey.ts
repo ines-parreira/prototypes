@@ -63,6 +63,7 @@ export enum FeatureFlagKey {
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
     /** @deprecated Fully evaluated to `true` */
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',
+    AiStandaloneAgent = 'ai-standalone-acl',
     /** @deprecated Fully evaluated to `true` */
     AiShoppingAssistantEnabled = 'ai-shopping-assistant-enabled',
     AiShoppingAssistantTrackingBundleWarningBanner = 'tracking-bundle-warning-banner',

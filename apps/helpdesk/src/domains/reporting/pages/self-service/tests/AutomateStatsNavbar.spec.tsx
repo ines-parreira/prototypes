@@ -5,9 +5,11 @@ import { Navigation } from 'components/Navigation/Navigation'
 import { LINK_AI_SALES_AGENT_TEXT } from 'domains/reporting/pages/automate/aiSalesAgent/constants'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { AutomateStatsNavbar } from 'domains/reporting/pages/self-service/AutomateStatsNavbar'
+import { PAGE_TITLE_PERFORMANCE_BY_FEATURES } from 'domains/reporting/pages/self-service/constants'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
+import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { isTrialing } from 'state/currentAccount/selectors'
 import { renderWithRouter } from 'utils/testing'
@@ -29,9 +31,14 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
 
+jest.mock('hooks/useStandaloneAiAccess', () => ({
+    useStandaloneAiAccess: jest.fn(),
+}))
+
 const mockUseFlag = assumeMock(useFlag)
 const mockUseCanUseAiSalesAgent = assumeMock(useCanUseAiSalesAgent)
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
+const mockUseStandaloneAiAccess = assumeMock(useStandaloneAiAccess)
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -54,6 +61,12 @@ describe('<AutomateStatsNavbar />', () => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: false,
             isLoading: false,
+        })
+        mockUseStandaloneAiAccess.mockReturnValue({
+            isStandaloneAiAgent: false,
+            accessFeaturesMapped: {
+                statistics: { canRead: false, canWrite: false },
+            },
         })
     })
 
@@ -289,6 +302,36 @@ describe('<AutomateStatsNavbar />', () => {
             '/app/stats/ai-sales-agent/overview',
         )
         expect(link?.querySelector('i.material-icons')).not.toBeInTheDocument()
+    })
+
+    it('should hide Performance by feature link when standalone AI agent', () => {
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.AIAgentStatsPage) return true
+            return false
+        })
+        mockUseAppSelector.mockImplementation(() => true)
+        mockUseAiAgentAccess.mockReturnValue({
+            hasAccess: true,
+            isLoading: false,
+        })
+        mockUseStandaloneAiAccess.mockReturnValue({
+            isStandaloneAiAgent: true,
+            accessFeaturesMapped: {
+                statistics: { canRead: true, canWrite: true },
+            },
+        })
+
+        const { queryByText, getByRole } = renderWithRouter(
+            <Navigation.Root>
+                <AutomateStatsNavbar />
+            </Navigation.Root>,
+        )
+
+        userEvent.click(getByRole('button', { name: /AI Agent/i }))
+
+        expect(
+            queryByText(PAGE_TITLE_PERFORMANCE_BY_FEATURES),
+        ).not.toBeInTheDocument()
     })
 
     it('should display the AI Sales Agent link as a paywall link when plan generation < 6 and no bypasses are active', () => {

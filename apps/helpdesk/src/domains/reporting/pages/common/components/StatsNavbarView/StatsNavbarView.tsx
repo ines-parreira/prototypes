@@ -20,6 +20,8 @@ import { currentAccountHasProduct } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
 
+import { useStandaloneAiAccess } from '../../../../../../hooks/useStandaloneAiAccess'
+
 type AutoQANavBarLinkProps = {
     isAvailable: boolean
 }
@@ -36,10 +38,24 @@ export function StatsNavbarView() {
         FeatureFlagKey.NewSatisfactionReport,
     )
 
+    const { isStandaloneAiAgent } = useStandaloneAiAccess()
+
     const isAutoQANavLinkAvailable = useMemo(
         () => isTeamLeadOrAdmin && hasAccess,
         [hasAccess, isTeamLeadOrAdmin],
     )
+
+    if (isStandaloneAiAgent) {
+        return (
+            <Navigation.Root
+                className={css.navigation}
+                value={sections}
+                onValueChange={handleNavigationStateChange}
+            >
+                <AutomateStatsNavbar />
+            </Navigation.Root>
+        )
+    }
 
     return (
         <Navigation.Root

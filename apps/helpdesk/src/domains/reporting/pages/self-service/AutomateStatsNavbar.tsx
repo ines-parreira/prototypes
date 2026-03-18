@@ -20,6 +20,8 @@ import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { STATS_ROUTES } from 'routes/constants'
 import { analyticsSections } from 'routes/layout/products/analytics'
 
+import { useStandaloneAiAccess } from '../../../../hooks/useStandaloneAiAccess'
+
 const OVERVIEW_PATH = `/app/stats/${STATS_ROUTES.AI_AGENT_OVERVIEW}`
 const AUTOMATE_AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
 const PERFORMANCE_BY_FEATURE_PATH = `/app/stats/${ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES}`
@@ -29,6 +31,7 @@ const ANALYTICS_AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.ANALYTICS_AI_AGENT}`
 
 export function AutomateStatsNavbar() {
     const { hasAccess } = useAiAgentAccess()
+    const { isStandaloneAiAgent } = useStandaloneAiAccess()
 
     const isAiAgentStatsPageEnabled = useFlag(FeatureFlagKey.AIAgentStatsPage)
 
@@ -158,17 +161,19 @@ export function AutomateStatsNavbar() {
                             </ProtectedRoute>
                         )}
 
-                        <ProtectedRoute path={PERFORMANCE_BY_FEATURE_PATH}>
-                            <Navigation.SectionItem
-                                as={NavLink}
-                                to={PERFORMANCE_BY_FEATURE_PATH}
-                                exact
-                                displayType="indent"
-                                data-candu-id="statistics-automate-performance-by-feature"
-                            >
-                                {PAGE_TITLE_PERFORMANCE_BY_FEATURES}
-                            </Navigation.SectionItem>
-                        </ProtectedRoute>
+                        {!isStandaloneAiAgent && (
+                            <ProtectedRoute path={PERFORMANCE_BY_FEATURE_PATH}>
+                                <Navigation.SectionItem
+                                    as={NavLink}
+                                    to={PERFORMANCE_BY_FEATURE_PATH}
+                                    exact
+                                    displayType="indent"
+                                    data-candu-id="statistics-automate-performance-by-feature"
+                                >
+                                    {PAGE_TITLE_PERFORMANCE_BY_FEATURES}
+                                </Navigation.SectionItem>
+                            </ProtectedRoute>
+                        )}
                     </>
                 )}
             </Navigation.SectionContent>
