@@ -23,11 +23,6 @@ export default function reducer(
             })
         case constants.FETCH_INVOICES_SUCCESS:
             return state.set('invoices', fromJS(action.resp))
-        case constants.SET_CREDIT_CARD:
-            return state.set('creditCard', action.creditCard)
-        case constants.FETCH_CREDIT_CARD_SUCCESS:
-        case constants.UPDATE_CREDIT_CARD_SUCCESS:
-            return state.set('creditCard', fromJS(action.resp))
         case constants.FETCH_CURRENT_PRODUCTS_USAGE_SUCCESS:
             return state.set('currentProductsUsage', fromJS(action.resp))
         default:

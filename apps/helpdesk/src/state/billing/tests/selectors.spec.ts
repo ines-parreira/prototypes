@@ -67,15 +67,6 @@ describe('billing selectors', () => {
         expect(selectors.getBillingState(state)).toEqual(state.billing.toJS())
     })
 
-    it('creditCard', () => {
-        expect(selectors.creditCard({} as RootState)).toEqualImmutable(
-            fromJS({}),
-        )
-        expect(selectors.creditCard(state)).toEqualImmutable(
-            state.billing.get('creditCard'),
-        )
-    })
-
     it('getCurrentUsage', () => {
         expect(selectors.getCurrentUsage({} as RootState)).toEqualImmutable(
             fromJS({}),

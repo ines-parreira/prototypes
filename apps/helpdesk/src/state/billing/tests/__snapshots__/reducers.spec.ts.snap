@@ -1,29 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`billing reducers SET_CREDIT_CARD should set the credit card (initial state). 1`] = `
-Immutable.Map {
-  "creditCard": Immutable.Map {
-    "last4": "1235",
-    "brand": "visa",
-    "exp_month": "4",
-    "exp_year": "23",
-    "name": "Steve",
-  },
-}
-`;
-
-exports[`billing reducers SET_CREDIT_CARD should set the credit card and override the previous one. 1`] = `
-Immutable.Map {
-  "creditCard": Immutable.Map {
-    "last4": "9583",
-    "brand": "visa",
-    "exp_month": "4",
-    "exp_year": "23",
-    "name": "Mark",
-  },
-}
-`;
-
 exports[`billing reducers UPDATE_INVOICE_IN_LIST should update an invoice in the list of invoices. (existing invoice) 1`] = `
 Immutable.Map {
   "invoices": Immutable.List [
@@ -39,17 +15,6 @@ Immutable.Map {
 }
 `;
 
-exports[`billing reducers fetch credit card 1`] = `
-Immutable.Map {
-  "creditCard": Immutable.Map {
-    "brand": "visa",
-    "last4": "4242",
-    "exp_month": 12,
-    "exp_year": 35,
-  },
-}
-`;
-
 exports[`billing reducers fetch invoices 1`] = `
 Immutable.Map {
   "invoices": Immutable.List [
@@ -60,17 +25,6 @@ Immutable.Map {
       "amount_due": 1234,
     },
   ],
-}
-`;
-
-exports[`billing reducers update credit card 1`] = `
-Immutable.Map {
-  "creditCard": Immutable.Map {
-    "brand": "visa",
-    "last4": "4242",
-    "exp_month": 12,
-    "exp_year": 35,
-  },
 }
 `;
 

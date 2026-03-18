@@ -325,11 +325,6 @@ export const getHasAutomate = createSelector(
     (plan) => !!plan,
 )
 
-export const creditCard = createSelector(
-    DEPRECATED_getBillingState,
-    (billing) => (billing.get('creditCard') as Map<any, any>) || fromJS({}),
-)
-
 export const getCurrentUsage = createSelector(
     DEPRECATED_getBillingState,
     (billing) => (billing.get('currentUsage') as Map<any, any>) || fromJS({}),
