@@ -1,4 +1,4 @@
-import { MetricScope } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 
@@ -32,3 +32,15 @@ export const aiSalesAgentActivityScope = defineScope({
 export type AiSalesAgentActivityContext = Context<
     typeof aiSalesAgentActivityScope.config
 >
+
+export const revenuePerInteraction = aiSalesAgentActivityScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
+    )
+    .defineQuery(() => ({
+        measures: ['revenuePerInteraction'] as const,
+    }))
+
+export const revenuePerInteractionQueryV2Factory = (
+    ctx: AiSalesAgentActivityContext,
+) => revenuePerInteraction.build(ctx)

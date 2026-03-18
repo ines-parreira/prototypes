@@ -2,18 +2,16 @@ import { screen, waitFor } from '@testing-library/react'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { useTotalSalePerInteractionTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalSalePerInteractionTrend'
 import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
+import { useRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const mockUseStatsFilters = jest.mocked(useStatsFilters)
 
-jest.mock(
-    'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalSalePerInteractionTrend',
-)
-const mockUseTotalSalePerInteractionTrend = jest.mocked(
-    useTotalSalePerInteractionTrend,
+jest.mock('pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric')
+const mockUseRevenuePerInteractionMetric = jest.mocked(
+    useRevenuePerInteractionMetric,
 )
 
 describe('AnalyticsAiAgentRevenuePerInteractionCard', () => {
@@ -33,10 +31,11 @@ describe('AnalyticsAiAgentRevenuePerInteractionCard', () => {
             userTimezone: 'UTC',
         } as any)
 
-        mockUseTotalSalePerInteractionTrend.mockReturnValue({
+        mockUseRevenuePerInteractionMetric.mockReturnValue({
             isFetching: false,
             isError: false,
             data: {
+                label: 'Revenue per interaction',
                 value: 93,
                 prevValue: 90,
             },
@@ -44,7 +43,7 @@ describe('AnalyticsAiAgentRevenuePerInteractionCard', () => {
     })
 
     it('should render loading state initially', () => {
-        mockUseTotalSalePerInteractionTrend.mockReturnValue({
+        mockUseRevenuePerInteractionMetric.mockReturnValue({
             isFetching: true,
             isError: false,
             data: undefined,

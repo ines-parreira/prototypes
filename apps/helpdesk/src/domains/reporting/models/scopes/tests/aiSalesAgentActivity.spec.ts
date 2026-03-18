@@ -1,4 +1,9 @@
-import { aiSalesAgentActivityScope } from 'domains/reporting/models/scopes/aiSalesAgentActivity'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import {
+    aiSalesAgentActivityScope,
+    revenuePerInteraction,
+    revenuePerInteractionQueryV2Factory,
+} from 'domains/reporting/models/scopes/aiSalesAgentActivity'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -122,5 +127,35 @@ describe('aiSalesAgentActivityScope', () => {
         expect(result).not.toContainEqual(
             expect.objectContaining({ member: 'integrationId' }),
         )
+    })
+})
+
+describe('revenuePerInteractionQueryV2Factory', () => {
+    const context = {
+        filters: {
+            period: {
+                start_datetime: '2025-09-03T00:00:00.000',
+                end_datetime: '2025-09-03T23:59:59.000',
+            },
+        },
+        timezone: 'UTC',
+    }
+
+    it('returns the same result as calling build directly', () => {
+        expect(revenuePerInteractionQueryV2Factory(context)).toEqual(
+            revenuePerInteraction.build(context),
+        )
+    })
+
+    it('sets the correct metricName', () => {
+        const result = revenuePerInteractionQueryV2Factory(context)
+        expect(result.metricName).toBe(
+            METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
+        )
+    })
+
+    it('queries the revenuePerInteraction measure', () => {
+        const result = revenuePerInteractionQueryV2Factory(context)
+        expect(result.measures).toContain('revenuePerInteraction')
     })
 })
