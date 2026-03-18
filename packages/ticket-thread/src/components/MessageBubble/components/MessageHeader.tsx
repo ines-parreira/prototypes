@@ -33,12 +33,12 @@ export function MessageHeader({
     senderAvatarUrl,
     channelIcon,
     channelName,
-    openedDatetime,
     createdDatetime,
     shouldShowStatus,
     deliveryStatus,
 }: MessageHeaderProps) {
-    const { datetimeFormat, timezone } = useTicketThreadDateTimeFormat()
+    const { datetimeFormat, compactDateWithTimeFormat, timezone } =
+        useTicketThreadDateTimeFormat()
 
     return (
         <Box justifyContent="space-between" alignItems="center">
@@ -48,12 +48,18 @@ export function MessageHeader({
                     {senderName}
                 </Text>
             </Box>
+
             <Box alignItems="center" gap="xs" className={css.meta}>
                 {channelIcon && channelName ? (
                     <Tooltip
-                        trigger={
-                            <Icon name={channelIcon as IconName} size="sm" />
-                        }
+                        trigger={() => (
+                            <span role="button" className={css.channelIcon}>
+                                <Icon
+                                    name={channelIcon as IconName}
+                                    size="sm"
+                                />
+                            </span>
+                        )}
                     >
                         <TooltipContent>
                             <Box flexDirection="column" gap="xxs">
@@ -63,26 +69,24 @@ export function MessageHeader({
                                         {channelName}
                                     </Text>
                                 </Text>
-                                {openedDatetime && (
-                                    <Text size="xs">
-                                        Date:{' '}
-                                        <Text
-                                            size="xs"
-                                            variant={TextVariant.Bold}
-                                        >
-                                            {formatDatetime(
-                                                openedDatetime,
-                                                datetimeFormat,
-                                            )}
-                                        </Text>
+                                <Text size="xs">
+                                    Date:{' '}
+                                    <Text size="xs" variant={TextVariant.Bold}>
+                                        {formatDatetime(
+                                            createdDatetime,
+                                            compactDateWithTimeFormat,
+                                            timezone,
+                                        )}
                                     </Text>
-                                )}
+                                </Text>
                             </Box>
                         </TooltipContent>
                     </Tooltip>
                 ) : (
                     channelIcon && (
-                        <Icon name={channelIcon as IconName} size="sm" />
+                        <span className={css.channelIcon}>
+                            <Icon name={channelIcon as IconName} size="sm" />
+                        </span>
                     )
                 )}
                 {shouldShowStatus && deliveryStatus && (

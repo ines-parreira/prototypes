@@ -4,12 +4,12 @@ import type { ValueOf } from '@repo/types'
 
 import { Box } from '@gorgias/axiom'
 
-import { isTicketMessage } from '../../hooks/messages/predicates'
 import type { TicketThreadMessageItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
 import { TicketMessage } from '../TicketMessage/TicketMessage'
+import { WhatsAppMessageWrapper } from '../WhatsAppMessage/WhatsAppMessageWrapper'
 
 const Placement = {
     Left: 'left',
@@ -25,13 +25,17 @@ type TicketThreadMessageItemProps = {
 export function TicketThreadMessageItem({
     item,
 }: TicketThreadMessageItemProps) {
-    const placement = useMemo<Placement>(
-        () =>
-            isTicketMessage(item.data) && item.data.from_agent
+    const placement = useMemo<Placement>(() => {
+        if (item._tag === TicketThreadItemTag.Messages.GroupedMessages) {
+            const first = item.data[0]
+            return first && 'from_agent' in first.data && first.data.from_agent
                 ? Placement.Right
-                : Placement.Left,
-        [item],
-    )
+                : Placement.Left
+        }
+        return 'from_agent' in item.data && item.data.from_agent
+            ? Placement.Right
+            : Placement.Left
+    }, [item])
 
     const content = useMemo(() => {
         switch (item._tag) {
@@ -72,7 +76,7 @@ export function TicketThreadMessageItem({
             case TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage:
                 return <Box padding="md">{JSON.stringify(item.data)}</Box>
             case TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <WhatsAppMessageWrapper item={item} />
             case TicketThreadItemTag.Messages.GroupedMessages:
                 return <Box padding="md">{JSON.stringify(item.data)}</Box>
             default:

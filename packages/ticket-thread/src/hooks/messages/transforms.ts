@@ -169,7 +169,11 @@ export function toTaggedMessage(
     }
 }
 
-const GROUPING_CHANNELS = ['facebook-messenger', 'chat'] as const
+const GROUPING_CHANNELS = [
+    'facebook-messenger',
+    'chat',
+    'whatsapp-message',
+] as const
 type GroupingChannels = (typeof GROUPING_CHANNELS)[number]
 
 function shouldGroupConsecutiveMessages(

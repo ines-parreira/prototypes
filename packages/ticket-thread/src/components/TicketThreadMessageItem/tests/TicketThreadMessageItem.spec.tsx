@@ -9,6 +9,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadMessageItem } from '../../../hooks/messages/types'
+import { useTicketThreadDateTimeFormat } from '../../../hooks/shared/useTicketThreadDateTimeFormat'
 import { TicketThreadItemTag } from '../../../hooks/types'
 import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
 import { render } from '../../../tests/render.utils'
@@ -36,6 +37,14 @@ vi.mock('../../../utils/LegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
 }))
 
+vi.mock('../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
+    useTicketThreadDateTimeFormat: vi.fn(),
+}))
+
+const mockUseTicketThreadDateTimeFormat = vi.mocked(
+    useTicketThreadDateTimeFormat,
+)
+
 const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
 
 beforeEach(() => {
@@ -56,6 +65,11 @@ beforeEach(() => {
             ),
         ).handler,
     )
+    mockUseTicketThreadDateTimeFormat.mockReturnValue({
+        datetimeFormat: 'YYYY-MM-DD',
+        compactDateWithTimeFormat: 'YYYY-MM-DD HH:mm',
+        timezone: undefined,
+    })
     mockUseTicketThreadLegacyBridge.mockReturnValue({
         currentTicketShoppingAssistantData: {
             influencedOrders: [],
@@ -135,10 +149,6 @@ describe('TicketThreadMessageItem', () => {
         {
             tag: TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage,
             label: 'Twitter DM',
-        },
-        {
-            tag: TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage,
-            label: 'WhatsApp message',
         },
     ]
 
@@ -236,5 +246,62 @@ describe('TicketThreadMessageItem', () => {
         } as TicketThreadMessageItem)
 
         expect(screen.getByText(JSON.stringify(mergedData))).toBeInTheDocument()
+    })
+
+    it('renders WhatsApp message with sender name', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage,
+            data: {
+                ...messageData,
+                source: { type: 'whatsapp-message' },
+                sender: {
+                    name: 'Alice',
+                    email: 'alice@example.com',
+                    meta: null,
+                },
+                from_agent: false,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('Alice')).toBeInTheDocument()
+    })
+
+    it('shows copy and intents buttons for inbound WhatsApp messages', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage,
+            data: {
+                ...messageData,
+                source: { type: 'whatsapp-message' },
+                from_agent: false,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(
+            screen.getByRole('button', { name: 'Message intent' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Copy message' }),
+        ).toBeInTheDocument()
+    })
+
+    it('shows only copy button for outbound WhatsApp messages', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage,
+            data: {
+                ...messageData,
+                source: { type: 'whatsapp-message' },
+                from_agent: true,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(
+            screen.queryByRole('button', { name: 'Message intent' }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Copy message' }),
+        ).toBeInTheDocument()
     })
 })

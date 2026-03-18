@@ -42,6 +42,7 @@ const baseProps: MessageHeaderProps = {
 beforeEach(() => {
     mockUseTicketThreadDateTimeFormat.mockReturnValue({
         datetimeFormat: 'YYYY-MM-DD',
+        compactDateWithTimeFormat: 'YYYY-MM-DD HH:mm',
         timezone: undefined,
     })
 })
@@ -72,6 +73,7 @@ describe('MessageHeader', () => {
     it('formats the datetime using the agent timezone when provided', () => {
         mockUseTicketThreadDateTimeFormat.mockReturnValue({
             datetimeFormat: 'YYYY-MM-DD HH:mm',
+            compactDateWithTimeFormat: 'YYYY-MM-DD HH:mm',
             timezone: 'America/Los_Angeles',
         })
 

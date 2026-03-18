@@ -12,6 +12,7 @@ describe('TicketThreadEventDateTime', () => {
     it('formats the event datetime using the agent timezone', () => {
         vi.mocked(useTicketThreadDateTimeFormat).mockReturnValue({
             datetimeFormat: 'YYYY-MM-DD HH:mm',
+            compactDateWithTimeFormat: 'YYYY-MM-DD HH:mm',
             timezone: 'America/Los_Angeles',
         })
 

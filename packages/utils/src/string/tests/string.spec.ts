@@ -1,6 +1,7 @@
 import {
     countLines,
     countWords,
+    humanize,
     humanizeArray,
     removeSuffix,
     truncateWords,
@@ -84,6 +85,30 @@ describe('string util', () => {
             expect(truncateWords('foo@#123$% bar-_&][ baz', 2)).toBe(
                 'foo@#123$% bar-_&][',
             )
+        })
+    })
+
+    describe('humanize', () => {
+        it('should replace underscores with spaces and capitalize first letter', () => {
+            expect(humanize('hello_world')).toBe('Hello world')
+        })
+
+        it('should insert space before uppercase letters (camelCase)', () => {
+            expect(humanize('helloWorld')).toBe('Hello world')
+        })
+
+        it('should replace hyphens and dots with spaces', () => {
+            expect(humanize('hello-world')).toBe('Hello world')
+            expect(humanize('hello.world')).toBe('Hello world')
+        })
+
+        it('should trim leading and trailing punctuation', () => {
+            expect(humanize('_hello_')).toBe('Hello')
+            expect(humanize('.-hello-.')).toBe('Hello')
+        })
+
+        it('should collapse multiple separators into one space', () => {
+            expect(humanize('hello__world')).toBe('Hello world')
         })
     })
 

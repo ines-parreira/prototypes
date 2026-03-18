@@ -1,4 +1,6 @@
 import _isString from 'lodash/isString'
+import _trim from 'lodash/trim'
+import _upperFirst from 'lodash/upperFirst'
 import _words from 'lodash/words'
 
 /**
@@ -53,6 +55,15 @@ export const truncateWords = (text: string, n: number): string => {
     }
 
     return text
+}
+
+export function humanize(text: string): string {
+    return _upperFirst(
+        _trim(text, '.-_')
+            .replace(/([A-Z])/g, ' $1')
+            .replace(/[-_.\s]+/g, ' ')
+            .toLowerCase(),
+    )
 }
 
 export const humanizeArray = (text: string[]) => {

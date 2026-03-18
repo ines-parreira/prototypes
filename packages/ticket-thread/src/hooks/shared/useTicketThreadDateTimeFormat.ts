@@ -10,6 +10,11 @@ export function useTicketThreadDateTimeFormat() {
             timeFormat,
             DateAndTimeFormatting.RelativeDateAndTime,
         ),
+        compactDateWithTimeFormat: getDateAndTimeFormat(
+            dateFormat,
+            timeFormat,
+            DateAndTimeFormatting.CompactDateWithTime,
+        ),
         timezone,
     }
 }
