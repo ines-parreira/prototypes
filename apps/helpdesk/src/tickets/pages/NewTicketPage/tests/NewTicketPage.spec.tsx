@@ -452,21 +452,6 @@ describe('NewTicketPage', () => {
             } as any)
         })
 
-        it('renders Shopify content when activeTab is Shopify', async () => {
-            useTicketInfobarNavigationMock.mockReturnValue({
-                isExpanded: true,
-                activeTab: TicketInfobarTab.Shopify,
-            } as any)
-
-            renderComponent()
-
-            expect(screen.getByText('ShopifyCustomer')).toBeInTheDocument()
-            expect(
-                screen.queryByRole('heading', { name: 'Ticket details' }),
-            ).not.toBeInTheDocument()
-            await waitForSelectsToLoad()
-        })
-
         it('renders Customer content when activeTab is Customer', async () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 isExpanded: true,

@@ -7,7 +7,10 @@ import { Box } from '@gorgias/axiom'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 import { IntegrationType } from '@gorgias/helpdesk-types'
 
-import type { EditShippingAddressModalRenderProps } from './components/CustomerInfo'
+import type {
+    EditShippingAddressModalRenderProps,
+    OrderSidePanelRenderProps,
+} from './components/CustomerInfo'
 import { CustomerInfo } from './components/CustomerInfo'
 
 type CustomerIntegrationData = {
@@ -22,6 +25,7 @@ type Props = {
     renderEditShippingAddressModal?: (
         props: EditShippingAddressModalRenderProps,
     ) => ReactNode
+    renderOrderSidePanel: (props: OrderSidePanelRenderProps) => ReactNode
     currentUser?: {
         name?: string
         firstname?: string
@@ -33,6 +37,7 @@ type Props = {
 export function ShopifyCustomer({
     onSyncProfile,
     renderEditShippingAddressModal,
+    renderOrderSidePanel,
     currentUser,
 }: Props) {
     const { ticketId } = useParams<{ ticketId: string }>()
@@ -73,6 +78,7 @@ export function ShopifyCustomer({
                 ticketId={ticketId}
                 customerId={customerId}
                 renderEditShippingAddressModal={renderEditShippingAddressModal}
+                renderOrderSidePanel={renderOrderSidePanel}
                 currentUser={currentUser}
             />
         </Box>

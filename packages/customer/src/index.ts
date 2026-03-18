@@ -1,4 +1,5 @@
 export { CustomerInfo } from './components/ShopifyCustomer/components/CustomerInfo'
+export type { OrderSidePanelRenderProps } from './components/ShopifyCustomer/components/CustomerInfo'
 export type { EditShippingAddressModalRenderProps } from './components/ShopifyCustomer/components/CustomerInfo/OrderSidePanelPreview'
 export { OrderSidePanelContent } from './components/ShopifyCustomer/components/CustomerInfo/OrderSidePanelContent'
 export type { OrderData } from './components/ShopifyCustomer/components/CustomerInfo/OrderSidePanelContent'

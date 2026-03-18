@@ -2,6 +2,7 @@ import { useCallback, useContext, useMemo, useState } from 'react'
 import type { ReactNode } from 'react'
 
 import { normalizeMetafields } from '@repo/ecommerce/shopify/components'
+import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
 import { EditFieldsType, useTicketInfobarNavigation } from '@repo/navigation'
 import { useUserDateTimePreferences } from '@repo/preferences'
 
@@ -27,11 +28,29 @@ import { IntermediateEditPanel } from './IntermediateEditPanel'
 import { MetafieldsSection } from './MetafieldsSection'
 import { NoShopifyProfile } from './NoShopifyProfile'
 import type { EditShippingAddressModalRenderProps } from './OrderSidePanelPreview'
-import { OrderSidePanelPreview } from './OrderSidePanelPreview'
 import { OrdersList } from './OrdersList'
 import type { FieldRenderContext, OrderFieldRenderContext } from './types'
 import { useCustomerFieldPreferences } from './useCustomerFieldPreferences'
 import { useOrderFieldPreferences } from './useOrderFieldPreferences'
+
+export type OrderSidePanelRenderProps = {
+    order: OrderEcommerceData['data'] | null
+    isOpen: boolean
+    onOpenChange: (isOpen: boolean) => void
+    productsMap?: Map<number, OrderCardProduct>
+    isDraftOrder?: boolean
+    storeName?: string
+    integrationId?: number
+    ticketId?: string
+    customerId?: string
+    renderEditShippingAddressModal?: (
+        props: EditShippingAddressModalRenderProps,
+    ) => ReactNode
+    hasPrevious?: boolean
+    hasNext?: boolean
+    onNavigatePrevious?: () => void
+    onNavigateNext?: () => void
+}
 
 type Props = {
     associatedShopifyCustomerIds: Set<number>
@@ -50,6 +69,7 @@ type Props = {
         lastname?: string
         email?: string
     }
+    renderOrderSidePanel: (props: OrderSidePanelRenderProps) => ReactNode
 }
 
 export function CustomerInfo({
@@ -62,6 +82,7 @@ export function CustomerInfo({
     customerId,
     renderEditShippingAddressModal,
     currentUser,
+    renderOrderSidePanel,
 }: Props) {
     const {
         filteredIntegrations,
@@ -75,13 +96,7 @@ export function CustomerInfo({
         onStoreChange,
     })
 
-    const {
-        onCreateOrder,
-        onEditOrder,
-        onDuplicateOrder,
-        onRefundOrder,
-        onCancelOrder,
-    } = useContext(ShopifyCustomerContext)
+    const { onCreateOrder } = useContext(ShopifyCustomerContext)
 
     const { shopper } = useGetShopper({
         integrationId: selectedIntegration?.id,
@@ -234,42 +249,6 @@ export function CustomerInfo({
     const hasNext =
         selectedOrderIndex !== null && selectedOrderIndex < allOrders.length - 1
 
-    const handleEditOrder = useCallback(
-        (order: OrderEcommerceData['data']) => {
-            if (selectedIntegration?.id && onEditOrder) {
-                onEditOrder(selectedIntegration.id, order)
-            }
-        },
-        [selectedIntegration?.id, onEditOrder],
-    )
-
-    const handleDuplicateOrder = useCallback(
-        (order: OrderEcommerceData['data']) => {
-            if (selectedIntegration?.id && onDuplicateOrder) {
-                onDuplicateOrder(selectedIntegration.id, order)
-            }
-        },
-        [selectedIntegration?.id, onDuplicateOrder],
-    )
-
-    const handleRefundOrder = useCallback(
-        (order: OrderEcommerceData['data']) => {
-            if (selectedIntegration?.id && onRefundOrder) {
-                onRefundOrder(selectedIntegration.id, order)
-            }
-        },
-        [selectedIntegration?.id, onRefundOrder],
-    )
-
-    const handleCancelOrder = useCallback(
-        (order: OrderEcommerceData['data']) => {
-            if (selectedIntegration?.id && onCancelOrder) {
-                onCancelOrder(selectedIntegration.id, order)
-            }
-        },
-        [selectedIntegration?.id, onCancelOrder],
-    )
-
     const firstOrder = allOrders[0]?.data
     const orderContext: OrderFieldRenderContext = {
         order: firstOrder ?? { id: '' },
@@ -415,32 +394,26 @@ export function CustomerInfo({
                 />
             </div>
 
-            <OrderSidePanelPreview
-                order={selectedOrder?.data ?? null}
-                isOpen={selectedOrderIndex !== null}
-                onOpenChange={(open) => {
+            {renderOrderSidePanel({
+                order: selectedOrder?.data ?? null,
+                isOpen: selectedOrderIndex !== null,
+                onOpenChange: (open) => {
                     if (!open) setSelectedOrderIndex(null)
-                }}
-                productsMap={productsMap}
-                isDraftOrder={isDraftOrder}
-                onEdit={handleEditOrder}
-                onDuplicate={handleDuplicateOrder}
-                onRefund={handleRefundOrder}
-                onCancel={handleCancelOrder}
-                storeName={selectedIntegration?.name}
-                integrationId={selectedIntegration?.id}
-                ticketId={ticketId}
-                customerId={selectedExternalId}
-                renderEditShippingAddressModal={renderEditShippingAddressModal}
-                hasPrevious={hasPrevious}
-                hasNext={hasNext}
-                onNavigatePrevious={
-                    allOrders.length > 1 ? handleNavigatePrevious : undefined
-                }
-                onNavigateNext={
-                    allOrders.length > 1 ? handleNavigateNext : undefined
-                }
-            />
+                },
+                productsMap,
+                isDraftOrder,
+                storeName: selectedIntegration?.name,
+                integrationId: selectedIntegration?.id,
+                ticketId,
+                customerId: selectedExternalId,
+                renderEditShippingAddressModal,
+                hasPrevious,
+                hasNext,
+                onNavigatePrevious:
+                    allOrders.length > 1 ? handleNavigatePrevious : undefined,
+                onNavigateNext:
+                    allOrders.length > 1 ? handleNavigateNext : undefined,
+            })}
         </>
     )
 }

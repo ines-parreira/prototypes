@@ -17,11 +17,17 @@ import {
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import { CustomerInfo } from '../'
+import type { OrderSidePanelRenderProps } from '../'
 import { render, testAppQueryClient } from '../../../../../tests/render.utils'
 import { useGetDraftOrders } from '../../../hooks/useGetDraftOrders'
 import { useGetOrders } from '../../../hooks/useGetOrders'
 import { ShopifyCustomerContext } from '../../../ShopifyCustomerContext'
 import type { OrderEcommerceData } from '../../../types'
+import { OrderSidePanelPreview } from '../OrderSidePanelPreview'
+
+const mockRenderOrderSidePanel = (props: OrderSidePanelRenderProps) => (
+    <OrderSidePanelPreview {...props} />
+)
 
 vi.mock('../../../hooks/useGetOrders', () => ({
     useGetOrders: vi.fn(),
@@ -228,6 +234,7 @@ describe('CustomerInfo', () => {
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -246,6 +253,7 @@ describe('CustomerInfo', () => {
                 externalIdMap={externalIdMap}
                 onStoreChange={onStoreChange}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -294,6 +302,7 @@ describe('CustomerInfo', () => {
                 externalIdMap={multipleExternalIdMap}
                 onStoreChange={onStoreChange}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -344,6 +353,7 @@ describe('CustomerInfo', () => {
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -368,6 +378,7 @@ describe('CustomerInfo', () => {
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -388,6 +399,7 @@ describe('CustomerInfo', () => {
                 externalIdMap={new Map()}
                 onSyncProfile={onSyncProfile}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -412,6 +424,7 @@ describe('CustomerInfo', () => {
                 externalIdMap={new Map()}
                 onSyncProfile={onSyncProfile}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -434,6 +447,7 @@ describe('CustomerInfo', () => {
                 externalIdMap={externalIdMap}
                 onSyncProfile={onSyncProfile}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -511,6 +525,7 @@ describe('CustomerInfo', () => {
                 }
                 externalIdMap={multipleExternalIdMap}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -529,6 +544,7 @@ describe('CustomerInfo', () => {
                 externalIdMap={externalIdMap}
                 onSyncProfile={onSyncProfile}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -571,6 +587,7 @@ describe('CustomerInfo', () => {
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -617,6 +634,7 @@ describe('CustomerInfo', () => {
                     associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                     externalIdMap={externalIdMap}
                     ticketId="123"
+                    renderOrderSidePanel={mockRenderOrderSidePanel}
                 />,
             )
 
@@ -682,6 +700,7 @@ describe('CustomerInfo', () => {
                     associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                     externalIdMap={externalIdMap}
                     ticketId="123"
+                    renderOrderSidePanel={mockRenderOrderSidePanel}
                 />,
             )
 
@@ -703,124 +722,6 @@ describe('CustomerInfo', () => {
         })
     })
 
-    describe('Order actions', () => {
-        const mockOrder: OrderEcommerceData = {
-            id: 'order-1',
-            account_id: 1,
-            created_datetime: '2024-01-15T10:00:00Z',
-            updated_datetime: '2024-01-15T10:00:00Z',
-            source_type: 'shopify',
-            integration_id: 1,
-            external_id: 'ext-order-1',
-            data: {
-                id: 12345,
-                name: '#1001',
-                financial_status: 'paid',
-                fulfillment_status: 'fulfilled',
-                line_items: [],
-                currency: 'USD',
-                total_price: '99.99',
-            } as unknown as OrderEcommerceData['data'],
-        }
-
-        beforeEach(() => {
-            vi.mocked(useGetOrders).mockReturnValue({
-                orders: [mockOrder],
-                isLoadingOrders: false,
-                refetchOrders: vi.fn(),
-            })
-        })
-
-        async function openOrderSidePanel(
-            user: ReturnType<typeof render>['user'],
-        ) {
-            await waitFor(() => {
-                expect(screen.getByText('#1001')).toBeInTheDocument()
-            })
-            await user.click(screen.getByText('#1001'))
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('heading', { name: /order #1001/i }),
-                ).toBeInTheDocument()
-            })
-        }
-
-        it('calls onDuplicateOrder with integration id and order data when Duplicate is clicked', async () => {
-            const onDuplicateOrder = vi.fn()
-            const { user } = render(
-                <ShopifyCustomerContext.Provider
-                    value={{ dispatchNotification: vi.fn(), onDuplicateOrder }}
-                >
-                    <CustomerInfo
-                        associatedShopifyCustomerIds={
-                            associatedShopifyCustomerIds
-                        }
-                        externalIdMap={externalIdMap}
-                        ticketId="123"
-                    />
-                </ShopifyCustomerContext.Provider>,
-            )
-
-            await openOrderSidePanel(user)
-            await user.click(screen.getByRole('button', { name: /duplicate/i }))
-
-            expect(onDuplicateOrder).toHaveBeenCalledWith(
-                mockShopifyIntegration.id,
-                mockOrder.data,
-            )
-        })
-
-        it('calls onRefundOrder with integration id and order data when Refund is clicked', async () => {
-            const onRefundOrder = vi.fn()
-            const { user } = render(
-                <ShopifyCustomerContext.Provider
-                    value={{ dispatchNotification: vi.fn(), onRefundOrder }}
-                >
-                    <CustomerInfo
-                        associatedShopifyCustomerIds={
-                            associatedShopifyCustomerIds
-                        }
-                        externalIdMap={externalIdMap}
-                        ticketId="123"
-                    />
-                </ShopifyCustomerContext.Provider>,
-            )
-
-            await openOrderSidePanel(user)
-            await user.click(screen.getByRole('button', { name: /refund/i }))
-
-            expect(onRefundOrder).toHaveBeenCalledWith(
-                mockShopifyIntegration.id,
-                mockOrder.data,
-            )
-        })
-
-        it('calls onCancelOrder with integration id and order data when Cancel is clicked', async () => {
-            const onCancelOrder = vi.fn()
-            const { user } = render(
-                <ShopifyCustomerContext.Provider
-                    value={{ dispatchNotification: vi.fn(), onCancelOrder }}
-                >
-                    <CustomerInfo
-                        associatedShopifyCustomerIds={
-                            associatedShopifyCustomerIds
-                        }
-                        externalIdMap={externalIdMap}
-                        ticketId="123"
-                    />
-                </ShopifyCustomerContext.Provider>,
-            )
-
-            await openOrderSidePanel(user)
-            await user.click(screen.getByRole('button', { name: /cancel/i }))
-
-            expect(onCancelOrder).toHaveBeenCalledWith(
-                mockShopifyIntegration.id,
-                mockOrder.data,
-            )
-        })
-    })
-
     it('calls onSetEditingWidgetType(null) when Confirm is clicked in IntermediateEditPanel', async () => {
         const onSetEditingWidgetType = vi.fn()
         mockUseTicketInfobarNavigation.mockReturnValue({
@@ -838,6 +739,7 @@ describe('CustomerInfo', () => {
                 associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                 externalIdMap={externalIdMap}
                 ticketId="123"
+                renderOrderSidePanel={mockRenderOrderSidePanel}
             />,
         )
 
@@ -950,6 +852,7 @@ describe('CustomerInfo', () => {
                     associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                     externalIdMap={externalIdMap}
                     ticketId="123"
+                    renderOrderSidePanel={mockRenderOrderSidePanel}
                 />,
             )
 
@@ -987,6 +890,7 @@ describe('CustomerInfo', () => {
                     associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                     externalIdMap={externalIdMap}
                     ticketId="123"
+                    renderOrderSidePanel={mockRenderOrderSidePanel}
                 />,
             )
 
@@ -1034,6 +938,7 @@ describe('CustomerInfo', () => {
                     associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                     externalIdMap={externalIdMap}
                     ticketId="123"
+                    renderOrderSidePanel={mockRenderOrderSidePanel}
                 />,
             )
 
@@ -1093,6 +998,7 @@ describe('CustomerInfo', () => {
                     associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                     externalIdMap={externalIdMap}
                     ticketId="123"
+                    renderOrderSidePanel={mockRenderOrderSidePanel}
                 />,
             )
 
@@ -1132,6 +1038,7 @@ describe('CustomerInfo', () => {
                     associatedShopifyCustomerIds={associatedShopifyCustomerIds}
                     externalIdMap={externalIdMap}
                     ticketId="123"
+                    renderOrderSidePanel={mockRenderOrderSidePanel}
                 />
             </ShopifyCustomerContext.Provider>,
         )

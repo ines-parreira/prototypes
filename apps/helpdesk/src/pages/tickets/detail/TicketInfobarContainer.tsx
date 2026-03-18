@@ -1,4 +1,3 @@
-import type { ComponentType } from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import type { EditShippingAddressModalRenderProps } from '@repo/customer'
@@ -27,7 +26,6 @@ import useSyncWidgetEditSession from 'hooks/useSyncWidgetEditSession'
 import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
-import type { InfobarModalProps } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/types'
 import { channelToCommunicationIcon } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/channelToCommunicationIcon'
 import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
@@ -58,23 +56,13 @@ import { WidgetEnvironment } from 'state/widgets/types'
 import { TimelineContent } from 'tickets/ticket-timeline'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import ConnectedEditOrderShippingAddressModal from 'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal'
-import CancelOrderModalDefault from 'Widgets/modules/Shopify/modules/Order/modules/CancelOrderModal'
-import EditOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/EditOrderModal'
-import RefundOrderModal from 'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal'
+import { OrderSidePanelWithActions } from 'Widgets/modules/Shopify/modules/Order/components/OrderSidePanelWithActions'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import { useFeedbackTracking } from './components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
-import { useCancelOrder } from './hooks/useCancelOrder'
 import { useCreateOrder } from './hooks/useCreateOrder'
-import { useDuplicateOrder } from './hooks/useDuplicateOrder'
-import { useEditOrder } from './hooks/useEditOrder'
-import { useRefundOrder } from './hooks/useRefundOrder'
 
 import css from './TicketInfobarContainer.less'
-
-const CancelOrderModal = CancelOrderModalDefault as ComponentType<
-    InfobarModalProps & { data: { actionName: string | null; order: unknown } }
->
 
 type OwnProps = {
     isEditingWidgets?: boolean
@@ -272,11 +260,6 @@ export const TicketInfobarContainer = ({
         ),
         [dispatch],
     )
-    const editOrder = useEditOrder()
-    const duplicateOrder = useDuplicateOrder()
-    const cancelOrder = useCancelOrder()
-    const refundOrder = useRefundOrder()
-
     const aiMessages = useAppSelector(getAIAgentMessages).filter(
         (message) =>
             new Date(message.created_datetime) > DATE_FEATURE_AVAILABLE,
@@ -433,16 +416,15 @@ export const TicketInfobarContainer = ({
                     <ShopifyCustomerProvider
                         dispatchNotification={dispatchNotification}
                         onCreateOrder={createOrder.open}
-                        onEditOrder={editOrder.open}
-                        onDuplicateOrder={duplicateOrder.open}
-                        onRefundOrder={refundOrder.open}
-                        onCancelOrder={cancelOrder.open}
                     >
                         <ShopifyCustomer
                             onSyncProfile={handleSyncProfile}
                             renderEditShippingAddressModal={
                                 renderEditShippingAddressModal
                             }
+                            renderOrderSidePanel={(props) => (
+                                <OrderSidePanelWithActions {...props} />
+                            )}
                             currentUser={{
                                 name: currentUser.get('name') as string,
                                 firstname: currentUser.get(
@@ -481,90 +463,6 @@ export const TicketInfobarContainer = ({
                                     actionName: ShopifyActionType.CreateOrder,
                                     customer:
                                         createOrder.data?.customerImmutable,
-                                }}
-                            />
-                        </IntegrationContext.Provider>
-                        <IntegrationContext.Provider
-                            value={{
-                                integration: fromJS({}),
-                                integrationId:
-                                    editOrder.data?.integrationId ?? null,
-                            }}
-                        >
-                            <EditOrderModal
-                                isOpen={editOrder.isOpen}
-                                title="Edit order"
-                                onChange={editOrder.onChange}
-                                onBulkChange={editOrder.onBulkChange}
-                                onSubmit={editOrder.onSubmit}
-                                onClose={editOrder.onClose}
-                                data={{
-                                    actionName: ShopifyActionType.EditOrder,
-                                    order: editOrder.data?.orderImmutable,
-                                    customer: editOrder.data?.customerImmutable,
-                                }}
-                            />
-                        </IntegrationContext.Provider>
-                        <IntegrationContext.Provider
-                            value={{
-                                integration: fromJS({}),
-                                integrationId:
-                                    duplicateOrder.data?.integrationId ?? null,
-                            }}
-                        >
-                            <DraftOrderModal
-                                isOpen={duplicateOrder.isOpen}
-                                title="Duplicate order"
-                                onChange={duplicateOrder.onChange}
-                                onBulkChange={duplicateOrder.onBulkChange}
-                                onSubmit={duplicateOrder.onSubmit}
-                                onClose={duplicateOrder.onClose}
-                                data={{
-                                    actionName:
-                                        ShopifyActionType.DuplicateOrder,
-                                    order: duplicateOrder.data?.orderImmutable,
-                                    customer:
-                                        duplicateOrder.data?.customerImmutable,
-                                }}
-                            />
-                        </IntegrationContext.Provider>
-                        <IntegrationContext.Provider
-                            value={{
-                                integration: fromJS({}),
-                                integrationId:
-                                    refundOrder.data?.integrationId ?? null,
-                            }}
-                        >
-                            <RefundOrderModal
-                                isOpen={refundOrder.isOpen}
-                                title="Refund order"
-                                onChange={refundOrder.onChange}
-                                onBulkChange={refundOrder.onBulkChange}
-                                onSubmit={refundOrder.onSubmit}
-                                onClose={refundOrder.onClose}
-                                data={{
-                                    actionName: ShopifyActionType.RefundOrder,
-                                    order: refundOrder.data?.orderImmutable,
-                                }}
-                            />
-                        </IntegrationContext.Provider>
-                        <IntegrationContext.Provider
-                            value={{
-                                integration: fromJS({}),
-                                integrationId:
-                                    cancelOrder.data?.integrationId ?? null,
-                            }}
-                        >
-                            <CancelOrderModal
-                                isOpen={cancelOrder.isOpen}
-                                title="Cancel order"
-                                onChange={cancelOrder.onChange}
-                                onBulkChange={cancelOrder.onBulkChange}
-                                onSubmit={cancelOrder.onSubmit}
-                                onClose={cancelOrder.onClose}
-                                data={{
-                                    actionName: ShopifyActionType.CancelOrder,
-                                    order: cancelOrder.data?.orderImmutable,
                                 }}
                             />
                         </IntegrationContext.Provider>

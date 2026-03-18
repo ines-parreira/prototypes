@@ -15,6 +15,12 @@ import type { Integration } from '@gorgias/helpdesk-types'
 
 import { ShopifyCustomer } from '../'
 import { render, testAppQueryClient } from '../../../tests/render.utils'
+import type { OrderSidePanelRenderProps } from '../components/CustomerInfo'
+import { OrderSidePanelPreview } from '../components/CustomerInfo/OrderSidePanelPreview'
+
+const mockRenderOrderSidePanel = (props: OrderSidePanelRenderProps) => (
+    <OrderSidePanelPreview {...props} />
+)
 
 vi.mock('@repo/navigation', async (importOriginal) => ({
     ...((await importOriginal()) as Record<string, unknown>),
@@ -102,10 +108,13 @@ beforeEach(() => {
 
 describe('ShopifyCustomer', () => {
     it('renders the store picker with integrations from the ticket', async () => {
-        render(<ShopifyCustomer />, {
-            initialEntries: ['/app/views/1/123'],
-            path: '/app/views/:viewId/:ticketId',
-        })
+        render(
+            <ShopifyCustomer renderOrderSidePanel={mockRenderOrderSidePanel} />,
+            {
+                initialEntries: ['/app/views/1/123'],
+                path: '/app/views/:viewId/:ticketId',
+            },
+        )
 
         await waitFor(() => {
             expect(screen.getByRole('textbox')).toHaveValue(
