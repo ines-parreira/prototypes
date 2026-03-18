@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import type { CustomField } from '@gorgias/helpdesk-types'
 
@@ -22,9 +22,19 @@ export function CustomCustomerField({
     const [currentValue, setCurrentValue] = useState<
         CustomFieldValue | undefined
     >(queryValue)
+    const currentValueRef = useRef<CustomFieldValue | undefined>(queryValue)
 
     const { updateOrDeleteCustomerFieldValue } =
         useUpdateOrDeleteCustomCustomerFieldValue(customerId)
+
+    // Temporary sync workaround until customer fields move to zustand state
+    // like the ticket fields implementation used by InfobarTicketField.
+    useEffect(() => {
+        if (currentValueRef.current !== queryValue) {
+            currentValueRef.current = queryValue
+            setCurrentValue(queryValue)
+        }
+    }, [queryValue])
 
     const mutate = useCallback(
         (value: CustomFieldValue | undefined) => {
@@ -44,17 +54,20 @@ export function CustomCustomerField({
              */
             if (isTextInput(field)) {
                 const textValue = newValue?.toString()
+                currentValueRef.current = textValue
                 setCurrentValue(textValue)
                 return
             }
 
             if (isNumberInput(field)) {
                 const numberValue = getNumberOrUndefined(newValue)
+                currentValueRef.current = numberValue
                 setCurrentValue(numberValue)
                 return mutate(numberValue)
             }
 
             // Dropdown field
+            currentValueRef.current = newValue
             setCurrentValue(newValue)
             mutate(newValue)
         },
@@ -65,6 +78,7 @@ export function CustomCustomerField({
         (newValue: CustomFieldValue | undefined) => {
             if (isTextInput(field)) {
                 const textValue = newValue?.toString()?.trim()
+                currentValueRef.current = textValue
                 setCurrentValue(textValue)
                 return mutate(textValue)
             }

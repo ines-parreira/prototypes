@@ -70,6 +70,7 @@ import { isViewSharedWithUser } from 'state/views/utils'
 import { isCurrentlyOnTicket } from 'utils'
 
 import { throttledUpdateCustomerCache } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
+import { throttledUpdateCustomFieldsCache } from '../helpers'
 
 import receivedEvents from '../receivedEvents'
 import { ticket } from 'fixtures/ticket'
@@ -96,6 +97,10 @@ jest.mock(
         throttledUpdateCustomerCache: jest.fn(),
     }),
 )
+jest.mock('../helpers', () => ({
+    ...jest.requireActual('../helpers'),
+    throttledUpdateCustomFieldsCache: jest.fn(),
+}))
 
 jest.mock('common/store', () => {
     /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
@@ -958,6 +963,17 @@ describe('receivedEvents', () => {
                 ticket: { id: 1, customer: { id: 123 } },
             } as any)
             expect(throttledUpdateCustomerCache).toHaveBeenCalledWith(123)
+        })
+
+        it('should call try to invalidate custom fields query caches', () => {
+            handler.onReceive({
+                ticket: { id: 1, customer: { id: 123 } },
+            } as any)
+
+            expect(throttledUpdateCustomFieldsCache).toHaveBeenCalledWith({
+                customerId: 123,
+                ticketId: 1,
+            })
         })
     })
 

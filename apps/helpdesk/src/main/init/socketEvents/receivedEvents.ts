@@ -14,6 +14,7 @@ import { store as reduxStore } from 'common/store'
 import { isSpecificTicketPath } from 'common/utils'
 import { MAX_RECENT_CHATS } from 'config/recentChats'
 import { isMigrationInProgress } from 'hooks/useWhatsAppMigration'
+import { throttledUpdateCustomFieldsCache } from 'main/init/socketEvents/helpers'
 import { fetchNewPhoneNumbers } from 'models/phoneNumber/resources'
 import type { UseListVoiceCalls } from 'models/voiceCall/queries'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
@@ -140,6 +141,10 @@ const receivedEvents: ReceivedEvent[] = [
             if (customerId) {
                 throttledUpdateCustomerCache(customerId)
             }
+            throttledUpdateCustomFieldsCache({
+                customerId,
+                ticketId: ticket.id,
+            })
         },
     },
     {

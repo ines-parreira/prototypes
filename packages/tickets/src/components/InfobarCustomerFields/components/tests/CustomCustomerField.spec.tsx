@@ -98,6 +98,30 @@ const dropdownField = mockCustomField({
 
 describe('CustomCustomerField', () => {
     describe('text field onChange', () => {
+        it('should update displayed value when external value changes', async () => {
+            const { rerender } = render(
+                <CustomCustomerField
+                    field={textField}
+                    value="Initial Value"
+                    customerId={customerId}
+                />,
+            )
+
+            await screen.findByDisplayValue('Initial Value')
+
+            act(() => {
+                rerender(
+                    <CustomCustomerField
+                        field={textField}
+                        value="Updated Externally"
+                        customerId={customerId}
+                    />,
+                )
+            })
+
+            await screen.findByDisplayValue('Updated Externally')
+        })
+
         it('should trim whitespace and call mutation', async () => {
             const waitForUpdateRequest =
                 mockUpdateCustomerCustomFieldValue.waitForRequest(server)
