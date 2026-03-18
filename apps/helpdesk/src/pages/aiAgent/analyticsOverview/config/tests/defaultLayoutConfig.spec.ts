@@ -107,7 +107,7 @@ describe('defaultLayoutConfig', () => {
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[2]
             expect(breakdownSection.id).toBe('breakdown')
             expect(breakdownSection.type).toBe(ChartType.Table)
-            expect(breakdownSection.items).toHaveLength(2)
+            expect(breakdownSection.items).toHaveLength(3)
             expect(breakdownSection.items[0].chartId).toBe(
                 AnalyticsOverviewChart.PerformanceTable,
             )
@@ -116,15 +116,19 @@ describe('defaultLayoutConfig', () => {
                 AnalyticsOverviewChart.OrderManagementTable,
             )
             expect(breakdownSection.items[1].gridSize).toBe(12)
+            expect(breakdownSection.items[2].chartId).toBe(
+                AnalyticsOverviewChart.FlowsTable,
+            )
+            expect(breakdownSection.items[2].gridSize).toBe(12)
         })
 
-        it('should have total of 10 charts across all sections', () => {
+        it('should have total of 12 charts across all sections', () => {
             const totalCharts =
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(11)
+            expect(totalCharts).toBe(12)
         })
 
         it('should only contain valid chart types', () => {

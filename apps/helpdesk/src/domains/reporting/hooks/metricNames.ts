@@ -36,6 +36,10 @@ export const METRIC_NAMES = {
         'automated-interactions-per-order-management-type',
     OVERALL_TIME_SAVED_BY_AGENT_PER_ORDER_MANAGEMENT_TYPE:
         'overall-time-saved-by-agent-per-order-management-type',
+    OVERALL_AUTOMATION_RATE_PER_FLOWS: 'overall-automation-rate-per-flows',
+    AUTOMATED_INTERACTIONS_PER_FLOWS: 'automated-interactions-per-flows',
+    OVERALL_TIME_SAVED_BY_AGENT_PER_FLOWS:
+        'overall-time-saved-by-agent-per-flows',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
         'ai-agent-handover-interactions-per-intent',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
@@ -581,6 +585,7 @@ export const METRIC_NAMES = {
     HANDOVER_INTERACTIONS_PER_FEATURE: 'handover-interactions-per-feature',
     HANDOVER_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE:
         'handover-interactions-per-order-management-type',
+    FLOW_DATASET_HANDOVER_INTERACTIONS: 'flow-dataset-handover-interactions',
     AI_AGENT_HANDOVER_INTERACTIONS: 'ai-agent-handover-interactions',
     AI_AGENT_SALES_HANDOVER_INTERACTIONS:
         'ai-sales-agent-handover-interactions',
@@ -644,6 +649,7 @@ export enum MetricScope {
     // No FF
     HandoverInteractions = 'handover-interactions',
     OverallTimeSavedByAgent = 'overall-time-saved-by-agent',
+    FlowDataset = 'flow-dataset',
 }
 
 export type MetricName = (typeof METRIC_NAMES)[keyof typeof METRIC_NAMES]
@@ -928,4 +934,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
     ],
     [MetricScope.AiSalesAgentDiscounts]: [],
+    [MetricScope.FlowDataset]: [
+        METRIC_NAMES.FLOW_DATASET_HANDOVER_INTERACTIONS,
+    ],
 }

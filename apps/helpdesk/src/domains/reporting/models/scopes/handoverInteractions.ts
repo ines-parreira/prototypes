@@ -17,6 +17,7 @@ const handoverInteractionsScope = defineScope({
         'channel',
         'customField',
         'engagementType',
+        'flowId',
         'storeIntegrationId',
         'orderManagementType',
     ],

@@ -219,6 +219,7 @@ export type MeasureName =
     | 'discountUsage'
     | 'medianDiscountAmount'
     | 'offeredDiscountCodesCount'
+    | 'dropOffCount'
 
 export type TimeDimensionName =
     | 'createdDatetime'

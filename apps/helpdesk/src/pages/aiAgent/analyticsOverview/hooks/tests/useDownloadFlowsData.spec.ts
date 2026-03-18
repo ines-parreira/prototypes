@@ -1,12 +1,12 @@
 import { renderHook, waitFor } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useDownloadOrderManagementData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadOrderManagementData'
+import { useDownloadFlowsData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadFlowsData'
 
 jest.mock('utils/errors', () => ({ reportError: jest.fn() }))
 
-jest.mock('../useOrderManagementMetrics', () => ({
-    fetchOrderManagementMetrics: jest.fn(),
+jest.mock('../useFlowsMetrics', () => ({
+    fetchFlowsMetrics: jest.fn(),
 }))
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters', () => {
@@ -27,37 +27,37 @@ jest.mock(
     () => ({ useMoneySavedPerInteractionWithAutomate: jest.fn(() => 3.1) }),
 )
 
-const mockFetch = jest.requireMock('../useOrderManagementMetrics')
+const mockFetch = jest.requireMock('../useFlowsMetrics')
 const mockReportError = jest.requireMock('utils/errors').reportError
 
-const MOCK_FILE_NAME = 'order-management-2024-01-01_2024-01-31.csv'
+const MOCK_FILE_NAME = 'flows-table-2024-01-01_2024-01-31.csv'
 const MOCK_CSV =
-    'Feature,Overall automation rate,Automated interactions\r\nCancel order,18%,2700'
+    'Flows,Overall automation rate,Automated interactions\r\nProduct availability,75%,1200'
 
-describe('useDownloadOrderManagementData', () => {
+describe('useDownloadFlowsData', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockFetch.fetchOrderManagementMetrics.mockResolvedValue({
+        mockFetch.fetchFlowsMetrics.mockResolvedValue({
             fileName: MOCK_FILE_NAME,
             files: { [MOCK_FILE_NAME]: MOCK_CSV },
         })
     })
 
     it('starts with isLoading true', () => {
-        const { result } = renderHook(() => useDownloadOrderManagementData())
+        const { result } = renderHook(() => useDownloadFlowsData())
 
         expect(result.current.isLoading).toBe(true)
     })
 
     it('returns empty files and fileName while loading', () => {
-        const { result } = renderHook(() => useDownloadOrderManagementData())
+        const { result } = renderHook(() => useDownloadFlowsData())
 
         expect(result.current.files).toEqual({})
         expect(result.current.fileName).toBe('')
     })
 
     it('returns CSV data and sets isLoading false after fetch completes', async () => {
-        const { result } = renderHook(() => useDownloadOrderManagementData())
+        const { result } = renderHook(() => useDownloadFlowsData())
 
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
@@ -67,9 +67,9 @@ describe('useDownloadOrderManagementData', () => {
 
     it('sets isLoading to false and reports to Sentry when fetch fails', async () => {
         const error = new Error('Network error')
-        mockFetch.fetchOrderManagementMetrics.mockRejectedValue(error)
+        mockFetch.fetchFlowsMetrics.mockRejectedValue(error)
 
-        const { result } = renderHook(() => useDownloadOrderManagementData())
+        const { result } = renderHook(() => useDownloadFlowsData())
 
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
@@ -78,11 +78,11 @@ describe('useDownloadOrderManagementData', () => {
         })
     })
 
-    it('calls fetchOrderManagementMetrics with period-only filters, timezone, and costSavedPerInteraction', async () => {
-        renderHook(() => useDownloadOrderManagementData())
+    it('calls fetchFlowsMetrics with period-only filters, timezone, and costSavedPerInteraction', async () => {
+        renderHook(() => useDownloadFlowsData())
 
         await waitFor(() =>
-            expect(mockFetch.fetchOrderManagementMetrics).toHaveBeenCalledWith(
+            expect(mockFetch.fetchFlowsMetrics).toHaveBeenCalledWith(
                 {
                     period: {
                         start_datetime: '2024-01-01T00:00:00Z',

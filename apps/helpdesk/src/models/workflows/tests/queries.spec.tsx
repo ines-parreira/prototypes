@@ -8,6 +8,7 @@ import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import type { TrackstarConnection } from '../../../pages/automate/workflows/types'
 import {
+    fetchWorkflowConfigurations,
     useCreateTrackstarLink,
     useCreateTrackstarToken,
     useDeleteWorkflowConfigurationTemplate,
@@ -289,6 +290,41 @@ describe('queries', () => {
 
             await waitFor(() => expect(result.current.isSuccess).toEqual(true))
             expect(result.current.data).toEqual(templatesResponse)
+        })
+    })
+
+    describe('fetchWorkflowConfigurations()', () => {
+        it('should return workflow configurations on success', async () => {
+            const configurationsResponse = [
+                {
+                    id: 'uuid1',
+                    internal_id: 'flow-seed-1',
+                    name: 'Test flow',
+                },
+            ]
+
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/configurations/)
+                .reply(200, configurationsResponse)
+
+            const result = await fetchWorkflowConfigurations()
+
+            expect(result).toEqual(configurationsResponse)
+        })
+
+        it('should include drafts when includeDrafts is true', async () => {
+            mockedServer
+                .onPost(/auth/)
+                .reply(200, {})
+                .onGet(/\/configurations/)
+                .reply(function (config) {
+                    expect(config.params.is_draft).toEqual(['0', '1'])
+                    return [200, []]
+                })
+
+            await fetchWorkflowConfigurations(true)
         })
     })
 

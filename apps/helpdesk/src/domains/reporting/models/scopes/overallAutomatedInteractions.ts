@@ -10,6 +10,7 @@ const overallAutomatedInteractionsScope = defineScope({
     measures: ['automatedInteractionsCount'],
     dimensions: [
         'automationFeatureType',
+        'flowId',
         'orderManagementType',
         'channel',
         'storeIntegrationId',
@@ -80,3 +81,21 @@ export const dynamicOverallAutomatedInteractionsTimeseries =
 export const dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2 = (
     ctx: Context,
 ) => dynamicOverallAutomatedInteractionsTimeseries.build(ctx)
+
+export const automatedInteractionsPerFlows = overallAutomatedInteractionsScope
+    .defineMetricName(METRIC_NAMES.AUTOMATED_INTERACTIONS_PER_FLOWS)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['automatedInteractionsCount'] as const,
+        dimensions: ['flowId'],
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'automationFeatureType',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [AutomationFeatureType.Flows],
+            },
+        ] as any,
+    }))
+
+export const automatedInteractionsPerFlowsQueryFactoryV2 = (ctx: Context) =>
+    automatedInteractionsPerFlows.build(ctx)

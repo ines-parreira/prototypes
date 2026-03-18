@@ -7,6 +7,7 @@ import {
     assembleEntityRows,
     fetchEntityMetrics,
     fetchStatsMetricPerDimension,
+    filterEntitiesWithData,
     mapMetricValues,
     selectMeasurePerDimension,
     toEntityMap,
@@ -705,6 +706,64 @@ describe('useStatsMetricPerDimension', () => {
                 { dimension: 'a', value: null, decile: null },
                 { dimension: 'b', value: null, decile: null },
             ])
+        })
+    })
+
+    describe('filterEntitiesWithData', () => {
+        const entityData = {
+            automationRate: { flow_a: 0.5, flow_b: null, flow_c: NaN },
+            automatedInteractions: { flow_a: 10, flow_b: null, flow_c: null },
+        }
+
+        it('returns all entities when isLoading is true', () => {
+            const result = filterEntitiesWithData(
+                ['flow_a', 'flow_b', 'flow_c'],
+                entityData,
+                true,
+            )
+
+            expect(result).toEqual(['flow_a', 'flow_b', 'flow_c'])
+        })
+
+        it('returns only entities with at least one non-null, non-NaN value', () => {
+            const result = filterEntitiesWithData(
+                ['flow_a', 'flow_b', 'flow_c'],
+                entityData,
+                false,
+            )
+
+            expect(result).toEqual(['flow_a'])
+        })
+
+        it('includes entities with 0 values', () => {
+            const result = filterEntitiesWithData(
+                ['flow_a', 'flow_b'],
+                { metric: { flow_a: 0, flow_b: null } },
+                false,
+            )
+
+            expect(result).toEqual(['flow_a'])
+        })
+
+        it('returns empty array when no entity has data', () => {
+            const result = filterEntitiesWithData(
+                ['flow_a', 'flow_b'],
+                { metric: { flow_a: null, flow_b: null } },
+                false,
+            )
+
+            expect(result).toEqual([])
+        })
+
+        it('preserves the entity type', () => {
+            type FlowEntity = 'flow_a' | 'flow_b'
+            const result: FlowEntity[] = filterEntitiesWithData(
+                ['flow_a', 'flow_b'] as FlowEntity[],
+                { metric: { flow_a: 1, flow_b: null } },
+                false,
+            )
+
+            expect(result).toEqual(['flow_a'])
         })
     })
 

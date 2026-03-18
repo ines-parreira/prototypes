@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import _mapValues from 'lodash/mapValues'
 
+import { appQueryClient } from 'api/queryClient'
 import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
 import type {
     OperationMethods,
@@ -349,6 +350,27 @@ export const useGetWorkflowConfigurations = (
         staleTime: STALE_TIME_MS,
         cacheTime: CACHE_TIME_MS,
         ...overrides,
+    })
+}
+
+export const fetchWorkflowConfigurations = (includeDrafts: boolean = false) => {
+    const params = includeDrafts
+        ? {
+              is_draft: [
+                  '0',
+                  '1',
+              ] as Paths.WfConfigurationControllerList.QueryParameters['is_draft'],
+          }
+        : {}
+    return appQueryClient.fetchQuery({
+        queryKey: workflowsConfigurationDefinitionKeys.list(params),
+        queryFn: async () => {
+            const client = await getGorgiasWfApiClient()
+            const response = await client.WfConfigurationController_list(params)
+            return response.data
+        },
+        staleTime: STALE_TIME_MS,
+        cacheTime: CACHE_TIME_MS,
     })
 }
 

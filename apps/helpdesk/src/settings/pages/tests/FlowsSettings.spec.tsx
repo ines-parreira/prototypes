@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -13,7 +11,6 @@ import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreSelector } from 'settings/automate'
 import { getHasAutomate } from 'state/billing/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -39,10 +36,9 @@ jest.mock(
 const getHasAutomateMock = assumeMock(getHasAutomate)
 const useStoreSelectorMock = assumeMock(useStoreSelector)
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
-const mockUseShouldShowChatSettingsRevamp =
-    useShouldShowChatSettingsRevamp as jest.MockedFunction<
-        typeof useShouldShowChatSettingsRevamp
-    >
+const mockUseShouldShowChatSettingsRevamp = jest.requireMock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+).useShouldShowChatSettingsRevamp as jest.Mock
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
@@ -137,7 +133,6 @@ describe('FlowsSettings', () => {
                         <FlowsSettings />
                     </Route>
                 </StaticRouter>
-                ,
             </Provider>,
         )
         expect(screen.getByText('Configuration')).toBeInTheDocument()

@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import { assumeMock } from '@repo/testing'
 import { UserRole } from '@repo/utils'
 import { screen } from '@testing-library/react'
@@ -11,7 +13,6 @@ import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { StoreIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
-import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreSelector } from 'settings/automate'
 import { getHasAutomate } from 'state/billing/selectors'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -38,9 +39,7 @@ jest.mock(
     'pages/automate/orderManagement/OrderManagementPreviewProvider',
     () => ({
         __esModule: true,
-        default: ({ children }: { children: React.ReactNode }) => (
-            <>{children}</>
-        ),
+        default: ({ children }: { children: ReactNode }) => <>{children}</>,
     }),
 )
 
@@ -49,10 +48,9 @@ jest.mock('pages/automate/orderManagement/OrderManagementView', () => ({
     default: () => <div>OrderManagementView</div>,
 }))
 
-const mockUseShouldShowChatSettingsRevamp =
-    useShouldShowChatSettingsRevamp as jest.MockedFunction<
-        typeof useShouldShowChatSettingsRevamp
-    >
+const mockUseShouldShowChatSettingsRevamp = jest.requireMock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
+).useShouldShowChatSettingsRevamp as jest.Mock
 const getHasAutomateMock = assumeMock(getHasAutomate)
 const useStoreSelectorMock = assumeMock(useStoreSelector)
 const useAiAgentAccessMock = assumeMock(useAiAgentAccess)

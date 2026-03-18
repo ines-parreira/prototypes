@@ -83,6 +83,23 @@ export const mapMetricValues = (
         : null,
 })
 
+export const filterEntitiesWithData = <TEntity extends string>(
+    entities: TEntity[],
+    entityData: Record<
+        string,
+        Partial<Record<string, number | null | undefined>>
+    >,
+    isLoading: boolean,
+): TEntity[] => {
+    if (isLoading) return entities
+    return entities.filter((entity) =>
+        Object.values(entityData).some((map) => {
+            const value = map[entity]
+            return value != null && !Number.isNaN(value)
+        }),
+    )
+}
+
 export const assembleEntityRows = <TRow, TEntity extends string = string>(
     entityData: Record<
         string,

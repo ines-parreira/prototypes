@@ -1,4 +1,6 @@
 import {
+    automatedInteractionsPerFlows,
+    automatedInteractionsPerFlowsQueryFactoryV2,
     automatedInteractionsPerOrderManagementType,
     automatedInteractionsPerOrderManagementTypeQueryFactoryV2,
     dynamicOverallAutomatedInteractions,
@@ -74,6 +76,38 @@ describe('overallAutomatedInteractionsScope', () => {
             }
 
             expect(actual).toEqual(expected)
+        })
+    })
+
+    describe('automatedInteractionsPerFlows', () => {
+        it('creates query with flowId dimension and Flows feature filter', () => {
+            const actual = automatedInteractionsPerFlows.build(context)
+
+            expect(actual).toEqual({
+                metricName: 'automated-interactions-per-flows',
+                scope: 'overall-automated-interactions',
+                measures: ['automatedInteractionsCount'],
+                dimensions: ['flowId'],
+                timezone: 'utc',
+                filters: [
+                    ...periodFilters,
+                    {
+                        member: 'automationFeatureType',
+                        operator: 'one-of',
+                        values: ['flow'],
+                    },
+                ],
+            })
+        })
+    })
+
+    describe('automatedInteractionsPerFlowsQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            const factoryResult =
+                automatedInteractionsPerFlowsQueryFactoryV2(context)
+            const buildResult = automatedInteractionsPerFlows.build(context)
+
+            expect(factoryResult).toEqual(buildResult)
         })
     })
 

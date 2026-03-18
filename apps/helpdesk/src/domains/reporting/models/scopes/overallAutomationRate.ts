@@ -13,6 +13,7 @@ const overallAutomationRateScope = defineScope({
         'aiAgentSkill',
         'automationFeatureType',
         'channel',
+        'flowId',
         'orderManagementType',
         'storeIntegrationId',
     ],
@@ -115,3 +116,21 @@ export const dynamicOverallAutomationRateTimeseries = overallAutomationRateScope
 export const dynamicOverallAutomationRateTimeseriesQueryFactoryV2 = (
     ctx: Context,
 ) => dynamicOverallAutomationRateTimeseries.build(ctx)
+
+export const overallAutomationRatePerFlows = overallAutomationRateScope
+    .defineMetricName(METRIC_NAMES.OVERALL_AUTOMATION_RATE_PER_FLOWS)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['automationRate'] as const,
+        dimensions: ['flowId'],
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'automationFeatureType',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [AutomationFeatureType.Flows],
+            },
+        ] as any,
+    }))
+
+export const overallAutomationRatePerFlowsQueryFactoryV2 = (ctx: Context) =>
+    overallAutomationRatePerFlows.build(ctx)

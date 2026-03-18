@@ -1,6 +1,9 @@
 import { renderHook } from '@testing-library/react'
 
-import { useOrderManagementMetrics } from '../useOrderManagementMetrics'
+import {
+    fetchOrderManagementMetrics,
+    useOrderManagementMetrics,
+} from '../useOrderManagementMetrics'
 
 jest.mock('domains/reporting/hooks/automate/useAutomateFilters', () => ({
     useAutomateFilters: jest.fn(),
@@ -8,8 +11,19 @@ jest.mock('domains/reporting/hooks/automate/useAutomateFilters', () => ({
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useEntityMetrics: jest.fn(),
     assembleEntityRows: jest.fn(),
+    fetchEntityMetrics: jest.fn(),
+    filterEntitiesWithData: jest.fn(),
     toEntityMap: jest.fn(),
     mapMetricValues: jest.fn(),
+}))
+jest.mock('domains/reporting/hooks/common/utils', () => ({
+    getCsvFileNameWithDates: jest.fn(),
+}))
+jest.mock('@repo/reporting', () => ({
+    formatMetricValue: jest.fn((v: number) => String(v ?? '')),
+}))
+jest.mock('utils/file', () => ({
+    createCsv: jest.fn(),
 }))
 jest.mock(
     'pages/aiAgent/analyticsOverview/hooks/useAutomatedInteractionsPerOrderManagementType',
@@ -58,6 +72,20 @@ const mockUseEntityMetrics = jest.requireMock(
 const mockAssembleEntityRows = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
 ).assembleEntityRows as jest.Mock
+
+const mockFetchEntityMetrics = jest.requireMock(
+    'domains/reporting/hooks/useStatsMetricPerDimension',
+).fetchEntityMetrics as jest.Mock
+
+const mockFilterEntitiesWithData = jest.requireMock(
+    'domains/reporting/hooks/useStatsMetricPerDimension',
+).filterEntitiesWithData as jest.Mock
+
+const mockGetCsvFileNameWithDates = jest.requireMock(
+    'domains/reporting/hooks/common/utils',
+).getCsvFileNameWithDates as jest.Mock
+
+const mockCreateCsv = jest.requireMock('utils/file').createCsv as jest.Mock
 
 const MOCK_STATS_FILTERS = {
     period: {
@@ -151,6 +179,12 @@ describe('useOrderManagementMetrics', () => {
                 timeSaved: false,
             },
         })
+        mockFilterEntitiesWithData.mockReturnValue([
+            'cancel_order',
+            'track_order',
+            'loop_returns_started',
+            'automated_response_started',
+        ])
         mockAssembleEntityRows.mockReturnValue(defaultRows)
     })
 
@@ -242,5 +276,116 @@ describe('useOrderManagementMetrics', () => {
 
         expect(result.current.data).toEqual([])
         expect(result.current.isLoading).toBe(true)
+    })
+})
+
+describe('fetchOrderManagementMetrics', () => {
+    const mockMetricsData = {
+        overallAutomationRate: { cancel_order: 0.75 },
+        automatedInteractions: { cancel_order: 10 },
+        handoverInteractions: { cancel_order: 3 },
+        costSaved: { cancel_order: 31 },
+        timeSaved: { cancel_order: 120 },
+    }
+
+    const mockRow = {
+        entity: 'cancel_order' as const,
+        automationRate: 0.75,
+        automatedInteractions: 10,
+        handoverInteractions: 3,
+        costSaved: 31,
+        timeSaved: 120,
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockFetchEntityMetrics.mockResolvedValue({
+            data: mockMetricsData,
+            isLoading: false,
+            isError: false,
+        })
+        mockFilterEntitiesWithData.mockReturnValue(['cancel_order'])
+        mockAssembleEntityRows.mockReturnValue([mockRow])
+        mockGetCsvFileNameWithDates.mockReturnValue(
+            '2024-01-01_2024-01-31_order-management-breakdown',
+        )
+        mockCreateCsv.mockReturnValue('csv-content')
+    })
+
+    it('returns empty file content when data is empty', async () => {
+        mockAssembleEntityRows.mockReturnValue([])
+
+        const result = await fetchOrderManagementMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
+
+        expect(result.files[result.fileName]).toBe('')
+    })
+
+    it('returns CSV content when data is available', async () => {
+        const result = await fetchOrderManagementMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
+
+        expect(result.files[result.fileName]).toBe('csv-content')
+    })
+
+    it('passes only period filters to fetchEntityMetrics', async () => {
+        const filtersWithExtra = {
+            ...MOCK_STATS_FILTERS,
+            channel: 'chat',
+        }
+
+        await fetchOrderManagementMetrics(filtersWithExtra, MOCK_TIMEZONE)
+
+        const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
+        expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+    })
+
+    it('passes costSavedPerInteraction to createOrderManagementFetchConfig', async () => {
+        const customCost = 42
+
+        await fetchOrderManagementMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+            customCost,
+        )
+
+        const [passedConfig] = mockFetchEntityMetrics.mock.calls[0]
+        expect(typeof passedConfig.costSaved.fetch).toBe('function')
+    })
+
+    it('calls filterEntitiesWithData with ORDER_MANAGEMENT_ENTITIES and isLoading=false', async () => {
+        await fetchOrderManagementMetrics(MOCK_STATS_FILTERS, MOCK_TIMEZONE)
+
+        const [entities, , isLoading] = mockFilterEntitiesWithData.mock.calls[0]
+        expect(entities).toEqual([
+            'cancel_order',
+            'track_order',
+            'loop_returns_started',
+            'automated_response_started',
+        ])
+        expect(isLoading).toBe(false)
+    })
+
+    it('uses entity display names in CSV rows', async () => {
+        await fetchOrderManagementMetrics(MOCK_STATS_FILTERS, MOCK_TIMEZONE)
+
+        const csvCallArgs = mockCreateCsv.mock.calls[0][0]
+        const firstDataRow = csvCallArgs[1]
+        expect(firstDataRow[0]).toBe('Cancel order')
+    })
+
+    it('returns fileName from getCsvFileNameWithDates', async () => {
+        const result = await fetchOrderManagementMetrics(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
+
+        expect(result.fileName).toBe(
+            '2024-01-01_2024-01-31_order-management-breakdown',
+        )
     })
 })

@@ -81,6 +81,12 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<any> = {
                     visibility: true,
                     requiresFeatureFlag: true,
                 },
+                {
+                    chartId: AnalyticsOverviewChart.FlowsTable,
+                    gridSize: 12,
+                    visibility: true,
+                    requiresFeatureFlag: true,
+                },
             ],
         },
     ],

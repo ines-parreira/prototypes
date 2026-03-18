@@ -8,6 +8,8 @@ import {
     dynamicOverallAutomationRateTimeseries,
     dynamicOverallAutomationRateTimeseriesQueryFactoryV2,
     overallAutomationRate,
+    overallAutomationRatePerFlows,
+    overallAutomationRatePerFlowsQueryFactoryV2,
     overallAutomationRatePerOrderManagementType,
     overallAutomationRatePerOrderManagementTypeQueryFactoryV2,
     overallAutomationRateQueryFactoryV2,
@@ -212,6 +214,37 @@ describe('overallAutomationRateScope', () => {
         })
     })
 
+    describe('overallAutomationRatePerFlows', () => {
+        it('creates query with flowId dimension and Flows feature filter', () => {
+            const actual = overallAutomationRatePerFlows.build(context)
+
+            expect(actual).toEqual({
+                metricName: 'overall-automation-rate-per-flows',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                dimensions: ['flowId'],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'automationFeatureType',
+                        operator: 'one-of',
+                        values: ['flow'],
+                    },
+                ],
+            })
+        })
+    })
+
     describe('dynamicOverallAutomationRateTimeseries', () => {
         it('creates query with time_dimensions using granularity from context', () => {
             const actual = dynamicOverallAutomationRateTimeseries.build({
@@ -312,6 +345,16 @@ describe('overallAutomationRateScope', () => {
                 const factoryResult =
                     automationRatePerFeatureQueryFactoryV2(context)
                 const buildResult = automationRatePerFeature.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
+
+        describe('overallAutomationRatePerFlowsQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult =
+                    overallAutomationRatePerFlowsQueryFactoryV2(context)
+                const buildResult = overallAutomationRatePerFlows.build(context)
 
                 expect(factoryResult).toEqual(buildResult)
             })

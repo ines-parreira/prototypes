@@ -8,6 +8,7 @@ import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricP
 import {
     assembleEntityRows,
     fetchEntityMetrics,
+    filterEntitiesWithData,
     useEntityMetrics,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -137,16 +138,19 @@ export const useOrderManagementMetrics = (): OrderManagementMetricsData => {
         userTimezone,
     )
 
-    const data = useMemo(
-        () =>
-            assembleEntityRows(
-                entityData,
-                ORDER_MANAGEMENT_ENTITIES,
-                buildOrderManagementRow(entityData),
-                { skipEmptyCheck: isLoading },
-            ),
-        [entityData, isLoading],
-    )
+    const data = useMemo(() => {
+        const filteredEntities = filterEntitiesWithData(
+            ORDER_MANAGEMENT_ENTITIES,
+            entityData,
+            isLoading,
+        )
+        return assembleEntityRows(
+            entityData,
+            filteredEntities,
+            buildOrderManagementRow(entityData),
+            { skipEmptyCheck: isLoading },
+        )
+    }, [entityData, isLoading])
 
     const loadingStates = useMemo(
         () => ({
@@ -160,6 +164,23 @@ export const useOrderManagementMetrics = (): OrderManagementMetricsData => {
     )
 
     return { data, isLoading, isError, loadingStates }
+}
+
+function createOrderManagementFetchConfig(
+    costSavedPerInteraction: number,
+): Record<OrderManagementMetricKeys, EntityMetricConfig> {
+    return {
+        ...ORDER_MANAGEMENT_METRICS_CONFIG,
+        costSaved: {
+            ...ORDER_MANAGEMENT_METRICS_CONFIG.costSaved,
+            fetch: (filters, tz) =>
+                fetchCostSavedPerOrderManagementType(
+                    filters,
+                    tz,
+                    costSavedPerInteraction,
+                ),
+        },
+    }
 }
 
 const ORDER_MANAGEMENT_FILENAME = 'order-management-breakdown'
@@ -176,25 +197,14 @@ export const fetchOrderManagementMetrics = async (
     )
 
     const metrics = await fetchEntityMetrics(
-        {
-            ...ORDER_MANAGEMENT_METRICS_CONFIG,
-            costSaved: {
-                ...ORDER_MANAGEMENT_METRICS_CONFIG.costSaved,
-                fetch: (filters, tz) =>
-                    fetchCostSavedPerOrderManagementType(
-                        filters,
-                        tz,
-                        costSavedPerInteraction,
-                    ),
-            },
-        },
+        createOrderManagementFetchConfig(costSavedPerInteraction),
         periodFilters,
         timezone,
     )
 
     const data = assembleEntityRows(
         metrics.data,
-        ORDER_MANAGEMENT_ENTITIES,
+        filterEntitiesWithData(ORDER_MANAGEMENT_ENTITIES, metrics.data, false),
         buildOrderManagementRow(metrics.data),
     )
 
@@ -210,9 +220,9 @@ export const fetchOrderManagementMetrics = async (
         ENTITY_DISPLAY_NAMES[row.entity],
         ...ORDER_MANAGEMENT_COLUMNS.map((col) =>
             formatMetricValue(
-                row[col.accessorKey as keyof OrderManagementEntityMetrics] as
-                    | number
-                    | null,
+                row[
+                    col.accessorKey as keyof OrderManagementEntityMetrics
+                ] as number,
                 col.metricFormat,
             ),
         ),

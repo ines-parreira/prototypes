@@ -1,6 +1,8 @@
 import {
     overallTimeSavedByAgentForOrderManagement,
     overallTimeSavedByAgentForOrderManagementQueryFactoryV2,
+    overallTimeSavedByAgentPerFlows,
+    overallTimeSavedByAgentPerFlowsQueryFactoryV2,
 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 
@@ -53,6 +55,38 @@ describe('overallTimeSavedByAgentScope', () => {
                     },
                 ],
             })
+        })
+    })
+
+    describe('overallTimeSavedByAgentPerFlows', () => {
+        it('creates query with flowId dimension and Flows feature filter', () => {
+            const actual = overallTimeSavedByAgentPerFlows.build(context)
+
+            expect(actual).toEqual({
+                metricName: 'overall-time-saved-by-agent-per-flows',
+                scope: 'overall-time-saved-by-agent',
+                measures: ['averageTimeSavedByAgent'],
+                dimensions: ['flowId'],
+                timezone: 'utc',
+                filters: [
+                    ...periodFilters,
+                    {
+                        member: 'automationFeatureType',
+                        operator: 'one-of',
+                        values: ['flow'],
+                    },
+                ],
+            })
+        })
+    })
+
+    describe('overallTimeSavedByAgentPerFlowsQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            const factoryResult =
+                overallTimeSavedByAgentPerFlowsQueryFactoryV2(context)
+            const buildResult = overallTimeSavedByAgentPerFlows.build(context)
+
+            expect(factoryResult).toEqual(buildResult)
         })
     })
 
