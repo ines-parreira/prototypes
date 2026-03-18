@@ -1,7 +1,6 @@
 import type { VoiceCallRecording } from '@gorgias/helpdesk-types'
 
 import type { RecentChatTicket } from 'business/types/recentChats'
-import type { TicketChannel } from 'business/types/ticket'
 import type {
     EcommerceStore,
     Shopper,
@@ -124,17 +123,6 @@ export type TicketUpdatedEvent = {
         type: 'ticket-updated'
     }
     ticket: Ticket
-}
-
-export type TicketAssignedEvent = {
-    event: {
-        type: 'ticket-assigned'
-    }
-    ticket: {
-        channel: TicketChannel
-        id: number
-        subject: string
-    }
 }
 
 export type TicketMessageCreatedEvent = {
@@ -412,7 +400,6 @@ export type ServerMessage =
     | CustomerUpdatedEvent
     | CustomerExternalDataUpdatedEvent
     | TicketUpdatedEvent
-    | TicketAssignedEvent
     | TicketMessageCreatedEvent
     | TicketMessageActionFailedEvent
     | TicketMessageFailedEvent
