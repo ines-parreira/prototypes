@@ -172,6 +172,18 @@ jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
     DrillDownModal: jest.fn(() => null),
 }))
 
+jest.mock(
+    'domains/reporting/hooks/drill-down/useDrillDownModalTrigger',
+    () => ({
+        useDrillDownModalTrigger: jest.fn(),
+    }),
+)
+
+const mockUseDrillDownModalTrigger =
+    require('domains/reporting/hooks/drill-down/useDrillDownModalTrigger')
+        .useDrillDownModalTrigger as jest.Mock
+const mockOpenDrillDownModal = jest.fn()
+
 describe('<Analytics />', () => {
     const mockStore = configureMockStore([thunk])({
         currentAccount: fromJS(account),
@@ -323,6 +335,11 @@ describe('<Analytics />', () => {
         })
 
         mockUseGetNamespacedShopNameForStore.mockReturnValue('shopify-store')
+
+        mockUseDrillDownModalTrigger.mockReturnValue({
+            openDrillDownModal: mockOpenDrillDownModal,
+            tooltipText: 'Click to view associated tickets',
+        })
     })
 
     it('should render loading state', () => {
@@ -808,5 +825,52 @@ describe('<Analytics />', () => {
             const infoIcons = within(modal).getAllByLabelText('info')
             expect(infoIcons).toHaveLength(1)
         })
+    })
+
+    it('should call useDrillDownModalTrigger with correct args for Orders metric', () => {
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith({
+            metricName: 'aiJourneyTotalOrders',
+            integrationId: '286584',
+            journeyIds: [],
+        })
+    })
+
+    it('should trigger drilldown modal when clicking Orders value', async () => {
+        const user = userEvent.setup()
+
+        mockUseAIJourneyTotalOrders.mockReturnValue({
+            label: 'Orders',
+            value: 50,
+            prevValue: 40,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'decimal-precision-1',
+            isLoading: false,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const ordersValue = screen.getByText('50')
+        await user.click(ordersValue)
+
+        expect(mockOpenDrillDownModal).toHaveBeenCalled()
     })
 })

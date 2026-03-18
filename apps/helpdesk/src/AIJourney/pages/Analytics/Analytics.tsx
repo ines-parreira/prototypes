@@ -30,6 +30,8 @@ import {
     useRevenuePerRecipient,
 } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
+import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
+import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
 
 import { useStatsFilters } from '../../../domains/reporting/hooks/support-performance/useStatsFilters'
@@ -166,6 +168,12 @@ export const Analytics = () => {
         journeysIdsToFilter,
     )
 
+    const ordersDrillDown = useDrillDownModalTrigger({
+        metricName: AIJourneyMetric.TotalOrders,
+        integrationId,
+        journeyIds: journeysIdsToFilter,
+    })
+
     const seriesBaseOptions = {
         dateFormatter: (date: string) => moment(date).format('MMM D'),
         withEndPeriod: {
@@ -210,6 +218,7 @@ export const Analytics = () => {
                 prevValue: orders.prevValue ?? null,
                 value: orders.value,
             },
+            drillDown: ordersDrillDown,
         },
         {
             id: 'Conversion rate',
@@ -409,6 +418,7 @@ export const Analytics = () => {
                                 interpretAs,
                                 isLoading,
                                 trend,
+                                drillDown,
                             } = metricData
 
                             return (
@@ -422,6 +432,7 @@ export const Analytics = () => {
                                     isLoading={isLoading}
                                     metricFormat={metricFormat}
                                     interpretAs={interpretAs}
+                                    drillDown={drillDown}
                                     trend={{
                                         isError: false,
                                         isFetching: isLoading,
