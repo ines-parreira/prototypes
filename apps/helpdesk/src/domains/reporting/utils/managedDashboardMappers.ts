@@ -27,6 +27,8 @@ function layoutConfigToTabSections(
                     metadata: {
                         visible: item.visibility,
                         grid_size: item.gridSize,
+                        measures: item.measures,
+                        dimensions: item.dimensions,
                     },
                 }),
             ),
@@ -103,6 +105,8 @@ export function backendConfigToLayoutConfig(
                     chartId: item.chart_id as AnalyticsChartType,
                     gridSize: (item.metadata?.grid_size ?? 3) as 3 | 6 | 12,
                     visibility: item.metadata?.visible ?? true,
+                    measures: item.metadata?.measures,
+                    dimensions: item.metadata?.dimensions,
                 })),
             }
         },

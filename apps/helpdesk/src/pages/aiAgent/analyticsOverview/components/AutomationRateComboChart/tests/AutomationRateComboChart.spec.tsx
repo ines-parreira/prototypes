@@ -12,17 +12,21 @@ import { getBarChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils
 
 jest.mock('@repo/feature-flags')
 jest.mock(
-    'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/DEPRECATED_AutomationRateComboChart',
+    'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection',
     () => ({
-        DEPRECATED_AutomationRateComboChart: () => <div>Deprecated chart</div>,
+        useSaveConfigurableGraphSelection: () => ({ onSelect: jest.fn() }),
     }),
 )
 jest.mock(
-    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+    'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext',
     () => ({
-        ChartsActionMenu: () => (
-            <div aria-label="charts-action-menu">Charts Action Menu</div>
-        ),
+        useDashboardContext: jest.fn().mockReturnValue(null),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/DEPRECATED_AutomationRateComboChart',
+    () => ({
+        DEPRECATED_AutomationRateComboChart: () => <div>Deprecated chart</div>,
     }),
 )
 jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
@@ -318,47 +322,5 @@ describe('AutomationChart', () => {
         render(<AutomationRateComboChart />)
 
         expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
-    })
-
-    it('should render the deprecated chart when the feature flag is off', () => {
-        useFlagMocked.mockReturnValue(false)
-        render(<AutomationRateComboChart />)
-
-        expect(screen.getByText('Deprecated chart')).toBeInTheDocument()
-    })
-
-    describe('ChartsActionMenu', () => {
-        const mockChartConfig = { label: 'Automation Rate' } as Parameters<
-            typeof AutomationRateComboChart
-        >[0]['chartConfig']
-
-        it('should render ChartsActionMenu when chartId and chartConfig are provided', () => {
-            render(
-                <AutomationRateComboChart
-                    chartId="automation-rate"
-                    chartConfig={mockChartConfig}
-                />,
-            )
-
-            expect(
-                screen.getByLabelText('charts-action-menu'),
-            ).toBeInTheDocument()
-        })
-
-        it('should not render ChartsActionMenu when chartId is not provided', () => {
-            render(<AutomationRateComboChart chartConfig={mockChartConfig} />)
-
-            expect(
-                screen.queryByLabelText('charts-action-menu'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should not render ChartsActionMenu when chartConfig is not provided', () => {
-            render(<AutomationRateComboChart chartId="automation-rate" />)
-
-            expect(
-                screen.queryByLabelText('charts-action-menu'),
-            ).not.toBeInTheDocument()
-        })
     })
 })

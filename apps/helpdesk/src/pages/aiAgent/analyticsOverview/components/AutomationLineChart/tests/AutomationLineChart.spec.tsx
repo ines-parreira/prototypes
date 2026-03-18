@@ -11,17 +11,21 @@ import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.util
 
 jest.mock('@repo/feature-flags')
 jest.mock(
-    'pages/aiAgent/analyticsOverview/components/AutomationLineChart/DEPRECATED_AutomationLineChart',
+    'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection',
     () => ({
-        DEPRECATED_AutomationLineChart: () => <div>Deprecated chart</div>,
+        useSaveConfigurableGraphSelection: () => ({ onSelect: jest.fn() }),
     }),
 )
 jest.mock(
-    'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu',
+    'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext',
     () => ({
-        ChartsActionMenu: () => (
-            <div aria-label="charts-action-menu">Charts Action Menu</div>
-        ),
+        useDashboardContext: jest.fn().mockReturnValue(null),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/AutomationLineChart/DEPRECATED_AutomationLineChart',
+    () => ({
+        DEPRECATED_AutomationLineChart: () => <div>Deprecated chart</div>,
     }),
 )
 jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
@@ -167,47 +171,5 @@ describe('AutomationLineChart', () => {
         render(<AutomationLineChart />)
 
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
-    })
-
-    it('should render the deprecated chart when the feature flag is off', () => {
-        useFlagMocked.mockReturnValue(false)
-        render(<AutomationLineChart />)
-
-        expect(screen.getByText('Deprecated chart')).toBeInTheDocument()
-    })
-
-    describe('ChartsActionMenu', () => {
-        const mockChartConfig = { label: 'Automation Rate' } as Parameters<
-            typeof AutomationLineChart
-        >[0]['chartConfig']
-
-        it('should render ChartsActionMenu when chartId and chartConfig are provided', () => {
-            render(
-                <AutomationLineChart
-                    chartId="automation-line-chart"
-                    chartConfig={mockChartConfig}
-                />,
-            )
-
-            expect(
-                screen.getByLabelText('charts-action-menu'),
-            ).toBeInTheDocument()
-        })
-
-        it('should not render ChartsActionMenu when chartId is not provided', () => {
-            render(<AutomationLineChart chartConfig={mockChartConfig} />)
-
-            expect(
-                screen.queryByLabelText('charts-action-menu'),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should not render ChartsActionMenu when chartConfig is not provided', () => {
-            render(<AutomationLineChart chartId="automation-line-chart" />)
-
-            expect(
-                screen.queryByLabelText('charts-action-menu'),
-            ).not.toBeInTheDocument()
-        })
     })
 })

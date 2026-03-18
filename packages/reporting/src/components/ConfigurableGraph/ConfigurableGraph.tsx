@@ -22,15 +22,25 @@ type Props = {
     metrics: ConfigurableGraphMetricConfig[]
     onSelect?: (selection: Selection) => void
     actionMenu?: ReactNode
+    initialMeasure?: string
+    initialDimension?: string
 }
 
 const NO_TREND: MetricTrend = { isFetching: false, isError: false }
 const useNoTrendData = () => NO_TREND
 
-export function ConfigurableGraph({ metrics, onSelect, actionMenu }: Props) {
-    const [selectedMeasure, setSelectedMeasure] = useState(metrics[0].measure)
+export function ConfigurableGraph({
+    metrics,
+    onSelect,
+    actionMenu,
+    initialMeasure,
+    initialDimension,
+}: Props) {
+    const [selectedMeasure, setSelectedMeasure] = useState(
+        initialMeasure ?? metrics[0].measure,
+    )
     const [selectedDimension, setSelectedDimension] = useState(
-        metrics[0].dimensions[0].id,
+        initialDimension ?? metrics[0].dimensions[0].id,
     )
 
     const selectedMetric = metrics.find((m) => m.measure === selectedMeasure)!

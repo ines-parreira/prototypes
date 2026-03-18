@@ -1,16 +1,13 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { ConfigurableGraph } from '@repo/reporting'
-
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { dynamicOverallAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
 import { dynamicOverallAutomationRateQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
-import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type {
     ChartConfig,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import { ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/ConfigurableGraphWrapper'
 import { getBarChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import type { BarChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
@@ -46,9 +43,6 @@ export const AutomationRateComboChart = ({
     dashboard,
     chartConfig,
 }: Props) => {
-    const isAnalyticsDashboardsNewChartsEnable = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
-    )
     const { statsFilters, userTimezone } = useAutomateFilters()
     const metrics = useMemo(
         () =>
@@ -60,20 +54,14 @@ export const AutomationRateComboChart = ({
         [statsFilters, userTimezone],
     )
 
-    return isAnalyticsDashboardsNewChartsEnable ? (
-        <ConfigurableGraph
+    return (
+        <ConfigurableGraphWrapper
             metrics={metrics}
-            actionMenu={
-                chartId && chartConfig ? (
-                    <ChartsActionMenu
-                        chartId={chartId}
-                        dashboard={dashboard}
-                        chartName={chartConfig.label}
-                    />
-                ) : undefined
-            }
+            analyticsChartId={chartId ?? ''}
+            DeprecatedChart={DEPRECATED_AutomationRateComboChart}
+            chartId={chartId}
+            dashboard={dashboard}
+            chartConfig={chartConfig}
         />
-    ) : (
-        <DEPRECATED_AutomationRateComboChart />
     )
 }

@@ -19,8 +19,8 @@ export function useGetManagedDashboardsLayoutConfig({
     dashboardId: ManagedDashboardId
     defaultLayoutConfig: DashboardLayoutConfig
     tabId: ManagedDashboardsTabId
-}): DashboardLayoutConfig {
-    const { data } = useFetchManagedDashboards()
+}): { layoutConfig: DashboardLayoutConfig; isLoading: boolean } {
+    const { data, isLoading } = useFetchManagedDashboards()
 
     const layoutConfig = useMemo(() => {
         const savedDashboard = data?.data?.data?.find(
@@ -39,5 +39,5 @@ export function useGetManagedDashboardsLayoutConfig({
         )
     }, [data, dashboardId, defaultLayoutConfig, tabId])
 
-    return layoutConfig
+    return { layoutConfig, isLoading }
 }

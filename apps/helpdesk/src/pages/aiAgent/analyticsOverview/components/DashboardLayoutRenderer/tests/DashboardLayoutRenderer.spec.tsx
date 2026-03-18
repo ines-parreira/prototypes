@@ -31,7 +31,10 @@ jest.mock(
     'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig',
     () => ({
         useGetManagedDashboardsLayoutConfig: jest.fn(
-            ({ defaultLayoutConfig }) => defaultLayoutConfig,
+            ({ defaultLayoutConfig }) => ({
+                layoutConfig: defaultLayoutConfig,
+                isLoading: false,
+            }),
         ),
     }),
 )
@@ -339,26 +342,30 @@ describe('DashboardLayoutRenderer', () => {
 
     it('should render default sections alongside saved sections when section IDs differ', () => {
         mockedUseGetManagedDashboardsLayoutConfig.mockReturnValueOnce({
-            sections: [
-                {
-                    id: 'kpis',
-                    type: ChartType.Card,
-                    items: [
-                        {
-                            chartId:
-                                'unknown_chart_id_not_in_report_config' as any,
-                            gridSize: 3,
-                            visibility: true,
-                        },
-                        {
-                            chartId: AnalyticsOverviewChart.AutomationRateCard,
-                            gridSize: 3,
-                            visibility: true,
-                        },
-                    ],
-                },
-            ],
-        } as unknown as DashboardLayoutConfig)
+            isLoading: false,
+            layoutConfig: {
+                sections: [
+                    {
+                        id: 'kpis',
+                        type: ChartType.Card,
+                        items: [
+                            {
+                                chartId:
+                                    'unknown_chart_id_not_in_report_config' as any,
+                                gridSize: 3,
+                                visibility: true,
+                            },
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.AutomationRateCard,
+                                gridSize: 3,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            } as unknown as DashboardLayoutConfig,
+        })
 
         render(
             <DashboardLayoutRenderer

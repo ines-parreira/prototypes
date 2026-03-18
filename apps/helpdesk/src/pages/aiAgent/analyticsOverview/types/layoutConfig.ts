@@ -19,6 +19,9 @@ export type LayoutItem<TChart extends AnalyticsChartType = AnalyticsChartType> =
         visibility: boolean
         // Temporary value to hide TrendCards under feature flag until all of them are ready to be shown
         requiresFeatureFlag?: boolean
+        // Configurable graphs
+        dimensions?: string[] | null
+        measures?: string[] | null
     }
 
 export type LayoutSection<

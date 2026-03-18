@@ -179,7 +179,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
 
         await waitFor(() => {
-            expect(result.current).toEqual(mockDefaultLayoutConfig)
+            expect(result.current.layoutConfig).toEqual(mockDefaultLayoutConfig)
         })
     })
 
@@ -205,7 +205,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
 
         await waitFor(() => {
-            expect(result.current).toEqual(mockDefaultLayoutConfig)
+            expect(result.current.layoutConfig).toEqual(mockDefaultLayoutConfig)
         })
     })
 
@@ -231,7 +231,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
 
         await waitFor(() => {
-            const kpisSection = result.current.sections.find(
+            const kpisSection = result.current.layoutConfig.sections.find(
                 (s) => s.id === 'kpis',
             )
             const kpi = kpisSection?.items.find(
@@ -262,7 +262,8 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
             { wrapper: makeWrapper() },
         )
 
-        expect(result.current).toEqual(mockDefaultLayoutConfig)
+        expect(result.current.layoutConfig).toEqual(mockDefaultLayoutConfig)
+        expect(result.current.isLoading).toBe(true)
     })
 
     it('should return layout config for the correct tab when tabId is provided', async () => {
@@ -287,7 +288,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
 
         await waitFor(() => {
-            const kpisSection = result.current.sections.find(
+            const kpisSection = result.current.layoutConfig.sections.find(
                 (s) => s.id === 'kpis',
             )
             const kpi = kpisSection?.items.find(
@@ -319,7 +320,7 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
 
         await waitFor(() => {
-            const kpisSection = result.current.sections.find(
+            const kpisSection = result.current.layoutConfig.sections.find(
                 (s) => s.id === 'kpis',
             )
             const kpi = kpisSection?.items.find(

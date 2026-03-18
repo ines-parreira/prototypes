@@ -5,6 +5,7 @@ import { DashboardComponent } from 'domains/reporting/pages/dashboards/Dashboard
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { CardsSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/CardsSection'
+import { DashboardContext } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardContext'
 import css from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer.less'
 import { TablesSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/TablesSection'
 import type {
@@ -96,31 +97,41 @@ export const DashboardLayoutRenderer = ({
     tabName,
     onTableTabChange,
 }: DashboardLayoutRendererProps) => {
-    const layoutConfig = useGetManagedDashboardsLayoutConfig({
+    const { layoutConfig, isLoading } = useGetManagedDashboardsLayoutConfig({
         dashboardId,
         defaultLayoutConfig,
         tabId,
     })
 
     return (
-        <Box
-            display="flex"
-            flexDirection="column"
-            p="lg"
-            gap="lg"
-            minWidth="0px"
-            className={css.container}
+        <DashboardContext.Provider
+            value={{
+                dashboardId,
+                tabId,
+                tabName,
+                layoutConfig,
+                isLoaded: !isLoading,
+            }}
         >
-            {layoutConfig.sections.map(
-                renderSection(
-                    reportConfig,
-                    tabId,
-                    dashboardId,
-                    layoutConfig,
-                    tabName,
-                    onTableTabChange,
-                ),
-            )}
-        </Box>
+            <Box
+                display="flex"
+                flexDirection="column"
+                p="lg"
+                gap="lg"
+                minWidth="0px"
+                className={css.container}
+            >
+                {layoutConfig.sections.map(
+                    renderSection(
+                        reportConfig,
+                        tabId,
+                        dashboardId,
+                        layoutConfig,
+                        tabName,
+                        onTableTabChange,
+                    ),
+                )}
+            </Box>
+        </DashboardContext.Provider>
     )
 }

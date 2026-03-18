@@ -178,6 +178,116 @@ describe('ConfigurableChart', () => {
         })
     })
 
+    describe('initial selection', () => {
+        it('uses the first metric and first dimension by default', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping, channelGrouping],
+                },
+                {
+                    measure: 'resolution_time',
+                    name: 'Resolution Time',
+                    metricFormat: 'duration',
+                    dimensions: [channelGrouping],
+                },
+            ]
+
+            render(<ConfigurableGraph metrics={metrics} />)
+
+            expect(
+                screen.getByRole('button', { name: /Automation Rate/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /Feature/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders the metric matching initialMeasure as the selected metric', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping],
+                },
+                {
+                    measure: 'resolution_time',
+                    name: 'Resolution Time',
+                    metricFormat: 'duration',
+                    dimensions: [channelGrouping],
+                },
+            ]
+
+            render(
+                <ConfigurableGraph
+                    metrics={metrics}
+                    initialMeasure="resolution_time"
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /Resolution Time/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders the grouping matching initialDimension as the selected grouping', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping, channelGrouping],
+                },
+            ]
+
+            render(
+                <ConfigurableGraph
+                    metrics={metrics}
+                    initialDimension="by_channel"
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /Channel/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('restores both measure and dimension from saved selection', () => {
+            const metrics: ConfigurableGraphMetricConfig[] = [
+                {
+                    measure: 'automation_rate',
+                    name: 'Automation Rate',
+                    metricFormat: 'decimal-to-percent',
+                    dimensions: [featureGrouping, channelGrouping],
+                },
+                {
+                    measure: 'resolution_time',
+                    name: 'Resolution Time',
+                    metricFormat: 'duration',
+                    dimensions: [featureGrouping, channelGrouping],
+                },
+            ]
+
+            render(
+                <ConfigurableGraph
+                    metrics={metrics}
+                    initialMeasure="resolution_time"
+                    initialDimension="by_channel"
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: /Resolution Time/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /Channel/i }),
+            ).toBeInTheDocument()
+        })
+    })
+
     describe('grouping selection', () => {
         it('calls onSelect with the new grouping when grouping changes', async () => {
             const user = userEvent.setup()
