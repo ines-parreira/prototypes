@@ -32,6 +32,7 @@ export function TicketThreadMessageItem({
                 ? Placement.Right
                 : Placement.Left
         }
+
         return 'from_agent' in item.data && item.data.from_agent
             ? Placement.Right
             : Placement.Left

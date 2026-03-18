@@ -13,7 +13,7 @@ type TicketThreadRespondedSatisfactionSurveyProps = {
 export function TicketThreadRespondedSatisfactionSurvey({
     item,
 }: TicketThreadRespondedSatisfactionSurveyProps) {
-    const { datetimeFormat, timezone } = useTicketThreadDateTimeFormat()
+    const { format, timezone } = useTicketThreadDateTimeFormat()
 
     const { data } = item
     const score = data.score
@@ -37,7 +37,7 @@ export function TicketThreadRespondedSatisfactionSurvey({
                         <Text size="sm">
                             {formatDatetime(
                                 item.datetime,
-                                datetimeFormat,
+                                format.relative,
                                 timezone,
                             )}
                         </Text>

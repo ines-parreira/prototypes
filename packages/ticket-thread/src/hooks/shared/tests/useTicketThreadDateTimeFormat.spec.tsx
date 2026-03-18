@@ -21,7 +21,7 @@ describe('useTicketThreadDateTimeFormat', () => {
         expect(
             formatDatetime(
                 '2024-03-21T00:00:00Z',
-                result.current.datetimeFormat,
+                result.current.format.relative,
                 result.current.timezone,
             ),
         ).toBe('03/20/2024')

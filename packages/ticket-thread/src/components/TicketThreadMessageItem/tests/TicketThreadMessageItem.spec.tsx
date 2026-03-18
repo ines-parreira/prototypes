@@ -66,8 +66,10 @@ beforeEach(() => {
         ).handler,
     )
     mockUseTicketThreadDateTimeFormat.mockReturnValue({
-        datetimeFormat: 'YYYY-MM-DD',
-        compactDateWithTimeFormat: 'YYYY-MM-DD HH:mm',
+        format: {
+            relative: 'YYYY-MM-DD',
+            compact: 'YYYY-MM-DD HH:mm',
+        },
         timezone: undefined,
     })
     mockUseTicketThreadLegacyBridge.mockReturnValue({
