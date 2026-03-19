@@ -4,6 +4,7 @@ import {
     aiJourneyOptedOutAfterReplyQueryFactory,
     aiJourneyOptedOutQueryFactory,
     aiJourneyRepliedMessagesQueryFactory,
+    aiJourneySankeyOrdersQueryFactory,
     aiJourneyTotalConversationsQueryFactory,
     aiJourneyTotalNumberOfOrderQueryFactory,
     aiJourneyUniqClicksQueryFactory,
@@ -17,6 +18,7 @@ import {
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
+import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
 import type { OrderDirection } from 'models/api/types'
 
@@ -279,3 +281,54 @@ export const aiJourneyOptOutAfterReplyDrillDownQueryFactory = (
               order: [],
           }),
 })
+
+export const aiJourneySankeyConversionsDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    integrationId: string,
+    sorting?: OrderDirection,
+    journeyIds?: string[],
+    engagementCategory?: string,
+): ReportingQuery<AiSalesAgentOrdersCube> => {
+    const baseQuery = aiJourneySankeyOrdersQueryFactory(
+        integrationId,
+        filters,
+        timezone,
+        journeyIds,
+    )
+    return {
+        ...baseQuery,
+        measures: [AiSalesAgentOrdersMeasure.GmvUsd],
+        dimensions: [
+            AiSalesAgentOrdersDimension.TicketId,
+            AiSalesAgentOrdersDimension.OrderId,
+            AiSalesAgentOrdersDimension.TotalAmount,
+            AiSalesAgentOrdersDimension.CustomerId,
+        ],
+        filters: [
+            ...baseQuery.filters,
+            {
+                member: AiSalesAgentOrdersDimension.TicketId,
+                operator: ReportingFilterOperator.Set,
+                values: [],
+            },
+            ...(engagementCategory
+                ? [
+                      {
+                          member: AiSalesAgentOrdersDimension.EngagementCategory,
+                          operator: ReportingFilterOperator.Equals,
+                          values: [engagementCategory],
+                      },
+                  ]
+                : []),
+        ],
+        limit: DRILLDOWN_QUERY_LIMIT,
+        ...(sorting
+            ? {
+                  order: [[AiSalesAgentOrdersDimension.TicketId, sorting]],
+              }
+            : {
+                  order: [],
+              }),
+    }
+}

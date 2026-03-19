@@ -16,6 +16,7 @@ import {
 } from '@gorgias/axiom'
 
 import {
+    AiJourneySankeyChart,
     AudienceHealthSection,
     DiscountCodesUsageSection,
 } from 'AIJourney/components'
@@ -459,6 +460,12 @@ export const Analytics = () => {
                         data={selectedData.series}
                     />
                 )}
+                <AiJourneySankeyChart
+                    integrationId={integrationId}
+                    userTimezone={userTimezone}
+                    filters={filters}
+                    journeyIds={journeysIdsToFilter}
+                />
                 <DiscountCodesUsageSection
                     integrationId={integrationId}
                     userTimezone={userTimezone}

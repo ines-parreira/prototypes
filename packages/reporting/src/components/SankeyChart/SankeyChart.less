@@ -29,6 +29,28 @@
         }
     }
 
+    .nodeContainer {
+        rect {
+            transition: opacity 0.15s ease;
+        }
+
+        .nodeLabelGroup {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.15s ease;
+            pointer-events: none;
+        }
+
+        &:hover rect {
+            opacity: 1;
+        }
+
+        &:hover .nodeLabelGroup {
+            display: initial;
+            opacity: 1;
+        }
+    }
+
     .nodeLabel {
         font-size: 12px;
         fill: var(--content-neutral-default);
@@ -50,7 +72,8 @@
         transition: stroke-opacity 0.2s ease;
 
         &:hover {
-            stroke-opacity: 0.7;
+            stroke: var(--hover-color) !important;
+            stroke-opacity: 0.25;
         }
 
         &:focus-visible,
@@ -90,5 +113,14 @@
 
     .skeletonCenter {
         flex: 3;
+    }
+
+    .linkTooltip {
+        position: fixed;
+        pointer-events: none;
+    }
+
+    .tooltipCard {
+        background: var(--surface-neutral-primary);
     }
 }

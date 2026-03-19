@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { fireEvent, render } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { vi } from 'vitest'
 
@@ -126,7 +126,7 @@ describe('createLinkRenderer', () => {
 
     it('should render clickable link with role="button" and aria-label', () => {
         const onLinkClick = vi.fn<(payload: SankeyLinkClickPayload) => void>()
-        const renderer = createLinkRenderer({
+        const LinkRenderer = createLinkRenderer({
             links,
             nodes,
             onLinkClick,
@@ -135,9 +135,10 @@ describe('createLinkRenderer', () => {
 
         const { getByRole } = render(
             <svg>
-                {renderer({ ...baseLinkProps, index: 0 } as Parameters<
-                    typeof renderer
-                >[0])}
+                <LinkRenderer
+                    {...(baseLinkProps as Parameters<typeof LinkRenderer>[0])}
+                    index={0}
+                />
             </svg>,
         )
 
@@ -150,7 +151,7 @@ describe('createLinkRenderer', () => {
     it('should call onLinkClick with correct payload when clicking a clickable link', async () => {
         const user = userEvent.setup()
         const onLinkClick = vi.fn<(payload: SankeyLinkClickPayload) => void>()
-        const renderer = createLinkRenderer({
+        const LinkRenderer = createLinkRenderer({
             links,
             nodes,
             onLinkClick,
@@ -159,9 +160,10 @@ describe('createLinkRenderer', () => {
 
         const { getByRole } = render(
             <svg>
-                {renderer({ ...baseLinkProps, index: 0 } as Parameters<
-                    typeof renderer
-                >[0])}
+                <LinkRenderer
+                    {...(baseLinkProps as Parameters<typeof LinkRenderer>[0])}
+                    index={0}
+                />
             </svg>,
         )
 
@@ -179,7 +181,7 @@ describe('createLinkRenderer', () => {
 
     it('should not render role="button" for non-clickable links', () => {
         const onLinkClick = vi.fn<(payload: SankeyLinkClickPayload) => void>()
-        const renderer = createLinkRenderer({
+        const LinkRenderer = createLinkRenderer({
             links,
             nodes,
             onLinkClick,
@@ -188,15 +190,17 @@ describe('createLinkRenderer', () => {
 
         const { container } = render(
             <svg>
-                {renderer({
-                    ...baseLinkProps,
-                    index: 1,
-                    payload: {
-                        source: { name: 'Source A' },
-                        target: { name: 'Target C' },
-                        value: 50,
-                    },
-                } as Parameters<typeof renderer>[0])}
+                <LinkRenderer
+                    {...({
+                        ...baseLinkProps,
+                        index: 1,
+                        payload: {
+                            source: { name: 'Source A' },
+                            target: { name: 'Target C' },
+                            value: 50,
+                        },
+                    } as Parameters<typeof LinkRenderer>[0])}
+                />
             </svg>,
         )
 
@@ -208,7 +212,7 @@ describe('createLinkRenderer', () => {
     it('should not call onLinkClick when clicking a non-clickable link', async () => {
         const user = userEvent.setup()
         const onLinkClick = vi.fn<(payload: SankeyLinkClickPayload) => void>()
-        const renderer = createLinkRenderer({
+        const LinkRenderer = createLinkRenderer({
             links,
             nodes,
             onLinkClick,
@@ -217,15 +221,17 @@ describe('createLinkRenderer', () => {
 
         const { container } = render(
             <svg>
-                {renderer({
-                    ...baseLinkProps,
-                    index: 1,
-                    payload: {
-                        source: { name: 'Source A' },
-                        target: { name: 'Target C' },
-                        value: 50,
-                    },
-                } as Parameters<typeof renderer>[0])}
+                <LinkRenderer
+                    {...({
+                        ...baseLinkProps,
+                        index: 1,
+                        payload: {
+                            source: { name: 'Source A' },
+                            target: { name: 'Target C' },
+                            value: 50,
+                        },
+                    } as Parameters<typeof LinkRenderer>[0])}
+                />
             </svg>,
         )
 
@@ -235,22 +241,164 @@ describe('createLinkRenderer', () => {
         expect(onLinkClick).not.toHaveBeenCalled()
     })
 
-    it('should render fallback path for unknown link index', () => {
-        const renderer = createLinkRenderer({ links, nodes, minLinkWidth: 3 })
+    it('should call onLinkHoverChange with label and targetLabel on mouse move', () => {
+        const onLinkHoverChange = vi.fn()
+        const LinkRenderer = createLinkRenderer({
+            links,
+            nodes,
+            onLinkHoverChange,
+            minLinkWidth: 3,
+        })
 
         const { container } = render(
             <svg>
-                {renderer({
-                    ...baseLinkProps,
-                    index: 999,
-                } as Parameters<typeof renderer>[0])}
+                <LinkRenderer
+                    {...(baseLinkProps as Parameters<typeof LinkRenderer>[0])}
+                    index={0}
+                />
+            </svg>,
+        )
+
+        const path = container.querySelector('path')!
+        fireEvent.mouseMove(path, { clientX: 120, clientY: 80 })
+
+        expect(onLinkHoverChange).toHaveBeenCalledWith({
+            value: 100,
+            x: 120,
+            y: 80,
+            label: 'Source A',
+            targetLabel: 'Target B',
+        })
+    })
+
+    it('should call onLinkHoverChange with null on mouse leave', () => {
+        const onLinkHoverChange = vi.fn()
+        const LinkRenderer = createLinkRenderer({
+            links,
+            nodes,
+            onLinkHoverChange,
+            minLinkWidth: 3,
+        })
+
+        const { container } = render(
+            <svg>
+                <LinkRenderer
+                    {...(baseLinkProps as Parameters<typeof LinkRenderer>[0])}
+                    index={0}
+                />
+            </svg>,
+        )
+
+        const path = container.querySelector('path')!
+        fireEvent.mouseLeave(path)
+
+        expect(onLinkHoverChange).toHaveBeenCalledWith(null)
+    })
+
+    it('should call onLinkSourceHover with source index and target color on mouse enter', () => {
+        const onLinkSourceHover = vi.fn()
+        const LinkRenderer = createLinkRenderer({
+            links,
+            nodes,
+            onLinkSourceHover,
+            minLinkWidth: 3,
+        })
+
+        const { container } = render(
+            <svg>
+                <LinkRenderer
+                    {...(baseLinkProps as Parameters<typeof LinkRenderer>[0])}
+                    index={0}
+                />
+            </svg>,
+        )
+
+        fireEvent.mouseEnter(container.querySelector('path')!)
+
+        expect(onLinkSourceHover).toHaveBeenCalledWith(0, '#F08080')
+    })
+
+    it('should call onLinkSourceHover with null, null on mouse leave', () => {
+        const onLinkSourceHover = vi.fn()
+        const LinkRenderer = createLinkRenderer({
+            links,
+            nodes,
+            onLinkSourceHover,
+            minLinkWidth: 3,
+        })
+
+        const { container } = render(
+            <svg>
+                <LinkRenderer
+                    {...(baseLinkProps as Parameters<typeof LinkRenderer>[0])}
+                    index={0}
+                />
+            </svg>,
+        )
+
+        fireEvent.mouseLeave(container.querySelector('path')!)
+
+        expect(onLinkSourceHover).toHaveBeenCalledWith(null, null)
+    })
+
+    it('should not fire hover callbacks for non-clickable links', () => {
+        const onLinkHoverChange = vi.fn()
+        const onLinkSourceHover = vi.fn()
+        const LinkRenderer = createLinkRenderer({
+            links,
+            nodes,
+            onLinkHoverChange,
+            onLinkSourceHover,
+            minLinkWidth: 3,
+        })
+
+        const { container } = render(
+            <svg>
+                <LinkRenderer
+                    {...({
+                        ...baseLinkProps,
+                        index: 1,
+                        payload: {
+                            source: { name: 'Source A' },
+                            target: { name: 'Target C' },
+                            value: 50,
+                        },
+                    } as Parameters<typeof LinkRenderer>[0])}
+                />
+            </svg>,
+        )
+
+        const path = container.querySelector('path')!
+        fireEvent.mouseEnter(path)
+        fireEvent.mouseMove(path, { clientX: 100, clientY: 100 })
+        fireEvent.mouseLeave(path)
+
+        expect(onLinkHoverChange).not.toHaveBeenCalled()
+        expect(onLinkSourceHover).not.toHaveBeenCalled()
+    })
+
+    it('should render fallback path for unknown link index', () => {
+        const LinkRenderer = createLinkRenderer({
+            links,
+            nodes,
+            minLinkWidth: 3,
+        })
+
+        const { container } = render(
+            <svg>
+                <LinkRenderer
+                    {...({
+                        ...baseLinkProps,
+                        index: 999,
+                    } as Parameters<typeof LinkRenderer>[0])}
+                />
             </svg>,
         )
 
         const path = container.querySelector('path')!
         expect(path).toBeInTheDocument()
         expect(path.getAttribute('stroke')).toBe('#ccc')
-        expect(path.getAttribute('stroke-opacity')).toBe('0.25')
+        expect(path).toHaveStyle({ strokeOpacity: 0.15 })
     })
 })
 

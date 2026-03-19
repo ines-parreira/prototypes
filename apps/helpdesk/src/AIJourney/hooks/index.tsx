@@ -16,5 +16,6 @@ export { useAIJourneyOptOutRate } from './useAIJourneyOptOutRate/useAIJourneyOpt
 export { useAIJourneyResponseRate } from './useAIJourneyResponseRate/useAIJourneyResponseRate'
 export { useClickThroughRate } from './useClickThroughRate/useClickThroughRate'
 export { useAIJourneyConversionRate } from './useAIJourneyConversionRate/useAIJourneyConversionRate'
+export { useAIJourneySankeyMetrics } from './useAIJourneySankeyMetrics/useAIJourneySankeyMetrics'
 export { useAIJourneyDiscountCodeUsageMetrics } from './useAIJourneyDiscountCodeUsageMetrics/useAIJourneyDiscountCodeUsageMetrics'
 export { useAIJourneyTotalReplies } from './useAIJourneyTotalReplies/useAIJourneyTotalReplies'

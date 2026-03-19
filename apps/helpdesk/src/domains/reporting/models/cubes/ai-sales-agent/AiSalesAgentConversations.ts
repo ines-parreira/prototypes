@@ -29,6 +29,7 @@ export enum AiSalesAgentConversationsDimension {
     Clicked = 'AiSalesAgentConversations.clicked',
     JourneyState = 'AiSalesAgentConversations.journeyState',
     ReplyCount = 'AiSalesAgentConversations.replyCount',
+    EngagementCategory = 'AiSalesAgentConversations.engagementCategory',
 }
 
 export enum AiSalesAgentConversationsFilterMember {

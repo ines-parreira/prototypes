@@ -3,14 +3,19 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
     AiSalesAgentConversationsDimension,
+    AiSalesAgentConversationsFilterMember,
     AiSalesAgentConversationsMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
     AiSalesAgentOrdersDimension,
+    AiSalesAgentOrdersFilterMember,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import { SourceFilter } from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
+import {
+    OutcomeFilter,
+    SourceFilter,
+} from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
 import {
     aiSalesAgentConversationsDefaultFiltersMembers,
     aiSalesAgentOrdersDefaultFiltersMembers,
@@ -1103,5 +1108,109 @@ export const AIJourneyDiscountCodesUsedQueryFactory = (
         ],
         timezone,
         metricName: METRIC_NAMES.AI_SALES_AGENT_DISCOUNT_CODES_APPLIED,
+    }
+}
+
+export const aiJourneySankeyConversationsQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_SANKEY_CONVERSATIONS,
+        measures: [AiSalesAgentConversationsMeasure.Count],
+        dimensions: [AiSalesAgentConversationsDimension.EngagementCategory],
+        filters: [
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.In,
+                values: [
+                    SourceFilter.AiJourney,
+                    SourceFilter.ShoppingAssistant,
+                ],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.Outcome,
+                operator: ReportingFilterOperator.NotEquals,
+                values: [OutcomeFilter.Handover],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.JourneyCompleteReason,
+                operator: ReportingFilterOperator.NotEquals,
+                values: [JOURNEY_COMPLETE_REASON.OPTED_OUT],
+            },
+            ...statsFiltersToReportingFilters(
+                {
+                    periodStart:
+                        AiSalesAgentConversationsFilterMember.PeriodStart,
+                    periodEnd: AiSalesAgentConversationsFilterMember.PeriodEnd,
+                    channels: AiSalesAgentConversationsFilterMember.Channel,
+                },
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
+    }
+}
+
+export const aiJourneySankeyOrdersQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentOrdersCube> => {
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentOrdersDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_SANKEY_ORDERS,
+        measures: [AiSalesAgentOrdersMeasure.ConvertedConversations],
+        dimensions: [
+            AiSalesAgentOrdersDimension.EngagementCategory,
+            AiSalesAgentOrdersDimension.Clicked,
+        ],
+        filters: [
+            {
+                member: AiSalesAgentOrdersDimension.IntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            ...statsFiltersToReportingFilters(
+                {
+                    periodStart: AiSalesAgentOrdersFilterMember.PeriodStart,
+                    periodEnd: AiSalesAgentOrdersFilterMember.PeriodEnd,
+                    channels: AiSalesAgentOrdersFilterMember.Channel,
+                },
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
     }
 }

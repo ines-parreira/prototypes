@@ -28,6 +28,7 @@ export const getEnrichmentFields = (metricName: string) => {
         case AIJourneyMetric.DiscountCodesGenerated:
             return [...defaultEnrichmentFields, EnrichmentFields.CustomerName]
         case AIJourneyMetric.DiscountCodesUsed:
+        case AIJourneyMetric.SankeyConversions:
             return [
                 ...defaultEnrichmentFields,
                 EnrichmentFields.CustomerName,
@@ -76,5 +77,7 @@ export const AIJourneyDrillDownConfig: DomainConfig<AIJourneyMetric> = {
             AIJourneyMetricsConfig[AIJourneyMetric.TotalReplies],
         [AIJourneyMetric.OptOutAfterReply]:
             AIJourneyMetricsConfig[AIJourneyMetric.OptOutAfterReply],
+        [AIJourneyMetric.SankeyConversions]:
+            AIJourneyMetricsConfig[AIJourneyMetric.SankeyConversions],
     },
 }

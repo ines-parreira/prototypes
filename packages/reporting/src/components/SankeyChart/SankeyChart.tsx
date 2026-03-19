@@ -1,8 +1,17 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 
 import { ResponsiveContainer, Sankey } from 'recharts'
 
-import { Box, Card, Heading, Skeleton } from '@gorgias/axiom'
+import {
+    Box,
+    Card,
+    Heading,
+    Icon,
+    Size,
+    Skeleton,
+    Text,
+    TextVariant,
+} from '@gorgias/axiom'
 
 import type { ResolvedLink } from './SankeyLink'
 import { createLinkRenderer } from './SankeyLink'
@@ -12,6 +21,7 @@ import type { SankeyChartProps } from './types'
 import css from './SankeyChart.less'
 
 const CHART_HEIGHT = 400
+
 const DEFAULT_NODE_WIDTH = 10
 const DEFAULT_NODE_PADDING = 24
 const DEFAULT_LABEL_WIDTH = 160
@@ -29,7 +39,22 @@ export const SankeyChart = ({
     labelWidth = DEFAULT_LABEL_WIDTH,
     valueFormatter,
     minLinkWidth = DEFAULT_MIN_LINK_WIDTH,
+    minNodeHeight,
+    maxNodeHeight,
+    hoverableNodeNames,
 }: SankeyChartProps) => {
+    const [linkTooltip, setLinkTooltip] = useState<{
+        value: number
+        x: number
+        y: number
+        label?: string
+        targetLabel?: string
+    } | null>(null)
+    const [hoveredNodeHighlight, setHoveredNodeHighlight] = useState<{
+        nodeIndex: number
+        color: string
+    } | null>(null)
+
     const resolvedLinks: ResolvedLink[] = useMemo(() => {
         const nameToIndex = new Map(
             data.nodes.map((node, index) => [node.name, index]),
@@ -40,6 +65,7 @@ export const SankeyChart = ({
             value: link.value,
             color: link.color,
             isClickable: link.isClickable,
+            strokeOpacity: link.strokeOpacity,
         }))
     }, [data.nodes, data.links])
 
@@ -65,8 +91,20 @@ export const SankeyChart = ({
                 nodes: data.nodes,
                 totalSourceValue,
                 valueFormatter,
+                minNodeHeight,
+                maxNodeHeight,
+                hoverableNodeNames,
+                hoveredNodeHighlight,
             }),
-        [data.nodes, totalSourceValue, valueFormatter],
+        [
+            data.nodes,
+            totalSourceValue,
+            valueFormatter,
+            minNodeHeight,
+            maxNodeHeight,
+            hoverableNodeNames,
+            hoveredNodeHighlight,
+        ],
     )
 
     const linkRenderer = useMemo(
@@ -75,9 +113,21 @@ export const SankeyChart = ({
                 links: resolvedLinks,
                 nodes: data.nodes,
                 onLinkClick,
+                onLinkHoverChange: setLinkTooltip,
+                onLinkSourceHover: (sourceNodeIndex, targetColor) => {
+                    if (sourceNodeIndex !== null && targetColor !== null) {
+                        setHoveredNodeHighlight({
+                            nodeIndex: sourceNodeIndex,
+                            color: targetColor,
+                        })
+                    } else {
+                        setHoveredNodeHighlight(null)
+                    }
+                },
                 minLinkWidth,
+                minNodeHeight,
             }),
-        [resolvedLinks, data.nodes, onLinkClick, minLinkWidth],
+        [resolvedLinks, data.nodes, onLinkClick, minLinkWidth, minNodeHeight],
     )
 
     const chartHeight =
@@ -125,12 +175,54 @@ export const SankeyChart = ({
                                 nodeWidth={nodeWidth}
                                 nodePadding={nodePadding}
                                 sort={false}
-                                margin={{ right: labelWidth }}
+                                margin={{
+                                    top: 20,
+                                    right: labelWidth,
+                                    bottom: 20,
+                                }}
                             />
                         </ResponsiveContainer>
                     </Box>
                 )}
             </Box>
+
+            {linkTooltip && (
+                <div
+                    className={css.linkTooltip}
+                    style={{
+                        left: linkTooltip.x + 12,
+                        top: linkTooltip.y - 28,
+                    }}
+                >
+                    <Card padding={Size.Xs} className={css.tooltipCard}>
+                        <Box alignItems="center" gap="xxxs">
+                            {linkTooltip.label && (
+                                <>
+                                    <Text variant={TextVariant.Regular}>
+                                        {linkTooltip.label}
+                                    </Text>
+                                    {linkTooltip.targetLabel && (
+                                        <>
+                                            <Icon
+                                                name="arrow-right"
+                                                size="xs"
+                                            />
+                                            <Text variant={TextVariant.Regular}>
+                                                {linkTooltip.targetLabel}:
+                                            </Text>
+                                        </>
+                                    )}
+                                </>
+                            )}
+                            <Text variant={TextVariant.Medium}>
+                                {valueFormatter
+                                    ? valueFormatter(linkTooltip.value)
+                                    : linkTooltip.value.toLocaleString()}
+                            </Text>
+                        </Box>
+                    </Card>
+                </div>
+            )}
         </Card>
     )
 }

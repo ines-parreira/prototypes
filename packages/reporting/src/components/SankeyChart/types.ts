@@ -11,6 +11,7 @@ export type SankeyLinkItem<NodeName extends string = string> = {
     value: number
     color?: string
     isClickable?: boolean
+    strokeOpacity?: number
 }
 
 export type SankeyChartData<NodeName extends string = string> = {
@@ -37,4 +38,7 @@ export type SankeyChartProps = {
     labelWidth?: number
     valueFormatter?: (value: number) => string
     minLinkWidth?: number
+    minNodeHeight?: number
+    maxNodeHeight?: number
+    hoverableNodeNames?: string[]
 }

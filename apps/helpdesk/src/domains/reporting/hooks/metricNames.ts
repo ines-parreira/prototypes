@@ -100,6 +100,8 @@ export const METRIC_NAMES = {
     AI_JOURNEY_TOTAL_UNIQUE_CONTACTS: 'ai-journey-total-unique-contacts',
     AI_JOURNEY_TOTAL_UNIQUE_CONTACTS_TIME_SERIES:
         'ai-journey-total-unique-contacts-time-series',
+    AI_JOURNEY_SANKEY_CONVERSATIONS: 'ai-journey-sankey-conversations',
+    AI_JOURNEY_SANKEY_ORDERS: 'ai-journey-sankey-orders',
 
     // AI Sales Agent
     AI_SALES_AGENT_AVERAGE_DISCOUNT_PERCENTAGE:

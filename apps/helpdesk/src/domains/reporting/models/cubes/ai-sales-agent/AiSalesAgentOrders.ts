@@ -10,6 +10,7 @@ export enum AiSalesAgentOrdersMeasure {
     AverageOrderValueUsd = 'AiSalesAgentOrders.averageOrderValueUsd',
     Count = 'AiSalesAgentOrders.count',
     UniqCount = 'AiSalesAgentOrders.uniqCount',
+    ConvertedConversations = 'AiSalesAgentOrders.convertedConversations',
 }
 
 export enum AiSalesAgentOrdersDimension {
@@ -34,6 +35,8 @@ export enum AiSalesAgentOrdersDimension {
     Channel = 'AiSalesAgentOrders.channel',
     JourneyId = 'AiSalesAgentOrders.journeyId',
     Outcome = 'AiSalesAgentOrders.outcome',
+    EngagementCategory = 'AiSalesAgentOrders.engagementCategory',
+    Clicked = 'AiSalesAgentOrders.clicked',
 }
 
 export const ProductRecommendation = 'product-recommendation'

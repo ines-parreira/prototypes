@@ -6,6 +6,7 @@ import {
     aiJourneyOptOutRateDrillDownQueryFactory,
     aiJourneyOrdersDrillDownQueryFactory,
     aiJourneyResponseRateDrillDownQueryFactory,
+    aiJourneySankeyConversionsDrillDownQueryFactory,
     aiJourneyTotalConversationsDrillDownQueryFactory,
     aiJourneyTotalOptOutsDrillDownQueryFactory,
     aiJourneyTotalRepliesDrillDownQueryFactory,
@@ -620,6 +621,21 @@ export const getDrillDownQuery = (
                     metricData.integrationId,
                     sorting,
                     metricData.journeyIds,
+                )
+        }
+        case AIJourneyMetric.SankeyConversions: {
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) =>
+                aiJourneySankeyConversionsDrillDownQueryFactory(
+                    statsFilters,
+                    timezone,
+                    metricData.integrationId,
+                    sorting,
+                    metricData.journeyIds,
+                    metricData.engagementCategory,
                 )
         }
         case KnowledgeMetric.Tickets: {

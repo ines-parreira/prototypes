@@ -21,6 +21,7 @@ export enum AIJourneyMetric {
     TotalOptOuts = 'aiJourneyTotalOptOuts',
     TotalReplies = 'aiJourneyTotalReplies',
     OptOutAfterReply = 'aiJourneyOptOutAfterReply',
+    SankeyConversions = 'aiJourneySankeyConversions',
 }
 
 export type AIJourneyMetricResult = {
@@ -37,6 +38,7 @@ export type AIJourneyMetrics = {
     journeyIds?: string[]
     integrationId: string
     shopName?: string
+    engagementCategory?: string
 }
 
 export const AIJourneyMetricsConfig: Record<
@@ -86,6 +88,12 @@ export const AIJourneyMetricsConfig: Record<
     },
     [AIJourneyMetric.TotalConversations]: {
         title: 'Total Conversations',
+        metricFormat: 'decimal-precision-1',
+        showMetric: false,
+        domain: Domain.AIJourney,
+    },
+    [AIJourneyMetric.SankeyConversions]: {
+        title: 'Conversions',
         metricFormat: 'decimal-precision-1',
         showMetric: false,
         domain: Domain.AIJourney,
