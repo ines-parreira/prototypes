@@ -1,33 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`billing reducers UPDATE_INVOICE_IN_LIST should update an invoice in the list of invoices. (existing invoice) 1`] = `
-Immutable.Map {
-  "invoices": Immutable.List [
-    Immutable.Map {
-      "id": "in_1",
-      "paid": false,
-    },
-    Immutable.Map {
-      "id": "in_2",
-      "paid": true,
-    },
-  ],
-}
-`;
-
-exports[`billing reducers fetch invoices 1`] = `
-Immutable.Map {
-  "invoices": Immutable.List [
-    Immutable.Map {
-      "metadata": Immutable.Map {},
-      "paid": true,
-      "date": "2016-11-13T18:30:19+00:00",
-      "amount_due": 1234,
-    },
-  ],
-}
-`;
-
 exports[`billing reducers fetch current products usage 1`] = `
 Immutable.Map {
   "currentProductsUsage": Immutable.Map {

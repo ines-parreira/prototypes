@@ -23,9 +23,6 @@ const useLocationMock = useLocation as jest.Mock
 const mockedDispatch = jest.fn()
 const mockedServer = new MockAdapter(client)
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('state/billing/actions', () => ({
-    fetchCreditCard: jest.fn(),
-}))
 
 describe('ConvertSubscriptionModal', () => {
     const canduId = 'my-test-candu-id'
@@ -42,15 +39,7 @@ describe('ConvertSubscriptionModal', () => {
                 status: 'active',
             },
         }),
-        billing: fromJS({
-            ...billingState,
-            creditCard: {
-                name: 'Alex',
-                number: '545454545454',
-                expDate: `10/${moment().add(1, 'year').format('YY')}`,
-                cvc: '123',
-            },
-        }),
+        billing: fromJS(billingState),
     }
 
     const minProps = {
@@ -111,10 +100,7 @@ describe('ConvertSubscriptionModal', () => {
                     status: 'trialing',
                 },
             }),
-            billing: fromJS({
-                ...billingState,
-                creditCard: null,
-            }),
+            billing: fromJS(billingState),
         }
 
         renderWithStoreAndQueryClientAndRouter(
