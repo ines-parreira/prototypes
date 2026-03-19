@@ -109,7 +109,10 @@ const defaultEntityData = {
         automated_response_started: 8,
     },
     handoverInteractions: {
-        automated_response_started: 3,
+        cancel_order: 2,
+        track_order: 4,
+        loop_returns_started: 1,
+        automated_response_not_helpful: 3,
     },
     costSaved: {
         cancel_order: 31,
@@ -130,7 +133,7 @@ const defaultRows = [
         entity: 'cancel_order',
         automationRate: 0.75,
         automatedInteractions: 10,
-        handoverInteractions: null,
+        handoverInteractions: 2,
         costSaved: 31,
         timeSaved: 120,
     },
@@ -138,7 +141,7 @@ const defaultRows = [
         entity: 'track_order',
         automationRate: 0.9,
         automatedInteractions: 25,
-        handoverInteractions: null,
+        handoverInteractions: 4,
         costSaved: 77.5,
         timeSaved: 90,
     },
@@ -146,7 +149,7 @@ const defaultRows = [
         entity: 'loop_returns_started',
         automationRate: 0.6,
         automatedInteractions: 5,
-        handoverInteractions: null,
+        handoverInteractions: 1,
         costSaved: 15.5,
         timeSaved: 60,
     },
@@ -255,6 +258,63 @@ describe('useOrderManagementMetrics', () => {
         expect(result.current.loadingStates.handoverInteractions).toBe(true)
         expect(result.current.loadingStates.costSaved).toBe(false)
         expect(result.current.loadingStates.timeSaved).toBe(true)
+    })
+
+    describe('buildOrderManagementRow', () => {
+        it('uses automated_response_not_helpful key for automated_response_started handover interactions', () => {
+            renderHook(() => useOrderManagementMetrics())
+
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const row = rowBuilder('automated_response_started')
+
+            expect(row.handoverInteractions).toBe(
+                defaultEntityData.handoverInteractions
+                    .automated_response_not_helpful,
+            )
+        })
+
+        it('uses the entity name as the handover key for non-remapped entities', () => {
+            renderHook(() => useOrderManagementMetrics())
+
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const row = rowBuilder('cancel_order')
+
+            expect(row.handoverInteractions).toBe(
+                defaultEntityData.handoverInteractions.cancel_order,
+            )
+        })
+
+        it('falls back to null when entity data values are missing', () => {
+            mockUseEntityMetrics.mockReturnValue({
+                data: {
+                    overallAutomationRate: {},
+                    automatedInteractions: {},
+                    handoverInteractions: {},
+                    costSaved: {},
+                    timeSaved: {},
+                },
+                isLoading: false,
+                isError: false,
+                loadingStates: {
+                    overallAutomationRate: false,
+                    automatedInteractions: false,
+                    handoverInteractions: false,
+                    costSaved: false,
+                    timeSaved: false,
+                },
+            })
+
+            renderHook(() => useOrderManagementMetrics())
+
+            const rowBuilder = mockAssembleEntityRows.mock.calls[0][2]
+            const row = rowBuilder('cancel_order')
+
+            expect(row.automationRate).toBeNull()
+            expect(row.automatedInteractions).toBeNull()
+            expect(row.handoverInteractions).toBeNull()
+            expect(row.costSaved).toBeNull()
+            expect(row.timeSaved).toBeNull()
+        })
     })
 
     it('returns undefined data when assembleEntityRows returns empty array while loading', () => {

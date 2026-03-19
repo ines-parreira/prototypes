@@ -53,6 +53,12 @@ export const ORDER_MANAGEMENT_ENTITIES: OrderManagementEntityName[] = [
     'automated_response_started',
 ]
 
+const HANDOVER_INTERACTIONS_ENTITY_KEY: Partial<
+    Record<OrderManagementEntityName, string>
+> = {
+    automated_response_started: 'automated_response_not_helpful',
+}
+
 export type OrderManagementEntityMetrics = {
     entity: OrderManagementEntityName
     automationRate: number | null
@@ -89,14 +95,19 @@ const buildOrderManagementRow =
             Partial<Record<string, number | null | undefined>>
         >,
     ) =>
-    (entity: OrderManagementEntityName): OrderManagementEntityMetrics => ({
-        entity,
-        automationRate: entityData.overallAutomationRate[entity] ?? null,
-        automatedInteractions: entityData.automatedInteractions[entity] ?? null,
-        handoverInteractions: entityData.handoverInteractions[entity] ?? null,
-        costSaved: entityData.costSaved[entity] ?? null,
-        timeSaved: entityData.timeSaved[entity] ?? null,
-    })
+    (entity: OrderManagementEntityName): OrderManagementEntityMetrics => {
+        const handoverKey = HANDOVER_INTERACTIONS_ENTITY_KEY[entity] ?? entity
+        return {
+            entity,
+            automationRate: entityData.overallAutomationRate[entity] ?? null,
+            automatedInteractions:
+                entityData.automatedInteractions[entity] ?? null,
+            handoverInteractions:
+                entityData.handoverInteractions[handoverKey] ?? null,
+            costSaved: entityData.costSaved[entity] ?? null,
+            timeSaved: entityData.timeSaved[entity] ?? null,
+        }
+    }
 
 const ORDER_MANAGEMENT_METRICS_CONFIG: Record<
     OrderManagementMetricKeys,
