@@ -1,6 +1,7 @@
 import type { ComponentProps, ReactNode } from 'react'
 
-import { fireEvent } from '@testing-library/react'
+import { fireEvent, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { createBrowserHistory } from 'history'
 import { fromJS } from 'immutable'
@@ -52,6 +53,9 @@ jest.mock('common/navigation', () => ({
 
 jest.mock('../RecentChats', () => ({
     RecentChats: () => <div>RecentChats</div>,
+}))
+jest.mock('../TicketNavbarCreateMenu', () => ({
+    TicketNavbarCreateMenu: () => <div>TicketNavbarCreateMenu</div>,
 }))
 jest.mock('../TicketNavbarBlock', () => ({
     TicketNavbarBlock: ({
@@ -441,6 +445,80 @@ describe('<TicketNavbar/>', () => {
         expect(queryByTestId('new-system-views')).not.toBeInTheDocument()
     })
 
+    describe('with wayfinding flag enabled', () => {
+        beforeEach(() => {
+            mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        })
+
+        it('should create a new section', async () => {
+            const user = userEvent.setup()
+            const { getByRole, getByTestId, getByText } = renderWithRouter(
+                <DndProvider backend={HTML5Backend}>
+                    <Provider store={mockStore(store as any)}>
+                        <TicketNavbarContainer {...minProps} />
+                    </Provider>
+                </DndProvider>,
+                { path: '/foo/:viewId?', route: '/foo/1' },
+            )
+
+            await user.click(getByRole('button', { name: 'add-plus-circle' }))
+
+            await waitFor(() => {
+                expect(getByText('Create section')).toBeInTheDocument()
+            })
+            await user.click(getByText('Create section'))
+            await user.click(getByTestId('SectionModal-submit'))
+
+            await waitFor(() => {
+                expect(minProps.sectionCreated).toHaveBeenNthCalledWith(
+                    1,
+                    section,
+                )
+            })
+        })
+
+        it('should update a section', async () => {
+            const user = userEvent.setup()
+            const { getByTestId } = renderWithRouter(
+                <DndProvider backend={HTML5Backend}>
+                    <Provider store={mockStore(store as any)}>
+                        <TicketNavbarContainer {...minProps} />
+                    </Provider>
+                </DndProvider>,
+                { path: '/foo/:viewId?', route: '/foo/1' },
+            )
+
+            await user.click(getByTestId('TicketNavbarContent-rename'))
+            await user.click(getByTestId('SectionModal-submit'))
+
+            await waitFor(() => {
+                expect(minProps.sectionUpdated).toHaveBeenNthCalledWith(
+                    1,
+                    section,
+                )
+            })
+        })
+
+        it('should delete a section', async () => {
+            const user = userEvent.setup()
+            const { getByTestId } = renderWithRouter(
+                <DndProvider backend={HTML5Backend}>
+                    <Provider store={mockStore(store as any)}>
+                        <TicketNavbarContainer {...minProps} />
+                    </Provider>
+                </DndProvider>,
+                { path: '/foo/:viewId?', route: '/foo/1' },
+            )
+
+            await user.click(getByTestId('TicketNavbarContent-delete'))
+            await user.click(getByTestId('DeleteModal-submit'))
+
+            await waitFor(() => {
+                expect(minProps.sectionDeleted).toHaveBeenNthCalledWith(1, 1)
+            })
+        })
+    })
+
     describe('sidebar collapsed state with wayfinding flag', () => {
         beforeEach(() => {
             mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
@@ -485,8 +563,8 @@ describe('<TicketNavbar/>', () => {
                 },
             )
 
-            const navbarBlocks = queryAllByTestId('NavbarBlock')
-            expect(navbarBlocks.length).toBeGreaterThan(0)
+            const navbarContents = queryAllByTestId('TicketNavbarContent')
+            expect(navbarContents.length).toBeGreaterThan(0)
         })
     })
 

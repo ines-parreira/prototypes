@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
-import { useSidebar } from '@repo/navigation'
+import { NavigationSectionGroup, useSidebar } from '@repo/navigation'
 import { CollapsedDefaultViews } from '@repo/tickets'
 import { systemViewIcons } from '@repo/tickets/utils/views'
 import { shortcutManager } from '@repo/utils'
@@ -35,6 +35,8 @@ import { fetchViewsPaginated, updateView } from 'models/view/resources'
 import type { View, ViewCategoryNavbar } from 'models/view/types'
 import { ViewVisibility } from 'models/view/types'
 import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
+import { InboxSidebarBlock } from 'pages/tickets/navbar/InboxSidebarBlock'
+import { TicketNavbarCreateMenu } from 'pages/tickets/navbar/TicketNavbarCreateMenu'
 import { tryLocalStorage } from 'services/common/utils'
 import GorgiasApi from 'services/gorgiasApi'
 import {
@@ -457,7 +459,100 @@ export function TicketNavbarContainer({
     const { scrollableAreaRef } = useAutoScrollOnDragging()
 
     if (hasWayfindingMS1Flag && isCollapsed) {
-        return <CollapsedDefaultViews />
+        return (
+            <>
+                <TicketNavbarCreateMenu />
+                <CollapsedDefaultViews />
+            </>
+        )
+    }
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <>
+                <TicketNavbarCreateMenu />
+                <RecentChats />
+                <DefaultViews viewCount={viewsCount} />
+                <NavigationSectionGroup storageKey="inbox-navigation">
+                    {categories.map((category) => (
+                        <TicketNavbarDropTarget
+                            type={TicketNavbarElementType.Category}
+                            key={category}
+                            accept={TicketNavbarElementType.Category}
+                            onDrop={handleCategoryDrop}
+                            canDrop={(item) =>
+                                item.type === TicketNavbarElementType.Category
+                            }
+                        >
+                            <InboxSidebarBlock
+                                id={`view-section-${category}`}
+                                title={ViewCategories[category]}
+                                value={category}
+                                actions={
+                                    (category === 'public' && isAgent) ||
+                                    category === 'private'
+                                        ? [
+                                              {
+                                                  label: 'Create view',
+                                                  onClick: () =>
+                                                      history.push(
+                                                          `/app/tickets/new/${category}`,
+                                                      ),
+                                              },
+                                              {
+                                                  label: 'Create section',
+                                                  onClick: () =>
+                                                      handleCreateSectionClick(
+                                                          category ===
+                                                              'private',
+                                                      ),
+                                              },
+                                          ]
+                                        : undefined
+                                }
+                            >
+                                <TicketNavbarContent
+                                    {...((category === 'public' && isAgent) ||
+                                    category === 'private'
+                                        ? {
+                                              onSectionDeleteClick:
+                                                  handleSectionDeleteClick,
+                                              onSectionRenameClick:
+                                                  handleSectionRenameClick,
+                                          }
+                                        : {})}
+                                    elements={
+                                        category === 'public'
+                                            ? sharedElements
+                                            : privateElements
+                                    }
+                                    isMovingItem={isMovingItem}
+                                    onSubmitMoveItem={handleSubmitMoveItem}
+                                    isPrivate={category === 'private'}
+                                />
+                            </InboxSidebarBlock>
+                        </TicketNavbarDropTarget>
+                    ))}
+                </NavigationSectionGroup>
+                <SectionFormModal
+                    isNewSection={isNewSection}
+                    isOpen={isSectionFormModalOpened}
+                    isSubmitting={isSubmitting}
+                    onChange={handleSectionDraftChange}
+                    onClose={handleSectionModalClose}
+                    onSubmit={handleSectionDraftSubmit}
+                    sectionForm={sectionForm}
+                />
+
+                <DeleteSectionModal
+                    isOpen={isDeleteSectionModalOpened}
+                    isSubmitting={isDeleting}
+                    onClose={handleDeleteSectionModalClose}
+                    onSubmit={handleSectionDelete}
+                    section={sectionForm as Maybe<Section>}
+                />
+            </>
+        )
     }
 
     return (
@@ -479,8 +574,7 @@ export function TicketNavbarContainer({
             }
         >
             <RecentChats />
-            {hasWayfindingMS1Flag && <DefaultViews viewCount={viewsCount} />}
-            {!hasWayfindingMS1Flag && !!systemTopElements.length && (
+            {!!systemTopElements.length && (
                 <div
                     data-appcues="new-system-views"
                     data-testid="new-system-views"
@@ -571,7 +665,7 @@ export function TicketNavbarContainer({
                     </TicketNavbarDropTarget>
                 ))}
             </Navigation.Root>
-            {!hasWayfindingMS1Flag && !!systemBottomElements.length && (
+            {!!systemBottomElements.length && (
                 <div className={css.navigation}>
                     {systemBottomElements.map((element) => (
                         <TicketNavbarViewLink

@@ -21,6 +21,7 @@ type BaseSectionProps = {
     label: string | ReactNode
     leadingSlot?: IconName | ReactNode
     id?: string
+    canduId?: string | null
 }
 
 type CollapsibleSectionProps = BaseSectionProps & {
@@ -46,14 +47,14 @@ function isLink(props: NavigationSectionProps): props is LinkSectionProps {
 
 export function NavigationSection(props: NavigationSectionProps) {
     if (isLink(props)) {
-        const { label, leadingSlot, to, exact, isActive, id } = props
+        const { label, leadingSlot, to, exact, isActive, canduId } = props
         return (
             <NavLink
                 to={to}
                 exact={exact}
                 isActive={isActive}
                 className={css.link}
-                data-candu-id={`navigation-section-${id}`}
+                {...(canduId ? { 'data-candu-id': canduId } : {})}
             >
                 <Box
                     alignItems="center"
@@ -79,6 +80,7 @@ export function NavigationSection(props: NavigationSectionProps) {
 
     const {
         id,
+        canduId,
         label,
         leadingSlot,
         children,
@@ -88,7 +90,11 @@ export function NavigationSection(props: NavigationSectionProps) {
     } = props
 
     return (
-        <Disclosure isDisabled={isDisabled} id={id}>
+        <Disclosure
+            isDisabled={isDisabled}
+            id={id}
+            {...(canduId ? { 'data-candu-id': canduId } : {})}
+        >
             <DisclosureHeader
                 title={
                     <Box
@@ -97,16 +103,16 @@ export function NavigationSection(props: NavigationSectionProps) {
                         justifyContent="space-between"
                         gap="xs"
                     >
-                        <Text size="sm" variant="medium">
-                            {label}
-                        </Text>
+                        <Box paddingBottom="xxxs" paddingTop="xxxs">
+                            <Text size="sm" variant="medium">
+                                {label}
+                            </Text>
+                        </Box>
                         {actionsSlot}
                     </Box>
                 }
                 paddingLeft="xs"
                 paddingRight="xxxs"
-                paddingBottom="xxxs"
-                paddingTop="xxxs"
                 leadingSlot={leadingSlot}
                 trailingSlot={({ isExpanded }) => (
                     <Box alignItems="center" gap="xs">

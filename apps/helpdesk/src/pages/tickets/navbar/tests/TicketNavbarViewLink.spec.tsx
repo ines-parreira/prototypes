@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlag, useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -19,6 +19,9 @@ jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn(),
 }))
 const useFlagMock = assumeMock(useFlag)
+const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
+    useHelpdeskV2WayfindingMS1Flag,
+)
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const useAppDispatchMock = assumeMock(useAppDispatch)
@@ -144,5 +147,36 @@ describe('TicketNavbarViewLink', () => {
         const sectionItem = outerDiv.firstChild as HTMLElement
         expect(sectionItem).toHaveClass('item viewLink')
         expect(sectionItem.tagName).toBe('A') // Navigation.SectionItem renders as a Link (anchor)
+    })
+
+    describe('when wayfinding MS1 flag is enabled', () => {
+        beforeEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+        })
+
+        afterEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
+        })
+
+        it('should render a link to the view via TicketNavbarViewLinkItem', () => {
+            render(
+                <MemoryRouter initialEntries={['/app']}>
+                    <TicketNavbarViewLink view={defaultView} />
+                </MemoryRouter>,
+            )
+
+            const link = screen.getByRole('link')
+            expect(link).toHaveAttribute('href', '/app/tickets/123/inbox')
+        })
+
+        it('should render the view name', () => {
+            render(
+                <MemoryRouter initialEntries={['/app']}>
+                    <TicketNavbarViewLink view={defaultView} />
+                </MemoryRouter>,
+            )
+
+            expect(screen.getByText('Inbox')).toBeInTheDocument()
+        })
     })
 })

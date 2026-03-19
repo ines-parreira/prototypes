@@ -84,4 +84,18 @@ describe('NavigationSectionItem', () => {
 
         expect(onClick).toHaveBeenCalledTimes(1)
     })
+
+    it('renders with data-candu-id attribute when canduId is provided', () => {
+        const { container } = renderInRouter(
+            <NavigationSectionItem
+                to="/overview"
+                label="Overview"
+                canduId="item-candu-id"
+            />,
+        )
+
+        expect(
+            container.querySelector('[data-candu-id="item-candu-id"]'),
+        ).toBeInTheDocument()
+    })
 })

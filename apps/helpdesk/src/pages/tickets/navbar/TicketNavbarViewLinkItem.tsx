@@ -1,76 +1,96 @@
-import { useMemo } from 'react'
+import { forwardRef, useMemo } from 'react'
 
-import { Link, matchPath, useLocation } from 'react-router-dom'
+import { NavigationSectionItem } from '@repo/navigation'
+import { matchPath, useLocation } from 'react-router-dom'
 
 import type { IconName } from '@gorgias/axiom'
-import { Box, Icon, Quantity } from '@gorgias/axiom'
-import type { View } from '@gorgias/helpdesk-types'
+import { Box, Icon, Quantity, Tooltip, TooltipContent } from '@gorgias/axiom'
+import type { View, ViewDecoration } from '@gorgias/helpdesk-types'
 
-import { Navigation } from 'components/Navigation/Navigation'
-import ViewName from 'pages/common/components/ViewName/ViewName'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 
 type Props = {
-    className?: string
-    icon: IconName
+    canduId?: string | null
+    icon?: IconName
     label?: string
-    view: Pick<View, 'id' | 'name' | 'slug' | 'decoration'>
+    view: Pick<View, 'id' | 'name' | 'slug'> & {
+        decoration?: Maybe<ViewDecoration>
+        deactivated_datetime?: Maybe<string>
+    }
     viewCount?: number
+    onClick?: () => void
 }
 
-export function TicketNavbarViewLinkItem({
-    icon,
-    view,
-    viewCount,
-    label,
-}: Props) {
-    const { isEnabled: splitTicketViewEnabled } = useSplitTicketView()
-    const { pathname } = useLocation()
-    const match = matchPath<{ viewId: string }>(pathname, {
-        path: splitTicketViewEnabled
-            ? `/app/views/:viewId`
-            : `/app/tickets/:viewId?/:slug?/`,
-    })
+export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
+    function TicketNavbarViewLinkItem(
+        { canduId, icon, view, viewCount, label, onClick }: Props,
+        ref,
+    ) {
+        const { isEnabled: splitTicketViewEnabled } = useSplitTicketView()
+        const { pathname } = useLocation()
+        const match = matchPath<{ viewId: string }>(pathname, {
+            path: splitTicketViewEnabled
+                ? `/app/views/:viewId`
+                : `/app/tickets/:viewId?/:slug?/`,
+        })
 
-    const viewIdParam = match?.params.viewId
-    const viewId = viewIdParam ? parseInt(viewIdParam, 10) : 0
+        const viewIdParam = match?.params.viewId
+        const viewId = viewIdParam ? parseInt(viewIdParam, 10) : 0
 
-    const isActiveView = view.id === viewId
+        const isActiveView = view.id === viewId
 
-    const linkTo = useMemo(
-        () =>
-            splitTicketViewEnabled
-                ? `/app/views/${view.id}`
-                : `/app/tickets/${view.id}/${encodeURIComponent(view.slug || '')}`,
-        [splitTicketViewEnabled, view],
-    )
+        const linkTo = useMemo(
+            () =>
+                splitTicketViewEnabled
+                    ? `/app/views/${view.id}`
+                    : `/app/tickets/${view.id}/${encodeURIComponent(view.slug || '')}`,
+            [splitTicketViewEnabled, view],
+        )
 
-    return (
-        <Navigation.SectionItem
-            as={Link}
-            to={linkTo}
-            id={`ticket-navbar-view-${view.id}`}
-        >
-            <Box
-                alignItems="center"
-                gap="xs"
-                w="100%"
-                justifyContent="space-between"
-            >
-                <Box alignItems="center" gap="xs">
-                    <Icon name={icon} size="sm" />
-                    <ViewName
-                        viewName={label || view.name || ''}
-                        emoji={view.decoration?.emoji}
-                    />
-                </Box>
-                {!!viewCount && (
-                    <Quantity
-                        quantity={viewCount}
-                        color={isActiveView ? 'purple' : undefined}
-                    />
-                )}
-            </Box>
-        </Navigation.SectionItem>
-    )
-}
+        return (
+            <NavigationSectionItem
+                ref={ref}
+                canduId={canduId}
+                onClick={() => onClick?.()}
+                id={`view-${view.id}`}
+                to={linkTo}
+                label={
+                    <Box alignItems="center" gap="xxxs">
+                        {typeof view.decoration?.emoji === 'string' && (
+                            <div>{view.decoration?.emoji}</div>
+                        )}
+                        <div>{label ?? view.name}</div>
+                    </Box>
+                }
+                leadingSlot={icon}
+                trailingSlot={
+                    !!view.deactivated_datetime ? (
+                        <Tooltip
+                            trigger={
+                                <span role="button" tabIndex={0}>
+                                    <Icon
+                                        name="octagon-error"
+                                        size="sm"
+                                        color="red"
+                                    />
+                                </span>
+                            }
+                        >
+                            <TooltipContent
+                                title={'This view is deactivated'}
+                            />
+                        </Tooltip>
+                    ) : (
+                        !!viewCount && (
+                            <Quantity
+                                quantity={viewCount}
+                                color={isActiveView ? 'purple' : undefined}
+                                maxQuantity={5000}
+                            />
+                        )
+                    )
+                }
+            />
+        )
+    },
+)

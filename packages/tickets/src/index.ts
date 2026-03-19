@@ -73,6 +73,7 @@ export {
     CollapsedDefaultViews,
     DefaultViewsMenu,
     SYSTEM_VIEW_DEFINITIONS,
+    TicketSectionActionsMenu,
 } from './sidebar'
 
 // Layout components

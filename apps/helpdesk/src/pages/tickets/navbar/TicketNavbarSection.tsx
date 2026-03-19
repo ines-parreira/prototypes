@@ -1,5 +1,8 @@
 import { useCallback, useMemo, useRef, useState } from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import { NavigationSection } from '@repo/navigation'
+import { TicketSectionActionsMenu } from '@repo/tickets'
 import { addCanduLinkForValidViewOrSection } from '@repo/tickets/utils/views'
 import classnames from 'classnames'
 import type { DropTargetMonitor } from 'react-dnd'
@@ -12,6 +15,8 @@ import {
     DropdownMenu,
     DropdownToggle,
 } from 'reactstrap'
+
+import { Box } from '@gorgias/axiom'
 
 import { Navigation } from 'components/Navigation/Navigation'
 import { UserRole } from 'config/types/user'
@@ -54,6 +59,7 @@ export function TicketNavbarSectionContainer({
         () => `ticket-navbar-section-${section.id}`,
         [section],
     )
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const [{ isDragging }, drag] = useDrag({
         type: TicketNavbarElementType.Section,
         item: {
@@ -80,6 +86,89 @@ export function TicketNavbarSectionContainer({
     const canduId = addCanduLinkForValidViewOrSection('section', section)
 
     drag(nameRef)
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <TicketNavbarDropTarget
+                accept={TicketNavbarElementType.Section}
+                canDrop={(item) =>
+                    sections[item.id].private === section.private
+                }
+                className={classnames({
+                    [css.isDragged]: isDragging,
+                })}
+                onDrop={handleDrop}
+                shallow={false}
+            >
+                <TicketNavbarDropTarget
+                    accept={TicketNavbarElementType.View}
+                    bottomIndicatorClassName={css.viewIntoSectionIndicator}
+                    onDrop={handleDrop}
+                    canDrop={(item) =>
+                        section.private
+                            ? views[item.id].visibility ===
+                              ViewVisibility.Private
+                            : views[item.id].visibility !==
+                              ViewVisibility.Private
+                    }
+                >
+                    <div ref={nameRef}>
+                        <NavigationSection
+                            id={`section-${section.id}`}
+                            canduId={canduId}
+                            label={
+                                <Box alignItems="center" gap="xxxs">
+                                    {emoji && <div>{emoji}</div>}
+                                    <div>{section.name}</div>
+                                </Box>
+                            }
+                            actionsSlot={
+                                onSectionRenameClick || onSectionDeleteClick ? (
+                                    <TicketSectionActionsMenu
+                                        triggerIcon="dots-meatballs-horizontal"
+                                        actions={[
+                                            ...(onSectionRenameClick
+                                                ? [
+                                                      {
+                                                          label: 'Rename',
+                                                          onClick: () =>
+                                                              onSectionRenameClick(
+                                                                  section.id,
+                                                              ),
+                                                      },
+                                                  ]
+                                                : []),
+                                            ...(onSectionDeleteClick
+                                                ? [
+                                                      {
+                                                          label: 'Delete',
+                                                          onClick: () =>
+                                                              onSectionDeleteClick(
+                                                                  section.id,
+                                                              ),
+                                                      },
+                                                  ]
+                                                : []),
+                                        ]}
+                                    />
+                                ) : null
+                            }
+                        >
+                            {children.map((view) => (
+                                <TicketNavbarView
+                                    key={view.id}
+                                    view={view}
+                                    viewCount={viewsCount[view.id]}
+                                    isNested={true}
+                                />
+                            ))}
+                        </NavigationSection>
+                    </div>
+                </TicketNavbarDropTarget>
+            </TicketNavbarDropTarget>
+        )
+    }
+
     return (
         <TicketNavbarDropTarget
             accept={TicketNavbarElementType.Section}

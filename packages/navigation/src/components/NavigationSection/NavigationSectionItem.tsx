@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import type { ReactNode } from 'react'
 
 import type { Location } from 'history'
@@ -10,6 +11,7 @@ import type { IconName } from '@gorgias/axiom'
 import css from './NavigationSection.less'
 
 export type NavigationSectionItemProps = {
+    canduId?: string | null
     label: string | ReactNode
     leadingSlot?: IconName | ReactNode
     trailingSlot?: IconName | ReactNode
@@ -21,28 +23,31 @@ export type NavigationSectionItemProps = {
     onClick?: () => void
 }
 
-export function NavigationSectionItem(props: NavigationSectionItemProps) {
+export const NavigationSectionItem = forwardRef<
+    HTMLAnchorElement,
+    NavigationSectionItemProps
+>(function NavigationSectionItem(props, ref) {
     const {
+        id,
+        canduId,
         label,
         leadingSlot,
         trailingSlot,
         to,
         exact,
         isActive,
-        id,
-
         onClick,
     } = props
 
     return (
         <NavLink
+            innerRef={ref}
+            id={id}
             to={to}
             exact={exact}
             isActive={isActive}
             className={css.link}
-            {...(id
-                ? { 'data-candu-id': `navigation-section-item-${id}` }
-                : {})}
+            {...(canduId ? { 'data-candu-id': canduId } : {})}
             onClick={onClick}
         >
             <Box
@@ -58,7 +63,7 @@ export function NavigationSectionItem(props: NavigationSectionItemProps) {
                 ) : (
                     leadingSlot
                 )}
-                <Box paddingTop="xxxs" paddingBottom="xxxs">
+                <Box paddingTop="xxxs" paddingBottom="xxxs" flex={1}>
                     <Text size="sm">{label}</Text>
                 </Box>
                 {trailingSlot && isIconName(trailingSlot) ? (
@@ -69,4 +74,4 @@ export function NavigationSectionItem(props: NavigationSectionItemProps) {
             </Box>
         </NavLink>
     )
-}
+})

@@ -71,7 +71,7 @@ export type ViewDecoration = {
 export type ViewDraft = {
     category: Maybe<ViewCategory>
     created_datetime: string
-    deactivated_datetime: Maybe<string>
+    deactivated_datetime?: Maybe<string>
     decoration: Maybe<ViewDecoration>
     fields: ViewField[]
     filters: string

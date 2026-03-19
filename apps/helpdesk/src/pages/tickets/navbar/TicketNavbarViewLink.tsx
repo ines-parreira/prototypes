@@ -1,7 +1,11 @@
-import type { ForwardedRef } from 'react'
+import type { ForwardedRef, RefObject } from 'react'
 import { forwardRef, useImperativeHandle, useMemo, useRef } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import {
+    FeatureFlagKey,
+    useFlag,
+    useHelpdeskV2WayfindingMS1Flag,
+} from '@repo/feature-flags'
 import { addCanduLinkForValidViewOrSection } from '@repo/tickets/utils/views'
 import classnames from 'classnames'
 import { Link, useLocation } from 'react-router-dom'
@@ -14,6 +18,7 @@ import useViewId from 'hooks/useViewId'
 import type { View } from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
+import { TicketNavbarViewLinkItem } from 'pages/tickets/navbar/TicketNavbarViewLinkItem'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import { activeViewIdSet } from 'state/ui/views/actions'
 import { isTicketPath } from 'utils'
@@ -36,6 +41,7 @@ const TicketNavbarViewLink = (
         FeatureFlagKey.RedirectDeprecatedTicketRoutes,
         false,
     )
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     const { isEnabled: splitTicketViewEnabled } = useSplitTicketView()
     const { pathname: path } = useLocation()
@@ -63,6 +69,17 @@ const TicketNavbarViewLink = (
                   : `/app/tickets/${view.id}/${encodeURIComponent(view.slug)}`,
         [shouldRedirectDeprecatedTicketRoutes, splitTicketViewEnabled, view],
     )
+
+    if (hasWayfindingMS1Flag) {
+        return (
+            <TicketNavbarViewLinkItem
+                ref={ref as unknown as RefObject<HTMLAnchorElement>}
+                canduId={canduId}
+                view={view}
+                onClick={() => dispatch(activeViewIdSet(view.id))}
+            />
+        )
+    }
 
     return (
         <div

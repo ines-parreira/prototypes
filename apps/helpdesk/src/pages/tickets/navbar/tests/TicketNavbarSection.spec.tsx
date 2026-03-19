@@ -1,7 +1,9 @@
 import type { ComponentProps } from 'react'
 
-import { userEvent } from '@repo/testing'
-import { render, screen, within } from '@testing-library/react'
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
+import { render, screen, waitFor, within } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { Provider } from 'react-redux'
@@ -19,6 +21,15 @@ import { DndProvider } from 'utils/wrappers/DndProvider'
 import { TicketNavbarSectionContainer } from '../TicketNavbarSection'
 
 import css from '../TicketNavbarSection.less'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
+    useFlag: jest.fn().mockReturnValue(false),
+}))
+const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
+    useHelpdeskV2WayfindingMS1Flag,
+)
 
 // Mock TicketNavbarDropTarget for this test
 jest.mock('../TicketNavbarDropTarget', () => ({
@@ -181,9 +192,10 @@ describe('<TicketNavbarSection/>', () => {
         expect(triggerContainer).toHaveAttribute('draggable', 'true')
     })
 
-    it('should handle dropdown menu interactions', () => {
+    it('should handle dropdown menu interactions', async () => {
         const onSectionDeleteClick = jest.fn()
         const onSectionRenameClick = jest.fn()
+        const user = userEvent.setup()
 
         render(
             <DndProvider backend={HTML5Backend}>
@@ -210,18 +222,18 @@ describe('<TicketNavbarSection/>', () => {
 
         // Open dropdown
         const dropdownToggle = screen.getByText('...')
-        userEvent.click(dropdownToggle)
+        await user.click(dropdownToggle)
 
         // Test rename action
         const renameButton = screen.getByText('Rename')
-        userEvent.click(renameButton)
+        await user.click(renameButton)
         expect(onSectionRenameClick).toHaveBeenCalledWith(
             minProps.sectionElement.data.id,
         )
 
         // Test delete action
         const deleteButton = screen.getByText('Delete')
-        userEvent.click(deleteButton)
+        await user.click(deleteButton)
         expect(onSectionDeleteClick).toHaveBeenCalledWith(
             minProps.sectionElement.data.id,
         )
@@ -325,5 +337,119 @@ describe('<TicketNavbarSection/>', () => {
 
         const sectionIndicator = container.querySelector('.sectionIndicator')
         expect(sectionIndicator).not.toBeInTheDocument()
+    })
+
+    describe('with wayfinding MS1 flag enabled', () => {
+        const renderSection = (
+            props: Partial<
+                ComponentProps<typeof TicketNavbarSectionContainer>
+            > = {},
+        ) =>
+            render(
+                <DndProvider backend={HTML5Backend}>
+                    <Provider
+                        store={mockStore({
+                            entities: fromJS({}),
+                            currentUser: fromJS(user),
+                        })}
+                    >
+                        <MemoryRouter initialEntries={['/']}>
+                            <SplitTicketViewProvider>
+                                <TicketNavbarSectionContainer
+                                    {...minProps}
+                                    {...props}
+                                />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </DndProvider>,
+            )
+
+        beforeEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+        })
+
+        afterEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
+        })
+
+        it('should render section name via NavigationSection', () => {
+            renderSection()
+
+            expect(
+                screen.getByText(minProps.sectionElement.data.name),
+            ).toBeInTheDocument()
+        })
+
+        it('should render Rename and Delete menu items when actions are provided', async () => {
+            const sectionUser = userEvent.setup()
+            const onSectionRenameClick = jest.fn()
+            const onSectionDeleteClick = jest.fn()
+
+            renderSection({ onSectionRenameClick, onSectionDeleteClick })
+
+            await sectionUser.click(
+                screen.getByRole('button', {
+                    name: 'dots-meatballs-horizontal',
+                }),
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('Rename')).toBeInTheDocument()
+                expect(screen.getByText('Delete')).toBeInTheDocument()
+            })
+        })
+
+        it('should call onSectionRenameClick when Rename is selected', async () => {
+            const sectionUser = userEvent.setup()
+            const onSectionRenameClick = jest.fn()
+
+            renderSection({
+                onSectionRenameClick,
+                onSectionDeleteClick: jest.fn(),
+            })
+
+            await sectionUser.click(
+                screen.getByRole('button', {
+                    name: 'dots-meatballs-horizontal',
+                }),
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('Rename')).toBeInTheDocument()
+            })
+
+            await sectionUser.click(screen.getByText('Rename'))
+
+            expect(onSectionRenameClick).toHaveBeenCalledWith(
+                minProps.sectionElement.data.id,
+            )
+        })
+
+        it('should call onSectionDeleteClick when Delete is selected', async () => {
+            const sectionUser = userEvent.setup()
+            const onSectionDeleteClick = jest.fn()
+
+            renderSection({
+                onSectionRenameClick: jest.fn(),
+                onSectionDeleteClick,
+            })
+
+            await sectionUser.click(
+                screen.getByRole('button', {
+                    name: 'dots-meatballs-horizontal',
+                }),
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('Delete')).toBeInTheDocument()
+            })
+
+            await sectionUser.click(screen.getByText('Delete'))
+
+            expect(onSectionDeleteClick).toHaveBeenCalledWith(
+                minProps.sectionElement.data.id,
+            )
+        })
     })
 })

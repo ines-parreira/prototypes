@@ -4,9 +4,7 @@ import {
     useExpandableDefaultViews,
 } from '@repo/tickets'
 
-import { Box, Button } from '@gorgias/axiom'
-
-import { Navigation } from 'components/Navigation/Navigation'
+import { Box, Button, Text } from '@gorgias/axiom'
 
 import { TicketNavbarViewLinkItem } from './TicketNavbarViewLinkItem'
 
@@ -19,12 +17,23 @@ export function DefaultViews({ viewCount }: Props) {
         useExpandableDefaultViews()
 
     return (
-        <Box flexDirection="column" gap="xs">
-            <Navigation.SectionItem>
-                <div>Default views</div>
+        <Box flexDirection="column" gap="xxxxs">
+            <Box
+                alignItems="center"
+                justifyContent="space-between"
+                width="100%"
+                gap="xs"
+                paddingLeft="xs"
+                paddingRight="xxxs"
+                paddingBottom="xxxs"
+                paddingTop="xxxs"
+            >
+                <Text size="sm" variant="medium">
+                    Default views
+                </Text>
                 <DefaultViewsMenu />
-            </Navigation.SectionItem>
-            <Box flexDirection="column">
+            </Box>
+            <Box flexDirection="column" gap="xxxxs">
                 {displayedViews.map(
                     (view) =>
                         !!view.id &&
@@ -48,6 +57,7 @@ export function DefaultViews({ viewCount }: Props) {
                     }
                     onClick={toggleExpanded}
                     variant="tertiary"
+                    size="sm"
                 >
                     {isExpanded ? 'Less' : 'More'}
                 </Button>

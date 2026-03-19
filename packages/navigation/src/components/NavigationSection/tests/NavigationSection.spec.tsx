@@ -42,6 +42,20 @@ describe('NavigationSection', () => {
 
             expect(screen.getByText('Custom Icon')).toBeInTheDocument()
         })
+
+        it('renders with data-candu-id attribute when canduId is provided', () => {
+            const { container } = renderInRouter(
+                <NavigationSection
+                    to="/settings"
+                    label="Settings"
+                    canduId="link-candu-id"
+                />,
+            )
+
+            expect(
+                container.querySelector('[data-candu-id="link-candu-id"]'),
+            ).toBeInTheDocument()
+        })
     })
 
     describe('collapsible variant', () => {
@@ -105,6 +119,18 @@ describe('NavigationSection', () => {
 
             expect(
                 screen.getByRole('img', { name: 'arrow-circle-up' }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders with data-candu-id attribute when canduId is provided', () => {
+            const { container } = renderInRouter(
+                <NavigationSection label="Tools" canduId="my-candu-id">
+                    <div>Child</div>
+                </NavigationSection>,
+            )
+
+            expect(
+                container.querySelector('[data-candu-id="my-candu-id"]'),
             ).toBeInTheDocument()
         })
     })
