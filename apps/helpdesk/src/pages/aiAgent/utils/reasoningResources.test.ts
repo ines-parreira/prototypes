@@ -41,6 +41,11 @@ describe('coerceResourceType', () => {
             const result = coerceResourceType(['action_execution', 'id123'])
             expect(result).toBe(AiAgentKnowledgeResourceTypeEnum.ACTION)
         })
+
+        it('should convert ACTION_EXECUTION (uppercase) to ACTION', () => {
+            const result = coerceResourceType(['ACTION_EXECUTION', 'id123'])
+            expect(result).toBe(AiAgentKnowledgeResourceTypeEnum.ACTION)
+        })
     })
 
     describe('product handling', () => {
@@ -65,6 +70,17 @@ describe('coerceResourceType', () => {
                 parts: ['product', 'id102'],
                 expected: AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
                 description: 'no subtype (defaults to PRODUCT_KNOWLEDGE)',
+            },
+            {
+                parts: ['PRODUCT', 'id103', 'KNOWLEDGE'],
+                expected: AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE,
+                description: 'uppercase type and subtype',
+            },
+            {
+                parts: ['PRODUCT', 'id104', 'RECOMMENDATION'],
+                expected:
+                    AiAgentKnowledgeResourceTypeEnum.PRODUCT_RECOMMENDATION,
+                description: 'uppercase type and recommendation subtype',
             },
         ])('should handle product with $description', ({ parts, expected }) => {
             const result = coerceResourceType(parts)
@@ -230,6 +246,28 @@ describe('parseReasoningResources', () => {
                     resourceTitle: undefined,
                     resourceVersion: undefined,
                     resourceLocale: undefined,
+                },
+            ])
+        })
+
+        it('should parse uppercase ACTION_EXECUTION marker with metadata', () => {
+            const content = 'Executed <<<ACTION_EXECUTION::exec123>>>'
+            const resources = createTestResources({
+                resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                resourceSetId: 'exec123',
+                resourceId: 'action456',
+                resourceTitle: 'Send Email',
+            })
+
+            const result = parseReasoningResources(content, resources)
+
+            expect(result).toEqual([
+                {
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                    resourceId: 'action456',
+                    resourceTitle: 'Send Email',
+                    resourceVersion: null,
+                    resourceLocale: '',
                 },
             ])
         })
@@ -418,6 +456,50 @@ describe('parseReasoningResources', () => {
         ])('should handle $description', ({ content, expectedLength }) => {
             const result = parseReasoningResources(content, [])
             expect(result).toHaveLength(expectedLength)
+        })
+
+        it('should normalize markers with 2 closing brackets', () => {
+            const content = 'Executed <<ACTION_EXECUTION::exec123>>'
+            const resources = createTestResources({
+                resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                resourceSetId: 'exec123',
+                resourceId: 'action456',
+                resourceTitle: 'Send Email',
+            })
+
+            const result = parseReasoningResources(content, resources)
+
+            expect(result).toEqual([
+                {
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                    resourceId: 'action456',
+                    resourceTitle: 'Send Email',
+                    resourceVersion: null,
+                    resourceLocale: '',
+                },
+            ])
+        })
+
+        it('should normalize markers with 3 opening and 2 closing brackets', () => {
+            const content = 'Executed <<<ACTION_EXECUTION::exec123>>'
+            const resources = createTestResources({
+                resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                resourceSetId: 'exec123',
+                resourceId: 'action456',
+                resourceTitle: 'Send Email',
+            })
+
+            const result = parseReasoningResources(content, resources)
+
+            expect(result).toEqual([
+                {
+                    resourceType: AiAgentKnowledgeResourceTypeEnum.ACTION,
+                    resourceId: 'action456',
+                    resourceTitle: 'Send Email',
+                    resourceVersion: null,
+                    resourceLocale: '',
+                },
+            ])
         })
 
         it('should handle duplicate resource markers', () => {

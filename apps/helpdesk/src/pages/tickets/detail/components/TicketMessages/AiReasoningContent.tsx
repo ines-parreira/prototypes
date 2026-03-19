@@ -127,8 +127,8 @@ export const AiAgentReasoningContent = ({
     if (reasoningContent === null) return null
 
     const normalizedContent = reasoningContent
-        .replace(/<{4,}/g, '<<<')
-        .replace(/>{4,}/g, '>>>')
+        .replace(/<{2,}/g, '<<<')
+        .replace(/>{2,}/g, '>>>')
 
     const allResourceMatches = normalizedContent.match(/<<<(.*?)>>>/g) || []
     const resourceMatches = allResourceMatches.filter(isKnownResourceType)

@@ -6,7 +6,7 @@ import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/component
  * Helper function to determine the specific product resource type based on subtype.
  */
 const coerceProductSubType = (additionalParts: string[]) => {
-    const subType = additionalParts[1]
+    const subType = additionalParts[1]?.toLowerCase()
     if (subType === 'knowledge') {
         return AiAgentKnowledgeResourceTypeEnum.PRODUCT_KNOWLEDGE
     }
@@ -29,7 +29,7 @@ const coerceProductSubType = (additionalParts: string[]) => {
 export const coerceResourceType = (parts: string[]) => {
     const [resourceType, ...additionalParts] = parts
 
-    switch (resourceType) {
+    switch (resourceType.toLowerCase()) {
         case 'action_execution':
             return AiAgentKnowledgeResourceTypeEnum.ACTION
         case 'product':
@@ -61,8 +61,8 @@ export const parseReasoningResources = (
     >['resources'],
 ): KnowledgeReasoningResource[] => {
     const normalizedContent = content
-        .replace(/<{4,}/g, '<<<')
-        .replace(/>{4,}/g, '>>>')
+        .replace(/<{2,}/g, '<<<')
+        .replace(/>{2,}/g, '>>>')
 
     return (normalizedContent.match(/<<<(.*?)>>>/g) || [])
         .map((resourceString) => {
