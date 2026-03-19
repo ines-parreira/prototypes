@@ -1,10 +1,8 @@
 import type { ComponentProps } from 'react'
 
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-
-import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp'
 import { ChatSettingsLanguagesSkeleton } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationLanguages/ChatSettingsLanguagesSkeleton'
 import { GorgiasChatIntegrationLanguagesRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatIntegrationLanguages'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import GorgiasChatIntegrationLanguagesLegacy from './legacy/GorgiasChatIntegrationLanguages/GorgiasChatIntegrationLanguages'
@@ -13,37 +11,16 @@ type Props = ComponentProps<typeof GorgiasChatIntegrationLanguagesLegacy>
 
 export const GorgiasChatIntegrationLanguages = (props: Props) => {
     const { storeIntegration } = useStoreIntegration(props.integration)
-    const {
-        shouldShowRevampWhenAiAgentEnabled,
-        isLoading: isStoreConfigLoading,
-    } = useShouldShowChatSettingsRevamp(
-        storeIntegration,
-        props.integration.get('id'),
-    )
+    const chatId = props.integration.get('id') as number | undefined
 
-    const {
-        value: isChatSettingsRevampEnabled,
-        isLoading: isChatSettingsRevampLoading,
-    } = useFlagWithLoading(FeatureFlagKey.ChatSettingsRevamp)
+    const { shouldShowScreensRevampWhenAiAgentEnabled, isLoading } =
+        useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
-    const {
-        value: isChatSettingsScreensRevampEnabled,
-        isLoading: isChatSettingsScreensRevampLoading,
-    } = useFlagWithLoading(FeatureFlagKey.ChatSettingsScreensRevamp)
-
-    if (
-        isChatSettingsRevampLoading ||
-        isChatSettingsScreensRevampLoading ||
-        isStoreConfigLoading
-    ) {
+    if (isLoading || !chatId) {
         return <ChatSettingsLanguagesSkeleton />
     }
 
-    if (
-        isChatSettingsRevampEnabled &&
-        isChatSettingsScreensRevampEnabled &&
-        shouldShowRevampWhenAiAgentEnabled
-    ) {
+    if (shouldShowScreensRevampWhenAiAgentEnabled) {
         return <GorgiasChatIntegrationLanguagesRevamp {...props} />
     }
 

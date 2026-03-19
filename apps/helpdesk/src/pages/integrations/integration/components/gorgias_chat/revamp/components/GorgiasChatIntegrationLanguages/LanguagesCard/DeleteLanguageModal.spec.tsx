@@ -196,6 +196,27 @@ describe('DeleteLanguageModal', () => {
             expect(onConfirm).toHaveBeenCalledTimes(1)
         })
 
+        it('should call onDiscard when modal is dismissed via onOpenChange', async () => {
+            const user = userEvent.setup()
+            const onDiscard = jest.fn()
+
+            render(
+                <DeleteLanguageModal
+                    language={frenchLanguage}
+                    isUpdatePending={false}
+                    isOneClickInstallation={undefined}
+                    onConfirm={jest.fn()}
+                    onDiscard={onDiscard}
+                />,
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /close modal/i }),
+            )
+
+            expect(onDiscard).toHaveBeenCalledTimes(1)
+        })
+
         it('should call onDiscard when Keep Language button is clicked', async () => {
             const user = userEvent.setup()
             const onDiscard = jest.fn()

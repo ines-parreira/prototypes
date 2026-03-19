@@ -1,22 +1,13 @@
-import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp'
+import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
+import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import { GorgiasChatIntegrationLanguages } from './GorgiasChatIntegrationLanguages'
 
-jest.mock('@repo/feature-flags')
-const mockUseFlagWithLoading = useFlagWithLoading as jest.MockedFunction<
-    typeof useFlagWithLoading
->
-
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp',
-    () => ({
-        __esModule: true,
-        default: jest.fn(),
-    }),
+    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
 )
 
 jest.mock(
@@ -33,9 +24,7 @@ jest.mock(
     }),
 )
 
-jest.mock('pages/integrations/integration/hooks/useStoreIntegration', () => ({
-    useStoreIntegration: () => ({ storeIntegration: undefined }),
-}))
+jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationLanguages/ChatSettingsLanguagesSkeleton',
@@ -46,9 +35,14 @@ jest.mock(
     }),
 )
 
-const mockUseShouldShowChatSettingsRevamp = jest.mocked(
-    useShouldShowChatSettingsRevamp,
-)
+const mockUseShouldShowChatSettingsRevamp =
+    useShouldShowChatSettingsRevamp as jest.MockedFunction<
+        typeof useShouldShowChatSettingsRevamp
+    >
+
+const mockUseStoreIntegration = useStoreIntegration as jest.MockedFunction<
+    typeof useStoreIntegration
+>
 
 const minProps = {
     integration: fromJS({ id: 1 }),
@@ -65,36 +59,28 @@ const minProps = {
 describe('<GorgiasChatIntegrationLanguages />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-    })
 
-    it('should render the skeleton while the feature flag is loading', () => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: true,
+        mockUseStoreIntegration.mockReturnValue({
+            storeIntegration: undefined,
+            isConnected: false,
+            isConnectedToShopify: false,
         })
+
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: false,
-            shouldShowPreviewForRevamp: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
         })
-
-        render(<GorgiasChatIntegrationLanguages {...minProps} />)
-
-        expect(screen.getByTestId('languages-skeleton')).toBeInTheDocument()
-        expect(screen.queryByTestId('legacy-languages')).not.toBeInTheDocument()
-        expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
     })
 
-    it('should render the skeleton while the store configuration is loading', () => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
+    it('should render the skeleton while the revamp hooks are loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: false,
-            shouldShowPreviewForRevamp: false,
+            isChatSettingsRevampEnabled: false,
+            isChatSettingsScreensRevampEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
+            shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: true,
         })
 
@@ -105,15 +91,32 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
         expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
     })
 
-    it('should render the legacy component when shouldShowRevampWhenAiAgentEnabled is false', () => {
-        mockUseFlagWithLoading.mockReturnValue({
-            value: false,
-            isLoading: false,
-        })
+    it('should render the skeleton when the integration id is not yet available', () => {
+        render(
+            <GorgiasChatIntegrationLanguages
+                {...minProps}
+                integration={fromJS({})}
+            />,
+        )
+
+        expect(screen.getByTestId('languages-skeleton')).toBeInTheDocument()
+        expect(screen.queryByTestId('legacy-languages')).not.toBeInTheDocument()
+        expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
+    })
+
+    it('should render the legacy component when shouldShowScreensRevampWhenAiAgentEnabled is false', () => {
+        render(<GorgiasChatIntegrationLanguages {...minProps} />)
+
+        expect(screen.getByTestId('legacy-languages')).toBeInTheDocument()
+        expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
+    })
+
+    it('should render the legacy component when only the base revamp flag is enabled but not the screens revamp', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: false,
-            shouldShowPreviewForRevamp: false,
-            shouldShowRevampWhenAiAgentEnabled: false,
+            isChatSettingsRevampEnabled: true,
+            isChatSettingsScreensRevampEnabled: false,
+            shouldShowRevampWhenAiAgentEnabled: true,
+            shouldShowScreensRevampWhenAiAgentEnabled: false,
             isLoading: false,
         })
 
@@ -123,37 +126,12 @@ describe('<GorgiasChatIntegrationLanguages />', () => {
         expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
     })
 
-    it('should render the legacy component when flag is disabled but AI agent is enabled', () => {
-        mockUseFlagWithLoading.mockImplementation((key) => ({
-            value: key === FeatureFlagKey.ChatSettingsRevamp ? false : false,
-            isLoading: false,
-        }))
+    it('should render the revamp component when shouldShowScreensRevampWhenAiAgentEnabled is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: false,
-            shouldShowPreviewForRevamp: false,
+            isChatSettingsRevampEnabled: true,
+            isChatSettingsScreensRevampEnabled: true,
             shouldShowRevampWhenAiAgentEnabled: true,
-            isLoading: false,
-        })
-
-        render(<GorgiasChatIntegrationLanguages {...minProps} />)
-
-        expect(screen.getByTestId('legacy-languages')).toBeInTheDocument()
-        expect(screen.queryByTestId('revamp-languages')).not.toBeInTheDocument()
-    })
-
-    it('should render the revamp component when ChatSettingsRevamp is enabled and AI agent is enabled', () => {
-        mockUseFlagWithLoading.mockImplementation((key) => ({
-            value:
-                key === FeatureFlagKey.ChatSettingsRevamp ||
-                key === FeatureFlagKey.ChatSettingsScreensRevamp
-                    ? true
-                    : false,
-            isLoading: false,
-        }))
-        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: true,
-            shouldShowPreviewForRevamp: false,
-            shouldShowRevampWhenAiAgentEnabled: true,
+            shouldShowScreensRevampWhenAiAgentEnabled: true,
             isLoading: false,
         })
 

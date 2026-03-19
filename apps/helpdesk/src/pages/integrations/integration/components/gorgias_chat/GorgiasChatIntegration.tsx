@@ -32,7 +32,7 @@ import { GorgiasChatIntegrationInstall } from './GorgiasChatIntegrationInstall'
 import { GorgiasChatIntegrationLanguages } from './GorgiasChatIntegrationLanguages'
 import { GorgiasChatIntegrationList } from './GorgiasChatIntegrationList'
 import { GorgiasChatIntegrationPreferences } from './GorgiasChatIntegrationPreferences'
-import GorgiasTranslateText from './legacy/GorgiasChatIntegrationAppearance/GorgiasTranslateText/GorgiasTranslateText'
+import { GorgiasChatTranslateText } from './GorgiasChatTranslateText'
 import GorgiasChatIntegrationCampaignsLegacy from './legacy/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
 import GorgiasChatIntegrationQuickRepliesLegacy from './legacy/GorgiasChatIntegrationQuickReplies/GorgiasChatIntegrationQuickReplies'
 import useIsQuickRepliesEnabled from './legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
@@ -233,7 +233,7 @@ export const GorgiasChatIntegration = ({
 
         if (extra === Tab.Appearance || !extra) {
             if (subId) {
-                return <GorgiasTranslateText integration={integration} />
+                return <GorgiasChatTranslateText integration={integration} />
             }
 
             return (
@@ -249,7 +249,7 @@ export const GorgiasChatIntegration = ({
 
         if (extra === Tab.Languages) {
             if (subId) {
-                return <GorgiasTranslateText integration={integration} />
+                return <GorgiasChatTranslateText integration={integration} />
             }
 
             return (
