@@ -33,6 +33,18 @@ export type AiSalesAgentActivityContext = Context<
     typeof aiSalesAgentActivityScope.config
 >
 
+export const recommendedProductCount = aiSalesAgentActivityScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS,
+    )
+    .defineQuery(() => ({
+        measures: ['recommendedProductCount'] as const,
+    }))
+
+export const recommendedProductCountQueryV2Factory = (
+    ctx: AiSalesAgentActivityContext,
+) => recommendedProductCount.build(ctx)
+
 export const revenuePerInteraction = aiSalesAgentActivityScope
     .defineMetricName(
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,

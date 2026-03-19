@@ -1,11 +1,17 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     aiSalesAgentActivityScope,
+    recommendedProductCount,
+    recommendedProductCountQueryV2Factory,
     revenuePerInteraction,
     revenuePerInteractionQueryV2Factory,
 } from 'domains/reporting/models/scopes/aiSalesAgentActivity'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
-import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
+import type {
+    AggregationWindow,
+    ApiStatsFilters,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 describe('aiSalesAgentActivityScope', () => {
@@ -127,6 +133,68 @@ describe('aiSalesAgentActivityScope', () => {
         expect(result).not.toContainEqual(
             expect.objectContaining({ member: 'integrationId' }),
         )
+    })
+})
+
+describe('recommendedProductCount queries', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const timezone = 'utc'
+    const granularity = 'day' as AggregationWindow
+
+    const context = {
+        filters,
+        timezone,
+        granularity,
+    }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    const timeDimensions = [
+        {
+            dimension: 'eventDatetime',
+            granularity: 'day',
+        },
+    ]
+
+    describe('recommendedProductCount', () => {
+        it('creates query with recommendedProductCount measure', () => {
+            expect(recommendedProductCount.build(context)).toEqual({
+                metricName:
+                    'ai-agent-shopping-assistant-product-recommendations',
+                scope: 'ai-sales-agent-activity',
+                measures: ['recommendedProductCount'],
+                timezone: 'utc',
+                filters: periodFilters,
+                time_dimensions: timeDimensions,
+            })
+        })
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('recommendedProductCountQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                expect(recommendedProductCountQueryV2Factory(context)).toEqual(
+                    recommendedProductCount.build(context),
+                )
+            })
+        })
     })
 })
 

@@ -11,7 +11,6 @@ import { fetchProductClickRateTrend } from 'domains/reporting/pages/automate/aiS
 import { fetchSuccessRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useSuccessRateTrend'
 import { fetchTotalNumberOfOrdersTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfOrdersTrend'
 import { fetchTotalNumberOfSalesConversationsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalNumberOfSalesConversationsTrend'
-import { fetchTotalProductRecommendations } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useTotalProductRecommendations'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
@@ -39,6 +38,7 @@ import { TotalSalesByProductComboChart } from 'pages/aiAgent/analyticsAiAgent/ch
 import { fetchAiSalesAgentConversionRateTrend } from 'pages/aiAgent/analyticsAiAgent/charts/useAiSalesAgentConversionRateTrend'
 import { ShoppingAssistantChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable'
 import { ShoppingAssistantTopProductsTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable'
+import { fetchAiAgentProductRecommendationsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentProductRecommendationsTrend'
 import { fetchRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
 import { fetchTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesTrend'
 import { STATS_ROUTES } from 'routes/constants'
@@ -319,7 +319,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                     csvProducer: [
                         {
                             type: DataExportFormat.Trend,
-                            fetch: fetchTotalProductRecommendations,
+                            fetch: fetchAiAgentProductRecommendationsTrend,
                             metricFormat: 'decimal',
                         },
                     ],
