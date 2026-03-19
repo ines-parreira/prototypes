@@ -10,6 +10,10 @@ import { assertNever } from '../../utils/assertNever'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
 import { TicketMessage } from '../TicketMessage/TicketMessage'
 import { WhatsAppMessageWrapper } from '../WhatsAppMessage/WhatsAppMessageWrapper'
+import { AiAgentTicketThreadDraftMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadDraftMessage'
+import { AiAgentTicketThreadInternalNote } from './AiAgentTicketThreadMessages/AiAgentTicketThreadInternalNote'
+import { AiAgentTicketThreadMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadMessage'
+import { AiAgentTicketThreadTrialMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadTrialMessage'
 
 const Placement = {
     Left: 'left',
@@ -44,18 +48,18 @@ export function TicketThreadMessageItem({
                 return <TicketMessage item={item} />
             case TicketThreadItemTag.Messages.InternalNote:
                 return (
-                    <MessageBubble>
+                    <MessageBubble variant="internal-note">
                         {item.data.stripped_text || item.data.body_text}
                     </MessageBubble>
                 )
             case TicketThreadItemTag.Messages.AiAgentMessage:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <AiAgentTicketThreadMessage item={item} />
             case TicketThreadItemTag.Messages.AiAgentInternalNote:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <AiAgentTicketThreadInternalNote item={item} />
             case TicketThreadItemTag.Messages.AiAgentDraftMessage:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <AiAgentTicketThreadDraftMessage item={item} />
             case TicketThreadItemTag.Messages.AiAgentTrialMessage:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <AiAgentTicketThreadTrialMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookComment:
                 return <Box padding="md">{JSON.stringify(item.data)}</Box>
             case TicketThreadItemTag.Messages.SocialMediaFacebookPost:

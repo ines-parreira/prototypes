@@ -10,12 +10,15 @@ import 'yet-another-react-lightbox/plugins/thumbnails.css'
 import { Banner, Box, Icon, IconName, Text } from '@gorgias/axiom'
 import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
-import type { TicketThreadRegularMessageItem } from '../../../hooks/messages/types'
+import type {
+    TicketThreadAiAgentMessageItem,
+    TicketThreadRegularMessageItem,
+} from '../../../hooks/messages/types'
 import { Attachment } from './Attachment'
 import { isImage } from './utils/image'
 
 type MessageAttachmentsProps = {
-    item: TicketThreadRegularMessageItem
+    item: TicketThreadRegularMessageItem | TicketThreadAiAgentMessageItem
 }
 
 export function MessageAttachments({ item }: MessageAttachmentsProps) {

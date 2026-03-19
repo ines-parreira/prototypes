@@ -6,7 +6,7 @@ export type MessageAvatarProps = {
 }
 
 export function MessageAvatar({ sender }: MessageAvatarProps) {
-    const name = sender.name ?? sender.email ?? ''
+    const name = sender.name ?? sender.email ?? '??'
     const url =
         (sender.meta as { profile_picture_url?: string } | null)
             ?.profile_picture_url ?? ''

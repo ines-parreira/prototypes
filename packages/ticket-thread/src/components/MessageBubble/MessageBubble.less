@@ -1,12 +1,45 @@
 :local {
     .messageBubble {
-        border: 1px solid var(--border-neutral-default);
         border-radius: var(--spacing-sm);
-        background-color: var(--elevation-neutral-default);
         box-shadow: var(--effects-shadow-container);
         overflow-wrap: anywhere;
         min-width: 80%;
         max-width: 80%;
+        transition: background-color 0.2s ease-in-out;
+
+        &[data-variant='regular'] {
+            border: 1px solid var(--border-neutral-default);
+            background-color: var(--elevation-neutral-default);
+        }
+
+        &[data-variant='internal-note'] {
+            border: 1px solid var(--border-additional-yellow);
+            background-color: var(--surface-additional-yellow);
+        }
+
+        &[data-variant='ai-agent'] {
+            position: relative;
+            background-color: var(--surface-container-blue);
+
+            &::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                padding: 1px;
+                background: var(--ai-border);
+                -webkit-mask:
+                    linear-gradient(#fff 0 0) content-box,
+                    linear-gradient(#fff 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                pointer-events: none;
+            }
+        }
+
+        &:hover {
+            background-color: var(--hover-default);
+        }
     }
 
     .actionButtons {

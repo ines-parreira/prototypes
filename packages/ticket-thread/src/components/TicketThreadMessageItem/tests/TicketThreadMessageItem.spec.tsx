@@ -97,22 +97,6 @@ function renderItem(item: TicketThreadMessageItem) {
 describe('TicketThreadMessageItem', () => {
     const messageTags = [
         {
-            tag: TicketThreadItemTag.Messages.AiAgentMessage,
-            label: 'AI agent message',
-        },
-        {
-            tag: TicketThreadItemTag.Messages.AiAgentInternalNote,
-            label: 'AI agent internal note',
-        },
-        {
-            tag: TicketThreadItemTag.Messages.AiAgentDraftMessage,
-            label: 'AI agent draft message',
-        },
-        {
-            tag: TicketThreadItemTag.Messages.AiAgentTrialMessage,
-            label: 'AI agent trial message',
-        },
-        {
             tag: TicketThreadItemTag.Messages.SocialMediaFacebookComment,
             label: 'Facebook comment',
         },
@@ -164,6 +148,50 @@ describe('TicketThreadMessageItem', () => {
         expect(
             screen.getByText(JSON.stringify(messageData)),
         ).toBeInTheDocument()
+    })
+
+    it('renders AI agent message item', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.AiAgentMessage,
+            data: messageData,
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText('hello')).toBeInTheDocument()
+    })
+
+    it('renders AI agent internal note item', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.AiAgentInternalNote,
+            data: messageData,
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText('hello')).toBeInTheDocument()
+    })
+
+    it('renders AI agent draft message item', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.AiAgentDraftMessage,
+            data: messageData,
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText('hello')).toBeInTheDocument()
+    })
+
+    it('renders AI agent trial message item', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.AiAgentTrialMessage,
+            data: messageData,
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText('hello')).toBeInTheDocument()
     })
 
     it('aligns agent messages to the right', () => {
