@@ -117,7 +117,6 @@ export const METRIC_NAMES = {
         'ai-sales-agent-discount-codes-offered',
     AI_SALES_AGENT_DISCOUNT_CODES_OFFERED_DRILLDOWN:
         'ai-sales-agent-discount-codes-offered-drilldown',
-    AI_SALES_AGENT_TOTAL_SALES_AMOUNT: 'ai-sales-agent-total-sales-amount',
     AI_SALES_AGENT_GMV: 'ai-sales-agent-gmv',
     AI_SALES_AGENT_GMV_INFLUENCED: 'ai-sales-agent-gmv-influenced',
     AI_SALES_AGENT_GMV_USD_TIME_SERIES: 'ai-sales-agent-gmv-usd-time-series',
@@ -645,7 +644,6 @@ export enum MetricScope {
     ConvertCampaignOrderEvents = 'convert-campaign-order-events',
     AISalesAgentOrders = 'ai-sales-agent-orders',
     AISalesAgentConversations = 'ai-sales-agent-conversations',
-    AiSalesAgentOrdersPerformance = 'ai-sales-agent-orders-performance',
 
     // P5 - AI Agent Revamp
     OverallAutomationRate = 'overall-automation-rate',
@@ -945,9 +943,6 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
     ],
     [MetricScope.AiSalesAgentDiscounts]: [],
-    [MetricScope.AiSalesAgentOrdersPerformance]: [
-        METRIC_NAMES.AI_SALES_AGENT_TOTAL_SALES_AMOUNT,
-    ],
     [MetricScope.FlowDataset]: [
         METRIC_NAMES.FLOW_DATASET_HANDOVER_INTERACTIONS,
     ],

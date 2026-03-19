@@ -129,9 +129,6 @@ export type DimensionName =
     | 'discountAmount'
     | 'discountCodeOffered'
     | 'discountCodeUsed'
-    | 'orderId'
-    | 'purchaseTime'
-    | 'totalAmount'
 
 export type MeasureName =
     | 'ticketCount'
@@ -223,11 +220,6 @@ export type MeasureName =
     | 'medianDiscountAmount'
     | 'offeredDiscountCodesCount'
     | 'dropOffCount'
-    | 'averageOrderValue'
-    | 'averagePurchaseTime'
-    | 'medianOrderValue'
-    | 'ordersInfluencedCount'
-    | 'totalSalesAmount'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -294,7 +286,6 @@ export type StringFilterName =
     | 'customField'
     | 'engagementType'
     | 'currency'
-    | 'orderId'
 
 export type NumberFilterName =
     | 'agentId'

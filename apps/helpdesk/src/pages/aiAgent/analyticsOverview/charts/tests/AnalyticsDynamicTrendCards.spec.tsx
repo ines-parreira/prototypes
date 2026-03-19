@@ -32,7 +32,6 @@ import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiA
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsAiAgentSupportDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
-import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
 import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts//AnalyticsOverviewAutomationRateCard'
 import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
@@ -325,18 +324,6 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'currency-precision-1' as const,
                 value: 1234.5,
                 prevValue: 1000,
-            },
-        },
-        {
-            name: 'AnalyticsAiAgentTotalSalesCard',
-            Component: AnalyticsAiAgentTotalSalesCard,
-            config: {
-                label: 'Total sales',
-                description:
-                    'The revenue influenced by a Shopping Assistant interaction, measured from orders placed within 3 days of the interaction',
-                metricFormat: 'currency-precision-1' as const,
-                value: 12345.6,
-                prevValue: 10000,
             },
         },
         {
