@@ -26,11 +26,11 @@ export type SankeyLinkClickPayload = {
     linkIndex: number
 }
 
-export type SankeyChartProps = {
+export type SankeyChartProps<NodeName extends string = string> = {
     title: string
     containerHeight?: SizeValue
     containerWidth?: SizeValue
-    data: SankeyChartData
+    data: SankeyChartData<NodeName>
     isLoading?: boolean
     onLinkClick?: (payload: SankeyLinkClickPayload) => void
     nodeWidth?: number
@@ -40,5 +40,5 @@ export type SankeyChartProps = {
     minLinkWidth?: number
     minNodeHeight?: number
     maxNodeHeight?: number
-    hoverableNodeNames?: string[]
+    hoverableNodeNames?: NodeName[]
 }

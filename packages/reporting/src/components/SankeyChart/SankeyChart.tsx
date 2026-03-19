@@ -27,7 +27,7 @@ const DEFAULT_NODE_PADDING = 24
 const DEFAULT_LABEL_WIDTH = 160
 const DEFAULT_MIN_LINK_WIDTH = 3
 
-export const SankeyChart = ({
+export const SankeyChart = <NodeName extends string = string>({
     title,
     containerHeight,
     containerWidth,
@@ -42,7 +42,7 @@ export const SankeyChart = ({
     minNodeHeight,
     maxNodeHeight,
     hoverableNodeNames,
-}: SankeyChartProps) => {
+}: SankeyChartProps<NodeName>) => {
     const [linkTooltip, setLinkTooltip] = useState<{
         value: number
         x: number
@@ -214,7 +214,7 @@ export const SankeyChart = ({
                                     )}
                                 </>
                             )}
-                            <Text variant={TextVariant.Medium}>
+                            <Text variant={TextVariant.Bold}>
                                 {valueFormatter
                                     ? valueFormatter(linkTooltip.value)
                                     : linkTooltip.value.toLocaleString()}

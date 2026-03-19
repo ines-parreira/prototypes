@@ -86,3 +86,43 @@ export const JOURNEY_ONBOARDING_STEPS = [
         stepNumber: 3,
     },
 ]
+
+export const SANKEY_ENGAGEMENT_CATEGORY = {
+    REPLIED_AND_CLICKED: 'replied_and_clicked',
+    REPLIED_ONLY: 'replied_only',
+    CLICKED_NO_REPLY: 'clicked_no_reply',
+    NO_ENGAGEMENT: 'no_engagement',
+    REPLIED_AND_USED_DISCOUNT: 'replied_and_used_discount',
+    USED_DISCOUNT_NO_REPLY: 'used_discount_no_reply',
+} as const
+
+export const SANKEY_NODES_NAMES = {
+    CONVERSATIONS: 'Conversations',
+    REPLIED_AND_USED_DISCOUNT: 'Replied + used discount',
+    REPLIED_AND_CLICKED: 'Replied + clicked',
+    REPLIED_ONLY: 'Replied only',
+    USED_DISCOUNT_NO_REPLY: 'Used discount (no reply)',
+    CLICKED_NO_REPLY: 'Clicked (no reply)',
+    NO_ENGAGEMENT: 'No engagement',
+    CONVERTED: 'Converted',
+    NOT_CONVERTED: 'Not converted',
+} as const
+
+export type SankeyNodeName =
+    (typeof SANKEY_NODES_NAMES)[keyof typeof SANKEY_NODES_NAMES]
+
+export const SANKEY_NODE_TO_ENGAGEMENT_CATEGORY: Partial<
+    Record<SankeyNodeName, string>
+> = {
+    [SANKEY_NODES_NAMES.REPLIED_AND_USED_DISCOUNT]:
+        SANKEY_ENGAGEMENT_CATEGORY.REPLIED_AND_USED_DISCOUNT,
+    [SANKEY_NODES_NAMES.REPLIED_AND_CLICKED]:
+        SANKEY_ENGAGEMENT_CATEGORY.REPLIED_AND_CLICKED,
+    [SANKEY_NODES_NAMES.REPLIED_ONLY]: SANKEY_ENGAGEMENT_CATEGORY.REPLIED_ONLY,
+    [SANKEY_NODES_NAMES.USED_DISCOUNT_NO_REPLY]:
+        SANKEY_ENGAGEMENT_CATEGORY.USED_DISCOUNT_NO_REPLY,
+    [SANKEY_NODES_NAMES.CLICKED_NO_REPLY]:
+        SANKEY_ENGAGEMENT_CATEGORY.CLICKED_NO_REPLY,
+    [SANKEY_NODES_NAMES.NO_ENGAGEMENT]:
+        SANKEY_ENGAGEMENT_CATEGORY.NO_ENGAGEMENT,
+}

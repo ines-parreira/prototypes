@@ -1156,6 +1156,11 @@ export const aiJourneySankeyConversationsQueryFactory = (
                 operator: ReportingFilterOperator.NotEquals,
                 values: [JOURNEY_COMPLETE_REASON.OPTED_OUT],
             },
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
             ...statsFiltersToReportingFilters(
                 {
                     periodStart:
