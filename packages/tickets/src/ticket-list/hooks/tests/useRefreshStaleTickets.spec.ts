@@ -69,7 +69,11 @@ function makeWrapper(queryClient: QueryClient) {
         createElement(QueryClientProvider, { client: queryClient }, children)
 }
 
-function seedViewListCache(queryClient: QueryClient, tickets: Ticket[]) {
+function seedViewListCache(
+    queryClient: QueryClient,
+    tickets: Ticket[],
+    nextItems: string | null = null,
+) {
     queryClient.setQueryData<InfiniteData<{ data: Ticket[]; meta: object }>>(
         queryKeys.views.listViewItems(viewId, undefined),
         {
@@ -77,7 +81,7 @@ function seedViewListCache(queryClient: QueryClient, tickets: Ticket[]) {
                 {
                     data: tickets,
                     meta: {
-                        next_items: null,
+                        next_items: nextItems,
                         prev_items: null,
                         current_cursor: null,
                     },
@@ -107,6 +111,18 @@ function renderHook(queryClient: QueryClient) {
     )
 }
 
+function makeUpdateItem(
+    ticket: Ticket,
+    updatedDatetime = ticket.updated_datetime,
+) {
+    return {
+        id: ticket.id,
+        updated_datetime: updatedDatetime,
+        cursor: `cursor-${ticket.id}`,
+        customer: {},
+    }
+}
+
 describe('useRefreshStaleTickets', () => {
     it('should not run queries when disabled', () => {
         const queryClient = createQueryClient()
@@ -128,15 +144,6 @@ describe('useRefreshStaleTickets', () => {
 
     it.each([
         {
-            scenario: 'updates list is empty',
-            cachedTickets: [mockTicket1, mockTicket2],
-            updates: [] as Array<{
-                id?: number
-                updated_datetime?: string | null
-                customer: {}
-            }>,
-        },
-        {
             scenario: 'update timestamp is not newer than cached data',
             cachedTickets: [mockTicket1],
             updates: [{ id: 1, updated_datetime: OLD_DATETIME, customer: {} }],
@@ -155,17 +162,6 @@ describe('useRefreshStaleTickets', () => {
             scenario: 'update has null updated_datetime',
             cachedTickets: [mockTicket1],
             updates: [{ id: 1, updated_datetime: null, customer: {} }],
-        },
-        {
-            scenario:
-                'cached ticket is absent from updates but its updated_datetime is older than all returned updates',
-            cachedTickets: [
-                mockTicket({ id: 1, updated_datetime: OLD_DATETIME }),
-                mockTicket({ id: 2, updated_datetime: NEW_DATETIME }),
-            ],
-            // ticket 1 is absent but OLD_DATETIME < NEW_DATETIME (the oldest
-            // returned updated_datetime), so it does not meet the removal threshold
-            updates: [{ id: 2, updated_datetime: NEW_DATETIME, customer: {} }],
         },
     ])(
         'should not invalidate when $scenario',
@@ -194,6 +190,60 @@ describe('useRefreshStaleTickets', () => {
         },
     )
 
+    it('should be a no-op when the authoritative updates window matches the cached rows', async () => {
+        const queryClient = createQueryClient()
+        seedViewListCache(
+            queryClient,
+            [mockTicket1, mockTicket2],
+            '/api/views/123/items/?cursor=stable-cursor',
+        )
+
+        server.use(
+            mockListViewItemsUpdatesHandler(async () =>
+                HttpResponse.json({
+                    data: [
+                        makeUpdateItem(mockTicket1),
+                        makeUpdateItem(mockTicket2),
+                    ],
+                    meta: {},
+                }),
+            ).handler,
+        )
+
+        const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries')
+
+        renderHookPrimitive(
+            () =>
+                useRefreshStaleTickets({
+                    viewId,
+                    params: undefined,
+                    upToCursor: 'stable-cursor',
+                    enabled: true,
+                }),
+            { wrapper: makeWrapper(queryClient) },
+        )
+
+        await waitFor(() => {
+            expect(
+                queryClient.getQueryState(
+                    queryKeys.views.listViewItemsUpdates(viewId, {
+                        order_by: undefined,
+                        up_to_cursor: 'stable-cursor',
+                    }),
+                )?.status,
+            ).toBe('success')
+        })
+
+        const listCache = queryClient.getQueryData<
+            InfiniteData<{ data: Ticket[]; meta: object }>
+        >(queryKeys.views.listViewItems(viewId, undefined))
+
+        expect(listCache?.pages[0].data.map((ticket) => ticket.id)).toEqual([
+            1, 2,
+        ])
+        expect(invalidateSpy).not.toHaveBeenCalled()
+    })
+
     describe('surgical per-page invalidation for stale tickets', () => {
         it('should call invalidateQueries with refetchPage when a ticket is stale', async () => {
             const queryClient = createQueryClient()
@@ -207,6 +257,11 @@ describe('useRefreshStaleTickets', () => {
                             {
                                 id: 1,
                                 updated_datetime: NEW_DATETIME,
+                                customer: {},
+                            },
+                            {
+                                id: 2,
+                                updated_datetime: OLD_DATETIME,
                                 customer: {},
                             },
                         ],
@@ -248,6 +303,11 @@ describe('useRefreshStaleTickets', () => {
                                 updated_datetime: NEW_DATETIME,
                                 customer: {},
                             },
+                            {
+                                id: 2,
+                                updated_datetime: OLD_DATETIME,
+                                customer: {},
+                            },
                         ],
                         meta: {},
                     }),
@@ -281,8 +341,8 @@ describe('useRefreshStaleTickets', () => {
         })
     })
 
-    describe('full invalidation for structural changes', () => {
-        it('should do a full invalidate when a new ticket enters the view', async () => {
+    describe('structural changes', () => {
+        it('should not invalidate the list when a new ticket enters the view', async () => {
             const queryClient = createQueryClient()
             seedViewListCache(queryClient, [mockTicket1])
 
@@ -305,14 +365,16 @@ describe('useRefreshStaleTickets', () => {
 
             renderHook(queryClient)
 
-            await waitFor(() => {
-                expect(invalidateSpy).toHaveBeenCalledWith({
+            await act(async () => {})
+
+            expect(invalidateSpy).not.toHaveBeenCalledWith(
+                expect.objectContaining({
                     queryKey: queryKeys.views.listViewItems(viewId, undefined),
-                })
-            })
+                }),
+            )
         })
 
-        it('should do a full invalidate when a cached ticket has left the view', async () => {
+        it('should remove a cached ticket that has left the view', async () => {
             const ticket1 = mockTicket({
                 id: 1,
                 updated_datetime: NEW_DATETIME,
@@ -324,8 +386,6 @@ describe('useRefreshStaleTickets', () => {
             const queryClient = createQueryClient()
             seedViewListCache(queryClient, [ticket1, ticket2])
 
-            // ticket2 is absent from updates but its timestamp is >= the oldest
-            // timestamp returned, so it should have appeared — it left the view
             server.use(
                 mockListViewItemsUpdatesHandler(async () =>
                     HttpResponse.json({
@@ -346,10 +406,185 @@ describe('useRefreshStaleTickets', () => {
             renderHook(queryClient)
 
             await waitFor(() => {
-                expect(invalidateSpy).toHaveBeenCalledWith({
-                    queryKey: queryKeys.views.listViewItems(viewId, undefined),
-                })
+                const listCache = queryClient.getQueryData<
+                    InfiniteData<{ data: Ticket[]; meta: object }>
+                >(queryKeys.views.listViewItems(viewId, undefined))
+
+                expect(
+                    listCache?.pages[0].data.map((ticket) => ticket.id),
+                ).toEqual([1])
             })
+
+            expect(invalidateSpy).not.toHaveBeenCalledWith(
+                expect.objectContaining({
+                    queryKey: queryKeys.views.listViewItems(viewId, undefined),
+                }),
+            )
+        })
+
+        it('should remove a cached ticket when the updates cursor matches the loaded window', async () => {
+            const queryClient = createQueryClient()
+            seedViewListCache(
+                queryClient,
+                [mockTicket1, mockTicket2],
+                '/api/views/123/items/?cursor=stable-cursor',
+            )
+
+            server.use(
+                mockListViewItemsUpdatesHandler(async () =>
+                    HttpResponse.json({
+                        data: [makeUpdateItem(mockTicket1)],
+                        meta: {},
+                    }),
+                ).handler,
+            )
+
+            renderHookPrimitive(
+                () =>
+                    useRefreshStaleTickets({
+                        viewId,
+                        params: undefined,
+                        upToCursor: 'stable-cursor',
+                        enabled: true,
+                    }),
+                { wrapper: makeWrapper(queryClient) },
+            )
+
+            await waitFor(() => {
+                const listCache = queryClient.getQueryData<
+                    InfiniteData<{ data: Ticket[]; meta: object }>
+                >(queryKeys.views.listViewItems(viewId, undefined))
+
+                expect(
+                    listCache?.pages[0].data.map((ticket) => ticket.id),
+                ).toEqual([1])
+            })
+        })
+
+        it('should remove an older cached ticket that has left the view', async () => {
+            const ticket1 = mockTicket({
+                id: 1,
+                updated_datetime: OLD_DATETIME,
+            })
+            const ticket2 = mockTicket({
+                id: 2,
+                updated_datetime: NEW_DATETIME,
+            })
+            const queryClient = createQueryClient()
+            seedViewListCache(queryClient, [ticket1, ticket2])
+
+            server.use(
+                mockListViewItemsUpdatesHandler(async () =>
+                    HttpResponse.json({
+                        data: [
+                            {
+                                id: 2,
+                                updated_datetime: NEW_DATETIME,
+                                customer: {},
+                            },
+                        ],
+                        meta: {},
+                    }),
+                ).handler,
+            )
+
+            const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries')
+
+            renderHook(queryClient)
+
+            await waitFor(() => {
+                const listCache = queryClient.getQueryData<
+                    InfiniteData<{ data: Ticket[]; meta: object }>
+                >(queryKeys.views.listViewItems(viewId, undefined))
+
+                expect(
+                    listCache?.pages[0].data.map((ticket) => ticket.id),
+                ).toEqual([2])
+            })
+
+            expect(invalidateSpy).not.toHaveBeenCalledWith(
+                expect.objectContaining({
+                    queryKey: queryKeys.views.listViewItems(viewId, undefined),
+                }),
+            )
+        })
+
+        it('should remove all cached tickets when the covered updates window is empty', async () => {
+            const queryClient = createQueryClient()
+            seedViewListCache(queryClient, [mockTicket1, mockTicket2])
+
+            server.use(
+                mockListViewItemsUpdatesHandler(async () =>
+                    HttpResponse.json({
+                        data: [],
+                        meta: {},
+                    }),
+                ).handler,
+            )
+
+            renderHook(queryClient)
+
+            await waitFor(() => {
+                const listCache = queryClient.getQueryData<
+                    InfiniteData<{ data: Ticket[]; meta: object }>
+                >(queryKeys.views.listViewItems(viewId, undefined))
+
+                expect(listCache?.pages[0].data).toEqual([])
+            })
+        })
+
+        it('should skip removals when the cached window cursor no longer matches the updates request', async () => {
+            const queryClient = createQueryClient()
+            seedViewListCache(
+                queryClient,
+                [mockTicket1, mockTicket2],
+                '/api/views/123/items/?cursor=newer-cursor',
+            )
+
+            server.use(
+                mockListViewItemsUpdatesHandler(async () =>
+                    HttpResponse.json({
+                        data: [
+                            {
+                                id: 1,
+                                updated_datetime: NEW_DATETIME,
+                                customer: {},
+                            },
+                        ],
+                        meta: {},
+                    }),
+                ).handler,
+            )
+
+            renderHookPrimitive(
+                () =>
+                    useRefreshStaleTickets({
+                        viewId,
+                        params: undefined,
+                        upToCursor: 'older-cursor',
+                        enabled: true,
+                    }),
+                { wrapper: makeWrapper(queryClient) },
+            )
+
+            await waitFor(() => {
+                expect(
+                    queryClient.getQueryState(
+                        queryKeys.views.listViewItemsUpdates(viewId, {
+                            order_by: undefined,
+                            up_to_cursor: 'older-cursor',
+                        }),
+                    )?.status,
+                ).toBe('success')
+            })
+
+            const listCache = queryClient.getQueryData<
+                InfiniteData<{ data: Ticket[]; meta: object }>
+            >(queryKeys.views.listViewItems(viewId, undefined))
+
+            expect(listCache?.pages[0].data.map((ticket) => ticket.id)).toEqual(
+                [1, 2],
+            )
         })
 
         it('should skip removal detection when cache exceeds the API result limit', async () => {

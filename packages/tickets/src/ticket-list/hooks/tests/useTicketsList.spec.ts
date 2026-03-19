@@ -43,11 +43,52 @@ const mockListViewItemsPage2 = mockListViewItemsHandler(async () =>
     } as any),
 )
 
-const mockListViewItemsUpdatesNoOp = mockListViewItemsUpdatesHandler(async () =>
-    HttpResponse.json({
-        data: [],
-        meta: {},
-    }),
+const mockListViewItemsUpdatesNoOp = mockListViewItemsUpdatesHandler(
+    async ({ request }) => {
+        const url = new URL(request.url)
+        const upToCursor = url.searchParams.get('up_to_cursor')
+
+        const data =
+            upToCursor === 'next-cursor'
+                ? [
+                      {
+                          id: mockTicket1.id,
+                          updated_datetime: mockTicket1.updated_datetime,
+                          customer: {},
+                      },
+                      {
+                          id: mockTicket2.id,
+                          updated_datetime: mockTicket2.updated_datetime,
+                          customer: {},
+                      },
+                  ]
+                : [
+                      {
+                          id: mockTicket1.id,
+                          updated_datetime: mockTicket1.updated_datetime,
+                          customer: {},
+                      },
+                      {
+                          id: mockTicket2.id,
+                          updated_datetime: mockTicket2.updated_datetime,
+                          customer: {},
+                      },
+                      {
+                          id: mockTicket3.id,
+                          updated_datetime: mockTicket3.updated_datetime,
+                          customer: {},
+                      },
+                  ]
+
+        return HttpResponse.json({
+            data,
+            meta: {
+                current_cursor: upToCursor ?? undefined,
+                next_items: undefined,
+                prev_items: undefined,
+            },
+        })
+    },
 )
 
 const server = setupServer()
@@ -120,6 +161,24 @@ describe('useTicketsList', () => {
 
         expect(result.current.tickets[2]).toEqual(mockTicket3)
         expect(result.current.hasNextPage).toBe(false)
+    })
+
+    it('should keep all loaded tickets when updates returns the full authoritative window after fetching the next page', async () => {
+        const { result } = renderHook(() => useTicketsList(viewId))
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        server.use(mockListViewItemsPage2.handler)
+
+        result.current.fetchNextPage()
+
+        await waitFor(() => {
+            expect(result.current.tickets.map((ticket) => ticket.id)).toEqual([
+                1, 2, 3,
+            ])
+        })
     })
 
     it('should extract cursor from next_items URL', async () => {

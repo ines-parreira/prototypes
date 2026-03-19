@@ -8,6 +8,7 @@ import type { Ticket } from '@gorgias/helpdesk-queries'
 import { queryKeys, useListViewItemsUpdates } from '@gorgias/helpdesk-queries'
 import type { ListViewItemsUpdates200DataItem } from '@gorgias/helpdesk-types'
 
+import { getNextCursorFromMeta } from '../utils/cursors'
 import type { UseTicketsListParams } from './useTicketsList'
 
 // ES (Elasticsearch) hard limit on results returned per request
@@ -21,7 +22,7 @@ type Props = {
 }
 
 type DiffResult = {
-    needsFullRefetch: boolean
+    removedIds: Set<number>
     staleIds: Set<number>
 }
 
@@ -38,7 +39,10 @@ function invalidateTicketCaches(
 }
 
 function buildCachedTimestamps(
-    cached: InfiniteData<{ data: Ticket[] }>,
+    cached: InfiniteData<{
+        data: Ticket[]
+        meta?: { next_items?: string | null }
+    }>,
 ): Map<number, string | null> {
     return new Map(
         cached.pages
@@ -47,29 +51,60 @@ function buildCachedTimestamps(
     )
 }
 
+function getCachedUpToCursor(
+    cached: InfiniteData<{
+        data: Ticket[]
+        meta?: { next_items?: string | null }
+    }>,
+) {
+    const lastPage = cached.pages[cached.pages.length - 1]
+    return getNextCursorFromMeta(lastPage?.meta)
+}
+
+function removeTicketsFromListCache(
+    queryClient: ReturnType<typeof useQueryClient>,
+    queryKey: ReturnType<typeof queryKeys.views.listViewItems>,
+    ticketIds: Set<number>,
+) {
+    if (ticketIds.size === 0) return
+
+    queryClient.setQueryData<InfiniteData<{ data: Ticket[] }>>(
+        queryKey,
+        (old) => {
+            if (!old?.pages) return old
+
+            let didChange = false
+            const pages = old.pages.map((page) => {
+                const data = page.data.filter(
+                    (ticket) => !ticketIds.has(ticket.id),
+                )
+                if (data.length === page.data.length) return page
+
+                didChange = true
+                return { ...page, data }
+            })
+
+            return didChange ? { ...old, pages } : old
+        },
+    )
+}
+
 function diffUpdatesAgainstCache(
     updates: ListViewItemsUpdates200DataItem[],
     cachedUpdatedAt: Map<number, string | null>,
 ): DiffResult {
     const updateIds = new Set<number>()
+    const removedIds = new Set<number>()
     const staleIds = new Set<number>()
-    let minUpdateTime = Infinity
-    let needsFullRefetch = false
 
     for (const update of updates) {
         if (update.id === undefined) continue
 
         updateIds.add(update.id)
 
-        if (update.updated_datetime != null) {
-            const t = new Date(update.updated_datetime).getTime()
-            if (t < minUpdateTime) minUpdateTime = t
-        }
-
         const cachedTime = cachedUpdatedAt.get(update.id)
-        if (cachedTime == null) {
-            needsFullRefetch = true
-        } else if (
+        if (
+            cachedTime != null &&
             update.updated_datetime != null &&
             new Date(update.updated_datetime).getTime() >
                 new Date(cachedTime).getTime()
@@ -78,19 +113,18 @@ function diffUpdatesAgainstCache(
         }
     }
 
-    // When the cache is within the API result limit, the response covers the
-    // full window. Any cached ticket newer than the oldest update that's absent
-    // from the response has left the view.
-    if (!needsFullRefetch && cachedUpdatedAt.size <= MAX_API_RESULTS) {
-        needsFullRefetch = [...cachedUpdatedAt.entries()].some(
-            ([id, updatedAt]) =>
-                !updateIds.has(id) &&
-                updatedAt != null &&
-                new Date(updatedAt).getTime() >= minUpdateTime,
-        )
+    if (cachedUpdatedAt.size <= MAX_API_RESULTS) {
+        for (const cachedId of cachedUpdatedAt.keys()) {
+            if (!updateIds.has(cachedId)) {
+                removedIds.add(cachedId)
+            }
+        }
     }
 
-    return { needsFullRefetch, staleIds }
+    return {
+        removedIds,
+        staleIds,
+    }
 }
 
 export function useRefreshStaleTickets({
@@ -120,23 +154,30 @@ export function useRefreshStaleTickets({
     )
 
     useEffect(() => {
-        if (!updates?.length) return
+        if (!updates) return
 
         const cached = queryClient.getQueryData<
-            InfiniteData<{ data: Ticket[] }>
+            InfiniteData<{
+                data: Ticket[]
+                meta?: { next_items?: string | null }
+            }>
         >(queryKeys.views.listViewItems(viewId, params))
         if (!cached) return
 
         const cachedUpdatedAt = buildCachedTimestamps(cached)
-        const { needsFullRefetch, staleIds } = diffUpdatesAgainstCache(
+        const cachedUpToCursor = getCachedUpToCursor(cached)
+        const canApplyRemovals = cachedUpToCursor === upToCursor
+        const { removedIds, staleIds } = diffUpdatesAgainstCache(
             updates,
             cachedUpdatedAt,
         )
 
-        if (needsFullRefetch) {
-            void queryClient.invalidateQueries({
-                queryKey: queryKeys.views.listViewItems(viewId, params),
-            })
+        if (canApplyRemovals && removedIds.size > 0) {
+            removeTicketsFromListCache(
+                queryClient,
+                queryKeys.views.listViewItems(viewId, params),
+                removedIds,
+            )
             invalidateTicketCaches(
                 queryClient,
                 updates.flatMap((update) =>
@@ -154,5 +195,5 @@ export function useRefreshStaleTickets({
             })
             invalidateTicketCaches(queryClient, staleIds)
         }
-    }, [updates, queryClient, viewId, params])
+    }, [updates, queryClient, viewId, params, upToCursor])
 }
