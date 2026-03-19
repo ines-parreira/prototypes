@@ -5,6 +5,7 @@ import { render } from '@testing-library/react'
 
 import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type {
     ChartConfig,
     DashboardChartProps,
@@ -40,6 +41,14 @@ import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOvervie
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
+
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        AiAgentAnalyticsDashboardsDrillDown:
+            'ai-agent-analytics-dashboards-drilldown',
+    },
+    useFlag: jest.fn().mockReturnValue(true),
+}))
 
 jest.mock('domains/reporting/hooks/drill-down/useDrillDownModalTrigger')
 const mockUseDrillDownModalTrigger = assumeMock(useDrillDownModalTrigger)
@@ -289,6 +298,11 @@ describe('Analytics Dynamic Trend Cards', () => {
             name: 'AnalyticsAiAgentSuccessRateSalesCard',
             Component: AnalyticsAiAgentSuccessRateSalesCard,
             hasDrillDown: true,
+            drillDownParams: {
+                metricName:
+                    AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard,
+                title: 'Success rate',
+            },
             config: {
                 label: 'Success rate',
                 description:
@@ -496,51 +510,93 @@ describe('Analytics Dynamic Trend Cards', () => {
         mockUseDrillDownModalTrigger.mockReturnValue(mockDrillDownReturn)
     })
 
-    describe.each(testCases)('$name', ({ Component, config, hasDrillDown }) => {
-        const chartConfig = createChartConfig({
-            Component,
-            label: config.label,
-            description: config.description,
-            metricFormat: config.metricFormat,
-        })
+    describe.each(testCases)(
+        '$name',
+        ({ Component, config, hasDrillDown, drillDownParams }) => {
+            const chartConfig = createChartConfig({
+                Component,
+                label: config.label,
+                description: config.description,
+                metricFormat: config.metricFormat,
+            })
 
-        const trendCardProps = createTrendCardProps({
-            label: config.label,
-            value: config.value,
-            prevValue: config.prevValue,
-            description: config.description,
-            metricFormat: config.metricFormat,
-        })
+            const trendCardProps = createTrendCardProps({
+                label: config.label,
+                value: config.value,
+                prevValue: config.prevValue,
+                description: config.description,
+                metricFormat: config.metricFormat,
+            })
 
-        beforeEach(() => {
-            mockUseReportingTrendCardProps.mockReturnValue(trendCardProps)
-        })
+            beforeEach(() => {
+                mockUseReportingTrendCardProps.mockReturnValue(trendCardProps)
+            })
 
-        it('should call useReportingTrendCardProps with correct arguments', () => {
+            it('should call useReportingTrendCardProps with correct arguments', () => {
+                render(
+                    <Component
+                        chartConfig={chartConfig}
+                        chartId="test-chart-id"
+                        dashboard={mockDashboard}
+                    />,
+                )
+
+                expect(mockUseReportingTrendCardProps).toHaveBeenCalledWith({
+                    chartConfig,
+                    chartId: 'test-chart-id',
+                    dashboard: mockDashboard,
+                    useTrend: expect.any(Function),
+                    isAiAgentTrendCard: true,
+                })
+            })
+
+            it('should pass useReportingTrendCardProps result to TrendCard', () => {
+                render(<Component chartConfig={chartConfig} />)
+
+                const expectedProps = hasDrillDown
+                    ? { ...trendCardProps, drillDown: mockDrillDownReturn }
+                    : trendCardProps
+                expect(mockTrendCard).toHaveBeenCalledWith(expectedProps, {})
+
+                if (drillDownParams) {
+                    expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith(
+                        drillDownParams,
+                    )
+                }
+            })
+        },
+    )
+
+    describe('AnalyticsAiAgentSuccessRateSalesCard drillDown guard', () => {
+        it('should not enable drillDown when trend data is undefined', () => {
+            mockUseReportingTrendCardProps.mockReturnValue({
+                isLoading: false,
+                metricFormat: 'decimal-to-percent' as const,
+                interpretAs: 'more-is-better' as const,
+                trendBadgeTooltipData: { period: 'Test Period' },
+                withBorder: true,
+                withFixedWidth: false,
+                hint: { title: 'Success rate', caption: '' },
+                actionMenu: undefined,
+                trend: undefined,
+            } as any)
+
             render(
-                <Component
-                    chartConfig={chartConfig}
-                    chartId="test-chart-id"
-                    dashboard={mockDashboard}
+                <AnalyticsAiAgentSuccessRateSalesCard
+                    chartConfig={createChartConfig({
+                        Component: AnalyticsAiAgentSuccessRateSalesCard,
+                        label: 'Success rate',
+                        description:
+                            'The percentage of interactions handled by the AI Agent that are fully resolved without any human escalation.',
+                        metricFormat: 'decimal-to-percent',
+                    })}
                 />,
             )
 
-            expect(mockUseReportingTrendCardProps).toHaveBeenCalledWith({
-                chartConfig,
-                chartId: 'test-chart-id',
-                dashboard: mockDashboard,
-                useTrend: expect.any(Function),
-                isAiAgentTrendCard: true,
-            })
-        })
-
-        it('should pass useReportingTrendCardProps result to TrendCard', () => {
-            render(<Component chartConfig={chartConfig} />)
-
-            const expectedProps = hasDrillDown
-                ? { ...trendCardProps, drillDown: mockDrillDownReturn }
-                : trendCardProps
-            expect(mockTrendCard).toHaveBeenCalledWith(expectedProps, {})
+            expect(mockTrendCard).toHaveBeenCalledWith(
+                expect.objectContaining({ drillDown: undefined }),
+                {},
+            )
         })
     })
 })

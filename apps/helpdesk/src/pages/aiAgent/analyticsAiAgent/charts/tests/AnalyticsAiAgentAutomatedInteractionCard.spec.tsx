@@ -1,23 +1,34 @@
-import { assumeMock } from '@repo/testing'
-import type { UseQueryResult } from '@tanstack/react-query'
+import { useFlag } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
 
+import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { usePostReportingV2 } from 'domains/reporting/models/queries'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
+import { useAiAgentAutomatedInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
-jest.mock('domains/reporting/models/queries')
-const mockUsePostReportingV2 = assumeMock(usePostReportingV2)
-
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
-const mockUseStatsFilters = assumeMock(useStatsFilters)
+const mockUseStatsFilters = jest.mocked(useStatsFilters)
 
-jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
-const mockUseGetNewStatsFeatureFlagMigration = assumeMock(
-    useGetNewStatsFeatureFlagMigration,
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        AiAgentAnalyticsDashboardsDrillDown:
+            'ai-agent-analytics-dashboards-drilldown',
+    },
+    useFlag: jest.fn(),
+}))
+const mockUseFlag = jest.mocked(useFlag)
+
+jest.mock('domains/reporting/hooks/drill-down/useDrillDownModalTrigger')
+const mockUseDrillDownModalTrigger = jest.mocked(useDrillDownModalTrigger)
+
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric',
+)
+const mockUseAiAgentAutomatedInteractionsMetric = jest.mocked(
+    useAiAgentAutomatedInteractionsMetric,
 )
 
 describe('AnalyticsAiAgentAutomatedInteractionsCard', () => {
@@ -28,11 +39,6 @@ describe('AnalyticsAiAgentAutomatedInteractionsCard', () => {
         },
     }
 
-    const defaultReporting = {
-        isFetching: false,
-        isError: false,
-    } as UseQueryResult
-
     beforeEach(() => {
         jest.resetAllMocks()
 
@@ -42,20 +48,30 @@ describe('AnalyticsAiAgentAutomatedInteractionsCard', () => {
             userTimezone: 'UTC',
         } as any)
 
-        mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('complete')
+        mockUseAiAgentAutomatedInteractionsMetric.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                label: 'Automated interactions',
+                value: 6200,
+                prevValue: null,
+            },
+        })
 
-        mockUsePostReportingV2.mockReturnValue({
-            ...defaultReporting,
-            data: { automatedInteractions: '6200' },
-        } as UseQueryResult)
+        mockUseDrillDownModalTrigger.mockReturnValue({
+            openDrillDownModal: jest.fn(),
+            tooltipText: 'Click to view tickets',
+        })
+
+        mockUseFlag.mockReturnValue(true)
     })
 
     it('should render loading state initially', () => {
-        mockUsePostReportingV2.mockReturnValue({
+        mockUseAiAgentAutomatedInteractionsMetric.mockReturnValue({
             isFetching: true,
             isError: false,
             data: undefined,
-        } as UseQueryResult)
+        })
 
         renderWithQueryClientProvider(
             <AnalyticsAiAgentAutomatedInteractionsCard />,
@@ -90,15 +106,15 @@ describe('AnalyticsAiAgentAutomatedInteractionsCard', () => {
     })
 
     it('should display trend badge with previous value', async () => {
-        mockUsePostReportingV2
-            .mockReturnValueOnce({
-                ...defaultReporting,
-                data: { automatedInteractions: '6200' },
-            } as UseQueryResult)
-            .mockReturnValueOnce({
-                ...defaultReporting,
-                data: { automatedInteractions: '6000' },
-            } as UseQueryResult)
+        mockUseAiAgentAutomatedInteractionsMetric.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                label: 'Automated interactions',
+                value: 6200,
+                prevValue: 6000,
+            },
+        })
 
         const { container } = renderWithQueryClientProvider(
             <AnalyticsAiAgentAutomatedInteractionsCard />,
@@ -176,5 +192,68 @@ describe('AnalyticsAiAgentAutomatedInteractionsCard', () => {
             ).toBeInTheDocument()
             expect(screen.getByText('6,200')).toBeInTheDocument()
         })
+    })
+
+    it('should pass drillDown prop to TrendCard', async () => {
+        renderWithQueryClientProvider(
+            <AnalyticsAiAgentAutomatedInteractionsCard />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
+        })
+
+        expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith({
+            metricName: AiAgentDrillDownMetricName.AutomatedInteractionsCard,
+            title: 'Automated interactions',
+        })
+    })
+
+    it('should not pass drillDown to TrendCard when feature flag is disabled', async () => {
+        mockUseFlag.mockReturnValue(false)
+
+        renderWithQueryClientProvider(
+            <AnalyticsAiAgentAutomatedInteractionsCard />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
+        })
+
+        expect(mockUseDrillDownModalTrigger).toHaveBeenCalled()
+        expect(
+            screen.queryByRole('button', { name: /view tickets/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should not pass drillDown to TrendCard when metric value is 0', async () => {
+        mockUseAiAgentAutomatedInteractionsMetric.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                label: 'Automated interactions',
+                value: 0,
+                prevValue: null,
+            },
+        })
+
+        renderWithQueryClientProvider(
+            <AnalyticsAiAgentAutomatedInteractionsCard />,
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Automated interactions'),
+            ).toBeInTheDocument()
+        })
+
+        expect(mockUseDrillDownModalTrigger).toHaveBeenCalled()
+        expect(
+            screen.queryByRole('button', { name: /view tickets/i }),
+        ).not.toBeInTheDocument()
     })
 })

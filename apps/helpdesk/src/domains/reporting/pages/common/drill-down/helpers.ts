@@ -21,6 +21,11 @@ import {
     totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import {
+    allAgentsAutomatedInteractionsDrillDownQueryFactory,
+    shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
+    supportAgentAutomatedInteractionsDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
+import {
     knowledgeCSATDrillDownQueryFactory,
     knowledgeHandoverTicketsDrillDownQueryFactory,
     knowledgeTicketsDrillDownQueryFactory,
@@ -449,6 +454,12 @@ export const getDrillDownQuery = (
                     sorting,
                     metricData.productId,
                 )
+        case AiAgentDrillDownMetricName.AutomatedInteractionsCard:
+            return allAgentsAutomatedInteractionsDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.ResolvedInteractionsCard:
+            return shoppingAssistantAutomatedInteractionsDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.SupportInteractionsCard:
+            return supportAgentAutomatedInteractionsDrillDownQueryFactory
         case VoiceOfCustomerMetricWithDrillDown.IntentPerProduct: {
             const { drillDownQuery } =
                 VoiceOfCustomerMetricWithDrillDownConfig[
@@ -969,6 +980,16 @@ export const getDrillDownMetricColumn = (
         metricValueFormat =
             AiSalesAgentMetricsWithDrillDownConfig[metricData.metricName]
                 .metricFormat
+    } else if (
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AutomatedInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.ResolvedInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportInteractionsCard
+    ) {
+        metricTitle = ''
+        metricValueFormat = 'decimal'
     } else if (isAiAgentMetric(metricData)) {
         metricTitle = metricData.title || ''
         metricValueFormat = 'decimal-to-percent'

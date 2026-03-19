@@ -56,6 +56,12 @@ export const METRIC_NAMES = {
     AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS:
         'ai-agent-all-agents-automated-interactions',
     AI_AGENT_ALL_AGENTS_COVERAGE_RATE: 'ai-agent-all-agents-coverage-rate',
+    AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILLDOWN:
+        'ai-agent-automated-interactions-drill-down',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILLDOWN:
+        'ai-agent-shopping-assistant-automated-interactions-drill-down',
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_DRILLDOWN:
+        'ai-agent-support-agent-automated-interactions-drill-down',
 
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',

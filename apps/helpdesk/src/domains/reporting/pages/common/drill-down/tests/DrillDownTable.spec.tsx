@@ -19,6 +19,7 @@ import {
     TicketSLADimension,
     TicketSLAStatus,
 } from 'domains/reporting/models/cubes/sla/TicketSLACube'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import type {
@@ -980,6 +981,77 @@ describe('<DrillDownTable />', () => {
             ).toBeInTheDocument()
             expect(screen.getByText('AI Agent Bot')).toBeInTheDocument()
             expect(screen.getByText('Jane Smith')).toBeInTheDocument()
+        })
+    })
+
+    describe.each([
+        {
+            label: 'AiAgentDrillDownMetricName.AutomatedInteractionsCard',
+            metricName: AiAgentDrillDownMetricName.AutomatedInteractionsCard,
+        },
+        {
+            label: 'AiAgentDrillDownMetricName.ResolvedInteractionsCard',
+            metricName: AiAgentDrillDownMetricName.ResolvedInteractionsCard,
+        },
+        {
+            label: 'AiAgentDrillDownMetricName.SupportInteractionsCard',
+            metricName: AiAgentDrillDownMetricName.SupportInteractionsCard,
+        },
+    ])('with $label', ({ metricName }) => {
+        const metricData = {
+            metricName,
+            title: 'Automated interactions',
+        } as DrillDownMetric
+
+        const exampleRow = {
+            ticket: {
+                id: '100001',
+                subject: 'Automated ticket subject',
+                description: 'Automated ticket description',
+                channel: 'email',
+                isRead: true,
+                created: '2025-09-01T10:00:00.000Z',
+                contactReason: null,
+                status: 'closed',
+            },
+            assignee: { id: 12345, name: 'Support Agent' },
+            rowData: {
+                'AutomationDataset.ticketId': '100001',
+                'Ticket.subject': 'Automated ticket subject',
+                'Ticket.status': 'closed',
+                'Ticket.excerpt': 'Automated ticket description',
+                'Ticket.channel': 'email',
+                'Ticket.assignee_user_id': 12345,
+                'Ticket.created_datetime': '2025-09-01T10:00:00.000Z',
+                'Ticket.contact_reason': null,
+                'Ticket.is_unread': false,
+                'Ticket.custom_fields': {},
+                'Ticket.customer_name': 'Test Customer',
+            },
+            slas: {},
+            outcome: null,
+            intent: 'Returns::Refund',
+            order: {},
+            product: { titles: [], variants: [] },
+        }
+
+        it('should show Intent column and hide Contact Reason column', () => {
+            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                data: [exampleRow],
+                isFetching: false,
+            } as any)
+
+            renderTable(metricData, TicketDrillDownTableContent)
+
+            expect(screen.getByRole('table')).toBeInTheDocument()
+            expect(
+                screen.getByRole('columnheader', { name: /Intent/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('columnheader', { name: /Contact Reason/i }),
+            ).not.toBeInTheDocument()
+            // Intent cell renders, 'Returns' is the first level from 'Returns::Refund'
+            expect(screen.getByText('Returns')).toBeInTheDocument()
         })
     })
 })

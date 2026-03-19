@@ -3,6 +3,7 @@ import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 import { UserRole } from 'config/types/user'
 import type { DrillDownDataHook } from 'domains/reporting/hooks/useDrillDownData'
 import { useDrillDownQueryWithoutLimit } from 'domains/reporting/hooks/useDrillDownData'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type {
     ConvertDrillDownRowData,
     TicketDrillDownRowData,
@@ -51,7 +52,12 @@ const getTheInfoLabel = (
         return `${totalResults} ${displayType}`
     }
 
-    if (metricName === KnowledgeMetric.CSAT) {
+    if (
+        metricName === KnowledgeMetric.CSAT ||
+        Object.values(AiAgentDrillDownMetricName).includes(
+            metricName as AiAgentDrillDownMetricName,
+        )
+    ) {
         return `Displaying last ${DRILLDOWN_QUERY_LIMIT} ${objectType} used to compute the metric`
     }
 

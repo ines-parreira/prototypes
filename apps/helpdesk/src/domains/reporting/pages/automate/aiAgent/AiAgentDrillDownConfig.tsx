@@ -2,11 +2,11 @@ import {
     defaultEnrichmentFields,
     useEnrichedDrillDownData,
 } from 'domains/reporting/hooks/useDrillDownData'
-import { successRateV2DrillDownQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
 import type { DomainConfig } from 'domains/reporting/pages/common/drill-down/DrillDownTableConfig'
+import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import { LegacyTicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/LegacyTicketDrillDownTableContent'
 import { TicketDrillDownTableContent } from 'domains/reporting/pages/common/drill-down/TicketDrillDownTableContent'
 import { Domain } from 'domains/reporting/pages/common/drill-down/types'
@@ -16,7 +16,7 @@ export type AiAgentDrillDownMetrics = AiAgentDrillDownMetricName
 
 const useAiAgentTicketDrillDownHook = (metricData: DrillDownMetric) =>
     useEnrichedDrillDownData(
-        successRateV2DrillDownQueryFactory,
+        getDrillDownQuery(metricData),
         metricData,
         defaultEnrichmentFields,
         formatTicketDrillDownRowData,
@@ -31,6 +31,18 @@ export const AiAgentDrillDownConfig: DomainConfig<AiAgentDrillDownMetrics> = {
     isMetricDataDownloadable: false,
     modalTriggerTooltipText: 'Click to view tickets',
     metricsConfig: {
+        [AiAgentDrillDownMetricName.AutomatedInteractionsCard]: {
+            showMetric: false,
+            domain: Domain.AiAgent,
+        },
+        [AiAgentDrillDownMetricName.ResolvedInteractionsCard]: {
+            showMetric: false,
+            domain: Domain.AiAgent,
+        },
+        [AiAgentDrillDownMetricName.SupportInteractionsCard]: {
+            showMetric: false,
+            domain: Domain.AiAgent,
+        },
         [AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard]: {
             showMetric: false,
             domain: Domain.AiAgent,

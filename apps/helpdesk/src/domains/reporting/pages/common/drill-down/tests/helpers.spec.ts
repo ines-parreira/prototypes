@@ -26,6 +26,11 @@ import {
     totalNumberProductRecommendationsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import {
+    allAgentsAutomatedInteractionsDrillDownQueryFactory,
+    shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
+    supportAgentAutomatedInteractionsDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
+import {
     knowledgeCSATDrillDownQueryFactory,
     knowledgeHandoverTicketsDrillDownQueryFactory,
     knowledgeTicketsDrillDownQueryFactory,
@@ -237,6 +242,18 @@ jest.mock(
 )
 const returnMentionsPerProductDrillDownQueryFactoryMock = assumeMock(
     returnMentionsPerProductDrillDownQueryFactory,
+)
+
+jest.mock(
+    'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories',
+)
+const allAgentsAutomatedInteractionsDrillDownQueryFactoryMock = assumeMock(
+    allAgentsAutomatedInteractionsDrillDownQueryFactory,
+)
+const shoppingAssistantAutomatedInteractionsDrillDownQueryFactoryMock =
+    assumeMock(shoppingAssistantAutomatedInteractionsDrillDownQueryFactory)
+const supportAgentAutomatedInteractionsDrillDownQueryFactoryMock = assumeMock(
+    supportAgentAutomatedInteractionsDrillDownQueryFactory,
 )
 
 jest.mock('AIJourney/queries/aiJourneyDrillDownQueries')
@@ -1825,6 +1842,69 @@ describe('getDrillDownQuery', () => {
             456,
         )
     })
+
+    it('should be populated with automated_interactions_card', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric = {
+            metricName: AiAgentDrillDownMetricName.AutomatedInteractionsCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            allAgentsAutomatedInteractionsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
+    it('should be populated with resolved_interactions_card', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric = {
+            metricName: AiAgentDrillDownMetricName.ResolvedInteractionsCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            shoppingAssistantAutomatedInteractionsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
+    it('should be populated with support_interactions_card', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric = {
+            metricName: AiAgentDrillDownMetricName.SupportInteractionsCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            supportAgentAutomatedInteractionsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
 })
 
 describe('getDrillDownMetric', () => {
@@ -2173,6 +2253,37 @@ describe('getDrillDownMetric', () => {
                 metricTitle: '',
                 showMetric: false,
                 metricValueFormat: 'decimal-to-percent',
+            },
+        },
+        {
+            metricData: {
+                metricName:
+                    AiAgentDrillDownMetricName.AutomatedInteractionsCard,
+            },
+            expectedValues: {
+                metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName: AiAgentDrillDownMetricName.ResolvedInteractionsCard,
+            },
+            expectedValues: {
+                metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName: AiAgentDrillDownMetricName.SupportInteractionsCard,
+            },
+            expectedValues: {
+                metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal',
             },
         },
     ]

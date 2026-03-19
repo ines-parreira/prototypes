@@ -12,6 +12,7 @@ import {
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import { EnrichmentFields } from 'domains/reporting/models/types'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { AgentAvatar } from 'domains/reporting/pages/common/AgentAvatar'
 import { DrillDownTableContentSkeleton } from 'domains/reporting/pages/common/components/Table/DrillDownTableContentSkeleton'
@@ -184,6 +185,14 @@ export const LegacyTicketDrillDownTableContent = ({
         metricData.metricName ===
         AiSalesAgentChart.AiSalesAgentTotalProductRecommendations
 
+    const isAiAgentAutomatedInteractionsMetric =
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AutomatedInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.ResolvedInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportInteractionsCard
+
     const { data, isFetching } = useEnrichedDrillDownData(
         getDrillDownQuery(metricData),
         metricData,
@@ -197,7 +206,8 @@ export const LegacyTicketDrillDownTableContent = ({
         if (
             isAiInsightsMetric ||
             isAiPerformanceMetric ||
-            isAiInsightsCsatMetric
+            isAiInsightsCsatMetric ||
+            isAiAgentAutomatedInteractionsMetric
         ) {
             return 280
         }
@@ -442,6 +452,7 @@ export const LegacyTicketDrillDownTableContent = ({
                     isAiJourneyResponseRateMetric ||
                     isAiJourneyOptOutRateMetric ||
                     isAiJourneyClickThroughRateMetric ||
+                    isAiAgentAutomatedInteractionsMetric ||
                     isKnowledgeMetric
                 ) && (
                     <HeaderCellProperty
@@ -452,7 +463,9 @@ export const LegacyTicketDrillDownTableContent = ({
                     />
                 )}
 
-                {(isAiPerformanceMetric || isAiInsightsCsatMetric) && (
+                {(isAiPerformanceMetric ||
+                    isAiInsightsCsatMetric ||
+                    isAiAgentAutomatedInteractionsMetric) && (
                     <HeaderCellProperty
                         title="Intent"
                         width={columnWidths.intent}
@@ -709,6 +722,7 @@ export const LegacyTicketDrillDownTableContent = ({
                                 isAiJourneyResponseRateMetric ||
                                 isAiJourneyOptOutRateMetric ||
                                 isAiJourneyClickThroughRateMetric ||
+                                isAiAgentAutomatedInteractionsMetric ||
                                 isKnowledgeMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
@@ -739,7 +753,8 @@ export const LegacyTicketDrillDownTableContent = ({
                             )}
 
                             {(isAiPerformanceMetric ||
-                                isAiInsightsCsatMetric) && (
+                                isAiInsightsCsatMetric ||
+                                isAiAgentAutomatedInteractionsMetric) && (
                                 <BodyCell width={columnWidths.intent}>
                                     {item.intent ? (
                                         <TruncateMultilineCellContent

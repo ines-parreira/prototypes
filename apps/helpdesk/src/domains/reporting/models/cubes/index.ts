@@ -5,6 +5,7 @@ import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-s
 import type { AiSalesAgentOrderCustomersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
 import type { TicketQAScoreCubeWithJoins } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import type { AutomationBillingEventCubeWithJoins } from 'domains/reporting/models/cubes/automate/AutomationBillingEventCube'
+import type { AIAgentAutomatedInteractionsV2Cube } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import type { AIAgentAutomatedInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import type { AutomatedTicketsCube } from 'domains/reporting/models/cubes/automate_v2/AutomatedTicketsCube'
 import type { AutomationDatasetCube } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
@@ -54,6 +55,7 @@ export type Cubes =
     | AiSalesAgentOrderCustomersCube
     | ConvertTrackingEventsCube
     | AIAgentAutomatedInteractionsCube
+    | AIAgentAutomatedInteractionsV2Cube
     | SuccessRateCube
     | TicketFirstHumanAgentResponseTimeCube
     | TicketInsightsTaskCube

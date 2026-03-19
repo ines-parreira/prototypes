@@ -1,9 +1,11 @@
 import { TrendCard } from '@repo/reporting'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { useAiAgentSupportInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportInteractionsMetric'
+import { useAiAgentTrendCardDrillDown } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTrendCardDrillDown'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
 export const AnalyticsAiAgentSupportInteractionsCard = ({
@@ -14,6 +16,14 @@ export const AnalyticsAiAgentSupportInteractionsCard = ({
     const trendTooltipData = formatPreviousPeriod(cleanStatsFilters?.period)
 
     const trend = useAiAgentSupportInteractionsMetric()
+
+    const drillDown = useAiAgentTrendCardDrillDown(
+        {
+            metricName: AiAgentDrillDownMetricName.SupportInteractionsCard,
+            title: 'Automated interactions',
+        },
+        trend.data?.value,
+    )
 
     return (
         <TrendCard
@@ -29,6 +39,7 @@ export const AnalyticsAiAgentSupportInteractionsCard = ({
                 caption:
                     'The number of fully automated interactions by AI Agent Support skills without human agent intervention.',
             }}
+            drillDown={drillDown}
             actionMenu={
                 chartId ? (
                     <ChartsActionMenu

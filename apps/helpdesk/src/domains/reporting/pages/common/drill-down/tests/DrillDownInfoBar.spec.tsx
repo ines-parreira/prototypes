@@ -8,6 +8,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { UserRole } from 'config/types/user'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { DrillDownInfoBar } from 'domains/reporting/pages/common/drill-down/DrillDownInfoBar'
 import { getDrillDownConfig } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { OverviewMetric } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewConfig'
@@ -147,6 +148,27 @@ describe('<DrillDownInfoBar />', () => {
                 ),
             ).toBeInTheDocument()
         })
+
+        it.each(Object.values(AiAgentDrillDownMetricName))(
+            'should render special label for AI Agent metric %s',
+            (metric) => {
+                const aiAgentMetricData: DrillDownMetric = {
+                    metricName: metric,
+                }
+                useDrillDownDataMock.mockReturnValue({
+                    totalResults: 150,
+                    isFetching: false,
+                } as any)
+
+                renderInfoBar(aiAgentMetricData)
+
+                expect(
+                    screen.getByText(
+                        `Displaying last ${DRILLDOWN_QUERY_LIMIT} tickets used to compute the metric`,
+                    ),
+                ).toBeInTheDocument()
+            },
+        )
 
         it.each([
             [ConvertMetric.CampaignSalesCount, 'orders'],

@@ -1,10 +1,10 @@
 import { TrendCard } from '@repo/reporting'
 
-import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { useSuccessRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useSuccessRateTrend'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import { useAiAgentTrendCardDrillDown } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTrendCardDrillDown'
 
 export const AnalyticsAiAgentSuccessRateSalesCard = ({
     chartId,
@@ -19,10 +19,14 @@ export const AnalyticsAiAgentSuccessRateSalesCard = ({
         isAiAgentTrendCard: true,
     })
 
-    const drillDown = useDrillDownModalTrigger({
-        metricName: AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard,
-        title: 'Success rate',
-    })
+    const drillDown = useAiAgentTrendCardDrillDown(
+        {
+            metricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard,
+            title: 'Success rate',
+        },
+        trendCardProps.trend?.data?.value,
+    )
 
     return <TrendCard {...trendCardProps} drillDown={drillDown} />
 }
