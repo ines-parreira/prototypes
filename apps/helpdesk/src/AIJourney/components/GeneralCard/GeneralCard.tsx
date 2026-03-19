@@ -17,13 +17,11 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
 
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
     const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
-    const smsImagesEnabled = useFlag(FeatureFlagKey.AiJourneySmsImagesEnabled)
     const campaignImageEnabled = useFlag(
         FeatureFlagKey.AiJourneyCampaignImageEnabled,
     )
 
-    const shouldRenderIncludeImage =
-        !isCampaign && !isWelcome && smsImagesEnabled
+    const shouldRenderIncludeImage = !isCampaign && !isWelcome
     const shouldRenderImageUpload = isCampaign && campaignImageEnabled
 
     if (!isFormReady) {

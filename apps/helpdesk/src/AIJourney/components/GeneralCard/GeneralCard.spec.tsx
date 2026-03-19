@@ -6,7 +6,6 @@ import { GeneralCard } from './GeneralCard'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
-        AiJourneySmsImagesEnabled: 'ai_journey_sms_images_enabled',
         AiJourneyCampaignImageEnabled: 'ai_journey_campaign_image_enabled',
     },
     useFlag: jest.fn(),
@@ -100,26 +99,13 @@ describe('<GeneralCard />', () => {
         })
 
         describe('IncludeImage', () => {
-            it('renders when smsImagesEnabled flag is true and journey is not CAMPAIGN', () => {
-                mockUseFlag.mockImplementation(
-                    (key: string) => key === 'ai_journey_sms_images_enabled',
-                )
-
+            it('should render when journey is not CAMPAIGN', () => {
                 render(<GeneralCard isFormReady={true} />)
 
                 expect(screen.getByText('IncludeImage')).toBeInTheDocument()
             })
 
-            it('does not render when smsImagesEnabled flag is false', () => {
-                render(<GeneralCard isFormReady={true} />)
-
-                expect(
-                    screen.queryByText('IncludeImage'),
-                ).not.toBeInTheDocument()
-            })
-
-            it('does not render when journey type is CAMPAIGN even if smsImagesEnabled is true', () => {
-                mockUseFlag.mockReturnValue(true)
+            it('should not render when journey type is CAMPAIGN', () => {
                 mockUseJourneyContext.mockReturnValue({
                     journeyType: JOURNEY_TYPES.CAMPAIGN,
                 })
@@ -131,8 +117,7 @@ describe('<GeneralCard />', () => {
                 ).not.toBeInTheDocument()
             })
 
-            it('does not render when journey type is WELCOME even if smsImagesEnabled is true', () => {
-                mockUseFlag.mockReturnValue(true)
+            it('should not render when journey type is WELCOME', () => {
                 mockUseJourneyContext.mockReturnValue({
                     journeyType: JOURNEY_TYPES.WELCOME,
                 })
