@@ -66,7 +66,7 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     },
                 ],
                 description:
-                    'The number of interactions automated by all automation features as a % of total customer interactions.',
+                    'The number of interactions automated and billed by an automation features as a % of total billed customer interactions (automated or not).',
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',

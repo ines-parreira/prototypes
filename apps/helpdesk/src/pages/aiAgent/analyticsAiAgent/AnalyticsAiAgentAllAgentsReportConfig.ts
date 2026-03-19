@@ -76,7 +76,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
         charts: {
             [AnalyticsAiAgentAllAgentsChart.AutomationRateCard]: {
                 chartComponent: AnalyticsAiAgentAutomationRateCard,
-                label: 'Overall automation rate',
+                label: 'AI Agent automation rate',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
@@ -85,7 +85,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                     },
                 ],
                 description:
-                    'The percentage of customer interactions fully handled by the AI Agent.',
+                    'The percentage of customer interactions fully handled by AI Agent.',
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',

@@ -12,7 +12,7 @@ import type { AutomateMetricProps } from './types'
 import { getTrendProps, toPercentage } from './utils'
 
 export const AUTOMATION_RATE_TOOLTIP: TooltipData = {
-    title: 'Automated interactions as a percent of all customer interactions.',
+    title: 'The number of interactions automated and billed by an automation features as a % of total billed customer interactions (automated or not).',
     link: 'https://link.gorgias.com/mnp',
     linkText: 'How is it calculated?',
 }
