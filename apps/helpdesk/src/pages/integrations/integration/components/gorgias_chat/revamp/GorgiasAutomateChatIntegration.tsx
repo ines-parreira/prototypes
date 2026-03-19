@@ -1,8 +1,11 @@
 import type { Map } from 'immutable'
 
+import { AutomateFeatures } from 'pages/automate/common/types'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout'
+import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import { ArticleRecommendationCard } from './components/ArticleRecommendationCard/ArticleRecommendationCard'
+import { ConnectedChannelsEmptyView } from './components/ConnectedChannelsEmptyView/ConnectedChannelsEmptyView'
 import { OrderManagementCard } from './components/OrderManagementCard/OrderManagementCard'
 import { useArticleRecommendation } from './hooks/useArticleRecommendation'
 import { useOrderManagement } from './hooks/useOrderManagement'
@@ -16,6 +19,8 @@ type Props = {
 export const GorgiasAutomateChatIntegrationRevamp = ({
     integration,
 }: Props) => {
+    const { isConnected } = useStoreIntegration(integration)
+
     const {
         enabledInSettings: articleRecommendationEnabledInSettings,
         isArticleRecommendationEnabled,
@@ -34,6 +39,16 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
         orderManagementUrl,
         handleToggle: handleOrderManagementToggle,
     } = useOrderManagement({ integration })
+
+    if (!isConnected) {
+        return (
+            <GorgiasChatRevampLayout integration={integration}>
+                <ConnectedChannelsEmptyView
+                    view={AutomateFeatures.AutomateChat}
+                />
+            </GorgiasChatRevampLayout>
+        )
+    }
 
     return (
         <GorgiasChatRevampLayout integration={integration}>
