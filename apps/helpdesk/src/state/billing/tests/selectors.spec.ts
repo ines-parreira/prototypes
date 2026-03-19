@@ -67,15 +67,6 @@ describe('billing selectors', () => {
         expect(selectors.getBillingState(state)).toEqual(state.billing.toJS())
     })
 
-    it('getCurrentUsage', () => {
-        expect(selectors.getCurrentUsage({} as RootState)).toEqualImmutable(
-            fromJS({}),
-        )
-        expect(selectors.getCurrentUsage(state)).toEqualImmutable(
-            state.billing.get('currentUsage'),
-        )
-    })
-
     it('getCurrentProductUsage', () => {
         expect(selectors.getCurrentProductsUsage({} as RootState)).toEqual(
             undefined,
