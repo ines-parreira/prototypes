@@ -69,10 +69,6 @@ export function TicketTable({ viewId, currentUserId, onFixFilters }: Props) {
         emptyStateVariant !== 'invalidFilters',
     )
 
-    const ticketIds = useMemo(() => tickets.map((t) => t.id), [tickets])
-    const { translationMap } = useTicketsTranslatedProperties({
-        ticket_ids: ticketIds,
-    })
     const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
     const dateTimePreferences = useUserDateTimePreferences()
 
@@ -105,6 +101,9 @@ export function TicketTable({ viewId, currentUserId, onFixFilters }: Props) {
             ),
         [tickets, currentPageIndex, pageSize],
     )
+    const { translationMap } = useTicketsTranslatedProperties({
+        ticket_ids: displayedTickets.map((ticket) => ticket.id),
+    })
 
     const handlePageChange = useCallback(
         (direction: 'next' | 'previous') => {

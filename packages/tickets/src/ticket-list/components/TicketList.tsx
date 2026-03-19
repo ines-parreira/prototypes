@@ -1,6 +1,6 @@
 import { forwardRef, useCallback, useEffect, useMemo, useState } from 'react'
 
-import { usePrevious } from '@repo/hooks'
+import { useDebouncedValue, usePrevious } from '@repo/hooks'
 import { Virtuoso } from 'react-virtuoso'
 import type { Components } from 'react-virtuoso'
 
@@ -100,6 +100,8 @@ const virtuosoComponents = {
     Item,
 } as unknown as Components<TicketCompact, ListContext>
 
+const TRANSLATION_VISIBLE_TICKETS_DEBOUNCE_MS = 200
+
 function itemContent(
     _index: number,
     ticket: TicketCompact,
@@ -152,6 +154,11 @@ export function TicketList({
           : 'default'
 
     const [pauseUpdates, setPauseUpdates] = useState(false)
+    const [visibleTicketIds, setVisibleTicketIds] = useState<number[]>([])
+    const debouncedVisibleTicketIds = useDebouncedValue(
+        visibleTicketIds,
+        TRANSLATION_VISIBLE_TICKETS_DEBOUNCE_MS,
+    )
 
     const ticketsListParams = useMemo(
         () => ({ order_by: sortOrder }),
@@ -217,9 +224,12 @@ export function TicketList({
         }
     }, [activeTicketId, previousActiveTicketInListId, tickets, markAsRead])
 
-    const ticketIds = useMemo(() => tickets.map((t) => t.id), [tickets])
+    const loadedTicketIds = useMemo(
+        () => tickets.map((ticket) => ticket.id),
+        [tickets],
+    )
     const { translationMap } = useTicketsTranslatedProperties({
-        ticket_ids: ticketIds,
+        ticket_ids: debouncedVisibleTicketIds,
     })
     const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
 
@@ -260,6 +270,7 @@ export function TicketList({
                 range.startIndex,
                 range.endIndex + 1,
             )
+            setVisibleTicketIds(visibleTickets.map((ticket) => ticket.id))
             viewVisibleTickets(visibleTickets)
 
             if (
@@ -312,7 +323,7 @@ export function TicketList({
             <TicketListActions
                 viewId={viewId}
                 selectedTicketIds={selectedTicketIds}
-                visibleTicketIds={ticketIds}
+                visibleTicketIds={loadedTicketIds}
                 hasSelectedAll={hasSelectedAll}
                 selectionCount={selectionCount}
                 onSelectAll={onSelectAll}

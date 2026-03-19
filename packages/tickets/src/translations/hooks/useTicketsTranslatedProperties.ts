@@ -22,6 +22,7 @@ type TicketPropertiesTranslationsParams = {
 }
 
 type TranslationMap = Record<number, TicketTranslationCompact>
+const MAX_TICKET_TRANSLATION_IDS = 100
 
 export function useTicketsTranslatedProperties({
     ticket_ids = [],
@@ -39,7 +40,11 @@ export function useTicketsTranslatedProperties({
          * This is needed since the component where the useTicketsTranslatedProperties hook is used
          * don't always have ticket_ids (Ticket header in the new ticket page for example)
          */
-        () => ticket_ids.filter(isNumber).sort((a, b) => a - b),
+        () =>
+            ticket_ids
+                .filter(isNumber)
+                .sort((a, b) => a - b)
+                .slice(0, MAX_TICKET_TRANSLATION_IDS),
         [ticket_ids],
     )
 
@@ -58,6 +63,7 @@ export function useTicketsTranslatedProperties({
             query: {
                 refetchOnWindowFocus: false,
                 enabled: isQueryEnabled,
+                keepPreviousData: true,
             },
         },
     )
@@ -131,8 +137,35 @@ export function useTicketsTranslatedProperties({
     )
 
     const translationMap = useMemo(() => {
-        if (!translations || !translations.data) {
-            return {}
+        const requestedTicketIds = new Set(stableTicketIds)
+        const queryCache = queryClient.getQueryCache()
+        const cachedQueries = queryCache.findAll({
+            queryKey: KeyPrefixes.ticketTranslations,
+        })
+
+        const cachedTranslationMap = cachedQueries.reduce<TranslationMap>(
+            (acc, query) => {
+                const cachedData = query.state.data as
+                    | HttpResponse<ListTicketTranslations200>
+                    | undefined
+
+                if (!cachedData?.data?.data) {
+                    return acc
+                }
+
+                for (const ticketTranslation of cachedData.data.data) {
+                    if (requestedTicketIds.has(ticketTranslation.ticket_id)) {
+                        acc[ticketTranslation.ticket_id] = ticketTranslation
+                    }
+                }
+
+                return acc
+            },
+            {},
+        )
+
+        if (!translations?.data?.data) {
+            return cachedTranslationMap
         }
 
         return translations.data.data.reduce<TranslationMap>(
@@ -140,9 +173,9 @@ export function useTicketsTranslatedProperties({
                 acc[ticketTranslation.ticket_id] = ticketTranslation
                 return acc
             },
-            {},
+            cachedTranslationMap,
         )
-    }, [translations])
+    }, [queryClient, stableTicketIds, translations])
 
     if (!hasMessagesTranslations) {
         return {

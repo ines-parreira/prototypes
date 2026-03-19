@@ -14,6 +14,7 @@ import {
     mockListViewItemsHandler,
     mockListViewItemsUpdatesHandler,
     mockTicket,
+    mockTicketCompact,
     mockUpdateTicketHandler,
 } from '@gorgias/helpdesk-mocks'
 
@@ -143,6 +144,51 @@ describe('TicketList', () => {
 
         expect(allFirstTickets).toHaveLength(1)
         expect(allSecondTickets).toHaveLength(1)
+    })
+
+    it('should request translations only for visible tickets', async () => {
+        const manyTickets = Array.from({ length: 150 }, (_, index) =>
+            mockTicketCompact({
+                id: index + 1,
+                subject: `Ticket ${index + 1}`,
+            }),
+        )
+        const useTicketsTranslatedPropertiesSpy = vi.spyOn(
+            useTicketsTranslatedPropertiesModule,
+            'useTicketsTranslatedProperties',
+        )
+
+        vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
+            tickets: manyTickets,
+            fetchNextPage: vi.fn(),
+            hasNextPage: false,
+            isLoading: false,
+            isFetching: false,
+            isFetchingNextPage: false,
+            error: null,
+            data: undefined,
+            refetch: vi.fn(),
+        })
+
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
+
+        await waitFor(() => {
+            const lastCall = useTicketsTranslatedPropertiesSpy.mock.calls.at(-1)
+            expect(lastCall).toBeDefined()
+
+            const [{ ticket_ids: visibleTicketIds }] = lastCall as [
+                { ticket_ids: number[] },
+            ]
+
+            expect(visibleTicketIds.length).toBeGreaterThan(0)
+            expect(visibleTicketIds.length).toBeLessThan(manyTickets.length)
+            expect(visibleTicketIds).toEqual(
+                Array.from(
+                    { length: visibleTicketIds.length },
+                    (_, index) => index + 1,
+                ),
+            )
+        })
     })
 
     it('should render network error state when the tickets request fails', async () => {

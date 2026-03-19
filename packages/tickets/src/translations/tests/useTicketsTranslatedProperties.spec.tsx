@@ -12,8 +12,10 @@ import {
     mockTicketTranslationCompact,
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
+import type { ListTicketTranslations200 } from '@gorgias/helpdesk-types'
 
 import { testAppQueryClient } from '../../tests/render.utils'
+import { KeyPrefixes } from '../hooks/constants'
 import type { CurrentUser } from '../hooks/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../hooks/useTicketsTranslatedProperties'
 
@@ -97,6 +99,19 @@ const defaultHandlers = [
 const wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
+
+const createTicketTranslationsQueryKey = (
+    ticketIds: number[],
+    language: Language = Language.En,
+) => [
+    ...KeyPrefixes.ticketTranslations,
+    {
+        queryParams: {
+            language,
+            ticket_ids: ticketIds,
+        },
+    },
+]
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -696,6 +711,98 @@ describe('useTicketsTranslatedProperties', () => {
                 })
             })
 
+            it('should return cached translations when the query is disabled', async () => {
+                const cachedTranslation = mockTicketTranslationCompact({
+                    ticket_id: 123,
+                    subject: 'Cached subject',
+                    excerpt: 'Cached excerpt',
+                })
+
+                queryClient.setQueryData(
+                    createTicketTranslationsQueryKey([123]),
+                    {
+                        data: {
+                            data: [cachedTranslation],
+                        },
+                    } as unknown as HttpResponse<ListTicketTranslations200>,
+                )
+
+                const { result } = renderHook(
+                    () =>
+                        useTicketsTranslatedProperties({
+                            ticket_ids: [123],
+                            ticketsRequiresTranslations: false,
+                        }),
+                    { wrapper },
+                )
+
+                await waitFor(() => {
+                    expect(result.current.translationMap).toEqual({
+                        123: cachedTranslation,
+                    })
+                })
+            })
+
+            it('should keep cached translations visible while a new request is loading', async () => {
+                const cachedTranslation = mockTicketTranslationCompact({
+                    ticket_id: 123,
+                    subject: 'Cached subject',
+                    excerpt: 'Cached excerpt',
+                })
+                const freshTranslation = mockTicketTranslationCompact({
+                    ticket_id: 123,
+                    subject: 'Fresh subject',
+                    excerpt: 'Fresh excerpt',
+                })
+
+                queryClient.setQueryData(
+                    createTicketTranslationsQueryKey([123]),
+                    {
+                        data: {
+                            data: [cachedTranslation],
+                        },
+                    } as unknown as HttpResponse<ListTicketTranslations200>,
+                )
+
+                let resolveRequest: (() => void) | undefined
+                const pendingRequest = new Promise<void>((resolve) => {
+                    resolveRequest = resolve
+                })
+
+                const { handler } = mockListTicketTranslationsHandler(
+                    async ({ data }) => {
+                        await pendingRequest
+
+                        return HttpResponse.json({
+                            ...data,
+                            data: [freshTranslation],
+                        })
+                    },
+                )
+                server.use(handler)
+
+                const { result } = renderHook(
+                    () => useTicketsTranslatedProperties({ ticket_ids: [123] }),
+                    { wrapper },
+                )
+
+                await waitFor(() => {
+                    expect(result.current.translationMap).toEqual({
+                        123: cachedTranslation,
+                    })
+                })
+
+                act(() => {
+                    resolveRequest?.()
+                })
+
+                await waitFor(() => {
+                    expect(result.current.translationMap).toEqual({
+                        123: freshTranslation,
+                    })
+                })
+            })
+
             it('should handle mixed ticket ID types (numbers and undefined)', async () => {
                 const mockTranslation = mockTicketTranslationCompact({
                     ticket_id: 123,
@@ -958,6 +1065,41 @@ describe('useTicketsTranslatedProperties', () => {
                     const url = new URL(request.url)
                     const ticketIds = url.searchParams.getAll('ticket_ids')
                     expect(ticketIds).toEqual(['123', '123', '123'])
+                })
+            })
+
+            it('should limit ticket_ids requests to 100 items', async () => {
+                const waitForRequest =
+                    mockListTicketTranslations.waitForRequest(server)
+                const { handler } = mockListTicketTranslationsHandler(
+                    async ({ data }) =>
+                        HttpResponse.json({
+                            ...data,
+                            data: [],
+                        }),
+                )
+                server.use(handler)
+
+                renderHook(
+                    () =>
+                        useTicketsTranslatedProperties({
+                            ticket_ids: Array.from(
+                                { length: 105 },
+                                (_, index) => 105 - index,
+                            ),
+                        }),
+                    { wrapper },
+                )
+
+                await waitForRequest(async (request) => {
+                    const url = new URL(request.url)
+                    const ticketIds = url.searchParams.getAll('ticket_ids')
+                    expect(ticketIds).toHaveLength(100)
+                    expect(ticketIds).toEqual(
+                        Array.from({ length: 100 }, (_, index) =>
+                            String(index + 1),
+                        ),
+                    )
                 })
             })
         })
