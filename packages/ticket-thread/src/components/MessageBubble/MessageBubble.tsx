@@ -9,7 +9,7 @@ import css from './MessageBubble.less'
 type MessageBubbleProps = {
     children?: ReactNode
     className?: string
-    variant?: 'regular' | 'ai-agent' | 'internal-note'
+    variant?: 'regular' | 'from-agent' | 'ai-agent' | 'internal-note'
 }
 
 export function MessageBubble({

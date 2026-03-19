@@ -18,9 +18,10 @@ type TicketMessageProps = {
 
 export function TicketMessage({ item }: TicketMessageProps) {
     const displayedItem = useDisplayedTicketMessage({ item })
+    const variant = item.data.from_agent ? 'from-agent' : 'regular'
 
     return (
-        <MessageBubble>
+        <MessageBubble variant={variant}>
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
                     <MessageAvatar sender={item.data.sender} />
