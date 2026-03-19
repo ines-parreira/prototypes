@@ -6,7 +6,7 @@ import type { RouteComponentProps } from 'react-router-dom'
 import { AGENT_ROLE } from 'config/user'
 import SelfServiceContactFormsProvider from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
 import SelfServiceHelpCentersProvider from 'pages/automate/common/providers/SelfServiceHelpCentersProvider'
-import CreateReportOrderIssueFlowScenarioViewContainer from 'pages/automate/orderManagement/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
+import CreateReportOrderIssueFlowScenarioViewContainer from 'pages/automate/orderManagement/legacy/reportOrderIssue/CreateReportOrderIssueFlowScenarioViewContainer'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 
 type OrderManagementReportNewScenarioRouteProps = RouteComponentProps<

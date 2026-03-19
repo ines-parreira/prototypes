@@ -8,7 +8,7 @@ import { IntegrationType } from 'models/integration/constants'
 import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
 
-import { useHistoryTracking } from '../common/hooks/useHistoryTracking'
+import { useHistoryTracking } from '../../common/hooks/useHistoryTracking'
 import type { OrderManagementPreviewContextType } from './OrderManagementPreviewContext'
 import OrderManagementPreviewContext from './OrderManagementPreviewContext'
 

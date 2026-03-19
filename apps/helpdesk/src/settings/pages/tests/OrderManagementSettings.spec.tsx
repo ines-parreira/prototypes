@@ -36,17 +36,20 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
 }))
 
 jest.mock(
-    'pages/automate/orderManagement/OrderManagementPreviewProvider',
+    'pages/automate/orderManagement/legacy/OrderManagementPreviewProvider',
     () => ({
         __esModule: true,
         default: ({ children }: { children: ReactNode }) => <>{children}</>,
     }),
 )
 
-jest.mock('pages/automate/orderManagement/OrderManagementView', () => ({
-    __esModule: true,
-    default: () => <div>OrderManagementView</div>,
-}))
+jest.mock(
+    'pages/automate/orderManagement/OrderManagementViewContainer',
+    () => ({
+        __esModule: true,
+        OrderManagementViewContainer: () => <div>OrderManagementView</div>,
+    }),
+)
 
 const mockUseShouldShowChatSettingsRevamp = jest.requireMock(
     'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',

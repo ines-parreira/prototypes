@@ -6,7 +6,7 @@ import type { RouteComponentProps } from 'react-router-dom'
 import { AGENT_ROLE } from 'config/user'
 import SelfServiceContactFormsProvider from 'pages/automate/common/providers/SelfServiceContactFormsProvider'
 import SelfServiceHelpCentersProvider from 'pages/automate/common/providers/SelfServiceHelpCentersProvider'
-import TrackOrderFlowViewContainer from 'pages/automate/orderManagement/trackOrder/TrackOrderFlowViewContainer'
+import TrackOrderFlowViewContainer from 'pages/automate/orderManagement/legacy/trackOrder/TrackOrderFlowViewContainer'
 import withUserRoleRequired from 'pages/common/utils/withUserRoleRequired'
 
 type OrderManagementTrackRouteProps = RouteComponentProps<

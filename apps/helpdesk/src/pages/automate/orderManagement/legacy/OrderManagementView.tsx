@@ -20,11 +20,11 @@ import AutomateSubscriptionButton from 'pages/settings/billing/automate/Automate
 import AutomateSubscriptionModal from 'pages/settings/billing/automate/AutomateSubscriptionModal'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
-import { ORDER_MANAGEMENT } from '../common/components/constants'
+import { ORDER_MANAGEMENT } from '../../common/components/constants'
 import {
     isSelfServiceChatChannel,
     isSelfServiceStandaloneContactFormChannel,
-} from '../common/hooks/useSelfServiceChannels'
+} from '../../common/hooks/useSelfServiceChannels'
 import OrderManagementFlowItem from './components/OrderManagementFlowItem'
 import OrderManagementPreview from './OrderManagementPreview'
 import { useOrderManagementPreviewContext } from './OrderManagementPreviewContext'

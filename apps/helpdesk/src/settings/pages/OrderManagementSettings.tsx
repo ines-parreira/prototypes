@@ -3,8 +3,8 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/constants'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import OrderManagementPreviewProvider from 'pages/automate/orderManagement/OrderManagementPreviewProvider'
-import OrderManagementView from 'pages/automate/orderManagement/OrderManagementView'
+import OrderManagementPreviewProvider from 'pages/automate/orderManagement/legacy/OrderManagementPreviewProvider'
+import { OrderManagementViewContainer } from 'pages/automate/orderManagement/OrderManagementViewContainer'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreSelector } from 'settings/automate'
 import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
@@ -55,7 +55,7 @@ export function OrderManagementSettings() {
                 <OrderManagementPreviewProvider>
                     <Switch>
                         <Route exact path={path}>
-                            <OrderManagementView />
+                            <OrderManagementViewContainer />
                         </Route>
                         <Route
                             path={`${path}/track`}
