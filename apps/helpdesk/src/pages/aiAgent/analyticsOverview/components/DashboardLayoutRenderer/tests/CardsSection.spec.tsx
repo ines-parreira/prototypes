@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlagWithLoading } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
@@ -13,14 +13,9 @@ import {
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
-jest.mock(
-    'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/AnimatedTrendCard',
-    () => ({
-        AnimatedTrendCard: ({ item }: any) => (
-            <div data-chart-id={item.chartId}>Chart: {item.chartId}</div>
-        ),
-    }),
-)
+jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
+    DashboardComponent: ({ chart }: any) => <div>Chart: {chart}</div>,
+}))
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/MetricsConfigurator',
@@ -38,7 +33,7 @@ jest.mock('@repo/feature-flags', () => ({
         AiAgentAnalyticsDashboardsTrendCards:
             'ai-agent-analytics-dashboards-trend-cards',
     },
-    useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
 
 jest.mock('@repo/reporting', () => ({
@@ -53,7 +48,7 @@ jest.mock('@repo/reporting', () => ({
     ),
 }))
 
-const mockedUseFlag = jest.mocked(useFlag)
+const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 const reportConfigMock = {
     charts: {
@@ -95,12 +90,15 @@ const makeSection = (
 
 describe('CardsSection', () => {
     beforeEach(() => {
-        mockedUseFlag.mockReset()
+        mockedUseFlagWithLoading.mockReset()
     })
 
     describe('when feature flag is enabled', () => {
         beforeEach(() => {
-            mockedUseFlag.mockReturnValue(true)
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
         })
 
         it('should render ShowMoreList when feature flag is on', () => {
@@ -228,7 +226,10 @@ describe('CardsSection', () => {
 
     describe('when feature flag is disabled', () => {
         beforeEach(() => {
-            mockedUseFlag.mockReturnValue(false)
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
         })
 
         it('should render plain div instead of ShowMoreList', () => {
@@ -351,7 +352,10 @@ describe('CardsSection', () => {
 
     describe('tabKey prop', () => {
         beforeEach(() => {
-            mockedUseFlag.mockReturnValue(true)
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
         })
 
         it('should render items regardless of tabKey', () => {

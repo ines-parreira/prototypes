@@ -1,9 +1,9 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { ShowMoreList } from '@repo/reporting'
 import type { MetricConfigItem } from '@repo/reporting'
 
+import { DashboardComponent } from 'domains/reporting/pages/dashboards/DashboardComponent'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
-import { AnimatedTrendCard } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/AnimatedTrendCard'
 import css from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer.less'
 import { MetricsConfigurator } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/MetricsConfigurator'
 import type {
@@ -31,9 +31,8 @@ export const CardsSection = ({
     tabId,
     tabName,
 }: CardsSectionProps) => {
-    const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
-    )
+    const { value: isAnalyticsDashboardsTrendCardsEnabled } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
 
     const visibleItems = section.items.filter(
         (item) =>
@@ -58,27 +57,28 @@ export const CardsSection = ({
                 tabName={tabName}
             />
             <ShowMoreList containerClassName={css.kpisSection}>
-                {visibleItems.map((item, index) => (
-                    <AnimatedTrendCard
+                {visibleItems.map((item) => (
+                    <div
                         key={`${tabId}-${item.chartId}`}
-                        item={item}
-                        index={index}
-                        tabId={tabId}
-                        reportConfig={reportConfig}
-                    />
+                        className={css.kpiItem}
+                    >
+                        <DashboardComponent
+                            chart={item.chartId}
+                            config={reportConfig}
+                        />
+                    </div>
                 ))}
             </ShowMoreList>
         </>
     ) : (
         <div className={css.kpisSection}>
-            {visibleItems.map((item, index) => (
-                <AnimatedTrendCard
-                    key={`${tabId}-${item.chartId}`}
-                    item={item}
-                    index={index}
-                    tabId={tabId}
-                    reportConfig={reportConfig}
-                />
+            {visibleItems.map((item) => (
+                <div key={`${tabId}-${item.chartId}`} className={css.kpiItem}>
+                    <DashboardComponent
+                        chart={item.chartId}
+                        config={reportConfig}
+                    />
+                </div>
             ))}
         </div>
     )

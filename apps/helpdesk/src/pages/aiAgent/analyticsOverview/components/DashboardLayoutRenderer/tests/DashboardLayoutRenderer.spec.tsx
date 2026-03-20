@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlag, useFlagWithLoading } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import userEventLib from '@testing-library/user-event'
 
@@ -26,6 +26,7 @@ const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
     useGetManagedDashboardsLayoutConfig,
 )
 const mockedUseFlag = jest.mocked(useFlag)
+const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 jest.mock(
     'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig',
@@ -64,6 +65,7 @@ jest.mock('@repo/feature-flags', () => ({
             'ai-agent-analytics-dashboards-trend-cards',
     },
     useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
 
 jest.mock('@gorgias/axiom', () => ({
@@ -294,6 +296,11 @@ const reportConfigMock = {
 describe('DashboardLayoutRenderer', () => {
     beforeEach(() => {
         DashboardComponentMock.mockClear()
+        mockedUseFlag.mockReturnValue(false)
+        mockedUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
     })
 
     it('should render all charts in the correct order', () => {
@@ -437,11 +444,14 @@ describe('DashboardLayoutRenderer', () => {
         ])
 
         beforeEach(() => {
-            mockedUseFlag.mockReturnValue(true)
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
         })
 
         afterEach(() => {
-            mockedUseFlag.mockReset()
+            mockedUseFlagWithLoading.mockReset()
         })
 
         it('should render KPI items with tabId', () => {
@@ -715,11 +725,14 @@ describe('DashboardLayoutRenderer', () => {
 
     describe('MetricsConfigurator integration', () => {
         beforeEach(() => {
-            mockedUseFlag.mockReset()
+            mockedUseFlagWithLoading.mockReset()
         })
 
         it('should render MetricsConfigurator when feature flag is enabled', () => {
-            mockedUseFlag.mockReturnValue(true)
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
 
             render(
                 <DashboardLayoutRenderer
@@ -737,7 +750,10 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should not render MetricsConfigurator when feature flag is disabled', () => {
-            mockedUseFlag.mockReturnValue(false)
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
 
             render(
                 <DashboardLayoutRenderer
@@ -755,7 +771,10 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should pass correct metrics to MetricsConfigurator', () => {
-            mockedUseFlag.mockReturnValue(true)
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
 
             render(
                 <DashboardLayoutRenderer
@@ -811,11 +830,14 @@ describe('DashboardLayoutRenderer', () => {
 
     describe('requiresFeatureFlag filtering', () => {
         beforeEach(() => {
-            mockedUseFlag.mockReset()
+            mockedUseFlagWithLoading.mockReset()
         })
 
         it('should show item when requiresFeatureFlag=true and feature flag=true', () => {
-            mockedUseFlag.mockReturnValue(true)
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
 
             render(
                 <DashboardLayoutRenderer
@@ -831,7 +853,10 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should show item when requiresFeatureFlag=false regardless of feature flag', () => {
-            mockedUseFlag.mockReturnValue(false)
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
 
             render(
                 <DashboardLayoutRenderer
@@ -847,7 +872,10 @@ describe('DashboardLayoutRenderer', () => {
         })
 
         it('should hide item when requiresFeatureFlag=true and feature flag=false', () => {
-            mockedUseFlag.mockReturnValue(false)
+            mockedUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
 
             render(
                 <DashboardLayoutRenderer
