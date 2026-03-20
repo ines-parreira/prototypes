@@ -11,6 +11,7 @@ import {
 } from 'common/navigation/hooks/useNavBar/context'
 import { UserRole } from 'config/types/user'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import {
@@ -88,12 +89,11 @@ describe('GlobalNavigation', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isModuleRestrictedToCurrentUser: () => false,
         } as any)
-        useStandaloneAiAccessMock.mockReturnValue({
-            isStandaloneAiAgent: false,
-            accessFeaturesMapped: {
+        useStandaloneAiAccessMock.mockReturnValue(
+            createMockStandaloneAiAccess({
                 statistics: { canRead: true, canWrite: true },
-            },
-        })
+            }),
+        )
     })
 
     it('should render the menu icon when the nav is pinned', () => {
@@ -225,12 +225,12 @@ describe('GlobalNavigation', () => {
     })
 
     it('should link statistics to STANDALONE_AI_AGENT_STATS_PATH when standalone AI agent', () => {
-        useStandaloneAiAccessMock.mockReturnValue({
-            isStandaloneAiAgent: true,
-            accessFeaturesMapped: {
+        useStandaloneAiAccessMock.mockReturnValue(
+            createMockStandaloneAiAccess({
+                isStandaloneAiAgent: true,
                 statistics: { canRead: true, canWrite: true },
-            },
-        })
+            }),
+        )
         const { container } = renderWithContext()
         const statsLink = container.querySelector(
             `a[href="${STANDALONE_AI_AGENT_STATS_PATH}"]`,

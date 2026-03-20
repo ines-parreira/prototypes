@@ -4,6 +4,10 @@ import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { UserRole } from 'config/types/user'
 import { ORDERED_ROLES_META_BY_USER_ROLE } from 'config/user'
+import {
+    STANDALONE_AI_ALLOWED_ROLES,
+    useStandaloneAiAccess,
+} from 'hooks/useStandaloneAiAccess'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import { RoleLabel } from 'pages/common/utils/labels'
 
@@ -27,6 +31,14 @@ export const Role = ({
     isViewingAccountOwner,
 }: Props) => {
     const isDisabled = isSelf || isViewingAccountOwner
+    const { isStandaloneAiAgent } = useStandaloneAiAccess()
+
+    const visibleRoles = isStandaloneAiAgent
+        ? ORDERED_ROLES_META_BY_USER_ROLE.filter(([key]) =>
+              STANDALONE_AI_ALLOWED_ROLES.has(key),
+          )
+        : ORDERED_ROLES_META_BY_USER_ROLE
+
     return (
         <>
             <Label className={css.label}>Role</Label>
@@ -44,7 +56,7 @@ export const Role = ({
                     .
                 </p>
             )}
-            {ORDERED_ROLES_META_BY_USER_ROLE.map(([key, orderedRole]) => {
+            {visibleRoles.map(([key, orderedRole]) => {
                 const id = `detail-role-${key}`
                 return (
                     !isInternal && (

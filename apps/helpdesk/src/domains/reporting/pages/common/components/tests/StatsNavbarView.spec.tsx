@@ -20,6 +20,7 @@ import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
 } from 'fixtures/plans'
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { IntegrationType } from 'models/integration/constants'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
@@ -84,12 +85,11 @@ describe('StatsNavbarViewV2', () => {
         useDashboardActionsMock.mockReturnValue({
             getDashboardsHandler: () => mockData,
         } as any)
-        useStandaloneAiAccessMock.mockReturnValue({
-            isStandaloneAiAgent: false,
-            accessFeaturesMapped: {
+        useStandaloneAiAccessMock.mockReturnValue(
+            createMockStandaloneAiAccess({
                 statistics: { canRead: true, canWrite: true },
-            },
-        })
+            }),
+        )
     })
 
     it('should render the link to new busiest times of days', () => {
@@ -330,12 +330,12 @@ describe('StatsNavbarViewV2', () => {
     })
 
     it('should render only AutomateStatsNavbar when standalone AI agent', () => {
-        useStandaloneAiAccessMock.mockReturnValue({
-            isStandaloneAiAgent: true,
-            accessFeaturesMapped: {
+        useStandaloneAiAccessMock.mockReturnValue(
+            createMockStandaloneAiAccess({
+                isStandaloneAiAgent: true,
                 statistics: { canRead: true, canWrite: true },
-            },
-        })
+            }),
+        )
 
         renderWithRouter(
             <Provider store={mockStore(defaultState)}>

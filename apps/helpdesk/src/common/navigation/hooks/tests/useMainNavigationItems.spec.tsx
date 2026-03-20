@@ -4,6 +4,7 @@ import { fromJS } from 'immutable'
 
 import { useMainNavigationItems } from 'common/navigation/hooks/useMainNavigationItems'
 import { UserRole } from 'config/types/user'
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
 import {
@@ -33,12 +34,11 @@ describe('MainNavigation', () => {
 
     beforeEach(() => {
         mockUseFlag.mockImplementation(() => false)
-        useStandaloneAiAccessMock.mockReturnValue({
-            isStandaloneAiAgent: false,
-            accessFeaturesMapped: {
+        useStandaloneAiAccessMock.mockReturnValue(
+            createMockStandaloneAiAccess({
                 statistics: { canRead: true, canWrite: true },
-            },
-        })
+            }),
+        )
     })
 
     it('should render the tickets menu item', () => {
@@ -127,12 +127,12 @@ describe('MainNavigation', () => {
     })
 
     it('should use STANDALONE_AI_AGENT_STATS_PATH for statistics when standalone AI agent', () => {
-        useStandaloneAiAccessMock.mockReturnValue({
-            isStandaloneAiAgent: true,
-            accessFeaturesMapped: {
+        useStandaloneAiAccessMock.mockReturnValue(
+            createMockStandaloneAiAccess({
+                isStandaloneAiAgent: true,
                 statistics: { canRead: true, canWrite: true },
-            },
-        })
+            }),
+        )
         const { result } = renderHook(() => useMainNavigationItems(basicUser))
         expect(result.current.map((item) => item.url)).toContain(
             STANDALONE_AI_AGENT_STATS_PATH,

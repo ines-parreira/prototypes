@@ -8,6 +8,7 @@ import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
@@ -63,12 +64,9 @@ describe('MainNavigation', () => {
         useAppDispatchMock.mockReturnValue(dispatch)
         getHasAutomateMock.mockReturnValue(true)
         useHasAiAgentMenuMock.mockReturnValue(true)
-        useStandaloneAiAccessMock.mockReturnValue({
-            accessFeaturesMapped: {
-                statistics: { canRead: false, canWrite: false },
-            },
-            isStandaloneAiAgent: false,
-        })
+        useStandaloneAiAccessMock.mockReturnValue(
+            createMockStandaloneAiAccess(),
+        )
     })
 
     it('should log an event and close panels when a menu item is clicked', () => {

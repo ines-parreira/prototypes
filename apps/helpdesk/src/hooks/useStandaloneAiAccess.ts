@@ -12,7 +12,27 @@ const ACTIONS = {
 
 const FEATURE_ACCESS_LIST = {
     statistics: ACTIONS,
+    userManagement: ACTIONS,
 }
+
+const STANDALONE_AI_ACCESS_BY_ROLE = {
+    [UserRole.Admin]: {
+        statistics: { canRead: true, canWrite: true },
+        userManagement: { canRead: true, canWrite: true },
+    },
+    [UserRole.Agent]: {
+        statistics: { canRead: true, canWrite: true },
+        userManagement: { canRead: false, canWrite: false },
+    },
+    [UserRole.ObserverAgent]: {
+        statistics: { canRead: true, canWrite: false },
+        userManagement: { canRead: false, canWrite: false },
+    },
+} as const
+
+export const STANDALONE_AI_ALLOWED_ROLES = new Set(
+    Object.keys(STANDALONE_AI_ACCESS_BY_ROLE) as UserRole[],
+)
 
 export const useStandaloneAiAccess = () => {
     const isStandaloneAiAgent = useFlag(FeatureFlagKey.AiStandaloneAgent, false)
@@ -24,16 +44,19 @@ export const useStandaloneAiAccess = () => {
     const accessFeaturesMapped = useMemo(() => {
         if (!isStandaloneAiAgent) return FEATURE_ACCESS_LIST
 
-        switch (roleName) {
-            case UserRole.Admin:
-            case UserRole.Agent:
-                return { statistics: { canRead: true, canWrite: true } }
-            case UserRole.ObserverAgent:
-                return { statistics: { canRead: true, canWrite: false } }
-            default:
-                console.error('Unsupported role name', roleName)
-                return FEATURE_ACCESS_LIST
+        if (!roleName) return FEATURE_ACCESS_LIST
+
+        const access =
+            STANDALONE_AI_ACCESS_BY_ROLE[
+                roleName as keyof typeof STANDALONE_AI_ACCESS_BY_ROLE
+            ]
+
+        if (!access) {
+            console.error('Unsupported role name', roleName)
+            return FEATURE_ACCESS_LIST
         }
+
+        return access
     }, [isStandaloneAiAgent, roleName])
 
     return {

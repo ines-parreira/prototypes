@@ -6,6 +6,7 @@ import { LINK_AI_SALES_AGENT_TEXT } from 'domains/reporting/pages/automate/aiSal
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { AutomateStatsNavbar } from 'domains/reporting/pages/self-service/AutomateStatsNavbar'
 import { PAGE_TITLE_PERFORMANCE_BY_FEATURES } from 'domains/reporting/pages/self-service/constants'
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
@@ -62,12 +63,9 @@ describe('<AutomateStatsNavbar />', () => {
             hasAccess: false,
             isLoading: false,
         })
-        mockUseStandaloneAiAccess.mockReturnValue({
-            isStandaloneAiAgent: false,
-            accessFeaturesMapped: {
-                statistics: { canRead: false, canWrite: false },
-            },
-        })
+        mockUseStandaloneAiAccess.mockReturnValue(
+            createMockStandaloneAiAccess(),
+        )
     })
 
     it('should render with upgrade icon when automate is not enabled', () => {
@@ -314,12 +312,13 @@ describe('<AutomateStatsNavbar />', () => {
             hasAccess: true,
             isLoading: false,
         })
-        mockUseStandaloneAiAccess.mockReturnValue({
-            isStandaloneAiAgent: true,
-            accessFeaturesMapped: {
+        mockUseStandaloneAiAccess.mockReturnValue(
+            createMockStandaloneAiAccess({
+                isStandaloneAiAgent: true,
                 statistics: { canRead: true, canWrite: true },
-            },
-        })
+                userManagement: { canRead: true, canWrite: true },
+            }),
+        )
 
         const { queryByText, getByRole } = renderWithRouter(
             <Navigation.Root>

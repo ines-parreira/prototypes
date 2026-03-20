@@ -20,6 +20,7 @@ const mockUseGetCurrentUser = jest.mocked(useGetCurrentUser)
 
 const FEATURE_ACCESS_LIST = {
     statistics: { canRead: false, canWrite: false },
+    userManagement: { canRead: false, canWrite: false },
 }
 
 function givenFeatureFlag(value: boolean) {
@@ -70,33 +71,36 @@ describe('useStandaloneAiAccess', () => {
             expect(result.current.isStandaloneAiAgent).toBe(true)
         })
 
-        it('should grant full statistics access for Admin role', () => {
+        it('should grant full statistics and userManagement access for Admin role', () => {
             givenUserRole(UserRole.Admin)
 
             const { result } = renderHook(() => useStandaloneAiAccess())
 
             expect(result.current.accessFeaturesMapped).toEqual({
                 statistics: { canRead: true, canWrite: true },
+                userManagement: { canRead: true, canWrite: true },
             })
         })
 
-        it('should grant full statistics access for Agent role', () => {
+        it('should grant full statistics access and no userManagement access for Agent role', () => {
             givenUserRole(UserRole.Agent)
 
             const { result } = renderHook(() => useStandaloneAiAccess())
 
             expect(result.current.accessFeaturesMapped).toEqual({
                 statistics: { canRead: true, canWrite: true },
+                userManagement: { canRead: false, canWrite: false },
             })
         })
 
-        it('should grant read-only statistics access for ObserverAgent role', () => {
+        it('should grant read-only statistics access and no userManagement access for ObserverAgent role', () => {
             givenUserRole(UserRole.ObserverAgent)
 
             const { result } = renderHook(() => useStandaloneAiAccess())
 
             expect(result.current.accessFeaturesMapped).toEqual({
                 statistics: { canRead: true, canWrite: false },
+                userManagement: { canRead: false, canWrite: false },
             })
         })
 
@@ -120,9 +124,7 @@ describe('useStandaloneAiAccess', () => {
         })
 
         it('should return default access list when user data is not yet loaded', () => {
-            const consoleSpy = jest
-                .spyOn(console, 'error')
-                .mockImplementation(() => {})
+            const consoleSpy = jest.spyOn(console, 'error')
             givenNoUser()
 
             const { result } = renderHook(() => useStandaloneAiAccess())
@@ -130,6 +132,7 @@ describe('useStandaloneAiAccess', () => {
             expect(result.current.accessFeaturesMapped).toEqual(
                 FEATURE_ACCESS_LIST,
             )
+            expect(consoleSpy).not.toHaveBeenCalled()
 
             consoleSpy.mockRestore()
         })
