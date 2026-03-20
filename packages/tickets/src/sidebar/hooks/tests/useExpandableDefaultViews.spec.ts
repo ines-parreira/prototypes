@@ -14,6 +14,7 @@ const makeViews = (count: number): SystemView[] =>
         id: i + 1,
         name: `View ${i + 1}`,
         slug: `view-${i + 1}`,
+        uri: `/api/views/${i + 1}`,
         category: 'system' as const,
     }))
 

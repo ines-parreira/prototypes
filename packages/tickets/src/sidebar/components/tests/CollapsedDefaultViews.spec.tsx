@@ -29,6 +29,7 @@ const makeViews = (count: number): SystemView[] =>
             'Spam',
         ][i],
         slug: `view-${i + 1}`,
+        uri: `/api/views/${i + 1}`,
         category: 'system' as const,
     }))
 
@@ -106,7 +107,12 @@ describe('CollapsedDefaultViews', () => {
     it('should use empty string for slug when view has no slug', async () => {
         mockUseExpandableDefaultViews.mockReturnValue({
             displayedViews: [
-                { id: 1, name: 'Inbox', category: 'system' as const },
+                {
+                    id: 1,
+                    name: 'Inbox',
+                    uri: '/api/views/1',
+                    category: 'system' as const,
+                },
             ],
             showToggle: false,
             isExpanded: false,
@@ -145,6 +151,7 @@ describe('CollapsedDefaultViews', () => {
                     id: 1,
                     name: 'Inbox',
                     slug: 'my/special-view',
+                    uri: '/api/views/1',
                     category: 'system' as const,
                 },
             ],

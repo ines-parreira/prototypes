@@ -42,6 +42,7 @@ const inboxView = {
     id: 1,
     name: 'Inbox',
     slug: 'inbox',
+    uri: '/api/views/1',
     category: 'system' as const,
 }
 
@@ -49,6 +50,7 @@ const unassignedView = {
     id: 2,
     name: 'Unassigned',
     slug: 'unassigned',
+    uri: '/api/views/2',
     category: 'system' as const,
 }
 
@@ -56,6 +58,7 @@ const allView = {
     id: 3,
     name: 'All',
     slug: 'all',
+    uri: '/api/views/3',
     category: 'system' as const,
 }
 

@@ -28,12 +28,12 @@
     "devDependencies": {
         "@repo/config": "workspace:*",
         "@repo/testing": "workspace:*",
-        "@types/history": "catalog:react-router",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
         "@testing-library/user-event": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/history": "catalog:react-router",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
         "@types/react-router": "catalog:react-router",

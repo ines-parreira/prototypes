@@ -15,9 +15,27 @@ const mockUseUpdateDefaultViewsVisibility = vi.mocked(
 )
 
 const systemViews: SystemView[] = [
-    { id: 1, name: 'Inbox', category: 'system', slug: 'inbox' },
-    { id: 2, name: 'Unassigned', category: 'system', slug: 'unassigned' },
-    { id: 3, name: 'All', category: 'system', slug: 'all' },
+    {
+        id: 1,
+        name: 'Inbox',
+        category: 'system',
+        slug: 'inbox',
+        uri: '/api/views/1',
+    },
+    {
+        id: 2,
+        name: 'Unassigned',
+        category: 'system',
+        slug: 'unassigned',
+        uri: '/api/views/2',
+    },
+    {
+        id: 3,
+        name: 'All',
+        category: 'system',
+        slug: 'all',
+        uri: '/api/views/3',
+    },
 ]
 
 describe('DefaultViewsMenu', () => {

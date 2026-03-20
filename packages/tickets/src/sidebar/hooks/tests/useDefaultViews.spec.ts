@@ -12,10 +12,15 @@ const mockUseListAccountSettings = vi.mocked(useListAccountSettings)
 describe('getOrderedSystemViews', () => {
     it('should return system views sorted by SYSTEM_VIEW_DEFINITIONS order', () => {
         const views: View[] = [
-            { id: 3, name: 'All', category: 'system' },
-            { id: 7, name: 'Spam', category: 'system' },
-            { id: 1, name: 'Inbox', category: 'system' },
-            { id: 2, name: 'Unassigned', category: 'system' },
+            { id: 3, name: 'All', category: 'system', uri: '/api/views/3' },
+            { id: 7, name: 'Spam', category: 'system', uri: '/api/views/7' },
+            { id: 1, name: 'Inbox', category: 'system', uri: '/api/views/1' },
+            {
+                id: 2,
+                name: 'Unassigned',
+                category: 'system',
+                uri: '/api/views/2',
+            },
         ]
 
         const result = getOrderedSystemViews(views)
@@ -34,8 +39,13 @@ describe('getOrderedSystemViews', () => {
 
     it('should filter out views whose name is not in SYSTEM_VIEW_DEFINITIONS', () => {
         const views: View[] = [
-            { id: 1, name: 'Inbox', category: 'system' },
-            { id: 99, name: 'My custom view', category: 'system' },
+            { id: 1, name: 'Inbox', category: 'system', uri: '/api/views/1' },
+            {
+                id: 99,
+                name: 'My custom view',
+                category: 'system',
+                uri: '/api/views/99',
+            },
         ]
 
         const result = getOrderedSystemViews(views)
@@ -46,13 +56,18 @@ describe('getOrderedSystemViews', () => {
 
     it('should return all 7 known system views when all are present', () => {
         const views: View[] = [
-            { id: 1, name: 'Inbox', category: 'system' },
-            { id: 2, name: 'Unassigned', category: 'system' },
-            { id: 3, name: 'All', category: 'system' },
-            { id: 4, name: 'Snoozed', category: 'system' },
-            { id: 5, name: 'Closed', category: 'system' },
-            { id: 6, name: 'Trash', category: 'system' },
-            { id: 7, name: 'Spam', category: 'system' },
+            { id: 1, name: 'Inbox', category: 'system', uri: '/api/views/1' },
+            {
+                id: 2,
+                name: 'Unassigned',
+                category: 'system',
+                uri: '/api/views/2',
+            },
+            { id: 3, name: 'All', category: 'system', uri: '/api/views/3' },
+            { id: 4, name: 'Snoozed', category: 'system', uri: '/api/views/4' },
+            { id: 5, name: 'Closed', category: 'system', uri: '/api/views/5' },
+            { id: 6, name: 'Trash', category: 'system', uri: '/api/views/6' },
+            { id: 7, name: 'Spam', category: 'system', uri: '/api/views/7' },
         ]
 
         const result = getOrderedSystemViews(views)
@@ -71,7 +86,12 @@ describe('getOrderedSystemViews', () => {
 
     it('should return empty array when no views match known system view names', () => {
         const views: View[] = [
-            { id: 99, name: 'My private view', category: 'user' },
+            {
+                id: 99,
+                name: 'My private view',
+                category: 'user',
+                uri: '/api/views/99',
+            },
         ]
 
         expect(getOrderedSystemViews(views)).toEqual([])
@@ -80,13 +100,13 @@ describe('getOrderedSystemViews', () => {
 
 describe('useDefaultViews', () => {
     const allSystemViews: View[] = [
-        { id: 1, name: 'Inbox', category: 'system' },
-        { id: 2, name: 'Unassigned', category: 'system' },
-        { id: 3, name: 'All', category: 'system' },
-        { id: 4, name: 'Snoozed', category: 'system' },
-        { id: 5, name: 'Closed', category: 'system' },
-        { id: 6, name: 'Trash', category: 'system' },
-        { id: 7, name: 'Spam', category: 'system' },
+        { id: 1, name: 'Inbox', category: 'system', uri: '/api/views/1' },
+        { id: 2, name: 'Unassigned', category: 'system', uri: '/api/views/2' },
+        { id: 3, name: 'All', category: 'system', uri: '/api/views/3' },
+        { id: 4, name: 'Snoozed', category: 'system', uri: '/api/views/4' },
+        { id: 5, name: 'Closed', category: 'system', uri: '/api/views/5' },
+        { id: 6, name: 'Trash', category: 'system', uri: '/api/views/6' },
+        { id: 7, name: 'Spam', category: 'system', uri: '/api/views/7' },
     ]
 
     beforeEach(() => {
