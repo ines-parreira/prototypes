@@ -37,9 +37,7 @@ const defaultState = {
     agents: fromJS({
         all: [user],
     }),
-    entities: {
-        chatInstallationStatus: { installed: true },
-    },
+    entities: {},
     integrations: fromJS({
         integrations: [],
     }),

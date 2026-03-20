@@ -1,10 +1,9 @@
 import type { Map } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
+import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import { Tab } from 'pages/integrations/integration/types'
-import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
 
 export const SHOPIFY_CHECKOUT_BANNER_TABS = [
     Tab.QuickReplies,
@@ -30,11 +29,10 @@ export const useShouldShowShopifyCheckoutChatBanner = (
     tab?: Tab,
 ): boolean => {
     const integrationType = integration.get('type')
+    const appId: string | undefined = integration.getIn(['meta', 'app_id'])
     const { isConnected, isConnectedToShopify } =
         useStoreIntegration(integration)
-    const { installedOnShopifyCheckout } = useAppSelector(
-        getChatInstallationStatus,
-    )
+    const { installedOnShopifyCheckout } = useInstallationStatus(appId)
 
     if (
         !tab ||

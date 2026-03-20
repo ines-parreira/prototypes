@@ -1,13 +1,11 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 
-import { useAsyncFn, useUpdateEffect } from '@repo/hooks'
 import { history } from '@repo/routing'
 import type { List, Map } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/types'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { ErrorBoundary } from 'pages/ErrorBoundary'
@@ -17,12 +15,7 @@ import {
 } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
-import {
-    chatInstallationStatusFetched,
-    resetChatInstallationStatus,
-} from 'state/entities/chatInstallationStatus/actions'
-import * as IntegrationsActions from 'state/integrations/actions'
-import { reportError } from 'utils/errors'
+import type * as IntegrationsActions from 'state/integrations/actions'
 
 import { Tab } from '../../types'
 import { GorgiasAutomateChatIntegration } from './GorgiasAutomateChatIntegration'
@@ -68,16 +61,12 @@ export const GorgiasChatIntegration = ({
         chatPreviewPortal,
         ...charPreviewPanelControls
     } = useChatPreviewPanel()
-    const dispatch = useAppDispatch()
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
     const { hasAccess } = useAiAgentAccess()
     const { storeIntegration } = useStoreIntegration(integration)
 
     const { shouldShowScreensRevampWhenAiAgentEnabled } =
         useShouldShowChatSettingsRevamp(storeIntegration, integration.get('id'))
-
-    const [articleRecommendationEnabled, setArticleRecommendationEnabled] =
-        useState(false)
 
     const editLinkDefaultTab = useMemo(() => {
         return `/app/settings/channels/${IntegrationType.GorgiasChat}/${integrationId}/${Tab.Appearance}`
@@ -99,48 +88,17 @@ export const GorgiasChatIntegration = ({
     const { applicationsAutomationSettings } =
         useApplicationsAutomationSettings(chatApplicationIds)
 
-    const [, handleFetchGorgiasChatInstallationStatus] = useAsyncFn(
-        async (applicationId: string) => {
-            try {
-                const installationStatus =
-                    await IntegrationsActions.getInstallationStatus(
-                        applicationId,
-                    )
-
-                if (installationStatus) {
-                    dispatch(chatInstallationStatusFetched(installationStatus))
-                }
-            } catch {
-                reportError(
-                    new Error(`Failed to fetch chat installation status`),
-                    {
-                        extra: { applicationId },
-                    },
-                )
-            }
-        },
-    )
-
-    useUpdateEffect(() => {
-        const appId = integration.getIn(['meta', 'app_id'])
-        if (appId) {
-            void handleFetchGorgiasChatInstallationStatus(appId)
-        } else {
-            dispatch(resetChatInstallationStatus())
-        }
-    }, [integration])
-
     const { selfServiceConfiguration, selfServiceConfigurationEnabled } =
         useSelfServiceConfiguration(integration)
 
-    useEffect(() => {
+    const articleRecommendationEnabled = useMemo(() => {
         const appId = chatApplicationIds[0]
-        if (appId) {
-            setArticleRecommendationEnabled(
-                applicationsAutomationSettings[appId]?.articleRecommendation
-                    ?.enabled && hasAccess,
-            )
-        }
+        return appId
+            ? Boolean(
+                  applicationsAutomationSettings[appId]?.articleRecommendation
+                      ?.enabled && hasAccess,
+              )
+            : false
     }, [hasAccess, chatApplicationIds, applicationsAutomationSettings])
 
     useEffect(() => {

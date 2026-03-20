@@ -10,6 +10,7 @@ import {
 } from 'constants/integration'
 import { entitiesInitialState } from 'fixtures/entities'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
@@ -22,6 +23,13 @@ jest.mock('../GorgiasChatIntegrationConnectedChannel', () => () => {
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus',
+    () => ({
+        useInstallationStatus: jest.fn(),
+    }),
+)
 
 jest.mock('@repo/feature-flags')
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
@@ -36,6 +44,8 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
 }))
 
 const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
+const mockUseInstallationStatus = jest.mocked(useInstallationStatus)
+
 jest.mock(
     '../GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled',
     () => ({
@@ -67,20 +77,14 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
     const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
     const store = mockStore({ entities: entitiesInitialState })
 
-    const storeInstallationIssue = mockStore({
-        entities: {
-            ...entitiesInitialState,
-            chatInstallationStatus: {
-                installed: false,
-                installedOnShopifyCheckout: false,
-                embeddedSpqInstalled: false,
-                minimumSnippetVersion: null,
-            },
-        },
-    })
-
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
+        mockUseInstallationStatus.mockReturnValue({
+            installed: true,
+            installedOnShopifyCheckout: true,
+            embeddedSpqInstalled: false,
+            minimumSnippetVersion: null,
+        })
     })
 
     it('should render automation features tab', () => {
@@ -135,8 +139,15 @@ describe('<GorgiasChatIntegrationNavigation />', () => {
     })
 
     it('should render GorgiasChatIntegrationNavigation with an installation issue icon', () => {
+        mockUseInstallationStatus.mockReturnValue({
+            installed: false,
+            installedOnShopifyCheckout: false,
+            embeddedSpqInstalled: false,
+            minimumSnippetVersion: null,
+        })
+
         const { container } = renderWithRouter(
-            <Provider store={storeInstallationIssue}>
+            <Provider store={store}>
                 <GorgiasChatIntegrationNavigation
                     integration={fromJS(integration)}
                 ></GorgiasChatIntegrationNavigation>

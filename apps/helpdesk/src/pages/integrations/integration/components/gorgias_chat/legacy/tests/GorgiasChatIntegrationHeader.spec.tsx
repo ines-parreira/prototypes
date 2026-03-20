@@ -28,6 +28,18 @@ jest.mock('../hooks/useShouldShowShopifyCheckoutChatBanner', () => ({
     useShouldShowShopifyCheckoutChatBanner: () => false,
 }))
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus',
+    () => ({
+        useInstallationStatus: () => ({
+            installed: true,
+            installedOnShopifyCheckout: false,
+            embeddedSpqInstalled: false,
+            minimumSnippetVersion: null,
+        }),
+    }),
+)
+
 describe('GorgiasChatIntegrationHeader', () => {
     it('should show theme extensions migration banner when conditions are met', () => {
         const mockIntegration = fromJS({

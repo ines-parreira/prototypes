@@ -1,7 +1,7 @@
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
+import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 import { Tab } from 'pages/integrations/integration/types'
 
@@ -10,23 +10,25 @@ import {
     useShouldShowShopifyCheckoutChatBanner,
 } from '../useShouldShowShopifyCheckoutChatBanner'
 
-jest.mock('hooks/useAppSelector', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}))
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus',
+    () => ({
+        useInstallationStatus: jest.fn(),
+    }),
+)
 
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration', () => ({
     useStoreIntegration: jest.fn(),
 }))
 
-const useAppSelectorMock = useAppSelector as jest.Mock
+const useInstallationStatusMock = useInstallationStatus as jest.Mock
 const useStoreIntegrationMock = useStoreIntegration as jest.Mock
 
 describe('useShouldShowShopifyCheckoutChatBanner', () => {
     const mockIntegration = fromJS({ type: IntegrationType.GorgiasChat })
 
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValue({
+        useInstallationStatusMock.mockReturnValue({
             installedOnShopifyCheckout: false,
         })
         useStoreIntegrationMock.mockReturnValue({
@@ -122,7 +124,9 @@ describe('useShouldShowShopifyCheckoutChatBanner', () => {
 
     it('returns false if chat is already installed on checkout', () => {
         // Given
-        useAppSelectorMock.mockReturnValue({ installedOnShopifyCheckout: true })
+        useInstallationStatusMock.mockReturnValue({
+            installedOnShopifyCheckout: true,
+        })
         const tab = Tab.Appearance
 
         // When

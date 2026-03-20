@@ -9,12 +9,23 @@ import thunk from 'redux-thunk'
 
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
 import type { RootState } from 'state/types'
 
 import { GorgiasAutomateChatIntegration } from '../GorgiasAutomateChatIntegration'
 
 jest.mock('@repo/feature-flags')
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus',
+    () => ({
+        useInstallationStatus: jest.fn(() => ({
+            installed: true,
+            installedOnShopifyCheckout: true,
+            embeddedSpqInstalled: false,
+            minimumSnippetVersion: null,
+        })),
+    }),
+)
 
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => {
     return jest.fn(() => [
@@ -77,15 +88,7 @@ const defaultState = {
 
     billing: fromJS(billingState),
 } as RootState
-const mockedStore = mockStore({
-    ...defaultState,
-    entities: {
-        chatInstallationStatus: {
-            installed: true,
-            minimumSnippetVersion: GorgiasChatMinimumSnippetVersion.V3,
-        },
-    },
-})
+const mockedStore = mockStore(defaultState)
 
 describe('GorgiasAutomateChatIntegration', () => {
     beforeEach(() => {

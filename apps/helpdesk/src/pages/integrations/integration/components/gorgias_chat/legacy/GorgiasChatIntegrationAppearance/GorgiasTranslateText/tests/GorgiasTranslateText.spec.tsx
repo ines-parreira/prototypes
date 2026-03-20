@@ -26,6 +26,18 @@ jest.mock('react-router-dom', () => ({
     useHistory: jest.fn(),
 }))
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus',
+    () => ({
+        useInstallationStatus: () => ({
+            installed: true,
+            installedOnShopifyCheckout: false,
+            embeddedSpqInstalled: false,
+            minimumSnippetVersion: null,
+        }),
+    }),
+)
+
 jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     __esModule: true,
     default: jest.fn(),

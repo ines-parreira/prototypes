@@ -3,7 +3,6 @@ import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppDispatch from 'hooks/useAppDispatch'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
@@ -19,17 +18,11 @@ jest.mock('react-router-dom', () => ({
     useParams: jest.fn(),
 }))
 
-jest.mock('@repo/hooks', () => ({
-    useAsyncFn: () => [undefined, jest.fn()],
-    useUpdateEffect: jest.fn(),
-}))
-
 jest.mock('@repo/routing', () => ({
     history: { replace: jest.fn() },
 }))
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
-jest.mock('hooks/useAppDispatch')
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
@@ -48,11 +41,6 @@ jest.mock(
     './legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled',
 )
 jest.mock('./legacy/hooks/useSelfServiceConfiguration')
-
-jest.mock('state/entities/chatInstallationStatus/actions', () => ({
-    chatInstallationStatusFetched: jest.fn(),
-    resetChatInstallationStatus: jest.fn(),
-}))
 
 jest.mock('pages/ErrorBoundary', () => ({
     ErrorBoundary: ({ children }: { children: React.ReactNode }) => (
@@ -109,7 +97,6 @@ jest.mock(
 
 const mockUseParams = useParams as jest.Mock
 const mockUseAiAgentAccess = useAiAgentAccess as jest.Mock
-const mockUseAppDispatch = useAppDispatch as jest.Mock
 const mockUseApplicationsAutomationSettings =
     useApplicationsAutomationSettings as jest.Mock
 const mockUseChatPreviewPanel = useChatPreviewPanel as jest.Mock
@@ -141,7 +128,6 @@ beforeEach(() => {
     })
 
     mockUseAiAgentAccess.mockReturnValue({ hasAccess: false })
-    mockUseAppDispatch.mockReturnValue(jest.fn())
     mockUseApplicationsAutomationSettings.mockReturnValue({
         applicationsAutomationSettings: {},
     })
@@ -388,5 +374,35 @@ describe('<GorgiasChatIntegration />', () => {
             expect(mockShowPreviewPanel).not.toHaveBeenCalled()
             expect(mockHidePreviewPanel).not.toHaveBeenCalled()
         })
+
+        it('calls hidePreviewPanel when extra is undefined and revamp is enabled', () => {
+            mockUseParams.mockReturnValue({
+                integrationId: '1',
+                extra: undefined,
+                subId: undefined,
+            })
+
+            render(<GorgiasChatIntegration {...defaultProps} />)
+
+            expect(mockHidePreviewPanel).toHaveBeenCalled()
+            expect(mockShowPreviewPanel).not.toHaveBeenCalled()
+        })
+    })
+
+    it('computes articleRecommendationEnabled as false when integration has no appId', () => {
+        mockUseParams.mockReturnValue({
+            integrationId: '1',
+            extra: Tab.Preferences,
+            subId: undefined,
+        })
+
+        render(
+            <GorgiasChatIntegration
+                {...defaultProps}
+                integration={fromJS({ id: 1 })}
+            />,
+        )
+
+        expect(screen.getByTestId('preferences-tab')).toBeInTheDocument()
     })
 })

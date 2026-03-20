@@ -17,6 +17,18 @@ jest.mock('@repo/feature-flags')
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 
 jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus',
+    () => ({
+        useInstallationStatus: jest.fn(() => ({
+            installed: true,
+            installedOnShopifyCheckout: true,
+            embeddedSpqInstalled: false,
+            minimumSnippetVersion: null,
+        })),
+    }),
+)
+
+jest.mock(
     '../components/GorgiasChatIntegrationLanguagesTable/useGorgiasChatIntegrationLanguagesTable',
     () => ({
         useGorgiasChatIntegrationLanguagesTable: jest.fn(() => ({
@@ -44,11 +56,7 @@ const defaultState: Partial<RootState> = {
     integrations: fromJS(integrationsState),
     billing: fromJS(billingState),
     currentAccount: fromJS(account),
-    entities: {
-        chatInstallationStatus: {
-            installed: true,
-        },
-    } as any,
+    entities: {} as any,
 }
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])

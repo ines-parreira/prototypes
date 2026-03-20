@@ -6,9 +6,8 @@ import { NavLink } from 'react-router-dom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
-import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
+import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 
 import { IntegrationType } from '../../../../../../models/integration/types'
 import SecondaryNavbar from '../../../../../common/components/SecondaryNavbar/SecondaryNavbar'
@@ -25,8 +24,9 @@ const GorgiasChatIntegrationNavigation = ({ integration }: Props) => {
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
 
     const integrationId: number = integration.get('id')
+    const appId: string | undefined = integration.getIn(['meta', 'app_id'])
 
-    const installationStatus = useAppSelector(getChatInstallationStatus)
+    const installationStatus = useInstallationStatus(appId)
     const storeIntegrations = useStoreIntegrations()
     const shopIntegrationId: number | null = integration.getIn(
         ['meta', 'shop_integration_id'],

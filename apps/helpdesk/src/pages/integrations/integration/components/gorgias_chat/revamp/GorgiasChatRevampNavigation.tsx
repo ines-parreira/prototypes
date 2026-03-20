@@ -6,11 +6,10 @@ import { NavLink } from 'react-router-dom'
 
 import dotError from 'assets/img/icons/dot-error.svg'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import SecondaryNavbar from 'pages/common/components/SecondaryNavbar/SecondaryNavbar'
+import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import css from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationNavigation.less'
-import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
 
 type Props = {
     integration: Map<any, any>
@@ -19,11 +18,12 @@ type Props = {
 export const GorgiasChatRevampNavigation = ({ integration }: Props) => {
     const integrationId: number = integration.get('id')
     const shopName = integration.getIn(['meta', 'shop_name'])
+    const appId: string | undefined = integration.getIn(['meta', 'app_id'])
     const { hasAccess } = useAiAgentAccess(shopName)
     const isChatMultiLanguagesEnabled = useFlag(
         FeatureFlagKey.ChatMultiLanguages,
     )
-    const installationStatus = useAppSelector(getChatInstallationStatus)
+    const installationStatus = useInstallationStatus(appId)
 
     const baseURL = useMemo(
         () =>

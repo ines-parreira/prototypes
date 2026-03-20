@@ -4,8 +4,6 @@ import type { ContactFormState } from 'state/entities/contactForm'
 
 import auditLogEvents from './auditLogEvents/reducer'
 import type { AuditLogEventsState } from './auditLogEvents/types'
-import chatInstallationStatus from './chatInstallationStatus/reducer'
-import type { ChatInstallationStatusState } from './chatInstallationStatus/types'
 import chatsApplicationAutomationSettings from './chatsApplicationAutomationSettings/reducer'
 import type { ChatsApplicationAutomationSettingsState } from './chatsApplicationAutomationSettings/types'
 import contactForm from './contactForm/reducer'
@@ -47,7 +45,6 @@ const entitiesReducers = combineReducers<{
     viewsCount: ViewsCountState
     helpCenter: HelpCenterState
     contactForm: ContactFormState
-    chatInstallationStatus: ChatInstallationStatusState
     selfServiceConfigurations: SelfServiceConfigurationsState
     rules: RulesState
     phoneNumbers: PhoneNumbersState
@@ -67,7 +64,6 @@ const entitiesReducers = combineReducers<{
     viewsCount,
     helpCenter,
     contactForm,
-    chatInstallationStatus,
     selfServiceConfigurations,
     phoneNumbers,
     newPhoneNumbers,

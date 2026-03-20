@@ -12,9 +12,9 @@ import NavigatedSuccessModal, {
 } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { SuccessModalIcon } from 'pages/common/components/SuccessModal/SuccessModal'
 import BackToConvertButton from 'pages/convert/onboarding/components/BackToConvertButton'
+import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
 import { Tab } from 'pages/integrations/integration/types'
-import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
 import type { deleteIntegration } from 'state/integrations/actions'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 
@@ -42,8 +42,8 @@ const GorgiasChatIntegrationInstall = ({
     isUpdate,
 }: Props) => {
     const storeIntegrations = useAppSelector(getStoreIntegrations)
-    const { installed } = useAppSelector(getChatInstallationStatus)
     const applicationId: string = integration.getIn(['meta', 'app_id'])
+    const { installed } = useInstallationStatus(applicationId)
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
         ? Number(integration.getIn(['meta', 'shop_integration_id']))
         : undefined

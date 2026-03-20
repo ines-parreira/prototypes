@@ -1,7 +1,7 @@
 import type { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { getChatInstallationStatus } from 'state/entities/chatInstallationStatus/selectors'
+import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import { getShowShopifyCheckoutChatBanner } from 'state/integrations/selectors'
 
 import type { Tab } from '../../../types'
@@ -21,7 +21,8 @@ const GorgiasChatIntegrationHeader: React.FC<Props> = ({
     integration,
     tab,
 }) => {
-    const { installed } = useAppSelector(getChatInstallationStatus)
+    const appId: string | undefined = integration.getIn(['meta', 'app_id'])
+    const { installed } = useInstallationStatus(appId)
     const shopifyCheckoutBannerVisible = useAppSelector(
         getShowShopifyCheckoutChatBanner,
     )

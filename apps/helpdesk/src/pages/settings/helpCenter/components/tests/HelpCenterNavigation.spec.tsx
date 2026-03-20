@@ -8,7 +8,6 @@ import { fromJS } from 'immutable'
 import { TicketChannel } from 'business/types/ticket'
 import { billingState } from 'fixtures/billing'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
 import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
@@ -58,12 +57,7 @@ const defaultState = {
         integrations: [],
     }),
     billing: fromJS(billingState),
-    entities: {
-        chatInstallationStatus: {
-            installed: true,
-            minimumSnippetVersion: GorgiasChatMinimumSnippetVersion.V3,
-        },
-    },
+    entities: {},
 } as RootState
 
 describe('HelpCenterNavigation', () => {

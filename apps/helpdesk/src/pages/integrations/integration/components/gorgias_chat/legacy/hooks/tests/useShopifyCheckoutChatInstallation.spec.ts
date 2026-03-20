@@ -1,21 +1,23 @@
 import { fromJS } from 'immutable'
 
-import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
+import { useInstallationStatus } from 'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import useShopifyCheckoutChatInstallation from '../useShopifyCheckoutChatInstallation'
 
-jest.mock('hooks/useAppSelector', () => ({
-    __esModule: true,
-    default: jest.fn(),
-}))
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/hooks/useInstallationStatus',
+    () => ({
+        useInstallationStatus: jest.fn(),
+    }),
+)
 
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration', () => ({
     useStoreIntegration: jest.fn(),
 }))
 
-const useAppSelectorMock = useAppSelector as jest.Mock
+const useInstallationStatusMock = useInstallationStatus as jest.Mock
 const useStoreIntegrationMock = useStoreIntegration as jest.Mock
 
 describe('useShopifyCheckoutChatInstallation', () => {
@@ -28,7 +30,7 @@ describe('useShopifyCheckoutChatInstallation', () => {
     }
 
     beforeEach(() => {
-        useAppSelectorMock.mockReturnValue({
+        useInstallationStatusMock.mockReturnValue({
             installedOnShopifyCheckout: false,
         })
         useStoreIntegrationMock.mockReturnValue({
@@ -39,7 +41,9 @@ describe('useShopifyCheckoutChatInstallation', () => {
 
     it('returns correct data when Shopify integration exists and chat is installed', () => {
         // Given
-        useAppSelectorMock.mockReturnValue({ installedOnShopifyCheckout: true })
+        useInstallationStatusMock.mockReturnValue({
+            installedOnShopifyCheckout: true,
+        })
 
         // When
         const result = useShopifyCheckoutChatInstallation(mockIntegration)
