@@ -29,11 +29,9 @@ jest.mock('pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking', () => ({
 }))
 
 jest.mock(
-    'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton',
+    'pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton',
     () => ({
-        AnalyticsOverviewDownloadButton: () => (
-            <div>AnalyticsOverviewDownloadButton</div>
-        ),
+        DashboardExportButton: () => <div>DashboardExportButton</div>,
     }),
 )
 
@@ -121,9 +119,7 @@ describe('AnalyticsOverviewLayout', () => {
     it('should render download button', () => {
         renderComponent()
 
-        expect(
-            screen.getByText('AnalyticsOverviewDownloadButton'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('DashboardExportButton')).toBeInTheDocument()
     })
 
     it('should render filters panel', () => {

@@ -1,8 +1,7 @@
 import type { RefObject } from 'react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import cn from 'classnames'
-import moment from 'moment'
 
 import { Box, Button, ButtonSize, Icon, IconName } from '@gorgias/axiom'
 
@@ -14,53 +13,76 @@ import {
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
+import { reportError } from 'utils/errors'
 
-import css from './AnalyticsOverviewDownloadButton.less'
+import css from './DashboardExportButton.less'
 
 type CsvExportHook = {
     triggerDownload: () => Promise<void>
     isLoading: boolean
 }
 
-type AnalyticsOverviewDownloadButtonProps = {
+type DashboardExportButtonProps = {
     contentRef: RefObject<HTMLElement>
     useCsvExport: () => CsvExportHook
     pdfFileName?: string
 }
 
-export const AnalyticsOverviewDownloadButton = ({
+type LazyCsvExporterProps = {
+    useCsvExport: () => CsvExportHook
+    onDone: () => void
+}
+
+const LazyCsvExporter = ({ useCsvExport, onDone }: LazyCsvExporterProps) => {
+    const { triggerDownload, isLoading } = useCsvExport()
+    const onDoneRef = useRef(onDone)
+    const hasTriggered = useRef(false)
+
+    useEffect(() => {
+        onDoneRef.current = onDone
+    })
+
+    useEffect(() => {
+        if (isLoading || hasTriggered.current) return
+        hasTriggered.current = true
+        triggerDownload()
+            .catch(reportError)
+            .finally(() => onDoneRef.current())
+    }, [isLoading, triggerDownload])
+
+    return null
+}
+
+export const DashboardExportButton = ({
     contentRef,
     useCsvExport,
     pdfFileName,
-}: AnalyticsOverviewDownloadButtonProps) => {
+}: DashboardExportButtonProps) => {
     const { onExport } = useAiAgentAnalyticsDashboardTracking()
 
     const buttonRef = useRef<HTMLButtonElement>(null)
     const [isOpen, setIsOpen] = useState(false)
-    const [isExporting, setIsExporting] = useState(false)
+    const [isCsvExporting, setIsCsvExporting] = useState(false)
 
     const { exportToPDF, isLoading: isPdfLoading } = useExportDashboardToPDF()
-    const { triggerDownload: exportToCSV, isLoading: isCsvLoading } =
-        useCsvExport()
 
-    const isDataLoading = isCsvLoading
-    const isExportInProgress = isPdfLoading || isExporting
+    const isExportInProgress = isPdfLoading || isCsvExporting
 
-    const handleExportCSV = async () => {
-        onExport({ format: ExportFormat.PDF })
-        setIsExporting(true)
-        try {
-            await exportToCSV()
-        } finally {
-            setIsExporting(false)
-        }
+    const handleExportCSV = () => {
+        onExport({ format: ExportFormat.CSV })
+        setIsCsvExporting(true)
     }
 
     const handleExportPDF = async () => {
+        onExport({ format: ExportFormat.PDF })
         const filename = pdfFileName
-            ? `${pdfFileName}-${moment().format('YYYY-MM-DD')}.pdf`
+            ? `${pdfFileName}-${new Date().toISOString().slice(0, 10)}.pdf`
             : undefined
-        await exportToPDF(contentRef, filename)
+        try {
+            await exportToPDF(contentRef, filename)
+        } catch (error) {
+            reportError(error)
+        }
     }
 
     const getButtonContent = () => {
@@ -72,13 +94,19 @@ export const AnalyticsOverviewDownloadButton = ({
 
     return (
         <div data-pdf-exclude>
+            {isCsvExporting && (
+                <LazyCsvExporter
+                    useCsvExport={useCsvExport}
+                    onDone={() => setIsCsvExporting(false)}
+                />
+            )}
             <Box className={css.buttonWrapper}>
                 <Button
                     ref={buttonRef}
                     variant="primary"
                     size={ButtonSize.Md}
                     onClick={() => setIsOpen(!isOpen)}
-                    isDisabled={isDataLoading || isExportInProgress}
+                    isDisabled={isExportInProgress}
                     leadingSlot={IconName.Download}
                 >
                     <Box display="flex" alignItems="center">

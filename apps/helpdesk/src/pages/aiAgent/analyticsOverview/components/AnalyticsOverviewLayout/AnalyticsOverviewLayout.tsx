@@ -10,7 +10,7 @@ import { FilterKey } from 'domains/reporting/models/stat/types'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
 import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPage'
 import { AnalyticsOverviewReportConfig } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
-import { AnalyticsOverviewDownloadButton } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton'
+import { DashboardExportButton } from 'pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton'
 import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
 import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
 import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
@@ -41,7 +41,7 @@ export const AnalyticsOverviewLayout = () => {
             ref={contentRef}
             title="Overview"
             titleExtra={
-                <AnalyticsOverviewDownloadButton
+                <DashboardExportButton
                     contentRef={contentRef}
                     useCsvExport={useExportAnalyticsOverviewToCSV}
                 />

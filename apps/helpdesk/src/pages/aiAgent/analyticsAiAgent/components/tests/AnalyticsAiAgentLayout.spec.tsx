@@ -39,9 +39,9 @@ jest.mock('pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking', () => ({
 }))
 
 jest.mock(
-    'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton',
+    'pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton',
     () => ({
-        AnalyticsOverviewDownloadButton: () => (
+        DashboardExportButton: () => (
             <div data-testid="download-button">Download</div>
         ),
     }),

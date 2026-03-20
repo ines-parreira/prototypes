@@ -10,7 +10,7 @@ import { FilterKey } from 'domains/reporting/models/stat/types'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper'
 import { AnalyticsPage } from 'domains/reporting/pages/common/layout/AnalyticsPage'
 import { useSearchParam } from 'hooks/useSearchParam'
-import { AnalyticsOverviewDownloadButton } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewDownloadButton/AnalyticsOverviewDownloadButton'
+import { DashboardExportButton } from 'pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton'
 import { DashboardLayoutRenderer } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/DashboardLayoutRenderer'
 import {
     ManagedDashboardId,
@@ -170,7 +170,7 @@ export const AnalyticsAiAgentLayout = () => {
             ref={contentRef}
             title="AI Agent"
             titleExtra={
-                <AnalyticsOverviewDownloadButton
+                <DashboardExportButton
                     key={activeTab}
                     contentRef={contentRef}
                     useCsvExport={useCsvExport}
