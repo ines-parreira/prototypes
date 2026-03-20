@@ -196,6 +196,14 @@ export const METRIC_NAMES = {
         'ai-agent-shopping-assistant-revenue-per-interaction',
     AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS:
         'ai-agent-shopping-assistant-product-recommendations',
+    AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_OFFERED:
+        'ai-agent-shopping-assistant-discount-codes-offered',
+    AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_DISCOUNT_AMOUNT:
+        'ai-agent-shopping-assistant-average-discount-amount',
+    AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_USAGE:
+        'ai-agent-shopping-assistant-discount-usage',
+    AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_APPLIED:
+        'ai-agent-shopping-assistant-discount-codes-applied',
     // Agent Experience
     AGENTXP_ONLINE_TIME: 'agentxp-online-time',
     AGENTXP_ONLINE_TIME_PER_AGENT: 'agentxp-online-time-per-agent',
@@ -948,7 +956,12 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
     ],
-    [MetricScope.AiSalesAgentDiscounts]: [],
+    [MetricScope.AiSalesAgentDiscounts]: [
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_OFFERED,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_DISCOUNT_AMOUNT,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_USAGE,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_APPLIED,
+    ],
     [MetricScope.FlowDataset]: [
         METRIC_NAMES.FLOW_DATASET_HANDOVER_INTERACTIONS,
     ],

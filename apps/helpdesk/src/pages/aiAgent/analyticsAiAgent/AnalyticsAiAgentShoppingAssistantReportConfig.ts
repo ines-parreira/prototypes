@@ -1,10 +1,6 @@
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchAiAgentSalesHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentSalesHandoverInteractionsTrend'
 import { fetchAverageOrderValueTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useAverageOrderValueTrend'
-import { fetchDiscountCodesAppliedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesAppliedTrend'
-import { fetchDiscountCodesAverageValueTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesAverageValueTrend'
-import { fetchDiscountCodesOfferedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesOfferedTrend'
-import { fetchDiscountCodesRateAppliedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesRateAppliedTrend'
 import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { fetchMedianPurchaseTimeTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useMedianPerchaseTimeTrend'
 import { fetchProductBuyRateTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useProductBuyRateTrend'
@@ -39,6 +35,10 @@ import { TotalSalesByProductComboChart } from 'pages/aiAgent/analyticsAiAgent/ch
 import { fetchAiSalesAgentConversionRateTrend } from 'pages/aiAgent/analyticsAiAgent/charts/useAiSalesAgentConversionRateTrend'
 import { ShoppingAssistantChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable'
 import { ShoppingAssistantTopProductsTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable'
+import { fetchAiAgentAverageDiscountAmountTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAverageDiscountAmountTrend'
+import { fetchAiAgentDiscountCodesAppliedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentDiscountCodesAppliedTrend'
+import { fetchAiAgentDiscountsOfferedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentDiscountsOfferedTrend'
+import { fetchAiAgentDiscountUsageTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentDiscountUsageTrend'
 import { fetchAiAgentProductRecommendationsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentProductRecommendationsTrend'
 import { fetchRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
 import { STATS_ROUTES } from 'routes/constants'
@@ -158,7 +158,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                     csvProducer: [
                         {
                             type: DataExportFormat.Trend,
-                            fetch: fetchDiscountCodesAverageValueTrend,
+                            fetch: fetchAiAgentAverageDiscountAmountTrend,
                             metricFormat: 'currency',
                         },
                     ],
@@ -190,7 +190,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchDiscountCodesRateAppliedTrend,
+                        fetch: fetchAiAgentDiscountUsageTrend,
                         metricFormat: 'decimal-to-percent',
                     },
                 ],
@@ -206,7 +206,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchDiscountCodesAppliedTrend,
+                        fetch: fetchAiAgentDiscountCodesAppliedTrend,
                         metricFormat: 'decimal',
                     },
                 ],
@@ -222,7 +222,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchDiscountCodesOfferedTrend,
+                        fetch: fetchAiAgentDiscountsOfferedTrend,
                         metricFormat: 'decimal',
                     },
                 ],

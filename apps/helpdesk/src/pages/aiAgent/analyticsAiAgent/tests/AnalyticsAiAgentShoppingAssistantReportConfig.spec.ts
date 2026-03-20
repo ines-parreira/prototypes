@@ -104,6 +104,49 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(config.csvProducer).not.toBeNull()
     })
 
+    it('should have discount codes applied card config', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Discount codes applied')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('decimal')
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
+    })
+
+    it('should have discounts offered card config', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.DiscountsOfferedCard
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Discount offered')
+        expect(config.chartType).toBe(ChartType.Card)
+        expect(config.metricFormat).toBe('decimal')
+        expect(config.csvProducer).not.toBeNull()
+    })
+
+    it('should have fetch function for discounts offered trend', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.DiscountsOfferedCard
+            ]
+
+        expect(config.csvProducer).toBeDefined()
+        expect(config.csvProducer).toHaveLength(1)
+
+        const csvProducer = config.csvProducer?.[0]
+        expect(csvProducer).toBeDefined()
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
+    })
+
     it('should have handover interactions card config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
@@ -252,6 +295,21 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
                 AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard
+            ]
+
+        expect(config.csvProducer).toBeDefined()
+        expect(config.csvProducer).toHaveLength(1)
+
+        const csvProducer = config.csvProducer?.[0]
+        expect(csvProducer).toBeDefined()
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
+    })
+
+    it('should have fetch function for discount codes applied trend', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart.DiscountCodesAppliedCard
             ]
 
         expect(config.csvProducer).toBeDefined()

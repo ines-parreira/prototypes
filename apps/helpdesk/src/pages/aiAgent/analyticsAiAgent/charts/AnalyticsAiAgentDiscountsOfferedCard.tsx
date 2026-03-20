@@ -1,8 +1,8 @@
 import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
-import { useDiscountCodesOfferedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useDiscountCodesOfferedTrend'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import { useAiAgentDiscountsOfferedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentDiscountsOfferedTrend'
 
 export const AnalyticsAiAgentDiscountsOfferedCard = ({
     chartId,
@@ -13,7 +13,7 @@ export const AnalyticsAiAgentDiscountsOfferedCard = ({
         chartConfig: chartConfig!,
         chartId,
         dashboard,
-        useTrend: useDiscountCodesOfferedTrend,
+        useTrend: useAiAgentDiscountsOfferedTrend,
         isAiAgentTrendCard: true,
     })
 
