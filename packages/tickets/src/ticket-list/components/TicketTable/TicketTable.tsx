@@ -233,7 +233,7 @@ export function TicketTable({ viewId, currentUserId, onFixFilters }: Props) {
                 columnEditing={{
                     enable: true,
                     defaultVisibleColumns,
-                    onChange: onColumnVisibilityChange,
+                    onVisibleColumnsChange: onColumnVisibilityChange,
                 }}
                 renderEmptyState={() => (
                     <TicketListEmptyPlaceholder
