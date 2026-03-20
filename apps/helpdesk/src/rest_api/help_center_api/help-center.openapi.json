@@ -4244,6 +4244,26 @@
                 "tags": ["auth"]
             }
         },
+        "/api/help-center/auth/abilities": {
+            "get": {
+                "operationId": "getAgentAbilities",
+                "summary": "Get CASL ability rules for the authenticated agent",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AgentAbilityRulesDto"
+                                }
+                            }
+                        }
+                    }
+                },
+                "tags": ["auth"]
+            }
+        },
         "/api/help-center/help-centers/{help_center_id}/file-ingestion": {
             "post": {
                 "operationId": "createFileIngestion",
@@ -4530,86 +4550,6 @@
                 "tags": ["import-csv"]
             }
         },
-        "/api/help-center/help-centers/{help_center_id}/import/hotswap/token": {
-            "post": {
-                "operationId": "createHotswapSessionToken",
-                "summary": "Generate hotswap session token",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "number" }
-                    }
-                ],
-                "responses": {
-                    "201": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HotswapResponseDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["import-hotswap"]
-            }
-        },
-        "/api/help-center/help-centers/{help_center_id}/import/hotswap/complete": {
-            "post": {
-                "operationId": "complete",
-                "summary": "Webhook called by hotswap when import is completed",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "number" }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/HotswapWebhookDto"
-                            }
-                        }
-                    }
-                },
-                "responses": { "201": { "description": "" } },
-                "tags": ["import-hotswap"]
-            }
-        },
-        "/api/help-center/help-centers/{help_center_id}/import/hotswap/status": {
-            "get": {
-                "operationId": "getHotswapStatus",
-                "summary": "Get hotswap import status",
-                "parameters": [
-                    {
-                        "name": "help_center_id",
-                        "required": true,
-                        "in": "path",
-                        "schema": { "type": "number" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HotswapProgressDto"
-                                }
-                            }
-                        }
-                    }
-                },
-                "tags": ["import-hotswap"]
-            }
-        },
         "/api/help-center/help-centers/{help_center_id}/ingested-resources/{article_ingestion_log_id}": {
             "get": {
                 "operationId": "listIngestedResources",
@@ -4881,6 +4821,83 @@
                 },
                 "responses": { "204": { "description": "" } },
                 "tags": ["ingestion"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/intents": {
+            "get": {
+                "operationId": "listIntents",
+                "summary": "List all intents for a help center",
+                "description": "List all intents for a help center.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved all intents for the help center",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ListIntentsResponseDto"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Help center does not belong to the authenticated account"
+                    },
+                    "404": { "description": "Help center not found" }
+                },
+                "tags": ["intents"]
+            }
+        },
+        "/api/help-center/help-centers/{help_center_id}/intents/{intent}": {
+            "put": {
+                "operationId": "updateIntentStatus",
+                "summary": "Update the status of an unlinked intent",
+                "description": "Update the status of an unlinked intent.",
+                "parameters": [
+                    {
+                        "name": "help_center_id",
+                        "required": true,
+                        "in": "path",
+                        "schema": { "type": "number" }
+                    },
+                    {
+                        "name": "intent",
+                        "required": true,
+                        "in": "path",
+                        "description": "The intent name (e.g., \"order::status\")",
+                        "schema": { "type": "string" }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateIntentStatusDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Intent status updated successfully"
+                    },
+                    "400": {
+                        "description": "Cannot update status of a linked intent"
+                    },
+                    "403": {
+                        "description": "Help center does not belong to the authenticated account"
+                    },
+                    "404": { "description": "Help center not found" }
+                },
+                "tags": ["intents"]
             }
         },
         "/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config": {
@@ -7107,13 +7124,21 @@
                         "type": "number",
                         "description": "The ID of the user publishing this translation. Required when using API key authentication."
                     },
+                    "title": {
+                        "type": "string",
+                        "description": "Optional title override for the rebased published version.",
+                        "maxLength": 255
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Optional content override for the rebased published version."
+                    },
                     "commit_message": {
                         "type": "string",
                         "description": "Optional commit message describing the publication.",
                         "maxLength": 280
                     }
-                },
-                "required": ["intents"]
+                }
             },
             "ArticleTranslationVersionResponseDto": {
                 "type": "object",
@@ -7650,10 +7675,6 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "hotswap_session_token": {
-                        "type": "string",
-                        "nullable": true
-                    },
                     "source": {
                         "nullable": false,
                         "enum": ["automation", "manual"],
@@ -7723,7 +7744,6 @@
                     "shop_name",
                     "shop_integration_id",
                     "self_service_deactivated_datetime",
-                    "hotswap_session_token",
                     "source",
                     "gaid",
                     "email_integration",
@@ -8085,10 +8105,6 @@
                         "type": "string",
                         "nullable": true
                     },
-                    "hotswap_session_token": {
-                        "type": "string",
-                        "nullable": true
-                    },
                     "source": {
                         "nullable": false,
                         "enum": ["automation", "manual"],
@@ -8170,7 +8186,6 @@
                     "shop_name",
                     "shop_integration_id",
                     "self_service_deactivated_datetime",
-                    "hotswap_session_token",
                     "source",
                     "gaid",
                     "email_integration",
@@ -10153,6 +10168,32 @@
                 },
                 "required": ["access_token", "token_type"]
             },
+            "AbilityRuleDto": {
+                "type": "object",
+                "properties": {
+                    "action": {
+                        "example": "manage",
+                        "oneOf": [
+                            { "type": "string" },
+                            { "type": "array", "items": { "type": "string" } }
+                        ]
+                    },
+                    "subject": { "type": "string", "example": "all" }
+                },
+                "required": ["action", "subject"]
+            },
+            "AgentAbilityRulesDto": {
+                "type": "object",
+                "properties": {
+                    "rules": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AbilityRuleDto"
+                        }
+                    }
+                },
+                "required": ["rules"]
+            },
             "CreateFileIngestionLogDto": {
                 "type": "object",
                 "properties": {
@@ -10520,52 +10561,6 @@
                 },
                 "required": ["result"]
             },
-            "HotswapResponseDto": {
-                "type": "object",
-                "properties": {
-                    "token": {
-                        "type": "string",
-                        "description": "Session token generated for hotswap widget",
-                        "example": "abcdef-abcdef-abcdef-abcdef"
-                    }
-                },
-                "required": ["token"]
-            },
-            "HotswapWebhookDto": {
-                "type": "object",
-                "properties": {
-                    "session_id": {
-                        "type": "string",
-                        "description": "Session id generated by hotswap service"
-                    },
-                    "progress": {
-                        "description": "Status of import",
-                        "enum": [
-                            "FAILURE",
-                            "IN_PROGRESS",
-                            "NOT_STARTED",
-                            "SUCCESS"
-                        ],
-                        "type": "string"
-                    }
-                },
-                "required": ["session_id", "progress"]
-            },
-            "HotswapProgressDto": {
-                "type": "object",
-                "properties": {
-                    "progress": {
-                        "type": "string",
-                        "enum": [
-                            "FAILURE",
-                            "IN_PROGRESS",
-                            "NOT_STARTED",
-                            "SUCCESS"
-                        ]
-                    }
-                },
-                "required": ["progress"]
-            },
             "IngestedResourceListDataDto": {
                 "type": "object",
                 "properties": {
@@ -10772,6 +10767,164 @@
                 "type": "object",
                 "properties": { "defaultDatasetId": { "type": "string" } },
                 "required": ["defaultDatasetId"]
+            },
+            "ArticleInIntentDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "description": "The article ID",
+                        "example": 123
+                    },
+                    "locale": {
+                        "type": "string",
+                        "description": "The locale code of the article translation",
+                        "example": "en-US"
+                    },
+                    "article_translation_version_id": {
+                        "type": "number",
+                        "description": "The article translation version ID",
+                        "example": 456
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "The title of the article",
+                        "example": "How to cancel an order"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "The status of the article version",
+                        "example": "published",
+                        "enum": ["published", "draft"]
+                    },
+                    "template_key": {
+                        "type": "string",
+                        "nullable": true,
+                        "description": "The template key used when creating the article",
+                        "example": "ai_skill_1"
+                    }
+                },
+                "required": [
+                    "id",
+                    "locale",
+                    "article_translation_version_id",
+                    "title",
+                    "status",
+                    "template_key"
+                ]
+            },
+            "IntentResponseDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "description": "The intent name",
+                        "example": "order::status",
+                        "enum": [
+                            "account::deletion",
+                            "account::login",
+                            "account::other",
+                            "account::registration",
+                            "account::update",
+                            "exchange::other",
+                            "exchange::request",
+                            "exchange::status",
+                            "feedback::negative",
+                            "feedback::other",
+                            "feedback::positive",
+                            "marketing::advertising",
+                            "marketing::collaboration",
+                            "marketing::other",
+                            "marketing::unsubscribe",
+                            "order::cancel",
+                            "order::damaged",
+                            "order::edit",
+                            "order::missing item",
+                            "order::other",
+                            "order::payment",
+                            "order::placement",
+                            "order::refund",
+                            "order::status",
+                            "order::wrong item",
+                            "other::no reply",
+                            "other::other",
+                            "other::spam",
+                            "product::availability",
+                            "product::customization",
+                            "product::details",
+                            "product::other",
+                            "product::quality issues",
+                            "product::usage",
+                            "promotion & discount::information",
+                            "promotion & discount::issue",
+                            "promotion & discount::other",
+                            "return::information",
+                            "return::other",
+                            "return::request",
+                            "return::status",
+                            "shipping::change address",
+                            "shipping::delay",
+                            "shipping::delivered not received",
+                            "shipping::information",
+                            "shipping::other",
+                            "subscription::cancel",
+                            "subscription::information",
+                            "subscription::modification",
+                            "subscription::other",
+                            "warranty::claim",
+                            "warranty::information",
+                            "warranty::other",
+                            "wholesale::information",
+                            "wholesale::other"
+                        ],
+                        "type": "string"
+                    },
+                    "status": {
+                        "description": "The status of the intent\n- 'linked': Intent is linked to one published articles\n- 'not_linked': Intent has no linked articles but is enabled for AI agent use (default)\n- 'handover': Intent has no linked articles and should hand over to human agent",
+                        "example": "linked",
+                        "enum": ["handover", "linked", "not_linked"],
+                        "type": "string"
+                    },
+                    "help_center_id": {
+                        "type": "number",
+                        "description": "The help center ID where this intent belongs",
+                        "example": 789
+                    },
+                    "articles": {
+                        "description": "List of articles linked to this intent\nEmpty array for orphan intents",
+                        "example": "[{ id: 123, locale: \"en-US\", article_translation_version_id: 456, title: \"How to cancel\", status: \"published\" }]",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ArticleInIntentDto"
+                        }
+                    }
+                },
+                "required": ["name", "status", "help_center_id", "articles"]
+            },
+            "ListIntentsResponseDto": {
+                "type": "object",
+                "properties": {
+                    "intents": {
+                        "description": "List of all intents for the shop",
+                        "example": "[{ name: \"order::status\", status: \"linked\", articles: [...] }]",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/IntentResponseDto"
+                        }
+                    }
+                },
+                "required": ["intents"]
+            },
+            "UpdateIntentStatusDto": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "The new status for the unlinked intent",
+                        "example": "handover",
+                        "enum": ["not_linked", "handover"]
+                    }
+                },
+                "required": ["status"]
             },
             "MailtoReplacementConfigGetDto": {
                 "type": "object",

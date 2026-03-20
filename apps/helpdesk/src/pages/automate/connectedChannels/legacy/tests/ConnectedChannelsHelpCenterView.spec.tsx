@@ -57,7 +57,6 @@ const mockHelpCenterChannels: SelfServiceHelpCenterChannel[] = [
             },
             favicon_url: null,
             gaid: null,
-            hotswap_session_token: null,
             id: 42,
             name: 'Acme2',
             powered_by_deactivated_datetime: null,

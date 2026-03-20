@@ -54,6 +54,7 @@ import {
     getKnowledgeStatus,
     listArticleTranslationVersions,
     listIngestedResources,
+    listIntents,
     startIngestion,
     updateAllIngestedResourcesStatus,
     updateArticleTranslation,
@@ -207,6 +208,8 @@ export const helpCenterKeys = {
             'translation-intents',
             locale,
         ] as const,
+    intents: (helpCenterId: number) =>
+        [...helpCenterKeys.detail(helpCenterId), 'intents'] as const,
     articleTranslationVersion: (
         helpCenterId: number,
         articleId: number,
@@ -1451,6 +1454,26 @@ export const useGetArticleTranslationIntents = (
             pathParams.help_center_id !== undefined &&
             pathParams.article_id !== undefined &&
             !!pathParams.locale &&
+            (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useListIntents = (
+    helpCenterId: Paths.ListIntents.Parameters.HelpCenterId,
+    overrides?: UseQueryOptions<Awaited<ReturnType<typeof listIntents>>>,
+) => {
+    const { client } = useHelpCenterApi()
+
+    return useQuery({
+        queryKey: helpCenterKeys.intents(helpCenterId),
+        queryFn: async () =>
+            listIntents(client, { help_center_id: helpCenterId }),
+        staleTime: STALE_TIME,
+        cacheTime: CACHE_TIME,
+        ...overrides,
+        enabled:
+            !!client &&
+            helpCenterId !== undefined &&
             (overrides === undefined || overrides.enabled),
     })
 }

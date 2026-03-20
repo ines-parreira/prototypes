@@ -37,6 +37,7 @@ import {
     useGetMultipleHelpCenter,
     useGetMultipleHelpCenterArticleLists,
     useListIngestedResources,
+    useListIntents,
     useStartIngestion,
     useUpdateAllIngestedResourcesStatus,
     useUpdateIngestedResource,
@@ -74,6 +75,7 @@ const getFileIngestionArticleTitlesAndStatus = jest.spyOn(
     'getFileIngestionArticleTitlesAndStatus',
 )
 const getKnowledgeStatus = jest.spyOn(resources, 'getKnowledgeStatus')
+const listIntents = jest.spyOn(resources, 'listIntents')
 
 const queryClient = mockQueryClient()
 const wrapper = ({ children }: any) => (
@@ -2557,6 +2559,79 @@ describe('queries', () => {
                 { help_center_id: helpCenterId },
                 { ...baseQueryParams, per_page: pageSize, page: totalPages },
             )
+        })
+    })
+
+    describe('useListIntents', () => {
+        const helpCenterId = 1
+
+        beforeEach(() => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: {} as HelpCenterClient,
+                isReady: true,
+            })
+        })
+
+        it('should return intents data on success', async () => {
+            const mockIntentsResponse = {
+                intents: [
+                    {
+                        id: 1,
+                        name: 'Shipping Policy',
+                        status: 'linked' as const,
+                        article_id: 101,
+                        article_unlisted_id: 'abc123',
+                    },
+                    {
+                        id: 2,
+                        name: 'Return Policy',
+                        status: 'unlinked' as const,
+                        article_id: null,
+                        article_unlisted_id: null,
+                    },
+                ],
+            }
+
+            listIntents.mockResolvedValue(mockIntentsResponse)
+
+            const { result } = renderHook(() => useListIntents(helpCenterId), {
+                wrapper,
+            })
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+            expect(result.current.data).toEqual(mockIntentsResponse)
+            expect(listIntents).toHaveBeenCalledWith(expect.any(Object), {
+                help_center_id: helpCenterId,
+            })
+        })
+
+        it('should not call the api function when client is not set', () => {
+            mockUseHelpCenterApi.mockReturnValue({
+                client: undefined,
+                isReady: false,
+            })
+
+            renderHook(() => useListIntents(helpCenterId), {
+                wrapper,
+            })
+
+            expect(listIntents).not.toHaveBeenCalled()
+        })
+
+        it('should not call the api function when enabled is false', () => {
+            renderHook(() => useListIntents(helpCenterId, { enabled: false }), {
+                wrapper,
+            })
+
+            expect(listIntents).not.toHaveBeenCalled()
+        })
+
+        it('should not call the api function when helpCenterId is undefined', () => {
+            renderHook(() => useListIntents(undefined as any), {
+                wrapper,
+            })
+
+            expect(listIntents).not.toHaveBeenCalled()
         })
     })
 })

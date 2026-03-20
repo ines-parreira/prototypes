@@ -458,3 +458,12 @@ export const getArticleTranslationIntents = async (
     const response = await client.getArticleTranslationIntents(pathParams)
     return response.data
 }
+
+export const listIntents = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.ListIntents.PathParameters,
+) => {
+    if (!client) return null
+    const response = await client.listIntents(pathParams)
+    return response.data
+}
