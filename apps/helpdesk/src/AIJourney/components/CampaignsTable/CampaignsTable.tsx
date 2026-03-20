@@ -17,7 +17,6 @@ import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
-import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useCreateNewJourney } from 'AIJourney/queries'
@@ -238,20 +237,6 @@ export default function CampaignsTable<TData, TValue>({
                                         variant="tertiary"
                                     >
                                         Edit table
-                                    </Button>
-                                ),
-                            },
-                            {
-                                key: 'create',
-                                content: (
-                                    <Button
-                                        onClick={() =>
-                                            history.push(
-                                                `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
-                                            )
-                                        }
-                                    >
-                                        Create campaign
                                     </Button>
                                 ),
                             },

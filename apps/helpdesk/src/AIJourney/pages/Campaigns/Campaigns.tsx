@@ -3,8 +3,9 @@ import { useMemo, useState } from 'react'
 import { useLocalStorage } from '@repo/hooks'
 import { ConfigureMetricsModal } from '@repo/reporting'
 import type { MetricConfigItem } from '@repo/reporting'
+import { useHistory } from 'react-router-dom'
 
-import { Box, Heading } from '@gorgias/axiom'
+import { Box, Button, PageHeader } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 
@@ -14,6 +15,7 @@ import {
     columns,
     metricColumns,
 } from 'AIJourney/components/CampaignsTable/Columns'
+import { JOURNEY_TYPES, STEPS_NAMES } from 'AIJourney/constants'
 import {
     DEFAULT_TABLE_METRICS,
     LOADING_TABLE_METRICS,
@@ -39,7 +41,10 @@ export const Campaigns = () => {
         campaigns,
         isLoadingJourneys: isLoadingCampaigns,
         currentIntegration,
+        shopName,
     } = useJourneyContext()
+
+    const history = useHistory()
 
     const integrationId = useMemo(() => {
         return currentIntegration?.id || 0
@@ -123,9 +128,17 @@ export const Campaigns = () => {
 
     return (
         <Box m="md" width="100%" flexDirection="column">
-            <Heading className={css.header} size="xl">
-                Campaigns
-            </Heading>
+            <PageHeader title="Campaigns">
+                <Button
+                    onClick={() =>
+                        history.push(
+                            `/app/ai-journey/${shopName}/${JOURNEY_TYPES.CAMPAIGN}/${STEPS_NAMES.SETUP}`,
+                        )
+                    }
+                >
+                    Create campaign
+                </Button>
+            </PageHeader>
 
             <Box
                 m="md"

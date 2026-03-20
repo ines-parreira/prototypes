@@ -1,6 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -48,6 +49,14 @@ jest.mock(
 jest.mock('domains/reporting/pages/common/filters/FiltersPanelWrapper', () => ({
     __esModule: true,
     default: () => <div data-testid="filters-panel-wrapper" />,
+}))
+
+const mockHistoryPush = jest.fn()
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({
+        push: mockHistoryPush,
+    }),
 }))
 
 describe('<Campaigns />', () => {
@@ -264,6 +273,39 @@ describe('<Campaigns />', () => {
                 enabled: true,
                 journeyIds: ['1', '2'],
             }),
+        )
+    })
+    it('should navigate to campaign setup page when clicking on Create campaign', async () => {
+        mockUseJourneyContext.mockReturnValue({
+            shopName: 'test-shop',
+            campaigns: [
+                { id: '1', campaign: { title: 'Campaign 1', state: 'active' } },
+                {
+                    id: '2',
+                    campaign: { title: 'Campaign 2', state: 'inactive' },
+                },
+            ],
+            isLoadingJourneys: false,
+            isLoadingIntegrations: false,
+            currentIntegration: { id: 1, name: 'Test Integration' },
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Campaigns />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        const user = userEvent.setup()
+        const createCampaignButton = screen.getByText('Create campaign')
+        await act(() => user.click(createCampaignButton))
+
+        expect(mockHistoryPush).toHaveBeenCalledWith(
+            '/app/ai-journey/test-shop/campaign/setup',
         )
     })
 })

@@ -6,7 +6,7 @@ import type { MetricConfigItem } from '@repo/reporting'
 import { ConfigureMetricsModal } from '@repo/reporting'
 
 import type { ColumnDef } from '@gorgias/axiom'
-import { Box, Heading } from '@gorgias/axiom'
+import { Box, PageHeader } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
@@ -171,9 +171,7 @@ export const Flows = () => {
 
     return (
         <Box m="md" width="100%" flexDirection="column">
-            <Heading className={css.header} size="xl">
-                Flows
-            </Heading>
+            <PageHeader title="Flows" />
             <Box
                 m="md"
                 padding="xs"
