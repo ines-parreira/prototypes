@@ -3,6 +3,7 @@ import type { MetricTrendFormat, TrendDirection } from '@repo/reporting'
 import type { Tag } from '@gorgias/helpdesk-queries'
 
 import type { User } from 'config/types/user'
+import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import type { MetricPerDimensionFetch } from 'domains/reporting/hooks/distributions'
 import type { TagSelection } from 'domains/reporting/hooks/tags/useTagResultsSelection'
 import type { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
@@ -89,6 +90,8 @@ export type DashboardChartSchema = {
     config_id: string
     metadata?: {
         layout?: ChartLayoutMetadata
+        savedMeasure?: string | null
+        savedDimension?: string | null
     }
 }
 
@@ -118,6 +121,8 @@ export enum DataExportFormat {
     TimeSeriesPerDimension = 'time-series-per-dimension',
     Distribution = 'distribution',
     Table = 'table',
+    ConfigurableBarGraph = 'configurable-bar-graph',
+    ConfigurableLineGraph = 'configurable-line-graph',
 }
 
 export type DistributionDataExportFetch = {
@@ -181,6 +186,12 @@ export type DataExportFetch =
           title: string
           headers: string[]
           dimensions: string[]
+      }
+    | {
+          type:
+              | DataExportFormat.ConfigurableBarGraph
+              | DataExportFormat.ConfigurableLineGraph
+          fetch: ConfigurableGraphFetch
       }
 
 export interface DashboardChartProps {

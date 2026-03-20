@@ -1,7 +1,36 @@
-import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
+import {
+    ChartType,
+    DashboardChildType,
+} from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
+import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
+
+const LAYOUT_WITH_GRAPHS: DashboardLayoutConfig = {
+    sections: [
+        {
+            id: 'graphs',
+            type: ChartType.Graph,
+            items: [
+                {
+                    chartId:
+                        AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart,
+                    gridSize: 6,
+                    visibility: true,
+                    measures: ['automationRate'],
+                    dimensions: ['channel'],
+                },
+                {
+                    chartId:
+                        AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendLineChart,
+                    gridSize: 6,
+                    visibility: false,
+                },
+            ],
+        },
+    ],
+}
 
 describe('buildCustomDashboard', () => {
     it('should return a dashboard with the provided name', () => {
@@ -109,6 +138,66 @@ describe('buildCustomDashboard', () => {
         expect(section.children[0]).toEqual({
             type: DashboardChildType.Chart,
             config_id: AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
+            metadata: {
+                savedMeasure: undefined,
+                savedDimension: undefined,
+            },
+        })
+    })
+
+    describe('graph sections', () => {
+        it('should exclude graph sections when isChartsEnabled is false', () => {
+            const result = buildCustomDashboard(
+                'test',
+                LAYOUT_WITH_GRAPHS,
+                false,
+                false,
+            )
+            expect(result.children).toHaveLength(0)
+        })
+
+        it('should include graph sections when isChartsEnabled is true', () => {
+            const result = buildCustomDashboard(
+                'test',
+                LAYOUT_WITH_GRAPHS,
+                false,
+                true,
+            )
+            expect(result.children).toHaveLength(1)
+        })
+
+        it('should include only visible graph items', () => {
+            const result = buildCustomDashboard(
+                'test',
+                LAYOUT_WITH_GRAPHS,
+                false,
+                true,
+            )
+            const section = result.children[0] as {
+                children: { config_id: string }[]
+            }
+            expect(section.children).toHaveLength(1)
+            expect(section.children[0].config_id).toBe(
+                AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart,
+            )
+        })
+
+        it('should set savedMeasure and savedDimension from item measures and dimensions', () => {
+            const result = buildCustomDashboard(
+                'test',
+                LAYOUT_WITH_GRAPHS,
+                false,
+                true,
+            )
+            const section = result.children[0] as {
+                children: {
+                    metadata: { savedMeasure: string; savedDimension: string }
+                }[]
+            }
+            expect(section.children[0].metadata).toEqual({
+                savedMeasure: 'automationRate',
+                savedDimension: 'channel',
+            })
         })
     })
 })

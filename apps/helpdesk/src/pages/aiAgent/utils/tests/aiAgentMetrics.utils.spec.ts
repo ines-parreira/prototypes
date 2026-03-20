@@ -1,9 +1,14 @@
 import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { useStatsMetricPerDimension } from 'domains/reporting/hooks/useStatsMetricPerDimension'
+import {
+    fetchStatsMetricPerDimension,
+    useStatsMetricPerDimension,
+} from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import { getStatsTrendHook } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
+    fetchStatsTimeSeries,
+    fetchStatsTimeSeriesPerDimension,
     useStatsTimeSeries,
     useStatsTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useStatsTimeSeries'
@@ -12,6 +17,8 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 import {
+    fetchConfigurableBarChartDownloadData,
+    fetchConfigurableLineChartDownloadData,
     getBarChartDataHooks,
     getBarChartGraphConfig,
     getLineChartDataHooks,
@@ -33,10 +40,17 @@ jest.mock('domains/reporting/hooks/useStatsTimeSeries')
 jest.mock('pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod')
 
 const useStatsMetricPerDimensionMock = assumeMock(useStatsMetricPerDimension)
+const fetchStatsMetricPerDimensionMock = assumeMock(
+    fetchStatsMetricPerDimension,
+)
 const getStatsTrendHookMock = assumeMock(getStatsTrendHook)
 const useStatsTimeSeriesMock = assumeMock(useStatsTimeSeries)
 const useStatsTimeSeriesPerDimensionMock = assumeMock(
     useStatsTimeSeriesPerDimension,
+)
+const fetchStatsTimeSeriesMock = assumeMock(fetchStatsTimeSeries)
+const fetchStatsTimeSeriesPerDimensionMock = assumeMock(
+    fetchStatsTimeSeriesPerDimension,
 )
 const formatPreviousPeriodMock = assumeMock(formatPreviousPeriod)
 
@@ -1309,5 +1323,395 @@ describe('getLineChartGraphConfig', () => {
         expect(result).toHaveLength(2)
         expect(result[0].measure).toBe('automationRate')
         expect(result[1].measure).toBe('resolvedInteractions')
+    })
+})
+
+describe('fetchConfigurableBarChartDownloadData', () => {
+    const mockBarMetric: BarChartMetricConfig = {
+        measure: 'automationRate',
+        name: 'Automation Rate',
+        metricFormat: 'decimal-to-percent',
+        interpretAs: 'more-is-better',
+        dimensions: ['channel'],
+        queryFactory: mockQuery,
+    }
+
+    const mockBarMetricWithFeatureDimension: BarChartMetricConfig = {
+        measure: 'resolvedInteractions',
+        name: 'Resolved Interactions',
+        metricFormat: 'decimal',
+        interpretAs: 'more-is-better',
+        dimensions: ['automationFeatureType'],
+        queryFactory: mockQuery,
+    }
+
+    beforeEach(() => {
+        mockQuery.mockReturnValue({ query: 'builtQuery' })
+        fetchStatsMetricPerDimensionMock.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [{ dimension: 'chat', value: 42, decile: null }],
+            },
+        })
+    })
+
+    it('selects the metric matching savedMeasure', async () => {
+        const fetch = fetchConfigurableBarChartDownloadData([
+            mockBarMetric,
+            mockBarMetricWithFeatureDimension,
+        ])
+
+        await fetch(
+            'resolvedInteractions',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith(
+            expect.objectContaining({ filters: defaultFilters }),
+        )
+        expect(fetchStatsMetricPerDimensionMock).toHaveBeenCalled()
+    })
+
+    it('falls back to the first metric when savedMeasure does not match', async () => {
+        const fetch = fetchConfigurableBarChartDownloadData([mockBarMetric])
+
+        await fetch(
+            'unknownMeasure',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(fetchStatsMetricPerDimensionMock).toHaveBeenCalled()
+    })
+
+    it('uses savedDimension when provided', async () => {
+        const fetch = fetchConfigurableBarChartDownloadData([mockBarMetric])
+
+        await fetch(
+            'automationRate',
+            'automationFeatureType',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith(
+            expect.objectContaining({
+                dimensions: ['automationFeatureType'],
+            }),
+        )
+    })
+
+    it('falls back to the first metric dimension when savedDimension is null', async () => {
+        const fetch = fetchConfigurableBarChartDownloadData([mockBarMetric])
+
+        await fetch(
+            'automationRate',
+            null,
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith(
+            expect.objectContaining({ dimensions: ['channel'] }),
+        )
+    })
+
+    it('returns files with "Channel" as dimension label for channel dimension', async () => {
+        const fetch = fetchConfigurableBarChartDownloadData([mockBarMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(result).toHaveProperty('files')
+        const fileName = Object.keys(result.files)[0]
+        expect(fileName).toContain('automation-rate')
+    })
+
+    it('returns files with "Feature" as dimension label for automationFeatureType dimension', async () => {
+        fetchStatsMetricPerDimensionMock.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [
+                    {
+                        dimension: AutomationFeatureType.AiAgent,
+                        value: 10,
+                        decile: null,
+                    },
+                ],
+            },
+        })
+
+        const fetch = fetchConfigurableBarChartDownloadData([
+            mockBarMetricWithFeatureDimension,
+        ])
+
+        const result = await fetch(
+            'resolvedInteractions',
+            'automationFeatureType',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(result).toHaveProperty('files')
+    })
+
+    it('returns empty files when API returns no data', async () => {
+        fetchStatsMetricPerDimensionMock.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+            data: null,
+        })
+
+        const fetch = fetchConfigurableBarChartDownloadData([mockBarMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(result.files).toEqual({})
+    })
+
+    it('uses raw dimension name for an unrecognized dimension', async () => {
+        fetchStatsMetricPerDimensionMock.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [
+                    { dimension: 'unknownDim', value: 5, decile: null },
+                ],
+            },
+        })
+
+        const fetch = fetchConfigurableBarChartDownloadData([mockBarMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'unknownDimension' as any,
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(result).toHaveProperty('files')
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('unknownDim')
+    })
+})
+
+describe('fetchConfigurableLineChartDownloadData', () => {
+    const mockLineMetric: LineChartMetricConfig = {
+        measure: 'automationRate',
+        name: 'Automation Rate',
+        metricFormat: 'decimal-to-percent',
+        interpretAs: 'more-is-better',
+        dimensions: ['overall', 'channel'],
+        trendQueryFactory: mockQuery,
+        timeSeriesQueryFactory: mockQuery,
+    }
+
+    const defaultTimeSeries = [
+        [
+            { dateTime: '2025-01-01T00:00:00', value: 10 },
+            { dateTime: '2025-01-02T00:00:00', value: 20 },
+        ],
+    ]
+
+    beforeEach(() => {
+        mockQuery.mockReturnValue({ query: 'builtQuery' })
+        fetchStatsTimeSeriesMock.mockResolvedValue(defaultTimeSeries)
+        fetchStatsTimeSeriesPerDimensionMock.mockResolvedValue({
+            chat: [[{ dateTime: '2025-01-01T00:00:00', value: 5 }]],
+            email: [[{ dateTime: '2025-01-01T00:00:00', value: 15 }]],
+        })
+    })
+
+    it('calls fetchStatsTimeSeries when dimension is "overall"', async () => {
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        await fetch(
+            'automationRate',
+            'overall',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(fetchStatsTimeSeriesMock).toHaveBeenCalled()
+        expect(fetchStatsTimeSeriesPerDimensionMock).not.toHaveBeenCalled()
+    })
+
+    it('calls fetchStatsTimeSeriesPerDimension when dimension is "channel"', async () => {
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        await fetch(
+            'automationRate',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(fetchStatsTimeSeriesPerDimensionMock).toHaveBeenCalled()
+        expect(fetchStatsTimeSeriesMock).not.toHaveBeenCalled()
+    })
+
+    it('calls fetchStatsTimeSeriesPerDimension when dimension is "automationFeatureType"', async () => {
+        fetchStatsTimeSeriesPerDimensionMock.mockResolvedValue({
+            [AutomationFeatureType.AiAgent]: [
+                [{ dateTime: '2025-01-01T00:00:00', value: 7 }],
+            ],
+        })
+
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        await fetch(
+            'automationRate',
+            'automationFeatureType',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(fetchStatsTimeSeriesPerDimensionMock).toHaveBeenCalled()
+    })
+
+    it('falls back to the first metric when savedMeasure does not match', async () => {
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        await fetch(
+            'unknownMeasure',
+            'overall',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(fetchStatsTimeSeriesMock).toHaveBeenCalled()
+    })
+
+    it('falls back to the first metric dimension when savedDimension is null', async () => {
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        await fetch(
+            'automationRate',
+            null,
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(fetchStatsTimeSeriesMock).toHaveBeenCalled()
+    })
+
+    it('passes granularity to the time series query factory for overall dimension', async () => {
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        await fetch(
+            'automationRate',
+            'overall',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Week,
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith(
+            expect.objectContaining({ granularity: ReportingGranularity.Week }),
+        )
+    })
+
+    it('returns files with timeseries data for overall dimension', async () => {
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'overall',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(result).toHaveProperty('files')
+        const fileName = Object.keys(result.files)[0]
+        expect(fileName).toContain('automation-rate-timeseries')
+    })
+
+    it('returns files with multiple timeseries data for channel dimension', async () => {
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(result).toHaveProperty('files')
+        const fileName = Object.keys(result.files)[0]
+        expect(fileName).toContain('automation-rate-timeseries')
+    })
+
+    it('returns empty files when overall time series is empty', async () => {
+        fetchStatsTimeSeriesMock.mockResolvedValue([[]])
+
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'overall',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(result.files).toEqual({})
+    })
+
+    it('uses raw metric name as label for an unrecognized dimension', async () => {
+        fetchStatsTimeSeriesPerDimensionMock.mockResolvedValue({
+            someMetric: [[{ dateTime: '2025-01-01T00:00:00', value: 7 }]],
+        })
+
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'unknownDimension' as any,
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(result).toHaveProperty('files')
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('someMetric')
     })
 })

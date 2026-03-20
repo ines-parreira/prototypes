@@ -20,8 +20,14 @@ import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
-import { AutomationLineChart } from 'pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart'
-import { AutomationRateComboChart } from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
+import {
+    AUTOMATION_LINE_CHART_METRICS,
+    AutomationLineChart,
+} from 'pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart'
+import {
+    AUTOMATION_RATE_BAR_CHART_METRICS,
+    AutomationRateComboChart,
+} from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
 import { FLOWS_TABLE } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/columns'
 import { FlowsTable } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/FlowsTable'
 import { ORDER_MANAGEMENT_TABLE } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/columns'
@@ -31,6 +37,10 @@ import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/compo
 import { fetchPerformanceMetricsPerFeatureReport } from 'pages/aiAgent/analyticsOverview/hooks/fetchPerformanceBreakdownData'
 import { fetchFlowsReport } from 'pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics'
 import { fetchOrderManagementReport } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
+import {
+    fetchConfigurableBarChartDownloadData,
+    fetchConfigurableLineChartDownloadData,
+} from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
 
 export enum AnalyticsOverviewChart {
@@ -170,7 +180,14 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
             [AnalyticsOverviewChart.AutomationRateComboChart]: {
                 chartComponent: AutomationRateComboChart,
                 label: 'Overall automation rate',
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableBarGraph,
+                        fetch: fetchConfigurableBarChartDownloadData(
+                            AUTOMATION_RATE_BAR_CHART_METRICS,
+                        ),
+                    },
+                ],
                 description: 'Breakdown of automation rate by feature',
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal-to-percent',
@@ -189,7 +206,14 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
             [AnalyticsOverviewChart.AutomationLineChart]: {
                 chartComponent: AutomationLineChart,
                 label: 'Overall automation rate',
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableLineGraph,
+                        fetch: fetchConfigurableLineChartDownloadData(
+                            AUTOMATION_LINE_CHART_METRICS,
+                        ),
+                    },
+                ],
                 description: 'Automation metrics trend over time',
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal-to-percent',

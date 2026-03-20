@@ -1,6 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment/moment'
 
+import { useConfigurableGraphsReportData } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { useDistributionTrendReportData } from 'domains/reporting/hooks/common/useDistributionTrendReportData'
 import { useTables } from 'domains/reporting/hooks/common/useTableReportData'
 import {
@@ -22,6 +23,7 @@ import type {
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import {
+    ChartType,
     DashboardChildType,
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
@@ -58,6 +60,8 @@ const useTimeSeriesPerDimensionReportDataMock = assumeMock(
 )
 jest.mock('domains/reporting/hooks/common/useTableReportData')
 const useTablesMock = assumeMock(useTables)
+jest.mock('domains/reporting/hooks/common/useConfigurableGraphsReportData')
+const useConfigurableGraphsMock = assumeMock(useConfigurableGraphsReportData)
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 jest.mock('domains/reporting/hooks/useAgentsTableConfigSetting')
@@ -148,6 +152,10 @@ describe('useDownloadDashboardData', () => {
             isFetching: false,
         })
         useTablesMock.mockReturnValue({
+            files: {},
+            isFetching: false,
+        })
+        useConfigurableGraphsMock.mockReturnValue({
             files: {},
             isFetching: false,
         })
@@ -254,6 +262,72 @@ describe('useDownloadDashboardData', () => {
             granularity,
             expect.any(Array),
         )
+    })
+
+    it('should call useConfigurableGraphs with configurable chart entries', () => {
+        const customFetch = jest.fn()
+        const configurableChartId = 'configurableChart'
+
+        const chartConfigs: Record<string, ChartConfig> = {
+            [configurableChartId]: {
+                chartComponent: null as any,
+                description: 'testing',
+                chartType: ChartType.Graph,
+                label: 'Configurable Chart',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableBarGraph,
+                        fetch: customFetch,
+                    },
+                ],
+            },
+        }
+        const dashboard: DashboardSchema = {
+            ...exampleDashboard,
+            children: [
+                {
+                    type: DashboardChildType.Chart,
+                    config_id: configurableChartId,
+                    metadata: {
+                        savedMeasure: 'automationRate',
+                        savedDimension: 'channel',
+                    },
+                },
+            ],
+        }
+
+        renderHook(() => useDashboardData(dashboard, false, chartConfigs))
+
+        expect(useConfigurableGraphsMock).toHaveBeenCalledWith(
+            statsFilters,
+            userTimezone,
+            granularity,
+            expect.arrayContaining([
+                expect.objectContaining({
+                    fetch: customFetch,
+                    savedMeasure: 'automationRate',
+                    savedDimension: 'channel',
+                    chartId: configurableChartId,
+                }),
+            ]),
+        )
+    })
+
+    it('should include configurable graph files in the result', () => {
+        useConfigurableGraphsMock.mockReturnValue({
+            files: {
+                'automation-rate-timeseries_2024-01-01_2024-01-31.csv':
+                    'csv content',
+            },
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() => useDashboardData(exampleDashboard))
+
+        expect(result.current.files).toMatchObject({
+            'automation-rate-timeseries_2024-01-01_2024-01-31.csv':
+                'csv content',
+        })
     })
 
     it('should return isLoading flag', () => {

@@ -128,7 +128,24 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config.csvProducer).toBeNull()
     })
 
-    it('should have automation line chart config', () => {
+    it('should have automation rate combo chart config with configurable bar graph producer', () => {
+        const config =
+            AnalyticsOverviewReportConfig.charts[
+                AnalyticsOverviewChart.AutomationRateComboChart
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Overall automation rate')
+        expect(config.chartType).toBe(ChartType.Graph)
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(
+            DataExportFormat.ConfigurableBarGraph,
+        )
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+    })
+
+    it('should have automation line chart config with configurable line graph producer', () => {
         const config =
             AnalyticsOverviewReportConfig.charts[
                 AnalyticsOverviewChart.AutomationLineChart
@@ -137,7 +154,12 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config).toBeDefined()
         expect(config.label).toBe('Overall automation rate')
         expect(config.chartType).toBe(ChartType.Graph)
-        expect(config.csvProducer).toBeNull()
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(
+            DataExportFormat.ConfigurableLineGraph,
+        )
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
     })
 
     it('should have performance table config', () => {
@@ -180,11 +202,20 @@ describe('AnalyticsOverviewReportConfig', () => {
         })
     })
 
-    it('should have null csvProducer for graph charts', () => {
+    it('should have null csvProducer only for graph charts without configurable producers', () => {
+        const configurableTypes = new Set([
+            DataExportFormat.ConfigurableBarGraph,
+            DataExportFormat.ConfigurableLineGraph,
+        ])
         Object.values(AnalyticsOverviewChart).forEach((chartId) => {
             const config = AnalyticsOverviewReportConfig.charts[chartId]
             if (config.chartType === ChartType.Graph) {
-                expect(config.csvProducer).toBeNull()
+                const hasConfigurableProducer = config.csvProducer?.some((p) =>
+                    configurableTypes.has(p.type as DataExportFormat),
+                )
+                if (!hasConfigurableProducer) {
+                    expect(config.csvProducer).toBeNull()
+                }
             }
         })
     })

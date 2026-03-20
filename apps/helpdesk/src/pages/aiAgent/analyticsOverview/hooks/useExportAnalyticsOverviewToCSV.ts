@@ -4,7 +4,12 @@ import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
+import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import {
+    ManagedDashboardId,
+    ManagedDashboardsTabId,
+} from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { saveZippedFiles } from 'utils/file'
 
 import { AnalyticsOverviewReportConfig } from '../AnalyticsOverviewReportConfig'
@@ -19,16 +24,30 @@ export const useExportAnalyticsOverviewToCSV = () => {
     const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
     )
+    const isNewChartsEnabled = useFlag(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
+    )
     const { cleanStatsFilters } = useStatsFilters()
+
+    const { layoutConfig } = useGetManagedDashboardsLayoutConfig({
+        dashboardId: ManagedDashboardId.AiAgentOverview,
+        defaultLayoutConfig: DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+        tabId: ManagedDashboardsTabId.Overview,
+    })
 
     const analyticsOverviewDashboard = useMemo(
         () =>
             buildCustomDashboard(
                 REPORT_NAME,
-                DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+                layoutConfig,
                 isAnalyticsDashboardsTrendCardsEnabled,
+                isNewChartsEnabled,
             ),
-        [isAnalyticsDashboardsTrendCardsEnabled],
+        [
+            isAnalyticsDashboardsTrendCardsEnabled,
+            layoutConfig,
+            isNewChartsEnabled,
+        ],
     )
 
     const { files: dashboardDataFiles, isLoading: isKpiLoading } =
@@ -42,23 +61,28 @@ export const useExportAnalyticsOverviewToCSV = () => {
     const automationRateTimeSeriesData =
         useDownloadAutomationRateTimeSeriesData()
 
-    const isLoading =
-        isKpiLoading ||
-        automationRateByFeatureData.isLoading ||
-        automationRateTimeSeriesData.isLoading
-
     const files = useMemo(
-        () => ({
-            ...dashboardDataFiles,
-            ...automationRateByFeatureData.files,
-            ...automationRateTimeSeriesData.files,
-        }),
+        () =>
+            isNewChartsEnabled
+                ? dashboardDataFiles
+                : {
+                      ...dashboardDataFiles,
+                      ...automationRateByFeatureData.files,
+                      ...automationRateTimeSeriesData.files,
+                  },
         [
             dashboardDataFiles,
             automationRateByFeatureData.files,
             automationRateTimeSeriesData.files,
+            isNewChartsEnabled,
         ],
     )
+
+    const isLoading =
+        isKpiLoading ||
+        (!isNewChartsEnabled &&
+            (automationRateByFeatureData.isLoading ||
+                automationRateTimeSeriesData.isLoading))
 
     const triggerDownload = useCallback(async () => {
         const fileName = getCsvFileNameWithDates(

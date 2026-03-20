@@ -9,9 +9,20 @@ import { ConfigurableGraphType } from '@repo/reporting'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import moment from 'moment/moment'
 
-import { useStatsMetricPerDimension } from 'domains/reporting/hooks/useStatsMetricPerDimension'
+import {
+    buildBarCsvFiles,
+    buildMultipleTimeSeriesCsvFiles,
+    buildTimeSeriesCsvFiles,
+} from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
+import type { MetricWithDecile } from 'domains/reporting/hooks/types'
+import {
+    fetchStatsMetricPerDimension,
+    useStatsMetricPerDimension,
+} from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import { getStatsTrendHook } from 'domains/reporting/hooks/useStatsMetricTrend'
 import {
+    fetchStatsTimeSeries,
+    fetchStatsTimeSeriesPerDimension,
     useStatsTimeSeries,
     useStatsTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useStatsTimeSeries'
@@ -22,6 +33,7 @@ import type {
     Context,
     MetricQueryFactory,
 } from 'domains/reporting/models/scopes/scope'
+import type { DimensionName } from 'domains/reporting/models/scopes/types'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { DATE_FORMAT } from 'pages/aiAgent/analyticsOverview/constants'
@@ -72,6 +84,51 @@ const formatChannelName = (channel: string): string => {
 const formatDate = (date: string) =>
     moment(date).format(DATE_FORMAT).replace(', ', ' ')
 
+const formatBarChartData = (
+    data: MetricWithDecile | undefined | null,
+    dimension: AutomationDimension,
+) => {
+    switch (dimension) {
+        case 'channel':
+            return {
+                data:
+                    data?.data?.allValues?.map((metricValue) => ({
+                        name: formatChannelName(
+                            metricValue.dimension.toString(),
+                        ),
+                        value: metricValue.value,
+                    })) ?? [],
+                isLoading: !!data?.isFetching,
+            }
+        case 'automationFeatureType':
+            return {
+                data:
+                    data?.data?.allValues
+                        ?.filter((metricValue) =>
+                            Object.keys(MAP_AUTOMATION_FEATURE_NAME).includes(
+                                metricValue.dimension.toString(),
+                            ),
+                        )
+                        .map((metricValue) => ({
+                            name: MAP_AUTOMATION_FEATURE_NAME[
+                                metricValue.dimension.toString()
+                            ],
+                            value: metricValue.value,
+                        })) ?? [],
+                isLoading: !!data?.isFetching,
+            }
+        default:
+            return {
+                data:
+                    data?.data?.allValues?.map((metricValue) => ({
+                        name: metricValue.dimension.toString(),
+                        value: metricValue.value,
+                    })) ?? [],
+                isLoading: !!data?.isFetching,
+            }
+    }
+}
+
 export const useAutomationMetricPerAutomationFeatureType = (
     query: MetricQueryFactory,
     filters: StatsFilters,
@@ -82,22 +139,7 @@ export const useAutomationMetricPerAutomationFeatureType = (
         'automationFeatureType',
     )
 
-    return {
-        data:
-            data.data?.allValues
-                ?.filter((metricValue) =>
-                    Object.keys(MAP_AUTOMATION_FEATURE_NAME).includes(
-                        metricValue.dimension.toString(),
-                    ),
-                )
-                .map((metricValue) => ({
-                    name: MAP_AUTOMATION_FEATURE_NAME[
-                        metricValue.dimension.toString()
-                    ],
-                    value: metricValue.value,
-                })) ?? [],
-        isLoading: data.isFetching,
-    }
+    return formatBarChartData(data, 'automationFeatureType')
 }
 
 export const useAutomationMetricPerChannel = (
@@ -114,14 +156,7 @@ export const useAutomationMetricPerChannel = (
         'channel',
     )
 
-    return {
-        data:
-            data.data?.allValues?.map((metricValue) => ({
-                name: formatChannelName(metricValue.dimension.toString()),
-                value: metricValue.value,
-            })) ?? [],
-        isLoading: data.isFetching,
-    }
+    return formatBarChartData(data, 'channel')
 }
 
 export const getBarChartDataHooks = (
@@ -228,6 +263,41 @@ export const useOverallTimeSeries = (
     }
 }
 
+const formatMultiTimeSeriesData = (
+    data: Record<string, TimeSeriesDataItem[][]> | undefined,
+    dimension: AutomationDimension,
+): MultipleTimeSeriesDataItem[] => {
+    switch (dimension) {
+        case 'automationFeatureType':
+            return data
+                ? Object.entries(data)
+                      .filter(([metricName]) =>
+                          Object.keys(MAP_AUTOMATION_FEATURE_NAME).includes(
+                              metricName,
+                          ),
+                      )
+                      .map(([metricName, values]) => ({
+                          label: MAP_AUTOMATION_FEATURE_NAME[metricName],
+                          values: formatTimeSeriesValues(values[0]),
+                      }))
+                : []
+        case 'channel':
+            return data
+                ? Object.entries(data).map(([metricName, values]) => ({
+                      label: formatChannelName(metricName),
+                      values: formatTimeSeriesValues(values[0]),
+                  }))
+                : []
+        default:
+            return data
+                ? Object.entries(data).map(([metricName, values]) => ({
+                      label: metricName,
+                      values: formatTimeSeriesValues(values[0]),
+                  }))
+                : []
+    }
+}
+
 export const useAutomationTimeSeriesPerAutomationFeatureType = (
     query: MetricQueryFactory,
     filters: StatsFilters,
@@ -243,19 +313,8 @@ export const useAutomationTimeSeriesPerAutomationFeatureType = (
         }),
     )
 
-    const chartData: MultipleTimeSeriesDataItem[] = data.data
-        ? Object.entries(data.data)
-              .filter(([metricName]) =>
-                  Object.keys(MAP_AUTOMATION_FEATURE_NAME).includes(metricName),
-              )
-              .map(([metricName, values]) => ({
-                  label: MAP_AUTOMATION_FEATURE_NAME[metricName],
-                  values: formatTimeSeriesValues(values[0]),
-              }))
-        : []
-
     return {
-        data: chartData,
+        data: formatMultiTimeSeriesData(data.data, 'automationFeatureType'),
         isLoading: data.isFetching,
     }
 }
@@ -275,15 +334,8 @@ export const useAutomationTimeSeriesPerChannel = (
         }),
     )
 
-    const chartData: MultipleTimeSeriesDataItem[] = data.data
-        ? Object.entries(data.data).map(([metricName, values]) => ({
-              label: formatChannelName(metricName),
-              values: formatTimeSeriesValues(values[0]),
-          }))
-        : []
-
     return {
-        data: chartData,
+        data: formatMultiTimeSeriesData(data.data, 'channel'),
         isLoading: data.isFetching,
     }
 }
@@ -374,3 +426,92 @@ export const getLineChartGraphConfig = (
         ),
     }))
 }
+
+export const fetchConfigurableBarChartDownloadData =
+    (metrics: BarChartMetricConfig[]) =>
+    async (
+        savedMeasure: string | null | undefined,
+        savedDimension: string | null | undefined,
+        filters: StatsFilters,
+        timezone: string,
+        __: ReportingGranularity,
+    ) => {
+        const metric =
+            metrics.find((m) => m.measure === savedMeasure) ?? metrics[0]
+        const dimension = savedDimension ?? metric.dimensions[0]
+
+        const response = await fetchStatsMetricPerDimension(
+            metric.queryFactory({
+                filters,
+                timezone,
+                dimensions: [dimension as AutomationDimension],
+            }),
+            dimension as AutomationDimension,
+        )
+        const { data } = formatBarChartData(
+            response,
+            dimension as AutomationDimension,
+        )
+
+        return {
+            files: buildBarCsvFiles(
+                data,
+                metric.name,
+                dimension === 'channel' ? 'Channel' : 'Feature',
+                metric.metricFormat,
+                filters.period,
+            ),
+        }
+    }
+
+export const fetchConfigurableLineChartDownloadData =
+    (metrics: LineChartMetricConfig[]) =>
+    async (
+        savedMeasure: string | null | undefined,
+        savedDimension: string | null | undefined,
+        filters: StatsFilters,
+        timezone: string,
+        granularity: ReportingGranularity,
+    ) => {
+        const metric =
+            metrics.find((m) => m.measure === savedMeasure) ?? metrics[0]
+        const dimension = savedDimension ?? metric.dimensions[0]
+
+        if (dimension === 'overall') {
+            const data = await fetchStatsTimeSeries(
+                metric.timeSeriesQueryFactory({
+                    filters,
+                    timezone,
+                    granularity,
+                }),
+            )
+            return {
+                files: buildTimeSeriesCsvFiles(
+                    formatTimeSeriesValues(data[0]),
+                    metric.name,
+                    metric.metricFormat,
+                    filters.period,
+                ),
+            }
+        }
+
+        const query = metric.timeSeriesQueryFactory({
+            filters,
+            timezone,
+            granularity,
+            dimensions: [dimension as DimensionName],
+        })
+        const data = await fetchStatsTimeSeriesPerDimension(query)
+        const labeledData = formatMultiTimeSeriesData(
+            data,
+            dimension as AutomationDimension,
+        )
+        return {
+            files: buildMultipleTimeSeriesCsvFiles(
+                labeledData,
+                metric.name,
+                metric.metricFormat,
+                filters.period,
+            ),
+        }
+    }

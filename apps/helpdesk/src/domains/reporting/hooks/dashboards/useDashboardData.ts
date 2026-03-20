@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
+import { useConfigurableGraphsReportData } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { useDistributionTrendReportData } from 'domains/reporting/hooks/common/useDistributionTrendReportData'
 import { useTables } from 'domains/reporting/hooks/common/useTableReportData'
 import {
@@ -106,6 +108,12 @@ type Queries = {
               title: string
           }
         | undefined
+    configurableCharts: {
+        fetch: ConfigurableGraphFetch
+        savedMeasure: string | null | undefined
+        savedDimension: string | null | undefined
+        chartId: string
+    }[]
 }
 
 const makeReduceReport =
@@ -152,6 +160,17 @@ const makeReduceReport =
                         title: String(config.label),
                     })
                 }
+                if (
+                    producer.type === DataExportFormat.ConfigurableBarGraph ||
+                    producer.type === DataExportFormat.ConfigurableLineGraph
+                ) {
+                    acc.configurableCharts.push({
+                        fetch: producer.fetch,
+                        savedMeasure: child.metadata?.savedMeasure,
+                        savedDimension: child.metadata?.savedDimension,
+                        chartId: child.config_id,
+                    })
+                }
             })
         }
         if (
@@ -173,6 +192,7 @@ const getQueryGroupsFromDashboard = (
         trends: [],
         distributions: undefined,
         tables: [],
+        configurableCharts: [],
     })
 }
 
@@ -248,6 +268,12 @@ export const useDashboardData = (
         granularity,
         queryGroups.tables,
     )
+    const configurableGraphs = useConfigurableGraphsReportData(
+        statsFilters,
+        userTimezone,
+        granularity,
+        queryGroups.configurableCharts,
+    )
 
     const loading = useMemo(() => {
         return [
@@ -256,8 +282,16 @@ export const useDashboardData = (
             distributions,
             timeSeriesPerDimension,
             tables,
+            configurableGraphs,
         ].some((metric) => metric.isFetching)
-    }, [distributions, tables, timeSeries, timeSeriesPerDimension, trends])
+    }, [
+        distributions,
+        tables,
+        timeSeries,
+        timeSeriesPerDimension,
+        trends,
+        configurableGraphs,
+    ])
 
     const fileName = getCsvFileNameWithDates(
         statsFilters.period,
@@ -271,6 +305,7 @@ export const useDashboardData = (
             ...timeSeriesPerDimensionReports.files,
             ...distributionsReport.files,
             ...tables.files,
+            ...configurableGraphs.files,
         }),
         [
             distributionsReport.files,
@@ -278,6 +313,7 @@ export const useDashboardData = (
             timeSeriesReport.files,
             trendsReport.files,
             tables.files,
+            configurableGraphs.files,
         ],
     )
 

@@ -19,7 +19,7 @@ type Props = {
     chartConfig?: ChartConfig
 }
 
-const AUTOMATION_RATE_BAR_CHART_METRICS: BarChartMetricConfig[] = [
+export const AUTOMATION_RATE_BAR_CHART_METRICS: BarChartMetricConfig[] = [
     {
         measure: 'automationRate',
         name: 'Overall automation rate',
