@@ -46,9 +46,12 @@ export function useTicketDisplayData({
     }, [ticket.customer])
 
     const displaySubject = useMemo(() => {
-        if (showTranslatedContent && translation?.subject)
-            return translation.subject
-        return ticket.subject
+        const subject =
+            showTranslatedContent && translation?.subject
+                ? translation.subject
+                : ticket.subject
+
+        return subject?.trim() ? subject : 'No subject'
     }, [showTranslatedContent, translation?.subject, ticket.subject])
 
     const displayExcerpt = useMemo(() => {
@@ -57,5 +60,10 @@ export function useTicketDisplayData({
         return ticket.excerpt || ''
     }, [showTranslatedContent, translation?.excerpt, ticket.excerpt])
 
-    return { otherAgentsViewing, customerName, displaySubject, displayExcerpt }
+    return {
+        otherAgentsViewing,
+        customerName,
+        displaySubject,
+        displayExcerpt,
+    }
 }

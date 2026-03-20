@@ -1,7 +1,7 @@
 import {
     Box,
     Button,
-    SelectTrigger,
+    OverflowTooltip,
     Text,
     Tooltip,
     TooltipContent,
@@ -28,26 +28,48 @@ export function TicketListHeader({ viewId, onCollapse, onEditView }: Props) {
             flexDirection="row"
             alignItems="center"
             justifyContent="space-between"
+            gap="xs"
         >
-            <Box flexDirection="row" alignItems="center" gap="xs">
-                <Tooltip
-                    trigger={
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            icon="system-bar-left-collapse"
-                            aria-label="Hide ticket panel"
-                            onClick={onCollapse}
-                        />
-                    }
-                >
-                    <TooltipContent title="Hide ticket panel" />
-                </Tooltip>
-                <SelectTrigger isDisabled>
-                    <Text>{viewName}</Text>
-                </SelectTrigger>
+            <Box
+                flexDirection="row"
+                alignItems="center"
+                gap="xs"
+                flex={1}
+                minWidth={0}
+            >
+                <Box flexShrink={0}>
+                    <Tooltip
+                        trigger={
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                icon="system-bar-left-collapse"
+                                aria-label="Hide ticket panel"
+                                onClick={onCollapse}
+                            />
+                        }
+                    >
+                        <TooltipContent title="Hide ticket panel" />
+                    </Tooltip>
+                </Box>
+                <Box flex={1} minWidth={0}>
+                    <OverflowTooltip>
+                        <Text
+                            overflow="ellipsis"
+                            className={css.viewName}
+                            color="content-neutral-default"
+                        >
+                            {viewName}
+                        </Text>
+                    </OverflowTooltip>
+                </Box>
             </Box>
-            <Box flexDirection="row" alignItems="center" gap="xs">
+            <Box
+                flexDirection="row"
+                alignItems="center"
+                gap="xs"
+                flexShrink={0}
+            >
                 <Tooltip
                     trigger={
                         <Button

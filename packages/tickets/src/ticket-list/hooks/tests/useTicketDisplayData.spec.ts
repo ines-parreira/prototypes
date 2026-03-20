@@ -158,15 +158,34 @@ describe('useTicketDisplayData', () => {
                 undefined,
                 'Help with order',
             ],
+            [
+                'falls back to "No subject" when ticket subject is empty',
+                false,
+                undefined,
+                'No subject',
+            ],
         ])('%s', (_, showTranslatedContent, translation, expected) => {
             const { result } = renderHook(() =>
                 useTicketDisplayData({
-                    ticket: mockTicketCompact({ subject: 'Help with order' }),
+                    ticket: mockTicketCompact({
+                        subject:
+                            expected === 'No subject' ? '' : 'Help with order',
+                    }),
                     showTranslatedContent,
                     translation,
                 }),
             )
             expect(result.current.displaySubject).toBe(expected)
+        })
+
+        it('returns "No subject" when ticket subject is empty', () => {
+            const { result } = renderHook(() =>
+                useTicketDisplayData({
+                    ticket: mockTicketCompact({ subject: '' }),
+                }),
+            )
+
+            expect(result.current.displaySubject).toBe('No subject')
         })
     })
 

@@ -60,6 +60,7 @@ const List: NonNullable<Components<TicketCompact, ListContext>['List']> =
 const Item: NonNullable<Components<TicketCompact, ListContext>['Item']> = ({
     children,
     context: __context,
+    item: __item,
     ...props
 }) => (
     <div role="article" {...props}>

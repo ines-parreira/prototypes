@@ -143,6 +143,18 @@ describe('createTicketTableColumns', () => {
             expect(screen.getByText('Translated subject')).toBeInTheDocument()
         })
 
+        it('renders "No subject" when the subject is empty', () => {
+            renderColumn(
+                'subject',
+                mockTicketCompact({
+                    id: 1,
+                    subject: '',
+                }),
+            )
+
+            expect(screen.getByText('No subject')).toBeInTheDocument()
+        })
+
         it('renders agents viewing', () => {
             mockGetTicketActivity.mockReturnValue({
                 viewing: [
@@ -175,6 +187,18 @@ describe('createTicketTableColumns', () => {
             })
 
             expect(screen.getByText('Translated subject')).toBeInTheDocument()
+        })
+
+        it('renders "No subject" when the subject is empty', () => {
+            renderColumn(
+                'subject_text',
+                mockTicketCompact({
+                    id: 42,
+                    subject: '',
+                }),
+            )
+
+            expect(screen.getByText('No subject')).toBeInTheDocument()
         })
     })
 

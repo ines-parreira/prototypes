@@ -29,6 +29,14 @@ const agentWithName2 = {
     name: 'Charlie Davis',
     email: 'charlie@example.com',
 }
+const agentWithAvatar = {
+    id: 4,
+    name: 'Dana Miller',
+    email: 'dana@example.com',
+    meta: {
+        profile_picture_url: 'https://example.com/avatar.jpg',
+    },
+}
 
 beforeEach(() => {
     testAppQueryClient.clear()
@@ -44,11 +52,13 @@ describe('TicketListItemAgentsViewing', () => {
 
     it('shows the agent name in the tooltip when a single named agent is viewing', () => {
         render(<TicketListItemAgentsViewing agents={[agentWithName]} />)
+
         expect(screen.getByText('Alice Smith is viewing')).toBeInTheDocument()
     })
 
     it('falls back to email in the tooltip when the agent has no name', () => {
         render(<TicketListItemAgentsViewing agents={[agentWithEmailOnly]} />)
+
         expect(
             screen.getByText('bob@example.com is viewing'),
         ).toBeInTheDocument()
@@ -57,6 +67,17 @@ describe('TicketListItemAgentsViewing', () => {
     it('uses email to derive avatar initials when agent has no name', () => {
         render(<TicketListItemAgentsViewing agents={[agentWithEmailOnly]} />)
         expect(screen.getByText('B')).toBeInTheDocument()
+    })
+
+    it('passes the uploaded avatar url when available', () => {
+        const { container } = render(
+            <TicketListItemAgentsViewing agents={[agentWithAvatar]} />,
+        )
+
+        expect(
+            container.querySelector('[data-name="image"]'),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('DM')).not.toBeInTheDocument()
     })
 
     it('shows a multiple-agents header and lists each name when more than one agent is viewing', () => {
@@ -68,6 +89,7 @@ describe('TicketListItemAgentsViewing', () => {
         expect(
             screen.getByText('Multiple agents are viewing'),
         ).toBeInTheDocument()
+
         expect(screen.getByText('Alice Smith')).toBeInTheDocument()
         expect(screen.getByText('Charlie Davis')).toBeInTheDocument()
     })

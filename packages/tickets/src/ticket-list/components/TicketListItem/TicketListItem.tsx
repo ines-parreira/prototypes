@@ -166,7 +166,7 @@ export const TicketListItem = memo(function TicketListItem({
                 <Box
                     flexDirection="row"
                     justifyContent="space-between"
-                    alignItems="baseline"
+                    alignItems="center"
                     gap="xxxs"
                 >
                     <Box flex={1} minWidth={0}>
@@ -192,7 +192,11 @@ export const TicketListItem = memo(function TicketListItem({
                             )
                         )}
                     </Box>
-                    <TicketListItemAgentsViewing agents={otherAgentsViewing} />
+                    <div className={styles.trailingAvatars}>
+                        <TicketListItemAgentsViewing
+                            agents={otherAgentsViewing}
+                        />
+                    </div>
                 </Box>
             </TileContent>
         </Tile>

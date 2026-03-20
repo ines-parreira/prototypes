@@ -26,6 +26,10 @@ export function TicketListItemAgentsViewing({ agents }: Props) {
                                 <Avatar
                                     key={agent.id}
                                     name={agent.name ?? agent.email ?? ''}
+                                    url={
+                                        agent.meta?.profile_picture_url ??
+                                        undefined
+                                    }
                                     size="sm"
                                 />
                             ))}

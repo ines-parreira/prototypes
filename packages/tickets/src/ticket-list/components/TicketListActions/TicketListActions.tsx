@@ -78,7 +78,7 @@ export function TicketListActions({
             alignItems="center"
             justifyContent="space-between"
         >
-            <Box flexDirection="row" alignItems="center" gap="xs">
+            <Box flexDirection="row" alignItems="center" gap="xs" pl="xxs">
                 <CheckBoxField
                     label={checkboxLabel}
                     value={hasSelectedAll}
