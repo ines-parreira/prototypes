@@ -1,5 +1,6 @@
 import { assumeMock } from '@repo/testing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import type { Call } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -12,6 +13,7 @@ import thunk from 'redux-thunk'
 import { usePutCallParticipantOnHold } from '@gorgias/helpdesk-queries'
 
 import { TwilioSocketEventType } from 'business/twilio'
+import goToTicket from 'common/utils/goToTicket'
 import * as twilioCallUtils from 'hooks/integrations/phone/twilioCall.utils'
 import client from 'models/api/resources'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
@@ -29,6 +31,9 @@ import { CallRecordingStatus, TWILIO_CURRENT_ITEM } from '../../constants'
 import OngoingPhoneCall from '../OngoingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
+
+jest.mock('common/utils/goToTicket')
+const goToTicketMock = goToTicket as jest.MockedFunction<typeof goToTicket>
 
 jest.mock('@gorgias/helpdesk-queries')
 
@@ -575,6 +580,22 @@ describe('<OngoingPhoneCall/>', () => {
         renderComponent(store, call)
 
         expect(screen.getByText('Queue name 1234')).toBeInTheDocument()
+    })
+
+    it('should navigate to ticket when clicking customer name button', async () => {
+        const user = userEvent.setup()
+        const ticketId = 456
+        const call = mockIncomingCall(integrationId) as Call
+        call.customParameters.set('ticket_id', ticketId.toString())
+
+        renderComponent(store, call)
+
+        const customerNameButton = screen.getByRole('button', {
+            name: /Bob/i,
+        })
+        await user.click(customerNameButton)
+
+        expect(goToTicketMock).toHaveBeenCalledWith(ticketId)
     })
 
     describe('Whispering warning', () => {

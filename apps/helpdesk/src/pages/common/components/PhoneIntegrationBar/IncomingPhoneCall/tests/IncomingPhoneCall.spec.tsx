@@ -4,6 +4,7 @@ import React from 'react'
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, cleanup, fireEvent, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import type { Call } from '@twilio/voice-sdk'
 import MockAdapter from 'axios-mock-adapter'
 import type { History } from 'history'
@@ -13,6 +14,7 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import goToTicket from 'common/utils/goToTicket'
 import client from 'models/api/resources'
 import * as hooks from 'pages/common/components/PhoneIntegrationBar/hooks'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
@@ -24,6 +26,9 @@ import { MICROPHONE_PERMISSION_REQUIRED_MESSAGE } from '../../constants'
 import IncomingPhoneCall from '../IncomingPhoneCall'
 
 jest.mock('@twilio/voice-sdk')
+
+jest.mock('common/utils/goToTicket')
+const goToTicketMock = goToTicket as jest.MockedFunction<typeof goToTicket>
 
 jest.mock(
     'pages/common/components/VoiceCallAgentLabel/VoiceCallAgentLabel',
@@ -112,7 +117,7 @@ describe('<IncomingPhoneCall />', () => {
         expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
     })
 
-    it('should accept call and open ticket with call-bar-restyling disabled', () => {
+    it('should accept call when call-bar-restyling is disabled', () => {
         useFlagMock.mockReturnValue(false)
         const call = mockIncomingCall(integrationId, ticketId) as Call
 
@@ -120,7 +125,6 @@ describe('<IncomingPhoneCall />', () => {
 
         fireEvent.click(screen.getByText(/Accept/))
         expect(call.accept).toHaveBeenCalled()
-        expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
     })
 
     it('should reject call on decline', (done) => {
@@ -152,19 +156,6 @@ describe('<IncomingPhoneCall />', () => {
         })
     })
 
-    it('should open ticket page', () => {
-        const call = mockIncomingCall(integrationId, ticketId) as Call
-
-        renderComponent({ call })
-
-        fireEvent.click(
-            screen.getByText(
-                state.integrations.getIn(['integrations', 0, 'name']),
-            ),
-        )
-        expect(history.push).toHaveBeenCalledWith(`/app/ticket/${ticketId}`)
-    })
-
     it('should not open ticket page if current page is WhatsApp migration', () => {
         history.location.pathname =
             '/app/settings/integrations/whatsapp/migration'
@@ -179,6 +170,41 @@ describe('<IncomingPhoneCall />', () => {
             ),
         )
         expect(history.push).not.toHaveBeenCalled()
+    })
+
+    it('should navigate to ticket when clicking customer name button', async () => {
+        const user = userEvent.setup()
+        const call = mockIncomingCall(integrationId, ticketId) as Call
+
+        renderComponent({ call })
+
+        const customerNameButton = screen.getByRole('button', {
+            name: /Bob/i,
+        })
+        await user.click(customerNameButton)
+
+        expect(goToTicketMock).toHaveBeenCalledWith(ticketId)
+    })
+
+    it('should render customer name as plain text when ticketId is null', () => {
+        const call = mockIncomingCall(integrationId) as Call
+
+        jest.spyOn(hooks, 'useConnectionParameters').mockReturnValueOnce({
+            integrationId,
+            ticketId: null,
+            customerName: 'Bob',
+            customerPhoneNumber: '+25111111111',
+            transferFromAgentId: null,
+            isTransferring: false,
+            isPossibleSpam: false,
+        })
+
+        renderComponent({ call })
+
+        expect(screen.getByText('Bob')).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /Bob/i }),
+        ).not.toBeInTheDocument()
     })
 
     it('should display waiting time', () => {

@@ -76,7 +76,7 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
                     type={AlertBannerTypes.Critical}
                 />
             )}
-            <PhoneBarContainer onClick={openTicket} isHighlighted>
+            <PhoneBarContainer isHighlighted>
                 <PhoneBarInnerContent>
                     <PhoneBarCallerDetailsContainer>
                         <Box display="flex" gap="xs" marginRight="lg">
@@ -97,10 +97,6 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
                                     <span>transferring</span>
                                 </>
                             )}
-                            <PhoneCustomerName
-                                name={customerName}
-                                phoneNumber={customerPhoneNumber}
-                            />
                             {isPossibleSpam && (
                                 <Tag
                                     leadingSlot={
@@ -111,6 +107,11 @@ export default function IncomingPhoneCall({ call }: Props): JSX.Element {
                                     Maybe spam
                                 </Tag>
                             )}
+                            <PhoneCustomerName
+                                name={customerName}
+                                phoneNumber={customerPhoneNumber}
+                                ticketId={ticketId}
+                            />
                         </div>
                     </PhoneBarCallerDetailsContainer>
                     {applyCallBarRestyling ? (

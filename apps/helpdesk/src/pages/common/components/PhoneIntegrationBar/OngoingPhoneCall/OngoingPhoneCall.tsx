@@ -74,7 +74,7 @@ export function OngoingPhoneCall({
 
     const [isTransferDropdownOpen, setIsTransferDropdownOpen] = useState(false)
     const { isMuted, onToggleMute } = useMute(call)
-    const { integrationId, customerName, customerPhoneNumber } =
+    const { integrationId, customerName, customerPhoneNumber, ticketId } =
         useConnectionParameters(call)
     const [isOnHold, setIsOnHold] = useState(false)
     const [isTransferring, setIsTransferring] = useState(false)
@@ -229,6 +229,7 @@ export function OngoingPhoneCall({
                         <PhoneCustomerName
                             name={customerName}
                             phoneNumber={customerPhoneNumber}
+                            ticketId={ticketId}
                         />
                     )}
                 </PhoneBarCallerDetailsContainer>
