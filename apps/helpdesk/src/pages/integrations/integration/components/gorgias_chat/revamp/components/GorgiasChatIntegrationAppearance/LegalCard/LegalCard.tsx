@@ -5,6 +5,7 @@ import { Card, CheckBoxField, Elevation, Heading, Text } from '@gorgias/axiom'
 
 import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
+import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { convertToHTML } from 'utils/editor'
 
 import css from '../GorgiasChatIntegrationAppearance.less'
@@ -22,13 +23,34 @@ export const LegalCard = ({
     onLegalDisclaimerTextChange,
     onLegalDisclaimerEnabledChange,
 }: Props) => {
+    const {
+        displayPage,
+        updateLegalDisclaimer,
+        openChat,
+        updateLegalDisclaimerEnabled,
+    } = useGorgiasChatCreationWizardContext()
+
+    const focusPreviewLegalDisclaimerSettings = () => {
+        openChat()
+        displayPage('conversation')
+    }
+
     const handleRichFieldChange = (editorState: EditorState) => {
         let html = convertToHTML(editorState.getCurrentContent())
         html = sanitizeHtmlDefault(html)
         if (html === `<div><br></div>'` || html === '<div><br /></div>') {
             html = ''
         }
+
+        focusPreviewLegalDisclaimerSettings()
+        updateLegalDisclaimer(html)
         onLegalDisclaimerTextChange(html)
+    }
+
+    const handleLegalDisclaimerEnabled = (value: boolean) => {
+        focusPreviewLegalDisclaimerSettings()
+        onLegalDisclaimerEnabledChange(value)
+        updateLegalDisclaimerEnabled(value)
     }
 
     return (
@@ -45,23 +67,28 @@ export const LegalCard = ({
                 <div className={css.legalMainContent}>
                     <div className={css.fieldSection}>
                         {legalDisclaimerText !== undefined && (
-                            <TicketRichField
-                                value={{
-                                    html: legalDisclaimerText,
-                                    text: legalDisclaimerText,
-                                }}
-                                aria-label="Legal disclaimer"
-                                onChange={handleRichFieldChange}
-                                displayedActions={[
-                                    ActionName.Bold,
-                                    ActionName.Italic,
-                                    ActionName.Underline,
-                                    ActionName.Link,
-                                    ActionName.Emoji,
-                                ]}
-                                canDropFiles={false}
-                                canInsertInlineImages={false}
-                            />
+                            <div
+                                className={css.focusWrapper}
+                                onFocus={focusPreviewLegalDisclaimerSettings}
+                            >
+                                <TicketRichField
+                                    value={{
+                                        html: legalDisclaimerText,
+                                        text: legalDisclaimerText,
+                                    }}
+                                    aria-label="Legal disclaimer"
+                                    onChange={handleRichFieldChange}
+                                    displayedActions={[
+                                        ActionName.Bold,
+                                        ActionName.Italic,
+                                        ActionName.Underline,
+                                        ActionName.Link,
+                                        ActionName.Emoji,
+                                    ]}
+                                    canDropFiles={false}
+                                    canInsertInlineImages={false}
+                                />
+                            </div>
                         )}
                         <Text
                             size="sm"
@@ -75,11 +102,16 @@ export const LegalCard = ({
                         </Text>
                     </div>
 
-                    <CheckBoxField
-                        label="Show legal disclaimer to customers at the start of any conversation"
-                        value={legalDisclaimerEnabled}
-                        onChange={onLegalDisclaimerEnabledChange}
-                    />
+                    <div
+                        className={css.focusWrapper}
+                        onFocus={focusPreviewLegalDisclaimerSettings}
+                    >
+                        <CheckBoxField
+                            label="Show legal disclaimer to customers at the start of any conversation"
+                            value={legalDisclaimerEnabled}
+                            onChange={handleLegalDisclaimerEnabled}
+                        />
+                    </div>
                 </div>
             </div>
         </Card>

@@ -60,6 +60,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 avatar_type: 'team-members',
                 launcher: {
                     type: GorgiasChatLauncherType.ICON,
+                    label: '',
                 },
                 background_color_style:
                     GorgiasChatBackgroundColorStyle.Gradient,
@@ -130,6 +131,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 avatar_type: 'team-members',
                 launcher: {
                     type: GorgiasChatLauncherType.ICON,
+                    label: '',
                 },
                 background_color_style:
                     GorgiasChatBackgroundColorStyle.Gradient,
@@ -200,6 +202,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 avatar_type: 'team-members',
                 launcher: {
                     type: GorgiasChatLauncherType.ICON,
+                    label: '',
                 },
                 background_color_style:
                     GorgiasChatBackgroundColorStyle.Gradient,
@@ -270,6 +273,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 avatar_type: 'team-members',
                 launcher: {
                     type: GorgiasChatLauncherType.ICON,
+                    label: '',
                 },
                 background_color_style:
                     GorgiasChatBackgroundColorStyle.Gradient,

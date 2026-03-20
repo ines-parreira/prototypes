@@ -76,6 +76,24 @@ jest.mock(
 )
 
 jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useGorgiasChatCreationWizardContext: () => ({
+            closeChat: jest.fn(),
+            openChat: jest.fn(),
+            displayPage: jest.fn(),
+            updateMainColor: jest.fn(),
+            updatePosition: jest.fn(),
+            updateHeaderPictureUrl: jest.fn(),
+            updateLauncher: jest.fn(),
+            updateTexts: jest.fn(),
+            updateLegalDisclaimer: jest.fn(),
+            updateLegalDisclaimerEnabled: jest.fn(),
+        }),
+    }),
+)
+
+jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/LauncherPositionPicker/LauncherPositionPicker',
     () => ({
         LauncherPositionPicker: (props: LauncherPositionPickerProps) => {

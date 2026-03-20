@@ -11,6 +11,10 @@ import type { ChatPreviewPanelHandle } from './ChatPreviewPanel'
 import { ChatPreviewPanel } from './ChatPreviewPanel'
 import type { ChatPreviewHandle } from './components/ChatPreview/ChatPreview'
 
+let mockIsLoaded = true
+let mockHasError = false
+let mockHasGorgiasChat = true
+
 jest.mock('@gorgias/axiom', () => {
     let capturedOnSelectionChange: ((key: string) => void) | undefined
 
@@ -42,18 +46,24 @@ jest.mock(
             open: jest.fn(),
             setPosition: jest.fn(),
             updateSettings: jest.fn(),
+            updateTexts: jest.fn(),
         }
 
         const ChatPreview = React.forwardRef(
             (_props: { appId: string }, ref: React.Ref<ChatPreviewHandle>) => {
                 React.useImperativeHandle(ref, () => ({
                     iframeRef: {
-                        current: {
-                            contentWindow: {
-                                GorgiasChat: mockGorgiasChat,
-                            },
-                        },
+                        current: mockHasGorgiasChat
+                            ? {
+                                  contentWindow: {
+                                      GorgiasChat: mockGorgiasChat,
+                                      Object,
+                                  },
+                              }
+                            : { contentWindow: {} },
                     },
+                    isLoaded: mockIsLoaded,
+                    hasError: mockHasError,
                 }))
                 return <div data-testid="chat-preview" />
             },
@@ -70,6 +80,9 @@ const { mockGorgiasChat } = jest.requireMock(
 describe('ChatPreviewPanel', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockIsLoaded = true
+        mockHasError = false
+        mockHasGorgiasChat = true
     })
 
     const renderComponent = (appId: string | null = 'test-app-id') => {
@@ -129,6 +142,7 @@ describe('ChatPreviewPanel', () => {
             expect(ref.current?.displayPage).toBeDefined()
             expect(ref.current?.updatePosition).toBeDefined()
             expect(ref.current?.updateSettings).toBeDefined()
+            expect(ref.current?.updateTexts).toBeDefined()
             expect(ref.current?.closeChat).toBeDefined()
             expect(ref.current?.openChat).toBeDefined()
         })
@@ -182,6 +196,46 @@ describe('ChatPreviewPanel', () => {
             expect(mockGorgiasChat.updateSettings).toHaveBeenCalledWith(
                 settings,
             )
+        })
+
+        it('updateTexts calls GorgiasChat.updateTexts with the provided texts', () => {
+            const { ref } = renderComponent()
+            const texts = { title: 'Hello', subtitle: 'World' }
+
+            ref.current?.updateTexts(texts)
+
+            expect(mockGorgiasChat.updateTexts).toHaveBeenCalledWith(
+                expect.objectContaining(texts),
+            )
+        })
+    })
+
+    describe('withGorgiasChat guards', () => {
+        it('does not call GorgiasChat when isLoaded is false', () => {
+            mockIsLoaded = false
+            const { ref } = renderComponent()
+
+            ref.current?.closeChat()
+
+            expect(mockGorgiasChat.close).not.toHaveBeenCalled()
+        })
+
+        it('does not call GorgiasChat when hasError is true', () => {
+            mockHasError = true
+            const { ref } = renderComponent()
+
+            ref.current?.openChat()
+
+            expect(mockGorgiasChat.open).not.toHaveBeenCalled()
+        })
+
+        it('does not call GorgiasChat when GorgiasChat is not present in the iframe window', () => {
+            mockHasGorgiasChat = false
+            const { ref } = renderComponent()
+
+            ref.current?.closeChat()
+
+            expect(mockGorgiasChat.close).not.toHaveBeenCalled()
         })
     })
 })

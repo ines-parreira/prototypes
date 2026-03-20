@@ -6,6 +6,24 @@ import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 
 import { BrandCard } from './BrandCard'
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useGorgiasChatCreationWizardContext: () => ({
+            updateMainColor: jest.fn(),
+            updateHeaderPictureUrl: jest.fn(),
+            openChat: jest.fn(),
+            closeChat: jest.fn(),
+            displayPage: jest.fn(),
+            updatePosition: jest.fn(),
+            updateLauncher: jest.fn(),
+            updateTexts: jest.fn(),
+            updateLegalDisclaimer: jest.fn(),
+            updateLegalDisclaimerEnabled: jest.fn(),
+        }),
+    }),
+)
+
 type ColorPickerProps = {
     className?: string
     value: string

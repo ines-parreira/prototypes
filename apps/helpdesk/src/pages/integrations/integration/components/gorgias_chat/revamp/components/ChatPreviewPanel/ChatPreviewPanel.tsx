@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useRef } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
 import {
     Box,
@@ -24,6 +24,7 @@ export type ChatPreviewPanelHandle = {
     displayPage: (page: 'homepage' | 'conversation') => void
     updatePosition: (position: GorgiasChatPosition) => void
     updateSettings: (settings: GorgiasChatPreviewApplicationSettings) => void
+    updateTexts: (texts: Record<string, string>) => void
     closeChat: () => void
     openChat: () => void
 }
@@ -34,48 +35,84 @@ export const ChatPreviewPanel = forwardRef<
 >(({ appId }, ref) => {
     const chatPreviewRef = useRef<ChatPreviewHandle>(null)
 
+    const withGorgiasChat = (
+        callback: (gorgiasChat: NonNullable<Window['GorgiasChat']>) => void,
+    ) => {
+        const ref = chatPreviewRef.current
+        if (!ref?.isLoaded || ref?.hasError) return
+        const gorgiasChat = ref.iframeRef.current?.contentWindow?.GorgiasChat
+        if (!gorgiasChat) return
+        try {
+            callback(gorgiasChat)
+        } catch (error) {
+            if (process.env.NODE_ENV === 'development') {
+                console.error(error)
+            }
+        }
+    }
+
     const displayPage = (page: 'homepage' | 'conversation') => {
-        chatPreviewRef.current?.iframeRef.current?.contentWindow?.GorgiasChat?.setPage(
-            page,
-        )
+        withGorgiasChat((gorgiasChat) => {
+            setSelectedPage(page)
+            gorgiasChat.setPage(page)
+        })
     }
 
     const closeChat = () => {
-        chatPreviewRef.current?.iframeRef.current?.contentWindow?.GorgiasChat?.close()
+        withGorgiasChat((gorgiasChat) => gorgiasChat.close())
     }
 
     const openChat = () => {
-        chatPreviewRef.current?.iframeRef.current?.contentWindow?.GorgiasChat?.open()
+        withGorgiasChat((gorgiasChat) => gorgiasChat.open())
     }
 
     const updatePosition = (position: GorgiasChatPosition) => {
-        chatPreviewRef.current?.iframeRef.current?.contentWindow?.GorgiasChat?.setPosition(
-            position,
-        )
+        withGorgiasChat((gorgiasChat) => gorgiasChat.setPosition(position))
     }
 
     const updateSettings = (
         settings: GorgiasChatPreviewApplicationSettings,
     ) => {
-        chatPreviewRef.current?.iframeRef.current?.contentWindow?.GorgiasChat?.updateSettings?.(
-            settings,
-        )
+        withGorgiasChat((gorgiasChat) => gorgiasChat.updateSettings?.(settings))
+    }
+
+    const updateTexts = (texts: Record<string, string>) => {
+        withGorgiasChat(() => {
+            const iframeWindow = chatPreviewRef.current?.iframeRef.current
+                ?.contentWindow as any
+            /**
+             * The iframe runs in a separate JS realm, so plain objects created here fail
+             * the `instanceof Object` check inside the chat widget. We use the iframe's
+             * own Object constructor to create the target, ensuring it belongs to the correct realm.
+             */
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const iframeTexts = iframeWindow.Object.assign(
+                new iframeWindow.Object(),
+                texts,
+            )
+            iframeWindow.GorgiasChat?.updateTexts(iframeTexts)
+        })
     }
 
     useImperativeHandle(ref, () => ({
         displayPage,
         updatePosition,
         updateSettings,
+        updateTexts,
         closeChat,
         openChat,
     }))
 
-    const handlePageChange = (key: string) => {
-        if (key === 'conversation' || key === 'homepage') {
-            displayPage(key)
+    const handlePageChange = (page: string) => {
+        if (page === 'conversation' || page === 'homepage') {
+            displayPage(page)
             openChat()
         }
     }
+
+    const [selectedPage, setSelectedPage] = useState<
+        'homepage' | 'conversation'
+    >('homepage')
 
     return (
         <Box flexDirection="column" className={css.panel}>
@@ -86,6 +123,7 @@ export const ChatPreviewPanel = forwardRef<
             >
                 <Text variant={TextVariant.Medium}>Chat preview</Text>
                 <ButtonGroup
+                    selectedKey={selectedPage}
                     defaultSelectedKey="homepage"
                     onSelectionChange={handlePageChange}
                 >

@@ -3,6 +3,7 @@ import { Card, Elevation, Heading, Text } from '@gorgias/axiom'
 import { GORGIAS_CHAT_DEFAULT_COLOR } from 'config/integrations/gorgias_chat'
 import { ColorPicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/ColorPicker'
 import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload'
+import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import css from '../GorgiasChatIntegrationAppearance.less'
 
@@ -19,6 +20,9 @@ export const BrandCard = ({
     onMainColorChange,
     onHeaderLogoUrlChange,
 }: Props) => {
+    const { updateMainColor, updateHeaderPictureUrl, openChat } =
+        useGorgiasChatCreationWizardContext()
+
     return (
         <Card className={css.card} elevation={Elevation.Mid}>
             <div className={css.cardContent}>
@@ -42,7 +46,11 @@ export const BrandCard = ({
                             className={css.brandColorPicker}
                             value={mainColor}
                             defaultValue={GORGIAS_CHAT_DEFAULT_COLOR}
-                            onChange={onMainColorChange}
+                            onChange={(value) => {
+                                onMainColorChange(value)
+                                updateMainColor(value)
+                            }}
+                            onFocus={openChat}
                         />
                     </div>
 
@@ -57,7 +65,10 @@ export const BrandCard = ({
                         </Text>
                         <LogoUpload
                             url={headerPictureUrl}
-                            onChange={onHeaderLogoUrlChange}
+                            onChange={(url) => {
+                                onHeaderLogoUrlChange(url)
+                                updateHeaderPictureUrl(url)
+                            }}
                         />
                     </div>
                 </div>

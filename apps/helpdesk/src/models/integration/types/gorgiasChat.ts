@@ -16,10 +16,7 @@ export type GorgiasChatIntegration = IntegrationBase & {
             name_type: GorgiasChatAvatarNameType
         }
         main_font_family?: string
-        launcher?: {
-            type: GorgiasChatLauncherType
-            label?: string
-        }
+        launcher?: GorgiasChatLauncherSettings
         background_color_style?: GorgiasChatBackgroundColorStyle
         header_picture_url?: string
         header_picture_url_offline?: string
@@ -128,11 +125,20 @@ export interface GorgiasChatPosition {
     offsetY: number
 }
 
+export type GorgiasChatLauncherSettings = {
+    type: GorgiasChatLauncherType
+    label: string
+}
+
 export type GorgiasChatPreviewApplicationSettings = {
     decoration?: {
         mainColor?: string
         headerPictureUrl?: string
         position?: GorgiasChatPosition
+        launcher?: GorgiasChatLauncherSettings
+    }
+    preferences?: {
+        privacyPolicyDisclaimerEnabled?: boolean
     }
 }
 

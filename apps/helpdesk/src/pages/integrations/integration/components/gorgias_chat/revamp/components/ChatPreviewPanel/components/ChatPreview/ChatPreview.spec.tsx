@@ -208,4 +208,88 @@ describe('ChatPreview', () => {
             )
         })
     })
+
+    describe('useImperativeHandle', () => {
+        it('should expose iframeRef pointing to the rendered iframe element', () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { ref } = renderComponent()
+
+            expect(ref.current?.iframeRef.current).toBe(
+                screen.getByTitle('helpdesk-chat-preview-iframe'),
+            )
+        })
+
+        it('should expose isLoaded as false before the widget signals ready', () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { ref } = renderComponent()
+
+            expect(ref.current?.isLoaded).toBe(false)
+        })
+
+        it('should expose isLoaded as true after the widget signals ready', async () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { ref } = renderComponent()
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-loaded' },
+                    }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(ref.current?.isLoaded).toBe(true)
+            })
+        })
+
+        it('should expose hasError as false initially', () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { ref } = renderComponent()
+
+            expect(ref.current?.hasError).toBe(false)
+        })
+
+        it('should expose hasError as true after the widget signals an error', async () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { ref } = renderComponent()
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-error' },
+                    }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(ref.current?.hasError).toBe(true)
+            })
+        })
+    })
 })

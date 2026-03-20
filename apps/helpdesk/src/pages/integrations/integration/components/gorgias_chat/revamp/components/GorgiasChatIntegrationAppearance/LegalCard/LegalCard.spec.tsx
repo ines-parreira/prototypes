@@ -1,10 +1,21 @@
 import type { ReactNode } from 'react'
-import React from 'react'
 
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { LegalCard } from './LegalCard'
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useGorgiasChatCreationWizardContext: () => ({
+            displayPage: jest.fn(),
+            updateLegalDisclaimer: jest.fn(),
+            openChat: jest.fn(),
+            updateLegalDisclaimerEnabled: jest.fn(),
+        }),
+    }),
+)
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),

@@ -2,10 +2,14 @@ import type { ReactNode } from 'react'
 
 import { act, renderHook } from '@testing-library/react'
 
-import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types/gorgiasChat'
+import {
+    GorgiasChatLauncherType,
+    GorgiasChatPositionAlignmentEnum,
+} from 'models/integration/types/gorgiasChat'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import { ChatPreviewPanel } from '../ChatPreviewPanel'
+import type { ChatPreviewPanelContextValue } from './useChatPreviewPanel'
 import {
     ChatPreviewPanelContext,
     useChatPreviewPanel,
@@ -94,6 +98,20 @@ describe('useChatPreviewPanel', () => {
         expect(() => result.current.updateMainColor('#ff0000')).not.toThrow()
     })
 
+    it('updateMainColor does not throw when called with an invalid hex color', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateMainColor('not-a-valid-color'),
+        ).not.toThrow()
+    })
+
+    it('updateMainColor does not throw when called with an empty string', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.updateMainColor('')).not.toThrow()
+    })
+
     it('updatePosition does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -123,6 +141,59 @@ describe('useChatPreviewPanel', () => {
             result.current.updateHeaderPictureUrl(undefined),
         ).not.toThrow()
     })
+
+    it('updateTexts does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateTexts({ title: 'Hello' }),
+        ).not.toThrow()
+    })
+
+    it('updateLauncher does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateLauncher({
+                type: GorgiasChatLauncherType.ICON,
+                label: 'Chat',
+            }),
+        ).not.toThrow()
+    })
+
+    it('updateLegalDisclaimer does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateLegalDisclaimer('Privacy policy text'),
+        ).not.toThrow()
+    })
+
+    it('updateLegalDisclaimerEnabled does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateLegalDisclaimerEnabled(true),
+        ).not.toThrow()
+    })
+
+    it('openChat does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.openChat()).not.toThrow()
+    })
+
+    it('closeChat does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.closeChat()).not.toThrow()
+    })
+
+    it('displayPage does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.displayPage('homepage')).not.toThrow()
+    })
 })
 
 describe('useGorgiasChatCreationWizardContext', () => {
@@ -141,10 +212,17 @@ describe('useGorgiasChatCreationWizardContext', () => {
     })
 
     it('returns context value when used within ChatPreviewPanelContext', () => {
-        const mockContextValue = {
+        const mockContextValue: ChatPreviewPanelContextValue = {
             updateMainColor: jest.fn(),
             updatePosition: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),
+            openChat: jest.fn(),
+            closeChat: jest.fn(),
+            displayPage: jest.fn(),
+            updateLauncher: jest.fn(),
+            updateTexts: jest.fn(),
+            updateLegalDisclaimer: jest.fn(),
+            updateLegalDisclaimerEnabled: jest.fn(),
         }
 
         const wrapper = ({ children }: { children: ReactNode }) => (

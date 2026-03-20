@@ -60,6 +60,7 @@ declare global {
                 flowId: string
             }) => void
             updateSSPTexts(param: Record<string, string>): void
+            updateTexts(texts: Record<string, string>): void
             setPosition(position: GorgiasChatPosition): void
             updateSettings?: (
                 settings: GorgiasChatPreviewApplicationSettings,
