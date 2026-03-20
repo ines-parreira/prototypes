@@ -55,7 +55,7 @@ export default function CampaignsTable<TData, TValue>({
         useState(false)
 
     const history = useHistory()
-    const { shopName, currency } = useJourneyContext()
+    const { shopName, currency, currentIntegration } = useJourneyContext()
 
     const createNewJourney = useCreateNewJourney()
 
@@ -82,7 +82,9 @@ export default function CampaignsTable<TData, TValue>({
         handleCloseRemoveModal()
     }, [selectedCampaignId, handleCloseRemoveModal, deleteCampaign])
 
-    const { handleUpdate } = useJourneyUpdateHandler({})
+    const { handleUpdate } = useJourneyUpdateHandler({
+        integrationId: currentIntegration?.id,
+    })
 
     // send campaign
     const handleOpenSendModal = useCallback(
