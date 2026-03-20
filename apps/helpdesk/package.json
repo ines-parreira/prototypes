@@ -245,7 +245,7 @@
         "scrollparent": "^2.1.0",
         "slack-message-parser": "^3.0.2",
         "slick-carousel": "1.6.0",
-        "socket.io-client": "^4.8.1",
+        "socket.io-client": "^4.8.3",
         "sortablejs": "gorgias/Sortable",
         "ulidx": "^0.5.0",
         "urlsafe-base64": "catalog:html",
