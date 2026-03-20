@@ -107,6 +107,7 @@ export default function ProductCardForCoupon({
             </div>
             <div>
                 <span className={css.bold}>Plan: </span>
+                <span className={css.bold}>{plan.plan_id}</span>-{' '}
                 <span>{getPlanDescription(plan)}</span>
             </div>
             <div className={css.verticallyAligned}>
