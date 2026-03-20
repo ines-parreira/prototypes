@@ -27,10 +27,11 @@ export type MessageBodyItem = {
 }
 
 type MessageBodyProps = {
+    className?: string
     item: MessageBodyItem
 }
 
-export function MessageBody({ item }: MessageBodyProps) {
+export function MessageBody({ className, item }: MessageBodyProps) {
     const { meta } = item.data
     const {
         messageId,
@@ -78,9 +79,14 @@ export function MessageBody({ item }: MessageBodyProps) {
     return (
         <>
             <div
-                className={classNames('message-content', css.content, {
-                    [css.whitespace]: !isHtml,
-                })}
+                className={classNames(
+                    'message-content',
+                    css.content,
+                    className,
+                    {
+                        [css.whitespace]: !isHtml,
+                    },
+                )}
                 dangerouslySetInnerHTML={{ __html: displayedContent }}
             />
             {isTruncated && (

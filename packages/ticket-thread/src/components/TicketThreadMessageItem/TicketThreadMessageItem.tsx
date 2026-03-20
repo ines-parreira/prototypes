@@ -7,7 +7,7 @@ import { Box } from '@gorgias/axiom'
 import type { TicketThreadMessageItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
-import { MessageBubble } from '../MessageBubble/MessageBubble'
+import { TicketInternalNote } from '../TicketInternalNote/TicketInternalNote'
 import { TicketMessage } from '../TicketMessage/TicketMessage'
 import { WhatsAppMessageWrapper } from '../WhatsAppMessage/WhatsAppMessageWrapper'
 import { AiAgentTicketThreadDraftMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadDraftMessage'
@@ -47,11 +47,7 @@ export function TicketThreadMessageItem({
             case TicketThreadItemTag.Messages.Message:
                 return <TicketMessage item={item} />
             case TicketThreadItemTag.Messages.InternalNote:
-                return (
-                    <MessageBubble variant="internal-note">
-                        {item.data.stripped_text || item.data.body_text}
-                    </MessageBubble>
-                )
+                return <TicketInternalNote item={item} />
             case TicketThreadItemTag.Messages.AiAgentMessage:
                 return <AiAgentTicketThreadMessage item={item} />
             case TicketThreadItemTag.Messages.AiAgentInternalNote:

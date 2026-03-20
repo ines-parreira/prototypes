@@ -3,7 +3,10 @@ import { isNumber } from 'lodash'
 import { Box, Icon, IconName, Tag, TagColor } from '@gorgias/axiom'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
-import type { TicketThreadRegularMessageItem } from '../../../hooks/messages/types'
+import type {
+    TicketThreadInternalNoteItem,
+    TicketThreadRegularMessageItem,
+} from '../../../hooks/messages/types'
 import { MessageAttachments } from './MessageAttachments'
 import { TranslationsDropdown } from './TranslationsDropdown'
 import { getMessageContent } from './utils/getMessageContent'
@@ -11,10 +14,14 @@ import { getMessageContent } from './utils/getMessageContent'
 import css from './MessageFooter.less'
 
 type MessageFooterProps = {
-    item: TicketThreadRegularMessageItem
+    item: TicketThreadRegularMessageItem | TicketThreadInternalNoteItem
+    showTranslations?: boolean
 }
 
-export function MessageFooter({ item }: MessageFooterProps) {
+export function MessageFooter({
+    item,
+    showTranslations = true,
+}: MessageFooterProps) {
     const { isStripped, messageId } = getMessageContent(item)
     const { toggleMessage } = useExpandedMessages()
 
@@ -35,7 +42,7 @@ export function MessageFooter({ item }: MessageFooterProps) {
                     </Tag>
                 </Box>
             )}
-            {isNumber(messageId) && (
+            {showTranslations && isNumber(messageId) && (
                 <TranslationsDropdown
                     messageId={messageId}
                     ticketId={item.data.ticket_id}

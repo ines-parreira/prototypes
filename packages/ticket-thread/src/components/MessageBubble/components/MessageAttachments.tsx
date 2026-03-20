@@ -12,13 +12,17 @@ import type { TicketMessageAttachment } from '@gorgias/helpdesk-types'
 
 import type {
     TicketThreadAiAgentMessageItem,
+    TicketThreadInternalNoteItem,
     TicketThreadRegularMessageItem,
 } from '../../../hooks/messages/types'
 import { Attachment } from './Attachment'
 import { isImage } from './utils/image'
 
 type MessageAttachmentsProps = {
-    item: TicketThreadRegularMessageItem | TicketThreadAiAgentMessageItem
+    item:
+        | TicketThreadRegularMessageItem
+        | TicketThreadInternalNoteItem
+        | TicketThreadAiAgentMessageItem
 }
 
 export function MessageAttachments({ item }: MessageAttachmentsProps) {

@@ -1,6 +1,8 @@
 import { Avatar } from '@gorgias/axiom'
 import type { TicketMessageUserOrCustomer } from '@gorgias/helpdesk-types'
 
+import css from './MessageAvatar.less'
+
 export type MessageAvatarProps = {
     sender: TicketMessageUserOrCustomer
 }
@@ -11,5 +13,7 @@ export function MessageAvatar({ sender }: MessageAvatarProps) {
         (sender.meta as { profile_picture_url?: string } | null)
             ?.profile_picture_url ?? ''
 
-    return <Avatar name={name} size="md" url={url} />
+    return (
+        <Avatar className={css.messageAvatar} name={name} size="md" url={url} />
+    )
 }
