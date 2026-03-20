@@ -33,9 +33,12 @@ describe('useAIJourneyOptOutAfterReply', () => {
 
     it('should return metric data with correct shape when loaded', () => {
         const { result } = renderHook(() =>
-            useAIJourneyOptOutAfterReply(integrationId, userTimezone, filters, [
-                'journey-1',
-            ]),
+            useAIJourneyOptOutAfterReply({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current).toEqual({
@@ -61,12 +64,12 @@ describe('useAIJourneyOptOutAfterReply', () => {
         const journeyIds = ['journey-1']
 
         renderHook(() =>
-            useAIJourneyOptOutAfterReply(
+            useAIJourneyOptOutAfterReply({
                 integrationId,
                 userTimezone,
                 filters,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(aiJourneyOptedOutAfterReplyQueryFactory).toHaveBeenCalledWith(
@@ -91,9 +94,12 @@ describe('useAIJourneyOptOutAfterReply', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyOptOutAfterReply(integrationId, userTimezone, filters, [
-                'journey-1',
-            ]),
+            useAIJourneyOptOutAfterReply({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current.trend.isFetching).toBe(true)
@@ -103,12 +109,11 @@ describe('useAIJourneyOptOutAfterReply', () => {
 
     it('should handle undefined journeyIds', () => {
         const { result } = renderHook(() =>
-            useAIJourneyOptOutAfterReply(
+            useAIJourneyOptOutAfterReply({
                 integrationId,
                 userTimezone,
                 filters,
-                undefined,
-            ),
+            }),
         )
 
         expect(aiJourneyOptedOutAfterReplyQueryFactory).toHaveBeenCalledWith(
@@ -129,9 +134,12 @@ describe('useAIJourneyOptOutAfterReply', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyOptOutAfterReply(integrationId, userTimezone, filters, [
-                'journey-1',
-            ]),
+            useAIJourneyOptOutAfterReply({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current.trend.data?.prevValue).toBeNull()
@@ -139,13 +147,37 @@ describe('useAIJourneyOptOutAfterReply', () => {
 
     it('should include drilldownMetricName as OptOutAfterReply', () => {
         const { result } = renderHook(() =>
-            useAIJourneyOptOutAfterReply(integrationId, userTimezone, filters, [
-                'journey-1',
-            ]),
+            useAIJourneyOptOutAfterReply({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current.drilldownMetricName).toBe(
             AIJourneyMetric.OptOutAfterReply,
         )
+    })
+
+    it('should disable queries and return zeroed values when no flows or campaigns are selected', () => {
+        const { result } = renderHook(() =>
+            useAIJourneyOptOutAfterReply({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: ['journey-1'],
+                forceEmpty: true,
+            }),
+        )
+
+        const metricTrendCalls = (useMetricTrend as jest.Mock).mock.calls
+        metricTrendCalls.forEach((call) => {
+            expect(call[4]).toBe(false)
+        })
+
+        expect(result.current.trend.isFetching).toBe(false)
+        expect(result.current.trend.data?.value).toBe(0)
+        expect(result.current.trend.data?.prevValue).toBe(0)
     })
 })

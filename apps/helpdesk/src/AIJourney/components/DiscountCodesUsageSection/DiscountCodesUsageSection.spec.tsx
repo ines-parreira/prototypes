@@ -115,10 +115,12 @@ describe('<DiscountCodesUsageSection />', () => {
         render(<DiscountCodesUsageSection {...defaultProps} />)
 
         expect(mockUseAIJourneyDiscountCodeUsageMetrics).toHaveBeenCalledWith(
-            defaultProps.integrationId,
-            defaultProps.userTimezone,
-            defaultProps.filters,
-            defaultProps.journeyIds,
+            expect.objectContaining({
+                integrationId: defaultProps.integrationId,
+                userTimezone: defaultProps.userTimezone,
+                filters: defaultProps.filters,
+                journeyIds: defaultProps.journeyIds,
+            }),
         )
     })
 

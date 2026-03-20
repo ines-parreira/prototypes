@@ -59,13 +59,13 @@ describe('useAIJourneyTotalOrders', () => {
         const userTimezone = 'America/New_York'
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalOrders(
-                '123',
+            useAIJourneyTotalOrders({
+                integrationId: '123',
                 userTimezone,
-                mockFilters,
-                ReportingGranularity.Week,
-                'shopName',
-            ),
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+                shopName: 'shopName',
+            }),
         )
 
         expect(result.current).toEqual({
@@ -112,13 +112,13 @@ describe('useAIJourneyTotalOrders', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalOrders(
-                '123',
-                'UTC',
-                mockFilters,
-                ReportingGranularity.Week,
-                'shopName',
-            ),
+            useAIJourneyTotalOrders({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+                shopName: 'shopName',
+            }),
         )
 
         expect(result.current).toEqual({
@@ -136,5 +136,41 @@ describe('useAIJourneyTotalOrders', () => {
                 title: 'Total Orders',
             },
         })
+    })
+
+    it('should disable queries and return zeroed values when no flows or campaigns are selected', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() =>
+            useAIJourneyTotalOrders({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+                shopName: 'shopName',
+                forceEmpty: true,
+            }),
+        )
+
+        const metricTrendCalls = (useMetricTrend as jest.Mock).mock.calls
+        metricTrendCalls.forEach((call) => {
+            expect(call[4]).toBe(false)
+        })
+        const timeSeriesCalls = (useTimeSeries as jest.Mock).mock.calls
+        timeSeriesCalls.forEach((call) => {
+            expect(call[2]).toBe(false)
+        })
+
+        expect(result.current.value).toBe(0)
+        expect(result.current.prevValue).toBe(0)
+        expect(result.current.series).toEqual([])
+        expect(result.current.isLoading).toBe(false)
     })
 })

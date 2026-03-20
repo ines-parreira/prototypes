@@ -34,12 +34,12 @@ describe('useAIJourneyTotalConversations', () => {
     it('should return metric data with correct formatting', () => {
         const journeyId = 'test-journey-id'
         const { result } = renderHook(() =>
-            useAIJourneyTotalConversations(
+            useAIJourneyTotalConversations({
                 integrationId,
                 userTimezone,
                 filters,
-                [journeyId],
-            ),
+                journeyIds: [journeyId],
+            }),
         )
 
         expect(result.current).toEqual({
@@ -80,12 +80,12 @@ describe('useAIJourneyTotalConversations', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalConversations(
+            useAIJourneyTotalConversations({
                 integrationId,
                 userTimezone,
                 filters,
-                ['test-journey-id'],
-            ),
+                journeyIds: ['test-journey-id'],
+            }),
         )
 
         expect(result.current.trend.isFetching).toBe(true)
@@ -94,12 +94,11 @@ describe('useAIJourneyTotalConversations', () => {
 
     it('should handle undefined journeyIds', () => {
         const { result } = renderHook(() =>
-            useAIJourneyTotalConversations(
+            useAIJourneyTotalConversations({
                 integrationId,
                 userTimezone,
                 filters,
-                undefined,
-            ),
+            }),
         )
 
         expect(aiJourneyTotalConversationsQueryFactory).toHaveBeenCalledWith(
@@ -115,16 +114,35 @@ describe('useAIJourneyTotalConversations', () => {
 
     it('should include drilldownMetricName as TotalConversations', () => {
         const { result } = renderHook(() =>
-            useAIJourneyTotalConversations(
+            useAIJourneyTotalConversations({
                 integrationId,
                 userTimezone,
                 filters,
-                ['journey-1'],
-            ),
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current.drilldownMetricName).toBe(
             AIJourneyMetric.TotalConversations,
         )
+    })
+
+    it('should disable queries and return zeroed values when no flows or campaigns are selected', () => {
+        const { result } = renderHook(() =>
+            useAIJourneyTotalConversations({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: ['journey-1'],
+                forceEmpty: true,
+            }),
+        )
+
+        const calls = (useMetricTrend as jest.Mock).mock.calls
+        expect(calls[0][4]).toBe(false)
+
+        expect(result.current.trend.isFetching).toBe(false)
+        expect(result.current.trend.data?.value).toBe(0)
+        expect(result.current.trend.data?.prevValue).toBe(0)
     })
 })

@@ -129,13 +129,13 @@ describe('useAIJourneyAudienceHealthMetrics', () => {
 
     it('should return an array of 6 metrics in the correct order', () => {
         const { result } = renderHook(() =>
-            useAIJourneyAudienceHealthMetrics(
+            useAIJourneyAudienceHealthMetrics({
                 integrationId,
                 userTimezone,
                 filters,
                 shopName,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(result.current).toHaveLength(6)
@@ -149,101 +149,169 @@ describe('useAIJourneyAudienceHealthMetrics', () => {
 
     it('should call each sub-hook with the correct arguments', () => {
         renderHook(() =>
-            useAIJourneyAudienceHealthMetrics(
+            useAIJourneyAudienceHealthMetrics({
                 integrationId,
                 userTimezone,
                 filters,
                 shopName,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(useAIJourneyTotalConversations).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            journeyIds,
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds,
+                forceEmpty: false,
+            }),
         )
         expect(useAIJourneyOptOutRate).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            shopName,
-            journeyIds,
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                shopName,
+                journeyIds,
+                forceEmpty: false,
+            }),
         )
         expect(useAIJourneyTotalOptOuts).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            journeyIds,
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds,
+                forceEmpty: false,
+            }),
         )
         expect(useAIJourneyTotalReplies).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            journeyIds,
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds,
+                forceEmpty: false,
+            }),
         )
         expect(useAIJourneyOptOutAfterReplyRate).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            journeyIds,
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds,
+                forceEmpty: false,
+            }),
         )
         expect(useAIJourneyOptOutAfterReply).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            journeyIds,
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds,
+                forceEmpty: false,
+            }),
         )
     })
 
     it('should pass an empty journeyIds array to all sub-hooks', () => {
         renderHook(() =>
-            useAIJourneyAudienceHealthMetrics(
+            useAIJourneyAudienceHealthMetrics({
                 integrationId,
                 userTimezone,
                 filters,
                 shopName,
-                [],
-            ),
+                journeyIds: [],
+            }),
         )
 
         expect(useAIJourneyTotalConversations).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            [],
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: [],
+                forceEmpty: false,
+            }),
         )
         expect(useAIJourneyOptOutRate).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            shopName,
-            [],
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                shopName,
+                journeyIds: [],
+                forceEmpty: false,
+            }),
         )
         expect(useAIJourneyTotalOptOuts).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            [],
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: [],
+                forceEmpty: false,
+            }),
         )
         expect(useAIJourneyTotalReplies).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            [],
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: [],
+                forceEmpty: false,
+            }),
         )
         expect(useAIJourneyOptOutAfterReplyRate).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            [],
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: [],
+                forceEmpty: false,
+            }),
         )
         expect(useAIJourneyOptOutAfterReply).toHaveBeenCalledWith(
-            integrationId,
-            userTimezone,
-            filters,
-            [],
+            expect.objectContaining({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: [],
+                forceEmpty: false,
+            }),
+        )
+    })
+
+    it('should disable all sub-hooks when no flows or campaigns are selected', () => {
+        renderHook(() =>
+            useAIJourneyAudienceHealthMetrics({
+                integrationId,
+                userTimezone,
+                filters,
+                shopName,
+                journeyIds,
+                forceEmpty: true,
+            }),
+        )
+
+        expect(useAIJourneyTotalConversations).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
+        )
+        expect(useAIJourneyOptOutRate).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
+        )
+        expect(useAIJourneyTotalOptOuts).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
+        )
+        expect(useAIJourneyTotalReplies).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
+        )
+        expect(useAIJourneyOptOutAfterReplyRate).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
+        )
+        expect(useAIJourneyOptOutAfterReply).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
         )
     })
 })

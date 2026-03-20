@@ -14,13 +14,25 @@ import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-export const useAIJourneyConversionRate = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    granularity: ReportingGranularity,
-    journeyIds?: string[],
-): MetricProps => {
+type UseAIJourneyConversionRateOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    granularity: ReportingGranularity
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
+
+export const useAIJourneyConversionRate = ({
+    integrationId,
+    userTimezone,
+    filters,
+    granularity,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyConversionRateOptions): MetricProps => {
+    const enabled = !forceEmpty
+
     const { data: totalOrdersData, isFetching: isFetchingTotalOrders } =
         useMetricTrend(
             aiJourneyTotalNumberOfOrderQueryFactory(
@@ -38,6 +50,9 @@ export const useAIJourneyConversionRate = (
                 userTimezone,
                 journeyIds,
             ),
+            undefined,
+            undefined,
+            enabled,
         )
 
     const {
@@ -59,6 +74,9 @@ export const useAIJourneyConversionRate = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     const conversionRateValue = useMemo(() => {
@@ -84,6 +102,8 @@ export const useAIJourneyConversionRate = (
                 granularity,
                 journeyIds,
             ),
+            undefined,
+            enabled,
         )
 
     const {
@@ -97,6 +117,8 @@ export const useAIJourneyConversionRate = (
             granularity,
             journeyIds,
         ),
+        undefined,
+        enabled,
     )
 
     const conversionRateTimeSeries = useMemo(() => {
@@ -121,15 +143,16 @@ export const useAIJourneyConversionRate = (
 
     return {
         label: 'Conversion rate',
-        value: conversionRateValue,
-        prevValue: conversionRatePrevValue,
-        series: conversionRateTimeSeries,
+        value: forceEmpty ? 0 : conversionRateValue,
+        prevValue: forceEmpty ? 0 : conversionRatePrevValue,
+        series: forceEmpty ? [] : conversionRateTimeSeries,
         interpretAs: 'more-is-better',
         metricFormat: 'percent-precision-1',
-        isLoading:
-            isFetchingtotalContactsEnrolled ||
-            isFetchingTotalOrders ||
-            isFetchingOrdersSeries ||
-            isFetchingConversationsSeries,
+        isLoading: forceEmpty
+            ? false
+            : isFetchingtotalContactsEnrolled ||
+              isFetchingTotalOrders ||
+              isFetchingOrdersSeries ||
+              isFetchingConversationsSeries,
     }
 }

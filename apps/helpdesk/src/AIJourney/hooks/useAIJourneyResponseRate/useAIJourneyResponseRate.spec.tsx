@@ -93,12 +93,12 @@ describe('useAIJourneyResponseRate', () => {
         const userTimezone = 'America/New_York'
 
         const { result } = renderHook(() =>
-            useAIJourneyResponseRate(
-                '123',
+            useAIJourneyResponseRate({
+                integrationId: '123',
                 userTimezone,
-                mockFilters,
-                ReportingGranularity.Week,
-            ),
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current).toEqual({
@@ -140,12 +140,12 @@ describe('useAIJourneyResponseRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyResponseRate(
-                '123',
-                'UTC',
-                mockFilters,
-                ReportingGranularity.Week,
-            ),
+            useAIJourneyResponseRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current).toEqual({
@@ -163,5 +163,40 @@ describe('useAIJourneyResponseRate', () => {
                 title: 'Response Rate',
             },
         })
+    })
+
+    it('should disable queries and return zeroed values when no flows or campaigns are selected', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() =>
+            useAIJourneyResponseRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+                forceEmpty: true,
+            }),
+        )
+
+        const metricTrendCalls = (useMetricTrend as jest.Mock).mock.calls
+        metricTrendCalls.forEach((call) => {
+            expect(call[4]).toBe(false)
+        })
+        const timeSeriesCalls = (useTimeSeries as jest.Mock).mock.calls
+        timeSeriesCalls.forEach((call) => {
+            expect(call[2]).toBe(false)
+        })
+
+        expect(result.current.value).toBe(0)
+        expect(result.current.prevValue).toBe(0)
+        expect(result.current.series).toEqual([])
+        expect(result.current.isLoading).toBe(false)
     })
 })

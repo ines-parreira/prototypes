@@ -18,13 +18,25 @@ import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-export const useAIJourneyResponseRate = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    granularity: ReportingGranularity,
-    journeyIds?: string[],
-): MetricProps => {
+type UseAIJourneyResponseRateOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    granularity: ReportingGranularity
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
+
+export const useAIJourneyResponseRate = ({
+    integrationId,
+    userTimezone,
+    filters,
+    granularity,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyResponseRateOptions): MetricProps => {
+    const enabled = !forceEmpty
+
     const { data: repliedMessagesData, isFetching: isFetchingRepliedMessages } =
         useMetricTrend(
             aiJourneyRepliedMessagesQueryFactory(
@@ -42,6 +54,9 @@ export const useAIJourneyResponseRate = (
                 userTimezone,
                 journeyIds,
             ),
+            undefined,
+            undefined,
+            enabled,
         )
 
     const {
@@ -63,6 +78,9 @@ export const useAIJourneyResponseRate = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     const responseRateValue = useMemo(() => {
@@ -90,6 +108,8 @@ export const useAIJourneyResponseRate = (
             granularity,
             journeyIds,
         ),
+        undefined,
+        enabled,
     )
 
     const {
@@ -103,6 +123,8 @@ export const useAIJourneyResponseRate = (
             granularity,
             journeyIds,
         ),
+        undefined,
+        enabled,
     )
 
     const conversionRateTimeSeries = useMemo(() => {
@@ -127,16 +149,17 @@ export const useAIJourneyResponseRate = (
 
     return {
         label: AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate].title,
-        value: responseRateValue,
-        prevValue: responseRatePrevValue,
-        series: conversionRateTimeSeries,
+        value: forceEmpty ? 0 : responseRateValue,
+        prevValue: forceEmpty ? 0 : responseRatePrevValue,
+        series: forceEmpty ? [] : conversionRateTimeSeries,
         interpretAs: 'more-is-better',
         metricFormat: 'percent-precision-1',
-        isLoading:
-            isFetchingRepliedMessages ||
-            isFetchingtotalContactsEnrolled ||
-            isFetchingRepliedMessagesSeries ||
-            isFetchingConversationsSeries,
+        isLoading: forceEmpty
+            ? false
+            : isFetchingRepliedMessages ||
+              isFetchingtotalContactsEnrolled ||
+              isFetchingRepliedMessagesSeries ||
+              isFetchingConversationsSeries,
         drilldown: {
             title: AIJourneyMetricsConfig[AIJourneyMetric.ResponseRate].title,
             metricName: AIJourneyMetric.ResponseRate,

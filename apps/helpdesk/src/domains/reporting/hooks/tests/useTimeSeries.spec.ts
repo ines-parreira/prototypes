@@ -235,6 +235,19 @@ describe('useTimeSeries', () => {
             undefined,
             expect.objectContaining({
                 select,
+                enabled: true,
+            }),
+        )
+    })
+
+    it('should pass enabled=false to usePostReportingV2', () => {
+        renderHook(() => useTimeSeries(defaultQuery, undefined, false))
+
+        expect(usePostReportingV2Mock).toHaveBeenCalledWith(
+            [defaultQuery],
+            undefined,
+            expect.objectContaining({
+                enabled: false,
             }),
         )
     })

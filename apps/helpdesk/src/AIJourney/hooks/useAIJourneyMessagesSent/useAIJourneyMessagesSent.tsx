@@ -9,13 +9,25 @@ import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-export const useAIJourneyMessagesSent = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    granularity: ReportingGranularity,
-    journeyIds?: string[],
-): MetricProps => {
+type UseAIJourneyMessagesSentOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    granularity: ReportingGranularity
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
+
+export const useAIJourneyMessagesSent = ({
+    integrationId,
+    userTimezone,
+    filters,
+    granularity,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyMessagesSentOptions): MetricProps => {
+    const enabled = !forceEmpty
+
     const { data: trendData, isFetching: isFetchingTrend } = useMetricTrend(
         aiJourneyTotalMessagesQueryFactory(
             integrationId,
@@ -32,6 +44,9 @@ export const useAIJourneyMessagesSent = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     const { data: timeSeriesData, isFetching: isFetchingSeries } =
@@ -43,15 +58,17 @@ export const useAIJourneyMessagesSent = (
                 granularity,
                 journeyIds,
             ),
+            undefined,
+            enabled,
         )
 
     return {
         label: 'Messages sent',
-        value: trendData?.value || 0,
-        prevValue: trendData?.prevValue,
-        series: timeSeriesData?.[0] ?? [],
+        value: forceEmpty ? 0 : trendData?.value || 0,
+        prevValue: forceEmpty ? 0 : trendData?.prevValue,
+        series: forceEmpty ? [] : (timeSeriesData?.[0] ?? []),
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-precision-1',
-        isLoading: isFetchingTrend || isFetchingSeries,
+        isLoading: forceEmpty ? false : isFetchingTrend || isFetchingSeries,
     }
 }

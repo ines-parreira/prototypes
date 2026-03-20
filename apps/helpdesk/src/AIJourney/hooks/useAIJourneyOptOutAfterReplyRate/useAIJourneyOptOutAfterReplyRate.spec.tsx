@@ -50,12 +50,12 @@ describe('useAIJourneyOptOutAfterReplyRate', () => {
 
     it('should return computed rate when both hooks have data', () => {
         const { result } = renderHook(() =>
-            useAIJourneyOptOutAfterReplyRate(
-                '123',
-                'America/New_York',
-                mockFilters,
-                ['journey-1'],
-            ),
+            useAIJourneyOptOutAfterReplyRate({
+                integrationId: '123',
+                userTimezone: 'America/New_York',
+                filters: mockFilters,
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current).toEqual({
@@ -90,9 +90,12 @@ describe('useAIJourneyOptOutAfterReplyRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyOptOutAfterReplyRate('123', 'UTC', mockFilters, [
-                'journey-1',
-            ]),
+            useAIJourneyOptOutAfterReplyRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current.trend.isFetching).toBe(true)
@@ -113,9 +116,12 @@ describe('useAIJourneyOptOutAfterReplyRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyOptOutAfterReplyRate('123', 'UTC', mockFilters, [
-                'journey-1',
-            ]),
+            useAIJourneyOptOutAfterReplyRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current.trend.isFetching).toBe(true)
@@ -147,12 +153,11 @@ describe('useAIJourneyOptOutAfterReplyRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyOptOutAfterReplyRate(
-                '123',
-                'UTC',
-                mockFilters,
-                undefined,
-            ),
+            useAIJourneyOptOutAfterReplyRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+            }),
         )
 
         expect(result.current.trend.data?.prevValue).toBe(0)
@@ -162,25 +167,46 @@ describe('useAIJourneyOptOutAfterReplyRate', () => {
         const journeyIds = ['journey-1', 'journey-2']
 
         renderHook(() =>
-            useAIJourneyOptOutAfterReplyRate(
-                '123',
-                'UTC',
-                mockFilters,
+            useAIJourneyOptOutAfterReplyRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(mockUseAIJourneyOptOutAfterReply).toHaveBeenCalledWith(
-            '123',
-            'UTC',
-            mockFilters,
-            journeyIds,
+            expect.objectContaining({
+                integrationId: '123',
+                journeyIds,
+                forceEmpty: false,
+            }),
         )
         expect(mockUseAIJourneyTotalReplies).toHaveBeenCalledWith(
-            '123',
-            'UTC',
-            mockFilters,
-            journeyIds,
+            expect.objectContaining({
+                integrationId: '123',
+                journeyIds,
+                forceEmpty: false,
+            }),
+        )
+    })
+
+    it('should disable all sub-hooks when no flows or campaigns are selected', () => {
+        renderHook(() =>
+            useAIJourneyOptOutAfterReplyRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                journeyIds: ['journey-1'],
+                forceEmpty: true,
+            }),
+        )
+
+        expect(mockUseAIJourneyOptOutAfterReply).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
+        )
+        expect(mockUseAIJourneyTotalReplies).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
         )
     })
 })

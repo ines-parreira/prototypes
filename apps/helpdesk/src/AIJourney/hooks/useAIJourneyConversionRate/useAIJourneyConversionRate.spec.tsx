@@ -85,12 +85,12 @@ describe('useAIJourneyConversionRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate(
-                '123',
-                mockUserTimezone,
-                mockFilters,
-                ReportingGranularity.Week,
-            ),
+            useAIJourneyConversionRate({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current.value).toBe(40)
@@ -130,12 +130,12 @@ describe('useAIJourneyConversionRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate(
-                '123',
-                mockUserTimezone,
-                mockFilters,
-                ReportingGranularity.Week,
-            ),
+            useAIJourneyConversionRate({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current.value).toBe(0)
@@ -161,12 +161,12 @@ describe('useAIJourneyConversionRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate(
-                '123',
-                mockUserTimezone,
-                mockFilters,
-                ReportingGranularity.Week,
-            ),
+            useAIJourneyConversionRate({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current.value).toBe(0)
@@ -185,12 +185,12 @@ describe('useAIJourneyConversionRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate(
-                '123',
-                mockUserTimezone,
-                mockFilters,
-                ReportingGranularity.Week,
-            ),
+            useAIJourneyConversionRate({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current.value).toBe(0)
@@ -215,14 +215,49 @@ describe('useAIJourneyConversionRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyConversionRate(
-                '123',
-                mockUserTimezone,
-                mockFilters,
-                ReportingGranularity.Week,
-            ),
+            useAIJourneyConversionRate({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current.value).toBe(100)
+    })
+
+    it('should disable queries and return zeroed values when no flows or campaigns are selected', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() =>
+            useAIJourneyConversionRate({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+                forceEmpty: true,
+            }),
+        )
+
+        const metricTrendCalls = (useMetricTrend as jest.Mock).mock.calls
+        metricTrendCalls.forEach((call) => {
+            expect(call[4]).toBe(false)
+        })
+        const timeSeriesCalls = (useTimeSeries as jest.Mock).mock.calls
+        timeSeriesCalls.forEach((call) => {
+            expect(call[2]).toBe(false)
+        })
+
+        expect(result.current.value).toBe(0)
+        expect(result.current.prevValue).toBe(0)
+        expect(result.current.series).toEqual([])
+        expect(result.current.isLoading).toBe(false)
     })
 })

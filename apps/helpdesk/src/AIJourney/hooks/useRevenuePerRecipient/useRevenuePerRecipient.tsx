@@ -26,14 +26,27 @@ const calculateRevenuePerRecipient = ({
     return 0
 }
 
-export const useRevenuePerRecipient = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    currency: string,
-    granularity: ReportingGranularity,
-    journeyIds?: string[],
-): MetricProps => {
+type UseRevenuePerRecipientOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    currency: string
+    granularity: ReportingGranularity
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
+
+export const useRevenuePerRecipient = ({
+    integrationId,
+    userTimezone,
+    filters,
+    currency,
+    granularity,
+    journeyIds,
+    forceEmpty = false,
+}: UseRevenuePerRecipientOptions): MetricProps => {
+    const enabled = !forceEmpty
+
     const { data: gmvData, isFetching: isFetchingGmv } = useMetricTrend(
         aiJourneyRevenueQueryFactory(
             integrationId,
@@ -50,6 +63,9 @@ export const useRevenuePerRecipient = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     const { data: recipientsData, isFetching: isFetchingRecipients } =
@@ -69,6 +85,9 @@ export const useRevenuePerRecipient = (
                 userTimezone,
                 journeyIds,
             ),
+            undefined,
+            undefined,
+            enabled,
         )
 
     const value = useMemo(() => {
@@ -94,6 +113,8 @@ export const useRevenuePerRecipient = (
                 granularity,
                 journeyIds,
             ),
+            undefined,
+            enabled,
         )
 
     const {
@@ -107,6 +128,8 @@ export const useRevenuePerRecipient = (
             granularity,
             journeyIds,
         ),
+        undefined,
+        enabled,
     )
 
     const series = useMemo(() => {
@@ -128,16 +151,17 @@ export const useRevenuePerRecipient = (
 
     return {
         label: 'Revenue Per Recipient',
-        value,
-        prevValue,
-        series,
+        value: forceEmpty ? 0 : value,
+        prevValue: forceEmpty ? 0 : prevValue,
+        series: forceEmpty ? [] : series,
         interpretAs: 'more-is-better',
         metricFormat: 'currency',
         currency,
-        isLoading:
-            isFetchingGmv ||
-            isFetchingRecipients ||
-            isFetchingGmvSeries ||
-            isFetchingRecipientsSeries,
+        isLoading: forceEmpty
+            ? false
+            : isFetchingGmv ||
+              isFetchingRecipients ||
+              isFetchingGmvSeries ||
+              isFetchingRecipientsSeries,
     }
 }

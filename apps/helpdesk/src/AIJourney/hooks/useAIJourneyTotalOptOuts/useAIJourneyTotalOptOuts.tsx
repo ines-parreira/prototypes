@@ -5,12 +5,23 @@ import { aiJourneyOptedOutQueryFactory } from 'AIJourney/utils/analytics-factori
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-export const useAIJourneyTotalOptOuts = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    journeyIds?: string[],
-): AIJourneyMetricResult => {
+type UseAIJourneyTotalOptOutsOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
+
+export const useAIJourneyTotalOptOuts = ({
+    integrationId,
+    userTimezone,
+    filters,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyTotalOptOutsOptions): AIJourneyMetricResult => {
+    const enabled = !forceEmpty
+
     const { data: trendData, isFetching } = useMetricTrend(
         aiJourneyOptedOutQueryFactory(
             integrationId,
@@ -27,16 +38,23 @@ export const useAIJourneyTotalOptOuts = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     return {
         trend: {
-            isFetching,
+            isFetching: forceEmpty ? false : isFetching,
             isError: false,
             data: {
                 label: 'Total opted-out',
-                value: isFetching ? null : (trendData?.value ?? null),
-                prevValue: trendData?.prevValue ?? null,
+                value: forceEmpty
+                    ? 0
+                    : isFetching
+                      ? null
+                      : (trendData?.value ?? null),
+                prevValue: forceEmpty ? 0 : (trendData?.prevValue ?? null),
             },
         },
         interpretAs: 'less-is-better',

@@ -100,74 +100,102 @@ export const Analytics = () => {
         allCampaignIds,
     ])
 
-    const totalSales = useAIJourneyTotalSales(
+    const isNothingSelected = useMemo(() => {
+        const selectedFlowIds = statsFilters.journeyFlows?.values
+        const selectedCampaignIds = statsFilters.journeyCampaigns?.values
+
+        const journeyNothingSelected =
+            selectedFlowIds?.length === 0 && selectedCampaignIds?.length === 0
+
+        const handoverNothingSelected =
+            statsFilters.handover !== undefined &&
+            statsFilters.handover.values.length === 0
+
+        return journeyNothingSelected || handoverNothingSelected
+    }, [
+        statsFilters.journeyFlows,
+        statsFilters.journeyCampaigns,
+        statsFilters.handover,
+    ])
+
+    const forceEmpty = isNothingSelected
+
+    const totalSales = useAIJourneyTotalSales({
         integrationId,
         userTimezone,
         filters,
         currency,
         granularity,
-        journeysIdsToFilter,
-    )
+        journeyIds: journeysIdsToFilter,
+        forceEmpty,
+    })
 
-    const orders = useAIJourneyTotalOrders(
+    const orders = useAIJourneyTotalOrders({
         integrationId,
         userTimezone,
         filters,
         granularity,
         shopName,
-        journeysIdsToFilter,
-    )
+        journeyIds: journeysIdsToFilter,
+        forceEmpty,
+    })
 
-    const conversionRate = useAIJourneyConversionRate(
+    const conversionRate = useAIJourneyConversionRate({
         integrationId,
         userTimezone,
         filters,
         granularity,
-        journeysIdsToFilter,
-    )
+        journeyIds: journeysIdsToFilter,
+        forceEmpty,
+    })
 
-    const clickThroughRate = useClickThroughRate(
+    const clickThroughRate = useClickThroughRate({
         integrationId,
         userTimezone,
         filters,
         granularity,
         shopName,
-        journeysIdsToFilter,
-    )
+        journeyIds: journeysIdsToFilter,
+        forceEmpty,
+    })
 
-    const responseRate = useAIJourneyResponseRate(
+    const responseRate = useAIJourneyResponseRate({
         integrationId,
         userTimezone,
         filters,
         granularity,
-        journeysIdsToFilter,
-    )
+        journeyIds: journeysIdsToFilter,
+        forceEmpty,
+    })
 
-    const totalMessagesSent = useAIJourneyMessagesSent(
+    const totalMessagesSent = useAIJourneyMessagesSent({
         integrationId,
         userTimezone,
         filters,
         granularity,
-        journeysIdsToFilter,
-    )
+        journeyIds: journeysIdsToFilter,
+        forceEmpty,
+    })
 
-    const averageOrderValue = useAverageOrderValue(
-        integrationId,
-        userTimezone,
-        filters,
-        currency,
-        granularity,
-        journeysIdsToFilter,
-    )
-
-    const revenuePerRecipient = useRevenuePerRecipient(
+    const averageOrderValue = useAverageOrderValue({
         integrationId,
         userTimezone,
         filters,
         currency,
         granularity,
-        journeysIdsToFilter,
-    )
+        journeyIds: journeysIdsToFilter,
+        forceEmpty,
+    })
+
+    const revenuePerRecipient = useRevenuePerRecipient({
+        integrationId,
+        userTimezone,
+        filters,
+        currency,
+        granularity,
+        journeyIds: journeysIdsToFilter,
+        forceEmpty,
+    })
 
     const ordersDrillDown = useDrillDownModalTrigger({
         metricName: AIJourneyMetric.TotalOrders,
@@ -477,6 +505,7 @@ export const Analytics = () => {
                     userTimezone={userTimezone}
                     filters={filters}
                     journeyIds={journeysIdsToFilter}
+                    forceEmpty={forceEmpty}
                 />
                 <AudienceHealthSection
                     integrationId={integrationId}
@@ -484,6 +513,7 @@ export const Analytics = () => {
                     filters={filters}
                     shopName={shopName}
                     journeyIds={journeysIdsToFilter}
+                    forceEmpty={forceEmpty}
                 />
                 <DrillDownModal />
             </Box>

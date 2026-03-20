@@ -6,55 +6,71 @@ import { useAIJourneyTotalOptOuts } from 'AIJourney/hooks/useAIJourneyTotalOptOu
 import { useAIJourneyTotalReplies } from 'AIJourney/hooks/useAIJourneyTotalReplies/useAIJourneyTotalReplies'
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 
-export const useAIJourneyAudienceHealthMetrics = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    shopName: string,
-    journeyIds: string[],
-) => {
-    const totalConversations = useAIJourneyTotalConversations(
+type UseAIJourneyAudienceHealthMetricsOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    shopName: string
+    journeyIds: string[]
+    forceEmpty?: boolean
+}
+
+export const useAIJourneyAudienceHealthMetrics = ({
+    integrationId,
+    userTimezone,
+    filters,
+    shopName,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyAudienceHealthMetricsOptions) => {
+    const totalConversations = useAIJourneyTotalConversations({
         integrationId,
         userTimezone,
         filters,
         journeyIds,
-    )
+        forceEmpty,
+    })
 
-    const optOutRate = useAIJourneyOptOutRate(
+    const optOutRate = useAIJourneyOptOutRate({
         integrationId,
         userTimezone,
         filters,
         shopName,
         journeyIds,
-    )
+        forceEmpty,
+    })
 
-    const totalOptOut = useAIJourneyTotalOptOuts(
+    const totalOptOut = useAIJourneyTotalOptOuts({
         integrationId,
         userTimezone,
         filters,
         journeyIds,
-    )
+        forceEmpty,
+    })
 
-    const recipientsWhoReplied = useAIJourneyTotalReplies(
+    const recipientsWhoReplied = useAIJourneyTotalReplies({
         integrationId,
         userTimezone,
         filters,
         journeyIds,
-    )
+        forceEmpty,
+    })
 
-    const optOutRateAfterReply = useAIJourneyOptOutAfterReplyRate(
+    const optOutRateAfterReply = useAIJourneyOptOutAfterReplyRate({
         integrationId,
         userTimezone,
         filters,
         journeyIds,
-    )
+        forceEmpty,
+    })
 
-    const optedOutAfterReply = useAIJourneyOptOutAfterReply(
+    const optedOutAfterReply = useAIJourneyOptOutAfterReply({
         integrationId,
         userTimezone,
         filters,
         journeyIds,
-    )
+        forceEmpty,
+    })
 
     return [
         totalConversations,

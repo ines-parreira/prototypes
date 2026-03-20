@@ -13,6 +13,7 @@ type Props = {
     filters: FilterType
     shopName: string
     journeyIds: string[]
+    forceEmpty?: boolean
 }
 
 export const AudienceHealthSection = ({
@@ -21,14 +22,16 @@ export const AudienceHealthSection = ({
     filters,
     shopName,
     journeyIds,
+    forceEmpty,
 }: Props) => {
-    const audienceHealthMetrics = useAIJourneyAudienceHealthMetrics(
+    const audienceHealthMetrics = useAIJourneyAudienceHealthMetrics({
         integrationId,
         userTimezone,
         filters,
         shopName,
         journeyIds,
-    )
+        forceEmpty,
+    })
 
     const totalConversationsDrillDown = useDrillDownModalTrigger({
         metricName: AIJourneyMetric.TotalConversations,

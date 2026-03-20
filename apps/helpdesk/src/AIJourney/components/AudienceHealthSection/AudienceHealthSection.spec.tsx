@@ -162,11 +162,13 @@ describe('<AudienceHealthSection />', () => {
         render(<AudienceHealthSection {...defaultProps} />)
 
         expect(mockUseAIJourneyAudienceHealthMetrics).toHaveBeenCalledWith(
-            defaultProps.integrationId,
-            defaultProps.userTimezone,
-            defaultProps.filters,
-            defaultProps.shopName,
-            defaultProps.journeyIds,
+            expect.objectContaining({
+                integrationId: defaultProps.integrationId,
+                userTimezone: defaultProps.userTimezone,
+                filters: defaultProps.filters,
+                shopName: defaultProps.shopName,
+                journeyIds: defaultProps.journeyIds,
+            }),
         )
     })
 

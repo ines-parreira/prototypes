@@ -516,12 +516,10 @@ describe('<Analytics />', () => {
         )
 
         expect(mockUseAIJourneyRevenue).toHaveBeenCalledWith(
-            expect.any(String),
-            expect.any(String),
-            expect.any(Object),
-            expect.any(String),
-            expect.any(String),
-            ['flow-1', 'campaign-1', 'campaign-2'],
+            expect.objectContaining({
+                journeyIds: ['flow-1', 'campaign-1', 'campaign-2'],
+                forceEmpty: false,
+            }),
         )
     })
 
@@ -577,12 +575,10 @@ describe('<Analytics />', () => {
         )
 
         expect(mockUseAIJourneyRevenue).toHaveBeenCalledWith(
-            expect.any(String),
-            expect.any(String),
-            expect.any(Object),
-            expect.any(String),
-            expect.any(String),
-            ['flow-1', 'flow-2', 'campaign-1'],
+            expect.objectContaining({
+                journeyIds: ['flow-1', 'flow-2', 'campaign-1'],
+                forceEmpty: false,
+            }),
         )
     })
 
@@ -627,12 +623,10 @@ describe('<Analytics />', () => {
         )
 
         expect(mockUseAIJourneyRevenue).toHaveBeenCalledWith(
-            expect.any(String),
-            expect.any(String),
-            expect.any(Object),
-            expect.any(String),
-            expect.any(String),
-            [],
+            expect.objectContaining({
+                journeyIds: [],
+                forceEmpty: false,
+            }),
         )
     })
 
@@ -681,6 +675,7 @@ describe('<Analytics />', () => {
                     period: expect.any(Object),
                 }),
                 journeyIds: [],
+                forceEmpty: false,
             }),
             expect.anything(),
         )
@@ -706,6 +701,7 @@ describe('<Analytics />', () => {
                 }),
                 shopName: 'shopify-store',
                 journeyIds: [],
+                forceEmpty: false,
             }),
             expect.anything(),
         )
@@ -732,6 +728,163 @@ describe('<Analytics />', () => {
         expect(
             localStorage.getItem('ai-journey-analytics-metrics-preferences'),
         ).toBeNull()
+    })
+
+    it('should disable analytics queries when all flows and campaigns are deselected', () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeys: [{ id: 'flow-1', type: 'cart_abandoned' }],
+            campaigns: [
+                {
+                    id: 'campaign-1',
+                    campaign: { title: 'Campaign 1', state: 'active' },
+                },
+            ],
+            currentIntegration: { id: 286584 },
+            shopName: 'shopify-store',
+            currency: 'USD',
+            isLoading: false,
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    end_datetime: moment().toISOString(),
+                    start_datetime: moment().toISOString(),
+                },
+                journeyFlows: { values: [], operator: 'in' },
+                journeyCampaigns: { values: [], operator: 'in' },
+            },
+            userTimezone: 'America/New_York',
+            granularity: ReportingGranularity.Day,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockUseAIJourneyRevenue).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
+        )
+        expect(mockDiscountCodesUsageSection).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
+            expect.anything(),
+        )
+        expect(mockAudienceHealthSection).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
+            expect.anything(),
+        )
+    })
+
+    it('should disable analytics queries when handover has both options deselected', () => {
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    end_datetime: moment().toISOString(),
+                    start_datetime: moment().toISOString(),
+                },
+                handover: { values: [], operator: 'in' },
+            },
+            userTimezone: 'America/New_York',
+            granularity: ReportingGranularity.Day,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockUseAIJourneyRevenue).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: true }),
+        )
+    })
+
+    it('should enable analytics queries when flows are empty but campaigns have selections', () => {
+        mockUseJourneyContext.mockReturnValue({
+            journeys: [{ id: 'flow-1', type: 'cart_abandoned' }],
+            campaigns: [
+                {
+                    id: 'campaign-1',
+                    campaign: { title: 'Campaign 1', state: 'active' },
+                },
+            ],
+            currentIntegration: { id: 286584 },
+            shopName: 'shopify-store',
+            currency: 'USD',
+            isLoading: false,
+            journeyType: 'cart_abandoned',
+            storeConfiguration: {
+                monitoredSmsIntegrations: [1, 2],
+            },
+        })
+
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    end_datetime: moment().toISOString(),
+                    start_datetime: moment().toISOString(),
+                },
+                journeyFlows: { values: [], operator: 'in' },
+                journeyCampaigns: { values: ['campaign-1'], operator: 'in' },
+            },
+            userTimezone: 'America/New_York',
+            granularity: ReportingGranularity.Day,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockUseAIJourneyRevenue).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: false }),
+        )
+    })
+
+    it('should enable analytics queries when filters are undefined (initial state)', () => {
+        mockUseStatsFilters.mockReturnValue({
+            cleanStatsFilters: {
+                period: {
+                    end_datetime: moment().toISOString(),
+                    start_datetime: moment().toISOString(),
+                },
+            },
+            userTimezone: 'America/New_York',
+            granularity: ReportingGranularity.Day,
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(mockUseAIJourneyRevenue).toHaveBeenCalledWith(
+            expect.objectContaining({ forceEmpty: false }),
+        )
     })
 
     it('should render DrillDownModal', () => {

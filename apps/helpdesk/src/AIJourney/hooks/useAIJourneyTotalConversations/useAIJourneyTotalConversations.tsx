@@ -5,12 +5,23 @@ import { aiJourneyTotalConversationsQueryFactory } from 'AIJourney/utils/analyti
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-export const useAIJourneyTotalConversations = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    journeyIds?: string[],
-): AIJourneyMetricResult => {
+type UseAIJourneyTotalConversationsOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
+
+export const useAIJourneyTotalConversations = ({
+    integrationId,
+    userTimezone,
+    filters,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyTotalConversationsOptions): AIJourneyMetricResult => {
+    const enabled = !forceEmpty
+
     const { data: trendData, isFetching } = useMetricTrend(
         aiJourneyTotalConversationsQueryFactory(
             integrationId,
@@ -27,16 +38,23 @@ export const useAIJourneyTotalConversations = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     return {
         trend: {
-            isFetching,
+            isFetching: forceEmpty ? false : isFetching,
             isError: false,
             data: {
                 label: 'Recipients',
-                value: isFetching ? null : (trendData?.value ?? null),
-                prevValue: trendData?.prevValue ?? null,
+                value: forceEmpty
+                    ? 0
+                    : isFetching
+                      ? null
+                      : (trendData?.value ?? null),
+                prevValue: forceEmpty ? 0 : (trendData?.prevValue ?? null),
             },
         },
         interpretAs: 'more-is-better',

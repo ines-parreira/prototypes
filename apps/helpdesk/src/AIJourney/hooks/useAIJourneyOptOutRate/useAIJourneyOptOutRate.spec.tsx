@@ -41,12 +41,12 @@ describe('useAIJourneyOptOutRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyOptOutRate(
-                '123',
-                'America/New_York',
-                mockFilters,
-                'shopName',
-            ),
+            useAIJourneyOptOutRate({
+                integrationId: '123',
+                userTimezone: 'America/New_York',
+                filters: mockFilters,
+                shopName: 'shopName',
+            }),
         )
 
         expect(result.current).toEqual({
@@ -74,10 +74,37 @@ describe('useAIJourneyOptOutRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyOptOutRate('123', 'UTC', mockFilters, 'shopName'),
+            useAIJourneyOptOutRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                shopName: 'shopName',
+            }),
         )
 
         expect(result.current.trend.isFetching).toBe(true)
         expect(result.current.trend.data?.value).toBeNull()
+    })
+
+    it('should disable queries when no flows or campaigns are selected', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: { value: 50, prevValue: 20 },
+            isFetching: false,
+        })
+
+        renderHook(() =>
+            useAIJourneyOptOutRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                shopName: 'shopName',
+                forceEmpty: true,
+            }),
+        )
+
+        const metricTrendCalls = (useMetricTrend as jest.Mock).mock.calls
+        metricTrendCalls.forEach((call) => {
+            expect(call[4]).toBe(false)
+        })
     })
 })

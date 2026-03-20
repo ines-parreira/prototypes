@@ -99,13 +99,13 @@ describe('useAverageOrderValue', () => {
         })
 
         const { result } = renderHook(() =>
-            useAverageOrderValue(
-                '123',
-                mockUserTimezone,
-                mockFilters,
-                'USD',
-                ReportingGranularity.Week,
-            ),
+            useAverageOrderValue({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                currency: 'USD',
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current.value).toBe(50)
@@ -139,13 +139,13 @@ describe('useAverageOrderValue', () => {
         })
 
         const { result } = renderHook(() =>
-            useAverageOrderValue(
-                '123',
-                mockUserTimezone,
-                mockFilters,
-                'USD',
-                ReportingGranularity.Week,
-            ),
+            useAverageOrderValue({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                currency: 'USD',
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current.value).toBe(0)
@@ -180,13 +180,13 @@ describe('useAverageOrderValue', () => {
         })
 
         const { result } = renderHook(() =>
-            useAverageOrderValue(
-                '123',
-                mockUserTimezone,
-                mockFilters,
-                'USD',
-                ReportingGranularity.Week,
-            ),
+            useAverageOrderValue({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                currency: 'USD',
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current.value).toBe(0)
@@ -203,13 +203,13 @@ describe('useAverageOrderValue', () => {
         })
 
         const { result } = renderHook(() =>
-            useAverageOrderValue(
-                '123',
-                mockUserTimezone,
-                mockFilters,
-                'USD',
-                ReportingGranularity.Week,
-            ),
+            useAverageOrderValue({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                currency: 'USD',
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current.value).toBe(0)
@@ -243,16 +243,52 @@ describe('useAverageOrderValue', () => {
         })
 
         const { result } = renderHook(() =>
-            useAverageOrderValue(
-                '123',
-                mockUserTimezone,
-                mockFilters,
-                'USD',
-                ReportingGranularity.Week,
-            ),
+            useAverageOrderValue({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                currency: 'USD',
+                granularity: ReportingGranularity.Week,
+            }),
         )
 
         expect(result.current.value).toBe(50)
         expect(result.current.prevValue).toBe(0)
+    })
+
+    it('should disable queries and return zeroed values when no flows or campaigns are selected', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() =>
+            useAverageOrderValue({
+                integrationId: '123',
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                currency: 'USD',
+                granularity: ReportingGranularity.Week,
+                forceEmpty: true,
+            }),
+        )
+
+        const metricTrendCalls = (useMetricTrend as jest.Mock).mock.calls
+        metricTrendCalls.forEach((call) => {
+            expect(call[4]).toBe(false)
+        })
+        const timeSeriesCalls = (useTimeSeries as jest.Mock).mock.calls
+        timeSeriesCalls.forEach((call) => {
+            expect(call[2]).toBe(false)
+        })
+
+        expect(result.current.value).toBe(0)
+        expect(result.current.prevValue).toBe(0)
+        expect(result.current.series).toEqual([])
+        expect(result.current.isLoading).toBe(false)
     })
 })

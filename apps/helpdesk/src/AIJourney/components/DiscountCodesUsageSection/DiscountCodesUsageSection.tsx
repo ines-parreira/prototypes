@@ -12,6 +12,7 @@ type Props = {
     userTimezone: string
     filters: FilterType
     journeyIds: string[]
+    forceEmpty?: boolean
 }
 
 export const DiscountCodesUsageSection = ({
@@ -19,13 +20,15 @@ export const DiscountCodesUsageSection = ({
     userTimezone,
     filters,
     journeyIds,
+    forceEmpty,
 }: Props) => {
-    const discountCodeUsageMetrics = useAIJourneyDiscountCodeUsageMetrics(
+    const discountCodeUsageMetrics = useAIJourneyDiscountCodeUsageMetrics({
         integrationId,
         userTimezone,
         filters,
         journeyIds,
-    )
+        forceEmpty,
+    })
 
     const discountCodesGeneratedDrillDown = useDrillDownModalTrigger({
         metricName: AIJourneyMetric.DiscountCodesGenerated,

@@ -38,12 +38,12 @@ describe('useAIJourneyDiscountCodeUsageMetrics', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyDiscountCodeUsageMetrics(
-                mockIntegrationId,
-                mockUserTimezone,
-                mockFilters,
-                mockJourneyIds,
-            ),
+            useAIJourneyDiscountCodeUsageMetrics({
+                integrationId: mockIntegrationId,
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                journeyIds: mockJourneyIds,
+            }),
         )
 
         const [offered, used, rate] = result.current
@@ -111,12 +111,12 @@ describe('useAIJourneyDiscountCodeUsageMetrics', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyDiscountCodeUsageMetrics(
-                mockIntegrationId,
-                mockUserTimezone,
-                mockFilters,
-                mockJourneyIds,
-            ),
+            useAIJourneyDiscountCodeUsageMetrics({
+                integrationId: mockIntegrationId,
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                journeyIds: mockJourneyIds,
+            }),
         )
 
         const [offered, , rate] = result.current
@@ -136,12 +136,12 @@ describe('useAIJourneyDiscountCodeUsageMetrics', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyDiscountCodeUsageMetrics(
-                mockIntegrationId,
-                mockUserTimezone,
-                mockFilters,
-                mockJourneyIds,
-            ),
+            useAIJourneyDiscountCodeUsageMetrics({
+                integrationId: mockIntegrationId,
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                journeyIds: mockJourneyIds,
+            }),
         )
 
         const [, used, rate] = result.current
@@ -161,12 +161,12 @@ describe('useAIJourneyDiscountCodeUsageMetrics', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyDiscountCodeUsageMetrics(
-                mockIntegrationId,
-                mockUserTimezone,
-                mockFilters,
-                mockJourneyIds,
-            ),
+            useAIJourneyDiscountCodeUsageMetrics({
+                integrationId: mockIntegrationId,
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                journeyIds: mockJourneyIds,
+            }),
         )
 
         const [, , rate] = result.current
@@ -183,12 +183,12 @@ describe('useAIJourneyDiscountCodeUsageMetrics', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyDiscountCodeUsageMetrics(
-                mockIntegrationId,
-                mockUserTimezone,
-                mockFilters,
-                mockJourneyIds,
-            ),
+            useAIJourneyDiscountCodeUsageMetrics({
+                integrationId: mockIntegrationId,
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                journeyIds: mockJourneyIds,
+            }),
         )
 
         const [offered, used, rate] = result.current
@@ -197,5 +197,35 @@ describe('useAIJourneyDiscountCodeUsageMetrics', () => {
         expect(used.trend.data?.value).toBeNull()
         expect(rate.trend.isFetching).toBe(false)
         expect(rate.trend.data?.value).toBe(0)
+    })
+
+    it('should disable all sub-hooks and return zeroed values when no flows or campaigns are selected', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() =>
+            useAIJourneyDiscountCodeUsageMetrics({
+                integrationId: mockIntegrationId,
+                userTimezone: mockUserTimezone,
+                filters: mockFilters,
+                journeyIds: mockJourneyIds,
+                forceEmpty: true,
+            }),
+        )
+
+        const calls = (useMetricTrend as jest.Mock).mock.calls
+        calls.forEach((call) => {
+            expect(call[4]).toBe(false)
+        })
+
+        const [offered, used] = result.current
+        expect(offered.trend.isFetching).toBe(false)
+        expect(offered.trend.data?.value).toBe(0)
+        expect(offered.trend.data?.prevValue).toBe(0)
+        expect(used.trend.isFetching).toBe(false)
+        expect(used.trend.data?.value).toBe(0)
+        expect(used.trend.data?.prevValue).toBe(0)
     })
 })

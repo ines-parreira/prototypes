@@ -54,12 +54,23 @@ const useDiscountCodesRateAppliedTrend = (
     }
 }
 
-const useAIJourneyDiscountCodesOffered = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    journeyIds: string[],
-): AIJourneyMetricResult => {
+type UseAIJourneyDiscountCodesOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    journeyIds: string[]
+    forceEmpty?: boolean
+}
+
+const useAIJourneyDiscountCodesOffered = ({
+    integrationId,
+    userTimezone,
+    filters,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyDiscountCodesOptions): AIJourneyMetricResult => {
+    const enabled = !forceEmpty
+
     const { data: trendData, isFetching: isFetchingTrend } = useMetricTrend(
         AIJourneyDiscountCodesOfferedQueryFactory(
             integrationId,
@@ -76,16 +87,19 @@ const useAIJourneyDiscountCodesOffered = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     return {
         trend: {
-            isFetching: isFetchingTrend,
+            isFetching: forceEmpty ? false : isFetchingTrend,
             isError: false,
             data: {
                 label: 'Discount codes generated',
-                value: trendData?.value ?? null,
-                prevValue: trendData?.prevValue ?? null,
+                value: forceEmpty ? 0 : (trendData?.value ?? null),
+                prevValue: forceEmpty ? 0 : (trendData?.prevValue ?? null),
             },
         },
         interpretAs: 'more-is-better',
@@ -97,12 +111,15 @@ const useAIJourneyDiscountCodesOffered = (
     }
 }
 
-const useAIJourneyDiscountCodesUsed = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    journeyIds: string[],
-): AIJourneyMetricResult => {
+const useAIJourneyDiscountCodesUsed = ({
+    integrationId,
+    userTimezone,
+    filters,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyDiscountCodesOptions): AIJourneyMetricResult => {
+    const enabled = !forceEmpty
+
     const { data: trendData, isFetching: isFetchingTrend } = useMetricTrend(
         AIJourneyDiscountCodesUsedQueryFactory(
             integrationId,
@@ -119,16 +136,19 @@ const useAIJourneyDiscountCodesUsed = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     return {
         trend: {
-            isFetching: isFetchingTrend,
+            isFetching: forceEmpty ? false : isFetchingTrend,
             isError: false,
             data: {
                 label: 'Discount codes used',
-                value: trendData?.value ?? null,
-                prevValue: trendData?.prevValue ?? null,
+                value: forceEmpty ? 0 : (trendData?.value ?? null),
+                prevValue: forceEmpty ? 0 : (trendData?.prevValue ?? null),
             },
         },
         interpretAs: 'more-is-better',
@@ -140,24 +160,35 @@ const useAIJourneyDiscountCodesUsed = (
     }
 }
 
-export const useAIJourneyDiscountCodeUsageMetrics = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    journeyIds: string[],
-) => {
-    const discountCodesOffered = useAIJourneyDiscountCodesOffered(
+type UseAIJourneyDiscountCodeUsageMetricsOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    journeyIds: string[]
+    forceEmpty?: boolean
+}
+
+export const useAIJourneyDiscountCodeUsageMetrics = ({
+    integrationId,
+    userTimezone,
+    filters,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyDiscountCodeUsageMetricsOptions) => {
+    const discountCodesOffered = useAIJourneyDiscountCodesOffered({
         integrationId,
         userTimezone,
         filters,
         journeyIds,
-    )
-    const discountCodesUsed = useAIJourneyDiscountCodesUsed(
+        forceEmpty,
+    })
+    const discountCodesUsed = useAIJourneyDiscountCodesUsed({
         integrationId,
         userTimezone,
         filters,
         journeyIds,
-    )
+        forceEmpty,
+    })
     const discountCodesRateApplied = useDiscountCodesRateAppliedTrend(
         discountCodesOffered,
         discountCodesUsed,

@@ -32,9 +32,12 @@ describe('useAIJourneyTotalReplies', () => {
 
     it('should return metric data with correct shape when loaded', () => {
         const { result } = renderHook(() =>
-            useAIJourneyTotalReplies(integrationId, userTimezone, filters, [
-                'journey-1',
-            ]),
+            useAIJourneyTotalReplies({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current).toEqual({
@@ -60,12 +63,12 @@ describe('useAIJourneyTotalReplies', () => {
         const journeyIds = ['journey-1']
 
         renderHook(() =>
-            useAIJourneyTotalReplies(
+            useAIJourneyTotalReplies({
                 integrationId,
                 userTimezone,
                 filters,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(aiJourneyRepliedMessagesQueryFactory).toHaveBeenCalledWith(
@@ -90,9 +93,12 @@ describe('useAIJourneyTotalReplies', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalReplies(integrationId, userTimezone, filters, [
-                'journey-1',
-            ]),
+            useAIJourneyTotalReplies({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current.trend.isFetching).toBe(true)
@@ -102,12 +108,11 @@ describe('useAIJourneyTotalReplies', () => {
 
     it('should handle undefined journeyIds', () => {
         const { result } = renderHook(() =>
-            useAIJourneyTotalReplies(
+            useAIJourneyTotalReplies({
                 integrationId,
                 userTimezone,
                 filters,
-                undefined,
-            ),
+            }),
         )
 
         expect(aiJourneyRepliedMessagesQueryFactory).toHaveBeenCalledWith(
@@ -128,11 +133,35 @@ describe('useAIJourneyTotalReplies', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyTotalReplies(integrationId, userTimezone, filters, [
-                'journey-1',
-            ]),
+            useAIJourneyTotalReplies({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: ['journey-1'],
+            }),
         )
 
         expect(result.current.trend.data?.prevValue).toBeNull()
+    })
+
+    it('should disable queries and return zeroed values when no flows or campaigns are selected', () => {
+        const { result } = renderHook(() =>
+            useAIJourneyTotalReplies({
+                integrationId,
+                userTimezone,
+                filters,
+                journeyIds: ['journey-1'],
+                forceEmpty: true,
+            }),
+        )
+
+        const metricTrendCalls = (useMetricTrend as jest.Mock).mock.calls
+        metricTrendCalls.forEach((call) => {
+            expect(call[4]).toBe(false)
+        })
+
+        expect(result.current.trend.isFetching).toBe(false)
+        expect(result.current.trend.data?.value).toBe(0)
+        expect(result.current.trend.data?.prevValue).toBe(0)
     })
 })

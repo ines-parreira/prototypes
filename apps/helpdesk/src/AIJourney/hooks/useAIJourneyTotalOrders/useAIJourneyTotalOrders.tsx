@@ -13,14 +13,27 @@ import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-export const useAIJourneyTotalOrders = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    granularity: ReportingGranularity,
-    shopName: string,
-    journeyIds?: string[],
-): MetricProps => {
+type UseAIJourneyTotalOrdersOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    granularity: ReportingGranularity
+    shopName: string
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
+
+export const useAIJourneyTotalOrders = ({
+    integrationId,
+    userTimezone,
+    filters,
+    granularity,
+    shopName,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyTotalOrdersOptions): MetricProps => {
+    const enabled = !forceEmpty
+
     const { data: trendData, isFetching: isFetchingTred } = useMetricTrend(
         aiJourneyTotalNumberOfOrderQueryFactory(
             integrationId,
@@ -37,6 +50,9 @@ export const useAIJourneyTotalOrders = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     const {
@@ -50,16 +66,18 @@ export const useAIJourneyTotalOrders = (
             granularity,
             journeyIds,
         ),
+        undefined,
+        enabled,
     )
 
     return {
         label: AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders].title,
-        value: trendData?.value || 0,
-        prevValue: trendData?.prevValue || 0,
-        series: totalNumberOfOrderTimeSeriesData?.[0] ?? [],
+        value: forceEmpty ? 0 : trendData?.value || 0,
+        prevValue: forceEmpty ? 0 : trendData?.prevValue || 0,
+        series: forceEmpty ? [] : (totalNumberOfOrderTimeSeriesData?.[0] ?? []),
         interpretAs: 'more-is-better',
         metricFormat: 'decimal-precision-1',
-        isLoading: isFetchingTred || isFetchingSeries,
+        isLoading: forceEmpty ? false : isFetchingTred || isFetchingSeries,
         drilldown: {
             title: AIJourneyMetricsConfig[AIJourneyMetric.TotalOrders].title,
             metricName: AIJourneyMetric.TotalOrders,

@@ -8,19 +8,31 @@ import { aiJourneyTotalNumberOfSalesConversationsQueryFactory } from 'AIJourney/
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-export const useAIJourneyOptOutRate = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    shopName: string,
-    journeyIds?: string[],
-): AIJourneyMetricResult => {
-    const { trend: optedOutTrend } = useAIJourneyTotalOptOuts(
+type UseAIJourneyOptOutRateOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    shopName: string
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
+
+export const useAIJourneyOptOutRate = ({
+    integrationId,
+    userTimezone,
+    filters,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyOptOutRateOptions): AIJourneyMetricResult => {
+    const enabled = !forceEmpty
+
+    const { trend: optedOutTrend } = useAIJourneyTotalOptOuts({
         integrationId,
         userTimezone,
         filters,
         journeyIds,
-    )
+        forceEmpty,
+    })
 
     const {
         data: totalContactsEnrolled,
@@ -41,6 +53,9 @@ export const useAIJourneyOptOutRate = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     const isFetching =

@@ -43,13 +43,13 @@ describe('useAIJourneyMessagesSent', () => {
 
     it('should return correct data when values are available', () => {
         const { result } = renderHook(() =>
-            useAIJourneyMessagesSent(
+            useAIJourneyMessagesSent({
                 integrationId,
                 userTimezone,
                 filters,
                 granularity,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(result.current).toEqual({
@@ -74,13 +74,13 @@ describe('useAIJourneyMessagesSent', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyMessagesSent(
+            useAIJourneyMessagesSent({
                 integrationId,
                 userTimezone,
                 filters,
                 granularity,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(result.current.value).toBe(0)
@@ -96,13 +96,13 @@ describe('useAIJourneyMessagesSent', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyMessagesSent(
+            useAIJourneyMessagesSent({
                 integrationId,
                 userTimezone,
                 filters,
                 granularity,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -115,13 +115,13 @@ describe('useAIJourneyMessagesSent', () => {
         })
 
         const { result } = renderHook(() =>
-            useAIJourneyMessagesSent(
+            useAIJourneyMessagesSent({
                 integrationId,
                 userTimezone,
                 filters,
                 granularity,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(result.current.isLoading).toBe(true)
@@ -129,13 +129,13 @@ describe('useAIJourneyMessagesSent', () => {
 
     it('should call aiJourneyTotalMessagesQueryFactory with current and previous period', () => {
         renderHook(() =>
-            useAIJourneyMessagesSent(
+            useAIJourneyMessagesSent({
                 integrationId,
                 userTimezone,
                 filters,
                 granularity,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(aiJourneyTotalMessagesQueryFactory).toHaveBeenCalledWith(
@@ -154,13 +154,13 @@ describe('useAIJourneyMessagesSent', () => {
 
     it('should call aiJourneyTotalMessagesTimeSeriesQuery with correct args', () => {
         renderHook(() =>
-            useAIJourneyMessagesSent(
+            useAIJourneyMessagesSent({
                 integrationId,
                 userTimezone,
                 filters,
                 granularity,
                 journeyIds,
-            ),
+            }),
         )
 
         expect(aiJourneyTotalMessagesTimeSeriesQuery).toHaveBeenCalledWith(
@@ -174,13 +174,13 @@ describe('useAIJourneyMessagesSent', () => {
 
     it('should handle undefined journeyIds', () => {
         const { result } = renderHook(() =>
-            useAIJourneyMessagesSent(
+            useAIJourneyMessagesSent({
                 integrationId,
                 userTimezone,
                 filters,
                 granularity,
-                undefined,
-            ),
+                journeyIds: undefined,
+            }),
         )
 
         expect(aiJourneyTotalMessagesQueryFactory).toHaveBeenCalledWith(
@@ -190,5 +190,41 @@ describe('useAIJourneyMessagesSent', () => {
             undefined,
         )
         expect(result.current.value).toBe(500)
+    })
+
+    it('should disable queries and return zeroed values when no flows or campaigns are selected', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() =>
+            useAIJourneyMessagesSent({
+                integrationId,
+                userTimezone,
+                filters,
+                granularity,
+                journeyIds,
+                forceEmpty: true,
+            }),
+        )
+
+        const metricTrendCalls = (useMetricTrend as jest.Mock).mock.calls
+        metricTrendCalls.forEach((call) => {
+            expect(call[4]).toBe(false)
+        })
+        const timeSeriesCalls = (useTimeSeries as jest.Mock).mock.calls
+        timeSeriesCalls.forEach((call) => {
+            expect(call[2]).toBe(false)
+        })
+
+        expect(result.current.value).toBe(0)
+        expect(result.current.prevValue).toBe(0)
+        expect(result.current.series).toEqual([])
+        expect(result.current.isLoading).toBe(false)
     })
 })

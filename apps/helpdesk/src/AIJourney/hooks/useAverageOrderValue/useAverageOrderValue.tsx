@@ -26,14 +26,27 @@ const calculateAverageOrderValue = ({
     return 0
 }
 
-export const useAverageOrderValue = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    currency: string,
-    granularity: ReportingGranularity,
-    journeyIds?: string[],
-): MetricProps => {
+type UseAverageOrderValueOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    currency: string
+    granularity: ReportingGranularity
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
+
+export const useAverageOrderValue = ({
+    integrationId,
+    userTimezone,
+    filters,
+    currency,
+    granularity,
+    journeyIds,
+    forceEmpty = false,
+}: UseAverageOrderValueOptions): MetricProps => {
+    const enabled = !forceEmpty
+
     const { data: gmvData, isFetching: isFetchingGmv } = useMetricTrend(
         aiJourneyRevenueQueryFactory(
             integrationId,
@@ -50,6 +63,9 @@ export const useAverageOrderValue = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     const { data: ordersData, isFetching: isFetchingOrders } = useMetricTrend(
@@ -68,6 +84,9 @@ export const useAverageOrderValue = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     const value = useMemo(() => {
@@ -93,6 +112,8 @@ export const useAverageOrderValue = (
                 granularity,
                 journeyIds,
             ),
+            undefined,
+            enabled,
         )
 
     const { data: ordersTimeSeriesData, isFetching: isFetchingOrdersSeries } =
@@ -104,6 +125,8 @@ export const useAverageOrderValue = (
                 granularity,
                 journeyIds,
             ),
+            undefined,
+            enabled,
         )
 
     const series = useMemo(() => {
@@ -125,16 +148,17 @@ export const useAverageOrderValue = (
 
     return {
         label: 'Average Order Value',
-        value,
-        prevValue,
-        series,
+        value: forceEmpty ? 0 : value,
+        prevValue: forceEmpty ? 0 : prevValue,
+        series: forceEmpty ? [] : series,
         interpretAs: 'more-is-better',
         metricFormat: 'currency',
         currency,
-        isLoading:
-            isFetchingGmv ||
-            isFetchingOrders ||
-            isFetchingGmvSeries ||
-            isFetchingOrdersSeries,
+        isLoading: forceEmpty
+            ? false
+            : isFetchingGmv ||
+              isFetchingOrders ||
+              isFetchingGmvSeries ||
+              isFetchingOrdersSeries,
     }
 }

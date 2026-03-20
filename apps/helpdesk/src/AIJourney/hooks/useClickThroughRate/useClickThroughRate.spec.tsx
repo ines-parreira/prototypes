@@ -57,13 +57,13 @@ describe('useClickThroughRate', () => {
         const userTimezone = 'America/New_York'
 
         const { result } = renderHook(() =>
-            useClickThroughRate(
-                '123',
+            useClickThroughRate({
+                integrationId: '123',
                 userTimezone,
-                mockFilters,
-                ReportingGranularity.Week,
-                'shopName',
-            ),
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+                shopName: 'shopName',
+            }),
         )
 
         expect(result.current).toEqual({
@@ -87,7 +87,7 @@ describe('useClickThroughRate', () => {
                 title: 'Click Through Rate',
                 metricName: AIJourneyMetric.ClickThroughRate,
                 integrationId: '123',
-                journeyId: undefined,
+                journeyIds: undefined,
                 shopName: 'shopName',
             },
         })
@@ -104,13 +104,13 @@ describe('useClickThroughRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useClickThroughRate(
-                '123',
-                'UTC',
-                mockFilters,
-                ReportingGranularity.Week,
-                'shopName',
-            ),
+            useClickThroughRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+                shopName: 'shopName',
+            }),
         )
 
         expect(result.current).toEqual({
@@ -125,7 +125,7 @@ describe('useClickThroughRate', () => {
                 title: 'Click Through Rate',
                 metricName: AIJourneyMetric.ClickThroughRate,
                 integrationId: '123',
-                journeyId: undefined,
+                journeyIds: undefined,
                 shopName: 'shopName',
             },
         })
@@ -142,14 +142,14 @@ describe('useClickThroughRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useClickThroughRate(
-                'integration123',
-                'America/Los_Angeles',
-                mockFilters,
-                ReportingGranularity.Day,
-                'testShopName',
-                ['journey456'],
-            ),
+            useClickThroughRate({
+                integrationId: 'integration123',
+                userTimezone: 'America/Los_Angeles',
+                filters: mockFilters,
+                granularity: ReportingGranularity.Day,
+                shopName: 'testShopName',
+                journeyIds: ['journey456'],
+            }),
         )
 
         expect(result.current.drilldown).toEqual({
@@ -172,20 +172,20 @@ describe('useClickThroughRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useClickThroughRate(
-                'integration789',
-                'Europe/Paris',
-                mockFilters,
-                ReportingGranularity.Month,
-                'anotherShopName',
-            ),
+            useClickThroughRate({
+                integrationId: 'integration789',
+                userTimezone: 'Europe/Paris',
+                filters: mockFilters,
+                granularity: ReportingGranularity.Month,
+                shopName: 'anotherShopName',
+            }),
         )
 
         expect(result.current.drilldown).toEqual({
             title: 'Click Through Rate',
             metricName: AIJourneyMetric.ClickThroughRate,
             integrationId: 'integration789',
-            journeyId: undefined,
+            journeyIds: undefined,
             shopName: 'anotherShopName',
         })
     })
@@ -201,16 +201,52 @@ describe('useClickThroughRate', () => {
         })
 
         const { result } = renderHook(() =>
-            useClickThroughRate(
-                '123',
-                'UTC',
-                mockFilters,
-                ReportingGranularity.Week,
-                'shopName',
-            ),
+            useClickThroughRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+                shopName: 'shopName',
+            }),
         )
 
         expect(result.current.label).toBe('Click Through Rate')
         expect(result.current.drilldown?.title).toBe('Click Through Rate')
+    })
+
+    it('should disable queries and return zeroed values when no flows or campaigns are selected', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        })
+
+        const { result } = renderHook(() =>
+            useClickThroughRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+                shopName: 'shopName',
+                forceEmpty: true,
+            }),
+        )
+
+        const metricTrendCalls = (useMetricTrend as jest.Mock).mock.calls
+        metricTrendCalls.forEach((call) => {
+            expect(call[4]).toBe(false)
+        })
+        const timeSeriesCalls = (useTimeSeries as jest.Mock).mock.calls
+        timeSeriesCalls.forEach((call) => {
+            expect(call[2]).toBe(false)
+        })
+
+        expect(result.current.value).toBe(0)
+        expect(result.current.prevValue).toBe(0)
+        expect(result.current.series).toEqual([])
+        expect(result.current.isLoading).toBe(false)
     })
 })

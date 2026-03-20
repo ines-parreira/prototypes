@@ -6,25 +6,36 @@ import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import type { AIJourneyMetricResult } from 'AIJourney/types/AIJourneyTypes'
 import { calculateRatiusToPercentage } from 'AIJourney/utils'
 
-export const useAIJourneyOptOutAfterReplyRate = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    journeyIds?: string[],
-): AIJourneyMetricResult => {
-    const { trend: optedOutAfterReplyTrend } = useAIJourneyOptOutAfterReply(
-        integrationId,
-        userTimezone,
-        filters,
-        journeyIds,
-    )
+type UseAIJourneyOptOutAfterReplyRateOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
 
-    const { trend: totalRepliesTrend } = useAIJourneyTotalReplies(
+export const useAIJourneyOptOutAfterReplyRate = ({
+    integrationId,
+    userTimezone,
+    filters,
+    journeyIds,
+    forceEmpty = false,
+}: UseAIJourneyOptOutAfterReplyRateOptions): AIJourneyMetricResult => {
+    const { trend: optedOutAfterReplyTrend } = useAIJourneyOptOutAfterReply({
         integrationId,
         userTimezone,
         filters,
         journeyIds,
-    )
+        forceEmpty,
+    })
+
+    const { trend: totalRepliesTrend } = useAIJourneyTotalReplies({
+        integrationId,
+        userTimezone,
+        filters,
+        journeyIds,
+        forceEmpty,
+    })
 
     const isFetching =
         optedOutAfterReplyTrend.isFetching || totalRepliesTrend.isFetching

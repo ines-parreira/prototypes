@@ -18,14 +18,27 @@ import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
 import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
-export const useClickThroughRate = (
-    integrationId: string,
-    userTimezone: string,
-    filters: FilterType,
-    granularity: ReportingGranularity,
-    shopName: string,
-    journeyIds?: string[],
-): MetricProps => {
+type UseClickThroughRateOptions = {
+    integrationId: string
+    userTimezone: string
+    filters: FilterType
+    granularity: ReportingGranularity
+    shopName: string
+    journeyIds?: string[]
+    forceEmpty?: boolean
+}
+
+export const useClickThroughRate = ({
+    integrationId,
+    userTimezone,
+    filters,
+    granularity,
+    shopName,
+    journeyIds,
+    forceEmpty = false,
+}: UseClickThroughRateOptions): MetricProps => {
+    const enabled = !forceEmpty
+
     const { data: totalUniqClicks, isFetching: isFetchingTotalUniqClicks } =
         useMetricTrend(
             aiJourneyUniqClicksQueryFactory(
@@ -43,6 +56,9 @@ export const useClickThroughRate = (
                 integrationId,
                 journeyIds,
             ),
+            undefined,
+            undefined,
+            enabled,
         )
 
     const {
@@ -64,6 +80,9 @@ export const useClickThroughRate = (
             userTimezone,
             journeyIds,
         ),
+        undefined,
+        undefined,
+        enabled,
     )
 
     const clickThroughRateValue = useMemo(() => {
@@ -89,6 +108,8 @@ export const useClickThroughRate = (
                 integrationId,
                 journeyIds,
             ),
+            undefined,
+            enabled,
         )
 
     const {
@@ -102,6 +123,8 @@ export const useClickThroughRate = (
             granularity,
             journeyIds,
         ),
+        undefined,
+        enabled,
     )
 
     const clickThroughRateTimeSeries = useMemo(() => {
@@ -126,16 +149,17 @@ export const useClickThroughRate = (
 
     return {
         label: AIJourneyMetricsConfig[AIJourneyMetric.ClickThroughRate].title,
-        value: clickThroughRateValue,
-        prevValue: clickThroughRateValueDataPrevValue,
-        series: clickThroughRateTimeSeries,
+        value: forceEmpty ? 0 : clickThroughRateValue,
+        prevValue: forceEmpty ? 0 : clickThroughRateValueDataPrevValue,
+        series: forceEmpty ? [] : clickThroughRateTimeSeries,
         interpretAs: 'more-is-better',
         metricFormat: 'percent-precision-1',
-        isLoading:
-            isFetchingTotalUniqClicks ||
-            isFetchingTotalContactsEnrolled ||
-            isFetchingClicksSeries ||
-            isFetchingConversationsSeries,
+        isLoading: forceEmpty
+            ? false
+            : isFetchingTotalUniqClicks ||
+              isFetchingTotalContactsEnrolled ||
+              isFetchingClicksSeries ||
+              isFetchingConversationsSeries,
         drilldown: {
             title: AIJourneyMetricsConfig[AIJourneyMetric.ClickThroughRate]
                 .title,
