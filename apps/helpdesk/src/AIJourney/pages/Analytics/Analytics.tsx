@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 
-import { useLocalStorage } from '@repo/hooks'
+import { useEffectOnce, useLocalStorage } from '@repo/hooks'
 import { ConfigureMetricsModal, LineChart, TrendCard } from '@repo/reporting'
 import type { MetricConfigItem, MetricTrendFormat } from '@repo/reporting'
 import { motion } from 'framer-motion'
@@ -346,7 +346,13 @@ export const Analytics = () => {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [keyKpisConfig, setKeyKpisConfig] = useLocalStorage<
         MetricConfigItem[]
-    >('ai-journey-analytics-metrics-preferences', defaultMetricsConfig)
+    >('ai-journey-analytics-key-metrics-preferences', defaultMetricsConfig)
+
+    useEffectOnce(() => {
+        const legacyItemKey = 'ai-journey-analytics-metrics-preferences'
+        if (localStorage.getItem(legacyItemKey))
+            localStorage.removeItem(legacyItemKey)
+    })
 
     if (isLoading) {
         return <LoadingSpinner />

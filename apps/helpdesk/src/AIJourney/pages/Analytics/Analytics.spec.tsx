@@ -196,7 +196,7 @@ describe('<Analytics />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        localStorage.removeItem('ai-journey-analytics-metrics-preferences')
+        localStorage.removeItem('ai-journey-analytics-key-metrics-preferences')
         FiltersPanelComponentMock.mockImplementation(() => <div />)
 
         mockUseStatsFilters.mockReturnValue({
@@ -403,7 +403,7 @@ describe('<Analytics />', () => {
 
     it('should render key metrics with values', () => {
         localStorage.setItem(
-            'ai-journey-analytics-metrics-preferences',
+            'ai-journey-analytics-key-metrics-preferences',
             JSON.stringify([
                 {
                     id: 'Click-through rate (CTR)',
@@ -711,6 +711,29 @@ describe('<Analytics />', () => {
         )
     })
 
+    it('should remove legacy localStorage key on mount if present', () => {
+        localStorage.setItem(
+            'ai-journey-analytics-metrics-preferences',
+            JSON.stringify([
+                { id: 'Total sales', label: 'Total sales', visibility: true },
+            ]),
+        )
+
+        renderWithRouter(
+            <Provider store={mockStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <JourneyProvider>
+                        <Analytics />
+                    </JourneyProvider>
+                </QueryClientProvider>
+            </Provider>,
+        )
+
+        expect(
+            localStorage.getItem('ai-journey-analytics-metrics-preferences'),
+        ).toBeNull()
+    })
+
     it('should render DrillDownModal', () => {
         renderWithRouter(
             <Provider store={mockStore}>
@@ -795,7 +818,7 @@ describe('<Analytics />', () => {
         const user = userEvent.setup()
 
         localStorage.setItem(
-            'ai-journey-analytics-metrics-preferences',
+            'ai-journey-analytics-key-metrics-preferences',
             JSON.stringify([
                 { id: 'unknown-metric', label: 'Unknown', visibility: true },
                 {
@@ -869,7 +892,9 @@ describe('<Analytics />', () => {
         )
 
         const ordersValue = screen.getByText('50')
-        await user.click(ordersValue)
+        await act(async () => {
+            await user.click(ordersValue)
+        })
 
         expect(mockOpenDrillDownModal).toHaveBeenCalled()
     })
