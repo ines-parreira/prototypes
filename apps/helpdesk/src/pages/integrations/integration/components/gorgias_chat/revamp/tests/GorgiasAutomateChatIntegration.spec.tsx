@@ -1,10 +1,13 @@
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { MemoryRouter } from 'react-router-dom'
 
+import { TicketChannel } from 'business/types/ticket'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import { GorgiasAutomateChatIntegrationRevamp } from '../GorgiasAutomateChatIntegration'
 import { useArticleRecommendation } from '../hooks/useArticleRecommendation'
+import { useFlows } from '../hooks/useFlows'
 import { useOrderManagement } from '../hooks/useOrderManagement'
 
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
@@ -15,6 +18,9 @@ const mockUseArticleRecommendation = jest.mocked(useArticleRecommendation)
 
 jest.mock('../hooks/useOrderManagement')
 const mockUseOrderManagement = jest.mocked(useOrderManagement)
+
+jest.mock('../hooks/useFlows')
+const mockUseFlows = jest.mocked(useFlows)
 
 jest.mock('../GorgiasChatRevampLayout', () => ({
     GorgiasChatRevampLayout: ({ children }: { children: React.ReactNode }) => (
@@ -43,6 +49,9 @@ jest.mock(
         ),
     }),
 )
+jest.mock('../components/FlowsCard/FlowsCard', () => ({
+    FlowsCard: () => <div data-testid="flows-card" />,
+}))
 
 const defaultArticleRecommendationHookReturn = {
     enabledInSettings: true,
@@ -63,6 +72,21 @@ const defaultOrderManagementHookReturn = {
     handleToggle: jest.fn(),
 }
 
+const defaultFlowsHookReturn = {
+    isLoading: false,
+    shopName: 'test-shop',
+    shopType: 'shopify',
+    channel: {
+        type: TicketChannel.Chat,
+        value: { id: 1, meta: {} },
+    },
+    primaryLanguage: 'en-US',
+    workflowEntrypoints: [],
+    workflowConfigurations: [],
+    automationSettingsWorkflows: [],
+    handleFlowsChange: jest.fn(),
+}
+
 const defaultProps = {
     integration: fromJS({ id: 1 }),
 }
@@ -79,10 +103,15 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
             defaultArticleRecommendationHookReturn,
         )
         mockUseOrderManagement.mockReturnValue(defaultOrderManagementHookReturn)
+        mockUseFlows.mockReturnValue(defaultFlowsHookReturn as any)
     })
 
     it('should render within the revamp layout', () => {
-        render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+        render(
+            <MemoryRouter>
+                <GorgiasAutomateChatIntegrationRevamp {...defaultProps} />
+            </MemoryRouter>,
+        )
 
         expect(screen.getByTestId('revamp-layout')).toBeInTheDocument()
     })
@@ -93,7 +122,11 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
             enabledInSettings: true,
         })
 
-        render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+        render(
+            <MemoryRouter>
+                <GorgiasAutomateChatIntegrationRevamp {...defaultProps} />
+            </MemoryRouter>,
+        )
 
         expect(
             screen.getByTestId('article-recommendation-card'),
@@ -106,7 +139,11 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
             enabledInSettings: false,
         })
 
-        render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+        render(
+            <MemoryRouter>
+                <GorgiasAutomateChatIntegrationRevamp {...defaultProps} />
+            </MemoryRouter>,
+        )
 
         expect(
             screen.queryByTestId('article-recommendation-card'),
@@ -119,7 +156,11 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
             enabledInSettings: true,
         })
 
-        render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+        render(
+            <MemoryRouter>
+                <GorgiasAutomateChatIntegrationRevamp {...defaultProps} />
+            </MemoryRouter>,
+        )
 
         expect(screen.getByTestId('order-management-card')).toBeInTheDocument()
     })

@@ -1,7 +1,9 @@
 import type { Map } from 'immutable'
 
 import { AutomateFeatures } from 'pages/automate/common/types'
+import { FlowsCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout'
+import { useFlows } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useFlows'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import { ArticleRecommendationCard } from './components/ArticleRecommendationCard/ArticleRecommendationCard'
@@ -40,6 +42,18 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
         handleToggle: handleOrderManagementToggle,
     } = useOrderManagement({ integration })
 
+    const {
+        isLoading: isFlowsLoading,
+        shopName,
+        shopType,
+        channel,
+        primaryLanguage,
+        workflowEntrypoints,
+        workflowConfigurations,
+        automationSettingsWorkflows,
+        handleFlowsChange,
+    } = useFlows({ integration })
+
     if (!isConnected) {
         return (
             <GorgiasChatRevampLayout integration={integration}>
@@ -53,6 +67,17 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
     return (
         <GorgiasChatRevampLayout integration={integration}>
             <div className={css.cardsWrapper}>
+                <FlowsCard
+                    isLoading={isFlowsLoading}
+                    shopName={shopName}
+                    shopType={shopType}
+                    channel={channel}
+                    primaryLanguage={primaryLanguage}
+                    workflowEntrypoints={workflowEntrypoints}
+                    workflowConfigurations={workflowConfigurations}
+                    automationSettingsWorkflows={automationSettingsWorkflows}
+                    onChange={handleFlowsChange}
+                />
                 {orderManagementEnabledInSettings && (
                     <OrderManagementCard
                         isEnabled={isOrderManagementEnabled}

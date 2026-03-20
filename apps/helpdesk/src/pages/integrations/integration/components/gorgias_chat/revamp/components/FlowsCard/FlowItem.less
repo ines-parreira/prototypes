@@ -1,0 +1,24 @@
+:local {
+    .flowItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-sm) var(--spacing-md);
+
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--border-neutral-default);
+        }
+    }
+
+    .dragHandle {
+        cursor: grab;
+        display: flex;
+        align-items: center;
+        color: var(--content-neutral-secondary);
+        font-size: 20px;
+
+        &:active {
+            cursor: grabbing;
+        }
+    }
+}
