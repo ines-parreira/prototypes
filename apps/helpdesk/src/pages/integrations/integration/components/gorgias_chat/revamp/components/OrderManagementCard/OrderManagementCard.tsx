@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 import {
     Box,
@@ -31,6 +31,8 @@ export function OrderManagementCard({
     orderManagementUrl,
     onChange,
 }: OrderManagementCardProps) {
+    const history = useHistory()
+
     if (isLoading) {
         return <Skeleton height={140} />
     }
@@ -63,11 +65,13 @@ export function OrderManagementCard({
                 </Text>
             </Box>
             <div>
-                <Link to={orderManagementUrl}>
-                    <Button variant="secondary" size="md">
-                        Edit Order Management
-                    </Button>
-                </Link>
+                <Button
+                    variant="secondary"
+                    size="md"
+                    onClick={() => history.push(orderManagementUrl)}
+                >
+                    Edit Order Management
+                </Button>
             </div>
         </Card>
     )

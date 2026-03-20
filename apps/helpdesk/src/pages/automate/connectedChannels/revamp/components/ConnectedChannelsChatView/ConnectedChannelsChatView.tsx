@@ -1,8 +1,12 @@
 import { useParams } from 'react-router-dom'
 
+import { AutomateFeatures } from 'pages/automate/common/types'
 import { ArticleRecommendationCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ArticleRecommendationCard/ArticleRecommendationCard'
+import { OrderManagementCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/OrderManagementCard/OrderManagementCard'
 
+import { ConnectedChannelsEmptyView } from '../../../legacy/components/ConnectedChannelsEmptyView'
 import { useArticleRecommendation } from '../../hooks/useArticleRecommendation'
+import { useOrderManagement } from '../../hooks/useOrderManagement'
 
 import css from './ConnectedChannelsChatView.less'
 
@@ -13,23 +17,50 @@ export const ConnectedChannelsChatView = () => {
     }>()
 
     const {
-        enabledInSettings,
+        hasChatChannels,
+        enabledInSettings: articleRecommendationEnabledInSettings,
         isArticleRecommendationEnabled,
-        isDisabled,
-        isLoading,
+        isDisabled: isArticleRecommendationDisabled,
+        isLoading: isArticleRecommendationLoading,
         showHelpCenterRequired,
-        handleToggle,
+        handleToggle: handleArticleRecommendationToggle,
     } = useArticleRecommendation({ shopName, shopType })
+
+    const {
+        enabledInSettings: orderManagementEnabledInSettings,
+        isOrderManagementEnabled,
+        isDisabled: isOrderManagementDisabled,
+        isLoading: isOrderManagementLoading,
+        showStoreRequired,
+        orderManagementUrl,
+        handleToggle: handleOrderManagementToggle,
+    } = useOrderManagement({ shopName, shopType })
+
+    if (!hasChatChannels) {
+        return (
+            <ConnectedChannelsEmptyView view={AutomateFeatures.AutomateChat} />
+        )
+    }
 
     return (
         <div className={css.wrapper}>
-            {enabledInSettings && (
+            {orderManagementEnabledInSettings && (
+                <OrderManagementCard
+                    isEnabled={isOrderManagementEnabled}
+                    isDisabled={isOrderManagementDisabled}
+                    isLoading={isOrderManagementLoading}
+                    showStoreRequired={showStoreRequired}
+                    orderManagementUrl={orderManagementUrl}
+                    onChange={handleOrderManagementToggle}
+                />
+            )}
+            {articleRecommendationEnabledInSettings && (
                 <ArticleRecommendationCard
                     isEnabled={isArticleRecommendationEnabled}
-                    isDisabled={isDisabled}
-                    isLoading={isLoading}
+                    isDisabled={isArticleRecommendationDisabled}
+                    isLoading={isArticleRecommendationLoading}
                     showHelpCenterRequired={showHelpCenterRequired}
-                    onChange={handleToggle}
+                    onChange={handleArticleRecommendationToggle}
                 />
             )}
         </div>

@@ -105,6 +105,7 @@ export function useArticleRecommendation({
     }
 
     return {
+        hasChatChannels: chatChannels.length > 0,
         enabledInSettings,
         isArticleRecommendationEnabled,
         isDisabled: isHelpCenterSelfServiceDeleted,
