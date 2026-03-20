@@ -22,11 +22,18 @@ import {
     ListItem,
     Select,
     Skeleton,
+    Text,
 } from '@gorgias/axiom'
 
-import type { MetricTrendFormat, TwoDimensionalDataItem } from '../../types'
+import { NOT_AVAILABLE_PLACEHOLDER } from '../../constants'
+import type {
+    MetricTrendFormat,
+    TrendDirection,
+    TwoDimensionalDataItem,
+} from '../../types'
 import { formatMetricValueOrString } from '../../utils/helpers'
 import { ChartTooltip } from '../ChartTooltip/ChartTooltip'
+import { TrendBadge } from '../TrendBadge/TrendBadge'
 import { toChartData } from './utils'
 
 const CHART_COLOR = 'var(--purple-500)'
@@ -36,13 +43,17 @@ type LineChartProps = {
     containerWidth?: SizeValue
     currency?: string
     data: TwoDimensionalDataItem[]
+    interpretAs?: TrendDirection
     isCurvedLine?: boolean
     isLoading?: boolean
     metrics?: { id: string; label: string }[]
     metricFormat?: MetricTrendFormat
     onMetricChange?: (metric: string) => void
+    prevValue?: number | null
     skeletonHeight?: number
     title: string
+    tooltipData?: { period: string }
+    value?: number | null
     variant?: 'line' | 'area'
 }
 export const LineChart = ({
@@ -50,20 +61,35 @@ export const LineChart = ({
     containerWidth,
     currency,
     data,
+    interpretAs,
     isCurvedLine = true,
     isLoading = false,
     metrics,
     metricFormat,
     onMetricChange,
+    prevValue,
     skeletonHeight = 250,
     title,
+    tooltipData,
+    value,
     variant = 'line',
 }: LineChartProps) => {
     const gradientId = useId()
     const formatter = formatMetricValueOrString({ metricFormat, currency })
+    const yAxisFormatter = formatMetricValueOrString({
+        metricFormat,
+        currency,
+        compact: true,
+    })
     if (isLoading) {
         return <Skeleton height={skeletonHeight} />
     }
+
+    const hasValue = value !== undefined && value !== null && value !== 0
+    const formattedValue =
+        value !== undefined && value !== null
+            ? formatter(value)
+            : NOT_AVAILABLE_PLACEHOLDER
 
     const transformedData = toChartData(data)
     const isArea = variant === 'area'
@@ -76,49 +102,71 @@ export const LineChart = ({
                 flexDirection="column"
                 width={containerWidth}
                 height={containerHeight}
-                paddingTop={22}
-                paddingBottom={22}
-                paddingLeft="lg"
-                paddingRight="lg"
                 gap="lg"
             >
-                <Box alignItems="center">
-                    <Heading>{title}</Heading>
-                    {!!metrics && metrics.length > 1 && (
-                        <div>
-                            <Select
-                                selectedItem={metrics.find(
-                                    (it) => it.label === title,
-                                )}
-                                onSelect={(item) => {
-                                    onMetricChange?.(item.label)
-                                }}
-                                items={metrics}
-                                trigger={({ isOpen }) => (
-                                    <Button
-                                        size="sm"
-                                        variant="tertiary"
-                                        icon={
-                                            isOpen ? (
-                                                <Icon
-                                                    color="var(--content-neutral-default)"
-                                                    name="arrow-chevron-up"
-                                                    size="sm"
-                                                />
-                                            ) : (
-                                                <Icon
-                                                    color="var(--content-neutral-default)"
-                                                    name="arrow-chevron-down"
-                                                    size="sm"
-                                                />
-                                            )
-                                        }
-                                    />
-                                )}
-                            >
-                                {(option) => <ListItem label={option.label} />}
-                            </Select>
-                        </div>
+                <Box flexDirection="column" gap="xxxs">
+                    <Box alignItems="center">
+                        <Text size="md" variant="bold">
+                            {title}
+                        </Text>
+                        {!!metrics && metrics.length > 1 && (
+                            <div>
+                                <Select
+                                    selectedItem={metrics.find(
+                                        (it) => it.label === title,
+                                    )}
+                                    onSelect={(item) => {
+                                        onMetricChange?.(item.label)
+                                    }}
+                                    items={metrics}
+                                    trigger={({ isOpen }) => (
+                                        <Button
+                                            size="sm"
+                                            variant="tertiary"
+                                            icon={
+                                                isOpen ? (
+                                                    <Icon
+                                                        color="var(--content-neutral-default)"
+                                                        name="arrow-chevron-up"
+                                                        size="sm"
+                                                    />
+                                                ) : (
+                                                    <Icon
+                                                        color="var(--content-neutral-default)"
+                                                        name="arrow-chevron-down"
+                                                        size="sm"
+                                                    />
+                                                )
+                                            }
+                                        />
+                                    )}
+                                >
+                                    {(option) => (
+                                        <ListItem label={option.label} />
+                                    )}
+                                </Select>
+                            </div>
+                        )}
+                    </Box>
+                    {value !== undefined && (
+                        <Box alignItems="center" gap="xxxs">
+                            <Heading size="xl">
+                                {hasValue
+                                    ? formattedValue
+                                    : NOT_AVAILABLE_PLACEHOLDER}
+                            </Heading>
+                            {hasValue && (
+                                <TrendBadge
+                                    value={value}
+                                    prevValue={prevValue}
+                                    metricFormat={metricFormat}
+                                    currency={currency}
+                                    interpretAs={interpretAs}
+                                    tooltipData={tooltipData}
+                                    size="md"
+                                />
+                            )}
+                        </Box>
                     )}
                 </Box>
                 <ResponsiveContainer width="100%" height="100%">
@@ -150,7 +198,12 @@ export const LineChart = ({
                             vertical={false}
                         />
                         <XAxis dataKey="name" interval="preserveStartEnd" />
-                        <YAxis width="auto" tickFormatter={formatter} />
+                        <YAxis
+                            width="auto"
+                            tickFormatter={yAxisFormatter}
+                            axisLine={false}
+                            tickLine={false}
+                        />
                         <Tooltip
                             cursor={{
                                 strokeDasharray: '1.5 3',

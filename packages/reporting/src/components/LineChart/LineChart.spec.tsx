@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
+import { NOT_AVAILABLE_PLACEHOLDER } from '../../constants'
 import type { TwoDimensionalDataItem } from '../../types'
 import { LineChart } from './LineChart'
 
@@ -125,6 +126,43 @@ describe('LineChart', () => {
             expect(
                 screen.queryByRole('button', { name: /arrow-chevron/ }),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('subtitle', () => {
+        it('should not render subtitle when value is not provided', () => {
+            render(<LineChart title="My chart" data={mockData} />)
+
+            expect(screen.queryByRole('heading')).not.toBeInTheDocument()
+        })
+
+        it('should render formatted value when value is provided', () => {
+            render(
+                <LineChart
+                    title="My chart"
+                    data={mockData}
+                    value={1234}
+                    prevValue={1000}
+                />,
+            )
+
+            expect(screen.getByRole('heading')).toHaveTextContent('1,234')
+        })
+
+        it('should render placeholder when value is 0', () => {
+            render(<LineChart title="My chart" data={mockData} value={0} />)
+
+            expect(screen.getByRole('heading')).toHaveTextContent(
+                NOT_AVAILABLE_PLACEHOLDER,
+            )
+        })
+
+        it('should render placeholder when value is null', () => {
+            render(<LineChart title="My chart" data={mockData} value={null} />)
+
+            expect(screen.getByRole('heading')).toHaveTextContent(
+                NOT_AVAILABLE_PLACEHOLDER,
+            )
         })
     })
 })

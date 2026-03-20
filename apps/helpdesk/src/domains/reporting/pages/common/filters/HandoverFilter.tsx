@@ -87,7 +87,7 @@ export const HandoverFilter = ({ value, dispatchUpdate }: Props) => {
             onRemoveAll={() => handleFilterValuesChange([])}
             isMultiple
             isPersistent
-            showQuickSelect
+            showQuickSelect={false}
             showSearch={false}
         />
     )

@@ -7,6 +7,8 @@ import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 
+import css from './DiscountCodesUsageSection.less'
+
 type Props = {
     integrationId: string
     userTimezone: string
@@ -56,7 +58,7 @@ export const DiscountCodesUsageSection = ({
     return (
         <Box flexDirection="column" gap="md">
             <Heading size="md">Discount codes usage</Heading>
-            <Box gap="md">
+            <Box gap="md" className={css.trendCardGrid}>
                 {discountCodeUsageMetrics.map((metric) => (
                     <TrendCard
                         key={`key-metric-${metric.trend.data?.label}`}

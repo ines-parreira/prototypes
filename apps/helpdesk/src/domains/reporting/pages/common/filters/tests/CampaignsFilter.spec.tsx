@@ -2,6 +2,7 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
+import * as clientSideFilterSearchModule from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import {
     withDefaultLogicalOperator,
     withLogicalOperator,
@@ -37,7 +38,6 @@ jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: { StatFilterSelected: 'stat-filter-selected' },
 }))
-
 const mockedUseGetCampaignsForStore = assumeMock(useGetCampaignsForStore)
 const mockedUseParamsReturnValue = jest.fn(() => ({ id: 1 }))
 jest.mock('react-router-dom', () => ({
@@ -371,6 +371,84 @@ describe('CampaignsFilter', () => {
             expect(removeSpy).toHaveBeenCalledWith({
                 filterKey: FilterKey.Campaigns,
             })
+        })
+    })
+
+    describe('search with no results', () => {
+        let useClientSideFilterSearchSpy: jest.SpyInstance
+
+        function mockClientSideFilterSearch(
+            override: Partial<clientSideFilterSearchModule.ClientSideFilterSearch>,
+        ) {
+            useClientSideFilterSearchSpy = jest
+                .spyOn(
+                    clientSideFilterSearchModule,
+                    'useClientSideFilterSearch',
+                )
+                .mockReturnValue({
+                    value: '',
+                    result: [{ options: [] }],
+                    onSearch: jest.fn(),
+                    onClear: jest.fn(),
+                    ...override,
+                })
+        }
+
+        afterEach(() => {
+            useClientSideFilterSearchSpy.mockRestore()
+        })
+
+        it('should show "No results" when search matches nothing', () => {
+            mockClientSideFilterSearch({
+                value: 'nonexistentcampaign',
+                result: [{ options: [] }],
+            })
+
+            renderComponent()
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+            expect(screen.getByText('No results')).toBeInTheDocument()
+        })
+
+        it('should hide "Select all" and "Deselect all" when search matches nothing', () => {
+            mockClientSideFilterSearch({
+                value: 'nonexistentcampaign',
+                result: [{ options: [] }],
+            })
+
+            renderComponent()
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+            expect(
+                screen.queryByText(FILTER_SELECT_ALL_LABEL),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText(FILTER_DESELECT_ALL_LABEL),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show options normally when search matches', () => {
+            mockClientSideFilterSearch({
+                value: mockedCampaignsList[0].name,
+                result: [
+                    {
+                        options: [
+                            {
+                                label: mockedCampaignsList[0].name,
+                                value: mockedCampaignsList[0].id,
+                            },
+                        ],
+                    },
+                ],
+            })
+
+            renderComponent()
+            userEvent.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+
+            expect(
+                screen.getByText(mockedCampaignsList[0].name),
+            ).toBeInTheDocument()
+            expect(screen.queryByText('No results')).not.toBeInTheDocument()
         })
     })
 })

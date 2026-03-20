@@ -7,6 +7,8 @@ import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 
+import css from './AudienceHealthSection.less'
+
 type Props = {
     integrationId: string
     userTimezone: string
@@ -72,7 +74,7 @@ export const AudienceHealthSection = ({
     return (
         <Box flexDirection="column" gap="md">
             <Heading size="md">Audience health</Heading>
-            <Box gap="md" flexWrap="wrap">
+            <Box gap="md" flexWrap="wrap" className={css.trendCardGrid}>
                 {audienceHealthMetrics.map((metric) => (
                     <TrendCard
                         key={`key-metric-${metric.trend.data?.label}`}

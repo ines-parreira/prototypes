@@ -250,7 +250,11 @@ const formatMetricValue = (
     format: MetricValueFormat = 'decimal',
     currency: string = 'USD',
     usePlaceholder: boolean = false,
+    compact: boolean = false,
 ) => {
+    const compactOption: Intl.NumberFormatOptions = compact
+        ? { notation: 'compact', compactDisplay: 'short' }
+        : {}
     if (value === null || value === undefined) {
         return usePlaceholder ? NOT_AVAILABLE_PLACEHOLDER : NOT_AVAILABLE_TEXT
     }
@@ -260,28 +264,31 @@ const formatMetricValue = (
     }
 
     if (format === 'decimal-to-percent') {
-        return `${metricToDecimal(value * 100)}%`
+        return `${metricToDecimal(value * 100, compactOption)}%`
     }
 
     if (format === 'decimal-to-percent-precision-1') {
         return `${metricToDecimal(value * 100, {
             maximumFractionDigits: 1,
+            ...compactOption,
         })}%`
     }
 
     if (format === 'percent') {
-        return `${metricToDecimal(value)}%`
+        return `${metricToDecimal(value, compactOption)}%`
     }
 
     if (format === 'percent-precision-1') {
         return `${metricToDecimal(value, {
             maximumFractionDigits: 1,
+            ...compactOption,
         })}%`
     }
 
     if (format === 'percent-refined') {
         return `${metricToDecimal(value, {
             maximumFractionDigits: value > 0.5 ? 0 : 1,
+            ...compactOption,
         })}%`
     }
 
@@ -294,36 +301,44 @@ const formatMetricValue = (
     }
 
     if (format === 'currency') {
-        return `${formatCurrency(value, currency)}`
+        return `${formatCurrency(value, currency, compactOption)}`
     }
 
     if (format === 'currency-precision-1') {
         return `${formatCurrency(value, currency, {
             maximumFractionDigits: 1,
+            ...compactOption,
         })}`
     }
 
     if (format === 'ratio') {
-        return `${metricToDecimal(value)}x`
+        return `${metricToDecimal(value, compactOption)}x`
     }
 
     if (format === 'decimal-precision-1') {
         return metricToDecimal(value, {
             maximumFractionDigits: 1,
+            ...compactOption,
         })
     }
 
-    return metricToDecimal(value)
+    return metricToDecimal(value, compactOption)
 }
 
 const formatMetricValueOrString =
-    (options?: { metricFormat?: MetricTrendFormat; currency?: string }) =>
+    (options?: {
+        metricFormat?: MetricTrendFormat
+        currency?: string
+        compact?: boolean
+    }) =>
     (value: number | string | undefined) => {
         if (typeof value === 'number') {
             return formatMetricValue(
                 value,
                 options?.metricFormat,
                 options?.currency,
+                false,
+                options?.compact ?? false,
             )
         }
 

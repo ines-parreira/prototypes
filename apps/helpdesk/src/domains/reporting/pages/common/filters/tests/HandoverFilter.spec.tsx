@@ -3,18 +3,13 @@ import userEvent from '@testing-library/user-event'
 
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import {
-    FILTER_DESELECT_ALL_LABEL,
-    FILTER_SELECT_ALL_LABEL,
-    LogicalOperatorEnum,
-} from 'domains/reporting/pages/common/components/Filter/constants'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import {
     HandoverFilter,
     HandoverFilterFromContext,
 } from 'domains/reporting/pages/common/filters/HandoverFilter'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
-import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
@@ -90,32 +85,6 @@ describe('HandoverFilter', () => {
         })
     })
 
-    it('should dispatch update on select all', async () => {
-        const user = userEvent.setup()
-        renderComponent(withLogicalOperator([]))
-
-        await user.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-        await user.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
-
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: ['yes', 'no'],
-            operator: LogicalOperatorEnum.ONE_OF,
-        })
-    })
-
-    it('should dispatch update on deselect all', async () => {
-        const user = userEvent.setup()
-        renderComponent()
-
-        await user.click(screen.getByText('All'))
-        await user.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
-
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: [],
-            operator: LogicalOperatorEnum.ONE_OF,
-        })
-    })
-
     it('should default to all selected when value is undefined', () => {
         renderWithStore(
             <HandoverFilter
@@ -142,11 +111,11 @@ describe('HandoverFilter', () => {
             expect(screen.getByText(HANDOVER_FILTER_NAME)).toBeInTheDocument()
 
             await user.click(screen.getByText('All'))
-            await user.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
+            await user.click(screen.getByRole('option', { name: 'Yes' }))
 
             expect(spy).toHaveBeenCalledWith({
                 handover: {
-                    values: [],
+                    values: ['no'],
                     operator: LogicalOperatorEnum.ONE_OF,
                 },
             })

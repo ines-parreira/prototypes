@@ -492,6 +492,10 @@ export const Analytics = () => {
                         isLoading={selectedData.isLoading}
                         metricFormat={selectedData.metricFormat}
                         data={selectedData.series}
+                        currency={selectedData.currency}
+                        value={selectedData.trend.value}
+                        prevValue={selectedData.trend.prevValue}
+                        interpretAs={selectedData.interpretAs}
                     />
                 )}
                 <AiJourneySankeyChart

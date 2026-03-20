@@ -105,6 +105,44 @@ describe('formatMetricValue', () => {
             '123,457%',
         )
     })
+
+    describe('compact formatting', () => {
+        it('should format 1100 as "1.1K" for decimal', () => {
+            expect(formatMetricValue(1100, 'decimal', 'USD', false, true)).toBe(
+                '1.1K',
+            )
+        })
+
+        it('should format 50000 as "50K" for decimal', () => {
+            expect(
+                formatMetricValue(50000, 'decimal', 'USD', false, true),
+            ).toBe('50K')
+        })
+
+        it('should not compact values under 1000', () => {
+            expect(formatMetricValue(999, 'decimal', 'USD', false, true)).toBe(
+                '999',
+            )
+        })
+
+        it('should format 1100 as "$1.1K" for currency', () => {
+            expect(
+                formatMetricValue(1100, 'currency', 'USD', false, true),
+            ).toBe('$1.1K')
+        })
+
+        it('should format 50000 as "$50K" for currency', () => {
+            expect(
+                formatMetricValue(50000, 'currency', 'USD', false, true),
+            ).toBe('$50K')
+        })
+
+        it('should return N/A for null with compact', () => {
+            expect(formatMetricValue(null, 'decimal', 'USD', false, true)).toBe(
+                NOT_AVAILABLE_TEXT,
+            )
+        })
+    })
 })
 
 describe('getTrendColorFromValue', () => {
@@ -313,6 +351,21 @@ describe('formatMetricValueOrString', () => {
         ])('should return string %p unchanged', (value, expected) => {
             const formatter = formatMetricValueOrString()
             expect(formatter(value)).toBe(expected)
+        })
+    })
+
+    describe('with compact option', () => {
+        it('should format 1100 as "1.1K"', () => {
+            const formatter = formatMetricValueOrString({ compact: true })
+            expect(formatter(1100)).toBe('1.1K')
+        })
+
+        it('should format 50000 as "$50K" for currency', () => {
+            const formatter = formatMetricValueOrString({
+                metricFormat: 'currency',
+                compact: true,
+            })
+            expect(formatter(50000)).toBe('$50K')
         })
     })
 })
