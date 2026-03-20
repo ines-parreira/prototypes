@@ -131,6 +131,7 @@ describe('SettingsSidebar', () => {
         expect(screen.getByText('REST API')).toBeInTheDocument()
         expect(screen.getByText('Audit logs')).toBeInTheDocument()
         expect(screen.getByText('Password & 2FA')).toBeInTheDocument()
+        expect(screen.getByText('Notifications')).toBeInTheDocument()
     })
 
     it('should render Agent unavailability when feature flag is enabled', async () => {

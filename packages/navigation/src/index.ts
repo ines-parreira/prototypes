@@ -15,11 +15,13 @@ export type {
 
 export {
     SidebarRoot,
+    SidebarCollapsedItem,
     SidebarContent,
     SidebarFooter,
 } from './components/Sidebar'
 export type {
     SidebarProps,
+    SidebarCollapsedItemProps,
     SidebarContentProps,
     SidebarFooterProps,
 } from './components/Sidebar'

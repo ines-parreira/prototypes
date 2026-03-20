@@ -18,7 +18,7 @@ import {
 export type SettingsNavbarSection = {
     id: string
     label: string
-    icon?: IconName
+    icon: IconName
     requiredRole?: UserRole
     items: {
         id: string
@@ -126,11 +126,18 @@ export function useSettingsNavigation() {
             )
         }
 
-        accountItems.push({
-            id: 'password-2fa',
-            to: 'password-2fa',
-            text: currentUser?.has_password ? '2FA' : 'Password & 2FA',
-        })
+        accountItems.push(
+            {
+                id: 'password-2fa',
+                to: 'password-2fa',
+                text: currentUser?.has_password ? '2FA' : 'Password & 2FA',
+            },
+            {
+                id: 'notifications',
+                to: 'notifications',
+                text: 'Notifications',
+            },
+        )
 
         return [
             {

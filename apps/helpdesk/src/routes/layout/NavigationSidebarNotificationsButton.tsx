@@ -1,4 +1,4 @@
-import { Button, Quantity } from '@gorgias/axiom'
+import { Button, Quantity, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useNotificationsOverlay } from 'common/notifications'
 import useCount from 'common/notifications/hooks/useCount'
@@ -12,24 +12,34 @@ export function NavigationSidebarNotificationsButton() {
     const rightOffset = count > 99 ? 'l' : count > 9 ? 'm' : 's'
 
     return (
-        <div className={css.container}>
-            <Button
-                icon="comm-bell"
-                variant="tertiary"
-                onClick={onToggle}
-                aria-label="Notifications"
-                size="sm"
-            ></Button>
-            {count > 0 && (
-                <div className={css.badge} data-right-offset={rightOffset}>
-                    <Quantity
-                        quantity={count}
-                        maxQuantity={99}
-                        color="red"
+        <Tooltip
+            placement="top"
+            trigger={
+                <div className={css.container}>
+                    <Button
+                        icon="comm-bell"
+                        variant="tertiary"
+                        onClick={onToggle}
+                        aria-label="Notifications"
                         size="sm"
-                    />
+                    ></Button>
+                    {count > 0 && (
+                        <div
+                            className={css.badge}
+                            data-right-offset={rightOffset}
+                        >
+                            <Quantity
+                                quantity={count}
+                                maxQuantity={99}
+                                color="red"
+                                size="sm"
+                            />
+                        </div>
+                    )}
                 </div>
-            )}
-        </div>
+            }
+        >
+            <TooltipContent title="Notifications" />
+        </Tooltip>
     )
 }

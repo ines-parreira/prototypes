@@ -1,6 +1,7 @@
+import { SidebarCollapsedItem } from '@repo/navigation'
 import { history } from '@repo/routing'
 
-import { ButtonGroup, ButtonGroupItem, Menu, MenuItem } from '@gorgias/axiom'
+import { ButtonGroup, Menu, MenuItem } from '@gorgias/axiom'
 
 import { SETTINGS_DEFAULT_PATH } from 'routes/layout/products/settings'
 import { useCollapsedSidebarActiveMatch } from 'routes/layout/sidebars/hooks/useCollapsedSidebarActiveMatch'
@@ -46,13 +47,11 @@ export const CollapsedSettingsSidebar = ({ sections }: Props) => {
                     }
                     selectionMode="single"
                     trigger={
-                        <ButtonGroupItem
-                            key={section.id}
+                        <SidebarCollapsedItem
                             id={section.id}
                             icon={section.icon}
-                        >
-                            {section.label}
-                        </ButtonGroupItem>
+                            label={section.label}
+                        />
                     }
                 >
                     {section.items?.map((item) => (

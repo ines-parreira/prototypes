@@ -25,7 +25,7 @@ export function NavigationSidebarSpotlightButton() {
                 />
             }
         >
-            <TooltipContent shortcut={(isMacOs ? '⌘' : 'ctrl') + 'k'} />
+            <TooltipContent shortcut={(isMacOs ? '⌘' : 'CTRL') + 'K'} />
         </Tooltip>
     )
 }

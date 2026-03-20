@@ -1,6 +1,7 @@
+import { SidebarCollapsedItem } from '@repo/navigation'
 import { history } from '@repo/routing'
 
-import { ButtonGroup, ButtonGroupItem, Menu, MenuItem } from '@gorgias/axiom'
+import { ButtonGroup, Menu, MenuItem } from '@gorgias/axiom'
 
 import { STATS_ROUTE_PREFIX } from 'domains/reporting/pages/common/components/constants'
 import type { StatsNavbarSection } from 'routes/layout/products/analytics'
@@ -39,13 +40,12 @@ export const CollapsedAnalyticsSidebar = ({ sections }: Props) => {
         >
             {sections.map((section) =>
                 section.items?.length === 1 ? (
-                    <ButtonGroupItem
+                    <SidebarCollapsedItem
                         key={section.id}
                         id={section.id}
                         icon={section.icon}
-                    >
-                        {section.label}
-                    </ButtonGroupItem>
+                        label={section.label}
+                    />
                 ) : (
                     <Menu
                         key={section.id}
@@ -56,13 +56,11 @@ export const CollapsedAnalyticsSidebar = ({ sections }: Props) => {
                         }
                         selectionMode="single"
                         trigger={
-                            <ButtonGroupItem
-                                key={section.id}
+                            <SidebarCollapsedItem
                                 id={section.id}
                                 icon={section.icon}
-                            >
-                                {section.label}
-                            </ButtonGroupItem>
+                                label={section.label}
+                            />
                         }
                     >
                         {section.items?.map((item) => (

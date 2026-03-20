@@ -6,7 +6,7 @@ import {
 } from '@repo/navigation'
 import { history } from '@repo/routing'
 
-import { Box, Button } from '@gorgias/axiom'
+import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import UserItem from 'common/navigation/components/UserItem'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
@@ -37,6 +37,8 @@ export function NavigationSidebar() {
                 alignItems="center"
                 flexDirection={isCollapsed ? 'column-reverse' : 'row'}
                 gap="md"
+                pl="xs"
+                pr="xs"
             >
                 {isSticky ? (
                     <Box
@@ -53,7 +55,7 @@ export function NavigationSidebar() {
                                 onClick={() =>
                                     history.push(
                                         prevNonStickyPathname ??
-                                            productConfig[Product.Home]
+                                            productConfig[Product.Inbox]
                                                 .defaultPath,
                                     )
                                 }
@@ -78,19 +80,28 @@ export function NavigationSidebar() {
                 >
                     <NavigationSidebarSpotlightButton />
 
-                    <Button
-                        icon={
-                            isCollapsed
-                                ? 'system-bar-collapse'
-                                : 'system-bar-expand'
+                    <Tooltip
+                        placement="bottom"
+                        trigger={
+                            <Button
+                                icon={
+                                    isCollapsed
+                                        ? 'system-bar-collapse'
+                                        : 'system-bar-expand'
+                                }
+                                size="sm"
+                                variant="tertiary"
+                                onClick={toggleCollapse}
+                                aria-label={
+                                    isCollapsed
+                                        ? 'Expand sidebar'
+                                        : 'Collapse sidebar'
+                                }
+                            />
                         }
-                        size="sm"
-                        variant="tertiary"
-                        onClick={toggleCollapse}
-                        aria-label={
-                            isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'
-                        }
-                    />
+                    >
+                        <TooltipContent shortcut={'['} />
+                    </Tooltip>
                 </Box>
             </Box>
 
@@ -105,27 +116,42 @@ export function NavigationSidebar() {
                     alignItems="center"
                     flexDirection={isCollapsed ? 'column' : 'row'}
                 >
-                    <Button
-                        onClick={() => {
-                            history.push(
-                                productConfig[Product.Settings].defaultPath,
-                            )
-                        }}
-                        icon={productConfig[Product.Settings].icon}
-                        variant={
-                            currentProduct.id === Product.Settings
-                                ? 'secondary'
-                                : 'tertiary'
+                    <Tooltip
+                        placement="top"
+                        trigger={
+                            <Button
+                                onClick={() => {
+                                    history.push(
+                                        productConfig[Product.Settings]
+                                            .defaultPath,
+                                    )
+                                }}
+                                icon={productConfig[Product.Settings].icon}
+                                variant={
+                                    currentProduct.id === Product.Settings
+                                        ? 'secondary'
+                                        : 'tertiary'
+                                }
+                                size="sm"
+                            />
                         }
-                        size="sm"
-                    />
-                    <Button
-                        icon="circle-help"
-                        onClick={toggleChat}
-                        variant="tertiary"
-                        size="sm"
-                        aria-label="Open chat"
-                    />
+                    >
+                        <TooltipContent title="Settings" />
+                    </Tooltip>
+                    <Tooltip
+                        placement="top"
+                        trigger={
+                            <Button
+                                icon="circle-help"
+                                onClick={toggleChat}
+                                variant="tertiary"
+                                size="sm"
+                                aria-label="Open chat"
+                            />
+                        }
+                    >
+                        <TooltipContent title="Open chat" />
+                    </Tooltip>
                     <NavigationSidebarNotificationsButton />
                 </Box>
             </SidebarFooter>

@@ -77,6 +77,7 @@ const TicketNavbarViewLink = (
                 canduId={canduId}
                 view={view}
                 onClick={() => dispatch(activeViewIdSet(view.id))}
+                viewCount={viewCount}
             />
         )
     }

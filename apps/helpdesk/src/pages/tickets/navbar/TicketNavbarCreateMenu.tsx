@@ -56,11 +56,18 @@ export function TicketNavbarCreateMenu() {
             <Menu
                 trigger={({ isOpen }) =>
                     isCollapsed ? (
-                        <Button
-                            icon="add-plus-circle"
-                            size="sm"
-                            variant="secondary"
-                        />
+                        <Tooltip
+                            placement="right"
+                            trigger={
+                                <Button
+                                    icon="add-plus-circle"
+                                    size="sm"
+                                    variant="secondary"
+                                />
+                            }
+                        >
+                            <TooltipContent title="Create ticket" />
+                        </Tooltip>
                     ) : (
                         <Button
                             ref={buttonRef}

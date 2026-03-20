@@ -210,7 +210,7 @@ describe('NavigationSidebar', () => {
             expect(history.push).toHaveBeenCalledWith('/app/tickets')
         })
 
-        it('should navigate to home default path when no previous non-sticky path exists', async () => {
+        it('should navigate to Inbox default path when no previous non-sticky path exists', async () => {
             const user = userEvent.setup()
             usePreviousProductNavigationMock.mockReturnValue(null)
 
@@ -219,7 +219,7 @@ describe('NavigationSidebar', () => {
             await user.click(screen.getByRole('button', { name: /go back/i }))
 
             expect(history.push).toHaveBeenCalledWith(
-                productConfig[Product.Home].defaultPath,
+                productConfig[Product.Inbox].defaultPath,
             )
         })
     })

@@ -17,6 +17,8 @@ export function SidebarContent({ children }: SidebarContentProps) {
         <Box
             flex="1"
             flexDirection="column"
+            pl="xs"
+            pr="xs"
             gap="md"
             className={css.content}
             alignItems={isCollapsed ? 'center' : undefined}

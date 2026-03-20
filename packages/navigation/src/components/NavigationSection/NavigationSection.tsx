@@ -136,7 +136,7 @@ export function NavigationSection(props: NavigationSectionProps) {
             <DisclosurePanel
                 flexDirection="column"
                 paddingLeft="lg"
-                paddingTop={0}
+                paddingTop="xxxxs"
                 gap="xxxxs"
             >
                 {children}

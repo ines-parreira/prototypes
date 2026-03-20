@@ -1,7 +1,13 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useSidebar } from '@repo/navigation'
 
-import { Button, Menu, MenuSection } from '@gorgias/axiom'
+import {
+    Button,
+    Menu,
+    MenuSection,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { Product, productConfig } from 'routes/layout/productConfig'
@@ -27,11 +33,18 @@ export function SidebarProductHeader({
         <Menu
             trigger={
                 isCollapsed ? (
-                    <Button
-                        icon={selectedItem.icon}
-                        variant="tertiary"
-                        size="sm"
-                    />
+                    <Tooltip
+                        placement="right"
+                        trigger={
+                            <Button
+                                icon={selectedItem.icon}
+                                variant="tertiary"
+                                size="sm"
+                            />
+                        }
+                    >
+                        <TooltipContent title={selectedItem.name} />
+                    </Tooltip>
                 ) : (
                     <Button
                         variant="tertiary"

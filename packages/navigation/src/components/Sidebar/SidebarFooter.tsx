@@ -12,7 +12,7 @@ export function SidebarFooter({ children }: SidebarFooterProps) {
     const { isCollapsed } = useSidebar()
 
     return (
-        <Box flexDirection="column" gap="md">
+        <Box flexDirection="column" gap="md" pl="xs" pr="xs">
             <Separator />
             <Box
                 justifyContent="space-between"

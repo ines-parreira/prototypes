@@ -14,7 +14,7 @@ export enum SettingsSection {
 export type SettingsSectionConfig = {
     id: SettingsSection
     label: string
-    icon?: IconName
+    icon: IconName
     requiredRole?: UserRole.Admin | UserRole.Agent
 }
 

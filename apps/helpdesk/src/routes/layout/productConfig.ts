@@ -3,6 +3,7 @@ import type { ComponentType } from 'react'
 import type { IconName } from '@gorgias/axiom'
 
 import { ANALYTICS_DEFAULT_PATH } from 'routes/layout/products/analytics'
+import { CUSTOMERS_DEFAULT_PATH } from 'routes/layout/products/customers'
 import { SETTINGS_DEFAULT_PATH } from 'routes/layout/products/settings'
 import { WORKFLOWS_DEFAULT_PATH } from 'routes/layout/products/workflows'
 
@@ -102,7 +103,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         sidebar: CustomersSidebar,
         urlPatterns: ['customers', 'customer'],
         icon: 'users',
-        defaultPath: '/app/customers',
+        defaultPath: CUSTOMERS_DEFAULT_PATH,
     },
     [Product.Settings]: {
         id: Product.Settings,

@@ -1,9 +1,11 @@
+import { SidebarCollapsedItem } from '@repo/navigation'
 import { history } from '@repo/routing'
 
-import { ButtonGroup, ButtonGroupItem } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
+import { ButtonGroup } from '@gorgias/axiom'
 
-type NavigationItem = {
-    icon: string
+export type NavigationItem = {
+    icon: IconName
     to: string
     label: string
     exact?: boolean
@@ -30,9 +32,12 @@ export const CollapsedAiJourneyNavigation = ({ navigationItems }: Props) => {
             onSelectionChange={handleSelectionChange}
         >
             {navigationItems.map((item) => (
-                <ButtonGroupItem key={item.to} id={item.label} icon={item.icon}>
-                    {item.label}
-                </ButtonGroupItem>
+                <SidebarCollapsedItem
+                    key={item.to}
+                    id={item.label}
+                    icon={item.icon}
+                    label={item.label}
+                />
             ))}
         </ButtonGroup>
     )

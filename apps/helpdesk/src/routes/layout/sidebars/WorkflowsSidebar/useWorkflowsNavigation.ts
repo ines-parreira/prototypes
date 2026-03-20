@@ -20,7 +20,7 @@ import {
 export type WorkflowsNavbarSection = {
     id: string
     label: string
-    icon?: IconName
+    icon: IconName
     requiredRole?: UserRole.Admin | UserRole.Agent
     items: {
         id: string

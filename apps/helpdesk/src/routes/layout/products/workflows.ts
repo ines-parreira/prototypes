@@ -12,7 +12,7 @@ export enum WorkflowsSection {
 export type WorkflowsSectionConfig = {
     id: WorkflowsSection
     label: string
-    icon?: IconName
+    icon: IconName
     requiredRole?: UserRole.Admin | UserRole.Agent
 }
 

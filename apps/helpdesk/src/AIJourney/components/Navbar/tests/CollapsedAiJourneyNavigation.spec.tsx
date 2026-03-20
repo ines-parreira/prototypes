@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event'
 
 import { renderWithRouter } from 'utils/testing'
 
+import type { NavigationItem } from '../CollapsedAiJourneyNavigation'
 import { CollapsedAiJourneyNavigation } from '../CollapsedAiJourneyNavigation'
 
 jest.mock('@repo/routing', () => ({
@@ -13,9 +14,9 @@ jest.mock('@repo/routing', () => ({
 }))
 
 describe('CollapsedAiJourneyNavigation', () => {
-    const mockNavigationItems = [
+    const mockNavigationItems: NavigationItem[] = [
         {
-            icon: 'dashboard',
+            icon: 'flows',
             to: '/app/ai-journey/overview',
             label: 'Overview',
             exact: true,

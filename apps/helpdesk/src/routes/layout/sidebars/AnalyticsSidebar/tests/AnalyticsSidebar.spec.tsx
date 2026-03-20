@@ -4,10 +4,9 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router'
 
+import { useStatsNavbarConfig } from 'routes/layout/products/analytics'
+import { AnalyticsSidebar } from 'routes/layout/sidebars/AnalyticsSidebar/AnalyticsSidebar'
 import { renderWithRouter } from 'utils/testing'
-
-import { useStatsNavbarConfig } from '../products/analytics'
-import { AnalyticsSidebar } from '../sidebars/AnalyticsSidebar/AnalyticsSidebar'
 
 jest.mock(
     'routes/layout/sidebars/AnalyticsSidebar/CollapsedAnalyticsSidebar',

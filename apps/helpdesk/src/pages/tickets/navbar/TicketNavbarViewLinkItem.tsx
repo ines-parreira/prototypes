@@ -51,7 +51,7 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
             <NavigationSectionItem
                 ref={ref}
                 canduId={canduId}
-                onClick={() => onClick?.()}
+                onClick={onClick}
                 id={`view-${view.id}`}
                 to={linkTo}
                 label={

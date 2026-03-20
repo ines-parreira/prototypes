@@ -1,6 +1,7 @@
+import { SidebarCollapsedItem } from '@repo/navigation'
 import { history } from '@repo/routing'
 
-import { Button, ButtonGroup, ButtonGroupItem } from '@gorgias/axiom'
+import { Button, ButtonGroup, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useTicketsLegacyBridge } from '../../utils/LegacyBridge'
 import { SYSTEM_VIEW_DEFINITIONS } from '../constants/views'
@@ -32,25 +33,31 @@ export function CollapsedDefaultViews() {
             onSelectionChange={handleSelectionChange}
         >
             {displayedViews.map((view) => (
-                <ButtonGroupItem
+                <SidebarCollapsedItem
                     key={`view-${view.id}`}
                     id={view.id.toString()}
                     icon={SYSTEM_VIEW_DEFINITIONS[view.name].icon}
-                >
-                    {SYSTEM_VIEW_DEFINITIONS[view.name].label}
-                </ButtonGroupItem>
+                    label={SYSTEM_VIEW_DEFINITIONS[view.name].label}
+                />
             ))}
             {showToggle && (
-                <Button
-                    icon={
-                        isExpanded
-                            ? 'arrow-chevron-up-duo'
-                            : 'dots-meatballs-horizontal'
+                <Tooltip
+                    placement="right"
+                    trigger={
+                        <Button
+                            icon={
+                                isExpanded
+                                    ? 'arrow-chevron-up-duo'
+                                    : 'dots-meatballs-horizontal'
+                            }
+                            onClick={toggleExpanded}
+                            size="sm"
+                            variant="tertiary"
+                        />
                     }
-                    onClick={toggleExpanded}
-                    size="sm"
-                    variant="tertiary"
-                />
+                >
+                    <TooltipContent title={isExpanded ? 'Less' : 'More'} />
+                </Tooltip>
             )}
         </ButtonGroup>
     )

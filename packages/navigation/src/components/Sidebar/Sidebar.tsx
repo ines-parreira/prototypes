@@ -14,7 +14,8 @@ export function Sidebar({ children }: SidebarProps) {
             flexDirection="column"
             justifyContent="space-between"
             gap="md"
-            p="xs"
+            pt="xs"
+            pb="xs"
         >
             {children}
         </Box>
