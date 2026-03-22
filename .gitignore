@@ -73,6 +73,9 @@ yalc.lock
 .nx/workspace-data
 
 .diagnostics
+.agents/
+.codex/
+.playwright-mcp/
 
 # Generated AI tooling
 AGENTS.md
