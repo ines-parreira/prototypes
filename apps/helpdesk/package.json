@@ -99,6 +99,7 @@
         "@knocklabs/client": "^0.16.3",
         "@knocklabs/react": "^0.7.31",
         "@reduxjs/toolkit": "^1.9.7",
+        "@repo/ai-agent": "workspace:*",
         "@repo/agent-status": "workspace:*",
         "@repo/billing-utils": "workspace:*",
         "@repo/browser-storage": "workspace:*",

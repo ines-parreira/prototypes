@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import type { AiAgentReasoningState } from '@repo/ai-agent'
+import * as aiAgent from '@repo/ai-agent'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -8,7 +10,6 @@ import { useLocation } from 'react-router-dom'
 import { LegacyButton as Button, Icon } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { AiAgentMessageType } from 'models/aiAgentPlayground/types'
 import type { TicketMessage } from 'models/ticket/types'
 import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
@@ -24,12 +25,6 @@ import { useReasoningTracking } from './hooks/useReasoningTracking'
 
 import css from './AiAgentReasoning.less'
 
-type AiAgentReasoningState =
-    | 'loading'
-    | 'collapsed'
-    | 'expanded'
-    | 'error'
-    | 'static'
 type AiAgentReasoningProps = {
     message: TicketMessage
 }
@@ -43,10 +38,9 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const ticketTags = ticket.get('tags') as
         | List<Map<string, string>>
         | undefined
-    const isEvoliTicket =
-        ticketTags?.some((tag) =>
-            ['ai_evolution', 'ai_next_gen'].includes(tag?.get('name') ?? ''),
-        ) ?? false
+    const isEvoliTicket = aiAgent.isEvoliTicket(
+        ticketTags?.map((tag) => tag?.get('name')).toArray(),
+    )
 
     const [state, setState] = useState<AiAgentReasoningState>(
         isEvoliTicket ? 'static' : 'collapsed',
@@ -70,7 +64,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const messageId = message.id || 0
     const isHandover =
         (message.meta as Record<string, unknown>)?.ai_agent_message_type ===
-        AiAgentMessageType.HANDOVER_TO_AGENT
+        aiAgent.AiAgentMessageType.HANDOVER_TO_AGENT
 
     const { activeTab, onChangeTab } = useTicketInfobarNavigation()
 

@@ -613,6 +613,9 @@ importers:
       '@repo/agent-status':
         specifier: workspace:*
         version: link:../../packages/agent-status
+      '@repo/ai-agent':
+        specifier: workspace:*
+        version: link:../../packages/ai-agent
       '@repo/billing-utils':
         specifier: workspace:*
         version: link:../../packages/billing-utils
