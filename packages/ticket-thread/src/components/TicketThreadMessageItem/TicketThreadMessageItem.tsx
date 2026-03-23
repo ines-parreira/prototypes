@@ -9,6 +9,7 @@ import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
 import { TicketInternalNote } from '../TicketInternalNote/TicketInternalNote'
 import { TicketMessage } from '../TicketMessage/TicketMessage'
+import { UnimplementedMessage } from '../UnimplementedMessage/UnimplementedMessage'
 import { WhatsAppMessageWrapper } from '../WhatsAppMessage/WhatsAppMessageWrapper'
 import { AiAgentTicketThreadDraftMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadDraftMessage'
 import { AiAgentTicketThreadInternalNote } from './AiAgentTicketThreadMessages/AiAgentTicketThreadInternalNote'
@@ -57,25 +58,25 @@ export function TicketThreadMessageItem({
             case TicketThreadItemTag.Messages.AiAgentTrialMessage:
                 return <AiAgentTicketThreadTrialMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookComment:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookPost:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookMessage:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramComment:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramMedia:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaTwitterTweet:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage:
                 return <WhatsAppMessageWrapper item={item} />
             case TicketThreadItemTag.Messages.GroupedMessages:

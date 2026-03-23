@@ -145,9 +145,7 @@ describe('TicketThreadMessageItem', () => {
             datetime: '2024-03-21T11:00:00Z',
         } as TicketThreadMessageItem)
 
-        expect(
-            screen.getByText(JSON.stringify(messageData)),
-        ).toBeInTheDocument()
+        expect(screen.getByText('hello')).toBeInTheDocument()
     })
 
     it('renders AI agent message item', () => {
