@@ -1,4 +1,4 @@
-import { act, screen, waitFor } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -215,7 +215,7 @@ describe('InfobarTicketCustomerDetails', () => {
             name: 'View customer',
         })
 
-        await act(() => user.click(viewCustomerButton))
+        await user.click(viewCustomerButton)
 
         await waitFor(() => {
             expect(screen.getByText('Jane Doe')).toBeInTheDocument()
@@ -233,10 +233,8 @@ describe('InfobarTicketCustomerDetails', () => {
 
         await waitUntilLoaded()
 
-        await act(() => user.click(screen.getByLabelText('Customer menu')))
-        await act(() =>
-            user.click(screen.getByText('Merge or switch customer')),
-        )
+        await user.click(screen.getByLabelText('Customer menu'))
+        await user.click(screen.getByText('Merge or switch customer'))
 
         await waitFor(() => {
             expect(screen.getByText('Search customers')).toBeInTheDocument()
@@ -276,10 +274,8 @@ describe('InfobarTicketCustomerDetails', () => {
 
         await waitUntilLoaded()
 
-        await act(() => user.click(screen.getByLabelText('Customer menu')))
-        await act(() =>
-            user.click(screen.getByText('Merge or switch customer')),
-        )
+        await user.click(screen.getByLabelText('Customer menu'))
+        await user.click(screen.getByText('Merge or switch customer'))
 
         await screen.findByText('Search customers')
 
@@ -295,7 +291,7 @@ describe('InfobarTicketCustomerDetails', () => {
             name: 'Switch customer',
         })
 
-        await act(() => user.click(switchCustomerButton))
+        await user.click(switchCustomerButton)
 
         await waitFor(() => {
             expect(
@@ -343,10 +339,8 @@ describe('InfobarTicketCustomerDetails', () => {
 
         await waitUntilLoaded()
 
-        await act(() => user.click(screen.getByLabelText('Customer menu')))
-        await act(() =>
-            user.click(screen.getByText('Merge or switch customer')),
-        )
+        await user.click(screen.getByLabelText('Customer menu'))
+        await user.click(screen.getByText('Merge or switch customer'))
 
         await screen.findByText('Search customers')
 
@@ -362,7 +356,7 @@ describe('InfobarTicketCustomerDetails', () => {
             name: 'Switch customer',
         })
 
-        await act(() => user.click(switchCustomerButton))
+        await user.click(switchCustomerButton)
 
         await waitFor(() => {
             expect(
@@ -374,7 +368,7 @@ describe('InfobarTicketCustomerDetails', () => {
             name: 'Cancel',
         })
 
-        await act(() => user.click(cancelButton))
+        await user.click(cancelButton)
 
         await waitFor(() => {
             expect(
@@ -416,16 +410,14 @@ describe('InfobarTicketCustomerDetails', () => {
 
         await waitUntilLoaded()
 
-        await act(() => user.click(screen.getByLabelText('Customer menu')))
-        await act(() =>
-            user.click(screen.getByText('Merge or switch customer')),
-        )
+        await user.click(screen.getByLabelText('Customer menu'))
+        await user.click(screen.getByText('Merge or switch customer'))
 
         const searchInput = screen.getByPlaceholderText(
             'Search by name, email or order no.',
         )
 
-        await act(() => user.type(searchInput, 'Antonio'))
+        await user.type(searchInput, 'Antonio')
 
         await waitFor(() => {
             expect(screen.getByText(/Antonio Lopez/)).toBeInTheDocument()
@@ -435,7 +427,7 @@ describe('InfobarTicketCustomerDetails', () => {
             name: 'Switch customer',
         })
 
-        await act(() => user.click(switchCustomerButton))
+        await user.click(switchCustomerButton)
 
         await waitFor(() => {
             expect(
@@ -447,7 +439,7 @@ describe('InfobarTicketCustomerDetails', () => {
 
         const waitForUpdateRequest = mockUpdateTicket.waitForRequest(server)
 
-        await act(() => user.click(confirmButton))
+        await user.click(confirmButton)
 
         await waitForUpdateRequest(async (request) => {
             const body = await request.json()

@@ -635,10 +635,16 @@ describe('selection behaviour', () => {
             expect(screen.getByText('First Ticket')).toBeInTheDocument()
         })
 
-        await user.click(screen.getByLabelText('Select ticket 1'))
+        await act(async () => {
+            await user.click(
+                screen.getByRole('checkbox', { name: 'Select ticket 1' }),
+            )
+        })
 
         await waitFor(() => {
-            expect(screen.getByText('1 selected')).toBeInTheDocument()
+            expect(
+                screen.getByRole('checkbox', { name: '1 selected' }),
+            ).toBePartiallyChecked()
         })
 
         // Simulate a sort order change by updating localStorage directly and
@@ -658,7 +664,9 @@ describe('selection behaviour', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText('Select all')).toBeInTheDocument()
+            expect(
+                screen.getByRole('checkbox', { name: 'Select all' }),
+            ).not.toBeChecked()
         })
     })
 
