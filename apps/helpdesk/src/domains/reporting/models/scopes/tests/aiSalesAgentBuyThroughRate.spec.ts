@@ -1,4 +1,8 @@
-import { aiSalesAgentBuyThroughRateScope } from 'domains/reporting/models/scopes/aiSalesAgentBuyThroughRate'
+import {
+    aiSalesAgentBuyThroughRateScope,
+    buyThroughRate,
+    buyThroughRateQueryV2Factory,
+} from 'domains/reporting/models/scopes/aiSalesAgentBuyThroughRate'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
@@ -10,6 +14,8 @@ describe('aiSalesAgentBuyThroughRateScope', () => {
             end_datetime: '2025-09-03T23:59:59.000',
         },
     }
+
+    const context = { filters: baseFilters, timezone: 'UTC' }
 
     it('includes period filters', () => {
         const result = createScopeFilters(
@@ -122,5 +128,16 @@ describe('aiSalesAgentBuyThroughRateScope', () => {
         expect(result).not.toContainEqual(
             expect.objectContaining({ member: 'integrationId' }),
         )
+    })
+
+    describe('QueryV2Factory methods', () => {
+        describe('buyThroughRateQueryV2Factory', () => {
+            it('returns the same result as calling build directly', () => {
+                const factoryResult = buyThroughRateQueryV2Factory(context)
+                const buildResult = buyThroughRate.build(context)
+
+                expect(factoryResult).toEqual(buildResult)
+            })
+        })
     })
 })

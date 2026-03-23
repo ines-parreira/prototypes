@@ -204,6 +204,8 @@ export const METRIC_NAMES = {
         'ai-agent-shopping-assistant-discount-usage',
     AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_APPLIED:
         'ai-agent-shopping-assistant-discount-codes-applied',
+    AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE:
+        'ai-agent-shopping-assistant-buy-through-rate',
     // Agent Experience
     AGENTXP_ONLINE_TIME: 'agentxp-online-time',
     AGENTXP_ONLINE_TIME_PER_AGENT: 'agentxp-online-time-per-agent',
@@ -952,7 +954,9 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.AiSalesAgentConversionRate]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CONVERSION_RATE,
     ],
-    [MetricScope.AiSalesAgentBuyThroughRate]: [],
+    [MetricScope.AiSalesAgentBuyThroughRate]: [
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE,
+    ],
     [MetricScope.AiSalesAgentActivity]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
