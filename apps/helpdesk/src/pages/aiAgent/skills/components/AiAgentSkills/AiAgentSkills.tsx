@@ -1,5 +1,6 @@
 import { Box, Skeleton } from '@gorgias/axiom'
 
+import { RecommendedSkillsSection } from 'pages/aiAgent/skills/components/RecommendedSkillsSection/RecommendedSkillsSection'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
 
 import { SkillsEmptyState } from '../SkillsEmptyState/SkillsEmptyState'
@@ -24,6 +25,10 @@ export const AiAgentSkills = () => {
             <SkillsHeader onViewIntents={noop} onCreateSkill={noop} />
 
             <Box flexDirection="column" className={css.content}>
+                {/* This section will be displayed only when there are unused templates.
+                The logic related to this will be applied in the next iteration */}
+                <RecommendedSkillsSection />
+
                 {isLoading ? (
                     <SkillsLoading />
                 ) : !hasLinkedSkills ? (

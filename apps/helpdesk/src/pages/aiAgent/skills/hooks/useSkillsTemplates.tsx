@@ -1,7 +1,10 @@
 import { useMemo } from 'react'
 
+import { useListIntents } from 'models/helpCenter/queries'
 import { GuidanceTemplatesData } from 'pages/aiAgent/hooks/useGuidanceTemplates'
-import type { SkillTemplate } from 'pages/aiAgent/skills/types'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { IntentStatus } from 'pages/aiAgent/skills/types'
+import type { Intent, SkillTemplate } from 'pages/aiAgent/skills/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
 const TAG_STYLES = {
@@ -36,7 +39,11 @@ const getGuidanceTemplate = (
     guidanceId: string,
 ) => guidanceTemplates.find(({ id }) => id === guidanceId)
 
-export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
+type SkillTemplateConfig = Omit<SkillTemplate, 'guidance' | 'intents'> & {
+    intentNames: Intent['name'][]
+}
+
+export const SkillTemplatesData: SkillTemplateConfig[] = [
     {
         id: 'order-status-tracking-or-delivery-timing',
         name: 'Order status, tracking or delivery timing',
@@ -44,7 +51,7 @@ export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
             'when-the-customer-asks-about-order-status-tracking-or-delivery-timing',
         tag: 'Order',
         style: TAG_STYLES.Order,
-        intents: [
+        intentNames: [
             'order::status',
             'shipping::delay',
             'shipping::delivered not received',
@@ -56,7 +63,7 @@ export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
         guidanceId: 'when-the-customer-reports-items-missing-from-order',
         tag: 'Order',
         style: TAG_STYLES.Order,
-        intents: ['order::missing item'],
+        intentNames: ['order::missing item'],
     },
     {
         id: 'order-cancellations',
@@ -64,7 +71,7 @@ export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
         guidanceId: 'when-the-customer-asks-to-cancel-an-order',
         tag: 'Order',
         style: TAG_STYLES.Order,
-        intents: ['order::cancel'],
+        intentNames: ['order::cancel'],
     },
     {
         id: 'shipping-address-updates-or-edits-in-an-order',
@@ -73,7 +80,7 @@ export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
             'when-the-customer-asks-to-edit-or-update-the-shipping-address',
         tag: 'Shipping',
         style: TAG_STYLES.Shipping,
-        intents: ['shipping::change address'],
+        intentNames: ['shipping::change address'],
     },
     {
         id: 'product-edits-in-an-order',
@@ -81,7 +88,7 @@ export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
         guidanceId: 'when-the-customer-asks-to-edit-the-products-in-an-order',
         tag: 'Product',
         style: TAG_STYLES.Product,
-        intents: ['order::edit'],
+        intentNames: ['order::edit'],
     },
     {
         id: 'item-is-damaged-defective-broken-or-not-working-as-expected',
@@ -89,7 +96,7 @@ export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
         guidanceId: 'when-the-customer-reports-item-damaged-defective-broken',
         tag: 'Product',
         style: TAG_STYLES.Product,
-        intents: ['order::damaged', 'product::quality issues'],
+        intentNames: ['order::damaged', 'product::quality issues'],
     },
     {
         id: 'returns-and-exchanges',
@@ -97,7 +104,7 @@ export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
         guidanceId: 'when-the-customer-asks-about-return-exchange-or-refund',
         tag: 'Return & exchanges',
         style: TAG_STYLES.ReturnExchanges,
-        intents: [
+        intentNames: [
             'return::request',
             'return::status',
             'return::information',
@@ -113,7 +120,7 @@ export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
         guidanceId: 'when-the-customer-asks-about-promo-codes-or-free-shipping',
         tag: 'Promotion',
         style: TAG_STYLES.Promotions,
-        intents: [
+        intentNames: [
             'promotion & discount::information',
             'promotion & discount::issue',
             'promotion & discount::other',
@@ -125,7 +132,7 @@ export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
         guidanceId: 'when-the-customer-asks-to-modify-their-subscription',
         tag: 'Subscription',
         style: TAG_STYLES.Subscriptions,
-        intents: ['subscription::modification', 'subscription::other'],
+        intentNames: ['subscription::modification', 'subscription::other'],
     },
     {
         id: 'subscription-cancellations',
@@ -133,22 +140,46 @@ export const SkillTemplatesData: Omit<SkillTemplate, 'guidance'>[] = [
         guidanceId: 'when-the-customer-asks-to-cancel-their-subscription',
         tag: 'Subscription',
         style: TAG_STYLES.Subscriptions,
-        intents: ['subscription::cancel'],
+        intentNames: ['subscription::cancel'],
     },
 ]
 
-export const useSkillsTemplates = () => {
-    const skillsTemplates = useMemo(
+export const useSkillsTemplates = (): SkillTemplate[] => {
+    const { isLoading: isLoadingStoreConfiguration, storeConfiguration } =
+        useAiAgentStoreConfigurationContext()
+
+    const helpCenterId = storeConfiguration?.guidanceHelpCenterId
+
+    const { data } = useListIntents(helpCenterId || 0, {
+        enabled: !isLoadingStoreConfiguration && !!helpCenterId,
+    })
+
+    const intentsByName = useMemo(() => {
+        const map = new Map<string, Intent>()
+        ;(data?.intents ?? []).forEach((intent) => map.set(intent.name, intent))
+        return map
+    }, [data])
+
+    const mappedSkillsTemplates = useMemo(
         () =>
-            SkillTemplatesData.map((template) => ({
+            SkillTemplatesData.map(({ intentNames, ...template }) => ({
                 ...template,
                 guidance: getGuidanceTemplate(
                     GuidanceTemplatesData,
                     template.guidanceId,
                 ),
+                intents: intentNames.map(
+                    (name) =>
+                        intentsByName.get(name) ?? {
+                            name,
+                            status: IntentStatus.NotLinked,
+                            help_center_id: helpCenterId || 0,
+                            articles: [],
+                        },
+                ),
             })),
-        [],
+        [intentsByName, helpCenterId],
     )
 
-    return { skillsTemplates }
+    return mappedSkillsTemplates
 }

@@ -1,0 +1,26 @@
+@import '~@gorgias/design-tokens/dist/css/typographyTokens';
+
+:local {
+    .card {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        border-radius: var(--spacing-sm);
+        border: 1px solid var(--border-neutral-default);
+        padding: var(--spacing-sm) var(--spacing-md);
+    }
+
+    .tagsContainer {
+        gap: var(--spacing-xxxs);
+        align-items: center;
+    }
+
+    .remainingCount {
+        padding: 0 var(--spacing-xs);
+        cursor: pointer;
+    }
+
+    .statsTitle {
+        color: var(--content-neutral-secondary);
+    }
+}

@@ -1,18 +1,57 @@
-import { renderHook } from '@repo/testing'
+import type React from 'react'
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { renderHook } from '@testing-library/react'
+
+import { useListIntents } from 'models/helpCenter/queries'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import { SkillTemplatesData, useSkillsTemplates } from './useSkillsTemplates'
 
+jest.mock('models/helpCenter/queries', () => ({
+    useListIntents: jest.fn(),
+}))
+
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
+    useAiAgentStoreConfigurationContext: jest.fn(),
+}))
+
+const mockUseAiAgentStoreConfigurationContext =
+    useAiAgentStoreConfigurationContext as jest.Mock
+const mockUseListIntents = useListIntents as jest.Mock
+
 describe('useSkillsTemplates', () => {
+    const queryClient = new QueryClient({
+        defaultOptions: {
+            queries: { retry: false },
+        },
+    })
+
+    const wrapper = ({ children }: { children: React.ReactNode }) =>
+        QueryClientProvider({ client: queryClient, children })
+
     beforeEach(() => {
-        jest.resetAllMocks()
+        jest.clearAllMocks()
+        queryClient.clear()
+
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            isLoading: false,
+            storeConfiguration: {
+                guidanceHelpCenterId: 123,
+            },
+        })
+
+        mockUseListIntents.mockReturnValue({
+            data: { intents: [] },
+            isLoading: false,
+            isError: false,
+        })
     })
 
     it('should return all skill templates', () => {
-        const { result } = renderHook(() => useSkillsTemplates())
+        const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
 
-        expect(result.current.skillsTemplates).toHaveLength(
-            SkillTemplatesData.length,
-        )
+        expect(result.current).toHaveLength(SkillTemplatesData.length)
     })
 
     it.each([
@@ -54,12 +93,53 @@ describe('useSkillsTemplates', () => {
             'WHEN: The customer asks to cancel their subscription',
         ],
     ])('should map "%s" to guidance "%s"', (skillName, guidanceName) => {
-        const { result } = renderHook(() => useSkillsTemplates())
+        const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
 
-        const template = result.current.skillsTemplates.find(
-            (t) => t.name === skillName,
-        )
+        const template = result.current.find((t) => t.name === skillName)
 
         expect(template?.guidance?.name).toBe(guidanceName)
+    })
+
+    it('should set intent status to linked when API returns linked intent', () => {
+        mockUseListIntents.mockReturnValue({
+            data: {
+                intents: [
+                    {
+                        name: 'order::status',
+                        status: 'linked',
+                        help_center_id: 123,
+                        articles: [],
+                    },
+                ],
+            },
+            isLoading: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
+
+        const template = result.current.find(
+            (t) => t.name === 'Order status, tracking or delivery timing',
+        )
+        const intent = template?.intents.find((i) => i.name === 'order::status')
+
+        expect(intent?.status).toBe('linked')
+    })
+
+    it('should default intent status to not_linked when intent is not in API response', () => {
+        mockUseListIntents.mockReturnValue({
+            data: { intents: [] },
+            isLoading: false,
+            isError: false,
+        })
+
+        const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
+
+        const template = result.current.find(
+            (t) => t.name === 'Order cancellations',
+        )
+        const intent = template?.intents.find((i) => i.name === 'order::cancel')
+
+        expect(intent?.status).toBe('not_linked')
     })
 })
