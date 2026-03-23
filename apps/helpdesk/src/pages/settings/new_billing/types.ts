@@ -6,6 +6,25 @@ import type {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 
+export type CancellationDates = Partial<Record<ProductType, string | null>>
+
+export type PlansByProduct = {
+    [ProductType.Helpdesk]: {
+        current?: HelpdeskPlan
+        available: HelpdeskPlan[]
+    }
+    [ProductType.Automation]: {
+        current?: AutomatePlan
+        available: AutomatePlan[]
+    }
+    [ProductType.Voice]: {
+        current?: SMSOrVoicePlan
+        available: SMSOrVoicePlan[]
+    }
+    [ProductType.SMS]: { current?: SMSOrVoicePlan; available: SMSOrVoicePlan[] }
+    [ProductType.Convert]: { current?: ConvertPlan; available: ConvertPlan[] }
+}
+
 export type SelectedPlans = {
     [ProductType.Helpdesk]: {
         plan?: HelpdeskPlan

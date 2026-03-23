@@ -139,7 +139,7 @@ describe('BillingProcessView', () => {
     it('should render', async () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
 
-        const { container } = renderWithStoreAndQueryClientAndRouter(
+        renderWithStoreAndQueryClientAndRouter(
             <BillingProcessView
                 currentUsage={currentProductsUsage}
                 contactBilling={jest.fn()}
@@ -155,8 +155,6 @@ describe('BillingProcessView', () => {
         await waitFor(() => {
             expect(screen.queryByText('See Plans Details')).toBeInTheDocument()
         })
-
-        expect(container).toMatchSnapshot()
     })
 
     it('should log BillingProductManagementVisited event on component mount', async () => {

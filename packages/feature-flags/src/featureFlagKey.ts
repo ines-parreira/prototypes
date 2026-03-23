@@ -83,6 +83,7 @@ export enum FeatureFlagKey {
     BigCommerceCreateOrder = 'bigcommerce-create-order',
     BigCommerceRefundOrder = 'bigcommerce-refund-order',
     BillingMaintenanceMode = 'billing-maintenance-mode',
+    MidCycleUpgradeBillingLogic = 'mid-cycle-upgrade-billing-logic',
     BillingPreventSubscriptionAnyPlan = 'linear.CRMGROW-1414.prevent-user-subscribing-to-any-plan',
     BillingQuarterlyFrequency = 'billing-quarterly-frequency',
     BillingSummaryTotalWithCoupons = 'billing-summary-total-with-coupons',

@@ -1,7 +1,9 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {
     basicMonthlyHelpdeskPlan,
@@ -16,7 +18,9 @@ import type { RootState, StoreDispatch } from 'state/types'
 import type { SummaryFooterProps } from '../SummaryFooter'
 import SummaryFooter from '../SummaryFooter'
 
-const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>()
+const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
+    thunk,
+])
 
 const store = mockedStore({
     billing: fromJS({
@@ -33,6 +37,10 @@ const store = mockedStore({
 
 const mockHistoryPush = jest.fn()
 
+jest.mock('utils/errors', () => ({
+    reportError: jest.fn(),
+}))
+
 jest.mock(
     'react-router-dom',
     () =>
@@ -45,7 +53,11 @@ jest.mock(
 )
 
 describe('SummaryFooter', () => {
-    const mockUpdateSubscription = jest.fn()
+    const mockUpdateSubscription = jest.fn(async () => undefined)
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
 
     const props: SummaryFooterProps = {
         isPaymentEnabled: true,
@@ -118,13 +130,14 @@ describe('SummaryFooter', () => {
     })
 
     it('calls handleSubscribe when the update subscription button is clicked', async () => {
+        const user = userEvent.setup()
         render(
             <Provider store={store}>
                 <SummaryFooter {...props} anyNewProductSelected={false} />
             </Provider>,
         )
         const button = screen.getByText('Update Subscription')
-        fireEvent.click(button)
+        await user.click(button)
 
         expect(mockUpdateSubscription).toHaveBeenCalled()
         await waitFor(() => {
@@ -132,7 +145,28 @@ describe('SummaryFooter', () => {
         })
     })
 
+    it('calls onOpenConfirmationModal when provided', async () => {
+        const user = userEvent.setup()
+        const onOpenConfirmationModal = jest.fn()
+
+        render(
+            <Provider store={store}>
+                <SummaryFooter
+                    {...props}
+                    anyNewProductSelected={false}
+                    onOpenConfirmationModal={onOpenConfirmationModal}
+                />
+            </Provider>,
+        )
+
+        await user.click(screen.getByText('Update Subscription'))
+
+        expect(onOpenConfirmationModal).toHaveBeenCalled()
+        expect(mockHistoryPush).not.toHaveBeenCalled()
+    })
+
     it('calls setSessionSelectedPlans with selectedPlans when subscription is updated', async () => {
+        const user = userEvent.setup()
         const mockSetSessionSelectedPlans = jest.fn()
         const selectedPlans: SelectedPlans = {
             [ProductType.Helpdesk]: {
@@ -164,7 +198,7 @@ describe('SummaryFooter', () => {
             </Provider>,
         )
         const button = screen.getByText('Update Subscription')
-        fireEvent.click(button)
+        await user.click(button)
 
         expect(mockUpdateSubscription).toHaveBeenCalled()
         await waitFor(() => {

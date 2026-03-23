@@ -32,7 +32,8 @@ export type SummaryFooterProps = {
     anyProductChanged: boolean
     anyNewProductSelected: boolean
     anyDowngradedPlanSelected: boolean
-    updateSubscription?: () => Promise<void | [void, void, void]>
+    updateSubscription?: () => Promise<void | [void, void] | [void, void, void]>
+    onOpenConfirmationModal?: () => void
     startSubscription?: () => Promise<void | [void, void]>
     periodEnd: string
     hideSubscribeButton?: boolean
@@ -59,6 +60,7 @@ const SummaryFooter = ({
     anyNewProductSelected,
     anyDowngradedPlanSelected,
     updateSubscription,
+    onOpenConfirmationModal,
     startSubscription,
     periodEnd,
     hideSubscribeButton = false,
@@ -80,7 +82,12 @@ const SummaryFooter = ({
     const history = useHistory()
     const dispatch = useAppDispatch()
 
-    const handleUpdateSubscription = async () => {
+    const handleSubmit = async () => {
+        if (onOpenConfirmationModal) {
+            onOpenConfirmationModal()
+            return
+        }
+
         try {
             setUpdateProcessStarted?.(true)
             await updateSubscription?.()
@@ -102,9 +109,7 @@ const SummaryFooter = ({
                 message: 'Your subscription has successfully been updated.',
             }
             void dispatch(notify(notification))
-        } catch (error) {
-            reportError(error as Error)
-        } finally {
+
             if (selectedPlans && setSessionSelectedPlans) {
                 setSessionSelectedPlans(selectedPlans)
             }
@@ -125,6 +130,9 @@ const SummaryFooter = ({
             } else {
                 history.push(BILLING_BASE_PATH)
             }
+        } catch (error) {
+            reportError(error as Error)
+            setUpdateProcessStarted?.(false)
         }
     }
 
@@ -241,7 +249,9 @@ const SummaryFooter = ({
                         }
                         className={css.button}
                         id="update-subscription"
-                        onClick={handleUpdateSubscription}
+                        onClick={() => {
+                            void handleSubmit()
+                        }}
                         isLoading={isSubscriptionUpdating}
                     >
                         {ctaText}

@@ -27,7 +27,7 @@ import ScheduledCancellationSummary from '../../components/ScheduledCancellation
 import VoiceOrSmsChangeReviewAlert from '../../components/VoiceOrSmsChangeReviewAlert'
 import { BILLING_BASE_PATH, PRICING_DETAILS_URL } from '../../constants'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
-import type { SelectedPlans } from '../../types'
+import type { PlansByProduct, SelectedPlans } from '../../types'
 import { BillingSummaryCard } from './BillingSummaryCard'
 import { EnterprisePlanCard } from './EnterprisePlanCard'
 import { useCancellationSummary } from './hooks/useCancellationSummary'
@@ -131,6 +131,43 @@ export const BillingProcessView = ({
             currentConvertPlan,
         })
 
+    const plansByProduct: PlansByProduct = useMemo(
+        () => ({
+            [ProductType.Helpdesk]: {
+                current: currentHelpdeskPlan,
+                available: helpdeskAvailablePlans,
+            },
+            [ProductType.Automation]: {
+                current: currentAutomatePlan,
+                available: automateAvailablePlans,
+            },
+            [ProductType.Voice]: {
+                current: currentVoicePlan,
+                available: voiceAvailablePlans,
+            },
+            [ProductType.SMS]: {
+                current: currentSmsPlan,
+                available: smsAvailablePlans,
+            },
+            [ProductType.Convert]: {
+                current: currentConvertPlan,
+                available: convertAvailablePlans,
+            },
+        }),
+        [
+            currentHelpdeskPlan,
+            helpdeskAvailablePlans,
+            currentAutomatePlan,
+            automateAvailablePlans,
+            currentVoicePlan,
+            voiceAvailablePlans,
+            currentSmsPlan,
+            smsAvailablePlans,
+            currentConvertPlan,
+            convertAvailablePlans,
+        ],
+    )
+
     // on page unload, remove error notification
     useEffect(() => {
         return () => {
@@ -207,16 +244,7 @@ export const BillingProcessView = ({
             <BillingSummaryCard
                 selectedPlans={selectedPlans}
                 cadence={cadence}
-                currentHelpdeskPlan={currentHelpdeskPlan}
-                helpdeskAvailablePlans={helpdeskAvailablePlans}
-                currentAutomatePlan={currentAutomatePlan}
-                automateAvailablePlans={automateAvailablePlans}
-                currentVoicePlan={currentVoicePlan}
-                voiceAvailablePlans={voiceAvailablePlans}
-                currentSmsPlan={currentSmsPlan}
-                smsAvailablePlans={smsAvailablePlans}
-                currentConvertPlan={currentConvertPlan}
-                convertAvailablePlans={convertAvailablePlans}
+                plansByProduct={plansByProduct}
                 totalProductAmount={totalProductAmount}
                 anyProductChanged={anyProductChanged}
                 anyNewProductSelected={anyNewProductSelected}
