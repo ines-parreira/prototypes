@@ -1,41 +1,18 @@
 import { Box, Button, Heading, Text } from '@gorgias/axiom'
 
+import {
+    EmptyViewsState,
+    getViewAwareEmptyStateMessage,
+} from '../../utils/views'
+import type { ViewEmptyStateKind } from '../../utils/views'
 import { TicketListItemSkeleton } from './TicketListItem/components/TicketListItemSkeleton'
 
 import css from './TicketList.module.less'
 
-export type EmptyStateVariant =
-    | 'default'
-    | 'invalidFilters'
-    | 'inaccessible'
-    | 'error'
-
-const emptyStateContent: Record<
-    EmptyStateVariant,
-    { heading: string; subText: string }
-> = {
-    default: {
-        heading: 'No open tickets',
-        subText: "You've closed all your tickets!",
-    },
-    invalidFilters: {
-        heading: 'Invalid filters',
-        subText: 'This view is deactivated as at least one filter is invalid.',
-    },
-    inaccessible: {
-        heading: "Can't access view",
-        subText:
-            'This view does not exist or you do not have the correct permissions',
-    },
-    error: {
-        heading: 'Network error',
-        subText: 'Unable to load this view currently',
-    },
-}
-
 type Props = {
     isLoading: boolean
-    emptyStateVariant: EmptyStateVariant
+    emptyStateVariant: ViewEmptyStateKind
+    isInboxView?: boolean
     onFixFilters?: () => void
     onRefresh?: () => void
 }
@@ -43,6 +20,7 @@ type Props = {
 export function TicketListEmptyPlaceholder({
     isLoading,
     emptyStateVariant,
+    isInboxView,
     onFixFilters,
     onRefresh,
 }: Props) {
@@ -56,7 +34,10 @@ export function TicketListEmptyPlaceholder({
         )
     }
 
-    const { heading, subText } = emptyStateContent[emptyStateVariant]
+    const { heading, subText } = getViewAwareEmptyStateMessage({
+        kind: emptyStateVariant,
+        isInboxView,
+    })
 
     return (
         <Box
@@ -81,10 +62,11 @@ export function TicketListEmptyPlaceholder({
                     {subText}
                 </Text>
             </Box>
-            {emptyStateVariant === 'invalidFilters' && onFixFilters && (
-                <Button onClick={onFixFilters}>Fix filters</Button>
-            )}
-            {emptyStateVariant === 'error' && onRefresh && (
+            {emptyStateVariant === EmptyViewsState.InvalidFilters &&
+                onFixFilters && (
+                    <Button onClick={onFixFilters}>Fix filters</Button>
+                )}
+            {emptyStateVariant === EmptyViewsState.Error && onRefresh && (
                 <Button onClick={onRefresh}>Refresh</Button>
             )}
         </Box>

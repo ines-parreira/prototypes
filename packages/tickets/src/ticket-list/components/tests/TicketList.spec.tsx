@@ -1,22 +1,30 @@
 import * as React from 'react'
 
 import { act, cleanup, screen, waitFor } from '@testing-library/react'
-import { http, HttpResponse } from 'msw'
+import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { VirtuosoMockContext } from 'react-virtuoso'
 
 import {
     mockGetCurrentUserHandler,
+    mockGetUserHandler,
     mockGetViewHandler,
     mockGetViewResponse,
     mockListTeamsHandler,
     mockListUsersHandler,
     mockListViewItemsHandler,
+    mockListViewItemsResponse,
     mockListViewItemsUpdatesHandler,
+    mockListViewItemsUpdatesResponse,
     mockTicket,
     mockTicketCompact,
     mockUpdateTicketHandler,
+    mockUser,
 } from '@gorgias/helpdesk-mocks'
+import type {
+    ListViewItems200DataItem,
+    TicketCompact,
+} from '@gorgias/helpdesk-types'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import * as useCurrentUserLanguagePreferencesModule from '../../../translations/hooks/useCurrentUserLanguagePreferences'
@@ -46,29 +54,39 @@ vi.mock('@repo/feature-flags', () => ({
 }))
 
 const viewId = 123
-const mockTicket1 = mockTicket({ id: 1, subject: 'First Ticket' })
-const mockTicket2 = mockTicket({ id: 2, subject: 'Second Ticket' })
-const mockTicket3 = mockTicket({ id: 3, subject: 'Third Ticket' })
+const mockTicket1 = mockTicketCompact({ id: 1, subject: 'First Ticket' })
+const mockTicket2 = mockTicketCompact({ id: 2, subject: 'Second Ticket' })
+const mockTicket3 = mockTicketCompact({ id: 3, subject: 'Third Ticket' })
 const nextItemsUrl = `/api/views/${viewId}/items/?cursor=page-2`
 
+function toListViewItem(ticket: TicketCompact): ListViewItems200DataItem {
+    return {
+        ...ticket,
+        assignee_team: undefined,
+        assignee_user: undefined,
+    } as unknown as ListViewItems200DataItem
+}
+
 const mockListViewItems = mockListViewItemsHandler(async () =>
-    HttpResponse.json({
-        data: [mockTicket1, mockTicket2],
-        meta: {
-            current_cursor: null,
-            next_items: null, // No next page
-            prev_items: null,
-        },
-        object: 'list',
-        uri: `/api/views/${viewId}/items/`,
-    } as any),
+    HttpResponse.json(
+        mockListViewItemsResponse({
+            data: [toListViewItem(mockTicket1), toListViewItem(mockTicket2)],
+            meta: {
+                current_cursor: undefined,
+                next_items: undefined,
+                prev_items: undefined,
+            },
+        }),
+    ),
 )
 
 const mockListViewItemsUpdatesNoOp = mockListViewItemsUpdatesHandler(async () =>
-    HttpResponse.json({
-        data: [],
-        meta: {},
-    }),
+    HttpResponse.json(
+        mockListViewItemsUpdatesResponse({
+            data: [],
+            meta: {},
+        }),
+    ),
 )
 
 const mockCurrentUser = mockGetCurrentUserHandler()
@@ -95,13 +113,15 @@ beforeEach(() => {
         mockGetView.handler,
         mockListTeams.handler,
         mockListUsers.handler,
-        http.get('*/api/users/:id', ({ params }) =>
-            HttpResponse.json({
-                id: Number(params.id),
-                name: `User ${params.id}`,
-                email: `user${params.id}@example.com`,
-            }),
-        ),
+        mockGetUserHandler(async ({ params }) =>
+            HttpResponse.json(
+                mockUser({
+                    id: Number(params?.id ?? 0),
+                    name: `User ${params?.id ?? 0}`,
+                    email: `user${params?.id ?? 0}@example.com`,
+                }) as never,
+            ),
+        ).handler,
     )
 })
 
@@ -237,25 +257,25 @@ describe('TicketList', () => {
 
         it('should render invalid filters state when the view is deactivated', async () => {
             server.use(
-                http.get(/.*\/api\/views\/[^/]+\/?(?:\?.*)?$/, () =>
+                mockGetViewHandler(async () =>
                     HttpResponse.json(
                         mockGetViewResponse({
                             id: viewId,
                             deactivated_datetime: '2024-01-01T00:00:00Z',
                         }),
                     ),
-                ),
+                ).handler,
                 mockListViewItemsHandler(async () =>
-                    HttpResponse.json({
-                        data: [],
-                        meta: {
-                            current_cursor: null,
-                            next_items: null,
-                            prev_items: null,
-                        },
-                        object: 'list',
-                        uri: `/api/views/${viewId}/items/`,
-                    } as any),
+                    HttpResponse.json(
+                        mockListViewItemsResponse({
+                            data: [],
+                            meta: {
+                                current_cursor: undefined,
+                                next_items: undefined,
+                                prev_items: undefined,
+                            },
+                        }),
+                    ),
                 ).handler,
             )
 
@@ -282,14 +302,14 @@ describe('TicketList', () => {
             )
 
             server.use(
-                http.get(/.*\/api\/views\/[^/]+\/?(?:\?.*)?$/, () =>
+                mockGetViewHandler(async () =>
                     HttpResponse.json(
                         mockGetViewResponse({
                             id: viewId,
                             deactivated_datetime: '2024-01-01T00:00:00Z',
                         }),
                     ),
-                ),
+                ).handler,
             )
 
             const { user } = renderWithVirtuoso(
@@ -315,20 +335,19 @@ describe('TicketList', () => {
 
         it('should render inaccessible state when the view data is null', async () => {
             server.use(
-                http.get(/.*\/api\/views\/[^/]+\/?(?:\?.*)?$/, () =>
-                    HttpResponse.json(null as any),
-                ),
+                mockGetViewHandler(async () => HttpResponse.json(null as any))
+                    .handler,
                 mockListViewItemsHandler(async () =>
-                    HttpResponse.json({
-                        data: [],
-                        meta: {
-                            current_cursor: null,
-                            next_items: null,
-                            prev_items: null,
-                        },
-                        object: 'list',
-                        uri: `/api/views/${viewId}/items/`,
-                    } as any),
+                    HttpResponse.json(
+                        mockListViewItemsResponse({
+                            data: [],
+                            meta: {
+                                current_cursor: undefined,
+                                next_items: undefined,
+                                prev_items: undefined,
+                            },
+                        }),
+                    ),
                 ).handler,
             )
 
@@ -348,8 +367,20 @@ describe('TicketList', () => {
             ).toBeInTheDocument()
         })
 
-        it('should render empty state', async () => {
+        it('should render inbox empty state', async () => {
             mockUseTicketsList()
+
+            server.use(
+                mockGetViewHandler(async () =>
+                    HttpResponse.json(
+                        mockGetViewResponse({
+                            id: viewId,
+                            deactivated_datetime: undefined,
+                            slug: 'inbox',
+                        }),
+                    ),
+                ).handler,
+            )
 
             renderWithVirtuoso(
                 <TicketList viewId={viewId} onCollapse={vi.fn()} />,
@@ -359,6 +390,35 @@ describe('TicketList', () => {
                 expect(screen.getByText('No open tickets')).toBeInTheDocument()
                 expect(
                     screen.getByText("You've closed all your tickets!"),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should render filtered empty state for non-inbox views', async () => {
+            mockUseTicketsList()
+
+            server.use(
+                mockGetViewHandler(async () =>
+                    HttpResponse.json(
+                        mockGetViewResponse({
+                            id: viewId,
+                            deactivated_datetime: undefined,
+                            slug: 'all',
+                        }),
+                    ),
+                ).handler,
+            )
+
+            renderWithVirtuoso(
+                <TicketList viewId={viewId} onCollapse={vi.fn()} />,
+            )
+
+            await waitFor(() => {
+                expect(screen.getByText('No tickets')).toBeInTheDocument()
+                expect(
+                    screen.getByText(
+                        'There are no tickets matching these filters',
+                    ),
                 ).toBeInTheDocument()
             })
         })
@@ -387,27 +447,30 @@ describe('TicketList', () => {
             mockListViewItemsHandler(async ({ request }) => {
                 const cursor = new URL(request.url).searchParams.get('cursor')
                 if (cursor === 'page-2') {
-                    return HttpResponse.json({
-                        data: [mockTicket3],
-                        meta: {
-                            current_cursor: 'page-2',
-                            next_items: null,
-                            prev_items: null,
-                        },
-                        object: 'list',
-                        uri: `/api/views/${viewId}/items/`,
-                    } as any)
+                    return HttpResponse.json(
+                        mockListViewItemsResponse({
+                            data: [toListViewItem(mockTicket3)],
+                            meta: {
+                                current_cursor: 'page-2',
+                                next_items: undefined,
+                                prev_items: undefined,
+                            },
+                        }),
+                    )
                 }
-                return HttpResponse.json({
-                    data: [mockTicket1, mockTicket2],
-                    meta: {
-                        current_cursor: null,
-                        next_items: nextItemsUrl,
-                        prev_items: null,
-                    },
-                    object: 'list',
-                    uri: `/api/views/${viewId}/items/`,
-                } as any)
+                return HttpResponse.json(
+                    mockListViewItemsResponse({
+                        data: [
+                            toListViewItem(mockTicket1),
+                            toListViewItem(mockTicket2),
+                        ],
+                        meta: {
+                            current_cursor: undefined,
+                            next_items: nextItemsUrl,
+                            prev_items: undefined,
+                        },
+                    }),
+                )
             }).handler,
         )
 
@@ -429,27 +492,30 @@ describe('TicketList', () => {
                 const cursor = new URL(request.url).searchParams.get('cursor')
                 if (cursor === 'page-2') {
                     await page2Promise
-                    return HttpResponse.json({
-                        data: [mockTicket3],
-                        meta: {
-                            current_cursor: 'page-2',
-                            next_items: null,
-                            prev_items: null,
-                        },
-                        object: 'list',
-                        uri: `/api/views/${viewId}/items/`,
-                    } as any)
+                    return HttpResponse.json(
+                        mockListViewItemsResponse({
+                            data: [toListViewItem(mockTicket3)],
+                            meta: {
+                                current_cursor: 'page-2',
+                                next_items: undefined,
+                                prev_items: undefined,
+                            },
+                        }),
+                    )
                 }
-                return HttpResponse.json({
-                    data: [mockTicket1, mockTicket2],
-                    meta: {
-                        current_cursor: null,
-                        next_items: nextItemsUrl,
-                        prev_items: null,
-                    },
-                    object: 'list',
-                    uri: `/api/views/${viewId}/items/`,
-                } as any)
+                return HttpResponse.json(
+                    mockListViewItemsResponse({
+                        data: [
+                            toListViewItem(mockTicket1),
+                            toListViewItem(mockTicket2),
+                        ],
+                        meta: {
+                            current_cursor: undefined,
+                            next_items: nextItemsUrl,
+                            prev_items: undefined,
+                        },
+                    }),
+                )
             }).handler,
         )
 
@@ -475,23 +541,23 @@ describe('TicketList', () => {
 
 describe('mark as read on navigation', () => {
     it('marks an unread ticket as read when it becomes the active ticket', async () => {
-        const unreadTicket = mockTicket({
+        const unreadTicket = mockTicketCompact({
             id: 1,
             subject: 'First Ticket',
             is_unread: true,
         })
         server.use(
             mockListViewItemsHandler(async () =>
-                HttpResponse.json({
-                    data: [unreadTicket],
-                    meta: {
-                        current_cursor: null,
-                        next_items: null,
-                        prev_items: null,
-                    },
-                    object: 'list',
-                    uri: `/api/views/${viewId}/items/`,
-                } as any),
+                HttpResponse.json(
+                    mockListViewItemsResponse({
+                        data: [toListViewItem(unreadTicket)],
+                        meta: {
+                            current_cursor: undefined,
+                            next_items: undefined,
+                            prev_items: undefined,
+                        },
+                    }),
+                ),
             ).handler,
             mockUpdateTicket.handler,
         )
@@ -513,7 +579,12 @@ describe('mark as read on navigation', () => {
     })
 
     it('does not mark a ticket as read when it is already read', async () => {
-        const readTicket = mockTicket({
+        const readTicket = mockTicketCompact({
+            id: 1,
+            subject: 'First Ticket',
+            is_unread: false,
+        })
+        const readTicketResponse = mockTicket({
             id: 1,
             subject: 'First Ticket',
             is_unread: false,
@@ -521,20 +592,20 @@ describe('mark as read on navigation', () => {
         const updateSpy = vi.fn()
         server.use(
             mockListViewItemsHandler(async () =>
-                HttpResponse.json({
-                    data: [readTicket],
-                    meta: {
-                        current_cursor: null,
-                        next_items: null,
-                        prev_items: null,
-                    },
-                    object: 'list',
-                    uri: `/api/views/${viewId}/items/`,
-                } as any),
+                HttpResponse.json(
+                    mockListViewItemsResponse({
+                        data: [toListViewItem(readTicket)],
+                        meta: {
+                            current_cursor: undefined,
+                            next_items: undefined,
+                            prev_items: undefined,
+                        },
+                    }),
+                ),
             ).handler,
             mockUpdateTicketHandler(async (info) => {
                 updateSpy(info)
-                return HttpResponse.json(readTicket)
+                return HttpResponse.json(readTicketResponse)
             }).handler,
         )
 

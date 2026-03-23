@@ -15,11 +15,15 @@ import type { Language, TicketCompact } from '@gorgias/helpdesk-types'
 
 import { useCurrentUserLanguagePreferences } from '../../../translations/hooks/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../../../translations/hooks/useTicketsTranslatedProperties'
+import {
+    EmptyViewsState,
+    isInboxView as getIsInboxView,
+} from '../../../utils/views'
 import { useMarkTicketAsRead } from '../../hooks/useMarkTicketAsRead'
 import { useSortOrder } from '../../hooks/useSortOrder'
 import { useTicketsList } from '../../hooks/useTicketsList'
 import { useTicketTableColumnVisibility } from '../../hooks/useTicketTableColumnVisibility'
-import type { EmptyStateVariant } from '../TicketListEmptyPlaceholder'
+import { getPlaceholderKind } from '../../utils/getPlaceholderKind'
 import { TicketListEmptyPlaceholder } from '../TicketListEmptyPlaceholder'
 import {
     parseSortOrder,
@@ -41,11 +45,7 @@ export function TicketTable({ viewId, currentUserId, onFixFilters }: Props) {
 
     const { data: viewResponse } = useGetView(viewId)
     const view = viewResponse?.data
-    const emptyStateVariant: EmptyStateVariant = view?.deactivated_datetime
-        ? 'invalidFilters'
-        : view === null
-          ? 'inaccessible'
-          : 'default'
+    const isInboxView = viewResponse ? getIsInboxView(view) : undefined
 
     const [pageSize, setPageSize] = useState(20)
 
@@ -66,9 +66,13 @@ export function TicketTable({ viewId, currentUserId, onFixFilters }: Props) {
         viewId,
         ticketsListParams,
         false,
-        emptyStateVariant !== 'invalidFilters',
+        !view?.deactivated_datetime,
     )
-
+    const placeholderKind = getPlaceholderKind({
+        view,
+        hasError: !!error,
+        isEmpty: tickets.length === 0,
+    })
     const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
     const dateTimePreferences = useUserDateTimePreferences()
 
@@ -191,11 +195,12 @@ export function TicketTable({ viewId, currentUserId, onFixFilters }: Props) {
         ],
     )
 
-    if (error && emptyStateVariant === 'default') {
+    if (placeholderKind === EmptyViewsState.Error) {
         return (
             <TicketListEmptyPlaceholder
                 isLoading={false}
-                emptyStateVariant="error"
+                emptyStateVariant={placeholderKind}
+                isInboxView={isInboxView}
                 onRefresh={refetch}
             />
         )
@@ -238,8 +243,12 @@ export function TicketTable({ viewId, currentUserId, onFixFilters }: Props) {
                 renderEmptyState={() => (
                     <TicketListEmptyPlaceholder
                         isLoading={false}
-                        emptyStateVariant={emptyStateVariant}
+                        emptyStateVariant={
+                            placeholderKind ?? EmptyViewsState.Empty
+                        }
+                        isInboxView={isInboxView}
                         onFixFilters={onFixFilters}
+                        onRefresh={refetch}
                     />
                 )}
             >

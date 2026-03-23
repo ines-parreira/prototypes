@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
 
-import { addCanduLinkForValidViewOrSection, systemViewIcons } from '../views'
+import {
+    addCanduLinkForValidViewOrSection,
+    EmptyViewsState,
+    getViewAwareEmptyStateMessage,
+    isInboxView,
+    systemViewIcons,
+} from '../views'
 
 type ViewOrSectionLike = {
     decoration?: {
@@ -105,5 +111,74 @@ describe('systemViewIcons', () => {
             trash: 'delete',
             unassigned: 'assignment_ind',
         })
+    })
+})
+
+describe('getViewAwareEmptyStateMessage', () => {
+    it('returns the default empty state copy while inbox state is unresolved', () => {
+        expect(
+            getViewAwareEmptyStateMessage({
+                kind: EmptyViewsState.Empty,
+            }),
+        ).toEqual({
+            heading: 'No open tickets',
+            subText: "You've closed all your tickets!",
+        })
+    })
+
+    it('returns the inbox empty state copy for the inbox view', () => {
+        expect(
+            getViewAwareEmptyStateMessage({
+                kind: EmptyViewsState.Empty,
+                isInboxView: true,
+            }),
+        ).toEqual({
+            heading: 'No open tickets',
+            subText: "You've closed all your tickets!",
+        })
+    })
+
+    it('returns the filtered empty state copy for non-inbox views', () => {
+        expect(
+            getViewAwareEmptyStateMessage({
+                kind: EmptyViewsState.Empty,
+                isInboxView: false,
+            }),
+        ).toEqual({
+            heading: 'No tickets',
+            subText: 'There are no tickets matching these filters',
+        })
+    })
+
+    it('returns the invalid filters copy', () => {
+        expect(
+            getViewAwareEmptyStateMessage({
+                kind: EmptyViewsState.InvalidFilters,
+            }),
+        ).toEqual({
+            heading: 'Invalid filters',
+            subText:
+                'This view is deactivated as at least one filter is invalid.',
+        })
+    })
+})
+
+describe('isInboxView', () => {
+    it('returns true for the inbox slug', () => {
+        expect(isInboxView({ slug: 'inbox' })).toBe(true)
+    })
+
+    it('returns true for the system Inbox view without relying on slug', () => {
+        expect(isInboxView({ category: 'system', name: 'Inbox' })).toBe(true)
+    })
+
+    it('returns false for custom views without a slug', () => {
+        expect(isInboxView({ category: 'user', name: 'My view' })).toBe(false)
+    })
+
+    it('returns false for non-inbox system views', () => {
+        expect(
+            isInboxView({ category: 'system', name: 'All', slug: 'all' }),
+        ).toBe(false)
     })
 })

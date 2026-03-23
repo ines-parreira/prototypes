@@ -14,14 +14,19 @@ import type {
 
 import { useCurrentUserLanguagePreferences } from '../../translations/hooks/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../../translations/hooks/useTicketsTranslatedProperties'
+import {
+    EmptyViewsState,
+    isInboxView as getIsInboxView,
+} from '../../utils/views'
+import type { ViewEmptyStateKind } from '../../utils/views'
 import { useMarkTicketAsRead } from '../hooks/useMarkTicketAsRead'
 import { useSortOrder } from '../hooks/useSortOrder'
 import type { OnSelectTicketParams } from '../hooks/useTicketSelection'
 import { useTicketSelection } from '../hooks/useTicketSelection'
 import { useTicketsList } from '../hooks/useTicketsList'
 import { useViewVisibleTickets } from '../hooks/useViewVisibleTickets'
+import { getPlaceholderKind } from '../utils/getPlaceholderKind'
 import { TicketListActions } from './TicketListActions/TicketListActions'
-import type { EmptyStateVariant } from './TicketListEmptyPlaceholder'
 import { TicketListEmptyPlaceholder } from './TicketListEmptyPlaceholder'
 import { TicketListHeader } from './TicketListHeader/TicketListHeader'
 import { TicketListItemSkeleton } from './TicketListItem/components/TicketListItemSkeleton'
@@ -40,7 +45,8 @@ type ListContext = {
     selectedTicketIds: Set<number>
     onSelectTicket: (params: OnSelectTicketParams) => void
     hasSelectedAll: boolean
-    emptyStateVariant: EmptyStateVariant
+    emptyStateVariant: ViewEmptyStateKind
+    isInboxView?: boolean
     onFixFilters?: () => void
 }
 
@@ -71,13 +77,15 @@ const Item: NonNullable<Components<TicketCompact, ListContext>['Item']> = ({
 function EmptyPlaceholder({ context }: { context?: ListContext }) {
     const {
         isLoading = false,
-        emptyStateVariant = 'default',
+        emptyStateVariant = EmptyViewsState.Empty,
+        isInboxView,
         onFixFilters,
     } = context ?? {}
     return (
         <TicketListEmptyPlaceholder
             isLoading={isLoading}
             emptyStateVariant={emptyStateVariant}
+            isInboxView={isInboxView}
             onFixFilters={onFixFilters}
         />
     )
@@ -148,11 +156,7 @@ export function TicketList({
 
     const { data: viewResponse } = useGetView(viewId)
     const view = viewResponse?.data
-    const emptyStateVariant: EmptyStateVariant = view?.deactivated_datetime
-        ? 'invalidFilters'
-        : view === null
-          ? 'inaccessible'
-          : 'default'
+    const isInboxView = viewResponse ? getIsInboxView(view) : undefined
 
     const [pauseUpdates, setPauseUpdates] = useState(false)
     const [visibleTicketIds, setVisibleTicketIds] = useState<number[]>([])
@@ -165,7 +169,7 @@ export function TicketList({
         () => ({ order_by: sortOrder }),
         [sortOrder],
     )
-    const shouldPollTicketUpdates = emptyStateVariant !== 'invalidFilters'
+    const shouldPollTicketUpdates = !view?.deactivated_datetime
 
     const {
         tickets,
@@ -181,6 +185,12 @@ export function TicketList({
         pauseUpdates,
         shouldPollTicketUpdates,
     )
+
+    const placeholderKind = getPlaceholderKind({
+        view,
+        hasError: !!error,
+        isEmpty: tickets.length === 0,
+    })
 
     const {
         hasSelectedAll,
@@ -246,7 +256,8 @@ export function TicketList({
             selectedTicketIds,
             onSelectTicket: onSelect,
             hasSelectedAll,
-            emptyStateVariant,
+            emptyStateVariant: placeholderKind ?? EmptyViewsState.Empty,
+            isInboxView,
             onFixFilters,
         }),
         [
@@ -260,7 +271,8 @@ export function TicketList({
             selectedTicketIds,
             onSelect,
             hasSelectedAll,
-            emptyStateVariant,
+            placeholderKind,
+            isInboxView,
             onFixFilters,
         ],
     )
@@ -297,17 +309,19 @@ export function TicketList({
         }
     }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
-    if (error && emptyStateVariant === 'default') {
+    if (placeholderKind === EmptyViewsState.Error) {
         return (
             <TicketListEmptyPlaceholder
                 isLoading={false}
-                emptyStateVariant="error"
+                emptyStateVariant={placeholderKind}
+                isInboxView={isInboxView}
                 onRefresh={refetch}
             />
         )
     }
 
-    const showEmptyPlaceholder = !isLoading && tickets.length === 0
+    const showEmptyPlaceholder =
+        !isLoading && placeholderKind !== null && tickets.length === 0
 
     return (
         <Box
@@ -334,8 +348,10 @@ export function TicketList({
             {showEmptyPlaceholder ? (
                 <TicketListEmptyPlaceholder
                     isLoading={false}
-                    emptyStateVariant={emptyStateVariant}
+                    emptyStateVariant={placeholderKind}
+                    isInboxView={isInboxView}
                     onFixFilters={onFixFilters}
+                    onRefresh={refetch}
                 />
             ) : (
                 <Virtuoso<TicketCompact, ListContext>

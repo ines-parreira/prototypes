@@ -1,3 +1,5 @@
+import type { ValueOf } from '@repo/types'
+
 type CanduLinkableDecoration = {
     emoji?: string
 }
@@ -22,6 +24,66 @@ const canduLinkEmojiByName: Record<string, string> = {
     Handover: '🧑‍💻',
     Close: '✅',
     All: '📂',
+}
+
+export const EmptyViewsState = {
+    Empty: 'empty',
+    InvalidFilters: 'invalidFilters',
+    Inaccessible: 'inaccessible',
+    Error: 'error',
+} as const
+
+export type ViewEmptyStateKind = ValueOf<typeof EmptyViewsState>
+
+export function isInboxView(
+    view?: {
+        slug?: string | null
+        category?: string | null
+        name?: string | null
+    } | null,
+): boolean {
+    return (
+        view?.slug === 'inbox' ||
+        (view?.category === 'system' && view?.name === 'Inbox')
+    )
+}
+
+export function getViewAwareEmptyStateMessage({
+    kind,
+    isInboxView,
+}: {
+    kind: ViewEmptyStateKind
+    isInboxView?: boolean
+}) {
+    switch (kind) {
+        case EmptyViewsState.Empty:
+            return isInboxView !== false
+                ? {
+                      heading: 'No open tickets',
+                      subText: "You've closed all your tickets!",
+                  }
+                : {
+                      heading: 'No tickets',
+                      subText: 'There are no tickets matching these filters',
+                  }
+        case EmptyViewsState.InvalidFilters:
+            return {
+                heading: 'Invalid filters',
+                subText:
+                    'This view is deactivated as at least one filter is invalid.',
+            }
+        case EmptyViewsState.Inaccessible:
+            return {
+                heading: "Can't access view",
+                subText:
+                    'This view does not exist or you do not have the correct permissions',
+            }
+        case EmptyViewsState.Error:
+            return {
+                heading: 'Network error',
+                subText: 'Unable to load this view currently',
+            }
+    }
 }
 
 export function addCanduLinkForValidViewOrSection(
