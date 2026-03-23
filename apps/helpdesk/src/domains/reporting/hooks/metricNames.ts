@@ -677,6 +677,7 @@ export enum MetricScope {
     AiSalesAgentDiscounts = 'ai-sales-agent-discounts',
     AiSalesAgentOrdersPerformance = 'ai-sales-agent-orders-performance',
     AiAgentAutomatedInteractions = 'ai-agent-automated-interactions',
+    AiAgentTimeSaved = 'ai-agent-time-saved',
 
     // No FF
     HandoverInteractions = 'handover-interactions',
@@ -976,6 +977,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.AiSalesAgentOrdersPerformance]: [],
     [MetricScope.AiAgentAutomatedInteractions]: [],
+    [MetricScope.AiAgentTimeSaved]: [],
     [MetricScope.FlowDataset]: [
         METRIC_NAMES.FLOW_DATASET_HANDOVER_INTERACTIONS,
     ],
