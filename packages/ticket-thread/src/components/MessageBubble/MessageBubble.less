@@ -1,11 +1,25 @@
 :local {
     .messageBubble {
+        position: relative;
         border-radius: var(--spacing-sm);
         box-shadow: var(--effects-shadow-container);
         overflow-wrap: anywhere;
         min-width: 80%;
         max-width: 80%;
         transition: background-color 0.2s ease-in-out;
+
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: inherit;
+            pointer-events: none;
+        }
+
+        &:hover::after {
+            background-color: var(--hover-default);
+        }
 
         &[data-variant='regular'] {
             border: 1px solid var(--border-neutral-default);
@@ -40,10 +54,6 @@
                 mask-composite: exclude;
                 pointer-events: none;
             }
-        }
-
-        &:hover {
-            background-color: var(--hover-default);
         }
     }
 
