@@ -66,6 +66,32 @@ describe('ChatTitleField', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('shows a required error when the field is blurred while empty', async () => {
+        const user = userEvent.setup()
+        renderComponent({ hasFailedSubmit: false, name: '' })
+
+        await user.click(
+            screen.getByLabelText('Chat title*', { selector: 'input' }),
+        )
+        await user.tab()
+
+        expect(screen.getByText('This field is required.')).toBeInTheDocument()
+    })
+
+    it('does not show an error when the field is blurred with a value', async () => {
+        const user = userEvent.setup()
+        renderComponent({ hasFailedSubmit: false, name: 'My Chat' })
+
+        await user.click(
+            screen.getByLabelText('Chat title*', { selector: 'input' }),
+        )
+        await user.tab()
+
+        expect(
+            screen.queryByText('This field is required.'),
+        ).not.toBeInTheDocument()
+    })
+
     it('does not show an error when hasFailedSubmit is true but name is provided', () => {
         renderComponent({ hasFailedSubmit: true, name: 'My Chat' })
 

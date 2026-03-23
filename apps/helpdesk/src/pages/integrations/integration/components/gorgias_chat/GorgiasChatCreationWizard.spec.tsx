@@ -6,10 +6,10 @@ import { GorgiasChatCreationWizard } from './GorgiasChatCreationWizard'
 const mockUseShouldShowChatSettingsRevamp = jest.fn()
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp',
+    'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp',
     () => ({
-        __esModule: true,
-        default: () => mockUseShouldShowChatSettingsRevamp(),
+        useShouldShowChatSettingsRevamp: () =>
+            mockUseShouldShowChatSettingsRevamp(),
     }),
 )
 
@@ -22,10 +22,17 @@ jest.mock(
 )
 
 jest.mock(
-    './legacy/GorgiasChatCreationWizard/revamp/GorgiasChatCreationWizard',
+    './revamp/components/GorgiasChatCreationWizard/GorgiasChatCreationWizard',
     () => ({
         __esModule: true,
         default: () => <div>Revamp Wizard</div>,
+    }),
+)
+
+jest.mock(
+    './revamp/components/GorgiasChatCreationWizard/GorgiasChatCreationWizardSkeleton',
+    () => ({
+        GorgiasChatCreationWizardSkeleton: () => <div>Skeleton</div>,
     }),
 )
 
@@ -40,9 +47,23 @@ describe('GorgiasChatCreationWizard', () => {
         jest.clearAllMocks()
     })
 
-    it('renders Legacy wizard when shouldShowRevamp is false', () => {
+    it('renders skeleton when loading', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: false,
+            isChatSettingsRevampEnabled: false,
+            isLoading: true,
+        })
+
+        render(<GorgiasChatCreationWizard {...defaultProps} />)
+
+        expect(screen.getByText('Skeleton')).toBeInTheDocument()
+        expect(screen.queryByText('Legacy Wizard')).not.toBeInTheDocument()
+        expect(screen.queryByText('Revamp Wizard')).not.toBeInTheDocument()
+    })
+
+    it('renders Legacy wizard when isChatSettingsRevampEnabled is false', () => {
+        mockUseShouldShowChatSettingsRevamp.mockReturnValue({
+            isChatSettingsRevampEnabled: false,
+            isLoading: false,
         })
 
         render(<GorgiasChatCreationWizard {...defaultProps} />)
@@ -51,9 +72,10 @@ describe('GorgiasChatCreationWizard', () => {
         expect(screen.queryByText('Revamp Wizard')).not.toBeInTheDocument()
     })
 
-    it('renders Revamp wizard when shouldShowRevamp is true', () => {
+    it('renders Revamp wizard when isChatSettingsRevampEnabled is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-            shouldShowRevamp: true,
+            isChatSettingsRevampEnabled: true,
+            isLoading: false,
         })
 
         render(<GorgiasChatCreationWizard {...defaultProps} />)

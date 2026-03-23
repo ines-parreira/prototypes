@@ -57,7 +57,7 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/revamp/components/LauncherPreview',
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/LauncherPreview',
     () => ({
         LauncherPreview: ({
             fillColor,

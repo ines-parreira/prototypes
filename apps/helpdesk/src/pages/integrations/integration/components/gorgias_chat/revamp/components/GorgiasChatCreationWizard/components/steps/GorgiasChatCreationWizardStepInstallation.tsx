@@ -18,15 +18,15 @@ import {
 import type { NavigatedSuccessModalLocationState } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import { NavigatedSuccessModalName } from 'pages/common/components/SuccessModal/NavigatedSuccessModal'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
+import useShopifyThemeAppExtension from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShopifyThemeAppExtension'
+import useThemeAppExtensionInstallation, {
+    getGorgiasMainThemeAppExtensionId,
+} from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useThemeAppExtensionInstallation'
+import { GorgiasChatCreationWizardStep } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatCreationWizardStep'
 import { Tab } from 'pages/integrations/integration/types'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
-import useShopifyThemeAppExtension from '../../../../hooks/useShopifyThemeAppExtension'
-import useThemeAppExtensionInstallation, {
-    getGorgiasMainThemeAppExtensionId,
-} from '../../../../hooks/useThemeAppExtensionInstallation'
-import { GorgiasChatCreationWizardStep } from '../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../hooks/useLogWizardEvent'
 import { GorgiasChatCreationWizardFooter } from '../GorgiasChatCreationWizardFooter'
 import SaveChangesPrompt from '../SaveChangesPrompt'

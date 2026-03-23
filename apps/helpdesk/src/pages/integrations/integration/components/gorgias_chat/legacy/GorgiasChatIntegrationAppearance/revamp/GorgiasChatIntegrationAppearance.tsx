@@ -68,6 +68,7 @@ import { LauncherPositionPicker } from 'pages/integrations/integration/component
 import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload'
 import { StorePicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/StorePicker'
 import GorgiasChatIntegrationHeader from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationHeader'
+import { LauncherPreview } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/LauncherPreview'
 import { Tab } from 'pages/integrations/integration/types'
 import type {
     Texts,
@@ -79,7 +80,6 @@ import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import type { RootState } from 'state/types'
 
 import useIntegrationPageViewLogEvent from '../../../../../hooks/useIntegrationPageViewLogEvent'
-import { LauncherPreview } from '../../../GorgiasChatIntegrationAppearance/revamp/components/LauncherPreview'
 import ImageField from '../components/ImageField'
 import { multiLanguageInitialTextsEmptyData } from '../GorgiasTranslateText/GorgiasTranslateText'
 

@@ -2,9 +2,9 @@ import { Card, Elevation, Heading, Icon, Text, TextField } from '@gorgias/axiom'
 
 import type { GorgiasChatPosition } from 'models/integration/types'
 import { GorgiasChatLauncherType } from 'models/integration/types'
-import { LauncherPreview } from 'pages/integrations/integration/components/gorgias_chat/GorgiasChatIntegrationAppearance/revamp/components/LauncherPreview'
 import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { LauncherPositionPicker } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/LauncherPositionPicker/LauncherPositionPicker'
+import { LauncherPreview } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/LauncherPreview'
 import type { GorgiasChatLauncherSettings } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useAppearanceForm'
 
 import css from '../GorgiasChatIntegrationAppearance.less'

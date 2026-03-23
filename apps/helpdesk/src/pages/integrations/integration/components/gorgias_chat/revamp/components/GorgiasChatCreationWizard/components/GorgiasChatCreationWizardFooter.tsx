@@ -53,16 +53,16 @@ export const GorgiasChatCreationWizardFooter: React.FC<Props> = ({
                 >
                     {primaryButton.label}
                 </Button>
+                {exitButton && (
+                    <Button
+                        variant={ButtonVariant.Secondary}
+                        onClick={exitButton.onClick}
+                        isDisabled={exitButton.isDisabled}
+                    >
+                        {exitButton.label}
+                    </Button>
+                )}
             </div>
-            {exitButton && (
-                <Button
-                    variant={ButtonVariant.Tertiary}
-                    onClick={exitButton.onClick}
-                    isDisabled={exitButton.isDisabled}
-                >
-                    {exitButton.label}
-                </Button>
-            )}
         </div>
     )
 }

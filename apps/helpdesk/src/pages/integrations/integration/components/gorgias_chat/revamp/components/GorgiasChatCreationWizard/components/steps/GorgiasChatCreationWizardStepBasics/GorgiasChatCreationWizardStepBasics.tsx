@@ -47,13 +47,13 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
 import type { Language } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LanguagePicker'
 import { LanguagePicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LanguagePicker'
+import { GorgiasChatCreationWizardStep } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatCreationWizardStep'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
 import {
     getIntegrationsByTypes,
     makeGetRedirectUri,
 } from 'state/integrations/selectors'
 
-import { GorgiasChatCreationWizardStep } from '../../../GorgiasChatCreationWizardStep'
 import useLogWizardEvent from '../../../hooks/useLogWizardEvent'
 import { GorgiasChatCreationWizardFooter } from '../../GorgiasChatCreationWizardFooter'
 import SaveChangesPrompt from '../../SaveChangesPrompt'
