@@ -365,7 +365,8 @@ function RuleRecipeCard({
                 </div>
             </div>
             <div>
-                {recipe.slug === RuleTemplateRecipeSlugs.AutoTagAiIgnore ? (
+                {recipe.slug === RuleTemplateRecipeSlugs.AutoTagAiIgnore ||
+                recipe.slug === RuleTemplateRecipeSlugs.ReopenLowCSATAiAgent ? (
                     <div className={css.ticketCount}>
                         <AiAgentRequirements aiAgentLink={aiAgentLink} />
                     </div>

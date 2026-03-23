@@ -18,6 +18,8 @@ const howItWorksText: Record<
         'This rule closes tickets created whenever your handle is mentioned in an Instagram story. Use this rule to auto-close these tickets to save time and prioritize important support requests. Keep this rule above auto-reply rules on your rules page to prevent irrelevant billable tickets.',
     [RuleTemplateRecipeSlugs.AutoCloseSocialComments]:
         'This rule closes social comments that aren’t leads or support requests to save you time to prioritize important tickets. Keep this rule above auto-reply rules on your rules page to prevent irrelevant billable tickets.',
+    [RuleTemplateRecipeSlugs.ReopenLowCSATAiAgent]:
+        'This rule re-opens closed tickets handled by AI Agent when they receive a low CSAT score and adds an internal note for follow-up. Use this rule to route poor AI Agent experiences back to your team for review and recovery.',
     [RuleTemplateRecipeSlugs.AutoTagPrimaryCategories]:
         'This rule tags tickets based on their main order-related intents, and positive or negative sentiments detected in ticket content. Use this rule to group tickets with similar intents and streamline reporting.',
     [RuleTemplateRecipeSlugs.AutoTagSubscriptionCancel]:
@@ -51,7 +53,8 @@ export const DefaultModal = ({
     aiAgentLink,
 }: DefaultModalProps) => (
     <div className={css.container}>
-        {recipeSlug === RuleTemplateRecipeSlugs.AutoTagAiIgnore ? (
+        {recipeSlug === RuleTemplateRecipeSlugs.AutoTagAiIgnore ||
+        recipeSlug === RuleTemplateRecipeSlugs.ReopenLowCSATAiAgent ? (
             <div className={css.count}>
                 <div className={css.targetTitle}>
                     <AiAgentRequirements aiAgentLink={aiAgentLink} />

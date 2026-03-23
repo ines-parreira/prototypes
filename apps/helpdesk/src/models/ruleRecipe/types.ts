@@ -4,6 +4,7 @@ import type { ViewDraft } from '../view/types'
 
 export enum RuleRecipeTag {
     AUTO_CLOSE = 'Auto Close',
+    AUTO_OPEN = 'Auto Open',
     AUTO_TAG = 'Auto Tag',
     AUTO_REPLY = 'Auto Reply',
     PRIORITY = 'Priority',

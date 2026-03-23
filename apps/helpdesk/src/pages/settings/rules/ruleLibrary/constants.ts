@@ -20,6 +20,10 @@ export const tagColors: {
         color: '#9411B5',
         backgroundColor: '#EDEAFF',
     },
+    [RuleRecipeTag.AUTO_OPEN]: {
+        color: '#0E7C6B',
+        backgroundColor: '#E0F7F4',
+    },
     [RuleRecipeTag.AUTO_REPLY]: {
         color: '#3373DB',
         backgroundColor: '#F6F9FF',
@@ -33,6 +37,7 @@ export const tagColors: {
 export enum RuleTemplateRecipeSlugs {
     AutoCloseStory = 'auto-close-story-recipe',
     AutoCloseSocialComments = 'auto-close-social-comments-recipe',
+    ReopenLowCSATAiAgent = 'reopen-low-csat-ai-agent',
     AutoTagPrimaryCategories = 'auto-tag-primary-categories',
     AutoTagSubscriptionCancel = 'auto-tag-subscription-cancel-recipe',
     AutoTagVip = 'auto-tag-vip-recipe',
