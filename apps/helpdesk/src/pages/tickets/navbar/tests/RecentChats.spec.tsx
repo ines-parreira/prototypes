@@ -14,6 +14,14 @@ import { setViewActive } from 'state/views/actions'
 
 import { RecentChats } from '../RecentChats'
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2WayfindingMS1Flag: jest.fn(() => false),
+}))
+const useHelpdeskV2WayfindingMS1FlagMock = jest.requireMock(
+    '@repo/feature-flags',
+).useHelpdeskV2WayfindingMS1Flag as jest.Mock
+
 jest.mock(
     '@repo/logging',
     () =>
@@ -65,21 +73,72 @@ describe('RecentChats', () => {
         setViewActiveMock.mockReturnValue(dispatch)
     })
 
-    it('should log an event and dispatch some actions on click', () => {
-        render(<RecentChats />, { wrapper })
-        userEvent.click(screen.getByText('John Doe'))
-        expect(logEvent).toHaveBeenCalledWith(
-            SegmentEvent.RecentActivityClicked,
-            {
-                position: 1,
-                ticket: recentTicket,
-            },
-        )
-        expect(dispatch).toHaveBeenCalledWith({ type: 'close-panels' })
-        expect(dispatch).toHaveBeenCalledWith(dispatch)
-        expect(dispatch).toHaveBeenCalledWith({
-            type: 'active-view-id-set',
-            payload: 0,
+    describe('with wayfinding flag disabled', () => {
+        beforeEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
+        })
+
+        it('should log an event and dispatch some actions on click', () => {
+            render(<RecentChats />, { wrapper })
+            userEvent.click(screen.getByText('John Doe'))
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.RecentActivityClicked,
+                {
+                    position: 1,
+                    ticket: recentTicket,
+                },
+            )
+            expect(dispatch).toHaveBeenCalledWith({ type: 'close-panels' })
+            expect(dispatch).toHaveBeenCalledWith(dispatch)
+            expect(dispatch).toHaveBeenCalledWith({
+                type: 'active-view-id-set',
+                payload: 0,
+            })
+        })
+    })
+
+    describe('with wayfinding flag enabled', () => {
+        beforeEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+        })
+
+        it('should render the "Real-time" section header', () => {
+            render(<RecentChats />, { wrapper })
+
+            expect(screen.getByText('Real-time')).toBeInTheDocument()
+        })
+
+        it('should render customer names after expanding the section', async () => {
+            const user = userEvent.setup()
+            render(<RecentChats />, { wrapper })
+
+            await user.click(screen.getByText('Real-time'))
+
+            expect(screen.getByText('John Doe')).toBeInTheDocument()
+        })
+
+        it('should not render anything when there are no tickets', () => {
+            useAppSelectorMock.mockReturnValue(fromJS({ tickets: [] }))
+            const { container } = render(<RecentChats />, { wrapper })
+
+            expect(container).toBeEmptyDOMElement()
+        })
+
+        it('should log a segment event when a ticket item is clicked', async () => {
+            const user = userEvent.setup()
+            render(<RecentChats />, { wrapper })
+
+            await user.click(screen.getByText('Real-time'))
+            await user.click(screen.getByText('John Doe'))
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.RecentActivityClicked,
+                {
+                    position: 1,
+                    ticket: recentTicket,
+                },
+            )
+            expect(dispatch).not.toHaveBeenCalled()
         })
     })
 })

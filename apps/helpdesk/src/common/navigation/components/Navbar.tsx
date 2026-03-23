@@ -74,7 +74,7 @@ export default function Navbar({
             className={cn(css.sidebar, {
                 [css.isResizing]: isResizing,
                 [css.legacy]: !hasWayfindingMS1Flag,
-                dark: theme.resolvedName === 'classic',
+                dark: theme.resolvedName === 'classic' && !hasWayfindingMS1Flag,
             })}
             {...(enableResize && { style: { width: `${width}px` } })}
         >

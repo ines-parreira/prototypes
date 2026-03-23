@@ -471,7 +471,6 @@ export function TicketNavbarContainer({
         return (
             <>
                 <TicketNavbarCreateMenu />
-                <RecentChats />
                 <DefaultViews viewCount={viewsCount} />
                 <NavigationSectionGroup storageKey="inbox-navigation">
                     {categories.map((category) => (

@@ -22,7 +22,7 @@ export function NavigationSidebarNotificationsButton() {
                         onClick={onToggle}
                         aria-label="Notifications"
                         size="sm"
-                    ></Button>
+                    />
                     {count > 0 && (
                         <div
                             className={css.badge}
