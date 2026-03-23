@@ -7,7 +7,7 @@ import { Box, Text } from '@gorgias/axiom'
 
 import { useMetafieldsFilter } from '../../hooks/useMetafieldsFilter'
 
-import css from './OrderSidePanelPreview.less'
+import css from './orders/sidePanel/OrderSidePanelPreview.less'
 
 type Props = {
     integrationId?: number

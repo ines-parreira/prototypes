@@ -1,21 +1,28 @@
 import { useQuery } from '@tanstack/react-query'
 
-type ShopifyCustomerTagsResponse = {
+type TagsType = 'customers' | 'orders'
+
+const RESPONSE_KEYS: Record<TagsType, string> = {
+    customers: 'customerTags',
+    orders: 'orderTags',
+}
+
+type ShopifyTagsResponse = {
     data?: {
-        shop?: {
-            customerTags?: {
-                edges?: Array<{ node: string }>
-            }
-        }
+        shop?: Record<string, { edges?: Array<{ node: string }> }>
     }
 }
 
 type UseShopifyShopTagsParams = {
     integrationId: number | undefined
+    tagsType?: TagsType
 }
 
-async function fetchShopifyShopTags(integrationId: number): Promise<string[]> {
-    const url = `/integrations/shopify/shop-tags/customers/list/?integration_id=${integrationId}&tags_type=customers`
+async function fetchShopifyShopTags(
+    integrationId: number,
+    tagsType: TagsType,
+): Promise<string[]> {
+    const url = `/integrations/shopify/shop-tags/${tagsType}/list/?integration_id=${integrationId}&tags_type=${tagsType}`
 
     const response = await fetch(url, {
         method: 'GET',
@@ -29,18 +36,20 @@ async function fetchShopifyShopTags(integrationId: number): Promise<string[]> {
         throw new Error(`Failed to fetch shop tags: ${response.statusText}`)
     }
 
-    const data: ShopifyCustomerTagsResponse = await response.json()
-    const edges = data?.data?.shop?.customerTags?.edges ?? []
+    const data: ShopifyTagsResponse = await response.json()
+    const responseKey = RESPONSE_KEYS[tagsType]
+    const edges = data?.data?.shop?.[responseKey]?.edges ?? []
 
     return edges.map((edge) => edge.node)
 }
 
 export function useShopifyShopTags({
     integrationId,
+    tagsType = 'customers',
 }: UseShopifyShopTagsParams) {
     return useQuery({
-        queryKey: ['shopify', 'shopTags', 'customers', integrationId],
-        queryFn: () => fetchShopifyShopTags(integrationId!),
+        queryKey: ['shopify', 'shopTags', tagsType, integrationId],
+        queryFn: () => fetchShopifyShopTags(integrationId!, tagsType),
         enabled: !!integrationId,
         staleTime: 5 * 60 * 1000,
     })

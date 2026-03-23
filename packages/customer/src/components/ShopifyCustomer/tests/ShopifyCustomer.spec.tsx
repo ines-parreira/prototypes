@@ -16,7 +16,7 @@ import type { Integration } from '@gorgias/helpdesk-types'
 import { ShopifyCustomer } from '../'
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import type { OrderSidePanelRenderProps } from '../components/CustomerInfo'
-import { OrderSidePanelPreview } from '../components/CustomerInfo/OrderSidePanelPreview'
+import { OrderSidePanelPreview } from '../components/CustomerInfo/orders/sidePanel/OrderSidePanelPreview'
 
 const mockRenderOrderSidePanel = (props: OrderSidePanelRenderProps) => (
     <OrderSidePanelPreview {...props} />

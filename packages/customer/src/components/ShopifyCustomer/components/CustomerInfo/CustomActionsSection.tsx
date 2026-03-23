@@ -20,7 +20,7 @@ import {
 import type { ButtonConfig, LinkConfig } from './CustomActions'
 import { EditableActionRow } from './EditableActionRow'
 
-import css from './IntermediateEditPanel.less'
+import css from './editPanels/IntermediateEditPanel.less'
 
 type ButtonDialogState =
     | { mode: 'closed' }

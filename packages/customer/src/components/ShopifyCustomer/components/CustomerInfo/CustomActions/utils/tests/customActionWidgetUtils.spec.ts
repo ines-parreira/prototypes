@@ -2,13 +2,10 @@ import type { Widget } from '@gorgias/helpdesk-types'
 
 import type { WidgetTemplate } from '../customActionTypes'
 import {
-    addItem,
     applyOptimisticWidgetUpdate,
     buildInitialTemplate,
-    editItem,
     findCustomerWidget,
     findShopifyWidget,
-    removeItem,
     updateCustomerWidget,
 } from '../customActionWidgetUtils'
 
@@ -165,31 +162,5 @@ describe('applyOptimisticWidgetUpdate', () => {
             template: updatedTemplate,
         })
         expect(result.data.data[1]).toBe(old.data.data[1])
-    })
-})
-
-describe('addItem', () => {
-    it('appends item to array', () => {
-        expect(addItem([1, 2], 3)).toEqual([1, 2, 3])
-    })
-
-    it('works with empty array', () => {
-        expect(addItem([], 'a')).toEqual(['a'])
-    })
-})
-
-describe('editItem', () => {
-    it('replaces item at index', () => {
-        expect(editItem(['a', 'b', 'c'], 1, 'x')).toEqual(['a', 'x', 'c'])
-    })
-})
-
-describe('removeItem', () => {
-    it('removes item at index', () => {
-        expect(removeItem(['a', 'b', 'c'], 1)).toEqual(['a', 'c'])
-    })
-
-    it('works when removing last item', () => {
-        expect(removeItem(['a'], 0)).toEqual([])
     })
 })

@@ -9,6 +9,7 @@ import {
     mockListEcommerceDataHandler,
     mockPaginatedDataEcommerceData,
 } from '@gorgias/ecommerce-storage-mocks'
+import { ObjectType } from '@gorgias/ecommerce-storage-queries'
 import {
     mockGetTicketHandler,
     mockListIntegrationsHandler,
@@ -19,22 +20,17 @@ import type { Integration } from '@gorgias/helpdesk-types'
 import { CustomerInfo } from '../'
 import type { OrderSidePanelRenderProps } from '../'
 import { render, testAppQueryClient } from '../../../../../tests/render.utils'
-import { useGetDraftOrders } from '../../../hooks/useGetDraftOrders'
-import { useGetOrders } from '../../../hooks/useGetOrders'
+import { useListShopifyOrders } from '../../../hooks/useListShopifyOrders'
 import { ShopifyCustomerContext } from '../../../ShopifyCustomerContext'
 import type { OrderEcommerceData } from '../../../types'
-import { OrderSidePanelPreview } from '../OrderSidePanelPreview'
+import { OrderSidePanelPreview } from '../orders/sidePanel/OrderSidePanelPreview'
 
 const mockRenderOrderSidePanel = (props: OrderSidePanelRenderProps) => (
     <OrderSidePanelPreview {...props} />
 )
 
-vi.mock('../../../hooks/useGetOrders', () => ({
-    useGetOrders: vi.fn(),
-}))
-
-vi.mock('../../../hooks/useGetDraftOrders', () => ({
-    useGetDraftOrders: vi.fn(),
+vi.mock('../../../hooks/useListShopifyOrders', () => ({
+    useListShopifyOrders: vi.fn(),
 }))
 
 const mockUseTicketInfobarNavigation = vi.fn().mockReturnValue({
@@ -204,15 +200,19 @@ beforeEach(() => {
         onSetEditingWidgetType: vi.fn(),
     })
 
-    vi.mocked(useGetOrders).mockReturnValue({
-        orders: undefined,
-        isLoadingOrders: false,
-        refetchOrders: vi.fn(),
-    })
-
-    vi.mocked(useGetDraftOrders).mockReturnValue({
-        orders: undefined,
-        isLoadingOrders: false,
+    vi.mocked(useListShopifyOrders).mockImplementation(({ objectType }) => {
+        if (objectType === ObjectType.Order) {
+            return {
+                orders: undefined,
+                isLoadingOrders: false,
+                refetchOrders: vi.fn(),
+            }
+        }
+        return {
+            orders: undefined,
+            isLoadingOrders: false,
+            refetchOrders: vi.fn(),
+        }
     })
 
     server.use(
@@ -623,11 +623,22 @@ describe('CustomerInfo', () => {
         }
 
         it('should open the order side panel when an order card is clicked', async () => {
-            vi.mocked(useGetOrders).mockReturnValue({
-                orders: [mockOrder],
-                isLoadingOrders: false,
-                refetchOrders: vi.fn(),
-            })
+            vi.mocked(useListShopifyOrders).mockImplementation(
+                ({ objectType }) => {
+                    if (objectType === ObjectType.Order) {
+                        return {
+                            orders: [mockOrder],
+                            isLoadingOrders: false,
+                            refetchOrders: vi.fn(),
+                        }
+                    }
+                    return {
+                        orders: undefined,
+                        isLoadingOrders: false,
+                        refetchOrders: vi.fn(),
+                    }
+                },
+            )
 
             const { user } = render(
                 <CustomerInfo
@@ -652,11 +663,22 @@ describe('CustomerInfo', () => {
         })
 
         it('renders customer metafields above the orders list', async () => {
-            vi.mocked(useGetOrders).mockReturnValue({
-                orders: [mockOrder],
-                isLoadingOrders: false,
-                refetchOrders: vi.fn(),
-            })
+            vi.mocked(useListShopifyOrders).mockImplementation(
+                ({ objectType }) => {
+                    if (objectType === ObjectType.Order) {
+                        return {
+                            orders: [mockOrder],
+                            isLoadingOrders: false,
+                            refetchOrders: vi.fn(),
+                        }
+                    }
+                    return {
+                        orders: undefined,
+                        isLoadingOrders: false,
+                        refetchOrders: vi.fn(),
+                    }
+                },
+            )
 
             server.use(
                 http.get(

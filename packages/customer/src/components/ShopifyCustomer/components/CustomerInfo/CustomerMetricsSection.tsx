@@ -3,14 +3,14 @@ import { useState } from 'react'
 import { Box, Button, Text } from '@gorgias/axiom'
 
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
-import { EditShopifyFieldsSidePanel } from './EditShopifyFieldsSidePanel'
+import { EditShopifyFieldsSidePanel } from './editPanels/EditShopifyFieldsSidePanel'
 import type {
     FieldConfig,
     FieldRenderContext,
     ShopifyFieldPreferences,
 } from './types'
 
-import css from './IntermediateEditPanel.less'
+import css from './editPanels/IntermediateEditPanel.less'
 
 type CustomerMetricsSectionProps = {
     fields: FieldConfig[]

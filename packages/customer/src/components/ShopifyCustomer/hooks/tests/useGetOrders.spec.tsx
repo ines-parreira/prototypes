@@ -7,10 +7,11 @@ import {
     mockListEcommerceDataHandler,
     mockPaginatedDataEcommerceData,
 } from '@gorgias/ecommerce-storage-mocks'
+import { ObjectType } from '@gorgias/ecommerce-storage-queries'
 
 import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
 import type { OrderData } from '../../types'
-import { useGetOrders } from '../useGetOrders'
+import { useListShopifyOrders } from '../useListShopifyOrders'
 
 const server = setupServer()
 
@@ -85,7 +86,7 @@ const createMockOrder = (
         },
     })
 
-describe('useGetOrders', () => {
+describe('useListShopifyOrders', () => {
     it('returns loading state initially', () => {
         const mockHandler = mockListEcommerceDataHandler(async () =>
             HttpResponse.json(
@@ -97,9 +98,10 @@ describe('useGetOrders', () => {
         server.use(mockHandler.handler)
 
         const { result } = renderHook(() =>
-            useGetOrders({
+            useListShopifyOrders({
                 integrationId: 1,
                 shopperIdentityId: SHOPPER_IDENTITY_ID,
+                objectType: ObjectType.Order,
             }),
         )
 
@@ -125,9 +127,10 @@ describe('useGetOrders', () => {
         server.use(mockHandler.handler)
 
         const { result } = renderHook(() =>
-            useGetOrders({
+            useListShopifyOrders({
                 integrationId: 1,
                 shopperIdentityId: SHOPPER_IDENTITY_ID,
+                objectType: ObjectType.Order,
             }),
         )
 
@@ -153,9 +156,10 @@ describe('useGetOrders', () => {
         const waitForRequest = mockHandler.waitForRequest(server)
 
         renderHook(() =>
-            useGetOrders({
+            useListShopifyOrders({
                 integrationId: 1,
                 shopperIdentityId: SHOPPER_IDENTITY_ID,
+                objectType: ObjectType.Order,
             }),
         )
 
@@ -178,9 +182,10 @@ describe('useGetOrders', () => {
         server.use(mockHandler.handler)
 
         const { result } = renderHook(() =>
-            useGetOrders({
+            useListShopifyOrders({
                 integrationId: 1,
                 shopperIdentityId: SHOPPER_IDENTITY_ID,
+                objectType: ObjectType.Order,
             }),
         )
 
@@ -206,9 +211,10 @@ describe('useGetOrders', () => {
         server.use(mockHandler.handler)
 
         const { result } = renderHook(() =>
-            useGetOrders({
+            useListShopifyOrders({
                 integrationId: 1,
                 shopperIdentityId: SHOPPER_IDENTITY_ID,
+                objectType: ObjectType.Order,
             }),
         )
 
@@ -232,9 +238,10 @@ describe('useGetOrders', () => {
         server.use(handler)
 
         const { result } = renderHook(() =>
-            useGetOrders({
+            useListShopifyOrders({
                 integrationId: undefined,
                 shopperIdentityId: SHOPPER_IDENTITY_ID,
+                objectType: ObjectType.Order,
             }),
         )
 
@@ -259,9 +266,10 @@ describe('useGetOrders', () => {
         server.use(handler)
 
         const { result } = renderHook(() =>
-            useGetOrders({
+            useListShopifyOrders({
                 integrationId: 1,
                 shopperIdentityId: undefined,
+                objectType: ObjectType.Order,
             }),
         )
 

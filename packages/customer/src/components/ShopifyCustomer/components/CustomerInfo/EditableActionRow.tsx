@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { Button } from '@gorgias/axiom'
 
-import css from './IntermediateEditPanel.less'
+import css from './editPanels/IntermediateEditPanel.less'
 
 type EditableActionRowProps = {
     label: ReactNode
