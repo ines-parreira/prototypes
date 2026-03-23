@@ -49,7 +49,7 @@ describe('<GuidanceReferenceProvider />', () => {
         expect(mockUseFindAllGuidancesKnowledgeResources).toHaveBeenCalledWith(
             {
                 actionsIds: ['action-1'],
-                includeDisabled: true,
+                includeDisabled: false,
             },
             {
                 enabled: true,

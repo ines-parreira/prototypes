@@ -39,7 +39,7 @@ const GuidanceReferenceProvider = <T extends { id: string }>({
         useFindAllGuidancesKnowledgeResources(
             {
                 actionsIds: actions.map((action) => action.id),
-                includeDisabled: true,
+                includeDisabled: false,
             },
             {
                 enabled: checkEnabled,
