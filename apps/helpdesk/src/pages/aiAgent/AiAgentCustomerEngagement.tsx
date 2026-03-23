@@ -29,6 +29,7 @@ import css from './AiAgentCustomerEngagement.less'
 
 const customerEngagementSchema = z.object({
     isConversationStartersEnabled: z.boolean(),
+    isConversationStartersDesktopOnly: z.boolean(),
     isAskAnythingInputEnabled: z.boolean(),
     isFloatingInputDesktopOnly: z.boolean(),
     isSalesHelpOnSearchEnabled: z.boolean(),
@@ -82,6 +83,8 @@ export const AiAgentCustomerEngagement = () => {
         values: {
             isConversationStartersEnabled:
                 storeConfiguration?.isConversationStartersEnabled ?? false,
+            isConversationStartersDesktopOnly:
+                storeConfiguration?.isConversationStartersDesktopOnly ?? false,
             isAskAnythingInputEnabled:
                 storeConfiguration?.floatingChatInputConfiguration?.isEnabled ??
                 false,
@@ -111,6 +114,8 @@ export const AiAgentCustomerEngagement = () => {
                         ...storeConfiguration,
                         isConversationStartersEnabled:
                             data.isConversationStartersEnabled,
+                        isConversationStartersDesktopOnly:
+                            data.isConversationStartersDesktopOnly,
                         floatingChatInputConfiguration: {
                             ...storeConfiguration?.floatingChatInputConfiguration,
                             isEnabled: data.isAskAnythingInputEnabled,

@@ -209,11 +209,13 @@ export class AiAgentStoreConfigurationFixture {
 
     withSuggestedProductQuestions() {
         this.aiAgentStoreConfigurationData.isConversationStartersEnabled = true
+        this.aiAgentStoreConfigurationData.isConversationStartersDesktopOnly = false
         return this
     }
 
     withoutSuggestedProductQuestions() {
         this.aiAgentStoreConfigurationData.isConversationStartersEnabled = false
+        this.aiAgentStoreConfigurationData.isConversationStartersDesktopOnly = false
         return this
     }
 

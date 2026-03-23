@@ -117,6 +117,8 @@ export type StoreConfiguration = {
     floatingChatInputConfigurationId: number | null
     floatingChatInputConfiguration?: FloatingChatInputConfiguration
 
+    isConversationStartersDesktopOnly: boolean
+
     chatChannelDeactivatedDatetime: string | null
     emailChannelDeactivatedDatetime: string | null
     smsChannelDeactivatedDatetime: string | null

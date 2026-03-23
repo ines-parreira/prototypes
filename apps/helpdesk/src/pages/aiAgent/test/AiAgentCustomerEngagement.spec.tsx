@@ -81,6 +81,7 @@ jest.mock(
                     onClick={() =>
                         onSave({
                             isConversationStartersEnabled: true,
+                            isConversationStartersDesktopOnly: false,
                             isAskAnythingInputEnabled: true,
                             isFloatingInputDesktopOnly: false,
                             isSalesHelpOnSearchEnabled: true,
@@ -205,6 +206,7 @@ describe('<AiAgentCustomerEngagement />', () => {
                 expect(mockUpdateStoreConfiguration).toHaveBeenCalledWith(
                     expect.objectContaining({
                         isConversationStartersEnabled: true,
+                        isConversationStartersDesktopOnly: false,
                         isSalesHelpOnSearchEnabled: true,
                         embeddedSpqEnabled: true,
                         floatingChatInputConfiguration: expect.objectContaining(
@@ -322,6 +324,7 @@ describe('<AiAgentCustomerEngagement />', () => {
                                 onClick={() =>
                                     onSave({
                                         isConversationStartersEnabled: false,
+                                        isConversationStartersDesktopOnly: false,
                                         isAskAnythingInputEnabled: false,
                                         isFloatingInputDesktopOnly: false,
                                         isSalesHelpOnSearchEnabled: false,
@@ -366,6 +369,7 @@ describe('<AiAgentCustomerEngagement />', () => {
                                 onClick={() =>
                                     onSave({
                                         isConversationStartersEnabled: false,
+                                        isConversationStartersDesktopOnly: false,
                                         isAskAnythingInputEnabled: false,
                                         isFloatingInputDesktopOnly: false,
                                         isSalesHelpOnSearchEnabled: false,

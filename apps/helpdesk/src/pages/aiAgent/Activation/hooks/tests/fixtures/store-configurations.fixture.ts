@@ -51,6 +51,7 @@ export const getStoreConfigurationFixture = (
     salesDiscountStrategyLevel: null,
     salesPersuasionLevel: null,
     isConversationStartersEnabled: false,
+    isConversationStartersDesktopOnly: false,
     embeddedSpqEnabled: false,
     customFieldIds: [],
     salesDeactivatedDatetime: null,
@@ -128,4 +129,5 @@ export const getStoreWithConversationStarters = (): StoreConfiguration =>
     getStoreConfigurationFixture({
         storeName: 'conversation-starters-store',
         isConversationStartersEnabled: true,
+        isConversationStartersDesktopOnly: false,
     })

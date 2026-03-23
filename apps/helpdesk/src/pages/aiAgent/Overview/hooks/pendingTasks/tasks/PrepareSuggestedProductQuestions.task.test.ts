@@ -25,6 +25,7 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
                 monitoredChatIntegrations: [],
                 scopes: [AiAgentScope.Sales],
                 isConversationStartersEnabled: false,
+                isConversationStartersDesktopOnly: false,
             },
             selfServiceChatChannels: [],
             pageInteractions: null,
@@ -70,6 +71,7 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
                     monitoredChatIntegrations: [],
                     scopes: [AiAgentScope.Sales],
                     isConversationStartersEnabled: false,
+                    isConversationStartersDesktopOnly: false,
                 } as any,
             })
             const task = new PrepareSuggestedProductQuestionsTask(
@@ -87,6 +89,7 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
                     monitoredChatIntegrations: [],
                     scopes: [AiAgentScope.Support],
                     isConversationStartersEnabled: false,
+                    isConversationStartersDesktopOnly: false,
                 } as any,
             })
             const task = new PrepareSuggestedProductQuestionsTask(
@@ -104,6 +107,7 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
                     monitoredChatIntegrations: [],
                     scopes: [AiAgentScope.Sales],
                     isConversationStartersEnabled: true,
+                    isConversationStartersDesktopOnly: false,
                 } as any,
             })
             const task = new PrepareSuggestedProductQuestionsTask(
@@ -121,6 +125,7 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
                     monitoredChatIntegrations: [],
                     scopes: [AiAgentScope.Sales, AiAgentScope.Support],
                     isConversationStartersEnabled: false,
+                    isConversationStartersDesktopOnly: false,
                 } as any,
             })
             const task = new PrepareSuggestedProductQuestionsTask(
@@ -138,6 +143,7 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
                     monitoredChatIntegrations: [],
                     scopes: [AiAgentScope.Sales, AiAgentScope.Support],
                     isConversationStartersEnabled: true,
+                    isConversationStartersDesktopOnly: false,
                 } as any,
             })
             const task = new PrepareSuggestedProductQuestionsTask(
@@ -155,6 +161,7 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
                     monitoredChatIntegrations: [],
                     scopes: [],
                     isConversationStartersEnabled: false,
+                    isConversationStartersDesktopOnly: false,
                 } as any,
             })
             const task = new PrepareSuggestedProductQuestionsTask(
@@ -198,6 +205,7 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
                     monitoredChatIntegrations: [],
                     scopes: [AiAgentScope.Sales],
                     isConversationStartersEnabled: true,
+                    isConversationStartersDesktopOnly: false,
                 } as any,
             })
             const task = new PrepareSuggestedProductQuestionsTask(
@@ -215,6 +223,7 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
                     monitoredChatIntegrations: [],
                     scopes: [AiAgentScope.Sales],
                     isConversationStartersEnabled: false,
+                    isConversationStartersDesktopOnly: false,
                 } as any,
             })
             const task = new PrepareSuggestedProductQuestionsTask(
@@ -232,6 +241,7 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
                     monitoredChatIntegrations: [],
                     scopes: [AiAgentScope.Support],
                     isConversationStartersEnabled: false,
+                    isConversationStartersDesktopOnly: false,
                 } as any,
             })
             const task = new PrepareSuggestedProductQuestionsTask(

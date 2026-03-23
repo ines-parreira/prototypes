@@ -301,11 +301,11 @@ const mockUpdateStoreConfiguration = jest
     .mockReturnValue(newStoreConfig)
 
 const getConversationStartersSwitch = (container: HTMLElement) => {
-    const rowContent = within(container).getByText(
-        'AI FAQs: Floating above chat',
-    )
+    const rowContent = within(container)
+        .getAllByText('AI FAQs: Floating above chat')
+        .find((el) => !el.closest('[role="dialog"]'))
 
-    return within(rowContent.closest('.cardContentWrapper')!).getByRole(
+    return within(rowContent!.closest('.cardContentWrapper')!).getByRole(
         'switch',
     )
 }
@@ -349,6 +349,15 @@ const getTriggerOnSearchToggle = (container: HTMLElement) => {
 
 describe('CustomerEngagementSettings', () => {
     beforeEach(() => {
+        // enabling the trigger on search switch to be able to interact and see the changes in the interface.
+        mockUseFlag.mockImplementation((flag) => {
+            if (flag === FeatureFlagKey.TriggerOnSearchKillSwitch) {
+                return false
+            }
+
+            return true
+        })
+
         store.clearActions()
         jest.clearAllMocks()
 
@@ -356,7 +365,10 @@ describe('CustomerEngagementSettings', () => {
             initialEntries: ['/shopify/test-store/customer-engagement'],
         })
 
-        mockUseFlag.mockReturnValue(true)
+        mockUseFlag.mockImplementation((key) => {
+            if (key === FeatureFlagKey.TriggerOnSearchKillSwitch) return false
+            return true
+        })
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
                 ...storeConfiguration,
@@ -405,7 +417,7 @@ describe('CustomerEngagementSettings', () => {
     it('should call updateApplicationTexts', async () => {
         const result = renderComponent()
 
-        const switchElement = getConversationStartersSwitch(result.container)
+        const switchElement = getTriggerOnSearchToggle(result.container)
         expect(switchElement).not.toBeChecked()
         click(switchElement)
 
@@ -441,7 +453,7 @@ describe('CustomerEngagementSettings', () => {
 
         const result = renderComponent()
 
-        const switchElement = getConversationStartersSwitch(result.container)
+        const switchElement = getTriggerOnSearchToggle(result.container)
         expect(switchElement).not.toBeChecked()
         click(switchElement)
 
@@ -458,14 +470,6 @@ describe('CustomerEngagementSettings', () => {
         const result = renderComponent()
         const saveButton = getSaveButton(result)
         expect(saveButton).toBeAriaDisabled()
-    })
-
-    it('enables save button when conversation starters toggle is clicked', async () => {
-        const result = renderComponent()
-        const switchElement = getConversationStartersSwitch(result.container)
-        expect(switchElement).not.toBeChecked()
-        click(switchElement)
-        expect(getSaveButton(result)).not.toBeAriaDisabled()
     })
 
     it('enables save button when floating input is set up', async () => {
@@ -713,9 +717,7 @@ describe('CustomerEngagementSettings', () => {
             mockUpdateStoreConfiguration.mockRejectedValue('ERROR')
             const result = renderComponent()
 
-            const switchElement = getConversationStartersSwitch(
-                result.container,
-            )
+            const switchElement = getTriggerOnSearchToggle(result.container)
             expect(switchElement).not.toBeChecked()
             click(switchElement)
 
@@ -771,27 +773,15 @@ describe('CustomerEngagementSettings', () => {
     })
 
     describe('feature flag behavior', () => {
-        it('should still trigger Unsaved Changes modal even when toggle is visually disabled', async () => {
-            mockUseFlag.mockReturnValue(false)
-
+        it('should trigger Unsaved Changes modal when navigating with unsaved changes', async () => {
             const result = renderComponent()
 
-            const switchElement = getConversationStartersSwitch(
-                result.container,
-            )
+            click(getTriggerOnSearchToggle(result.container))
 
-            // Check visual state
-            expect(switchElement).toHaveClass('disabled')
-
-            // Simulate user click anyway
-            fireEvent.click(switchElement)
-
-            // Simulate navigation
             act(() => {
                 history.push('/test')
             })
 
-            // Assert that the modal *does* appear due to dirty form state
             expect(result.getByText('Save changes?')).toBeInTheDocument()
         })
 
@@ -807,10 +797,8 @@ describe('CustomerEngagementSettings', () => {
                 result.container,
             )
             expect(switchElement).not.toBeChecked()
-            click(switchElement)
+            click(getTriggerOnSearchToggle(result.container))
 
-            // Will trigger because the button was disabled
-            // Testing the switch disabled functionality wasn't consistent
             act(() => {
                 history.push('/test')
             })
@@ -832,7 +820,7 @@ describe('CustomerEngagementSettings', () => {
     it('should handle toggle click correctly', async () => {
         const result = renderComponent()
 
-        const switchElement = getConversationStartersSwitch(result.container)
+        const switchElement = getTriggerOnSearchToggle(result.container)
         expect(switchElement).not.toBeChecked()
         click(switchElement)
         expect(switchElement).toBeChecked()
@@ -843,7 +831,7 @@ describe('CustomerEngagementSettings', () => {
     it('should reset form state when onDiscard is called', async () => {
         const result = renderComponent()
 
-        click(getConversationStartersSwitch(result.container))
+        click(getTriggerOnSearchToggle(result.container))
 
         act(() => {
             history.push('/test')

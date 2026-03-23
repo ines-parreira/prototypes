@@ -91,6 +91,7 @@ export const CustomerEngagementSettings = ({
                         isEnabled={isAiShoppingAssistantEnabled}
                         gmv={gmv}
                         isGmvLoading={isGmvLoading}
+                        onAdvancedSettingsSave={handleSubmit(onSave)}
                     />
 
                     {(!isTriggerOnSearchDisabled ||

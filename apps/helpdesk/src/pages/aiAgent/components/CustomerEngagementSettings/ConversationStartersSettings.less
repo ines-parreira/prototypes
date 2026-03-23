@@ -12,4 +12,63 @@
     .cardContent {
         flex-grow: 1;
     }
+
+    .allDevicesSwitch {
+        color: var(--neutral-grey-6); // legacy
+        font-size: var(--font-size-md);
+        font-weight: 600;
+    }
+
+    .drawerToggleRow {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        font-weight: @body-regular-font-weight;
+        font-size: var(--font-size-sm);
+        margin-bottom: var(--layout-spacing-s);
+    }
+
+    .desktopToggleRow {
+        border-radius: var(--border-radius-md);
+        border: 1px solid var(--neutral-grey-2); // legacy
+        box-shadow: 0px 3px 20px 0px rgba(0, 0, 0, 0.04);
+        background: var(--neutral-grey-0); // legacy
+
+        padding: var(--spacing-lg);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .toggleContainer {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding-bottom: var(--layout-spacing-xs);
+    }
+
+    .switchDescription {
+        color: var(--neutral-grey-5); // legacy
+        font-size: var(--font-size-sm);
+        font-weight: 400;
+        margin-bottom: var(--layout-spacing-s);
+    }
+
+    .drawerFooter {
+        gap: var(--layout-spacing-xs);
+    }
+}
+
+.axiom :local {
+    .allDevicesSwitch {
+        color: var(--content-neutral-default);
+    }
+
+    .desktopToggleRow {
+        border: 1px solid var(--border-neutral-default);
+        background: var(--elevation-neutral-default);
+    }
+
+    .switchDescription {
+        color: var(--content-neutral-secondary);
+    }
 }

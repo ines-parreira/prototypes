@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 import { get } from 'lodash'
@@ -6,11 +6,7 @@ import { useFormContext } from 'react-hook-form'
 import { useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 
-import {
-    LegacyButton as Button,
-    LegacyCheckBoxField as CheckBoxField,
-    LegacyLabel as Label,
-} from '@gorgias/axiom'
+import { LegacyButton as Button, CheckBoxField, Label } from '@gorgias/axiom'
 
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import useAppSelector from 'hooks/useAppSelector'
@@ -63,6 +59,8 @@ export const ConversationLauncherAdvancedSettings = ({
     const storeHasOnlyOneChatIntegration =
         storeConfiguration?.monitoredChatIntegrations.length === 1
 
+    const wasOpenRef = useRef(false)
+
     const [localValue, setLocalValue] = useState({
         isAskAnythingInputEnabled: false,
         isFloatingInputDesktopOnly: false,
@@ -76,13 +74,14 @@ export const ConversationLauncherAdvancedSettings = ({
     )
 
     useEffect(() => {
-        if (isOpen) {
+        if (isOpen && !wasOpenRef.current) {
             setLocalValue(() => ({
                 isAskAnythingInputEnabled,
                 needHelpText,
                 isFloatingInputDesktopOnly,
             }))
         }
+        wasOpenRef.current = isOpen
     }, [
         isOpen,
         isFloatingInputDesktopOnly,
@@ -248,12 +247,7 @@ export const ConversationLauncherAdvancedSettings = ({
                     Update
                 </Button>
 
-                <Button
-                    isDisabled={false}
-                    onClick={onClose}
-                    intent="secondary"
-                    size="medium"
-                >
+                <Button onClick={onClose} intent="secondary" size="medium">
                     Cancel
                 </Button>
             </Drawer.Footer>
