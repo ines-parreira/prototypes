@@ -113,6 +113,10 @@ export const GorgiasChatIntegration = ({
                 showPreviewPanel(integration.getIn(['meta', 'app_id']) || null)
             }
         }
+
+        return () => {
+            hidePreviewPanel()
+        }
     }, [
         integration,
         showPreviewPanel,

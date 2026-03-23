@@ -387,6 +387,24 @@ describe('<GorgiasChatIntegration />', () => {
             expect(mockHidePreviewPanel).toHaveBeenCalled()
             expect(mockShowPreviewPanel).not.toHaveBeenCalled()
         })
+
+        it('calls hidePreviewPanel on unmount', () => {
+            mockUseParams.mockReturnValue({
+                integrationId: '1',
+                extra: Tab.Appearance,
+                subId: undefined,
+            })
+
+            const { unmount } = render(
+                <GorgiasChatIntegration {...defaultProps} />,
+            )
+
+            mockHidePreviewPanel.mockClear()
+
+            unmount()
+
+            expect(mockHidePreviewPanel).toHaveBeenCalledTimes(1)
+        })
     })
 
     it('computes articleRecommendationEnabled as false when integration has no appId', () => {

@@ -86,8 +86,12 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
             script.src = scriptSrc.toString()
 
             return `
-            <script type="application/javascript">${iframeBootstrapScript}</script>
-            ${script.outerHTML}
+            <html>
+                <body>
+                    <script type="application/javascript">${iframeBootstrapScript}</script>
+                    ${script.outerHTML}
+                </body>
+            </html>
         `
         }, [installationSnippet?.snippet])
 

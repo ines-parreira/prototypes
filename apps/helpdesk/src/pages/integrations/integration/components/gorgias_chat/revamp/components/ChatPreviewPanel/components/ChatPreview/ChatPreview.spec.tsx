@@ -207,6 +207,46 @@ describe('ChatPreview', () => {
                 'allow-scripts allow-same-origin',
             )
         })
+
+        it('should set srcDoc with an html tag', () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+            })
+
+            renderComponent()
+
+            const iframe = screen.getByTitle('helpdesk-chat-preview-iframe')
+            expect(iframe).toHaveAttribute(
+                'srcdoc',
+                expect.stringContaining('<html>'),
+            )
+            expect(iframe).toHaveAttribute(
+                'srcdoc',
+                expect.stringContaining('</html>'),
+            )
+        })
+
+        it('should set srcDoc with a body tag', () => {
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+            })
+
+            renderComponent()
+
+            const iframe = screen.getByTitle('helpdesk-chat-preview-iframe')
+            expect(iframe).toHaveAttribute(
+                'srcdoc',
+                expect.stringContaining('<body>'),
+            )
+            expect(iframe).toHaveAttribute(
+                'srcdoc',
+                expect.stringContaining('</body>'),
+            )
+        })
     })
 
     describe('useImperativeHandle', () => {
