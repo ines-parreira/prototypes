@@ -298,6 +298,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'engagementType':
             case 'aiAgentSkill':
             case 'currency':
+            case 'orderId':
                 {
                     const filter = statFilters[filterKey]
                     if (filter && hasFilter(filter)) {

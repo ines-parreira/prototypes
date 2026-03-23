@@ -129,6 +129,9 @@ export type DimensionName =
     | 'discountAmount'
     | 'discountCodeOffered'
     | 'discountCodeUsed'
+    | 'orderId'
+    | 'purchaseTime'
+    | 'totalAmount'
 
 export type MeasureName =
     | 'ticketCount'
@@ -220,6 +223,12 @@ export type MeasureName =
     | 'medianDiscountAmount'
     | 'offeredDiscountCodesCount'
     | 'dropOffCount'
+    | 'averageOrderValue'
+    | 'averagePurchaseTime'
+    | 'medianOrderValue'
+    | 'ordersInfluencedCount'
+    | 'totalSalesAmount'
+    | 'totalSalesAmountUsd'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -297,6 +306,7 @@ export type NumberFilterName =
     | 'storeIntegrationId'
     | 'talkTime'
     | 'waitTime'
+    | 'orderId'
 
 export type BooleanFilterName =
     | 'isAnsweredByAgent'

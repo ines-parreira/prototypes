@@ -667,6 +667,7 @@ export enum MetricScope {
     AiSalesAgentBuyThroughRate = 'ai-sales-agent-buy-through-rate',
     AiSalesAgentActivity = 'ai-sales-agent-activity',
     AiSalesAgentDiscounts = 'ai-sales-agent-discounts',
+    AiSalesAgentOrdersPerformance = 'ai-sales-agent-orders-performance',
 
     // No FF
     HandoverInteractions = 'handover-interactions',
@@ -962,6 +963,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_USAGE,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_APPLIED,
     ],
+    [MetricScope.AiSalesAgentOrdersPerformance]: [],
     [MetricScope.FlowDataset]: [
         METRIC_NAMES.FLOW_DATASET_HANDOVER_INTERACTIONS,
     ],
