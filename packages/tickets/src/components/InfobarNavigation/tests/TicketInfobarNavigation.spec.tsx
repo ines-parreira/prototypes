@@ -12,6 +12,20 @@ vi.mock('@repo/feature-flags', async (importOriginal) => ({
     useHelpdeskV2MS2Flag: vi.fn(),
 }))
 
+const mockPush = vi.fn()
+
+const { useHistory } = vi.hoisted(() => ({
+    useHistory: vi.fn(),
+}))
+
+vi.mock('react-router-dom', async () => {
+    const actual = await vi.importActual('react-router-dom')
+    return {
+        ...actual,
+        useHistory,
+    }
+})
+
 const mockUseHelpdeskV2MS2Flag = vi.mocked(useHelpdeskV2MS2Flag)
 
 const { TicketInfobarTab } = repoNavigation
@@ -24,6 +38,8 @@ describe('TicketInfobarNavigation', () => {
     beforeEach(() => {
         onChangeTab = vi.fn()
         onToggle = vi.fn()
+        mockPush.mockClear()
+        useHistory.mockReturnValue({ push: mockPush })
         mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
 
         useTicketInfobarNavigationMock = vi.spyOn(
@@ -224,6 +240,23 @@ describe('TicketInfobarNavigation', () => {
 
             expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
             expect(onToggle).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Edit Widget data menu', () => {
+        it('should navigate to integrations settings when "Add new app" is clicked', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            const { user } = render(<TicketInfobarNavigation />)
+
+            const settingsButton = screen.getByRole('button', {
+                name: 'Edit Widget data',
+            })
+            await user.click(settingsButton)
+
+            const addNewAppItem = await screen.findByText('Add new app')
+            await user.click(addNewAppItem)
+
+            expect(mockPush).toHaveBeenCalledWith('/app/settings/integrations')
         })
     })
 

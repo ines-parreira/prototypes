@@ -4,6 +4,7 @@ import {
     TicketInfobarTab,
     useTicketInfobarNavigation,
 } from '@repo/navigation'
+import { useHistory } from 'react-router-dom'
 
 import {
     Button,
@@ -40,6 +41,7 @@ export function TicketInfobarNavigation({
     } = useTicketInfobarNavigation()
     useTicketInfobarNavigationShortcuts()
     const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
+    const history = useHistory()
 
     return (
         <InfobarNavigationContainer>
@@ -156,7 +158,9 @@ export function TicketInfobarNavigation({
                         <MenuItem
                             label="Add new app"
                             leadingSlot="add-plus"
-                            onAction={() => {}}
+                            onAction={() => {
+                                history.push('/app/settings/integrations')
+                            }}
                         />
                     </MenuSection>
                 </Menu>
