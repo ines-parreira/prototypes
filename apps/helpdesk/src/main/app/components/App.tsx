@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import type { ReactNode } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
@@ -82,6 +83,24 @@ export default function App({ children }: Props) {
 
     useAutomateRedirects()
     useRedirectDeprecatedTicketRoutes()
+
+    useEffect(() => {
+        const ids = ['gorgias-chat-container', 'gaia-embed-btn']
+
+        const tryApply = () => {
+            ids.forEach((id) => {
+                document
+                    .getElementById(id)
+                    ?.setAttribute('data-react-aria-top-layer', 'true')
+            })
+        }
+
+        tryApply()
+
+        const observer = new MutationObserver(tryApply)
+        observer.observe(document.body, { childList: true, subtree: false })
+        return () => observer.disconnect()
+    }, [])
 
     const isOnboarding = isAiAgentOnboarding(history.location.pathname)
 
