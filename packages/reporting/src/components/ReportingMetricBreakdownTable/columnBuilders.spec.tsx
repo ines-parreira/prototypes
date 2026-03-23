@@ -16,6 +16,23 @@ vi.mock('../../utils/helpers', () => ({
 vi.mock('@gorgias/axiom', () => ({
     Box: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
     Icon: () => null,
+    Link: ({
+        children,
+        href,
+        target,
+        rel,
+        'aria-label': ariaLabel,
+    }: {
+        children: React.ReactNode
+        href: string
+        target?: string
+        rel?: string
+        'aria-label'?: string
+    }) => (
+        <a href={href} target={target} rel={rel} aria-label={ariaLabel}>
+            {children}
+        </a>
+    ),
     Skeleton: () => <div data-testid="skeleton" />,
     Text: ({ children }: { children: React.ReactNode }) => (
         <span>{children}</span>
@@ -99,6 +116,53 @@ describe('buildNameColDef', () => {
             </>,
         )
         expect(screen.getByText('Cancel order')).toBeInTheDocument()
+    })
+
+    it('cell renders an icon link next to the display name when getHref is provided', () => {
+        const col = buildNameColDef({
+            accessor: 'entity' as const,
+            label: 'Article name',
+            displayNames: {
+                'https://example.com/article-1': 'How to return',
+            },
+            getHref: (value) => value,
+        })
+        const cellFn = col.cell as any
+        render(
+            <>
+                {cellFn({
+                    getValue: () => 'https://example.com/article-1',
+                    row: { original: {} },
+                })}
+            </>,
+        )
+        const link = screen.getByRole('link', { name: 'Open How to return' })
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute('href', 'https://example.com/article-1')
+        expect(link).toHaveAttribute('target', '_blank')
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer')
+    })
+
+    it('cell renders an icon link with the raw value aria-label when getHref is provided but no displayNames', () => {
+        const col = buildNameColDef({
+            accessor: 'entity' as const,
+            label: 'Article name',
+            getHref: (value) => value,
+        })
+        const cellFn = col.cell as any
+        render(
+            <>
+                {cellFn({
+                    getValue: () => 'https://example.com/article-1',
+                    row: { original: {} },
+                })}
+            </>,
+        )
+        const link = screen.getByRole('link', {
+            name: 'Open https://example.com/article-1',
+        })
+        expect(link).toBeInTheDocument()
+        expect(link).toHaveAttribute('href', 'https://example.com/article-1')
     })
 })
 

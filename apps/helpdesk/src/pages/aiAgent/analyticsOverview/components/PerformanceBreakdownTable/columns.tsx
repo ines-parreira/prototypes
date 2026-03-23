@@ -1,7 +1,7 @@
 import type { MetricColumnConfig } from '@repo/reporting'
 
 export const PERFORMANCE_BREAKDOWN_TABLE = {
-    title: 'Performance breakdown',
+    title: 'All features',
     description:
         'Automation performance metrics per feature, including automation rate, automated interactions, handovers, cost saved, and time saved.',
 }

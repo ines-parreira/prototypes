@@ -20,6 +20,8 @@ import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
+import { ArticleRecommendationTable } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/ArticleRecommendationTable'
+import { ARTICLE_RECOMMENDATION_TABLE } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/columns'
 import {
     AUTOMATION_LINE_CHART_METRICS,
     AutomationLineChart,
@@ -35,6 +37,7 @@ import { OrderManagementTable } from 'pages/aiAgent/analyticsOverview/components
 import { PERFORMANCE_BREAKDOWN_TABLE } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
 import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable'
 import { fetchPerformanceMetricsPerFeatureReport } from 'pages/aiAgent/analyticsOverview/hooks/fetchPerformanceBreakdownData'
+import { fetchArticleRecommendationReport } from 'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics'
 import { fetchFlowsReport } from 'pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics'
 import { fetchOrderManagementReport } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
 import {
@@ -55,6 +58,7 @@ export enum AnalyticsOverviewChart {
     PerformanceTable = 'performance_table',
     OrderManagementTable = 'order_management_table',
     FlowsTable = 'flows_table',
+    ArticleRecommendationTable = 'article_recommendation_table',
     HandoverInteractionsCard = 'handover_interactions_card',
     DecreaseInFRTCard = 'decrease_in_frt_card',
 }
@@ -253,6 +257,18 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                     },
                 ],
                 description: FLOWS_TABLE.description,
+                chartType: ChartType.Table,
+            },
+            [AnalyticsOverviewChart.ArticleRecommendationTable]: {
+                chartComponent: ArticleRecommendationTable,
+                label: ARTICLE_RECOMMENDATION_TABLE.title,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Table,
+                        fetch: fetchArticleRecommendationReport,
+                    },
+                ],
+                description: ARTICLE_RECOMMENDATION_TABLE.description,
                 chartType: ChartType.Table,
             },
         },

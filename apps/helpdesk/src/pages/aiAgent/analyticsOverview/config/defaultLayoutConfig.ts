@@ -76,13 +76,19 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<any> = {
                     visibility: true,
                 },
                 {
-                    chartId: AnalyticsOverviewChart.OrderManagementTable,
+                    chartId: AnalyticsOverviewChart.ArticleRecommendationTable,
                     gridSize: 12,
                     visibility: true,
                     requiresFeatureFlag: true,
                 },
                 {
                     chartId: AnalyticsOverviewChart.FlowsTable,
+                    gridSize: 12,
+                    visibility: true,
+                    requiresFeatureFlag: true,
+                },
+                {
+                    chartId: AnalyticsOverviewChart.OrderManagementTable,
                     gridSize: 12,
                     visibility: true,
                     requiresFeatureFlag: true,

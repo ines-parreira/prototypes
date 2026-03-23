@@ -2,6 +2,7 @@ import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     Icon,
+    Link,
     Skeleton,
     Text,
     Tooltip,
@@ -55,10 +56,32 @@ export function buildNameColDef<TData>(
         meta: { displayName: config.label },
         cell: (info) => {
             const value = info.getValue() as string
+            const displayName = config.displayNames
+                ? config.displayNames[value]
+                : value
+            const href = config.getHref?.(value)
+
             return (
-                <Text size="md" variant="bold" className={css.featureName}>
-                    {config.displayNames ? config.displayNames[value] : value}
-                </Text>
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    gap="xxxs"
+                    className={css.featureName}
+                >
+                    <Text size="md" variant="bold">
+                        {displayName}
+                    </Text>
+                    {href && (
+                        <Link
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`Open ${displayName}`}
+                        >
+                            <Icon name="external-link" size="xs" />
+                        </Link>
+                    )}
+                </Box>
             )
         },
         enableHiding: false,

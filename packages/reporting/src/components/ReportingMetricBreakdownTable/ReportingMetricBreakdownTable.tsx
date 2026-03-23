@@ -111,6 +111,9 @@ export function ReportingMetricBreakdownTable<TData>({
                                     />
                                 </TableHeader>
                                 <TableBodyContent
+                                    isLoading={
+                                        isAnyLoading && data.length === 0
+                                    }
                                     rows={table.getRowModel().rows}
                                     columnCount={table.getAllColumns().length}
                                     table={table}

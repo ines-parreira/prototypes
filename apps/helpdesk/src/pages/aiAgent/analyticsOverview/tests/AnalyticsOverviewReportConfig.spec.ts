@@ -169,7 +169,22 @@ describe('AnalyticsOverviewReportConfig', () => {
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Performance breakdown')
+        expect(config.label).toBe('All features')
+        expect(config.chartType).toBe(ChartType.Table)
+        expect(config.csvProducer).not.toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Table)
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+    })
+
+    it('should have article recommendation table config', () => {
+        const config =
+            AnalyticsOverviewReportConfig.charts[
+                AnalyticsOverviewChart.ArticleRecommendationTable
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Article Recommendation')
         expect(config.chartType).toBe(ChartType.Table)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)

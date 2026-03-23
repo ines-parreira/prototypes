@@ -19,4 +19,5 @@ export type NameColumnConfig<TData> = {
     accessor: keyof TData & string
     label: string
     displayNames?: Record<string, string>
+    getHref?: (value: string) => string | undefined
 }

@@ -796,6 +796,73 @@ describe('managedDashboardMappers', () => {
             )
         })
 
+        it('should preserve default item order when saved config is missing items added later', () => {
+            const savedConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsAiAgentAllAgentsChart.ChannelPerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                            {
+                                chartId:
+                                    AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const defaultConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsAiAgentAllAgentsChart.ChannelPerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.ArticleRecommendationTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                            {
+                                chartId:
+                                    AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const result = mergeWithDefaults(savedConfig, defaultConfig)
+
+            expect(result.sections[0].items).toHaveLength(3)
+            expect(result.sections[0].items[0].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.ChannelPerformanceTable,
+            )
+            expect(result.sections[0].items[1].chartId).toBe(
+                AnalyticsOverviewChart.ArticleRecommendationTable,
+            )
+            expect(result.sections[0].items[2].chartId).toBe(
+                AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable,
+            )
+        })
+
         it('should handle empty saved config', () => {
             const savedConfig: DashboardLayoutConfig = {
                 sections: [],
