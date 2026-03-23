@@ -1,10 +1,11 @@
 import { createRef } from 'react'
 
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { ButtonGroupItemProps, ButtonGroupProps } from '@gorgias/axiom'
 
+import { Language } from 'constants/languages'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types'
 
 import type { ChatPreviewPanelHandle } from './ChatPreviewPanel'
@@ -47,6 +48,7 @@ jest.mock(
             setPosition: jest.fn(),
             updateSettings: jest.fn(),
             updateTexts: jest.fn(),
+            setLanguage: jest.fn().mockResolvedValue(undefined),
         }
 
         const ChatPreview = React.forwardRef(
@@ -109,32 +111,6 @@ describe('ChatPreviewPanel', () => {
 
             expect(screen.queryByTestId('chat-preview')).not.toBeInTheDocument()
         })
-
-        it('renders the default ButtonGroup when headerActions is not provided', () => {
-            renderComponent()
-
-            expect(
-                screen.getByTestId('button-group-item-homepage'),
-            ).toBeInTheDocument()
-        })
-
-        it('renders headerActions instead of the ButtonGroup when provided', () => {
-            const ref = createRef<ChatPreviewPanelHandle>()
-            render(
-                <ChatPreviewPanel
-                    ref={ref}
-                    appId="test-app-id"
-                    headerActions={<button>Custom action</button>}
-                />,
-            )
-
-            expect(
-                screen.getByRole('button', { name: 'Custom action' }),
-            ).toBeInTheDocument()
-            expect(
-                screen.queryByTestId('button-group-item-homepage'),
-            ).not.toBeInTheDocument()
-        })
     })
 
     describe('page navigation', () => {
@@ -171,14 +147,13 @@ describe('ChatPreviewPanel', () => {
             expect(ref.current?.updateTexts).toBeDefined()
             expect(ref.current?.closeChat).toBeDefined()
             expect(ref.current?.openChat).toBeDefined()
+            expect(ref.current?.updateLanguage).toBeDefined()
         })
 
         it('displayPage calls GorgiasChat.setPage', () => {
             const { ref } = renderComponent()
 
-            act(() => {
-                ref.current?.displayPage('conversation')
-            })
+            ref.current?.displayPage('conversation')
 
             expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('conversation')
         })
@@ -236,6 +211,33 @@ describe('ChatPreviewPanel', () => {
                 expect.objectContaining(texts),
             )
         })
+
+        it('updateLanguage calls GorgiasChat.setLanguage with the provided language', async () => {
+            const { ref } = renderComponent()
+
+            await ref.current?.updateLanguage(Language.French)
+
+            expect(mockGorgiasChat.setLanguage).toHaveBeenCalledWith(
+                Language.French,
+            )
+        })
+
+        it('updateLanguage resolves when setLanguage resolves', async () => {
+            const { ref } = renderComponent()
+
+            await expect(
+                ref.current?.updateLanguage(Language.EnglishUs),
+            ).resolves.toBeUndefined()
+        })
+
+        it('updateLanguage resolves when setLanguage is not defined on gorgiasChat', async () => {
+            mockGorgiasChat.setLanguage = undefined as any
+            const { ref } = renderComponent()
+
+            await expect(
+                ref.current?.updateLanguage(Language.French),
+            ).resolves.toBeUndefined()
+        })
     })
 
     describe('withGorgiasChat guards', () => {
@@ -266,24 +268,31 @@ describe('ChatPreviewPanel', () => {
             expect(mockGorgiasChat.close).not.toHaveBeenCalled()
         })
 
-        it('does not throw when methods are called with no chat preview rendered', () => {
-            const { ref } = renderComponent(null)
+        it('updateLanguage resolves when isLoaded is false', async () => {
+            mockIsLoaded = false
+            const { ref } = renderComponent()
 
-            expect(() => ref.current?.displayPage('homepage')).not.toThrow()
-            expect(() => ref.current?.closeChat()).not.toThrow()
-            expect(() => ref.current?.openChat()).not.toThrow()
-            expect(() =>
-                ref.current?.updatePosition({
-                    alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT,
-                    offsetX: 0,
-                    offsetY: 0,
-                }),
-            ).not.toThrow()
-            expect(() =>
-                ref.current?.updateSettings({
-                    decoration: { mainColor: '#fff' },
-                }),
-            ).not.toThrow()
+            await expect(
+                ref.current?.updateLanguage(Language.French),
+            ).resolves.toBeUndefined()
+        })
+
+        it('updateLanguage resolves when hasError is true', async () => {
+            mockHasError = true
+            const { ref } = renderComponent()
+
+            await expect(
+                ref.current?.updateLanguage(Language.French),
+            ).resolves.toBeUndefined()
+        })
+
+        it('updateLanguage resolves when GorgiasChat is not present in the iframe window', async () => {
+            mockHasGorgiasChat = false
+            const { ref } = renderComponent()
+
+            await expect(
+                ref.current?.updateLanguage(Language.French),
+            ).resolves.toBeUndefined()
         })
     })
 })

@@ -1,4 +1,6 @@
 // g/integrations/gorgias_chat/schemas.py
+import type { Language } from '@gorgias/helpdesk-types'
+
 import type { LanguageItem } from 'config/integrations/gorgias_chat'
 
 import { IntegrationType } from '../constants'
@@ -140,6 +142,7 @@ export type GorgiasChatPreviewApplicationSettings = {
     preferences?: {
         privacyPolicyDisclaimerEnabled?: boolean
     }
+    language?: Language
 }
 
 export enum GorgiasChatStatusEnum {

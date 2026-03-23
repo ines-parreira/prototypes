@@ -6,10 +6,11 @@ import { Language } from 'constants/languages'
 import { GorgiasChatIntegrationLanguagesRevamp } from '../GorgiasChatIntegrationLanguages'
 
 const mockAddLanguage = jest.fn()
-const mockUpdateDefaultLanguage = jest.fn()
+const mockUpdateDefaultLanguage = jest.fn().mockResolvedValue(undefined)
 const mockDeleteLanguage = jest.fn()
 const mockLanguagesCard = jest.fn()
 const mockSelect = jest.fn()
+const mockUpdateLanguage = jest.fn().mockResolvedValue(undefined)
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout',
@@ -51,6 +52,15 @@ jest.mock(
             mockLanguagesCard(props)
             return null
         },
+    }),
+)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useGorgiasChatCreationWizardContext: jest.fn(() => ({
+            updateLanguage: mockUpdateLanguage,
+        })),
     }),
 )
 
@@ -125,19 +135,46 @@ describe('GorgiasChatIntegrationLanguagesRevamp', () => {
         )
     })
 
-    it('should pass updateDefaultLanguage as onClickSetDefault to LanguagesCard', () => {
-        render(
-            <GorgiasChatIntegrationLanguagesRevamp
-                integration={fromJS({ id: 1 })}
-                loading={mockLoading}
-            />,
-        )
+    describe('handleUpdateDefaultLanguage', () => {
+        const renderAndGetOnClickSetDefault = () => {
+            render(
+                <GorgiasChatIntegrationLanguagesRevamp
+                    integration={fromJS({ id: 1 })}
+                    loading={mockLoading}
+                />,
+            )
+            return mockLanguagesCard.mock.calls[0][0].onClickSetDefault
+        }
 
-        expect(mockLanguagesCard).toHaveBeenCalledWith(
-            expect.objectContaining({
-                onClickSetDefault: mockUpdateDefaultLanguage,
-            }),
-        )
+        it('calls updateDefaultLanguage with the full language item', async () => {
+            const onClickSetDefault = renderAndGetOnClickSetDefault()
+            const language = { language: Language.French }
+
+            await onClickSetDefault(language)
+
+            expect(mockUpdateDefaultLanguage).toHaveBeenCalledWith(language)
+        })
+
+        it('calls updateLanguage with the language code', async () => {
+            const onClickSetDefault = renderAndGetOnClickSetDefault()
+
+            await onClickSetDefault({ language: Language.French })
+
+            expect(mockUpdateLanguage).toHaveBeenCalledWith(Language.French)
+        })
+
+        it('does not call updateLanguage when updateDefaultLanguage rejects', async () => {
+            mockUpdateDefaultLanguage.mockRejectedValueOnce(
+                new Error('update failed'),
+            )
+            const onClickSetDefault = renderAndGetOnClickSetDefault()
+
+            await expect(
+                onClickSetDefault({ language: Language.French }),
+            ).rejects.toThrow('update failed')
+
+            expect(mockUpdateLanguage).not.toHaveBeenCalled()
+        })
     })
 
     it('should call deleteLanguage when onClickDelete is invoked on LanguagesCard', async () => {

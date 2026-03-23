@@ -1,5 +1,6 @@
 import { Middleware } from 'redux'
 
+import { Language } from 'constants/languages'
 import type {
     GorgiasChatPosition,
     GorgiasChatPreviewApplicationSettings,
@@ -65,6 +66,7 @@ declare global {
             updateSettings?: (
                 settings: GorgiasChatPreviewApplicationSettings,
             ) => void
+            setLanguage?: (language: Language) => Promise<void>
         }
         GorgiasCanduRouter?: {
             route: (url: string) => void

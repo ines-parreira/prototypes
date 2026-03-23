@@ -1,5 +1,5 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import type { ReactNode } from 'react'
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 
 import {
     Box,
@@ -11,6 +11,7 @@ import {
     TextVariant,
 } from '@gorgias/axiom'
 
+import type { Language } from 'constants/languages'
 import type {
     GorgiasChatPosition,
     GorgiasChatPreviewApplicationSettings,
@@ -28,6 +29,7 @@ export type ChatPreviewPanelHandle = {
     updateTexts: (texts: Record<string, string>) => void
     closeChat: () => void
     openChat: () => void
+    updateLanguage: (language: Language) => Promise<void>
 }
 
 type Props = {
@@ -36,22 +38,30 @@ type Props = {
 }
 
 export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
-    ({ appId, headerActions }, ref) => {
+    ({ appId, headerActions }: Props, ref) => {
         const chatPreviewRef = useRef<ChatPreviewHandle>(null)
-        const [selectedPage, setSelectedPage] = useState<
-            'homepage' | 'conversation'
-        >('homepage')
 
         const withGorgiasChat = (
-            callback: (gorgiasChat: NonNullable<Window['GorgiasChat']>) => void,
-        ) => {
-            const chatRef = chatPreviewRef.current
-            if (!chatRef?.isLoaded || chatRef?.hasError) return
+            callback: (
+                gorgiasChat: NonNullable<Window['GorgiasChat']>,
+            ) => void | Promise<void>,
+        ): void | Promise<void> => {
+            const ref = chatPreviewRef.current
+            if (!ref?.isLoaded || ref?.hasError) return
+
             const gorgiasChat =
-                chatRef.iframeRef.current?.contentWindow?.GorgiasChat
+                ref.iframeRef.current?.contentWindow?.GorgiasChat
             if (!gorgiasChat) return
+
             try {
-                callback(gorgiasChat)
+                const result = callback(gorgiasChat)
+                if (result instanceof Promise) {
+                    return result.catch((error) => {
+                        if (process.env.NODE_ENV === 'development') {
+                            console.error(error)
+                        }
+                    })
+                }
             } catch (error) {
                 if (process.env.NODE_ENV === 'development') {
                     console.error(error)
@@ -104,6 +114,14 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             })
         }
 
+        const updateLanguage = (language: Language): Promise<void> => {
+            return (
+                withGorgiasChat((gorgiasChat) =>
+                    gorgiasChat.setLanguage?.(language),
+                ) ?? Promise.resolve()
+            )
+        }
+
         useImperativeHandle(ref, () => ({
             displayPage,
             updatePosition,
@@ -111,6 +129,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             updateTexts,
             closeChat,
             openChat,
+            updateLanguage,
         }))
 
         const handlePageChange = (page: string) => {
@@ -119,6 +138,10 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 openChat()
             }
         }
+
+        const [selectedPage, setSelectedPage] = useState<
+            'homepage' | 'conversation'
+        >('homepage')
 
         return (
             <Box flexDirection="column" className={css.panel}>

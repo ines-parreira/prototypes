@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useRef, useState } from 'react'
 
 import { toHex } from 'color2k'
 
+import type { Language } from 'constants/languages'
 import type { GorgiasChatPosition } from 'models/integration/types'
 import type { GorgiasChatLauncherSettings } from 'models/integration/types/gorgiasChat'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
@@ -117,6 +118,10 @@ export const useChatPreviewPanel = () => {
         })
     }
 
+    const updateLanguage = async (language: Language) => {
+        await chatPreviewPanelRef.current?.updateLanguage(language)
+    }
+
     return {
         chatPreviewPortal,
         showPreviewPanel,
@@ -131,5 +136,6 @@ export const useChatPreviewPanel = () => {
         updateTexts,
         updateLegalDisclaimer,
         updateLegalDisclaimerEnabled,
+        updateLanguage,
     }
 }
