@@ -1,5 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import { Box } from '@gorgias/axiom'
+
 import { DTPTicketHeaderToggle } from '../../dtp/DTPTicketHeaderToggle'
 import { useTicket } from '../../hooks/useTicket'
 import { TicketTranslationMenu } from '../../translations/components/TicketTranslationMenu'
@@ -42,8 +44,14 @@ export function TicketHeader({ ticketId }: Props) {
     return (
         <TicketHeaderContainer>
             <TicketHeaderLeft>
-                <DTPTicketHeaderToggle />
-                <CurrentTicketTitle ticket={ticket} />
+                <Box alignItems="center" gap="xxxs">
+                    <Box flexShrink={0}>
+                        <DTPTicketHeaderToggle />
+                    </Box>
+                    <Box flexGrow={1} minWidth={0}>
+                        <CurrentTicketTitle ticket={ticket} />
+                    </Box>
+                </Box>
             </TicketHeaderLeft>
             <TicketHeaderRight>
                 {spam && <SpamTicket />}
