@@ -1,5 +1,9 @@
+import { useState } from 'react'
+
 import type { Map } from 'immutable'
 
+import type { GorgiasChatIntegration } from 'models/integration/types'
+import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { AutomateFeatures } from 'pages/automate/common/types'
 import { FlowsCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout'
@@ -8,6 +12,7 @@ import { useStoreIntegration } from 'pages/integrations/integration/hooks/useSto
 
 import { ArticleRecommendationCard } from './components/ArticleRecommendationCard/ArticleRecommendationCard'
 import { ConnectedChannelsEmptyView } from './components/ConnectedChannelsEmptyView/ConnectedChannelsEmptyView'
+import type { Workflow } from './components/FlowsCard/types'
 import { OrderManagementCard } from './components/OrderManagementCard/OrderManagementCard'
 import { useArticleRecommendation } from './hooks/useArticleRecommendation'
 import { useOrderManagement } from './hooks/useOrderManagement'
@@ -22,24 +27,41 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
     integration,
 }: Props) => {
     const { isConnected } = useStoreIntegration(integration)
+    const gorgiasChatIntegration = integration.toJS() as GorgiasChatIntegration
+    const appId = gorgiasChatIntegration?.meta?.app_id
+
+    const {
+        applicationsAutomationSettings,
+        isUpdatePending: isSaving,
+        handleChatApplicationAutomationSettingsUpdate,
+    } = useApplicationsAutomationSettings(appId ? [appId] : [])
+
+    const serverSettings = appId
+        ? applicationsAutomationSettings?.[appId]
+        : undefined
+
+    const [pendingOrderManagement, setPendingOrderManagement] = useState<
+        boolean | null
+    >(null)
+    const [pendingArticleRecommendation, setPendingArticleRecommendation] =
+        useState<boolean | null>(null)
+    const [pendingFlows, setPendingFlows] = useState<Workflow[] | null>(null)
 
     const {
         enabledInSettings: articleRecommendationEnabledInSettings,
-        isArticleRecommendationEnabled,
+        isArticleRecommendationEnabled: serverArticleRecommendationEnabled,
         isDisabled: isArticleRecommendationDisabled,
         isLoading: isArticleRecommendationLoading,
         showHelpCenterRequired,
-        handleToggle: handleArticleRecommendationToggle,
     } = useArticleRecommendation({ integration })
 
     const {
         enabledInSettings: orderManagementEnabledInSettings,
-        isOrderManagementEnabled,
+        isOrderManagementEnabled: serverOrderManagementEnabled,
         isDisabled: isOrderManagementDisabled,
         isLoading: isOrderManagementLoading,
         showStoreRequired,
         orderManagementUrl,
-        handleToggle: handleOrderManagementToggle,
     } = useOrderManagement({ integration })
 
     const {
@@ -51,8 +73,47 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
         workflowEntrypoints,
         workflowConfigurations,
         automationSettingsWorkflows,
-        handleFlowsChange,
     } = useFlows({ integration })
+
+    const handleFlowsChange = (updatedWorkflows: Workflow[]) => {
+        setPendingFlows(updatedWorkflows)
+    }
+
+    const isOrderManagementEnabled =
+        pendingOrderManagement ?? serverOrderManagementEnabled
+    const isArticleRecommendationEnabled =
+        pendingArticleRecommendation ?? serverArticleRecommendationEnabled
+
+    const isSaveDisabled =
+        pendingOrderManagement === null &&
+        pendingArticleRecommendation === null &&
+        pendingFlows === null
+
+    const handleSave = async () => {
+        if (!serverSettings) return
+
+        await handleChatApplicationAutomationSettingsUpdate({
+            ...serverSettings,
+            ...(pendingOrderManagement !== null && {
+                orderManagement: { enabled: pendingOrderManagement },
+            }),
+            ...(pendingArticleRecommendation !== null && {
+                articleRecommendation: {
+                    enabled: pendingArticleRecommendation,
+                },
+            }),
+            ...(pendingFlows !== null && {
+                workflows: {
+                    ...serverSettings.workflows,
+                    entrypoints: pendingFlows,
+                },
+            }),
+        })
+
+        setPendingOrderManagement(null)
+        setPendingArticleRecommendation(null)
+        setPendingFlows(null)
+    }
 
     if (!isConnected) {
         return (
@@ -65,7 +126,12 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
     }
 
     return (
-        <GorgiasChatRevampLayout integration={integration}>
+        <GorgiasChatRevampLayout
+            integration={integration}
+            onSave={handleSave}
+            isSaveDisabled={isSaveDisabled}
+            isSaving={isSaving}
+        >
             <div className={css.cardsWrapper}>
                 <FlowsCard
                     isLoading={isFlowsLoading}
@@ -75,7 +141,9 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
                     primaryLanguage={primaryLanguage}
                     workflowEntrypoints={workflowEntrypoints}
                     workflowConfigurations={workflowConfigurations}
-                    automationSettingsWorkflows={automationSettingsWorkflows}
+                    automationSettingsWorkflows={
+                        pendingFlows ?? automationSettingsWorkflows
+                    }
                     onChange={handleFlowsChange}
                 />
                 {orderManagementEnabledInSettings && (
@@ -85,7 +153,7 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
                         isLoading={isOrderManagementLoading}
                         showStoreRequired={showStoreRequired}
                         orderManagementUrl={orderManagementUrl}
-                        onChange={handleOrderManagementToggle}
+                        onChange={setPendingOrderManagement}
                     />
                 )}
                 {articleRecommendationEnabledInSettings && (
@@ -94,7 +162,7 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
                         isDisabled={isArticleRecommendationDisabled}
                         isLoading={isArticleRecommendationLoading}
                         showHelpCenterRequired={showHelpCenterRequired}
-                        onChange={handleArticleRecommendationToggle}
+                        onChange={setPendingArticleRecommendation}
                     />
                 )}
             </div>

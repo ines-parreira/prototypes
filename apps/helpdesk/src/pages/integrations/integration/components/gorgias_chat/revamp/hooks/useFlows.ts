@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react'
+import { useMemo } from 'react'
 
 import type { Map } from 'immutable'
 
@@ -9,7 +9,6 @@ import { useGetWorkflowConfigurations } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
-import type { Workflow } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/types'
 
 type UseFlowsParams = {
     integration: Map<any, any>
@@ -31,7 +30,6 @@ export function useFlows({ integration }: UseFlowsParams) {
     const {
         applicationsAutomationSettings,
         isFetchPending: isAutomationSettingsFetchPending,
-        handleChatApplicationAutomationSettingsUpdate,
     } = useApplicationsAutomationSettings(appId ? [appId] : [])
 
     const automationSettingsWorkflows = useMemo(() => {
@@ -59,40 +57,6 @@ export function useFlows({ integration }: UseFlowsParams) {
         isSelfServiceConfigurationFetchPending ||
         isAutomationSettingsFetchPending
 
-    const handleFlowsChange = useCallback(
-        (nextEntrypoints: Workflow[], action: 'add' | 'remove' | 'reorder') => {
-            if (!appId) return
-
-            const applicationAutomationSettings =
-                applicationsAutomationSettings?.[appId]
-
-            if (!applicationAutomationSettings) return
-
-            const readableAction =
-                action === 'add'
-                    ? 'added'
-                    : action === 'remove'
-                      ? 'removed'
-                      : 'order updated'
-
-            void handleChatApplicationAutomationSettingsUpdate(
-                {
-                    ...applicationAutomationSettings,
-                    workflows: {
-                        ...applicationAutomationSettings.workflows,
-                        entrypoints: nextEntrypoints,
-                    },
-                },
-                `${action === 'reorder' ? 'Flows' : 'Flow'} ${readableAction}`,
-            )
-        },
-        [
-            appId,
-            applicationsAutomationSettings,
-            handleChatApplicationAutomationSettingsUpdate,
-        ],
-    )
-
     return {
         isLoading,
         shopName,
@@ -102,6 +66,5 @@ export function useFlows({ integration }: UseFlowsParams) {
         workflowEntrypoints: selfServiceConfiguration?.workflowsEntrypoints,
         workflowConfigurations,
         automationSettingsWorkflows,
-        handleFlowsChange,
     }
 }

@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { act, renderHook } from '@testing-library/react'
+import { renderHook } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -207,107 +207,58 @@ describe('useFlows', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should call handleChatApplicationAutomationSettingsUpdate when handleFlowsChange is called with add action', () => {
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
-        )
-
-        act(() => {
-            result.current.handleFlowsChange(
-                [{ workflow_id: 'workflow-2', enabled: true }],
-                'add',
+    describe('deferred flows save', () => {
+        it('should not expose handleFlowsChange (flow changes are deferred to the header Save)', () => {
+            const { result } = renderHook(
+                () => useFlows({ integration: defaultIntegration }),
+                { wrapper },
             )
+
+            expect('handleFlowsChange' in result.current).toBe(false)
         })
 
-        expect(
-            mockHandleChatApplicationAutomationSettingsUpdate,
-        ).toHaveBeenCalledWith(
-            expect.objectContaining({
-                workflows: expect.objectContaining({
-                    entrypoints: [{ workflow_id: 'workflow-2', enabled: true }],
-                }),
-            }),
-            'Flow added',
-        )
-    })
+        it('should not call handleChatApplicationAutomationSettingsUpdate on mount', () => {
+            renderHook(() => useFlows({ integration: defaultIntegration }), {
+                wrapper,
+            })
 
-    it('should call handleChatApplicationAutomationSettingsUpdate when handleFlowsChange is called with remove action', () => {
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
-        )
-
-        act(() => {
-            result.current.handleFlowsChange([], 'remove')
+            expect(
+                mockHandleChatApplicationAutomationSettingsUpdate,
+            ).not.toHaveBeenCalled()
         })
 
-        expect(
-            mockHandleChatApplicationAutomationSettingsUpdate,
-        ).toHaveBeenCalledWith(
-            expect.objectContaining({
-                workflows: expect.objectContaining({
-                    entrypoints: [],
-                }),
-            }),
-            'Flow removed',
-        )
-    })
+        it('should return automationSettingsWorkflows reflecting the latest server state', () => {
+            mockedUseApplicationsAutomationSettings.mockReturnValue({
+                applicationsAutomationSettings: {
+                    'test-app-id': {
+                        applicationId: 'test-app-id',
+                        workflows: {
+                            enabled: true,
+                            entrypoints: [
+                                { workflow_id: 'workflow-1', enabled: true },
+                                { workflow_id: 'workflow-2', enabled: false },
+                            ],
+                        },
+                    },
+                },
+                isFetchPending: false,
+                isUpdatePending: false,
+                handleChatApplicationAutomationSettingsUpdate:
+                    mockHandleChatApplicationAutomationSettingsUpdate,
+            } as any)
 
-    it('should call handleChatApplicationAutomationSettingsUpdate when handleFlowsChange is called with reorder action', () => {
-        const { result } = renderHook(
-            () => useFlows({ integration: defaultIntegration }),
-            { wrapper },
-        )
-
-        act(() => {
-            result.current.handleFlowsChange(
-                [
-                    { workflow_id: 'workflow-2', enabled: true },
-                    { workflow_id: 'workflow-1', enabled: true },
-                ],
-                'reorder',
+            const { result } = renderHook(
+                () => useFlows({ integration: defaultIntegration }),
+                { wrapper },
             )
+
+            expect(result.current.automationSettingsWorkflows).toEqual([
+                { workflow_id: 'workflow-1', enabled: true },
+                { workflow_id: 'workflow-2', enabled: false },
+            ])
+            expect(
+                mockHandleChatApplicationAutomationSettingsUpdate,
+            ).not.toHaveBeenCalled()
         })
-
-        expect(
-            mockHandleChatApplicationAutomationSettingsUpdate,
-        ).toHaveBeenCalledWith(
-            expect.objectContaining({
-                workflows: expect.objectContaining({
-                    entrypoints: [
-                        { workflow_id: 'workflow-2', enabled: true },
-                        { workflow_id: 'workflow-1', enabled: true },
-                    ],
-                }),
-            }),
-            'Flows order updated',
-        )
-    })
-
-    it('should not call handleChatApplicationAutomationSettingsUpdate when appId is missing', () => {
-        const integrationWithoutAppId = fromJS({
-            id: 1,
-            meta: {
-                shop_name: 'test-shop',
-                shop_type: 'shopify',
-            },
-        })
-
-        const { result } = renderHook(
-            () => useFlows({ integration: integrationWithoutAppId }),
-            { wrapper },
-        )
-
-        act(() => {
-            result.current.handleFlowsChange(
-                [{ workflow_id: 'workflow-1', enabled: true }],
-                'add',
-            )
-        })
-
-        expect(
-            mockHandleChatApplicationAutomationSettingsUpdate,
-        ).not.toHaveBeenCalled()
     })
 })
