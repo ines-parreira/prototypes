@@ -4,7 +4,6 @@ import type { AiAgentReasoningState } from '@repo/ai-agent'
 import * as aiAgent from '@repo/ai-agent'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
-import type { List, Map } from 'immutable'
 import { useLocation } from 'react-router-dom'
 
 import { LegacyButton as Button, Icon } from '@gorgias/axiom'
@@ -12,6 +11,7 @@ import { LegacyButton as Button, Icon } from '@gorgias/axiom'
 import useAppSelector from 'hooks/useAppSelector'
 import type { TicketMessage } from 'models/ticket/types'
 import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
+import { useIsEvoliTicket } from 'pages/tickets/detail/hooks/useIsEvoliTicket'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
@@ -34,13 +34,7 @@ const EVOLI_STATIC_MESSAGE =
 
 export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const ticket = useAppSelector(getTicketState)
-
-    const ticketTags = ticket.get('tags') as
-        | List<Map<string, string>>
-        | undefined
-    const isEvoliTicket = aiAgent.isEvoliTicket(
-        ticketTags?.map((tag) => tag?.get('name')).toArray(),
-    )
+    const isEvoliTicket = useIsEvoliTicket()
 
     const [state, setState] = useState<AiAgentReasoningState>(
         isEvoliTicket ? 'static' : 'collapsed',

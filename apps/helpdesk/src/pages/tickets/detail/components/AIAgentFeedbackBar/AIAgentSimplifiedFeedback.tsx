@@ -31,6 +31,7 @@ import {
     AutoSaveState,
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToNextTicket'
+import { useIsEvoliTicket } from 'pages/tickets/detail/hooks/useIsEvoliTicket'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getSectionIdByName } from 'state/entities/sections/selectors'
 import { getAIAgentMessages, getTicketState } from 'state/ticket/selectors'
@@ -61,6 +62,7 @@ const AIAgentSimplifiedFeedback = () => {
     const accountId: number = account.get('id')
     const userId: number = currentUser.get('id')
 
+    const isEvoliTicket = useIsEvoliTicket()
     const aiMessages = useAppSelector(getAIAgentMessages)
     const shouldShowTicketLevelFeedback = useMemo(() => {
         if (
@@ -395,7 +397,8 @@ const AIAgentSimplifiedFeedback = () => {
             <div className={css.container}>
                 {feedback &&
                 feedback.executions.length === 0 &&
-                !shouldShowTicketLevelFeedback ? (
+                !shouldShowTicketLevelFeedback &&
+                !isEvoliTicket ? (
                     "We're still processing the details of this conversation. You'll be able to review shortly."
                 ) : (
                     <div className={css.feedbackSection}>
