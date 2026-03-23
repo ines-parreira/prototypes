@@ -4,11 +4,17 @@ import {
     AIAgentAutomatedInteractionsV2FilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import { HandoverInteractionsFilterMember } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
+    allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
+    shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
+    supportAgentHandoverInteractionsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
+import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
 import { DRILLDOWN_QUERY_LIMIT } from 'domains/reporting/utils/reporting'
@@ -334,6 +340,143 @@ describe('supportAgentAutomatedInteractionsDrillDownQueryFactory', () => {
                 AIAgentAutomatedInteractionsV2Dimension.TicketId,
                 OrderDirection.Asc,
             ],
+        ])
+    })
+})
+
+const timezone = 'UTC'
+const filters: StatsFilters = {
+    channels: withDefaultLogicalOperator(['chat']),
+    period: {
+        start_datetime: '2021-01-01T00:00:00Z',
+        end_datetime: '2021-01-02T00:00:00Z',
+    },
+}
+
+const periodFilters = [
+    {
+        member: 'HandoverInteractions.periodStart',
+        operator: 'afterDate',
+        values: ['2021-01-01T00:00:00Z'],
+    },
+    {
+        member: 'HandoverInteractions.periodEnd',
+        operator: 'beforeDate',
+        values: ['2021-01-02T00:00:00Z'],
+    },
+]
+
+describe('allAgentsHandoverInteractionsDrillDownQueryFactory', () => {
+    it('returns query with automationFeatureType filter and period filters', () => {
+        expect(
+            allAgentsHandoverInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_ALL_AGENTS_HANDOVER_INTERACTIONS_DRILLDOWN,
+            measures: [],
+            dimensions: ['HandoverInteractions.ticketId'],
+            filters: [
+                {
+                    member: HandoverInteractionsFilterMember.FeatureType,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [AutomationFeatureType.AiAgent],
+                },
+                ...periodFilters,
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('includes sorting order when sorting is provided', () => {
+        const result = allAgentsHandoverInteractionsDrillDownQueryFactory(
+            filters,
+            timezone,
+            OrderDirection.Asc,
+        )
+        expect(result.order).toEqual([
+            ['HandoverInteractions.ticketId', OrderDirection.Asc],
+        ])
+    })
+})
+
+describe('shoppingAssistantHandoverInteractionsDrillDownQueryFactory', () => {
+    it('returns query with AIAgentSales skill filter and period filters', () => {
+        expect(
+            shoppingAssistantHandoverInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_DRILLDOWN,
+            measures: [],
+            dimensions: ['HandoverInteractions.ticketId'],
+            filters: [
+                {
+                    member: 'HandoverInteractions.aiAgentSkill',
+                    operator: 'equals',
+                    values: [AIAgentSkills.AIAgentSales],
+                },
+                ...periodFilters,
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('includes sorting order when sorting is provided', () => {
+        const result =
+            shoppingAssistantHandoverInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Desc,
+            )
+        expect(result.order).toEqual([
+            ['HandoverInteractions.ticketId', OrderDirection.Desc],
+        ])
+    })
+})
+
+describe('supportAgentHandoverInteractionsDrillDownQueryFactory', () => {
+    it('returns query with AIAgentSupport skill filter and period filters', () => {
+        expect(
+            supportAgentHandoverInteractionsDrillDownQueryFactory(
+                filters,
+                timezone,
+            ),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_HANDOVER_INTERACTIONS_DRILLDOWN,
+            measures: [],
+            dimensions: ['HandoverInteractions.ticketId'],
+            filters: [
+                {
+                    member: 'HandoverInteractions.aiAgentSkill',
+                    operator: 'equals',
+                    values: [AIAgentSkills.AIAgentSupport],
+                },
+                ...periodFilters,
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('includes sorting order when sorting is provided', () => {
+        const result = supportAgentHandoverInteractionsDrillDownQueryFactory(
+            filters,
+            timezone,
+            OrderDirection.Asc,
+        )
+        expect(result.order).toEqual([
+            ['HandoverInteractions.ticketId', OrderDirection.Asc],
         ])
     })
 })

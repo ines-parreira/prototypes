@@ -20,6 +20,17 @@ jest.mock('domains/reporting/hooks/useDrillDownData', () => ({
 }))
 
 jest.mock(
+    'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories',
+    () => ({
+        allAgentsAutomatedInteractionsDrillDownQueryFactory: jest.fn(),
+        shoppingAssistantAutomatedInteractionsDrillDownQueryFactory: jest.fn(),
+        supportAgentAutomatedInteractionsDrillDownQueryFactory: jest.fn(),
+        allAgentsHandoverInteractionsDrillDownQueryFactory: jest.fn(),
+        shoppingAssistantHandoverInteractionsDrillDownQueryFactory: jest.fn(),
+        supportAgentHandoverInteractionsDrillDownQueryFactory: jest.fn(),
+    }),
+)
+jest.mock(
     'domains/reporting/pages/common/drill-down/DrillDownFormatters',
     () => ({
         formatTicketDrillDownRowData: jest.fn(),

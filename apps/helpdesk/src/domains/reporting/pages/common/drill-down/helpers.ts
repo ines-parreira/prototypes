@@ -22,8 +22,11 @@ import {
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
+    allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
+    shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
+    supportAgentHandoverInteractionsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
     knowledgeCSATDrillDownQueryFactory,
@@ -434,6 +437,12 @@ export const getDrillDownQuery = (
         case AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard:
             // Exhaustiveness stub, AiAgentDrillDownConfig.drillDownHook handles actual routing.
             return successRateV2DrillDownQueryFactory
+        case AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard:
+            return allAgentsHandoverInteractionsDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard:
+            return shoppingAssistantHandoverInteractionsDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard:
+            return supportAgentHandoverInteractionsDrillDownQueryFactory
         case AiSalesAgentChart.AiSalesDiscountOffered:
             return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesDiscountOffered
@@ -986,7 +995,13 @@ export const getDrillDownMetricColumn = (
         metricData.metricName ===
             AiAgentDrillDownMetricName.ResolvedInteractionsCard ||
         metricData.metricName ===
-            AiAgentDrillDownMetricName.SupportInteractionsCard
+            AiAgentDrillDownMetricName.SupportInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard
     ) {
         metricTitle = ''
         metricValueFormat = 'decimal'

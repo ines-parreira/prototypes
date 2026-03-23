@@ -403,6 +403,12 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSupportHandoverInteractionsCard',
             Component: AnalyticsAiAgentSupportHandoverInteractionsCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName:
+                    AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard,
+                title: 'Handover interactions',
+            },
             config: {
                 label: 'Handover interactions',
                 description:
@@ -415,6 +421,12 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentAllAgentsHandoverInteractionsCard',
             Component: AnalyticsAiAgentAllAgentsHandoverInteractionsCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName:
+                    AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard,
+                title: 'Handover interactions',
+            },
             config: {
                 label: 'Handover interactions',
                 description:
@@ -427,6 +439,12 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSalesHandoverInteractionsCard',
             Component: AnalyticsAiAgentSalesHandoverInteractionsCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName:
+                    AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard,
+                title: 'Handover interactions',
+            },
             config: {
                 label: 'Handover interactions',
                 description:

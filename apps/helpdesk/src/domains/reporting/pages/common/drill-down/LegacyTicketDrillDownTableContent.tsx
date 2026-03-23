@@ -191,7 +191,13 @@ export const LegacyTicketDrillDownTableContent = ({
         metricData.metricName ===
             AiAgentDrillDownMetricName.ResolvedInteractionsCard ||
         metricData.metricName ===
-            AiAgentDrillDownMetricName.SupportInteractionsCard
+            AiAgentDrillDownMetricName.SupportInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard
 
     const { data, isFetching } = useEnrichedDrillDownData(
         getDrillDownQuery(metricData),

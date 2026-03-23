@@ -5,6 +5,12 @@ import {
     AIAgentAutomatedInteractionsV2FilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
+import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
+import {
+    HandoverInteractionsDimension,
+    HandoverInteractionsFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
+import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import { ReportingFilterOperator } from 'domains/reporting/models/types'
@@ -19,6 +25,19 @@ const buildPeriodFilters = (filters: StatsFilters) => [
     },
     {
         member: AIAgentAutomatedInteractionsV2FilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [filters.period.end_datetime],
+    },
+]
+
+const buildHandoverPeriodFilters = (filters: StatsFilters) => [
+    {
+        member: HandoverInteractionsFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [filters.period.start_datetime],
+    },
+    {
+        member: HandoverInteractionsFilterMember.PeriodEnd,
         operator: ReportingFilterOperator.BeforeDate,
         values: [filters.period.end_datetime],
     },
@@ -87,4 +106,70 @@ export const supportAgentAutomatedInteractionsDrillDownQueryFactory = (
     order: sorting
         ? [[AIAgentAutomatedInteractionsV2Dimension.TicketId, sorting]]
         : [],
+})
+
+export const allAgentsHandoverInteractionsDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<HandoverInteractionsCube> => ({
+    metricName:
+        METRIC_NAMES.AI_AGENT_ALL_AGENTS_HANDOVER_INTERACTIONS_DRILLDOWN,
+    measures: [],
+    dimensions: [HandoverInteractionsDimension.TicketId],
+    filters: [
+        {
+            member: HandoverInteractionsFilterMember.FeatureType,
+            operator: ReportingFilterOperator.Equals,
+            values: [AutomationFeatureType.AiAgent],
+        },
+        ...buildHandoverPeriodFilters(filters),
+    ],
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting ? [[HandoverInteractionsDimension.TicketId, sorting]] : [],
+})
+
+export const shoppingAssistantHandoverInteractionsDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<HandoverInteractionsCube> => ({
+    metricName:
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_DRILLDOWN,
+    measures: [],
+    dimensions: [HandoverInteractionsDimension.TicketId],
+    filters: [
+        {
+            member: HandoverInteractionsFilterMember.AiAgentSkill,
+            operator: ReportingFilterOperator.Equals,
+            values: [AIAgentSkills.AIAgentSales],
+        },
+        ...buildHandoverPeriodFilters(filters),
+    ],
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting ? [[HandoverInteractionsDimension.TicketId, sorting]] : [],
+})
+
+export const supportAgentHandoverInteractionsDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<HandoverInteractionsCube> => ({
+    metricName:
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_HANDOVER_INTERACTIONS_DRILLDOWN,
+    measures: [],
+    dimensions: [HandoverInteractionsDimension.TicketId],
+    filters: [
+        {
+            member: HandoverInteractionsFilterMember.AiAgentSkill,
+            operator: ReportingFilterOperator.Equals,
+            values: [AIAgentSkills.AIAgentSupport],
+        },
+        ...buildHandoverPeriodFilters(filters),
+    ],
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting ? [[HandoverInteractionsDimension.TicketId, sorting]] : [],
 })

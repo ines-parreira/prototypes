@@ -27,8 +27,11 @@ import {
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
+    allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
+    shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
+    supportAgentHandoverInteractionsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
     knowledgeCSATDrillDownQueryFactory,
@@ -170,6 +173,9 @@ jest.mock(
 )
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
 jest.mock(
+    'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories',
+)
+jest.mock(
     'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
 )
 jest.mock('AIJourney/queries/aiJourneyDrillDownQueries')
@@ -227,6 +233,14 @@ const totalNumberOfAutomatedSalesDrillDownQueryFactoryMock = assumeMock(
 )
 const successRateV2DrillDownQueryFactoryMock = assumeMock(
     successRateV2DrillDownQueryFactory,
+)
+const allAgentsHandoverInteractionsDrillDownQueryFactoryMock = assumeMock(
+    allAgentsHandoverInteractionsDrillDownQueryFactory,
+)
+const shoppingAssistantHandoverInteractionsDrillDownQueryFactoryMock =
+    assumeMock(shoppingAssistantHandoverInteractionsDrillDownQueryFactory)
+const supportAgentHandoverInteractionsDrillDownQueryFactoryMock = assumeMock(
+    supportAgentHandoverInteractionsDrillDownQueryFactory,
 )
 const discountCodesOfferedDrillDownQueryFactoryMock = assumeMock(
     discountCodesOfferedDrillDownQueryFactory,
@@ -1425,6 +1439,72 @@ describe('getDrillDownQuery', () => {
         )
     })
 
+    it('should be populated with AllAgentsHandoverInteractionsCard', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName:
+                AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            allAgentsHandoverInteractionsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
+    it('should be populated with ShoppingAssistantHandoverInteractionsCard', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            shoppingAssistantHandoverInteractionsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
+    it('should be populated with SupportAgentHandoverInteractionsCard', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName:
+                AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            supportAgentHandoverInteractionsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
     it('should be populated with AiSalesDiscountOffered', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -2280,6 +2360,39 @@ describe('getDrillDownMetric', () => {
             metricData: {
                 metricName: AiAgentDrillDownMetricName.SupportInteractionsCard,
             },
+            expectedValues: {
+                metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName:
+                    AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard,
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName:
+                    AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard,
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName:
+                    AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard,
+            } as AiAgentMetrics,
             expectedValues: {
                 metricTitle: '',
                 showMetric: false,

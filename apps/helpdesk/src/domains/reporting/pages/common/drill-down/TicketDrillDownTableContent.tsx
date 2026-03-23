@@ -193,7 +193,13 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName ===
             AiAgentDrillDownMetricName.ResolvedInteractionsCard ||
         metricData.metricName ===
-            AiAgentDrillDownMetricName.SupportInteractionsCard
+            AiAgentDrillDownMetricName.SupportInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard
 
     // Fetch data directly (used by legacy table, or when context is not available)
     const fetchedData = useEnrichedDrillDownData(

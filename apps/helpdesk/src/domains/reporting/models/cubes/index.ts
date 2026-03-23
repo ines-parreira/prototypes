@@ -10,6 +10,7 @@ import type { AIAgentAutomatedInteractionsCube } from 'domains/reporting/models/
 import type { AutomatedTicketsCube } from 'domains/reporting/models/cubes/automate_v2/AutomatedTicketsCube'
 import type { AutomationDatasetCube } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import type { BillableTicketDatasetCube } from 'domains/reporting/models/cubes/automate_v2/BillableTicketDatasetCube'
+import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import type { RecommendedResourcesCube } from 'domains/reporting/models/cubes/automate_v2/RecommendedResourcesCube'
 import type { SuccessRateCube } from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
 import type { WorkflowDatasetCube } from 'domains/reporting/models/cubes/automate_v2/WorkflowDatasetCube'
@@ -56,6 +57,7 @@ export type Cubes =
     | ConvertTrackingEventsCube
     | AIAgentAutomatedInteractionsCube
     | AIAgentAutomatedInteractionsV2Cube
+    | HandoverInteractionsCube
     | SuccessRateCube
     | TicketFirstHumanAgentResponseTimeCube
     | TicketInsightsTaskCube

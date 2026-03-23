@@ -997,6 +997,21 @@ describe('<DrillDownTable />', () => {
             label: 'AiAgentDrillDownMetricName.SupportInteractionsCard',
             metricName: AiAgentDrillDownMetricName.SupportInteractionsCard,
         },
+        {
+            label: 'AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard',
+            metricName:
+                AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard,
+        },
+        {
+            label: 'AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard',
+            metricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard,
+        },
+        {
+            label: 'AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard',
+            metricName:
+                AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard,
+        },
     ])('with $label', ({ metricName }) => {
         const metricData = {
             metricName,
