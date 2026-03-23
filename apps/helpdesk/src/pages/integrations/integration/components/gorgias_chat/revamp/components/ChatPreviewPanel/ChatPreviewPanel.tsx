@@ -1,4 +1,5 @@
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import type { ReactNode } from 'react'
 
 import {
     Box,
@@ -29,124 +30,136 @@ export type ChatPreviewPanelHandle = {
     openChat: () => void
 }
 
-export const ChatPreviewPanel = forwardRef<
-    ChatPreviewPanelHandle,
-    { appId: string | null }
->(({ appId }, ref) => {
-    const chatPreviewRef = useRef<ChatPreviewHandle>(null)
+type Props = {
+    appId: string | null
+    headerActions?: ReactNode
+}
 
-    const withGorgiasChat = (
-        callback: (gorgiasChat: NonNullable<Window['GorgiasChat']>) => void,
-    ) => {
-        const ref = chatPreviewRef.current
-        if (!ref?.isLoaded || ref?.hasError) return
-        const gorgiasChat = ref.iframeRef.current?.contentWindow?.GorgiasChat
-        if (!gorgiasChat) return
-        try {
-            callback(gorgiasChat)
-        } catch (error) {
-            if (process.env.NODE_ENV === 'development') {
-                console.error(error)
+export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
+    ({ appId, headerActions }, ref) => {
+        const chatPreviewRef = useRef<ChatPreviewHandle>(null)
+        const [selectedPage, setSelectedPage] = useState<
+            'homepage' | 'conversation'
+        >('homepage')
+
+        const withGorgiasChat = (
+            callback: (gorgiasChat: NonNullable<Window['GorgiasChat']>) => void,
+        ) => {
+            const chatRef = chatPreviewRef.current
+            if (!chatRef?.isLoaded || chatRef?.hasError) return
+            const gorgiasChat =
+                chatRef.iframeRef.current?.contentWindow?.GorgiasChat
+            if (!gorgiasChat) return
+            try {
+                callback(gorgiasChat)
+            } catch (error) {
+                if (process.env.NODE_ENV === 'development') {
+                    console.error(error)
+                }
             }
         }
-    }
 
-    const displayPage = (page: 'homepage' | 'conversation') => {
-        withGorgiasChat((gorgiasChat) => {
-            setSelectedPage(page)
-            gorgiasChat.setPage(page)
-        })
-    }
-
-    const closeChat = () => {
-        withGorgiasChat((gorgiasChat) => gorgiasChat.close())
-    }
-
-    const openChat = () => {
-        withGorgiasChat((gorgiasChat) => gorgiasChat.open())
-    }
-
-    const updatePosition = (position: GorgiasChatPosition) => {
-        withGorgiasChat((gorgiasChat) => gorgiasChat.setPosition(position))
-    }
-
-    const updateSettings = (
-        settings: GorgiasChatPreviewApplicationSettings,
-    ) => {
-        withGorgiasChat((gorgiasChat) => gorgiasChat.updateSettings?.(settings))
-    }
-
-    const updateTexts = (texts: Record<string, string>) => {
-        withGorgiasChat(() => {
-            const iframeWindow = chatPreviewRef.current?.iframeRef.current
-                ?.contentWindow as any
-            /**
-             * The iframe runs in a separate JS realm, so plain objects created here fail
-             * the `instanceof Object` check inside the chat widget. We use the iframe's
-             * own Object constructor to create the target, ensuring it belongs to the correct realm.
-             */
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const iframeTexts = iframeWindow.Object.assign(
-                new iframeWindow.Object(),
-                texts,
-            )
-            iframeWindow.GorgiasChat?.updateTexts(iframeTexts)
-        })
-    }
-
-    useImperativeHandle(ref, () => ({
-        displayPage,
-        updatePosition,
-        updateSettings,
-        updateTexts,
-        closeChat,
-        openChat,
-    }))
-
-    const handlePageChange = (page: string) => {
-        if (page === 'conversation' || page === 'homepage') {
-            displayPage(page)
-            openChat()
+        const displayPage = (page: 'homepage' | 'conversation') => {
+            withGorgiasChat((gorgiasChat) => {
+                setSelectedPage(page)
+                gorgiasChat.setPage(page)
+            })
         }
-    }
 
-    const [selectedPage, setSelectedPage] = useState<
-        'homepage' | 'conversation'
-    >('homepage')
+        const closeChat = () => {
+            withGorgiasChat((gorgiasChat) => gorgiasChat.close())
+        }
 
-    return (
-        <Box flexDirection="column" className={css.panel}>
-            <Box
-                alignItems="center"
-                justifyContent="space-between"
-                className={css.header}
-            >
-                <Text variant={TextVariant.Medium}>Chat preview</Text>
-                <ButtonGroup
-                    selectedKey={selectedPage}
-                    defaultSelectedKey="homepage"
-                    onSelectionChange={handlePageChange}
+        const openChat = () => {
+            withGorgiasChat((gorgiasChat) => gorgiasChat.open())
+        }
+
+        const updatePosition = (position: GorgiasChatPosition) => {
+            withGorgiasChat((gorgiasChat) => gorgiasChat.setPosition(position))
+        }
+
+        const updateSettings = (
+            settings: GorgiasChatPreviewApplicationSettings,
+        ) => {
+            withGorgiasChat((gorgiasChat) =>
+                gorgiasChat.updateSettings?.(settings),
+            )
+        }
+
+        const updateTexts = (texts: Record<string, string>) => {
+            withGorgiasChat(() => {
+                const iframeWindow = chatPreviewRef.current?.iframeRef.current
+                    ?.contentWindow as any
+                /**
+                 * The iframe runs in a separate JS realm, so plain objects created here fail
+                 * the `instanceof Object` check inside the chat widget. We use the iframe's
+                 * own Object constructor to create the target, ensuring it belongs to the correct realm.
+                 */
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const iframeTexts = iframeWindow.Object.assign(
+                    new iframeWindow.Object(),
+                    texts,
+                )
+                iframeWindow.GorgiasChat?.updateTexts(iframeTexts)
+            })
+        }
+
+        useImperativeHandle(ref, () => ({
+            displayPage,
+            updatePosition,
+            updateSettings,
+            updateTexts,
+            closeChat,
+            openChat,
+        }))
+
+        const handlePageChange = (page: string) => {
+            if (page === 'conversation' || page === 'homepage') {
+                displayPage(page)
+                openChat()
+            }
+        }
+
+        return (
+            <Box flexDirection="column" className={css.panel}>
+                <Box
+                    alignItems="center"
+                    justifyContent="space-between"
+                    className={css.header}
                 >
-                    <ButtonGroupItem
-                        id="homepage"
-                        icon={<Icon name="nav-home" />}
-                    />
-                    <ButtonGroupItem
-                        id="conversation"
-                        icon={<Icon name="comm-chat-conversation-circle" />}
-                    />
-                </ButtonGroup>
+                    <Text variant={TextVariant.Medium}>Chat preview</Text>
+                    {headerActions ?? (
+                        <ButtonGroup
+                            selectedKey={selectedPage}
+                            defaultSelectedKey="homepage"
+                            onSelectionChange={handlePageChange}
+                        >
+                            <ButtonGroupItem
+                                id="homepage"
+                                icon={<Icon name="nav-home" />}
+                            />
+                            <ButtonGroupItem
+                                id="conversation"
+                                icon={
+                                    <Icon name="comm-chat-conversation-circle" />
+                                }
+                            />
+                        </ButtonGroup>
+                    )}
+                </Box>
+                <Box
+                    flexGrow={1}
+                    className={css.content}
+                    paddingLeft={Size.Md}
+                    paddingRight={Size.Md}
+                    paddingBottom={Size.Xxl}
+                    paddingTop={Size.Xxl}
+                >
+                    {appId && (
+                        <ChatPreview ref={chatPreviewRef} appId={appId} />
+                    )}
+                </Box>
             </Box>
-            <Box
-                flexGrow={1}
-                className={css.content}
-                paddingLeft={Size.Md}
-                paddingRight={Size.Md}
-                paddingBottom={Size.Xxl}
-                paddingTop={Size.Xxl}
-            >
-                {appId && <ChatPreview ref={chatPreviewRef} appId={appId} />}
-            </Box>
-        </Box>
-    )
-})
+        )
+    },
+)

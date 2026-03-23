@@ -2,13 +2,10 @@ import { useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
-import { Box, Heading } from '@gorgias/axiom'
-
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { ChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/ChatPreviewPanel'
 
 import { ChatChannelSelector } from '../ChatChannelSelector/ChatChannelSelector'
-
-import css from './ConnectedChannelsPreviewPanel.less'
 
 export const ConnectedChannelsPreviewPanel = () => {
     const { shopType, shopName } = useParams<{
@@ -21,22 +18,23 @@ export const ConnectedChannelsPreviewPanel = () => {
         number | undefined
     >(() => chatChannels[0]?.value.id)
 
+    const selectedChannel =
+        chatChannels.find((c) => c.value.id === selectedChannelId) ??
+        chatChannels[0]
+    const appId = selectedChannel?.value.meta.app_id ?? null
+
     return (
-        <Box flexDirection="column" className={css.panel}>
-            <Box
-                alignItems="center"
-                justifyContent="space-between"
-                className={css.header}
-            >
-                <Heading size="sm">Chat preview</Heading>
-                {chatChannels.length > 0 && (
+        <ChatPreviewPanel
+            appId={appId}
+            headerActions={
+                chatChannels.length > 0 ? (
                     <ChatChannelSelector
                         chatChannels={chatChannels}
                         selectedChannelId={selectedChannelId}
                         onSelect={setSelectedChannelId}
                     />
-                )}
-            </Box>
-        </Box>
+                ) : undefined
+            }
+        />
     )
 }

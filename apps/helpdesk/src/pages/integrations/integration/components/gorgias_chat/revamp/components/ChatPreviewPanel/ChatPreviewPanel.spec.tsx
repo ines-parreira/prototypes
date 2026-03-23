@@ -1,6 +1,6 @@
 import { createRef } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { ButtonGroupItemProps, ButtonGroupProps } from '@gorgias/axiom'
@@ -109,6 +109,32 @@ describe('ChatPreviewPanel', () => {
 
             expect(screen.queryByTestId('chat-preview')).not.toBeInTheDocument()
         })
+
+        it('renders the default ButtonGroup when headerActions is not provided', () => {
+            renderComponent()
+
+            expect(
+                screen.getByTestId('button-group-item-homepage'),
+            ).toBeInTheDocument()
+        })
+
+        it('renders headerActions instead of the ButtonGroup when provided', () => {
+            const ref = createRef<ChatPreviewPanelHandle>()
+            render(
+                <ChatPreviewPanel
+                    ref={ref}
+                    appId="test-app-id"
+                    headerActions={<button>Custom action</button>}
+                />,
+            )
+
+            expect(
+                screen.getByRole('button', { name: 'Custom action' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('button-group-item-homepage'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('page navigation', () => {
@@ -150,7 +176,9 @@ describe('ChatPreviewPanel', () => {
         it('displayPage calls GorgiasChat.setPage', () => {
             const { ref } = renderComponent()
 
-            ref.current?.displayPage('conversation')
+            act(() => {
+                ref.current?.displayPage('conversation')
+            })
 
             expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('conversation')
         })
@@ -236,6 +264,26 @@ describe('ChatPreviewPanel', () => {
             ref.current?.closeChat()
 
             expect(mockGorgiasChat.close).not.toHaveBeenCalled()
+        })
+
+        it('does not throw when methods are called with no chat preview rendered', () => {
+            const { ref } = renderComponent(null)
+
+            expect(() => ref.current?.displayPage('homepage')).not.toThrow()
+            expect(() => ref.current?.closeChat()).not.toThrow()
+            expect(() => ref.current?.openChat()).not.toThrow()
+            expect(() =>
+                ref.current?.updatePosition({
+                    alignment: GorgiasChatPositionAlignmentEnum.BOTTOM_LEFT,
+                    offsetX: 0,
+                    offsetY: 0,
+                }),
+            ).not.toThrow()
+            expect(() =>
+                ref.current?.updateSettings({
+                    decoration: { mainColor: '#fff' },
+                }),
+            ).not.toThrow()
         })
     })
 })
