@@ -6,6 +6,8 @@ import {
     aiSupportHandoverInteractions,
     aiSupportHandoverInteractionsV2QueryFactory,
     handoverInteractions,
+    handoverInteractionsPerChannel,
+    handoverInteractionsPerChannelQueryFactoryV2,
     handoverInteractionsPerFeature,
     handoverInteractionsPerFeatureQueryFactoryV2,
     handoverInteractionsPerOrderManagementType,
@@ -175,6 +177,29 @@ describe('handoverInteractionsScope', () => {
         })
     })
 
+    describe('handoverInteractionsPerChannel', () => {
+        it('creates query with channel dimension and automationFeatureType filter for ai-agent', () => {
+            const actual = handoverInteractionsPerChannel.build(context)
+
+            expect(actual).toEqual({
+                metricName: 'ai-agent-handover-interactions-per-channel',
+                scope: 'handover-interactions',
+                measures: ['handoverInteractionsCount'],
+                dimensions: ['channel'],
+                timezone: 'utc',
+                filters: [
+                    ...periodFilters,
+                    {
+                        member: 'automationFeatureType',
+                        operator: 'one-of',
+                        values: ['ai-agent'],
+                    },
+                ],
+                time_dimensions: timeDimensions,
+            })
+        })
+    })
+
     describe('QueryV2Factory methods', () => {
         describe('handoverInteractionsV2QueryFactory', () => {
             it('returns the same result as calling build directly', () => {
@@ -225,6 +250,14 @@ describe('handoverInteractionsScope', () => {
                 ).toEqual(
                     handoverInteractionsPerOrderManagementType.build(context),
                 )
+            })
+        })
+
+        describe('handoverInteractionsPerChannelQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                expect(
+                    handoverInteractionsPerChannelQueryFactoryV2(context),
+                ).toEqual(handoverInteractionsPerChannel.build(context))
             })
         })
     })

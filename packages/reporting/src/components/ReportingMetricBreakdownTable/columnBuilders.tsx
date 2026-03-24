@@ -56,9 +56,9 @@ export function buildNameColDef<TData>(
         meta: { displayName: config.label },
         cell: (info) => {
             const value = info.getValue() as string
-            const displayName = config.displayNames
-                ? config.displayNames[value]
-                : value
+            const displayName = config.formatName
+                ? config.formatName(value)
+                : (config.displayNames?.[value] ?? value)
             const href = config.getHref?.(value)
 
             return (

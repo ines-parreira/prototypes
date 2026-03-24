@@ -229,6 +229,7 @@ export type MeasureName =
     | 'ordersInfluencedCount'
     | 'totalSalesAmount'
     | 'totalSalesAmountUsd'
+    | 'successRate'
 
 export type TimeDimensionName =
     | 'createdDatetime'

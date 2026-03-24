@@ -1,29 +1,42 @@
 ---
 name: add-metric-table
-description: Add a new analytics metric breakdown table to the AI Agent Analytics Overview dashboard. Scaffolds scope queries, per-metric hooks, aggregator hook, download hook, component files, report config entry, and layout config entry.
+description: Add a new analytics metric breakdown table to the AI Agent Analytics dashboard (analyticsOverview or analyticsAiAgent). Scaffolds scope queries, per-metric hooks, aggregator hook, download hook, component files, and wires up CSV export and layout registration.
 ---
 
 # Add Metric Breakdown Table
 
-Create a new analytics breakdown table for the AI Agent Analytics Overview dashboard. The table shows the standard 5 metrics (overall automation rate, automated interactions, handover interactions, cost saved, time saved) broken down by a new dimension (e.g., per flow, per skill, per channel).
+Create a new analytics breakdown table that uses `ReportingMetricBreakdownTable` from `@repo/reporting`. The table shows metrics broken down by a new dimension (e.g., per skill, per channel, per integration).
 
 ## How to use this skill
 
 Ask the user for the following information if not already provided:
 
-1. **Table name** – e.g., `FlowsBreakdown` (PascalCase, used for component and hook names)
-2. **Dimension name** – the API dimension key, e.g., `flowId`, `aiAgentSkill`, `channel`
-3. **Entity source** – one of:
-    - **Dynamic** – entities are fetched at runtime from an API (e.g., workflow configurations). Ask which query to use, e.g., `useGetWorkflowConfigurations()` / `fetchWorkflowConfigurations()` from `models/workflows/queries.ts`, and which field to use as the entity key (e.g., `id`, `internal_id`)
-    - **Static** – a fixed list of known entity keys (e.g., `['cancel_order', 'return_item']`). Ask for the full list.
-4. **Entity display names** – how to get human-readable labels:
-    - For **dynamic** entities: which field on the fetched object holds the name (e.g., `name`)
-    - For **static** entities: a `Record<EntityKey, string>` map, or `null` if raw keys should be displayed as-is
-5. **Feature name column label** – e.g., `Flow name`, `Skill`, `Channel`
-6. **Automation feature type filter** – the `AutomationFeatureType` enum value to filter by (from `domains/reporting/models/scopes/constants.ts`), or `null` if no feature filter is needed
-7. **Handover metric** – which entity value(s) support handover counts (or `all` or `none`)
-8. **Segment event name** – string for the download button's segment event, e.g., `ai-agent_overview_flows-breakdown-table`
-9. **Dashboard section** – whether to add to the existing `breakdown` section or a new section in `defaultLayoutConfig.ts`
+1. **Table name** – e.g., `SkillBreakdown` (PascalCase, used for component and hook names)
+2. **Dashboard section** – `analyticsOverview` or `analyticsAiAgent` (determines paths, column config, and CSV export registration target)
+3. **Dimension name** – the API dimension key, e.g., `aiAgentSkill`, `channel`
+4. **Entities** – the list of dimension values to show rows for, e.g., `['skill_a', 'skill_b']`
+5. **Name formatter** – how to display entity values: `displayNames` static record, `formatName` function (when a shared `formatXxxName` already exists), or `none` (show raw values)
+6. **Feature name column label** – e.g., `Skill name`, `Channel`
+7. **Automation feature type filter** – the `AutomationFeatureType` enum value to filter by (from `domains/reporting/models/scopes/constants.ts`), or `null` if no feature filter is needed
+8. **Handover metric** – which entity value(s) support handover counts (or `all` or `none`)
+9. **CSV filename** – kebab-case base name for the downloaded CSV, e.g., `skill-breakdown`
+10. **Segment event name** – string for the download button's segment event, e.g., `ai-agent_all-agents_skill-breakdown-table`
+11. **Legacy table** (`analyticsAiAgent` only) – the existing table component this replaces, for the feature flag wrapper
+12. **Dashboard section / layout** (`analyticsOverview` only) – whether to add to the existing `breakdown` section or a new section in `defaultLayoutConfig.ts`
+
+---
+
+## Path reference
+
+All paths below use `<section>` = `analyticsOverview` or `analyticsAiAgent`.
+
+| Artefact                | `analyticsOverview`                                                                | `analyticsAiAgent`                                            |
+| ----------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Component dir           | `pages/aiAgent/analyticsOverview/components/<TableName>Table/`                     | `pages/aiAgent/analyticsAiAgent/components/<TableName>Table/` |
+| Hook dir                | `pages/aiAgent/analyticsOverview/hooks/`                                           | `pages/aiAgent/analyticsAiAgent/hooks/`                       |
+| Shared download button  | `analyticsOverview/components/shared/DownloadTableButton`                          | same                                                          |
+| Column base             | `STANDARD_METRIC_COLUMNS` from `analyticsOverview/components/shared/metricColumns` | custom per-table columns (no shared base)                     |
+| CSV export registration | `AnalyticsOverviewReportConfig.ts` + `defaultLayoutConfig.ts`                      | `useExportAiAgentAllAgentsToCSV.ts`                           |
 
 ---
 
@@ -39,7 +52,7 @@ The 5 scope files and their corresponding query factory pattern (based on the `O
 | ----------------------- | -------------------------------------------------------------- | ------------------------------------------------------------- |
 | Overall automation rate | `overallAutomationRate.ts`                                     | `overallAutomationRatePerOrderManagementTypeQueryFactoryV2`   |
 | Automated interactions  | `overallAutomatedInteractions.ts`                              | `automatedInteractionsPerOrderManagementTypeQueryFactoryV2`   |
-| Handover interactions   | `handoverInteractions.ts` or a dedicated scope file            | `handoverInteractionsForReportOrderIssueQueryFactoryV2`       |
+| Handover interactions   | `handoverInteractions.ts`                                      | `handoverInteractionsForReportOrderIssueQueryFactoryV2`       |
 | Cost saved              | N/A – computed from automatedInteractions × costPerInteraction | —                                                             |
 | Time saved              | `overallTimeSavedByAgent.ts`                                   | `overallTimeSavedByAgentPerOrderManagementTypeQueryFactoryV2` |
 
@@ -50,32 +63,15 @@ For each scope file, define a new metric using `.defineMetricName(METRIC_NAMES.<
 
 Export both the metric object and a `...QueryFactoryV2 = (ctx: Context) => metric.build(ctx)` function.
 
-**Cost saved** does not have its own scope – it reuses `automatedInteractions` and multiplies by `costSavedPerInteraction` using `mapMetricValues` (see `useCostSavedPerFlows.ts` for the pattern).
-
-**Dedicated scope** (e.g., `flowDataset.ts`): if the dimension lives in its own Cube.js dataset rather than the standard automation scopes, create a new scope file following the `flowDataset.ts` pattern:
-
-```typescript
-const myScope = defineScope({
-    scope: MetricScope.<ScopeName>,
-    measures: [...],
-    dimensions: [...],
-    timeDimensions: [...],
-    filters: [...],
-    order: [...],
-})
-export const my<Metric>QueryFactoryV2 = (ctx: Context<typeof myScope.config>) =>
-    myScope.defineMetricName(METRIC_NAMES.<KEY>).defineQuery(...).build(ctx)
-```
+**Cost saved** does not have its own scope – it reuses `automatedInteractions` and multiplies by `costSavedPerInteraction` using `mapMetricValues` (see `useCostSavedPerOrderManagementType.ts` for the pattern).
 
 ### Step 2 – Add METRIC_NAMES entries
 
 In `apps/helpdesk/src/domains/reporting/hooks/metricNames.ts`, add new `METRIC_NAMES` constant entries for each new query factory that needs one (automation rate, automated interactions, handover, time saved). Follow the existing `AI_AGENT_*_PER_ORDER_MANAGEMENT_TYPE` naming pattern.
 
-If a new `MetricScope` enum value is needed (for a dedicated scope), add it there too and register the scope's metric names in the scope map.
-
 ### Step 3 – Create per-metric hooks
 
-Create one file per metric in `apps/helpdesk/src/pages/aiAgent/analyticsOverview/hooks/`:
+Create one file per metric in the hooks directory for your section.
 
 **Pattern for most metrics** (e.g., `useAutomationRatePer{TableName}.ts`):
 
@@ -118,17 +114,17 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 export const useCostSavedPer<TableName> = (
     statsFilters: StatsFilters,
     timezone: string,
+    costSavedPerInteraction: number,
 ) => {
     const query = <automatedInteractionsQueryFactoryV2>({ filters: statsFilters, timezone })
     const metric = useStatsMetricPerDimension(query)
-    const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(AGENT_COST_PER_TICKET)
     return mapMetricValues(metric, (v) => (v !== null ? v * costSavedPerInteraction : null))
 }
 
 export const fetchCostSavedPer<TableName> = async (
     statsFilters: StatsFilters,
     timezone: string,
-    costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
+    costSavedPerInteraction: number,
 ) => {
     const query = <automatedInteractionsQueryFactoryV2>({ filters: statsFilters, timezone })
     const metric = await fetchStatsMetricPerDimension(query)
@@ -138,162 +134,28 @@ export const fetchCostSavedPer<TableName> = async (
 
 ### Step 4 – Create the aggregator hook
 
-Create `apps/helpdesk/src/pages/aiAgent/analyticsOverview/hooks/use<TableName>Metrics.ts`.
+Create `use<TableName>Metrics.ts` in the hooks directory.
 
 This file must export:
 
-- `<TableName>EntityMetrics` row type with `entity: string` + the 5 metric fields
-- `use<TableName>Metrics()` hook returning `{ data, isLoading, isError, loadingStates, displayNames }`
-- `fetch<TableName>Metrics(statsFilters, timezone, costSavedPerInteraction?)` async function
-- `fetch<TableName>Report: ReportFetch` adapter
+- `<TableName>EntityName` type union of entity keys
+- `<TableName>Entities` array of all entity keys
+- `<TableName>EntityMetrics` row type with `entity` + the metric fields
+- `use<TableName>Metrics()` hook returning `{ data, isLoading, isError, loadingStates }`
+- `fetch<TableName>Metrics(statsFilters, timezone, costSavedPerInteraction?)` async function — **also builds the CSV** (fileName + files)
+- `fetch<TableName>Report: ReportFetch` adapter (`analyticsOverview` only)
 
-Define:
+Follow `useOrderManagementMetrics.ts` (for `analyticsOverview`) or `useAllAgentsPerformanceByChannelMetrics.ts` (for `analyticsAiAgent`):
 
-- `build<TableName>Row` mapping entity keys to metric values
-- `<TABLE_NAME>_METRICS_CONFIG: Record<MetricKeys, EntityMetricConfig>` with `{ use, fetch }` per metric
-- `create<TableName>FetchConfig(costSavedPerInteraction: number)` factory that returns the config with `costSaved.fetch` bound to the given cost value
-- `get<TableName>Entities` and `get<TableName>DisplayNames` helpers (see below)
-
-#### Entity source variants
-
-**Dynamic entities** (fetched from API at runtime, e.g., `useGetWorkflowConfigurations`):
-
-```typescript
-import {
-    fetchWorkflowConfigurations,
-    useGetWorkflowConfigurations,
-} from 'models/workflows/queries'
-
-type Workflow = { id: string; name: string }
-
-const getEntities = (workflows: Workflow[]) => workflows.map((w) => w.id)
-const getDisplayNames = (workflows: Workflow[]): Record<string, string> =>
-    Object.fromEntries(workflows.map((w) => [w.id, w.name]))
-
-export const use<TableName>Metrics = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
-    const { data: workflows, isLoading: isLoadingWorkflows } =
-        useGetWorkflowConfigurations()
-
-    const entities = useMemo(() => getEntities(workflows ?? []), [workflows])
-    const displayNames = useMemo(() => getDisplayNames(workflows ?? []), [workflows])
-
-    const { data: entityData, isLoading: isLoadingMetrics, isError, loadingStates: entityLoadingStates } =
-        useEntityMetrics(<TABLE_NAME>_METRICS_CONFIG, statsFilters, userTimezone)
-
-    const isLoading = isLoadingWorkflows || isLoadingMetrics
-    const data = useMemo(() => {
-        const filteredEntities = filterEntitiesWithData(entities, entityData, isLoading)
-        return assembleEntityRows(entityData, filteredEntities, build<TableName>Row(entityData), { skipEmptyCheck: isLoading })
-    }, [entityData, entities, isLoading])
-    // ... loadingStates mapping
-    return { data, isLoading, isError, loadingStates, displayNames }
-}
-
-export const fetch<TableName>Metrics = async (
-    statsFilters,
-    timezone,
-    costSavedPerInteraction = AGENT_COST_PER_TICKET,
-) => {
-    const workflows = await fetchWorkflowConfigurations()
-    const entities = getEntities(workflows)
-    const displayNames = getDisplayNames(workflows)
-
-    const metrics = await fetchEntityMetrics(
-        create<TableName>FetchConfig(costSavedPerInteraction),
-        { period: statsFilters.period },
-        timezone,
-    )
-    const data = assembleEntityRows(
-        metrics.data,
-        filterEntitiesWithData(entities, metrics.data, false),
-        build<TableName>Row(metrics.data),
-    )
-    // ... CSV build using displayNames
-    return { fileName, files }
-}
-```
-
-**Static entities** (fixed list known at compile time, e.g., `OrderManagement`):
-
-```typescript
-export type <TableName>EntityName = 'entity_a' | 'entity_b' | 'entity_c'
-export const <TABLE_NAME>_ENTITIES: <TableName>EntityName[] = ['entity_a', 'entity_b', 'entity_c']
-
-export const use<TableName>Metrics = () => {
-    const { statsFilters, userTimezone } = useAutomateFilters()
-    const { data: entityData, isLoading, isError, loadingStates: entityLoadingStates } =
-        useEntityMetrics(<TABLE_NAME>_METRICS_CONFIG, statsFilters, userTimezone)
-
-    const data = useMemo(() => {
-        const filteredEntities = filterEntitiesWithData(<TABLE_NAME>_ENTITIES, entityData, isLoading)
-        return assembleEntityRows(entityData, filteredEntities, build<TableName>Row(entityData), { skipEmptyCheck: isLoading })
-    }, [entityData, isLoading])
-    // ... loadingStates mapping
-    return { data, isLoading, isError, loadingStates }
-    // Note: no displayNames returned — handled via static ENTITY_DISPLAY_NAMES in columns.tsx
-}
-
-export const fetch<TableName>Metrics = async (
-    statsFilters,
-    timezone,
-    costSavedPerInteraction = AGENT_COST_PER_TICKET,
-) => {
-    const metrics = await fetchEntityMetrics(
-        create<TableName>FetchConfig(costSavedPerInteraction),
-        { period: statsFilters.period },
-        timezone,
-    )
-    const data = assembleEntityRows(
-        metrics.data,
-        filterEntitiesWithData(<TABLE_NAME>_ENTITIES, metrics.data, false),
-        build<TableName>Row(metrics.data),
-    )
-    // ... CSV build
-    return { fileName, files }
-}
-```
-
-#### `create<TableName>FetchConfig` factory (both variants)
-
-Always define this to bind `costSavedPerInteraction` into the fetch config without inline spreads at the call site:
-
-```typescript
-function create<TableName>FetchConfig(
-    costSavedPerInteraction: number,
-): Record<<TableName>MetricKeys, EntityMetricConfig> {
-    return {
-        ...<TABLE_NAME>_METRICS_CONFIG,
-        costSaved: {
-            ...<TABLE_NAME>_METRICS_CONFIG.costSaved,
-            fetch: (filters, tz) =>
-                fetchCostSavedPer<TableName>(filters, tz, costSavedPerInteraction),
-        },
-    }
-}
-```
-
-#### CSV filename
-
-Derive the filename from `<TABLE_NAME>_TABLE.title` — do not hardcode a string:
-
-```typescript
-const <TABLE_NAME>_FILENAME = `${<TABLE_NAME>_TABLE.title.toLowerCase().replace(/\s+/g, '_')}_table`
-```
-
-For example, a title of `'Flows breakdown'` produces `'flows_breakdown_table'`.
-
-#### CSV header
-
-Use `<TABLE_NAME>_TABLE.title` as the first CSV column header — do not hardcode a string:
-
-```typescript
-const headers = [<TABLE_NAME>_TABLE.title, ...<TABLE_NAME>_COLUMNS.map((col) => col.label)]
-```
+- Define `build<TableName>Row` that maps entity keys to metric values
+- Define `<TABLE_NAME>_METRICS_CONFIG: Record<MetricKeys, EntityMetricConfig>` with `{ use, fetch }` per metric
+- Use `useEntityMetrics` + `assembleEntityRows` in the hook
+- Use `fetchEntityMetrics` + `assembleEntityRows` in the fetch function
+- Build CSV using `<TABLE_NAME>_COLUMNS` labels and `formatMetricValue`
 
 ### Step 5 – Create the download hook
 
-Create `apps/helpdesk/src/pages/aiAgent/analyticsOverview/hooks/useDownload<TableName>Data.ts`:
+**`analyticsOverview` pattern** — plain fetch, no error handling needed:
 
 ```typescript
 import { useEffect, useState } from 'react'
@@ -323,19 +185,57 @@ export const useDownload<TableName>Data = () => {
 }
 ```
 
+**`analyticsAiAgent` pattern** — adds `reportError` on failure:
+
+```typescript
+import { useEffect, useState } from 'react'
+
+import { reportError } from '@repo/logging'
+
+import { SentryTeam } from 'common/const/sentryTeamNames'
+import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { fetch<TableName>Metrics } from 'pages/aiAgent/analyticsAiAgent/hooks/use<TableName>Metrics'
+import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
+
+export const useDownload<TableName>Data = () => {
+    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(AGENT_COST_PER_TICKET)
+
+    const [result, setResult] = useState<{ fileName: string; files: Record<string, string> }>()
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        setIsLoading(true)
+        fetch<TableName>Metrics({ period: cleanStatsFilters.period }, userTimezone, costSavedPerInteraction)
+            .then(({ fileName, files }) => {
+                setResult({ fileName, files })
+                setIsLoading(false)
+            })
+            .catch((error) => {
+                reportError(error, { tags: { team: SentryTeam.CRM_REPORTING } })
+                setIsLoading(false)
+            })
+    }, [cleanStatsFilters, userTimezone, costSavedPerInteraction])
+
+    return { files: result?.files ?? {}, fileName: result?.fileName ?? '', isLoading }
+}
+```
+
 ### Step 6 – Create the component files
 
-Create the directory `apps/helpdesk/src/pages/aiAgent/analyticsOverview/components/<TableName>Table/`.
-
-#### `columns.tsx`
+**`columns.tsx`** – exports only constants, no column builder functions:
 
 ```typescript
 import type { MetricColumnConfig } from '@repo/reporting'
 
+// analyticsOverview: reuse shared standard columns
 import { STANDARD_METRIC_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/shared/metricColumns'
 
-// Only export ENTITY_DISPLAY_NAMES for static-entity tables
-// For dynamic-entity tables, omit this — displayNames come from the hook
+// analyticsAiAgent: define custom columns (example – adjust per table)
+// export const <TABLE_NAME>_COLUMNS: MetricColumnConfig[] = [ ... ]
+
+// Only include ENTITY_DISPLAY_NAMES if using the displayNames formatter
 export const ENTITY_DISPLAY_NAMES: Record<<TableName>EntityName, string> = {
     // fill in display names
 }
@@ -348,40 +248,17 @@ export const <TABLE_NAME>_TABLE = {
 export const <TABLE_NAME>_COLUMNS: MetricColumnConfig[] = STANDARD_METRIC_COLUMNS
 ```
 
-#### `<TableName>Table.tsx`
+**`<TableName>Table.tsx`** – passes props directly to `ReportingMetricBreakdownTable`, no `useMemo`.
 
-**Dynamic entities** – `displayNames` comes from the hook:
+Choose the `nameColumn` variant that fits:
 
 ```typescript
 import { ReportingMetricBreakdownTable } from '@repo/reporting'
 
-import { <TABLE_NAME>_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/<TableName>Table/columns'
-import { Download<TableName>Button } from 'pages/aiAgent/analyticsOverview/components/<TableName>Table/Download<TableName>Button'
-import { use<TableName>Metrics } from 'pages/aiAgent/analyticsOverview/hooks/use<TableName>Metrics'
+import { <TABLE_NAME>_COLUMNS } from '.../columns'
+import { Download<TableName>Button } from '.../Download<TableName>Button'
+import { use<TableName>Metrics } from '.../use<TableName>Metrics'
 
-export const <TableName>Table = () => {
-    const { data = [], loadingStates, displayNames } = use<TableName>Metrics()
-
-    return (
-        <ReportingMetricBreakdownTable
-            data={data}
-            metricColumns={<TABLE_NAME>_COLUMNS}
-            loadingStates={loadingStates}
-            getRowKey={(row) => row.entity}
-            DownloadButton={<Download<TableName>Button />}
-            nameColumn={{
-                accessor: 'entity',
-                label: '<Feature name label>',
-                displayNames,
-            }}
-        />
-    )
-}
-```
-
-**Static entities** – `ENTITY_DISPLAY_NAMES` is imported from `columns.tsx`:
-
-```typescript
 export const <TableName>Table = () => {
     const { data = [], loadingStates } = use<TableName>Metrics()
 
@@ -395,87 +272,22 @@ export const <TableName>Table = () => {
             nameColumn={{
                 accessor: 'entity',
                 label: '<Feature name label>',
+                // Option A – static map (import ENTITY_DISPLAY_NAMES from columns):
                 displayNames: ENTITY_DISPLAY_NAMES,
+                // Option B – function (import formatXxxName from utils):
+                // formatName: formatXxxName,
+                // Option C – neither (omit both to show raw values)
             }}
         />
     )
 }
 ```
 
-#### `tests/columns.spec.tsx`
-
-```typescript
-import { <TABLE_NAME>_COLUMNS } from 'pages/aiAgent/analyticsOverview/components/<TableName>Table/columns'
-
-describe('<TABLE_NAME>_COLUMNS', () => {
-    it('has 5 entries', () => {
-        expect(<TABLE_NAME>_COLUMNS).toHaveLength(5)
-    })
-
-    it('has the correct accessorKeys in order', () => {
-        expect(<TABLE_NAME>_COLUMNS.map((col) => col.accessorKey)).toEqual([
-            'automationRate',
-            'automatedInteractions',
-            'handoverInteractions',
-            'costSaved',
-            'timeSaved',
-        ])
-    })
-})
-
-// Only for static-entity tables with ENTITY_DISPLAY_NAMES
-describe('ENTITY_DISPLAY_NAMES', () => {
-    it('has a display name for every entity key', () => {
-        expect(Object.keys(ENTITY_DISPLAY_NAMES)).toEqual([/* list all keys in order */])
-    })
-
-    it('has non-empty display names for all entities', () => {
-        Object.values(ENTITY_DISPLAY_NAMES).forEach((name) => {
-            expect(name.length).toBeGreaterThan(0)
-        })
-    })
-})
-```
-
-#### `tests/<TableName>Table.spec.tsx`
-
-**Dynamic entities** – mock hook returns `displayNames`:
-
-```typescript
-const mockUse<TableName>Metrics = jest.requireMock(
-    'pages/aiAgent/analyticsOverview/hooks/use<TableName>Metrics',
-).use<TableName>Metrics as jest.Mock
-
-// In beforeEach / renderComponent:
-mockUse<TableName>Metrics.mockReturnValue({ data, loadingStates, displayNames: {} })
-
-// Test displayNames is forwarded dynamically:
-it('passes displayNames from the hook to nameColumn', () => {
-    const displayNames = { 'uuid-1': 'Flow A' }
-    mockUse<TableName>Metrics.mockReturnValue({ data: defaultData, loadingStates: defaultLoadingStates, displayNames })
-    renderComponent()
-    expect(getLastCallProps().nameColumn.displayNames).toBe(displayNames)
-})
-```
-
-**Static entities** – `ENTITY_DISPLAY_NAMES` imported from columns, hook does not return `displayNames`:
-
-```typescript
-it('passes nameColumn with entity accessor, correct label, and ENTITY_DISPLAY_NAMES', () => {
-    renderComponent()
-    expect(getLastCallProps().nameColumn).toEqual({
-        accessor: 'entity',
-        label: '<Feature name label>',
-        displayNames: ENTITY_DISPLAY_NAMES,
-    })
-})
-```
-
-#### `Download<TableName>Button.tsx`
+**`Download<TableName>Button.tsx`** – thin wrapper around `DownloadTableButton`:
 
 ```typescript
 import { DownloadTableButton } from 'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton'
-import { useDownload<TableName>Data } from 'pages/aiAgent/analyticsOverview/hooks/useDownload<TableName>Data'
+import { useDownload<TableName>Data } from '.../useDownload<TableName>Data'
 
 export const Download<TableName>Button = () => {
     const { files, fileName, isLoading } = useDownload<TableName>Data()
@@ -490,31 +302,224 @@ export const Download<TableName>Button = () => {
 }
 ```
 
-#### `tests/Download<TableName>Button.spec.tsx`
+**`index.ts`**:
+
+```typescript
+export { <TableName>Table } from './<TableName>Table'
+```
+
+### Step 7a – Register in CSV export (`analyticsAiAgent` only)
+
+In `useExportAiAgentAllAgentsToCSV.ts`, call **both** hooks unconditionally (React rules of hooks), then select by flag:
+
+```typescript
+const isAnalyticsDashboardsTablesEnabled = useFlag(
+    FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+)
+
+// Both hooks must be called unconditionally:
+const allAgents<Name>Data = useDownload<TableName>Data()
+const legacy<Name>Data = useLegacyDownload<TableName>Data()
+const <name>Data = isAnalyticsDashboardsTablesEnabled
+    ? allAgents<Name>Data
+    : legacy<Name>Data
+```
+
+Include `<name>Data.isLoading` in the combined `isLoading` and spread `<name>Data.files` in the `files` memo.
+
+### Step 7b – Create feature flag wrapper (`analyticsAiAgent` only)
+
+When the new table replaces an existing legacy table behind a flag:
+
+```typescript
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+
+import { <TableName>Table } from './<TableName>Table'
+import { Legacy<TableName>Table } from '../AiAgentPerformanceBreakdownTable/Legacy<TableName>Table'
+
+export const <TableName>TableWrapper = () => {
+    const { value: isNewTableEnabled, isLoading } = useFlagWithLoading(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+    )
+    if (!isLoading && isNewTableEnabled) return <<TableName>Table />
+    return <Legacy<TableName>Table />
+}
+```
+
+### Step 8 – Register in report config and layout (`analyticsOverview` only)
+
+In `AnalyticsOverviewReportConfig.ts`:
+
+1. Add a new enum value to `AnalyticsOverviewChart`:
+
+    ```typescript
+    <TableName>Table = '<snake_case_table_id>',
+    ```
+
+2. Add a config entry in `AnalyticsOverviewReportConfig.charts`:
+    ```typescript
+    [AnalyticsOverviewChart.<TableName>Table]: {
+        chartComponent: <TableName>Table,
+        label: <TABLE_NAME>_TABLE.title,
+        csvProducer: [{ type: DataExportFormat.Table, fetch: fetch<TableName>Report }],
+        description: <TABLE_NAME>_TABLE.description,
+        chartType: ChartType.Table,
+    },
+    ```
+
+In `defaultLayoutConfig.ts`, add the table to the appropriate section:
+
+```typescript
+{
+    chartId: AnalyticsOverviewChart.<TableName>Table,
+    gridSize: 12,
+    visibility: true,
+},
+```
+
+---
+
+## Test patterns
+
+### `tests/columns.spec.tsx` – test constants directly
+
+```typescript
+import { ALL_AGENTS_PERFORMANCE_BY_<NAME>_COLUMNS } from '.../columns'
+
+describe('<TABLE_NAME>_COLUMNS', () => {
+    it('has N entries', () => {
+        expect(<TABLE_NAME>_COLUMNS).toHaveLength(N)
+    })
+
+    it('has the correct accessorKeys in order', () => {
+        expect(<TABLE_NAME>_COLUMNS.map((col) => col.accessorKey)).toEqual([
+            'automatedInteractions',
+            'handoverInteractions',
+            // ... etc
+        ])
+    })
+})
+```
+
+### `tests/<TableName>Table.spec.tsx` – mock `@repo/reporting`, assert props
+
+```typescript
+import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
+import { render, screen } from '@testing-library/react'
+
+import { <TABLE_NAME>_COLUMNS } from '.../columns'
+import { <TableName>Table } from './<TableName>Table'
+import type { <TableName>EntityMetrics } from '.../use<TableName>Metrics'
+
+const mockReportingMetricBreakdownTable = jest.fn(({ DownloadButton }) => (
+    <div>{DownloadButton}</div>
+))
+
+jest.mock('@repo/reporting', () => ({
+    ReportingMetricBreakdownTable: (props: unknown) =>
+        mockReportingMetricBreakdownTable(props),
+}))
+
+jest.mock('.../Download<TableName>Button', () => ({
+    Download<TableName>Button: () => <div>Download <TableName></div>,
+}))
+
+jest.mock('.../use<TableName>Metrics')
+
+const mockUse<TableName>Metrics = jest.requireMock(
+    '.../use<TableName>Metrics',
+).use<TableName>Metrics as jest.Mock
+
+// ... defaultLoadingStates, defaultData, renderComponent setup ...
+
+const getLastCallProps = () =>
+    mockReportingMetricBreakdownTable.mock.calls[
+        mockReportingMetricBreakdownTable.mock.calls.length - 1
+    ][0] as {
+        data: <TableName>EntityMetrics[]
+        metricColumns: MetricColumnConfig[]
+        loadingStates: MetricLoadingStates
+        getRowKey: (row: <TableName>EntityMetrics) => string
+        DownloadButton: React.ReactNode
+        nameColumn: {
+            accessor: string
+            label: string
+            displayNames?: Record<string, string>
+            formatName?: (value: string) => string
+        }
+    }
+
+describe('<TableName>Table', () => {
+    afterEach(() => { jest.clearAllMocks() })
+
+    it('passes data from use<TableName>Metrics to ReportingMetricBreakdownTable', () => {
+        renderComponent()
+        expect(getLastCallProps().data).toBe(defaultData)
+    })
+
+    it('passes loadingStates from the hook', () => {
+        renderComponent()
+        expect(getLastCallProps().loadingStates).toBe(defaultLoadingStates)
+    })
+
+    it('passes <TABLE_NAME>_COLUMNS as metricColumns', () => {
+        renderComponent()
+        expect(getLastCallProps().metricColumns).toBe(<TABLE_NAME>_COLUMNS)
+    })
+
+    it('passes getRowKey that returns the entity value', () => {
+        renderComponent()
+        const { getRowKey } = getLastCallProps()
+        expect(getRowKey(defaultData[0])).toBe(defaultData[0].entity)
+    })
+
+    // Option A – displayNames
+    it('passes nameColumn with entity accessor, correct label, and ENTITY_DISPLAY_NAMES', () => {
+        renderComponent()
+        expect(getLastCallProps().nameColumn).toEqual({
+            accessor: 'entity',
+            label: '<Feature name label>',
+            displayNames: ENTITY_DISPLAY_NAMES,
+        })
+    })
+
+    // Option B – formatName function
+    it('passes nameColumn with entity accessor, correct label, and formatXxxName', () => {
+        renderComponent()
+        const { nameColumn } = getLastCallProps()
+        expect(nameColumn.accessor).toBe('entity')
+        expect(nameColumn.label).toBe('<Feature name label>')
+        expect(nameColumn.formatName).toBe(formatXxxName)
+    })
+
+    it('renders Download<TableName>Button as the DownloadButton', () => {
+        renderComponent()
+        expect(screen.getByText('Download <TableName>')).toBeInTheDocument()
+    })
+})
+```
+
+### `tests/Download<TableName>Button.spec.tsx` – mock `DownloadTableButton`, assert props
 
 ```typescript
 import { render } from '@testing-library/react'
 
-import { Download<TableName>Button } from 'pages/aiAgent/analyticsOverview/components/<TableName>Table/Download<TableName>Button'
+import { Download<TableName>Button } from '.../Download<TableName>Button'
 
 const mockDownloadTableButton = jest.fn((_) => null)
 
-jest.mock(
-    'pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton',
-    () => ({
-        DownloadTableButton: (props: unknown) => mockDownloadTableButton(props),
-    }),
-)
+jest.mock('pages/aiAgent/analyticsOverview/components/shared/DownloadTableButton', () => ({
+    DownloadTableButton: (props: unknown) => mockDownloadTableButton(props),
+}))
 
-jest.mock('pages/aiAgent/analyticsOverview/hooks/useDownload<TableName>Data')
+jest.mock('.../useDownload<TableName>Data')
 
 const mockUseDownload<TableName>Data = jest.requireMock(
-    'pages/aiAgent/analyticsOverview/hooks/useDownload<TableName>Data',
+    '.../useDownload<TableName>Data',
 ).useDownload<TableName>Data as jest.Mock
 
 const mockFiles = { 'report.csv': '"Entity"\r\n"value_a"' }
-// filename is derived from <TABLE_NAME>_TABLE.title: e.g. 'flows_breakdown_table'
-const mockFileName = '2024-01-01_2024-01-31-<table_name_table>.csv'
+const mockFileName = '2024-01-01_2024-01-31-<csv-filename>.csv'
 
 beforeEach(() => {
     mockUseDownload<TableName>Data.mockReturnValue({
@@ -525,9 +530,7 @@ beforeEach(() => {
 })
 
 describe('Download<TableName>Button', () => {
-    afterEach(() => {
-        jest.clearAllMocks()
-    })
+    afterEach(() => { jest.clearAllMocks() })
 
     it('passes files and fileName from the hook to DownloadTableButton', () => {
         render(<Download<TableName>Button />)
@@ -553,44 +556,41 @@ describe('Download<TableName>Button', () => {
 })
 ```
 
-### Step 7 – Register in the report config
+### `useExportAiAgentAllAgentsToCSV.spec.ts` additions (`analyticsAiAgent` only)
 
-In `apps/helpdesk/src/pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig.ts`:
+When adding a new download hook to `useExportAiAgentAllAgentsToCSV`:
 
-1. Add a new enum value to `AnalyticsOverviewChart`:
-
-    ```typescript
-    <TableName>Table = '<snake_case_table_id>',
-    ```
-
-2. Import the table component and its constants directly from the component file (not from an index barrel):
-
-    ```typescript
-    import { <TableName>Table, <TABLE_NAME>_TABLE } from 'pages/aiAgent/analyticsOverview/components/<TableName>Table/<TableName>Table'
-    ```
-
-3. Add a config entry in `AnalyticsOverviewReportConfig.charts`:
-    ```typescript
-    [AnalyticsOverviewChart.<TableName>Table]: {
-        chartComponent: <TableName>Table,
-        label: <TABLE_NAME>_TABLE.title,
-        csvProducer: [{ type: DataExportFormat.Table, fetch: fetch<TableName>Report }],
-        description: <TABLE_NAME>_TABLE.description,
-        chartType: ChartType.Table,
-    },
-    ```
-
-### Step 8 – Add to layout config
-
-In `apps/helpdesk/src/pages/aiAgent/analyticsOverview/config/defaultLayoutConfig.ts`, add the new table item to the appropriate section (typically `breakdown`):
+1. Add `jest.mock` and `jest.mocked` for both the new and legacy download hooks
+2. Add default mock return values in `beforeEach` for both
+3. Add a `describe` block for flag-switching behaviour:
 
 ```typescript
-{
-    chartId: AnalyticsOverviewChart.<TableName>Table,
-    gridSize: 12,
-    visibility: true,
-},
+describe('<name> data based on AiAgentAnalyticsDashboardsTables flag', () => {
+    it('uses new <name> data when the tables flag is enabled', async () => {
+        mockUseFlag.mockReturnValue(true)
+        // render, trigger download, assert new file name is present and legacy is absent
+    })
+
+    it('uses legacy <name> data when the tables flag is disabled', async () => {
+        mockUseFlag.mockImplementation(
+            (flag) => flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+        )
+        // render, trigger download, assert legacy file name is present and new is absent
+    })
+
+    it('reflects isLoading from legacy <name> data when the tables flag is disabled', () => {
+        mockUseFlag.mockImplementation(
+            (flag) => flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+        )
+        mockUseLegacy <
+            Name >
+            Data.mockReturnValue({ files: {}, fileName: '', isLoading: true })
+        // renderHook, expect isLoading true
+    })
+})
 ```
+
+Note: the `should handle empty download data files` test must empty the **active** hook's data (the one selected by the flag), not the inactive one.
 
 ---
 
@@ -599,18 +599,14 @@ In `apps/helpdesk/src/pages/aiAgent/analyticsOverview/config/defaultLayoutConfig
 After implementing, run these commands from the repo root:
 
 ```bash
-pnpm lint @repo/helpdesk
-pnpm format:fix @repo/helpdesk
 pnpm typecheck @repo/helpdesk
 pnpm test @repo/helpdesk "<TableName>"
 ```
 
 Ensure:
 
-- [ ] Lint passes with no errors
-- [ ] Formatting is clean
 - [ ] Typecheck passes with no errors
-- [ ] Unit tests pass for all new files
+- [ ] Unit tests pass for the new aggregator hook and any new scope query factories
 - [ ] The table renders in the dashboard with correct column headers
 - [ ] The download button produces a valid CSV with correct column labels
 - [ ] Handover counts appear only for the expected entity rows
@@ -622,12 +618,13 @@ Ensure:
 | What                     | Location                                                                                                                                                                                                  |
 | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Generic table shell      | `@repo/reporting` → `ReportingMetricBreakdownTable`                                                                                                                                                       |
-| Column builder helpers   | `@repo/reporting` → `buildMetricColumnDefs` (used internally by `ReportingMetricBreakdownTable`)                                                                                                          |
 | Types                    | `@repo/reporting` → `MetricColumnConfig`, `MetricLoadingStates`, `NameColumnConfig`                                                                                                                       |
-| Generic download button  | `components/shared/DownloadTableButton.tsx`                                                                                                                                                               |
-| Standard 5-column config | `components/shared/metricColumns.tsx` → `STANDARD_METRIC_COLUMNS`                                                                                                                                         |
+| Generic download button  | `analyticsOverview/components/shared/DownloadTableButton.tsx`                                                                                                                                             |
+| Standard 5-column config | `analyticsOverview/components/shared/metricColumns.tsx` → `STANDARD_METRIC_COLUMNS`                                                                                                                       |
 | Dimension data fetching  | `domains/reporting/hooks/useStatsMetricPerDimension.ts` → `useStatsMetricPerDimension`, `fetchStatsMetricPerDimension`, `useEntityMetrics`, `fetchEntityMetrics`, `assembleEntityRows`, `mapMetricValues` |
 | Cost transform helper    | `mapMetricValues` from `useStatsMetricPerDimension.ts`                                                                                                                                                    |
 | Row assembly             | `assembleEntityRows` from `useStatsMetricPerDimension.ts`                                                                                                                                                 |
-| Entity filtering         | `filterEntitiesWithData` from `useStatsMetricPerDimension.ts` — filters to entities with at least one non-null, non-NaN value; returns all entities while loading                                        |
+| Entity filtering         | `filterEntitiesWithData` from `useStatsMetricPerDimension.ts` — filters to entities with at least one non-null, non-NaN value; returns all entities while loading                                         |
+| Channel name formatter   | `pages/aiAgent/utils/aiAgentMetrics.utils.ts` → `formatChannelName`                                                                                                                                       |
+| Error reporting          | `@repo/logging` → `reportError` (use `SentryTeam.CRM_REPORTING`)                                                                                                                                          |
 | Workflow configurations  | `models/workflows/queries.ts` → `useGetWorkflowConfigurations`, `fetchWorkflowConfigurations`                                                                                                             |

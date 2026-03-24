@@ -1,8 +1,8 @@
 import {
-    aiAgentAutomatedInteractionsPerChannel,
-    aiAgentAutomatedInteractionsPerChannelQueryFactoryV2,
-    aiAgentAutomatedInteractionsScope,
-} from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
+    aiAgentSuccessRatePerChannel,
+    aiAgentSuccessRatePerChannelQueryFactoryV2,
+    aiAgentSuccessRateScope,
+} from 'domains/reporting/models/scopes/aiAgentSuccessRate'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import type {
     ApiStatsFilters,
@@ -10,7 +10,7 @@ import type {
 } from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
-describe('aiAgentAutomatedInteractionsScope', () => {
+describe('aiAgentSuccessRateScope', () => {
     const baseFilters: ApiStatsFilters = {
         period: {
             start_datetime: '2025-09-03T00:00:00.000',
@@ -21,7 +21,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
     it('includes period filters', () => {
         const result = createScopeFilters(
             baseFilters,
-            aiAgentAutomatedInteractionsScope.config,
+            aiAgentSuccessRateScope.config,
         )
 
         expect(result).toContainEqual(
@@ -48,7 +48,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
         }
         const result = createScopeFilters(
             filters,
-            aiAgentAutomatedInteractionsScope.config,
+            aiAgentSuccessRateScope.config,
         )
 
         expect(result).toContainEqual(
@@ -62,7 +62,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
     it('omits aiAgentSkill filter when not provided', () => {
         const result = createScopeFilters(
             baseFilters,
-            aiAgentAutomatedInteractionsScope.config,
+            aiAgentSuccessRateScope.config,
         )
 
         expect(result).not.toContainEqual(
@@ -80,7 +80,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
         }
         const result = createScopeFilters(
             filters,
-            aiAgentAutomatedInteractionsScope.config,
+            aiAgentSuccessRateScope.config,
         )
 
         expect(result).toContainEqual(
@@ -91,7 +91,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
     it('omits channel filter when not provided', () => {
         const result = createScopeFilters(
             baseFilters,
-            aiAgentAutomatedInteractionsScope.config,
+            aiAgentSuccessRateScope.config,
         )
 
         expect(result).not.toContainEqual(
@@ -109,7 +109,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
         }
         const result = createScopeFilters(
             filters,
-            aiAgentAutomatedInteractionsScope.config,
+            aiAgentSuccessRateScope.config,
         )
 
         expect(result).toContainEqual(
@@ -123,7 +123,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
     it('omits engagementType filter when not provided', () => {
         const result = createScopeFilters(
             baseFilters,
-            aiAgentAutomatedInteractionsScope.config,
+            aiAgentSuccessRateScope.config,
         )
 
         expect(result).not.toContainEqual(
@@ -141,7 +141,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
         }
         const result = createScopeFilters(
             filters,
-            aiAgentAutomatedInteractionsScope.config,
+            aiAgentSuccessRateScope.config,
         )
 
         expect(result).toContainEqual(
@@ -155,7 +155,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
     it('omits storeIntegrationId filter when not provided', () => {
         const result = createScopeFilters(
             baseFilters,
-            aiAgentAutomatedInteractionsScope.config,
+            aiAgentSuccessRateScope.config,
         )
 
         expect(result).not.toContainEqual(
@@ -164,7 +164,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
     })
 })
 
-describe('aiAgentAutomatedInteractionsPerChannel', () => {
+describe('aiAgentSuccessRatePerChannel', () => {
     const filters: StatsFilters = {
         period: {
             start_datetime: '2025-09-03T00:00:00.000',
@@ -188,23 +188,23 @@ describe('aiAgentAutomatedInteractionsPerChannel', () => {
     ]
 
     it('builds query with correct metricName, scope, measures, dimensions, and filters', () => {
-        const actual = aiAgentAutomatedInteractionsPerChannel.build(context)
+        const actual = aiAgentSuccessRatePerChannel.build(context)
 
         expect(actual).toEqual({
-            metricName: 'ai-agent-automated-interactions-per-channel',
-            scope: 'ai-agent-automated-interactions',
-            measures: ['automatedInteractionsCount'],
+            metricName: 'ai-agent-success-rate-per-channel',
+            scope: 'ai-agent-success-rate',
+            measures: ['successRate'],
             dimensions: ['channel'],
             timezone: 'utc',
             filters: periodFilters,
         })
     })
 
-    describe('aiAgentAutomatedInteractionsPerChannelQueryFactoryV2', () => {
+    describe('aiAgentSuccessRatePerChannelQueryFactoryV2', () => {
         it('returns the same result as calling build directly', () => {
-            expect(
-                aiAgentAutomatedInteractionsPerChannelQueryFactoryV2(context),
-            ).toEqual(aiAgentAutomatedInteractionsPerChannel.build(context))
+            expect(aiAgentSuccessRatePerChannelQueryFactoryV2(context)).toEqual(
+                aiAgentSuccessRatePerChannel.build(context),
+            )
         })
     })
 })

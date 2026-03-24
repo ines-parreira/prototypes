@@ -8,6 +8,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentAllAgentsLayoutConfig'
 import { useDownloadAiAgentAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentAutomationRateTimeSeriesData'
+import { useDownloadAllAgentsPerformanceByChannelData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAllAgentsPerformanceByChannelData'
 import { useDownloadAutomatedInteractionsBySkillData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAutomatedInteractionsBySkillData'
 import { useDownloadChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData'
 import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
@@ -19,6 +20,9 @@ const REPORT_NAME = 'ai-agent-all-agents'
 export const useExportAiAgentAllAgentsToCSV = () => {
     const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
+    )
+    const isAnalyticsDashboardsTablesEnabled = useFlag(
+        FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
     )
     const { cleanStatsFilters } = useStatsFilters()
 
@@ -43,7 +47,12 @@ export const useExportAiAgentAllAgentsToCSV = () => {
         useDownloadAutomatedInteractionsBySkillData()
     const automationRateTimeSeriesData =
         useDownloadAiAgentAutomationRateTimeSeriesData()
-    const channelPerformanceData = useDownloadChannelPerformanceData()
+    const allAgentsChannelPerformanceData =
+        useDownloadAllAgentsPerformanceByChannelData()
+    const legacyChannelPerformanceData = useDownloadChannelPerformanceData()
+    const channelPerformanceData = isAnalyticsDashboardsTablesEnabled
+        ? allAgentsChannelPerformanceData
+        : legacyChannelPerformanceData
     const intentPerformanceData = useDownloadIntentPerformanceData()
 
     const isLoading =

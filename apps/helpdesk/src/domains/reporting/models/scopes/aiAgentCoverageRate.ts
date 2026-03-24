@@ -30,3 +30,14 @@ export const coverageRate = aiAgentCoverageRateScope
 
 export const coverageRateQueryV2Factory = (ctx: AiAgentCoverageRateContext) =>
     coverageRate.build(ctx)
+
+export const aiAgentCoverageRatePerChannel = aiAgentCoverageRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_COVERAGE_RATE_PER_CHANNEL)
+    .defineQuery(() => ({
+        measures: ['coverageRate'] as const,
+        dimensions: ['channel'],
+    }))
+
+export const aiAgentCoverageRatePerChannelQueryFactoryV2 = (
+    ctx: AiAgentCoverageRateContext,
+) => aiAgentCoverageRatePerChannel.build(ctx)

@@ -79,7 +79,7 @@ const MAP_AUTOMATION_FEATURE_NAME: Record<string, string> = {
     [AutomationFeatureType.ArticleRecommendation]: 'Article Recommendation',
 }
 
-const formatChannelName = (channel: string): string => {
+export const formatChannelName = (channel: string): string => {
     const channelNames: Record<string, string> = {
         email: 'Email',
         chat: 'Chat',

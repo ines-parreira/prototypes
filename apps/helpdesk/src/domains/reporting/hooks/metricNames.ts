@@ -40,6 +40,8 @@ export const METRIC_NAMES = {
     AUTOMATED_INTERACTIONS_PER_FLOWS: 'automated-interactions-per-flows',
     OVERALL_TIME_SAVED_BY_AGENT_PER_FLOWS:
         'overall-time-saved-by-agent-per-flows',
+    AI_AGENT_AUTOMATED_INTERACTIONS_PER_CHANNEL:
+        'ai-agent-automated-interactions-per-channel',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
         'ai-agent-handover-interactions-per-intent',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
@@ -56,6 +58,8 @@ export const METRIC_NAMES = {
     AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS:
         'ai-agent-all-agents-automated-interactions',
     AI_AGENT_ALL_AGENTS_COVERAGE_RATE: 'ai-agent-all-agents-coverage-rate',
+    AI_AGENT_COVERAGE_RATE_PER_CHANNEL: 'ai-agent-coverage-rate-per-channel',
+    AI_AGENT_SUCCESS_RATE_PER_CHANNEL: 'ai-agent-success-rate-per-channel',
     AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILLDOWN:
         'ai-agent-automated-interactions-drill-down',
     AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILLDOWN:
@@ -679,6 +683,7 @@ export enum MetricScope {
     AiSalesAgentOrdersPerformance = 'ai-sales-agent-orders-performance',
     AiAgentAutomatedInteractions = 'ai-agent-automated-interactions',
     AiAgentTimeSaved = 'ai-agent-time-saved',
+    AiAgentSuccessRate = 'ai-agent-success-rate',
 
     // No FF
     HandoverInteractions = 'handover-interactions',
@@ -936,6 +941,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.HANDOVER_INTERACTIONS,
         METRIC_NAMES.HANDOVER_INTERACTIONS_PER_FEATURE,
         METRIC_NAMES.HANDOVER_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE,
+        METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SALES_HANDOVER_INTERACTIONS,
@@ -953,12 +959,17 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS_TIMESERIES,
         METRIC_NAMES.AUTOMATED_INTERACTIONS_PER_ORDER_MANAGEMENT_TYPE,
+        METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
     ],
     [MetricScope.OverallTimeSavedByAgent]: [
         METRIC_NAMES.OVERALL_TIME_SAVED_BY_AGENT_PER_ORDER_MANAGEMENT_TYPE,
     ],
     [MetricScope.AiAgentCoverageRate]: [
         METRIC_NAMES.AI_AGENT_ALL_AGENTS_COVERAGE_RATE,
+        METRIC_NAMES.AI_AGENT_COVERAGE_RATE_PER_CHANNEL,
+    ],
+    [MetricScope.AiAgentSuccessRate]: [
+        METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_CHANNEL,
     ],
     [MetricScope.AiSalesAgentConversionRate]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CONVERSION_RATE,

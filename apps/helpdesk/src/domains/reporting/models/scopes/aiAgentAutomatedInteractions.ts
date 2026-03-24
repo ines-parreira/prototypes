@@ -1,4 +1,4 @@
-import { MetricScope } from 'domains/reporting/hooks/metricNames'
+import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 
@@ -30,3 +30,17 @@ export const aiAgentAutomatedInteractionsScope = defineScope({
 export type AiAgentAutomatedInteractionsContext = Context<
     typeof aiAgentAutomatedInteractionsScope.config
 >
+
+export const aiAgentAutomatedInteractionsPerChannel =
+    aiAgentAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
+        )
+        .defineQuery(() => ({
+            measures: ['automatedInteractionsCount'] as const,
+            dimensions: ['channel'],
+        }))
+
+export const aiAgentAutomatedInteractionsPerChannelQueryFactoryV2 = (
+    ctx: Context,
+) => aiAgentAutomatedInteractionsPerChannel.build(ctx)

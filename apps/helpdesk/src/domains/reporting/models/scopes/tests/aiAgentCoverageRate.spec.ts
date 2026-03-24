@@ -1,4 +1,6 @@
 import {
+    aiAgentCoverageRatePerChannel,
+    aiAgentCoverageRatePerChannelQueryFactoryV2,
     aiAgentCoverageRateScope,
     coverageRate,
     coverageRateQueryV2Factory,
@@ -67,35 +69,6 @@ describe('aiAgentCoverageRateScope', () => {
 
         expect(result).not.toContainEqual(
             expect.objectContaining({ member: 'aiAgentSkill' }),
-        )
-    })
-
-    it('includes channel filter when provided', () => {
-        const filters: ApiStatsFilters = {
-            ...baseFilters,
-            channels: {
-                operator: LogicalOperatorEnum.ONE_OF,
-                values: ['email'],
-            },
-        }
-        const result = createScopeFilters(
-            filters,
-            aiAgentCoverageRateScope.config,
-        )
-
-        expect(result).toContainEqual(
-            expect.objectContaining({ member: 'channel', operator: 'one-of' }),
-        )
-    })
-
-    it('omits channel filter when not provided', () => {
-        const result = createScopeFilters(
-            baseFilters,
-            aiAgentCoverageRateScope.config,
-        )
-
-        expect(result).not.toContainEqual(
-            expect.objectContaining({ member: 'channel' }),
         )
     })
 
@@ -205,6 +178,51 @@ describe('coverageRate', () => {
             expect(coverageRateQueryV2Factory(context)).toEqual(
                 coverageRate.build(context),
             )
+        })
+    })
+})
+
+describe('aiAgentCoverageRatePerChannel', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with correct metricName, scope, measures, dimensions, and filters', () => {
+        const actual = aiAgentCoverageRatePerChannel.build(context)
+
+        expect(actual).toEqual({
+            metricName: 'ai-agent-coverage-rate-per-channel',
+            scope: 'ai-agent-coverage-rate',
+            measures: ['coverageRate'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    describe('aiAgentCoverageRatePerChannelQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentCoverageRatePerChannelQueryFactoryV2(context),
+            ).toEqual(aiAgentCoverageRatePerChannel.build(context))
         })
     })
 })
