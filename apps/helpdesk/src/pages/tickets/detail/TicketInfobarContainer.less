@@ -83,6 +83,20 @@
         overflow: auto;
     }
 
+    .integrationContainer {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        background-color: var(--neutral-grey-0); // legacy
+        overflow: hidden;
+    }
+
+    .integrationContent {
+        flex: 1;
+        padding: var(--layout-spacing-s) 0;
+        overflow: auto;
+    }
+
     .editionTools {
         display: flex;
         gap: var(--spacing-xs);
@@ -147,6 +161,10 @@
     }
 
     .rechargeContainer {
+        background-color: var(--elevation-neutral-default);
+    }
+
+    .integrationContainer {
         background-color: var(--elevation-neutral-default);
     }
 

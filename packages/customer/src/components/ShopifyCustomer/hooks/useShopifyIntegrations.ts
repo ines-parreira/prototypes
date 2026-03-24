@@ -1,22 +1,19 @@
-import { useListIntegrations } from '@gorgias/helpdesk-queries'
+import { useExhaustEndpoint } from '@repo/hooks'
+
+import { listIntegrations } from '@gorgias/helpdesk-client'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 export function useShopifyIntegrations() {
-    const { data, isLoading, isError, error, refetch } = useListIntegrations(
-        {
-            type: 'shopify',
-        },
-        {
-            query: {
-                refetchOnWindowFocus: false,
-            },
-        },
+    const queryParams = { limit: 100, type: 'shopify' as const }
+
+    const { data, isLoading } = useExhaustEndpoint(
+        queryKeys.integrations.listIntegrations(queryParams),
+        (cursor) => listIntegrations({ cursor, ...queryParams }),
+        { refetchOnWindowFocus: false },
     )
 
     return {
-        integrations: data?.data.data ?? [],
+        integrations: data,
         isLoading,
-        isError,
-        error,
-        refetch,
     }
 }

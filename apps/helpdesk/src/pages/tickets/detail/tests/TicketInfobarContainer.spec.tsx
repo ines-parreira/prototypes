@@ -246,9 +246,11 @@ jest.mock(
     }),
 )
 
-jest.mock('pages/tickets/detail/RechargeTabContent', () => ({
+jest.mock('pages/tickets/detail/IntegrationTabContent', () => ({
     __esModule: true,
-    default: () => <div>RechargeTabContent</div>,
+    default: ({ widgetType }: { widgetType: string }) => (
+        <div>IntegrationTabContent-{widgetType}</div>
+    ),
 }))
 
 jest.mock('state/integrations/selectors', () => ({
@@ -899,7 +901,7 @@ describe('<TicketInfobarContainer />', () => {
     })
 
     describe('Recharge tab', () => {
-        it('should render RechargeTabContent when activeTab is Recharge and recharge integration exists', () => {
+        it('should render IntegrationTabContent when activeTab is Recharge and recharge integration exists', () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 activeTab: TicketInfobarTab.Recharge,
                 onChangeTab,
@@ -919,10 +921,12 @@ describe('<TicketInfobarContainer />', () => {
                 { path: '/foo/:ticketId?', route: '/foo/123' },
             )
 
-            expect(screen.getByText('RechargeTabContent')).toBeInTheDocument()
+            expect(
+                screen.getByText('IntegrationTabContent-recharge'),
+            ).toBeInTheDocument()
         })
 
-        it('should not render RechargeTabContent when tab is not Recharge', () => {
+        it('should not render IntegrationTabContent when tab is not Recharge', () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 activeTab: TicketInfobarTab.Customer,
                 onChangeTab,
@@ -943,11 +947,11 @@ describe('<TicketInfobarContainer />', () => {
             )
 
             expect(
-                screen.queryByText('RechargeTabContent'),
+                screen.queryByText('IntegrationTabContent-recharge'),
             ).not.toBeInTheDocument()
         })
 
-        it('should not render RechargeTabContent when no recharge integration matches customer', () => {
+        it('should not render IntegrationTabContent when no recharge integration matches customer', () => {
             useTicketInfobarNavigationMock.mockReturnValue({
                 activeTab: TicketInfobarTab.Recharge,
                 onChangeTab,
@@ -968,7 +972,301 @@ describe('<TicketInfobarContainer />', () => {
             )
 
             expect(
-                screen.queryByText('RechargeTabContent'),
+                screen.queryByText('IntegrationTabContent-recharge'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('BigCommerce tab', () => {
+        it('should render IntegrationTabContent when activeTab is BigCommerce and integration exists', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.BigCommerce,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockImplementation(
+                (type: string) => () => {
+                    if (type === 'bigcommerce') return [{ id: 50 }]
+                    return []
+                },
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({ '50': {} }))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.getByText('IntegrationTabContent-bigcommerce'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render when no bigcommerce integration matches', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.BigCommerce,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockImplementation(
+                () => () => [],
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({}))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.queryByText('IntegrationTabContent-bigcommerce'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Magento tab', () => {
+        it('should render IntegrationTabContent when activeTab is Magento and integration exists', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Magento,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockImplementation(
+                (type: string) => () => {
+                    if (type === 'magento2') return [{ id: 60 }]
+                    return []
+                },
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({ '60': {} }))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.getByText('IntegrationTabContent-magento2'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('WooCommerce tab', () => {
+        it('should render IntegrationTabContent when activeTab is WooCommerce and store exists', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.WooCommerce,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockReturnValue(
+                () => [],
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({}))
+
+            const sourcesWithWoo = fromJS({
+                ticket: {
+                    customer: {
+                        ecommerce_data: {
+                            'store-uuid': {
+                                store: { type: 'woocommerce' },
+                            },
+                        },
+                    },
+                },
+                customer: {},
+            })
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer
+                        {...minProps}
+                        sources={sourcesWithWoo}
+                    />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.getByText('IntegrationTabContent-woocommerce'),
+            ).toBeInTheDocument()
+        })
+
+        it.each([
+            {
+                scenario: 'no ecommerce_data key',
+                sources: fromJS({
+                    ticket: { customer: {} },
+                    customer: {},
+                }),
+            },
+            {
+                scenario: 'ecommerce_data is empty',
+                sources: fromJS({
+                    ticket: { customer: { ecommerce_data: {} } },
+                    customer: {},
+                }),
+            },
+            {
+                scenario: 'store type is not woocommerce',
+                sources: fromJS({
+                    ticket: {
+                        customer: {
+                            ecommerce_data: {
+                                'store-uuid': {
+                                    store: { type: 'shopify' },
+                                },
+                            },
+                        },
+                    },
+                    customer: {},
+                }),
+            },
+        ])(
+            'should not render IntegrationTabContent when $scenario',
+            ({ sources }) => {
+                useTicketInfobarNavigationMock.mockReturnValue({
+                    activeTab: TicketInfobarTab.WooCommerce,
+                    onChangeTab,
+                })
+                ;(mockedGetIntegrationsByType as jest.Mock).mockReturnValue(
+                    () => [],
+                )
+                mockedGetIntegrationsData.mockReturnValue(fromJS({}))
+
+                renderWithRouter(
+                    <Provider store={store}>
+                        <TicketInfobarContainer
+                            {...minProps}
+                            sources={sources}
+                        />
+                    </Provider>,
+                    { path: '/foo/:ticketId?', route: '/foo/123' },
+                )
+
+                expect(
+                    screen.queryByText('IntegrationTabContent-woocommerce'),
+                ).not.toBeInTheDocument()
+            },
+        )
+
+        it('should not render when no woocommerce store exists', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.WooCommerce,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockReturnValue(
+                () => [],
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({}))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.queryByText('IntegrationTabContent-woocommerce'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Smile tab', () => {
+        it('should render IntegrationTabContent when activeTab is Smile and smile integration exists', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Smile,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockImplementation(
+                (type: string) => () => {
+                    if (type === 'smile') return [{ id: 70 }]
+                    return []
+                },
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({ '70': {} }))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.getByText('IntegrationTabContent-smile'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render when no smile integration matches', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Smile,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockImplementation(
+                () => () => [],
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({}))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.queryByText('IntegrationTabContent-smile'),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Yotpo tab', () => {
+        it('should render IntegrationTabContent when activeTab is Yotpo and yotpo integration exists', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Yotpo,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockImplementation(
+                (type: string) => () => {
+                    if (type === 'yotpo') return [{ id: 80 }]
+                    return []
+                },
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({ '80': {} }))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.getByText('IntegrationTabContent-yotpo'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render when no yotpo integration matches', () => {
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Yotpo,
+                onChangeTab,
+            })
+            ;(mockedGetIntegrationsByType as jest.Mock).mockImplementation(
+                () => () => [],
+            )
+            mockedGetIntegrationsData.mockReturnValue(fromJS({}))
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <TicketInfobarContainer {...minProps} />
+                </Provider>,
+                { path: '/foo/:ticketId?', route: '/foo/123' },
+            )
+
+            expect(
+                screen.queryByText('IntegrationTabContent-yotpo'),
             ).not.toBeInTheDocument()
         })
     })

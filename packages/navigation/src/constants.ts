@@ -1,10 +1,15 @@
 export enum TicketInfobarTab {
     AIFeedback = 'ai-feedback',
     AutoQA = 'auto-qa',
+    BigCommerce = 'bigcommerce',
     Customer = 'customer',
+    Magento = 'magento',
     Recharge = 'recharge',
     Shopify = 'shopify',
+    Smile = 'smile',
     Timeline = 'timeline',
+    WooCommerce = 'woocommerce',
+    Yotpo = 'yotpo',
 }
 
 export const EditFieldsType = {
@@ -12,7 +17,7 @@ export const EditFieldsType = {
     Recharge: 'recharge',
     Woocommerce: 'woocommerce',
     Bigcommerce: 'bigcommerce',
-    Magento: 'magento',
+    Magento: 'magento2',
     Yotpo: 'yotpo',
     Smile: 'smile',
     Custom: 'custom',

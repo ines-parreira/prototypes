@@ -23,14 +23,26 @@ import { InfobarToggle } from './components/TicketInfobarNavigationToggle'
 
 type TicketInfobarNavigationProps = {
     hasAIFeedback?: boolean
+    hasBigCommerce?: boolean
+    hasMagento?: boolean
     hasRecharge?: boolean
+    hasShopify?: boolean
+    hasSmile?: boolean
     hasTimeline?: boolean
+    hasWooCommerce?: boolean
+    hasYotpo?: boolean
 }
 
 export function TicketInfobarNavigation({
     hasAIFeedback,
+    hasBigCommerce,
+    hasMagento,
     hasRecharge,
+    hasShopify,
+    hasSmile,
     hasTimeline,
+    hasWooCommerce,
+    hasYotpo,
 }: TicketInfobarNavigationProps) {
     const {
         activeTab,
@@ -65,7 +77,7 @@ export function TicketInfobarNavigation({
                         title: 'Details',
                     }}
                 />
-                {hasUIVisionMilestone2 && (
+                {hasUIVisionMilestone2 && hasShopify && (
                     <InfobarNavigationItem
                         name={TicketInfobarTab.Shopify}
                         icon="app-shopify"
@@ -80,6 +92,51 @@ export function TicketInfobarNavigation({
                         icon="app-recharge"
                         tooltip={{
                             title: 'Recharge',
+                        }}
+                    />
+                )}
+                {hasUIVisionMilestone2 && hasBigCommerce && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.BigCommerce}
+                        icon="app-bicommerce"
+                        tooltip={{
+                            title: 'BigCommerce',
+                        }}
+                    />
+                )}
+                {hasUIVisionMilestone2 && hasMagento && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.Magento}
+                        icon="app-magento"
+                        tooltip={{
+                            title: 'Magento',
+                        }}
+                    />
+                )}
+                {hasUIVisionMilestone2 && hasWooCommerce && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.WooCommerce}
+                        icon="app-woo"
+                        tooltip={{
+                            title: 'WooCommerce',
+                        }}
+                    />
+                )}
+                {hasUIVisionMilestone2 && hasSmile && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.Smile}
+                        icon="emoji-smile"
+                        tooltip={{
+                            title: 'Smile',
+                        }}
+                    />
+                )}
+                {hasUIVisionMilestone2 && hasYotpo && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.Yotpo}
+                        icon="app-yotpo"
+                        tooltip={{
+                            title: 'Yotpo',
                         }}
                     />
                 )}
@@ -129,27 +186,86 @@ export function TicketInfobarNavigation({
                     }
                 >
                     <MenuSection id="edit-widget-data" name="Edit widget data">
-                        <MenuItem
-                            label="Shopify"
-                            leadingSlot="app-shopify"
-                            onAction={() => {
-                                onChangeTab(TicketInfobarTab.Shopify)
-                                onSetEditingWidgetType(EditFieldsType.Shopify)
-                            }}
-                        />
-                        <MenuItem
-                            label="Recharge"
-                            leadingSlot="app-recharge"
-                            onAction={() => {
-                                onChangeTab(TicketInfobarTab.Recharge)
-                                onSetEditingWidgetType(EditFieldsType.Recharge)
-                            }}
-                        />
-                        <MenuItem
-                            label="Yotpo"
-                            leadingSlot="channel-yotpo"
-                            onAction={() => {}}
-                        />
+                        {hasShopify && (
+                            <MenuItem
+                                label="Shopify"
+                                leadingSlot="app-shopify"
+                                onAction={() => {
+                                    onChangeTab(TicketInfobarTab.Shopify)
+                                    onSetEditingWidgetType(
+                                        EditFieldsType.Shopify,
+                                    )
+                                }}
+                            />
+                        )}
+                        {hasRecharge && (
+                            <MenuItem
+                                label="Recharge"
+                                leadingSlot="app-recharge"
+                                onAction={() => {
+                                    onChangeTab(TicketInfobarTab.Recharge)
+                                    onSetEditingWidgetType(
+                                        EditFieldsType.Recharge,
+                                    )
+                                }}
+                            />
+                        )}
+                        {hasBigCommerce && (
+                            <MenuItem
+                                label="BigCommerce"
+                                leadingSlot="app-bicommerce"
+                                onAction={() => {
+                                    onChangeTab(TicketInfobarTab.BigCommerce)
+                                    onSetEditingWidgetType(
+                                        EditFieldsType.Bigcommerce,
+                                    )
+                                }}
+                            />
+                        )}
+                        {hasMagento && (
+                            <MenuItem
+                                label="Magento"
+                                leadingSlot="app-magento"
+                                onAction={() => {
+                                    onChangeTab(TicketInfobarTab.Magento)
+                                    onSetEditingWidgetType(
+                                        EditFieldsType.Magento,
+                                    )
+                                }}
+                            />
+                        )}
+                        {hasWooCommerce && (
+                            <MenuItem
+                                label="WooCommerce"
+                                leadingSlot="app-woo"
+                                onAction={() => {
+                                    onChangeTab(TicketInfobarTab.WooCommerce)
+                                    onSetEditingWidgetType(
+                                        EditFieldsType.Woocommerce,
+                                    )
+                                }}
+                            />
+                        )}
+                        {hasSmile && (
+                            <MenuItem
+                                label="Smile"
+                                leadingSlot="emoji-smile"
+                                onAction={() => {
+                                    onChangeTab(TicketInfobarTab.Smile)
+                                    onSetEditingWidgetType(EditFieldsType.Smile)
+                                }}
+                            />
+                        )}
+                        {hasYotpo && (
+                            <MenuItem
+                                label="Yotpo"
+                                leadingSlot="app-yotpo"
+                                onAction={() => {
+                                    onChangeTab(TicketInfobarTab.Yotpo)
+                                    onSetEditingWidgetType(EditFieldsType.Yotpo)
+                                }}
+                            />
+                        )}
                         <MenuItem
                             label="Custom integrations"
                             leadingSlot="webhook"

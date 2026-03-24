@@ -65,7 +65,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {
@@ -190,6 +189,8 @@ const mockListWidgets = mockListWidgetsHandler()
 const mockGetTicket = mockGetTicketHandler()
 
 beforeEach(() => {
+    testAppQueryClient.clear()
+
     mockUseTicketInfobarNavigation.mockReturnValue({
         shopifyIntegrationId: undefined,
         activeTab: undefined,

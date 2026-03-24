@@ -26,14 +26,23 @@ jest.mock('pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent')
 jest.mock('@repo/tickets', () => ({
     TicketInfobarNavigation: ({
         hasAIFeedback,
+        hasBigCommerce,
+        hasMagento,
         hasTimeline,
+        hasWooCommerce,
     }: {
         hasAIFeedback?: boolean
+        hasBigCommerce?: boolean
+        hasMagento?: boolean
         hasTimeline?: boolean
+        hasWooCommerce?: boolean
     }) => (
         <div data-testid="ticket-infobar-navigation">
             <div data-testid="has-ai-feedback">{String(!!hasAIFeedback)}</div>
             <div data-testid="has-timeline">{String(!!hasTimeline)}</div>
+            <div data-testid="has-bigcommerce">{String(!!hasBigCommerce)}</div>
+            <div data-testid="has-magento">{String(!!hasMagento)}</div>
+            <div data-testid="has-woocommerce">{String(!!hasWooCommerce)}</div>
             {hasTimeline && (
                 <button data-testid="timeline-tab">Timeline Tab</button>
             )}

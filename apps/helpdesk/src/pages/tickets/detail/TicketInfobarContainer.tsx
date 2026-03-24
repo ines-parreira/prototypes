@@ -8,6 +8,7 @@ import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import classNames from 'classnames'
 import { fromJS } from 'immutable'
+import type { Map } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
@@ -32,7 +33,7 @@ import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentF
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
-import RechargeTabContent from 'pages/tickets/detail/RechargeTabContent'
+import IntegrationTabContent from 'pages/tickets/detail/IntegrationTabContent'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
@@ -48,16 +49,23 @@ import {
 import type { RootState } from 'state/types'
 import { changeTicketMessage } from 'state/ui/ticketAIAgentFeedback'
 import * as actions from 'state/widgets/actions'
+import { WOOCOMMERCE_WIDGET_TYPE } from 'state/widgets/constants'
 import {
     getSourcesWithCustomer,
     getWidgetsState,
 } from 'state/widgets/selectors'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { TimelineContent } from 'tickets/ticket-timeline'
+import BigCommerceWidget from 'Widgets/modules/BigCommerce'
+import Magento2Widget from 'Widgets/modules/Magento2'
+import RechargeWidget from 'Widgets/modules/Recharge'
 import DraftOrderModal from 'Widgets/modules/Shopify/modules/DraftOrderModal'
 import ConnectedEditOrderShippingAddressModal from 'Widgets/modules/Shopify/modules/Order/components/EditOrderShippingAddressModal'
 import { OrderSidePanelWithActions } from 'Widgets/modules/Shopify/modules/Order/components/OrderSidePanelWithActions'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
+import SmileWidget from 'Widgets/modules/Smile'
+import WooCommerceWidget from 'Widgets/modules/WooCommerce'
+import YotpoWidget from 'Widgets/modules/Yotpo'
 
 import { useCreateOrder } from './hooks/useCreateOrder'
 
@@ -115,6 +123,18 @@ export const TicketInfobarContainer = ({
     const rechargeIntegrations = useAppSelector(
         getIntegrationsByType(IntegrationType.Recharge),
     )
+    const bigcommerceIntegrations = useAppSelector(
+        getIntegrationsByType(IntegrationType.Bigcommerce),
+    )
+    const magento2Integrations = useAppSelector(
+        getIntegrationsByType(IntegrationType.Magento2),
+    )
+    const smileIntegrations = useAppSelector(
+        getIntegrationsByType(IntegrationType.Smile),
+    )
+    const yotpoIntegrations = useAppSelector(
+        getIntegrationsByType(IntegrationType.Yotpo),
+    )
     const shopIntegrationId = useMemo(
         () =>
             shopifyIntegrations.find((integration) =>
@@ -129,6 +149,47 @@ export const TicketInfobarContainer = ({
             ),
         [rechargeIntegrations, customerIntegrations],
     )
+    const bigcommerceIntegration = useMemo(
+        () =>
+            bigcommerceIntegrations.find((integration) =>
+                customerIntegrations.has(String(integration.id)),
+            ),
+        [bigcommerceIntegrations, customerIntegrations],
+    )
+    const magento2Integration = useMemo(
+        () =>
+            magento2Integrations.find((integration) =>
+                customerIntegrations.has(String(integration.id)),
+            ),
+        [magento2Integrations, customerIntegrations],
+    )
+    const smileIntegration = useMemo(
+        () =>
+            smileIntegrations.find((integration) =>
+                customerIntegrations.has(String(integration.id)),
+            ),
+        [smileIntegrations, customerIntegrations],
+    )
+    const yotpoIntegration = useMemo(
+        () =>
+            yotpoIntegrations.find((integration) =>
+                customerIntegrations.has(String(integration.id)),
+            ),
+        [yotpoIntegrations, customerIntegrations],
+    )
+    const wooCommerceStoreUuid = useMemo(() => {
+        const ecommerceData = sources.getIn([
+            'ticket',
+            'customer',
+            'ecommerce_data',
+        ]) as Map<string, unknown> | undefined
+        if (!ecommerceData) return null
+        const entry = ecommerceData.findEntry(
+            (value) =>
+                (value as any)?.getIn?.(['store', 'type']) === 'woocommerce',
+        )
+        return entry ? (entry[0] as string) : null
+    }, [sources])
 
     const { topOpportunity } = useFindTopOpportunityByTicketId(
         shopIntegrationId ?? 0,
@@ -328,7 +389,12 @@ export const TicketInfobarContainer = ({
             if (
                 tab === TicketInfobarTab.Customer ||
                 tab === TicketInfobarTab.Shopify ||
-                tab === TicketInfobarTab.Recharge
+                tab === TicketInfobarTab.Recharge ||
+                tab === TicketInfobarTab.BigCommerce ||
+                tab === TicketInfobarTab.Magento ||
+                tab === TicketInfobarTab.WooCommerce ||
+                tab === TicketInfobarTab.Smile ||
+                tab === TicketInfobarTab.Yotpo
             ) {
                 resetTicketMessage()
             }
@@ -469,10 +535,92 @@ export const TicketInfobarContainer = ({
                 </div>
             ) : activeTab === TicketInfobarTab.Recharge ? (
                 rechargeIntegration ? (
-                    <RechargeTabContent
+                    <IntegrationTabContent
                         sources={sources}
                         widgets={widgets}
-                        rechargeIntegration={rechargeIntegration}
+                        widgetType={IntegrationType.Recharge}
+                        sourcePath={[
+                            'ticket',
+                            'customer',
+                            'integrations',
+                            String(rechargeIntegration.id),
+                        ]}
+                        WidgetComponent={RechargeWidget}
+                    />
+                ) : null
+            ) : activeTab === TicketInfobarTab.BigCommerce ? (
+                bigcommerceIntegration ? (
+                    <IntegrationTabContent
+                        sources={sources}
+                        widgets={widgets}
+                        widgetType={IntegrationType.Bigcommerce}
+                        sourcePath={[
+                            'ticket',
+                            'customer',
+                            'integrations',
+                            String(bigcommerceIntegration.id),
+                        ]}
+                        WidgetComponent={BigCommerceWidget}
+                    />
+                ) : null
+            ) : activeTab === TicketInfobarTab.Magento ? (
+                magento2Integration ? (
+                    <IntegrationTabContent
+                        sources={sources}
+                        widgets={widgets}
+                        widgetType={IntegrationType.Magento2}
+                        sourcePath={[
+                            'ticket',
+                            'customer',
+                            'integrations',
+                            String(magento2Integration.id),
+                        ]}
+                        WidgetComponent={Magento2Widget}
+                    />
+                ) : null
+            ) : activeTab === TicketInfobarTab.WooCommerce ? (
+                wooCommerceStoreUuid ? (
+                    <IntegrationTabContent
+                        sources={sources}
+                        widgets={widgets}
+                        widgetType={WOOCOMMERCE_WIDGET_TYPE}
+                        sourcePath={[
+                            'ticket',
+                            'customer',
+                            'ecommerce_data',
+                            wooCommerceStoreUuid,
+                        ]}
+                        WidgetComponent={WooCommerceWidget}
+                    />
+                ) : null
+            ) : activeTab === TicketInfobarTab.Smile ? (
+                smileIntegration ? (
+                    <IntegrationTabContent
+                        sources={sources}
+                        widgets={widgets}
+                        widgetType={IntegrationType.Smile}
+                        sourcePath={[
+                            'ticket',
+                            'customer',
+                            'integrations',
+                            String(smileIntegration.id),
+                        ]}
+                        WidgetComponent={SmileWidget}
+                    />
+                ) : null
+            ) : activeTab === TicketInfobarTab.Yotpo ? (
+                yotpoIntegration ? (
+                    <IntegrationTabContent
+                        sources={sources}
+                        widgets={widgets}
+                        widgetType={IntegrationType.Yotpo}
+                        sourcePath={[
+                            'ticket',
+                            'customer',
+                            'integrations',
+                            String(yotpoIntegration.id),
+                        ]}
+                        WidgetComponent={YotpoWidget}
                     />
                 ) : null
             ) : (

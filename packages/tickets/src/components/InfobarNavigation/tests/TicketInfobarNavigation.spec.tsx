@@ -28,7 +28,7 @@ vi.mock('react-router-dom', async () => {
 
 const mockUseHelpdeskV2MS2Flag = vi.mocked(useHelpdeskV2MS2Flag)
 
-const { TicketInfobarTab } = repoNavigation
+const { TicketInfobarTab, EditFieldsType } = repoNavigation
 
 describe('TicketInfobarNavigation', () => {
     let useTicketInfobarNavigationMock: MockInstance
@@ -108,7 +108,7 @@ describe('TicketInfobarNavigation', () => {
 
     it('should render the "Shopify" tab when `useHelpdeskV2MS2Flag` returns true', async () => {
         mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
-        render(<TicketInfobarNavigation />)
+        render(<TicketInfobarNavigation hasShopify />)
 
         await waitFor(() => {
             expect(screen.getByLabelText('app-shopify')).toBeInTheDocument()
@@ -128,7 +128,7 @@ describe('TicketInfobarNavigation', () => {
 
     it('should change to the "Shopify" tab when that icon is clicked', async () => {
         mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
-        const { user } = render(<TicketInfobarNavigation />)
+        const { user } = render(<TicketInfobarNavigation hasShopify />)
 
         const button = screen.getByLabelText('app-shopify').closest('button')
 
@@ -209,6 +209,261 @@ describe('TicketInfobarNavigation', () => {
 
             expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Recharge)
         })
+    })
+
+    describe('BigCommerce tab', () => {
+        it('should render the "BigCommerce" tab when useHelpdeskV2MS2Flag is true and hasBigCommerce is true', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            render(<TicketInfobarNavigation hasBigCommerce />)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByLabelText('app-bicommerce'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should not render the "BigCommerce" tab when useHelpdeskV2MS2Flag is false', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+            render(<TicketInfobarNavigation hasBigCommerce />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByLabelText('app-bicommerce'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should change to the "BigCommerce" tab when the icon is clicked', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            const { user } = render(<TicketInfobarNavigation hasBigCommerce />)
+
+            const button = screen
+                .getByLabelText('app-bicommerce')
+                .closest('button')
+
+            await user.click(button!)
+
+            expect(onChangeTab).toHaveBeenCalledWith(
+                TicketInfobarTab.BigCommerce,
+            )
+        })
+    })
+
+    describe('Magento tab', () => {
+        it('should render the "Magento" tab when useHelpdeskV2MS2Flag is true and hasMagento is true', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            render(<TicketInfobarNavigation hasMagento />)
+
+            await waitFor(() => {
+                expect(screen.getByLabelText('app-magento')).toBeInTheDocument()
+            })
+        })
+
+        it('should not render the "Magento" tab when useHelpdeskV2MS2Flag is false', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+            render(<TicketInfobarNavigation hasMagento />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByLabelText('app-magento'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should change to the "Magento" tab when the icon is clicked', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            const { user } = render(<TicketInfobarNavigation hasMagento />)
+
+            const button = screen
+                .getByLabelText('app-magento')
+                .closest('button')
+
+            await user.click(button!)
+
+            expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Magento)
+        })
+    })
+
+    describe('WooCommerce tab', () => {
+        it('should render the "WooCommerce" tab when useHelpdeskV2MS2Flag is true and hasWooCommerce is true', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            render(<TicketInfobarNavigation hasWooCommerce />)
+
+            await waitFor(() => {
+                expect(screen.getByLabelText('app-woo')).toBeInTheDocument()
+            })
+        })
+
+        it('should not render the "WooCommerce" tab when useHelpdeskV2MS2Flag is false', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+            render(<TicketInfobarNavigation hasWooCommerce />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByLabelText('app-woo'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should change to the "WooCommerce" tab when the icon is clicked', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            const { user } = render(<TicketInfobarNavigation hasWooCommerce />)
+
+            const button = screen.getByLabelText('app-woo').closest('button')
+
+            await user.click(button!)
+
+            expect(onChangeTab).toHaveBeenCalledWith(
+                TicketInfobarTab.WooCommerce,
+            )
+        })
+    })
+
+    describe('Smile tab', () => {
+        it('should render the "Smile" tab when useHelpdeskV2MS2Flag is true and hasSmile is true', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            render(<TicketInfobarNavigation hasSmile />)
+
+            await waitFor(() => {
+                expect(screen.getByLabelText('emoji-smile')).toBeInTheDocument()
+            })
+        })
+
+        it('should not render the "Smile" tab when useHelpdeskV2MS2Flag is false', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+            render(<TicketInfobarNavigation hasSmile />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByLabelText('emoji-smile'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should change to the "Smile" tab when the icon is clicked', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            const { user } = render(<TicketInfobarNavigation hasSmile />)
+
+            const button = screen
+                .getByLabelText('emoji-smile')
+                .closest('button')
+
+            await user.click(button!)
+
+            expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Smile)
+        })
+    })
+
+    describe('Yotpo tab', () => {
+        it('should render the "Yotpo" tab when useHelpdeskV2MS2Flag is true and hasYotpo is true', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            render(<TicketInfobarNavigation hasYotpo />)
+
+            await waitFor(() => {
+                expect(screen.getByLabelText('app-yotpo')).toBeInTheDocument()
+            })
+        })
+
+        it('should not render the "Yotpo" tab when useHelpdeskV2MS2Flag is false', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+            render(<TicketInfobarNavigation hasYotpo />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByLabelText('app-yotpo'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should change to the "Yotpo" tab when the icon is clicked', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            const { user } = render(<TicketInfobarNavigation hasYotpo />)
+
+            const button = screen.getByLabelText('app-yotpo').closest('button')
+
+            await user.click(button!)
+
+            expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Yotpo)
+        })
+    })
+
+    describe('Edit widget data menu', () => {
+        const onSetEditingWidgetType = vi.fn()
+
+        beforeEach(() => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            useTicketInfobarNavigationMock.mockReturnValue({
+                activeTab: TicketInfobarTab.Customer,
+                isExpanded: true,
+                onChangeTab,
+                onToggle,
+                onSetEditingWidgetType,
+            })
+        })
+
+        it.each([
+            {
+                label: 'Shopify',
+                prop: 'hasShopify',
+                tab: TicketInfobarTab.Shopify,
+                editType: EditFieldsType.Shopify,
+            },
+            {
+                label: 'Recharge',
+                prop: 'hasRecharge',
+                tab: TicketInfobarTab.Recharge,
+                editType: EditFieldsType.Recharge,
+            },
+            {
+                label: 'BigCommerce',
+                prop: 'hasBigCommerce',
+                tab: TicketInfobarTab.BigCommerce,
+                editType: EditFieldsType.Bigcommerce,
+            },
+            {
+                label: 'Magento',
+                prop: 'hasMagento',
+                tab: TicketInfobarTab.Magento,
+                editType: EditFieldsType.Magento,
+            },
+            {
+                label: 'WooCommerce',
+                prop: 'hasWooCommerce',
+                tab: TicketInfobarTab.WooCommerce,
+                editType: EditFieldsType.Woocommerce,
+            },
+            {
+                label: 'Smile',
+                prop: 'hasSmile',
+                tab: TicketInfobarTab.Smile,
+                editType: EditFieldsType.Smile,
+            },
+            {
+                label: 'Yotpo',
+                prop: 'hasYotpo',
+                tab: TicketInfobarTab.Yotpo,
+                editType: EditFieldsType.Yotpo,
+            },
+        ])(
+            'should call onChangeTab and onSetEditingWidgetType when $label menu item is clicked',
+            async ({ label, prop, tab, editType }) => {
+                const { user } = render(
+                    <TicketInfobarNavigation {...{ [prop]: true }} />,
+                )
+
+                await user.click(screen.getByLabelText('Edit Widget data'))
+
+                await user.click(
+                    screen.getByRole('menuitem', {
+                        name: new RegExp(`${label}$`),
+                    }),
+                )
+
+                expect(onChangeTab).toHaveBeenCalledWith(tab)
+                expect(onSetEditingWidgetType).toHaveBeenCalledWith(editType)
+            },
+        )
     })
 
     describe('Tab click when collapsed', () => {
