@@ -1,7 +1,7 @@
 {
-    "name": "@repo/billing-utils",
+    "name": "@repo/billing",
     "version": "1.0.0",
-    "description": "Shared billing utilities for the monorepo",
+    "description": "Billing types, constants, and utilities",
     "private": true,
     "exports": {
         ".": "./src/index.ts"
@@ -10,18 +10,27 @@
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
         "lint": "oxlint --quiet",
-        "lint:unused": "knip --directory ../.. --workspace @repo/billing-utils --no-progress",
-        "test": "vitest run --configLoader=runner",
-        "test:ci:cover": "vitest run --configLoader=runner --coverage --silent",
+        "lint:unused": "knip --directory ../.. --workspace @repo/billing --no-progress",
+        "test": "vitest run --configLoader=runner --passWithNoTests",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage --passWithNoTests --silent",
         "test:watch": "vitest watch --configLoader=runner",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
+    "peerDependencies": {
+        "react": "catalog:react",
+        "react-dom": "catalog:react"
+    },
     "devDependencies": {
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test"
     }

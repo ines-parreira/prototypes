@@ -1,4 +1,4 @@
-import { PlanName } from '@repo/billing-utils'
+import { PlanName } from '@repo/billing'
 
 import { formatDuration } from 'domains/reporting/pages/common/utils'
 import { MetricName } from 'domains/reporting/services/constants'

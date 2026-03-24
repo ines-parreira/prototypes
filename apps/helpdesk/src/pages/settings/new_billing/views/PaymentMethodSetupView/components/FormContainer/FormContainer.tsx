@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
+import { BILLING_BASE_PATH, BILLING_PAYMENT_PATH } from '@repo/billing'
 import { Form } from '@repo/forms'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -16,10 +17,6 @@ import BackLink from 'pages/settings/new_billing/components/BackLink'
 import { BillingInformationFields } from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import Card from 'pages/settings/new_billing/components/Card'
 import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
-import {
-    BILLING_BASE_PATH,
-    BILLING_PAYMENT_PATH,
-} from 'pages/settings/new_billing/constants'
 import { useStripeElementPaymentState } from 'pages/settings/new_billing/hooks/useStripeElementPaymentState'
 import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
 import { getIsMissingBillingInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingInformation'

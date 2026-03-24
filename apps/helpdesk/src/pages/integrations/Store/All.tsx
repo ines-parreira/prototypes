@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 
-import { getCheapestPlanNameForFeature } from '@repo/billing-utils'
+import { getCheapestPlanNameForFeature } from '@repo/billing'
 import { useTitle } from '@repo/hooks'
 
 import useAppDispatch from 'hooks/useAppDispatch'

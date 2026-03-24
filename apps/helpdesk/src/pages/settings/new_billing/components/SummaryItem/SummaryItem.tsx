@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import type { SelectedPlans } from '@repo/billing'
 import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -16,7 +17,6 @@ import {
 } from 'models/billing/utils'
 
 import warningIcon from '../../../../../assets/img/icons/warning.svg'
-import type { SelectedPlans } from '../../types'
 import { formatAmount } from '../../utils/formatAmount'
 import { getNextTier } from '../../utils/getNextTier'
 import { SummaryItemTitle } from './SummaryItemTitle'

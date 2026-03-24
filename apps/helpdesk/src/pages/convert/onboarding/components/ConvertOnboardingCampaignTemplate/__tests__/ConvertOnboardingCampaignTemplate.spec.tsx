@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { PlanName } from '@repo/billing-utils'
+import { PlanName } from '@repo/billing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'

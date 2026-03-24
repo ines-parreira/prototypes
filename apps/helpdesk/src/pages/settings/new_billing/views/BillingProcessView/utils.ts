@@ -1,3 +1,4 @@
+import type { SelectedPlans } from '@repo/billing'
 import _capitalize from 'lodash/capitalize'
 
 import type { PlanForProductType } from 'models/billing/types'
@@ -9,7 +10,6 @@ import {
     NotificationStyle,
 } from 'state/notifications/types'
 
-import type { SelectedPlans } from '../../types'
 import { formatNumTickets } from '../../utils/formatAmount'
 
 export type setNotificationProps<T extends ProductType> = {

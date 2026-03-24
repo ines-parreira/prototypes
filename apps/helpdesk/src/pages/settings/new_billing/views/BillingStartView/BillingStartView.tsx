@@ -1,5 +1,20 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import type { SelectedPlans } from '@repo/billing'
+import {
+    BILLING_BASE_PATH,
+    BILLING_INFORMATION_PATH,
+    BILLING_INTERNAL_PATH,
+    BILLING_PAYMENT_CARD_PATH,
+    BILLING_PAYMENT_FREQUENCY_PATH,
+    BILLING_PAYMENT_PATH,
+    BILLING_PAYMENTS_HISTORY_PATH,
+    BILLING_PROCESS_PATH,
+    BILLING_SUPPORT_EMAIL,
+    DATE_FORMAT,
+    SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
+    ZAPIER_BILLING_HOOK,
+} from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useSessionStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -37,23 +52,8 @@ import {
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 import ContactSupportModal from '../../components/ContactSupportModal/ContactSupportModal'
-import {
-    BILLING_BASE_PATH,
-    BILLING_INFORMATION_PATH,
-    BILLING_INTERNAL_PATH,
-    BILLING_PAYMENT_CARD_PATH,
-    BILLING_PAYMENT_FREQUENCY_PATH,
-    BILLING_PAYMENT_PATH,
-    BILLING_PAYMENTS_HISTORY_PATH,
-    BILLING_PROCESS_PATH,
-    BILLING_SUPPORT_EMAIL,
-    DATE_FORMAT,
-    SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
-    ZAPIER_BILLING_HOOK,
-} from '../../constants'
 import useDispatchBillingError from '../../hooks/useDispatchBillingError'
 import { useUrlNotification } from '../../hooks/useUrlNotification'
-import type { SelectedPlans } from '../../types'
 import { BillingAddressSetupView } from '../BillingAddressSetupView/BillingAddressSetupView'
 import BillingFrequencyView from '../BillingFrequencyView'
 import BillingInternalView from '../BillingInternalView'

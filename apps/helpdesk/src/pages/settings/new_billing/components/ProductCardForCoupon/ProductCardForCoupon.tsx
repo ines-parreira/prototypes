@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { DATE_FORMAT } from '@repo/billing'
 import _capitalize from 'lodash/capitalize'
 import moment from 'moment/moment'
 
@@ -8,7 +9,6 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 import type { CouponSummary, Plan } from 'models/billing/types'
 import { getPlanDescription } from 'models/billing/utils'
 
-import { DATE_FORMAT } from '../../constants'
 import AddSalesCouponModal from '../AddSalesCouponModal'
 
 import css from './ProductCardForCoupon.less'

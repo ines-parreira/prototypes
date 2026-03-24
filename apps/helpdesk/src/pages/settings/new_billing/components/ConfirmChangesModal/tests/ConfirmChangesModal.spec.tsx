@@ -1,3 +1,4 @@
+import type { SelectedPlans } from '@repo/billing'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -10,7 +11,6 @@ import {
     voicePlan1,
 } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
-import type { SelectedPlans } from 'pages/settings/new_billing/types'
 
 import type { ConfirmChangesModalProps } from '../ConfirmChangesModal'
 import { ConfirmChangesModal } from '../ConfirmChangesModal'

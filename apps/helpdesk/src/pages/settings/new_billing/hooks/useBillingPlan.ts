@@ -1,5 +1,11 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import type { SelectedPlans } from '@repo/billing'
+import {
+    BILLING_SUPPORT_EMAIL,
+    DATE_FORMAT,
+    ZAPIER_BILLING_HOOK,
+} from '@repo/billing'
 import { useQueryClient } from '@tanstack/react-query'
 import moment from 'moment'
 import { useHistory } from 'react-router-dom'
@@ -57,12 +63,6 @@ import {
 } from 'state/notifications/types'
 import { objKeys } from 'utils'
 
-import {
-    BILLING_SUPPORT_EMAIL,
-    DATE_FORMAT,
-    ZAPIER_BILLING_HOOK,
-} from '../constants'
-import type { SelectedPlans } from '../types'
 import { sendSupportTicket } from '../utils/sendSupportTicket'
 import {
     setAutomationNotification,

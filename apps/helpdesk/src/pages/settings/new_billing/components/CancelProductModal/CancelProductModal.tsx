@@ -1,6 +1,8 @@
 import type React from 'react'
 import { useReducer, useState } from 'react'
 
+import type { SelectedPlans } from '@repo/billing'
+import { BILLING_SUPPORT_EMAIL, ZAPIER_REMOVE_AAO_HOOK } from '@repo/billing'
 import { SegmentEvent } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -26,8 +28,6 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { trackBillingEvent } from '../../../../../models/billing/resources'
 import { cancelHelpdeskAutoRenewal } from '../../../../../state/currentAccount/actions'
-import { BILLING_SUPPORT_EMAIL, ZAPIER_REMOVE_AAO_HOOK } from '../../constants'
-import type { SelectedPlans } from '../../types'
 import { reportCRMGrowthError } from '../../utils/reportCRMGrowthError'
 import { sendRemoveNotificationZap } from '../../utils/sendRemoveNotificationZap'
 import CancellationReasons from './CancellationReasons'

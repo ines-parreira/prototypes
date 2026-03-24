@@ -1,5 +1,13 @@
 import { useEffect, useMemo } from 'react'
 
+import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    BILLING_PAUSED_TOOLTIP,
+    BILLING_PAYMENT_CARD_PATH,
+    BILLING_PROCESS_PATH,
+    DATE_FORMAT,
+    PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+} from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -41,14 +49,6 @@ import { NotificationStyle } from 'state/notifications/types'
 
 import NavigateToChangeBillingFrequency from '../../components/NavigateToChangeBillingFrequency/NavigateToChangeBillingFrequency'
 import ProductCard from '../../components/ProductCard'
-import {
-    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
-    BILLING_PAUSED_TOOLTIP,
-    BILLING_PAYMENT_CARD_PATH,
-    BILLING_PROCESS_PATH,
-    DATE_FORMAT,
-    PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
-} from '../../constants'
 import useProductCancellations from '../../hooks/useProductCancellations'
 import { CustomPlanBanner } from './CustomPlanBanner'
 

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { BILLING_PAYMENT_PATH } from '@repo/billing'
 import { isAdmin } from '@repo/utils'
 
 import type { ContextBanner } from 'AlertBanners'
@@ -7,7 +8,6 @@ import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
 import { BillingAddressValidationStatus } from 'models/billing/types'
-import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 const INSTANCE_ID = 'billing-address-validation'

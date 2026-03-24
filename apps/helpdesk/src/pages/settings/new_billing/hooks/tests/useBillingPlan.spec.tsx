@@ -1,3 +1,4 @@
+import { DATE_FORMAT } from '@repo/billing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
@@ -50,7 +51,6 @@ import {
 import type { RootState, StoreDispatch, StoreState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
-import { DATE_FORMAT } from '../../constants'
 import { useBillingPlans } from '../useBillingPlan'
 
 const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([

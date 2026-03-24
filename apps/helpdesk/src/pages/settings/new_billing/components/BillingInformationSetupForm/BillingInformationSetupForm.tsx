@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
+import { BILLING_PAYMENT_PATH } from '@repo/billing'
 import type { FormProps } from '@repo/forms'
 import { Form } from '@repo/forms'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -9,7 +10,6 @@ import mapValues from 'lodash/mapValues'
 import type { SubmitHandler } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 
-import { BILLING_PAYMENT_PATH } from 'pages/settings/new_billing/constants'
 import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
 import { normalizeStateToCode } from 'pages/settings/new_billing/utils/normalizeStateToCode'
 import { useSubmitBillingAddress } from 'pages/settings/new_billing/views/BillingAddressSetupView/hooks/useSubmitBillingAddress'

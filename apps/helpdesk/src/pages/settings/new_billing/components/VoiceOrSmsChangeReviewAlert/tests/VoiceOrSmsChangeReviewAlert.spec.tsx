@@ -1,5 +1,6 @@
 import React from 'react'
 
+import type { SelectedPlans } from '@repo/billing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { resetLDMocks } from 'jest-launchdarkly-mock'
@@ -19,7 +20,6 @@ import {
     voicePlan0,
     voicePlan1,
 } from 'fixtures/plans'
-import type { SelectedPlans } from 'pages/settings/new_billing/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import VoiceOrSmsChangeReviewAlert from '../VoiceOrSmsChangeReviewAlert'

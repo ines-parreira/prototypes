@@ -1,3 +1,9 @@
+import type { PlansByProduct } from '@repo/billing'
+import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_CARD_PATH,
+} from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -12,18 +18,12 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence, ProductType } from 'models/billing/types'
-import type { PlansByProduct } from 'pages/settings/new_billing/types'
 import {
     getShopifyBillingStatus,
     shouldPayWithShopify,
 } from 'state/currentAccount/selectors'
 import { ShopifyBillingStatus } from 'state/currentAccount/types'
 
-import {
-    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
-    BILLING_BASE_PATH,
-    BILLING_PAYMENT_CARD_PATH,
-} from '../../../constants'
 import { BillingSummaryCard } from '../BillingSummaryCard'
 
 jest.mock('@repo/feature-flags', () => ({

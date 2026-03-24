@@ -1,3 +1,4 @@
+import { ENTERPRISE_PLAN_ID, PRODUCT_INFO } from '@repo/billing'
 import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
@@ -14,10 +15,6 @@ import type {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
-import {
-    ENTERPRISE_PLAN_ID,
-    PRODUCT_INFO,
-} from 'pages/settings/new_billing/constants'
 
 import {
     formatAmount,

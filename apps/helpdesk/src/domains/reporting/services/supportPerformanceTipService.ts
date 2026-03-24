@@ -1,4 +1,4 @@
-import type { PlanName } from '@repo/billing-utils'
+import type { PlanName } from '@repo/billing'
 import _findLastIndex from 'lodash/findLastIndex'
 
 import { formatDuration } from 'domains/reporting/pages/common/utils'

@@ -1,4 +1,4 @@
-import { getCheapestPlanNameForFeature } from '@repo/billing-utils'
+import { getCheapestPlanNameForFeature } from '@repo/billing'
 
 import { paywallConfigs as defaultPaywallConfigs } from 'config/paywalls'
 import useAppSelector from 'hooks/useAppSelector'

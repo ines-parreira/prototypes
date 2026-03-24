@@ -1,3 +1,7 @@
+import {
+    BILLING_PAUSED_TOOLTIP,
+    BILLING_PAYMENT_FREQUENCY_PATH,
+} from '@repo/billing'
 import { logEvent } from '@repo/logging'
 import type { SegmentEvent } from '@repo/logging'
 import { Link } from 'react-router-dom'
@@ -20,11 +24,6 @@ import {
 } from 'state/billing/selectors'
 import { TicketPurpose } from 'state/billing/types'
 import { getCurrentSubscription } from 'state/currentAccount/selectors'
-
-import {
-    BILLING_PAUSED_TOOLTIP,
-    BILLING_PAYMENT_FREQUENCY_PATH,
-} from '../../constants'
 
 import css from './NavigateToChangeBillingFrequency.less'
 

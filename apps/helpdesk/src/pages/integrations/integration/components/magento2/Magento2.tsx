@@ -1,4 +1,4 @@
-import { PlanName } from '@repo/billing-utils'
+import { PlanName } from '@repo/billing'
 import type { List as ImmutableList, Map } from 'immutable'
 import { Link, NavLink, useParams } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'

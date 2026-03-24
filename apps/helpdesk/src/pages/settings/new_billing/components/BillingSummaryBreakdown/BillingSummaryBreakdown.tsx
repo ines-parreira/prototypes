@@ -1,13 +1,14 @@
+import type {
+    CancellationDates,
+    PlansByProduct,
+    SelectedPlans,
+} from '@repo/billing'
+
 import { Box, Text } from '@gorgias/axiom'
 
 import type { Cadence } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
 
-import type {
-    CancellationDates,
-    PlansByProduct,
-    SelectedPlans,
-} from '../../types'
 import { SummaryItem } from '../SummaryItem'
 import SummaryTotal from '../SummaryTotal'
 

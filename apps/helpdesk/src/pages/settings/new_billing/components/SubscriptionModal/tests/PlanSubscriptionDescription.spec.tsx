@@ -1,3 +1,4 @@
+import { PRODUCT_SUBSCRIPTION_DESCRIPTION } from '@repo/billing'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -6,7 +7,6 @@ import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo, getProductLabel } from 'models/billing/utils'
 import type { PlanSubscriptionDescriptionProps } from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
-import { PRODUCT_SUBSCRIPTION_DESCRIPTION } from 'pages/settings/new_billing/constants'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 describe('PlanSubscriptionDescription', () => {

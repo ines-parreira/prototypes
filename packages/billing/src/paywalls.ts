@@ -1,3 +1,7 @@
+import { Cadence } from './types'
+
+export { Cadence } from './types'
+
 export enum PlanName {
     Starter = 'Starter',
     Basic = 'Basic',
@@ -6,12 +10,6 @@ export enum PlanName {
     Enterprise = 'Enterprise',
     Custom = 'Custom',
     Free = 'Free',
-}
-
-export enum Cadence {
-    Month = 'month',
-    Quarter = 'quarter',
-    Year = 'year',
 }
 
 type PlanFeatureMetadata = {

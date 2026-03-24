@@ -1,5 +1,11 @@
 import { useMemo } from 'react'
 
+import type {
+    CancellationDates,
+    PlansByProduct,
+    SelectedPlans,
+} from '@repo/billing'
+
 import {
     Box,
     Button,
@@ -15,11 +21,6 @@ import {
 import { ProductType } from 'models/billing/types'
 import type { Cadence } from 'models/billing/types'
 
-import type {
-    CancellationDates,
-    PlansByProduct,
-    SelectedPlans,
-} from '../../types'
 import { BillingSummaryBreakdown } from '../BillingSummaryBreakdown'
 
 export type ConfirmChangesModalProps = {

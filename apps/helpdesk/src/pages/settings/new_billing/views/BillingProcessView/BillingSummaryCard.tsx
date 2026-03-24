@@ -1,6 +1,16 @@
 import type React from 'react'
 import { useState } from 'react'
 
+import type {
+    CancellationDates,
+    PlansByProduct,
+    SelectedPlans,
+} from '@repo/billing'
+import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_CARD_PATH,
+} from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
@@ -26,16 +36,6 @@ import { BillingSummaryBreakdown } from '../../components/BillingSummaryBreakdow
 import Card from '../../components/Card'
 import { ConfirmChangesModal } from '../../components/ConfirmChangesModal'
 import SummaryFooter from '../../components/SummaryFooter'
-import {
-    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
-    BILLING_BASE_PATH,
-    BILLING_PAYMENT_CARD_PATH,
-} from '../../constants'
-import type {
-    CancellationDates,
-    PlansByProduct,
-    SelectedPlans,
-} from '../../types'
 
 import css from './BillingProcessView.less'
 

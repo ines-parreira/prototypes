@@ -1,3 +1,5 @@
+import type { SelectedPlans } from '@repo/billing'
+
 import {
     automationProduct,
     basicMonthlyAutomationPlan,
@@ -6,7 +8,6 @@ import {
 } from 'fixtures/plans'
 import type { AutomatePlan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
-import type { SelectedPlans } from 'pages/settings/new_billing/types'
 
 import {
     buildEnterpriseMessage,

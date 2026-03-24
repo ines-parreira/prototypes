@@ -1,6 +1,11 @@
 import type { ElementType } from 'react'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 
+import {
+    BILLING_BASE_PATH,
+    BILLING_SUPPORT_EMAIL,
+    ZAPIER_BILLING_HOOK,
+} from '@repo/billing'
 import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
@@ -20,11 +25,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import type { Plan } from 'models/billing/types'
 import { isEnterprise, isYearlyContractPlan } from 'models/billing/utils'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal/ContactSupportModal'
-import {
-    BILLING_BASE_PATH,
-    BILLING_SUPPORT_EMAIL,
-    ZAPIER_BILLING_HOOK,
-} from 'pages/settings/new_billing/constants'
 import { useCurrentPlanIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import {
     getAvailableAutomatePlans,

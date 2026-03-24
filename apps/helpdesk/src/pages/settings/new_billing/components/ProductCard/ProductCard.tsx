@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { BILLING_PROCESS_PATH, DATE_FORMAT } from '@repo/billing'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import moment from 'moment'
@@ -34,7 +35,6 @@ import {
 import type { BillingBanner, CurrentUsagePerProduct } from 'state/billing/types'
 import { TicketPurpose } from 'state/billing/types'
 
-import { BILLING_PROCESS_PATH, DATE_FORMAT } from '../../constants'
 import { formatAmount, formatNumTickets } from '../../utils/formatAmount'
 
 import css from './ProductCard.less'

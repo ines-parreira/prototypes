@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing-utils'
+import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing'
 
 import type { MetricName } from 'domains/reporting/services/constants'
 import type { Tip } from 'domains/reporting/services/supportPerformanceTipService'

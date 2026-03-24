@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { PlanName } from '@repo/billing-utils'
+import { PlanName } from '@repo/billing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
+import { BILLING_SUPPORT_EMAIL, ZAPIER_BILLING_HOOK } from '@repo/billing'
 import { useHistory } from 'react-router-dom'
 import { Modal, ModalBody, ModalHeader } from 'reactstrap'
 
@@ -11,10 +12,6 @@ import { isEnterprise, isYearlyContractPlan } from 'models/billing/utils'
 import ContactSupportModal from 'pages/settings/new_billing/components/ContactSupportModal'
 import PlanSubscriptionDescription from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription'
 import SubscriptionModalFooter from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModalFooter'
-import {
-    BILLING_SUPPORT_EMAIL,
-    ZAPIER_BILLING_HOOK,
-} from 'pages/settings/new_billing/constants'
 import { useCurrentPlanIds } from 'pages/settings/new_billing/hooks/useGetCurrentPriceIds'
 import { useUpdateSubscription } from 'pages/settings/new_billing/hooks/useUpdateSubscription'
 import {

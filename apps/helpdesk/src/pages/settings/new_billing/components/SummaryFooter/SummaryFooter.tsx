@@ -1,6 +1,12 @@
 import type React from 'react'
 import { useMemo, useState } from 'react'
 
+import type { SelectedPlans } from '@repo/billing'
+import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_CARD_PATH,
+} from '@repo/billing'
 import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
@@ -15,13 +21,6 @@ import {
     NotificationStyle,
 } from 'state/notifications/types'
 import { reportError } from 'utils/errors'
-
-import {
-    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
-    BILLING_BASE_PATH,
-    BILLING_PAYMENT_CARD_PATH,
-} from '../../constants'
-import type { SelectedPlans } from '../../types'
 
 import css from './SummaryFooter.less'
 

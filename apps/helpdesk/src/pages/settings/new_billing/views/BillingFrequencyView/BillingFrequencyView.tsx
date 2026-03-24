@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import type { SelectedPlans } from '@repo/billing'
+import { BILLING_PAYMENT_PATH, PRICING_DETAILS_URL } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -24,9 +26,7 @@ import Card from '../../components/Card/Card'
 import SummaryFooter from '../../components/SummaryFooter/SummaryFooter'
 import { SummaryItem } from '../../components/SummaryItem/SummaryItem'
 import SummaryTotal from '../../components/SummaryTotal/SummaryTotal'
-import { BILLING_PAYMENT_PATH, PRICING_DETAILS_URL } from '../../constants'
 import { useBillingPlans } from '../../hooks/useBillingPlan'
-import type { SelectedPlans } from '../../types'
 
 import css from './BillingFrequencyView.less'
 

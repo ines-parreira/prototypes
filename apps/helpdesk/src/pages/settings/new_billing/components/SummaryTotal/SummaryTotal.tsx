@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 
+import type { SelectedPlans } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
 import type { CouponSummary, Plan, ProductType } from 'models/billing/types'
 import { Cadence, SubscriptionStatus } from 'models/billing/types'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
-import type { SelectedPlans } from '../../types'
 import { formatAmount } from '../../utils/formatAmount'
 import { getTotalWithDiscounts } from '../../utils/getTotalWithDiscounts'
 import SummaryTotalWithDiscounts from './SummaryTotalWithDiscounts'

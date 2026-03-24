@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-return */
+import type { SelectedPlans } from '@repo/billing'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { Form } from '@repo/forms'
 import { useSessionStorage } from '@repo/hooks'
@@ -10,7 +11,6 @@ import { mockFlags } from 'jest-launchdarkly-mock'
 import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
 import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan'
-import type { SelectedPlans } from 'pages/settings/new_billing/types'
 import * as selectors from 'state/currentAccount/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'

@@ -1,6 +1,8 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
+import type { SelectedPlans } from '@repo/billing'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import Alert from 'pages/common/components/Alert/Alert'
@@ -8,8 +10,6 @@ import {
     getIsVettedForPhone,
     getVoiceOrSmsPlanChanged,
 } from 'state/billing/selectors'
-
-import type { SelectedPlans } from '../../types'
 
 import css from './VoiceOrSmsChangeReviewAlert.less'
 

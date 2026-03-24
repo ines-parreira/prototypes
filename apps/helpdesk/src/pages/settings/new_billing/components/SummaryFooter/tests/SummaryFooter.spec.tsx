@@ -1,3 +1,5 @@
+import type { SelectedPlans } from '@repo/billing'
+import { BILLING_BASE_PATH } from '@repo/billing'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
@@ -11,8 +13,6 @@ import {
     products,
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
-import { BILLING_BASE_PATH } from 'pages/settings/new_billing/constants'
-import type { SelectedPlans } from 'pages/settings/new_billing/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import type { SummaryFooterProps } from '../SummaryFooter'

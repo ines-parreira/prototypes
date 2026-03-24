@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react'
 
-import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing-utils'
+import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing'
 import type { Map } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'

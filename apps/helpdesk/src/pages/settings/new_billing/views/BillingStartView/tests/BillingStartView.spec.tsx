@@ -1,3 +1,9 @@
+import {
+    BILLING_BASE_PATH,
+    BILLING_INFORMATION_PATH,
+    BILLING_PAYMENT_CARD_PATH,
+    BILLING_PAYMENT_PATH,
+} from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -12,12 +18,6 @@ import {
 } from 'fixtures/convert'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import {
-    BILLING_BASE_PATH,
-    BILLING_INFORMATION_PATH,
-    BILLING_PAYMENT_CARD_PATH,
-    BILLING_PAYMENT_PATH,
-} from 'pages/settings/new_billing/constants'
 import {
     currentProductsUsageWithPhone,
     storeWithActiveSubscriptionWithConvert,

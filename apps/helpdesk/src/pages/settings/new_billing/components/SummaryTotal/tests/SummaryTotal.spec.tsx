@@ -1,3 +1,4 @@
+import type { SelectedPlans } from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -8,7 +9,6 @@ import {
 } from 'fixtures/plans'
 import client from 'models/api/resources'
 import { Cadence, SubscriptionStatus } from 'models/billing/types'
-import type { SelectedPlans } from 'pages/settings/new_billing/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import SummaryTotal from '../SummaryTotal'

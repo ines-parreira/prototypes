@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 
+import { DATE_FORMAT } from '@repo/billing'
 import moment from 'moment/moment'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -14,7 +15,6 @@ import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 
-import { DATE_FORMAT } from '../../constants'
 import AddSalesCouponModal from '../AddSalesCouponModal'
 
 import css from './UpcomingInvoiceCard.less'

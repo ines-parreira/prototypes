@@ -1,7 +1,6 @@
+import { BILLING_BASE_PATH } from '@repo/billing'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
-
-import { BILLING_BASE_PATH } from '../constants'
 
 export const generateBreadcrumbs = (
     breadcrumbItems: (JSX.Element | string)[],

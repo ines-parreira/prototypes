@@ -1,9 +1,8 @@
 import React, { useMemo } from 'react'
 
+import { DATE_FORMAT } from '@repo/billing'
 import classNames from 'classnames'
 import moment from 'moment/moment'
-
-import { DATE_FORMAT } from '../../constants'
 
 import css from './ScheduledCancellationSummary.less'
 

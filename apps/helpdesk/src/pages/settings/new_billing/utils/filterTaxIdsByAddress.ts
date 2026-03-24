@@ -1,6 +1,6 @@
+import { TAX_ID_VALIDATION } from '@repo/billing'
 import mapValues from 'lodash/mapValues'
 
-import { TAX_ID_VALIDATION } from 'pages/settings/new_billing/constants'
 import type {
     BillingContactUpdatePayload,
     TaxIdType,

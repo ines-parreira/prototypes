@@ -1,5 +1,11 @@
 import { useState } from 'react'
 
+import {
+    BILLING_SUPPORT_EMAIL,
+    CANCEL_AUTOMATION_REASONS,
+    DATE_FORMAT,
+    ZAPIER_REMOVE_AAO_HOOK,
+} from '@repo/billing'
 import moment from 'moment'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -17,12 +23,6 @@ import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentDomain, isTrialing } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-import {
-    BILLING_SUPPORT_EMAIL,
-    CANCEL_AUTOMATION_REASONS,
-    DATE_FORMAT,
-    ZAPIER_REMOVE_AAO_HOOK,
-} from '../../constants'
 import useAutomationFeatures from '../../hooks/useAutomationFeatures'
 import { sendRemoveNotificationZap } from '../../utils/sendRemoveNotificationZap'
 import ReasonsAAOModal from './ReasonsAAOModal'

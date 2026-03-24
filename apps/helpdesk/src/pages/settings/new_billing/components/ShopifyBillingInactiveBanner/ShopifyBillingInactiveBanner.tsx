@@ -1,14 +1,13 @@
+import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    STORE_MANAGEMENT_PATH,
+} from '@repo/billing'
 import { Link } from 'react-router-dom'
 
 import { Banner, Box, Text } from '@gorgias/axiom'
 
 import { useBillingState } from 'models/billing/queries'
 import { SubscriptionStatus } from 'models/billing/types'
-
-import {
-    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
-    STORE_MANAGEMENT_PATH,
-} from '../../constants'
 
 export const ShopifyBillingInactiveBanner = () => {
     const { data: billingState } = useBillingState()

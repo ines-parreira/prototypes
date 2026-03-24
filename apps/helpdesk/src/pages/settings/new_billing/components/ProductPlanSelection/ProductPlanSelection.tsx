@@ -1,6 +1,12 @@
 import type React from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
+import type { SelectedPlans } from '@repo/billing'
+import {
+    DATE_FORMAT,
+    ENTERPRISE_PLAN_ID,
+    PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+} from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -32,13 +38,7 @@ import { TicketPurpose } from 'state/billing/types'
 import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import {
-    DATE_FORMAT,
-    ENTERPRISE_PLAN_ID,
-    PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
-} from '../../constants'
 import useIsCancellationAvailable from '../../hooks/useIsCancellationAvailable'
-import type { SelectedPlans } from '../../types'
 import { formatNumTickets } from '../../utils/formatAmount'
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
 import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'

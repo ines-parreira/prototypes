@@ -1,4 +1,4 @@
-import { PlanName } from '@repo/billing-utils'
+import { PlanName } from '@repo/billing'
 import { ulid } from 'ulidx'
 
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'

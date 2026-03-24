@@ -1,4 +1,4 @@
-import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing-utils'
+import { convertLegacyPlanNameToPublicPlanName } from '@repo/billing'
 import classNames from 'classnames'
 import { v4 as uuidv4 } from 'uuid'
 

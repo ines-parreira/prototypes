@@ -1,6 +1,6 @@
-import type { CouponSummary, ProductType } from 'models/billing/types'
+import type { SelectedPlans } from '@repo/billing'
 
-import type { SelectedPlans } from '../types'
+import type { CouponSummary, ProductType } from 'models/billing/types'
 
 // Calculates the costs all of currently selected products, accounting for coupons.
 export const getTotalWithDiscounts = (

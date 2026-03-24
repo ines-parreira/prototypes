@@ -1,3 +1,9 @@
+import type { SelectedPlans } from '@repo/billing'
+import {
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_PATH,
+    SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
+} from '@repo/billing'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import {
@@ -21,12 +27,6 @@ import {
 } from 'fixtures/plans'
 import client from 'models/api/resources'
 import { ProductType } from 'models/billing/types'
-import {
-    BILLING_BASE_PATH,
-    BILLING_PAYMENT_PATH,
-    SELECTED_PRODUCTS_SESSION_STORAGE_KEY,
-} from 'pages/settings/new_billing/constants'
-import type { SelectedPlans } from 'pages/settings/new_billing/types'
 import { FormContainer } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
 import type { BillingContactDetailResponse } from 'state/billing/types'
 import type { RootState } from 'state/types'

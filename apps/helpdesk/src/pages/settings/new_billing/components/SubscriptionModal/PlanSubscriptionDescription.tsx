@@ -1,6 +1,11 @@
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import type { ProductSubscriptionDescription } from '@repo/billing'
+import {
+    ENTERPRISE_PLAN_ID,
+    PRODUCT_SUBSCRIPTION_DESCRIPTION,
+} from '@repo/billing'
 import classNames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -18,12 +23,7 @@ import CounterText from 'pages/settings/new_billing/components/CounterText'
 import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSubscriptionDescription.less'
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
-import {
-    ENTERPRISE_PLAN_ID,
-    PRODUCT_SUBSCRIPTION_DESCRIPTION,
-} from 'pages/settings/new_billing/constants'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
-import type { ProductSubscriptionDescription } from 'pages/settings/new_billing/types'
 import { formatNumTickets } from 'pages/settings/new_billing/utils/formatAmount'
 
 export type PlanSubscriptionDescriptionProps = {

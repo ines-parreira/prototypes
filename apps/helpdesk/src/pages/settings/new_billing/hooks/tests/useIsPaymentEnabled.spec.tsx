@@ -1,3 +1,7 @@
+import {
+    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
+    BILLING_PAYMENT_CARD_PATH,
+} from '@repo/billing'
 import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -5,10 +9,6 @@ import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
 import client from 'models/api/resources'
 import type { CreditCard } from 'models/billing/types'
-import {
-    ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
-    BILLING_PAYMENT_CARD_PATH,
-} from 'pages/settings/new_billing/constants'
 import {
     payingWithAchCredit,
     payingWithAchDebit,

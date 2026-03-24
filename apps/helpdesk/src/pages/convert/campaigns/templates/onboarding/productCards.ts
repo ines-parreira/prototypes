@@ -1,4 +1,4 @@
-import { PlanName } from '@repo/billing-utils'
+import { PlanName } from '@repo/billing'
 import type { Map } from 'immutable'
 import { ulid } from 'ulidx'
 

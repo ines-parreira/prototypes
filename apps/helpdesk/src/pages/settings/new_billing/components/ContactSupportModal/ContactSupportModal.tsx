@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { BILLING_BASE_PATH } from '@repo/billing'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
@@ -18,7 +19,6 @@ import { isTrialing } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
-import { BILLING_BASE_PATH } from '../../constants'
 import { sendSupportTicket } from '../../utils/sendSupportTicket'
 import { prepareMessage } from './helpers/prepareMessage'
 
