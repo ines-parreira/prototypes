@@ -1,7 +1,5 @@
 import { DurationInMs, slidingWindow } from '@repo/utils'
 
-import type { TicketMessage } from '@gorgias/helpdesk-queries'
-
 import { TicketThreadItemTag } from '../types'
 import {
     isAiAgentDraftMessage,
@@ -24,12 +22,13 @@ import {
     isTicketMessage,
 } from './predicates'
 import type {
+    TicketThreadMessageData,
     TicketThreadMessageItem,
     TicketThreadSingleMessageItem,
 } from './types'
 
 export function toTaggedMessage(
-    message: TicketMessage,
+    message: TicketThreadMessageData,
 ): TicketThreadSingleMessageItem {
     const datetime = message.created_datetime
 

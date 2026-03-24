@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import type { TicketMessage } from '@gorgias/helpdesk-queries'
-
 import { useListTicketMessages } from '../shared/useListTicketMessages'
 import {
     isActivePendingMessage,
@@ -11,7 +9,7 @@ import {
     isTicketMessage,
 } from './predicates'
 import { groupConsecutiveMessages, toTaggedMessage } from './transforms'
-import type { TicketThreadMessageItem } from './types'
+import type { TicketThreadMessageData, TicketThreadMessageItem } from './types'
 
 type UseTicketThreadMessagesParams = {
     ticketId: number
@@ -23,7 +21,9 @@ type UseTicketThreadMessagesResult = {
     activePendingMessages: TicketThreadMessageItem[]
 }
 
-function sortMessagesByDate(messages: TicketMessage[]): TicketMessage[] {
+function sortMessagesByDate<TMessage extends TicketThreadMessageData>(
+    messages: TMessage[],
+): TMessage[] {
     return [...messages].sort((a, b) =>
         a.created_datetime.localeCompare(b.created_datetime),
     )
@@ -36,12 +36,12 @@ export function useTicketThreadMessages({
     const messages = useListTicketMessages({ ticketId })
 
     return useMemo(() => {
-        const persistedMessages = (messages ?? []).filter(
-            (message) =>
-                isTicketMessage(message) &&
-                !isHiddenMessage(message) &&
-                !isSignalMessage(message),
-        )
+        const persistedMessages = (messages ?? [])
+            .filter(isTicketMessage)
+            .filter(
+                (message) =>
+                    !isHiddenMessage(message) && !isSignalMessage(message),
+            )
         const normalizedPendingMessages = (pendingMessages ?? []).filter(
             isTicketMessage,
         )

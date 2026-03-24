@@ -1,4 +1,4 @@
-import { Box } from '@gorgias/axiom'
+import { AIThinking, Box } from '@gorgias/axiom'
 
 import type { TicketThreadAiAgentMessageItem } from '../../../../hooks/messages/types'
 import { MessageAttachments } from '../../../MessageBubble/components/MessageAttachments'
@@ -21,7 +21,7 @@ export function AiAgentTicketThreadMessage({
         <MessageBubble variant="ai-agent">
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
-                    <div>AI agent image</div>
+                    <AIThinking variant="static" />
                     <MessageSender sender={{ name: 'AI Agent' }} />
                 </Box>
                 <Box alignItems="center" gap="xs">

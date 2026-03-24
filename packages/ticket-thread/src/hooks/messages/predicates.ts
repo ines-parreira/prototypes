@@ -1,7 +1,3 @@
-import type { Prettify } from '@repo/types'
-
-import type { TicketMessage } from '@gorgias/helpdesk-queries'
-
 import type {
     ActivePendingMessageSchema,
     AiAgentDraftMessageSchema,
@@ -21,7 +17,6 @@ import type {
     SocialMediaTwitterDirectMessageSchema,
     SocialMediaTwitterTweetSchema,
     SocialMediaWhatsAppMessageSchema,
-    TicketMessageSchema,
 } from './schemas'
 import {
     activePendingMessageSchema,
@@ -48,22 +43,23 @@ import {
     socialMediaWhatsAppMessageSchema,
     ticketMessageSchema,
 } from './schemas'
+import type { TicketThreadMessageData } from './types'
 
 export function isTicketMessage(
     input: unknown,
-): input is Prettify<TicketMessage & TicketMessageSchema> {
+): input is TicketThreadMessageData {
     return ticketMessageSchema.safeParse(input).success
 }
 
 export function isFailedPendingMessage(
     input: unknown,
-): input is Prettify<TicketMessage & FailedPendingMessageSchema> {
+): input is TicketThreadMessageData<FailedPendingMessageSchema> {
     return failedPendingMessageSchema.safeParse(input).success
 }
 
 export function isActivePendingMessage(
     input: unknown,
-): input is Prettify<TicketMessage & ActivePendingMessageSchema> {
+): input is TicketThreadMessageData<ActivePendingMessageSchema> {
     return (
         activePendingMessageSchema.safeParse(input).success &&
         !isFailedPendingMessage(input)
@@ -80,86 +76,124 @@ export function isSignalMessage(input: unknown): boolean {
 
 export function isInternalNote(
     input: unknown,
-): input is Prettify<TicketMessage & InternalNoteSchema> {
-    return internalNoteSchema.safeParse(input).success
+): input is TicketThreadMessageData<InternalNoteSchema> {
+    return isTicketMessage(input) && internalNoteSchema.safeParse(input).success
 }
 
 export function isAiAgentMessage(
     input: unknown,
-): input is Prettify<TicketMessage & AiAgentMessageSchema> {
-    return aiAgentMessageSchema.safeParse(input).success
+): input is TicketThreadMessageData<AiAgentMessageSchema> {
+    return (
+        isTicketMessage(input) && aiAgentMessageSchema.safeParse(input).success
+    )
 }
 
 export function isAiAgentInternalNote(
     input: unknown,
-): input is Prettify<TicketMessage & AIAgentInternalNoteSchema> {
-    return aiAgentInternalNoteSchema.safeParse(input).success
+): input is TicketThreadMessageData<AIAgentInternalNoteSchema> {
+    return (
+        isTicketMessage(input) &&
+        aiAgentInternalNoteSchema.safeParse(input).success
+    )
 }
 
 export function isAiAgentDraftMessage(
     input: unknown,
-): input is Prettify<TicketMessage & AiAgentDraftMessageSchema> {
-    return aiAgentDraftMessageSchema.safeParse(input).success
+): input is TicketThreadMessageData<AiAgentDraftMessageSchema> {
+    return (
+        isTicketMessage(input) &&
+        aiAgentDraftMessageSchema.safeParse(input).success
+    )
 }
 
 export function isAiAgentTrialMessage(
     input: unknown,
-): input is Prettify<TicketMessage & AiAgentTrialMessageSchema> {
-    return aiAgentTrialMessageSchema.safeParse(input).success
+): input is TicketThreadMessageData<AiAgentTrialMessageSchema> {
+    return (
+        isTicketMessage(input) &&
+        aiAgentTrialMessageSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaFacebookComment(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaFacebookCommentSchema> {
-    return socialMediaFacebookCommentSchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaFacebookCommentSchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaFacebookCommentSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaFacebookPost(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaFacebookPostSchema> {
-    return socialMediaFacebookPostSchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaFacebookPostSchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaFacebookPostSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaFacebookMessage(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaFacebookMessageSchema> {
-    return socialMediaFacebookMessageSchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaFacebookMessageSchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaFacebookMessageSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaInstagramComment(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaInstagramCommentSchema> {
-    return socialMediaInstagramCommentSchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaInstagramCommentSchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaInstagramCommentSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaInstagramDirectMessage(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaInstagramDirectMessageSchema> {
-    return socialMediaInstagramDirectMessageSchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaInstagramDirectMessageSchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaInstagramDirectMessageSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaInstagramMedia(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaInstagramMediaSchema> {
-    return socialMediaInstagramMediaSchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaInstagramMediaSchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaInstagramMediaSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaTwitterTweet(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaTwitterTweetSchema> {
-    return socialMediaTwitterTweetSchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaTwitterTweetSchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaTwitterTweetSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaTwitterDirectMessage(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaTwitterDirectMessageSchema> {
-    return socialMediaTwitterDirectMessageSchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaTwitterDirectMessageSchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaTwitterDirectMessageSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaWhatsAppMessage(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaWhatsAppMessageSchema> {
-    return socialMediaWhatsAppMessageSchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaWhatsAppMessageSchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaWhatsAppMessageSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaHiddenComment(input: unknown): boolean {
@@ -172,12 +206,18 @@ export function isSocialMediaDeletedComment(input: unknown): boolean {
 
 export function isSocialMediaInstagramStoryMention(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaInstagramStoryMentionSchema> {
-    return socialMediaInstagramStoryMentionSchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaInstagramStoryMentionSchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaInstagramStoryMentionSchema.safeParse(input).success
+    )
 }
 
 export function isSocialMediaInstagramStoryReply(
     input: unknown,
-): input is Prettify<TicketMessage & SocialMediaInstagramStoryReplySchema> {
-    return socialMediaInstagramStoryReplySchema.safeParse(input).success
+): input is TicketThreadMessageData<SocialMediaInstagramStoryReplySchema> {
+    return (
+        isTicketMessage(input) &&
+        socialMediaInstagramStoryReplySchema.safeParse(input).success
+    )
 }

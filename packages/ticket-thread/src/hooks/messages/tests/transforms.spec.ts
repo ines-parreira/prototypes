@@ -2,8 +2,11 @@ import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { TicketThreadItemTag } from '../../types'
 import { groupConsecutiveMessages, toTaggedMessage } from '../transforms'
+import type { TicketThreadMessageData } from '../types'
 
-function createMessage(overrides: Partial<TicketMessage>): TicketMessage {
+function createMessage(
+    overrides: Partial<TicketMessage>,
+): TicketThreadMessageData {
     return {
         id: 1,
         channel: 'chat',
@@ -21,7 +24,7 @@ function createMessage(overrides: Partial<TicketMessage>): TicketMessage {
         source: { type: 'chat' },
         meta: null,
         ...overrides,
-    } as TicketMessage
+    } as TicketThreadMessageData
 }
 
 describe('groupConsecutiveMessages', () => {

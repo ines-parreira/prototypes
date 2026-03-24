@@ -8,7 +8,7 @@ import { render } from '../../../../tests/render.utils'
 import { MessageBody } from '../MessageBody'
 
 function makeItem(
-    data: ReturnType<typeof mockTicketMessage>,
+    data: TicketThreadRegularMessageItem['data'],
 ): TicketThreadRegularMessageItem {
     return {
         _tag: TicketThreadItemTag.Messages.Message,
@@ -17,7 +17,7 @@ function makeItem(
     }
 }
 
-function renderMessageBody(data: ReturnType<typeof mockTicketMessage>) {
+function renderMessageBody(data: TicketThreadRegularMessageItem['data']) {
     return render(<MessageBody item={makeItem(data)} />)
 }
 
@@ -30,7 +30,7 @@ describe('MessageBody', () => {
                 stripped_html: null,
                 stripped_text: 'Hello world',
                 meta: null,
-            }),
+            }) as TicketThreadRegularMessageItem['data'],
         )
 
         expect(screen.getByText('Hello world')).toBeInTheDocument()
@@ -44,7 +44,7 @@ describe('MessageBody', () => {
                 stripped_html: null,
                 stripped_text: null,
                 meta: null,
-            }),
+            }) as TicketThreadRegularMessageItem['data'],
         )
 
         expect(screen.getByText('Hello world')).toBeInTheDocument()
@@ -58,7 +58,7 @@ describe('MessageBody', () => {
                 stripped_html: null,
                 stripped_text: 'Hello world.',
                 meta: null,
-            }),
+            }) as TicketThreadRegularMessageItem['data'],
         )
 
         expect(screen.getByText('Hello world.')).toBeInTheDocument()
@@ -75,7 +75,7 @@ describe('MessageBody', () => {
                 stripped_html: null,
                 stripped_text: 'Hello world',
                 meta: { body_text_truncated: true },
-            }),
+            }) as TicketThreadRegularMessageItem['data'],
         )
 
         expect(
@@ -93,7 +93,7 @@ describe('MessageBody', () => {
                 stripped_html: null,
                 stripped_text: null,
                 meta: null,
-            }),
+            }) as TicketThreadRegularMessageItem['data'],
         )
 
         expect(container).toBeEmptyDOMElement()

@@ -1,6 +1,11 @@
 import { z } from 'zod'
 
 import {
+    LegacyChannelSlug,
+    TicketMessageSourceType,
+} from '@gorgias/helpdesk-types'
+
+import {
     AI_AGENT_BOT_EMAILS,
     AI_AGENT_DRAFT_MESSAGE_TAG,
     AI_AGENT_TRIAL_MESSAGE_TAG,
@@ -16,11 +21,15 @@ import {
 } from './constants'
 
 export const ticketMessageSchema = z.object({
-    channel: z.string(),
+    channel: z.union([
+        z.nativeEnum(TicketMessageSourceType),
+        z.nativeEnum(LegacyChannelSlug),
+    ]),
     from_agent: z.boolean(),
     via: z.string(),
 })
 export type TicketMessageSchema = z.infer<typeof ticketMessageSchema>
+export type TicketMessageChannel = TicketMessageSchema['channel']
 
 export const failedPendingMessageSchema = ticketMessageSchema.extend({
     failed_datetime: z.string(),

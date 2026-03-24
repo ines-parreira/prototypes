@@ -90,3 +90,5 @@ export {
 export { MacroActionName } from './utils/macros/types'
 export type { MacroResponseActionName } from './utils/macros/types'
 export { getMacroTicketFieldValues } from './components/InfobarTicketDetails/components/InfobarTicketFields/utils/getMacroTicketFieldValues'
+export { ticketMessageSourceToIconName } from './components/TicketMessageSourceIcon/utils'
+export type { TicketMessageSource } from './components/TicketMessageSourceIcon/utils'

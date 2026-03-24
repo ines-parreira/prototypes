@@ -1,4 +1,4 @@
-import { Box } from '@gorgias/axiom'
+import { AIThinking, Box } from '@gorgias/axiom'
 
 import type { TicketThreadAiAgentInternalNoteItem } from '../../../hooks/messages/types'
 import { MessageBody } from '../../MessageBubble/components/MessageBody'
@@ -20,7 +20,7 @@ export function AiAgentTicketThreadInternalNote({
         <MessageBubble variant="internal-note">
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
-                    <div>AI agent image</div>
+                    <AIThinking variant="static" />
                     <MessageSender sender={{ name: 'AI Agent' }} />
                 </Box>
                 <Box alignItems="center" gap="xs">

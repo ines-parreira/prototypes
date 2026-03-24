@@ -1,12 +1,14 @@
+import { ticketMessageSourceToIconName } from '@repo/tickets'
 import { formatDatetime } from '@repo/utils'
 
 import type { IconName } from '@gorgias/axiom'
 import { Box, Icon, Text, Tooltip, TooltipContent } from '@gorgias/axiom'
 
+import type { TicketMessageChannel } from '../../../../hooks/messages/schemas'
 import { useTicketThreadDateTimeFormat } from '../../../../hooks/shared/useTicketThreadDateTimeFormat'
 
 export type MessageChannelProps = {
-    channel?: string | null
+    channel?: TicketMessageChannel | null
     channelIcon?: string | null
     channelName?: string | null
     createdDatetime?: string | null
@@ -22,7 +24,7 @@ export function MessageChannel({
 }: MessageChannelProps) {
     const { format, timezone } = useTicketThreadDateTimeFormat()
     const resolvedChannelIcon =
-        channelIcon ?? (channel === 'email' ? 'comm-mail' : null)
+        channelIcon ?? (channel ? ticketMessageSourceToIconName(channel) : null)
     const resolvedChannelName = channelName ?? channel ?? null
     const channelIconColor =
         variant === 'internal-note'
