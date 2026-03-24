@@ -27,7 +27,6 @@ export type SankeyLinkClickPayload = {
 }
 
 export type SankeyChartProps<NodeName extends string = string> = {
-    title: string
     containerHeight?: SizeValue
     containerWidth?: SizeValue
     data: SankeyChartData<NodeName>

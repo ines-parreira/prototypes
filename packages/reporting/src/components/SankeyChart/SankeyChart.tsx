@@ -5,7 +5,6 @@ import { ResponsiveContainer, Sankey } from 'recharts'
 import {
     Box,
     Card,
-    Heading,
     Icon,
     Size,
     Skeleton,
@@ -28,7 +27,6 @@ const DEFAULT_LABEL_WIDTH = 160
 const DEFAULT_MIN_LINK_WIDTH = 3
 
 export const SankeyChart = <NodeName extends string = string>({
-    title,
     containerHeight,
     containerWidth,
     data,
@@ -134,57 +132,53 @@ export const SankeyChart = <NodeName extends string = string>({
         typeof containerHeight === 'number' ? containerHeight : CHART_HEIGHT
 
     return (
-        <Card className={css.cardContainer} padding="lg">
-            <Box flexDirection="column" gap="md">
-                <Heading size="sm">{title}</Heading>
-
-                {isLoading ? (
-                    <Box
-                        height={containerHeight ?? CHART_HEIGHT}
-                        width={containerWidth}
-                        className={css.skeletonContainer}
+        <>
+            {isLoading ? (
+                <Box
+                    height={containerHeight ?? CHART_HEIGHT}
+                    width={containerWidth}
+                    className={css.skeletonContainer}
+                >
+                    <div className={css.skeletonColumn}>
+                        <Skeleton height={60} />
+                        <Skeleton height={40} />
+                        <Skeleton height={30} />
+                    </div>
+                    <div
+                        className={`${css.skeletonColumn} ${css.skeletonCenter}`}
                     >
-                        <div className={css.skeletonColumn}>
-                            <Skeleton height={60} />
-                            <Skeleton height={40} />
-                            <Skeleton height={30} />
-                        </div>
-                        <div
-                            className={`${css.skeletonColumn} ${css.skeletonCenter}`}
-                        >
-                            <Skeleton height={CHART_HEIGHT - 40} />
-                        </div>
-                        <div className={css.skeletonColumn}>
-                            <Skeleton height={50} />
-                            <Skeleton height={50} />
-                            <Skeleton height={30} />
-                        </div>
-                    </Box>
-                ) : (
-                    <Box
-                        flexDirection="column"
-                        width={containerWidth}
-                        height={containerHeight}
-                        className={css.chartContainer}
-                    >
-                        <ResponsiveContainer width="100%" height={chartHeight}>
-                            <Sankey
-                                data={resolvedData}
-                                node={nodeRenderer}
-                                link={linkRenderer}
-                                nodeWidth={nodeWidth}
-                                nodePadding={nodePadding}
-                                sort={false}
-                                margin={{
-                                    top: 20,
-                                    right: labelWidth,
-                                    bottom: 20,
-                                }}
-                            />
-                        </ResponsiveContainer>
-                    </Box>
-                )}
-            </Box>
+                        <Skeleton height={CHART_HEIGHT - 40} />
+                    </div>
+                    <div className={css.skeletonColumn}>
+                        <Skeleton height={50} />
+                        <Skeleton height={50} />
+                        <Skeleton height={30} />
+                    </div>
+                </Box>
+            ) : (
+                <Box
+                    flexDirection="column"
+                    width={containerWidth}
+                    height={containerHeight}
+                    className={css.chartContainer}
+                >
+                    <ResponsiveContainer width="100%" height={chartHeight}>
+                        <Sankey
+                            data={resolvedData}
+                            node={nodeRenderer}
+                            link={linkRenderer}
+                            nodeWidth={nodeWidth}
+                            nodePadding={nodePadding}
+                            sort={false}
+                            margin={{
+                                top: 20,
+                                right: labelWidth,
+                                bottom: 20,
+                            }}
+                        />
+                    </ResponsiveContainer>
+                </Box>
+            )}
 
             {linkTooltip && (
                 <div
@@ -223,6 +217,6 @@ export const SankeyChart = <NodeName extends string = string>({
                     </Card>
                 </div>
             )}
-        </Card>
+        </>
     )
 }

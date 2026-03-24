@@ -1,6 +1,6 @@
-import { SankeyChart } from '@repo/reporting'
 import { render } from '@testing-library/react'
 
+import { ConversationFunnelCard } from 'AIJourney/components/ConversationFunnelCard/ConversationFunnelCard'
 import { useAIJourneySankeyMetrics } from 'AIJourney/hooks'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { setMetricData } from 'domains/reporting/state/ui/stats/drillDownSlice'
@@ -12,16 +12,21 @@ jest.mock('AIJourney/hooks', () => ({
     useAIJourneySankeyMetrics: jest.fn(),
 }))
 
-jest.mock('@repo/reporting', () => ({
-    ...jest.requireActual('@repo/reporting'),
-    SankeyChart: jest.fn(() => null),
-}))
+jest.mock(
+    'AIJourney/components/ConversationFunnelCard/ConversationFunnelCard',
+    () => ({
+        ...jest.requireActual(
+            'AIJourney/components/ConversationFunnelCard/ConversationFunnelCard',
+        ),
+        ConversationFunnelCard: jest.fn(() => null),
+    }),
+)
 
 const mockDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockDispatch)
 
 const mockUseAIJourneySankeyMetrics = useAIJourneySankeyMetrics as jest.Mock
-const mockSankeyChart = SankeyChart as jest.Mock
+const mockConversationFunnelCard = ConversationFunnelCard as jest.Mock
 
 const defaultData = { nodes: [], links: [] }
 
@@ -58,16 +63,7 @@ describe('<AiJourneySankeyChart />', () => {
         )
     })
 
-    it('should render SankeyChart with title "Conversation funnel"', () => {
-        render(<AiJourneySankeyChart {...defaultProps} />)
-
-        expect(mockSankeyChart).toHaveBeenCalledWith(
-            expect.objectContaining({ title: 'Conversation funnel' }),
-            expect.anything(),
-        )
-    })
-
-    it('should pass isLoading=true to SankeyChart when the hook is loading', () => {
+    it('should pass isLoading=true to ConversationFunnelCard when the hook is loading', () => {
         mockUseAIJourneySankeyMetrics.mockReturnValue({
             data: defaultData,
             isLoading: true,
@@ -76,22 +72,22 @@ describe('<AiJourneySankeyChart />', () => {
 
         render(<AiJourneySankeyChart {...defaultProps} />)
 
-        expect(mockSankeyChart).toHaveBeenCalledWith(
+        expect(mockConversationFunnelCard).toHaveBeenCalledWith(
             expect.objectContaining({ isLoading: true }),
             expect.anything(),
         )
     })
 
-    it('should pass isLoading=false to SankeyChart when the hook is not loading', () => {
+    it('should pass isLoading=false to ConversationFunnelCard when the hook is not loading', () => {
         render(<AiJourneySankeyChart {...defaultProps} />)
 
-        expect(mockSankeyChart).toHaveBeenCalledWith(
+        expect(mockConversationFunnelCard).toHaveBeenCalledWith(
             expect.objectContaining({ isLoading: false }),
             expect.anything(),
         )
     })
 
-    it('should pass data from the hook to SankeyChart', () => {
+    it('should pass data from the hook to ConversationFunnelCard', () => {
         const mockData = {
             nodes: [{ name: 'Conversations', color: '#B7A7FF' }],
             links: [],
@@ -104,16 +100,16 @@ describe('<AiJourneySankeyChart />', () => {
 
         render(<AiJourneySankeyChart {...defaultProps} />)
 
-        expect(mockSankeyChart).toHaveBeenCalledWith(
+        expect(mockConversationFunnelCard).toHaveBeenCalledWith(
             expect.objectContaining({ data: mockData }),
             expect.anything(),
         )
     })
 
-    it('should pass the correct hoverableNodeNames to SankeyChart', () => {
+    it('should pass the correct hoverableNodeNames to ConversationFunnelCard', () => {
         render(<AiJourneySankeyChart {...defaultProps} />)
 
-        expect(mockSankeyChart).toHaveBeenCalledWith(
+        expect(mockConversationFunnelCard).toHaveBeenCalledWith(
             expect.objectContaining({
                 hoverableNodeNames: [
                     'Replied + used discount',
@@ -130,7 +126,7 @@ describe('<AiJourneySankeyChart />', () => {
 
     describe('onLinkClick', () => {
         const triggerLinkClick = (sourceName: string) => {
-            const [{ onLinkClick }] = mockSankeyChart.mock.calls[0]
+            const [{ onLinkClick }] = mockConversationFunnelCard.mock.calls[0]
             onLinkClick({
                 source: { name: sourceName, color: '#7E55F6' },
                 target: { name: 'Converted', color: '#7E55F6' },

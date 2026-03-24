@@ -35,7 +35,7 @@ describe('SankeyChart', () => {
 
     const renderComponent = (
         props: Partial<React.ComponentProps<typeof SankeyChart>> = {},
-    ) => render(<SankeyChart title="Test Sankey" data={mockData} {...props} />)
+    ) => render(<SankeyChart data={mockData} {...props} />)
 
     describe('loading state', () => {
         it('should show skeleton when loading', () => {
@@ -81,16 +81,6 @@ describe('SankeyChart', () => {
             const { container } = renderComponent({ data: emptyData })
 
             expect(container).toBeInTheDocument()
-        })
-    })
-
-    describe('title', () => {
-        it('should render the card title', () => {
-            const { getByText } = renderComponent({
-                title: 'Conversion Funnel',
-            })
-
-            expect(getByText('Conversion Funnel')).toBeInTheDocument()
         })
     })
 })

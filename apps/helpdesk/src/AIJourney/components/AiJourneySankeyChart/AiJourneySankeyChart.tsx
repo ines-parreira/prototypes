@@ -1,6 +1,6 @@
-import { SankeyChart } from '@repo/reporting'
 import type { SankeyLinkClickPayload } from '@repo/reporting'
 
+import { ConversationFunnelCard } from 'AIJourney/components/ConversationFunnelCard/ConversationFunnelCard'
 import { SANKEY_NODE_TO_ENGAGEMENT_CATEGORY } from 'AIJourney/constants'
 import type { SankeyNodeName } from 'AIJourney/constants'
 import { useAIJourneySankeyMetrics } from 'AIJourney/hooks'
@@ -47,8 +47,7 @@ export const AiJourneySankeyChart = ({
     }
 
     return (
-        <SankeyChart
-            title="Conversation funnel"
+        <ConversationFunnelCard
             data={sankeyMetrics.data}
             isLoading={sankeyMetrics.isLoading}
             nodeWidth={23}
