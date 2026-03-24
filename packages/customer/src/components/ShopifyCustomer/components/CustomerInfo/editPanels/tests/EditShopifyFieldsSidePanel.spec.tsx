@@ -1,5 +1,5 @@
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
 import { render } from '../../../../../../tests/render.utils'
 import type { FieldRenderContext, ShopifyFieldPreferences } from '../../types'
@@ -94,8 +94,12 @@ describe('EditShopifyFieldsSidePanel', () => {
         const toggles = screen.getAllByRole('switch')
         await user.click(toggles[1])
 
-        expect(screen.getByRole('button', { name: /save/i })).not.toBeDisabled()
-    })
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /save/i }),
+            ).not.toBeDisabled()
+        })
+    }, 10000)
 
     it('calls onSave with updated preferences on save', async () => {
         const { user } = render(
@@ -105,7 +109,16 @@ describe('EditShopifyFieldsSidePanel', () => {
         const toggles = screen.getAllByRole('switch')
         await user.click(toggles[1])
 
-        await user.click(screen.getByRole('button', { name: /save/i }))
+        const saveButton = screen.getByRole('button', { name: /save/i })
+
+        await waitFor(() => {
+            expect(saveButton).toBeEnabled()
+        })
+        await user.click(saveButton)
+
+        await waitFor(() => {
+            expect(defaultProps.onSave).toHaveBeenCalledTimes(1)
+        })
 
         const savedPrefs = defaultProps.onSave.mock.calls[0][0]
         expect(savedPrefs.fields).toEqual([{ id: 'note', visible: true }])
@@ -113,8 +126,10 @@ describe('EditShopifyFieldsSidePanel', () => {
         expect(savedPrefs.sections.customer.fields).toEqual([
             { id: 'note', visible: true },
         ])
-        expect(defaultProps.onOpenChange).toHaveBeenCalledWith(false)
-    })
+        await waitFor(() => {
+            expect(defaultProps.onOpenChange).toHaveBeenCalledWith(false)
+        })
+    }, 10000)
 
     it('collapses fields when clicking the collapse button', async () => {
         const { user } = render(

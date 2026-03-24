@@ -17,7 +17,7 @@ import {
     isGenericEmailIntegration,
 } from 'pages/integrations/integration/components/email/helpers'
 import { CONTACT_FORM_ALERT_ACKNOWLEDGED_LOCAL_STORAGE_KEY } from 'pages/settings/helpCenter/constants'
-import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
 import settingsCss from 'pages/settings/settings.less'
 import * as integrationsSelectors from 'state/integrations/selectors'
 

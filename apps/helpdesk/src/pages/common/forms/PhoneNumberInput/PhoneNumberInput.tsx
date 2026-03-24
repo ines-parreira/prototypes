@@ -11,6 +11,7 @@ import {
 } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
+import { reportError } from '@repo/logging'
 import classnames from 'classnames'
 import type { CountryCode } from 'libphonenumber-js'
 import {
@@ -38,7 +39,6 @@ import {
     getCountryFromPhoneNumber,
 } from 'pages/phoneNumbers/utils'
 import { getCountryCountryCallingCodeSelectOptions } from 'pages/settings/helpCenter/utils/phoneCodeSelectOptions'
-import { reportError } from 'utils/errors'
 
 import css from './PhoneNumberInput.less'
 

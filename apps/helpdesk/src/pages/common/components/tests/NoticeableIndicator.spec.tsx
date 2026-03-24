@@ -1,10 +1,9 @@
 // import { userEvent } from '@repo/testing'
 import React from 'react'
 
+import { reportError } from '@repo/logging'
 import { addBreadcrumb } from '@sentry/react'
 import { act, render, waitFor } from '@testing-library/react'
-
-import { reportError } from 'utils/errors'
 
 // import {assumeMock} from 'utils/testing'
 
@@ -12,7 +11,7 @@ import NoticeableIndicator from '../NoticeableIndicator'
 
 jest.mock('@sentry/react', () => ({ addBreadcrumb: jest.fn() }))
 
-jest.mock('utils/errors', () => ({ reportError: jest.fn() }))
+jest.mock('@repo/logging', () => ({ reportError: jest.fn() }))
 
 describe('NoticeableIndicator', () => {
     let noticeableOn: jest.Mock

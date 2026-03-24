@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import type { TwilioError } from '@twilio/voice-sdk'
 import { Call } from '@twilio/voice-sdk'
 import crypto from 'crypto'
@@ -22,7 +23,6 @@ import { SocketEventType } from 'services/socketManager/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'
-import { reportError } from 'utils/errors'
 
 import * as twilioCallUtils from './twilioCall.utils'
 

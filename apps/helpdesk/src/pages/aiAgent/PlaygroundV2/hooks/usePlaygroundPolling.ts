@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
+import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetTestSessionLogs } from 'models/aiAgent/queries'
-import { reportError } from 'utils/errors'
 
 const POLLING_INTERVAL = 5000
 const POLLING_TIMEOUT = 5 * 60 * 1000 // 5 minutes in milliseconds

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -11,9 +12,11 @@ import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterA
 import type { Components } from 'rest_api/help_center_api/client.generated'
 import { buildSDKMocks } from 'rest_api/help_center_api/tests/buildSdkMocks'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import * as errors from 'utils/errors'
 
 // Mock dependencies
+jest.mock('@repo/logging')
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
+
 const getArticleIngestionLogsSpy = jest.spyOn(
     resources,
     'getArticleIngestionLogs',
@@ -22,9 +25,8 @@ const getArticleIngestionArticleTitlesAndStatusSpy = jest.spyOn(
     resources,
     'getArticleIngestionArticleTitlesAndStatus',
 )
-const reportErrorSpy = jest.spyOn(errors, 'reportError')
+const mockReportError = jest.mocked(reportError)
 
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
     typeof useHelpCenterApi
 >
@@ -220,7 +222,7 @@ describe('useMultiplePublicResources', () => {
         )
 
         // Verify error reporting
-        expect(reportErrorSpy).toHaveBeenCalledWith(error, {
+        expect(mockReportError).toHaveBeenCalledWith(error, {
             tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
             extra: {
                 context:

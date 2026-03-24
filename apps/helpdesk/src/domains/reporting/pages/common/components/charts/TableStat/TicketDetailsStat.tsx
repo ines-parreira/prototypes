@@ -1,6 +1,11 @@
 import React, { useMemo } from 'react'
 
-import { logEvent, SegmentEvent, StatViewLinkClickedStat } from '@repo/logging'
+import {
+    logEvent,
+    reportError,
+    SegmentEvent,
+    StatViewLinkClickedStat,
+} from '@repo/logging'
 
 import { TicketStatus } from 'business/types/ticket'
 import { getTicketViewField, getTicketViewFieldPath } from 'config/views'
@@ -13,7 +18,6 @@ import { getChannels } from 'services/channels'
 import { EqualityOperator } from 'state/rules/types'
 import { humanizeChannel } from 'state/ticket/utils'
 import type { ViewFilter } from 'state/views/types'
-import { reportError } from 'utils/errors'
 
 const ASSIGNEE_FILTER_LEFT = getTicketViewFieldPath(
     getTicketViewField(ViewField.Assignee),

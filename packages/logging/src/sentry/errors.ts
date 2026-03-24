@@ -9,8 +9,10 @@ import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
 import type { ScopeContext } from '@sentry/types'
 
-import type { User } from 'config/types/user'
-import type { Account } from 'state/currentAccount/types'
+import type {
+    Account as HelpdeskAccount,
+    User as HelpdeskUser,
+} from '@gorgias/helpdesk-types'
 
 export const TRACE_SAMPLE_RATE = 0
 export const IGNORED_ERRORS = [
@@ -41,13 +43,23 @@ export const LANGUAGE_TAG_VALUE = 'javascript'
 export const ACCOUNT_DOMAIN_TAG = 'account.domain'
 export const SERVER_VERSION_TAG = 'server.version'
 
+export type ErrorReporterUser = Pick<HelpdeskUser, 'email' | 'id' | 'name'> & {
+    email: string
+    id: number
+    name: string
+}
+
+export type ErrorReporterAccount = Pick<HelpdeskAccount, 'domain'> & {
+    domain: string
+}
+
 export type InitErrorReporterParams = {
     dsn: string
     clientVersion: string
     serverVersion: string
     environment: GorgiasUIEnv
-    currentUser: User
-    currentAccount: Account
+    currentUser: ErrorReporterUser
+    currentAccount: ErrorReporterAccount
 }
 
 export function initErrorReporter({

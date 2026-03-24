@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -10,7 +11,6 @@ import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterA
 import type { Components } from 'rest_api/help_center_api/client.generated'
 import { buildSDKMocks } from 'rest_api/help_center_api/tests/buildSdkMocks'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import * as errors from 'utils/errors'
 
 import { useMultipleStoreWebsiteQuestions } from '../useMultipleStoreWebsiteQuestions'
 import { useStoresDomainIngestionLogs } from '../useStoresDomainIngestionLogs'
@@ -18,7 +18,7 @@ import { useStoresDomainIngestionLogs } from '../useStoresDomainIngestionLogs'
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 jest.mock('../useStoresDomainIngestionLogs')
 jest.mock('models/helpCenter/resources')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
     typeof useHelpCenterApi
@@ -28,7 +28,7 @@ const mockedUseStoresDomainIngestionLogs =
         typeof useStoresDomainIngestionLogs
     >
 const listIngestedResourcesSpy = jest.spyOn(resources, 'listIngestedResources')
-const reportErrorSpy = jest.spyOn(errors, 'reportError')
+const mockedReportError = jest.mocked(reportError)
 
 const queryClient = mockQueryClient()
 
@@ -393,7 +393,7 @@ describe('useMultipleStoreWebsiteQuestions', () => {
                 expect(result.current.isLoading).toBe(false)
             })
 
-            expect(reportErrorSpy).toHaveBeenCalledWith(testError, {
+            expect(mockedReportError).toHaveBeenCalledWith(testError, {
                 tags: { team: SentryTeam.CONVAI_KNOWLEDGE },
                 extra: {
                     context:
@@ -420,12 +420,12 @@ describe('useMultipleStoreWebsiteQuestions', () => {
                 expect(result.current.isLoading).toBe(false)
             })
 
-            expect(reportErrorSpy).toHaveBeenCalledTimes(2)
-            expect(reportErrorSpy).toHaveBeenCalledWith(
+            expect(mockedReportError).toHaveBeenCalledTimes(2)
+            expect(mockedReportError).toHaveBeenCalledWith(
                 error1,
                 expect.any(Object),
             )
-            expect(reportErrorSpy).toHaveBeenCalledWith(
+            expect(mockedReportError).toHaveBeenCalledWith(
                 error2,
                 expect.any(Object),
             )

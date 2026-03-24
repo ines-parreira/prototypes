@@ -1,11 +1,11 @@
 import { useEffect, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
 import type { UseQueryOptions } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetIngestionLogs } from 'models/helpCenter/queries'
 import type { getIngestionLogs } from 'models/helpCenter/resources'
-import { reportError } from 'utils/errors'
 
 import {
     IngestionLogStatus,

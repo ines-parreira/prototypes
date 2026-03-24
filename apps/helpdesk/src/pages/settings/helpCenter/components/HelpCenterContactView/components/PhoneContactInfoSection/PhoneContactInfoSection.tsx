@@ -7,7 +7,7 @@ import parsePhoneNumber from 'libphonenumber-js'
 import type { PhoneContactInfoDto } from 'models/helpCenter/types'
 import TextArea from 'pages/common/forms/TextArea'
 import ToggleInput from 'pages/common/forms/ToggleInput'
-import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
 import settingsCss from 'pages/settings/settings.less'
 
 import { MAX_DESCRIPTION_LENGTH } from '../../constants'

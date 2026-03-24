@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { useStripe } from '@stripe/react-stripe-js'
 import { act, waitFor } from '@testing-library/react'
@@ -8,7 +9,6 @@ import { confirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import client from 'models/api/resources'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
-import { reportError } from 'utils/errors'
 
 import { useSubmitPaymentMethodWithBillingContact } from '../useSubmitPaymentMethodWithBillingContact'
 
@@ -23,7 +23,7 @@ jest.mock('@stripe/react-stripe-js', () => ({
     }),
 }))
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 jest.mock('@gorgias/helpdesk-client')
 

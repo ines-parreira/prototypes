@@ -1,13 +1,13 @@
 import type { MouseEvent } from 'react'
 import React from 'react'
 
+import { reportError } from '@repo/logging'
 import copy from 'copy-to-clipboard'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import IconButton from 'pages/common/components/button/IconButton'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import css from './CopyButton.less'
 

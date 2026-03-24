@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import * as envUtils from '@repo/utils'
 import { waitFor } from '@testing-library/react'
 import { Call, Device, TwilioError } from '@twilio/voice-sdk'
@@ -37,10 +38,9 @@ import type { VoiceDeviceActions } from 'pages/integrations/integration/componen
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
 import { ActivityEvents } from 'services/activityTracker'
 import * as activityTracker from 'services/activityTracker'
-import { reportError } from 'utils/errors'
 
 jest.mock('common/notifications')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('@twilio/voice-sdk')
 jest.mock('services/activityTracker')
 jest.mock('api/queryClient')

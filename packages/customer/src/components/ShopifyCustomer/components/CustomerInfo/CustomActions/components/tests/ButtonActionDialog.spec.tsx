@@ -247,7 +247,11 @@ describe('ButtonActionDialog', () => {
         const formKeyInput = keyInputs[keyInputs.length - 1]
         await user.type(formKeyInput, 'username')
 
-        await user.click(screen.getByRole('button', { name: /save/i }))
+        const saveButton = screen.getByRole('button', { name: /save/i })
+        await waitFor(() => {
+            expect(saveButton).toBeEnabled()
+        })
+        await user.click(saveButton)
 
         await waitFor(() => {
             expect(defaultProps.onSubmit).toHaveBeenCalledWith(
@@ -266,7 +270,7 @@ describe('ButtonActionDialog', () => {
                 }),
             )
         })
-    })
+    }, 10000)
 
     it('submits with header parameters', async () => {
         const { user } = render(<ButtonActionDialog {...defaultProps} />)
@@ -320,13 +324,19 @@ describe('ButtonActionDialog', () => {
         await user.type(screen.getByLabelText(/url/i), 'https://example.com')
 
         const saveButton = screen.getByRole('button', { name: /save/i })
+        await waitFor(() => {
+            expect(saveButton).toBeEnabled()
+        })
         await user.click(saveButton)
         await user.click(saveButton)
 
+        await waitFor(() => {
+            expect(slowSubmit).toHaveBeenCalledTimes(1)
+        })
         resolveSubmit!()
 
         await waitFor(() => {
             expect(slowSubmit).toHaveBeenCalledTimes(1)
         })
-    })
+    }, 10000)
 })

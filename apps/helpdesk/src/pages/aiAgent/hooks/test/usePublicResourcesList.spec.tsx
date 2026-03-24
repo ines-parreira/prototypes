@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -12,16 +13,17 @@ import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterA
 import type { Components } from 'rest_api/help_center_api/client.generated'
 import { buildSDKMocks } from 'rest_api/help_center_api/tests/buildSdkMocks'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import * as errors from 'utils/errors'
+
+jest.mock('@repo/logging')
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 
 const getArticleIngestionLogsSpy = jest.spyOn(
     resources,
     'getArticleIngestionLogs',
 )
 const getHelpCenterListSpy = jest.spyOn(resources, 'getHelpCenterList')
-const reportErrorSpy = jest.spyOn(errors, 'reportError')
+const mockReportError = jest.mocked(reportError)
 
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
     typeof useHelpCenterApi
 >
@@ -232,7 +234,7 @@ describe('usePublicResourcesList', () => {
                 },
             ],
         })
-        expect(reportErrorSpy).not.toHaveBeenCalled()
+        expect(mockReportError).not.toHaveBeenCalled()
     })
 
     it('should report errors', async () => {
@@ -251,7 +253,7 @@ describe('usePublicResourcesList', () => {
         await waitFor(() => {
             expect(result.current.isLoading).toBe(false)
             expect(result.current.sourceItems).toBeUndefined()
-            expect(reportErrorSpy).toHaveBeenCalled()
+            expect(mockReportError).toHaveBeenCalled()
         })
     })
 })

@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import copy from 'copy-to-clipboard'
 
@@ -7,7 +8,6 @@ import type {
 } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { getSingleArticleEnglish } from '../../fixtures/getArticlesResponse.fixture'
 import { getSingleCustomDomainResponseFixture } from '../../fixtures/getCustomDomainsResponse.fixture'
@@ -30,7 +30,7 @@ import {
 
 jest.mock('copy-to-clipboard')
 jest.mock('state/notifications/actions')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 const mockedCopy = assumeMock(copy)
 const mockedNotify = assumeMock(notify)

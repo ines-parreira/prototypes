@@ -2,7 +2,7 @@ import { LegacyLabel as Label } from '@gorgias/axiom'
 
 import type { Locale } from 'models/helpCenter/types'
 
-import { useHelpCenterPreferencesSettings } from '../../../../providers/HelpCenterPreferencesSettings'
+import { useHelpCenterPreferencesSettings } from '../../../../providers/HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'
 import { LanguageBadgeTags } from './LanguageBadgeTags'
 
 import css from './AvailableLanguagesTags.less'

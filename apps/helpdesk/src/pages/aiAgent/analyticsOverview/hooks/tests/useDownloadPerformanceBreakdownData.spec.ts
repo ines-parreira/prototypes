@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useDownloadPerformanceBreakdownData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadPerformanceBreakdownData'
 
-jest.mock('utils/errors', () => ({ reportError: jest.fn() }))
+jest.mock('@repo/logging', () => ({ reportError: jest.fn() }))
 
 jest.mock('../fetchPerformanceBreakdownData', () => ({
     fetchPerformanceMetricsPerFeature: jest.fn(),
@@ -33,7 +33,7 @@ jest.mock(
 )
 
 const mockFetch = jest.requireMock('../fetchPerformanceBreakdownData')
-const mockReportError = jest.requireMock('utils/errors').reportError
+const mockReportError = jest.requireMock('@repo/logging').reportError
 
 const MOCK_FILE_NAME = 'performance-breakdown-2024-01-01_2024-01-31.csv'
 const MOCK_CSV =

@@ -1,12 +1,13 @@
 import { useEffect, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
     useGetArticleIngestionLogsList,
     useGetHelpCenterListMulti,
 } from 'models/helpCenter/queries'
 import type { SourceItem } from 'pages/aiAgent/components/PublicSourcesSection/types'
-import { reportError } from 'utils/errors'
 import { notNull } from 'utils/types'
 
 import { mapArticleIngestionLogsToSourceItem } from '../components/PublicSourcesSection/utils'

@@ -5,7 +5,7 @@ import { act, render, waitFor } from '@testing-library/react'
 import type { TypingActivityProps } from '../withTypingActivity'
 import withTypingActivity from '../withTypingActivity'
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('@repo/feature-flags')
 jest.mock('@gorgias/realtime', () => ({
     useAgentActivity: jest.fn().mockImplementation(() => ({

@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import type {
@@ -18,7 +18,6 @@ import { getGenericMessageFromError } from 'pages/settings/helpCenter/utils'
 import { isExistingArticle } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 export const useFeedbackArticleActions = (
     selectedTemplateKey: ArticleTemplateKey | null,

@@ -44,8 +44,8 @@ import HelpCenterCreationWizard from '../../components/HelpCenterCreationWizard'
 import { HelpCenterMaintenanceView } from '../../components/HelpCenterMaintenanceView'
 import CurrentHelpCenterContext from '../../contexts/CurrentHelpCenterContext'
 import { EditionManagerContextProvider } from '../EditionManagerContext'
-import { HelpCenterPreferencesSettings } from '../HelpCenterPreferencesSettings'
-import { HelpCenterTranslationProvider } from '../HelpCenterTranslation'
+import { HelpCenterPreferencesSettings } from '../HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'
+import { HelpCenterTranslationProvider } from '../HelpCenterTranslation/HelpCenterTranslation'
 import { SearchContextProvider } from '../SearchContext'
 
 const CurrentHelpCenter: React.FC = () => {

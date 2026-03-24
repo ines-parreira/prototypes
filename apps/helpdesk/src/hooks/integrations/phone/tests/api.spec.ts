@@ -4,7 +4,7 @@ import client from 'models/api/resources'
 
 import { getToken } from '../api'
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('@twilio/voice-sdk')
 
 const mockedServer = new MockAdapter(client)

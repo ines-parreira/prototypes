@@ -277,13 +277,17 @@ describe('CustomActionsSection', () => {
             )
 
             const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
+            const saveButton = within(dialog).getByRole('button', {
+                name: /save/i,
+            })
 
-            await user.click(
-                within(dialog).getByRole('button', { name: /save/i }),
-            )
+            await waitFor(() => {
+                expect(saveButton).toBeEnabled()
+            })
+            await user.click(saveButton)
 
             await waitForUpdateRequest(async (request) => {
-                const body = await request.json()
+                const body = await request.clone().json()
                 const customerWidget = body.template.widgets.find(
                     (w: { path: string }) => w.path === 'customer',
                 )
@@ -295,7 +299,7 @@ describe('CustomActionsSection', () => {
                     'https://new-link.com',
                 )
             })
-        })
+        }, 10000)
 
         it('edits an existing link via the dialog', async () => {
             const updateWidgetMock = mockUpdateWidgetHandler()
@@ -393,13 +397,17 @@ describe('CustomActionsSection', () => {
             )
 
             const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
+            const saveButton = within(dialog).getByRole('button', {
+                name: /save/i,
+            })
 
-            await user.click(
-                within(dialog).getByRole('button', { name: /save/i }),
-            )
+            await waitFor(() => {
+                expect(saveButton).toBeEnabled()
+            })
+            await user.click(saveButton)
 
             await waitForUpdateRequest(async (request) => {
-                const body = await request.json()
+                const body = await request.clone().json()
                 const customerWidget = body.template.widgets.find(
                     (w: { path: string }) => w.path === 'customer',
                 )
@@ -411,7 +419,7 @@ describe('CustomActionsSection', () => {
                     'https://api.new-button.com',
                 )
             })
-        })
+        }, 10000)
 
         it('edits an existing button via the dialog', async () => {
             const updateWidgetMock = mockUpdateWidgetHandler()

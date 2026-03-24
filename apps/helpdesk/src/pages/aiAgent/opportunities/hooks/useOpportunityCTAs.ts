@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 
+import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 import _get from 'lodash/get'
 
@@ -20,7 +21,6 @@ import {
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import {
     buildApprovePayload,

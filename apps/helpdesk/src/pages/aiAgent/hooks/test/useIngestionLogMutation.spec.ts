@@ -1,10 +1,10 @@
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { helpCenterKeys, useStartIngestion } from 'models/helpCenter/queries'
 import { IngestionType } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
-import { reportError } from 'utils/errors'
 
 import { useIngestionLogMutation } from '../useIngestionLogMutation'
 
@@ -12,7 +12,7 @@ jest.mock('@tanstack/react-query', () => ({
     useQueryClient: jest.fn(),
 }))
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

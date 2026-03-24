@@ -17,7 +17,7 @@ import { CustomFieldsFormComponent } from '../CustomFieldsFormComponent'
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('custom-fields/hooks/queries/useCustomFieldConditions')
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('state/notifications/actions')
 jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 

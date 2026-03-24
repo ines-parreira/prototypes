@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -23,9 +24,8 @@ import type {
 } from 'domains/reporting/models/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import client from 'models/api/resources'
-import { reportError } from 'utils/errors'
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 const reportErrorMock = assumeMock(reportError)
 
 // Mock URL constructor to handle relative paths

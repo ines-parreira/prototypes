@@ -12,7 +12,7 @@ import {
     BILLING_PAYMENT_CARD_PATH,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -30,7 +30,6 @@ import {
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { BillingSummaryBreakdown } from '../../components/BillingSummaryBreakdown'
 import Card from '../../components/Card'

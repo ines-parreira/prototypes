@@ -146,6 +146,11 @@ catalogs:
     'push.js': '1.0.12'
   logging:
     '@types/segment-analytics': '^0.0.38'
+  sentry:
+    '@sentry/cli': '^2.47.0'
+    '@sentry/react': '7.119.1'
+    '@sentry/tracing': '7.119.1'
+    '@sentry/types': '7.119.1'
   voice:
     '@twilio/voice-sdk': '^2.11.1'
   ua-parser:

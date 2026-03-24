@@ -10,7 +10,6 @@ import { user } from 'fixtures/users'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { GorgiasInitialState, InitialReactQueryState } from 'types'
-import { initErrorReporter } from 'utils/errors'
 import { identifyUser } from 'utils/hotjar'
 import { initSDKs } from 'utils/sdk'
 
@@ -54,10 +53,9 @@ jest.mock('state/billing/selectors', () => ({
 }))
 
 jest.mock('utils/sdk')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('@repo/feature-flags')
 jest.mock('utils/hotjar')
-jest.mock('@repo/logging')
 jest.mock('state/notifications/actions')
 
 jest.mock('@repo/utils')
@@ -163,20 +161,21 @@ describe('init', () => {
         })
 
         it('should init error reporter when SENTRY_DSN is defined', () => {
-            const expectedParams: Parameters<typeof initErrorReporter> = [
-                {
-                    dsn: defaultSentryDsn,
-                    serverVersion: defaultGorgiasRelease,
-                    clientVersion: defaultWebAppRelease,
-                    environment: defaultEnvironment,
-                    currentUser: defaultGorgiasState.currentUser,
-                    currentAccount: defaultGorgiasState.currentAccount,
-                },
-            ]
+            const expectedParams: Parameters<typeof logging.initErrorReporter> =
+                [
+                    {
+                        dsn: defaultSentryDsn,
+                        serverVersion: defaultGorgiasRelease,
+                        clientVersion: defaultWebAppRelease,
+                        environment: defaultEnvironment,
+                        currentUser: defaultGorgiasState.currentUser,
+                        currentAccount: defaultGorgiasState.currentAccount,
+                    },
+                ]
 
             initApp()
 
-            expect(initErrorReporter).toHaveBeenLastCalledWith(
+            expect(logging.initErrorReporter).toHaveBeenLastCalledWith(
                 ...expectedParams,
             )
         })
@@ -186,7 +185,7 @@ describe('init', () => {
 
             initApp()
 
-            expect(initErrorReporter).not.toHaveBeenCalled()
+            expect(logging.initErrorReporter).not.toHaveBeenCalled()
         })
 
         it('should identify hotjar user', () => {

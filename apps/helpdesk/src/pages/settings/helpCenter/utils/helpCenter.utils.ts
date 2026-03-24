@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { isDevelopment } from '@repo/utils'
 import copy from 'copy-to-clipboard'
 
@@ -23,7 +24,6 @@ import type { StoreIntegration } from 'models/integration/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'
-import { reportError } from 'utils/errors'
 
 import {
     ARTICLE_HASH_PREFIX,

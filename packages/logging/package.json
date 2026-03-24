@@ -19,6 +19,8 @@
     "peerDependencies": {
         "@datadog/browser-logs": "^5.17.1",
         "@datadog/browser-rum": "^5.17.1",
+        "@sentry/react": "catalog:sentry",
+        "@sentry/tracing": "catalog:sentry",
         "lodash": "catalog:lodash",
         "react": "catalog:react",
         "react-dom": "catalog:react",
@@ -31,6 +33,9 @@
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
         "@repo/utils": "workspace:*",
+        "@sentry/react": "catalog:sentry",
+        "@sentry/tracing": "catalog:sentry",
+        "@sentry/types": "catalog:sentry",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",

@@ -19,7 +19,7 @@ import { ActivityEvents } from 'services/activityTracker'
 import * as activityTracker from 'services/activityTracker'
 
 jest.mock('common/notifications')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('@twilio/voice-sdk')
 jest.mock('services/activityTracker')
 jest.mock('api/queryClient')

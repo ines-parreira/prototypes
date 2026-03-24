@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import type {
     Ticket,
     TicketsSearchListDataItem,
@@ -8,7 +10,6 @@ import { getTicket } from '@gorgias/helpdesk-client'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useSearchTickets } from 'models/aiAgent/queries'
-import { reportError } from 'utils/errors'
 
 import { TicketSearchDropdownSelectComponent } from './TicketSearchDropdownSelectComponent'
 

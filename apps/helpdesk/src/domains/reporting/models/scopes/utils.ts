@@ -1,3 +1,5 @@
+import { reportError } from '@repo/logging'
+
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -41,7 +43,6 @@ import {
 } from 'domains/reporting/pages/common/components/Filter/constants'
 import { CAMPAIGN_EVENTS } from 'domains/reporting/pages/convert/clients/constants'
 import { formatReportingQueryDate } from 'domains/reporting/utils/reporting'
-import { reportError } from 'utils/errors'
 
 function createDateFilter(
     member: FilterName,

@@ -19,7 +19,7 @@ import { getSingleHelpCenterResponseFixture } from '../../../../../fixtures/getH
 import { getHelpCenterTranslationsResponseFixture } from '../../../../../fixtures/getHelpCenterTranslationsResponse.fixture'
 import { getLocalesResponseFixture } from '../../../../../fixtures/getLocalesResponse.fixtures'
 import useCurrentHelpCenter from '../../../../../hooks/useCurrentHelpCenter'
-import { HelpCenterTranslationProvider } from '../../../../../providers/HelpCenterTranslation'
+import { HelpCenterTranslationProvider } from '../../../../../providers/HelpCenterTranslation/HelpCenterTranslation'
 import { useSupportedLocales } from '../../../../../providers/SupportedLocales'
 import PhoneContactInfoSection from '../PhoneContactInfoSection'
 

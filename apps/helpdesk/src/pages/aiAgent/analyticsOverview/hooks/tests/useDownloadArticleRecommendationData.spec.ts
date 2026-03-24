@@ -1,9 +1,10 @@
+import { reportError } from '@repo/logging'
 import { renderHook, waitFor } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useDownloadArticleRecommendationData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadArticleRecommendationData'
 
-jest.mock('utils/errors', () => ({ reportError: jest.fn() }))
+jest.mock('@repo/logging', () => ({ reportError: jest.fn() }))
 
 jest.mock(
     'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics',
@@ -27,7 +28,7 @@ jest.mock('domains/reporting/hooks/support-performance/useStatsFilters', () => {
 const mockFetch = jest.requireMock(
     'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics',
 )
-const mockReportError = jest.requireMock('utils/errors').reportError
+const mockReportError = jest.mocked(reportError)
 
 const MOCK_FILE_NAME = 'article_recommendation_table_2024-01-01_2024-01-31.csv'
 const MOCK_CSV =

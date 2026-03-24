@@ -13,7 +13,7 @@ import { cachedSelection, predictionKey } from '../state'
 
 const variationMock = jest.fn(() => true)
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),

@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -14,7 +15,6 @@ import {
 } from 'state/entities/helpCenter/helpCentersAutomationSettings'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 const useHelpCentersAutomationSettings = (
     helpCenterId: number,

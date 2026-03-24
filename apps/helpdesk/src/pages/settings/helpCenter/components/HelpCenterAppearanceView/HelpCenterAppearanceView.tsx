@@ -3,6 +3,7 @@ import { createRef, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
+import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 import { FormGroup, FormText } from 'reactstrap'
 import isHexColor from 'validator/lib/isHexColor'
@@ -39,7 +40,6 @@ import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
-import { reportError } from 'utils/errors'
 
 import { FontSelectField } from '../../../common/FontSelectField/FontSelectField'
 import type { HelpCenterLayout } from '../../types/layout.enum'

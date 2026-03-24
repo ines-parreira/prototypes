@@ -22,7 +22,7 @@ import { initialState as uiState } from 'state/ui/helpCenter/reducer'
 import { renderWithRouter } from 'utils/testing'
 
 import { getHelpCenterTranslationsResponseFixture } from '../../fixtures/getHelpCenterTranslationsResponse.fixture'
-import { HelpCenterTranslationProvider } from '../../providers/HelpCenterTranslation'
+import { HelpCenterTranslationProvider } from '../../providers/HelpCenterTranslation/HelpCenterTranslation'
 import { HelpCenterAppearanceView } from '../HelpCenterAppearanceView/HelpCenterAppearanceView'
 
 const mockedStore = configureMockStore<Partial<RootState>, StoreDispatch>([

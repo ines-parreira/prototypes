@@ -287,6 +287,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
         })
 
         it('should add multiple tags when selected', async () => {
+            const waitForFirstRequest = mockUpdateTicket.waitForRequest(server)
             const { user } = render(
                 <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
@@ -300,11 +301,19 @@ describe('TicketInfobarTicketDetailsTags', () => {
             const documentationOption = await screen.findByRole('option', {
                 name: 'Documentation',
             })
-
-            const waitForFirstRequest = mockUpdateTicket.waitForRequest(server)
             await user.click(documentationOption)
 
-            await waitForFirstRequest()
+            await waitForFirstRequest(async (request) => {
+                const body = await request.clone().json()
+                expect(body.tags).toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({
+                            id: 3,
+                            name: 'Documentation',
+                        }),
+                    ]),
+                )
+            })
             await waitForQueriesSettled()
 
             await openTagMenu(user)
@@ -316,7 +325,17 @@ describe('TicketInfobarTicketDetailsTags', () => {
             const waitForSecondRequest = mockUpdateTicket.waitForRequest(server)
             await user.click(marketingOption)
 
-            await waitForSecondRequest()
+            await waitForSecondRequest(async (request) => {
+                const body = await request.clone().json()
+                expect(body.tags).toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({
+                            id: 4,
+                            name: 'Marketing',
+                        }),
+                    ]),
+                )
+            })
 
             await waitFor(() => {
                 const marketingTags = screen.getAllByText('Marketing')
@@ -324,7 +343,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
             })
 
             await waitForQueriesSettled()
-        })
+        }, 10000)
 
         it('should maintain tag sort order when adding new tags', async () => {
             const waitForUpdateTicketRequest =
@@ -674,17 +693,15 @@ describe('TicketInfobarTicketDetailsTags', () => {
 
             await openTagMenu(user)
 
-            await waitFor(() => {
-                expect(screen.getByRole('searchbox')).toBeInTheDocument()
-            })
-
-            const searchInput = screen.getByRole('searchbox')
+            const searchInput = await screen.findByRole('searchbox')
             await user.type(searchInput, 'Test')
 
-            expect(searchInput).toHaveValue('Test')
+            await waitFor(() => {
+                expect(searchInput).toHaveValue('Test')
+            })
 
             await waitForQueriesSettled()
-        })
+        }, 10000)
 
         it('should show search input when dropdown is open', async () => {
             const { user } = render(

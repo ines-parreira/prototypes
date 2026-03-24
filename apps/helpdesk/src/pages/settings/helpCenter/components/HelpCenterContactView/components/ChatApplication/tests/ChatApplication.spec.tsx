@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 
 import { useApplications } from 'models/integration/queries'
 import { contactInfoFixture } from 'pages/settings/helpCenter/fixtures/contactInfo.fixture'
-import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation'
+import { useHelpCenterTranslation } from 'pages/settings/helpCenter/providers/HelpCenterTranslation/HelpCenterTranslation'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
@@ -195,7 +195,9 @@ const defaultState: Partial<RootState> = {
     }),
 } as unknown as RootState
 
-jest.mock('../../../../../providers/HelpCenterTranslation')
+jest.mock(
+    '../../../../../providers/HelpCenterTranslation/HelpCenterTranslation',
+)
 jest.mock('../../../../../../../../models/integration/queries')
 
 const route = {

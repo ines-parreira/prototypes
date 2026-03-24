@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { reportError } from '@repo/logging'
 import { isCancel } from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -19,7 +20,6 @@ import { useAIJourneyContext } from 'pages/aiAgent/PlaygroundV2/contexts/AIJourn
 import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/ConfigurationContext'
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
-import { reportError } from 'utils/errors'
 
 import type { PlaygroundCustomer } from '../types'
 import { PlaygroundEvent } from '../types'

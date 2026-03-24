@@ -1,7 +1,7 @@
+import { reportError } from '@repo/logging'
 import type { Call } from '@twilio/voice-sdk'
 
 import client from 'models/api/resources'
-import { reportError } from 'utils/errors'
 
 export async function getToken(): Promise<string | null> {
     const response = await client.get('/integrations/phone/token')

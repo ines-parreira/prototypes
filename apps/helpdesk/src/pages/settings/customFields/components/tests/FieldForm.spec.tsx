@@ -1,4 +1,5 @@
 import { useFlag } from '@repo/feature-flags'
+import { reportError } from '@repo/logging'
 import { assumeMock, getLastMockCall, userEvent } from '@repo/testing'
 import { createEvent, fireEvent, screen, waitFor } from '@testing-library/react'
 import { omit } from 'lodash'
@@ -28,7 +29,6 @@ import DropdownInput from 'pages/settings/customFields/components/DropdownInput'
 import FieldForm from 'pages/settings/customFields/components/FieldForm'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 import { renderWithRouter } from 'utils/testing'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
@@ -37,7 +37,7 @@ jest.mock('hooks/useAppSelector')
 const useAppSelectorMock = assumeMock(useAppSelector)
 jest.mock('state/notifications/actions')
 const notifyMock = assumeMock(notify)
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 const reportErrorMock = assumeMock(reportError)
 
 jest.mock('@repo/feature-flags')

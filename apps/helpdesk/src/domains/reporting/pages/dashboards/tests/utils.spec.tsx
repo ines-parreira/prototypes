@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { AxiosError } from 'axios'
 
 import type {
@@ -64,9 +65,8 @@ import {
     SupportPerformanceOverviewReportConfig,
 } from 'domains/reporting/pages/support-performance/overview/SupportPerformanceOverviewReportConfig'
 import { STATS_ROUTES } from 'routes/constants'
-import { reportError } from 'utils/errors'
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 const reportErrorMock = reportError
 
 describe('dashboardFromApi', () => {

@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
 import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -15,7 +16,6 @@ import { useIngestionDomainBannerDismissed } from 'pages/aiAgent/AiAgentScrapedD
 import type { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { PAGE_NAME } from '../AiAgentScrapedDomainContent/constant'
 import { updateArticleIngestionLogs } from '../components/PublicSourcesSection/utils'

@@ -5,7 +5,7 @@ import {
     BILLING_PAYMENT_CARD_PATH,
 } from '@repo/billing'
 import { useFlag } from '@repo/feature-flags'
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -34,13 +34,11 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
+    reportError: jest.fn(),
     SegmentEvent: {
         BillingUsageAndPlansUpdateSubscriptionClicked:
             'billing-usage-and-plans-update-subscription-click',
     },
-}))
-jest.mock('utils/errors', () => ({
-    reportError: jest.fn(),
 }))
 jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
@@ -106,7 +104,7 @@ const mockUseAppDispatch = jest.mocked(useAppDispatch)
 const mockUseAppSelector = jest.mocked(useAppSelector)
 const mockShouldPayWithShopify = jest.mocked(shouldPayWithShopify)
 const mockGetShopifyBillingStatus = jest.mocked(getShopifyBillingStatus)
-
+const mockReportError = jest.mocked(reportError)
 const mockUseFlag = jest.mocked(useFlag)
 
 const plansByProduct: PlansByProduct = {
@@ -245,6 +243,7 @@ describe('BillingSummaryCard', () => {
         })
 
         expect(mockHistoryPush).not.toHaveBeenCalled()
+        expect(mockReportError).toHaveBeenCalledWith(expect.any(Error))
     })
 
     it('keeps confirm modal open on error', async () => {

@@ -8,6 +8,8 @@ import {
     useState,
 } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type {
@@ -30,7 +32,6 @@ import { getContactFormById } from 'state/entities/contactForm/contactForms'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
-import { reportError } from 'utils/errors'
 
 import { getGenericMessageFromError } from '../../utils'
 

@@ -1,14 +1,14 @@
 import React from 'react'
 
+import { reportError } from '@repo/logging'
 import { render } from '@testing-library/react'
 
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import TextInput from 'pages/common/forms/input/TextInput'
-import { reportError } from 'utils/errors'
 
 import GroupAddon from '../GroupAddon'
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 const reportErrorMock = reportError as jest.Mock
 
 describe('<GroupAddon />', () => {

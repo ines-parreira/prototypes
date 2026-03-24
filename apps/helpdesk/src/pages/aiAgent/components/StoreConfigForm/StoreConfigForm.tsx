@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
+import { reportError } from '@repo/logging'
 import { history } from '@repo/routing'
 import { List } from 'immutable'
 import { useParams } from 'react-router-dom'
@@ -64,7 +65,6 @@ import { HandoverConfigurationDrawer } from 'pages/standalone/components/Handove
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { TicketTagsFormComponent } from './FormComponents/TicketTagsFormComponent'
 import { useVerifyChannelsActivation } from './hooks/useVerifyChannelsActivation'

@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react'
 
-import type { SegmentEvent } from '@repo/logging'
 import { logEvent } from '@repo/logging'
+import type { SegmentEvent } from '@repo/logging'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { useParams } from 'react-router-dom'

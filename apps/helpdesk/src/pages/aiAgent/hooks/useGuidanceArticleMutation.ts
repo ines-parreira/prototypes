@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
     useBulkCopyArticles,
@@ -18,7 +20,6 @@ import {
 } from 'pages/aiAgent/utils/guidance.utils'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import type { Paths } from 'rest_api/help_center_api/client.generated'
-import { reportError } from 'utils/errors'
 
 import type { CreateGuidanceArticle, UpdateGuidanceArticle } from '../types'
 

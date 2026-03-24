@@ -14,7 +14,7 @@ import {
     useUnmount,
     useUpdateEffect,
 } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import classnames from 'classnames'
@@ -92,7 +92,6 @@ import {
 } from 'state/views/selectors'
 import type { FetchViewItemsOptions } from 'state/views/types'
 import { fieldPath, getDefaultOperator, slugify } from 'utils'
-import { reportError } from 'utils/errors'
 
 import { AddFilterDropdown } from './AddFilterDropdown'
 import { getDefaultCustomFieldOperator } from './Filters/utils'

@@ -284,6 +284,19 @@ catalogs:
     '@gorgias/knowledge-service-validators':
       specifier: ^0.2.58
       version: 0.2.58
+  sentry:
+    '@sentry/cli':
+      specifier: ^2.47.0
+      version: 2.50.0
+    '@sentry/react':
+      specifier: 7.119.1
+      version: 7.119.1
+    '@sentry/tracing':
+      specifier: 7.119.1
+      version: 7.119.1
+    '@sentry/types':
+      specifier: 7.119.1
+      version: 7.119.1
   styles:
     '@types/classnames':
       specifier: 2.2.10
@@ -416,7 +429,7 @@ importers:
         specifier: 0.5.0
         version: 0.5.0
       '@sentry/cli':
-        specifier: ^2.47.0
+        specifier: catalog:sentry
         version: 2.50.0(encoding@0.1.13)
       '@trivago/prettier-plugin-sort-imports':
         specifier: catalog:prettier
@@ -662,10 +675,10 @@ importers:
         specifier: workspace:*
         version: link:../../packages/voice
       '@sentry/react':
-        specifier: 7.119.1
+        specifier: catalog:sentry
         version: 7.119.1(react@18.2.0)
       '@sentry/tracing':
-        specifier: 7.119.1
+        specifier: catalog:sentry
         version: 7.119.1
       '@stripe/react-stripe-js':
         specifier: ^2.8.0
@@ -1134,10 +1147,10 @@ importers:
         specifier: 1.6.1
         version: 1.6.1(react-refresh@0.14.0)(webpack-hot-middleware@2.25.4)
       '@sentry/cli':
-        specifier: ^2.30.0
+        specifier: catalog:sentry
         version: 2.50.0(encoding@0.1.13)
       '@sentry/types':
-        specifier: 7.119.1
+        specifier: catalog:sentry
         version: 7.119.1
       '@sheerun/mutationobserver-shim':
         specifier: 0.3.3
@@ -2381,6 +2394,15 @@ importers:
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
+      '@sentry/react':
+        specifier: catalog:sentry
+        version: 7.119.1(react@18.2.0)
+      '@sentry/tracing':
+        specifier: catalog:sentry
+        version: 7.119.1
+      '@sentry/types':
+        specifier: catalog:sentry
+        version: 7.119.1
       '@testing-library/dom':
         specifier: catalog:test
         version: 10.4.0

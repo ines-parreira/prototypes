@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import type { Moment } from 'moment'
@@ -36,7 +37,6 @@ import SatisfactionSurvey from 'pages/tickets/detail/components/SatisfactionSurv
 import TicketMessages from 'pages/tickets/detail/components/TicketMessages/TicketMessages'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getLastCustomerMessage, getTicketState } from 'state/ticket/selectors'
-import { reportError } from 'utils/errors'
 
 import type { TicketEventPrivateReplyData } from '../../../../models/event/types'
 import type { ShoppingAssistantEvent } from '../hooks/useInsertShoppingAssistantEventElements'

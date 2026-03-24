@@ -1,3 +1,5 @@
+import { reportError } from '@repo/logging'
+
 import { ReportingStatsOperatorsEnum } from '@gorgias/helpdesk-types'
 
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
@@ -16,9 +18,8 @@ import {
     ApiOnlyOperatorEnum,
     LogicalOperatorEnum,
 } from 'domains/reporting/pages/common/components/Filter/constants'
-import { reportError } from 'utils/errors'
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

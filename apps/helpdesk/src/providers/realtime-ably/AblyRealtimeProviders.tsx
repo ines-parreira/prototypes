@@ -2,14 +2,13 @@ import { useCallback, useEffect, useRef } from 'react'
 import type { ReactNode } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { reportError } from '@repo/logging'
 
 import {
     AgentActivityProvider,
     AgentOnlineStatusProvider,
     RealtimeProvider,
 } from '@gorgias/realtime'
-
-import { reportError } from 'utils/errors'
 
 type Props = {
     children: ReactNode

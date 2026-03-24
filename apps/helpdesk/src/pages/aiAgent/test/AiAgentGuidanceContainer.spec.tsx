@@ -2,6 +2,7 @@
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
 import { useFlag } from '@repo/feature-flags'
+import { reportError } from '@repo/logging'
 import { history } from '@repo/routing'
 import { assumeMock, userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -19,7 +20,6 @@ import { getHelpCentersResponseFixture } from 'pages/settings/helpCenter/fixture
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { reportError } from 'utils/errors'
 import { renderWithRouter } from 'utils/testing'
 
 import {
@@ -52,7 +52,8 @@ const useAppDispatchMock = assumeMock(useAppDispatch)
 jest.mock('state/notifications/actions')
 
 jest.mock('sanitize-html', () => () => jest.fn())
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
+    ...jest.requireActual('@repo/logging'),
     reportError: jest.fn(),
 }))
 jest.mock('../hooks/useGuidanceArticles', () => ({

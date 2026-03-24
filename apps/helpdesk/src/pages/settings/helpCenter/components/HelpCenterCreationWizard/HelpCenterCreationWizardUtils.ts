@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { chain, differenceBy, map, orderBy } from 'lodash'
 import _isEqual from 'lodash/isEqual'
 import _pickBy from 'lodash/pickBy'
@@ -33,7 +34,6 @@ import type { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { StoreDispatch } from 'state/types'
-import { reportError } from 'utils/errors'
 
 import { HelpCenterLayout } from '../../types/layout.enum'
 import { getHelpCenterLayout } from '../../utils/helpCenter.utils'

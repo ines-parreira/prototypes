@@ -3,7 +3,7 @@ import { renderHook, waitFor } from '@testing-library/react'
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useDownloadFlowsData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadFlowsData'
 
-jest.mock('utils/errors', () => ({ reportError: jest.fn() }))
+jest.mock('@repo/logging', () => ({ reportError: jest.fn() }))
 
 jest.mock('../useFlowsMetrics', () => ({
     fetchFlowsMetrics: jest.fn(),
@@ -28,7 +28,7 @@ jest.mock(
 )
 
 const mockFetch = jest.requireMock('../useFlowsMetrics')
-const mockReportError = jest.requireMock('utils/errors').reportError
+const mockReportError = jest.requireMock('@repo/logging').reportError
 
 const MOCK_FILE_NAME = 'flows-table-2024-01-01_2024-01-31.csv'
 const MOCK_CSV =

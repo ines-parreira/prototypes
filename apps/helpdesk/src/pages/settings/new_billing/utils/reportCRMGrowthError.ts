@@ -1,5 +1,6 @@
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { reportError } from 'utils/errors'
 
 export const reportCRMGrowthError = (error: unknown, context: string) => {
     const errorMessage =

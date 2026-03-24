@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
 import type { ChartDataItem } from '@repo/reporting'
 import { useQueries } from '@tanstack/react-query'
 
@@ -14,7 +15,6 @@ import {
 import { gmvByInfluencedProductQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { useGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
-import { reportError } from 'utils/errors'
 
 type TotalSalesByProductData = {
     chartData: ChartDataItem[]

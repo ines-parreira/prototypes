@@ -1,11 +1,11 @@
 import { useLocalStorage } from '@repo/hooks'
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGenerateCustomToneOfVoicePreview } from 'models/aiAgent/queries'
-import { reportError } from 'utils/errors'
 
 import { customToneOfVoicePreviewFixture } from '../../fixtures/customToneOfVoicePreview.fixture'
 import { createCustomToneOfVoicePreviewBody } from '../../utils/custom-tone-of-voice-preview.utils'
@@ -18,7 +18,7 @@ jest.mock('@repo/hooks', () => ({
 }))
 jest.mock('models/aiAgent/queries')
 jest.mock('state/currentAccount/selectors')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('../../utils/custom-tone-of-voice-preview.utils', () => ({
     createCustomToneOfVoicePreviewBody: jest.fn(),
 }))

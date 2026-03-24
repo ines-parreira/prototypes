@@ -1,4 +1,4 @@
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
@@ -13,7 +13,6 @@ import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelp
 import { useUpsertArticleTemplateReview } from 'pages/settings/helpCenter/queries'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { useFeedbackArticleActions } from '../useFeedbackArticleActions'
 
@@ -23,7 +22,6 @@ jest.mock('pages/settings/helpCenter/hooks/useArticlesActions')
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('state/notifications/actions')
-jest.mock('utils/errors')
 
 describe('useFeedbackArticleActions', () => {
     const mockDispatch = jest.fn()

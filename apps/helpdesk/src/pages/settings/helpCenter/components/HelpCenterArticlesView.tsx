@@ -2,7 +2,7 @@ import type React from 'react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 import { usePrevious } from '@repo/hooks'
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import copy from 'copy-to-clipboard'
 import _isEqual from 'lodash/isEqual'
 import { useLocation } from 'react-router-dom'
@@ -29,7 +29,6 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
 import { unreachable } from 'utils'
-import { reportError } from 'utils/errors'
 
 import type { ArticleRowActionTypes } from '../constants'
 import {

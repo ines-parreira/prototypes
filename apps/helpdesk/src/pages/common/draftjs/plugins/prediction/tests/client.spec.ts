@@ -1,8 +1,8 @@
+import { reportError } from '@repo/logging'
 import { AxiosError } from 'axios'
 import AxiosMock from 'axios-mock-adapter'
 
 import axiosClient from 'models/api/resources'
-import { reportError } from 'utils/errors'
 
 import type { PredictionFeedback, QueryContext } from '../client'
 import {
@@ -14,7 +14,7 @@ import {
 } from '../client'
 
 const axiosMock = new AxiosMock(axiosClient)
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 const PHRASE_PREDICTION_URL = 'https://gorgias.com/api/prediction'
 const PHRASE_FEEDBACK_URL = 'https://gorgias.com/api/feedback'

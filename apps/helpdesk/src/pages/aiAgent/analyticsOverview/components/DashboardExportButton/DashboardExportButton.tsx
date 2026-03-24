@@ -1,6 +1,7 @@
 import type { RefObject } from 'react'
 import { useEffect, useRef, useState } from 'react'
 
+import { reportError } from '@repo/logging'
 import cn from 'classnames'
 
 import { Box, Button, ButtonSize, Icon, IconName } from '@gorgias/axiom'
@@ -13,7 +14,6 @@ import {
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
 import DropdownBody from 'pages/common/components/dropdown/DropdownBody'
 import DropdownItem from 'pages/common/components/dropdown/DropdownItem'
-import { reportError } from 'utils/errors'
 
 import css from './DashboardExportButton.less'
 

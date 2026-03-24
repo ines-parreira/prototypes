@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _compact from 'lodash/compact'
@@ -39,7 +40,6 @@ import {
 import { WidgetEnvironment } from 'state/widgets/types'
 import { getSourcePathFromContext } from 'state/widgets/utils'
 import * as utils from 'utils'
-import { reportError } from 'utils/errors'
 
 /**
  * Check if is an array of objects (and no an array of string for example)

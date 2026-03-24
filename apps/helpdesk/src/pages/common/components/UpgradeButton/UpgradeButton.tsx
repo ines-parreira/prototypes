@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
 
-import type { SegmentEventToSend } from '@repo/logging'
 import { logEvent } from '@repo/logging'
+import type { SegmentEventToSend } from '@repo/logging'
 import classnames from 'classnames'
 import { Link } from 'react-router-dom'
 

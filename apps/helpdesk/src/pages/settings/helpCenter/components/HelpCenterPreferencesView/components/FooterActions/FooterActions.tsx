@@ -1,6 +1,6 @@
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { useHelpCenterPreferencesSettings } from '../../../../providers/HelpCenterPreferencesSettings'
+import { useHelpCenterPreferencesSettings } from '../../../../providers/HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'
 
 export const FooterActions: React.FC = () => {
     const { savePreferences, resetPreferences, canSavePreferences } =

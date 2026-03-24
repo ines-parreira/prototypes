@@ -1,12 +1,12 @@
 import type React from 'react'
 
+import { reportError } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetIngestionLogs } from 'models/helpCenter/queries'
 import { POLLING_INTERVAL } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
-import { reportError } from 'utils/errors'
 
 import { useGetStoreDomainIngestionLog } from '../useGetStoreDomainIngestionLog'
 
@@ -15,7 +15,7 @@ jest.mock('models/helpCenter/queries', () => ({
 }))
 const mockUseGetIngestionLogs = assumeMock(useGetIngestionLogs)
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

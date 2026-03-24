@@ -2,6 +2,7 @@ import type { ComponentProps } from 'react'
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { useUpdateEffect } from '@repo/hooks'
+import { reportError } from '@repo/logging'
 import {
     DropdownItem,
     DropdownMenu,
@@ -18,7 +19,6 @@ import {
 } from 'config'
 import InputGroup from 'pages/common/forms/input/InputGroup'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import { reportError } from 'utils/errors'
 
 import css from './TimedeltaPicker.less'
 

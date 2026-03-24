@@ -14,7 +14,7 @@ import { renderWithRouter } from 'utils/testing'
 import CurrentHelpCenterContext from '../../contexts/CurrentHelpCenterContext'
 import { getSingleHelpCenterResponseFixture } from '../../fixtures/getHelpCentersResponse.fixture'
 import { useStoreIntegrationByShopName } from '../../hooks/useStoreIntegrationByShopName'
-import { HelpCenterPreferencesSettings } from '../../providers/HelpCenterPreferencesSettings'
+import { HelpCenterPreferencesSettings } from '../../providers/HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'
 import { useGetPageEmbedments } from '../../queries'
 import HelpCenterPublishAndTrackView from '../HelpCenterPublishAndTrackView'
 

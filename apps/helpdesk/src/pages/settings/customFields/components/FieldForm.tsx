@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { reportError } from '@repo/logging'
 import type { AxiosResponse } from 'axios'
 import { cloneDeep, pick, set } from 'lodash'
 
@@ -34,7 +35,6 @@ import TypeSelectInput from 'pages/settings/customFields/components/TypeSelectIn
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 const SAVE_BUTTON_ID = 'custom-fields-form-save-button'
 const TOOLTIP_MESSAGE =

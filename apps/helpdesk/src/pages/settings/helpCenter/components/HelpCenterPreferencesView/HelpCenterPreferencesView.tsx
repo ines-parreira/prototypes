@@ -1,10 +1,10 @@
 import useCurrentHelpCenter from '../../hooks/useCurrentHelpCenter'
-import { useHelpCenterPreferencesSettings } from '../../providers/HelpCenterPreferencesSettings'
+import { useHelpCenterPreferencesSettings } from '../../providers/HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'
 import { useSupportedLocales } from '../../providers/SupportedLocales'
 import HelpCenterPageWrapper from '../HelpCenterPageWrapper'
 import { AvailableLanguagesTags } from './components/AvailableLanguagesTags'
 import { DefaultLanguageSelect } from './components/DefaultLanguageSelect'
-import { FooterActions } from './components/FooterActions'
+import { FooterActions } from './components/FooterActions/FooterActions'
 import { SEO } from './components/SEO'
 
 import css from './HelpCenterPreferencesView.less'

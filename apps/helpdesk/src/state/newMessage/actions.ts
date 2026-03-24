@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
 import type { AxiosError, CancelToken } from 'axios'
@@ -82,7 +82,6 @@ import {
 } from 'utils'
 import { getMomentNow } from 'utils/date'
 import { convertToHTML } from 'utils/editor'
-import { reportError } from 'utils/errors'
 
 import type { CustomerChannel } from '../../models/customerChannel/types'
 import * as constants from './constants'

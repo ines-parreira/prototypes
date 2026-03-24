@@ -2,7 +2,6 @@ import type React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
-import { logEvent } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'
@@ -32,10 +31,9 @@ import { useActivation } from '../useActivation'
 import { getStoreConfigurationFixture } from './fixtures/store-configurations.fixture'
 
 // Mock only external services
-jest.mock('@repo/logging')
 jest.mock('@repo/feature-flags')
 jest.mock('@repo/logging')
-const mockLogEvent = jest.mocked(logEvent)
+const mockLogEvent = jest.mocked(segment.logEvent)
 jest.mock('models/helpCenter/queries')
 const useGetHelpCenterListMock = assumeMock(useGetHelpCenterList)
 

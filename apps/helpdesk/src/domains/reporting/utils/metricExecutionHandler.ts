@@ -1,4 +1,5 @@
 import { readMigration } from '@repo/feature-flags'
+import { reportError } from '@repo/logging'
 import { AxiosError } from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -23,7 +24,6 @@ import type {
     ReportingQuery,
 } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
-import { reportError } from 'utils/errors'
 
 // Metrics that are expected to support cursor pagination
 // Add metrics here when implementing pagination support for them

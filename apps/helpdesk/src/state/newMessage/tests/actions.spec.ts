@@ -15,7 +15,6 @@ import {
     TicketStatus,
 } from 'business/types/ticket'
 import * as segmentTracker from '@repo/logging'
-import { SegmentEvent } from '@repo/logging'
 import { AttachmentEnum } from 'common/types'
 import * as commonUtils from 'common/utils'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
@@ -1154,7 +1153,7 @@ describe('actions', () => {
                 )
                 expect(data?.newMessage).toMatchSnapshot()
                 expect(logEventSpy).toHaveBeenCalledWith(
-                    SegmentEvent.InsertDiscountCodeAdded,
+                    segmentTracker.SegmentEvent.InsertDiscountCodeAdded,
                     expect.objectContaining({
                         customer: {
                             gorgias_id: 12,
@@ -1201,7 +1200,7 @@ describe('actions', () => {
                 )
                 expect(data?.newMessage).toMatchSnapshot()
                 expect(logEventSpy).toHaveBeenCalledWith(
-                    SegmentEvent.InsertDiscountCodeAdded,
+                    segmentTracker.SegmentEvent.InsertDiscountCodeAdded,
                     expect.objectContaining({
                         discount: {
                             id: 4,

@@ -1,8 +1,9 @@
 import { useState } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { createJob } from 'models/job/resources'
 import { JobType } from 'models/job/types'
-import { reportError } from 'utils/errors'
 
 export const useExportOpportunityTickets = () => {
     const [isLoading, setIsLoading] = useState(false)

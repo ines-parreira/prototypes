@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 import classnames from 'classnames'
 import { produce } from 'immer'
@@ -36,7 +37,6 @@ import {
 import * as integrationsSelectors from 'state/integrations/selectors'
 import { notify as notifyAction } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { EMAIL_INTEGRATION_TYPES } from '../../../../constants/integration'
 import useAppDispatch from '../../../../hooks/useAppDispatch'

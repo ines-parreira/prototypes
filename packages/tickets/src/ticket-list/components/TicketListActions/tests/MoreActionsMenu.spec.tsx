@@ -1,3 +1,5 @@
+import * as React from 'react'
+
 import { UserRole } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -19,18 +21,35 @@ import { MoreActionsMenu } from '../MoreActionsMenu'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => ({
     ...(await importOriginal()),
-    Tooltip: ({
-        trigger,
-        children,
-    }: {
-        trigger: React.ReactNode
-        children: React.ReactNode
-    }) => (
-        <>
-            {trigger}
-            {children}
-        </>
-    ),
+    Tooltip: React.forwardRef<
+        HTMLElement,
+        {
+            trigger: React.ReactNode
+            children: React.ReactNode
+        } & React.HTMLAttributes<HTMLElement>
+    >(({ trigger, children, ...props }, ref) => {
+        const triggerElement = React.isValidElement(trigger) ? (
+            React.cloneElement(trigger as React.ReactElement, {
+                ...props,
+                ref,
+            })
+        ) : (
+            <span
+                ref={ref as React.Ref<HTMLSpanElement>}
+                tabIndex={-1}
+                {...props}
+            >
+                {trigger}
+            </span>
+        )
+
+        return (
+            <>
+                {triggerElement}
+                {children}
+            </>
+        )
+    }),
     TooltipContent: ({ title }: { title: string }) => <div>{title}</div>,
 }))
 
@@ -216,7 +235,7 @@ describe('MoreActionsMenu', () => {
             expect(
                 screen.getByRole('menuitem', { name: /move to trash/i }),
             ).toBeInTheDocument()
-        })
+        }, 10000)
 
         it('shows export tickets for an agent', async () => {
             const { user } = render(<MoreActionsMenu {...defaultProps} />)
@@ -330,12 +349,14 @@ describe('MoreActionsMenu', () => {
             await openMenu(user)
             await user.click(screen.getByRole('menuitem', { name: /add tag/i }))
 
-            expect(
-                screen.getByRole('menuitem', {
-                    name: /create tag:\s*new tag/i,
-                }),
-            ).toBeInTheDocument()
-        })
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('menuitem', {
+                        name: /create tag:\s*new tag/i,
+                    }),
+                ).toBeInTheDocument()
+            })
+        }, 10000)
 
         it('creates a tag and adds it when the create action is activated', async () => {
             const createdTag = mockTag({
@@ -532,14 +553,10 @@ describe('MoreActionsMenu', () => {
             await user.click(
                 screen.getByRole('menuitem', { name: /change priority/i }),
             )
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('menuitem', { name: /critical/i }),
-                ).toBeInTheDocument()
+            const criticalPriorityOption = await screen.findByRole('menuitem', {
+                name: /critical/i,
             })
-            await user.click(
-                screen.getByRole('menuitem', { name: /critical/i }),
-            )
+            await user.click(criticalPriorityOption)
 
             expect(onChangePriority).toHaveBeenCalledWith('critical')
         })

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { reportError } from '@repo/logging'
 import classNames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -18,7 +19,6 @@ import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCen
 import settingsCss from 'pages/settings/settings.less'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { HelpText } from './components/HelpText'
 

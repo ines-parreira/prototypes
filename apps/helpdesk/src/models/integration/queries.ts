@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import { reportError } from '@repo/logging'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useInfiniteQuery, useQueries, useQuery } from '@tanstack/react-query'
 
@@ -16,7 +17,6 @@ import {
     getInstallationSnippet,
 } from 'state/integrations/actions/gorgias-chat.actions'
 import { fetchIntegrationProducts as fetchIntegrationProductsByIds } from 'state/integrations/helpers'
-import { reportError } from 'utils/errors'
 
 import {
     fetchCustomerSegments,

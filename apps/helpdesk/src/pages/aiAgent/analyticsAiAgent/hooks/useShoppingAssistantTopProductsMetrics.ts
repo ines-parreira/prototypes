@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
 import { useQueries } from '@tanstack/react-query'
 
 import type { Product } from 'constants/integrations/types/shopify'
@@ -33,7 +34,6 @@ import type { ProductTableContentCell } from 'domains/reporting/pages/automate/a
 import safeDivide from 'domains/reporting/pages/automate/aiSalesAgent/util/safeDivide'
 import { mapMetrics } from 'domains/reporting/utils/reporting'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
-import { reportError } from 'utils/errors'
 
 type ProductsByIntegration = {
     integrationId: number

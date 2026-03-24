@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -14,7 +15,6 @@ import type {
 } from 'models/aiAgent/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { useGetOrCreateSnippetHelpCenter } from '../../hooks/useGetOrCreateSnippetHelpCenter'
 

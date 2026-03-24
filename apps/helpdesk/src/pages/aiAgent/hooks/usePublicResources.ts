@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQueries } from '@tanstack/react-query'
 
@@ -11,7 +12,6 @@ import {
 } from 'models/helpCenter/resources'
 import { mapArticleIngestionLogsToSourceItem } from 'pages/aiAgent/components/PublicSourcesSection/utils'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { reportError } from 'utils/errors'
 
 import type { BaseArticle } from '../AiAgentScrapedDomainContent/types'
 

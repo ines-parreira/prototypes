@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useGetArticleTranslations } from 'models/helpCenter/queries'
 import type { Article, LocaleCode } from 'models/helpCenter/types'
@@ -12,7 +14,6 @@ import type { Components } from 'rest_api/help_center_api/client.generated'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { changeViewLanguage } from 'state/ui/helpCenter'
-import { reportError } from 'utils/errors'
 
 export const useArticleTranslations = (
     selectedArticle: Components.Schemas.CreateArticleDto | Article | null,

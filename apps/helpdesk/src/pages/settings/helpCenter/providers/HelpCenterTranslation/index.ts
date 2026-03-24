@@ -1,1 +1,4 @@
-export * from './HelpCenterTranslation'
+export {
+    HelpCenterTranslationProvider,
+    useHelpCenterTranslation,
+} from './HelpCenterTranslation'

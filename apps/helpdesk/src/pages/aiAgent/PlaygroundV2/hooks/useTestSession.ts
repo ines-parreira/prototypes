@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useNotify } from 'hooks/useNotify'
 import { useCreateTestSessionMutation } from 'models/aiAgent/queries'
 import type { AiAgentPlaygroundOptions } from 'models/aiAgent/types'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 export const useTestSession = (
     baseUrl?: string,

@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 
+import { reportError } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -8,7 +9,6 @@ import {
     useUpdateAllIngestedResourcesStatus,
     useUpdateIngestedResource,
 } from 'models/helpCenter/queries'
-import { reportError } from 'utils/errors'
 
 import type { IngestedResourceStatus } from '../constant'
 

@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -6,15 +7,16 @@ import * as resources from 'models/helpCenter/resources'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import { buildSDKMocks } from 'rest_api/help_center_api/tests/buildSdkMocks'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import * as errors from 'utils/errors'
 
 import { useStoresKnowledgeStatus } from '../useStoresKnowledgeStatus'
 
+jest.mock('@repo/logging')
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
+
 const queryClient = mockQueryClient()
 const getKnowledgeStatusSpy = jest.spyOn(resources, 'getKnowledgeStatus')
-const reportErrorSpy = jest.spyOn(errors, 'reportError')
+const mockReportError = jest.mocked(reportError)
 
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
     typeof useHelpCenterApi
 >
@@ -107,7 +109,7 @@ describe('useStoresKnowledgeStatus', () => {
                 has_external_documents: false,
             },
         })
-        expect(reportErrorSpy).not.toHaveBeenCalled()
+        expect(mockReportError).not.toHaveBeenCalled()
     })
 
     it('should report errors', async () => {
@@ -128,6 +130,6 @@ describe('useStoresKnowledgeStatus', () => {
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
         expect(result.current.data).toBeUndefined()
-        expect(reportErrorSpy).toHaveBeenCalled()
+        expect(mockReportError).toHaveBeenCalled()
     })
 })

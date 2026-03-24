@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { HelpCenter } from 'models/helpCenter/types'
@@ -10,7 +12,6 @@ import {
 } from 'state/entities/helpCenter/helpCenters'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { useHelpCenterApi } from './useHelpCenterApi'
 

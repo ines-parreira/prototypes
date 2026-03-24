@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { reportError } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
@@ -10,7 +11,6 @@ import { useGetArticleIngestionLogs } from 'models/helpCenter/queries'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { reportError } from 'utils/errors'
 
 import { useAiAgentNavigation } from '../useAiAgentNavigation'
 import { usePublicResourcesPooling } from '../usePublicResourcesPooling'
@@ -27,7 +27,7 @@ jest.mock('@repo/routing', () => ({
 }))
 jest.mock('state/notifications/actions')
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useCallback, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -9,7 +10,6 @@ import {
     useGetIngestionLogs,
     useStartIngestion,
 } from 'models/helpCenter/queries'
-import { reportError } from 'utils/errors'
 
 import {
     IngestionLogStatus,

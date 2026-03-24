@@ -1,4 +1,5 @@
 import { useAsyncFn } from '@repo/hooks'
+import { reportError } from '@repo/logging'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { UpdateHelpCenterDto } from 'models/helpCenter/types'
@@ -8,7 +9,6 @@ import { useHelpCenterIdParam } from 'pages/settings/helpCenter/hooks/useHelpCen
 import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import css from './UpdateToggle.less'
 

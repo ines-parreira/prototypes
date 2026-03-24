@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
+import { reportError } from '@repo/logging'
 import { addBreadcrumb } from '@sentry/react'
-
-import { reportError } from 'utils/errors'
 
 type UnreadCountChangedPayload = {
     detail: {

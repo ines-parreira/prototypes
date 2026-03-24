@@ -1,5 +1,6 @@
 import { createRef } from 'react'
 
+import { reportError } from '@repo/logging'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -8,13 +9,12 @@ import {
     ExportFormat,
     useAiAgentAnalyticsDashboardTracking,
 } from 'pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking'
-import { reportError } from 'utils/errors'
 
 import { DashboardExportButton } from '../DashboardExportButton'
 
 jest.mock('pages/aiAgent/analyticsOverview/hooks/useExportDashboardToPDF')
 jest.mock('pages/aiAgent/hooks/useAiAgentAnalyticsDashboardTracking')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('appNode', () => ({
     useAppNode: () => document.body,
 }))

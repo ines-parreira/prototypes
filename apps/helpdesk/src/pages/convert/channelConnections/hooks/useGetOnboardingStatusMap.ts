@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useListChannelConnections } from 'models/convert/channelConnection/queries'
 import { ChannelConnectionChannel } from 'models/convert/channelConnection/types'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 export const useGetOnboardingStatusMap = () => {
     const dispatch = useAppDispatch()

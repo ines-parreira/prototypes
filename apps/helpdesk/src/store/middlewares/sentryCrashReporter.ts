@@ -1,8 +1,7 @@
+import { reportError } from '@repo/logging'
 import * as Sentry from '@sentry/react'
 import type { AxiosError } from 'axios'
 import type { Middleware } from 'redux'
-
-import { reportError } from 'utils/errors'
 
 /**
  * Middleware sending redux errors to Sentry

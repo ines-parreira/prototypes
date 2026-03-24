@@ -18,7 +18,7 @@ jest.mock('@gorgias/helpdesk-client', () => ({
     getTicket: jest.fn(),
 }))
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

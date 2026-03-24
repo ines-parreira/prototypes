@@ -2,7 +2,7 @@ import type { ComponentProps } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import * as hooksImports from '@repo/hooks'
-import { logEvent } from '@repo/logging'
+import { logEvent, reportError } from '@repo/logging'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -50,7 +50,6 @@ import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fi
 import { initialState as articlesState } from 'state/entities/helpCenter/articles'
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import { reportError } from 'utils/errors'
 import { renderWithRouter } from 'utils/testing'
 
 import { StoreConfigForm } from '../StoreConfigForm'
@@ -71,12 +70,12 @@ jest.mock('@repo/routing', () => ({
 
 const queryClient = mockQueryClient()
 
-jest.mock('utils/errors')
 jest.mock('../hooks/useVerifyChannelsActivation')
 // eslint-disable-next-line @typescript-eslint/no-unsafe-return
 jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
+    reportError: jest.fn(),
 }))
 const mockLogEvent = jest.mocked(logEvent)
 

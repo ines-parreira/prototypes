@@ -1,7 +1,8 @@
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import type { HelpCenter } from 'models/helpCenter/types'
-import { reportError } from 'utils/errors'
 
 const FIVE_MINUTES = 1000 * 60 * 5
 

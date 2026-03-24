@@ -1,4 +1,3 @@
-import { SegmentEvent } from '@repo/logging'
 import * as segmentTracker from '@repo/logging'
 import { renderHook } from '@repo/testing'
 
@@ -40,7 +39,7 @@ describe('usePrevNextTicketNavigation', () => {
 
         expect(logEventMock).toHaveBeenCalledTimes(1)
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.TicketPreviousNavigation,
+            segmentTracker.SegmentEvent.TicketPreviousNavigation,
         )
         expect(useAppDispatchMock).toHaveBeenCalledTimes(1)
         expect(clearTicketMock).toHaveBeenCalledTimes(1)
@@ -62,7 +61,7 @@ describe('usePrevNextTicketNavigation', () => {
 
         expect(logEventMock).toHaveBeenCalledTimes(1)
         expect(logEventMock).toHaveBeenCalledWith(
-            SegmentEvent.TicketNextNavigation,
+            segmentTracker.SegmentEvent.TicketNextNavigation,
         )
         expect(useAppDispatchMock).toHaveBeenCalledTimes(1)
         expect(clearTicketMock).toHaveBeenCalledTimes(1)

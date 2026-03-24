@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import type { AxiosResponse } from 'axios'
 import { AxiosError } from 'axios'
@@ -22,7 +23,6 @@ import type {
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import type { ExecuteMetricConfig } from 'domains/reporting/utils/metricExecutionHandler'
 import { metricExecutionHandler } from 'domains/reporting/utils/metricExecutionHandler'
-import { reportError } from 'utils/errors'
 
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 
@@ -35,7 +35,7 @@ const getNewStatsFeatureFlagMigrationMock = assumeMock(
     getNewStatsFeatureFlagMigration,
 )
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 const reportErrorMock = assumeMock(reportError)
 
 jest.mock('domains/reporting/models/resources', () => ({

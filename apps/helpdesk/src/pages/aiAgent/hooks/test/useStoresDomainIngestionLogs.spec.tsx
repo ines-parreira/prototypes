@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -14,14 +15,15 @@ import type { Components } from 'rest_api/help_center_api/client.generated'
 import { buildSDKMocks } from 'rest_api/help_center_api/tests/buildSdkMocks'
 import type { RootState } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-import * as errors from 'utils/errors'
 import { mockStore } from 'utils/testing'
+
+jest.mock('@repo/logging')
+jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 
 const getIngestionLogsSpy = jest.spyOn(resources, 'getIngestionLogs')
 const getHelpCenterListSpy = jest.spyOn(resources, 'getHelpCenterList')
-const reportErrorSpy = jest.spyOn(errors, 'reportError')
+const mockReportError = jest.mocked(reportError)
 
-jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi')
 const mockedUseHelpCenterApi = useHelpCenterApi as jest.MockedFunction<
     typeof useHelpCenterApi
 >
@@ -269,7 +271,7 @@ describe('useStoresDomainIngestionLogs', () => {
                 },
             ],
         })
-        expect(reportErrorSpy).not.toHaveBeenCalled()
+        expect(mockReportError).not.toHaveBeenCalled()
     })
 
     it('should report errors', async () => {
@@ -294,6 +296,6 @@ describe('useStoresDomainIngestionLogs', () => {
         await waitFor(() => expect(result.current.isLoading).toBe(false))
 
         expect(result.current.data).toBeUndefined()
-        expect(reportErrorSpy).toHaveBeenCalled()
+        expect(mockReportError).toHaveBeenCalled()
     })
 })

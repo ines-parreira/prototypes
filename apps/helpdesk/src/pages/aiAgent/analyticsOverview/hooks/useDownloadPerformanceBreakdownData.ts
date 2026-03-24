@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
@@ -7,7 +9,6 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { fetchPerformanceMetricsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/fetchPerformanceBreakdownData'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
-import { reportError } from 'utils/errors'
 
 export const useDownloadPerformanceBreakdownData = () => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()

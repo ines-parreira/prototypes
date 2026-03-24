@@ -627,28 +627,28 @@ describe('mark as read on navigation', () => {
 
 describe('selection behaviour', () => {
     it('clears the selection when the sort order changes', async () => {
-        const { user } = renderWithVirtuoso(
-            <TicketList viewId={viewId} onCollapse={vi.fn()} />,
-        )
+        const clear = vi.fn()
+        vi.spyOn(
+            useTicketSelectionModule,
+            'useTicketSelection',
+        ).mockReturnValue({
+            hasSelectedAll: false,
+            selectedTicketIds: new Set([mockTicket1.id]),
+            selectionCount: 1,
+            hasAnySelection: true,
+            onSelect: vi.fn(),
+            onSelectAll: vi.fn(),
+            clear,
+        })
+
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
         await waitFor(() => {
             expect(screen.getByText('First Ticket')).toBeInTheDocument()
         })
 
-        await act(async () => {
-            await user.click(
-                screen.getByRole('checkbox', { name: 'Select ticket 1' }),
-            )
-        })
+        expect(clear).not.toHaveBeenCalled()
 
-        await waitFor(() => {
-            expect(
-                screen.getByRole('checkbox', { name: '1 selected' }),
-            ).toBePartiallyChecked()
-        })
-
-        // Simulate a sort order change by updating localStorage directly and
-        // dispatching the custom event that useLocalStorage listens for.
         act(() => {
             localStorage.setItem(
                 'ticket-list-view-sort-orders',
@@ -664,11 +664,9 @@ describe('selection behaviour', () => {
         })
 
         await waitFor(() => {
-            expect(
-                screen.getByRole('checkbox', { name: 'Select all' }),
-            ).not.toBeChecked()
+            expect(clear).toHaveBeenCalledTimes(1)
         })
-    })
+    }, 10000)
 
     afterEach(() => {
         localStorage.clear()

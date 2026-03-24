@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 
@@ -14,7 +15,6 @@ import {
 import { getArticleTranslationWithRatingFixture } from 'pages/aiAgent/fixtures/articleTranslation.fixture'
 import useCurrentHelpCenter from 'pages/settings/helpCenter/hooks/useCurrentHelpCenter'
 import { notify } from 'state/notifications/actions'
-import { reportError } from 'utils/errors'
 
 import { useArticleTranslations } from '../useArticleTranslations'
 
@@ -22,7 +22,7 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('models/helpCenter/queries')
 jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
 jest.mock('state/notifications/actions')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 const mockReportError = reportError as jest.Mock
 const mockUseGetArticleTranslations = useGetArticleTranslations as jest.Mock

@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetFeedback } from 'models/knowledgeService/queries'
-import { reportError } from 'utils/errors'
 
 const POLLING_INTERVAL = 5000 // 5 seconds
 const POLLING_TIMEOUT = 2 * 60 * 1000 // 2 minutes in milliseconds

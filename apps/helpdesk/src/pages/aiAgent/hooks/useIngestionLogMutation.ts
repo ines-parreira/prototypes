@@ -1,8 +1,8 @@
+import { reportError } from '@repo/logging'
 import { useQueryClient } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { helpCenterKeys, useStartIngestion } from 'models/helpCenter/queries'
-import { reportError } from 'utils/errors'
 
 import type { IngestionType } from '../AiAgentScrapedDomainContent/constant'
 

@@ -266,15 +266,16 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
     })
 
     it('should return layout config for the correct tab when tabId is provided', async () => {
-        server.use(
-            mockListAnalyticsManagedDashboardsHandler(async () =>
+        const mockHandler = mockListAnalyticsManagedDashboardsHandler(
+            async () =>
                 HttpResponse.json(
                     mockListAnalyticsManagedDashboardsResponse({
                         data: [mockAnalyticsDashboard],
                     }),
                 ),
-            ).handler,
         )
+        server.use(mockHandler.handler)
+        const waitForRequest = mockHandler.waitForRequest(server)
 
         const { result } = renderHook(
             () =>
@@ -285,6 +286,12 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
                 }),
             { wrapper: makeWrapper() },
         )
+
+        await waitForRequest()
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
 
         await waitFor(() => {
             const kpisSection = result.current.layoutConfig.sections.find(
@@ -298,15 +305,16 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
     })
 
     it('should return layout config for the support-agent tab when that tabId is provided', async () => {
-        server.use(
-            mockListAnalyticsManagedDashboardsHandler(async () =>
+        const mockHandler = mockListAnalyticsManagedDashboardsHandler(
+            async () =>
                 HttpResponse.json(
                     mockListAnalyticsManagedDashboardsResponse({
                         data: [mockAnalyticsDashboard],
                     }),
                 ),
-            ).handler,
         )
+        server.use(mockHandler.handler)
+        const waitForRequest = mockHandler.waitForRequest(server)
 
         const { result } = renderHook(
             () =>
@@ -317,6 +325,12 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
                 }),
             { wrapper: makeWrapper() },
         )
+
+        await waitForRequest()
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
 
         await waitFor(() => {
             expect(result.current.isLoading).toBe(false)

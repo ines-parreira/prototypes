@@ -1,4 +1,5 @@
 import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
+import { reportError } from '@repo/logging'
 import { isProduction } from '@repo/utils'
 import { Call, Device, TwilioError } from '@twilio/voice-sdk'
 
@@ -18,7 +19,6 @@ import { declineCall, getToken } from 'hooks/integrations/phone/api'
 import { CALL_FAILED_MICROPHONE_PERMISSION_ERROR } from 'pages/common/components/PhoneIntegrationBar/constants'
 import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import type { StoreDispatch } from 'state/types'
-import { reportError } from 'utils/errors'
 
 import {
     gatherCallContext,

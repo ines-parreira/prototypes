@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { fetchArticleRecommendationMetrics } from 'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics'
-import { reportError } from 'utils/errors'
 
 export const useDownloadArticleRecommendationData = () => {
     const { cleanStatsFilters } = useStatsFilters()

@@ -27,7 +27,7 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const mockedUseFlag = jest.mocked(useFlag)
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

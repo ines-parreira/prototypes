@@ -18,7 +18,7 @@ import { renderWithRouter } from 'utils/testing'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 import { getSingleHelpCenterResponseFixtureWithTranslation } from '../../../../../fixtures/getHelpCentersResponse.fixture'
-import { HelpCenterTranslationProvider } from '../../../../../providers/HelpCenterTranslation'
+import { HelpCenterTranslationProvider } from '../../../../../providers/HelpCenterTranslation/HelpCenterTranslation'
 import ContactFormInfoSection from '../ContactFormInfoSection'
 
 jest.mock('@repo/feature-flags')

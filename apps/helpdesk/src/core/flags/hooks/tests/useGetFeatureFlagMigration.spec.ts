@@ -1,12 +1,12 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { MigrationStage } from '@repo/feature-flags'
+import { reportError } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 
 import { useGetFeatureFlagMigration } from 'core/flags/hooks/useGetFeatureFlagMigration'
-import { reportError } from 'utils/errors'
 
 jest.mock('@repo/feature-flags')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 const useFlagMocked = assumeMock(useFlag)
 const reportErrorMocked = assumeMock(reportError)

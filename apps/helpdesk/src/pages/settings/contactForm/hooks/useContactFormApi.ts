@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { reportError } from '@repo/logging'
 import { isAxiosError } from 'axios'
 import { get } from 'lodash'
 import { useHistory } from 'react-router-dom'
@@ -21,7 +22,6 @@ import {
     contactFormAutomationSettingsFetched,
     contactFormAutomationSettingsUpdated,
 } from 'state/entities/contactForm/contactFormsAutomationSettings'
-import { reportError } from 'utils/errors'
 
 import {
     CONTACT_FORM_BASE_PATH,

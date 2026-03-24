@@ -8,6 +8,7 @@ import {
     useState,
 } from 'react'
 
+import { reportError } from '@repo/logging'
 import type { Draft } from 'immer'
 import { produce } from 'immer'
 
@@ -30,7 +31,6 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
 import { changeViewLanguage } from 'state/ui/helpCenter/actions'
-import { reportError } from 'utils/errors'
 
 import { getGenericMessageFromError } from '../../utils'
 import { useHelpCenterShopConnection } from './useHelpCenterShopConnection'

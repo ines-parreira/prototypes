@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { logEvent } from '@repo/logging'
+import { logEvent, reportError } from '@repo/logging'
 import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -17,13 +17,11 @@ import { channels } from 'fixtures/channels'
 import { integrationsState } from 'fixtures/integrations'
 import * as channelsService from 'services/channels'
 import type { RootState, StoreDispatch } from 'state/types'
-import { reportError } from 'utils/errors'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 const logEventMock = logEvent as jest.Mock
 const reportErrorMock = reportError as jest.Mock
 
-jest.mock('utils/errors')
 jest.mock('@repo/logging')
 jest.mock(
     'domains/reporting/pages/common/ViewLink',

@@ -1,1 +1,4 @@
-export * from './DraggablePreviewImage'
+export {
+    DraggablePreviewImage,
+    type DraggablePreviewImageProps,
+} from './DraggablePreviewImage'

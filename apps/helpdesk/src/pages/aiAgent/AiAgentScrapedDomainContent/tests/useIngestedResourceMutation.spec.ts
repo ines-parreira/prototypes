@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { useQueryClient } from '@tanstack/react-query'
 
@@ -7,7 +8,6 @@ import {
     useUpdateAllIngestedResourcesStatus,
     useUpdateIngestedResource,
 } from 'models/helpCenter/queries'
-import { reportError } from 'utils/errors'
 
 import { IngestedResourceStatus } from '../constant'
 import { useIngestedResourceMutation } from '../hooks/useIngestedResourceMutation'
@@ -16,7 +16,7 @@ jest.mock('@tanstack/react-query', () => ({
     useQueryClient: jest.fn(),
 }))
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

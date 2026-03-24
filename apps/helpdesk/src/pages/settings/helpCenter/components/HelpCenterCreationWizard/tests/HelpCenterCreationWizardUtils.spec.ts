@@ -1,3 +1,5 @@
+import { reportError } from '@repo/logging'
+
 import type {
     HelpCenter,
     HelpCenterArticleItem,
@@ -24,7 +26,6 @@ import { HelpCenterLayout } from 'pages/settings/helpCenter/types/layout.enum'
 import { mapHelpCenterArticleItemToArticle } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import {
     findArticleByKey,
@@ -44,7 +45,7 @@ import {
 } from '../HelpCenterCreationWizardUtils'
 
 jest.mock('state/notifications/actions')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 const defaultApiHelpCenter = HelpCenterApiBasicsFixture
 const emptyUIHelpCenter = EmptyHelpCenterUiFixture

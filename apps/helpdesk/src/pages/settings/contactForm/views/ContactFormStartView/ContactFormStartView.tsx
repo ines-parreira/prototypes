@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
 import _flatten from 'lodash/flatten'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
@@ -27,7 +28,6 @@ import { CONTACT_FORM_APP_DETAIL } from 'pages/settings/contactForm/views/Contac
 import ManageContactForms from 'pages/settings/contactForm/views/ContactFormStartView/ManageContactForms'
 import { notify as notifyAction } from 'state/notifications/actions'
 import { notEmpty } from 'utils'
-import { reportError } from 'utils/errors'
 
 import { NotificationStatus } from '../../../../../state/notifications/types'
 import { useGetContactFormList } from '../../queries'

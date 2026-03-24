@@ -7,6 +7,7 @@ import {
     BILLING_BASE_PATH,
     BILLING_PAYMENT_CARD_PATH,
 } from '@repo/billing'
+import { reportError } from '@repo/logging'
 import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
@@ -20,7 +21,6 @@ import {
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import css from './SummaryFooter.less'
 

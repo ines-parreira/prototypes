@@ -1,9 +1,9 @@
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { act } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetTestSessionLogs } from 'models/aiAgent/queries'
-import { reportError } from 'utils/errors'
 
 import { usePlaygroundPolling } from '../usePlaygroundPolling'
 
@@ -12,7 +12,7 @@ jest.mock('models/aiAgent/queries', () => ({
     useGetTestSessionLogs: jest.fn(),
 }))
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

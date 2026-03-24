@@ -43,7 +43,7 @@
     "devDependencies": {
         "@gorgias/config": "^0.6.0",
         "@gorgias/static-analysis": "0.5.0",
-        "@sentry/cli": "^2.47.0",
+        "@sentry/cli": "catalog:sentry",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/node": "22.13.13",
         "@types/semver": "^7.7.0",

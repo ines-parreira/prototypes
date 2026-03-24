@@ -1,8 +1,8 @@
+import { reportError } from '@repo/logging'
 import { act, renderHook } from '@testing-library/react'
 
 import { createJob } from 'models/job/resources'
 import { JobType } from 'models/job/types'
-import { reportError } from 'utils/errors'
 
 import { useExportOpportunityTickets } from './useExportOpportunityTickets'
 
@@ -10,7 +10,7 @@ jest.mock('models/job/resources', () => ({
     createJob: jest.fn(),
 }))
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

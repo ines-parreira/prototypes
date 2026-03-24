@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { reportError } from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -14,7 +15,6 @@ import { ReportingGranularity } from 'domains/reporting/models/types'
 import { useGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { useTotalSalesByProduct } from 'pages/aiAgent/analyticsAiAgent/hooks/useTotalSalesByProduct'
 import { fetchIntegrationProducts } from 'state/integrations/helpers'
-import { reportError } from 'utils/errors'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/useMetricPerDimension')
@@ -22,7 +22,7 @@ jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend',
 )
 jest.mock('state/integrations/helpers')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 const useStatsFiltersMock = assumeMock(useStatsFilters)
 const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)

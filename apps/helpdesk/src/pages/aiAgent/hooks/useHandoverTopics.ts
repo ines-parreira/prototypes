@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { INITIAL_FORM_VALUES } from '../constants'
 import { useStoreConfiguration } from './useStoreConfiguration'

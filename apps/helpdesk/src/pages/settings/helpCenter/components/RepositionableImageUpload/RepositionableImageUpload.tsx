@@ -10,7 +10,7 @@ import {
 } from '../../../../common/components/ImageUpload'
 import type { ImageUploadProps } from '../ImageUpload'
 import { useLocalImage } from '../ImageUpload'
-import { DraggablePreviewImage } from './components/DraggablePreviewImage'
+import { DraggablePreviewImage } from './components/DraggablePreviewImage/DraggablePreviewImage'
 
 import imageUploadCss from '../ImageUpload/ImageUpload.less'
 import css from './RepositionableImageUpload.less'

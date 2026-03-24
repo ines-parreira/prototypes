@@ -1,9 +1,3 @@
-import {
-    assumeMock,
-    mockDevelopmentEnvironment,
-    mockProductionEnvironment,
-    mockStagingEnvironment,
-} from '@repo/testing'
 import { GorgiasUIEnv } from '@repo/utils'
 import {
     captureException,
@@ -15,9 +9,7 @@ import {
 import { BrowserTracing } from '@sentry/tracing'
 import type { ScopeContext } from '@sentry/types'
 
-import { account } from 'fixtures/account'
-import { user } from 'fixtures/users'
-import type { InitErrorReporterParams } from 'utils/errors'
+import type { InitErrorReporterParams } from '../errors'
 import {
     ACCOUNT_DOMAIN_TAG,
     DENY_URLS,
@@ -31,36 +23,80 @@ import {
     reportError,
     SERVER_VERSION_TAG,
     TRACE_SAMPLE_RATE,
-} from 'utils/errors'
+} from '../errors'
 
-jest.mock('@sentry/react')
+vi.mock('@sentry/react', () => ({
+    captureException: vi.fn(),
+    init: vi.fn(),
+    setTag: vi.fn(),
+    setUser: vi.fn(),
+    withScope: vi.fn(),
+}))
 
-const captureExceptionMock = captureException as jest.MockedFunction<
-    typeof captureException
->
-const initMock = assumeMock(init)
-const setUserMock = assumeMock(setUser)
-const setTagMock = assumeMock(setTag)
-const withScopeMock = assumeMock(withScope)
+vi.mock('@sentry/tracing', () => ({
+    BrowserTracing: vi.fn(),
+}))
 
-const consoleErrorMock = jest.fn()
-global.console.error = consoleErrorMock
+const captureExceptionMock = vi.mocked(captureException)
+const initMock = vi.mocked(init)
+const setUserMock = vi.mocked(setUser)
+const setTagMock = vi.mocked(setTag)
+const withScopeMock = vi.mocked(withScope)
+const BrowserTracingMock = vi.mocked(BrowserTracing)
 
-const userAgentMock = jest.fn()
-Object.defineProperty(global.navigator, 'userAgent', {
-    get: userAgentMock,
-})
+const account = {
+    domain: 'acme.gorgias.help',
+}
 
-describe('errors util', () => {
+const user = {
+    id: 1,
+    email: 'agent@gorgias.com',
+    name: 'Ada Lovelace',
+}
+
+const mockProductionEnvironment = () => {
+    window.DEVELOPMENT = false
+    window.STAGING = false
+    window.PRODUCTION = true
+}
+
+const mockStagingEnvironment = () => {
+    window.DEVELOPMENT = false
+    window.STAGING = true
+    window.PRODUCTION = false
+}
+
+const mockDevelopmentEnvironment = () => {
+    window.DEVELOPMENT = true
+    window.STAGING = false
+    window.PRODUCTION = false
+}
+
+describe('errors', () => {
+    const userAgentGetter = vi.fn()
+    let consoleErrorSpy: ReturnType<typeof vi.spyOn>
+
     beforeEach(() => {
-        userAgentMock.mockReturnValue(
+        vi.clearAllMocks()
+        userAgentGetter.mockReturnValue(
             'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.41 Safari/537.36',
         )
+        Object.defineProperty(global.navigator, 'userAgent', {
+            configurable: true,
+            get: userAgentGetter,
+        })
         withScopeMock.mockImplementation((callback: any) => {
             callback({
-                setFingerprint: jest.fn(),
+                setFingerprint: vi.fn(),
             })
         })
+        consoleErrorSpy = vi
+            .spyOn(console, 'error')
+            .mockImplementation(() => undefined)
+    })
+
+    afterEach(() => {
+        consoleErrorSpy.mockRestore()
     })
 
     describe('initErrorReporter', () => {
@@ -76,6 +112,7 @@ describe('errors util', () => {
         it('should init sentry', () => {
             initErrorReporter(defaultInitOptions)
 
+            expect(BrowserTracingMock).toHaveBeenCalledTimes(1)
             expect(initMock).toHaveBeenCalledWith({
                 dsn: defaultInitOptions.dsn,
                 release: defaultInitOptions.clientVersion,
@@ -84,7 +121,7 @@ describe('errors util', () => {
                 ignoreErrors: IGNORED_ERRORS,
                 denyUrls: DENY_URLS,
                 enabled: true,
-                integrations: [expect.any(BrowserTracing)],
+                integrations: [expect.anything()],
             })
         })
 
@@ -137,7 +174,7 @@ describe('errors util', () => {
                     'Mozilla/5.0 (iPhone; CPU iPhone OS 15_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.4 Mobile/15E148 Safari/604.1',
             },
         ])('should disable reporting for $browser', ({ userAgent }) => {
-            userAgentMock.mockReturnValue(userAgent)
+            userAgentGetter.mockReturnValue(userAgent)
 
             initErrorReporter(defaultInitOptions)
 
@@ -169,7 +206,7 @@ describe('errors util', () => {
                 referrer: '',
                 search: {},
                 title: '',
-                url: 'http://localhost/',
+                url: window.location.href,
             },
         }
 
@@ -178,9 +215,9 @@ describe('errors util', () => {
 
             reportError(testError, defaultOptions)
 
-            expect(captureExceptionMock).not.toBeCalled()
-            expect(consoleErrorMock).toHaveBeenCalledWith(testError)
-            expect(consoleErrorMock).toHaveBeenCalledWith(
+            expect(captureExceptionMock).not.toHaveBeenCalled()
+            expect(consoleErrorSpy).toHaveBeenCalledWith(testError)
+            expect(consoleErrorSpy).toHaveBeenCalledWith(
                 ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
                 defaultOptions.extra,
             )
@@ -191,7 +228,7 @@ describe('errors util', () => {
 
             reportError(testError, defaultOptions)
 
-            expect(consoleErrorMock).not.toHaveBeenCalled()
+            expect(consoleErrorSpy).not.toHaveBeenCalled()
             expect(captureExceptionMock).toHaveBeenCalledWith(testError, {
                 extra: { ...defaultOptions.extra, environment: 'production' },
             })
@@ -206,8 +243,8 @@ describe('errors util', () => {
                 testError,
                 defaultOptions,
             )
-            expect(consoleErrorMock).toHaveBeenCalledWith(testError)
-            expect(consoleErrorMock).toHaveBeenCalledWith(
+            expect(consoleErrorSpy).toHaveBeenCalledWith(testError)
+            expect(consoleErrorSpy).toHaveBeenCalledWith(
                 ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
                 defaultOptions.extra,
             )
@@ -232,8 +269,8 @@ describe('errors util', () => {
 
             reportError(testError)
 
-            expect(consoleErrorMock).toHaveBeenCalledWith(testError)
-            expect(consoleErrorMock).not.toHaveBeenCalledWith(
+            expect(consoleErrorSpy).toHaveBeenCalledWith(testError)
+            expect(consoleErrorSpy).not.toHaveBeenCalledWith(
                 ERROR_EXTRA_CONSOLE_LOG_MESSAGE,
                 expect.anything(),
             )
@@ -241,7 +278,7 @@ describe('errors util', () => {
 
         it('should set fingerprints when provided in production', () => {
             mockProductionEnvironment()
-            const mockSetFingerprint = jest.fn()
+            const mockSetFingerprint = vi.fn()
             withScopeMock.mockImplementation((callback: any) => {
                 callback({
                     setFingerprint: mockSetFingerprint,
@@ -256,7 +293,7 @@ describe('errors util', () => {
 
         it('should not call setFingerprint when fingerprints not provided', () => {
             mockProductionEnvironment()
-            const mockSetFingerprint = jest.fn()
+            const mockSetFingerprint = vi.fn()
             withScopeMock.mockImplementation((callback: any) => {
                 callback({
                     setFingerprint: mockSetFingerprint,
@@ -391,6 +428,7 @@ describe('errors util', () => {
             expect(result).toHaveProperty('lineNumber')
             expect(result).toHaveProperty('columnNumber')
         })
+
         it('should parse Firefox stack trace format', () => {
             const mockError = {
                 stack: `Error: Test error

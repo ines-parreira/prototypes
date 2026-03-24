@@ -1,7 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { reportError } from '@repo/logging'
 import { render } from '@testing-library/react'
-
-import { reportError } from 'utils/errors'
 
 import AblyRealtimeProviders from '../AblyRealtimeProviders'
 
@@ -36,7 +35,7 @@ jest.mock('@gorgias/realtime', () => ({
 }))
 
 jest.mock('@repo/feature-flags')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 const mockUseFlag = useFlag as jest.Mock
 const mockReportError = reportError as jest.MockedFunction<typeof reportError>

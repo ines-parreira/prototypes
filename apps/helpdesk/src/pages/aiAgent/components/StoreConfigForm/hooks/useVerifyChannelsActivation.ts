@@ -1,5 +1,7 @@
 import { useCallback, useEffect } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { StoreConfiguration } from 'models/aiAgent/types'
@@ -7,7 +9,6 @@ import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 export const useVerifyChannelsActivation = ({
     chatChannels,

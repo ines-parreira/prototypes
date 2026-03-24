@@ -1,17 +1,17 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
+import { reportError } from '@repo/logging'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook } from '@testing-library/react'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
-import { reportError } from 'utils/errors'
 
 import { useAiAgentHelpCenter } from '../useAiAgentHelpCenter'
 
 jest.mock('models/helpCenter/queries')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 const mockUseGetHelpCenterList = useGetHelpCenterList as jest.Mock
 const mockReportError = reportError as jest.Mock

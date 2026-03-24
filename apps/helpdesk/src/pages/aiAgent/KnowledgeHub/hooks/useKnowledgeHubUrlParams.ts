@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { reportError } from '@repo/logging'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { useNotify } from 'hooks/useNotify'
-import { reportError } from 'utils/errors'
 
 import { useAiAgentNavigation } from '../../hooks/useAiAgentNavigation'
 import type { GroupedKnowledgeItem, KnowledgeType } from '../types'

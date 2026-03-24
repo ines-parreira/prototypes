@@ -1,14 +1,13 @@
 import { createRef } from 'react'
 
+import { reportError } from '@repo/logging'
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-
-import { reportError } from 'utils/errors'
 
 import type { PhoneNumberInputHandle } from '../PhoneNumberInput'
 import PhoneNumberInput from '../PhoneNumberInput'
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 jest.mock('lodash/uniqueId', () => (id: string) => `${id || ''}42`)
 jest.mock('pages/common/components/Loader/Loader', () => () => (

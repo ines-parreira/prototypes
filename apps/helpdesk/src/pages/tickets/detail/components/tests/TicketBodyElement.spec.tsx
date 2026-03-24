@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { render } from '@testing-library/react'
 import _noop from 'lodash/noop'
 import { Provider } from 'react-redux'
@@ -15,9 +16,8 @@ import {
 import TicketBodyElement from 'pages/tickets/detail/components/TicketBodyElement'
 import { InfluencedOrderSource } from 'pages/tickets/detail/hooks/useInsertShoppingAssistantEventElements'
 import type { RootState } from 'state/types'
-import { reportError } from 'utils/errors'
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 jest.mock('pages/tickets/detail/components/AuditLogEvent', () => ({
     __esModule: true,

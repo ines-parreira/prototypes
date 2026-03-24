@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { reportError } from '@repo/logging'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
@@ -15,7 +16,6 @@ import {
 } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { OpportunityType } from '../enums'
 import type {
@@ -34,7 +34,7 @@ jest.mock('./useProcessOpportunity', () => ({
 jest.mock('models/knowledgeService/mutations')
 jest.mock('pages/settings/helpCenter/queries')
 jest.mock('hooks/useAppDispatch')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('state/notifications/actions')
 
 const mockStore = configureStore([])

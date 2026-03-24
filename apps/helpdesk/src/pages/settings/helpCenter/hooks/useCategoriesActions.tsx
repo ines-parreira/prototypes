@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type {
@@ -23,7 +25,6 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
-import { reportError } from 'utils/errors'
 
 import type { CategoriesPositionsType } from '../components/CategoriesTable'
 import { HELP_CENTER_ROOT_CATEGORY_ID } from '../constants'

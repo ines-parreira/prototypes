@@ -2,7 +2,7 @@ import type React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { logEvent, SegmentEvent } from '@repo/logging'
+import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { isAxiosError } from 'axios'
 import { get } from 'lodash'
 import _debounce from 'lodash/debounce'
@@ -34,7 +34,6 @@ import {
 } from 'state/entities/helpCenter/helpCenters/actions'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import {
     HELP_CENTER_BASE_PATH,
@@ -46,7 +45,7 @@ import useCurrentHelpCenter from '../hooks/useCurrentHelpCenter'
 import { useHelpCenterActions } from '../hooks/useHelpCenterActions'
 import { useHelpCenterApi } from '../hooks/useHelpCenterApi'
 import { useStoreIntegrationByShopName } from '../hooks/useStoreIntegrationByShopName'
-import { useHelpCenterPreferencesSettings } from '../providers/HelpCenterPreferencesSettings'
+import { useHelpCenterPreferencesSettings } from '../providers/HelpCenterPreferencesSettings/HelpCenterPreferencesSettings'
 import { getAbsoluteUrl, getHelpCenterDomain } from '../utils/helpCenter.utils'
 import {
     getSubdomainValidationError,

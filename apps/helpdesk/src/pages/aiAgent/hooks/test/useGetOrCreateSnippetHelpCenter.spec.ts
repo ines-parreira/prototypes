@@ -8,7 +8,7 @@ import { useGetOrCreateSnippetHelpCenter } from '../useGetOrCreateSnippetHelpCen
 
 jest.mock('models/aiAgent/queries')
 jest.mock('models/helpCenter/queries')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 describe('useGetOrCreateSnippetHelpCenter', () => {
     const accountDomain = 'test-domain'

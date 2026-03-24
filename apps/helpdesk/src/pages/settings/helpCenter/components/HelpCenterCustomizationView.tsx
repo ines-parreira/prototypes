@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { reportError } from '@repo/logging'
 import classNames from 'classnames'
 import { FormGroup } from 'reactstrap'
 import type { IsURLOptions } from 'validator/lib/isURL'
@@ -24,7 +25,6 @@ import { helpCenterUpdated } from 'state/entities/helpCenter/helpCenters/actions
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { getViewLanguage } from 'state/ui/helpCenter'
-import { reportError } from 'utils/errors'
 
 import CodeEditor from '../../../common/components/CodeEditor/CodeEditor'
 import { ExtraHtmlSection } from '../../../common/components/ExtraHtmlSection/ExtraHtmlSection'

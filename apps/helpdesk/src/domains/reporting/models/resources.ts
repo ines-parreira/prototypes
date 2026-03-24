@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import type { AxiosResponse } from 'axios'
 import { isAxiosError } from 'axios'
 
@@ -13,7 +14,6 @@ import type {
     ReportingResponse,
 } from 'domains/reporting/models/types'
 import client from 'models/api/resources'
-import { reportError } from 'utils/errors'
 
 export const REPORTING_ENDPOINT = '/api/reporting'
 export const REPORTING_STATS_ENDPOINT = '/api/reporting/stats'

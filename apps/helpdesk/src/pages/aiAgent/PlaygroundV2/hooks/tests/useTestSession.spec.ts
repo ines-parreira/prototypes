@@ -273,7 +273,7 @@ describe('useTestSession hook', () => {
             })),
         }))
 
-        jest.mock('utils/errors', () => ({
+        jest.mock('@repo/logging', () => ({
             reportError: jest.fn(),
         }))
 

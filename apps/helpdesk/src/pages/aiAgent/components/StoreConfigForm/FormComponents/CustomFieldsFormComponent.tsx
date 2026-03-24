@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
@@ -18,7 +19,6 @@ import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { StoreCustomFieldsList } from './StoreCustomFieldList'
 import { useCustomFieldsState } from './useCustomFieldsState'

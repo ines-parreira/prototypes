@@ -1,9 +1,10 @@
+import { reportError } from '@repo/logging'
+
 import type { CanduRouter } from 'routes/hooks/useCanduRouter'
 import { parseCanduRoute, useCanduRouter } from 'routes/hooks/useCanduRouter'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
-import { reportError } from 'utils/errors'
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 const mockReportError: jest.MockedFunction<typeof reportError> =
     jest.mocked(reportError)

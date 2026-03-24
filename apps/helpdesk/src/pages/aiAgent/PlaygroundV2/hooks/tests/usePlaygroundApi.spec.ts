@@ -25,7 +25,7 @@ jest.mock('../../utils/playground-ticket.util', () => ({
     getTicketCustomer: jest.fn(),
 }))
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

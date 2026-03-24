@@ -1,12 +1,13 @@
 import { useEffect, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
     useGetHelpCenterListMulti,
     useGetIngestionLogsList,
 } from 'models/helpCenter/queries'
 import { getShopUrlFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import { reportError } from 'utils/errors'
 import { notNull } from 'utils/types'
 
 import type { IngestionLog } from '../AiAgentScrapedDomainContent/types'

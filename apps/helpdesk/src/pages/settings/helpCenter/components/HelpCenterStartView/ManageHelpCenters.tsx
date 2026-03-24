@@ -23,7 +23,7 @@ import { HELP_CENTER_BASE_PATH } from '../../constants'
 import { useHelpCenterApi } from '../../hooks/useHelpCenterApi'
 import { useSupportedLocales } from '../../providers/SupportedLocales'
 import HelpCenterTable from '../HelpCenterTable'
-import { StandaloneBanner } from '../StandaloneBanner'
+import { StandaloneBanner } from '../StandaloneBanner/StandaloneBanner'
 
 import css from './HelpCenterStartView.less'
 

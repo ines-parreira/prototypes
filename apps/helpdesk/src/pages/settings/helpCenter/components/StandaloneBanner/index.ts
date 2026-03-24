@@ -1,1 +1,1 @@
-export * from './StandaloneBanner'
+export { StandaloneBanner } from './StandaloneBanner'

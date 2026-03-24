@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { renderHook } from '@repo/testing'
 import { act } from 'react-dom/test-utils'
 
@@ -12,7 +13,6 @@ import {
 } from 'models/helpCenter/mutations'
 import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
-import { reportError } from 'utils/errors'
 
 import { useGuidanceArticleMutation } from '../hooks/useGuidanceArticleMutation'
 
@@ -35,7 +35,7 @@ jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({
     useHelpCenterApi: jest.fn(),
 }))
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
 

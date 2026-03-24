@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 
 import ProvinceInput from '../ProvinceInput'
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 describe('<ProvinceInput/>', () => {
     const onChange: jest.MockedFunction<(value: string) => void> = jest.fn()

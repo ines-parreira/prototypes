@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
 import { Link, useParams } from 'react-router-dom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
@@ -8,7 +9,6 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 import AutomateViewContent from 'pages/automate/common/components/AutomateViewContent'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import { HELP_CENTER_MAX_CREATION } from 'pages/settings/helpCenter/constants'
-import { reportError } from 'utils/errors'
 
 import { AiAgentGuidanceView } from './AiAgentGuidanceView'
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'

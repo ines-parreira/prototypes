@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from 'react'
 
+import { reportError } from '@repo/logging'
 import { history } from '@repo/routing'
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
@@ -30,7 +31,6 @@ import {
     ONBOARDING_WIZARD_LABELS,
     OnboardingWizardSteps,
 } from 'pages/convert/onboarding/components/ConvertOnboardingWizardView/constants'
-import { reportError } from 'utils/errors'
 
 import WizardCampaignsStep from '../WizardCampaignsStep'
 import WizardFooter from '../WizardFooter'

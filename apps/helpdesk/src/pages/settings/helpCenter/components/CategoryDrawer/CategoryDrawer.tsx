@@ -2,6 +2,7 @@ import type React from 'react'
 import { useEffect } from 'react'
 
 import { useAsyncFn } from '@repo/hooks'
+import { reportError } from '@repo/logging'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -26,7 +27,6 @@ import {
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { changeViewLanguage, getViewLanguage } from 'state/ui/helpCenter'
-import { reportError } from 'utils/errors'
 
 import { useSearchContext } from '../../providers/SearchContext'
 import { getGenericMessageFromError } from '../../utils'

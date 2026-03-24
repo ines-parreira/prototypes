@@ -1,9 +1,9 @@
 import { createReducer } from '@reduxjs/toolkit'
+import { reportError } from '@repo/logging'
 import _uniq from 'lodash/uniq'
 
 import { HELP_CENTER_ROOT_CATEGORY_ID } from 'pages/settings/helpCenter/constants'
 import { getInitialRootCategory } from 'pages/settings/helpCenter/fixtures/getCategoriesTree.fixtures'
-import { reportError } from 'utils/errors'
 
 import {
     deleteCategory,

@@ -1,14 +1,13 @@
 import type { ReactNode } from 'react'
 import React, { PureComponent } from 'react'
 
+import { reportError } from '@repo/logging'
 import { Emoji } from 'emoji-mart'
 import { Card, CardBody, Collapse } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import type { SentryTeam } from 'common/const/sentryTeamNames'
-
-import { reportError } from '../utils/errors'
 
 import css from './ErrorBoundary.less'
 

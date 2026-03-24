@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
 import { useQueries } from '@tanstack/react-query'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { listIngestedResources } from 'models/helpCenter/resources'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import type { Components } from 'rest_api/help_center_api/client.generated'
-import { reportError } from 'utils/errors'
 
 import type { IngestedResourceWithArticleId } from '../AiAgentScrapedDomainContent/types'
 import { getTheLatestIngestionLog } from '../AiAgentScrapedDomainContent/utils'

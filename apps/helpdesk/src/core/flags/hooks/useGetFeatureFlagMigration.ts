@@ -1,7 +1,6 @@
 import type { FeatureFlagKey, MigrationStage } from '@repo/feature-flags'
 import { useFlag } from '@repo/feature-flags'
-
-import { reportError } from 'utils/errors'
+import { reportError } from '@repo/logging'
 
 const ALLOWED_VALUES: Set<MigrationStage> = new Set([
     'off',

@@ -1,16 +1,16 @@
+import { reportError } from '@repo/logging'
 import { renderHook, waitFor } from '@testing-library/react'
 import { isAxiosError } from 'axios'
 
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { reportError } from 'utils/errors'
 
 import { usePlaygroundResources } from '../usePlaygroundResources'
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('axios')
 jest.mock('state/notifications/actions')
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 jest.mock('../../../hooks/useGetOrCreateSnippetHelpCenter')
 
 // Mock the queries module before importing

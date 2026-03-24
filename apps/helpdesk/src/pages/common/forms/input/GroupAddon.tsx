@@ -1,6 +1,7 @@
 import type { HTMLProps } from 'react'
 import React, { useContext } from 'react'
 
+import { reportError } from '@repo/logging'
 import classnames from 'classnames'
 
 import {
@@ -8,7 +9,6 @@ import {
     GroupPositionContext,
 } from 'pages/common/components/layout/Group'
 import { InputGroupContext } from 'pages/common/forms/input/InputGroup'
-import { reportError } from 'utils/errors'
 
 import css from './GroupAddon.less'
 

@@ -1,10 +1,9 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { reportError } from '@repo/logging'
 import { fireEvent, render } from '@testing-library/react'
 import type { Collapse } from 'reactstrap'
-
-import { reportError } from 'utils/errors'
 
 import {
     ErrorBoundary,
@@ -23,7 +22,7 @@ jest.mock('reactstrap', () => {
     }
 })
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 describe('<ErrorBoundary/>', () => {
     const noErrorChildText = 'foo'

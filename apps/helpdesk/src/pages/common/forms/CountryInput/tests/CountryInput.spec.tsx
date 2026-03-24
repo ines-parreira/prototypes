@@ -4,7 +4,7 @@ import { fireEvent, render, screen, within } from '@testing-library/react'
 
 import CountryInput from '../CountryInput'
 
-jest.mock('utils/errors')
+jest.mock('@repo/logging')
 
 describe('<CountryInput/>', () => {
     const onChange: jest.MockedFunction<(value: string) => void> = jest.fn()

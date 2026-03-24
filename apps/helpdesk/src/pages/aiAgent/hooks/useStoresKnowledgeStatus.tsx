@@ -1,8 +1,9 @@
 import { useEffect, useMemo } from 'react'
 
+import { reportError } from '@repo/logging'
+
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { useGetKnowledgeStatus } from 'models/helpCenter/queries'
-import { reportError } from 'utils/errors'
 
 import type { KnowledgeStatus } from '../AiAgentScrapedDomainContent/types'
 

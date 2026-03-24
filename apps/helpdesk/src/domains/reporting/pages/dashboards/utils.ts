@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import _flatten from 'lodash/flatten'
 
 import type {
@@ -30,7 +31,6 @@ import type {
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { isGorgiasApiError } from 'models/api/types'
 import { BASE_STATS_PATH, STATS_ROUTES } from 'routes/constants'
-import { reportError } from 'utils/errors'
 import { notNull } from 'utils/types'
 
 const fromApiChart = (

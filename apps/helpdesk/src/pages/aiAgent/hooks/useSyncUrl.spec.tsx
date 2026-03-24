@@ -1,3 +1,4 @@
+import { reportError } from '@repo/logging'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, renderHook, waitFor } from '@testing-library/react'
 
@@ -5,7 +6,6 @@ import {
     useGetIngestionLogs,
     useStartIngestion,
 } from 'models/helpCenter/queries'
-import * as errorsModule from 'utils/errors'
 
 import { IngestionLogStatus } from '../AiAgentScrapedDomainContent/constant'
 import * as utilsModule from '../AiAgentScrapedDomainContent/utils'
@@ -30,9 +30,11 @@ jest.mock('models/helpCenter/queries', () => ({
     useStartIngestion: jest.fn(),
 }))
 
-jest.mock('utils/errors', () => ({
+jest.mock('@repo/logging', () => ({
     reportError: jest.fn(),
 }))
+
+const mockReportError = jest.mocked(reportError)
 
 jest.mock('./useAiAgentNavigation', () => ({
     useAiAgentNavigation: jest.fn(() => ({
@@ -634,7 +636,6 @@ describe('useSyncUrl', () => {
         it('syncUrl reports error to Sentry on failure', async () => {
             const mockError = new Error('API Error')
             mockStartIngestion.mockRejectedValue(mockError)
-            const reportErrorSpy = jest.spyOn(errorsModule, 'reportError')
 
             const { result } = renderHook(
                 () =>
@@ -651,7 +652,7 @@ describe('useSyncUrl', () => {
                 result.current.syncUrl('https://valid.com/page'),
             ).rejects.toThrow('API Error')
 
-            expect(reportErrorSpy).toHaveBeenCalledWith(mockError, {
+            expect(mockReportError).toHaveBeenCalledWith(mockError, {
                 tags: { team: 'convai-knowledge' },
                 extra: {
                     context: 'Error during URL sync',
