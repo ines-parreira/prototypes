@@ -1,5 +1,6 @@
 import { useFlagWithLoading } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { CardsSection } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/CardsSection'
@@ -36,17 +37,25 @@ jest.mock('@repo/feature-flags', () => ({
     useFlagWithLoading: jest.fn(),
 }))
 
-jest.mock('@repo/reporting', () => ({
-    ShowMoreList: ({ children, containerClassName }: any) => (
-        <div
-            className={containerClassName}
-            role="region"
-            aria-label="show more list"
-        >
-            {children}
-        </div>
-    ),
-}))
+jest.mock('@repo/reporting', () => {
+    const React = require('react')
+    const ShowMoreList = ({ children, containerClassName }: any) => {
+        const [isExpanded, setIsExpanded] = React.useState(false)
+        return (
+            <div
+                className={containerClassName}
+                role="region"
+                aria-label="show more list"
+            >
+                <button onClick={() => setIsExpanded((v: boolean) => !v)}>
+                    {isExpanded ? 'Show less' : 'Show more'}
+                </button>
+                {children}
+            </div>
+        )
+    }
+    return { ShowMoreList }
+})
 
 const mockedUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
@@ -221,6 +230,44 @@ describe('CardsSection', () => {
             )
 
             expect(screen.getByText('Chart: kpi1')).toBeInTheDocument()
+        })
+
+        it('should reset ShowMoreList expanded state when switching tabs', async () => {
+            const user = userEvent.setup()
+            const section = makeSection([{ chartId: 'kpi1', visibility: true }])
+            const props = {
+                section,
+                reportConfig: reportConfigMock,
+                layoutConfig: defaultLayoutConfig,
+                dashboardId: ManagedDashboardId.AiAgentAnalytics,
+                tabName: 'Test',
+            }
+
+            const { rerender } = render(
+                <CardsSection
+                    {...props}
+                    tabId={ManagedDashboardsTabId.AllAgents}
+                />,
+            )
+
+            await user.click(screen.getByRole('button', { name: 'Show more' }))
+            expect(
+                screen.getByRole('button', { name: 'Show less' }),
+            ).toBeInTheDocument()
+
+            rerender(
+                <CardsSection
+                    {...props}
+                    tabId={ManagedDashboardsTabId.SupportAgent}
+                />,
+            )
+
+            expect(
+                screen.queryByRole('button', { name: 'Show less' }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Show more' }),
+            ).toBeInTheDocument()
         })
     })
 

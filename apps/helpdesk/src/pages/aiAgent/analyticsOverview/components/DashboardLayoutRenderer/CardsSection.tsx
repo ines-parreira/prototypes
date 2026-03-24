@@ -56,7 +56,7 @@ export const CardsSection = ({
                 tabId={tabId}
                 tabName={tabName}
             />
-            <ShowMoreList containerClassName={css.kpisSection}>
+            <ShowMoreList key={tabId} containerClassName={css.kpisSection}>
                 {visibleItems.map((item) => (
                     <div
                         key={`${tabId}-${item.chartId}`}
