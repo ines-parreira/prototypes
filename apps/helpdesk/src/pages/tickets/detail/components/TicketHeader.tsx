@@ -384,18 +384,24 @@ const TicketHeader = ({
     return (
         <div className={classnames(css.component, className)} id="TicketHeader">
             <div className={css.title}>
-                <TicketHeaderToggle />
-                <TicketSubjectLoadingState isInitialLoading={isSubjectLoading}>
-                    <EditableTitle
-                        className={css.editableTitleWrapper}
-                        inputClassName={css.editableTitle}
-                        title={title}
-                        placeholder="Subject"
-                        update={handleSubjectChange}
-                        focus={!ticket.get('id')}
-                        maxLength={998}
-                    />
-                </TicketSubjectLoadingState>
+                <div className={css.titleMain}>
+                    <div className={css.titleToggle}>
+                        <TicketHeaderToggle />
+                    </div>
+                    <TicketSubjectLoadingState
+                        isInitialLoading={isSubjectLoading}
+                    >
+                        <EditableTitle
+                            className={css.editableTitleWrapper}
+                            inputClassName={css.editableTitle}
+                            title={title}
+                            placeholder="Subject"
+                            update={handleSubjectChange}
+                            focus={!ticket.get('id')}
+                            maxLength={998}
+                        />
+                    </TicketSubjectLoadingState>
+                </div>
                 <div className={css.actions}>
                     <>
                         {shouldShowTranslatedContent(

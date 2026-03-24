@@ -20,9 +20,17 @@
         .heading-subsection-semibold();
         height: 32px;
         transition: all 0.2s linear;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
 
         &:not(:hover):not(:focus):not(.edit-mode) {
             .not-editable;
+        }
+
+        &:focus,
+        &.edit-mode {
+            text-overflow: clip;
         }
 
         &:disabled {
