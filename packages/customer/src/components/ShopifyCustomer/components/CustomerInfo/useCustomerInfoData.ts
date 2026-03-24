@@ -5,7 +5,11 @@ import { useUserDateTimePreferences } from '@repo/preferences'
 import { ObjectType } from '@gorgias/ecommerce-storage-queries'
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
-import { useGetOrderProducts, useIntegrationSelection } from '../../hooks'
+import {
+    useCustomerUpdatedInvalidation,
+    useGetOrderProducts,
+    useIntegrationSelection,
+} from '../../hooks'
 import { useGetMarketingConsent } from '../../hooks/useGetMarketingConsent'
 import { useGetPurchaseSummary } from '../../hooks/useGetPurchaseSummary'
 import { useGetShopper } from '../../hooks/useGetShopper'
@@ -32,6 +36,8 @@ export function useCustomerInfoData({
     ticketId,
     customerId,
 }: Params) {
+    useCustomerUpdatedInvalidation(customerId)
+
     const {
         filteredIntegrations,
         selectedIntegration,

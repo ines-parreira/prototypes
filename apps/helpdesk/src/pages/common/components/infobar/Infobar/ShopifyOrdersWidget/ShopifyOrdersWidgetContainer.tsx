@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react'
 
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
-import { isEmpty } from 'lodash'
+
+import { useGetCustomer } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { Customer } from 'models/customer/types'
@@ -16,13 +17,16 @@ import { useWidgetOrderProducts } from './useWidgetOrderProducts'
 import css from './ShopifyOrdersWidgetContainer.less'
 
 export function ShopifyOrdersWidgetContainer() {
-    const ticketCustomer: Customer = useAppSelector(getTicketCustomer)?.toJS()
+    const ticketCustomer = useAppSelector(getTicketCustomer)
     const activeCustomer = useAppSelector(getActiveCustomer)
+    const customerId =
+        ticketCustomer?.get('id') || (activeCustomer as Customer)?.id
     const { onChangeTab } = useTicketInfobarNavigation()
 
-    const customer: Customer = isEmpty(ticketCustomer)
-        ? (activeCustomer as Customer)
-        : ticketCustomer
+    const { data: customerResponse } = useGetCustomer(customerId, undefined, {
+        query: { enabled: !!customerId },
+    })
+    const customer = customerResponse?.data as Customer | undefined
 
     const { lastOrder, totalCount, unfulfilledCount, integrationId } =
         useShopifyOrdersSummary(customer)

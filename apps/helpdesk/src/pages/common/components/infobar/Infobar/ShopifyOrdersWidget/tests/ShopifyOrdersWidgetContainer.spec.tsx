@@ -6,7 +6,10 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { mockGetCurrentUserHandler } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetCurrentUserHandler,
+    mockGetCustomerHandler,
+} from '@gorgias/helpdesk-mocks'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
@@ -44,9 +47,11 @@ jest.mock(
 )
 
 const mockGetCurrentUser = mockGetCurrentUserHandler()
+const mockGetCustomer = mockGetCustomerHandler()
 
 const server = setupServer(
     mockGetCurrentUser.handler,
+    mockGetCustomer.handler,
     http.get('/api/users/:id', () => HttpResponse.json({})),
     http.get('/integrations/shopify/shop-tags/orders/list/', () =>
         HttpResponse.json({
