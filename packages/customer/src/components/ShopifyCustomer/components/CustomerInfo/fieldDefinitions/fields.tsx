@@ -11,6 +11,7 @@ export const FIELD_DEFINITIONS: Record<string, FieldConfig> = {
         id: 'totalSpent',
         type: 'readonly',
         label: 'Total spent',
+        alwaysVisible: true,
         getValue: (ctx) => ctx.purchaseSummary?.amountSpent?.amount,
         formatValue: (_, ctx) =>
             formatCurrency(ctx.purchaseSummary?.amountSpent),
@@ -31,6 +32,7 @@ export const FIELD_DEFINITIONS: Record<string, FieldConfig> = {
         id: 'orders',
         type: 'readonly',
         label: 'Orders',
+        alwaysVisible: true,
         getValue: (ctx) => ctx.purchaseSummary?.numberOfOrders ?? 0,
         formatValue: (value) => {
             const count = (value as number) ?? 0

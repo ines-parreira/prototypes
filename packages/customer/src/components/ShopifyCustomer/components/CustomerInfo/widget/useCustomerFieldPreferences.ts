@@ -16,13 +16,24 @@ export function useCustomerFieldPreferences() {
         useWidgetFieldPreferences()
 
     const customerFields = useMemo(() => {
+        const alwaysVisible = Object.values(FIELD_DEFINITIONS).filter(
+            (f) => f.alwaysVisible,
+        )
+
         const fieldsList = Array.isArray(preferences?.fields)
             ? preferences.fields
             : []
 
-        return fieldsList
-            .filter((f) => f.visible && FIELD_DEFINITIONS[f.id])
+        const togglable = fieldsList
+            .filter(
+                (f) =>
+                    f.visible &&
+                    FIELD_DEFINITIONS[f.id] &&
+                    !FIELD_DEFINITIONS[f.id].alwaysVisible,
+            )
             .map((f) => FIELD_DEFINITIONS[f.id])
+
+        return [...alwaysVisible, ...togglable]
     }, [preferences])
 
     const sections = useMemo(() => {

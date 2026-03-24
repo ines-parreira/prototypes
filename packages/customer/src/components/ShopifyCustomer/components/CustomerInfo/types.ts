@@ -97,6 +97,7 @@ export type FieldRenderContext = {
 type BaseFieldConfig = {
     id: string
     label: string
+    alwaysVisible?: boolean
 }
 
 export type ReadOnlyFieldConfig = BaseFieldConfig & {

@@ -48,13 +48,36 @@ describe('EditShopifyFieldsSidePanel', () => {
         vi.clearAllMocks()
     })
 
-    it('renders header and field labels', () => {
+    it('renders header and field labels, excluding always-visible fields', () => {
         render(<EditShopifyFieldsSidePanel {...defaultProps} />)
 
         expect(screen.getByText('Shopify metrics')).toBeInTheDocument()
-        expect(screen.getByText('Total spent')).toBeInTheDocument()
-        expect(screen.getByText('Orders')).toBeInTheDocument()
+        expect(screen.queryByText('Total spent')).not.toBeInTheDocument()
+        expect(screen.queryByText('Orders')).not.toBeInTheDocument()
         expect(screen.getByText('Note')).toBeInTheDocument()
+    })
+
+    it('does not render totalSpent or orders in edit panel even when in preferences', () => {
+        const preferences: ShopifyFieldPreferences = {
+            fields: [
+                { id: 'totalSpent', visible: true },
+                { id: 'orders', visible: true },
+                { id: 'note', visible: false },
+                { id: 'createdAt', visible: true },
+            ],
+        }
+
+        render(
+            <EditShopifyFieldsSidePanel
+                {...defaultProps}
+                preferences={preferences}
+            />,
+        )
+
+        expect(screen.queryByText('Total spent')).not.toBeInTheDocument()
+        expect(screen.queryByText('Orders')).not.toBeInTheDocument()
+        expect(screen.getByText('Note')).toBeInTheDocument()
+        expect(screen.getByText('Created at')).toBeInTheDocument()
     })
 
     it('has save button disabled when no changes are made', () => {
@@ -69,7 +92,7 @@ describe('EditShopifyFieldsSidePanel', () => {
         )
 
         const toggles = screen.getAllByRole('switch')
-        await user.click(toggles[2])
+        await user.click(toggles[1])
 
         expect(screen.getByRole('button', { name: /save/i })).not.toBeDisabled()
     })
@@ -79,23 +102,16 @@ describe('EditShopifyFieldsSidePanel', () => {
             <EditShopifyFieldsSidePanel {...defaultProps} />,
         )
 
-        // toggles[0] is the section-level "toggle all", per-field toggles start at [1]
         const toggles = screen.getAllByRole('switch')
-        await user.click(toggles[2])
+        await user.click(toggles[1])
 
         await user.click(screen.getByRole('button', { name: /save/i }))
 
         const savedPrefs = defaultProps.onSave.mock.calls[0][0]
-        expect(savedPrefs.fields).toEqual([
-            { id: 'totalSpent', visible: true },
-            { id: 'orders', visible: false },
-            { id: 'note', visible: false },
-        ])
+        expect(savedPrefs.fields).toEqual([{ id: 'note', visible: true }])
         expect(savedPrefs.sections).toBeDefined()
         expect(savedPrefs.sections.customer.fields).toEqual([
-            { id: 'totalSpent', visible: true },
-            { id: 'orders', visible: false },
-            { id: 'note', visible: false },
+            { id: 'note', visible: true },
         ])
         expect(defaultProps.onOpenChange).toHaveBeenCalledWith(false)
     })
@@ -105,13 +121,13 @@ describe('EditShopifyFieldsSidePanel', () => {
             <EditShopifyFieldsSidePanel {...defaultProps} />,
         )
 
-        expect(screen.getByText('Total spent')).toBeInTheDocument()
+        expect(screen.getByText('Note')).toBeInTheDocument()
 
         await user.click(
             screen.getByRole('button', { name: /collapse customer fields/i }),
         )
 
-        expect(screen.queryByText('Total spent')).not.toBeInTheDocument()
+        expect(screen.queryByText('Note')).not.toBeInTheDocument()
     })
 
     it('toggles all fields visibility', async () => {
@@ -119,6 +135,8 @@ describe('EditShopifyFieldsSidePanel', () => {
             fields: [
                 { id: 'totalSpent', visible: true },
                 { id: 'orders', visible: true },
+                { id: 'note', visible: true },
+                { id: 'createdAt', visible: true },
             ],
         }
 
@@ -136,12 +154,12 @@ describe('EditShopifyFieldsSidePanel', () => {
 
         const savedPrefs = defaultProps.onSave.mock.calls[0][0]
         expect(savedPrefs.fields).toEqual([
-            { id: 'totalSpent', visible: false },
-            { id: 'orders', visible: false },
+            { id: 'note', visible: false },
+            { id: 'createdAt', visible: false },
         ])
         expect(savedPrefs.sections.customer.fields).toEqual([
-            { id: 'totalSpent', visible: false },
-            { id: 'orders', visible: false },
+            { id: 'note', visible: false },
+            { id: 'createdAt', visible: false },
         ])
     })
 })

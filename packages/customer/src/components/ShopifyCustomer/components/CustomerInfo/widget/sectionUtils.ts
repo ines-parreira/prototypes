@@ -12,9 +12,13 @@ export function initShopifySections(
     for (const config of SECTION_CONFIGS) {
         const sectionPref = preferences.sections?.[config.key]
         if (sectionPref) {
-            sections[config.key] = sectionPref.fields
+            sections[config.key] = sectionPref.fields.filter(
+                (f) => !config.fieldDefinitions[f.id]?.alwaysVisible,
+            )
         } else if (config.key === 'customer') {
-            sections[config.key] = preferences.fields
+            sections[config.key] = preferences.fields.filter(
+                (f) => !config.fieldDefinitions[f.id]?.alwaysVisible,
+            )
         } else {
             sections[config.key] = Object.keys(config.fieldDefinitions).map(
                 (id) => ({ id, visible: false }),

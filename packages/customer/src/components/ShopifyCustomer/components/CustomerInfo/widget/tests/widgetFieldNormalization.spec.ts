@@ -76,8 +76,8 @@ describe('widgetFieldNormalization', () => {
                 { path: 'total_spent', type: 'text', title: 'Total spent' },
             ]
             const fieldPreferences = [
-                { id: 'note', visible: true },
-                { id: 'totalSpent', visible: false },
+                { id: 'totalSpent', visible: true },
+                { id: 'note', visible: false },
             ]
 
             const result = widgetFieldsToPreferences(widgets, fieldPreferences)

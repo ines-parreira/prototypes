@@ -18,6 +18,9 @@ vi.mock('../useWidgetFieldPreferences', () => ({
 }))
 
 const ALL_FIELD_IDS = Object.keys(FIELD_DEFINITIONS)
+const ALWAYS_VISIBLE_FIELDS = Object.values(FIELD_DEFINITIONS).filter(
+    (f) => f.alwaysVisible,
+)
 
 beforeEach(() => {
     mockWidgetPreferences = {
@@ -27,10 +30,17 @@ beforeEach(() => {
 })
 
 describe('useCustomerFieldPreferences', () => {
-    it('returns no visible fields when all preferences are hidden', () => {
+    it('always returns always-visible fields even when all preferences are hidden', () => {
         const { result } = renderHook(() => useCustomerFieldPreferences())
 
-        expect(result.current.customerFields).toHaveLength(0)
+        expect(result.current.customerFields).toHaveLength(
+            ALWAYS_VISIBLE_FIELDS.length,
+        )
+        for (const { id } of ALWAYS_VISIBLE_FIELDS) {
+            expect(
+                result.current.customerFields.find((f) => f.id === id),
+            ).toBeDefined()
+        }
     })
 
     it('returns all field definitions in preferences', () => {
@@ -42,38 +52,67 @@ describe('useCustomerFieldPreferences', () => {
         expect(preferenceIds).toHaveLength(allDefinitionIds.length)
     })
 
-    it('only returns visible fields in the fields array', () => {
-        const { result } = renderHook(() => useCustomerFieldPreferences())
-
-        const visiblePrefs = result.current.preferences.fields.filter(
-            (f) => f.visible,
-        )
-        expect(result.current.customerFields).toHaveLength(visiblePrefs.length)
-    })
-
-    it('returns empty fields when preferences fields is not an array', () => {
-        mockWidgetPreferences = { fields: 'not-an-array' as never }
-
-        const { result } = renderHook(() => useCustomerFieldPreferences())
-
-        expect(result.current.customerFields).toHaveLength(0)
-    })
-
-    it('returns only the fields matching visible preference ids', () => {
+    it('returns only visible preference fields plus always-visible fields', () => {
         mockWidgetPreferences = {
             fields: [
                 { id: 'totalSpent', visible: true },
                 { id: 'orders', visible: true },
+                { id: 'createdAt', visible: true },
+                { id: 'note', visible: false },
             ],
         }
 
         const { result } = renderHook(() => useCustomerFieldPreferences())
 
-        expect(result.current.customerFields).toHaveLength(2)
         expect(result.current.customerFields.map((f) => f.id)).toEqual([
             'totalSpent',
             'orders',
+            'createdAt',
         ])
+    })
+
+    it('always-visible fields appear first, before togglable fields', () => {
+        mockWidgetPreferences = {
+            fields: [
+                { id: 'createdAt', visible: true },
+                { id: 'note', visible: true },
+            ],
+        }
+
+        const { result } = renderHook(() => useCustomerFieldPreferences())
+
+        const ids = result.current.customerFields.map((f) => f.id)
+        expect(ids[0]).toBe('totalSpent')
+        expect(ids[1]).toBe('orders')
+        expect(ids).toContain('createdAt')
+        expect(ids).toContain('note')
+    })
+
+    it('does not duplicate always-visible fields when they appear in preferences', () => {
+        mockWidgetPreferences = {
+            fields: [
+                { id: 'totalSpent', visible: true },
+                { id: 'orders', visible: true },
+                { id: 'createdAt', visible: true },
+            ],
+        }
+
+        const { result } = renderHook(() => useCustomerFieldPreferences())
+
+        const totalSpentCount = result.current.customerFields.filter(
+            (f) => f.id === 'totalSpent',
+        ).length
+        expect(totalSpentCount).toBe(1)
+    })
+
+    it('returns empty customer fields when preferences fields is not an array', () => {
+        mockWidgetPreferences = { fields: 'not-an-array' as never }
+
+        const { result } = renderHook(() => useCustomerFieldPreferences())
+
+        expect(result.current.customerFields).toHaveLength(
+            ALWAYS_VISIBLE_FIELDS.length,
+        )
     })
 
     it('exposes savePreferences and isLoading', () => {
