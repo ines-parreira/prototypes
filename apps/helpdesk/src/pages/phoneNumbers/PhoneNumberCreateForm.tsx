@@ -8,6 +8,7 @@ import { Col, Form, FormGroup, Row } from 'reactstrap'
 
 import { LegacyBanner as Banner, Button } from '@gorgias/axiom'
 
+import { PhoneUseCase } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     createPhoneNumber,
@@ -25,6 +26,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
+import { useShowPhoneUseCase } from './hooks/useShowPhoneUseCase'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
 import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
@@ -43,7 +45,9 @@ export default function PhoneNumberCreateForm(): JSX.Element {
         type: PhoneType.Local,
         emoji: null,
     })
+    const [usecase, setUsecase] = useState<PhoneUseCase>(PhoneUseCase.Standard)
     const { country, type } = meta
+    const showUseCase = useShowPhoneUseCase(country)
     const [validationAddress, setValidationAddress] =
         useState<Partial<AddressInformation> | null>(null)
 
@@ -67,6 +71,9 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                     name,
                     meta,
                     address,
+                    ...(showUseCase && usecase === PhoneUseCase.Marketing
+                        ? { usecase }
+                        : {}),
                 } as Partial<PhoneNumber>
 
                 const oldPhoneNumber = await createPhoneNumber(payload)
@@ -84,7 +91,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
             } catch (error) {
                 showCreatePhoneNumberErrorNotification({ error })
             }
-        }, [dispatch, name, meta, validationAddress])
+        }, [dispatch, name, meta, validationAddress, showUseCase, usecase])
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
@@ -99,6 +106,7 @@ export default function PhoneNumberCreateForm(): JSX.Element {
             ...address,
             country,
         }))
+        setUsecase(PhoneUseCase.Standard)
     }, [country])
 
     const validationAlertMessage = getAddressValidationAlertMessage(
@@ -152,7 +160,13 @@ export default function PhoneNumberCreateForm(): JSX.Element {
                                 isRequired
                             />
                         </FormGroup>
-                        <PhoneMetaFields value={meta} onChange={setMeta} />
+                        <PhoneMetaFields
+                            value={meta}
+                            onChange={setMeta}
+                            usecase={usecase}
+                            onUseCaseChange={setUsecase}
+                            showUseCase={showUseCase}
+                        />
                         {validationAddress &&
                             country &&
                             isAddressValidationRequired && (

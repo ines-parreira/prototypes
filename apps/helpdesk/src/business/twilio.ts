@@ -378,6 +378,11 @@ export enum PhoneFunction {
     Ivr = 'ivr',
 }
 
+export enum PhoneUseCase {
+    Standard = 'standard',
+    Marketing = 'marketing',
+}
+
 export enum TwilioErrorCode {
     AuthorizationAccessTokenInvalid = 20101,
     AuthorizationAccessTokenExpired = 20104,

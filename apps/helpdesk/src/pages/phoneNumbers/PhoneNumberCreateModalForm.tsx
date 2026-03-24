@@ -6,6 +6,7 @@ import { Col, Form, FormGroup, Row } from 'reactstrap'
 
 import { LegacyBanner as Banner, LegacyButton as Button } from '@gorgias/axiom'
 
+import { PhoneUseCase } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {
     createPhoneNumber,
@@ -27,6 +28,7 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import useCreatePhoneNumberNotifications from './hooks/useCreatePhoneNumberNotifications'
+import { useShowPhoneUseCase } from './hooks/useShowPhoneUseCase'
 import PhoneAddressFields from './PhoneAddressFields'
 import PhoneMetaFields from './PhoneMetaFields'
 import PhoneNumberCapabilitiesAlert from './PhoneNumberCapabilitiesAlert'
@@ -61,7 +63,9 @@ export default function PhoneNumberCreateModalForm({
         type: PhoneType.Local,
         emoji: null,
     })
+    const [usecase, setUsecase] = useState<PhoneUseCase>(PhoneUseCase.Standard)
     const { country, type } = meta
+    const showUseCase = useShowPhoneUseCase(country)
 
     const [address, setAddress] = useState<Partial<AddressInformation> | null>({
         country,
@@ -80,6 +84,9 @@ export default function PhoneNumberCreateModalForm({
                     name,
                     meta,
                     address,
+                    ...(showUseCase && usecase === PhoneUseCase.Marketing
+                        ? { usecase }
+                        : {}),
                 } as Partial<NewPhoneNumber>
 
                 const oldPhoneNumber = await createPhoneNumber(payload)
@@ -99,7 +106,16 @@ export default function PhoneNumberCreateModalForm({
             } catch (error) {
                 showCreatePhoneNumberErrorNotification({ error })
             }
-        }, [dispatch, name, meta, address, onClose, onCreate])
+        }, [
+            dispatch,
+            name,
+            meta,
+            address,
+            onClose,
+            onCreate,
+            showUseCase,
+            usecase,
+        ])
 
     const onSubmit = useCallback(
         async (event: React.FormEvent) => {
@@ -115,6 +131,7 @@ export default function PhoneNumberCreateModalForm({
             ...address,
             country,
         }))
+        setUsecase(PhoneUseCase.Standard)
     }, [country])
 
     const footerExtra = useMemo(() => {
@@ -166,6 +183,9 @@ export default function PhoneNumberCreateModalForm({
                                     <PhoneMetaFields
                                         value={meta}
                                         onChange={setMeta}
+                                        usecase={usecase}
+                                        onUseCaseChange={setUsecase}
+                                        showUseCase={showUseCase}
                                     />
                                 </>
                             )}

@@ -1,3 +1,4 @@
+import type { PhoneUseCase } from 'business/twilio'
 import { PhoneCountry, PhoneFunction, PhoneType } from 'business/twilio'
 import type { Integration } from 'models/integration/types'
 
@@ -15,6 +16,7 @@ export type OldPhoneNumber = {
     integrations: IntegrationPreview[]
     capabilities: PhoneCapabilities
     meta: PhoneNumberMeta
+    usecase?: PhoneUseCase
 }
 
 export type NewPhoneNumber = {
@@ -33,6 +35,7 @@ export type NewPhoneNumber = {
         waba_phone_number_id: string
     }
     twilio_phone_number?: TwilioPhoneNumberMeta
+    usecase?: PhoneUseCase
 }
 
 export type TwilioPhoneNumberMeta = {

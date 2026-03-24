@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -16,6 +17,8 @@ import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import PhoneNumberCreateForm from '../PhoneNumberCreateForm'
 import * as phoneNumberUtils from '../utils'
+
+const mockUseFlag = assumeMock(useFlag)
 
 const QueryClientProvider = mockQueryClientProvider().QueryClientProvider
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
@@ -338,6 +341,185 @@ describe('<PhoneNumberCreateForm/>', () => {
                 )
                 expect(notificationSent?.allowHTML).toBe(true)
             })
+        })
+    })
+
+    describe('usecase field', () => {
+        it('should show usecase field for US when marketing-phone-number flag is enabled', async () => {
+            mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+                if (key === FeatureFlagKey.MarketingPhoneNumber) {
+                    return true
+                }
+                return false
+            })
+
+            const { getByText, findByText } = renderComponent()
+
+            await act(async () => {
+                await userEvent.click(getByText('United States'))
+            })
+            await findByText('Alabama')
+            await act(async () => {
+                await userEvent.click(getByText('Alabama'))
+            })
+
+            await waitFor(() => {
+                expect(screen.getByLabelText('Use case')).toBeInTheDocument()
+            })
+        })
+
+        it('should show usecase field for Canada when marketing-phone-number flag is enabled', async () => {
+            mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+                if (key === FeatureFlagKey.MarketingPhoneNumber) {
+                    return true
+                }
+                return false
+            })
+
+            const { getByText } = renderComponent()
+
+            await act(async () => {
+                await userEvent.click(getByText('Canada'))
+            })
+
+            await waitFor(() => {
+                expect(screen.getByLabelText('Use case')).toBeInTheDocument()
+            })
+        })
+
+        it('should not show usecase field when marketing-phone-number flag is disabled', async () => {
+            mockUseFlag.mockImplementation(() => false)
+
+            const { getByText, findByText } = renderComponent()
+
+            await act(async () => {
+                await userEvent.click(getByText('United States'))
+            })
+            await findByText('Alabama')
+            await act(async () => {
+                await userEvent.click(getByText('Alabama'))
+            })
+
+            await waitFor(() => {
+                expect(screen.queryByLabelText('Use case')).toBe(null)
+            })
+        })
+
+        it('should include usecase in payload only when Marketing is selected', async () => {
+            mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+                if (key === FeatureFlagKey.MarketingPhoneNumber) {
+                    return true
+                }
+                return false
+            })
+
+            const { getByText, getByRole, findByText } = renderComponent()
+
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', {
+                        name: /phone number name required/i,
+                    }),
+                    'test title',
+                )
+            })
+
+            await act(async () => {
+                await userEvent.click(getByText('United States'))
+            })
+            await findByText('Alabama')
+            await act(async () => {
+                await userEvent.click(getByText('Alabama'))
+            })
+
+            // Wait for usecase field to appear
+            await waitFor(() => {
+                expect(screen.getByLabelText('Use case')).toBeInTheDocument()
+            })
+
+            // Select Marketing usecase
+            await act(async () => {
+                await userEvent.click(getByText('Standard'))
+            })
+            await act(async () => {
+                await userEvent.click(getByText('Marketing'))
+            })
+
+            // Wait for area codes to load
+            await waitFor(() => {
+                expect(screen.getByText('Birmingham (205)')).toBeInTheDocument()
+            })
+            await act(async () => {
+                await userEvent.click(getByText('Birmingham (205)'))
+            })
+
+            await act(async () => {
+                await userEvent.click(getByText('Add phone number'))
+            })
+
+            await waitFor(() => {
+                expect(createPhoneNumberSpy).toHaveBeenCalled()
+            })
+
+            const latestCallArguments = createPhoneNumberSpy.mock.lastCall?.[0]
+            expect(latestCallArguments?.usecase).toBe('marketing')
+        })
+
+        it('should not include usecase in payload when Standard is selected', async () => {
+            mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
+                if (key === FeatureFlagKey.MarketingPhoneNumber) {
+                    return true
+                }
+                return false
+            })
+
+            const { getByText, getByRole, findByText } = renderComponent()
+
+            await act(async () => {
+                await userEvent.type(
+                    getByRole('textbox', {
+                        name: /phone number name required/i,
+                    }),
+                    'test title',
+                )
+            })
+
+            await act(async () => {
+                await userEvent.click(getByText('United States'))
+            })
+            await findByText('Alabama')
+            await act(async () => {
+                await userEvent.click(getByText('Alabama'))
+            })
+
+            // Wait for usecase field to appear and keep Standard selected (default)
+            await waitFor(() => {
+                expect(screen.getByLabelText('Use case')).toBeInTheDocument()
+            })
+
+            // Select Standard usecase explicitly
+            await act(async () => {
+                await userEvent.click(getByText('Standard'))
+            })
+
+            // Wait for area codes to load
+            await waitFor(() => {
+                expect(screen.getByText('Birmingham (205)')).toBeInTheDocument()
+            })
+            await act(async () => {
+                await userEvent.click(getByText('Birmingham (205)'))
+            })
+
+            await act(async () => {
+                await userEvent.click(getByText('Add phone number'))
+            })
+
+            await waitFor(() => {
+                expect(createPhoneNumberSpy).toHaveBeenCalled()
+            })
+
+            const latestCallArguments = createPhoneNumberSpy.mock.lastCall?.[0]
+            expect(latestCallArguments?.usecase).toBeUndefined()
         })
     })
 })

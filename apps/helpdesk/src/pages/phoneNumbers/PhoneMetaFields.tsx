@@ -3,7 +3,11 @@ import { useCallback, useMemo } from 'react'
 import { endsWith } from 'lodash'
 import { Col, FormGroup, Label, Row } from 'reactstrap'
 
-import { countryOptions, phoneCountryConfig } from 'business/twilio'
+import {
+    countryOptions,
+    phoneCountryConfig,
+    PhoneUseCase,
+} from 'business/twilio'
 import type { PhoneNumberMeta } from 'models/phoneNumber/types'
 import { PhoneCountry, PhoneType } from 'models/phoneNumber/types'
 import InputField from 'pages/common/forms/input/InputField'
@@ -17,14 +21,25 @@ import {
     shouldDisplayType,
 } from './utils'
 
+const useCaseOptions = [
+    { label: 'Standard', value: PhoneUseCase.Standard },
+    { label: 'Marketing', value: PhoneUseCase.Marketing },
+]
+
 type Props = {
     value: Partial<PhoneNumberMeta>
     onChange: (value: Partial<PhoneNumberMeta>) => void
+    usecase?: PhoneUseCase
+    onUseCaseChange: (usecase: PhoneUseCase) => void
+    showUseCase?: boolean
 }
 
 export default function PhoneDetailsFields({
     value,
     onChange,
+    usecase,
+    onUseCaseChange,
+    showUseCase = false,
 }: Props): JSX.Element {
     const { country, type, state, area_code } = value
 
@@ -200,6 +215,23 @@ export default function PhoneDetailsFields({
                                 value={selectedAreaCode}
                                 onChange={handleAreaCodeChange}
                                 options={areaCodeOptions}
+                                fullWidth
+                                required
+                            />
+                        </FormGroup>
+                    )}
+                    {showUseCase && (
+                        <FormGroup>
+                            <Label htmlFor="usecase" className="control-label">
+                                Use case
+                            </Label>
+                            <SelectField
+                                id="usecase"
+                                value={usecase}
+                                onChange={(value) =>
+                                    onUseCaseChange(value as PhoneUseCase)
+                                }
+                                options={useCaseOptions}
                                 fullWidth
                                 required
                             />

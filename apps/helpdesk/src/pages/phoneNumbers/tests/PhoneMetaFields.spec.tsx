@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { PhoneCountry, PhoneType } from 'business/twilio'
+import { PhoneCountry, PhoneType, PhoneUseCase } from 'business/twilio'
 import type { PhoneNumberMeta } from 'models/phoneNumber/types'
 
 import PhoneMetaFields from '../PhoneMetaFields'
@@ -18,6 +18,9 @@ describe('<PhoneMetaFields />', () => {
     const onChange: jest.MockedFunction<
         (value: Partial<PhoneNumberMeta>) => void
     > = jest.fn()
+    const onUseCaseChange: jest.MockedFunction<
+        (usecase: PhoneUseCase) => void
+    > = jest.fn()
 
     beforeEach(() => {
         mockShouldDisplayType.mockReturnValue(true)
@@ -27,6 +30,7 @@ describe('<PhoneMetaFields />', () => {
         const { queryByText } = render(
             <PhoneMetaFields
                 onChange={onChange}
+                onUseCaseChange={onUseCaseChange}
                 value={{
                     country: PhoneCountry.US,
                     type: PhoneType.Local,
@@ -44,6 +48,7 @@ describe('<PhoneMetaFields />', () => {
         const { queryByText } = render(
             <PhoneMetaFields
                 onChange={onChange}
+                onUseCaseChange={onUseCaseChange}
                 value={{
                     country: PhoneCountry.CA,
                     type: PhoneType.TollFree,
@@ -62,6 +67,7 @@ describe('<PhoneMetaFields />', () => {
         const { getByLabelText } = render(
             <PhoneMetaFields
                 onChange={onChange}
+                onUseCaseChange={onUseCaseChange}
                 value={{ country: PhoneCountry.US, type: PhoneType.Local }}
             />,
         )
@@ -75,10 +81,66 @@ describe('<PhoneMetaFields />', () => {
         const { queryByLabelText } = render(
             <PhoneMetaFields
                 onChange={onChange}
+                onUseCaseChange={onUseCaseChange}
                 value={{ country: PhoneCountry.US, type: PhoneType.Local }}
             />,
         )
 
         expect(queryByLabelText('Type')).toBe(null)
+    })
+
+    describe('usecase field', () => {
+        it('should render usecase field for US when showUseCase is true', () => {
+            const { getByLabelText } = render(
+                <PhoneMetaFields
+                    onChange={onChange}
+                    value={{
+                        country: PhoneCountry.US,
+                        type: PhoneType.Local,
+                        state: 'AL',
+                    }}
+                    showUseCase={true}
+                    usecase={PhoneUseCase.Standard}
+                    onUseCaseChange={onUseCaseChange}
+                />,
+            )
+
+            expect(getByLabelText('Use case')).toBeInTheDocument()
+        })
+
+        it('should render usecase field for Canada when showUseCase is true', () => {
+            const { getByLabelText } = render(
+                <PhoneMetaFields
+                    onChange={onChange}
+                    value={{
+                        country: PhoneCountry.CA,
+                        type: PhoneType.Local,
+                    }}
+                    showUseCase={true}
+                    usecase={PhoneUseCase.Standard}
+                    onUseCaseChange={onUseCaseChange}
+                />,
+            )
+
+            expect(getByLabelText('Use case')).toBeInTheDocument()
+        })
+
+        it('should not render usecase field when showUseCase is false', () => {
+            const { queryByLabelText } = render(
+                <PhoneMetaFields
+                    onChange={onChange}
+                    value={{
+                        country: PhoneCountry.US,
+                        type: PhoneType.Local,
+                        state: 'AL',
+                    }}
+                    showUseCase={false}
+                    usecase={PhoneUseCase.Standard}
+                    onUseCaseChange={onUseCaseChange}
+                />,
+            )
+
+            expect(queryByLabelText('Use case')).toBe(null)
+        })
     })
 })
