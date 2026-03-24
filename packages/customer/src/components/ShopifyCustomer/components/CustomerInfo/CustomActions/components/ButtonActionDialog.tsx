@@ -83,7 +83,11 @@ export function ButtonActionDialog(props: Props) {
                             isRequired
                         />
 
-                        <Box flexDirection="row" gap="sm" alignItems="flex-end">
+                        <Box
+                            flexDirection="row"
+                            gap="sm"
+                            alignItems="flex-start"
+                        >
                             <MethodField />
                             <Box flex={1}>
                                 <FormField
