@@ -8,7 +8,7 @@ import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
-import { StaticRouter, useHistory, useParams } from 'react-router-dom'
+import { StaticRouter, useHistory } from 'react-router-dom'
 
 import { useLastSelectedStore } from 'AIJourney/hooks'
 import { JourneyProvider } from 'AIJourney/providers'
@@ -25,7 +25,6 @@ import { AiJourneyNavbar } from './Navbar'
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: jest.fn(),
-    useParams: jest.fn(),
 }))
 
 jest.mock('AIJourney/hooks', () => ({
@@ -44,7 +43,6 @@ jest.mock('hooks/useAppSelector')
 const mockUseAppSelector = assumeMock(useAppSelector)
 
 const mockUseHistory = jest.mocked(useHistory)
-const mockUseParams = jest.mocked(useParams)
 const mockPush = jest.fn()
 const mockReplace = jest.fn()
 const mockSetLastSelectedStore = jest.fn()
@@ -123,9 +121,6 @@ describe('<AiJourneyNavbar />', () => {
             setLastSelectedStore: mockSetLastSelectedStore,
             resolveStore: (storeNames: string[]) => storeNames[0],
         })
-        mockUseParams.mockReturnValue({
-            shopName: undefined as unknown as string,
-        })
     })
     it('should render ai agent navbar with first store selected', async () => {
         renderNavbar()
@@ -202,8 +197,14 @@ describe('<AiJourneyNavbar />', () => {
         it('should save selected store to localStorage when changing store', async () => {
             renderNavbar()
 
-            await user.click(screen.getByRole('button', { name: /teststore1/ }))
-            await user.click(screen.getByRole('option', { name: /teststore2/ }))
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /teststore1/ }),
+                )
+                await user.click(
+                    screen.getByRole('option', { name: /teststore2/ }),
+                )
+            })
 
             expect(mockSetLastSelectedStore).toHaveBeenCalledWith('teststore2')
         })
@@ -386,6 +387,42 @@ describe('<AiJourneyNavbar />', () => {
 
             const campaignsLink = screen.getByText('Campaigns').closest('a')
             expect(campaignsLink).toHaveClass('active')
+        })
+    })
+
+    describe('Segments section', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneySegmentsUiEnabled) {
+                    return true
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+        })
+
+        it('should render segments section when feature flag is enabled', async () => {
+            renderNavbar()
+
+            expect(screen.getByText('Segments')).toBeInTheDocument()
+        })
+
+        it('should not render segments section when feature flag is disabled', async () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneySegmentsUiEnabled) {
+                    return false
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+
+            renderNavbar()
+
+            expect(screen.queryByText('Segments')).not.toBeInTheDocument()
         })
     })
 })

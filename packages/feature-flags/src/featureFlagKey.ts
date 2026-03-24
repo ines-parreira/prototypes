@@ -60,6 +60,7 @@ export enum FeatureFlagKey {
     AiJourneyPostPurchaseEnabled = 'ai-journey-post-purchase-enabled',
     AiJourneyWelcomeFlowEnabled = 'ai-journey-welcome-flow-enabled',
     AiJourneyCampaignSendingEnabled = 'campaign-sending-enabled',
+    AiJourneySegmentsUiEnabled = 'ai-journey-segments-ui-enabled',
     AiSalesAgentActivationEmailSettings = 'linear.project_ai-sales-agent-email-settings',
     /** @deprecated Fully evaluated to `true` */
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',

@@ -1404,7 +1404,7 @@ describe('<Routes/>', () => {
             ).toBeInTheDocument()
         })
 
-        it('should redirect to first store when no store is passed in the URL', async () => {
+        it('should redirect to first store analytics page when no store is passed in the URL', async () => {
             mockUseFlag.mockReturnValue(true)
             const history = createMemoryHistory({
                 initialEntries: ['/app/ai-journey'],
@@ -1424,7 +1424,7 @@ describe('<Routes/>', () => {
 
             await waitFor(() => {
                 expect(history.location.pathname).toBe(
-                    '/app/ai-journey/shopify-store',
+                    '/app/ai-journey/shopify-store/analytics',
                 )
             })
         })

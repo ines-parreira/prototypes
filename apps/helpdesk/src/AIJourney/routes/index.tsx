@@ -1,4 +1,4 @@
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
 import { AI_JOURNEY_ONBOARDING_STEPS } from 'AIJourney/constants/journeyTypes'
@@ -7,6 +7,7 @@ import {
     Analytics,
     Flows,
     Playground,
+    Segments,
 } from 'AIJourney/pages'
 import { Campaigns } from 'AIJourney/pages/Campaigns/Campaigns'
 import { JourneyProvider } from 'AIJourney/providers'
@@ -32,10 +33,8 @@ function AiJourneyBaseRoutes() {
                             <Route
                                 path={`${path}/:shopName`}
                                 exact
-                                render={() => (
-                                    <DefaultStatsFilters>
-                                        <Analytics />
-                                    </DefaultStatsFilters>
+                                render={({ match }) => (
+                                    <Redirect to={`${match.url}/analytics`} />
                                 )}
                             />
                             {AI_JOURNEY_ONBOARDING_STEPS.map(
@@ -73,6 +72,11 @@ function AiJourneyBaseRoutes() {
                                 path={`${path}/:shopName/playground`}
                                 exact
                                 render={() => <Playground />}
+                            />
+                            <Route
+                                path={`${path}/:shopName/segments`}
+                                exact
+                                render={() => <Segments />}
                             />
                             <Route
                                 path={`${path}/:shopName/analytics`}

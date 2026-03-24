@@ -12,7 +12,7 @@ import {
 } from '@repo/navigation'
 import { matchPath, NavLink, useHistory, useLocation } from 'react-router-dom'
 
-import type { IconName } from '@gorgias/axiom'
+import { IconName } from '@gorgias/axiom'
 
 import { useLastSelectedStore } from 'AIJourney/hooks'
 import { ActiveContent, Navbar } from 'common/navigation'
@@ -49,6 +49,10 @@ export const AiJourneyNavbar = () => {
 
     const isAiJourneyCampaignsEnabled = useFlag(
         FeatureFlagKey.AiJourneyCampaignsEnabled,
+    )
+
+    const isAiJourneySegmentsEnabled = useFlag(
+        FeatureFlagKey.AiJourneySegmentsUiEnabled,
     )
 
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
@@ -96,10 +100,6 @@ export const AiJourneyNavbar = () => {
         [storeIntegrations, history, setLastSelectedStore],
     )
 
-    const shouldAccessPlayground = isAiJourneyPlaygroundEnabled
-    const shouldAccessAnalytics = isAiJourneyAnalyticsEnabled
-    const shouldAccessCampaigns = isAiJourneyCampaignsEnabled
-
     const navigationItems = useMemo(() => {
         const items: Array<{
             icon: IconName
@@ -109,7 +109,7 @@ export const AiJourneyNavbar = () => {
             isActive?: (match: any, location: any) => boolean
         }> = []
 
-        if (shouldAccessAnalytics) {
+        if (isAiJourneyAnalyticsEnabled) {
             items.push({
                 icon: 'chart-line-alt',
                 to: `/app/ai-journey/${shopName}/analytics`,
@@ -118,7 +118,7 @@ export const AiJourneyNavbar = () => {
             })
         }
 
-        if (shouldAccessCampaigns) {
+        if (isAiJourneyCampaignsEnabled) {
             items.push({
                 icon: 'nav-flag',
                 to: `/app/ai-journey/${shopName}/campaigns`,
@@ -135,7 +135,7 @@ export const AiJourneyNavbar = () => {
             exact: true,
         })
 
-        if (shouldAccessPlayground) {
+        if (isAiJourneyPlaygroundEnabled) {
             items.push({
                 icon: 'media-play-circle',
                 to: `/app/ai-journey/${shopName}/playground`,
@@ -143,13 +143,22 @@ export const AiJourneyNavbar = () => {
                 exact: true,
             })
         }
+        if (isAiJourneySegmentsEnabled) {
+            items.push({
+                icon: IconName.Target,
+                to: `/app/ai-journey/${shopName}/segments`,
+                label: 'Segments',
+                exact: true,
+            })
+        }
 
         return items
     }, [
         shopName,
-        shouldAccessCampaigns,
-        shouldAccessPlayground,
-        shouldAccessAnalytics,
+        isAiJourneyCampaignsEnabled,
+        isAiJourneyPlaygroundEnabled,
+        isAiJourneyAnalyticsEnabled,
+        isAiJourneySegmentsEnabled,
     ])
 
     if (hasWayfindingMS1Flag) {
@@ -199,7 +208,7 @@ export const AiJourneyNavbar = () => {
                     />
                 </div>
                 <div className={css.navigationSections}>
-                    {shouldAccessAnalytics && (
+                    {isAiJourneyAnalyticsEnabled && (
                         <Navigation.SectionItem
                             as={NavLink}
                             exact
@@ -208,7 +217,7 @@ export const AiJourneyNavbar = () => {
                             Analytics
                         </Navigation.SectionItem>
                     )}
-                    {shouldAccessCampaigns && (
+                    {isAiJourneyCampaignsEnabled && (
                         <Navigation.SectionItem
                             as={NavLink}
                             isActive={(_, location) => {
@@ -226,13 +235,22 @@ export const AiJourneyNavbar = () => {
                     >
                         Flows
                     </Navigation.SectionItem>
-                    {shouldAccessPlayground && (
+                    {isAiJourneyPlaygroundEnabled && (
                         <Navigation.SectionItem
                             as={NavLink}
                             exact
                             to={`/app/ai-journey/${shopName}/playground`}
                         >
                             Playground
+                        </Navigation.SectionItem>
+                    )}
+                    {isAiJourneySegmentsEnabled && (
+                        <Navigation.SectionItem
+                            as={NavLink}
+                            exact
+                            to={`/app/ai-journey/${shopName}/segments`}
+                        >
+                            Segments
                         </Navigation.SectionItem>
                     )}
                 </div>
