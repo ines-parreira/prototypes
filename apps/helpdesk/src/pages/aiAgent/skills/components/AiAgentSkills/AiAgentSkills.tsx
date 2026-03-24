@@ -1,16 +1,14 @@
 import { Box, Skeleton } from '@gorgias/axiom'
 
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { RecommendedSkillsSection } from 'pages/aiAgent/skills/components/RecommendedSkillsSection/RecommendedSkillsSection'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
 
 import { SkillsEmptyState } from '../SkillsEmptyState/SkillsEmptyState'
 import { SkillsHeader } from '../SkillsHeader/SkillsHeader'
+import { SkillsTable } from '../SkillsTable/SkillsTable'
 
 import css from './AiAgentSkills.less'
-
-const SkillsContent = () => {
-    return <Box>Skills content coming soon...</Box>
-}
 
 const SkillsLoading = () => {
     return <Skeleton height={220} />
@@ -34,9 +32,11 @@ export const AiAgentSkills = () => {
                 ) : !hasLinkedSkills ? (
                     <SkillsEmptyState onCreateSkill={noop} />
                 ) : (
-                    <SkillsContent />
+                    <SkillsTable />
                 )}
             </Box>
+
+            <DrillDownModal isLegacy={false} />
         </Box>
     )
 }

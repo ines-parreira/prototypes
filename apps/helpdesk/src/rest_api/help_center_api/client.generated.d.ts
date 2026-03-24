@@ -218,6 +218,12 @@ declare namespace Components {
              * ai_skill_1
              */
             template_key: string | null
+            /**
+             * The visibility status of the article translation
+             * example:
+             * PUBLIC
+             */
+            visibility_status: 'GORGIAS_INTERNAL' | 'PUBLIC' | 'UNLISTED'
         }
         export interface ArticleIngestionLogDto {
             help_center_id: number
@@ -7604,6 +7610,26 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.List.Responses.$200>
     /**
+     * listIntents - List all intents for a help center
+     *
+     * List all intents for a help center.
+     */
+    'listIntents'(
+        parameters: Parameters<Paths.ListIntents.PathParameters>,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ListIntents.Responses.$200>
+    /**
+     * updateIntentStatus - Update the status of an unlinked intent
+     *
+     * Update the status of an unlinked intent.
+     */
+    'updateIntentStatus'(
+        parameters: Parameters<Paths.UpdateIntentStatus.PathParameters>,
+        data?: Paths.UpdateIntentStatus.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.UpdateIntentStatus.Responses.$200>
+    /**
      * upsertArticleTemplateReview - Review an AI article template
      */
     'upsertArticleTemplateReview'(
@@ -8023,26 +8049,6 @@ export interface OperationMethods {
         data?: Paths.HandleIngestionFail.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.HandleIngestionFail.Responses.$204>
-    /**
-     * listIntents - List all intents for a help center
-     *
-     * List all intents for a help center.
-     */
-    'listIntents'(
-        parameters: Parameters<Paths.ListIntents.PathParameters>,
-        data?: any,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.ListIntents.Responses.$200>
-    /**
-     * updateIntentStatus - Update the status of an unlinked intent
-     *
-     * Update the status of an unlinked intent.
-     */
-    'updateIntentStatus'(
-        parameters: Parameters<Paths.UpdateIntentStatus.PathParameters>,
-        data?: Paths.UpdateIntentStatus.RequestBody,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.UpdateIntentStatus.Responses.$200>
     /**
      * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
      */
@@ -9002,6 +9008,30 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.List.Responses.$200>
     }
+    ['/api/help-center/help-centers/{help_center_id}/intents']: {
+        /**
+         * listIntents - List all intents for a help center
+         *
+         * List all intents for a help center.
+         */
+        'get'(
+            parameters: Parameters<Paths.ListIntents.PathParameters>,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.ListIntents.Responses.$200>
+    }
+    ['/api/help-center/help-centers/{help_center_id}/intents/{intent}']: {
+        /**
+         * updateIntentStatus - Update the status of an unlinked intent
+         *
+         * Update the status of an unlinked intent.
+         */
+        'put'(
+            parameters: Parameters<Paths.UpdateIntentStatus.PathParameters>,
+            data?: Paths.UpdateIntentStatus.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.UpdateIntentStatus.Responses.$200>
+    }
     ['/api/help-center/help-centers/{help_center_id}/article-templates/review']: {
         /**
          * upsertArticleTemplateReview - Review an AI article template
@@ -9501,30 +9531,6 @@ export interface PathsDictionary {
             data?: Paths.HandleIngestionFail.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.HandleIngestionFail.Responses.$204>
-    }
-    ['/api/help-center/help-centers/{help_center_id}/intents']: {
-        /**
-         * listIntents - List all intents for a help center
-         *
-         * List all intents for a help center.
-         */
-        'get'(
-            parameters: Parameters<Paths.ListIntents.PathParameters>,
-            data?: any,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.ListIntents.Responses.$200>
-    }
-    ['/api/help-center/help-centers/{help_center_id}/intents/{intent}']: {
-        /**
-         * updateIntentStatus - Update the status of an unlinked intent
-         *
-         * Update the status of an unlinked intent.
-         */
-        'put'(
-            parameters: Parameters<Paths.UpdateIntentStatus.PathParameters>,
-            data?: Paths.UpdateIntentStatus.RequestBody,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.UpdateIntentStatus.Responses.$200>
     }
     ['/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config']: {
         /**
