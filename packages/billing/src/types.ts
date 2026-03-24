@@ -203,45 +203,15 @@ export enum VATCountries {
 export type CancellationDates = Partial<Record<ProductType, string | null>>
 
 export type PlansByProduct = {
-    [ProductType.Helpdesk]: {
-        current?: HelpdeskPlan
-        available: HelpdeskPlan[]
+    [K in ProductType]: {
+        current?: PlanForProductType<K>
+        available: PlanForProductType<K>[]
     }
-    [ProductType.Automation]: {
-        current?: AutomatePlan
-        available: AutomatePlan[]
-    }
-    [ProductType.Voice]: {
-        current?: SMSOrVoicePlan
-        available: SMSOrVoicePlan[]
-    }
-    [ProductType.SMS]: { current?: SMSOrVoicePlan; available: SMSOrVoicePlan[] }
-    [ProductType.Convert]: { current?: ConvertPlan; available: ConvertPlan[] }
 }
 
 export type SelectedPlans = {
-    [ProductType.Helpdesk]: {
-        plan?: HelpdeskPlan
-        isSelected: boolean
-        autoUpgrade?: false
-    }
-    [ProductType.Automation]: {
-        plan?: AutomatePlan
-        isSelected: boolean
-        autoUpgrade?: false
-    }
-    [ProductType.Voice]: {
-        plan?: SMSOrVoicePlan
-        isSelected: boolean
-        autoUpgrade?: false
-    }
-    [ProductType.SMS]: {
-        plan?: SMSOrVoicePlan
-        isSelected: boolean
-        autoUpgrade?: false
-    }
-    [ProductType.Convert]: {
-        plan?: ConvertPlan
+    [K in ProductType]: {
+        plan?: PlanForProductType<K>
         isSelected: boolean
         autoUpgrade?: boolean
     }
