@@ -81,6 +81,14 @@ describe('AgentAvailabilityTableConfig', () => {
             )
         })
 
+        it('should return the updated fixed tooltip copy for system columns', () => {
+            const result = getColumnConfig(undefined)
+
+            expect(result[ONLINE_TIME_COLUMN].hint).toEqual({
+                title: 'Total time the agent had at least one Gorgias tab open during the period. This is the sum of Available and Unavailable time. Only affected by the date and agent filter.',
+            })
+        })
+
         it('should merge custom statuses with hint when description provided', () => {
             const customStatuses: CustomUserAvailabilityStatus[] = [
                 {

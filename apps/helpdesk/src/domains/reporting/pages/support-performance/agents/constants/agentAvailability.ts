@@ -47,35 +47,35 @@ export const FIXED_AGENT_AVAILABILITY_COLUMN_CONFIG: AvailabilityColumnDictionar
         [ONLINE_TIME_COLUMN]: {
             format: 'duration',
             hint: {
-                title: 'Total time spent by the agent on Gorgias during the period. The metric is only affected by the date and agent filter.',
+                title: 'Total time the agent had at least one Gorgias tab open during the period. This is the sum of Available and Unavailable time. Only affected by the date and agent filter.',
             },
             label: AGENT_AVAILABILITY_TABLE_LABELS[ONLINE_TIME_COLUMN],
         },
         [AVAILABLE_STATUS_COLUMN]: {
             format: 'duration',
             hint: {
-                title: 'Total time spent by the agent on Gorgias during the period. The metric is only affected by the date and agent filter.',
+                title: 'Total time the agent was online and set to available during the period. Only affected by the date and agent filter.',
             },
             label: AGENT_AVAILABILITY_TABLE_LABELS[AVAILABLE_STATUS_COLUMN],
         },
         [UNAVAILABLE_STATUS_COLUMN]: {
             format: 'duration',
             hint: {
-                title: 'Total time spent by the agent on Gorgias during the period. The metric is only affected by the date and agent filter.',
+                title: 'Total time the agent was online but set to unavailable during the period. Only affected by the date and agent filter.',
             },
             label: AGENT_AVAILABILITY_TABLE_LABELS[UNAVAILABLE_STATUS_COLUMN],
         },
         [ON_CALL_STATUS_COLUMN]: {
             format: 'duration',
             hint: {
-                title: 'Total time spent by the agent on Gorgias during the period. The metric is only affected by the date and agent filter.',
+                title: 'Total time the agent spent on phone calls during the period. Only affected by the date and agent filter.',
             },
             label: AGENT_AVAILABILITY_TABLE_LABELS[ON_CALL_STATUS_COLUMN],
         },
         [WRAPPING_UP_STATUS_COLUMN]: {
             format: 'duration',
             hint: {
-                title: 'Total time spent by the agent on Gorgias during the period. The metric is only affected by the date and agent filter.',
+                title: 'Total time the agent spent in wrap-up after calls ended during the period. Only affected by the date and agent filter.',
             },
             label: AGENT_AVAILABILITY_TABLE_LABELS[WRAPPING_UP_STATUS_COLUMN],
         },

@@ -1,4 +1,4 @@
-import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
+import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import type { TooltipData } from 'domains/reporting/pages/types'
 import { OrderDirection } from 'models/api/types'
 import HeaderCellProperty from 'pages/common/components/table/cells/HeaderCellProperty'
@@ -27,6 +27,7 @@ export const AgentsHeaderCellContent = ({
     colSpan = 1,
 }: AgentsHeaderCellContentProps) => {
     const { sortCallback, direction, isOrderedBy } = useSortingQuery()
+    const tooltip = hint ? <HintTooltipContent {...hint} /> : null
 
     return (
         <HeaderCellProperty
@@ -43,8 +44,7 @@ export const AgentsHeaderCellContent = ({
             justifyContent={justifyContent}
             className={className}
             colSpan={colSpan}
-        >
-            {hint && <HintTooltip {...hint} />}
-        </HeaderCellProperty>
+            tooltip={tooltip}
+        />
     )
 }

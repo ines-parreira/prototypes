@@ -1,5 +1,5 @@
 import { useChannelsSortingQuery } from 'domains/reporting/hooks/support-performance/useChannelsSortingQuery'
-import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
+import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import {
     ChannelColumnConfig,
     ChannelsTableLabels,
@@ -26,6 +26,7 @@ export const ChannelsHeaderCellContent = ({
     )
     const isOrderedBy = column === field
     const tooltip = ChannelColumnConfig[column].hint
+    const tooltipContent = tooltip ? <HintTooltipContent {...tooltip} /> : null
 
     return (
         <HeaderCellProperty
@@ -38,8 +39,7 @@ export const ChannelsHeaderCellContent = ({
             height={'comfortable'}
             width={width}
             className={className}
-        >
-            {tooltip && <HintTooltip {...tooltip} />}
-        </HeaderCellProperty>
+            tooltip={tooltipContent}
+        />
     )
 }

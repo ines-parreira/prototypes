@@ -45,7 +45,7 @@ describe('<AgentsHeaderCellContent>', () => {
         })
 
         await waitFor(() => {
-            expect(screen.getByText(hint))
+            expect(screen.getByText(hint)).toBeInTheDocument()
         })
     })
 
