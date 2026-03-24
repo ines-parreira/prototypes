@@ -2,6 +2,8 @@ export { TicketThreadLegacyBridgeProvider } from './TicketThreadLegacyBridgeProv
 export { useTicketThreadLegacyBridge } from './useTicketThreadLegacyBridge'
 export type {
     CurrentTicketShoppingAssistantData,
+    InstagramCommentHideCommentData,
+    InstagramCommentPrivateReplyData,
     LegacyBridgeContextType,
     LegacyBridgeInfluencedOrder,
     LegacyBridgeShopifyIntegration,

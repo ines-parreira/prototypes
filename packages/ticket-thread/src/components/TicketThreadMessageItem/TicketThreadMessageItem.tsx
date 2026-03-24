@@ -7,6 +7,7 @@ import { Box } from '@gorgias/axiom'
 import type { TicketThreadMessageItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
+import { InstagramCommentMessageWrapper } from '../InstagramCommentMessage/InstagramCommentMessageWrapper'
 import { TicketInternalNote } from '../TicketInternalNote/TicketInternalNote'
 import { TicketMessage } from '../TicketMessage/TicketMessage'
 import { UnimplementedMessage } from '../UnimplementedMessage/UnimplementedMessage'
@@ -15,6 +16,8 @@ import { AiAgentTicketThreadDraftMessage } from './AiAgentTicketThreadMessages/A
 import { AiAgentTicketThreadInternalNote } from './AiAgentTicketThreadMessages/AiAgentTicketThreadInternalNote'
 import { AiAgentTicketThreadMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadMessage'
 import { AiAgentTicketThreadTrialMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadTrialMessage'
+
+import css from '../MessageBubble/MessageBubble.less'
 
 const Placement = {
     Left: 'left',
@@ -37,7 +40,6 @@ export function TicketThreadMessageItem({
                 ? Placement.Right
                 : Placement.Left
         }
-
         return 'from_agent' in item.data && item.data.from_agent
             ? Placement.Right
             : Placement.Left
@@ -64,7 +66,7 @@ export function TicketThreadMessageItem({
             case TicketThreadItemTag.Messages.SocialMediaFacebookMessage:
                 return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramComment:
-                return <UnimplementedMessage item={item} />
+                return <InstagramCommentMessageWrapper item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage:
                 return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramMedia:
@@ -92,6 +94,7 @@ export function TicketThreadMessageItem({
             justifyContent={
                 placement === Placement.Right ? 'flex-end' : 'flex-start'
             }
+            className={css.messageRow}
         >
             {content}
         </Box>

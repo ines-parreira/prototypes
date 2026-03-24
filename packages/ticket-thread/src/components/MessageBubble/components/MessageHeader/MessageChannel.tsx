@@ -13,6 +13,8 @@ export type MessageChannelProps = {
     channelName?: string | null
     createdDatetime?: string | null
     variant?: 'regular' | 'internal-note'
+    from?: string | null
+    to?: string | null
 }
 
 export function MessageChannel({
@@ -21,6 +23,8 @@ export function MessageChannel({
     channelName,
     createdDatetime,
     variant = 'regular',
+    from,
+    to,
 }: MessageChannelProps) {
     const { format, timezone } = useTicketThreadDateTimeFormat()
     const resolvedChannelIcon =
@@ -55,12 +59,29 @@ export function MessageChannel({
         >
             <TooltipContent>
                 <Box flexDirection="column" gap="xxs">
+                    {from && (
+                        <Text size="xs">
+                            From:{' '}
+                            <Text size="xs" variant="bold">
+                                {from}
+                            </Text>
+                        </Text>
+                    )}
+                    {to && (
+                        <Text size="xs">
+                            To:{' '}
+                            <Text size="xs" variant="bold">
+                                {to}
+                            </Text>
+                        </Text>
+                    )}
                     <Text size="xs">
                         Channel:{' '}
                         <Text size="xs" variant="bold">
                             {resolvedChannelName}
                         </Text>
                     </Text>
+
                     {createdDatetime && (
                         <Text size="xs">
                             Date:{' '}

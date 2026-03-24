@@ -3,6 +3,9 @@ import { TicketThreadLegacyBridgeProvider } from '@repo/ticket-thread/legacy-bri
 import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket'
 import useRuleSuggestionForDemos from 'pages/tickets/detail/hooks/useRuleSuggestionForDemos'
 
+import { InstagramCommentPrivateReplyModal } from './InstagramCommentPrivateReplyModal'
+import { useInstagramCommentActions } from './useInstagramCommentActions'
+
 type TicketThreadLegacyBridgeProps = {
     children: React.ReactNode
 }
@@ -19,6 +22,13 @@ export const TicketThreadLegacyBridge = ({
         true,
     )
 
+    const {
+        privateReplyData,
+        handlePrivateReply,
+        handlePrivateReplyToggle,
+        handleHideComment,
+    } = useInstagramCommentActions()
+
     return (
         <TicketThreadLegacyBridgeProvider
             currentTicketShoppingAssistantData={{
@@ -27,8 +37,16 @@ export const TicketThreadLegacyBridge = ({
                 shopifyIntegrations,
             }}
             currentTicketRuleSuggestionData={{ shouldDisplayDemoSuggestion }}
+            onInstagramCommentPrivateReply={handlePrivateReply}
+            onInstagramCommentHideComment={handleHideComment}
         >
             {children}
+            {privateReplyData && (
+                <InstagramCommentPrivateReplyModal
+                    data={privateReplyData}
+                    onToggle={handlePrivateReplyToggle}
+                />
+            )}
         </TicketThreadLegacyBridgeProvider>
     )
 }

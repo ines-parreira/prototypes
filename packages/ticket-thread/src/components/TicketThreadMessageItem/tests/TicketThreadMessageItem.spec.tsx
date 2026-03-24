@@ -109,10 +109,6 @@ describe('TicketThreadMessageItem', () => {
             label: 'Facebook message',
         },
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaInstagramComment,
-            label: 'Instagram comment',
-        },
-        {
             tag: TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage,
             label: 'Instagram DM',
         },
@@ -309,6 +305,79 @@ describe('TicketThreadMessageItem', () => {
         expect(
             screen.getByRole('button', { name: 'Message intent' }),
         ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Copy message' }),
+        ).toBeInTheDocument()
+    })
+
+    it('renders Instagram comment with sender name', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramComment,
+            data: {
+                ...messageData,
+                source: { type: 'instagram-comment' },
+                sender: {
+                    id: 1,
+                    name: 'Alice',
+                    email: 'alice@example.com',
+                    meta: null,
+                },
+                from_agent: false,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('Alice')).toBeInTheDocument()
+    })
+
+    it('shows action buttons for inbound Instagram comments', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramComment,
+            data: {
+                ...messageData,
+                source: { type: 'instagram-comment' },
+                sender: {
+                    id: 1,
+                    name: 'Alice',
+                    email: 'alice@example.com',
+                    meta: null,
+                },
+                from_agent: false,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(
+            screen.getByRole('radio', { name: 'Private reply' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('radio', { name: 'Hide comment' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Copy message' }),
+        ).toBeInTheDocument()
+    })
+
+    it('shows only copy button for outbound Instagram comments', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramComment,
+            data: {
+                ...messageData,
+                source: { type: 'instagram-comment' },
+                sender: {
+                    id: 1,
+                    name: 'Alice',
+                    email: 'alice@example.com',
+                    meta: null,
+                },
+                from_agent: true,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(
+            screen.queryByRole('radio', { name: 'Private reply' }),
+        ).not.toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: 'Copy message' }),
         ).toBeInTheDocument()

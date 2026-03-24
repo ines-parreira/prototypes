@@ -1,11 +1,27 @@
-import { Box, Text } from '@gorgias/axiom'
+import { Box, Icon, Text } from '@gorgias/axiom'
+import type { IconName } from '@gorgias/axiom'
 
 import css from './SocialMessageBubble.less'
 
-export function HiddenCommentBanner() {
+type HiddenCommentBannerProps = {
+    onUnhide?: () => void
+}
+
+export function HiddenCommentBanner({ onUnhide }: HiddenCommentBannerProps) {
     return (
-        <Box alignItems="center" className={css.hiddenBanner}>
-            <Text size="sm">Message hidden</Text>
+        <Box alignItems="center" gap="xs" className={css.hiddenBanner}>
+            <Icon name={'hide' as IconName} size="sm" />
+            <Text size="sm">Comment hidden</Text>
+            {onUnhide && (
+                <span
+                    role="button"
+                    aria-label="Unhide comment"
+                    onClick={onUnhide}
+                    className={css.unhideButton}
+                >
+                    Unhide comment
+                </span>
+            )}
         </Box>
     )
 }
