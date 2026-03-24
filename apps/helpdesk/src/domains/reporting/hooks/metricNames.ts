@@ -171,6 +171,8 @@ export const METRIC_NAMES = {
         'ai-sales-agent-total-number-of-order-drill-down',
     AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN:
         'ai-sales-agent-total-number-of-automated-sales-drill-down',
+    AI_SALES_AGENT_SUCCESS_RATE_DRILL_DOWN:
+        'ai-sales-agent-success-rate-drill-down',
     AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS_DRILL_DOWN:
         'ai-sales-agent-total-product-recommendations-drill-down',
     AI_SALES_AGENT_DISCOUNT_CODES_OFFERED_DRILL_DOWN:

@@ -200,7 +200,7 @@ export const allAgentsClosedTicketsDrillDownQueryFactory = (
     metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILLDOWN,
     measures: [],
     dimensions: [AIAgentClosedTicketsDimension.TicketId],
-    filters: [...buildClosedTicketsPeriodFilters(filters)],
+    filters: buildClosedTicketsPeriodFilters(filters),
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting ? [[AIAgentClosedTicketsDimension.TicketId, sorting]] : [],

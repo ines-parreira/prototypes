@@ -806,8 +806,7 @@ describe('successRateV2DrillDownQueryFactory', () => {
         }
 
         expect(successRateV2DrillDownQueryFactory(filters, 'UTC')).toEqual({
-            metricName:
-                METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN,
+            metricName: METRIC_NAMES.AI_SALES_AGENT_SUCCESS_RATE_DRILL_DOWN,
             measures: [],
             dimensions: [SuccessRateDimension.TicketId],
             filters: [
@@ -840,8 +839,7 @@ describe('successRateV2DrillDownQueryFactory', () => {
         }
 
         expect(successRateV2DrillDownQueryFactory(filters, 'UTC')).toEqual({
-            metricName:
-                METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN,
+            metricName: METRIC_NAMES.AI_SALES_AGENT_SUCCESS_RATE_DRILL_DOWN,
             measures: [],
             dimensions: [SuccessRateDimension.TicketId],
             filters: [
@@ -876,8 +874,7 @@ describe('successRateV2DrillDownQueryFactory', () => {
                 OrderDirection.Desc,
             ),
         ).toEqual({
-            metricName:
-                METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN,
+            metricName: METRIC_NAMES.AI_SALES_AGENT_SUCCESS_RATE_DRILL_DOWN,
             measures: [],
             dimensions: [SuccessRateDimension.TicketId],
             filters: [

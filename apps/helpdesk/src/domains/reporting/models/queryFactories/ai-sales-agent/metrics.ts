@@ -805,8 +805,7 @@ export const successRateV2DrillDownQueryFactory = (
         ...statsFiltersToReportingFilters(successRateFiltersMembers, filters),
     ],
     timezone,
-    metricName:
-        METRIC_NAMES.AI_SALES_AGENT_TOTAL_NUMBER_OF_AUTOMATED_SALES_DRILL_DOWN,
+    metricName: METRIC_NAMES.AI_SALES_AGENT_SUCCESS_RATE_DRILL_DOWN,
     limit: DRILLDOWN_QUERY_LIMIT,
     ...(sorting
         ? { order: [[SuccessRateDimension.TicketId, sorting]] }
