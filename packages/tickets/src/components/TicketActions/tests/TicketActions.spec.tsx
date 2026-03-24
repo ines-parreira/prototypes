@@ -7,6 +7,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import {
     mockGetCurrentUserHandler,
+    mockGetViewHandler,
+    mockGetViewResponse,
+    mockListViewItemsHandler,
+    mockListViewItemsUpdatesHandler,
     mockMergeTicketsHandler,
     mockSearchTicketsHandler,
     mockTicket,
@@ -35,12 +39,44 @@ const agentUser = mockUser({
 const mockGetCurrentUser = mockGetCurrentUserHandler(async () => {
     return HttpResponse.json(agentUser)
 })
+const mockGetView = mockGetViewHandler(async () =>
+    HttpResponse.json(mockGetViewResponse({ id: 1 })),
+)
+const mockListViewItems = mockListViewItemsHandler(async () =>
+    HttpResponse.json({
+        data: [
+            mockTicket({ id: 122 }),
+            mockTicket({ id: 123 }),
+            mockTicket({ id: 124 }),
+        ],
+        meta: {
+            current_cursor: null,
+            next_items: null,
+            prev_items: null,
+        },
+        object: 'list',
+        uri: '/api/views/1/items/',
+    } as any),
+)
+const mockListViewItemsUpdates = mockListViewItemsUpdatesHandler(async () =>
+    HttpResponse.json({
+        data: [],
+        meta: {
+            current_cursor: undefined,
+            next_items: undefined,
+            prev_items: undefined,
+        },
+    }),
+)
 
 const mockSearchTickets = mockSearchTicketsHandler()
 const mockMergeTickets = mockMergeTicketsHandler()
 
 const server = setupServer(
     mockGetCurrentUser.handler,
+    mockGetView.handler,
+    mockListViewItems.handler,
+    mockListViewItemsUpdates.handler,
     mockSearchTickets.handler,
     mockMergeTickets.handler,
 )
@@ -66,6 +102,9 @@ describe('TicketActions', () => {
     beforeEach(() => {
         vi.spyOn(window, 'open').mockImplementation(() => null)
         server.use(mockGetCurrentUser.handler)
+        server.use(mockGetView.handler)
+        server.use(mockListViewItems.handler)
+        server.use(mockListViewItemsUpdates.handler)
     })
 
     afterEach(() => {

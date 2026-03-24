@@ -6,8 +6,12 @@ import { setupServer } from 'msw/node'
 import {
     mockGetCurrentUserHandler,
     mockGetTicketHandler,
+    mockGetViewHandler,
+    mockGetViewResponse,
     mockListCustomFieldConditionsHandler,
     mockListCustomFieldsHandler,
+    mockListViewItemsHandler,
+    mockListViewItemsUpdatesHandler,
     mockTicket,
     mockUpdateTicketHandler,
     mockUser,
@@ -66,6 +70,36 @@ const mockGetCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
         }),
     ),
 )
+const mockGetView = mockGetViewHandler(async () =>
+    HttpResponse.json(mockGetViewResponse({ id: 1 })),
+)
+const mockListViewItems = mockListViewItemsHandler(async () =>
+    HttpResponse.json({
+        data: [
+            mockTicket({ id: 122 }),
+            mockTicket({ id: 123 }),
+            mockTicket({ id: 124 }),
+        ],
+        meta: {
+            current_cursor: null,
+            next_items: null,
+            prev_items: null,
+        },
+        object: 'list',
+        uri: '/api/views/1/items/',
+    } as any),
+)
+
+const mockListViewItemsUpdates = mockListViewItemsUpdatesHandler(async () =>
+    HttpResponse.json({
+        data: [],
+        meta: {
+            current_cursor: undefined,
+            next_items: undefined,
+            prev_items: undefined,
+        },
+    }),
+)
 
 const mockListCustomFields = mockListCustomFieldsHandler(async () =>
     HttpResponse.json({
@@ -90,6 +124,9 @@ const server = setupServer(
     mockGetTicket.handler,
     mockUpdateTicket.handler,
     mockGetCurrentUser.handler,
+    mockGetView.handler,
+    mockListViewItems.handler,
+    mockListViewItemsUpdates.handler,
     mockListCustomFields.handler,
     mockListCustomFieldConditions.handler,
 )
@@ -100,6 +137,9 @@ beforeAll(() => {
 
 beforeEach(() => {
     testAppQueryClient.clear()
+    server.use(mockGetView.handler)
+    server.use(mockListViewItems.handler)
+    server.use(mockListViewItemsUpdates.handler)
 })
 
 afterEach(() => {

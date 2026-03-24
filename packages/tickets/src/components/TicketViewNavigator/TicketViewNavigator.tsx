@@ -1,3 +1,6 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { useConditionalShortcuts } from '@repo/utils'
+
 import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useTicketViewNavigation } from '../../hooks/useTicketViewNavigation'
@@ -10,6 +13,35 @@ export function TicketViewNavigator() {
         handleGoToPreviousViewTicket,
         handleGoToNextViewTicket,
     } = useTicketViewNavigation()
+
+    useConditionalShortcuts(
+        ticketViewNavigation.shouldDisplay,
+        'TicketViewNavigator',
+        {
+            GO_BACK: {
+                action: () => {
+                    if (!ticketViewNavigation.isPreviousEnabled) {
+                        return
+                    }
+
+                    logEvent(
+                        SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
+                    )
+                    void handleGoToPreviousViewTicket()
+                },
+            },
+            GO_FORWARD: {
+                action: () => {
+                    if (!ticketViewNavigation.isNextEnabled) {
+                        return
+                    }
+
+                    logEvent(SegmentEvent.TicketKeyboardShortcutsNextNavigation)
+                    void handleGoToNextViewTicket()
+                },
+            },
+        },
+    )
 
     if (!ticketViewNavigation.shouldDisplay) {
         return null

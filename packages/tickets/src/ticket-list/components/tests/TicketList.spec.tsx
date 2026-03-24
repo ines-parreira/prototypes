@@ -761,9 +761,13 @@ describe('polling pause behaviour', () => {
         await waitFor(() => {
             expect(useTicketsListSpy).toHaveBeenLastCalledWith(
                 viewId,
-                { order_by: 'last_received_message_datetime:asc' },
-                false,
-                expect.any(Boolean),
+                expect.objectContaining({
+                    params: {
+                        order_by: 'last_received_message_datetime:asc',
+                    },
+                    pauseUpdates: false,
+                    enableStaleUpdates: expect.any(Boolean),
+                }),
             )
         })
 
@@ -774,9 +778,13 @@ describe('polling pause behaviour', () => {
         await waitFor(() => {
             expect(useTicketsListSpy).toHaveBeenLastCalledWith(
                 viewId,
-                { order_by: 'last_received_message_datetime:asc' },
-                true,
-                expect.any(Boolean),
+                expect.objectContaining({
+                    params: {
+                        order_by: 'last_received_message_datetime:asc',
+                    },
+                    pauseUpdates: true,
+                    enableStaleUpdates: expect.any(Boolean),
+                }),
             )
         })
 
@@ -787,9 +795,13 @@ describe('polling pause behaviour', () => {
         await waitFor(() => {
             expect(useTicketsListSpy).toHaveBeenLastCalledWith(
                 viewId,
-                { order_by: 'last_received_message_datetime:asc' },
-                false,
-                expect.any(Boolean),
+                expect.objectContaining({
+                    params: {
+                        order_by: 'last_received_message_datetime:asc',
+                    },
+                    pauseUpdates: false,
+                    enableStaleUpdates: expect.any(Boolean),
+                }),
             )
         })
     })

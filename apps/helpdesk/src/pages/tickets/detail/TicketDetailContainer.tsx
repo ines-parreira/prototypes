@@ -433,26 +433,30 @@ export const TicketDetailContainer = ({
 
     useEffect(() => {
         shortcutManager.bind('TicketDetailContainer', {
-            GO_BACK: {
-                action: () => {
-                    if (!isGoToPrevOrNextTicketPending) {
-                        logEvent(
-                            SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
-                        )
-                        void goToPrevOrNextTicket('prev')
-                    }
-                },
-            },
-            GO_FORWARD: {
-                action: () => {
-                    if (!isGoToPrevOrNextTicketPending) {
-                        logEvent(
-                            SegmentEvent.TicketKeyboardShortcutsNextNavigation,
-                        )
-                        void goToPrevOrNextTicket('next')
-                    }
-                },
-            },
+            ...(hasUIVisionMS1
+                ? {}
+                : {
+                      GO_BACK: {
+                          action: () => {
+                              if (!isGoToPrevOrNextTicketPending) {
+                                  logEvent(
+                                      SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
+                                  )
+                                  void goToPrevOrNextTicket('prev')
+                              }
+                          },
+                      },
+                      GO_FORWARD: {
+                          action: () => {
+                              if (!isGoToPrevOrNextTicketPending) {
+                                  logEvent(
+                                      SegmentEvent.TicketKeyboardShortcutsNextNavigation,
+                                  )
+                                  void goToPrevOrNextTicket('next')
+                              }
+                          },
+                      },
+                  }),
             SUBMIT_TICKET: {
                 action: (e) => {
                     if (e.preventDefault) {

@@ -3,13 +3,25 @@ import { useCallback } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { useTicketsLegacyBridge } from '../utils/LegacyBridge'
+import { useCachedTicketViewNavigation } from './useCachedTicketViewNavigation'
 
 export const useTicketViewNavigation = () => {
-    const { ticketViewNavigation } = useTicketsLegacyBridge()
+    const { ticketViewNavigation: legacyTicketViewNavigation } =
+        useTicketsLegacyBridge()
     const history = useHistory()
-    const { viewId } = useParams<{
+    const { viewId, ticketId } = useParams<{
         viewId?: string
+        ticketId?: string
     }>()
+    const parsedViewId = viewId ? parseInt(viewId, 10) : undefined
+    const parsedTicketId = ticketId ? parseInt(ticketId, 10) : undefined
+    const cachedTicketViewNavigation = useCachedTicketViewNavigation({
+        viewId: parsedViewId,
+        ticketId: parsedTicketId,
+    })
+
+    const ticketViewNavigation =
+        cachedTicketViewNavigation ?? legacyTicketViewNavigation
 
     const handleGoToPreviousViewTicket = useCallback(() => {
         if (ticketViewNavigation.shouldUseLegacyFunctions) {

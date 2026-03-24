@@ -18,6 +18,13 @@ export type UseTicketsListParams = {
     limit?: number
 }
 
+export type UseTicketsListOptions = {
+    params?: UseTicketsListParams
+    pauseUpdates?: boolean
+    enableStaleUpdates?: boolean
+    enabled?: boolean
+}
+
 export const PAGE_SIZE = 25
 const STALE_TIME_MS = DurationInMs.ThirtySeconds
 
@@ -28,11 +35,21 @@ export function getTicketsListQueryKey(
     return queryKeys.views.listViewItems(viewId, params)
 }
 
+export function getNavigableTicketsListQueryKey(
+    viewId: number,
+    sortOrder: ListViewItemsUpdatesOrderBy,
+) {
+    return getTicketsListQueryKey(viewId, { order_by: sortOrder })
+}
+
 export function useTicketsList(
     viewId: number,
-    params?: UseTicketsListParams,
-    pauseUpdates?: boolean,
-    enableStaleUpdates = true,
+    {
+        params,
+        pauseUpdates,
+        enableStaleUpdates = true,
+        enabled = true,
+    }: UseTicketsListOptions = {},
 ) {
     const query = useInfiniteQuery({
         queryKey: getTicketsListQueryKey(viewId, params),
@@ -52,6 +69,7 @@ export function useTicketsList(
             return getNextCursorFromMeta(lastPage.meta)
         },
         staleTime: STALE_TIME_MS,
+        enabled,
         refetchOnWindowFocus: true,
     })
 
@@ -74,7 +92,8 @@ export function useTicketsList(
         viewId,
         params,
         upToCursor,
-        enabled: enableStaleUpdates && !query.isLoading && !pauseUpdates,
+        enabled:
+            enabled && enableStaleUpdates && !query.isLoading && !pauseUpdates,
     })
 
     return {

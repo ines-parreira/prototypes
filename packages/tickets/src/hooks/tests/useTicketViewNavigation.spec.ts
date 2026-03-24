@@ -1,10 +1,15 @@
 import { act, waitFor } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { renderHook } from '../../tests/render.utils'
+import * as useCachedTicketViewNavigationModule from '../useCachedTicketViewNavigation'
 import { useTicketViewNavigation } from '../useTicketViewNavigation'
 
 describe('useTicketViewNavigation', () => {
+    beforeEach(() => {
+        vi.restoreAllMocks()
+    })
+
     describe('when not in a view context', () => {
         it('should return ticket view navigation state', () => {
             const { result } = renderHook(() => useTicketViewNavigation(), {
@@ -32,20 +37,24 @@ describe('useTicketViewNavigation', () => {
     })
 
     describe('when in a view context', () => {
-        it('should navigate to previous ticket in view', () => {
+        it('should navigate to previous ticket in view from cache', () => {
+            vi.spyOn(
+                useCachedTicketViewNavigationModule,
+                'useCachedTicketViewNavigation',
+            ).mockReturnValue({
+                shouldDisplay: true,
+                shouldUseLegacyFunctions: false,
+                previousTicketId: 122,
+                nextTicketId: 124,
+                legacyGoToPrevTicket: vi.fn(),
+                isPreviousEnabled: true,
+                legacyGoToNextTicket: vi.fn(),
+                isNextEnabled: true,
+            })
+
             const { result } = renderHook(() => useTicketViewNavigation(), {
                 initialEntries: ['/app/views/1/123'],
                 path: '/app/views/:viewId/:ticketId',
-                ticketViewNavigation: {
-                    shouldDisplay: true,
-                    shouldUseLegacyFunctions: false,
-                    previousTicketId: 122,
-                    nextTicketId: 124,
-                    legacyGoToPrevTicket: vi.fn(),
-                    isPreviousEnabled: true,
-                    legacyGoToNextTicket: vi.fn(),
-                    isNextEnabled: true,
-                },
             })
 
             act(() => {
@@ -57,20 +66,24 @@ describe('useTicketViewNavigation', () => {
             })
         })
 
-        it('should navigate to next ticket in view', () => {
+        it('should navigate to next ticket in view from cache', () => {
+            vi.spyOn(
+                useCachedTicketViewNavigationModule,
+                'useCachedTicketViewNavigation',
+            ).mockReturnValue({
+                shouldDisplay: true,
+                shouldUseLegacyFunctions: false,
+                previousTicketId: 122,
+                nextTicketId: 124,
+                legacyGoToPrevTicket: vi.fn(),
+                isPreviousEnabled: true,
+                legacyGoToNextTicket: vi.fn(),
+                isNextEnabled: true,
+            })
+
             const { result } = renderHook(() => useTicketViewNavigation(), {
                 initialEntries: ['/app/views/1/123'],
                 path: '/app/views/:viewId/:ticketId',
-                ticketViewNavigation: {
-                    shouldDisplay: true,
-                    shouldUseLegacyFunctions: false,
-                    previousTicketId: 122,
-                    nextTicketId: 124,
-                    legacyGoToPrevTicket: vi.fn(),
-                    isPreviousEnabled: true,
-                    legacyGoToNextTicket: vi.fn(),
-                    isNextEnabled: true,
-                },
             })
 
             act(() => {
@@ -94,6 +107,104 @@ describe('useTicketViewNavigation', () => {
 
             waitFor(() => {
                 expect(window.location.pathname).toBe('/app/views/1/456')
+            })
+        })
+
+        it('should prefer cache navigation over legacy hidden state', () => {
+            vi.spyOn(
+                useCachedTicketViewNavigationModule,
+                'useCachedTicketViewNavigation',
+            ).mockReturnValue({
+                shouldDisplay: true,
+                shouldUseLegacyFunctions: false,
+                previousTicketId: 122,
+                nextTicketId: 124,
+                legacyGoToPrevTicket: vi.fn(),
+                isPreviousEnabled: true,
+                legacyGoToNextTicket: vi.fn(),
+                isNextEnabled: true,
+            })
+
+            const { result } = renderHook(() => useTicketViewNavigation(), {
+                initialEntries: ['/app/views/1/123'],
+                path: '/app/views/:viewId/:ticketId',
+                ticketViewNavigation: {
+                    shouldDisplay: false,
+                    shouldUseLegacyFunctions: true,
+                    previousTicketId: undefined,
+                    nextTicketId: undefined,
+                    legacyGoToPrevTicket: vi.fn(),
+                    isPreviousEnabled: false,
+                    legacyGoToNextTicket: vi.fn(),
+                    isNextEnabled: false,
+                },
+            })
+
+            expect(result.current.ticketViewNavigation).toMatchObject({
+                shouldDisplay: true,
+                shouldUseLegacyFunctions: false,
+                previousTicketId: 122,
+                nextTicketId: 124,
+                isPreviousEnabled: true,
+                isNextEnabled: true,
+            })
+        })
+
+        it('should keep using legacy navigation until list-derived navigation becomes available', () => {
+            const cachedNavigationState = {
+                current: undefined as
+                    | ReturnType<
+                          typeof useCachedTicketViewNavigationModule.useCachedTicketViewNavigation
+                      >
+                    | undefined,
+            }
+
+            vi.spyOn(
+                useCachedTicketViewNavigationModule,
+                'useCachedTicketViewNavigation',
+            ).mockImplementation(() => cachedNavigationState.current)
+
+            const { result, rerender } = renderHook(
+                () => useTicketViewNavigation(),
+                {
+                    initialEntries: ['/app/views/1/123'],
+                    path: '/app/views/:viewId/:ticketId',
+                    ticketViewNavigation: {
+                        shouldDisplay: true,
+                        shouldUseLegacyFunctions: true,
+                        previousTicketId: 900,
+                        nextTicketId: 901,
+                        legacyGoToPrevTicket: vi.fn(),
+                        isPreviousEnabled: true,
+                        legacyGoToNextTicket: vi.fn(),
+                        isNextEnabled: true,
+                    },
+                },
+            )
+
+            expect(result.current.ticketViewNavigation).toMatchObject({
+                shouldUseLegacyFunctions: true,
+                previousTicketId: 900,
+                nextTicketId: 901,
+            })
+
+            cachedNavigationState.current = {
+                shouldDisplay: true,
+                shouldUseLegacyFunctions: false,
+                previousTicketId: 122,
+                nextTicketId: 124,
+                legacyGoToPrevTicket: vi.fn(),
+                isPreviousEnabled: true,
+                legacyGoToNextTicket: vi.fn(),
+                isNextEnabled: true,
+            }
+
+            rerender()
+
+            expect(result.current.ticketViewNavigation).toMatchObject({
+                shouldUseLegacyFunctions: false,
+                previousTicketId: 122,
+                nextTicketId: 124,
             })
         })
     })

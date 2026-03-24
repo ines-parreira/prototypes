@@ -355,6 +355,7 @@ describe('TicketDetailContainer component', () => {
     })
 
     beforeEach(() => {
+        jest.clearAllMocks()
         mockedStore = mockStore({
             ticket: fromJS({
                 tags: [],
@@ -1392,6 +1393,70 @@ describe('TicketDetailContainer component', () => {
             expect(logEvent).toHaveBeenCalledWith(trackedEvent)
         },
     )
+
+    it('should bind legacy previous and next keyboard shortcuts when hasUIVisionMS1 is disabled', () => {
+        mockUseHelpdeskV2MS1Flag.mockReturnValue(false)
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            },
+        )
+
+        const lastBindCall = shortcutManagerMock.bind.mock.calls.at(-1)
+
+        expect(lastBindCall?.[0]).toBe('TicketDetailContainer')
+        expect(lastBindCall?.[1]).toEqual(
+            expect.objectContaining({
+                GO_BACK: expect.any(Object),
+                GO_FORWARD: expect.any(Object),
+                SUBMIT_TICKET: expect.any(Object),
+                SUBMIT_CLOSE_TICKET: expect.any(Object),
+            }),
+        )
+    })
+
+    it('should not bind legacy previous and next keyboard shortcuts when hasUIVisionMS1 is enabled', () => {
+        mockUseHelpdeskV2MS1Flag.mockReturnValue(true)
+
+        renderWithRouter(
+            <QueryClientProvider client={queryClient}>
+                <Provider store={mockedStore}>
+                    <TicketDetailContainer {...minProps} />
+                </Provider>
+            </QueryClientProvider>,
+            {
+                path: '/foo/:ticketId',
+                route: '/foo/1',
+            },
+        )
+
+        const lastBindCall = shortcutManagerMock.bind.mock.calls.at(-1)
+
+        expect(lastBindCall?.[0]).toBe('TicketDetailContainer')
+        expect(lastBindCall?.[1]).toEqual(
+            expect.objectContaining({
+                SUBMIT_TICKET: expect.any(Object),
+                SUBMIT_CLOSE_TICKET: expect.any(Object),
+            }),
+        )
+        expect(lastBindCall?.[1]).not.toEqual(
+            expect.objectContaining({
+                GO_BACK: expect.any(Object),
+            }),
+        )
+        expect(lastBindCall?.[1]).not.toEqual(
+            expect.objectContaining({
+                GO_FORWARD: expect.any(Object),
+            }),
+        )
+    })
 
     it('should track the control / cmd + f combo', () => {
         const { container } = renderWithRouter(

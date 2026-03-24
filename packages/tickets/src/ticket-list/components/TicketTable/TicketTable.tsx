@@ -62,12 +62,11 @@ export function TicketTable({ viewId, currentUserId, onFixFilters }: Props) {
         isFetchingNextPage,
         error,
         refetch,
-    } = useTicketsList(
-        viewId,
-        ticketsListParams,
-        false,
-        !view?.deactivated_datetime,
-    )
+    } = useTicketsList(viewId, {
+        params: ticketsListParams,
+        pauseUpdates: false,
+        enableStaleUpdates: !view?.deactivated_datetime,
+    })
     const placeholderKind = getPlaceholderKind({
         view,
         hasError: !!error,

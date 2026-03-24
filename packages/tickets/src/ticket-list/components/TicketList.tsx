@@ -179,12 +179,11 @@ export function TicketList({
         isFetchingNextPage,
         error,
         refetch,
-    } = useTicketsList(
-        viewId,
-        ticketsListParams,
+    } = useTicketsList(viewId, {
+        params: ticketsListParams,
         pauseUpdates,
-        shouldPollTicketUpdates,
-    )
+        enableStaleUpdates: shouldPollTicketUpdates,
+    })
 
     const placeholderKind = getPlaceholderKind({
         view,

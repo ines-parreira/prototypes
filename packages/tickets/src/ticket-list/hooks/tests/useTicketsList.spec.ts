@@ -199,7 +199,9 @@ describe('useTicketsList', () => {
 
         renderHook(() =>
             useTicketsList(viewId, {
-                order_by: 'last_message_datetime:desc',
+                params: {
+                    order_by: 'last_message_datetime:desc',
+                },
             }),
         )
 
@@ -243,7 +245,7 @@ describe('useTicketsList', () => {
             'useRefreshStaleTickets',
         )
 
-        renderHook(() => useTicketsList(viewId, undefined, false, false))
+        renderHook(() => useTicketsList(viewId, { enableStaleUpdates: false }))
 
         await waitFor(() => {
             expect(refreshSpy).toHaveBeenCalled()

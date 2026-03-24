@@ -232,6 +232,19 @@ export const shortcuts: Shortcuts = {
             },
         },
     },
+    TicketViewNavigator: {
+        description: 'Ticket view navigation',
+        actions: {
+            GO_BACK: {
+                key: 'left',
+                description: 'Go to the previous ticket.',
+            },
+            GO_FORWARD: {
+                key: 'right',
+                description: 'Go to the next ticket.',
+            },
+        },
+    },
     TicketActions: {
         description: 'Ticket actions menu',
         actions: {

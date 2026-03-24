@@ -1,9 +1,27 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
+import { shortcutManager } from '@repo/utils'
+import type { InfiniteData } from '@tanstack/react-query'
 import { act, screen } from '@testing-library/react'
 import { useLocation } from 'react-router'
 
-import { render } from '../../tests/render.utils'
+import { mockTicketCompact } from '@gorgias/helpdesk-mocks'
+import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
+
+import { createTestQueryClient, render } from '../../tests/render.utils'
+import { getNavigableTicketsListQueryKey } from '../../ticket-list/hooks/useTicketsList'
 import type { LegacyBridgeContextType } from '../../utils/LegacyBridge/context'
 import { TicketViewNavigator } from './TicketViewNavigator'
+
+vi.mock('@repo/logging', () => ({
+    logEvent: vi.fn(),
+    SegmentEvent: {
+        TicketKeyboardShortcutsPreviousNavigation:
+            'TicketKeyboardShortcutsPreviousNavigation',
+        TicketKeyboardShortcutsNextNavigation:
+            'TicketKeyboardShortcutsNextNavigation',
+    },
+}))
 
 const mockTicketViewNavigation: LegacyBridgeContextType['ticketViewNavigation'] =
     {
@@ -22,7 +40,20 @@ function LocationDisplay() {
     return <output aria-label="current location">{location.pathname}</output>
 }
 
+function makeInfiniteData(
+    pages: TicketCompact[][],
+): InfiniteData<{ data: TicketCompact[] }> {
+    return {
+        pages: pages.map((data) => ({ data })),
+        pageParams: [],
+    }
+}
+
 describe('TicketViewNavigator', () => {
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
+
     describe('when shouldDisplay is false', () => {
         it('should not render anything', () => {
             const { container } = render(<TicketViewNavigator />, {
@@ -40,6 +71,45 @@ describe('TicketViewNavigator', () => {
         it('should render previous and next buttons', () => {
             render(<TicketViewNavigator />, {
                 ticketViewNavigation: mockTicketViewNavigation,
+                initialEntries: ['/app/views/1/101'],
+                path: '/app/views/:viewId/:ticketId',
+            })
+
+            expect(
+                screen.getByRole('button', { name: /arrow-chevron-left/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /arrow-chevron-right/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should render buttons from active view cache even when legacy navigation is hidden', () => {
+            const queryClient = createTestQueryClient()
+            queryClient.setQueryData(
+                getNavigableTicketsListQueryKey(
+                    1,
+                    ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
+                ),
+                makeInfiniteData([
+                    [
+                        mockTicketCompact({ id: 100 }),
+                        mockTicketCompact({ id: 101 }),
+                        mockTicketCompact({ id: 102 }),
+                    ],
+                ]),
+            )
+
+            render(<TicketViewNavigator />, {
+                queryClient,
+                ticketViewNavigation: {
+                    ...mockTicketViewNavigation,
+                    shouldDisplay: false,
+                    shouldUseLegacyFunctions: true,
+                    previousTicketId: undefined,
+                    nextTicketId: undefined,
+                    isPreviousEnabled: false,
+                    isNextEnabled: false,
+                },
                 initialEntries: ['/app/views/1/101'],
                 path: '/app/views/:viewId/:ticketId',
             })
@@ -153,6 +223,114 @@ describe('TicketViewNavigator', () => {
             expect(nextButton).toBeDisabled()
 
             await act(() => user.click(nextButton))
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/views/1/101')
+        })
+
+        it('should navigate to previous ticket from the keyboard and log the segment event', async () => {
+            render(
+                <>
+                    <TicketViewNavigator />
+                    <LocationDisplay />
+                </>,
+                {
+                    ticketViewNavigation: mockTicketViewNavigation,
+                    initialEntries: ['/app/views/1/101'],
+                    path: '/app/views/:viewId/:ticketId',
+                },
+            )
+
+            await act(() => {
+                shortcutManager.triggerAction('TicketViewNavigator', 'GO_BACK')
+            })
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.TicketKeyboardShortcutsPreviousNavigation,
+            )
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/views/1/100')
+        })
+
+        it('should navigate to next ticket from the keyboard and log the segment event', async () => {
+            render(
+                <>
+                    <TicketViewNavigator />
+                    <LocationDisplay />
+                </>,
+                {
+                    ticketViewNavigation: mockTicketViewNavigation,
+                    initialEntries: ['/app/views/1/101'],
+                    path: '/app/views/:viewId/:ticketId',
+                },
+            )
+
+            await act(() => {
+                shortcutManager.triggerAction(
+                    'TicketViewNavigator',
+                    'GO_FORWARD',
+                )
+            })
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.TicketKeyboardShortcutsNextNavigation,
+            )
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/views/1/102')
+        })
+
+        it('should not navigate or log when previous keyboard navigation is disabled', async () => {
+            render(
+                <>
+                    <TicketViewNavigator />
+                    <LocationDisplay />
+                </>,
+                {
+                    ticketViewNavigation: {
+                        ...mockTicketViewNavigation,
+                        isPreviousEnabled: false,
+                    },
+                    initialEntries: ['/app/views/1/101'],
+                    path: '/app/views/:viewId/:ticketId',
+                },
+            )
+
+            await act(() => {
+                shortcutManager.triggerAction('TicketViewNavigator', 'GO_BACK')
+            })
+
+            expect(logEvent).not.toHaveBeenCalled()
+            expect(
+                screen.getByRole('status', { name: /current location/i }),
+            ).toHaveTextContent('/app/views/1/101')
+        })
+
+        it('should not navigate or log when next keyboard navigation is disabled', async () => {
+            render(
+                <>
+                    <TicketViewNavigator />
+                    <LocationDisplay />
+                </>,
+                {
+                    ticketViewNavigation: {
+                        ...mockTicketViewNavigation,
+                        isNextEnabled: false,
+                    },
+                    initialEntries: ['/app/views/1/101'],
+                    path: '/app/views/:viewId/:ticketId',
+                },
+            )
+
+            await act(() => {
+                shortcutManager.triggerAction(
+                    'TicketViewNavigator',
+                    'GO_FORWARD',
+                )
+            })
+
+            expect(logEvent).not.toHaveBeenCalled()
             expect(
                 screen.getByRole('status', { name: /current location/i }),
             ).toHaveTextContent('/app/views/1/101')
