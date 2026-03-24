@@ -8,17 +8,60 @@ export enum AiAgentNotificationType {
     AiShoppingAssistantTrialRequest = 'ai-shopping-assistant-trial-request',
     AiAgentTrialRequest = 'ai-agent-trial-request',
     NewOpportunityGenerated = 'new-opportunity-generated',
+    DomainSyncCompleted = 'domain-sync-completed',
+    DomainSyncFailed = 'domain-sync-failed',
+    UrlSyncCompleted = 'url-sync-completed',
+    UrlSyncFailed = 'url-sync-failed',
 }
 
-export type AiAgentNotificationPayload = {
-    ai_agent_notification_type: AiAgentNotificationType
+type AiAgentNotificationPayloadBase = {
     shop_name: string
     shop_type: string
-    ticket_id?: string
-    agent_id?: number
-    opportunity_ids?: number[]
-    total_tickets?: number
 }
+
+type OnboardingNotificationPayload = AiAgentNotificationPayloadBase & {
+    ai_agent_notification_type:
+        | AiAgentNotificationType.StartAiAgentSetup
+        | AiAgentNotificationType.FinishAiAgentSetup
+        | AiAgentNotificationType.ActivateAiAgent
+        | AiAgentNotificationType.MeetAiAgent
+        | AiAgentNotificationType.ScrapingProcessingFinished
+}
+
+type FirstAiAgentTicketNotificationPayload = AiAgentNotificationPayloadBase & {
+    ai_agent_notification_type: AiAgentNotificationType.FirstAiAgentTicket
+    ticket_id?: string
+}
+
+type TrialRequestNotificationPayload = AiAgentNotificationPayloadBase & {
+    ai_agent_notification_type:
+        | AiAgentNotificationType.AiShoppingAssistantTrialRequest
+        | AiAgentNotificationType.AiAgentTrialRequest
+    agent_id: number
+}
+
+type NewOpportunityNotificationPayload = AiAgentNotificationPayloadBase & {
+    ai_agent_notification_type: AiAgentNotificationType.NewOpportunityGenerated
+    opportunity_ids: readonly number[]
+    total_tickets: number
+}
+
+type SyncNotificationPayload = AiAgentNotificationPayloadBase & {
+    ai_agent_notification_type:
+        | AiAgentNotificationType.DomainSyncCompleted
+        | AiAgentNotificationType.DomainSyncFailed
+        | AiAgentNotificationType.UrlSyncCompleted
+        | AiAgentNotificationType.UrlSyncFailed
+    source_url: string
+    source_type: 'domain' | 'url'
+}
+
+export type AiAgentNotificationPayload =
+    | OnboardingNotificationPayload
+    | FirstAiAgentTicketNotificationPayload
+    | TrialRequestNotificationPayload
+    | NewOpportunityNotificationPayload
+    | SyncNotificationPayload
 
 export type WorkflowConfigurationUpdatedNotificationPayload = {
     store_name: string

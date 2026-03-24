@@ -6,6 +6,7 @@ import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceAction
 
 import type { GroupedKnowledgeItem } from '../../types'
 import { KnowledgeType, KnowledgeVisibility } from '../../types'
+import type { SyncStatusData } from '../columns'
 import { getColumns } from '../columns'
 
 // Mock the DrillDownModalTrigger component
@@ -467,7 +468,10 @@ describe('getColumns - Metrics Columns', () => {
     describe('In Use by AI Agent Column', () => {
         const IN_USE_BY_AI_COLUMN_INDEX = 6
 
-        const renderInUseByAICell = (item: GroupedKnowledgeItem) => {
+        const renderInUseByAICell = (
+            item: GroupedKnowledgeItem,
+            syncStatusData?: SyncStatusData,
+        ) => {
             const columns = getColumns(
                 '',
                 mockOnClick,
@@ -476,6 +480,11 @@ describe('getColumns - Metrics Columns', () => {
                 mockMetricsDateRange,
                 mockOutcomeCustomFieldId,
                 mockIntentCustomFieldId,
+                false,
+                undefined,
+                undefined,
+                undefined,
+                syncStatusData,
             )
             const column = columns[IN_USE_BY_AI_COLUMN_INDEX]
 
@@ -532,6 +541,90 @@ describe('getColumns - Metrics Columns', () => {
             expect(
                 screen.getByRole('img', { name: 'close' }),
             ).toBeInTheDocument()
+        })
+
+        it('should show loader for syncing grouped URL', () => {
+            const item = createMockItem({
+                type: KnowledgeType.URL,
+                isGrouped: true,
+                source: 'https://syncing.com',
+            })
+
+            renderInUseByAICell(item, {
+                syncingUrls: ['https://syncing.com'],
+                domainSyncStatus: undefined,
+                failedUrls: [],
+            })
+
+            expect(screen.getByRole('progressbar')).toBeInTheDocument()
+        })
+
+        it('should show loader for syncing grouped Domain', () => {
+            const item = createMockItem({
+                type: KnowledgeType.Domain,
+                isGrouped: true,
+            })
+
+            renderInUseByAICell(item, {
+                syncingUrls: [],
+                domainSyncStatus: 'PENDING',
+                failedUrls: [],
+            })
+
+            expect(screen.getByRole('progressbar')).toBeInTheDocument()
+        })
+
+        it('should show warning for failed grouped URL', () => {
+            const item = createMockItem({
+                type: KnowledgeType.URL,
+                isGrouped: true,
+                source: 'https://failed.com',
+                itemCount: 2,
+            })
+
+            renderInUseByAICell(item, {
+                syncingUrls: [],
+                domainSyncStatus: undefined,
+                failedUrls: ['https://failed.com'],
+            })
+
+            expect(
+                screen.getByRole('img', { name: 'triangle-warning' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show warning for failed grouped Domain', () => {
+            const item = createMockItem({
+                type: KnowledgeType.Domain,
+                isGrouped: true,
+                itemCount: 1,
+            })
+
+            renderInUseByAICell(item, {
+                syncingUrls: [],
+                domainSyncStatus: 'FAILED',
+                failedUrls: [],
+            })
+
+            expect(
+                screen.getByRole('img', { name: 'triangle-warning' }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show "--" for grouped items that are neither syncing nor failed', () => {
+            const item = createMockItem({
+                type: KnowledgeType.URL,
+                isGrouped: true,
+                source: 'https://normal.com',
+            })
+
+            renderInUseByAICell(item, {
+                syncingUrls: [],
+                domainSyncStatus: undefined,
+                failedUrls: [],
+            })
+
+            expect(screen.getByText('--')).toBeInTheDocument()
         })
     })
 })

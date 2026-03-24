@@ -87,3 +87,5 @@ CLAUDE.md
 .cursor/
 .opencode/
 .rulesync/skills/.curated/
+
+.agents/

@@ -44,14 +44,16 @@ import {
     openUrlModal,
     useListenToDocumentEvent,
 } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
+import type { FolderSyncStatus } from 'pages/aiAgent/KnowledgeHub/FolderSyncBanner'
+import { FolderSyncBanner } from 'pages/aiAgent/KnowledgeHub/FolderSyncBanner'
 import { useGetLastWebsiteSync } from 'pages/aiAgent/KnowledgeHub/hooks/useGetLastWebsiteSync'
 import { useKnowledgeHubFaqEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor'
 import { useKnowledgeHubGuidanceEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor'
 import { KnowledgeHubHeader } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/KnowledgeHubHeader'
-import { SyncStoreDomainBanner } from 'pages/aiAgent/KnowledgeHub/SyncStoreDomainBanner'
 import { KnowledgeHubTable } from 'pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable'
 import type {
     GroupedKnowledgeItem,
+    KnowledgeItem,
     KnowledgeMetrics,
 } from 'pages/aiAgent/KnowledgeHub/types'
 import {
@@ -95,15 +97,10 @@ export const KnowledgeHubContainer = () => {
         guidanceHelpCenterId,
         refetchKnowledgeHubArticles,
         storeDomainIngestionLog,
-        urlSyncStatus,
         syncingUrls,
         urlIngestionLogs,
         existingUrls,
-        urlTotalCount,
-        urlPendingCount,
-        fileIngestionStatus,
         fileIngestionLogs,
-        filePendingCount,
     } = useKnowledgeHub()
 
     const { onKnowledgeSourcesViewed } = useKnowledgeTracking({ shopName })
@@ -111,6 +108,28 @@ export const KnowledgeHubContainer = () => {
     useEffectOnce(() => {
         onKnowledgeSourcesViewed()
     })
+
+    const tableDataWithSyncingUrls = useMemo(() => {
+        const existingSourceUrls = new Set(
+            tableData
+                .filter((item) => item.type === KnowledgeType.URL)
+                .map((item) => item.source)
+                .filter(Boolean),
+        )
+
+        const syntheticEntries: KnowledgeItem[] = syncingUrls
+            .filter((url) => !existingSourceUrls.has(url))
+            .map((url) => ({
+                id: `syncing-${url}`,
+                title: url,
+                type: KnowledgeType.URL,
+                lastUpdatedAt: new Date().toISOString(),
+                source: url,
+                isSyncing: true,
+            }))
+
+        return [...tableData, ...syntheticEntries]
+    }, [tableData, syncingUrls])
 
     const {
         selectedFilter,
@@ -128,7 +147,7 @@ export const KnowledgeHubContainer = () => {
         removeFolderParamFromUrl,
         handleCloseEditorPath,
         clearSearchParams,
-    } = useKnowledgeHubUrlParams(shopName, tableData)
+    } = useKnowledgeHubUrlParams(shopName, tableDataWithSyncingUrls)
 
     const { routes } = useAiAgentNavigation({ shopName })
 
@@ -242,13 +261,12 @@ export const KnowledgeHubContainer = () => {
         return map
     }, [allResourcesMetrics.data])
 
-    // Enrich table data with metrics
     const enrichedTableData = useMemo(() => {
-        return tableData.map((item) => ({
+        return tableDataWithSyncingUrls.map((item) => ({
             ...item,
             metrics: metricsMap.get(item.id),
         }))
-    }, [tableData, metricsMap])
+    }, [tableDataWithSyncingUrls, metricsMap])
 
     useEffect(() => {
         const prevType = prevTypeRef.current
@@ -598,13 +616,42 @@ export const KnowledgeHubContainer = () => {
             .filter((url): url is string => !!url)
     }, [urlIngestionLogs])
 
-    const successfulUrls = useMemo(() => {
-        if (!urlIngestionLogs) return []
-        return urlIngestionLogs
-            .filter((log) => log.status === IngestionLogStatus.Successful)
-            .map((log) => log.url)
-            .filter((url): url is string => !!url)
-    }, [urlIngestionLogs])
+    const syncStatusData = useMemo(
+        () => ({
+            syncingUrls,
+            domainSyncStatus: syncStatus ?? undefined,
+            failedUrls,
+        }),
+        [syncingUrls, syncStatus, failedUrls],
+    )
+
+    const folderSyncStatus: FolderSyncStatus | null = useMemo(() => {
+        if (!selectedFolder) return null
+        if (selectedFolder.type === KnowledgeType.URL) {
+            if (syncingUrls.includes(selectedFolder.source ?? ''))
+                return 'syncing'
+            const urlLog = urlIngestionLogs?.find(
+                (log) => log.url === selectedFolder.source,
+            )
+            if (urlLog?.status === IngestionLogStatus.Failed) return 'error'
+            if (urlLog?.status === IngestionLogStatus.Successful)
+                return 'success'
+            return null
+        }
+        if (selectedFolder.type === KnowledgeType.Domain) {
+            if (syncStatus === IngestionLogStatus.Pending) return 'syncing'
+            if (syncStatus === IngestionLogStatus.Failed) return 'error'
+            if (syncStatus === IngestionLogStatus.Successful) return 'success'
+            return null
+        }
+        return null
+    }, [selectedFolder, syncingUrls, urlIngestionLogs, syncStatus])
+
+    const isDomainFolderSyncing = useMemo(() => {
+        if (!selectedFolder || selectedFolder.type !== KnowledgeType.Domain)
+            return false
+        return syncStatus === IngestionLogStatus.Pending
+    }, [selectedFolder, syncStatus])
 
     return (
         <div className={css.container}>
@@ -622,26 +669,15 @@ export const KnowledgeHubContainer = () => {
             />
             <div className={css.scrollContainer}>
                 <Box paddingLeft="lg" paddingRight="lg" flexDirection="column">
-                    <SyncStoreDomainBanner
-                        syncStatus={syncStatus}
-                        shopName={shopName}
-                        type="domain"
-                    />
-                    <SyncStoreDomainBanner
-                        syncStatus={urlSyncStatus}
-                        shopName={shopName}
-                        type="url"
-                        completedCount={urlPendingCount}
-                        totalCount={urlTotalCount}
-                        failedUrls={failedUrls}
-                        successfulUrls={successfulUrls}
-                    />
-                    <SyncStoreDomainBanner
-                        syncStatus={fileIngestionStatus}
-                        shopName={shopName}
-                        type="file"
-                        completedCount={filePendingCount}
-                    />
+                    {selectedFolder && folderSyncStatus && (
+                        <Box paddingTop="md">
+                            <FolderSyncBanner
+                                key={`${selectedFolder.source}-${folderSyncStatus}`}
+                                status={folderSyncStatus}
+                                folderType={selectedFolder.type}
+                            />
+                        </Box>
+                    )}
 
                     {!selectedFolder && (
                         <DocumentFilters
@@ -655,7 +691,12 @@ export const KnowledgeHubContainer = () => {
                     metricsDateRange={metricsDateRange}
                     isMetricsEnabled={true}
                     isMetricsLoading={isMetricsLoading}
-                    isLoading={isInitialLoading || isUrlFolderSyncing}
+                    isLoading={
+                        isInitialLoading ||
+                        isUrlFolderSyncing ||
+                        isDomainFolderSyncing
+                    }
+                    syncStatusData={syncStatusData}
                     onRowClick={onClick}
                     onGuidanceRowClick={handleOpenGuidanceEditor}
                     onFaqRowClick={handleOpenFaqEditor}

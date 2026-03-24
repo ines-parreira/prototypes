@@ -1,9 +1,12 @@
 import { useEffect, useRef } from 'react'
 
+import useAppDispatch from 'hooks/useAppDispatch'
 import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
 import { useGetStoreDomainIngestionLog } from 'pages/aiAgent/hooks/useGetStoreDomainIngestionLog'
 import { REFETCH_KNOWLEDGE_HUB_TABLE } from 'pages/aiAgent/KnowledgeHub/constants'
 import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 type UseDomainSyncStatusParams = {
     helpCenterId: number
@@ -18,6 +21,7 @@ export const useDomainSyncStatus = ({
     helpCenterId,
     storeUrl,
 }: UseDomainSyncStatusParams) => {
+    const dispatch = useAppDispatch()
     const { status: syncStatus, storeDomainIngestionLog } =
         useGetStoreDomainIngestionLog({
             helpCenterId,
@@ -32,16 +36,31 @@ export const useDomainSyncStatus = ({
         const prevStatus = prevSyncStatusRef.current
         const currentStatus = syncStatus
 
-        // Dispatch event when domain sync completes successfully
-        if (
-            prevStatus === IngestionLogStatus.Pending &&
-            currentStatus === IngestionLogStatus.Successful
-        ) {
-            dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
+        if (prevStatus === IngestionLogStatus.Pending) {
+            if (currentStatus === IngestionLogStatus.Successful) {
+                dispatchDocumentEvent(REFETCH_KNOWLEDGE_HUB_TABLE)
+                void dispatch(
+                    notify({
+                        message:
+                            'Your store website has been synced successfully.',
+                        status: NotificationStatus.Success,
+                    }),
+                )
+            }
+
+            if (currentStatus === IngestionLogStatus.Failed) {
+                void dispatch(
+                    notify({
+                        message:
+                            "We couldn't sync your store website. Please try again or contact support.",
+                        status: NotificationStatus.Error,
+                    }),
+                )
+            }
         }
 
         prevSyncStatusRef.current = currentStatus
-    }, [syncStatus])
+    }, [syncStatus, dispatch])
 
     return {
         syncStatus,

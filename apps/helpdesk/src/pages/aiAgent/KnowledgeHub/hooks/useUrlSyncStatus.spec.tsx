@@ -4,9 +4,17 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 
 import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
+import { NotificationStatus } from 'state/notifications/types'
 
 import { dispatchDocumentEvent } from '../EmptyState/utils'
 import { useUrlSyncStatus } from './useUrlSyncStatus'
+
+const mockDispatch = jest.fn()
+
+jest.mock('hooks/useAppDispatch', () => ({
+    __esModule: true,
+    default: () => mockDispatch,
+}))
 
 jest.mock('pages/aiAgent/hooks/useSyncUrl', () => ({
     useSyncUrl: jest.fn(),
@@ -16,6 +24,10 @@ jest.mock('../EmptyState/utils', () => ({
     dispatchDocumentEvent: jest.fn(),
 }))
 
+jest.mock('state/notifications/actions', () => ({
+    notify: jest.fn((payload) => ({ type: 'NOTIFY', payload })),
+}))
+
 const mockUseSyncUrl = jest.requireMock(
     'pages/aiAgent/hooks/useSyncUrl',
 ).useSyncUrl
@@ -23,6 +35,9 @@ const mockUseSyncUrl = jest.requireMock(
 const mockDispatchDocumentEvent = dispatchDocumentEvent as jest.MockedFunction<
     typeof dispatchDocumentEvent
 >
+
+const mockNotify = jest.requireMock('state/notifications/actions')
+    .notify as jest.Mock
 
 describe('useUrlSyncStatus', () => {
     let queryClient: QueryClient
@@ -713,7 +728,7 @@ describe('useUrlSyncStatus', () => {
             })
         })
 
-        it('does not dispatch event when URL sync fails', async () => {
+        it('does not dispatch refetch event when URL sync fails', async () => {
             mockUseSyncUrl.mockReturnValue({
                 latestUrlIngestionLog: {
                     id: 1,
@@ -756,6 +771,109 @@ describe('useUrlSyncStatus', () => {
             rerender()
 
             expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
+        })
+
+        it('dispatches success notification when URL sync completes', async () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Pending,
+                    created_datetime: '2024-01-01',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Pending,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
+            })
+
+            const { rerender } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                { wrapper: createWrapper() },
+            )
+
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Successful,
+                    created_datetime: '2024-01-01',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Successful,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
+            })
+
+            rerender()
+
+            await waitFor(() => {
+                expect(mockNotify).toHaveBeenCalledWith({
+                    message: 'Your URL has been synced successfully.',
+                    status: NotificationStatus.Success,
+                })
+                expect(mockDispatch).toHaveBeenCalled()
+            })
+        })
+
+        it('dispatches error notification when URL sync fails', async () => {
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Pending,
+                    created_datetime: '2024-01-01',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Pending,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
+            })
+
+            const { rerender } = renderHook(
+                () => useUrlSyncStatus(defaultParams),
+                { wrapper: createWrapper() },
+            )
+
+            mockUseSyncUrl.mockReturnValue({
+                latestUrlIngestionLog: {
+                    id: 1,
+                    url: 'https://example.com',
+                    status: IngestionLogStatus.Failed,
+                    created_datetime: '2024-01-01',
+                },
+                urlIngestionLogs: [
+                    {
+                        id: 1,
+                        url: 'https://example.com',
+                        status: IngestionLogStatus.Failed,
+                        created_datetime: '2024-01-01',
+                    },
+                ],
+            })
+
+            rerender()
+
+            await waitFor(() => {
+                expect(mockNotify).toHaveBeenCalledWith({
+                    message:
+                        "We couldn't sync your URL. Please try again or contact support.",
+                    status: NotificationStatus.Error,
+                })
+                expect(mockDispatch).toHaveBeenCalled()
+            })
         })
 
         it('does not dispatch event when status remains pending', async () => {

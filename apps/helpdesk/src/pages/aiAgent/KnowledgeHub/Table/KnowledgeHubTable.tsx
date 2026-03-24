@@ -26,6 +26,7 @@ import {
 import type { FilterOption } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
 import { AddFilterButton } from 'pages/aiAgent/KnowledgeHub/Table/AddFilterButton'
 import { BulkActions } from 'pages/aiAgent/KnowledgeHub/Table/BulkActions/BulkActions'
+import type { SyncStatusData } from 'pages/aiAgent/KnowledgeHub/Table/columns'
 import {
     COLUMN_IDS,
     getColumns,
@@ -90,6 +91,7 @@ type KnowledgeHubTableProps = {
     guidanceHelpCenterId?: number | null
     snippetHelpCenterId?: number | null
     clearSearchParams: () => void
+    syncStatusData?: SyncStatusData
 }
 
 export const KnowledgeHubTable = ({
@@ -119,6 +121,7 @@ export const KnowledgeHubTable = ({
     guidanceHelpCenterId,
     snippetHelpCenterId,
     clearSearchParams,
+    syncStatusData,
 }: KnowledgeHubTableProps) => {
     // Initialize activeFilterTypes from URL params
     const [activeFilterTypes, setActiveFilterTypes] = useState<Set<string>>(
@@ -401,6 +404,7 @@ export const KnowledgeHubTable = ({
             undefined, // shopIntegrationId (not currently used)
             sortState, // Pass sort state
             handleColumnClick, // Pass click handler
+            syncStatusData,
         )
     }, [
         searchTerm,
@@ -414,6 +418,7 @@ export const KnowledgeHubTable = ({
         isMetricsLoading,
         sortState,
         handleColumnClick,
+        syncStatusData,
     ])
 
     // Custom sorting - no TanStack sorting, we handle column clicks manually

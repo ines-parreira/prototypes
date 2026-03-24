@@ -30,6 +30,7 @@ export type KnowledgeItem = {
     content?: string
     draftVersionId?: number | null
     publishedVersionId?: number | null
+    isSyncing?: boolean
 }
 
 export type KnowledgeMetrics = {

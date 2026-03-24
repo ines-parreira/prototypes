@@ -224,11 +224,11 @@ export const SyncUrlModal = ({ helpCenterId, existingUrls }: Props) => {
             <Box flexDirection="column" gap="md">
                 {isResync ? (
                     <>
-                        <Text color="content-error-default">
+                        <Text>
                             Syncing will replace all existing snippets and reset
                             any disabled snippets from this URL.
                         </Text>
-                        <Text color="content-error-default">
+                        <Text>
                             This action cannot be undone. You will need to
                             review newly generated snippets after syncing.
                         </Text>

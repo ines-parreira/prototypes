@@ -6,6 +6,7 @@ import {
     CheckBoxField,
     createSelectableColumn,
     Icon,
+    Loader,
     Skeleton,
     Text,
     Tooltip,
@@ -24,6 +25,12 @@ import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceAction
 import { TitleCell } from './TitleCell'
 
 import styles from './KnowledgeHubTable.less'
+
+export type SyncStatusData = {
+    syncingUrls: string[]
+    domainSyncStatus: string | undefined
+    failedUrls: string[]
+}
 
 export const COLUMN_IDS = {
     TITLE: 'title',
@@ -167,6 +174,7 @@ export const getColumns = (
     // New parameters for custom sorting
     sortState?: SortingState,
     onColumnSort?: (columnId: string) => void,
+    syncStatusData?: SyncStatusData,
 ): ColumnDef<GroupedKnowledgeItem>[] => {
     // Base columns - always present
     const baseColumns: ColumnDef<GroupedKnowledgeItem>[] = [
@@ -437,6 +445,70 @@ export const getColumns = (
                 const row = info.row.original
 
                 if (isGrouped) {
+                    const isSyncing =
+                        (row.type === KnowledgeType.URL &&
+                            syncStatusData?.syncingUrls.includes(
+                                row.source ?? '',
+                            )) ||
+                        (row.type === KnowledgeType.Domain &&
+                            syncStatusData?.domainSyncStatus === 'PENDING')
+
+                    if (isSyncing) {
+                        return (
+                            <Box
+                                alignItems="center"
+                                justifyContent="flex-start"
+                            >
+                                <Tooltip
+                                    delay={0}
+                                    trigger={() => (
+                                        <span
+                                            className={styles.syncStatusTrigger}
+                                        >
+                                            <Loader size="sm" />
+                                        </span>
+                                    )}
+                                >
+                                    <TooltipContent caption="Syncing in progress..." />
+                                </Tooltip>
+                            </Box>
+                        )
+                    }
+
+                    const isFailed =
+                        (row.type === KnowledgeType.URL &&
+                            syncStatusData?.failedUrls.includes(
+                                row.source ?? '',
+                            )) ||
+                        (row.type === KnowledgeType.Domain &&
+                            syncStatusData?.domainSyncStatus === 'FAILED')
+
+                    if (isFailed && row.itemCount && row.itemCount > 0) {
+                        return (
+                            <Box
+                                alignItems="center"
+                                justifyContent="flex-start"
+                            >
+                                <Tooltip
+                                    delay={0}
+                                    trigger={() => (
+                                        <span
+                                            className={styles.syncStatusTrigger}
+                                        >
+                                            <Icon
+                                                name="triangle-warning"
+                                                size="sm"
+                                                color="content-error-primary"
+                                            />
+                                        </span>
+                                    )}
+                                >
+                                    <TooltipContent caption="Sync failed - using previous content" />
+                                </Tooltip>
+                            </Box>
+                        )
+                    }
+
                     return (
                         <Box alignItems="center" justifyContent="flex-start">
                             <Text>--</Text>

@@ -254,25 +254,11 @@ jest.mock(
         ),
     }),
 )
-jest.mock('pages/aiAgent/KnowledgeHub/SyncStoreDomainBanner', () => ({
-    SyncStoreDomainBanner: ({
-        syncStatus,
-        shopName,
-        type,
-        failedUrls,
-        successfulUrls,
-    }: any) => (
-        <div data-testid={`sync-banner-${type}`}>
-            <span data-testid="sync-status">{syncStatus}</span>
-            <span data-testid="shop-name">{shopName}</span>
-            {failedUrls && failedUrls.length > 0 && (
-                <span data-testid="failed-urls">{failedUrls.join(',')}</span>
-            )}
-            {successfulUrls && successfulUrls.length > 0 && (
-                <span data-testid="successful-urls">
-                    {successfulUrls.join(',')}
-                </span>
-            )}
+jest.mock('pages/aiAgent/KnowledgeHub/FolderSyncBanner', () => ({
+    FolderSyncBanner: ({ status, folderType }: any) => (
+        <div data-testid="folder-sync-banner">
+            <span data-testid="folder-sync-status">{status}</span>
+            <span data-testid="folder-sync-type">{folderType}</span>
         </div>
     ),
 }))
@@ -3067,170 +3053,11 @@ describe('KnowledgeHubContainer', () => {
         })
     })
 
-    describe('failedUrls and successfulUrls logic', () => {
-        it('should return empty array when urlIngestionLogs is undefined', () => {
+    describe('syncing URLs in table data', () => {
+        it('should show synthetic rows for syncing URLs not in tableData', () => {
             mockUseUrlSyncStatus.mockReturnValue({
                 syncStatus: null,
-                syncingUrls: [],
-                urlIngestionLogs: undefined,
-                totalCount: 0,
-                completedCount: 0,
-                successCount: 0,
-                pendingCount: 0,
-            })
-
-            renderComponent()
-
-            const failedUrls = screen.queryByTestId('failed-urls')
-            const successfulUrls = screen.queryByTestId('successful-urls')
-
-            expect(failedUrls).not.toBeInTheDocument()
-            expect(successfulUrls).not.toBeInTheDocument()
-        })
-
-        it('should filter and map failed URLs correctly', () => {
-            mockUseUrlSyncStatus.mockReturnValue({
-                syncStatus: null,
-                syncingUrls: [],
-                urlIngestionLogs: [
-                    {
-                        url: 'https://example.com/failed1',
-                        status: 'FAILED',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                    {
-                        url: 'https://example.com/successful',
-                        status: 'SUCCESSFUL',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                    {
-                        url: 'https://example.com/failed2',
-                        status: 'FAILED',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                ],
-                totalCount: 3,
-                completedCount: 3,
-                successCount: 1,
-                pendingCount: 0,
-            })
-
-            renderComponent()
-
-            const failedUrls = screen.getByTestId('failed-urls')
-            expect(failedUrls).toHaveTextContent(
-                'https://example.com/failed1,https://example.com/failed2',
-            )
-        })
-
-        it('should filter and map successful URLs correctly', () => {
-            mockUseUrlSyncStatus.mockReturnValue({
-                syncStatus: null,
-                syncingUrls: [],
-                urlIngestionLogs: [
-                    {
-                        url: 'https://example.com/failed',
-                        status: 'FAILED',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                    {
-                        url: 'https://example.com/successful1',
-                        status: 'SUCCESSFUL',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                    {
-                        url: 'https://example.com/successful2',
-                        status: 'SUCCESSFUL',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                ],
-                totalCount: 3,
-                completedCount: 3,
-                successCount: 2,
-                pendingCount: 0,
-            })
-
-            renderComponent()
-
-            const successfulUrls = screen.getByTestId('successful-urls')
-            expect(successfulUrls).toHaveTextContent(
-                'https://example.com/successful1,https://example.com/successful2',
-            )
-        })
-
-        it('should filter out logs with null or undefined URLs', () => {
-            mockUseUrlSyncStatus.mockReturnValue({
-                syncStatus: null,
-                syncingUrls: [],
-                urlIngestionLogs: [
-                    {
-                        url: null,
-                        status: 'FAILED',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                    {
-                        url: 'https://example.com/failed',
-                        status: 'FAILED',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                    {
-                        url: undefined,
-                        status: 'SUCCESSFUL',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                    {
-                        url: 'https://example.com/successful',
-                        status: 'SUCCESSFUL',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                ],
-                totalCount: 4,
-                completedCount: 4,
-                successCount: 2,
-                pendingCount: 0,
-            })
-
-            renderComponent()
-
-            const failedUrls = screen.getByTestId('failed-urls')
-            const successfulUrls = screen.getByTestId('successful-urls')
-
-            expect(failedUrls).toHaveTextContent('https://example.com/failed')
-            expect(successfulUrls).toHaveTextContent(
-                'https://example.com/successful',
-            )
-        })
-
-        it('should handle logs with only pending status', () => {
-            mockUseUrlSyncStatus.mockReturnValue({
-                syncStatus: 'PENDING',
-                syncingUrls: ['https://example.com/pending'],
-                urlIngestionLogs: [
-                    {
-                        url: 'https://example.com/pending',
-                        status: 'PENDING',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                ],
-                totalCount: 1,
-                completedCount: 0,
-                successCount: 0,
-                pendingCount: 1,
-            })
-
-            renderComponent()
-
-            const failedUrls = screen.queryByTestId('failed-urls')
-            const successfulUrls = screen.queryByTestId('successful-urls')
-
-            expect(failedUrls).not.toBeInTheDocument()
-            expect(successfulUrls).not.toBeInTheDocument()
-        })
-
-        it('should handle empty urlIngestionLogs array', () => {
-            mockUseUrlSyncStatus.mockReturnValue({
-                syncStatus: null,
-                syncingUrls: [],
+                syncingUrls: ['https://new-url.com'],
                 urlIngestionLogs: [],
                 totalCount: 0,
                 completedCount: 0,
@@ -3238,56 +3065,86 @@ describe('KnowledgeHubContainer', () => {
                 pendingCount: 0,
             })
 
-            renderComponent()
-
-            const failedUrls = screen.queryByTestId('failed-urls')
-            const successfulUrls = screen.queryByTestId('successful-urls')
-
-            expect(failedUrls).not.toBeInTheDocument()
-            expect(successfulUrls).not.toBeInTheDocument()
-        })
-
-        it('should handle logs with empty string URLs', () => {
-            mockUseUrlSyncStatus.mockReturnValue({
-                syncStatus: null,
-                syncingUrls: [],
-                urlIngestionLogs: [
-                    {
-                        url: '',
-                        status: 'FAILED',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                    {
-                        url: 'https://example.com/failed',
-                        status: 'FAILED',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                    {
-                        url: '',
-                        status: 'SUCCESSFUL',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                    {
-                        url: 'https://example.com/successful',
-                        status: 'SUCCESSFUL',
-                        latest_sync: '2025-01-01T00:00:00Z',
-                    },
-                ],
-                totalCount: 4,
-                completedCount: 4,
-                successCount: 2,
-                pendingCount: 0,
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: { articles: [] },
+                isInitialLoading: false,
+                refetch: jest.fn(),
             })
 
             renderComponent()
 
-            const failedUrls = screen.getByTestId('failed-urls')
-            const successfulUrls = screen.getByTestId('successful-urls')
+            expect(screen.getByText('https://new-url.com')).toBeInTheDocument()
+        })
 
-            expect(failedUrls).toHaveTextContent('https://example.com/failed')
-            expect(successfulUrls).toHaveTextContent(
-                'https://example.com/successful',
-            )
+        it('should not create duplicate rows for URLs already in tableData', () => {
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: null,
+                syncingUrls: ['https://existing.com'],
+                urlIngestionLogs: [],
+                totalCount: 0,
+                completedCount: 0,
+                successCount: 0,
+                pendingCount: 0,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Existing URL Article',
+                            type: KnowledgeType.URL,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://existing.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('Existing URL Article')).toBeInTheDocument()
+            expect(
+                screen.queryByText('https://existing.com'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show synthetic row alongside existing data', () => {
+            mockUseUrlSyncStatus.mockReturnValue({
+                syncStatus: null,
+                syncingUrls: ['https://new-syncing-url.com'],
+                urlIngestionLogs: [],
+                totalCount: 0,
+                completedCount: 0,
+                successCount: 0,
+                pendingCount: 0,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Test Article',
+                            type: 'guidance',
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            expect(screen.getByText('Test Article')).toBeInTheDocument()
+            expect(
+                screen.getByText('https://new-syncing-url.com'),
+            ).toBeInTheDocument()
         })
     })
 })

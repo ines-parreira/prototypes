@@ -1,6 +1,5 @@
 import moment from 'moment'
 
-import type { User } from 'config/types/user'
 import type {
     OnboardingNotificationState,
     TrialRequestNotification,
@@ -24,21 +23,8 @@ export const getNotificationParams = (
     payload: AiAgentNotificationPayload,
     aiAgentTicketViewId: number | null,
 ): NotificationParams | null => {
-    const {
-        ai_agent_notification_type: aiAgentNotificationType,
-        shop_name: shopName,
-        ticket_id: ticketId,
-        agent_id: agentId,
-        opportunity_ids: opportunityIds,
-        total_tickets: totalTickets,
-    } = payload
-
-    const routes = getAiAgentNavigationRoutes(shopName)
-    let agent: User | undefined
-
-    if (agentId) {
-        agent = getAgent(agentId)
-    }
+    const { ai_agent_notification_type: aiAgentNotificationType } = payload
+    const routes = getAiAgentNavigationRoutes(payload.shop_name)
 
     switch (aiAgentNotificationType) {
         case AiAgentNotificationType.StartAiAgentSetup:
@@ -52,14 +38,14 @@ export const getNotificationParams = (
             return {
                 title: 'Finish AI Agent setup',
                 subtitle:
-                    'You’re only a few steps away from getting AI Agent ready to start automating 60% of your tickets!',
+                    "You're only a few steps away from getting AI Agent ready to start automating 60% of your tickets!",
                 redirectTo: routes.onboardingWizard,
             }
         case AiAgentNotificationType.ActivateAiAgent:
             return {
                 title: 'Activate AI Agent',
                 subtitle:
-                    'You’re just one click away from automating 60% of your tickets!',
+                    "You're just one click away from automating 60% of your tickets!",
                 redirectTo: routes.settings,
             }
         case AiAgentNotificationType.MeetAiAgent:
@@ -72,37 +58,47 @@ export const getNotificationParams = (
         case AiAgentNotificationType.ScrapingProcessingFinished:
             return {
                 title: 'Your AI Agent knowledge is ready!',
-                subtitle: `We’ve finished syncing your store ${shopName} so AI Agent can use it to answer tickets.`,
+                subtitle: `We've finished syncing your store ${payload.shop_name} so AI Agent can use it to answer tickets.`,
                 redirectTo: routes.knowledge,
             }
-        case AiAgentNotificationType.FirstAiAgentTicket:
+        case AiAgentNotificationType.FirstAiAgentTicket: {
+            const { ticket_id: ticketId } = payload
             return {
                 title: 'AI Agent answered its first ticket',
                 subtitle:
-                    'Review AI Agent’s response and leave feedback in the ticket to improve its performance.',
+                    "Review AI Agent's response and leave feedback in the ticket to improve its performance.",
                 redirectTo:
                     aiAgentTicketViewId && ticketId
                         ? `/app/views/${aiAgentTicketViewId}/${ticketId}`
                         : '',
             }
-        case AiAgentNotificationType.AiShoppingAssistantTrialRequest:
+        }
+        case AiAgentNotificationType.AiShoppingAssistantTrialRequest: {
+            const agent = getAgent(payload.agent_id)
             const agentName = agent?.name || 'Your team'
             return {
                 title: 'New message',
                 subtitle: `<b>Trial request</b> from <b>${agentName}</b>`,
                 excerpt: `${agentName} has expressed interest in trying out the Shopping Assistant for 14 days at no additional cost.`,
-                redirectTo: `/app/ai-agent/shopify/${shopName}/sales?from=notification`,
+                redirectTo: `/app/ai-agent/shopify/${payload.shop_name}/sales?from=notification`,
             }
-        case AiAgentNotificationType.AiAgentTrialRequest:
+        }
+        case AiAgentNotificationType.AiAgentTrialRequest: {
+            const agent = getAgent(payload.agent_id)
             const aiAgentName = agent?.name || 'Your team'
             return {
                 title: 'New message',
                 subtitle: `<b>Trial request</b> from <b>${aiAgentName}</b>`,
-                excerpt: `${aiAgentName} wants to try out AI Agent for 14 days for ${shopName} for free.`,
-                redirectTo: `/app/ai-agent/shopify/${shopName}/trial?from=notification`,
+                excerpt: `${aiAgentName} wants to try out AI Agent for 14 days for ${payload.shop_name} for free.`,
+                redirectTo: `/app/ai-agent/shopify/${payload.shop_name}/trial?from=notification`,
             }
-        case AiAgentNotificationType.NewOpportunityGenerated:
-            if (!opportunityIds || !opportunityIds.length) return null
+        }
+        case AiAgentNotificationType.NewOpportunityGenerated: {
+            const {
+                opportunity_ids: opportunityIds,
+                total_tickets: totalTickets,
+            } = payload
+            if (!opportunityIds.length) return null
             const totalOpportunities = opportunityIds.length
             return {
                 title: 'New opportunities to improve AI Agent',
@@ -110,6 +106,35 @@ export const getNotificationParams = (
                 redirectTo: routes.opportunitiesWithId(
                     opportunityIds[0].toString(),
                 ),
+            }
+        }
+        case AiAgentNotificationType.DomainSyncCompleted:
+            return {
+                title: 'Store website synced',
+                subtitle:
+                    'Your store website has been synced successfully and is in use by AI Agent. Review newly generated content for accuracy.',
+                redirectTo: routes.knowledgeSourcesByDomain(payload.source_url),
+            }
+        case AiAgentNotificationType.DomainSyncFailed:
+            return {
+                title: 'Store website failed to sync',
+                subtitle:
+                    "We couldn't sync your store website. Please try again or contact support if the issue persists.",
+                redirectTo: routes.knowledgeSourcesByDomain(payload.source_url),
+            }
+        case AiAgentNotificationType.UrlSyncCompleted:
+            return {
+                title: 'URL synced',
+                subtitle:
+                    'Your URL has been synced successfully and is in use by AI Agent. Review newly generated content for accuracy.',
+                redirectTo: routes.knowledgeSourcesByUrl(payload.source_url),
+            }
+        case AiAgentNotificationType.UrlSyncFailed:
+            return {
+                title: 'URL failed to sync',
+                subtitle:
+                    "We couldn't sync one or more of your URLs. Make sure URLs are correct and publicly accessible.",
+                redirectTo: routes.knowledgeSourcesByUrl(payload.source_url),
             }
         default:
             return null
@@ -120,10 +145,7 @@ export const getNotificationReceivedDatetimePayload = (
     payload: AiAgentNotificationPayload,
     onboardingNotificationState?: OnboardingNotificationState,
 ): Partial<OnboardingNotificationState> => {
-    const {
-        ai_agent_notification_type: aiAgentNotificationType,
-        agent_id: agentId,
-    } = payload
+    const { ai_agent_notification_type: aiAgentNotificationType } = payload
 
     const receivedDatetime = new Date().toISOString()
     switch (aiAgentNotificationType) {
@@ -154,7 +176,8 @@ export const getNotificationReceivedDatetimePayload = (
                     receivedDatetime,
                 onboardingState: AiAgentOnboardingState.FullyOnboarded,
             }
-        case AiAgentNotificationType.AiShoppingAssistantTrialRequest:
+        case AiAgentNotificationType.AiShoppingAssistantTrialRequest: {
+            const { agent_id: agentId } = payload
             const existingNotifications =
                 onboardingNotificationState?.trialRequestNotification || []
             let updatedNotifications = [...existingNotifications]
@@ -171,7 +194,7 @@ export const getNotificationReceivedDatetimePayload = (
                 }
             } else {
                 updatedNotifications.push({
-                    userId: agentId!,
+                    userId: agentId,
                     receivedDatetime,
                     trialType: TrialType.ShoppingAssistant,
                 })
@@ -180,7 +203,9 @@ export const getNotificationReceivedDatetimePayload = (
             return {
                 trialRequestNotification: updatedNotifications,
             }
-        case AiAgentNotificationType.AiAgentTrialRequest:
+        }
+        case AiAgentNotificationType.AiAgentTrialRequest: {
+            const { agent_id: agentId } = payload
             const existingAiAgentNotifications =
                 onboardingNotificationState?.trialRequestNotification || []
             let updatedAiAgentNotifications = [...existingAiAgentNotifications]
@@ -198,7 +223,7 @@ export const getNotificationReceivedDatetimePayload = (
                 }
             } else {
                 updatedAiAgentNotifications.push({
-                    userId: agentId!,
+                    userId: agentId,
                     receivedDatetime,
                     trialType: TrialType.AiAgent,
                 })
@@ -207,6 +232,7 @@ export const getNotificationReceivedDatetimePayload = (
             return {
                 trialRequestNotification: updatedAiAgentNotifications,
             }
+        }
         default:
             return {}
     }
@@ -224,10 +250,7 @@ export const isNotificationAlreadyReceived = (
         return false
     }
 
-    const {
-        ai_agent_notification_type: aiAgentNotificationType,
-        agent_id: agentId,
-    } = payload
+    const { ai_agent_notification_type: aiAgentNotificationType } = payload
 
     switch (aiAgentNotificationType) {
         case AiAgentNotificationType.StartAiAgentSetup:
@@ -242,11 +265,11 @@ export const isNotificationAlreadyReceived = (
             return !!onboardingNotificationState.scrapingProcessingFinishedDatetime
         case AiAgentNotificationType.FirstAiAgentTicket:
             return !!onboardingNotificationState.firstAiAgentTicketNotificationReceivedDatetime
-        case AiAgentNotificationType.AiShoppingAssistantTrialRequest:
+        case AiAgentNotificationType.AiShoppingAssistantTrialRequest: {
             const trialRequest =
                 onboardingNotificationState.trialRequestNotification?.find(
                     (trialRequest) =>
-                        trialRequest.userId === agentId &&
+                        trialRequest.userId === payload.agent_id &&
                         isTrialNotificationOfType(
                             trialRequest,
                             TrialType.ShoppingAssistant,
@@ -256,11 +279,12 @@ export const isNotificationAlreadyReceived = (
                 return false
             }
             return isLessThan24HoursAgo(trialRequest.receivedDatetime)
-        case AiAgentNotificationType.AiAgentTrialRequest:
+        }
+        case AiAgentNotificationType.AiAgentTrialRequest: {
             const trialRequestAiAgent =
                 onboardingNotificationState.trialRequestNotification?.find(
                     (trialRequest) =>
-                        trialRequest.userId === agentId &&
+                        trialRequest.userId === payload.agent_id &&
                         isTrialNotificationOfType(
                             trialRequest,
                             TrialType.AiAgent,
@@ -270,6 +294,7 @@ export const isNotificationAlreadyReceived = (
                 return false
             }
             return isLessThan24HoursAgo(trialRequestAiAgent.receivedDatetime)
+        }
         default:
             return false
     }

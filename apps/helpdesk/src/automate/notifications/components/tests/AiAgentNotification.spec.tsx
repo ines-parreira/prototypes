@@ -65,16 +65,22 @@ describe('AiAgentNotification', () => {
     const basePayload = {
         shop_name: SHOP_NAME,
         shop_type: 'shopify',
-    }
+    } as const
 
     const notifications: {
         type: AiAgentNotificationType
+        payload: AiAgentNotificationPayload
         title: string
         subtitle: string
         redirectTo: string
     }[] = [
         {
             type: AiAgentNotificationType.StartAiAgentSetup,
+            payload: {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.StartAiAgentSetup,
+            },
             title: 'Set up AI Agent',
             subtitle:
                 'We noticed you checking out AI Agent. It only takes a few steps to start automating 60% of your tickets!',
@@ -82,20 +88,34 @@ describe('AiAgentNotification', () => {
         },
         {
             type: AiAgentNotificationType.FinishAiAgentSetup,
+            payload: {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.FinishAiAgentSetup,
+            },
             title: 'Finish AI Agent setup',
             subtitle:
-                'You’re only a few steps away from getting AI Agent ready to start automating 60% of your tickets!',
+                "You're only a few steps away from getting AI Agent ready to start automating 60% of your tickets!",
             redirectTo: '/app/ai-agent/shopify/store_1/onboarding',
         },
         {
             type: AiAgentNotificationType.ActivateAiAgent,
+            payload: {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.ActivateAiAgent,
+            },
             title: 'Activate AI Agent',
             subtitle:
-                'You’re just one click away from automating 60% of your tickets!',
+                "You're just one click away from automating 60% of your tickets!",
             redirectTo: '/app/ai-agent/shopify/store_1/settings',
         },
         {
             type: AiAgentNotificationType.MeetAiAgent,
+            payload: {
+                ...basePayload,
+                ai_agent_notification_type: AiAgentNotificationType.MeetAiAgent,
+            },
             title: 'Meet your new team member: AI Agent',
             subtitle:
                 'Delight customers with instant and personalized answers, automating up to 60% of your tickets!',
@@ -103,30 +123,29 @@ describe('AiAgentNotification', () => {
         },
         {
             type: AiAgentNotificationType.FirstAiAgentTicket,
+            payload: {
+                ...basePayload,
+                ai_agent_notification_type:
+                    AiAgentNotificationType.FirstAiAgentTicket,
+                ticket_id: '12345',
+            },
             title: 'AI Agent answered its first ticket',
             subtitle:
-                'Review AI Agent’s response and leave feedback in the ticket to improve its performance.',
+                "Review AI Agent's response and leave feedback in the ticket to improve its performance.",
             redirectTo: `/app/views/${TICKET_VIEW_ID}/12345`,
         },
     ]
 
     it.each(notifications)(
         'should render correctly $type notification and redirect to the correct page when clicked',
-        ({ type, title, subtitle, redirectTo }) => {
+        ({ payload, title, subtitle, redirectTo }) => {
             const notification: Notification<AiAgentNotificationPayload> = {
                 id: '1',
                 inserted_datetime: '2024-11-04T13:07:00',
                 read_datetime: null,
                 seen_datetime: null,
                 type: 'automate-setup-and-optimization',
-                payload: {
-                    ...basePayload,
-                    ai_agent_notification_type: type,
-                    ticket_id:
-                        type === AiAgentNotificationType.FirstAiAgentTicket
-                            ? '12345'
-                            : undefined,
-                },
+                payload,
             }
 
             const { getByText, container } = renderWithRouter(
@@ -158,9 +177,8 @@ describe('AiAgentNotification', () => {
                 type: 'automate-setup-and-optimization',
                 payload: {
                     ...basePayload,
-                    ai_agent_notification_type:
-                        'unsupported-type' as AiAgentNotificationType,
-                },
+                    ai_agent_notification_type: 'unsupported-type',
+                } as unknown as AiAgentNotificationPayload,
             }
 
         const { container } = renderWithRouter(
@@ -172,21 +190,14 @@ describe('AiAgentNotification', () => {
 
     it.each(notifications)(
         'should save and log event when $type notification is received',
-        ({ type }) => {
+        ({ type, payload }) => {
             const notification: Notification<AiAgentNotificationPayload> = {
                 id: '1',
                 inserted_datetime: '2024-11-04T13:07:00',
                 read_datetime: null,
                 seen_datetime: null,
                 type: 'automate-setup-and-optimization',
-                payload: {
-                    ...basePayload,
-                    ai_agent_notification_type: type,
-                    ticket_id:
-                        type === AiAgentNotificationType.FirstAiAgentTicket
-                            ? '12345'
-                            : undefined,
-                },
+                payload,
             }
 
             renderWithRouter(
@@ -235,21 +246,14 @@ describe('AiAgentNotification', () => {
 
     it.each(notifications)(
         'should log event when $type notification is clicked',
-        ({ type, redirectTo }) => {
+        ({ type, payload, redirectTo }) => {
             const notification: Notification<AiAgentNotificationPayload> = {
                 id: '1',
                 inserted_datetime: '2024-11-04T13:07:00',
                 read_datetime: null,
                 seen_datetime: null,
                 type: 'automate-setup-and-optimization',
-                payload: {
-                    ...basePayload,
-                    ai_agent_notification_type: type,
-                    ticket_id:
-                        type === AiAgentNotificationType.FirstAiAgentTicket
-                            ? '12345'
-                            : undefined,
-                },
+                payload,
             }
 
             const { container } = renderWithRouter(

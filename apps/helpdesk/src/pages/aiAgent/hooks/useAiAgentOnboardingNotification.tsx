@@ -351,7 +351,11 @@ export const useAiAgentOnboardingNotification = ({
     ])
 
     const handleOnTriggerTrialRequestNotification = useCallback(
-        async (notificationType: AiAgentNotificationType) => {
+        async (
+            notificationType:
+                | AiAgentNotificationType.AiShoppingAssistantTrialRequest
+                | AiAgentNotificationType.AiAgentTrialRequest,
+        ) => {
             if (!isAiAgentOnboardingNotificationEnabled || !shopName) return
 
             const { data } = await getOnboardingNotificationState(

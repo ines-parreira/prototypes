@@ -47,7 +47,15 @@ export default function AiAgentNotification({ notification, ...props }: Props) {
 
         if (
             payload.ai_agent_notification_type ===
-            AiAgentNotificationType.NewOpportunityGenerated
+                AiAgentNotificationType.NewOpportunityGenerated ||
+            payload.ai_agent_notification_type ===
+                AiAgentNotificationType.DomainSyncCompleted ||
+            payload.ai_agent_notification_type ===
+                AiAgentNotificationType.DomainSyncFailed ||
+            payload.ai_agent_notification_type ===
+                AiAgentNotificationType.UrlSyncCompleted ||
+            payload.ai_agent_notification_type ===
+                AiAgentNotificationType.UrlSyncFailed
         )
             return
 

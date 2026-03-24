@@ -2,6 +2,7 @@ import type { OnboardingNotificationState } from 'models/aiAgent/types'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import { getOnboardingNotificationStateFixture } from 'pages/aiAgent/fixtures/onboardingNotificationState.fixture'
 
+import type { AiAgentNotificationPayload } from '../types'
 import { AiAgentNotificationType } from '../types'
 import {
     getNotificationParams,
@@ -15,15 +16,14 @@ import {
 const basePayload = {
     shop_name: 'store_1',
     shop_type: 'shopify',
-    ticket_id: '12345',
-}
+} as const
 describe('getNotificationParams', () => {
     it('should return correct params for StartAiAgentSetup', () => {
         const payload = {
             ...basePayload,
             ai_agent_notification_type:
                 AiAgentNotificationType.StartAiAgentSetup,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
@@ -40,14 +40,14 @@ describe('getNotificationParams', () => {
             ...basePayload,
             ai_agent_notification_type:
                 AiAgentNotificationType.FinishAiAgentSetup,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
         expect(result).toEqual({
             title: 'Finish AI Agent setup',
             subtitle:
-                'You’re only a few steps away from getting AI Agent ready to start automating 60% of your tickets!',
+                "You're only a few steps away from getting AI Agent ready to start automating 60% of your tickets!",
             redirectTo: '/app/ai-agent/shopify/store_1/onboarding',
         })
     })
@@ -56,14 +56,14 @@ describe('getNotificationParams', () => {
         const payload = {
             ...basePayload,
             ai_agent_notification_type: AiAgentNotificationType.ActivateAiAgent,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
         expect(result).toEqual({
             title: 'Activate AI Agent',
             subtitle:
-                'You’re just one click away from automating 60% of your tickets!',
+                "You're just one click away from automating 60% of your tickets!",
             redirectTo: '/app/ai-agent/shopify/store_1/settings',
         })
     })
@@ -72,7 +72,7 @@ describe('getNotificationParams', () => {
         const payload = {
             ...basePayload,
             ai_agent_notification_type: AiAgentNotificationType.MeetAiAgent,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
@@ -89,14 +89,15 @@ describe('getNotificationParams', () => {
             ...basePayload,
             ai_agent_notification_type:
                 AiAgentNotificationType.FirstAiAgentTicket,
-        }
+            ticket_id: '12345',
+        } as const
 
         const result = getNotificationParams(payload, 123)
 
         expect(result).toEqual({
             title: 'AI Agent answered its first ticket',
             subtitle:
-                'Review AI Agent’s response and leave feedback in the ticket to improve its performance.',
+                "Review AI Agent's response and leave feedback in the ticket to improve its performance.",
             redirectTo: '/app/views/123/12345',
         })
     })
@@ -106,14 +107,14 @@ describe('getNotificationParams', () => {
             ...basePayload,
             ai_agent_notification_type:
                 AiAgentNotificationType.ScrapingProcessingFinished,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
         expect(result).toEqual({
             title: 'Your AI Agent knowledge is ready!',
             subtitle:
-                'We’ve finished syncing your store store_1 so AI Agent can use it to answer tickets.',
+                "We've finished syncing your store store_1 so AI Agent can use it to answer tickets.",
             redirectTo: '/app/ai-agent/shopify/store_1/knowledge',
         })
     })
@@ -129,7 +130,7 @@ describe('getNotificationParams', () => {
             ai_agent_notification_type:
                 AiAgentNotificationType.AiShoppingAssistantTrialRequest,
             agent_id: 123,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
@@ -153,7 +154,7 @@ describe('getNotificationParams', () => {
             ai_agent_notification_type:
                 AiAgentNotificationType.AiShoppingAssistantTrialRequest,
             agent_id: 123,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
@@ -177,7 +178,7 @@ describe('getNotificationParams', () => {
             ai_agent_notification_type:
                 AiAgentNotificationType.AiAgentTrialRequest,
             agent_id: 123,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
@@ -201,7 +202,7 @@ describe('getNotificationParams', () => {
             ai_agent_notification_type:
                 AiAgentNotificationType.AiAgentTrialRequest,
             agent_id: 123,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
@@ -221,7 +222,7 @@ describe('getNotificationParams', () => {
                 AiAgentNotificationType.NewOpportunityGenerated,
             opportunity_ids: [123, 456],
             total_tickets: 15,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
@@ -240,19 +241,93 @@ describe('getNotificationParams', () => {
                 AiAgentNotificationType.NewOpportunityGenerated,
             opportunity_ids: [],
             total_tickets: 10,
-        }
+        } as const
 
         const result = getNotificationParams(payload, null)
 
         expect(result).toEqual(null)
     })
 
-    it('should return null for unsupported notification series', () => {
+    it('should return correct params for DomainSyncCompleted', () => {
         const payload = {
             ...basePayload,
             ai_agent_notification_type:
-                'unsupported-series' as AiAgentNotificationType,
-        }
+                AiAgentNotificationType.DomainSyncCompleted,
+            source_url: 'https://example.com',
+            source_type: 'domain' as const,
+        } as const
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'Store website synced',
+            subtitle:
+                'Your store website has been synced successfully and is in use by AI Agent. Review newly generated content for accuracy.',
+            redirectTo: `/app/ai-agent/shopify/store_1/knowledge/sources?filter=domain&folder=${encodeURIComponent('https://example.com')}`,
+        })
+    })
+
+    it('should return correct params for DomainSyncFailed', () => {
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.DomainSyncFailed,
+            source_url: 'https://example.com',
+            source_type: 'domain' as const,
+        } as const
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'Store website failed to sync',
+            subtitle:
+                "We couldn't sync your store website. Please try again or contact support if the issue persists.",
+            redirectTo: `/app/ai-agent/shopify/store_1/knowledge/sources?filter=domain&folder=${encodeURIComponent('https://example.com')}`,
+        })
+    })
+
+    it('should return correct params for UrlSyncCompleted', () => {
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type:
+                AiAgentNotificationType.UrlSyncCompleted,
+            source_url: 'https://example.com/page',
+            source_type: 'url' as const,
+        } as const
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'URL synced',
+            subtitle:
+                'Your URL has been synced successfully and is in use by AI Agent. Review newly generated content for accuracy.',
+            redirectTo: `/app/ai-agent/shopify/store_1/knowledge/sources?filter=url&folder=${encodeURIComponent('https://example.com/page')}`,
+        })
+    })
+
+    it('should return correct params for UrlSyncFailed', () => {
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type: AiAgentNotificationType.UrlSyncFailed,
+            source_url: 'https://example.com/page',
+            source_type: 'url' as const,
+        } as const
+
+        const result = getNotificationParams(payload, null)
+
+        expect(result).toEqual({
+            title: 'URL failed to sync',
+            subtitle:
+                "We couldn't sync one or more of your URLs. Make sure URLs are correct and publicly accessible.",
+            redirectTo: `/app/ai-agent/shopify/store_1/knowledge/sources?filter=url&folder=${encodeURIComponent('https://example.com/page')}`,
+        })
+    })
+
+    it('should return null for unsupported notification series', () => {
+        const payload = {
+            ...basePayload,
+            ai_agent_notification_type: 'unsupported-series',
+        } as unknown as AiAgentNotificationPayload
 
         const result = getNotificationParams(payload, null)
 
@@ -531,9 +606,8 @@ describe('getNotificationReceivedDatetimePayload', () => {
     it('should return an empty object for unsupported notification types', () => {
         const result = getNotificationReceivedDatetimePayload({
             ...basePayload,
-            ai_agent_notification_type:
-                'unsupported-series' as AiAgentNotificationType,
-        })
+            ai_agent_notification_type: 'unsupported-series',
+        } as unknown as AiAgentNotificationPayload)
         expect(result).toEqual({})
     })
 })
@@ -869,9 +943,8 @@ describe('isNotificationAlreadyReceived', () => {
         const result = isNotificationAlreadyReceived(
             {
                 ...basePayload,
-                ai_agent_notification_type:
-                    'unsupported-series' as AiAgentNotificationType,
-            },
+                ai_agent_notification_type: 'unsupported-series',
+            } as unknown as AiAgentNotificationPayload,
             baseState,
         )
         expect(result).toBe(false)

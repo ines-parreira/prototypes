@@ -1,11 +1,21 @@
 import { renderHook, waitFor } from '@testing-library/react'
 
 import { IngestionLogStatus } from 'pages/aiAgent/AiAgentScrapedDomainContent/constant'
+import { NotificationStatus } from 'state/notifications/types'
 
 import { useDomainSyncStatus } from './useDomainSyncStatus'
 
+const mockDispatch = jest.fn()
+
+jest.mock('hooks/useAppDispatch', () => ({
+    __esModule: true,
+    default: () => mockDispatch,
+}))
 jest.mock('pages/aiAgent/hooks/useGetStoreDomainIngestionLog')
 jest.mock('pages/aiAgent/KnowledgeHub/EmptyState/utils')
+jest.mock('state/notifications/actions', () => ({
+    notify: jest.fn((payload) => ({ type: 'NOTIFY', payload })),
+}))
 
 const mockUseGetStoreDomainIngestionLog = jest.requireMock(
     'pages/aiAgent/hooks/useGetStoreDomainIngestionLog',
@@ -14,6 +24,9 @@ const mockUseGetStoreDomainIngestionLog = jest.requireMock(
 const mockDispatchDocumentEvent = jest.requireMock(
     'pages/aiAgent/KnowledgeHub/EmptyState/utils',
 ).dispatchDocumentEvent as jest.Mock
+
+const mockNotify = jest.requireMock('state/notifications/actions')
+    .notify as jest.Mock
 
 describe('useDomainSyncStatus', () => {
     const mockParams = {
@@ -53,13 +66,11 @@ describe('useDomainSyncStatus', () => {
     it('dispatches refetch event when sync completes successfully', async () => {
         const { rerender } = renderHook(() => useDomainSyncStatus(mockParams))
 
-        // Initial render with pending status
         mockUseGetStoreDomainIngestionLog.mockReturnValue({
             status: IngestionLogStatus.Pending,
         })
         rerender()
 
-        // Update to successful status
         mockUseGetStoreDomainIngestionLog.mockReturnValue({
             status: IngestionLogStatus.Successful,
         })
@@ -72,56 +83,81 @@ describe('useDomainSyncStatus', () => {
         })
     })
 
+    it('dispatches success notification when sync completes successfully', async () => {
+        const { rerender } = renderHook(() => useDomainSyncStatus(mockParams))
+
+        mockUseGetStoreDomainIngestionLog.mockReturnValue({
+            status: IngestionLogStatus.Pending,
+        })
+        rerender()
+
+        mockUseGetStoreDomainIngestionLog.mockReturnValue({
+            status: IngestionLogStatus.Successful,
+        })
+        rerender()
+
+        await waitFor(() => {
+            expect(mockNotify).toHaveBeenCalledWith({
+                message: 'Your store website has been synced successfully.',
+                status: NotificationStatus.Success,
+            })
+            expect(mockDispatch).toHaveBeenCalled()
+        })
+    })
+
+    it('dispatches error notification when sync fails', async () => {
+        const { rerender } = renderHook(() => useDomainSyncStatus(mockParams))
+
+        mockUseGetStoreDomainIngestionLog.mockReturnValue({
+            status: IngestionLogStatus.Pending,
+        })
+        rerender()
+
+        mockUseGetStoreDomainIngestionLog.mockReturnValue({
+            status: IngestionLogStatus.Failed,
+        })
+        rerender()
+
+        await waitFor(() => {
+            expect(mockNotify).toHaveBeenCalledWith({
+                message:
+                    "We couldn't sync your store website. Please try again or contact support.",
+                status: NotificationStatus.Error,
+            })
+            expect(mockDispatch).toHaveBeenCalled()
+        })
+    })
+
     it('does not dispatch event when status changes from null to pending', () => {
         const { rerender } = renderHook(() => useDomainSyncStatus(mockParams))
 
-        // Initial render with null status
         mockUseGetStoreDomainIngestionLog.mockReturnValue({
             status: null,
             storeDomainIngestionLog: undefined,
         })
         rerender()
 
-        // Update to pending status
         mockUseGetStoreDomainIngestionLog.mockReturnValue({
             status: IngestionLogStatus.Pending,
         })
         rerender()
 
         expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
-    })
-
-    it('does not dispatch event when status changes from pending to failed', () => {
-        const { rerender } = renderHook(() => useDomainSyncStatus(mockParams))
-
-        // Initial render with pending status
-        mockUseGetStoreDomainIngestionLog.mockReturnValue({
-            status: IngestionLogStatus.Pending,
-        })
-        rerender()
-
-        // Update to failed status
-        mockUseGetStoreDomainIngestionLog.mockReturnValue({
-            status: IngestionLogStatus.Failed,
-        })
-        rerender()
-
-        expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
+        expect(mockNotify).not.toHaveBeenCalled()
     })
 
     it('does not dispatch event when status remains pending', () => {
         const { rerender } = renderHook(() => useDomainSyncStatus(mockParams))
 
-        // Initial render with pending status
         mockUseGetStoreDomainIngestionLog.mockReturnValue({
             status: IngestionLogStatus.Pending,
         })
         rerender()
 
-        // Rerender with same pending status
         rerender()
 
         expect(mockDispatchDocumentEvent).not.toHaveBeenCalled()
+        expect(mockNotify).not.toHaveBeenCalled()
     })
 
     it('handles null storeUrl parameter', () => {
