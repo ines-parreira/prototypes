@@ -7,6 +7,8 @@ import { setupServer } from 'msw/node'
 
 import {
     mockGetCurrentUserHandler,
+    mockGetViewHandler,
+    mockGetViewResponse,
     mockTag,
     mockTeam,
     mockUser,
@@ -94,6 +96,7 @@ const basicAgentUser = mockUser({
 const mockAgentCurrentUser = mockGetCurrentUserHandler(async () =>
     HttpResponse.json(agentUser),
 )
+const mockGetView = mockGetViewHandler()
 
 const server = setupServer()
 const mockUseTeamOptions = vi.mocked(useTeamOptions)
@@ -113,7 +116,7 @@ beforeAll(() => {
 
 beforeEach(() => {
     testAppQueryClient.clear()
-    server.use(mockAgentCurrentUser.handler)
+    server.use(mockAgentCurrentUser.handler, mockGetView.handler)
     mockUseTeamOptions.mockReturnValue({
         teamsMap: new Map([
             [supportTeamId, supportTeam],
@@ -167,6 +170,7 @@ afterAll(() => {
 })
 
 const defaultProps = {
+    viewId: 123,
     isDisabled: false,
     onMarkAsUnread: vi.fn(),
     onMarkAsRead: vi.fn(),
@@ -176,6 +180,21 @@ const defaultProps = {
     onExportTickets: vi.fn(),
     onApplyMacro: vi.fn(),
     onMoveToTrash: vi.fn(),
+    onUndelete: vi.fn(),
+    onDeleteForever: vi.fn(),
+}
+
+function mockTrashLikeView() {
+    server.use(
+        mockGetViewHandler(async () =>
+            HttpResponse.json(
+                mockGetViewResponse({
+                    id: 123,
+                    filters: 'isNotEmpty(ticket.trashed_datetime)',
+                }),
+            ),
+        ).handler,
+    )
 }
 
 async function openMenu(user: ReturnType<typeof render>['user']) {
@@ -233,7 +252,7 @@ describe('MoreActionsMenu', () => {
                 screen.getByRole('menuitem', { name: /apply macro/i }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('menuitem', { name: /move to trash/i }),
+                screen.getByRole('menuitem', { name: /delete/i }),
             ).toBeInTheDocument()
         }, 10000)
 
@@ -261,6 +280,55 @@ describe('MoreActionsMenu', () => {
             await waitFor(() => {
                 expect(
                     screen.queryByRole('menuitem', { name: /export tickets/i }),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByRole('menuitem', { name: /^delete$/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('shows trash-like actions for an agent on a trash-like view', async () => {
+            mockTrashLikeView()
+
+            const { user } = render(<MoreActionsMenu {...defaultProps} />)
+            await openMenu(user)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('menuitem', { name: /export tickets/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('menuitem', { name: /undelete/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('menuitem', { name: /delete forever/i }),
+                ).toBeInTheDocument()
+            })
+            expect(
+                screen.queryByRole('menuitem', { name: /^delete$/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('hides restricted trash-like actions for a user below agent level', async () => {
+            mockTrashLikeView()
+            server.use(
+                mockGetCurrentUserHandler(async () =>
+                    HttpResponse.json(basicAgentUser),
+                ).handler,
+            )
+
+            const { user } = render(<MoreActionsMenu {...defaultProps} />)
+            await openMenu(user)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('menuitem', { name: /export tickets/i }),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByRole('menuitem', { name: /undelete/i }),
+                ).not.toBeInTheDocument()
+                expect(
+                    screen.queryByRole('menuitem', { name: /delete forever/i }),
                 ).not.toBeInTheDocument()
             })
         })
@@ -308,11 +376,40 @@ describe('MoreActionsMenu', () => {
                 />,
             )
             await openMenu(user)
-            await user.click(
-                screen.getByRole('menuitem', { name: /move to trash/i }),
-            )
+            await user.click(screen.getByRole('menuitem', { name: /delete/i }))
 
             expect(onMoveToTrash).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls onUndelete when that item is activated on a trash-like view', async () => {
+            mockTrashLikeView()
+            const onUndelete = vi.fn()
+            const { user } = render(
+                <MoreActionsMenu {...defaultProps} onUndelete={onUndelete} />,
+            )
+            await openMenu(user)
+            await user.click(
+                screen.getByRole('menuitem', { name: /undelete/i }),
+            )
+
+            expect(onUndelete).toHaveBeenCalledTimes(1)
+        })
+
+        it('calls onDeleteForever when that item is activated on a trash-like view', async () => {
+            mockTrashLikeView()
+            const onDeleteForever = vi.fn()
+            const { user } = render(
+                <MoreActionsMenu
+                    {...defaultProps}
+                    onDeleteForever={onDeleteForever}
+                />,
+            )
+            await openMenu(user)
+            await user.click(
+                screen.getByRole('menuitem', { name: /delete forever/i }),
+            )
+
+            expect(onDeleteForever).toHaveBeenCalledTimes(1)
         })
 
         it('calls onAddTag when a tag option is activated', async () => {

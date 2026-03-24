@@ -2,6 +2,7 @@ import { Panels } from '@repo/layout'
 import { assumeMock } from '@repo/testing'
 import { useHelpdeskV2MS4Dot5Flag } from '@repo/tickets/feature-flags'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -25,17 +26,52 @@ jest.mock('state/views/actions', () => ({ setViewActive: jest.fn() }))
 const setViewActiveMock = assumeMock(setViewActive)
 
 const mockViewPanel = jest.fn(
-    ({ viewId }: { viewId: number; onExpand?: () => void }) => (
+    ({
+        viewId,
+        onExpand,
+        onApplyMacro,
+    }: {
+        viewId: number
+        onExpand?: () => void
+        onApplyMacro?: (ticketIds: number[]) => void
+    }) => (
         <div>
             <p>ViewPanel</p>
             <p>viewId: {viewId}</p>
+            <button onClick={onExpand}>Expand</button>
+            <button onClick={() => onApplyMacro?.([1, 2, 3])}>
+                Open macro
+            </button>
         </div>
     ),
 )
 
 jest.mock('@repo/tickets/views', () => ({
-    ViewPanel: (props: { viewId: number; onExpand?: () => void }) =>
-        mockViewPanel(props),
+    ViewPanel: (props: {
+        viewId: number
+        onExpand?: () => void
+        onApplyMacro?: (ticketIds: number[]) => void
+    }) => mockViewPanel(props),
+}))
+
+jest.mock('ticket-list-view/components/bulk-actions/ApplyMacro', () => ({
+    __esModule: true,
+    default: ({
+        ticketIds,
+        onApplyMacro,
+        setIsOpen,
+    }: {
+        ticketIds: number[]
+        onApplyMacro: () => void
+        setIsOpen: (v: boolean) => void
+    }) => (
+        <div>
+            <p>ApplyMacro</p>
+            <p>ticketIds: {ticketIds.join(',')}</p>
+            <button onClick={onApplyMacro}>Apply macro</button>
+            <button onClick={() => setIsOpen(false)}>Close macro</button>
+        </div>
+    ),
 }))
 
 jest.mock('../ViewPanel', () => ({
@@ -95,8 +131,7 @@ describe('ViewPanelEntrypoint', () => {
                 <ViewPanelEntrypoint />
             </Panels>,
         )
-        const props = mockViewPanel.mock.calls[0]?.[0]
-        props?.onExpand?.()
+        screen.getByRole('button', { name: 'Expand' }).click()
         expect(setIsEnabledMock).toHaveBeenCalledWith(true)
     })
 
@@ -112,5 +147,71 @@ describe('ViewPanelEntrypoint', () => {
 
         expect(setViewActiveMock).toHaveBeenCalledWith(fromJS(view))
         expect(dispatch).toHaveBeenCalledWith(setViewActiveAction)
+    })
+
+    describe('Apply macro', () => {
+        beforeEach(() => {
+            useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        })
+
+        it('does not render ApplyMacro initially', () => {
+            render(
+                <Panels size={1000}>
+                    <ViewPanelEntrypoint />
+                </Panels>,
+            )
+
+            expect(screen.queryByText('ApplyMacro')).not.toBeInTheDocument()
+        })
+
+        it('renders ApplyMacro when ViewPanel calls onApplyMacro', async () => {
+            const user = userEvent.setup()
+            render(
+                <Panels size={1000}>
+                    <ViewPanelEntrypoint />
+                </Panels>,
+            )
+
+            await user.click(screen.getByRole('button', { name: 'Open macro' }))
+
+            expect(await screen.findByText('ApplyMacro')).toBeInTheDocument()
+            expect(screen.getByText('ticketIds: 1,2,3')).toBeInTheDocument()
+        })
+
+        it('hides ApplyMacro when setIsOpen is called with false', async () => {
+            const user = userEvent.setup()
+            render(
+                <Panels size={1000}>
+                    <ViewPanelEntrypoint />
+                </Panels>,
+            )
+
+            await user.click(screen.getByRole('button', { name: 'Open macro' }))
+            expect(await screen.findByText('ApplyMacro')).toBeInTheDocument()
+
+            await user.click(
+                screen.getByRole('button', { name: 'Close macro' }),
+            )
+
+            expect(screen.queryByText('ApplyMacro')).not.toBeInTheDocument()
+        })
+
+        it('hides ApplyMacro when the macro is applied', async () => {
+            const user = userEvent.setup()
+            render(
+                <Panels size={1000}>
+                    <ViewPanelEntrypoint />
+                </Panels>,
+            )
+
+            await user.click(screen.getByRole('button', { name: 'Open macro' }))
+            expect(await screen.findByText('ApplyMacro')).toBeInTheDocument()
+
+            await user.click(
+                screen.getByRole('button', { name: 'Apply macro' }),
+            )
+
+            expect(screen.queryByText('ApplyMacro')).not.toBeInTheDocument()
+        })
     })
 })

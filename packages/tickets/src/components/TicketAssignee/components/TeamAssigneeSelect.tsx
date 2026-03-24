@@ -45,6 +45,16 @@ export function TeamAssigneeSelect({
         shouldLoadMore,
     } = useTeamOptions({ currentTeam: value })
 
+    const handleOpenChange = useCallback(
+        (isOpen: boolean) => {
+            setIsTeamAssigneeOpen(isOpen)
+            if (!isOpen) {
+                setSearch('')
+            }
+        },
+        [setIsTeamAssigneeOpen, setSearch],
+    )
+
     const handleChange = useCallback(
         (option: TeamOption) => {
             if (option.id === NO_TEAM_OPTION.id) {
@@ -56,17 +66,7 @@ export function TeamAssigneeSelect({
                 }
             }
         },
-        [teamsMap, onChange],
-    )
-
-    const handleOpenChange = useCallback(
-        (isOpen: boolean) => {
-            setIsTeamAssigneeOpen(isOpen)
-            if (!isOpen) {
-                setSearch('')
-            }
-        },
-        [setIsTeamAssigneeOpen, setSearch],
+        [onChange, teamsMap],
     )
 
     const actions = {
@@ -91,12 +91,12 @@ export function TeamAssigneeSelect({
             onSelect={handleChange}
             isLoading={isLoading}
             isDisabled={isDisabled || isLoading}
+            isOpen={isTeamAssigneeOpen}
+            onOpenChange={handleOpenChange}
             minWidth={SELECT_WIDTH}
             maxWidth={SELECT_WIDTH}
             maxHeight={220}
             onLoadMore={() => shouldLoadMore && onLoad()}
-            isOpen={isTeamAssigneeOpen}
-            onOpenChange={handleOpenChange}
             aria-label="Team selection"
             size="sm"
             trigger={({ selectedText, isPlaceholder, isOpen, ref }) => {
@@ -165,13 +165,7 @@ export function TeamAssigneeSelect({
                                 label={option.label}
                                 leadingSlot={
                                     !!emoji ? (
-                                        <span
-                                            style={{
-                                                display: 'flex',
-                                            }}
-                                        >
-                                            <Emoji emoji={emoji} size={16} />
-                                        </span>
+                                        <Emoji emoji={emoji} size={16} />
                                     ) : (
                                         <Icon name="user" size="sm" />
                                     )

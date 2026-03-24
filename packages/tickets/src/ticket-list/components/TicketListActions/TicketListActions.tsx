@@ -47,6 +47,8 @@ export function TicketListActions({
         handleAddTag,
         handleCloseTickets,
         handleMoveToTrash,
+        handleUndelete,
+        handleDeleteForever,
         handleExportTickets,
         handleApplyMacro,
     } = useTicketListActions({
@@ -57,6 +59,10 @@ export function TicketListActions({
         onActionComplete,
         onApplyMacro,
     })
+
+    const handleUndeleteFromTrashView = useCallback(() => {
+        void handleUndelete({ removeFromCurrentViewCache: true })
+    }, [handleUndelete])
 
     const handleCheckboxChange = useCallback(
         (value: boolean) => {
@@ -114,6 +120,7 @@ export function TicketListActions({
                     onAssignUser={handleAssignUser}
                 />
                 <MoreActionsMenu
+                    viewId={viewId}
                     isDisabled={isDisabled || isLoading}
                     onMarkAsUnread={handleMarkAsUnread}
                     onMarkAsRead={handleMarkAsRead}
@@ -123,6 +130,8 @@ export function TicketListActions({
                     onExportTickets={handleExportTickets}
                     onApplyMacro={handleApplyMacro}
                     onMoveToTrash={handleMoveToTrash}
+                    onUndelete={handleUndeleteFromTrashView}
+                    onDeleteForever={handleDeleteForever}
                 />
             </Box>
         </Box>

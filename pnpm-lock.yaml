@@ -11,8 +11,8 @@ catalogs:
       version: 0.1.25
   axiom:
     '@gorgias/axiom':
-      specifier: 0.211.1
-      version: 0.211.1
+      specifier: 0.214.1
+      version: 0.214.1
     '@gorgias/design-tokens':
       specifier: 0.11.4
       version: 0.11.4
@@ -223,13 +223,13 @@ catalogs:
   rest-api-sdk:
     '@gorgias/convert-client':
       specifier: ^0.3.32
-      version: 0.3.32
+      version: 0.3.34
     '@gorgias/convert-mocks':
       specifier: ^0.2.49
-      version: 0.2.49
+      version: 0.2.51
     '@gorgias/convert-queries':
       specifier: ^0.2.50
-      version: 0.2.50
+      version: 0.2.52
     '@gorgias/ecommerce-storage-client':
       specifier: ^0.2.11
       version: 0.2.11
@@ -535,19 +535,19 @@ importers:
         version: 0.1.25(classnames@2.2.6)(core-js@3.42.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/branding-assets':
         specifier: ^0.2.1
         version: 0.2.1
       '@gorgias/convert-client':
         specifier: catalog:rest-api-sdk
-        version: 0.3.32
+        version: 0.3.34
       '@gorgias/convert-mocks':
         specifier: catalog:rest-api-sdk
-        version: 0.2.49(@types/node@22.13.13)(typescript@5.9.3)
+        version: 0.2.51(@types/node@22.13.13)(typescript@5.9.3)
       '@gorgias/convert-queries':
         specifier: catalog:rest-api-sdk
-        version: 0.2.50(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+        version: 0.2.52(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.4
@@ -1605,7 +1605,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.4
@@ -1692,7 +1692,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.4
@@ -1862,7 +1862,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/ecommerce-storage-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.11(@types/node@22.13.13)(typescript@5.9.3)
@@ -2012,7 +2012,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/ecommerce-storage-mocks':
         specifier: catalog:rest-api-sdk
         version: 0.2.11(@types/node@22.13.13)(typescript@5.9.3)
@@ -2159,7 +2159,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-validators':
         specifier: catalog:rest-api-sdk
         version: 0.7.180
@@ -2459,7 +2459,7 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@repo/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -2595,7 +2595,7 @@ importers:
     dependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       react-dnd:
         specifier: catalog:react-dnd
         version: 16.0.1(@types/hoist-non-react-statics@3.3.5)(@types/node@22.13.13)(@types/react@18.2.67)(react@18.2.0)
@@ -2892,7 +2892,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/helpdesk-client':
         specifier: catalog:rest-api-sdk
         version: 0.10.122
@@ -3037,7 +3037,7 @@ importers:
     devDependencies:
       '@gorgias/axiom':
         specifier: catalog:axiom
-        version: 0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+        version: 0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
       '@gorgias/events':
         specifier: catalog:events
         version: 0.14.1
@@ -4777,8 +4777,8 @@ packages:
       react: ^17
       react-dom: ^17
 
-  '@gorgias/axiom@0.211.1':
-    resolution: {integrity: sha512-JzVi4Ub6tttPXYnG47AUOdKGd8gmbxMKPO3DJKluiiTUzXpZ5UBuFilO1nohR250TM015lCOxvd4PzkzXcYiFg==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.211.1/d507f330f0c5eea5fcc22cd6af4c305a53991b59}
+  '@gorgias/axiom@0.214.1':
+    resolution: {integrity: sha512-0Q1LJXHVAz+e9uutJzWqjun90VIrda7IvL3A4uLWMCgsdGjRcPQHn/aYD+Bq0ScCwhTJbqEwlU47Q6sInzhE6Q==, tarball: https://npm.pkg.github.com/download/@gorgias/axiom/0.214.1/468d547724b1aad0ffc06ff97ea1f895319a2311}
     engines: {node: '>=22.22.0'}
     peerDependencies:
       react: ^17
@@ -4811,20 +4811,20 @@ packages:
       eslint-plugin-react-hooks: ^4.6.2
       oxlint: ^1
 
-  '@gorgias/convert-client@0.3.32':
-    resolution: {integrity: sha512-WsImP9E51L5/kgjQC0NJudv0+GcufVBgRTD+uMv+xQUAiq7ZMwBr1qLIzNU01PezfKW/KZ7RBMWyawQcrz1sVg==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.3.32/34b9517f75d0ca1545c24b1ae39a8f90f59b47c9}
+  '@gorgias/convert-client@0.3.34':
+    resolution: {integrity: sha512-Zwr4ghJ9y1pQSVkqCfBe0F/KBeQTS7sSYxgO0QFttaLGHs+sk+WcCFPfSbOQENyCwW5R/t5MJNi00PKWid8b3w==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-client/0.3.34/5b1a92815482da44e75fef9ef7856f0df12592c8}
 
-  '@gorgias/convert-mocks@0.2.49':
-    resolution: {integrity: sha512-HSdmn0YKe6aqyRusat7MIzjsGyorfN+sdpeCgpJAswBCMJ7t41aHx442V9zFDIIPU8fE5SmN7sOJH/gsXLHSsg==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-mocks/0.2.49/64475ea7f9d47a08653ee846cf0a000eeb3a8d50}
+  '@gorgias/convert-mocks@0.2.51':
+    resolution: {integrity: sha512-HYhQLbadtjSoGN/EWxrWxMgAonANgzlnqxHR0NcsxBozEHstvzjDeBZafXb/M1sj8Vsz59DOOpygW00vOjZtJw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-mocks/0.2.51/f85fb2c7e03f8ce86e1fdc362d6761c4d275cfc0}
 
-  '@gorgias/convert-queries@0.2.50':
-    resolution: {integrity: sha512-8M+hjKhOcw7h0ti67qLn9NoU6p+Hbqi+8pmX9q27KNROTvdIteMzHTY6mrbbexMnxfMppcwI/hYA+HD1XVij+w==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-queries/0.2.50/9027461a96e2cb26049ca1112aba4ce0318740c1}
+  '@gorgias/convert-queries@0.2.52':
+    resolution: {integrity: sha512-Kcqbtmy5NRIPIDFDWoJzG/TtXW7bch4oC/05lCKag2DGsvNV9UFDzOH/iVOAKxuEGIpgFoWIeIaF8+q5tQuHhQ==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-queries/0.2.52/9dcaf9c143c72e1974f8c32247aa69248b74585b}
 
-  '@gorgias/convert-spec@0.2.38':
-    resolution: {integrity: sha512-Zn9AWi8WbCFIaAmY25cqWNNNtwZ0QNW2XBa9lIKHgwQAR9wikMJ0YFOtcMtIAEfSPPcLQrlRpkBuIGl1wUQfKQ==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-spec/0.2.38/e5d5327458d7990f58a93e50519ac14c9fc5e693}
+  '@gorgias/convert-spec@0.2.40':
+    resolution: {integrity: sha512-f1ur3sYesRs84sNZUrb809HBcMxdEwFRN3AWUT965rTl+j2ShCsHwiNw3hftkMwkHh3M/ONafQVIUko7i/mAhw==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-spec/0.2.40/1a32ecb9d03d14bfd86d0824ac74244f0893e2c2}
 
-  '@gorgias/convert-types@0.4.23':
-    resolution: {integrity: sha512-BK/L0kAOFowz3bhoRorpzQA0oiftZ0B4UpuvDAJJkDAzUbRhygGfn8f1Q9PHgcM54v9MJmAMLPMKohfzDWx+Og==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.23/9bc096fa24fe3164ca5e800b4855015365ec9c86}
+  '@gorgias/convert-types@0.4.25':
+    resolution: {integrity: sha512-247zeZxqR01ZDsmdB4v29SHTY+I64SEom6EjuG9vAPamerzUI+EOKxkUFW0IfdZB/wlCuejO0ovFHpoD0/YAvQ==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.25/3b06731d353c385d4a63b8170de618fce4290551}
 
   '@gorgias/design-tokens@0.11.4':
     resolution: {integrity: sha512-zpJjYuwRU8kaYyug6pRHn4jGi0YCquiIzJS5e4/N2BJTJMTZcUrxmxUQKigDSZ/ppxqSyjLUWmyEZpcAxPf+Xw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.4/44e8e159b3a75f452426c6b2a25758afc0e3f673}
@@ -4934,8 +4934,8 @@ packages:
   '@gorgias/sdk-client@0.9.15':
     resolution: {integrity: sha512-T4dUDGHIPcHSpHQXHlMAt4kaBEHdD7aCWZrauFNRR6H+BG0TpIZNso/1sUnc03ALeAiwowNgUMbvOJRM66AQrw==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.15/10d822d47db9b10969aa37a7374e9c34c63f0db9}
 
-  '@gorgias/sdk-client@0.9.16':
-    resolution: {integrity: sha512-iw7qVfT/yGjKzT1VTlRvC9DxOtcHSpkVw+LI6NvpPvoGXxcJl1jD5g11eLnC666N/SZ8MrVNG6nml6nWy+zVLg==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.16/bbc48191f86de249618354b3bff4e3f3a581c066}
+  '@gorgias/sdk-client@0.9.18':
+    resolution: {integrity: sha512-V05TH8IJmthlAVHxMPxe5gi/2Bp5Ptw/tdt62fhC4YNSJUZyT08FnxO90dyAh6PrdRtWUK+oxSAyTrOSu8Y8MQ==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.18/930827398e929f852f1a5b211008789d59ab8350}
 
   '@gorgias/sdk-client@0.9.20':
     resolution: {integrity: sha512-JqKN9D7U2W+VoQrejMvrlCd+4xtIAPjvr6c8tv31GGV64n3Cy6+wb2e5mn4OfCxcFMQukByhArP7urn4s53SvA==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.20/af5e163e50e9e62caedf1e42099ce9fc72353c7b}
@@ -4946,8 +4946,8 @@ packages:
   '@gorgias/sdk-mocks@0.14.1':
     resolution: {integrity: sha512-Mhsap8kqeEQWHBxRZsXZEfOOAAyPTmh/maKZlSctnWmgeRy+VS79C7pS3O+8H4YzbRUf7140IiOOAavD8xu0jg==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.14.1/4cb4dae63d4169aae1f888413b435da11dcc35c6}
 
-  '@gorgias/sdk-mocks@0.14.2':
-    resolution: {integrity: sha512-p+lk6H5rvo4OrcTMxlgwKuVDaGL2wtZKA4svipfIKygnTRsoIWWodTl/gK4EFsc54y7AzI3mlms7/KSyVaaziA==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.14.2/c5c8e25817aad10dacfade5c88a29e5e593b1b0d}
+  '@gorgias/sdk-mocks@0.14.4':
+    resolution: {integrity: sha512-CwDyvVn3b/Nvn363i6LSvLpvmxmK48Zc056bqh1ZWzkSmKP64SxVvgGuhtXlgh/qhRFk9QCnYScZy82wgL3Now==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.14.4/1a70e43973a555301e143cdd8e3a22e0b3d3e712}
 
   '@gorgias/sdk-mocks@0.14.6':
     resolution: {integrity: sha512-GId5it/xbV4EImQT4H9G8EoEgzLhkbssCZK03VIb8QMRmXebtR3ctxcn3w1Uxf28KT6TJeLafbaAgMVRKj5ayw==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.14.6/e9fdb659119a7c55549c2b1e4966a16cfe6eebdb}
@@ -17398,7 +17398,7 @@ snapshots:
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
 
-  '@gorgias/axiom@0.211.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
+  '@gorgias/axiom@0.214.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))':
     dependencies:
       '@floating-ui/react': 0.25.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       '@gorgias/design-tokens': 0.11.4
@@ -17441,19 +17441,19 @@ snapshots:
       eslint-plugin-react-hooks: 7.0.1(eslint@8.1.0)
       oxlint: 1.51.0
 
-  '@gorgias/convert-client@0.3.32':
+  '@gorgias/convert-client@0.3.34':
     dependencies:
-      '@gorgias/convert-types': 0.4.23
-      '@gorgias/sdk-client': 0.9.16
+      '@gorgias/convert-types': 0.4.25
+      '@gorgias/sdk-client': 0.9.18
       axios: 1.13.5(debug@4.4.3)
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/convert-mocks@0.2.49(@types/node@22.13.13)(typescript@5.9.3)':
+  '@gorgias/convert-mocks@0.2.51(@types/node@22.13.13)(typescript@5.9.3)':
     dependencies:
-      '@gorgias/convert-spec': 0.2.38
-      '@gorgias/convert-types': 0.4.23
-      '@gorgias/sdk-mocks': 0.14.2(@types/node@22.13.13)(typescript@5.9.3)
+      '@gorgias/convert-spec': 0.2.40
+      '@gorgias/convert-types': 0.4.25
+      '@gorgias/sdk-mocks': 0.14.4(@types/node@22.13.13)(typescript@5.9.3)
       '@gorgias/sdk-spec-utils': 0.11.0
       lodash-es: 4.17.21
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
@@ -17461,10 +17461,10 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@gorgias/convert-queries@0.2.50(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+  '@gorgias/convert-queries@0.2.52(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:
-      '@gorgias/convert-client': 0.3.32
-      '@gorgias/convert-types': 0.4.23
+      '@gorgias/convert-client': 0.3.34
+      '@gorgias/convert-types': 0.4.25
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
     transitivePeerDependencies:
       - debug
@@ -17472,9 +17472,9 @@ snapshots:
       - react-dom
       - react-native
 
-  '@gorgias/convert-spec@0.2.38': {}
+  '@gorgias/convert-spec@0.2.40': {}
 
-  '@gorgias/convert-types@0.4.23': {}
+  '@gorgias/convert-types@0.4.25': {}
 
   '@gorgias/design-tokens@0.11.4': {}
 
@@ -17725,7 +17725,7 @@ snapshots:
     transitivePeerDependencies:
       - debug
 
-  '@gorgias/sdk-client@0.9.16':
+  '@gorgias/sdk-client@0.9.18':
     dependencies:
       axios: 1.13.5(debug@4.4.3)
     transitivePeerDependencies:
@@ -17759,7 +17759,7 @@ snapshots:
       - '@types/node'
       - typescript
 
-  '@gorgias/sdk-mocks@0.14.2(@types/node@22.13.13)(typescript@5.9.3)':
+  '@gorgias/sdk-mocks@0.14.4(@types/node@22.13.13)(typescript@5.9.3)':
     dependencies:
       '@faker-js/faker': 9.8.0
       '@gorgias/sdk-spec-utils': 0.11.0

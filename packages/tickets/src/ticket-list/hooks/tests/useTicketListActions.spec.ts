@@ -384,11 +384,115 @@ describe('useTicketListActions', () => {
     })
 
     describe('handleMoveToTrash', () => {
-        it('creates a DeleteTicket job', async () => {
+        it('creates an UpdateTicket job with trashed_datetime', async () => {
             const { result } = setup()
             const waitForRequest = mockCreateJob.waitForRequest(server)
 
             await result.current.handleMoveToTrash()
+
+            await waitForRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toMatchObject({
+                    type: JobType.UpdateTicket,
+                    params: {
+                        ticket_ids: TICKET_IDS,
+                        updates: { trashed_datetime: expect.any(String) },
+                    },
+                })
+            })
+        })
+
+        it('calls onActionComplete after the job completes', async () => {
+            const onActionComplete = vi.fn()
+            const { result } = setup({ onActionComplete })
+
+            await result.current.handleMoveToTrash()
+
+            expect(onActionComplete).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('handleUndelete', () => {
+        it('creates an UpdateTicket job with trashed_datetime: null', async () => {
+            const { result } = setup()
+            const waitForRequest = mockCreateJob.waitForRequest(server)
+
+            await result.current.handleUndelete()
+
+            await waitForRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toMatchObject({
+                    type: JobType.UpdateTicket,
+                    params: {
+                        ticket_ids: TICKET_IDS,
+                        updates: { trashed_datetime: null },
+                    },
+                })
+            })
+        })
+
+        it('does not remove tickets from the ticket list cache by default', async () => {
+            seedViewCache([
+                mockTicket({ id: 1 }),
+                mockTicket({ id: 2 }),
+                mockTicket({ id: 3 }),
+            ])
+
+            const { result } = setup()
+
+            await result.current.handleUndelete()
+
+            expect(
+                getViewCache()?.pages[0].data.map((ticket) => ticket.id),
+            ).toEqual([1, 2, 3])
+        })
+
+        it('optimistically removes selected tickets from the ticket list cache when requested', async () => {
+            seedViewCache([
+                mockTicket({ id: 1 }),
+                mockTicket({ id: 2 }),
+                mockTicket({ id: 3 }),
+            ])
+
+            const { result } = setup()
+            const waitForRequest = mockCreateJob.waitForRequest(server)
+
+            await result.current.handleUndelete({
+                removeFromCurrentViewCache: true,
+            })
+
+            expect(
+                getViewCache()?.pages[0].data.map((ticket) => ticket.id),
+            ).toEqual([3])
+
+            await waitForRequest(async (request) => {
+                const body = await request.json()
+                expect(body).toMatchObject({
+                    type: JobType.UpdateTicket,
+                    params: {
+                        ticket_ids: TICKET_IDS,
+                        updates: { trashed_datetime: null },
+                    },
+                })
+            })
+        })
+
+        it('calls onActionComplete after the job completes', async () => {
+            const onActionComplete = vi.fn()
+            const { result } = setup({ onActionComplete })
+
+            await result.current.handleUndelete()
+
+            expect(onActionComplete).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('handleDeleteForever', () => {
+        it('creates a DeleteTicket job', async () => {
+            const { result } = setup()
+            const waitForRequest = mockCreateJob.waitForRequest(server)
+
+            await result.current.handleDeleteForever()
 
             await waitForRequest(async (request) => {
                 const body = await request.json()
@@ -408,7 +512,7 @@ describe('useTicketListActions', () => {
 
             const { result } = setup()
 
-            await result.current.handleMoveToTrash()
+            await result.current.handleDeleteForever()
 
             expect(
                 getViewCache()?.pages[0].data.map((ticket) => ticket.id),
@@ -419,7 +523,7 @@ describe('useTicketListActions', () => {
             const onActionComplete = vi.fn()
             const { result } = setup({ onActionComplete })
 
-            await result.current.handleMoveToTrash()
+            await result.current.handleDeleteForever()
 
             expect(onActionComplete).toHaveBeenCalledTimes(1)
         })

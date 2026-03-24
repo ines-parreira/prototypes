@@ -41,11 +41,13 @@ type TeamWithRequiredFields = Team & {
 type UseTeamOptionsParams = {
     currentTeam?: TicketTeam | null
     enabled?: boolean
+    includeNoTeamOption?: boolean
 }
 
 export function useTeamOptions({
     currentTeam,
     enabled = true,
+    includeNoTeamOption = false,
 }: UseTeamOptionsParams) {
     const [search, setSearch] = useState('')
     const { data: allTeams = [], isLoading } = useListAllTeams({ enabled })
@@ -110,7 +112,12 @@ export function useTeamOptions({
             })
         }
 
-        if (currentTeam && !isLoading && !search && sections.length > 0) {
+        if (
+            (includeNoTeamOption || currentTeam) &&
+            !isLoading &&
+            !search &&
+            sections.length > 0
+        ) {
             sections.unshift({
                 ...SECTION_DETAILS.NO_TEAM,
                 items: [NO_TEAM_OPTION],
@@ -118,7 +125,7 @@ export function useTeamOptions({
         }
 
         return sections
-    }, [currentTeam, isLoading, search, teams])
+    }, [currentTeam, includeNoTeamOption, isLoading, search, teams])
 
     const teamOptions = useMemo<TeamOption[]>(() => {
         return teamSections.flatMap((section) => section.items)

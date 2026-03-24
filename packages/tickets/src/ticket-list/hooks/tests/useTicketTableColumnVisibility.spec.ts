@@ -59,6 +59,7 @@ describe('useTicketTableColumnVisibility', () => {
 
         await waitFor(() => {
             expect(result.current.defaultVisibleColumns).toEqual([
+                'select',
                 'subject',
                 'customer',
                 'assignee',
@@ -99,6 +100,7 @@ describe('useTicketTableColumnVisibility', () => {
         await waitFor(() => {
             expect(result.current.defaultVisibleColumns).toEqual([
                 'subject',
+                'select',
                 'customer',
                 'created_datetime',
             ])

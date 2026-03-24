@@ -34,7 +34,10 @@ export function TicketCell({
             gap="xxxxs"
             alignItems="stretch"
         >
-            <Text variant={ticket.is_unread ? 'bold' : 'regular'}>
+            <Text
+                variant={ticket.is_unread ? 'bold' : 'regular'}
+                overflow="ellipsis"
+            >
                 {displaySubject}
             </Text>
             <Box

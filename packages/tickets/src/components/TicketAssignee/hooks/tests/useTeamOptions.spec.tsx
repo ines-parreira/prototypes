@@ -89,6 +89,24 @@ describe('useTeamOptions', () => {
         })
     })
 
+    it('should include "No team" section when explicitly enabled for bulk usage', async () => {
+        const { result } = renderHook(() =>
+            useTeamOptions({
+                currentTeam: null,
+                includeNoTeamOption: true,
+            }),
+        )
+
+        await waitFor(() => {
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        expect(result.current.teamSections).toHaveLength(2)
+        expect(result.current.teamSections[0].id).toBe('no_team_section')
+        expect(result.current.teamSections[0].items).toEqual([NO_TEAM_OPTION])
+        expect(result.current.teamSections[1].id).toBe('teams')
+    })
+
     it('should exclude "No team" section when searching', async () => {
         const { result } = renderHook(() =>
             useTeamOptions({ currentTeam: mockTicketTeam(team1) }),

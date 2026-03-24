@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import { hasRole, UserRole } from '@repo/utils'
-
 import {
     Button,
     Intent,
@@ -14,18 +12,20 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 import type { Team, TicketPriority, TicketTag } from '@gorgias/helpdesk-queries'
-import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
 import {
     NO_TEAM_OPTION,
     useTeamOptions,
 } from '../../../components/TicketAssignee/hooks/useTeamOptions'
+import { useBulkActionMenuState } from '../../hooks/useBulkActionMenuState'
+import { useIsTrashLikeView } from '../../hooks/useIsTrashLikeView'
 import { AddTagSubMenu } from './AddTagSubMenu'
 import { PrioritySubMenu } from './PrioritySubMenu'
 
 import css from './MoreActionsMenu.module.less'
 
 type Props = {
+    viewId: number
     isDisabled: boolean
     onMarkAsUnread: () => void
     onMarkAsRead: () => void
@@ -35,9 +35,12 @@ type Props = {
     onExportTickets: () => void
     onApplyMacro: () => void
     onMoveToTrash: () => void
+    onUndelete: () => void
+    onDeleteForever: () => void
 }
 
 export function MoreActionsMenu({
+    viewId,
     isDisabled,
     onMarkAsUnread,
     onMarkAsRead,
@@ -47,17 +50,16 @@ export function MoreActionsMenu({
     onExportTickets,
     onApplyMacro,
     onMoveToTrash,
+    onUndelete,
+    onDeleteForever,
 }: Props) {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-    const { data: currentUser } = useGetCurrentUser()
+    const { canUseRestrictedBulkActions } = useBulkActionMenuState()
+    const isTrashLikeView = useIsTrashLikeView(viewId)
     const { teamsMap, teamSections, search, setSearch } = useTeamOptions({
         currentTeam: null,
         enabled: isMenuOpen,
     })
-    const canExportTickets = useMemo(
-        () => currentUser && hasRole(currentUser.data, UserRole.Agent),
-        [currentUser],
-    )
     const teamOptions = useMemo(
         () => [
             NO_TEAM_OPTION,
@@ -170,7 +172,7 @@ export function MoreActionsMenu({
                 ))}
             </SubMenu>
             <PrioritySubMenu onChangePriority={onChangePriority} />
-            {canExportTickets && (
+            {canUseRestrictedBulkActions && (
                 <MenuItem
                     id="export-tickets"
                     label={renderOverflowLabel('Export tickets')}
@@ -182,12 +184,29 @@ export function MoreActionsMenu({
                 label={renderOverflowLabel('Apply macro')}
                 onAction={onApplyMacro}
             />
-            <MenuItem
-                id="move-to-trash"
-                label={renderOverflowLabel('Move to trash')}
-                intent={Intent.Destructive}
-                onAction={onMoveToTrash}
-            />
+            {canUseRestrictedBulkActions &&
+                (isTrashLikeView ? (
+                    <>
+                        <MenuItem
+                            id="undelete"
+                            label={renderOverflowLabel('Undelete')}
+                            onAction={onUndelete}
+                        />
+                        <MenuItem
+                            id="delete-forever"
+                            label={renderOverflowLabel('Delete forever')}
+                            intent={Intent.Destructive}
+                            onAction={onDeleteForever}
+                        />
+                    </>
+                ) : (
+                    <MenuItem
+                        id="delete"
+                        label={renderOverflowLabel('Delete')}
+                        intent={Intent.Destructive}
+                        onAction={onMoveToTrash}
+                    />
+                ))}
         </Menu>
     )
 }

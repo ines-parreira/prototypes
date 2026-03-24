@@ -26,6 +26,7 @@ const ALL_COLUMNS = [
 ]
 
 const MANDATORY_COLUMN = 'subject'
+const SELECTION_COLUMN = 'select'
 
 const COLUMN_TO_FIELD: Record<string, ViewField> = {
     subject: ViewField.Subject,
@@ -58,10 +59,11 @@ export function useTicketTableColumnVisibility(viewId: number) {
 
     const defaultVisibleColumns = useMemo(() => {
         const fields = viewResponse?.data?.fields
-        if (!fields?.length) return ALL_COLUMNS
+        if (!fields?.length) return [SELECTION_COLUMN, ...ALL_COLUMNS]
         const mapped = fields
             .map((f) => FIELD_TO_COLUMN[f])
             .filter(Boolean) as string[]
+        if (!mapped.includes(SELECTION_COLUMN)) mapped.unshift(SELECTION_COLUMN)
         if (!mapped.includes(MANDATORY_COLUMN)) mapped.unshift(MANDATORY_COLUMN)
         return mapped
     }, [viewResponse])
@@ -70,6 +72,7 @@ export function useTicketTableColumnVisibility(viewId: number) {
         (newVisibleColumns: string[]) => {
             if (!newVisibleColumns.includes(MANDATORY_COLUMN)) return
             const fields = newVisibleColumns
+                .filter((col) => col !== SELECTION_COLUMN)
                 .map((col) => COLUMN_TO_FIELD[col])
                 .filter(Boolean) as ViewField[]
 

@@ -1,9 +1,12 @@
 import { screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
     mockCreateJobHandler,
     mockGetCurrentUserHandler,
+    mockGetViewHandler,
+    mockGetViewResponse,
 } from '@gorgias/helpdesk-mocks'
 
 import { useCreateTicketTag } from '../../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useCreateTicketTag'
@@ -56,6 +59,14 @@ vi.mock(
 
 const mockCurrentUser = mockGetCurrentUserHandler()
 const mockCreateJob = mockCreateJobHandler()
+const mockGetView = mockGetViewHandler(async () =>
+    HttpResponse.json(
+        mockGetViewResponse({
+            id: 123,
+            filters: '',
+        }),
+    ),
+)
 const mockUseTeamOptions = vi.mocked(useTeamOptions)
 const mockUseUserOptions = vi.mocked(useUserOptions)
 const mockUseListTagsSearch = vi.mocked(useListTagsSearch)
@@ -69,7 +80,11 @@ beforeAll(() => {
 
 beforeEach(() => {
     testAppQueryClient.clear()
-    server.use(mockCurrentUser.handler, mockCreateJob.handler)
+    server.use(
+        mockCurrentUser.handler,
+        mockCreateJob.handler,
+        mockGetView.handler,
+    )
     mockUseTeamOptions.mockReturnValue({
         teamsMap: new Map(),
         teamSections: [],

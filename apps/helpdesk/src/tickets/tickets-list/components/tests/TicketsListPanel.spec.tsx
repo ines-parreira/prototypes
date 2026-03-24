@@ -3,7 +3,7 @@ import React from 'react'
 import { Panels } from '@repo/layout'
 import { assumeMock } from '@repo/testing'
 import { useHelpdeskV2MS4Flag } from '@repo/tickets/feature-flags'
-import { act, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -190,40 +190,43 @@ describe('TicketsListPanel', () => {
         })
 
         it('renders ApplyMacro when TicketList calls onApplyMacro', async () => {
+            const user = userEvent.setup()
             render(
                 <Panels size={1000}>
                     <TicketsListPanel />
                 </Panels>,
             )
-            screen.getByRole('button', { name: 'Open macro' }).click()
+            await user.click(screen.getByRole('button', { name: 'Open macro' }))
             expect(await screen.findByText('ApplyMacro')).toBeInTheDocument()
         })
 
         it('hides ApplyMacro when setIsOpen is called with false', async () => {
+            const user = userEvent.setup()
             render(
                 <Panels size={1000}>
                     <TicketsListPanel />
                 </Panels>,
             )
-            screen.getByRole('button', { name: 'Open macro' }).click()
+            await user.click(screen.getByRole('button', { name: 'Open macro' }))
             await screen.findByText('ApplyMacro')
-            act(() => {
-                screen.getByRole('button', { name: 'Close macro' }).click()
-            })
+            await user.click(
+                screen.getByRole('button', { name: 'Close macro' }),
+            )
             expect(screen.queryByText('ApplyMacro')).not.toBeInTheDocument()
         })
 
         it('hides ApplyMacro when the macro is applied', async () => {
+            const user = userEvent.setup()
             render(
                 <Panels size={1000}>
                     <TicketsListPanel />
                 </Panels>,
             )
-            screen.getByRole('button', { name: 'Open macro' }).click()
+            await user.click(screen.getByRole('button', { name: 'Open macro' }))
             await screen.findByText('ApplyMacro')
-            act(() => {
-                screen.getByRole('button', { name: 'Apply macro' }).click()
-            })
+            await user.click(
+                screen.getByRole('button', { name: 'Apply macro' }),
+            )
             expect(screen.queryByText('ApplyMacro')).not.toBeInTheDocument()
         })
     })

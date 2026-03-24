@@ -20,6 +20,10 @@ type Params = {
     onApplyMacro?: (ticketIds: number[]) => void
 }
 
+type HandleUndeleteOptions = {
+    removeFromCurrentViewCache?: boolean
+}
+
 export function useTicketListActions({
     viewId,
     selectedTicketIds,
@@ -72,6 +76,21 @@ export function useTicketListActions({
             await createJobRemovingTickets(
                 JobType.DeleteTicket,
                 undefined,
+                successMessage,
+            )
+            onActionComplete()
+        },
+        [createJobRemovingTickets, onActionComplete],
+    )
+
+    const runBulkUpdateRemovingTickets = useCallback(
+        async (
+            updates: Parameters<typeof createJob>[1],
+            successMessage: string,
+        ) => {
+            await createJobRemovingTickets(
+                JobType.UpdateTicket,
+                updates,
                 successMessage,
             )
             onActionComplete()
@@ -159,8 +178,47 @@ export function useTicketListActions({
         )
     }, [runBulkUpdate, selectionLabel, withDelayNotice])
 
+    const handleSetStatus = useCallback(
+        async (status: TicketStatus) => {
+            await runBulkUpdate(
+                { status },
+                withDelayNotice(
+                    status === TicketStatus.Open
+                        ? `${selectionLabel} reopened`
+                        : `${selectionLabel} closed`,
+                ),
+            )
+        },
+        [runBulkUpdate, selectionLabel, withDelayNotice],
+    )
+
     const handleMoveToTrash = useCallback(async () => {
-        await runBulkDelete(`${selectionLabel} moved to trash.`)
+        await runBulkUpdate(
+            { trashed_datetime: new Date().toISOString() },
+            `${selectionLabel} moved to trash.`,
+        )
+    }, [runBulkUpdate, selectionLabel])
+
+    const handleUndelete = useCallback(
+        async (options?: HandleUndeleteOptions) => {
+            if (options?.removeFromCurrentViewCache) {
+                await runBulkUpdateRemovingTickets(
+                    { trashed_datetime: null },
+                    `${selectionLabel} restored from trash.`,
+                )
+                return
+            }
+
+            await runBulkUpdate(
+                { trashed_datetime: null },
+                `${selectionLabel} restored from trash.`,
+            )
+        },
+        [runBulkUpdate, runBulkUpdateRemovingTickets, selectionLabel],
+    )
+
+    const handleDeleteForever = useCallback(async () => {
+        await runBulkDelete(`${selectionLabel} deleted forever.`)
     }, [runBulkDelete, selectionLabel])
 
     const handleExportTickets = useCallback(async () => {
@@ -185,8 +243,11 @@ export function useTicketListActions({
         handleAssignTeam,
         handleAssignUser,
         handleAddTag,
+        handleSetStatus,
         handleCloseTickets,
         handleMoveToTrash,
+        handleUndelete,
+        handleDeleteForever,
         handleExportTickets,
         handleApplyMacro,
     }
