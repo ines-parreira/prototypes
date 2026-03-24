@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { useFeedbackTracking } from '@repo/ai-agent'
 import { useDebouncedEffect } from '@repo/hooks'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
@@ -11,8 +12,6 @@ import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/Au
 import { AutoSaveState } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
-
-import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 
 type FeedbackInternalNoteProps = {
     onDebouncedChange: (value: string) => void

@@ -1,10 +1,10 @@
+import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { Panel } from '@repo/layout'
 import { TicketInfobarNavigation } from '@repo/tickets'
 import { useParams } from 'react-router-dom'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
-import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import useHasRecharge from 'pages/tickets/detail/hooks/useHasRecharge'
 

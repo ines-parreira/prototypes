@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
+import { useFeedbackTracking } from '@repo/ai-agent'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -32,7 +33,6 @@ import FeedbackOtherResourcesSelect from './FeedbackOtherResourcesSelect'
 import FeedbackReportIssue from './FeedbackReportIssue'
 import { FeedbackResourceSection } from './FeedbackResourceSection'
 import FeedbackStatusBadge from './FeedbackStatusBadge'
-import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 import type { FeedbackStatus } from './types'
 import { ResourceSection } from './types'
 import { getActionUrl, getGuidanceUrl, getKnowledgeUrl } from './utils'

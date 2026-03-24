@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { useFeedbackTracking } from '@repo/ai-agent'
+
 import useAppSelector from 'hooks/useAppSelector'
 import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
@@ -9,7 +11,6 @@ import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/Current
 import { EditionManagerContextProvider } from 'pages/settings/helpCenter/providers/EditionManagerContext'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { useFeedbackActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackActions'
-import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import KnowledgeSourceSideBar from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBar'
 import { UnsavedChangesModalProvider } from 'pages/tickets/detail/components/AIAgentFeedbackBar/UnsavedChangesModalProvider'

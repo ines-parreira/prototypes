@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
@@ -29,7 +30,6 @@ import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { knowledgeResourceShouldBeLink } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
-import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import type { RootState, StoreDispatch } from 'state/types'
@@ -183,9 +183,17 @@ jest.mock('react-markdown', () => {
     }
 })
 
-jest.mock(
-    'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback',
-)
+jest.mock('@repo/ai-agent', () => ({
+    ...jest.requireActual('@repo/ai-agent'),
+    useCanAccessAIFeedback: jest.fn(),
+    useFeedbackTracking: jest.fn(() => ({
+        onFeedbackTabOpened: jest.fn(),
+        onKnowledgeResourceClick: jest.fn(),
+    })),
+    useReasoningTracking: jest.fn(() => ({
+        onReasoningOpened: jest.fn(),
+    })),
+}))
 const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
 
 jest.mock('models/knowledgeService/queries', () => ({

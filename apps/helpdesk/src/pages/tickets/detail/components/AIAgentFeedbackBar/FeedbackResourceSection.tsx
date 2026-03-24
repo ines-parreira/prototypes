@@ -1,3 +1,4 @@
+import { useFeedbackTracking } from '@repo/ai-agent'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import { useCookies } from 'react-cookie'
@@ -16,7 +17,6 @@ import type {
     Knowledge,
 } from '../../../../../models/aiAgentFeedback/types'
 import IconButton from '../../../../common/components/button/IconButton'
-import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 import type { ResourceSection } from './types'
 import { ActionStatus } from './types'
 

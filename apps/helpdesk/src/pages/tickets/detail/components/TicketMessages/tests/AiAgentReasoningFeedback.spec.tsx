@@ -1,3 +1,4 @@
+import { useFeedbackTracking } from '@repo/ai-agent'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -8,7 +9,6 @@ import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import { useFeedbackTracking } from '../../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { AiAgentBinaryFeedbackEnum } from '../../AIAgentFeedbackBar/types'
 import { AiAgentReasoningFeedback } from '../AiAgentReasoningFeedback'
 
@@ -20,7 +20,7 @@ jest.mock('models/knowledgeService/mutations', () => ({
     useUpsertFeedback: jest.fn(),
 }))
 
-jest.mock('../../AIAgentFeedbackBar/hooks/useFeedbackTracking', () => ({
+jest.mock('@repo/ai-agent', () => ({
     useFeedbackTracking: jest.fn(),
 }))
 

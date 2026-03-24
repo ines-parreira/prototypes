@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useReasoningTracking } from '@repo/ai-agent'
 import classNames from 'classnames'
 import { useLocation } from 'react-router-dom'
 
@@ -10,7 +11,6 @@ import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
 import type { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import type { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { AiAgentReasoningContent } from 'pages/tickets/detail/components/TicketMessages/AiReasoningContent'
-import { useReasoningTracking } from 'pages/tickets/detail/components/TicketMessages/hooks/useReasoningTracking'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 
 import { useCoreContext } from '../../contexts/CoreContext'

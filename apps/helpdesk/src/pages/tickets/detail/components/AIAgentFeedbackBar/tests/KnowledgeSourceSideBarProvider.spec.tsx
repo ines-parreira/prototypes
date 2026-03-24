@@ -22,14 +22,11 @@ const useNavBarMocked = assumeMock(useNavBar)
 jest.mock('split-ticket-view-toggle')
 const useSplitTicketViewMocked = assumeMock(useSplitTicketView)
 
-jest.mock(
-    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking',
-    () => ({
-        useFeedbackTracking: jest.fn(() => ({
-            onKnowledgeResourceClick: jest.fn(),
-        })),
-    }),
-)
+jest.mock('@repo/ai-agent', () => ({
+    useFeedbackTracking: jest.fn(() => ({
+        onKnowledgeResourceClick: jest.fn(),
+    })),
+}))
 
 const mockResource = {
     id: '123',

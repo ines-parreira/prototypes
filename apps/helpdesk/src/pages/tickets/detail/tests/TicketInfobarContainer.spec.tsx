@@ -1,5 +1,6 @@
 import type { ComponentProps, ReactNode } from 'react'
 
+import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import type { EditShippingAddressModalRenderProps } from '@repo/customer'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
@@ -22,7 +23,6 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
 import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
 import type { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
-import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
@@ -77,9 +77,12 @@ const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 jest.mock('@gorgias/helpdesk-queries')
 const useGetTicketMock = assumeMock(useGetTicket)
 
-jest.mock(
-    'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback',
-)
+jest.mock('@repo/ai-agent', () => ({
+    useCanAccessAIFeedback: jest.fn(),
+    useFeedbackTracking: jest.fn(() => ({
+        onFeedbackTabOpened: jest.fn(),
+    })),
+}))
 const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
 
 jest.mock('pages/tickets/detail/components/TicketFeedback', () => ({

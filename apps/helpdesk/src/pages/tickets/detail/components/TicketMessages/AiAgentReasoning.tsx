@@ -1,7 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { AiAgentReasoningState } from '@repo/ai-agent'
-import * as aiAgent from '@repo/ai-agent'
+import {
+    AiAgentMessageType,
+    useCanAccessAIFeedback,
+    useFeedbackTracking,
+    useReasoningTracking,
+} from '@repo/ai-agent'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
 import { useLocation } from 'react-router-dom'
@@ -16,12 +21,9 @@ import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 
-import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from '../AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
-import { useCanAccessAIFeedback } from '../TicketFeedback/hooks/useCanAccessAIFeedback'
 import { AiAgentReasoningFeedback } from './AiAgentReasoningFeedback'
 import { AiAgentReasoningContent } from './AiReasoningContent'
-import { useReasoningTracking } from './hooks/useReasoningTracking'
 
 import css from './AiAgentReasoning.less'
 
@@ -58,7 +60,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const messageId = message.id || 0
     const isHandover =
         (message.meta as Record<string, unknown>)?.ai_agent_message_type ===
-        aiAgent.AiAgentMessageType.HANDOVER_TO_AGENT
+        AiAgentMessageType.HANDOVER_TO_AGENT
 
     const { activeTab, onChangeTab } = useTicketInfobarNavigation()
 

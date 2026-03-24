@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useFeedbackTracking } from '@repo/ai-agent'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
@@ -16,7 +17,6 @@ import { useShopIntegrationId } from 'pages/aiAgent/hooks/useShopIntegrationId'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
 import { useHasAccessToOpportunities } from 'pages/aiAgent/opportunities/hooks/useHasAccessToOpportunities'
-import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
@@ -78,9 +78,9 @@ jest.mock(
 )
 const useKnowledgeSourceSideBarMocked = assumeMock(useKnowledgeSourceSideBar)
 
-jest.mock(
-    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking',
-)
+jest.mock('@repo/ai-agent', () => ({
+    useFeedbackTracking: jest.fn(),
+}))
 const useFeedbackTrackingMocked = assumeMock(useFeedbackTracking)
 
 jest.mock('pages/settings/helpCenter/hooks/useHelpCenterApi', () => ({

@@ -1,14 +1,19 @@
+import type * as loggingModule from '@repo/logging'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@testing-library/react'
 
 import { useReasoningTracking } from '../useReasoningTracking'
 
-const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
+vi.mock('@repo/logging', async () => {
+    const actual = await vi.importActual<typeof loggingModule>('@repo/logging')
 
-jest.mock('@repo/logging', () => ({
-    ...jest.requireActual('@repo/logging'),
-    logEvent: jest.fn(),
-}))
+    return {
+        ...actual,
+        logEvent: vi.fn(),
+    }
+})
+
+const mockLogEvent = vi.mocked(logEvent)
 
 describe('useReasoningTracking', () => {
     const defaultProps = {
@@ -26,7 +31,7 @@ describe('useReasoningTracking', () => {
     }
 
     beforeEach(() => {
-        jest.clearAllMocks()
+        vi.clearAllMocks()
     })
 
     describe('when onReasoningOpened is called', () => {

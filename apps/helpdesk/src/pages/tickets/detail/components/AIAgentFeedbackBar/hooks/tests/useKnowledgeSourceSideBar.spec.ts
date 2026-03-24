@@ -26,14 +26,11 @@ jest.mock('split-ticket-view-toggle', () => ({
     }),
 }))
 
-jest.mock(
-    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking',
-    () => ({
-        useFeedbackTracking: jest.fn(() => ({
-            onKnowledgeResourceClick: jest.fn(),
-        })),
-    }),
-)
+jest.mock('@repo/ai-agent', () => ({
+    useFeedbackTracking: jest.fn(() => ({
+        onKnowledgeResourceClick: jest.fn(),
+    })),
+}))
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 
 describe('useKnowledgeSourceSideBar', () => {

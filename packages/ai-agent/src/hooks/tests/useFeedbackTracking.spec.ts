@@ -1,15 +1,19 @@
+import type * as loggingModule from '@repo/logging'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@testing-library/react'
 
-import { AiAgentKnowledgeResourceTypeEnum } from '../../types'
 import { useFeedbackTracking } from '../useFeedbackTracking'
 
-const mockLogEvent = logEvent as jest.MockedFunction<typeof logEvent>
+vi.mock('@repo/logging', async () => {
+    const actual = await vi.importActual<typeof loggingModule>('@repo/logging')
 
-jest.mock('@repo/logging', () => ({
-    ...jest.requireActual('@repo/logging'),
-    logEvent: jest.fn(),
-}))
+    return {
+        ...actual,
+        logEvent: vi.fn(),
+    }
+})
+
+const mockLogEvent = vi.mocked(logEvent)
 
 describe('useFeedbackTracking', () => {
     const defaultProps = {
@@ -19,7 +23,7 @@ describe('useFeedbackTracking', () => {
     }
 
     const mockResourceId = 'resource-123'
-    const mockResourceType = AiAgentKnowledgeResourceTypeEnum.ARTICLE
+    const mockResourceType = 'ARTICLE'
     const mockResourceSetId = 'helpCenter-456'
 
     const expectedEventContext = {
@@ -27,6 +31,10 @@ describe('useFeedbackTracking', () => {
         accountId: defaultProps.accountId,
         userId: defaultProps.userId,
     }
+
+    beforeEach(() => {
+        vi.clearAllMocks()
+    })
 
     describe('when onKnowledgeResourceClick is called', () => {
         it('logs the correct event with resource details', () => {
@@ -132,6 +140,7 @@ describe('useFeedbackTracking', () => {
 
             const openedFrom = 'give-feedback-buton-from-reasoning'
             result.current.onFeedbackTabOpened(openedFrom)
+
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.AiAgentFeedbackTabOpened,
                 {
@@ -150,6 +159,7 @@ describe('useFeedbackTracking', () => {
 
             const type = 'thumbs_up'
             result.current.onFeedbackGiven(type)
+
             expect(mockLogEvent).toHaveBeenCalledWith(
                 SegmentEvent.AiAgentFeedbackGiven,
                 { ...expectedEventContext, type },

@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { useFeedbackTracking } from '@repo/ai-agent'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
@@ -8,7 +9,6 @@ import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration'
 import { useFeedbackActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackActions'
-import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
@@ -38,9 +38,9 @@ jest.mock(
 )
 const useFeedbackActionsMock = useFeedbackActions as jest.Mock
 
-jest.mock(
-    'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking',
-)
+jest.mock('@repo/ai-agent', () => ({
+    useFeedbackTracking: jest.fn(),
+}))
 const useFeedbackTrackingMock = useFeedbackTracking as jest.Mock
 
 jest.mock(

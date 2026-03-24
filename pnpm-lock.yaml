@@ -1683,9 +1683,18 @@ importers:
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.4
+      '@gorgias/helpdesk-queries':
+        specifier: catalog:rest-api-sdk
+        version: 0.10.12(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
+      '@repo/logging':
+        specifier: workspace:*
+        version: link:../logging
+      '@repo/utils':
+        specifier: workspace:*
+        version: link:../utils
       '@testing-library/dom':
         specifier: catalog:test
         version: 10.4.0

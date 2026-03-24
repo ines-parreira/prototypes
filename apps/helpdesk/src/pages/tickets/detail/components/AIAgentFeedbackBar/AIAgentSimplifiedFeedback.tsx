@@ -1,5 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
+import { useFeedbackTracking } from '@repo/ai-agent'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab } from '@repo/navigation'
 import { v4 as uuidv4 } from 'uuid'
@@ -17,7 +18,6 @@ import css from 'pages/tickets/detail/components/AIAgentFeedbackBar/AIAgentSimpl
 import AutoSaveBadge from 'pages/tickets/detail/components/AIAgentFeedbackBar/AutoSaveBadge'
 import CreateKnowledgeSection from 'pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection'
 import { useFeedbackActions } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackActions'
-import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import KnowledgeSourceFeedback from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedback'
 import { KnowledgeSourceFeedbackSkeleton } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceFeedbackSkeleton'
 import MissingKnowledgeSelect from 'pages/tickets/detail/components/AIAgentFeedbackBar/MissingKnowledgeSelect'

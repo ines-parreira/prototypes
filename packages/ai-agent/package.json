@@ -17,6 +17,9 @@
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
+        "@repo/logging": "workspace:*",
+        "@repo/utils": "workspace:*",
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/design-tokens": "catalog:axiom",
         "react": "catalog:react",
@@ -26,7 +29,10 @@
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
         "@gorgias/design-tokens": "catalog:axiom",
+        "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
+        "@repo/logging": "workspace:*",
+        "@repo/utils": "workspace:*",
         "@testing-library/dom": "catalog:test",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",

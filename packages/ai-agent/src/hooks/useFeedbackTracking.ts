@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import type { AiAgentKnowledgeResourceTypeEnum } from '../types'
+type FeedbackTrackingResourceType = string
 
 interface UseFeedbackTrackingProps {
     ticketId: number
@@ -13,21 +13,21 @@ interface UseFeedbackTrackingProps {
 interface FeedbackTrackingCallbacks {
     onKnowledgeResourceClick: (
         resourceId: string,
-        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceType: FeedbackTrackingResourceType,
         resourceSetId: string,
     ) => void
     onKnowledgeResourceEditClick: (
         resourceId: string,
-        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceType: FeedbackTrackingResourceType,
         resourceSetId: string,
     ) => void
     onKnowledgeResourceCreateClick: (
-        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceType: FeedbackTrackingResourceType,
         resourceSetId: string,
     ) => void
     onKnowledgeResourceSaved: (
         resourceId: string,
-        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceType: FeedbackTrackingResourceType,
         resourceSetId: string,
         isNew: boolean,
     ) => void
@@ -50,7 +50,7 @@ export const useFeedbackTracking = ({
 
     const onKnowledgeResourceClick = (
         resourceId: string,
-        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceType: FeedbackTrackingResourceType,
         resourceSetId: string,
     ) => {
         logEvent(SegmentEvent.AiAgentFeedbackKnowledgeResourceClicked, {
@@ -63,7 +63,7 @@ export const useFeedbackTracking = ({
 
     const onKnowledgeResourceEditClick = (
         resourceId: string,
-        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceType: FeedbackTrackingResourceType,
         resourceSetId: string,
     ) => {
         logEvent(SegmentEvent.AiAgentFeedbackKnowledgeResourceEditClicked, {
@@ -75,7 +75,7 @@ export const useFeedbackTracking = ({
     }
 
     const onKnowledgeResourceCreateClick = (
-        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceType: FeedbackTrackingResourceType,
         resourceSetId: string,
     ) => {
         logEvent(SegmentEvent.AiAgentFeedbackKnowledgeResourceCreateClicked, {
@@ -87,7 +87,7 @@ export const useFeedbackTracking = ({
 
     const onKnowledgeResourceSaved = (
         resourceId: string,
-        resourceType: AiAgentKnowledgeResourceTypeEnum,
+        resourceType: FeedbackTrackingResourceType,
         resourceSetId: string,
         isNew: boolean,
     ) => {

@@ -1,10 +1,11 @@
 import type { ReactNode } from 'react'
 import { useCallback, useMemo, useRef, useState } from 'react'
 
+import { useFeedbackTracking } from '@repo/ai-agent'
+
 import { NavBarDisplayMode } from 'common/navigation/hooks/useNavBar/context'
 import { useNavBar } from 'common/navigation/hooks/useNavBar/useNavBar'
 import useAppSelector from 'hooks/useAppSelector'
-import { useFeedbackTracking } from 'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import {
     KnowledgeSourceSideBarContext,
     KnowledgeSourceSideBarMode,

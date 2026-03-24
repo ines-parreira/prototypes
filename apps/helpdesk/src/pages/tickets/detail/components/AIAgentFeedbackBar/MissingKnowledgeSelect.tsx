@@ -1,6 +1,7 @@
 import type { RefObject } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { useFeedbackTracking } from '@repo/ai-agent'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
 
@@ -29,7 +30,6 @@ import type {
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getTicketState } from 'state/ticket/selectors'
 
-import { useFeedbackTracking } from './hooks/useFeedbackTracking'
 import { useKnowledgeSourceSideBar } from './hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar'
 import type { useGetAllRelatedResourceData } from './useEnrichKnowledgeFeedbackData/useGetAllRelatedResourceData'
 import { getResourceMetadata } from './useEnrichKnowledgeFeedbackData/utils'

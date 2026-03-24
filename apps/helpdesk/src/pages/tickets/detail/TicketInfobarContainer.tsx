@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useCanAccessAIFeedback, useFeedbackTracking } from '@repo/ai-agent'
 import type { EditShippingAddressModalRenderProps } from '@repo/customer'
 import { ShopifyCustomer, ShopifyCustomerProvider } from '@repo/customer'
 import { logEvent, logEventWithSampling, SegmentEvent } from '@repo/logging'
@@ -30,7 +31,6 @@ import { channelToCommunicationIcon } from 'pages/common/components/infobar/Info
 import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
-import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import RechargeTabContent from 'pages/tickets/detail/RechargeTabContent'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
@@ -59,7 +59,6 @@ import ConnectedEditOrderShippingAddressModal from 'Widgets/modules/Shopify/modu
 import { OrderSidePanelWithActions } from 'Widgets/modules/Shopify/modules/Order/components/OrderSidePanelWithActions'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
-import { useFeedbackTracking } from './components/AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import { useCreateOrder } from './hooks/useCreateOrder'
 
 import css from './TicketInfobarContainer.less'

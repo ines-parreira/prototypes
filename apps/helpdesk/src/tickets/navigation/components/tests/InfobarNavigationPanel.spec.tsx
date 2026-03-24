@@ -1,3 +1,4 @@
+import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { Panels } from '@repo/layout'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
@@ -6,7 +7,6 @@ import { MemoryRouter, Route } from 'react-router-dom'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
-import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
@@ -17,9 +17,9 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
     useGetTicket: jest.fn(),
 }))
 
-jest.mock(
-    'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback',
-)
+jest.mock('@repo/ai-agent', () => ({
+    useCanAccessAIFeedback: jest.fn(),
+}))
 
 jest.mock('pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent')
 

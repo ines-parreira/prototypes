@@ -1,3 +1,4 @@
+import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
@@ -14,7 +15,6 @@ import {
     useSubmitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
 import type { TicketMessage } from 'models/ticket/types'
-import { useCanAccessAIFeedback } from 'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -30,9 +30,12 @@ jest.mock('@repo/navigation', () => ({
 }))
 const useTicketInfobarNavigationMock = useTicketInfobarNavigation as jest.Mock
 
-jest.mock(
-    'pages/tickets/detail/components/TicketFeedback/hooks/useCanAccessAIFeedback',
-)
+jest.mock('@repo/ai-agent', () => ({
+    useCanAccessAIFeedback: jest.fn(),
+    useFeedbackTracking: jest.fn(() => ({
+        onFeedbackTabOpened: jest.fn(),
+    })),
+}))
 const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
 
 jest.mock('models/aiAgentFeedback/queries')

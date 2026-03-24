@@ -195,7 +195,7 @@ const useAppSelectorMock = useAppSelector as jest.Mock
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = useAppDispatch as jest.Mock
 
-jest.mock('../hooks/useFeedbackTracking', () => ({
+jest.mock('@repo/ai-agent', () => ({
     useFeedbackTracking: jest.fn(),
 }))
 
@@ -239,9 +239,7 @@ describe('MissingKnowledgeSelect', () => {
 
         useAppDispatchMock.mockReturnValue(jest.fn())
 
-        const { useFeedbackTracking } = jest.requireMock(
-            '../hooks/useFeedbackTracking',
-        )
+        const { useFeedbackTracking } = jest.requireMock('@repo/ai-agent')
         useFeedbackTracking.mockReturnValue({
             onFeedbackGiven: jest.fn(),
         })

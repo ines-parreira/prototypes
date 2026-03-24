@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { useFeedbackTracking } from '@repo/ai-agent'
 import { useDebouncedCallback, useDebouncedEffect } from '@repo/hooks'
 import classNames from 'classnames'
 
@@ -16,7 +17,6 @@ import { useUpsertFeedback } from 'models/knowledgeService/mutations'
 import { useGetFeedback } from 'models/knowledgeService/queries'
 
 import AutoSaveBadge from '../AIAgentFeedbackBar/AutoSaveBadge'
-import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
 import {
     AiAgentBinaryFeedbackEnum,
     AutoSaveState,

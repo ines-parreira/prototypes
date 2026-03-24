@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useCanAccessAIFeedback, useFeedbackTracking } from '@repo/ai-agent'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
 
@@ -15,9 +16,6 @@ import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 import css from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner.less'
 import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
-
-import { useFeedbackTracking } from '../AIAgentFeedbackBar/hooks/useFeedbackTracking'
-import { useCanAccessAIFeedback } from '../TicketFeedback/hooks/useCanAccessAIFeedback'
 
 export type SimplifiedAIAgentBannerProps = {
     message: TicketMessage
