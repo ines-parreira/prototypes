@@ -24,6 +24,7 @@ type ConfigurationContextValue = {
     gorgiasDomain: string
     accountId: number
     chatIntegrationId: number | undefined
+    smsIntegrationId: number | undefined
     shopName: string
 }
 
@@ -76,6 +77,7 @@ export const ConfigurationProvider = ({
     const gorgiasDomain = accountConfiguration?.gorgiasDomain || ''
     const accountId = accountConfiguration?.accountId || 0
     const chatIntegrationId = storeConfiguration?.monitoredChatIntegrations?.[0]
+    const smsIntegrationId = storeConfiguration?.monitoredSmsIntegrations?.[0]
 
     const contextValue = useMemo(
         () => ({
@@ -87,6 +89,7 @@ export const ConfigurationProvider = ({
             gorgiasDomain,
             accountId,
             chatIntegrationId,
+            smsIntegrationId,
             shopName,
         }),
         [
@@ -98,6 +101,7 @@ export const ConfigurationProvider = ({
             gorgiasDomain,
             accountId,
             chatIntegrationId,
+            smsIntegrationId,
             shopName,
         ],
     )

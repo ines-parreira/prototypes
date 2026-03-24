@@ -504,6 +504,54 @@ describe('usePlaygroundApi', () => {
             )
         })
 
+        it('includes smsConfig in offline eval payload when channel is sms and channelIntegrationId is set', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'sms',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.objectContaining({
+                        smsConfig: {
+                            integrationId: defaultParams.channelIntegrationId,
+                        },
+                    }),
+                }),
+            )
+        })
+
+        it('omits smsConfig from offline eval payload when channel is not sms', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.not.objectContaining({
+                        smsConfig: expect.anything(),
+                    }),
+                }),
+            )
+        })
+
         it('omits chatConfig from offline eval payload when channel is not chat', async () => {
             const createTestSession = jest.fn().mockResolvedValue('v3-session')
 
@@ -525,6 +573,49 @@ describe('usePlaygroundApi', () => {
                     }),
                 }),
             )
+        })
+
+        it('passes hasAiAgentReplied: true when session already exists', async () => {
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: 'existing-v3-session',
+                createTestSession: jest.fn(),
+            })
+
+            expect(mockSubmitTestModeMessage).toHaveBeenCalledWith([
+                undefined,
+                expect.objectContaining({
+                    sessionId: 'existing-v3-session',
+                    hasAiAgentReplied: true,
+                }),
+            ])
+        })
+
+        it('does not pass hasAiAgentReplied when creating a new session', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(mockSubmitTestModeMessage).toHaveBeenCalledWith([
+                undefined,
+                expect.not.objectContaining({
+                    hasAiAgentReplied: expect.anything(),
+                }),
+            ])
         })
 
         it('includes knowledgeOverrideRules in offline eval payload when draftKnowledge is set', async () => {

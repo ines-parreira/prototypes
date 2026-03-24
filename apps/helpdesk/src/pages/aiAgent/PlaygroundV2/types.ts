@@ -13,6 +13,7 @@ export type PlaygroundCustomer = {
     email: string
     name?: string
     id: number
+    phoneNumber?: string
 }
 
 export type PlaygroundFormValues = {

@@ -253,7 +253,7 @@ describe('usePlaygroundMessages hook', () => {
             )
         })
 
-        it('should pass undefined channelIntegrationId for non-chat channel without journey configuration', () => {
+        it('should pass undefined channelIntegrationId for email channel without journey configuration', () => {
             mockedUseCoreContext.mockReturnValue({
                 ...defaultCoreContext,
                 channel: 'email',
@@ -264,6 +264,25 @@ describe('usePlaygroundMessages hook', () => {
             expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
                 expect.objectContaining({
                     channelIntegrationId: undefined,
+                }),
+            )
+        })
+
+        it('should use smsIntegrationId from configuration context when channel is sms', () => {
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                channel: 'sms',
+            } as any)
+            mockUseConfigurationContextFn.mockReturnValue({
+                ...defaultConfigurationContext,
+                smsIntegrationId: 555,
+            })
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    channelIntegrationId: 555,
                 }),
             )
         })

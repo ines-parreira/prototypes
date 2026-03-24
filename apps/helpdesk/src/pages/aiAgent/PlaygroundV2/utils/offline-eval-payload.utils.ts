@@ -2,6 +2,7 @@ import type {
     AiAgentPlaygroundOptions,
     ChatConfig,
     KnowledgeOverrideRule,
+    SmsConfig,
     StoreConfiguration,
 } from 'models/aiAgent/types'
 import { DEFAULT_PLAYGROUND_CUSTOMER } from 'pages/aiAgent/constants'
@@ -42,6 +43,7 @@ export const buildOfflineEvalPayload = ({
     areActionsAllowedToExecute,
     draftKnowledge,
     chatConfig,
+    smsConfig,
 }: {
     customer: PlaygroundCustomer
     storeData: StoreConfiguration
@@ -50,6 +52,7 @@ export const buildOfflineEvalPayload = ({
     areActionsAllowedToExecute: boolean
     draftKnowledge?: DraftKnowledge
     chatConfig?: ChatConfig
+    smsConfig?: SmsConfig
 }): AiAgentPlaygroundOptions => {
     const customerId = customer.id ?? DEFAULT_PLAYGROUND_CUSTOMER.id
     const customerName = customer.name ?? DEFAULT_PLAYGROUND_CUSTOMER.name
@@ -59,7 +62,7 @@ export const buildOfflineEvalPayload = ({
         areActionsAllowedToExecute,
         offlineEvalSettings: {
             app: {
-                evaluatedUseCase: 'chat-customer-support',
+                evaluatedUseCase: `gorgias-${channel}`,
                 shopName: storeData.storeName,
                 shopType: storeData.shopType,
                 gorgiasDomain,
@@ -67,6 +70,10 @@ export const buildOfflineEvalPayload = ({
             user: {
                 id: customerId.toString(),
                 name: customerName!,
+                ...(customer.email && { email: customer.email }),
+                ...(customer.phoneNumber && {
+                    phoneNumber: customer.phoneNumber,
+                }),
             },
             session: {
                 channel,
@@ -75,6 +82,7 @@ export const buildOfflineEvalPayload = ({
                 knowledgeOverrideRules,
             }),
             chatConfig: chatConfig,
+            smsConfig: smsConfig,
         },
     }
 }

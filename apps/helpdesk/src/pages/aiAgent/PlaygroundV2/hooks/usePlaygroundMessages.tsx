@@ -21,7 +21,7 @@ import { useConfigurationContext } from 'pages/aiAgent/PlaygroundV2/contexts/Con
 import { useCoreContext } from 'pages/aiAgent/PlaygroundV2/contexts/CoreContext'
 import { useSubscribeToEvent } from 'pages/aiAgent/PlaygroundV2/contexts/EventsContext'
 
-import type { PlaygroundCustomer } from '../types'
+import type { PlaygroundChannels, PlaygroundCustomer } from '../types'
 import { PlaygroundEvent } from '../types'
 import { handleAiAgentTestSessionLog } from '../utils/playground-handler.utils'
 import { usePlaygroundApi } from './usePlaygroundApi'
@@ -39,6 +39,23 @@ const GREETING_MESSAGE: PlaygroundMessage = {
     createdDatetime: new Date().toISOString(),
 }
 
+const getChannelIntegrationId = (
+    channel: PlaygroundChannels,
+    ids: {
+        chatIntegrationId?: number
+        smsIntegrationId?: number
+    },
+) => {
+    switch (channel) {
+        case 'chat':
+            return ids.chatIntegrationId
+        case 'sms':
+            return ids.smsIntegrationId
+        default:
+            return
+    }
+}
+
 export const usePlaygroundMessages = () => {
     const isNewAgenticArchitectureEnabled = useFlag(
         FeatureFlagKey.AiAgentUseNewAgenticArchitecture,
@@ -51,6 +68,7 @@ export const usePlaygroundMessages = () => {
         accountId,
         httpIntegrationId,
         chatIntegrationId,
+        smsIntegrationId,
         baseUrl,
     } = useConfigurationContext()
 
@@ -70,7 +88,10 @@ export const usePlaygroundMessages = () => {
 
     const channelIntegrationId =
         journeyConfiguration?.sms_sender_integration_id ??
-        (channel === 'chat' ? chatIntegrationId : undefined)
+        getChannelIntegrationId(channel, {
+            chatIntegrationId,
+            smsIntegrationId,
+        })
 
     const { submitMessage, isSubmitting, abortCurrentRequest } =
         usePlaygroundApi({

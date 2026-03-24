@@ -490,6 +490,10 @@ export type ChatConfig = {
     integrationId: number
 }
 
+export type SmsConfig = {
+    integrationId: number
+}
+
 export type AiAgentPlaygroundOptions = {
     areActionsAllowedToExecute: boolean
     offlineEvalSettings?: {
@@ -502,12 +506,15 @@ export type AiAgentPlaygroundOptions = {
         user: {
             id: string
             name: string
+            email?: string
+            phoneNumber?: string
         }
         session: {
             channel?: string
         }
         knowledgeOverrideRules?: KnowledgeOverrideRule[]
         chatConfig?: ChatConfig
+        smsConfig?: SmsConfig
     }
 }
 
@@ -526,6 +533,7 @@ export type TestModeSessionMessagePayload = {
     sessionId: string
     userMessage: TestModeSessionUserMessage
     isDirectModelCall: boolean
+    hasAiAgentReplied?: boolean
 }
 
 export type TestModeSessionMessageResponse = {

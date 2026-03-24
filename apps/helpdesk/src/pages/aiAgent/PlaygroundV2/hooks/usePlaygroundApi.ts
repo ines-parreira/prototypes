@@ -102,6 +102,7 @@ export const usePlaygroundApi = ({
 
             let consolidatedTestSessionId = testSessionId
             if (useV3) {
+                const isExistingSession = !!consolidatedTestSessionId
                 if (!consolidatedTestSessionId) {
                     const offlineEvalPayload = buildOfflineEvalPayload({
                         customer,
@@ -117,6 +118,10 @@ export const usePlaygroundApi = ({
                                           channelAvailability ?? 'online',
                                       integrationId: channelIntegrationId,
                                   }
+                                : undefined,
+                        smsConfig:
+                            channel === 'sms' && channelIntegrationId
+                                ? { integrationId: channelIntegrationId }
                                 : undefined,
                     })
                     consolidatedTestSessionId =
@@ -136,6 +141,8 @@ export const usePlaygroundApi = ({
                         ],
                     },
                     isDirectModelCall: false,
+                    // for playground it should be enough
+                    ...(isExistingSession && { hasAiAgentReplied: true }),
                 })
                 return
             }
