@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
 import { useFlag } from '@repo/feature-flags'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -20,6 +20,7 @@ import {
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
@@ -48,11 +49,7 @@ afterAll(() => {
 })
 
 function makeWrapper() {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-        },
-    })
+    const queryClient = mockQueryClient()
     return ({ children }: { children: ReactNode }) => (
         <QueryClientProvider client={queryClient}>
             {children}
@@ -231,15 +228,17 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
 
         await waitFor(() => {
-            const kpisSection = result.current.layoutConfig.sections.find(
-                (s) => s.id === 'kpis',
-            )
-            const kpi = kpisSection?.items.find(
-                (i) => i.chartId === AnalyticsOverviewChart.AutomationRateCard,
-            )
-            expect(kpi).toBeDefined()
-            expect(kpi?.visibility).toBe(false)
+            expect(result.current.isLoading).toBe(false)
         })
+
+        const kpisSection = result.current.layoutConfig.sections.find(
+            (s) => s.id === 'kpis',
+        )
+        const kpi = kpisSection?.items.find(
+            (i) => i.chartId === AnalyticsOverviewChart.AutomationRateCard,
+        )
+        expect(kpi).toBeDefined()
+        expect(kpi?.visibility).toBe(false)
     })
 
     it('should return defaultLayoutConfig while data is loading', () => {
@@ -320,15 +319,16 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
 
         await waitFor(() => {
-            const kpisSection = result.current.layoutConfig.sections.find(
-                (s) => s.id === 'kpis',
-            )
-            const kpi = kpisSection?.items.find(
-                (i) =>
-                    i.chartId ===
-                    AnalyticsOverviewChart.AutomatedInteractionsCard,
-            )
-            expect(kpi?.visibility).toBe(false)
+            expect(result.current.isLoading).toBe(false)
         })
+
+        const kpisSection = result.current.layoutConfig.sections.find(
+            (s) => s.id === 'kpis',
+        )
+        const kpi = kpisSection?.items.find(
+            (i) =>
+                i.chartId === AnalyticsOverviewChart.AutomatedInteractionsCard,
+        )
+        expect(kpi?.visibility).toBe(false)
     })
 })
