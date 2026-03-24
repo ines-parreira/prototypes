@@ -250,4 +250,17 @@ describe('AiAgentOnboarding', () => {
             )
         })
     })
+
+    it('should preserve shop context when current step is invalid', async () => {
+        renderComponent(
+            '/app/ai-agent/shopify/shopify-store/onboarding/channels',
+            '/app/ai-agent/:shopType/:shopName/onboarding/:step',
+        )
+
+        await waitFor(() => {
+            expect(history.location.pathname).toBe(
+                '/app/ai-agent/shopify/shopify-store/onboarding/shopify integration',
+            )
+        })
+    })
 })

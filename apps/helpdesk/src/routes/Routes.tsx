@@ -44,7 +44,6 @@ import { AiAgentGuidanceNewContainer } from 'pages/aiAgent/AiAgentGuidanceNewCon
 import { AiAgentGuidanceTemplateNewContainer } from 'pages/aiAgent/AiAgentGuidanceTemplateNewContainer'
 import { AiAgentGuidanceTemplatesContainer } from 'pages/aiAgent/AiAgentGuidanceTemplatesContainer'
 import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
-import { AiAgentOnboardingRouter } from 'pages/aiAgent/AiAgentOnboardingRouter'
 import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import { AiAgentPreviewModeSettingsContainer } from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
 import { AiAgentProductRecommendations } from 'pages/aiAgent/AiAgentProductRecommendations/AiAgentProductRecommendations'
@@ -56,7 +55,6 @@ import AiAgentScrapedDomainProductsContainer from 'pages/aiAgent/AiAgentScrapedD
 import AiAgentScrapedDomainQuestionsContainer from 'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer'
 import { AiAgentToneOfVoice } from 'pages/aiAgent/AiAgentToneOfVoice'
 import { AiAgentNavbar } from 'pages/aiAgent/components/AiAgentNavbar/AiAgentNavbar'
-import { AiAgentOnboardingRedirect } from 'pages/aiAgent/components/AiAgentOnboardingRedirect/AiAgentOnboardingRedirect'
 import { AiAgentRedirect } from 'pages/aiAgent/components/AiAgentRedirect/AiAgentRedirect'
 import AiAgentExternalDocumentsArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentExternalDocumentsArticleContainer'
 import AiAgentUrlSourcesArticleContainer from 'pages/aiAgent/components/Knowledge/AiAgentUrlSourcesArticleContainer'
@@ -66,7 +64,8 @@ import {
 } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { OptimizeContainer } from 'pages/aiAgent/insights/OptimizeContainer/OptimizeContainer'
 import { KnowledgeHubContainer } from 'pages/aiAgent/KnowledgeHub/KnowledgeHubContainer'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { AiAgentOnboarding } from 'pages/aiAgent/Onboarding_V2/components/AiAgentOnboarding/AiAgentOnboarding'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 import { AiAgentOpportunities } from 'pages/aiAgent/opportunities/AiAgentOpportunities'
 import { AiAgentOverview } from 'pages/aiAgent/Overview/AiAgentOverview'
 import { SalesPaywallMiddleware } from 'pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware'
@@ -896,12 +895,16 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
                         }
                     />
 
-                    {/* TEMPORARY: V1/V2 feature flag redirect - remove with CRMGROW-2521 */}
-                    {/* Redirect `/shopType/shopName/onboarding` to appropriate starting step based on feature flag and state */}
+                    {/* Redirect `/shopType/shopName/onboarding` to first onboarding step */}
                     <Route
                         exact
                         path={`${path}/:shopType/:shopName/onboarding`}
-                        component={AiAgentOnboardingRedirect}
+                        render={({ history, match }) =>
+                            handleRedirect(
+                                history,
+                                `${match.url}/${WizardStepEnum.TONE_OF_VOICE}`,
+                            )
+                        }
                     />
 
                     {/* Generic function to wrap AiAgentOnboarding with user role validation */}
@@ -912,7 +915,7 @@ export function AiAgentBaseRoutes({ match: { path } }: RouteComponentProps) {
                         ]}
                         exact
                         component={withUserRoleRequired(
-                            AiAgentOnboardingRouter,
+                            AiAgentOnboarding,
                             AGENT_ROLE,
                         )}
                     />

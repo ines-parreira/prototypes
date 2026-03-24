@@ -11,7 +11,7 @@ import {
     TONE_OF_VOICE,
     TRAIN,
 } from 'pages/aiAgent/constants'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 
 import { useAiAgentNavigation } from '../useAiAgentNavigation'
 
@@ -284,9 +284,11 @@ describe('useAiAgentNavigation', () => {
 
                 expect(
                     result.current.routes.onboardingWizardStep(
-                        WizardStepEnum.CHANNELS,
+                        WizardStepEnum.TONE_OF_VOICE,
                     ),
-                ).toEqual('/app/ai-agent/shopify/my-shop/onboarding/channels')
+                ).toEqual(
+                    '/app/ai-agent/shopify/my-shop/onboarding/tone of voice',
+                )
             })
         })
 

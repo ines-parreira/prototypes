@@ -10,7 +10,7 @@ import { AiAgentNotificationType } from 'automate/notifications/types'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 
 import { useAiAgentTrialOnboarding } from '../useAiAgentTrialOnboarding'
 
@@ -37,7 +37,7 @@ jest.mock('react-router-dom', () => ({
 describe('useAiAgentTrialOnboarding', () => {
     const mockShopName = 'test-shop'
     const mockOnboardingWizardStepPath =
-        '/ai-agent/shopify/test-shop/onboarding/channels'
+        '/ai-agent/shopify/test-shop/onboarding/tone of voice'
 
     let queryClient: QueryClient
     let wrapper: React.FC<{ children: React.ReactNode }>
@@ -215,7 +215,7 @@ describe('useAiAgentTrialOnboarding', () => {
             })
 
             expect(mockOnboardingWizardStep).toHaveBeenCalledWith(
-                WizardStepEnum.CHANNELS,
+                WizardStepEnum.TONE_OF_VOICE,
             )
 
             expect(mockHistoryPush).toHaveBeenCalledWith({

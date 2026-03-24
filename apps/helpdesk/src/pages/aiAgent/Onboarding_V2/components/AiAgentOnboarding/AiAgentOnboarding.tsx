@@ -90,11 +90,12 @@ export const AiAgentOnboarding = () => {
 
     const renderStep = () => {
         if (!isValidStep && validSteps.length > 0) {
-            return (
-                <Redirect
-                    to={`/app/ai-agent/onboarding/${validSteps[0].step}`}
-                />
-            )
+            const basePath =
+                shopType && shopName
+                    ? `/app/ai-agent/${shopType}/${shopName}/onboarding`
+                    : '/app/ai-agent/onboarding'
+
+            return <Redirect to={`${basePath}/${validSteps[0].step}`} />
         }
 
         switch (step) {

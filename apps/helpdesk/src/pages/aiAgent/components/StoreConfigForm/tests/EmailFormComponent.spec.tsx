@@ -16,7 +16,10 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
-import { EmailFormComponent } from '../FormComponents/EmailFormComponent'
+import {
+    EmailFormComponent,
+    emailSortingCallback,
+} from '../FormComponents/EmailFormComponent'
 
 // Mock dependencies
 
@@ -154,5 +157,49 @@ describe('EmailFormComponent', () => {
 
         screen.getByText('One or more addresses required.')
         screen.getByText(/Select one or more emails/i)
+    })
+})
+
+describe('emailSortingCallback', () => {
+    const makeEmail = (
+        email: string,
+        { isDisabled = false, isDefault = false } = {},
+    ) => ({ email, id: 0, isDisabled, isDefault })
+
+    it('should sort disabled emails after enabled ones', () => {
+        const a = makeEmail('a@test.com', { isDisabled: true })
+        const b = makeEmail('b@test.com')
+
+        expect(emailSortingCallback(a, b)).toBe(1)
+        expect(emailSortingCallback(b, a)).toBe(-1)
+    })
+
+    it('should sort default email before non-default', () => {
+        const a = makeEmail('a@test.com', { isDefault: true })
+        const b = makeEmail('b@test.com')
+
+        expect(emailSortingCallback(a, b)).toBe(-1)
+    })
+
+    it('should sort non-default before default when b is default', () => {
+        const a = makeEmail('a@test.com')
+        const b = makeEmail('b@test.com', { isDefault: true })
+
+        expect(emailSortingCallback(a, b)).toBe(1)
+    })
+
+    it('should sort alphabetically when both have the same flags', () => {
+        const a = makeEmail('alpha@test.com')
+        const b = makeEmail('beta@test.com')
+
+        expect(emailSortingCallback(a, b)).toBeLessThan(0)
+        expect(emailSortingCallback(b, a)).toBeGreaterThan(0)
+    })
+
+    it('should return 0 for identical emails with same flags', () => {
+        const a = makeEmail('same@test.com')
+        const b = makeEmail('same@test.com')
+
+        expect(emailSortingCallback(a, b)).toBe(0)
     })
 })

@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory } from 'react-router-dom'
@@ -22,8 +21,7 @@ import {
     OnboardingState,
     useAiAgentOnboardingState,
 } from 'pages/aiAgent/hooks/useAiAgentOnboardingState'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
-import { WizardStepEnum as WizardStepEnumV2 } from 'pages/aiAgent/Onboarding_V2/types'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
 import { useNotifyAdmins } from 'pages/aiAgent/trial/hooks/useNotifyAdmins'
 import { useShoppingAssistantTrialFlow } from 'pages/aiAgent/trial/hooks/useShoppingAssistantTrialFlow'
@@ -94,9 +92,6 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
 
     const aiAgentNavigation = useAiAgentNavigation({ shopName: props.shopName })
 
-    const isSimplifiedOnboardingEnabled = useFlag(
-        FeatureFlagKey.SimplifyAIAgentOnboardingWizard,
-    )
     const handleOnFinishSetupNotification = useCallback(async () => {
         const isFinishedSetupNotificationAlreadyReceived =
             !!onboardingNotificationState?.finishAiAgentSetupNotificationReceivedDatetime
@@ -151,12 +146,9 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
             store: props.shopName,
         })
 
-        // Determine the correct step based on version
-        const targetStep = isSimplifiedOnboardingEnabled
-            ? WizardStepEnumV2.TONE_OF_VOICE
-            : WizardStepEnum.CHANNELS
-
-        const path = aiAgentNavigation.routes.onboardingWizardStep(targetStep)
+        const path = aiAgentNavigation.routes.onboardingWizardStep(
+            WizardStepEnum.TONE_OF_VOICE,
+        )
 
         history.push({
             pathname: path,
@@ -171,7 +163,6 @@ export const AIAgentWelcomePageView = (props: AiAgentWelcomePageProps) => {
         isAdmin,
         isOnUpdateOnboardingWizard,
         props.shopName,
-        isSimplifiedOnboardingEnabled,
     ])
 
     /*

@@ -270,7 +270,7 @@ describe('<AIAgentWelcomePageView />', () => {
         )
     })
 
-    it('should redirect to AiAgentOnboardingWizard page when Set up AI Agent button is clicked', async () => {
+    it('should redirect to onboarding when Set up AI Agent button is clicked', async () => {
         const user = userEvent.setup()
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
@@ -284,31 +284,12 @@ describe('<AIAgentWelcomePageView />', () => {
         await act(() => user.click(button))
 
         expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
+            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/tone of voice`,
             search: '',
         })
     })
 
-    it('should redirect to AiAgentOnboardingWizard page when Set up AI Agent button is clicked with the skillset step skipped', async () => {
-        const user = userEvent.setup()
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithProvider({}, history)
-
-        const button = screen.getByRole('button', {
-            name: /Set Up AI Agent/i,
-        })
-
-        await act(() => user.click(button))
-
-        expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
-            search: '',
-        })
-    })
-
-    it('should redirect to AiAgentOnboardingWizard page with search params when Continue Set Up button is clicked', async () => {
+    it('should redirect to onboarding with search params when Continue Setup button is clicked', async () => {
         const user = userEvent.setup()
         const history = createMemoryHistory()
         const historyPushSpy = jest.spyOn(history, 'push')
@@ -328,46 +309,8 @@ describe('<AIAgentWelcomePageView />', () => {
         await act(() => user.click(button))
 
         expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
+            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/tone of voice`,
             search: `?${WIZARD_UPDATE_QUERY_KEY}=true`,
-        })
-    })
-
-    it('should redirect to the new onboarding page without search params when Continue Set Up button is clicked', async () => {
-        const user = userEvent.setup()
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithProvider({}, history)
-
-        const button = screen.getByRole('button', {
-            name: /Set Up AI Agent/i,
-        })
-
-        await act(() => user.click(button))
-
-        expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
-            search: '',
-        })
-    })
-
-    it('should redirect to the new onboarding page without search params when Continue Set Up button is clicked and the skillset step is skipped', async () => {
-        const user = userEvent.setup()
-        const history = createMemoryHistory()
-        const historyPushSpy = jest.spyOn(history, 'push')
-
-        renderWithProvider({}, history)
-
-        const button = screen.getByRole('button', {
-            name: /Set Up AI Agent/i,
-        })
-
-        await act(() => user.click(button))
-
-        expect(historyPushSpy).toHaveBeenCalledWith({
-            pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
-            search: '',
         })
     })
 
@@ -398,7 +341,7 @@ describe('<AIAgentWelcomePageView />', () => {
             renderWithProvider({}, history)
 
             expect(historyPushSpy).toHaveBeenCalledWith({
-                pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/channels`,
+                pathname: `/app/ai-agent/${SHOP_TYPE}/${SHOP_NAME}/onboarding/tone of voice`,
                 search: '',
             })
         })

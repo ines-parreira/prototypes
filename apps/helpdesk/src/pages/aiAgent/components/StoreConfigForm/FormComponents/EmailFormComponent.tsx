@@ -8,9 +8,9 @@ import { EMAIL_INTEGRATION_TYPES } from 'constants/integration'
 import useAppSelector from 'hooks/useAppSelector'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { EmailIntegrationListSelection } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
+import type { EmailItem } from 'pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection'
 import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
 import { useGetAlreadyUsedEmailIntegrationIds } from 'pages/aiAgent/hooks/useGetAlreadyUsedEmailIntegrationIds'
-import { emailSortingCallback } from 'pages/aiAgent/Onboarding/components/steps/ChannelsStep/ChannelsStep'
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import {
     SettingsCard,
@@ -21,6 +21,22 @@ import {
 import { getIntegrationsByTypes } from 'state/integrations/selectors'
 
 import css from './EmailFormComponent.less'
+
+export const emailSortingCallback = (a: EmailItem, b: EmailItem) => {
+    if (a.isDisabled && !b.isDisabled) {
+        return 1
+    }
+    if (b.isDisabled && !a.isDisabled) {
+        return -1
+    }
+    if (a.isDefault) {
+        return -1
+    }
+    if (b.isDefault) {
+        return 1
+    }
+    return a.email.localeCompare(b.email)
+}
 
 type EmailFormComponentProps = {
     updateValue: UpdateValue<FormValues>

@@ -6,7 +6,7 @@ import { AiAgentNotificationType } from 'automate/notifications/types'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 
 export const useAiAgentTrialOnboarding = ({
     shopName,
@@ -52,7 +52,7 @@ export const useAiAgentTrialOnboarding = ({
         }
 
         const path = aiAgentNavigation.routes.onboardingWizardStep(
-            WizardStepEnum.CHANNELS,
+            WizardStepEnum.TONE_OF_VOICE,
         )
 
         history.push({ pathname: path })

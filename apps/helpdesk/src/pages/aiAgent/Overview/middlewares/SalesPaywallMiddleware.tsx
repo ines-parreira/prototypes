@@ -26,7 +26,7 @@ import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/Shop
 import { SALES, WIZARD_UPDATE_QUERY_KEY } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useAiAgentOnboardingNotification } from 'pages/aiAgent/hooks/useAiAgentOnboardingNotification'
-import { WizardStepEnum } from 'pages/aiAgent/Onboarding/types'
+import { WizardStepEnum } from 'pages/aiAgent/Onboarding_V2/types'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { TrialActivatedModal } from 'pages/aiAgent/trial/components/TrialActivatedModal/TrialActivatedModal'
 import { UpgradePlanModal } from 'pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal'
@@ -245,7 +245,7 @@ export const SalesPaywallMiddleware =
             })
 
             const path = aiAgentNavigation.routes.onboardingWizardStep(
-                WizardStepEnum.CHANNELS,
+                WizardStepEnum.TONE_OF_VOICE,
             )
 
             history.push({
