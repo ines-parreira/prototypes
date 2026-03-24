@@ -1,6 +1,8 @@
 import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock, renderHook } from '@repo/testing'
 
+import { listStores } from '@gorgias/helpdesk-client'
+
 import {
     fetchStatsMetricPerDimension,
     useStatsMetricPerDimension,
@@ -19,14 +21,17 @@ import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/form
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
+    fetchExtraConfig,
     getBarChartDataHooks,
     getBarChartGraphConfig,
     getLineChartDataHooks,
     getLineChartGraphConfig,
     useAutomationMetricPerAutomationFeatureType,
     useAutomationMetricPerChannel,
+    useAutomationMetricPerStoreIntegrationId,
     useAutomationTimeSeriesPerAutomationFeatureType,
     useAutomationTimeSeriesPerChannel,
+    useAutomationTimeSeriesPerStoreIntegrationId,
     useOverallTimeSeries,
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import type {
@@ -34,6 +39,7 @@ import type {
     LineChartMetricConfig,
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
+jest.mock('@gorgias/helpdesk-client')
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension')
 jest.mock('domains/reporting/hooks/useStatsMetricTrend')
 jest.mock('domains/reporting/hooks/useStatsTimeSeries')
@@ -53,6 +59,7 @@ const fetchStatsTimeSeriesPerDimensionMock = assumeMock(
     fetchStatsTimeSeriesPerDimension,
 )
 const formatPreviousPeriodMock = assumeMock(formatPreviousPeriod)
+const listStoresMock = assumeMock(listStores)
 
 const defaultDimensionResult = {
     data: null,
@@ -346,6 +353,172 @@ describe('useAutomationMetricPerChannel', () => {
     })
 })
 
+describe('useAutomationMetricPerStoreIntegrationId', () => {
+    const mockStores = [
+        {
+            store_integration_id: 123,
+            name: 'my-store',
+            created_datetime: '2025-01-01T00:00:00Z',
+        },
+        {
+            store_integration_id: 456,
+            name: 'another-store',
+            created_datetime: '2025-01-01T00:00:00Z',
+        },
+    ]
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('should map store IDs to names when stores are provided', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: '123', value: 10 },
+                    { dimension: '456', value: 20 },
+                ],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                { stores: mockStores },
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { name: 'my-store', value: 10 },
+            { name: 'another-store', value: 20 },
+        ])
+    })
+
+    it('should fall back to "Store {id}" when ID does not match any store', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [{ dimension: '999', value: 5 }],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                { stores: mockStores },
+            ),
+        )
+
+        expect(result.current.data).toEqual([{ name: 'Store 999', value: 5 }])
+    })
+
+    it('should return "No store" for null dimension value', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [{ dimension: 'null', value: 7 }],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                { stores: mockStores },
+            ),
+        )
+
+        expect(result.current.data).toEqual([{ name: 'No store', value: 7 }])
+    })
+
+    it('should fall back to "Store {id}" when no stores are provided', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [{ dimension: '123', value: 10 }],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([{ name: 'Store 123', value: 10 }])
+    })
+
+    it('should return empty array when allValues is undefined', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: { allValues: undefined },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([])
+    })
+
+    it('should return isLoading derived from isFetching', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            isFetching: true,
+            data: null,
+        })
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should call query and useStatsMetricPerDimension with storeIntegrationId dimension', () => {
+        const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+        mockQuery.mockReturnValue(mockBuiltQuery)
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: null,
+        })
+
+        renderHook(() =>
+            useAutomationMetricPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith({
+            filters: defaultFilters,
+            timezone: defaultTimezone,
+            dimensions: ['storeIntegrationId'],
+        })
+        expect(useStatsMetricPerDimensionMock).toHaveBeenCalledWith(
+            mockBuiltQuery,
+            'storeIntegrationId',
+        )
+    })
+})
+
 describe('getBarChartDataHooks', () => {
     const mockTrendHook = jest.fn()
     const mockTrendResult = {
@@ -403,6 +576,53 @@ describe('getBarChartDataHooks', () => {
             period,
         })
         expect(dimensions[0].valueFormatter).toBeUndefined()
+    })
+
+    it('should return storeIntegrationId dimension config with correct shape', () => {
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['storeIntegrationId'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+        )
+
+        expect(dimensions).toHaveLength(1)
+        expect(dimensions[0]).toMatchObject({
+            id: 'storeIntegrationId',
+            name: 'Store',
+            configurableGraphType: ConfigurableGraphType.Bar,
+            period,
+        })
+    })
+
+    it('should pass stores via extra to storeIntegrationId useChartData', () => {
+        const mockStores = [
+            {
+                store_integration_id: 123,
+                name: 'my-store',
+                created_datetime: '2025-01-01T00:00:00Z',
+            },
+        ]
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [{ dimension: '123', value: 42 }],
+            },
+        } as any)
+
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['storeIntegrationId'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+            { stores: mockStores },
+        )
+
+        const { result } = renderHook(() => dimensions[0].useChartData())
+
+        expect(result.current.data).toEqual([{ name: 'my-store', value: 42 }])
     })
 
     it('should return all requested dimensions', () => {
@@ -893,6 +1113,163 @@ describe('useAutomationTimeSeriesPerChannel', () => {
     })
 })
 
+describe('useAutomationTimeSeriesPerStoreIntegrationId', () => {
+    const defaultGranularity = ReportingGranularity.Day
+    const mockStores = [
+        {
+            store_integration_id: 123,
+            name: 'my-store',
+            created_datetime: '2025-01-01T00:00:00Z',
+        },
+    ]
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('should map store IDs to names when stores are provided', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                '123': [[{ dateTime: '2025-01-01', value: 50 }]],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+                { stores: mockStores },
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            {
+                label: 'my-store',
+                values: [{ date: 'Jan 1', value: 50 }],
+            },
+        ])
+    })
+
+    it('should fall back to "Store {id}" when ID does not match any store', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                '999': [[{ dateTime: '2025-01-01', value: 30 }]],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+                { stores: mockStores },
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            {
+                label: 'Store 999',
+                values: [{ date: 'Jan 1', value: 30 }],
+            },
+        ])
+    })
+
+    it('should return "No store" label for null dimension key', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                null: [[{ dateTime: '2025-01-01', value: 10 }]],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+                { stores: mockStores },
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            {
+                label: 'No store',
+                values: [{ date: 'Jan 1', value: 10 }],
+            },
+        ])
+    })
+
+    it('should return empty array when data is undefined', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.data).toEqual([])
+    })
+
+    it('should return isLoading derived from isFetching', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: true,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should call query with filters, timezone, storeIntegrationId dimension, and granularity', () => {
+        const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+        mockQuery.mockReturnValue(mockBuiltQuery)
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        renderHook(() =>
+            useAutomationTimeSeriesPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith({
+            filters: defaultFilters,
+            timezone: defaultTimezone,
+            dimensions: ['storeIntegrationId'],
+            granularity: defaultGranularity,
+        })
+        expect(useStatsTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+            mockBuiltQuery,
+        )
+    })
+})
+
 describe('getLineChartDataHooks', () => {
     const mockTrendHook = jest.fn()
     const mockTrendQuery = jest.fn()
@@ -986,6 +1363,24 @@ describe('getLineChartDataHooks', () => {
         expect(dimensions[0]).toMatchObject({
             id: 'automationFeatureType',
             name: 'Feature',
+            configurableGraphType: ConfigurableGraphType.MultipleTimeSeries,
+        })
+    })
+
+    it('should return storeIntegrationId dimension config with MultipleTimeSeries chart type', () => {
+        const { dimensions } = getLineChartDataHooks(
+            mockTrendQuery,
+            mockTimeSeriesQuery,
+            ['storeIntegrationId'],
+            defaultFilters,
+            defaultTimezone,
+            defaultGranularity,
+        )
+
+        expect(dimensions).toHaveLength(1)
+        expect(dimensions[0]).toMatchObject({
+            id: 'storeIntegrationId',
+            name: 'Store',
             configurableGraphType: ConfigurableGraphType.MultipleTimeSeries,
         })
     })
@@ -1166,6 +1561,67 @@ describe('getLineChartDataHooks', () => {
                 mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['automationFeatureType'],
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            )
+
+            const { result } = renderHook(() => dimensions[0].useChartData())
+
+            expect(result.current.isLoading).toBe(true)
+        })
+
+        it('storeIntegrationId useChartData calls useStatsTimeSeriesPerDimension with storeIntegrationId dimension and resolves store names', () => {
+            const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+            mockTimeSeriesQuery.mockReturnValue(mockBuiltQuery)
+            const mockStores = [
+                {
+                    store_integration_id: 123,
+                    name: 'my-store',
+                    created_datetime: '2025-01-01T00:00:00Z',
+                },
+            ]
+            useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+                data: {
+                    '123': [[{ dateTime: '2025-01-01', value: 77 }]],
+                },
+                isFetching: false,
+            } as any)
+
+            const { dimensions } = getLineChartDataHooks(
+                mockTrendQuery,
+                mockTimeSeriesQuery,
+                ['storeIntegrationId'],
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+                { stores: mockStores },
+            )
+
+            const { result } = renderHook(() => dimensions[0].useChartData())
+
+            expect(mockTimeSeriesQuery).toHaveBeenCalledWith({
+                filters: defaultFilters,
+                timezone: defaultTimezone,
+                dimensions: ['storeIntegrationId'],
+                granularity: defaultGranularity,
+            })
+            expect(result.current.data).toEqual([
+                { label: 'my-store', values: [{ date: 'Jan 1', value: 77 }] },
+            ])
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        it('storeIntegrationId useChartData returns isLoading true when fetching', () => {
+            useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+                data: undefined,
+                isFetching: true,
+            } as any)
+
+            const { dimensions } = getLineChartDataHooks(
+                mockTrendQuery,
+                mockTimeSeriesQuery,
+                ['storeIntegrationId'],
                 defaultFilters,
                 defaultTimezone,
                 defaultGranularity,
@@ -1357,6 +1813,7 @@ describe('fetchConfigurableBarChartDownloadData', () => {
                 allValues: [{ dimension: 'chat', value: 42, decile: null }],
             },
         })
+        listStoresMock.mockResolvedValue({ data: { data: [] } } as any)
     })
 
     it('selects the metric matching savedMeasure', async () => {
@@ -1496,6 +1953,91 @@ describe('fetchConfigurableBarChartDownloadData', () => {
         expect(result.files).toEqual({})
     })
 
+    it('returns files with "Store" as dimension label for storeIntegrationId dimension', async () => {
+        fetchStatsMetricPerDimensionMock.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [{ dimension: '123', value: 15, decile: null }],
+            },
+        })
+
+        const fetch = fetchConfigurableBarChartDownloadData([
+            {
+                measure: 'automationRate',
+                name: 'Automation Rate',
+                metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
+                dimensions: ['storeIntegrationId'],
+                queryFactory: mockQuery,
+            },
+        ])
+
+        const result = await fetch(
+            'automationRate',
+            'storeIntegrationId',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(result).toHaveProperty('files')
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('Store 123')
+    })
+
+    it('resolves store names in CSV via fetchExtraConfig when dimension is storeIntegrationId', async () => {
+        fetchStatsMetricPerDimensionMock.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [{ dimension: '123', value: 15, decile: null }],
+            },
+        })
+        listStoresMock.mockResolvedValue({
+            data: {
+                data: [
+                    {
+                        store_integration_id: 123,
+                        name: 'my-store',
+                        created_datetime: '2025-01-01T00:00:00Z',
+                    },
+                ],
+            },
+        } as any)
+
+        const fetch = fetchConfigurableBarChartDownloadData([
+            {
+                measure: 'automationRate',
+                name: 'Automation Rate',
+                metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
+                dimensions: ['storeIntegrationId'],
+                queryFactory: mockQuery,
+            },
+        ])
+
+        const result = await fetch(
+            'automationRate',
+            'storeIntegrationId',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(listStoresMock).toHaveBeenCalled()
+        expect(result).toHaveProperty('files')
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('my-store')
+        expect(csvContent).not.toContain('Store 123')
+    })
+
     it('uses raw dimension name for an unrecognized dimension', async () => {
         fetchStatsMetricPerDimensionMock.mockResolvedValue({
             isFetching: false,
@@ -1551,6 +2093,7 @@ describe('fetchConfigurableLineChartDownloadData', () => {
             chat: [[{ dateTime: '2025-01-01T00:00:00', value: 5 }]],
             email: [[{ dateTime: '2025-01-01T00:00:00', value: 15 }]],
         })
+        listStoresMock.mockResolvedValue({ data: { data: [] } } as any)
     })
 
     it('calls fetchStatsTimeSeries when dimension is "overall"', async () => {
@@ -1713,5 +2256,86 @@ describe('fetchConfigurableLineChartDownloadData', () => {
         expect(result).toHaveProperty('files')
         const csvContent = Object.values(result.files)[0]
         expect(csvContent).toContain('someMetric')
+    })
+
+    it('calls fetchStatsTimeSeriesPerDimension when dimension is "storeIntegrationId"', async () => {
+        fetchStatsTimeSeriesPerDimensionMock.mockResolvedValue({
+            '123': [[{ dateTime: '2025-01-01T00:00:00', value: 5 }]],
+        })
+
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        await fetch(
+            'automationRate',
+            'storeIntegrationId',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(fetchStatsTimeSeriesPerDimensionMock).toHaveBeenCalled()
+        expect(fetchStatsTimeSeriesMock).not.toHaveBeenCalled()
+    })
+
+    it('resolves store names in CSV via fetchExtraConfig when dimension is storeIntegrationId', async () => {
+        fetchStatsTimeSeriesPerDimensionMock.mockResolvedValue({
+            '123': [[{ dateTime: '2025-01-01T00:00:00', value: 5 }]],
+        })
+        listStoresMock.mockResolvedValue({
+            data: {
+                data: [
+                    {
+                        store_integration_id: 123,
+                        name: 'my-store',
+                        created_datetime: '2025-01-01T00:00:00Z',
+                    },
+                ],
+            },
+        } as any)
+
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'storeIntegrationId',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(listStoresMock).toHaveBeenCalled()
+        expect(result).toHaveProperty('files')
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('my-store')
+        expect(csvContent).not.toContain('Store 123')
+    })
+})
+
+describe('fetchExtraConfig', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('calls listStores and returns stores when dimension is storeIntegrationId', async () => {
+        const mockStores = [
+            {
+                store_integration_id: 123,
+                name: 'my-store',
+                created_datetime: '2025-01-01T00:00:00Z',
+            },
+        ]
+        listStoresMock.mockResolvedValue({ data: { data: mockStores } } as any)
+
+        const result = await fetchExtraConfig('storeIntegrationId')
+
+        expect(listStoresMock).toHaveBeenCalled()
+        expect(result).toEqual({ stores: mockStores })
+    })
+
+    it('returns empty stores without calling listStores for other dimensions', async () => {
+        const result = await fetchExtraConfig('channel')
+
+        expect(listStoresMock).not.toHaveBeenCalled()
+        expect(result).toEqual({ stores: [] })
     })
 })

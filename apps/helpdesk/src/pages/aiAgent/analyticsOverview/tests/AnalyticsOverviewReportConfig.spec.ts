@@ -116,26 +116,14 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
     })
 
-    it('should have automated interactions combo chart config', () => {
-        const config =
-            AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.AutomatedInteractionsComboChart
-            ]
-
-        expect(config).toBeDefined()
-        expect(config.label).toBe('Automated interactions')
-        expect(config.chartType).toBe(ChartType.Graph)
-        expect(config.csvProducer).toBeNull()
-    })
-
     it('should have automation rate combo chart config with configurable bar graph producer', () => {
         const config =
             AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.AutomationRateComboChart
+                AnalyticsOverviewChart.ConfigurableBarGraph
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Overall automation rate')
+        expect(config.label).toBe('Configurable bar graph')
         expect(config.chartType).toBe(ChartType.Graph)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
@@ -148,11 +136,11 @@ describe('AnalyticsOverviewReportConfig', () => {
     it('should have automation line chart config with configurable line graph producer', () => {
         const config =
             AnalyticsOverviewReportConfig.charts[
-                AnalyticsOverviewChart.AutomationLineChart
+                AnalyticsOverviewChart.ConfigurableLineGraph
             ]
 
         expect(config).toBeDefined()
-        expect(config.label).toBe('Overall automation rate')
+        expect(config.label).toBe('Configurable line graph')
         expect(config.chartType).toBe(ChartType.Graph)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)

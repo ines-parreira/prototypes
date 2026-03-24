@@ -88,7 +88,7 @@ describe('defaultLayoutConfig', () => {
             const visualizationsSection =
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[1]
             expect(visualizationsSection.items[0].chartId).toBe(
-                AnalyticsOverviewChart.AutomationRateComboChart,
+                AnalyticsOverviewChart.ConfigurableBarGraph,
             )
             expect(visualizationsSection.items[0].gridSize).toBe(6)
         })
@@ -97,7 +97,7 @@ describe('defaultLayoutConfig', () => {
             const visualizationsSection =
                 DEFAULT_ANALYTICS_OVERVIEW_LAYOUT.sections[1]
             expect(visualizationsSection.items[1].chartId).toBe(
-                AnalyticsOverviewChart.AutomationLineChart,
+                AnalyticsOverviewChart.ConfigurableLineGraph,
             )
             expect(visualizationsSection.items[1].gridSize).toBe(6)
         })

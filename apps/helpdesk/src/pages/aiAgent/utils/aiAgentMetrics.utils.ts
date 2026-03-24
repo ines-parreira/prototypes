@@ -9,6 +9,10 @@ import { ConfigurableGraphType } from '@repo/reporting'
 import { DateTimeFormatMapper, DateTimeFormatType } from '@repo/utils'
 import moment from 'moment/moment'
 
+import { listStores } from '@gorgias/helpdesk-client'
+import type { StoreIntegration } from '@gorgias/helpdesk-queries'
+import { useListStores } from '@gorgias/helpdesk-queries'
+
 import {
     buildBarCsvFiles,
     buildMultipleTimeSeriesCsvFiles,
@@ -39,7 +43,10 @@ import type { ReportingGranularity } from 'domains/reporting/models/types'
 import { DATE_FORMAT } from 'pages/aiAgent/analyticsOverview/constants'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
-type AutomationDimension = 'channel' | 'automationFeatureType'
+type AutomationDimension =
+    | 'channel'
+    | 'automationFeatureType'
+    | 'storeIntegrationId'
 type LineAutomationDimension = 'overall' | AutomationDimension
 
 export type BarChartMetricConfig = {
@@ -59,6 +66,10 @@ export type LineChartMetricConfig = {
     dimensions: LineAutomationDimension[]
     trendQueryFactory(ctx: Context): BuiltQuery
     timeSeriesQueryFactory(ctx: Context): BuiltQuery
+}
+
+export type ExtraConfigProps = {
+    stores?: StoreIntegration[]
 }
 
 const MAP_AUTOMATION_FEATURE_NAME: Record<string, string> = {
@@ -81,12 +92,38 @@ const formatChannelName = (channel: string): string => {
     return channelNames[channel] || channel
 }
 
+const formatStoreName = (storeId: string, stores?: StoreIntegration[]) => {
+    if (storeId === 'null' || !storeId) {
+        return 'No store'
+    }
+    const store = stores?.find(
+        (store) => store.store_integration_id.toString() === storeId.toString(),
+    )
+    return store?.name ?? `Store ${storeId}`
+}
+
+const formatDimensionName = (dimension: string) => {
+    switch (dimension) {
+        case 'overall':
+            return 'Overall'
+        case 'channel':
+            return 'Channel'
+        case 'storeIntegrationId':
+            return 'Store'
+        case 'automationFeatureType':
+            return 'Feature'
+        default:
+            return dimension
+    }
+}
+
 const formatDate = (date: string) =>
     moment(date).format(DATE_FORMAT).replace(', ', ' ')
 
 const formatBarChartData = (
     data: MetricWithDecile | undefined | null,
     dimension: AutomationDimension,
+    extra?: ExtraConfigProps,
 ) => {
     switch (dimension) {
         case 'channel':
@@ -117,6 +154,18 @@ const formatBarChartData = (
                         })) ?? [],
                 isLoading: !!data?.isFetching,
             }
+        case 'storeIntegrationId':
+            return {
+                data:
+                    data?.data?.allValues?.map((metricValue) => ({
+                        name: formatStoreName(
+                            metricValue.dimension.toString(),
+                            extra?.stores,
+                        ),
+                        value: metricValue.value,
+                    })) ?? [],
+                isLoading: !!data?.isFetching,
+            }
         default:
             return {
                 data:
@@ -127,6 +176,17 @@ const formatBarChartData = (
                 isLoading: !!data?.isFetching,
             }
     }
+}
+
+export const useStoreIntegrations = (): StoreIntegration[] => {
+    const { data: stores } = useListStores(undefined, {
+        query: {
+            select: (data) => data?.data?.data ?? [],
+            cacheTime: 1000 * 60 * 60, // 1H
+        },
+    })
+
+    return stores ?? []
 }
 
 export const useAutomationMetricPerAutomationFeatureType = (
@@ -159,12 +219,31 @@ export const useAutomationMetricPerChannel = (
     return formatBarChartData(data, 'channel')
 }
 
+export const useAutomationMetricPerStoreIntegrationId = (
+    query: MetricQueryFactory,
+    filters: StatsFilters,
+    timezone: string,
+    extra?: ExtraConfigProps,
+) => {
+    const data = useStatsMetricPerDimension(
+        query({
+            filters,
+            timezone,
+            dimensions: ['storeIntegrationId'],
+        }),
+        'storeIntegrationId',
+    )
+
+    return formatBarChartData(data, 'storeIntegrationId', extra)
+}
+
 export const getBarChartDataHooks = (
     query: MetricQueryFactory,
     dimensions: AutomationDimension[],
     filters: StatsFilters,
     timezone: string,
     period?: { start_datetime: string; end_datetime: string },
+    extra?: ExtraConfigProps,
 ) => {
     const dimensionConfigs: ConfigurableGraphGroupingConfig[] = dimensions.map(
         (dimensionId) => {
@@ -172,7 +251,7 @@ export const getBarChartDataHooks = (
                 case 'channel':
                     return {
                         id: dimensionId,
-                        name: 'Channel',
+                        name: formatDimensionName(dimensionId),
                         configurableGraphType: ConfigurableGraphType.Bar,
                         useChartData: () =>
                             useAutomationMetricPerChannel(
@@ -185,13 +264,27 @@ export const getBarChartDataHooks = (
                 case 'automationFeatureType':
                     return {
                         id: dimensionId,
-                        name: 'Feature',
+                        name: formatDimensionName(dimensionId),
                         configurableGraphType: ConfigurableGraphType.Bar,
                         useChartData: () =>
                             useAutomationMetricPerAutomationFeatureType(
                                 query,
                                 filters,
                                 timezone,
+                            ),
+                        period,
+                    }
+                case 'storeIntegrationId':
+                    return {
+                        id: dimensionId,
+                        name: formatDimensionName(dimensionId),
+                        configurableGraphType: ConfigurableGraphType.Bar,
+                        useChartData: () =>
+                            useAutomationMetricPerStoreIntegrationId(
+                                query,
+                                filters,
+                                timezone,
+                                extra,
                             ),
                         period,
                     }
@@ -209,6 +302,7 @@ export const getBarChartGraphConfig = (
     metrics: BarChartMetricConfig[],
     statsFilters: StatsFilters,
     userTimezone: string,
+    extra?: ExtraConfigProps,
 ): ConfigurableGraphMetricConfig[] => {
     const tooltipPeriod = formatPreviousPeriod(statsFilters.period)
 
@@ -233,6 +327,7 @@ export const getBarChartGraphConfig = (
             statsFilters,
             userTimezone,
             period,
+            extra,
         ),
     }))
 }
@@ -266,6 +361,7 @@ export const useOverallTimeSeries = (
 const formatMultiTimeSeriesData = (
     data: Record<string, TimeSeriesDataItem[][]> | undefined,
     dimension: AutomationDimension,
+    extra?: ExtraConfigProps,
 ): MultipleTimeSeriesDataItem[] => {
     switch (dimension) {
         case 'automationFeatureType':
@@ -285,6 +381,13 @@ const formatMultiTimeSeriesData = (
             return data
                 ? Object.entries(data).map(([metricName, values]) => ({
                       label: formatChannelName(metricName),
+                      values: formatTimeSeriesValues(values[0]),
+                  }))
+                : []
+        case 'storeIntegrationId':
+            return data
+                ? Object.entries(data).map(([metricName, values]) => ({
+                      label: formatStoreName(metricName, extra?.stores),
                       values: formatTimeSeriesValues(values[0]),
                   }))
                 : []
@@ -340,6 +443,28 @@ export const useAutomationTimeSeriesPerChannel = (
     }
 }
 
+export const useAutomationTimeSeriesPerStoreIntegrationId = (
+    query: MetricQueryFactory,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    extra?: ExtraConfigProps,
+) => {
+    const data = useStatsTimeSeriesPerDimension(
+        query({
+            filters,
+            timezone,
+            dimensions: ['storeIntegrationId'],
+            granularity,
+        }),
+    )
+
+    return {
+        data: formatMultiTimeSeriesData(data.data, 'storeIntegrationId', extra),
+        isLoading: data.isFetching,
+    }
+}
+
 export const getLineChartDataHooks = (
     trendQuery: MetricQueryFactory,
     timeSeriesQuery: MetricQueryFactory,
@@ -347,6 +472,7 @@ export const getLineChartDataHooks = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
+    extra?: ExtraConfigProps,
 ) => {
     const dimensionConfigs: ConfigurableGraphGroupingConfig[] = dimensions.map(
         (dimensionId) => {
@@ -354,7 +480,7 @@ export const getLineChartDataHooks = (
                 case 'overall':
                     return {
                         id: 'overall',
-                        name: 'Overall',
+                        name: formatDimensionName(dimensionId),
                         configurableGraphType: ConfigurableGraphType.TimeSeries,
                         useChartData: () =>
                             useOverallTimeSeries(
@@ -367,7 +493,7 @@ export const getLineChartDataHooks = (
                 case 'channel':
                     return {
                         id: dimensionId,
-                        name: 'Channel',
+                        name: formatDimensionName(dimensionId),
                         configurableGraphType:
                             ConfigurableGraphType.MultipleTimeSeries,
                         useChartData: () =>
@@ -381,7 +507,7 @@ export const getLineChartDataHooks = (
                 case 'automationFeatureType':
                     return {
                         id: dimensionId,
-                        name: 'Feature',
+                        name: formatDimensionName(dimensionId),
                         configurableGraphType:
                             ConfigurableGraphType.MultipleTimeSeries,
                         useChartData: () =>
@@ -390,6 +516,21 @@ export const getLineChartDataHooks = (
                                 filters,
                                 timezone,
                                 granularity,
+                            ),
+                    }
+                case 'storeIntegrationId':
+                    return {
+                        id: dimensionId,
+                        name: formatDimensionName(dimensionId),
+                        configurableGraphType:
+                            ConfigurableGraphType.MultipleTimeSeries,
+                        useChartData: () =>
+                            useAutomationTimeSeriesPerStoreIntegrationId(
+                                timeSeriesQuery,
+                                filters,
+                                timezone,
+                                granularity,
+                                extra,
                             ),
                     }
             }
@@ -407,6 +548,7 @@ export const getLineChartGraphConfig = (
     statsFilters: StatsFilters,
     userTimezone: string,
     granularity: ReportingGranularity,
+    extra?: ExtraConfigProps,
 ): ConfigurableGraphMetricConfig[] => {
     const tooltipPeriod = formatPreviousPeriod(statsFilters.period)
 
@@ -423,8 +565,21 @@ export const getLineChartGraphConfig = (
             statsFilters,
             userTimezone,
             granularity,
+            extra,
         ),
     }))
+}
+
+export const fetchExtraConfig = async (
+    dimension: string,
+): Promise<ExtraConfigProps> => {
+    let stores: StoreIntegration[] = []
+    if (dimension === 'storeIntegrationId') {
+        const { data } = await listStores()
+        stores = data?.data
+    }
+
+    return { stores }
 }
 
 export const fetchConfigurableBarChartDownloadData =
@@ -448,16 +603,19 @@ export const fetchConfigurableBarChartDownloadData =
             }),
             dimension as AutomationDimension,
         )
+
+        const extra = await fetchExtraConfig(dimension)
         const { data } = formatBarChartData(
             response,
             dimension as AutomationDimension,
+            extra,
         )
 
         return {
             files: buildBarCsvFiles(
                 data,
                 metric.name,
-                dimension === 'channel' ? 'Channel' : 'Feature',
+                formatDimensionName(dimension),
                 metric.metricFormat,
                 filters.period,
             ),
@@ -502,9 +660,11 @@ export const fetchConfigurableLineChartDownloadData =
             dimensions: [dimension as DimensionName],
         })
         const data = await fetchStatsTimeSeriesPerDimension(query)
+        const extra = await fetchExtraConfig(dimension)
         const labeledData = formatMultiTimeSeriesData(
             data,
             dimension as AutomationDimension,
+            extra,
         )
         return {
             files: buildMultipleTimeSeriesCsvFiles(

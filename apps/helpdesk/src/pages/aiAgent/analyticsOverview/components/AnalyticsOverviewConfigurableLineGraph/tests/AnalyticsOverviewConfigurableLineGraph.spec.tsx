@@ -4,12 +4,16 @@ import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useListStores } from '@gorgias/helpdesk-queries'
+
+import * as automateFiltersHooks from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { AutomationLineChart } from 'pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart'
 import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
+import { AnalyticsOverviewConfigurableLineGraph } from '../AnalyticsOverviewConfigurableLineGraph'
+
 jest.mock('@repo/feature-flags')
+jest.mock('@gorgias/helpdesk-queries')
 jest.mock(
     'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection',
     () => ({
@@ -23,7 +27,7 @@ jest.mock(
     }),
 )
 jest.mock(
-    'pages/aiAgent/analyticsOverview/components/AutomationLineChart/DEPRECATED_AutomationLineChart',
+    'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewConfigurableLineGraph/DEPRECATED_AutomationLineChart',
     () => ({
         DEPRECATED_AutomationLineChart: () => <div>Deprecated chart</div>,
     }),
@@ -33,10 +37,11 @@ jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
     getLineChartGraphConfig: jest.fn(),
 }))
 const getLineChartGraphConfigMock = assumeMock(getLineChartGraphConfig)
+const useListStoresMock = assumeMock(useListStores)
 
 const useFlagMocked = assumeMock(useFlag)
 
-describe('AutomationLineChart', () => {
+describe('AnalyticsOverviewConfigurableLineGraph', () => {
     const mockTimeSeriesData = [
         { date: 'Jun 1 2024', value: 0.3 },
         { date: 'Jun 2 2024', value: 0.28 },
@@ -79,8 +84,8 @@ describe('AutomationLineChart', () => {
     })
 
     beforeEach(() => {
-        jest.spyOn(statsHooks, 'useStatsFilters').mockReturnValue({
-            cleanStatsFilters: {
+        jest.spyOn(automateFiltersHooks, 'useAutomateFilters').mockReturnValue({
+            statsFilters: {
                 period: {
                     start_datetime: '2024-06-01',
                     end_datetime: '2024-06-07',
@@ -90,8 +95,8 @@ describe('AutomationLineChart', () => {
             granularity: ReportingGranularity.Day,
         })
 
+        useListStoresMock.mockReturnValue({ data: [] } as any)
         getLineChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
-
         useFlagMocked.mockReturnValue(true)
     })
 
@@ -100,26 +105,26 @@ describe('AutomationLineChart', () => {
     })
 
     it('should render the metric title', () => {
-        render(<AutomationLineChart />)
+        render(<AnalyticsOverviewConfigurableLineGraph />)
 
         expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
     })
 
     it('should render the metric value from trend data', () => {
-        render(<AutomationLineChart />)
+        render(<AnalyticsOverviewConfigurableLineGraph />)
 
         expect(screen.getByText('32%')).toBeInTheDocument()
     })
 
     it('should render the trend badge', () => {
-        const { container } = render(<AutomationLineChart />)
+        const { container } = render(<AnalyticsOverviewConfigurableLineGraph />)
 
         const trendBadge = container.querySelector('.trend')
         expect(trendBadge).toBeInTheDocument()
     })
 
     it('should render with positive trend icon', () => {
-        const { container } = render(<AutomationLineChart />)
+        const { container } = render(<AnalyticsOverviewConfigurableLineGraph />)
 
         const icons = container.querySelectorAll('svg')
         const hasTrendIcon = Array.from(icons).some((icon) =>
@@ -140,7 +145,7 @@ describe('AutomationLineChart', () => {
             },
         ])
 
-        const { container } = render(<AutomationLineChart />)
+        const { container } = render(<AnalyticsOverviewConfigurableLineGraph />)
 
         const trendingDownIcon = container.querySelector(
             '[aria-label="trending-down"]',
@@ -149,12 +154,33 @@ describe('AutomationLineChart', () => {
     })
 
     it('should render responsive container for chart', () => {
-        const { container } = render(<AutomationLineChart />)
+        const { container } = render(<AnalyticsOverviewConfigurableLineGraph />)
 
         const responsiveContainer = container.querySelector(
             '.recharts-responsive-container',
         )
         expect(responsiveContainer).toBeInTheDocument()
+    })
+
+    it('should pass stores from useListStores to getLineChartGraphConfig', () => {
+        const mockStores = [
+            {
+                store_integration_id: 123,
+                name: 'my-store',
+                created_datetime: '2025-01-01T00:00:00Z',
+            },
+        ]
+        useListStoresMock.mockReturnValue({ data: mockStores } as any)
+
+        render(<AnalyticsOverviewConfigurableLineGraph />)
+
+        expect(getLineChartGraphConfigMock).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.anything(),
+            expect.anything(),
+            expect.anything(),
+            { stores: mockStores },
+        )
     })
 
     it('should render loading skeleton when trend data is fetching', () => {
@@ -168,7 +194,7 @@ describe('AutomationLineChart', () => {
             },
         ])
 
-        render(<AutomationLineChart />)
+        render(<AnalyticsOverviewConfigurableLineGraph />)
 
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })

@@ -92,7 +92,7 @@ const DeprecatedChart: ComponentType = () => <div>Deprecated chart</div>
 
 const defaultProps = {
     metrics: [defaultMetricConfig],
-    analyticsChartId: AnalyticsOverviewChart.AutomationLineChart,
+    analyticsChartId: AnalyticsOverviewChart.ConfigurableLineGraph,
     DeprecatedChart,
 }
 
@@ -179,7 +179,7 @@ describe('ConfigurableGraphWrapper', () => {
                             items: [
                                 {
                                     chartId:
-                                        AnalyticsOverviewChart.AutomationLineChart,
+                                        AnalyticsOverviewChart.ConfigurableLineGraph,
                                     gridSize: 6,
                                     visibility: true,
                                     measures: ['automationRate'],
@@ -210,7 +210,7 @@ describe('ConfigurableGraphWrapper', () => {
                             items: [
                                 {
                                     chartId:
-                                        AnalyticsOverviewChart.AutomationLineChart,
+                                        AnalyticsOverviewChart.ConfigurableLineGraph,
                                     gridSize: 6,
                                     visibility: true,
                                     measures: ['automatedInteractionsCount'],

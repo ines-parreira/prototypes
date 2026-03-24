@@ -54,12 +54,12 @@ export const DEFAULT_ANALYTICS_OVERVIEW_LAYOUT: DashboardLayoutConfig<any> = {
             type: ChartType.Graph,
             items: [
                 {
-                    chartId: AnalyticsOverviewChart.AutomationRateComboChart,
+                    chartId: AnalyticsOverviewChart.ConfigurableBarGraph,
                     gridSize: 6,
                     visibility: true,
                 },
                 {
-                    chartId: AnalyticsOverviewChart.AutomationLineChart,
+                    chartId: AnalyticsOverviewChart.ConfigurableLineGraph,
                     gridSize: 6,
                     visibility: true,
                 },

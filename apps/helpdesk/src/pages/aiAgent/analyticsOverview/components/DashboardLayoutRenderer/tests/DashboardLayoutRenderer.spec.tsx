@@ -262,11 +262,11 @@ const reportConfigMock = {
             chartComponent: () => null,
             label: 'Cost Saved',
         },
-        [AnalyticsOverviewChart.AutomationRateComboChart]: {
+        [AnalyticsOverviewChart.ConfigurableBarGraph]: {
             chartComponent: () => null,
             label: 'Automation Rate Chart',
         },
-        [AnalyticsOverviewChart.AutomationLineChart]: {
+        [AnalyticsOverviewChart.ConfigurableLineGraph]: {
             chartComponent: () => null,
             label: 'Automation Line Chart',
         },
@@ -332,12 +332,12 @@ describe('DashboardLayoutRenderer', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                `Chart: ${AnalyticsOverviewChart.AutomationRateComboChart}`,
+                `Chart: ${AnalyticsOverviewChart.ConfigurableBarGraph}`,
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                `Chart: ${AnalyticsOverviewChart.AutomationLineChart}`,
+                `Chart: ${AnalyticsOverviewChart.ConfigurableLineGraph}`,
             ),
         ).toBeInTheDocument()
         expect(

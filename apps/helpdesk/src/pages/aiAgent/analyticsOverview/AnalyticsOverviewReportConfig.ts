@@ -14,22 +14,21 @@ import {
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
-import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
 import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomationRateCard'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
+import {
+    AnalyticsOverviewConfigurableBarGraph,
+    OVERVIEW_BAR_CHART_METRICS,
+} from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewConfigurableBarGraph/AnalyticsOverviewConfigurableBarGraph'
+import {
+    AnalyticsOverviewConfigurableLineGraph,
+    OVERVIEW_LINE_CHART_METRICS,
+} from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewConfigurableLineGraph/AnalyticsOverviewConfigurableLineGraph'
 import { ArticleRecommendationTable } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/ArticleRecommendationTable'
 import { ARTICLE_RECOMMENDATION_TABLE } from 'pages/aiAgent/analyticsOverview/components/ArticleRecommendationTable/columns'
-import {
-    AUTOMATION_LINE_CHART_METRICS,
-    AutomationLineChart,
-} from 'pages/aiAgent/analyticsOverview/components/AutomationLineChart/AutomationLineChart'
-import {
-    AUTOMATION_RATE_BAR_CHART_METRICS,
-    AutomationRateComboChart,
-} from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
 import { FLOWS_TABLE } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/columns'
 import { FlowsTable } from 'pages/aiAgent/analyticsOverview/components/FlowsTable/FlowsTable'
 import { ORDER_MANAGEMENT_TABLE } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/columns'
@@ -52,9 +51,8 @@ export enum AnalyticsOverviewChart {
     TimeSavedCard = 'time_saved_card',
     CostSavedCard = 'cost_saved_card',
     DecreaseInResolutionTimeCard = 'decrease_in_resolution_time_card',
-    AutomationRateComboChart = 'automation_rate_combo_chart',
-    AutomatedInteractionsComboChart = 'automated_interactions_combo_chart',
-    AutomationLineChart = 'automation_line_chart',
+    ConfigurableBarGraph = 'configurable_bar_graph',
+    ConfigurableLineGraph = 'configurable_line_graph',
     PerformanceTable = 'performance_table',
     OrderManagementTable = 'order_management_table',
     FlowsTable = 'flows_table',
@@ -181,44 +179,34 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
             },
-            [AnalyticsOverviewChart.AutomationRateComboChart]: {
-                chartComponent: AutomationRateComboChart,
-                label: 'Overall automation rate',
+            [AnalyticsOverviewChart.ConfigurableBarGraph]: {
+                chartComponent: AnalyticsOverviewConfigurableBarGraph,
+                label: 'Configurable bar graph',
                 csvProducer: [
                     {
                         type: DataExportFormat.ConfigurableBarGraph,
                         fetch: fetchConfigurableBarChartDownloadData(
-                            AUTOMATION_RATE_BAR_CHART_METRICS,
+                            OVERVIEW_BAR_CHART_METRICS,
                         ),
                     },
                 ],
-                description: 'Breakdown of automation rate by feature',
+                description: 'Breakdown of different metrics',
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
             },
-            [AnalyticsOverviewChart.AutomatedInteractionsComboChart]: {
-                chartComponent:
-                    AnalyticsOverviewAutomatedInteractionsComboChart,
-                label: 'Automated interactions',
-                csvProducer: null,
-                description: 'Breakdown of automated interactions by skill',
-                chartType: ChartType.Graph,
-                metricFormat: 'decimal',
-                interpretAs: 'more-is-better',
-            },
-            [AnalyticsOverviewChart.AutomationLineChart]: {
-                chartComponent: AutomationLineChart,
-                label: 'Overall automation rate',
+            [AnalyticsOverviewChart.ConfigurableLineGraph]: {
+                chartComponent: AnalyticsOverviewConfigurableLineGraph,
+                label: 'Configurable line graph',
                 csvProducer: [
                     {
                         type: DataExportFormat.ConfigurableLineGraph,
                         fetch: fetchConfigurableLineChartDownloadData(
-                            AUTOMATION_LINE_CHART_METRICS,
+                            OVERVIEW_LINE_CHART_METRICS,
                         ),
                     },
                 ],
-                description: 'Automation metrics trend over time',
+                description: 'Breakdown of different metrics over time',
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',

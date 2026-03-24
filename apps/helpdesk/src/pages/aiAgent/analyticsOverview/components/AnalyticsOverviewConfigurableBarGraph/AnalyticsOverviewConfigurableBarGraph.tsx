@@ -8,7 +8,10 @@ import type {
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import { ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/ConfigurableGraphWrapper'
-import { getBarChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import {
+    getBarChartGraphConfig,
+    useStoreIntegrations,
+} from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import type { BarChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 import { DEPRECATED_AutomationRateComboChart } from './DEPRECATED_AutomationRateComboChart'
@@ -19,14 +22,14 @@ type Props = {
     chartConfig?: ChartConfig
 }
 
-export const AUTOMATION_RATE_BAR_CHART_METRICS: BarChartMetricConfig[] = [
+export const OVERVIEW_BAR_CHART_METRICS: BarChartMetricConfig[] = [
     {
         measure: 'automationRate',
         name: 'Overall automation rate',
         metricFormat: 'decimal-to-percent' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory: dynamicOverallAutomationRateQueryFactoryV2,
-        dimensions: ['channel', 'automationFeatureType'],
+        dimensions: ['channel', 'storeIntegrationId', 'automationFeatureType'],
     },
     {
         measure: 'automatedInteractionsCount',
@@ -34,24 +37,27 @@ export const AUTOMATION_RATE_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory: dynamicOverallAutomatedInteractionsQueryFactoryV2,
-        dimensions: ['channel', 'automationFeatureType'],
+        dimensions: ['channel', 'storeIntegrationId', 'automationFeatureType'],
     },
 ]
 
-export const AutomationRateComboChart = ({
+export const AnalyticsOverviewConfigurableBarGraph = ({
     chartId,
     dashboard,
     chartConfig,
 }: Props) => {
     const { statsFilters, userTimezone } = useAutomateFilters()
+    const stores = useStoreIntegrations()
+
     const metrics = useMemo(
         () =>
             getBarChartGraphConfig(
-                AUTOMATION_RATE_BAR_CHART_METRICS,
+                OVERVIEW_BAR_CHART_METRICS,
                 statsFilters,
                 userTimezone,
+                { stores },
             ),
-        [statsFilters, userTimezone],
+        [statsFilters, userTimezone, stores],
     )
 
     return (

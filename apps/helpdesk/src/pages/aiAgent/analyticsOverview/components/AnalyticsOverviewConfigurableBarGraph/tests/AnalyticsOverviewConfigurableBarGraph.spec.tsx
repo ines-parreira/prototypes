@@ -5,12 +5,15 @@ import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 
-import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useListStores } from '@gorgias/helpdesk-queries'
+
+import * as automateFiltersHooks from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
-import { AutomationRateComboChart } from 'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/AutomationRateComboChart'
+import { AnalyticsOverviewConfigurableBarGraph } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewConfigurableBarGraph/AnalyticsOverviewConfigurableBarGraph'
 import { getBarChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 jest.mock('@repo/feature-flags')
+jest.mock('@gorgias/helpdesk-queries')
 jest.mock(
     'domains/reporting/hooks/managed-dashboards/useSaveConfigurableGraphSelection',
     () => ({
@@ -24,7 +27,7 @@ jest.mock(
     }),
 )
 jest.mock(
-    'pages/aiAgent/analyticsOverview/components/AutomationRateComboChart/DEPRECATED_AutomationRateComboChart',
+    'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewConfigurableBarGraph/DEPRECATED_AutomationRateComboChart',
     () => ({
         DEPRECATED_AutomationRateComboChart: () => <div>Deprecated chart</div>,
     }),
@@ -34,10 +37,11 @@ jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
     getBarChartGraphConfig: jest.fn(),
 }))
 const getBarChartGraphConfigMock = assumeMock(getBarChartGraphConfig)
+const useListStoresMock = assumeMock(useListStores)
 
 const useFlagMocked = assumeMock(useFlag)
 
-describe('AutomationChart', () => {
+describe('AnalyticsOverviewConfigurableBarGraph', () => {
     const mockChartData = [
         { name: 'AI Agent', value: 18 },
         { name: 'Flows', value: 7 },
@@ -84,8 +88,8 @@ describe('AutomationChart', () => {
     })
 
     beforeEach(() => {
-        jest.spyOn(statsHooks, 'useStatsFilters').mockReturnValue({
-            cleanStatsFilters: {
+        jest.spyOn(automateFiltersHooks, 'useAutomateFilters').mockReturnValue({
+            statsFilters: {
                 period: {
                     start_datetime: '2024-01-01',
                     end_datetime: '2024-01-31',
@@ -95,6 +99,7 @@ describe('AutomationChart', () => {
             granularity: ReportingGranularity.Day,
         })
 
+        useListStoresMock.mockReturnValue({ data: [] } as any)
         getBarChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
 
         useFlagMocked.mockReturnValue(true)
@@ -105,26 +110,26 @@ describe('AutomationChart', () => {
     })
 
     it('should render the metric title', () => {
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
     })
 
     it('should render the metric value from automation rate hook', () => {
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         expect(screen.getByText('32%')).toBeInTheDocument()
     })
 
     it('should render the trend badge', () => {
-        const { container } = render(<AutomationRateComboChart />)
+        const { container } = render(<AnalyticsOverviewConfigurableBarGraph />)
 
         const trendBadge = container.querySelector('.trend')
         expect(trendBadge).toBeInTheDocument()
     })
 
     it('should render with positive trend icon', () => {
-        const { container } = render(<AutomationRateComboChart />)
+        const { container } = render(<AnalyticsOverviewConfigurableBarGraph />)
 
         const icons = container.querySelectorAll('svg')
         const hasTrendIcon = Array.from(icons).some((icon) =>
@@ -134,7 +139,7 @@ describe('AutomationChart', () => {
     })
 
     it('should not render select dropdown when only one metric', () => {
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         const selectButtons = screen.queryAllByRole('button', {
             name: /Overall automation rate/i,
@@ -146,7 +151,7 @@ describe('AutomationChart', () => {
     })
 
     it('should render all legend items', () => {
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
         expect(screen.getByText('Flows')).toBeInTheDocument()
@@ -155,7 +160,7 @@ describe('AutomationChart', () => {
     })
 
     it('should render legend percentages from chart data', () => {
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         expect(screen.getAllByText('56.25%').length).toBeGreaterThan(0)
         expect(screen.getAllByText('21.88%').length).toBeGreaterThan(0)
@@ -164,7 +169,7 @@ describe('AutomationChart', () => {
     })
 
     it('should render responsive container for donut chart', () => {
-        const { container } = render(<AutomationRateComboChart />)
+        const { container } = render(<AnalyticsOverviewConfigurableBarGraph />)
 
         const responsiveContainer = container.querySelector(
             '.recharts-responsive-container',
@@ -187,7 +192,7 @@ describe('AutomationChart', () => {
             },
         ])
 
-        const { container } = render(<AutomationRateComboChart />)
+        const { container } = render(<AnalyticsOverviewConfigurableBarGraph />)
 
         const trendingDownIcon = container.querySelector(
             '[aria-label="trending-down"]',
@@ -196,7 +201,7 @@ describe('AutomationChart', () => {
     })
 
     it('should render legend items as interactive buttons', () => {
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         const legendButtons = screen.getAllByRole('button', {
             name: /AI Agent|Flows|Article Recommendation|Order Management/,
@@ -205,7 +210,7 @@ describe('AutomationChart', () => {
     })
 
     it('should toggle legend item visibility when clicked', async () => {
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         const aiAgentButton = screen.getByRole('button', {
             name: /AI Agent/,
@@ -218,6 +223,26 @@ describe('AutomationChart', () => {
         })
 
         expect(aiAgentButton).toBeInTheDocument()
+    })
+
+    it('should pass stores from useListStores to getBarChartGraphConfig', () => {
+        const mockStores = [
+            {
+                store_integration_id: 123,
+                name: 'my-store',
+                created_datetime: '2025-01-01T00:00:00Z',
+            },
+        ]
+        useListStoresMock.mockReturnValue({ data: mockStores } as any)
+
+        render(<AnalyticsOverviewConfigurableBarGraph />)
+
+        expect(getBarChartGraphConfigMock).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.anything(),
+            expect.anything(),
+            { stores: mockStores },
+        )
     })
 
     it('should render loading skeleton when data is loading', () => {
@@ -235,7 +260,7 @@ describe('AutomationChart', () => {
             },
         ])
 
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
@@ -251,7 +276,7 @@ describe('AutomationChart', () => {
             },
         ])
 
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
@@ -278,7 +303,7 @@ describe('AutomationChart', () => {
             },
         ])
 
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
         expect(screen.queryByText('Flows')).not.toBeInTheDocument()
@@ -299,7 +324,7 @@ describe('AutomationChart', () => {
             },
         ])
 
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
     })
@@ -319,7 +344,7 @@ describe('AutomationChart', () => {
             },
         ])
 
-        render(<AutomationRateComboChart />)
+        render(<AnalyticsOverviewConfigurableBarGraph />)
 
         expect(screen.getByText('Overall automation rate')).toBeInTheDocument()
     })

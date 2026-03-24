@@ -14,7 +14,10 @@ import type {
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
 import { ConfigurableGraphWrapper } from 'pages/aiAgent/analyticsOverview/components/DashboardLayoutRenderer/ConfigurableGraphWrapper'
-import { getLineChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import {
+    getLineChartGraphConfig,
+    useStoreIntegrations,
+} from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import type { LineChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 import { DEPRECATED_AutomationLineChart } from './DEPRECATED_AutomationLineChart'
@@ -25,7 +28,7 @@ type Props = {
     chartConfig?: ChartConfig
 }
 
-export const AUTOMATION_LINE_CHART_METRICS: LineChartMetricConfig[] = [
+export const OVERVIEW_LINE_CHART_METRICS: LineChartMetricConfig[] = [
     {
         measure: 'automationRate',
         name: 'Overall automation rate',
@@ -34,7 +37,12 @@ export const AUTOMATION_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         trendQueryFactory: dynamicOverallAutomationRateQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicOverallAutomationRateTimeseriesQueryFactoryV2,
-        dimensions: ['overall', 'channel', 'automationFeatureType'],
+        dimensions: [
+            'overall',
+            'channel',
+            'storeIntegrationId',
+            'automationFeatureType',
+        ],
     },
     {
         measure: 'automatedInteractionsCount',
@@ -44,25 +52,33 @@ export const AUTOMATION_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         trendQueryFactory: dynamicOverallAutomatedInteractionsQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2,
-        dimensions: ['overall', 'channel', 'automationFeatureType'],
+        dimensions: [
+            'overall',
+            'channel',
+            'storeIntegrationId',
+            'automationFeatureType',
+        ],
     },
 ]
 
-export const AutomationLineChart = ({
+export const AnalyticsOverviewConfigurableLineGraph = ({
     chartId,
     dashboard,
     chartConfig,
 }: Props) => {
     const { statsFilters, userTimezone, granularity } = useAutomateFilters()
+    const stores = useStoreIntegrations()
+
     const metrics = useMemo(
         () =>
             getLineChartGraphConfig(
-                AUTOMATION_LINE_CHART_METRICS,
+                OVERVIEW_LINE_CHART_METRICS,
                 statsFilters,
                 userTimezone,
                 granularity,
+                { stores },
             ),
-        [statsFilters, userTimezone, granularity],
+        [statsFilters, userTimezone, granularity, stores],
     )
 
     return (

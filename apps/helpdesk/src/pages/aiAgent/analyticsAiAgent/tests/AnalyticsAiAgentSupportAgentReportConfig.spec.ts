@@ -90,16 +90,6 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         expect(config.csvProducer).not.toBeNull()
     })
 
-    it('should have support agent trend combo chart config', () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.SupportAgentTrendComboChart
-            ]
-
-        expect(config).toBeDefined()
-        expect(config.chartType).toBe(ChartType.Graph)
-    })
-
     it('should have support agent trend line chart config', () => {
         const config =
             AnalyticsAiAgentSupportAgentReportConfig.charts[
