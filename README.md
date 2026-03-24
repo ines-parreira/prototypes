@@ -21,7 +21,6 @@ It's built using ReactJS + Redux + many other smaller tools.
         - [Running the shared worker](#running-the-shared-worker)
         - [Storybook](#storybook)
             - [Story Guidelines](#story-guidelines)
-            - [Storybook Folder Structure](#storybook-folder-structure)
         - [Design tokens](#design-tokens)
     - [Testing](#testing)
         - [General testing](#general-testing)
@@ -61,8 +60,8 @@ Please `cat ~/.npmrc` and ensure that `@gorgias:registry=https://npm.pkg.github.
 
 ## Prerequisites
 
-- [Node.js (v22, uses nvm to install)](https://nodejs.org/en/download/package-manager)
-- [pnpm](https://pnpm.io/installation)
+- [Node.js (`22.22.0`, uses nvm to install)](https://nodejs.org/en/download/package-manager)
+- [pnpm (`10.18.3`)](https://pnpm.io/installation)
 - [nvm (Node Version Manager)](https://github.com/nvm-sh/nvm)
 
 ## Installation
@@ -84,7 +83,7 @@ AI rules, commands, and skills are managed from `.rulesync/`. Edit the shared so
 
 Running `pnpm install` triggers `postinstall`, which runs `pnpm ai:rulesync` and regenerates the local files for Claude Code, Codex CLI, Cursor, and OpenCode. You can also run `pnpm ai:rulesync` manually after changing `.rulesync`.
 
-If you get an error about a missing skill in a given folder (`.curated` for example), removed said folder and reinstall: `rm -rf .rulesync/skills/{folder_name} && pnpm install`.
+If you get an error about a missing skill in a given folder (`.curated` for example), remove said folder and reinstall: `rm -rf .rulesync/skills/{folder_name} && pnpm install`.
 
 Generated files such as `AGENTS.md`, `CLAUDE.md`, `.claude/`, `.codex/`, `.cursor/`, and `.opencode/` are ignored by Git and should not be edited by hand.
 
@@ -108,11 +107,11 @@ This project uses PNPM's `minimumReleaseAge` feature to ensure package stability
 - **`minimumReleaseAge: 4320`**: Packages must be at least 4320 minutes (72 hours) old before they can be installed
 - **`minimumReleaseAgeExclude`**: A list of trusted packages that are exempt from the minimum release age requirement
 
-The excluded packages include all internal Gorgias packages (like `@gorgias/helpdesk-client`, `@gorgias/design-tokens`, etc.). This ensures that internal packages can be updated immediately while external packages have a 24-hour "cooling off" period to catch any critical issues before adoption.
+The excluded packages include all internal Gorgias packages (like `@gorgias/helpdesk-client`, `@gorgias/design-tokens`, etc.). This ensures that internal packages can be updated immediately while external packages have a 72-hour "cooling off" period to catch any critical issues before adoption.
 
 To modify this behavior, update the `minimumReleaseAge` value (in minutes) or add/remove packages from the `minimumReleaseAgeExclude` list in `pnpm-workspace.yaml`.
 
-When trying to install a package that isn't doesn't respect the `minimumReleaseAge` you will get the following error: `ERR_PNPM_NO_MATCHING_VERSION No matching version found for [...]`
+When trying to install a package version that doesn't respect the `minimumReleaseAge` you will get the following error: `ERR_PNPM_NO_MATCHING_VERSION No matching version found for [...]`
 
 ## Development
 
@@ -137,7 +136,7 @@ This project uses environment variables for development configuration. Follow th
 
 ### Running the Development Server
 
-1. If you don't want run the backend on your machine, start the development server with:
+1. If you don't want to run the backend on your machine, start the development server with:
 
 ```bash
 pnpm dev:proxy
@@ -179,19 +178,9 @@ pnpm --filter @repo/helpdesk storybook:dev
 
 1. Create a story for each state of the component.
 2. Think about forwarding refs and memoized components
-3. Each component that is shared should be placed in `pages/common` folder and needs to have a file `{fileName}.stories.tsx` for stories.
+3. Stories are colocated with components as `{fileName}.stories.tsx`. Follow the existing pattern near the component you are working on.
 4. [Use args](https://storybook.js.org/docs/writing-stories#using-args) and never hardcode the props passed to the story → Allow UI [Controls](https://storybook.js.org/docs/essentials/controls) to manipulate the component.
 5. [Use decorators](https://storybook.js.org/docs/writing-stories#using-decorators) if your component has dependencies that need to be injected (e.g. drag and drop provider).
-
-#### Storybook Folder Structure
-
-- **General**: Composable components e.g. buttons, icon, text that we will reuse to build the rest of our component library
-- **Navigation**: Components related to navigation like menu, breadcrumbs, page header, dropdowns
-- **Data Entry**: Forms related components (inputs, checkboxes, uploads etc.)
-- **Data Display**: Badges, Cards, Images, Lists, Avatars, Tables etc.
-- **Charts (could be nested in Data Display)**: This falls in the data display category but we can make its own category if it gets big enough
-- **Feedback**: Components that we display as consequence of an user action like Alerts, Notifications, Modals, Loaders
-- **Layout**: Components that we use to build a page skeleton like grid system, dividers
 
 ### Design tokens
 
@@ -289,7 +278,7 @@ Due to performance concerns, we use [Oxlint](https://oxc.rs/docs/guide/usage/lin
 
 For Neovim users, Oxlint should work [out of the box](https://github.com/neovim/nvim-lspconfig/pull/3586).
 
-If you't editor doesn't support Oxc yet, please use the `pnpm oxlint:watch` command to run it in watch mode while developing. It will run Oxlint with the --fix flag on the files you've changed.
+If your editor doesn't support Oxc yet, please use the `pnpm oxlint:watch` command to run it in watch mode while developing. It will run Oxlint with the --fix flag on the files you've changed.
 
 ### Running Linting
 
@@ -475,13 +464,13 @@ pnpm platform:check-node-engines
 ## Contributing
 
 - [ADR](https://github.com/gorgias/architectural-decision-records/tree/main/project/helpdesk)
-- [Storybook](./docs/GetStarted.stories.mdx)
+- Storybook: `pnpm --filter @repo/helpdesk storybook:dev`
 - [FE Chapter](https://www.notion.so/gorgias/Front-End-Chapter-5045e25b1a1f4ab7a42dad4a0187f541)
 
 ## Update gorgias-chat client
 
 To run the `gorgiaschat:update-client` script, you first need to install [postman-to-openapi](https://github.com/joolfe/postman-to-openapi#readme).
-Since this tool is not maintained and its package.json configuration make not compatible with recent NodeJS version you will need to install it globally and not into this project. For that run the following command:
+Since this tool is not maintained and its package.json configuration is not compatible with recent NodeJS versions, you will need to install it globally and not into this project. For that run the following command:
 
 ```bash
 pnpm add -g postman-to-openapi
