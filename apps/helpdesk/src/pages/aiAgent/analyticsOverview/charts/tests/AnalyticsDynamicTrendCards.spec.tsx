@@ -355,6 +355,12 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentClosedTicketsCard',
             Component: AnalyticsAiAgentClosedTicketsCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName:
+                    AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
+                title: 'Closed tickets',
+            },
             config: {
                 label: 'Closed tickets',
                 description:

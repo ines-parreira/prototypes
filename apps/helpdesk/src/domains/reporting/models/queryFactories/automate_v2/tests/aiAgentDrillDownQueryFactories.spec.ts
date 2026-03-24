@@ -3,10 +3,12 @@ import {
     AIAgentAutomatedInteractionsV2Dimension,
     AIAgentAutomatedInteractionsV2FilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
+import { AIAgentClosedTicketsDimension } from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import { HandoverInteractionsFilterMember } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
+    allAgentsClosedTicketsDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
@@ -478,5 +480,63 @@ describe('supportAgentHandoverInteractionsDrillDownQueryFactory', () => {
         expect(result.order).toEqual([
             ['HandoverInteractions.ticketId', OrderDirection.Asc],
         ])
+    })
+})
+
+describe('allAgentsClosedTicketsDrillDownQueryFactory', () => {
+    it('should build a query', () => {
+        expect(
+            allAgentsClosedTicketsDrillDownQueryFactory(filters, timezone),
+        ).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILLDOWN,
+            measures: [],
+            dimensions: [AIAgentClosedTicketsDimension.TicketId],
+            filters: [
+                {
+                    member: 'AIAgentClosedTickets.periodStart',
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [filters.period.start_datetime],
+                },
+                {
+                    member: 'AIAgentClosedTickets.periodEnd',
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [filters.period.end_datetime],
+                },
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('should build a query with sorting', () => {
+        expect(
+            allAgentsClosedTicketsDrillDownQueryFactory(
+                filters,
+                timezone,
+                OrderDirection.Desc,
+            ),
+        ).toEqual({
+            metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILLDOWN,
+            measures: [],
+            dimensions: [AIAgentClosedTicketsDimension.TicketId],
+            filters: [
+                {
+                    member: 'AIAgentClosedTickets.periodStart',
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [filters.period.start_datetime],
+                },
+                {
+                    member: 'AIAgentClosedTickets.periodEnd',
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [filters.period.end_datetime],
+                },
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [
+                [AIAgentClosedTicketsDimension.TicketId, OrderDirection.Desc],
+            ],
+        })
     })
 })

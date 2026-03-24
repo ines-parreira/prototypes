@@ -13,6 +13,7 @@ import {
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
+import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { useEnrichedDrillDownDataUnpaginated } from 'domains/reporting/hooks/useDrillDownData'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import {
@@ -52,6 +53,7 @@ import {
     AIInsightsMetric,
     AutoQAMetric,
     ConvertMetric,
+    KnowledgeMetric,
     SatisfactionMetric,
     SlaMetric,
 } from 'domains/reporting/state/ui/stats/types'
@@ -504,6 +506,24 @@ describe('<DrillDownTable />', () => {
             expect(outcomeElement).toBeInTheDocument()
             expect(outcomeElement).toHaveClass('level1')
         })
+
+        it.each([{ outcome: 'Automated' }, { outcome: 'Handover' }])(
+            'should render KnowledgeMetric outcome Tag for "$outcome"',
+            ({ outcome }) => {
+                const knowledgeMetricData = {
+                    metricName: KnowledgeMetric.Tickets,
+                } as DrillDownMetric
+
+                useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                    data: [{ ...exampleRow, outcome }],
+                    isFetching: false,
+                } as any)
+
+                renderTableForTicket(knowledgeMetricData)
+
+                expect(screen.getByText(outcome)).toBeInTheDocument()
+            },
+        )
     })
 
     describe('with Convert campaign sales content', () => {
@@ -1012,6 +1032,10 @@ describe('<DrillDownTable />', () => {
             metricName:
                 AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard,
         },
+        {
+            label: 'AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard',
+            metricName: AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
+        },
     ])('with $label', ({ metricName }) => {
         const metricData = {
             metricName,
@@ -1068,5 +1092,59 @@ describe('<DrillDownTable />', () => {
             // Intent cell renders, 'Returns' is the first level from 'Returns::Refund'
             expect(screen.getByText('Returns')).toBeInTheDocument()
         })
+    })
+
+    describe('with AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard Outcome Tag', () => {
+        const metricData = {
+            metricName: AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
+            title: 'Closed tickets',
+        } as DrillDownMetric
+
+        it.each([
+            {
+                outcome: `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}::Close`,
+                expectedLabel: AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
+            },
+            {
+                outcome: `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover}::AI Agent`,
+                expectedLabel: AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
+            },
+            {
+                outcome: 'Unknown::reason',
+                expectedLabel: 'Unknown',
+            },
+        ])(
+            'should render Outcome Tag with first segment "$expectedLabel"',
+            ({ outcome, expectedLabel }) => {
+                useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                    data: [
+                        {
+                            ticket: {
+                                id: '100001',
+                                subject: 'Closed ticket',
+                                description: 'desc',
+                                channel: 'email',
+                                isRead: true,
+                                created: '2025-09-01T10:00:00.000Z',
+                                contactReason: null,
+                                status: 'closed',
+                            },
+                            assignee: { id: 12345, name: 'Support Agent' },
+                            rowData: {},
+                            slas: {},
+                            outcome,
+                            intent: null,
+                            order: {},
+                            product: { titles: [], variants: [] },
+                        },
+                    ],
+                    isFetching: false,
+                } as any)
+
+                renderTable(metricData, TicketDrillDownTableContent)
+
+                expect(screen.getByText(expectedLabel)).toBeInTheDocument()
+            },
+        )
     })
 })

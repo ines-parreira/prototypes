@@ -22,6 +22,7 @@ import {
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
+    allAgentsClosedTicketsDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
@@ -469,6 +470,8 @@ export const getDrillDownQuery = (
             return shoppingAssistantAutomatedInteractionsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.SupportInteractionsCard:
             return supportAgentAutomatedInteractionsDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard:
+            return allAgentsClosedTicketsDrillDownQueryFactory
         case VoiceOfCustomerMetricWithDrillDown.IntentPerProduct: {
             const { drillDownQuery } =
                 VoiceOfCustomerMetricWithDrillDownConfig[
@@ -1001,7 +1004,9 @@ export const getDrillDownMetricColumn = (
         metricData.metricName ===
             AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard ||
         metricData.metricName ===
-            AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard
+            AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard
     ) {
         metricTitle = ''
         metricValueFormat = 'decimal'

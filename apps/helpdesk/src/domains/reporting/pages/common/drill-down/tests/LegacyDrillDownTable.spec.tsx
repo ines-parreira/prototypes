@@ -13,12 +13,14 @@ import {
     AIJourneyMetricsConfig,
 } from 'AIJourney/types/AIJourneyTypes'
 import { TicketChannel, TicketStatus } from 'business/types/ticket'
+import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import { useEnrichedDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
 import { TicketQAScoreMeasure } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import {
     TicketSLADimension,
     TicketSLAStatus,
 } from 'domains/reporting/models/cubes/sla/TicketSLACube'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { AiSalesAgentChart } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentMetricsConfig'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import type {
@@ -51,6 +53,7 @@ import {
     AIInsightsMetric,
     AutoQAMetric,
     ConvertMetric,
+    KnowledgeMetric,
     SatisfactionMetric,
     SlaMetric,
 } from 'domains/reporting/state/ui/stats/types'
@@ -565,6 +568,25 @@ describe('<LegacyDrillDownTable />', () => {
             expect(outcomeElement).toBeInTheDocument()
             expect(outcomeElement).toHaveClass('level1')
         })
+
+        it('should render KnowledgeMetric outcome as text', () => {
+            const knowledgeMetricData = {
+                metricName: KnowledgeMetric.Tickets,
+            } as DrillDownMetric
+
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [{ ...exampleRow, outcome: 'Automated' }],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage: 1,
+                perPage: 10,
+            } as any)
+
+            renderTableForTicket(knowledgeMetricData)
+
+            expect(screen.getByText('Automated')).toBeInTheDocument()
+        })
     })
 
     describe('with Convert campaign sales content', () => {
@@ -1068,5 +1090,63 @@ describe('<LegacyDrillDownTable />', () => {
             expect(screen.getByText('AI Agent Bot')).toBeInTheDocument()
             expect(screen.getByText('Jane Smith')).toBeInTheDocument()
         })
+    })
+
+    describe('with AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard Outcome Tag', () => {
+        const metricData = {
+            metricName: AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
+            title: 'Closed tickets',
+        } as DrillDownMetric
+
+        it.each([
+            {
+                outcome: `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated}::Close`,
+                expectedLabel: AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated,
+            },
+            {
+                outcome: `${AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover}::AI Agent`,
+                expectedLabel: AI_AGENT_OUTCOME_DISPLAY_LABELS.Handover,
+            },
+            {
+                outcome: 'Unknown::reason',
+                expectedLabel: 'Unknown',
+            },
+        ])(
+            'should render Outcome Tag with first segment "$expectedLabel"',
+            ({ outcome, expectedLabel }) => {
+                useEnrichedDrillDownDataMock.mockReturnValue({
+                    data: [
+                        {
+                            ticket: {
+                                id: '100001',
+                                subject: 'Closed ticket',
+                                description: 'desc',
+                                channel: 'email',
+                                isRead: true,
+                                created: '2025-09-01T10:00:00.000Z',
+                                contactReason: null,
+                                status: 'closed',
+                            },
+                            assignee: { id: 12345, name: 'Support Agent' },
+                            rowData: {},
+                            slas: {},
+                            outcome,
+                            intent: null,
+                            order: {},
+                            product: { titles: [], variants: [] },
+                        },
+                    ],
+                    isFetching: false,
+                } as any)
+                useDataHookMock.mockReturnValue({
+                    currentPage: 1,
+                    perPage: 10,
+                } as any)
+
+                renderTable(metricData, LegacyTicketDrillDownTableContent)
+
+                expect(screen.getByText(expectedLabel)).toBeInTheDocument()
+            },
+        )
     })
 })

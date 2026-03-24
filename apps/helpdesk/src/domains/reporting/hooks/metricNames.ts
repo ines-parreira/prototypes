@@ -68,6 +68,7 @@ export const METRIC_NAMES = {
         'ai-agent-shopping-assistant-handover-interactions-drill-down',
     AI_AGENT_SUPPORT_AGENT_HANDOVER_INTERACTIONS_DRILLDOWN:
         'ai-agent-support-agent-handover-interactions-drill-down',
+    AI_AGENT_CLOSED_TICKETS_DRILLDOWN: 'ai-agent-closed-tickets-drill-down',
 
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',

@@ -4,6 +4,11 @@ import {
     AIAgentAutomatedInteractionsV2Dimension,
     AIAgentAutomatedInteractionsV2FilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
+import type { AIAgentClosedTicketsCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
+import {
+    AIAgentClosedTicketsDimension,
+    AIAgentClosedTicketsFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import {
@@ -172,4 +177,31 @@ export const supportAgentHandoverInteractionsDrillDownQueryFactory = (
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting ? [[HandoverInteractionsDimension.TicketId, sorting]] : [],
+})
+
+const buildClosedTicketsPeriodFilters = (filters: StatsFilters) => [
+    {
+        member: AIAgentClosedTicketsFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [filters.period.start_datetime],
+    },
+    {
+        member: AIAgentClosedTicketsFilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [filters.period.end_datetime],
+    },
+]
+
+export const allAgentsClosedTicketsDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AIAgentClosedTicketsCube> => ({
+    metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILLDOWN,
+    measures: [],
+    dimensions: [AIAgentClosedTicketsDimension.TicketId],
+    filters: [...buildClosedTicketsPeriodFilters(filters)],
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting ? [[AIAgentClosedTicketsDimension.TicketId, sorting]] : [],
 })

@@ -27,6 +27,7 @@ import css from 'domains/reporting/pages/common/drill-down/DrillDownTable.less'
 import { DrillDownTicketDetailsCell } from 'domains/reporting/pages/common/drill-down/DrillDownTicketDetailsCell'
 import { DrillDownTruncateMultilineCellContent } from 'domains/reporting/pages/common/drill-down/DrillDownTruncateMultilineCellContent'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
+import { OutcomeTag } from 'domains/reporting/pages/common/drill-down/OutcomeTag'
 import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
@@ -201,6 +202,10 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName ===
             AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard
 
+    const isAiAgentClosedTicketsMetric =
+        metricData.metricName ===
+        AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard
+
     // Fetch data directly (used by legacy table, or when context is not available)
     const fetchedData = useEnrichedDrillDownData(
         getDrillDownQuery(metricData),
@@ -224,7 +229,8 @@ export const TicketDrillDownTableContent = ({
             isAiInsightsMetric ||
             isAiPerformanceMetric ||
             isAiInsightsCsatMetric ||
-            isAiAgentAutomatedInteractionsMetric
+            isAiAgentAutomatedInteractionsMetric ||
+            isAiAgentClosedTicketsMetric
         ) {
             return 280
         }
@@ -267,6 +273,7 @@ export const TicketDrillDownTableContent = ({
             isAiSalesAgentSuccessRateMetric ||
             isAiSalesAgentDiscountOfferedMetric ||
             isAiSalesAgentTotalProductRecommendationsMetric ||
+            isAiAgentClosedTicketsMetric ||
             (isKnowledgeMetric &&
                 metricData.metricName !== KnowledgeMetric.CSAT)
         const hasAssigneeColumn =
@@ -282,13 +289,15 @@ export const TicketDrillDownTableContent = ({
             isAiSalesAgentDiscountOfferedMetric ||
             isAiSalesAgentTotalProductRecommendationsMetric ||
             isAiAgentAutomatedInteractionsMetric ||
+            isAiAgentClosedTicketsMetric ||
             hasCustomerColumn ||
             isKnowledgeMetric
         )
         const hasIntentColumn =
             isAiPerformanceMetric ||
             isAiInsightsCsatMetric ||
-            isAiAgentAutomatedInteractionsMetric
+            isAiAgentAutomatedInteractionsMetric ||
+            isAiAgentClosedTicketsMetric
 
         return [
             columnWidths.ticket,
@@ -373,6 +382,7 @@ export const TicketDrillDownTableContent = ({
                     isAiSalesAgentSuccessRateMetric ||
                     isAiSalesAgentDiscountOfferedMetric ||
                     isAiSalesAgentTotalProductRecommendationsMetric ||
+                    isAiAgentClosedTicketsMetric ||
                     (isKnowledgeMetric &&
                         metricData.metricName !== KnowledgeMetric.CSAT)) && (
                     <DrillDownHeaderCellWithTooltip
@@ -541,6 +551,7 @@ export const TicketDrillDownTableContent = ({
                     isAiJourneyOptOutRateMetric ||
                     isAiJourneyClickThroughRateMetric ||
                     isAiAgentAutomatedInteractionsMetric ||
+                    isAiAgentClosedTicketsMetric ||
                     isKnowledgeMetric
                 ) && (
                     <DrillDownHeaderCellWithTooltip
@@ -554,7 +565,8 @@ export const TicketDrillDownTableContent = ({
 
                 {(isAiPerformanceMetric ||
                     isAiInsightsCsatMetric ||
-                    isAiAgentAutomatedInteractionsMetric) && (
+                    isAiAgentAutomatedInteractionsMetric ||
+                    isAiAgentClosedTicketsMetric) && (
                     <DrillDownHeaderCellWithTooltip
                         title="Intent"
                         width={columnWidths.intent}
@@ -647,12 +659,17 @@ export const TicketDrillDownTableContent = ({
                                 isAiSalesAgentSuccessRateMetric ||
                                 isAiSalesAgentDiscountOfferedMetric ||
                                 isAiSalesAgentTotalProductRecommendationsMetric ||
+                                isAiAgentClosedTicketsMetric ||
                                 (isKnowledgeMetric &&
                                     metricData.metricName !==
                                         KnowledgeMetric.CSAT)) && (
                                 <BodyCell width={columnWidths.outcome}>
                                     {item.outcome ? (
-                                        isKnowledgeMetric ? (
+                                        isAiAgentClosedTicketsMetric ? (
+                                            <OutcomeTag
+                                                outcome={item.outcome}
+                                            />
+                                        ) : isKnowledgeMetric ? (
                                             <Tag
                                                 color={
                                                     item.outcome === 'Automated'
@@ -822,6 +839,7 @@ export const TicketDrillDownTableContent = ({
                                 isAiJourneyOptOutRateMetric ||
                                 isAiJourneyClickThroughRateMetric ||
                                 isAiAgentAutomatedInteractionsMetric ||
+                                isAiAgentClosedTicketsMetric ||
                                 isKnowledgeMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
@@ -853,7 +871,8 @@ export const TicketDrillDownTableContent = ({
 
                             {(isAiPerformanceMetric ||
                                 isAiInsightsCsatMetric ||
-                                isAiAgentAutomatedInteractionsMetric) && (
+                                isAiAgentAutomatedInteractionsMetric ||
+                                isAiAgentClosedTicketsMetric) && (
                                 <BodyCell width={columnWidths.intent}>
                                     {item.intent ? (
                                         <DrillDownTruncateMultilineCellContent

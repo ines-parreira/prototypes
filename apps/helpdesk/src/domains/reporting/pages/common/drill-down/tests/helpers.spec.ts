@@ -27,6 +27,7 @@ import {
 } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
+    allAgentsClosedTicketsDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
@@ -250,6 +251,9 @@ const totalNumberOfOrderDrillDownQueryFactoryMock = assumeMock(
 )
 const totalNumberProductRecommendationsDrillDownQueryFactoryMock = assumeMock(
     totalNumberProductRecommendationsDrillDownQueryFactory,
+)
+const allAgentsClosedTicketsDrillDownQueryFactoryMock = assumeMock(
+    allAgentsClosedTicketsDrillDownQueryFactory,
 )
 jest.mock(
     'domains/reporting/models/queryFactories/voice-of-customer/returnMentionsPerProduct',
@@ -1505,6 +1509,27 @@ describe('getDrillDownQuery', () => {
         ).toHaveBeenCalledWith(statsFilters, timezone)
     })
 
+    it('should be populated with AllAgentsClosedTicketsCard', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName: AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            allAgentsClosedTicketsDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
     it('should be populated with AiSalesDiscountOffered', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -2392,6 +2417,17 @@ describe('getDrillDownMetric', () => {
             metricData: {
                 metricName:
                     AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard,
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName:
+                    AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
             } as AiAgentMetrics,
             expectedValues: {
                 metricTitle: '',

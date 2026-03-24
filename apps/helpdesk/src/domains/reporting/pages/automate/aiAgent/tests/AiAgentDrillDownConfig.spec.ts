@@ -28,6 +28,7 @@ jest.mock(
         allAgentsHandoverInteractionsDrillDownQueryFactory: jest.fn(),
         shoppingAssistantHandoverInteractionsDrillDownQueryFactory: jest.fn(),
         supportAgentHandoverInteractionsDrillDownQueryFactory: jest.fn(),
+        allAgentsClosedTicketsDrillDownQueryFactory: jest.fn(),
     }),
 )
 jest.mock(
