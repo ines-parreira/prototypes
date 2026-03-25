@@ -43,7 +43,7 @@ describe('ChatPreview', () => {
 
             renderComponent()
 
-            expect(screen.getByText('Loading Preview...')).toBeInTheDocument()
+            expect(screen.getByLabelText('Loading preview')).toBeInTheDocument()
         })
 
         it('should not show the iframe while the widget is loading', () => {
@@ -126,7 +126,7 @@ describe('ChatPreview', () => {
 
             renderComponent()
 
-            expect(screen.getByText('Loading Preview...')).toBeInTheDocument()
+            expect(screen.getByLabelText('Loading preview')).toBeInTheDocument()
 
             act(() => {
                 window.dispatchEvent(
@@ -138,7 +138,7 @@ describe('ChatPreview', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByText('Loading Preview...'),
+                    screen.queryByLabelText('Loading preview'),
                 ).not.toBeInTheDocument()
             })
 
@@ -173,7 +173,7 @@ describe('ChatPreview', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByText('Loading Preview...'),
+                    screen.queryByLabelText('Loading preview'),
                 ).not.toBeInTheDocument()
             })
 
@@ -185,7 +185,7 @@ describe('ChatPreview', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Loading Preview...'),
+                    screen.getByLabelText('Loading preview'),
                 ).toBeInTheDocument()
             })
         })

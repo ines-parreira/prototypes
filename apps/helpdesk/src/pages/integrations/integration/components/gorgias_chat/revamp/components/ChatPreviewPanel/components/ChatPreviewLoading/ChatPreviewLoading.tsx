@@ -1,14 +1,18 @@
-import { Box, Text } from '@gorgias/axiom'
+import { Box, Loader, Text } from '@gorgias/axiom'
+
+import css from './ChatPreviewLoading.less'
 
 export const ChatPreviewLoading = () => {
     return (
         <Box
             alignItems="center"
             justifyContent="center"
-            height="100%"
-            width="100%"
+            flexDirection="column"
+            gap="sm"
+            className={css.overlay}
         >
-            <Text>Loading Preview...</Text>
+            <Loader aria-label="Loading preview" />
+            <Text>Loading preview...</Text>
         </Box>
     )
 }
