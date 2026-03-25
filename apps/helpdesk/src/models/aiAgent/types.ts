@@ -2,9 +2,9 @@ import type { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import type { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 import type { AiAgentChannel, ToneOfVoice } from 'pages/aiAgent/constants'
-import type { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import type { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import type { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
+import type { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
+import type { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
+import type { AiAgentScopes } from 'pages/aiAgent/Onboarding_V2/types'
 import type { PlaygroundChannelAvailability } from 'pages/aiAgent/PlaygroundV2/types'
 
 export type Verbosity = 'concise' | 'balanced' | 'detailed'

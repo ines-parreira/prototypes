@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 import partyPopperImg from 'assets/img/ai-agent/ai-agent_party-popper.svg'
-import { CardTitle } from 'pages/aiAgent/Onboarding/components/Card'
+import { CardTitle } from 'pages/aiAgent/components/Card'
 import { OverviewCard } from 'pages/aiAgent/Overview/components/OverviewCard/OverviewCard'
 import { useTaskDisplayLimit } from 'pages/aiAgent/Overview/hooks/pendingTasks/useTaskDisplayLimit'
 

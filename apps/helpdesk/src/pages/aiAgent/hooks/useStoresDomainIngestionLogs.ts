@@ -11,7 +11,7 @@ import { getShopUrlFromStoreIntegration } from 'models/selfServiceConfiguration/
 import { notNull } from 'utils/types'
 
 import type { IngestionLog } from '../AiAgentScrapedDomainContent/types'
-import { useShopifyIntegrations } from '../Onboarding/hooks/useShopifyIntegrations'
+import { useShopifyIntegrations } from '../Onboarding_V2/hooks/useShopifyIntegrations'
 
 export const useStoresDomainIngestionLogs = ({
     storeNames,

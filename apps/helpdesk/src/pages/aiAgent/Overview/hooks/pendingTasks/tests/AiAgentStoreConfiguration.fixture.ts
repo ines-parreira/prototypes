@@ -1,5 +1,5 @@
 import type { AiAgentScope } from 'models/aiAgent/types'
-import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 
 import type { AiAgentStoreConfigurationData } from '../useFetchAiAgentStoreConfigurationData'
 

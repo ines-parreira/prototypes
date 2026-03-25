@@ -12,7 +12,7 @@ import {
     CardFooter,
     CardHeader,
     CardTitle,
-} from 'pages/aiAgent/Onboarding/components/Card'
+} from 'pages/aiAgent/components/Card'
 
 import css from './PendingTask.less'
 

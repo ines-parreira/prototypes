@@ -1,6 +1,6 @@
 import { Box, Icon, IconName, IconSize, Size } from '@gorgias/axiom'
 
-import TypingMessage from 'pages/aiAgent/Onboarding/components/TypingMessage/TypingMessage'
+import TypingMessage from 'pages/aiAgent/Onboarding_V2/components/TypingMessage/TypingMessage'
 
 import css from './GeneratingMessage.less'
 

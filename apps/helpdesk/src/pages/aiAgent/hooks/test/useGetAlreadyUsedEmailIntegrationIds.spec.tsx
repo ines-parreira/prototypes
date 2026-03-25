@@ -16,9 +16,9 @@ import { integrationsState, shopifyIntegration } from 'fixtures/integrations'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import type { OnboardingData } from 'models/aiAgent/types'
 import type { ShopifyIntegration } from 'models/integration/types'
-import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
-import { AiAgentScopes } from 'pages/aiAgent/Onboarding/types'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
+import { AiAgentScopes } from 'pages/aiAgent/Onboarding_V2/types'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -26,10 +26,10 @@ import type {
     StoreConfiguration,
     StoreConfigurationsResponse,
 } from '../../../../models/aiAgent/types'
-import { useGetOnboardings } from '../../Onboarding/hooks/useGetOnboardings'
+import { useGetOnboardings } from '../../Onboarding_V2/hooks/useGetOnboardings'
 import { useGetAlreadyUsedEmailIntegrationIds } from '../useGetAlreadyUsedEmailIntegrationIds'
 
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardings')
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardings')
 const useGetOnboardingsMock = jest.mocked(useGetOnboardings)
 
 jest.mock('models/aiAgent/queries')

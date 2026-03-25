@@ -1,0 +1,66 @@
+@import (reference) '~css/typography';
+
+:local {
+    .cardContainer {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--neutral-grey-2); // legacy
+        border-radius: 8px;
+        background-color: var(--neutral-grey-0); // legacy
+        padding: var(--layout-spacing-m);
+        cursor: pointer;
+        transition: ease-in-out 0.2s;
+        gap: var(--layout-spacing-m);
+        box-shadow: 0px 2px 4px 0px rgba(22, 22, 22, 0.16);
+    }
+
+    .cardHeader {
+        display: flex;
+        justify-content: space-between;
+        color: var(--neutral-grey-3); // legacy
+        flex-direction: column;
+    }
+
+    .cardContent {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .cardFooter {
+        display: flex;
+        color: var(--neutral-grey-3); // legacy
+    }
+
+    .cardTitle {
+        .heading-subsection-semibold();
+        color: var(--neutral-grey-6); // legacy
+    }
+
+    .cardCaption {
+        color: var(--neutral-grey-5); // legacy
+        font-size: 12px;
+    }
+}
+
+.axiom :local {
+    .cardContainer {
+        background-color: var(--elevation-neutral-mid);
+        border: 1px solid var(--border-neutral-default);
+    }
+
+    .cardHeader {
+        color: var(--content-neutral-secondary);
+    }
+
+    .cardFooter {
+        color: var(--content-neutral-secondary);
+    }
+
+    .cardTitle {
+        color: var(--content-neutral-default);
+    }
+
+    .cardCaption {
+        color: var(--content-neutral-secondary);
+    }
+}

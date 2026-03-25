@@ -18,7 +18,7 @@ import {
     fetchNewPhoneNumbers,
     fetchPhoneNumbers,
 } from 'models/phoneNumber/resources'
-import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding/hooks/useOnboardingIntegrationRedirection'
+import { useOnboardingIntegrationRedirection } from 'pages/aiAgent/Onboarding_V2/hooks/useOnboardingIntegrationRedirection'
 import { makeHasFeature } from 'state/billing/selectors'
 import { AccountFeature } from 'state/currentAccount/types'
 import {

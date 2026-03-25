@@ -1,7 +1,7 @@
 import MockAdapter from 'axios-mock-adapter'
 
 import authClient from 'models/api/resources'
-import { PRODUCT_RECOMMENDATION_MESSAGE_ID } from 'pages/aiAgent/Onboarding/components/PersonalityPreviewGroup/constants'
+import { PRODUCT_RECOMMENDATION_MESSAGE_ID } from 'pages/aiAgent/Onboarding_V2/constants/previewConstants'
 
 import { apiClient } from '../message-processing'
 import { transformToneOfVoice } from '../transform-tone-of-voice'

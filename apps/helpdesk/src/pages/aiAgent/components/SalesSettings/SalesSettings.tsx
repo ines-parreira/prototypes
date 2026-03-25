@@ -10,25 +10,26 @@ import {
 } from '@gorgias/axiom'
 
 import { shopifyAdminBaseUrl } from 'config/integrations/shopify'
+import { getRGB } from 'gorgias-design-system/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { SalesSettingsData } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { useShoppingAssistantTracking } from 'pages/aiAgent/hooks/useShoppingAssistantTracking'
-import { OnboardingSteppedSlider } from 'pages/aiAgent/Onboarding/components/OnboardingSteppedSlider/OnboardingSteppedSlider'
 import {
     DiscountStrategy,
     DiscountStrategyLabels,
     DiscountStrategySteps,
-} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
+} from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
 import {
     PersuasionLevel,
     PersuasionLevelLabels,
     PersuasionLevelSteps,
-} from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+} from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { TrialManageWorkflow } from 'pages/aiAgent/trial/components/TrialManageWorkflow/TrialManageWorkflow'
 import { formatDiscountMax } from 'pages/aiAgent/utils/sales-discount.utils'
 import AIBanner from 'pages/common/components/AIBanner/AIBanner'
+import { SteppedSlider } from 'pages/common/components/SteppedSlider/SteppedSlider'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import IconInput from 'pages/common/forms/input/IconInput'
@@ -108,6 +109,7 @@ export const SalesSettings = () => {
     const salesPersuasionLevel = watch('salesPersuasionLevel')
     const salesDiscountStrategyLevel = watch('salesDiscountStrategyLevel')
     const salesDiscountMax = watch('salesDiscountMax')
+    const steppedSliderColor = getRGB('--accessory-magenta-25')
 
     const handleSliderChange = (
         field: keyof SalesSettingsData,
@@ -269,9 +271,10 @@ export const SalesSettings = () => {
                                 </IconTooltip>
                             </div>
                             <div>
-                                <OnboardingSteppedSlider
+                                <SteppedSlider
                                     steps={PersuasionLevelSteps}
                                     stepKey={salesPersuasionLevel}
+                                    color={steppedSliderColor}
                                     onChange={(value: string) => {
                                         handleSliderChange(
                                             'salesPersuasionLevel',
@@ -307,9 +310,10 @@ export const SalesSettings = () => {
                                 </IconTooltip>
                             </div>
                             <div>
-                                <OnboardingSteppedSlider
+                                <SteppedSlider
                                     steps={DiscountStrategySteps}
                                     stepKey={salesDiscountStrategyLevel}
+                                    color={steppedSliderColor}
                                     onChange={(value: string) => {
                                         handleSliderChange(
                                             'salesDiscountStrategyLevel',

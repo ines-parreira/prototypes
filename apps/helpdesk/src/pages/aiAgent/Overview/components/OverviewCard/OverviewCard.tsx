@@ -1,4 +1,4 @@
-import { Card } from 'pages/aiAgent/Onboarding/components/Card'
+import { Card } from 'pages/aiAgent/components/Card'
 
 import css from './OverviewCard.less'
 

@@ -24,11 +24,11 @@ import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import { useDisplayPlaygroundButtonInLayoutHeader } from './components/AiAgentLayout/usePlaygroundButtonInLayoutHeader'
+import CollapsibleSection from './components/CollapsibleSection/CollapsibleSection'
 import { PersonalitySelector } from './components/StoreConfigForm/FormComponents/PersonalitySelector'
 import type { ToneOfVoice } from './constants'
 import { CHANGES_SAVED_SUCCESS } from './constants'
 import { usePlaygroundPanel } from './hooks/usePlaygroundPanel'
-import CollapsibleSection from './Onboarding/components/CollapsibleSection/CollapsibleSection'
 import { useShopNameResolution } from './PlaygroundV2/hooks/useShopNameResolution'
 import { useAiAgentStoreConfigurationContext } from './providers/AiAgentStoreConfigurationContext'
 

@@ -1,8 +1,8 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { renderHook } from '@testing-library/react'
 
-import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 
 import { useShoppingAssistantTracking } from '../useShoppingAssistantTracking'
 

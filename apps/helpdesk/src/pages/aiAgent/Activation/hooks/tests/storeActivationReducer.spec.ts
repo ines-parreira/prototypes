@@ -1,7 +1,7 @@
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentScope } from 'models/aiAgent/types'
-import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 
 import type { Flags, State } from '../storeActivationReducer'

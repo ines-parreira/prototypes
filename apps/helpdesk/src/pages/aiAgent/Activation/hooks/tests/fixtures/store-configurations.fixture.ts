@@ -1,8 +1,8 @@
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { AiAgentScope } from 'models/aiAgent/types'
 import { ToneOfVoice } from 'pages/aiAgent/constants'
-import { DiscountStrategy } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/DiscountStrategy'
-import { PersuasionLevel } from 'pages/aiAgent/Onboarding/components/steps/PersonalityStep/PersuasionLevel'
+import { DiscountStrategy } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/DiscountStrategy'
+import { PersuasionLevel } from 'pages/aiAgent/Onboarding_V2/components/steps/PersonalityStep/PersuasionLevel'
 
 export const getStoreConfigurationFixture = (
     props?: Partial<StoreConfiguration>,

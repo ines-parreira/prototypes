@@ -67,20 +67,16 @@ describe('ThankYouModal', () => {
     it('renders the loading state correctly', () => {
         render(<ThankYouModal {...defaultProps} isLoading={true} />)
 
-        // Expect skeleton loaders to be present
         expect(screen.getByTestId('skeleton-loader')).toBeInTheDocument()
     })
 
-    it('ensures the modal is rendered with dialog role', () => {
+    it('ensures the modal has correct accessibility attributes', () => {
         render(<ThankYouModal {...defaultProps} />)
 
         const modal = screen.getByRole('dialog')
-        expect(modal).toBeInTheDocument()
+        expect(modal).toHaveAttribute('aria-modal', 'true')
     })
 
-    /**
-     * ✅ TEST CASE: Should not crash if onClick and onClose are not provided
-     */
     it('does not throw error when onClick and onClose are undefined', () => {
         const noHandlersProps = {
             ...defaultProps,
@@ -93,9 +89,6 @@ describe('ThankYouModal', () => {
         ).not.toThrow()
     })
 
-    /**
-     * ✅ TEST CASE: Calls default empty function when onClick is not provided
-     */
     it('does not crash when clicking action button without onClick', () => {
         const noOnClickProps = { ...defaultProps, onClick: undefined }
         render(<ThankYouModal {...noOnClickProps} />)
@@ -103,13 +96,9 @@ describe('ThankYouModal', () => {
         const actionButton = screen.getByText(actionTestLabel)
         fireEvent.click(actionButton)
 
-        // No error should occur
         expect(actionButton).toBeInTheDocument()
     })
 
-    /**
-     * ✅ TEST CASE: Calls default empty function when onClose is not provided
-     */
     it('does not crash when clicking close button without onClose', () => {
         const noOnCloseProps = { ...defaultProps, onClose: undefined }
         render(<ThankYouModal {...noOnCloseProps} />)
@@ -117,7 +106,6 @@ describe('ThankYouModal', () => {
         const closeButton = screen.getByText(closeTestLabel)
         fireEvent.click(closeButton)
 
-        // No error should occur
         expect(closeButton).toBeInTheDocument()
     })
 })

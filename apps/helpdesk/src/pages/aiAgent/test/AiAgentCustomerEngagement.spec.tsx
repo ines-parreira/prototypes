@@ -9,7 +9,7 @@ import { Provider } from 'react-redux'
 
 import { toImmutable } from 'common/utils'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import * as chatColorHook from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
+import * as chatColorHook from 'pages/aiAgent/hooks/useGetChatIntegrationColor'
 import * as contextHook from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
@@ -23,7 +23,7 @@ jest.mock('@repo/logging', () => ({
     logEvent: (...args: unknown[]) => mockLogEvent(...args),
 }))
 
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor')
+jest.mock('pages/aiAgent/hooks/useGetChatIntegrationColor')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/settings/helpCenter/hooks/useStoreIntegrationByShopName')
 jest.mock(

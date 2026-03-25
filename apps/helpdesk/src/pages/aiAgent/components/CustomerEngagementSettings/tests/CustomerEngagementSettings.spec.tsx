@@ -16,7 +16,7 @@ import { integrationsState } from 'fixtures/integrations'
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
-import * as chatColorHook from 'pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor'
+import * as chatColorHook from 'pages/aiAgent/hooks/useGetChatIntegrationColor'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
 import type {
@@ -213,7 +213,7 @@ jest.mock('state/integrations/actions', () => {
     }
 })
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetChatIntegrationColor')
+jest.mock('pages/aiAgent/hooks/useGetChatIntegrationColor')
 jest.mock(
     'pages/aiAgent/components/CustomerEngagementSettings/hooks/useGmvUsdOver30Days',
     () => {

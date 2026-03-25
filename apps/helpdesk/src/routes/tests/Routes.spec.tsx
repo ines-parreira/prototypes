@@ -32,7 +32,7 @@ import useVoiceDevice from 'hooks/integrations/phone/useVoiceDevice'
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import { useListProducts } from 'models/integration/queries'
-import { useGetOnboardingData } from 'pages/aiAgent/Onboarding/hooks/useGetOnboardingData'
+import { useGetOnboardingData } from 'pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData'
 import type { VoiceDeviceContextState } from 'pages/integrations/integration/components/voice/VoiceDeviceContext'
 import Routes from 'routes/Routes'
 import { SplitTicketViewProvider } from 'split-ticket-view-toggle'
@@ -232,7 +232,7 @@ const mockUseJourneyContext =
     require('AIJourney/providers/JourneyProvider/JourneyProvider')
         .useJourneyContext as jest.Mock
 
-jest.mock('pages/aiAgent/Onboarding/hooks/useGetOnboardingData')
+jest.mock('pages/aiAgent/Onboarding_V2/hooks/useGetOnboardingData')
 const useGetOnboardingDataMock = assumeMock(useGetOnboardingData)
 
 const useReportChartRestrictionsMock = assumeMock(useReportChartRestrictions)

@@ -16,7 +16,7 @@ import {
     CardContent,
     CardHeader,
     CardTitle,
-} from 'pages/aiAgent/Onboarding/components/Card'
+} from 'pages/aiAgent/components/Card'
 import { AIButton } from 'pages/common/components/AIButton/AIButton'
 import Alert, { AlertType } from 'pages/common/components/Alert/Alert'
 import Modal from 'pages/common/components/modal/Modal'
