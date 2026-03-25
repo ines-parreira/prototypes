@@ -14,10 +14,12 @@ export const PerformanceBreakdownTable = () => {
             loadingStates={loadingStates}
             getRowKey={(row) => row.feature}
             DownloadButton={<DownloadPerformanceBreakdownButton />}
-            nameColumn={{
-                accessor: 'feature',
-                label: 'Feature',
-            }}
+            nameColumns={[
+                {
+                    accessor: 'feature',
+                    label: 'Feature',
+                },
+            ]}
         />
     )
 }

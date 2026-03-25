@@ -1,6 +1,8 @@
 import {
     aiAgentAutomatedInteractionsPerChannel,
     aiAgentAutomatedInteractionsPerChannelQueryFactoryV2,
+    aiAgentAutomatedInteractionsPerIntent,
+    aiAgentAutomatedInteractionsPerIntentQueryFactoryV2,
     aiAgentAutomatedInteractionsScope,
 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
@@ -205,6 +207,51 @@ describe('aiAgentAutomatedInteractionsPerChannel', () => {
             expect(
                 aiAgentAutomatedInteractionsPerChannelQueryFactoryV2(context),
             ).toEqual(aiAgentAutomatedInteractionsPerChannel.build(context))
+        })
+    })
+})
+
+describe('aiAgentAutomatedInteractionsPerIntent', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with correct metricName, scope, measures, dimensions, and filters', () => {
+        const actual = aiAgentAutomatedInteractionsPerIntent.build(context)
+
+        expect(actual).toEqual({
+            metricName: 'ai-agent-automated-interactions-per-intent',
+            scope: 'ai-agent-automated-interactions',
+            measures: ['automatedInteractionsCount'],
+            dimensions: ['customField'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    describe('aiAgentAutomatedInteractionsPerIntentQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentAutomatedInteractionsPerIntentQueryFactoryV2(context),
+            ).toEqual(aiAgentAutomatedInteractionsPerIntent.build(context))
         })
     })
 })

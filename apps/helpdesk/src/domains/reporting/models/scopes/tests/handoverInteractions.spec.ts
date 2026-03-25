@@ -1,5 +1,7 @@
 import {
     aiAgentHandoverInteractions,
+    aiAgentHandoverInteractionsPerIntent,
+    aiAgentHandoverInteractionsPerIntentQueryFactoryV2,
     aiAgentHandoverInteractionsV2QueryFactory,
     aiSalesAgentHandoverInteractions,
     aiSalesAgentHandoverInteractionsV2QueryFactory,
@@ -258,6 +260,37 @@ describe('handoverInteractionsScope', () => {
                 expect(
                     handoverInteractionsPerChannelQueryFactoryV2(context),
                 ).toEqual(handoverInteractionsPerChannel.build(context))
+            })
+        })
+
+        describe('handoverInteractionsPerIntentQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                expect(
+                    aiAgentHandoverInteractionsPerIntentQueryFactoryV2(context),
+                ).toEqual(aiAgentHandoverInteractionsPerIntent.build(context))
+            })
+        })
+    })
+
+    describe('handoverInteractionsPerIntent', () => {
+        it('creates query with customField dimension and automationFeatureType filter for ai-agent', () => {
+            const actual = aiAgentHandoverInteractionsPerIntent.build(context)
+
+            expect(actual).toEqual({
+                metricName: 'ai-agent-handover-interactions-per-intent',
+                scope: 'handover-interactions',
+                measures: ['handoverInteractionsCount'],
+                dimensions: ['customField'],
+                timezone: 'utc',
+                filters: [
+                    ...periodFilters,
+                    {
+                        member: 'automationFeatureType',
+                        operator: 'one-of',
+                        values: ['ai-agent'],
+                    },
+                ],
+                time_dimensions: timeDimensions,
             })
         })
     })

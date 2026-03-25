@@ -9,7 +9,7 @@ import { ReportingMetricBreakdownTable } from './ReportingMetricBreakdownTable'
 
 type Row = { name: string; value: number }
 
-const nameColumn = { accessor: 'name' as const, label: 'Name' }
+const nameColumns = [{ accessor: 'name', label: 'Name' }]
 
 const metricColumns: MetricColumnConfig[] = [
     {
@@ -44,7 +44,7 @@ describe('ReportingMetricBreakdownTable', () => {
                 loadingStates={defaultLoadingStates}
                 getRowKey={(row) => row.name}
                 DownloadButton={<button>Download</button>}
-                nameColumn={nameColumn}
+                nameColumns={nameColumns}
             />,
         )
 
@@ -61,7 +61,7 @@ describe('ReportingMetricBreakdownTable', () => {
                 loadingStates={defaultLoadingStates}
                 getRowKey={(row) => row.name}
                 DownloadButton={null}
-                nameColumn={nameColumn}
+                nameColumns={nameColumns}
             />,
         )
 
@@ -82,7 +82,7 @@ describe('ReportingMetricBreakdownTable', () => {
                 }}
                 getRowKey={(row) => row.name}
                 DownloadButton={null}
-                nameColumn={nameColumn}
+                nameColumns={nameColumns}
             />,
         )
 
@@ -97,7 +97,7 @@ describe('ReportingMetricBreakdownTable', () => {
                 loadingStates={defaultLoadingStates}
                 getRowKey={(row) => row.name}
                 DownloadButton={null}
-                nameColumn={nameColumn}
+                nameColumns={nameColumns}
             />,
         )
 
@@ -118,7 +118,7 @@ describe('ReportingMetricBreakdownTable', () => {
                 loadingStates={defaultLoadingStates}
                 getRowKey={(row) => row.name}
                 DownloadButton={null}
-                nameColumn={{ ...nameColumn, displayNames }}
+                nameColumns={[{ ...nameColumns[0], displayNames }]}
             />,
         )
 
@@ -134,7 +134,7 @@ describe('ReportingMetricBreakdownTable', () => {
                 loadingStates={defaultLoadingStates}
                 getRowKey={(row) => row.name}
                 DownloadButton={null}
-                nameColumn={nameColumn}
+                nameColumns={nameColumns}
             />,
         )
 

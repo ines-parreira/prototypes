@@ -8,6 +8,7 @@ export const aiAgentSuccessRateScope = defineScope({
     dimensions: [
         'aiAgentSkill',
         'channel',
+        'customField',
         'engagementType',
         'storeIntegrationId',
         'ticketId',
@@ -16,6 +17,7 @@ export const aiAgentSuccessRateScope = defineScope({
     filters: [
         'aiAgentSkill',
         'channel',
+        'customFieldId',
         'engagementType',
         'periodEnd',
         'periodStart',
@@ -38,3 +40,14 @@ export const aiAgentSuccessRatePerChannel = aiAgentSuccessRateScope
 export const aiAgentSuccessRatePerChannelQueryFactoryV2 = (
     ctx: AiAgentSuccessRateContext,
 ) => aiAgentSuccessRatePerChannel.build(ctx)
+
+export const aiAgentSuccessRatePerIntent = aiAgentSuccessRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_INTENT)
+    .defineQuery(() => ({
+        measures: ['successRate'] as const,
+        dimensions: ['customField'],
+    }))
+
+export const aiAgentSuccessRatePerIntentQueryFactoryV2 = (
+    ctx: AiAgentSuccessRateContext,
+) => aiAgentSuccessRatePerIntent.build(ctx)

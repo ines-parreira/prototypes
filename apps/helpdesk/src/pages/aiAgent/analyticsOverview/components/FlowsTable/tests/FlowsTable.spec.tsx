@@ -77,11 +77,11 @@ const getLastCallProps = () =>
         loadingStates: MetricLoadingStates
         getRowKey: (row: FlowsEntityMetrics) => string
         DownloadButton: React.ReactNode
-        nameColumn: {
+        nameColumns: {
             accessor: string
             label: string
             displayNames?: Record<string, string>
-        }
+        }[]
     }
 
 describe('FlowsTable', () => {
@@ -114,10 +114,10 @@ describe('FlowsTable', () => {
         expect(getRowKey(defaultData[0])).toBe('flow-seed-10')
     })
 
-    it('passes nameColumn with entity accessor, Flows label, and displayNames from the hook', () => {
+    it('passes nameColumns with entity accessor, Flows label, and displayNames from the hook', () => {
         renderComponent()
 
-        expect(getLastCallProps().nameColumn).toEqual({
+        expect(getLastCallProps().nameColumns[0]).toEqual({
             accessor: 'entity',
             label: 'Flows',
             displayNames: defaultDisplayNames,

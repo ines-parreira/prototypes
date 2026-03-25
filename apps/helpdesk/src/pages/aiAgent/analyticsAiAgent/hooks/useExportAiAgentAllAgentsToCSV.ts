@@ -9,6 +9,7 @@ import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAi
 import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentAllAgentsLayoutConfig'
 import { useDownloadAiAgentAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentAutomationRateTimeSeriesData'
 import { useDownloadAllAgentsPerformanceByChannelData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAllAgentsPerformanceByChannelData'
+import { useDownloadAllAgentsPerformanceByIntentData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAllAgentsPerformanceByIntentData'
 import { useDownloadAutomatedInteractionsBySkillData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAutomatedInteractionsBySkillData'
 import { useDownloadChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData'
 import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
@@ -53,7 +54,12 @@ export const useExportAiAgentAllAgentsToCSV = () => {
     const channelPerformanceData = isAnalyticsDashboardsTablesEnabled
         ? allAgentsChannelPerformanceData
         : legacyChannelPerformanceData
-    const intentPerformanceData = useDownloadIntentPerformanceData()
+    const allAgentsIntentPerformanceData =
+        useDownloadAllAgentsPerformanceByIntentData()
+    const legacyIntentPerformanceData = useDownloadIntentPerformanceData()
+    const intentPerformanceData = isAnalyticsDashboardsTablesEnabled
+        ? allAgentsIntentPerformanceData
+        : legacyIntentPerformanceData
 
     const isLoading =
         isKpiLoading ||

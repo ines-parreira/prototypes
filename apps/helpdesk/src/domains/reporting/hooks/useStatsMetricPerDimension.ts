@@ -26,6 +26,9 @@ export type EntityMetricConfig = {
     ) => Promise<EntityMetricResult>
 }
 
+export type UseEntityMetricConfig = Pick<EntityMetricConfig, 'use'>
+export type FetchEntityMetricConfig = Pick<EntityMetricConfig, 'fetch'>
+
 export type AssembledEntityMetrics<TKeys extends string> = {
     data: Record<TKeys, Partial<Record<string, number | null>>>
     isLoading: boolean
@@ -122,11 +125,11 @@ export const assembleEntityRows = <TRow, TEntity extends string = string>(
 }
 
 export const useEntityMetrics = <TKeys extends string>(
-    config: Record<TKeys, EntityMetricConfig>,
+    config: Record<TKeys, UseEntityMetricConfig>,
     filters: StatsFilters,
     timezone: string,
 ): AssembledEntityMetrics<TKeys> => {
-    const entries = Object.entries<EntityMetricConfig>(config)
+    const entries = Object.entries<UseEntityMetricConfig>(config)
     const results = entries.map(([, { use }]) => use(filters, timezone))
     return assembleEntityMetrics(
         Object.fromEntries(
@@ -136,11 +139,11 @@ export const useEntityMetrics = <TKeys extends string>(
 }
 
 export const fetchEntityMetrics = async <TKeys extends string>(
-    config: Record<TKeys, EntityMetricConfig>,
+    config: Record<TKeys, FetchEntityMetricConfig>,
     filters: StatsFilters,
     timezone: string,
 ): Promise<AssembledEntityMetrics<TKeys>> => {
-    const entries = Object.entries<EntityMetricConfig>(config)
+    const entries = Object.entries<FetchEntityMetricConfig>(config)
     const results = await Promise.all(
         entries.map(([, { fetch }]) => fetch(filters, timezone)),
     )

@@ -14,11 +14,13 @@ export const FlowsTable = () => {
             loadingStates={loadingStates}
             getRowKey={(row) => row.entity}
             DownloadButton={<DownloadFlowsButton />}
-            nameColumn={{
-                accessor: 'entity',
-                label: 'Flows',
-                displayNames,
-            }}
+            nameColumns={[
+                {
+                    accessor: 'entity',
+                    label: 'Flows',
+                    displayNames,
+                },
+            ]}
         />
     )
 }

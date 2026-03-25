@@ -81,12 +81,12 @@ const getLastCallProps = () =>
         loadingStates: MetricLoadingStates
         getRowKey: (row: ArticleRecommendationRow) => string
         DownloadButton: React.ReactNode
-        nameColumn: {
+        nameColumns: {
             accessor: string
             label: string
             displayNames?: Record<string, string>
             getHref?: (value: string) => string | undefined
-        }
+        }[]
     }
 
 describe('ArticleRecommendationTable', () => {
@@ -121,10 +121,10 @@ describe('ArticleRecommendationTable', () => {
         expect(getRowKey(defaultData[0])).toBe('https://example.com/article-1')
     })
 
-    it('passes nameColumn with entity accessor, Article name label, displayNames, and getHref', () => {
+    it('passes nameColumns with entity accessor, Article name label, displayNames, and getHref', () => {
         renderComponent()
 
-        const { nameColumn } = getLastCallProps()
+        const nameColumn = getLastCallProps().nameColumns[0]
         expect(nameColumn.accessor).toBe('entity')
         expect(nameColumn.label).toBe('Article name')
         expect(nameColumn.displayNames).toBe(defaultDisplayNames)
@@ -144,7 +144,9 @@ describe('ArticleRecommendationTable', () => {
         })
         render(<ArticleRecommendationTable />)
 
-        expect(getLastCallProps().nameColumn.displayNames).toBe(displayNames)
+        expect(getLastCallProps().nameColumns[0].displayNames).toBe(
+            displayNames,
+        )
     })
 
     it('renders DownloadArticleRecommendationButton as the DownloadButton', () => {

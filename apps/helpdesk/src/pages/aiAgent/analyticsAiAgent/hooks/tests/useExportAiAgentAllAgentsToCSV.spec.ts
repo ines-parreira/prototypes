@@ -6,6 +6,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import { useDownloadAiAgentAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentAutomationRateTimeSeriesData'
 import { useDownloadAllAgentsPerformanceByChannelData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAllAgentsPerformanceByChannelData'
+import { useDownloadAllAgentsPerformanceByIntentData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAllAgentsPerformanceByIntentData'
 import { useDownloadAutomatedInteractionsBySkillData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAutomatedInteractionsBySkillData'
 import { useDownloadChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData'
 import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
@@ -32,6 +33,9 @@ jest.mock(
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData',
 )
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAllAgentsPerformanceByIntentData',
+)
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
@@ -55,6 +59,9 @@ const mockedUseDownloadChannelPerformanceData = jest.mocked(
 )
 const mockedUseDownloadIntentPerformanceData = jest.mocked(
     useDownloadIntentPerformanceData,
+)
+const mockedUseDownloadAllAgentsPerformanceByIntentData = jest.mocked(
+    useDownloadAllAgentsPerformanceByIntentData,
 )
 const mockedSaveZippedFiles = jest.mocked(fileUtils.saveZippedFiles)
 
@@ -136,6 +143,15 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
             fileName: 'intent-performance.csv',
             isLoading: false,
         })
+
+        mockedUseDownloadAllAgentsPerformanceByIntentData.mockReturnValue({
+            files: {
+                'all-agents-intent-performance.csv':
+                    'intent,automated_interactions\nIntent A,150',
+            },
+            fileName: 'all-agents-intent-performance.csv',
+            isLoading: false,
+        })
     })
 
     it('should return isLoading as false when all data is loaded', () => {
@@ -193,7 +209,7 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
     })
 
     it('should return isLoading as true when intent performance data is loading', () => {
-        mockedUseDownloadIntentPerformanceData.mockReturnValue({
+        mockedUseDownloadAllAgentsPerformanceByIntentData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: true,
@@ -244,7 +260,9 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
             fileNames.some((name) => name.includes('channel-performance')),
         ).toBe(true)
         expect(
-            fileNames.some((name) => name.includes('intent-performance')),
+            fileNames.some((name) =>
+                name.includes('all-agents-intent-performance'),
+            ),
         ).toBe(true)
     })
 
@@ -339,6 +357,77 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         })
     })
 
+    describe('intent data based on AiAgentAnalyticsDashboardsTables flag', () => {
+        it('uses all agents intent performance data when the tables flag is enabled', async () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const { result } = renderHook(() =>
+                useExportAiAgentAllAgentsToCSV(),
+            )
+
+            await act(async () => {
+                await result.current.triggerDownload()
+            })
+
+            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+            expect(
+                Object.keys(filesArg).some((name) =>
+                    name.includes('all-agents-intent-performance'),
+                ),
+            ).toBe(true)
+            expect(
+                Object.keys(filesArg).some(
+                    (name) => name === 'intent-performance.csv',
+                ),
+            ).toBe(false)
+        })
+
+        it('uses legacy intent performance data when the tables flag is disabled', async () => {
+            mockUseFlag.mockImplementation(
+                (flag) =>
+                    flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+            )
+
+            const { result } = renderHook(() =>
+                useExportAiAgentAllAgentsToCSV(),
+            )
+
+            await act(async () => {
+                await result.current.triggerDownload()
+            })
+
+            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+            expect(
+                Object.keys(filesArg).some(
+                    (name) => name === 'intent-performance.csv',
+                ),
+            ).toBe(true)
+            expect(
+                Object.keys(filesArg).some((name) =>
+                    name.includes('all-agents-intent-performance'),
+                ),
+            ).toBe(false)
+        })
+
+        it('reflects isLoading from legacy intent data when the tables flag is disabled', () => {
+            mockUseFlag.mockImplementation(
+                (flag) =>
+                    flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+            )
+            mockedUseDownloadIntentPerformanceData.mockReturnValue({
+                files: {},
+                fileName: '',
+                isLoading: true,
+            })
+
+            const { result } = renderHook(() =>
+                useExportAiAgentAllAgentsToCSV(),
+            )
+
+            expect(result.current.isLoading).toBe(true)
+        })
+    })
+
     it('should handle empty download data files', async () => {
         mockedUseDownloadAutomatedInteractionsBySkillData.mockReturnValue({
             files: {},
@@ -358,7 +447,7 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
             isLoading: false,
         })
 
-        mockedUseDownloadIntentPerformanceData.mockReturnValue({
+        mockedUseDownloadAllAgentsPerformanceByIntentData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: false,

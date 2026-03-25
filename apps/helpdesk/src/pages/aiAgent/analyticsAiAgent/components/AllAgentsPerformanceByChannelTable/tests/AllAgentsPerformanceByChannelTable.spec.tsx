@@ -79,11 +79,11 @@ const getLastCallProps = () =>
         loadingStates: MetricLoadingStates
         getRowKey: (row: AllAgentsPerformanceByChannelEntityMetrics) => string
         DownloadButton: React.ReactNode
-        nameColumn: {
+        nameColumns: {
             accessor: string
             label: string
             formatName?: (value: string) => string
-        }
+        }[]
     }
 
 describe('AllAgentsPerformanceByChannelTable', () => {
@@ -118,13 +118,17 @@ describe('AllAgentsPerformanceByChannelTable', () => {
         expect(getRowKey(defaultData[0])).toBe('email')
     })
 
-    it('passes nameColumn with entity accessor, Channel label, and formatChannelName', () => {
+    it('passes nameColumns with entity accessor, Channel label, and formatChannelName', () => {
         renderComponent()
 
-        const { nameColumn } = getLastCallProps()
-        expect(nameColumn.accessor).toBe('entity')
-        expect(nameColumn.label).toBe('Channel')
-        expect(nameColumn.formatName).toBe(formatChannelName)
+        const { nameColumns } = getLastCallProps()
+        expect(nameColumns).toEqual([
+            expect.objectContaining({
+                accessor: 'entity',
+                label: 'Channel',
+                formatName: formatChannelName,
+            }),
+        ])
     })
 
     it('renders DownloadAllAgentsPerformanceByChannelButton as the DownloadButton', () => {

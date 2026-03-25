@@ -76,11 +76,11 @@ const getLastCallProps = () =>
         loadingStates: MetricLoadingStates
         getRowKey: (row: OrderManagementEntityMetrics) => string
         DownloadButton: React.ReactNode
-        nameColumn: {
+        nameColumns: {
             accessor: string
             label: string
             displayNames?: Record<string, string>
-        }
+        }[]
     }
 
 describe('OrderManagementTable', () => {
@@ -113,10 +113,10 @@ describe('OrderManagementTable', () => {
         expect(getRowKey(defaultData[0])).toBe('cancel_order')
     })
 
-    it('passes nameColumn with entity accessor, Feature name label, and ENTITY_DISPLAY_NAMES', () => {
+    it('passes nameColumns with entity accessor, Feature name label, and ENTITY_DISPLAY_NAMES', () => {
         renderComponent()
 
-        expect(getLastCallProps().nameColumn).toEqual({
+        expect(getLastCallProps().nameColumns[0]).toEqual({
             accessor: 'entity',
             label: 'Feature name',
             displayNames: ENTITY_DISPLAY_NAMES,

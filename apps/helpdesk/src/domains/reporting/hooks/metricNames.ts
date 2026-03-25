@@ -42,6 +42,10 @@ export const METRIC_NAMES = {
         'overall-time-saved-by-agent-per-flows',
     AI_AGENT_AUTOMATED_INTERACTIONS_PER_CHANNEL:
         'ai-agent-automated-interactions-per-channel',
+    AI_AGENT_OVERALL_AUTOMATION_RATE_PER_INTENT:
+        'ai-agent-overall-automation-rate-per-intent',
+    AI_AGENT_AUTOMATED_INTERACTIONS_PER_INTENT:
+        'ai-agent-automated-interactions-per-intent',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
         'ai-agent-handover-interactions-per-intent',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
@@ -60,6 +64,7 @@ export const METRIC_NAMES = {
     AI_AGENT_ALL_AGENTS_COVERAGE_RATE: 'ai-agent-all-agents-coverage-rate',
     AI_AGENT_COVERAGE_RATE_PER_CHANNEL: 'ai-agent-coverage-rate-per-channel',
     AI_AGENT_SUCCESS_RATE_PER_CHANNEL: 'ai-agent-success-rate-per-channel',
+    AI_AGENT_SUCCESS_RATE_PER_INTENT: 'ai-agent-success-rate-per-intent',
     AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILLDOWN:
         'ai-agent-automated-interactions-drill-down',
     AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILLDOWN:
@@ -975,6 +980,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.AiAgentSuccessRate]: [
         METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_INTENT,
     ],
     [MetricScope.AiSalesAgentConversionRate]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CONVERSION_RATE,

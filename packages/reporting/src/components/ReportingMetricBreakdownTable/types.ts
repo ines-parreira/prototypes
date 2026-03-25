@@ -15,8 +15,8 @@ export type MetricColumnConfig = {
     showNotAvailable?: boolean
 }
 
-export type NameColumnConfig<TData> = {
-    accessor: keyof TData & string
+export type NameColumnConfig = {
+    accessor: string
     label: string
     displayNames?: Record<string, string>
     formatName?: (value: string) => string

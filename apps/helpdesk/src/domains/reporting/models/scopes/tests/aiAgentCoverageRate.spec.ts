@@ -1,4 +1,6 @@
 import {
+    aiAgentAutomationRatePerIntent,
+    aiAgentAutomationRatePerIntentQueryFactoryV2,
     aiAgentCoverageRatePerChannel,
     aiAgentCoverageRatePerChannelQueryFactoryV2,
     aiAgentCoverageRateScope,
@@ -223,6 +225,51 @@ describe('aiAgentCoverageRatePerChannel', () => {
             expect(
                 aiAgentCoverageRatePerChannelQueryFactoryV2(context),
             ).toEqual(aiAgentCoverageRatePerChannel.build(context))
+        })
+    })
+})
+
+describe('automationRatePerIntent', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with correct metricName, scope, measures, dimensions, and filters', () => {
+        const actual = aiAgentAutomationRatePerIntent.build(context)
+
+        expect(actual).toEqual({
+            metricName: 'ai-agent-overall-automation-rate-per-intent',
+            scope: 'ai-agent-coverage-rate',
+            measures: ['coverageRate'],
+            dimensions: ['customField'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    describe('automationRatePerIntentQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentAutomationRatePerIntentQueryFactoryV2(context),
+            ).toEqual(aiAgentAutomationRatePerIntent.build(context))
         })
     })
 })

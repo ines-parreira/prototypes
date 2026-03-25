@@ -30,7 +30,7 @@ type Props<TData> = {
     loadingStates: MetricLoadingStates
     getRowKey: (row: TData) => string
     DownloadButton: ReactNode
-    nameColumn: NameColumnConfig<TData>
+    nameColumns: NameColumnConfig[]
 }
 
 export function ReportingMetricBreakdownTable<TData>({
@@ -39,10 +39,10 @@ export function ReportingMetricBreakdownTable<TData>({
     loadingStates,
     getRowKey,
     DownloadButton,
-    nameColumn,
+    nameColumns,
 }: Props<TData>) {
     const columns = [
-        buildNameColDef(nameColumn),
+        ...nameColumns.map((col) => buildNameColDef<TData>(col)),
         ...buildMetricColumnDefs(metricColumns, loadingStates, getRowKey),
     ]
 

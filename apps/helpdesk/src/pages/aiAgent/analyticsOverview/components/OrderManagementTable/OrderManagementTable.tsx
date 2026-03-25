@@ -17,11 +17,13 @@ export const OrderManagementTable = () => {
             loadingStates={loadingStates}
             getRowKey={(row) => row.entity}
             DownloadButton={<DownloadOrderManagementButton />}
-            nameColumn={{
-                accessor: 'entity',
-                label: 'Feature name',
-                displayNames: ENTITY_DISPLAY_NAMES,
-            }}
+            nameColumns={[
+                {
+                    accessor: 'entity',
+                    label: 'Feature name',
+                    displayNames: ENTITY_DISPLAY_NAMES,
+                },
+            ]}
         />
     )
 }

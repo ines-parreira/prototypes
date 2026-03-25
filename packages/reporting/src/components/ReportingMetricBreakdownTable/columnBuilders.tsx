@@ -20,7 +20,7 @@ import type {
 import css from './ReportingMetricBreakdownTable.less'
 
 export function buildNameColDef<TData>(
-    config: NameColumnConfig<TData>,
+    config: NameColumnConfig,
 ): ColumnDef<TData> {
     return {
         accessorKey: config.accessor,

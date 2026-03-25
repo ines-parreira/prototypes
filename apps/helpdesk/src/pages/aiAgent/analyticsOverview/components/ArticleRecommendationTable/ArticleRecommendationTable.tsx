@@ -18,12 +18,14 @@ export const ArticleRecommendationTable = () => {
             loadingStates={loadingStates}
             getRowKey={(row) => row.entity}
             DownloadButton={<DownloadArticleRecommendationButton />}
-            nameColumn={{
-                accessor: 'entity',
-                label: 'Article name',
-                displayNames,
-                getHref: (entity) => entity,
-            }}
+            nameColumns={[
+                {
+                    accessor: 'entity',
+                    label: 'Article name',
+                    displayNames,
+                    getHref: (entity) => entity,
+                },
+            ]}
         />
     )
 }

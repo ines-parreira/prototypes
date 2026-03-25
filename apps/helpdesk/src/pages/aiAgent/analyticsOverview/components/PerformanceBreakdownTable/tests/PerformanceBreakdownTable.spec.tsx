@@ -78,7 +78,7 @@ const getLastCallProps = () =>
         loadingStates: MetricLoadingStates
         getRowKey: (row: FeatureMetrics) => string
         DownloadButton: React.ReactNode
-        nameColumn: { accessor: string; label: string }
+        nameColumns: { accessor: string; label: string }[]
     }
 
 describe('PerformanceBreakdownTable', () => {
@@ -113,10 +113,10 @@ describe('PerformanceBreakdownTable', () => {
         expect(getRowKey(defaultData[0])).toBe('AI Agent')
     })
 
-    it('passes nameColumn with feature accessor and Feature label', () => {
+    it('passes nameColumns with feature accessor and Feature label', () => {
         renderComponent()
 
-        expect(getLastCallProps().nameColumn).toEqual({
+        expect(getLastCallProps().nameColumns[0]).toEqual({
             accessor: 'feature',
             label: 'Feature',
         })

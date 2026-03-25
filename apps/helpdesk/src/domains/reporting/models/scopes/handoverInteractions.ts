@@ -155,3 +155,22 @@ export const handoverInteractionsPerChannel = handoverInteractionsScope
 export const handoverInteractionsPerChannelQueryFactoryV2 = (
     ctx: HandoverInteractionsContext,
 ) => handoverInteractionsPerChannel.build(ctx)
+
+export const aiAgentHandoverInteractionsPerIntent = handoverInteractionsScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['handoverInteractionsCount'],
+        dimensions: ['customField'],
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'automationFeatureType',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [AutomationFeatureType.AiAgent],
+            },
+        ] as any,
+    }))
+
+export const aiAgentHandoverInteractionsPerIntentQueryFactoryV2 = (
+    ctx: HandoverInteractionsContext,
+) => aiAgentHandoverInteractionsPerIntent.build(ctx)

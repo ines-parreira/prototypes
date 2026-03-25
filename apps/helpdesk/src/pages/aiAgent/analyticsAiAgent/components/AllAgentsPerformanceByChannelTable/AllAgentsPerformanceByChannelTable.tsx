@@ -16,11 +16,13 @@ export const AllAgentsPerformanceByChannelTable = () => {
             loadingStates={loadingStates}
             getRowKey={(row) => row.entity}
             DownloadButton={<DownloadAllAgentsPerformanceByChannelButton />}
-            nameColumn={{
-                accessor: 'entity',
-                label: 'Channel',
-                formatName: formatChannelName,
-            }}
+            nameColumns={[
+                {
+                    accessor: 'entity',
+                    label: 'Channel',
+                    formatName: formatChannelName,
+                },
+            ]}
         />
     )
 }

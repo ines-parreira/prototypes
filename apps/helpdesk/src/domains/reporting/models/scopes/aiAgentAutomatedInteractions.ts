@@ -44,3 +44,17 @@ export const aiAgentAutomatedInteractionsPerChannel =
 export const aiAgentAutomatedInteractionsPerChannelQueryFactoryV2 = (
     ctx: Context,
 ) => aiAgentAutomatedInteractionsPerChannel.build(ctx)
+
+export const aiAgentAutomatedInteractionsPerIntent =
+    aiAgentAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_AUTOMATED_INTERACTIONS_PER_INTENT,
+        )
+        .defineQuery(() => ({
+            measures: ['automatedInteractionsCount'] as const,
+            dimensions: ['customField'],
+        }))
+
+export const aiAgentAutomatedInteractionsPerIntentQueryFactoryV2 = (
+    ctx: AiAgentAutomatedInteractionsContext,
+) => aiAgentAutomatedInteractionsPerIntent.build(ctx)
