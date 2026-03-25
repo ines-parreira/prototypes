@@ -602,6 +602,47 @@ describe('<TicketInfobarContainer />', () => {
         expect(screen.getByText(AI_FEEDBACK_TAB.LABEL)).toBeInTheDocument()
     })
 
+    it('should default back to the Customer tab on first render in the new layout', () => {
+        useHelpdeskV2MS1FlagMock.mockReturnValue(true)
+        useTicketInfobarNavigationMock.mockReturnValue({
+            activeTab: TicketInfobarTab.AIFeedback,
+            onChangeTab,
+        })
+
+        renderWithRouter(
+            <Provider store={store}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: '/foo/123',
+            },
+        )
+
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Customer)
+    })
+
+    it('should keep the AI Feedback tab on first render in the new layout when explicitly requested in the URL', () => {
+        useHelpdeskV2MS1FlagMock.mockReturnValue(true)
+        const customStore = mockStore({
+            ...state,
+            ticket: fromJS({ ...ticket, status: TicketStatus.Closed }),
+        })
+        customStore.dispatch = jest.fn()
+
+        renderWithRouter(
+            <Provider store={customStore}>
+                <TicketInfobarContainer {...minProps} />
+            </Provider>,
+            {
+                path: '/foo/:ticketId?',
+                route: `/foo/123/?activeTab=${TicketInfobarTab.AIFeedback}`,
+            },
+        )
+
+        expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.AIFeedback)
+    })
+
     it('should not call onChangeTab when clicking an already active tab', () => {
         renderWithRouter(
             <Provider store={store}>
