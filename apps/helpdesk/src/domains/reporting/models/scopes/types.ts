@@ -117,6 +117,7 @@ export type DimensionName =
     | 'statusName'
     | 'campaignId'
     | 'abVariant'
+    | 'aiAgentRole'
     | 'aiAgentSkill'
     | 'automationFeatureType'
     | 'customField'
@@ -230,6 +231,8 @@ export type MeasureName =
     | 'totalSalesAmount'
     | 'totalSalesAmountUsd'
     | 'successRate'
+    | 'averageDecreaseInFirstResponseTime'
+    | 'medianDecreaseInFirstResponseTime'
 
 export type TimeDimensionName =
     | 'createdDatetime'
@@ -291,6 +294,7 @@ export type StringFilterName =
     | 'abVariant'
     | 'shopName'
     | 'campaignId'
+    | 'aiAgentRole'
     | 'aiAgentSkill'
     | 'automationFeatureType'
     | 'customField'

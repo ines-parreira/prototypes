@@ -265,6 +265,21 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 }
                 break
 
+            case 'aiAgentRole':
+                if (
+                    statFilters.aiAgentSkill &&
+                    hasFilter(statFilters.aiAgentSkill)
+                ) {
+                    filters.push(
+                        createStandardFilter(
+                            'aiAgentRole',
+                            statFilters.aiAgentSkill.operator,
+                            statFilters.aiAgentSkill.values,
+                        ),
+                    )
+                }
+                break
+
             case 'score':
             case 'communicationSkills':
             case 'languageProficiency':

@@ -58,6 +58,7 @@ export const P5_AI_AGENT_REVAMP_SCOPES: MetricScope[] = [
     MetricScope.AiSalesAgentOrdersPerformance,
     MetricScope.AiAgentAutomatedInteractions,
     MetricScope.AiAgentTimeSaved,
+    MetricScope.AiAgentDecreaseInFirstResponseTime,
 ]
 
 const METRIC_TO_FLAG_MAP = new Map<MetricName, FeatureFlagKey>()
