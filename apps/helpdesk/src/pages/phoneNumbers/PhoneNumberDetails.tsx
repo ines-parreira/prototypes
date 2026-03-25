@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useEffect, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import { history } from '@repo/routing'
 import classnames from 'classnames'
@@ -19,7 +20,7 @@ import {
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
-import { countryOptions } from 'business/twilio'
+import { countryOptions, PhoneUseCase } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type { GorgiasApiError } from 'models/api/types'
 import { IntegrationType } from 'models/integration/types'
@@ -57,6 +58,9 @@ const countries: SelectableOption[] = countryOptions
 
 export function PhoneNumberDetails({ phoneNumber }: Props) {
     const dispatch = useAppDispatch()
+    const isMarketingPhoneNumberEnabled = useFlag(
+        FeatureFlagKey.MarketingPhoneNumber,
+    )
     const [name, setName] = useState(phoneNumber.name)
 
     const twilioConnection = phoneNumber.connections.find(isTwilioConnection)
@@ -203,6 +207,23 @@ export function PhoneNumberDetails({ phoneNumber }: Props) {
                             </InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
+                    {isMarketingPhoneNumberEnabled && (
+                        <FormGroup>
+                            <Label htmlFor="usecase" className="control-label">
+                                Use case
+                            </Label>
+                            <Input
+                                id="usecase"
+                                value={
+                                    phoneNumber.usecase ===
+                                    PhoneUseCase.Marketing
+                                        ? 'Marketing'
+                                        : 'Standard'
+                                }
+                                readOnly
+                            />
+                        </FormGroup>
+                    )}
                 </Col>
             </Row>
             {twilioConnection && (

@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { reverse, sortBy } from 'lodash'
 
+import { PhoneUseCase } from 'business/twilio'
 import useAppSelector from 'hooks/useAppSelector'
 import { OrderDirection } from 'models/api/types'
 import { IntegrationType } from 'models/integration/types'
@@ -24,6 +26,9 @@ import css from './PhoneNumbersList.less'
 
 export function PhoneNumbersList(): JSX.Element | null {
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
+    const isMarketingPhoneNumberEnabled = useFlag(
+        FeatureFlagKey.MarketingPhoneNumber,
+    )
 
     const [orderBy, setOrderBy] = useState<string>('id')
     const [orderDirection, setOrderDirection] = useState<OrderDirection>(
@@ -80,6 +85,14 @@ export function PhoneNumbersList(): JSX.Element | null {
                     isOrderedBy={orderBy === 'name'}
                     onClick={() => setSortOptions('name')}
                 />
+                {isMarketingPhoneNumberEnabled && (
+                    <HeaderCellProperty
+                        title="Use case"
+                        direction={orderDirection}
+                        isOrderedBy={orderBy === 'usecase'}
+                        onClick={() => setSortOptions('usecase')}
+                    />
+                )}
                 <HeaderCellProperty
                     title="Connected Apps"
                     direction={orderDirection}
@@ -104,6 +117,14 @@ export function PhoneNumbersList(): JSX.Element | null {
                                     withRoundFlag
                                 />
                             </BodyCell>
+                            {isMarketingPhoneNumberEnabled && (
+                                <BodyCell>
+                                    {phoneNumber.usecase ===
+                                    PhoneUseCase.Marketing
+                                        ? 'Marketing'
+                                        : 'Standard'}
+                                </BodyCell>
+                            )}
                             <BodyCell>
                                 {hasIntegration(
                                     phoneNumber,

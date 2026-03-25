@@ -1,7 +1,9 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
+import { PhoneUseCase } from 'business/twilio'
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { IntegrationType } from 'models/integration/types'
 import type { PhoneNumber } from 'models/phoneNumber/types'
@@ -9,6 +11,13 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { PhoneNumberDetails } from '../PhoneNumberDetails'
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
+}))
+
+const mockUseFlag = useFlag as jest.Mock
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>()
 const store = mockStore({
@@ -21,6 +30,10 @@ const store = mockStore({
 } as RootState)
 
 describe('<PhoneNumberDetails/>', () => {
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+    })
+
     describe('render()', () => {
         it('should render with a local US number', () => {
             const { container } = renderWithRouter(
@@ -149,6 +162,64 @@ describe('<PhoneNumberDetails/>', () => {
             expect(queryAllByText('Manage Integration').length).toBe(0)
             expect(queryAllByText('Add Integration').length).toBe(2)
             expect(container).toMatchSnapshot()
+        })
+    })
+
+    describe('Use case field', () => {
+        it('should not render Use case field when feature flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            const { queryByLabelText } = renderWithRouter(
+                <Provider store={store}>
+                    <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
+                </Provider>,
+            )
+
+            expect(queryByLabelText('Use case')).toBeNull()
+        })
+
+        it('should render Use case field when feature flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            const { getByLabelText } = renderWithRouter(
+                <Provider store={store}>
+                    <PhoneNumberDetails phoneNumber={phoneNumbers[0]} />
+                </Provider>,
+            )
+
+            expect(getByLabelText('Use case')).toBeInTheDocument()
+            expect(mockUseFlag).toHaveBeenCalledWith(
+                FeatureFlagKey.MarketingPhoneNumber,
+            )
+        })
+
+        it('should display "Standard" when usecase is undefined', () => {
+            mockUseFlag.mockReturnValue(true)
+            const phoneNumber = { ...phoneNumbers[0], usecase: undefined }
+
+            const { getByLabelText } = renderWithRouter(
+                <Provider store={store}>
+                    <PhoneNumberDetails phoneNumber={phoneNumber} />
+                </Provider>,
+            )
+
+            expect(getByLabelText('Use case')).toHaveValue('Standard')
+        })
+
+        it('should display "Marketing" when usecase is marketing', () => {
+            mockUseFlag.mockReturnValue(true)
+            const phoneNumber = {
+                ...phoneNumbers[0],
+                usecase: PhoneUseCase.Marketing,
+            }
+
+            const { getByLabelText } = renderWithRouter(
+                <Provider store={store}>
+                    <PhoneNumberDetails phoneNumber={phoneNumber} />
+                </Provider>,
+            )
+
+            expect(getByLabelText('Use case')).toHaveValue('Marketing')
         })
     })
 })

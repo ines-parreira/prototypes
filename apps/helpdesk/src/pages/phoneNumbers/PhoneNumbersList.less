@@ -6,8 +6,11 @@
 
         tr {
             height: 68px;
-            td {
-                width: auto !important;
+            td,
+            th {
+                &:first-child {
+                    width: 75%;
+                }
 
                 > div {
                     span {
@@ -26,6 +29,7 @@
                 &:last-child {
                     width: 70px !important;
                     max-width: 70px !important;
+                    padding-right: 0;
                 }
             }
 
