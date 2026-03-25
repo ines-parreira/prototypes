@@ -1,4 +1,5 @@
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -14,6 +15,20 @@ jest.mock('pages/aiAgent/skills/hooks/useHasLinkedSkills')
 jest.mock('pages/aiAgent/skills/hooks/useSkillsTemplates')
 jest.mock('../SkillsTable/SkillsTable', () => ({
     SkillsTable: () => <div data-testid="skills-table">Skills Table</div>,
+}))
+jest.mock('../IntentsTable/IntentsTable', () => ({
+    IntentsTable: ({
+        isOpen,
+        onOpenChange,
+    }: {
+        isOpen: boolean
+        onOpenChange: (open: boolean) => void
+    }) => (
+        <div data-testid="intents-table" data-open={isOpen}>
+            Intents Table
+            <button onClick={() => onOpenChange(false)}>Close</button>
+        </div>
+    ),
 }))
 
 const mockStore = configureMockStore([thunk])
@@ -116,5 +131,60 @@ describe('AiAgentSkills', () => {
         renderComponent()
 
         expect(screen.getByLabelText('Loading')).toBeInTheDocument()
+    })
+
+    describe('Intents Table', () => {
+        beforeEach(() => {
+            mockUseHasLinkedSkills.mockReturnValue({
+                hasLinkedSkills: true,
+                isLoading: false,
+                isError: false,
+            })
+        })
+
+        it('should render intents table closed by default', () => {
+            renderComponent()
+
+            const intentsTable = screen.getByTestId('intents-table')
+            expect(intentsTable).toHaveAttribute('data-open', 'false')
+        })
+
+        it('should open intents table when "View intents" is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const viewIntentsButton = screen.getByRole('button', {
+                name: /view intents/i,
+            })
+            await user.click(viewIntentsButton)
+
+            await waitFor(() => {
+                const intentsTable = screen.getByTestId('intents-table')
+                expect(intentsTable).toHaveAttribute('data-open', 'true')
+            })
+        })
+
+        it('should close intents table when close button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const viewIntentsButton = screen.getByRole('button', {
+                name: /view intents/i,
+            })
+            await user.click(viewIntentsButton)
+
+            await waitFor(() => {
+                const intentsTable = screen.getByTestId('intents-table')
+                expect(intentsTable).toHaveAttribute('data-open', 'true')
+            })
+
+            const closeButton = screen.getByRole('button', { name: /close/i })
+            await user.click(closeButton)
+
+            await waitFor(() => {
+                const intentsTable = screen.getByTestId('intents-table')
+                expect(intentsTable).toHaveAttribute('data-open', 'false')
+            })
+        })
     })
 })

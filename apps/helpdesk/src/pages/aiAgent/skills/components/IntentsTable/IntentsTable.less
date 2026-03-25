@@ -1,0 +1,112 @@
+:local {
+    .container {
+        width: 100%;
+    }
+
+    .tableWithExpandedRows {
+        :global {
+            table {
+                table-layout: fixed;
+            }
+
+            // Expand column
+            th:nth-child(1),
+            td:nth-child(1) {
+                width: 40px;
+            }
+
+            // Intent column
+            th:nth-child(2),
+            td:nth-child(2) {
+                width: 200px;
+            }
+
+            // Ticket volume column
+            th:nth-child(3),
+            td:nth-child(3) {
+                width: 140px;
+            }
+
+            // Handover column
+            th:nth-child(4),
+            td:nth-child(4) {
+                width: 140px;
+            }
+
+            // Link column
+            th:nth-child(5),
+            td:nth-child(5) {
+                width: 220px;
+            }
+
+            // Enabled column
+            th:nth-child(6),
+            td:nth-child(6) {
+                width: 80px;
+            }
+
+            // Child row padding
+            tr[data-child-row='true'] td {
+                padding: var(--spacing-xxxs) var(--spacing-md);
+            }
+        }
+    }
+
+    .tableWithoutExpandedRows {
+        :global {
+            table {
+                table-layout: fixed;
+            }
+
+            // Expand column
+            th:nth-child(1),
+            td:nth-child(1) {
+                width: 40px;
+            }
+
+            // Intent column (wider when no link column)
+            th:nth-child(2),
+            td:nth-child(2) {
+                width: 400px;
+            }
+
+            // Ticket volume column
+            th:nth-child(3),
+            td:nth-child(3) {
+                width: 140px;
+            }
+
+            // Handover column
+            th:nth-child(4),
+            td:nth-child(4) {
+                width: 140px;
+            }
+
+            // Enabled column (5th position when no link column)
+            th:nth-child(5),
+            td:nth-child(5) {
+                width: 80px;
+            }
+
+            // Child row padding
+            tr[data-child-row='true'] td {
+                padding: var(--spacing-xxxs) var(--spacing-md);
+            }
+        }
+    }
+
+    .linkedSkillRow {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-xxxxs);
+        cursor: pointer;
+    }
+
+    .descriptionWrapper {
+        display: flex;
+        align-items: center;
+        height: 14px;
+        color: var(--content-neutral-secondary);
+    }
+}
