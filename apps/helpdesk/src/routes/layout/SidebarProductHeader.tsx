@@ -1,8 +1,11 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useSidebar } from '@repo/navigation'
 
+import type { IconName } from '@gorgias/axiom'
 import {
+    Box,
     Button,
+    Icon,
     Menu,
     MenuSection,
     Tooltip,
@@ -10,12 +13,12 @@ import {
 } from '@gorgias/axiom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import type { ProductConfig } from 'routes/layout/productConfig'
 import { Product, productConfig } from 'routes/layout/productConfig'
 import { SidebarProductHeaderMenuItem } from 'routes/layout/SidebarProductHeaderMenuItem'
 
-type SelectedItem = {
-    name: string
-    icon?: string
+type SelectedItem = Omit<ProductConfig, 'icon'> & {
+    icon?: IconName
 }
 
 type SidebarProductHeaderProps = {
@@ -29,17 +32,29 @@ export function SidebarProductHeader({
     const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled)
     const { hasAccess } = useAiAgentAccess()
 
+    const icon =
+        selectedItem.icon != null ? (
+            <Icon
+                name={selectedItem.icon}
+                color={selectedItem.color}
+                withBackground
+            />
+        ) : null
+
     return (
         <Menu
+            selectedKeys={[selectedItem.id]}
+            selectionMode="single"
             trigger={
-                isCollapsed ? (
+                isCollapsed && selectedItem.icon ? (
                     <Tooltip
                         placement="right"
                         trigger={
                             <Button
-                                icon={selectedItem.icon}
+                                icon={icon}
                                 variant="tertiary"
                                 size="sm"
+                                color={selectedItem.color}
                             />
                         }
                     >
@@ -48,7 +63,9 @@ export function SidebarProductHeader({
                 ) : (
                     <Button
                         variant="tertiary"
-                        leadingSlot={selectedItem.icon}
+                        leadingSlot={
+                            icon ? <Box pr="xs">{icon}</Box> : undefined
+                        }
                         trailingSlot="arrow-chevron-down"
                     >
                         {selectedItem.name}
@@ -56,7 +73,7 @@ export function SidebarProductHeader({
                 )
             }
         >
-            <MenuSection id={'home'}>
+            <MenuSection id={'home-section'}>
                 <SidebarProductHeaderMenuItem
                     item={productConfig[Product.Home]}
                 />

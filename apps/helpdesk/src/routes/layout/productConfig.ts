@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
 
-import type { IconName } from '@gorgias/axiom'
+import type { IconName, MenuItemColor } from '@gorgias/axiom'
 
 import { ANALYTICS_DEFAULT_PATH } from 'routes/layout/products/analytics'
 import { CUSTOMERS_DEFAULT_PATH } from 'routes/layout/products/customers'
@@ -42,6 +42,7 @@ export type ProductConfig = {
     urlPatterns: string[]
     icon: IconName
     defaultPath: string
+    color?: MenuItemColor
 }
 
 export const productConfig: Record<Product, ProductConfig> = {
@@ -60,6 +61,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         sidebar: InboxSidebar,
         urlPatterns: ['tickets', 'ticket', 'views'],
         icon: 'comm-chat-conversation-circle',
+        color: 'blue',
         defaultPath: '/app/',
     },
     [Product.AiAgent]: {
@@ -69,6 +71,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         sidebar: AiAgentSidebar,
         urlPatterns: ['ai-agent', 'automation'],
         icon: 'ai-alt-1',
+        color: 'fuchsia',
         defaultPath: '/app/ai-agent',
     },
     [Product.Marketing]: {
@@ -78,6 +81,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         sidebar: MarketingSidebar,
         urlPatterns: ['ai-journey'],
         icon: 'ai',
+        color: 'coral',
         defaultPath: '/app/ai-journey',
     },
     [Product.Analytics]: {
@@ -87,6 +91,7 @@ export const productConfig: Record<Product, ProductConfig> = {
         sidebar: AnalyticsSidebar,
         urlPatterns: ['stats', 'voice-of-customer'],
         icon: 'chart-bar-vertical',
+        color: 'teal',
         defaultPath: ANALYTICS_DEFAULT_PATH,
     },
     [Product.Workflows]: {

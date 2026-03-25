@@ -63,7 +63,7 @@ export function NavigationSidebar() {
                         )}
                         <SidebarProductHeader
                             selectedItem={{
-                                name: currentProduct.name,
+                                ...currentProduct,
                                 icon: isCollapsed
                                     ? currentProduct.icon
                                     : undefined,

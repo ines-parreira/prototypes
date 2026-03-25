@@ -5,6 +5,7 @@ import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import { Product, productConfig } from 'routes/layout/productConfig'
 
 import { SidebarProductHeader } from '../SidebarProductHeader'
 
@@ -42,14 +43,12 @@ describe('SidebarProductHeader', () => {
 
     describe('when sidebar is expanded', () => {
         it('should render trigger button with selected item name', () => {
-            const selectedItem = {
-                name: 'Inbox',
-                icon: 'comm-chat-conversation-circle',
-            }
-
-            render(<SidebarProductHeader selectedItem={selectedItem} />, {
-                wrapper,
-            })
+            render(
+                <SidebarProductHeader
+                    selectedItem={productConfig[Product.Inbox]}
+                />,
+                { wrapper },
+            )
 
             const triggerButton = screen.getByRole('button', { name: /Inbox/i })
             expect(triggerButton).toBeInTheDocument()
@@ -57,33 +56,35 @@ describe('SidebarProductHeader', () => {
 
         it('should render core menu items when clicked', async () => {
             const user = userEvent.setup()
-            const selectedItem = {
-                name: 'Inbox',
-                icon: 'comm-chat-conversation-circle',
-            }
 
-            render(<SidebarProductHeader selectedItem={selectedItem} />, {
-                wrapper,
-            })
+            render(
+                <SidebarProductHeader
+                    selectedItem={productConfig[Product.Inbox]}
+                />,
+                { wrapper },
+            )
 
             const triggerButton = screen.getByRole('button', { name: /Inbox/i })
 
             await act(() => user.click(triggerButton))
 
             expect(
-                screen.getByRole('menuitem', { name: /Inbox/ }),
+                screen.getByRole('menuitemradio', { name: /Home/ }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('menuitem', { name: /AI Agent/ }),
+                screen.getByRole('menuitemradio', { name: /Inbox/ }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('menuitem', { name: /Analytics/ }),
+                screen.getByRole('menuitemradio', { name: /AI Agent/ }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('menuitem', { name: /Workflows/ }),
+                screen.getByRole('menuitemradio', { name: /Analytics/ }),
             ).toBeInTheDocument()
             expect(
-                screen.getByRole('menuitem', { name: /Customers/ }),
+                screen.getByRole('menuitemradio', { name: /Workflows/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitemradio', { name: /Customers/ }),
             ).toBeInTheDocument()
         })
 
@@ -93,20 +94,18 @@ describe('SidebarProductHeader', () => {
                 key === FeatureFlagKey.AiJourneyEnabled ? false : false,
             )
 
-            const selectedItem = {
-                name: 'Inbox',
-                icon: 'comm-chat-conversation-circle',
-            }
-
-            render(<SidebarProductHeader selectedItem={selectedItem} />, {
-                wrapper,
-            })
+            render(
+                <SidebarProductHeader
+                    selectedItem={productConfig[Product.Inbox]}
+                />,
+                { wrapper },
+            )
 
             const triggerButton = screen.getByRole('button', { name: /Inbox/i })
             await act(() => user.click(triggerButton))
 
             expect(
-                screen.queryByRole('menuitem', { name: /Marketing/ }),
+                screen.queryByRole('menuitemradio', { name: /Marketing/ }),
             ).not.toBeInTheDocument()
         })
 
@@ -116,20 +115,18 @@ describe('SidebarProductHeader', () => {
                 key === FeatureFlagKey.AiJourneyEnabled ? true : false,
             )
 
-            const selectedItem = {
-                name: 'Inbox',
-                icon: 'comm-chat-conversation-circle',
-            }
-
-            render(<SidebarProductHeader selectedItem={selectedItem} />, {
-                wrapper,
-            })
+            render(
+                <SidebarProductHeader
+                    selectedItem={productConfig[Product.Inbox]}
+                />,
+                { wrapper },
+            )
 
             const triggerButton = screen.getByRole('button', { name: /Inbox/i })
             await act(() => user.click(triggerButton))
 
             expect(
-                screen.getByRole('menuitem', { name: /Marketing/ }),
+                screen.getByRole('menuitemradio', { name: /Marketing/ }),
             ).toBeInTheDocument()
         })
 
@@ -140,14 +137,12 @@ describe('SidebarProductHeader', () => {
                 isLoading: false,
             })
 
-            const selectedItem = {
-                name: 'Inbox',
-                icon: 'comm-chat-conversation-circle',
-            }
-
-            render(<SidebarProductHeader selectedItem={selectedItem} />, {
-                wrapper,
-            })
+            render(
+                <SidebarProductHeader
+                    selectedItem={productConfig[Product.Inbox]}
+                />,
+                { wrapper },
+            )
 
             const triggerButton = screen.getByRole('button', { name: /Inbox/i })
             await act(() => user.click(triggerButton))
@@ -162,14 +157,12 @@ describe('SidebarProductHeader', () => {
                 isLoading: false,
             })
 
-            const selectedItem = {
-                name: 'Inbox',
-                icon: 'comm-chat-conversation-circle',
-            }
-
-            render(<SidebarProductHeader selectedItem={selectedItem} />, {
-                wrapper,
-            })
+            render(
+                <SidebarProductHeader
+                    selectedItem={productConfig[Product.Inbox]}
+                />,
+                { wrapper },
+            )
 
             const triggerButton = screen.getByRole('button', { name: /Inbox/i })
             await act(() => user.click(triggerButton))
@@ -180,23 +173,23 @@ describe('SidebarProductHeader', () => {
 
     describe('when sidebar is collapsed', () => {
         it('should render icon-only trigger button', () => {
-            const selectedItem = {
-                name: 'Inbox',
-                icon: 'comm-chat-conversation-circle',
-            }
-
-            render(<SidebarProductHeader selectedItem={selectedItem} />, {
-                wrapper: ({ children }) => (
-                    <SidebarContext.Provider
-                        value={{
-                            isCollapsed: true,
-                            toggleCollapse: mockToggleCollapse,
-                        }}
-                    >
-                        {children}
-                    </SidebarContext.Provider>
-                ),
-            })
+            render(
+                <SidebarProductHeader
+                    selectedItem={productConfig[Product.Inbox]}
+                />,
+                {
+                    wrapper: ({ children }) => (
+                        <SidebarContext.Provider
+                            value={{
+                                isCollapsed: true,
+                                toggleCollapse: mockToggleCollapse,
+                            }}
+                        >
+                            {children}
+                        </SidebarContext.Provider>
+                    ),
+                },
+            )
 
             const triggerButton = screen.getByRole('button')
             expect(triggerButton).toBeInTheDocument()
@@ -205,30 +198,34 @@ describe('SidebarProductHeader', () => {
 
         it('should render all menu items when clicked', async () => {
             const user = userEvent.setup()
-            const selectedItem = {
-                name: 'Inbox',
-                icon: 'comm-chat-conversation-circle',
-            }
 
-            render(<SidebarProductHeader selectedItem={selectedItem} />, {
-                wrapper: ({ children }) => (
-                    <SidebarContext.Provider
-                        value={{
-                            isCollapsed: true,
-                            toggleCollapse: mockToggleCollapse,
-                        }}
-                    >
-                        {children}
-                    </SidebarContext.Provider>
-                ),
-            })
+            render(
+                <SidebarProductHeader
+                    selectedItem={productConfig[Product.Inbox]}
+                />,
+                {
+                    wrapper: ({ children }) => (
+                        <SidebarContext.Provider
+                            value={{
+                                isCollapsed: true,
+                                toggleCollapse: mockToggleCollapse,
+                            }}
+                        >
+                            {children}
+                        </SidebarContext.Provider>
+                    ),
+                },
+            )
 
             const triggerButton = screen.getByRole('button')
 
             await act(() => user.click(triggerButton))
 
             expect(
-                screen.getByRole('menuitem', { name: /Inbox/ }),
+                screen.getByRole('menuitemradio', { name: /Home/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitemradio', { name: /Inbox/ }),
             ).toBeInTheDocument()
         })
     })

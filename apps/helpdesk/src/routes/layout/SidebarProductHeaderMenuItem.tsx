@@ -15,7 +15,8 @@ export function SidebarProductHeaderMenuItem({
 }: SidebarProductHeaderMenuItemProps) {
     return (
         <MenuItem
-            key={item.id}
+            id={item.id}
+            color={item.color}
             label={
                 requiresUpgrade ? (
                     <Box alignItems="center" gap="xxs">
@@ -32,7 +33,9 @@ export function SidebarProductHeaderMenuItem({
                 history.push(item.defaultPath)
             }}
             caption={item.description}
-            leadingSlot={<Icon name={item.icon} />}
+            leadingSlot={
+                <Icon name={item.icon} color={item.color} withBackground />
+            }
         />
     )
 }

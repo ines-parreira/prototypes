@@ -60,6 +60,23 @@ describe('SidebarProductHeaderMenuItem', () => {
         expect(screen.getByText('Upgrade')).toBeInTheDocument()
     })
 
+    it('should render item description as caption', async () => {
+        const user = userEvent.setup()
+        const item = productConfig[Product.Inbox]
+
+        render(
+            <Menu trigger={<Button>Open Menu</Button>}>
+                <SidebarProductHeaderMenuItem item={item} />
+            </Menu>,
+        )
+
+        await act(() =>
+            user.click(screen.getByRole('button', { name: /Open Menu/i })),
+        )
+
+        expect(screen.getByText('Talk with customers')).toBeInTheDocument()
+    })
+
     it('should render item name without Upgrade badge when requiresUpgrade is false', async () => {
         const user = userEvent.setup()
         const item = productConfig[Product.AiAgent]
