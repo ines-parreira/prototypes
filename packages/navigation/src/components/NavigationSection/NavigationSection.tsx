@@ -11,6 +11,7 @@ import {
     DisclosurePanel,
     Icon,
     isIconName,
+    OverflowTooltip,
     Text,
 } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
@@ -70,9 +71,11 @@ export function NavigationSection(props: NavigationSectionProps) {
                     ) : (
                         leadingSlot
                     )}
-                    <Text size="sm" variant="medium">
-                        {label}
-                    </Text>
+                    <OverflowTooltip placement="right">
+                        <Text variant="medium" overflow="ellipsis">
+                            {label}
+                        </Text>
+                    </OverflowTooltip>
                 </Box>
             </NavLink>
         )
@@ -103,10 +106,17 @@ export function NavigationSection(props: NavigationSectionProps) {
                         justifyContent="space-between"
                         gap="xs"
                     >
-                        <Box paddingBottom="xxxs" paddingTop="xxxs">
-                            <Text size="sm" variant="medium">
-                                {label}
-                            </Text>
+                        <Box
+                            paddingBottom="xxxs"
+                            paddingTop="xxxs"
+                            width="100%"
+                            className={css.title}
+                        >
+                            <OverflowTooltip placement="right">
+                                <Text variant="medium" overflow="ellipsis">
+                                    {label}
+                                </Text>
+                            </OverflowTooltip>
                         </Box>
                         {actionsSlot}
                     </Box>

@@ -5,7 +5,7 @@ import type { Location } from 'history'
 import { NavLink } from 'react-router-dom'
 import type { match as Match } from 'react-router-dom'
 
-import { Box, Icon, isIconName, Text } from '@gorgias/axiom'
+import { Box, Icon, isIconName, OverflowTooltip, Text } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
 
 import css from './NavigationSection.less'
@@ -63,8 +63,16 @@ export const NavigationSectionItem = forwardRef<
                 ) : (
                     leadingSlot
                 )}
-                <Box paddingTop="xxxs" paddingBottom="xxxs" flex={1}>
-                    <Text size="sm">{label}</Text>
+                <Box
+                    paddingTop="xxxs"
+                    paddingBottom="xxxs"
+                    alignItems="center"
+                    flex={1}
+                    className={css.label}
+                >
+                    <OverflowTooltip placement="right">
+                        <Text overflow="ellipsis">{label}</Text>
+                    </OverflowTooltip>
                 </Box>
                 {trailingSlot && isIconName(trailingSlot) ? (
                     <Icon name={trailingSlot} size="sm" />

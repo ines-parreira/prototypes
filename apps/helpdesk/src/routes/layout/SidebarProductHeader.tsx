@@ -5,6 +5,7 @@ import type { IconName } from '@gorgias/axiom'
 import {
     Box,
     Button,
+    Heading,
     Icon,
     Menu,
     MenuSection,
@@ -53,7 +54,6 @@ export function SidebarProductHeader({
                             <Button
                                 icon={icon}
                                 variant="tertiary"
-                                size="sm"
                                 color={selectedItem.color}
                             />
                         }
@@ -68,7 +68,7 @@ export function SidebarProductHeader({
                         }
                         trailingSlot="arrow-chevron-down"
                     >
-                        {selectedItem.name}
+                        <Heading>{selectedItem.name}</Heading>
                     </Button>
                 )
             }

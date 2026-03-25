@@ -61,7 +61,6 @@ export function TicketNavbarCreateMenu() {
                             trigger={
                                 <Button
                                     icon="add-plus-circle"
-                                    size="sm"
                                     variant="secondary"
                                 />
                             }
@@ -77,7 +76,7 @@ export function TicketNavbarCreateMenu() {
                                 <DropdownIcon isOpen={isOpen} size="xs" />
                             }
                         >
-                            Create ticket
+                            Create
                         </Button>
                     )
                 }

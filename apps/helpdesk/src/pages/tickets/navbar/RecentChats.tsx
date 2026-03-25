@@ -114,11 +114,7 @@ export const RecentChats = () => {
         return (
             <NavigationSection
                 id="real-time-messaging"
-                label={
-                    <Text variant="regular" size="sm">
-                        Real-time
-                    </Text>
-                }
+                label={<Text variant="regular">Real-time</Text>}
                 trailingSlot={<Quantity quantity={tickets.size} />}
             >
                 {tickets.toArray().map((e, index) => (

@@ -30,9 +30,7 @@ export function DefaultViews({ viewCount }: Props) {
                 paddingBottom="xxxs"
                 paddingTop="xxxs"
             >
-                <Text size="sm" variant="medium">
-                    Default views
-                </Text>
+                <Text variant="medium">Default views</Text>
                 <DefaultViewsMenu />
             </Box>
             <Box flexDirection="column" gap="xxxxs">

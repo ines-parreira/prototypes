@@ -122,6 +122,7 @@ describe('TicketNavbarViewLinkItem', () => {
         const deactivatedView = {
             ...defaultView,
             deactivated_datetime: '2023-01-01T00:00:00Z',
+            decoration: {},
         }
 
         renderComponent({ view: deactivatedView })

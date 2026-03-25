@@ -3,9 +3,6 @@
         width: 100%;
         color: var(--content-neutral-default) !important;
         border-radius: 8px;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
         background-color: transparent;
         box-shadow: none;
         transition:
@@ -36,5 +33,10 @@
         &[aria-current='page']:hover {
             background: var(--surface-accent-default);
         }
+    }
+
+    .label,
+    .title {
+        min-width: 0;
     }
 }

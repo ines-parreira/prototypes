@@ -55,13 +55,16 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
                 id={`view-${view.id}`}
                 to={linkTo}
                 label={
-                    <Box alignItems="center" gap="xxxs">
+                    <>
                         {typeof view.decoration?.emoji === 'string' && (
-                            <div>{view.decoration?.emoji}</div>
+                            <Box display="inline" pr="xxxs">
+                                {view.decoration.emoji}
+                            </Box>
                         )}
-                        <div>{label ?? view.name}</div>
-                    </Box>
+                        {label ?? view.name}
+                    </>
                 }
+                isActive={() => isActiveView}
                 leadingSlot={icon}
                 trailingSlot={
                     !!view.deactivated_datetime ? (

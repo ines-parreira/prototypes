@@ -472,7 +472,10 @@ export function TicketNavbarContainer({
             <>
                 <TicketNavbarCreateMenu />
                 <DefaultViews viewCount={viewsCount} />
-                <NavigationSectionGroup storageKey="inbox-navigation">
+                <NavigationSectionGroup
+                    storageKey="inbox-navigation"
+                    defaultExpandedKeys={Object.keys(ViewCategories)}
+                >
                     {categories.map((category) => (
                         <TicketNavbarDropTarget
                             type={TicketNavbarElementType.Category}
@@ -484,7 +487,7 @@ export function TicketNavbarContainer({
                             }
                         >
                             <InboxSidebarBlock
-                                id={`view-section-${category}`}
+                                id={category}
                                 title={ViewCategories[category]}
                                 value={category}
                                 actions={

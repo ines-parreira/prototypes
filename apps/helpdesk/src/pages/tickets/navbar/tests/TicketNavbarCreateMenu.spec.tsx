@@ -91,10 +91,10 @@ describe('TicketNavbarCreateMenu', () => {
         })
     })
 
-    it('renders "Create ticket" button text when sidebar is not collapsed', () => {
+    it('renders "Create" button text when sidebar is not collapsed', () => {
         renderComponent()
 
-        expect(screen.getByText('Create ticket')).toBeInTheDocument()
+        expect(screen.getByText('Create')).toBeInTheDocument()
     })
 
     it('renders icon-only button when sidebar is collapsed', () => {
@@ -104,7 +104,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         renderComponent()
 
-        expect(screen.queryByText('Create ticket')).not.toBeInTheDocument()
+        expect(screen.queryByText('Create')).not.toBeInTheDocument()
         expect(screen.getByRole('button')).toBeInTheDocument()
     })
 
@@ -116,7 +116,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
             expect(screen.getByText('Resume draft')).toBeInTheDocument()
@@ -129,12 +129,10 @@ describe('TicketNavbarCreateMenu', () => {
     it('renders "Create ticket" menu item when there is no draft', async () => {
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
-            expect(screen.getAllByText('Create ticket').length).toBeGreaterThan(
-                1,
-            )
+            expect(screen.getByText('Create ticket')).toBeInTheDocument()
         })
     })
 
@@ -146,7 +144,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
             expect(screen.getByText('Place call')).toBeInTheDocument()
@@ -156,12 +154,10 @@ describe('TicketNavbarCreateMenu', () => {
     it('does not render "Place call" when shouldDisplayButton is false', async () => {
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
-            expect(screen.getAllByText('Create ticket').length).toBeGreaterThan(
-                1,
-            )
+            expect(screen.getByText('Create ticket')).toBeInTheDocument()
         })
 
         expect(screen.queryByText('Place call')).not.toBeInTheDocument()
@@ -177,7 +173,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
             expect(screen.getByText('Place call')).toBeInTheDocument()
@@ -194,15 +190,13 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
-            expect(screen.getAllByText('Create ticket').length).toBeGreaterThan(
-                1,
-            )
+            expect(screen.getByText('Create ticket')).toBeInTheDocument()
         })
 
-        await user.click(screen.getAllByText('Create ticket')[1])
+        await user.click(screen.getByText('Create ticket'))
 
         expect(history.push).toHaveBeenCalledWith('/ticket/new')
         expect(logEvent).toHaveBeenCalledWith(
@@ -220,7 +214,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
             expect(screen.getByText('Resume draft')).toBeInTheDocument()
@@ -241,7 +235,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
             expect(
@@ -262,7 +256,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent(['/ticket/new'])
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
             expect(screen.getByText('Resume draft')).toBeInTheDocument()
@@ -288,7 +282,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
             expect(screen.getByText('Place call')).toBeInTheDocument()
@@ -310,7 +304,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
             expect(screen.getByText('Place call')).toBeInTheDocument()
@@ -332,7 +326,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
             expect(screen.getByText('Place call')).toBeInTheDocument()
@@ -352,7 +346,7 @@ describe('TicketNavbarCreateMenu', () => {
 
         const { user } = renderComponent()
 
-        await user.click(screen.getByText('Create ticket'))
+        await user.click(screen.getByText('Create'))
 
         await waitFor(() => {
             expect(screen.getByText('Place call')).toBeInTheDocument()

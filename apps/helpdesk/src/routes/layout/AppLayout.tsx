@@ -7,7 +7,7 @@ import { NavigationSidebar } from 'routes/layout/NavigationSidebar'
 import css from './AppLayout.less'
 
 const expandedSidebarPanelConfig = {
-    defaultSize: 238,
+    defaultSize: 240,
     minSize: 200,
     maxSize: 350,
     prioritise: true,

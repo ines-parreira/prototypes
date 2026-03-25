@@ -117,10 +117,14 @@ export function TicketNavbarSectionContainer({
                             id={`section-${section.id}`}
                             canduId={canduId}
                             label={
-                                <Box alignItems="center" gap="xxxs">
-                                    {emoji && <div>{emoji}</div>}
-                                    <div>{section.name}</div>
-                                </Box>
+                                <>
+                                    {emoji && (
+                                        <Box display="inline" pr="xxxs">
+                                            {emoji}
+                                        </Box>
+                                    )}
+                                    {section.name}
+                                </>
                             }
                             actionsSlot={
                                 onSectionRenameClick || onSectionDeleteClick ? (
