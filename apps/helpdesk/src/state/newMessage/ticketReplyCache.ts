@@ -1,10 +1,9 @@
+import { tryLocalStorage } from '@repo/browser-storage'
 import type { RawDraftContentState, SelectionState } from 'draft-js'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
 import type { DiscountCode } from 'models/discountCodes/types'
-
-import { tryLocalStorage } from '../../services/common/utils'
 
 export interface TopRankMacroState {
     state: 'accepted' | 'pending' | 'rejected'

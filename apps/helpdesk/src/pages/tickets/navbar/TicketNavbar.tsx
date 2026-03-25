@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { tryLocalStorage } from '@repo/browser-storage'
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import { NavigationSectionGroup, useSidebar } from '@repo/navigation'
@@ -37,7 +38,6 @@ import { ViewVisibility } from 'models/view/types'
 import useAutoScrollOnDragging from 'pages/common/hooks/useAutoScrollOnDragging'
 import { InboxSidebarBlock } from 'pages/tickets/navbar/InboxSidebarBlock'
 import { TicketNavbarCreateMenu } from 'pages/tickets/navbar/TicketNavbarCreateMenu'
-import { tryLocalStorage } from 'services/common/utils'
 import GorgiasApi from 'services/gorgiasApi'
 import {
     SplitTicketViewToggle,

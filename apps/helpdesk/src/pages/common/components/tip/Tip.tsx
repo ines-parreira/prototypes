@@ -1,10 +1,11 @@
 import type React from 'react'
 import { useState } from 'react'
 
+import { tryLocalStorage } from '@repo/browser-storage'
+
 import useAppSelector from 'hooks/useAppSelector'
 import type { Props as LinkAlertProps } from 'pages/common/components/Alert/LinkAlert'
 import LinkAlert from 'pages/common/components/Alert/LinkAlert'
-import { tryLocalStorage } from 'services/common/utils'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
 type Props = {

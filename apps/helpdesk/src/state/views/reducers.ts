@@ -1,3 +1,4 @@
+import { tryLocalStorage } from '@repo/browser-storage'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _isNumber from 'lodash/isNumber'
@@ -5,7 +6,6 @@ import moment from 'moment'
 
 import { MAX_RECENT_VIEWS } from 'config/views'
 import type { View } from 'models/view/types'
-import { tryLocalStorage } from 'services/common/utils'
 import { getCode } from 'utils'
 
 import type { GorgiasAction, RootState } from '../types'

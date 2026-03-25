@@ -1,3 +1,4 @@
+import { tryLocalStorage } from '@repo/browser-storage'
 import { isTimedelta } from '@repo/utils'
 import { Syntax } from 'esprima'
 import type { BaseCallExpression, BaseNode } from 'estree'
@@ -18,7 +19,6 @@ import { QaScoreDimensions } from 'pages/common/components/ViewTable/Filters/uti
 import { TIMEDELTA_OPERATOR_DEFAULT_VALUE, UNARY_OPERATORS } from '../../config'
 import { UserRole } from '../../config/types/user'
 import { ViewType, ViewVisibility } from '../../models/view/types'
-import { tryLocalStorage } from '../../services/common/utils'
 import {
     getAST,
     getCode,

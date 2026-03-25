@@ -1,6 +1,6 @@
+import { tryLocalStorage } from '@repo/browser-storage'
 import _debounce from 'lodash/debounce'
 
-import { tryLocalStorage } from 'services/common/utils'
 import {
     LayoutKeys,
     PANELS_STORAGE_DEBOUNCE_TIME,

@@ -1,9 +1,8 @@
 import type { ComponentType } from 'react'
 import React, { Component } from 'react'
 
+import { tryLocalStorage } from '@repo/browser-storage'
 import { logEvent, SegmentEvent } from '@repo/logging'
-
-import { tryLocalStorage } from 'services/common/utils'
 
 export type InjectedProps = {
     detectGrammarly: () => void

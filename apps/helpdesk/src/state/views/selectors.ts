@@ -1,3 +1,4 @@
+import { tryLocalStorage } from '@repo/browser-storage'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import moment from 'moment'
@@ -13,7 +14,6 @@ import type {
     TicketNavbarElement,
     TicketNavbarSectionElement,
 } from 'pages/tickets/navbar/TicketNavbarContent'
-import { tryLocalStorage } from 'services/common/utils'
 import {
     DEPRECATED_getViewsOrderingSetting,
     getViewsOrderingSetting,
