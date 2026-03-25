@@ -7,6 +7,14 @@ export const METRIC_NAMES = {
         'ai-agent-dynamic-overall-automated-interactions',
     AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS_TIMESERIES:
         'ai-agent-dynamic-overall-automated-interactions-timeseries',
+    AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS:
+        'ai-agent-dynamic-shopping-assistant-automated-interactions',
+    AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_TOTAL_SALES_AMOUNT:
+        'ai-agent-dynamic-shopping-assistant-total-sales-amount',
+    AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_COUNT:
+        'ai-agent-dynamic-shopping-assistant-orders-influenced-count',
+    AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION:
+        'ai-agent-dynamic-shopping-assistant-revenue-per-interaction',
     AI_AGENT_AUTOMATED_INTERACTIONS_TIME_SERIES:
         'ai-agent-automated-interactions-time-series',
     AI_AGENT_AUTOMATED_INTERACTIONS_TICKETS:
@@ -1000,6 +1008,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.AiSalesAgentActivity]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
     ],
     [MetricScope.AiSalesAgentDiscounts]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_OFFERED,
@@ -1012,8 +1021,12 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_ORDERS_INFLUENCED,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_MEDIAN_PURCHASE_TIME,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_ORDER_VALUE,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_TOTAL_SALES_AMOUNT,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_COUNT,
     ],
-    [MetricScope.AiAgentAutomatedInteractions]: [],
+    [MetricScope.AiAgentAutomatedInteractions]: [
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS,
+    ],
     [MetricScope.AiAgentTimeSaved]: [],
     [MetricScope.AiAgentDecreaseInFirstResponseTime]: [],
     [MetricScope.FlowDataset]: [

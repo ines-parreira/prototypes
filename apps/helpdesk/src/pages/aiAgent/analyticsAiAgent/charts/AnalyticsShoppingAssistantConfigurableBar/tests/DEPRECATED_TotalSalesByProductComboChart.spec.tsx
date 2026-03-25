@@ -5,7 +5,7 @@ import * as statsHooks from 'domains/reporting/hooks/support-performance/useStat
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
 import * as totalSalesByProductHook from '../../../hooks/useTotalSalesByProduct'
-import { TotalSalesByProductComboChart } from '../TotalSalesByProductComboChart'
+import { DEPRECATED_TotalSalesByProductComboChart } from '../DEPRECATED_TotalSalesByProductComboChart'
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('../../../hooks/useTotalSalesByProduct')
@@ -62,26 +62,30 @@ describe('TotalSalesByProductComboChart', () => {
     })
 
     it('should render the metric title', () => {
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('Total sales')).toBeInTheDocument()
     })
 
     it('should render the metric value formatted as currency', () => {
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('$12,000')).toBeInTheDocument()
     })
 
     it('should render the trend badge', () => {
-        const { container } = render(<TotalSalesByProductComboChart />)
+        const { container } = render(
+            <DEPRECATED_TotalSalesByProductComboChart />,
+        )
 
         const trendBadge = container.querySelector('.trend')
         expect(trendBadge).toBeInTheDocument()
     })
 
     it('should render with positive trend icon', () => {
-        const { container } = render(<TotalSalesByProductComboChart />)
+        const { container } = render(
+            <DEPRECATED_TotalSalesByProductComboChart />,
+        )
 
         const icons = container.querySelectorAll('svg')
         const hasTrendIcon = Array.from(icons).some((icon) =>
@@ -91,7 +95,7 @@ describe('TotalSalesByProductComboChart', () => {
     })
 
     it('should render all product legend items', () => {
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('Product A')).toBeInTheDocument()
         expect(screen.getByText('Product B')).toBeInTheDocument()
@@ -100,7 +104,9 @@ describe('TotalSalesByProductComboChart', () => {
     })
 
     it('should render responsive container for donut chart', () => {
-        const { container } = render(<TotalSalesByProductComboChart />)
+        const { container } = render(
+            <DEPRECATED_TotalSalesByProductComboChart />,
+        )
 
         const responsiveContainer = container.querySelector(
             '.recharts-responsive-container',
@@ -123,7 +129,9 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        const { container } = render(<TotalSalesByProductComboChart />)
+        const { container } = render(
+            <DEPRECATED_TotalSalesByProductComboChart />,
+        )
 
         const trendingDownIcon = container.querySelector(
             '[aria-label="trending-down"]',
@@ -132,7 +140,7 @@ describe('TotalSalesByProductComboChart', () => {
     })
 
     it('should render chart controls with donut and bar buttons', () => {
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         const donutButton = screen.getByRole('radio', {
             name: /chart-pie/i,
@@ -146,7 +154,7 @@ describe('TotalSalesByProductComboChart', () => {
     })
 
     it('should have donut chart selected by default', () => {
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         const donutButton = screen.getByRole('radio', {
             name: /chart-pie/i,
@@ -170,7 +178,7 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
@@ -196,7 +204,7 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('Product A')).toBeInTheDocument()
         expect(screen.queryByText('Product B')).not.toBeInTheDocument()
@@ -218,7 +226,7 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('Total sales')).toBeInTheDocument()
     })
@@ -238,13 +246,13 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('Total sales')).toBeInTheDocument()
     })
 
     it('should switch to bar chart when bar button is clicked', async () => {
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         const barButton = screen.getByRole('radio', {
             name: /chart-bar-vertical/i,
@@ -258,7 +266,9 @@ describe('TotalSalesByProductComboChart', () => {
     })
 
     it('should render bar chart with correct data after switching', async () => {
-        const { container } = render(<TotalSalesByProductComboChart />)
+        const { container } = render(
+            <DEPRECATED_TotalSalesByProductComboChart />,
+        )
 
         const barButton = screen.getByRole('radio', {
             name: /chart-bar-vertical/i,
@@ -275,7 +285,7 @@ describe('TotalSalesByProductComboChart', () => {
     })
 
     it('should switch back to donut chart when donut button is clicked', async () => {
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         const barButton = screen.getByRole('radio', {
             name: /chart-bar-vertical/i,
@@ -312,7 +322,7 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('Total sales')).toBeInTheDocument()
         expect(screen.getByText('No data found')).toBeInTheDocument()
@@ -333,7 +343,7 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('€12,000')).toBeInTheDocument()
     })
@@ -347,7 +357,7 @@ describe('TotalSalesByProductComboChart', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('Total sales')).toBeInTheDocument()
     })
@@ -359,13 +369,15 @@ describe('TotalSalesByProductComboChart', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('Total sales')).toBeInTheDocument()
     })
 
     it('should render bar chart mode correctly', async () => {
-        const { container } = render(<TotalSalesByProductComboChart />)
+        const { container } = render(
+            <DEPRECATED_TotalSalesByProductComboChart />,
+        )
 
         const barButton = screen.getByRole('radio', {
             name: /chart-bar-vertical/i,
@@ -394,7 +406,9 @@ describe('TotalSalesByProductComboChart', () => {
             granularity: ReportingGranularity.Day,
         })
 
-        const { container } = render(<TotalSalesByProductComboChart />)
+        const { container } = render(
+            <DEPRECATED_TotalSalesByProductComboChart />,
+        )
 
         const responsiveContainer = container.querySelector(
             '.recharts-responsive-container',
@@ -417,7 +431,7 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('£15,000')).toBeInTheDocument()
     })
@@ -437,7 +451,7 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('$1,000,000')).toBeInTheDocument()
     })
@@ -457,14 +471,16 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        render(<TotalSalesByProductComboChart />)
+        render(<DEPRECATED_TotalSalesByProductComboChart />)
 
         expect(screen.getByText('Solo Product')).toBeInTheDocument()
         expect(screen.getByText('$5,000')).toBeInTheDocument()
     })
 
     it('should render bar chart container after switching', async () => {
-        const { container } = render(<TotalSalesByProductComboChart />)
+        const { container } = render(
+            <DEPRECATED_TotalSalesByProductComboChart />,
+        )
 
         const barButton = screen.getByRole('radio', {
             name: /chart-bar-vertical/i,
@@ -495,7 +511,9 @@ describe('TotalSalesByProductComboChart', () => {
             isError: false,
         })
 
-        const { container } = render(<TotalSalesByProductComboChart />)
+        const { container } = render(
+            <DEPRECATED_TotalSalesByProductComboChart />,
+        )
 
         const trendBadge = container.querySelector('.trend')
         expect(trendBadge).toBeInTheDocument()

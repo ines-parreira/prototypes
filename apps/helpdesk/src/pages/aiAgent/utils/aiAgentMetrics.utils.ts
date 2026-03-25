@@ -47,6 +47,7 @@ type AutomationDimension =
     | 'channel'
     | 'automationFeatureType'
     | 'storeIntegrationId'
+    | 'engagementType'
 type LineAutomationDimension = 'overall' | AutomationDimension
 
 export type BarChartMetricConfig = {
@@ -70,6 +71,13 @@ export type LineChartMetricConfig = {
 
 export type ExtraConfigProps = {
     stores?: StoreIntegration[]
+}
+
+const MAP_ENGAGEMENT_TYPE_NAME: Record<string, string> = {
+    search_bar: 'Search bar',
+    ask_anything: 'Ask anything',
+    suggested_product_question: 'Suggested product question',
+    null: 'Unknown',
 }
 
 const MAP_AUTOMATION_FEATURE_NAME: Record<string, string> = {
@@ -112,6 +120,8 @@ const formatDimensionName = (dimension: string) => {
             return 'Store'
         case 'automationFeatureType':
             return 'Feature'
+        case 'engagementType':
+            return 'Engagement type'
         default:
             return dimension
     }
@@ -152,6 +162,20 @@ const formatBarChartData = (
                             ],
                             value: metricValue.value,
                         })) ?? [],
+                isLoading: !!data?.isFetching,
+            }
+        case 'engagementType':
+            return {
+                data:
+                    data?.data?.allValues?.map((metricValue) => {
+                        const key = !metricValue.dimension
+                            ? 'null'
+                            : metricValue.dimension.toString()
+                        return {
+                            name: MAP_ENGAGEMENT_TYPE_NAME[key] ?? 'Unknown',
+                            value: metricValue.value,
+                        }
+                    }) ?? [],
                 isLoading: !!data?.isFetching,
             }
         case 'storeIntegrationId':
@@ -200,6 +224,19 @@ export const useAutomationMetricPerAutomationFeatureType = (
     )
 
     return formatBarChartData(data, 'automationFeatureType')
+}
+
+export const useAutomationMetricPerEngagementType = (
+    query: MetricQueryFactory,
+    filters: StatsFilters,
+    timezone: string,
+) => {
+    const data = useStatsMetricPerDimension(
+        query({ filters, timezone, dimensions: ['engagementType'] }),
+        'engagementType',
+    )
+
+    return formatBarChartData(data, 'engagementType')
 }
 
 export const useAutomationMetricPerChannel = (
@@ -285,6 +322,19 @@ export const getBarChartDataHooks = (
                                 filters,
                                 timezone,
                                 extra,
+                            ),
+                        period,
+                    }
+                case 'engagementType':
+                    return {
+                        id: dimensionId,
+                        name: formatDimensionName(dimensionId),
+                        configurableGraphType: ConfigurableGraphType.Bar,
+                        useChartData: () =>
+                            useAutomationMetricPerEngagementType(
+                                query,
+                                filters,
+                                timezone,
                             ),
                         period,
                     }
@@ -384,6 +434,13 @@ const formatMultiTimeSeriesData = (
                       values: formatTimeSeriesValues(values[0]),
                   }))
                 : []
+        case 'engagementType':
+            return data
+                ? Object.entries(data).map(([metricName, values]) => ({
+                      label: MAP_ENGAGEMENT_TYPE_NAME[metricName] ?? metricName,
+                      values: formatTimeSeriesValues(values[0]),
+                  }))
+                : []
         case 'storeIntegrationId':
             return data
                 ? Object.entries(data).map(([metricName, values]) => ({
@@ -418,6 +475,27 @@ export const useAutomationTimeSeriesPerAutomationFeatureType = (
 
     return {
         data: formatMultiTimeSeriesData(data.data, 'automationFeatureType'),
+        isLoading: data.isFetching,
+    }
+}
+
+export const useAutomationTimeSeriesPerEngagementType = (
+    query: MetricQueryFactory,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+) => {
+    const data = useStatsTimeSeriesPerDimension(
+        query({
+            filters,
+            timezone,
+            dimensions: ['engagementType'],
+            granularity,
+        }),
+    )
+
+    return {
+        data: formatMultiTimeSeriesData(data.data, 'engagementType'),
         isLoading: data.isFetching,
     }
 }
@@ -512,6 +590,20 @@ export const getLineChartDataHooks = (
                             ConfigurableGraphType.MultipleTimeSeries,
                         useChartData: () =>
                             useAutomationTimeSeriesPerAutomationFeatureType(
+                                timeSeriesQuery,
+                                filters,
+                                timezone,
+                                granularity,
+                            ),
+                    }
+                case 'engagementType':
+                    return {
+                        id: dimensionId,
+                        name: formatDimensionName(dimensionId),
+                        configurableGraphType:
+                            ConfigurableGraphType.MultipleTimeSeries,
+                        useChartData: () =>
+                            useAutomationTimeSeriesPerEngagementType(
                                 timeSeriesQuery,
                                 filters,
                                 timezone,

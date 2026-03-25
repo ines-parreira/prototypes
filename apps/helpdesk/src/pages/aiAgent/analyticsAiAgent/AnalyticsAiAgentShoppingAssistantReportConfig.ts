@@ -27,7 +27,10 @@ import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyti
 import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSalesHandoverInteractionsCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
-import { TotalSalesByProductComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/TotalSalesByProductComboChart'
+import {
+    AnalyticsShoppingAssistantConfigurableBar,
+    SHOPPING_ASSISTANT_BAR_CHART_METRICS,
+} from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsShoppingAssistantConfigurableBar/AnalyticsShoppingAssistantConfigurableBar'
 import { fetchAiSalesAgentConversionRateTrend } from 'pages/aiAgent/analyticsAiAgent/charts/useAiSalesAgentConversionRateTrend'
 import { ShoppingAssistantChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable'
 import { ShoppingAssistantTopProductsTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable'
@@ -41,15 +44,10 @@ import { fetchAiAgentOrdersInfluencedTrend } from 'pages/aiAgent/analyticsAiAgen
 import { fetchAiAgentProductRecommendationsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentProductRecommendationsTrend'
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
+import { fetchConfigurableBarChartDownloadData } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
-const fetchShoppingAssistantTrendBreakdown = async () =>
-    ({
-        isLoading: false,
-        fileName: 'shopping-assistant-breakdown.csv',
-        files: {},
-    }) as any
 const fetchShoppingAssistantTrendData = async () =>
     ({
         isLoading: false,
@@ -74,8 +72,8 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
     SuccessRateCard = 'sales_rate_card',
     ProductRecommendationsCard = 'product_recommendations_card',
     HandoverInteractionsCard = 'handover_interactions_card',
-    ShoppingAssistantTrendComboChart = 'shopping_assistant_trend_combo_chart',
-    ShoppingAssistantTrendLineChart = 'shopping_assistant_trend_line_chart',
+    ConfigurableBarGraph = 'configurable_bar_graph',
+    ConfigurableLineGraph = 'configurable_line_graph',
     ChannelPerformanceTable = 'channel_performance_table',
     TopProductsPerformanceTable = 'top_products_performance_table',
 }
@@ -345,36 +343,37 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 metricFormat: 'decimal',
                 interpretAs: 'less-is-better',
             },
-            [AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart]:
-                {
-                    chartComponent: TotalSalesByProductComboChart,
-                    label: 'Total sales',
-                    csvProducer: [
-                        {
-                            type: DataExportFormat.Table,
-                            fetch: fetchShoppingAssistantTrendBreakdown,
-                        },
-                    ],
-                    description: 'Breakdown of total sales by product',
-                    chartType: ChartType.Graph,
-                    metricFormat: 'currency-precision-1',
-                    interpretAs: 'more-is-better',
-                },
-            [AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendLineChart]:
-                {
-                    chartComponent: AnalyticsShoppingAssistantLineChart,
-                    label: 'Total sales',
-                    csvProducer: [
-                        {
-                            type: DataExportFormat.Table,
-                            fetch: fetchShoppingAssistantTrendData,
-                        },
-                    ],
-                    description: 'Total sales trend over time',
-                    chartType: ChartType.Graph,
-                    metricFormat: 'currency-precision-1',
-                    interpretAs: 'more-is-better',
-                },
+            [AnalyticsAiAgentShoppingAssistantChart.ConfigurableBarGraph]: {
+                chartComponent: AnalyticsShoppingAssistantConfigurableBar,
+                label: 'Shopping Assistant Configurable Bar',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableBarGraph,
+                        fetch: fetchConfigurableBarChartDownloadData(
+                            SHOPPING_ASSISTANT_BAR_CHART_METRICS,
+                        ),
+                    },
+                ],
+                description: 'Configurable bar for shopping assistant metrics',
+                chartType: ChartType.Graph,
+                metricFormat: 'currency-precision-1',
+                interpretAs: 'more-is-better',
+            },
+            [AnalyticsAiAgentShoppingAssistantChart.ConfigurableLineGraph]: {
+                chartComponent: AnalyticsShoppingAssistantLineChart,
+                label: 'Shopping Assistant Configurable Line',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Table,
+                        fetch: fetchShoppingAssistantTrendData,
+                    },
+                ],
+                description:
+                    'Configurable line for shopping assistant metrics over time',
+                chartType: ChartType.Graph,
+                metricFormat: 'currency-precision-1',
+                interpretAs: 'more-is-better',
+            },
             [AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable]: {
                 chartComponent: ShoppingAssistantChannelTable,
                 label: 'Channel',

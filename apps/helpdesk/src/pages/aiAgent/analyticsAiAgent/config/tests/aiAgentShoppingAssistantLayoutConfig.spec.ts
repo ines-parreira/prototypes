@@ -70,20 +70,20 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             expect(visualizationsSection.items).toHaveLength(2)
         })
 
-        it('should have ShoppingAssistantTrendComboChart in visualizations section', () => {
+        it('should have ShoppingAssistantConfigurableBarGraph in visualizations section', () => {
             const visualizationsSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[1]
             expect(visualizationsSection.items[0].chartId).toBe(
-                AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart,
+                AnalyticsAiAgentShoppingAssistantChart.ConfigurableBarGraph,
             )
             expect(visualizationsSection.items[0].gridSize).toBe(6)
         })
 
-        it('should have ShoppingAssistantTrendLineChart in visualizations section', () => {
+        it('should have ShoppingAssistantConfigurableLineGraph in visualizations section', () => {
             const visualizationsSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[1]
             expect(visualizationsSection.items[1].chartId).toBe(
-                AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendLineChart,
+                AnalyticsAiAgentShoppingAssistantChart.ConfigurableLineGraph,
             )
             expect(visualizationsSection.items[1].gridSize).toBe(6)
         })

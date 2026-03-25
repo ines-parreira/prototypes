@@ -20,7 +20,7 @@ const DATE_FORMAT = DateTimeFormatMapper[
     DateTimeFormatType.SHORT_DATE_EN_US
 ] as string
 
-export const TotalSalesByProductComboChart = () => {
+export const DEPRECATED_TotalSalesByProductComboChart = () => {
     const { cleanStatsFilters } = useStatsFilters()
     const { chartType, setChartType } = useChartTypeToggle()
 

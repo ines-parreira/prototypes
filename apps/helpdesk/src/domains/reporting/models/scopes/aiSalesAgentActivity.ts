@@ -56,3 +56,15 @@ export const revenuePerInteraction = aiSalesAgentActivityScope
 export const revenuePerInteractionQueryV2Factory = (
     ctx: AiSalesAgentActivityContext,
 ) => revenuePerInteraction.build(ctx)
+
+export const dynamicRevenuePerInteraction = aiSalesAgentActivityScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
+    )
+    .defineQuery(({ ctx }) => ({
+        measures: ['revenuePerInteraction'],
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicRevenuePerInteractionQueryFactoryV2 = (ctx: Context) =>
+    dynamicRevenuePerInteraction.build(ctx)

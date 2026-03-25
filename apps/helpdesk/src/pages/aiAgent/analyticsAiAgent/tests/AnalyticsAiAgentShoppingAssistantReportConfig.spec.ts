@@ -162,22 +162,20 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
     })
 
-    it('should have shopping assistant trend combo chart config', () => {
+    it('should have shopping assistant configurable bar graph config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
-                AnalyticsAiAgentShoppingAssistantChart
-                    .ShoppingAssistantTrendComboChart
+                AnalyticsAiAgentShoppingAssistantChart.ConfigurableBarGraph
             ]
 
         expect(config).toBeDefined()
         expect(config.chartType).toBe(ChartType.Graph)
     })
 
-    it('should have shopping assistant trend line chart config', () => {
+    it('should have shopping assistant configurable line graph config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
-                AnalyticsAiAgentShoppingAssistantChart
-                    .ShoppingAssistantTrendLineChart
+                AnalyticsAiAgentShoppingAssistantChart.ConfigurableLineGraph
             ]
 
         expect(config).toBeDefined()
@@ -351,11 +349,10 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(typeof csvProducer?.fetch).toBe('function')
     })
 
-    it('should have fetch function for shopping assistant trend breakdown', async () => {
+    it('should have fetch function for shopping assistant configurable bar graph', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
-                AnalyticsAiAgentShoppingAssistantChart
-                    .ShoppingAssistantTrendComboChart
+                AnalyticsAiAgentShoppingAssistantChart.ConfigurableBarGraph
             ]
 
         expect(config.csvProducer).toBeDefined()
@@ -363,21 +360,14 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
 
         const csvProducer = config.csvProducer?.[0]
         expect(csvProducer).toBeDefined()
-
-        if (csvProducer && typeof csvProducer.fetch === 'function') {
-            const result = await (csvProducer.fetch as any)()
-            expect(result).toBeDefined()
-            expect(result).toHaveProperty('isLoading')
-            expect(result).toHaveProperty('fileName')
-            expect(result).toHaveProperty('files')
-        }
+        expect(csvProducer?.fetch).toBeDefined()
+        expect(typeof csvProducer?.fetch).toBe('function')
     })
 
-    it('should have fetch function for shopping assistant trend data', async () => {
+    it('should have fetch function for shopping assistant configurable line graph', async () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
-                AnalyticsAiAgentShoppingAssistantChart
-                    .ShoppingAssistantTrendLineChart
+                AnalyticsAiAgentShoppingAssistantChart.ConfigurableLineGraph
             ]
 
         expect(config.csvProducer).toBeDefined()

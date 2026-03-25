@@ -1,6 +1,8 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     aiSalesAgentActivityScope,
+    dynamicRevenuePerInteraction,
+    dynamicRevenuePerInteractionQueryFactoryV2,
     recommendedProductCount,
     recommendedProductCountQueryV2Factory,
     revenuePerInteraction,
@@ -225,5 +227,97 @@ describe('revenuePerInteractionQueryV2Factory', () => {
     it('queries the revenuePerInteraction measure', () => {
         const result = revenuePerInteractionQueryV2Factory(context)
         expect(result.measures).toContain('revenuePerInteraction')
+    })
+})
+
+describe('dynamicRevenuePerInteraction', () => {
+    const filters: ApiStatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const context = { filters, timezone: 'utc' }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('creates query without dimensions when no dimension provided', () => {
+        const actual = dynamicRevenuePerInteraction.build({
+            ...context,
+            dimensions: [],
+        })
+
+        expect(actual).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-revenue-per-interaction',
+            scope: 'ai-sales-agent-activity',
+            measures: ['revenuePerInteraction'],
+            dimensions: [],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    it('creates query with the provided dimension', () => {
+        const actual = dynamicRevenuePerInteraction.build({
+            ...context,
+            dimensions: ['channel'],
+        })
+
+        expect(actual).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-revenue-per-interaction',
+            scope: 'ai-sales-agent-activity',
+            measures: ['revenuePerInteraction'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+})
+
+describe('dynamicRevenuePerInteractionQueryFactoryV2', () => {
+    const filters: ApiStatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const context = { filters, timezone: 'utc' }
+
+    it('returns query with empty dimensions when no dimension provided', () => {
+        const result = dynamicRevenuePerInteractionQueryFactoryV2(context)
+
+        expect(result.dimensions).toBeUndefined()
+    })
+
+    it('returns query with the provided dimension', () => {
+        const result = dynamicRevenuePerInteractionQueryFactoryV2({
+            ...context,
+            dimensions: ['channel'],
+        })
+
+        expect(result.dimensions).toEqual(['channel'])
+    })
+
+    it('returns the same result as calling build directly with the dimension', () => {
+        const ctx = { ...context, dimensions: ['channel'] as const }
+
+        expect(dynamicRevenuePerInteractionQueryFactoryV2(ctx)).toEqual(
+            dynamicRevenuePerInteraction.build(ctx),
+        )
     })
 })

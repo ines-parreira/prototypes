@@ -32,7 +32,9 @@ function DonutOrBarWithToggleRenderer({
     activeGraphType: ChartType
 }) {
     const { data, isLoading } = groupingConfig.useChartData()
-    const filteredData = data?.filter((item) => item.value !== 0)
+    const filteredData = data?.filter(
+        (item) => item.value !== 0 && item.value !== null,
+    )
 
     if (activeGraphType === 'donut') {
         return (

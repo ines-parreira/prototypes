@@ -85,3 +85,27 @@ export const averageOrderValue = aiSalesAgentOrdersPerformanceScope
 export const averageOrderValueQueryV2Factory = (
     ctx: AiSalesAgentOrdersPerformanceContext,
 ) => averageOrderValue.build(ctx)
+
+export const dynamicTotalSalesAmount = aiSalesAgentOrdersPerformanceScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_TOTAL_SALES_AMOUNT,
+    )
+    .defineQuery(({ ctx }) => ({
+        measures: ['totalSalesAmount'],
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicTotalSalesAmountQueryFactoryV2 = (ctx: Context) =>
+    dynamicTotalSalesAmount.build(ctx)
+
+export const dynamicOrdersInfluencedCount = aiSalesAgentOrdersPerformanceScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_COUNT,
+    )
+    .defineQuery(({ ctx }) => ({
+        measures: ['ordersInfluencedCount'],
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicOrdersInfluencedCountQueryFactoryV2 = (ctx: Context) =>
+    dynamicOrdersInfluencedCount.build(ctx)

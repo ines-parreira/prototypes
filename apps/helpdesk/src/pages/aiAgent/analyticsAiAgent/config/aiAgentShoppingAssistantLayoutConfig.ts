@@ -125,13 +125,13 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                 items: [
                     {
                         chartId:
-                            AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart,
+                            AnalyticsAiAgentShoppingAssistantChart.ConfigurableBarGraph,
                         gridSize: 6,
                         visibility: true,
                     },
                     {
                         chartId:
-                            AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendLineChart,
+                            AnalyticsAiAgentShoppingAssistantChart.ConfigurableLineGraph,
                         gridSize: 6,
                         visibility: true,
                     },

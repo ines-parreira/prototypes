@@ -15,7 +15,7 @@ const LAYOUT_WITH_GRAPHS: DashboardLayoutConfig = {
             items: [
                 {
                     chartId:
-                        AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart,
+                        AnalyticsAiAgentShoppingAssistantChart.ConfigurableBarGraph,
                     gridSize: 6,
                     visibility: true,
                     measures: ['automationRate'],
@@ -23,7 +23,7 @@ const LAYOUT_WITH_GRAPHS: DashboardLayoutConfig = {
                 },
                 {
                     chartId:
-                        AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendLineChart,
+                        AnalyticsAiAgentShoppingAssistantChart.ConfigurableLineGraph,
                     gridSize: 6,
                     visibility: false,
                 },
@@ -178,7 +178,7 @@ describe('buildCustomDashboard', () => {
             }
             expect(section.children).toHaveLength(1)
             expect(section.children[0].config_id).toBe(
-                AnalyticsAiAgentShoppingAssistantChart.ShoppingAssistantTrendComboChart,
+                AnalyticsAiAgentShoppingAssistantChart.ConfigurableBarGraph,
             )
         })
 

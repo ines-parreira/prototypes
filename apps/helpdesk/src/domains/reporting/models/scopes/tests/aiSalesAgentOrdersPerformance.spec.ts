@@ -3,6 +3,10 @@ import {
     aiSalesAgentOrdersPerformanceScope,
     averageOrderValue,
     averageOrderValueQueryV2Factory,
+    dynamicOrdersInfluencedCount,
+    dynamicOrdersInfluencedCountQueryFactoryV2,
+    dynamicTotalSalesAmount,
+    dynamicTotalSalesAmountQueryFactoryV2,
     medianPurchaseTime,
     medianPurchaseTimeQueryV2Factory,
     totalSalesAmountUsd,
@@ -376,5 +380,189 @@ describe('averageOrderValue queries', () => {
             const result = averageOrderValueQueryV2Factory(context)
             expect(result.measures).toContain('averageOrderValue')
         })
+    })
+})
+
+describe('dynamicTotalSalesAmount', () => {
+    const filters: ApiStatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const context = { filters, timezone: 'utc' }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('creates query without dimensions when no dimension provided', () => {
+        const actual = dynamicTotalSalesAmount.build({
+            ...context,
+            dimensions: [],
+        })
+
+        expect(actual).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-total-sales-amount',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['totalSalesAmount'],
+            dimensions: [],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    it('creates query with the provided dimension', () => {
+        const actual = dynamicTotalSalesAmount.build({
+            ...context,
+            dimensions: ['channel'],
+        })
+
+        expect(actual).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-total-sales-amount',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['totalSalesAmount'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+})
+
+describe('dynamicTotalSalesAmountQueryFactoryV2', () => {
+    const filters: ApiStatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const context = { filters, timezone: 'utc' }
+
+    it('returns query with empty dimensions when no dimension provided', () => {
+        const result = dynamicTotalSalesAmountQueryFactoryV2(context)
+
+        expect(result.dimensions).toBeUndefined()
+    })
+
+    it('returns query with the provided dimension', () => {
+        const result = dynamicTotalSalesAmountQueryFactoryV2({
+            ...context,
+            dimensions: ['channel'],
+        })
+
+        expect(result.dimensions).toEqual(['channel'])
+    })
+
+    it('returns the same result as calling build directly with the dimension', () => {
+        const ctx = { ...context, dimensions: ['channel'] as const }
+
+        expect(dynamicTotalSalesAmountQueryFactoryV2(ctx)).toEqual(
+            dynamicTotalSalesAmount.build(ctx),
+        )
+    })
+})
+
+describe('dynamicOrdersInfluencedCount', () => {
+    const filters: ApiStatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const context = { filters, timezone: 'utc' }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('creates query without dimensions when no dimension provided', () => {
+        const actual = dynamicOrdersInfluencedCount.build({
+            ...context,
+            dimensions: [],
+        })
+
+        expect(actual).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-orders-influenced-count',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['ordersInfluencedCount'],
+            dimensions: [],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    it('creates query with the provided dimension', () => {
+        const actual = dynamicOrdersInfluencedCount.build({
+            ...context,
+            dimensions: ['channel'],
+        })
+
+        expect(actual).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-orders-influenced-count',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['ordersInfluencedCount'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+})
+
+describe('dynamicOrdersInfluencedCountQueryFactoryV2', () => {
+    const filters: ApiStatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const context = { filters, timezone: 'utc' }
+
+    it('returns query with empty dimensions when no dimension provided', () => {
+        const result = dynamicOrdersInfluencedCountQueryFactoryV2(context)
+
+        expect(result.dimensions).toBeUndefined()
+    })
+
+    it('returns query with the provided dimension', () => {
+        const result = dynamicOrdersInfluencedCountQueryFactoryV2({
+            ...context,
+            dimensions: ['channel'],
+        })
+
+        expect(result.dimensions).toEqual(['channel'])
+    })
+
+    it('returns the same result as calling build directly with the dimension', () => {
+        const ctx = { ...context, dimensions: ['channel'] as const }
+
+        expect(dynamicOrdersInfluencedCountQueryFactoryV2(ctx)).toEqual(
+            dynamicOrdersInfluencedCount.build(ctx),
+        )
     })
 })

@@ -28,9 +28,11 @@ import {
     getLineChartGraphConfig,
     useAutomationMetricPerAutomationFeatureType,
     useAutomationMetricPerChannel,
+    useAutomationMetricPerEngagementType,
     useAutomationMetricPerStoreIntegrationId,
     useAutomationTimeSeriesPerAutomationFeatureType,
     useAutomationTimeSeriesPerChannel,
+    useAutomationTimeSeriesPerEngagementType,
     useAutomationTimeSeriesPerStoreIntegrationId,
     useOverallTimeSeries,
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
@@ -519,6 +521,162 @@ describe('useAutomationMetricPerStoreIntegrationId', () => {
     })
 })
 
+describe('useAutomationMetricPerEngagementType', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('should map known engagement types to their display names', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: 'search_bar', value: 10 },
+                    { dimension: 'ask_anything', value: 20 },
+                    { dimension: 'suggested_product_question', value: 30 },
+                ],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { name: 'Search bar', value: 10 },
+            { name: 'Ask anything', value: 20 },
+            { name: 'Suggested product question', value: 30 },
+        ])
+    })
+
+    it('should map null/falsy dimension to "Unknown"', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: null, value: 5 },
+                    { dimension: 0, value: 15 },
+                ],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { name: 'Unknown', value: 5 },
+            { name: 'Unknown', value: 15 },
+        ])
+    })
+
+    it('should return "Unknown" for unrecognized engagement types', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [{ dimension: 'some_unknown_type', value: 7 }],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([{ name: 'Unknown', value: 7 }])
+    })
+
+    it('should return empty array when allValues is undefined', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: { allValues: undefined },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([])
+    })
+
+    it('should return empty array when data is null', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: null,
+        })
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([])
+    })
+
+    it('should return isLoading derived from isFetching', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            isFetching: true,
+            data: null,
+        })
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should call query and useStatsMetricPerDimension with engagementType dimension', () => {
+        const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+        mockQuery.mockReturnValue(mockBuiltQuery)
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: null,
+        })
+
+        renderHook(() =>
+            useAutomationMetricPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith({
+            filters: defaultFilters,
+            timezone: defaultTimezone,
+            dimensions: ['engagementType'],
+        })
+        expect(useStatsMetricPerDimensionMock).toHaveBeenCalledWith(
+            mockBuiltQuery,
+            'engagementType',
+        )
+    })
+})
+
 describe('getBarChartDataHooks', () => {
     const mockTrendHook = jest.fn()
     const mockTrendResult = {
@@ -625,18 +783,65 @@ describe('getBarChartDataHooks', () => {
         expect(result.current.data).toEqual([{ name: 'my-store', value: 42 }])
     })
 
-    it('should return all requested dimensions', () => {
+    it('should return engagementType dimension config with correct shape', () => {
         const { dimensions } = getBarChartDataHooks(
             mockQuery,
-            ['channel', 'automationFeatureType'],
+            ['engagementType'],
             defaultFilters,
             defaultTimezone,
             period,
         )
 
-        expect(dimensions).toHaveLength(2)
+        expect(dimensions).toHaveLength(1)
+        expect(dimensions[0]).toMatchObject({
+            id: 'engagementType',
+            name: 'Engagement type',
+            configurableGraphType: ConfigurableGraphType.Bar,
+            period,
+        })
+    })
+
+    it('should return engagementType useChartData that calls useStatsMetricPerDimension with engagementType dimension and returns formatted data', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: 'search_bar', value: 10 },
+                    { dimension: 'ask_anything', value: 5 },
+                ],
+            },
+        } as any)
+
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['engagementType'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+        )
+
+        const { result } = renderHook(() => dimensions[0].useChartData())
+
+        expect(result.current.data).toEqual([
+            { name: 'Search bar', value: 10 },
+            { name: 'Ask anything', value: 5 },
+        ])
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should return all requested dimensions', () => {
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['channel', 'automationFeatureType', 'engagementType'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+        )
+
+        expect(dimensions).toHaveLength(3)
         expect(dimensions[0].id).toBe('channel')
         expect(dimensions[1].id).toBe('automationFeatureType')
+        expect(dimensions[2].id).toBe('engagementType')
     })
 
     it('should pass through the period to dimension configs when provided', () => {
@@ -1270,6 +1475,134 @@ describe('useAutomationTimeSeriesPerStoreIntegrationId', () => {
     })
 })
 
+describe('useAutomationTimeSeriesPerEngagementType', () => {
+    const defaultGranularity = ReportingGranularity.Day
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('should map known engagement types to MultipleTimeSeriesDataItem', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                search_bar: [[{ dateTime: '2025-01-01', value: 10 }]],
+                ask_anything: [[{ dateTime: '2025-01-01', value: 20 }]],
+                suggested_product_question: [
+                    [{ dateTime: '2025-01-01', value: 30 }],
+                ],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { label: 'Search bar', values: [{ date: 'Jan 1', value: 10 }] },
+            { label: 'Ask anything', values: [{ date: 'Jan 1', value: 20 }] },
+            {
+                label: 'Suggested product question',
+                values: [{ date: 'Jan 1', value: 30 }],
+            },
+        ])
+    })
+
+    it('should fall back to the raw key for unrecognized engagement types', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                some_unknown_type: [[{ dateTime: '2025-01-01', value: 5 }]],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            {
+                label: 'some_unknown_type',
+                values: [{ date: 'Jan 1', value: 5 }],
+            },
+        ])
+    })
+
+    it('should return empty array when data is undefined', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.data).toEqual([])
+    })
+
+    it('should return isLoading derived from isFetching', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: true,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should call query with filters, timezone, engagementType dimension, and granularity', () => {
+        const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+        mockQuery.mockReturnValue(mockBuiltQuery)
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        renderHook(() =>
+            useAutomationTimeSeriesPerEngagementType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith({
+            filters: defaultFilters,
+            timezone: defaultTimezone,
+            dimensions: ['engagementType'],
+            granularity: defaultGranularity,
+        })
+        expect(useStatsTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+            mockBuiltQuery,
+        )
+    })
+})
+
 describe('getLineChartDataHooks', () => {
     const mockTrendHook = jest.fn()
     const mockTrendQuery = jest.fn()
@@ -1385,20 +1718,39 @@ describe('getLineChartDataHooks', () => {
         })
     })
 
-    it('should return all requested dimensions', () => {
+    it('should return engagementType dimension config with MultipleTimeSeries chart type', () => {
         const { dimensions } = getLineChartDataHooks(
             mockTrendQuery,
             mockTimeSeriesQuery,
-            ['overall', 'channel', 'automationFeatureType'],
+            ['engagementType'],
             defaultFilters,
             defaultTimezone,
             defaultGranularity,
         )
 
-        expect(dimensions).toHaveLength(3)
+        expect(dimensions).toHaveLength(1)
+        expect(dimensions[0]).toMatchObject({
+            id: 'engagementType',
+            name: 'Engagement type',
+            configurableGraphType: ConfigurableGraphType.MultipleTimeSeries,
+        })
+    })
+
+    it('should return all requested dimensions', () => {
+        const { dimensions } = getLineChartDataHooks(
+            mockTrendQuery,
+            mockTimeSeriesQuery,
+            ['overall', 'channel', 'automationFeatureType', 'engagementType'],
+            defaultFilters,
+            defaultTimezone,
+            defaultGranularity,
+        )
+
+        expect(dimensions).toHaveLength(4)
         expect(dimensions[0].id).toBe('overall')
         expect(dimensions[1].id).toBe('channel')
         expect(dimensions[2].id).toBe('automationFeatureType')
+        expect(dimensions[3].id).toBe('engagementType')
     })
 
     describe('useChartData hooks', () => {
@@ -1622,6 +1974,67 @@ describe('getLineChartDataHooks', () => {
                 mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['storeIntegrationId'],
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            )
+
+            const { result } = renderHook(() => dimensions[0].useChartData())
+
+            expect(result.current.isLoading).toBe(true)
+        })
+
+        it('engagementType useChartData calls useStatsTimeSeriesPerDimension with engagementType dimension and returns formatted data', () => {
+            const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+            mockTimeSeriesQuery.mockReturnValue(mockBuiltQuery)
+            useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+                data: {
+                    search_bar: [[{ dateTime: '2025-01-01', value: 10 }]],
+                    ask_anything: [[{ dateTime: '2025-01-01', value: 20 }]],
+                },
+                isFetching: false,
+            } as any)
+
+            const { dimensions } = getLineChartDataHooks(
+                mockTrendQuery,
+                mockTimeSeriesQuery,
+                ['engagementType'],
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            )
+
+            const { result } = renderHook(() => dimensions[0].useChartData())
+
+            expect(mockTimeSeriesQuery).toHaveBeenCalledWith({
+                filters: defaultFilters,
+                timezone: defaultTimezone,
+                dimensions: ['engagementType'],
+                granularity: defaultGranularity,
+            })
+            expect(result.current.data).toEqual([
+                {
+                    label: 'Search bar',
+                    values: [{ date: 'Jan 1', value: 10 }],
+                },
+                {
+                    label: 'Ask anything',
+                    values: [{ date: 'Jan 1', value: 20 }],
+                },
+            ])
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        it('engagementType useChartData returns isLoading true when fetching', () => {
+            useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+                data: undefined,
+                isFetching: true,
+            } as any)
+
+            const { dimensions } = getLineChartDataHooks(
+                mockTrendQuery,
+                mockTimeSeriesQuery,
+                ['engagementType'],
                 defaultFilters,
                 defaultTimezone,
                 defaultGranularity,
@@ -1900,6 +2313,49 @@ describe('fetchConfigurableBarChartDownloadData', () => {
         expect(fileName).toContain('automation-rate')
     })
 
+    it('returns files with "Engagement type" as dimension label for engagementType dimension', async () => {
+        fetchStatsMetricPerDimensionMock.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [
+                    { dimension: 'search_bar', value: 10, decile: null },
+                    { dimension: 'ask_anything', value: 20, decile: null },
+                ],
+            },
+        })
+
+        const mockBarMetricWithEngagementDimension: BarChartMetricConfig = {
+            measure: 'engagementMetric',
+            name: 'Engagement Metric',
+            metricFormat: 'decimal',
+            interpretAs: 'more-is-better',
+            dimensions: ['engagementType'],
+            queryFactory: mockQuery,
+        }
+
+        const fetch = fetchConfigurableBarChartDownloadData([
+            mockBarMetricWithEngagementDimension,
+        ])
+
+        const result = await fetch(
+            'engagementMetric',
+            'engagementType',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(result).toHaveProperty('files')
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('Engagement type')
+        expect(csvContent).toContain('Search bar')
+        expect(csvContent).toContain('Ask anything')
+    })
+
     it('returns files with "Feature" as dimension label for automationFeatureType dimension', async () => {
         fetchStatsMetricPerDimensionMock.mockResolvedValue({
             isFetching: false,
@@ -2124,6 +2580,30 @@ describe('fetchConfigurableLineChartDownloadData', () => {
 
         expect(fetchStatsTimeSeriesPerDimensionMock).toHaveBeenCalled()
         expect(fetchStatsTimeSeriesMock).not.toHaveBeenCalled()
+    })
+
+    it('calls fetchStatsTimeSeriesPerDimension when dimension is "engagementType"', async () => {
+        fetchStatsTimeSeriesPerDimensionMock.mockResolvedValue({
+            search_bar: [[{ dateTime: '2025-01-01T00:00:00', value: 10 }]],
+            ask_anything: [[{ dateTime: '2025-01-01T00:00:00', value: 20 }]],
+        })
+
+        const fetch = fetchConfigurableLineChartDownloadData([mockLineMetric])
+
+        const result = await fetch(
+            'automationRate',
+            'engagementType',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        expect(fetchStatsTimeSeriesPerDimensionMock).toHaveBeenCalled()
+        expect(fetchStatsTimeSeriesMock).not.toHaveBeenCalled()
+        expect(result).toHaveProperty('files')
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('Search bar')
+        expect(csvContent).toContain('Ask anything')
     })
 
     it('calls fetchStatsTimeSeriesPerDimension when dimension is "automationFeatureType"', async () => {
