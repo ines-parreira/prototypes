@@ -165,7 +165,7 @@ export const useAiAgentReasoning = ({
                                 taskReasoning.value,
                                 messageAiReasoning.resources.filter(
                                     (resource) =>
-                                        resource.taskIds.includes(
+                                        resource.taskIds?.includes(
                                             taskReasoning.targetId,
                                         ),
                                 ),

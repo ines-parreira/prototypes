@@ -772,6 +772,131 @@ describe('useAiAgentReasoning', () => {
         })
     })
 
+    describe('V3 (Evoli) support', () => {
+        it('should render response reasoning without Full details section for V3', () => {
+            const mockData = mockReasoningData({
+                reasoning: [
+                    {
+                        responseType: ReasoningResponseType.RESPONSE,
+                        value: 'V3 response content',
+                        targetId: 'response-1',
+                    } as any,
+                ] as any,
+                usedTasks: [] as any,
+            })
+            ;(useGetMessageAiReasoning as jest.Mock).mockReturnValue({
+                data: mockData,
+                refetch: jest.fn(),
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useAiAgentReasoning({
+                        objectId: '123',
+                        objectType: 'TICKET',
+                        messageId: '456',
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.reasoningContent).toContain(
+                'V3 response content',
+            )
+            expect(result.current.reasoningContent).not.toContain(
+                'fullDetailsContainer',
+            )
+            expect(result.current.reasoningContent).not.toContain(
+                'Full details:',
+            )
+        })
+
+        it('should pass all resources to response reasoning when resources have empty taskIds', () => {
+            const resources = [
+                {
+                    resourceId: '1',
+                    resourceType: 'ARTICLE',
+                    taskIds: [] as any,
+                } as any,
+                {
+                    resourceId: '2',
+                    resourceType: 'GUIDANCE',
+                    taskIds: [] as any,
+                } as any,
+            ]
+            const mockData = mockReasoningData({
+                reasoning: [
+                    {
+                        responseType: ReasoningResponseType.RESPONSE,
+                        value: 'V3 response',
+                        targetId: 'response-1',
+                    } as any,
+                ] as any,
+                resources: resources as any,
+                usedTasks: [] as any,
+            })
+            ;(useGetMessageAiReasoning as jest.Mock).mockReturnValue({
+                data: mockData,
+                refetch: jest.fn(),
+            })
+
+            renderHook(
+                () =>
+                    useAiAgentReasoning({
+                        objectId: '123',
+                        objectType: 'TICKET',
+                        messageId: '456',
+                    }),
+                { wrapper },
+            )
+
+            expect(parseReasoningResources).toHaveBeenCalledWith(
+                'V3 response',
+                resources,
+            )
+        })
+
+        it('should not crash when resources have null or undefined taskIds', () => {
+            const mockData = mockReasoningData({
+                reasoning: [
+                    {
+                        responseType: ReasoningResponseType.TASK,
+                        value: 'Task reasoning',
+                        targetId: 'task-1',
+                    } as any,
+                ] as any,
+                resources: [
+                    {
+                        resourceId: '1',
+                        resourceType: 'ARTICLE',
+                        taskIds: null as any,
+                    } as any,
+                    {
+                        resourceId: '2',
+                        resourceType: 'GUIDANCE',
+                        taskIds: undefined as any,
+                    } as any,
+                ] as any,
+                usedTasks: ['task-1'] as any,
+            })
+            ;(useGetMessageAiReasoning as jest.Mock).mockReturnValue({
+                data: mockData,
+                refetch: jest.fn(),
+            })
+
+            expect(() =>
+                renderHook(
+                    () =>
+                        useAiAgentReasoning({
+                            objectId: '123',
+                            objectType: 'TICKET',
+                            messageId: '456',
+                        }),
+                    { wrapper },
+                ),
+            ).not.toThrow()
+        })
+    })
+
     describe('refetch functionality', () => {
         it('should expose refetch function from useGetMessageAiReasoning', () => {
             const mockRefetch = jest.fn()
