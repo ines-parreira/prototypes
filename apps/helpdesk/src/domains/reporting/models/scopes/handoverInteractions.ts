@@ -13,6 +13,7 @@ const handoverInteractionsScope = defineScope({
     measures: ['handoverInteractionsCount'],
     dimensions: [
         'aiAgentSkill',
+        'aiIntentCustomField',
         'automationFeatureType',
         'channel',
         'customField',
@@ -160,7 +161,7 @@ export const aiAgentHandoverInteractionsPerIntent = handoverInteractionsScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT)
     .defineQuery(({ ctx, config }) => ({
         measures: ['handoverInteractionsCount'],
-        dimensions: ['customField'],
+        dimensions: ['aiIntentCustomField'],
         filters: [
             ...createScopeFilters(ctx.filters, config),
             {

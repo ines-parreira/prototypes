@@ -10,6 +10,7 @@ export const aiAgentAutomatedInteractionsScope = defineScope({
     measures: ['automatedInteractionsCount'],
     dimensions: [
         'aiAgentSkill',
+        'aiIntentCustomField',
         'channel',
         'customField',
         'engagementType',
@@ -55,7 +56,7 @@ export const aiAgentAutomatedInteractionsPerIntent =
         )
         .defineQuery(() => ({
             measures: ['automatedInteractionsCount'] as const,
-            dimensions: ['customField'],
+            dimensions: ['aiIntentCustomField'],
         }))
 
 export const aiAgentAutomatedInteractionsPerIntentQueryFactoryV2 = (

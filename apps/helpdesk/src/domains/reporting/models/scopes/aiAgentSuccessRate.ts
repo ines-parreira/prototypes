@@ -7,6 +7,7 @@ export const aiAgentSuccessRateScope = defineScope({
     measures: ['successRate'],
     dimensions: [
         'aiAgentSkill',
+        'aiIntentCustomField',
         'channel',
         'customField',
         'engagementType',
@@ -45,7 +46,7 @@ export const aiAgentSuccessRatePerIntent = aiAgentSuccessRateScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_INTENT)
     .defineQuery(() => ({
         measures: ['successRate'] as const,
-        dimensions: ['customField'],
+        dimensions: ['aiIntentCustomField'],
     }))
 
 export const aiAgentSuccessRatePerIntentQueryFactoryV2 = (

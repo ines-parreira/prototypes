@@ -5,7 +5,13 @@ import { defineScope } from 'domains/reporting/models/scopes/scope'
 export const aiAgentCoverageRateScope = defineScope({
     scope: MetricScope.AiAgentCoverageRate,
     measures: ['coverageRate'],
-    dimensions: ['aiAgentSkill', 'channel', 'customField', 'ticketId'],
+    dimensions: [
+        'aiAgentSkill',
+        'aiIntentCustomField',
+        'channel',
+        'customField',
+        'ticketId',
+    ],
     timeDimensions: ['eventDatetime'],
     filters: [
         'aiAgentSkill',
@@ -47,7 +53,7 @@ export const aiAgentAutomationRatePerIntent = aiAgentCoverageRateScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_OVERALL_AUTOMATION_RATE_PER_INTENT)
     .defineQuery(() => ({
         measures: ['coverageRate'] as const,
-        dimensions: ['customField'],
+        dimensions: ['aiIntentCustomField'],
     }))
 
 export const aiAgentAutomationRatePerIntentQueryFactoryV2 = (

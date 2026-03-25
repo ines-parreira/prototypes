@@ -351,7 +351,7 @@ describe('aiAgentAutomatedInteractionsPerIntent', () => {
             metricName: 'ai-agent-automated-interactions-per-intent',
             scope: 'ai-agent-automated-interactions',
             measures: ['automatedInteractionsCount'],
-            dimensions: ['customField'],
+            dimensions: ['aiIntentCustomField'],
             timezone: 'utc',
             filters: periodFilters,
         })

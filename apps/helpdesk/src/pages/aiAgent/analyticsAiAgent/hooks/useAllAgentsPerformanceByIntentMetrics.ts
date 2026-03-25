@@ -39,10 +39,6 @@ import {
     fetchHandoverInteractionsPerAllAgentsIntent,
     useHandoverInteractionsPerAllAgentsIntent,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useHandoverInteractionsPerAllAgentsIntent'
-import {
-    fetchCustomTicketsFieldsDefinitionData,
-    useGetCustomTicketsFieldsDefinitionData,
-} from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { createCsv } from 'utils/file'
 
@@ -114,48 +110,18 @@ const deriveEntities = (
 
 export const useAllAgentsPerformanceByIntentMetrics = () => {
     const { statsFilters, userTimezone } = useAutomateFilters()
-    const { intentCustomFieldId } = useGetCustomTicketsFieldsDefinitionData()
 
     const metricsConfig: Record<
         AllAgentsPerformanceByIntentMetricKeys,
         UseEntityMetricConfig
     > = {
-        automatedInteractions: {
-            use: (filters, timezone) =>
-                useAutomatedInteractionsPerIntent(
-                    filters,
-                    timezone,
-                    intentCustomFieldId,
-                ),
-        },
+        automatedInteractions: { use: useAutomatedInteractionsPerIntent },
         handoverInteractions: {
-            use: (filters, timezone) =>
-                useHandoverInteractionsPerAllAgentsIntent(
-                    filters,
-                    timezone,
-                    intentCustomFieldId,
-                ),
+            use: useHandoverInteractionsPerAllAgentsIntent,
         },
-        coverageRate: {
-            use: (filters, timezone) =>
-                useAiAgentCoverageRatePerIntent(
-                    filters,
-                    timezone,
-                    intentCustomFieldId,
-                ),
-        },
-        successRate: {
-            use: (filters, timezone) =>
-                useAiAgentSuccessRatePerIntent(
-                    filters,
-                    timezone,
-                    intentCustomFieldId,
-                ),
-        },
-        costSaved: {
-            use: (filters, timezone) =>
-                useCostSavedPerIntent(filters, timezone, intentCustomFieldId),
-        },
+        coverageRate: { use: useAiAgentCoverageRatePerIntent },
+        successRate: { use: useAiAgentSuccessRatePerIntent },
+        costSaved: { use: useCostSavedPerIntent },
     }
 
     const {
@@ -208,51 +174,21 @@ export const fetchAllAgentsPerformanceByIntentMetrics = async (
         ALL_AGENTS_PERFORMANCE_BY_INTENT_FILENAME,
     )
 
-    const { intentCustomFieldId } =
-        await fetchCustomTicketsFieldsDefinitionData()
-
     const fetchConfig: Record<
         AllAgentsPerformanceByIntentMetricKeys,
         FetchEntityMetricConfig
     > = {
-        automatedInteractions: {
-            fetch: (filters, timezone) =>
-                fetchAutomatedInteractionsPerIntent(
-                    filters,
-                    timezone,
-                    intentCustomFieldId,
-                ),
-        },
+        automatedInteractions: { fetch: fetchAutomatedInteractionsPerIntent },
         handoverInteractions: {
-            fetch: (filters, timezone) =>
-                fetchHandoverInteractionsPerAllAgentsIntent(
-                    filters,
-                    timezone,
-                    intentCustomFieldId,
-                ),
+            fetch: fetchHandoverInteractionsPerAllAgentsIntent,
         },
-        coverageRate: {
-            fetch: (filters, timezone) =>
-                fetchAiAgentCoverageRatePerIntent(
-                    filters,
-                    timezone,
-                    intentCustomFieldId,
-                ),
-        },
-        successRate: {
-            fetch: (filters, timezone) =>
-                fetchAiAgentSuccessRatePerIntent(
-                    filters,
-                    timezone,
-                    intentCustomFieldId,
-                ),
-        },
+        coverageRate: { fetch: fetchAiAgentCoverageRatePerIntent },
+        successRate: { fetch: fetchAiAgentSuccessRatePerIntent },
         costSaved: {
             fetch: (filters, timezone) =>
                 fetchCostSavedPerIntent(
                     filters,
                     timezone,
-                    intentCustomFieldId,
                     costSavedPerInteraction,
                 ),
         },

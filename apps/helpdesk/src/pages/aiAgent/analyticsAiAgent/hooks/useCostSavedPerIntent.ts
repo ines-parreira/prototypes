@@ -5,17 +5,15 @@ import {
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import { aiAgentAutomatedInteractionsPerIntentQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { buildIntentFilters } from 'pages/aiAgent/analyticsAiAgent/hooks/intentFilters'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 export const useCostSavedPerIntent = (
     statsFilters: StatsFilters,
     timezone: string,
-    intentCustomFieldId: number,
 ) => {
     const query = aiAgentAutomatedInteractionsPerIntentQueryFactoryV2({
-        filters: buildIntentFilters(statsFilters, intentCustomFieldId),
+        filters: statsFilters,
         timezone,
     })
     const automatedInteractions = useStatsMetricPerDimension(query)
@@ -30,11 +28,10 @@ export const useCostSavedPerIntent = (
 export const fetchCostSavedPerIntent = async (
     statsFilters: StatsFilters,
     timezone: string,
-    intentCustomFieldId: number,
     costSavedPerInteraction: number = AGENT_COST_PER_TICKET,
 ) => {
     const query = aiAgentAutomatedInteractionsPerIntentQueryFactoryV2({
-        filters: buildIntentFilters(statsFilters, intentCustomFieldId),
+        filters: statsFilters,
         timezone,
     })
     const automatedInteractions = await fetchStatsMetricPerDimension(query)

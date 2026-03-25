@@ -273,14 +273,14 @@ describe('handoverInteractionsScope', () => {
     })
 
     describe('handoverInteractionsPerIntent', () => {
-        it('creates query with customField dimension and automationFeatureType filter for ai-agent', () => {
+        it('creates query with aiIntentCustomField dimension and automationFeatureType filter for ai-agent', () => {
             const actual = aiAgentHandoverInteractionsPerIntent.build(context)
 
             expect(actual).toEqual({
                 metricName: 'ai-agent-handover-interactions-per-intent',
                 scope: 'handover-interactions',
                 measures: ['handoverInteractionsCount'],
-                dimensions: ['customField'],
+                dimensions: ['aiIntentCustomField'],
                 timezone: 'utc',
                 filters: [
                     ...periodFilters,

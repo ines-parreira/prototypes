@@ -12,9 +12,6 @@ jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
 jest.mock('domains/reporting/models/scopes/aiAgentCoverageRate', () => ({
     aiAgentAutomationRatePerIntentQueryFactoryV2: jest.fn(),
 }))
-jest.mock('pages/aiAgent/analyticsAiAgent/hooks/intentFilters', () => ({
-    buildIntentFilters: jest.fn((filters) => filters),
-}))
 
 const mockUseStatsMetricPerDimension = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
@@ -28,10 +25,6 @@ const mockQueryFactory = jest.requireMock(
     'domains/reporting/models/scopes/aiAgentCoverageRate',
 ).aiAgentAutomationRatePerIntentQueryFactoryV2 as jest.Mock
 
-const mockBuildIntentFilters = jest.requireMock(
-    'pages/aiAgent/analyticsAiAgent/hooks/intentFilters',
-).buildIntentFilters as jest.Mock
-
 const MOCK_STATS_FILTERS = {
     period: {
         start_datetime: '2024-01-01T00:00:00Z',
@@ -39,7 +32,6 @@ const MOCK_STATS_FILTERS = {
     },
 }
 const MOCK_TIMEZONE = 'UTC'
-const MOCK_INTENT_CUSTOM_FIELD_ID = 123
 const MOCK_QUERY = { metricName: 'overall-automation-rate-per-intent' }
 
 const defaultAllValues = [
@@ -63,28 +55,9 @@ describe('useAiAgentCoverageRatePerIntent', () => {
         })
     })
 
-    it('calls buildIntentFilters with the provided intentCustomFieldId', () => {
+    it('calls the query factory with stats filters and timezone', () => {
         renderHook(() =>
-            useAiAgentCoverageRatePerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
-        )
-
-        expect(mockBuildIntentFilters).toHaveBeenCalledWith(
-            MOCK_STATS_FILTERS,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
-        )
-    })
-
-    it('calls the query factory with intent filters and timezone', () => {
-        renderHook(() =>
-            useAiAgentCoverageRatePerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
+            useAiAgentCoverageRatePerIntent(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         expect(mockQueryFactory).toHaveBeenCalledWith({
@@ -95,11 +68,7 @@ describe('useAiAgentCoverageRatePerIntent', () => {
 
     it('passes the query result to useStatsMetricPerDimension', () => {
         renderHook(() =>
-            useAiAgentCoverageRatePerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
+            useAiAgentCoverageRatePerIntent(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         expect(mockUseStatsMetricPerDimension).toHaveBeenCalledWith(MOCK_QUERY)
@@ -107,11 +76,7 @@ describe('useAiAgentCoverageRatePerIntent', () => {
 
     it('returns the result from useStatsMetricPerDimension', () => {
         const { result } = renderHook(() =>
-            useAiAgentCoverageRatePerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
+            useAiAgentCoverageRatePerIntent(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         expect(result.current.data?.allValues).toEqual(defaultAllValues)
@@ -127,11 +92,7 @@ describe('useAiAgentCoverageRatePerIntent', () => {
         })
 
         const { result } = renderHook(() =>
-            useAiAgentCoverageRatePerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
+            useAiAgentCoverageRatePerIntent(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         expect(result.current.isFetching).toBe(true)
@@ -145,11 +106,7 @@ describe('useAiAgentCoverageRatePerIntent', () => {
         })
 
         const { result } = renderHook(() =>
-            useAiAgentCoverageRatePerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
+            useAiAgentCoverageRatePerIntent(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         expect(result.current.isError).toBe(true)
@@ -167,24 +124,10 @@ describe('fetchAiAgentCoverageRatePerIntent', () => {
         })
     })
 
-    it('calls buildIntentFilters with the provided intentCustomFieldId', async () => {
+    it('calls the query factory with stats filters and timezone', async () => {
         await fetchAiAgentCoverageRatePerIntent(
             MOCK_STATS_FILTERS,
             MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
-        )
-
-        expect(mockBuildIntentFilters).toHaveBeenCalledWith(
-            MOCK_STATS_FILTERS,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
-        )
-    })
-
-    it('calls the query factory with intent filters and timezone', async () => {
-        await fetchAiAgentCoverageRatePerIntent(
-            MOCK_STATS_FILTERS,
-            MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
         )
 
         expect(mockQueryFactory).toHaveBeenCalledWith({
@@ -197,7 +140,6 @@ describe('fetchAiAgentCoverageRatePerIntent', () => {
         await fetchAiAgentCoverageRatePerIntent(
             MOCK_STATS_FILTERS,
             MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
         )
 
         expect(mockFetchStatsMetricPerDimension).toHaveBeenCalledWith(
@@ -209,7 +151,6 @@ describe('fetchAiAgentCoverageRatePerIntent', () => {
         const result = await fetchAiAgentCoverageRatePerIntent(
             MOCK_STATS_FILTERS,
             MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
         )
 
         expect(result?.data?.allValues).toEqual(defaultAllValues)

@@ -12,9 +12,6 @@ jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
 jest.mock('domains/reporting/models/scopes/handoverInteractions', () => ({
     aiAgentHandoverInteractionsPerIntentQueryFactoryV2: jest.fn(),
 }))
-jest.mock('pages/aiAgent/analyticsAiAgent/hooks/intentFilters', () => ({
-    buildIntentFilters: jest.fn((filters) => filters),
-}))
 
 const mockUseStatsMetricPerDimension = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
@@ -28,10 +25,6 @@ const mockQueryFactory = jest.requireMock(
     'domains/reporting/models/scopes/handoverInteractions',
 ).aiAgentHandoverInteractionsPerIntentQueryFactoryV2 as jest.Mock
 
-const mockBuildIntentFilters = jest.requireMock(
-    'pages/aiAgent/analyticsAiAgent/hooks/intentFilters',
-).buildIntentFilters as jest.Mock
-
 const MOCK_STATS_FILTERS = {
     period: {
         start_datetime: '2024-01-01T00:00:00Z',
@@ -39,7 +32,6 @@ const MOCK_STATS_FILTERS = {
     },
 }
 const MOCK_TIMEZONE = 'UTC'
-const MOCK_INTENT_CUSTOM_FIELD_ID = 42
 const MOCK_QUERY = { metricName: 'ai-agent-handover-interactions-per-intent' }
 
 const defaultAllValues = [
@@ -63,27 +55,11 @@ describe('useHandoverInteractionsPerAllAgentsIntent', () => {
         })
     })
 
-    it('calls buildIntentFilters with the provided intentCustomFieldId', () => {
+    it('calls the query factory with stats filters and timezone', () => {
         renderHook(() =>
             useHandoverInteractionsPerAllAgentsIntent(
                 MOCK_STATS_FILTERS,
                 MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
-        )
-
-        expect(mockBuildIntentFilters).toHaveBeenCalledWith(
-            MOCK_STATS_FILTERS,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
-        )
-    })
-
-    it('calls the query factory with intent filters and timezone', () => {
-        renderHook(() =>
-            useHandoverInteractionsPerAllAgentsIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
             ),
         )
 
@@ -98,7 +74,6 @@ describe('useHandoverInteractionsPerAllAgentsIntent', () => {
             useHandoverInteractionsPerAllAgentsIntent(
                 MOCK_STATS_FILTERS,
                 MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
             ),
         )
 
@@ -110,7 +85,6 @@ describe('useHandoverInteractionsPerAllAgentsIntent', () => {
             useHandoverInteractionsPerAllAgentsIntent(
                 MOCK_STATS_FILTERS,
                 MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
             ),
         )
 
@@ -130,7 +104,6 @@ describe('useHandoverInteractionsPerAllAgentsIntent', () => {
             useHandoverInteractionsPerAllAgentsIntent(
                 MOCK_STATS_FILTERS,
                 MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
             ),
         )
 
@@ -148,7 +121,6 @@ describe('useHandoverInteractionsPerAllAgentsIntent', () => {
             useHandoverInteractionsPerAllAgentsIntent(
                 MOCK_STATS_FILTERS,
                 MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
             ),
         )
 
@@ -167,24 +139,10 @@ describe('fetchHandoverInteractionsPerAllAgentsIntent', () => {
         })
     })
 
-    it('calls buildIntentFilters with the provided intentCustomFieldId', async () => {
+    it('calls the query factory with stats filters and timezone', async () => {
         await fetchHandoverInteractionsPerAllAgentsIntent(
             MOCK_STATS_FILTERS,
             MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
-        )
-
-        expect(mockBuildIntentFilters).toHaveBeenCalledWith(
-            MOCK_STATS_FILTERS,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
-        )
-    })
-
-    it('calls the query factory with intent filters and timezone', async () => {
-        await fetchHandoverInteractionsPerAllAgentsIntent(
-            MOCK_STATS_FILTERS,
-            MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
         )
 
         expect(mockQueryFactory).toHaveBeenCalledWith({
@@ -197,7 +155,6 @@ describe('fetchHandoverInteractionsPerAllAgentsIntent', () => {
         await fetchHandoverInteractionsPerAllAgentsIntent(
             MOCK_STATS_FILTERS,
             MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
         )
 
         expect(mockFetchStatsMetricPerDimension).toHaveBeenCalledWith(
@@ -209,7 +166,6 @@ describe('fetchHandoverInteractionsPerAllAgentsIntent', () => {
         const result = await fetchHandoverInteractionsPerAllAgentsIntent(
             MOCK_STATS_FILTERS,
             MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
         )
 
         expect(result?.data?.allValues).toEqual(defaultAllValues)

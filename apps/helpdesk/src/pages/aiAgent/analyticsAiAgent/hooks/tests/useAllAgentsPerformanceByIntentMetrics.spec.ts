@@ -25,13 +25,6 @@ jest.mock('utils/file', () => ({
     createCsv: jest.fn(),
 }))
 jest.mock(
-    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
-    () => ({
-        useGetCustomTicketsFieldsDefinitionData: jest.fn(),
-        fetchCustomTicketsFieldsDefinitionData: jest.fn(),
-    }),
-)
-jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useAutomatedInteractionsPerIntent',
     () => ({
         useAutomatedInteractionsPerIntent: jest.fn(),
@@ -86,14 +79,6 @@ const mockGetCsvFileNameWithDates = jest.requireMock(
 
 const mockCreateCsv = jest.requireMock('utils/file').createCsv as jest.Mock
 
-const mockUseGetCustomTicketsFieldsDefinitionData = jest.requireMock(
-    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
-).useGetCustomTicketsFieldsDefinitionData as jest.Mock
-
-const mockFetchCustomTicketsFieldsDefinitionData = jest.requireMock(
-    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
-).fetchCustomTicketsFieldsDefinitionData as jest.Mock
-
 const MOCK_STATS_FILTERS = {
     period: {
         start_datetime: '2024-01-01T00:00:00Z',
@@ -101,7 +86,6 @@ const MOCK_STATS_FILTERS = {
     },
 }
 const MOCK_TIMEZONE = 'UTC'
-const MOCK_INTENT_CUSTOM_FIELD_ID = 42
 
 const defaultEntityData = {
     automatedInteractions: {
@@ -146,9 +130,6 @@ describe('useAllAgentsPerformanceByIntentMetrics', () => {
         mockUseAutomateFilters.mockReturnValue({
             statsFilters: MOCK_STATS_FILTERS,
             userTimezone: MOCK_TIMEZONE,
-        })
-        mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
-            intentCustomFieldId: MOCK_INTENT_CUSTOM_FIELD_ID,
         })
         mockUseEntityMetrics.mockReturnValue({
             data: defaultEntityData,
@@ -355,9 +336,6 @@ describe('fetchAllAgentsPerformanceByIntentMetrics', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        mockFetchCustomTicketsFieldsDefinitionData.mockResolvedValue({
-            intentCustomFieldId: MOCK_INTENT_CUSTOM_FIELD_ID,
-        })
         mockFetchEntityMetrics.mockResolvedValue({
             data: mockMetricsData,
             isLoading: false,
@@ -406,15 +384,6 @@ describe('fetchAllAgentsPerformanceByIntentMetrics', () => {
 
         const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
         expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
-    })
-
-    it('fetches intentCustomFieldId before building fetch config', async () => {
-        await fetchAllAgentsPerformanceByIntentMetrics(
-            MOCK_STATS_FILTERS,
-            MOCK_TIMEZONE,
-        )
-
-        expect(mockFetchCustomTicketsFieldsDefinitionData).toHaveBeenCalled()
     })
 
     it('includes Intent L1 and Intent L2 as the first CSV headers', async () => {

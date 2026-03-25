@@ -43,9 +43,6 @@ jest.mock(
 jest.mock('pages/automate/automate-metrics/constants', () => ({
     AGENT_COST_PER_TICKET: 3.1,
 }))
-jest.mock('pages/aiAgent/analyticsAiAgent/hooks/intentFilters', () => ({
-    buildIntentFilters: jest.fn((filters) => filters),
-}))
 
 const mockUseStatsMetricPerDimension = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
@@ -63,10 +60,6 @@ const mockQueryFactory = jest.requireMock(
     'domains/reporting/models/scopes/aiAgentAutomatedInteractions',
 ).aiAgentAutomatedInteractionsPerIntentQueryFactoryV2 as jest.Mock
 
-const mockBuildIntentFilters = jest.requireMock(
-    'pages/aiAgent/analyticsAiAgent/hooks/intentFilters',
-).buildIntentFilters as jest.Mock
-
 const MOCK_STATS_FILTERS = {
     period: {
         start_datetime: '2024-01-01T00:00:00Z',
@@ -74,7 +67,6 @@ const MOCK_STATS_FILTERS = {
     },
 }
 const MOCK_TIMEZONE = 'UTC'
-const MOCK_INTENT_CUSTOM_FIELD_ID = 42
 const MOCK_QUERY = { metricName: 'ai-agent-automated-interactions-per-intent' }
 const COST_PER_INTERACTION = 3.1
 
@@ -100,28 +92,9 @@ describe('useCostSavedPerIntent', () => {
         })
     })
 
-    it('calls buildIntentFilters with the provided intentCustomFieldId', () => {
+    it('calls the query factory with stats filters and timezone', () => {
         renderHook(() =>
-            useCostSavedPerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
-        )
-
-        expect(mockBuildIntentFilters).toHaveBeenCalledWith(
-            MOCK_STATS_FILTERS,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
-        )
-    })
-
-    it('calls the query factory with intent filters and timezone', () => {
-        renderHook(() =>
-            useCostSavedPerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
+            useCostSavedPerIntent(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         expect(mockQueryFactory).toHaveBeenCalledWith({
@@ -132,11 +105,7 @@ describe('useCostSavedPerIntent', () => {
 
     it('multiplies each entity value by costSavedPerInteraction', () => {
         const { result } = renderHook(() =>
-            useCostSavedPerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
+            useCostSavedPerIntent(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         const allValues = result.current.data?.allValues ?? []
@@ -167,11 +136,7 @@ describe('useCostSavedPerIntent', () => {
         })
 
         const { result } = renderHook(() =>
-            useCostSavedPerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
+            useCostSavedPerIntent(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         const value = result.current.data?.allValues?.find(
@@ -188,11 +153,7 @@ describe('useCostSavedPerIntent', () => {
         })
 
         const { result } = renderHook(() =>
-            useCostSavedPerIntent(
-                MOCK_STATS_FILTERS,
-                MOCK_TIMEZONE,
-                MOCK_INTENT_CUSTOM_FIELD_ID,
-            ),
+            useCostSavedPerIntent(MOCK_STATS_FILTERS, MOCK_TIMEZONE),
         )
 
         expect(result.current.isFetching).toBe(true)
@@ -215,25 +176,8 @@ describe('fetchCostSavedPerIntent', () => {
         })
     })
 
-    it('calls buildIntentFilters with the provided intentCustomFieldId', async () => {
-        await fetchCostSavedPerIntent(
-            MOCK_STATS_FILTERS,
-            MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
-        )
-
-        expect(mockBuildIntentFilters).toHaveBeenCalledWith(
-            MOCK_STATS_FILTERS,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
-        )
-    })
-
-    it('calls the query factory with intent filters and timezone', async () => {
-        await fetchCostSavedPerIntent(
-            MOCK_STATS_FILTERS,
-            MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
-        )
+    it('calls the query factory with stats filters and timezone', async () => {
+        await fetchCostSavedPerIntent(MOCK_STATS_FILTERS, MOCK_TIMEZONE)
 
         expect(mockQueryFactory).toHaveBeenCalledWith({
             filters: MOCK_STATS_FILTERS,
@@ -245,7 +189,6 @@ describe('fetchCostSavedPerIntent', () => {
         const result = await fetchCostSavedPerIntent(
             MOCK_STATS_FILTERS,
             MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
             COST_PER_INTERACTION,
         )
 
@@ -259,7 +202,6 @@ describe('fetchCostSavedPerIntent', () => {
         const result = await fetchCostSavedPerIntent(
             MOCK_STATS_FILTERS,
             MOCK_TIMEZONE,
-            MOCK_INTENT_CUSTOM_FIELD_ID,
         )
 
         const allValues = result.data?.allValues ?? []

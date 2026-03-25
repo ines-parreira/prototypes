@@ -259,7 +259,7 @@ describe('automationRatePerIntent', () => {
             metricName: 'ai-agent-overall-automation-rate-per-intent',
             scope: 'ai-agent-coverage-rate',
             measures: ['coverageRate'],
-            dimensions: ['customField'],
+            dimensions: ['aiIntentCustomField'],
             timezone: 'utc',
             filters: periodFilters,
         })

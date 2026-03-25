@@ -241,7 +241,7 @@ describe('successRatePerIntent', () => {
             metricName: 'ai-agent-success-rate-per-intent',
             scope: 'ai-agent-success-rate',
             measures: ['successRate'],
-            dimensions: ['customField'],
+            dimensions: ['aiIntentCustomField'],
             timezone: 'utc',
             filters: periodFilters,
         })

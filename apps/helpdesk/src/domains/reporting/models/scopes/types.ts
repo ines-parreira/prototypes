@@ -119,6 +119,7 @@ export type DimensionName =
     | 'abVariant'
     | 'aiAgentRole'
     | 'aiAgentSkill'
+    | 'aiIntentCustomField'
     | 'automationFeatureType'
     | 'customField'
     | 'engagementType'
