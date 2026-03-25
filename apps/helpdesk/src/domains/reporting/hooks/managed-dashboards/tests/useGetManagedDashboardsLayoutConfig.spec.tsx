@@ -207,15 +207,16 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
     })
 
     it('should return merged layoutConfig with saved and default items when dashboard is found', async () => {
-        server.use(
-            mockListAnalyticsManagedDashboardsHandler(async () =>
+        const mockHandler = mockListAnalyticsManagedDashboardsHandler(
+            async () =>
                 HttpResponse.json(
                     mockListAnalyticsManagedDashboardsResponse({
                         data: [mockOverviewDashboard],
                     }),
                 ),
-            ).handler,
         )
+        server.use(mockHandler.handler)
+        const waitForRequest = mockHandler.waitForRequest(server)
 
         const { result } = renderHook(
             () =>
@@ -226,6 +227,8 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
                 }),
             { wrapper: makeWrapper() },
         )
+
+        await waitForRequest()
 
         await waitFor(() => {
             expect(result.current.isLoading).toBe(false)
@@ -327,10 +330,6 @@ describe('useGetManagedDashboardsLayoutConfig', () => {
         )
 
         await waitForRequest()
-
-        await waitFor(() => {
-            expect(result.current.isLoading).toBe(false)
-        })
 
         await waitFor(() => {
             expect(result.current.isLoading).toBe(false)
