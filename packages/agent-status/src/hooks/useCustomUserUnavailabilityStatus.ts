@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import type { AgentStatusWithSystem } from '../types'
 import { useAgentStatuses } from './useAgentStatuses'
 
-export function useAgentStatus(
+export function useCustomUserUnavailabilityStatus(
     statusId: string | null | undefined,
 ): AgentStatusWithSystem | undefined {
     const { data: allStatuses } = useAgentStatuses()

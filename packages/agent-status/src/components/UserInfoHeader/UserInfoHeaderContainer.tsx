@@ -2,15 +2,14 @@ import { useMemo } from 'react'
 
 import { DurationInMs } from '@repo/utils'
 
-import type { UserAvailability } from '@gorgias/helpdesk-queries'
 import {
     useGetCurrentUser,
     useGetUserAvailability,
 } from '@gorgias/helpdesk-queries'
 
 import {
-    useAgentStatus,
     useAvailabilityStatusColor,
+    useCustomUserUnavailabilityStatus,
     useUserAvailabilityExpirationTime,
 } from '../../hooks'
 import type { AgentStatusWithSystem } from '../../types'
@@ -29,13 +28,13 @@ export function UserInfoHeaderContainer({
         },
     })
 
-    const userAvailability = data?.data as unknown as UserAvailability
+    const userAvailability = data?.data
 
     const statusExpirationTime = useUserAvailabilityExpirationTime(
         userAvailability?.custom_user_availability_status_expires_datetime,
     )
 
-    const customUserStatus = useAgentStatus(
+    const customUserStatus = useCustomUserUnavailabilityStatus(
         userAvailability?.custom_user_availability_status_id,
     )
 

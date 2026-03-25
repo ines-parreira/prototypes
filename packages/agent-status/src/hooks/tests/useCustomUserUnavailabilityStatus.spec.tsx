@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { renderHook } from '../../tests/render.utils'
-import { useAgentStatus } from '../useAgentStatus'
 import * as hooks from '../useAgentStatuses'
+import { useCustomUserUnavailabilityStatus } from '../useCustomUserUnavailabilityStatus'
 
 vi.mock('../useAgentStatuses', async () => {
     const actual = await vi.importActual<typeof hooks>('../useAgentStatuses')
@@ -12,7 +12,7 @@ vi.mock('../useAgentStatuses', async () => {
     }
 })
 
-describe('useAgentStatus', () => {
+describe('useCustomUserUnavailabilityStatus', () => {
     beforeEach(() => {
         vi.clearAllMocks()
     })
@@ -22,7 +22,9 @@ describe('useAgentStatus', () => {
             data: [],
         } as any)
 
-        const { result } = renderHook(() => useAgentStatus(undefined))
+        const { result } = renderHook(() =>
+            useCustomUserUnavailabilityStatus(undefined),
+        )
 
         expect(result.current).toBeUndefined()
     })
@@ -32,7 +34,9 @@ describe('useAgentStatus', () => {
             data: undefined,
         } as any)
 
-        const { result } = renderHook(() => useAgentStatus('status-1'))
+        const { result } = renderHook(() =>
+            useCustomUserUnavailabilityStatus('status-1'),
+        )
 
         expect(result.current).toBeUndefined()
     })
@@ -55,7 +59,9 @@ describe('useAgentStatus', () => {
             ],
         } as any)
 
-        const { result } = renderHook(() => useAgentStatus('status-1'))
+        const { result } = renderHook(() =>
+            useCustomUserUnavailabilityStatus('status-1'),
+        )
 
         expect(result.current).toEqual({
             id: 'status-1',
@@ -77,7 +83,9 @@ describe('useAgentStatus', () => {
             ],
         } as any)
 
-        const { result } = renderHook(() => useAgentStatus('status-999'))
+        const { result } = renderHook(() =>
+            useCustomUserUnavailabilityStatus('status-999'),
+        )
 
         expect(result.current).toBeUndefined()
     })

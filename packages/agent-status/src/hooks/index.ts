@@ -1,5 +1,5 @@
 export { useUserAvailabilityExpirationTime } from './useUserAvailabilityExpirationTime'
-export { useAgentStatus } from './useAgentStatus'
+export { useCustomUserUnavailabilityStatus } from './useCustomUserUnavailabilityStatus'
 export { useAgentStatuses } from './useAgentStatuses'
 export { useCreateAgentStatus } from './useCreateAgentStatus'
 export { useUpdateAgentStatus } from './useUpdateAgentStatus'

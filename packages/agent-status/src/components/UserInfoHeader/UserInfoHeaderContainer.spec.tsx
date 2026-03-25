@@ -26,7 +26,7 @@ vi.mock('../../hooks', async () => {
         ...actual,
         useUserAvailabilityExpirationTime: vi.fn(),
         useAvailabilityStatusColor: vi.fn(),
-        useAgentStatus: vi.fn(),
+        useCustomUserUnavailabilityStatus: vi.fn(),
     }
 })
 
@@ -55,7 +55,9 @@ describe('UserInfoHeaderContainer', () => {
             undefined,
         )
         vi.mocked(hooks.useAvailabilityStatusColor).mockReturnValue(undefined)
-        vi.mocked(hooks.useAgentStatus).mockReturnValue(undefined)
+        vi.mocked(hooks.useCustomUserUnavailabilityStatus).mockReturnValue(
+            undefined,
+        )
     })
 
     describe('Loading states', () => {
@@ -299,7 +301,7 @@ describe('UserInfoHeaderContainer', () => {
                     },
                 },
             } as any)
-            vi.mocked(hooks.useAgentStatus).mockReturnValue({
+            vi.mocked(hooks.useCustomUserUnavailabilityStatus).mockReturnValue({
                 id: 'custom',
                 name: 'In a meeting',
                 is_system: false,
@@ -355,7 +357,7 @@ describe('UserInfoHeaderContainer', () => {
                     },
                 },
             } as any)
-            vi.mocked(hooks.useAgentStatus).mockReturnValue({
+            vi.mocked(hooks.useCustomUserUnavailabilityStatus).mockReturnValue({
                 id: 'custom',
                 name: 'In a meeting',
                 is_system: false,
@@ -381,7 +383,7 @@ describe('UserInfoHeaderContainer', () => {
                     },
                 },
             } as any)
-            vi.mocked(hooks.useAgentStatus).mockReturnValue({
+            vi.mocked(hooks.useCustomUserUnavailabilityStatus).mockReturnValue({
                 id: 'custom',
                 name: 'In a meeting',
                 is_system: false,
