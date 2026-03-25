@@ -1,13 +1,12 @@
 import type {
+    Cadence,
     CancellationDates,
     PlansByProduct,
     SelectedPlans,
 } from '@repo/billing'
+import { ProductType } from '@repo/billing'
 
 import { Box, Text } from '@gorgias/axiom'
-
-import type { Cadence } from 'models/billing/types'
-import { ProductType } from 'models/billing/types'
 
 import { SummaryItem } from '../SummaryItem'
 import SummaryTotal from '../SummaryTotal'
@@ -47,48 +46,17 @@ export function BillingSummaryBreakdown({
                     PRICE
                 </Text>
             </Box>
-            <SummaryItem
-                productType={ProductType.Helpdesk}
-                cadence={cadence}
-                currentPlan={plansByProduct[ProductType.Helpdesk].current}
-                availablePlans={plansByProduct[ProductType.Helpdesk].available}
-                selectedPlans={selectedPlans}
-                scheduledToCancelAt={cancellationDates[ProductType.Helpdesk]}
-            />
-            <SummaryItem
-                productType={ProductType.Automation}
-                cadence={cadence}
-                currentPlan={plansByProduct[ProductType.Automation].current}
-                availablePlans={
-                    plansByProduct[ProductType.Automation].available
-                }
-                selectedPlans={selectedPlans}
-                scheduledToCancelAt={cancellationDates[ProductType.Automation]}
-            />
-            <SummaryItem
-                productType={ProductType.Voice}
-                cadence={cadence}
-                currentPlan={plansByProduct[ProductType.Voice].current}
-                availablePlans={plansByProduct[ProductType.Voice].available}
-                selectedPlans={selectedPlans}
-                scheduledToCancelAt={cancellationDates[ProductType.Voice]}
-            />
-            <SummaryItem
-                productType={ProductType.SMS}
-                cadence={cadence}
-                currentPlan={plansByProduct[ProductType.SMS].current}
-                availablePlans={plansByProduct[ProductType.SMS].available}
-                selectedPlans={selectedPlans}
-                scheduledToCancelAt={cancellationDates[ProductType.SMS]}
-            />
-            <SummaryItem
-                productType={ProductType.Convert}
-                cadence={cadence}
-                currentPlan={plansByProduct[ProductType.Convert].current}
-                availablePlans={plansByProduct[ProductType.Convert].available}
-                selectedPlans={selectedPlans}
-                scheduledToCancelAt={cancellationDates[ProductType.Convert]}
-            />
+            {Object.values(ProductType).map((productType) => (
+                <SummaryItem
+                    key={productType}
+                    productType={productType}
+                    cadence={cadence}
+                    currentPlan={plansByProduct[productType].current}
+                    availablePlans={plansByProduct[productType].available}
+                    selectedPlans={selectedPlans}
+                    scheduledToCancelAt={cancellationDates[productType]}
+                />
+            ))}
             <SummaryTotal
                 selectedPlans={selectedPlans}
                 totalProductAmount={totalProductAmount}

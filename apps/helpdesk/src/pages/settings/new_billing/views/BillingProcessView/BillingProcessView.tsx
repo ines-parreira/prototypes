@@ -1,17 +1,23 @@
 import type React from 'react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { PlansByProduct, SelectedPlans } from '@repo/billing'
-import { BILLING_BASE_PATH, PRICING_DETAILS_URL } from '@repo/billing'
+import {
+    BILLING_BASE_PATH,
+    PRICING_DETAILS_URL,
+    ProductType,
+} from '@repo/billing'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import { dismissNotification } from 'reapop'
 
+import { Separator } from '@gorgias/axiom'
+import type { CustomerSummary } from '@gorgias/helpdesk-types'
+
 import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { ProductType } from 'models/billing/types'
 import { getProductInfo, isYearlyContractPlan } from 'models/billing/utils'
 import Loader from 'pages/common/components/Loader/Loader'
 import PendingChangesModal from 'pages/settings/helpCenter/components/PendingChangesModal/PendingChangesModal'
@@ -168,6 +174,45 @@ export const BillingProcessView = ({
         ],
     )
 
+    const productOverrides: {
+        [K in ProductType]: {
+            initialIndex?: number
+            customer?: CustomerSummary | null
+            currentUsage?: CurrentProductsUsages
+        }
+    } = {
+        [ProductType.Helpdesk]: {
+            customer: billingState.data?.customer,
+        },
+        [ProductType.Automation]: {
+            initialIndex: automationInitialIndex,
+            currentUsage,
+        },
+        [ProductType.Voice]: { initialIndex: voiceInitialIndex },
+        [ProductType.SMS]: { initialIndex: smsInitialIndex },
+        [ProductType.Convert]: { initialIndex: convertInitialIndex },
+    }
+
+    const getScheduledToCancelAt = (type: ProductType): string | null => {
+        const currentPlan = plansByProduct[type].current
+        if (!currentPlan) return null
+        if (type === ProductType.Helpdesk) {
+            return currentSubscriptionScheduledToCancelAt || null
+        }
+        return (
+            currentSubscriptionScheduledToCancelAt ||
+            cancellationDates[type] ||
+            null
+        )
+    }
+
+    const productConfigs = Object.values(ProductType).map((type) => ({
+        type,
+        ...plansByProduct[type],
+        scheduledToCancelAt: getScheduledToCancelAt(type),
+        ...productOverrides[type],
+    }))
+
     // on page unload, remove error notification
     useEffect(() => {
         return () => {
@@ -291,129 +336,33 @@ export const BillingProcessView = ({
                     }}
                 >
                     <div className={css.products}>
-                        <ProductPlanSelection
-                            type={ProductType.Helpdesk}
-                            customer={billingState.data?.customer}
-                            cadence={cadence}
-                            currentPlan={currentHelpdeskPlan}
-                            availablePlans={helpdeskAvailablePlans}
-                            selectedPlans={selectedPlans}
-                            periodEnd={periodEnd}
-                            isTrialing={isTrialing}
-                            setSelectedPlans={setSelectedPlans}
-                            editingAvailable={
-                                !isCurrentSubscriptionScheduledToCancel
-                            }
-                            updateSubscription={updateSubscription}
-                            scheduledToCancelAt={
-                                currentHelpdeskPlan
-                                    ? currentSubscriptionScheduledToCancelAt ||
-                                      null
-                                    : null
-                            }
-                            cancelledProducts={cancelledProducts}
-                            contactBilling={contactBilling}
-                        />
-                        <div className={css.separator} />
-                        <ProductPlanSelection
-                            type={ProductType.Automation}
-                            cadence={cadence}
-                            currentPlan={currentAutomatePlan}
-                            availablePlans={automateAvailablePlans}
-                            selectedPlans={selectedPlans}
-                            setSelectedPlans={setSelectedPlans}
-                            initialIndex={automationInitialIndex}
-                            periodEnd={periodEnd}
-                            isTrialing={isTrialing}
-                            currentUsage={currentUsage}
-                            editingAvailable={
-                                !isCurrentSubscriptionScheduledToCancel
-                            }
-                            updateSubscription={updateSubscription}
-                            scheduledToCancelAt={
-                                currentAutomatePlan
-                                    ? currentSubscriptionScheduledToCancelAt ||
-                                      cancellationDates[ProductType.Automation]
-                                    : null
-                            }
-                            cancelledProducts={cancelledProducts}
-                            contactBilling={contactBilling}
-                        />
-                        <div className={css.separator} />
-                        <ProductPlanSelection
-                            type={ProductType.Voice}
-                            cadence={cadence}
-                            currentPlan={currentVoicePlan}
-                            availablePlans={voiceAvailablePlans}
-                            selectedPlans={selectedPlans}
-                            setSelectedPlans={setSelectedPlans}
-                            isTrialing={isTrialing}
-                            periodEnd={periodEnd}
-                            initialIndex={voiceInitialIndex}
-                            editingAvailable={
-                                !isCurrentSubscriptionScheduledToCancel
-                            }
-                            updateSubscription={updateSubscription}
-                            scheduledToCancelAt={
-                                currentVoicePlan
-                                    ? currentSubscriptionScheduledToCancelAt ||
-                                      cancellationDates[ProductType.Voice] ||
-                                      null
-                                    : null
-                            }
-                            cancelledProducts={cancelledProducts}
-                            contactBilling={contactBilling}
-                        />
-                        <div className={css.separator} />
-                        <ProductPlanSelection
-                            type={ProductType.SMS}
-                            cadence={cadence}
-                            currentPlan={currentSmsPlan}
-                            availablePlans={smsAvailablePlans}
-                            selectedPlans={selectedPlans}
-                            setSelectedPlans={setSelectedPlans}
-                            isTrialing={isTrialing}
-                            periodEnd={periodEnd}
-                            initialIndex={smsInitialIndex}
-                            editingAvailable={
-                                !isCurrentSubscriptionScheduledToCancel
-                            }
-                            updateSubscription={updateSubscription}
-                            scheduledToCancelAt={
-                                currentSmsPlan
-                                    ? currentSubscriptionScheduledToCancelAt ||
-                                      cancellationDates[ProductType.SMS] ||
-                                      null
-                                    : null
-                            }
-                            cancelledProducts={cancelledProducts}
-                            contactBilling={contactBilling}
-                        />
-                        <div className={css.separator} />
-                        <ProductPlanSelection
-                            type={ProductType.Convert}
-                            cadence={cadence}
-                            currentPlan={currentConvertPlan}
-                            availablePlans={convertAvailablePlans}
-                            selectedPlans={selectedPlans}
-                            setSelectedPlans={setSelectedPlans}
-                            isTrialing={isTrialing}
-                            periodEnd={periodEnd}
-                            initialIndex={convertInitialIndex}
-                            editingAvailable={
-                                !isCurrentSubscriptionScheduledToCancel
-                            }
-                            updateSubscription={updateSubscription}
-                            scheduledToCancelAt={
-                                currentConvertPlan
-                                    ? currentSubscriptionScheduledToCancelAt ||
-                                      cancellationDates[ProductType.Convert] ||
-                                      null
-                                    : null
-                            }
-                            cancelledProducts={cancelledProducts}
-                            contactBilling={contactBilling}
-                        />
+                        {productConfigs.map((config, index) => (
+                            <Fragment key={config.type}>
+                                {index > 0 && <Separator variant="dashed" />}
+                                <ProductPlanSelection
+                                    type={config.type}
+                                    cadence={cadence}
+                                    currentPlan={config.current}
+                                    availablePlans={config.available}
+                                    selectedPlans={selectedPlans}
+                                    setSelectedPlans={setSelectedPlans}
+                                    isTrialing={isTrialing}
+                                    periodEnd={periodEnd}
+                                    initialIndex={config.initialIndex}
+                                    customer={config.customer}
+                                    currentUsage={config.currentUsage}
+                                    editingAvailable={
+                                        !isCurrentSubscriptionScheduledToCancel
+                                    }
+                                    updateSubscription={updateSubscription}
+                                    scheduledToCancelAt={
+                                        config.scheduledToCancelAt
+                                    }
+                                    cancelledProducts={cancelledProducts}
+                                    contactBilling={contactBilling}
+                                />
+                            </Fragment>
+                        ))}
                     </div>
                 </Card>
                 {renderSummary()}
