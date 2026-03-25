@@ -205,7 +205,7 @@ describe('SettingsSidebar', () => {
         expect(screen.getByText('Store')).toBeInTheDocument()
         expect(screen.getByText('Users')).toBeInTheDocument()
         expect(screen.getByText('Access management')).toBeInTheDocument()
-        expect(screen.getByText('Billing & usage')).toBeInTheDocument()
+        expect(screen.getByText('Billing and usage')).toBeInTheDocument()
         expect(screen.getByText('REST API')).toBeInTheDocument()
         expect(screen.getByText('Audit logs')).toBeInTheDocument()
         expect(screen.getByText('Password & 2FA')).toBeInTheDocument()
