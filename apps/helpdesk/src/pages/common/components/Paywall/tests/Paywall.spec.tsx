@@ -1,8 +1,8 @@
 import type { ComponentProps, ReactNode } from 'react'
 
+import { resetLDMocks } from '@repo/feature-flags/testing'
 import type { RenderResult } from '@testing-library/react'
 import { fireEvent, render } from '@testing-library/react'
-import { resetLDMocks } from 'jest-launchdarkly-mock'
 import { MemoryRouter } from 'react-router-dom'
 
 import { testimonial as testimonialFixture } from 'fixtures/paywall'

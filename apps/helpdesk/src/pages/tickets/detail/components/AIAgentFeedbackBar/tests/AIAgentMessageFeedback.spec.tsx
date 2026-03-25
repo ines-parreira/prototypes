@@ -1,9 +1,8 @@
-import { getLDClient } from '@repo/feature-flags'
+import { ldClientMock } from '@repo/feature-flags/testing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { ldClientMock } from 'jest-launchdarkly-mock'
 import { useCookies } from 'react-cookie'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -92,9 +91,6 @@ describe('AIAgentMessageFeedback', () => {
         ])
         ;(useHasAgentPrivileges as jest.Mock).mockReturnValue(true)
         ldClientMock.allFlags.mockReturnValue({})
-        let __client = getLDClient()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        __client = ldClientMock
     })
 
     afterEach(() => {

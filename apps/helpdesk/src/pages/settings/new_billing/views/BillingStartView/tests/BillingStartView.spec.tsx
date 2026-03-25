@@ -5,11 +5,11 @@ import {
     BILLING_PAYMENT_PATH,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { resetLDMocks } from '@repo/feature-flags/testing'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
-import { resetLDMocks } from 'jest-launchdarkly-mock'
 
 import {
     convertStatusLimitReached,

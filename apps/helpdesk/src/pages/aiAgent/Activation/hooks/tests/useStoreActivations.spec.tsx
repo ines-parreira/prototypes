@@ -6,7 +6,6 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 
@@ -16,6 +15,7 @@ import type { StoreConfiguration } from 'models/aiAgent/types'
 import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfiguration.fixtures'
 import { useStoreConfigurationForAccount } from 'pages/aiAgent/hooks/useStoreConfigurationForAccount'
 import { useStoresConfigurationMutation } from 'pages/aiAgent/hooks/useStoresConfigurationMutation'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore } from 'utils/testing'
 
@@ -375,7 +375,7 @@ describe('useStoreActivations', () => {
 
     describe('migrateToNewPricing', () => {
         it('should update all store configuration even on a single store page', async () => {
-            mockFlags({
+            mockFeatureFlags({
                 [FeatureFlagKey.AiAgentNewActivationXp]: true,
             })
             const { result } = renderHookWithRouter({
@@ -403,7 +403,7 @@ describe('useStoreActivations', () => {
         })
 
         it('should filter store that do not exist', async () => {
-            mockFlags({
+            mockFeatureFlags({
                 [FeatureFlagKey.AiAgentNewActivationXp]: true,
             })
             const { result } = renderHookWithRouter({

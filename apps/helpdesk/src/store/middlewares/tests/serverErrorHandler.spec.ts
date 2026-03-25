@@ -1,6 +1,6 @@
 import { getLDClient } from '@repo/feature-flags'
+import { ldClientMock } from '@repo/feature-flags/testing'
 import { waitFor } from '@testing-library/react'
-import { ldClientMock } from 'jest-launchdarkly-mock'
 import _get from 'lodash/get'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'

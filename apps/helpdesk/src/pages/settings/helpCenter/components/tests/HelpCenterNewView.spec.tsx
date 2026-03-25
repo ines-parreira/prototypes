@@ -3,7 +3,6 @@ import React from 'react'
 import { history } from '@repo/routing'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
@@ -12,6 +11,7 @@ import { billingState } from 'fixtures/billing'
 import { integrationsState } from 'fixtures/integrations'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { RootState, StoreDispatch } from 'state/types'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { renderWithRouter } from 'utils/testing'
 
 import { getLocalesResponseFixture } from '../../fixtures/getLocalesResponse.fixtures'
@@ -74,7 +74,7 @@ describe('<HelpCenterNewView />', () => {
 
     beforeEach(() => {
         history.push = jest.fn()
-        mockFlags({})
+        mockFeatureFlags({})
         mockCheckHelpCenterWithSubdomainExists.mockResolvedValue(true)
         mockCreateHelpCenter.mockResolvedValue({ data: {} })
         mockIsPassingRuleCheck.mockReturnValue(true)

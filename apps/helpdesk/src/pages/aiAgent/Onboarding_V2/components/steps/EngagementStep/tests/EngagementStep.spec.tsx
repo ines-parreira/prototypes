@@ -1,3 +1,4 @@
+import { ldClientMock } from '@repo/feature-flags/testing'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -5,7 +6,6 @@ import { userEvent } from '@testing-library/user-event'
 import { createMemoryHistory } from 'history'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import { ldClientMock } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 

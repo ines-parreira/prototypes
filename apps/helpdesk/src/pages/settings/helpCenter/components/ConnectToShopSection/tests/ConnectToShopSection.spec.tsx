@@ -2,7 +2,6 @@ import type React from 'react'
 
 import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -17,6 +16,7 @@ import { initialState as articlesState } from 'state/entities/helpCenter/article
 import { initialState as categoriesState } from 'state/entities/helpCenter/categories/reducer'
 import type { RootState, StoreDispatch } from 'state/types'
 import { initialState as uiState } from 'state/ui/helpCenter/reducer'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { ConnectToShopSection } from '../ConnectToShopSection'
 
@@ -94,7 +94,7 @@ const mockUseAiAgentAccess = jest.mocked(useAiAgentAccess)
 describe('<ConnectToShopSection />', () => {
     beforeEach(() => {
         store.clearActions()
-        mockFlags({})
+        mockFeatureFlags({})
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,

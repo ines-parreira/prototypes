@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { MemoryRouter } from 'react-router-dom'
 
 import { GUIDANCE } from 'pages/aiAgent/constants'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import { GuidanceBreadcrumbs } from './GuidanceBreadcrumbs'
 
@@ -27,7 +27,7 @@ describe('GuidanceBreadcrumbs', () => {
     })
 
     test('renders the component', () => {
-        mockFlags({})
+        mockFeatureFlags({})
 
         render(
             <MemoryRouter>

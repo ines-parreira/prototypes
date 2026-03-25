@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
+import { resetLDMocks } from '@repo/feature-flags/testing'
 import { fromJS } from 'immutable'
-import { resetLDMocks } from 'jest-launchdarkly-mock'
 import _cloneDeep from 'lodash/cloneDeep'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'

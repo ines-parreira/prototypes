@@ -1,5 +1,5 @@
+import { ldClientMock } from '@repo/feature-flags/testing'
 import { fireEvent, screen } from '@testing-library/react'
-import { ldClientMock } from 'jest-launchdarkly-mock'
 
 import { encodeAction } from 'pages/common/draftjs/plugins/guidanceActions/utils'
 import { useToolbarContext } from 'pages/common/draftjs/plugins/toolbar/ToolbarContext'

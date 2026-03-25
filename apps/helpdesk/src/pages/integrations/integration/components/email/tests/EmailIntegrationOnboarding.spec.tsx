@@ -7,7 +7,6 @@ import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -28,6 +27,7 @@ import {
     useEmailOnboarding,
 } from 'pages/integrations/integration/components/email/hooks/useEmailOnboarding'
 import type { RootState, StoreDispatch } from 'state/types'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 jest.mock('@repo/routing', () => ({
@@ -131,7 +131,7 @@ describe('<EmailIntegrationOnboarding />', () => {
             <div>DomainVerificationOnboarding</div>,
         )
         getDomainFromEmailAddressMock.mockReturnValue('gorgias.com')
-        mockFlags({
+        mockFeatureFlags({
             [FeatureFlagKey.ForceEmailOnboarding]: false,
         })
 
@@ -300,7 +300,7 @@ describe('<EmailIntegrationOnboarding />', () => {
         }
 
         it('should show "Add email address" breadcrumb when forceEmailForwardingFlag is false and customer is not enterprise', () => {
-            mockFlags({
+            mockFeatureFlags({
                 [FeatureFlagKey.ForceEmailOnboarding]: false,
             })
 
@@ -314,7 +314,7 @@ describe('<EmailIntegrationOnboarding />', () => {
         })
 
         it('should show "Add email address" breadcrumb when forceEmailForwardingFlag is false and customer is enterprise', () => {
-            mockFlags({
+            mockFeatureFlags({
                 [FeatureFlagKey.ForceEmailOnboarding]: false,
             })
 
@@ -328,7 +328,7 @@ describe('<EmailIntegrationOnboarding />', () => {
         })
 
         it('should show "Add email address" breadcrumb when forceEmailForwardingFlag is true and customer is not enterprise', () => {
-            mockFlags({
+            mockFeatureFlags({
                 [FeatureFlagKey.ForceEmailOnboarding]: true,
             })
 
@@ -342,7 +342,7 @@ describe('<EmailIntegrationOnboarding />', () => {
         })
 
         it('should hide "Add email address" breadcrumb when forceEmailForwardingFlag is true and customer is enterprise (isForcedEmailOnboarding = true)', () => {
-            mockFlags({
+            mockFeatureFlags({
                 [FeatureFlagKey.ForceEmailOnboarding]: true,
             })
 
@@ -354,7 +354,9 @@ describe('<EmailIntegrationOnboarding />', () => {
 
             expect(screen.getByRole('navigation')).toBeInTheDocument()
             expect(screen.getByText('email@gorgias.com')).toBeInTheDocument()
-            expect(screen.getByText('Add email address')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Add email address'),
+            ).not.toBeInTheDocument()
         })
     })
 

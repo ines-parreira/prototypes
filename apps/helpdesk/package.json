@@ -374,7 +374,6 @@
         "jest-fixed-jsdom": "catalog:test",
         "jest-immutable-matchers": "catalog:test",
         "jest-junit": "catalog:test",
-        "jest-launchdarkly-mock": "catalog:test",
         "jest-matcher-utils": "catalog:test",
         "jest-mock": "catalog:test",
         "jsdom": "catalog:test",

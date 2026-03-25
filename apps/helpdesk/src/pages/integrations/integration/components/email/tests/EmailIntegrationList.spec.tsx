@@ -4,12 +4,12 @@ import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 
 import { basicMonthlyHelpdeskPlan, customHelpdeskPlan } from 'fixtures/plans'
 import useAppSelector from 'hooks/useAppSelector'
 import { EmailProvider, IntegrationType } from 'models/integration/constants'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockStore, renderWithRouter } from 'utils/testing'
 
@@ -638,7 +638,7 @@ describe('<EmailIntegrationList/>', () => {
                     canIntegrationDomainBeVerifiedMock.mockReturnValue(
                         canDomainBeVerified,
                     )
-                    mockFlags({
+                    mockFeatureFlags({
                         [FeatureFlagKey.NewDomainVerification]:
                             newDomainVerificationFFEnabled ?? false,
                     })

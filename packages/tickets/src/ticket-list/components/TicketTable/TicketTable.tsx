@@ -280,7 +280,6 @@ export function TicketTable({
                 isLoading={isLoading || isFetchingNextPage}
                 onRowClick={handleRowClick}
                 layout="fixed"
-                overflow="scroll"
                 selection={{
                     enable: true,
                     multiple: true,

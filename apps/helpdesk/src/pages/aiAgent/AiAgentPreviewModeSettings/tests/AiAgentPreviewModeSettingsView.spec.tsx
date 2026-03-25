@@ -2,7 +2,6 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
@@ -16,6 +15,7 @@ import { usePublicResources } from 'pages/aiAgent/hooks/usePublicResources'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
@@ -98,7 +98,7 @@ describe('AiAgentPreviewModeSettingsView', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         mockUseParams.mockReturnValue({ shopName: 'Test Shop' })
-        mockFlags({
+        mockFeatureFlags({
             [FeatureFlagKey.FollowUpAiAgentPreviewMode]: true,
         })
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({

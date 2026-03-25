@@ -1,9 +1,9 @@
 import React from 'react'
 
 import type { SelectedPlans } from '@repo/billing'
+import { resetLDMocks } from '@repo/feature-flags/testing'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { resetLDMocks } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'

@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react'
 
-import { getLDClient } from '@repo/feature-flags'
+import { ldClientMock } from '@repo/feature-flags/testing'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { ldClientMock } from 'jest-launchdarkly-mock'
 import { FormProvider, useForm, useFormContext } from 'react-hook-form'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -58,9 +57,6 @@ const Wrapper = ({
 describe('ConversationStartersSettings', () => {
     beforeEach(() => {
         ldClientMock.allFlags.mockReturnValue({})
-        let __client = getLDClient()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        __client = ldClientMock
     })
 
     it('renders the toggle with correct label and unchecked by default', () => {

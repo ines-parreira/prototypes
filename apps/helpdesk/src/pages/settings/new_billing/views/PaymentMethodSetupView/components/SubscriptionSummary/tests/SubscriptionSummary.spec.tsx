@@ -6,12 +6,12 @@ import { useSessionStorage } from '@repo/hooks'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
 import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { Cadence, ProductType } from 'models/billing/types'
 import { useBillingPlans } from 'pages/settings/new_billing/hooks/useBillingPlan'
 import * as selectors from 'state/currentAccount/selectors'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
@@ -90,7 +90,7 @@ describe('SubscriptionSummary Component', () => {
         assumeMock(useBillingPlans).mockReturnValue(
             defaultUseBillingPlansMockReturnValue,
         )
-        mockFlags({
+        mockFeatureFlags({
             [FeatureFlagKey.BillingSummaryTotalWithCoupons]: false,
         })
     })

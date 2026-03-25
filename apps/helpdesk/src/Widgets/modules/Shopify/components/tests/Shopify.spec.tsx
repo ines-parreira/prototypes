@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import React, { useContext } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
@@ -20,10 +21,12 @@ jest.mock('Widgets/modules/Template', () => {
 })
 
 const TemplateMock = assumeMock(Template)
+const useFlagMock = assumeMock(useFlag)
 
 describe('ShopifyWidget', () => {
     beforeEach(() => {
         TemplateMock.mockReturnValue(<></>)
+        useFlagMock.mockReturnValue(false)
     })
     const props = {
         whatever: '20-1 rpz',
@@ -35,7 +38,7 @@ describe('ShopifyWidget', () => {
         expect(TemplateMock).toHaveBeenCalledWith(props, expect.anything())
     })
 
-    it('should call the customization context provider with the customization object', () => {
+    it('should call the customization context provider with the customization object and the flag state', () => {
         let passedCustomization = null
         TemplateMock.mockImplementation(() => {
             passedCustomization = useContext(CustomizationContext)
@@ -43,7 +46,13 @@ describe('ShopifyWidget', () => {
         })
         render(<ShopifyWidget {...props} />)
 
-        expect(passedCustomization).toEqual(customization)
+        expect(useFlagMock).toHaveBeenCalledWith(
+            FeatureFlagKey.ShopifyHideActionButtons,
+        )
+        expect(passedCustomization).toEqual({
+            ...customization,
+            hideActionsForCustomer: false,
+        })
     })
 })
 

@@ -6,7 +6,6 @@ import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -25,6 +24,7 @@ import { usePollStoreDomainIngestionLog } from 'pages/aiAgent/hooks/usePollStore
 import { useSyncStoreDomain } from 'pages/aiAgent/hooks/useSyncStoreDomain'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
@@ -178,7 +178,7 @@ describe('<AiAgentScrapedDomainQuestionsContainer />', () => {
             isAllIngestedResourceUpdating: false,
             updateAllIngestedResourcesStatus: jest.fn(),
         })
-        mockFlags({
+        mockFeatureFlags({
             [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
         })
         mockUseGetIngestedResource.mockReturnValue({

@@ -4,7 +4,6 @@ import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { useLocation, useParams } from 'react-router-dom'
 
 import {
@@ -18,6 +17,7 @@ import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArtic
 import { usePublicResourceMutation } from 'pages/aiAgent/hooks/usePublicResourcesMutation'
 import { usePublicResourcesPooling } from 'pages/aiAgent/hooks/usePublicResourcesPooling'
 import { getSingleHelpCenterResponseFixtureWithTranslation } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import AiAgentExternalSourceArticlesView from '../AiAgentExternalSourceArticlesView'
@@ -111,7 +111,7 @@ const renderComponent = (props = {}) => {
 
 describe('AiAgentExternalSourceArticlesView', () => {
     beforeEach(() => {
-        mockFlags({
+        mockFeatureFlags({
             AiShoppingAssistantEnabled: true,
         })
         mockUseLocation.mockReturnValue({

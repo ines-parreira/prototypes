@@ -3,7 +3,6 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { keyBy } from 'lodash'
 import { Provider } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -21,6 +20,7 @@ import { getStoreConfigurationFixture } from 'pages/aiAgent/fixtures/storeConfig
 import { useGetOrCreateSnippetHelpCenter } from 'pages/aiAgent/hooks/useGetOrCreateSnippetHelpCenter'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getHasAutomate } from 'state/billing/selectors'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
@@ -210,7 +210,7 @@ const setupMocks = ({
     isHelpCentersLoading = false,
     hasStoreConfiguration = true,
 } = {}) => {
-    mockFlags({})
+    mockFeatureFlags({})
 
     mockGetHasAutomate.mockReturnValue(false)
     mockUseGetOrCreateSnippetHelpCenter.mockReturnValue({

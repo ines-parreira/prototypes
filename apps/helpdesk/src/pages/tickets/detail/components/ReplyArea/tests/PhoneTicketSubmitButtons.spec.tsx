@@ -1,10 +1,10 @@
 import React from 'react'
 
+import { resetLDMocks } from '@repo/feature-flags/testing'
 import { assumeMock } from '@repo/testing'
 import { isDeviceReady } from '@repo/voice'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { resetLDMocks } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'

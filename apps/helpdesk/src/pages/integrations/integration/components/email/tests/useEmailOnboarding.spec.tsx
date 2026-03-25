@@ -3,7 +3,6 @@ import * as hooksImports from '@repo/hooks'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import createMockStore from 'redux-mock-store'
@@ -24,6 +23,7 @@ import { fetchIntegration, onCreateSuccess } from 'state/integrations/actions'
 import { DELETE_INTEGRATION_SUCCESS } from 'state/integrations/constants'
 import { notify } from 'state/notifications/actions'
 import type { RootState, StoreDispatch } from 'state/types'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import type {
@@ -97,7 +97,7 @@ const mockIsRequested = (isRequested: boolean) => {
 
 describe('useEmailOnboarding()', () => {
     beforeEach(() => {
-        mockFlags({
+        mockFeatureFlags({
             [FeatureFlagKey.NewDomainVerification]: true,
         })
     })

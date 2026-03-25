@@ -4,7 +4,8 @@
     "description": "Feature flags package",
     "private": true,
     "exports": {
-        ".": "./src/index.ts"
+        ".": "./src/index.ts",
+        "./testing": "./src/testing.ts"
     },
     "scripts": {
         "format:check": "prettier --check .",
@@ -36,6 +37,7 @@
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
+        "jest-mock": "catalog:test",
         "launchdarkly-js-client-sdk": "catalog:feature-flags",
         "launchdarkly-react-client-sdk": "catalog:feature-flags",
         "oxlint": "catalog:oxlint",

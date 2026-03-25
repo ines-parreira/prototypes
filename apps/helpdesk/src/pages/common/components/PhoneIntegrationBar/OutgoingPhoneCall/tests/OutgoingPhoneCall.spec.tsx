@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import type { Call } from '@twilio/voice-sdk'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import type { RootState, StoreDispatch } from 'state/types'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockOutgoingCall } from 'tests/twilioMocks'
 
 import OutgoingPhoneCall from '../OutgoingPhoneCall'
@@ -35,7 +35,7 @@ describe('<OutgoingPhoneCall/>', () => {
             }),
         } as RootState
         store = mockStore(state)
-        mockFlags({})
+        mockFeatureFlags({})
     })
 
     it('should render', () => {

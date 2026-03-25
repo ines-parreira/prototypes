@@ -4,10 +4,10 @@ import React from 'react'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 
 import { account } from 'fixtures/account'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockStore } from 'utils/testing'
 
 import {
@@ -24,7 +24,7 @@ describe('useAiAgentOnboardingState', () => {
     const shopName = 'Test Shop'
 
     beforeEach(() => {
-        mockFlags({
+        mockFeatureFlags({
             [FeatureFlagKey.AiAgentOnboardingWizard]: true,
         })
         mockUseStoreConfiguration.mockReturnValue({

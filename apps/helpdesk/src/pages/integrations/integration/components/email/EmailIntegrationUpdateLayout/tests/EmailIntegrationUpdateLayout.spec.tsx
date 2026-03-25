@@ -4,9 +4,9 @@ import { FeatureFlagKey } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { mockFlags } from 'jest-launchdarkly-mock'
 
 import type { Integration } from 'models/integration/types'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { renderWithRouter } from 'utils/testing'
 
 import {
@@ -38,7 +38,7 @@ const renderComponent = (
 
 describe('EmailIntegrationUpdateLayout', () => {
     beforeEach(() => {
-        mockFlags({
+        mockFeatureFlags({
             [FeatureFlagKey.NewDomainVerification]: false,
         })
         isGenericEmailIntegrationMock.mockReturnValue(true)
@@ -143,7 +143,7 @@ describe('EmailIntegrationUpdateLayout', () => {
     })
 
     it('should render Domain Verification tab name even if provider is Sendgrid when feature flag is enabled', () => {
-        mockFlags({
+        mockFeatureFlags({
             [FeatureFlagKey.NewDomainVerification]: true,
         })
 

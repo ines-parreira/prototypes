@@ -1,4 +1,4 @@
-import { ldClientMock } from 'jest-launchdarkly-mock'
+import { ldClientMock } from '@repo/feature-flags/testing'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import type { Knowledge } from 'models/aiAgentFeedback/types'

@@ -1,9 +1,8 @@
 import type { ReactNode } from 'react'
 
-import { getLDClient } from '@repo/feature-flags'
+import { ldClientMock } from '@repo/feature-flags/testing'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import { fromJS } from 'immutable'
-import { ldClientMock } from 'jest-launchdarkly-mock'
 import { FormProvider, useForm } from 'react-hook-form'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
@@ -98,9 +97,6 @@ describe('ConversationLauncherSettings', () => {
 
     beforeEach(() => {
         ldClientMock.allFlags.mockReturnValue({})
-        let __client = getLDClient()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        __client = ldClientMock
 
         // Default mock - shows setup button (no floatingChatInputConfiguration)
         mockedUseAiAgentStoreConfigurationContext.mockReturnValue({

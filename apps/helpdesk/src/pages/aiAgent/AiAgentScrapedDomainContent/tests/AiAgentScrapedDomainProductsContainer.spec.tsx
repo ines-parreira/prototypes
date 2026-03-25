@@ -7,7 +7,6 @@ import { assumeMock } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -23,6 +22,7 @@ import { usePollStoreDomainIngestionLog } from 'pages/aiAgent/hooks/usePollStore
 import { useSyncStoreDomain } from 'pages/aiAgent/hooks/useSyncStoreDomain'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
@@ -163,7 +163,7 @@ describe('<AiAgentScrapedDomainProductsContainer />', () => {
             data: null,
             isLoading: false,
         } as any)
-        mockFlags({
+        mockFeatureFlags({
             [FeatureFlagKey.AiAgentScrapeStoreDomain]: true,
         })
         mockUseFlag.mockImplementation(() => {

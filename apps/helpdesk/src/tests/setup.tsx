@@ -1,7 +1,6 @@
 import './mockAudioContext'
 
 import MutationObserver from '@sheerun/mutationobserver-shim'
-import { mockFlags } from 'jest-launchdarkly-mock'
 import mockMoment from 'moment'
 import type { MomentTimezone } from 'moment-timezone'
 import { setImmediate } from 'timers'
@@ -10,6 +9,7 @@ import { TextDecoder, TextEncoder } from 'util'
 import '@formatjs/intl-displaynames/polyfill'
 import '@formatjs/intl-displaynames/locale-data/en'
 
+import { ldClientMock, resetLDMocks } from '@repo/feature-flags/testing'
 import { history } from '@repo/routing'
 import { envVars } from '@repo/utils'
 
@@ -278,9 +278,6 @@ global.TextEncoder = TextEncoder as unknown as typeof global.TextEncoder
 global.TextDecoder = TextDecoder as typeof global.TextDecoder
 global.setImmediate = setImmediate
 
-// LaunchDarkly
-mockFlags({})
-
 // Font loading
 Object.defineProperty(document, 'fonts', {
     value: jest.fn(() => {
@@ -298,6 +295,16 @@ global.fetch = jest.fn(() =>
     Promise.resolve({ arrayBuffer: () => ({}) } as Response),
 )
 
+function getMockedFlagValue<T>(flag: string, defaultValue: T): T {
+    const flags = ldClientMock.allFlags() ?? {}
+
+    if (Object.prototype.hasOwnProperty.call(flags, flag)) {
+        return flags[flag] as T
+    }
+
+    return ldClientMock.variation(flag, defaultValue) as T
+}
+
 jest.mock('core/theme/useTheme.ts', () =>
     jest.fn(() => ({
         name: THEME_NAME.Light,
@@ -307,18 +314,108 @@ jest.mock('core/theme/useTheme.ts', () =>
 )
 
 jest.mock('@repo/feature-flags', () => {
-    const mockModule = jest.createMockFromModule(
-        '@repo/feature-flags',
-    ) as typeof import('@repo/feature-flags')
+    const React = jest.requireActual('react') as typeof import('react')
     const actual = jest.requireActual(
         '@repo/feature-flags',
     ) as typeof import('@repo/feature-flags')
+
+    const useFlag = jest.fn(function useFlagImpl(
+        flag: string,
+        defaultValue: unknown = false,
+    ) {
+        return getMockedFlagValue(flag, defaultValue)
+    })
+
+    const useFlagWithLoading = jest.fn(function useFlagWithLoadingImpl(
+        flag: string,
+        defaultValue: unknown = false,
+    ) {
+        return {
+            value: getMockedFlagValue(flag, defaultValue),
+            isLoading: false,
+        }
+    })
+
+    const withFeatureFlags = jest.fn(function withFeatureFlagsImpl(
+        Component: React.ComponentType<Record<string, unknown>>,
+    ) {
+        const WrappedComponent = (props: Record<string, unknown>) =>
+            React.createElement(Component, {
+                ...props,
+                flags: ldClientMock.allFlags(),
+            })
+
+        WrappedComponent.displayName = `WithFeatureFlags(${
+            Component.displayName || Component.name || 'Component'
+        })`
+
+        return WrappedComponent
+    })
+
+    const fetchFlag = jest.fn(async function fetchFlagImpl(
+        flag: string,
+        defaultValue: unknown = false,
+    ) {
+        return {
+            flag: getMockedFlagValue(flag, defaultValue),
+            error: null,
+        }
+    })
+
+    const useHelpdeskV2BaselineFlag = jest.fn(() => {
+        const hasUIVisionBetaBaselineFlag = getMockedFlagValue(
+            actual.FeatureFlagKey.UIVisionBetaBaseline,
+            false,
+        )
+
+        return {
+            hasUIVisionBetaBaselineFlag,
+            hasUIVisionBeta: hasUIVisionBetaBaselineFlag,
+            onToggle: jest.fn(),
+        }
+    })
+
+    const useHelpdeskV2MS2Flag = jest.fn(() => {
+        const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
+
+        return (
+            hasUIVisionBeta &&
+            getMockedFlagValue(actual.FeatureFlagKey.UIVisionMilestone2, false)
+        )
+    })
+
+    const useHelpdeskV2WayfindingMS1Flag = jest.fn(() => {
+        const { hasUIVisionBeta } = useHelpdeskV2BaselineFlag()
+
+        return (
+            hasUIVisionBeta &&
+            getMockedFlagValue(
+                actual.FeatureFlagKey.UIVisionWayfindingMS1,
+                false,
+            )
+        )
+    })
+
     return {
-        ...mockModule,
+        ...actual,
+        FeatureFlagsProvider: ({ children }: { children: React.ReactNode }) =>
+            children,
         FeatureFlagKey: actual.FeatureFlagKey,
-        useFlag: jest.fn(),
-        useFlagWithLoading: jest.fn(() => ({ value: false, isLoading: false })),
+        getLDClient: jest.fn(() => ldClientMock),
+        initLaunchDarkly: jest.fn(() => ldClientMock),
+        withFeatureFlags,
+        useFlag,
+        fetchFlag,
+        useAreFlagsLoading: jest.fn(() => false),
+        useFlagWithLoading,
+        useHelpdeskV2BaselineFlag,
+        useHelpdeskV2MS2Flag,
+        useHelpdeskV2WayfindingMS1Flag,
     }
+})
+
+beforeEach(() => {
+    resetLDMocks()
 })
 
 const SocketManagerMock = () => ({
