@@ -28,10 +28,12 @@ import {
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
     allAgentsClosedTicketsDrillDownQueryFactory,
+    allAgentsCsatDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
+    supportAgentCsatDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
@@ -272,6 +274,12 @@ const shoppingAssistantAutomatedInteractionsDrillDownQueryFactoryMock =
     assumeMock(shoppingAssistantAutomatedInteractionsDrillDownQueryFactory)
 const supportAgentAutomatedInteractionsDrillDownQueryFactoryMock = assumeMock(
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
+)
+const allAgentsCsatDrillDownQueryFactoryMock = assumeMock(
+    allAgentsCsatDrillDownQueryFactory,
+)
+const supportAgentCsatDrillDownQueryFactoryMock = assumeMock(
+    supportAgentCsatDrillDownQueryFactory,
 )
 
 jest.mock('AIJourney/queries/aiJourneyDrillDownQueries')
@@ -2010,6 +2018,50 @@ describe('getDrillDownQuery', () => {
             supportAgentAutomatedInteractionsDrillDownQueryFactoryMock,
         ).toHaveBeenCalledWith(statsFilters, timezone)
     })
+
+    it('should be populated with AllAgentsCsatCard', () => {
+        const timezone = 'someTimeZone'
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+        }
+        const drillDownMetric: DrillDownMetric = {
+            metricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
+        } as DrillDownMetric
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(allAgentsCsatDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+        )
+    })
+
+    it('should be populated with SupportAgentCsatCard', () => {
+        const timezone = 'someTimeZone'
+        const periodStart = moment()
+        const periodEnd = periodStart.clone().add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                start_datetime: periodStart.toISOString(),
+                end_datetime: periodEnd.toISOString(),
+            },
+        }
+        const drillDownMetric: DrillDownMetric = {
+            metricName: AiAgentDrillDownMetricName.SupportAgentCsatCard,
+        } as DrillDownMetric
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(supportAgentCsatDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+        )
+    })
 })
 
 describe('getDrillDownMetric', () => {
@@ -2431,6 +2483,26 @@ describe('getDrillDownMetric', () => {
             } as AiAgentMetrics,
             expectedValues: {
                 metricTitle: '',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: 'CSAT',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName: AiAgentDrillDownMetricName.SupportAgentCsatCard,
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: 'CSAT',
                 showMetric: false,
                 metricValueFormat: 'decimal',
             },

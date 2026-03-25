@@ -109,6 +109,8 @@ export const hiddenMetrics: DrillDownMetric['metricName'][] = [
     AiAgentDrillDownMetricName.ResolvedInteractionsCard,
     AiAgentDrillDownMetricName.SupportInteractionsCard,
     AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
+    AiAgentDrillDownMetricName.AllAgentsCsatCard,
+    AiAgentDrillDownMetricName.SupportAgentCsatCard,
 ]
 
 describe('MetricsConfig', () => {

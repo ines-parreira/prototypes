@@ -7,6 +7,7 @@ import { Tag } from '@gorgias/axiom'
 
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import { DROPDOWN_NESTING_DELIMITER } from 'custom-fields/constants'
+import { AI_AGENT_OUTCOME_DISPLAY_LABELS } from 'domains/reporting/hooks/automate/types'
 import {
     defaultEnrichmentFields,
     extraEnrichmentFieldsPerMetric,
@@ -141,7 +142,11 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName === AutoQAAgentsTableColumn.ReviewedClosedTickets
     const showSurveyScore =
         metricData.metricName === SatisfactionMetric.SatisfactionScore ||
-        metricData.metricName === KnowledgeMetric.CSAT
+        metricData.metricName === KnowledgeMetric.CSAT ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AllAgentsCsatCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportAgentCsatCard
 
     const isKnowledgeMetric =
         metricData.metricName === KnowledgeMetric.Tickets ||
@@ -200,7 +205,11 @@ export const TicketDrillDownTableContent = ({
         metricData.metricName ===
             AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard ||
         metricData.metricName ===
-            AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard
+            AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AllAgentsCsatCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportAgentCsatCard
 
     const isAiAgentClosedTicketsMetric =
         metricData.metricName ===
@@ -225,6 +234,15 @@ export const TicketDrillDownTableContent = ({
     const { data, isFetching } = contextData ?? fetchedData
 
     const getTicketColumnWidth = () => {
+        if (
+            metricData.metricName ===
+                AiAgentDrillDownMetricName.AllAgentsCsatCard ||
+            metricData.metricName ===
+                AiAgentDrillDownMetricName.SupportAgentCsatCard
+        ) {
+            return 232
+        }
+
         if (
             isAiInsightsMetric ||
             isAiPerformanceMetric ||
@@ -376,6 +394,21 @@ export const TicketDrillDownTableContent = ({
                         />
                     </>
                 )}
+                {showSurveyScore && (
+                    <HeaderCellProperty
+                        title={
+                            metricData.metricName ===
+                                AiAgentDrillDownMetricName.AllAgentsCsatCard ||
+                            metricData.metricName ===
+                                AiAgentDrillDownMetricName.SupportAgentCsatCard
+                                ? 'CSAT'
+                                : CSAT_SCORE
+                        }
+                        width={columnWidths.surveyScore}
+                        className={css.headerCell}
+                        titleClassName={css.headerCellTitle}
+                    />
+                )}
                 {(isAiInsightsMetric ||
                     isAiPerformanceMetric ||
                     isAiSalesAgentConversationsMetric ||
@@ -383,6 +416,10 @@ export const TicketDrillDownTableContent = ({
                     isAiSalesAgentDiscountOfferedMetric ||
                     isAiSalesAgentTotalProductRecommendationsMetric ||
                     isAiAgentClosedTicketsMetric ||
+                    metricData.metricName ===
+                        AiAgentDrillDownMetricName.AllAgentsCsatCard ||
+                    metricData.metricName ===
+                        AiAgentDrillDownMetricName.SupportAgentCsatCard ||
                     (isKnowledgeMetric &&
                         metricData.metricName !== KnowledgeMetric.CSAT)) && (
                     <DrillDownHeaderCellWithTooltip
@@ -400,14 +437,6 @@ export const TicketDrillDownTableContent = ({
                         className={css.headerCell}
                         titleClassName={css.headerCellTitle}
                         tooltip={tooltipHints.metric}
-                    />
-                )}
-                {showSurveyScore && (
-                    <HeaderCellProperty
-                        title={CSAT_SCORE}
-                        width={columnWidths.surveyScore}
-                        className={css.headerCell}
-                        titleClassName={css.headerCellTitle}
                     />
                 )}
                 {isAutoQAResolutionCompleteness && (
@@ -653,6 +682,12 @@ export const TicketDrillDownTableContent = ({
                                     />
                                 </BodyCell>
                             )}
+                            {showSurveyScore && (
+                                <BodyCell width={columnWidths.surveyScore}>
+                                    {item.surveyScore ||
+                                        NOT_AVAILABLE_PLACEHOLDER}
+                                </BodyCell>
+                            )}
                             {(isAiInsightsMetric ||
                                 isAiPerformanceMetric ||
                                 isAiSalesAgentConversationsMetric ||
@@ -660,19 +695,28 @@ export const TicketDrillDownTableContent = ({
                                 isAiSalesAgentDiscountOfferedMetric ||
                                 isAiSalesAgentTotalProductRecommendationsMetric ||
                                 isAiAgentClosedTicketsMetric ||
+                                metricData.metricName ===
+                                    AiAgentDrillDownMetricName.AllAgentsCsatCard ||
+                                metricData.metricName ===
+                                    AiAgentDrillDownMetricName.SupportAgentCsatCard ||
                                 (isKnowledgeMetric &&
                                     metricData.metricName !==
                                         KnowledgeMetric.CSAT)) && (
                                 <BodyCell width={columnWidths.outcome}>
                                     {item.outcome ? (
-                                        isAiAgentClosedTicketsMetric ? (
+                                        isAiAgentClosedTicketsMetric ||
+                                        metricData.metricName ===
+                                            AiAgentDrillDownMetricName.AllAgentsCsatCard ||
+                                        metricData.metricName ===
+                                            AiAgentDrillDownMetricName.SupportAgentCsatCard ? (
                                             <OutcomeTag
                                                 outcome={item.outcome}
                                             />
                                         ) : isKnowledgeMetric ? (
                                             <Tag
                                                 color={
-                                                    item.outcome === 'Automated'
+                                                    item.outcome ===
+                                                    AI_AGENT_OUTCOME_DISPLAY_LABELS.Automated
                                                         ? 'green'
                                                         : 'orange'
                                                 }
@@ -717,12 +761,6 @@ export const TicketDrillDownTableContent = ({
                                         : item.slas && (
                                               <SLAStatusCell item={item.slas} />
                                           )}
-                                </BodyCell>
-                            )}
-                            {showSurveyScore && (
-                                <BodyCell width={columnWidths.surveyScore}>
-                                    {item.surveyScore ||
-                                        NOT_AVAILABLE_PLACEHOLDER}
                                 </BodyCell>
                             )}
                             {isAutoQAResolutionCompleteness && (

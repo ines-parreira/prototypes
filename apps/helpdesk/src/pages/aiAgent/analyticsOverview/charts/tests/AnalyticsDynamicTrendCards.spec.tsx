@@ -11,6 +11,7 @@ import type {
     DashboardChartProps,
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
+import { AnalyticsAiAgentAllAgentsCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsCsatCard'
 import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
@@ -285,6 +286,28 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSupportAgentCsatCard',
             Component: AnalyticsAiAgentSupportAgentCsatCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName: AiAgentDrillDownMetricName.SupportAgentCsatCard,
+                title: 'CSAT',
+            },
+            config: {
+                label: 'Average CSAT',
+                description:
+                    'Average CSAT score and rating distribution for surveys sent within the timeframe; surveys are sent following ticket resolution.',
+                metricFormat: 'decimal' as const,
+                value: 4.5,
+                prevValue: 4.3,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentAllAgentsCsatCard',
+            Component: AnalyticsAiAgentAllAgentsCsatCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
+                title: 'CSAT',
+            },
             config: {
                 label: 'Average CSAT',
                 description:

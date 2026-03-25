@@ -29,6 +29,8 @@ jest.mock(
         shoppingAssistantHandoverInteractionsDrillDownQueryFactory: jest.fn(),
         supportAgentHandoverInteractionsDrillDownQueryFactory: jest.fn(),
         allAgentsClosedTicketsDrillDownQueryFactory: jest.fn(),
+        allAgentsCsatDrillDownQueryFactory: jest.fn(),
+        supportAgentCsatDrillDownQueryFactory: jest.fn(),
     }),
 )
 jest.mock(
@@ -61,7 +63,7 @@ describe('AiAgentDrillDownConfig', () => {
     })
 
     it.each(Object.values(AiAgentDrillDownMetricName))(
-        'should include %s in metricsConfig',
+        'should include %s in metricsConfig with showMetric false',
         (metricName) => {
             expect(AiAgentDrillDownConfig.metricsConfig[metricName]).toEqual({
                 showMetric: false,

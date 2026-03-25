@@ -4,6 +4,7 @@ import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-s
 import type { TicketQAScoreCubeWithJoins } from 'domains/reporting/models/cubes/auto-qa/TicketQAScoreCube'
 import type { AIAgentAutomatedInteractionsV2Cube } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import type { AIAgentClosedTicketsCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
+import type { AIAgentCSATCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
 import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import type { SuccessRateCube } from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
 import type { ConvertOrderConversionCube } from 'domains/reporting/models/cubes/ConvertOrderConversionCube'
@@ -73,6 +74,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | HandleTimeCubeWithJoins
     | AIAgentAutomatedInteractionsV2Cube
     | AIAgentClosedTicketsCube
+    | AIAgentCSATCube
     | HelpdeskMessageCubeWithJoins
     | HelpdeskCustomerMessagesReceivedEnrichedCubeWithJoins
     | TicketQAScoreCubeWithJoins

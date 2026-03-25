@@ -6,7 +6,7 @@ import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/typ
 import { useAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { useAiAgentTrendCardDrillDown } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTrendCardDrillDown'
 
-export const AnalyticsAiAgentSupportAgentCsatCard = ({
+export const AnalyticsAiAgentAllAgentsCsatCard = ({
     chartId,
     dashboard,
     chartConfig,
@@ -15,13 +15,13 @@ export const AnalyticsAiAgentSupportAgentCsatCard = ({
         chartConfig: chartConfig!,
         chartId,
         dashboard,
-        useTrend: useAiAgentSupportAgentCsatTrend,
+        useTrend: useAiAgentSupportAgentCsatTrend, // AIAgentCSATCube has no AiAgentSkill dimension, same hook covers All Agents scope
         isAiAgentTrendCard: true,
     })
 
     const drillDown = useAiAgentTrendCardDrillDown(
         {
-            metricName: AiAgentDrillDownMetricName.SupportAgentCsatCard,
+            metricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
             title: 'CSAT',
         },
         trendCardProps.trend.data.value,

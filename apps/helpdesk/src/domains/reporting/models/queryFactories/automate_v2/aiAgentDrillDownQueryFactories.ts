@@ -9,6 +9,11 @@ import {
     AIAgentClosedTicketsDimension,
     AIAgentClosedTicketsFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
+import type { AIAgentCSATCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
+import {
+    AIAgentCSATDimension,
+    AIAgentCSATFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import {
@@ -204,4 +209,58 @@ export const allAgentsClosedTicketsDrillDownQueryFactory = (
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting ? [[AIAgentClosedTicketsDimension.TicketId, sorting]] : [],
+})
+
+const buildCsatPeriodFilters = (filters: StatsFilters) => [
+    {
+        member: AIAgentCSATFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [filters.period.start_datetime],
+    },
+    {
+        member: AIAgentCSATFilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [filters.period.end_datetime],
+    },
+]
+
+export const allAgentsCsatDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AIAgentCSATCube> => ({
+    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CSAT_DRILL_DOWN,
+    measures: [],
+    dimensions: [
+        AIAgentCSATDimension.TicketId,
+        AIAgentCSATDimension.SurveyScore,
+    ],
+    filters: buildCsatPeriodFilters(filters),
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting ? [[AIAgentCSATDimension.SurveyScore, sorting]] : [],
+})
+
+export const supportAgentCsatDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AIAgentCSATCube> => ({
+    metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_CSAT_DRILL_DOWN,
+    measures: [],
+    dimensions: [
+        AIAgentCSATDimension.TicketId,
+        AIAgentCSATDimension.SurveyScore,
+    ],
+    filters: [
+        {
+            member: AIAgentCSATFilterMember.AiAgentRole,
+            operator: ReportingFilterOperator.Equals,
+            values: [AIAgentSkills.AIAgentSupport],
+        },
+        ...buildCsatPeriodFilters(filters),
+    ],
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting ? [[AIAgentCSATDimension.SurveyScore, sorting]] : [],
 })

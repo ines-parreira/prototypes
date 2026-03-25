@@ -7,4 +7,6 @@ export enum AiAgentDrillDownMetricName {
     ShoppingAssistantHandoverInteractionsCard = 'shopping_assistant_handover_interactions_card',
     SupportAgentHandoverInteractionsCard = 'support_agent_handover_interactions_card',
     AllAgentsClosedTicketsCard = 'all_agents_closed_tickets_card',
+    AllAgentsCsatCard = 'all_agents_csat_card',
+    SupportAgentCsatCard = 'support_agent_csat_card',
 }

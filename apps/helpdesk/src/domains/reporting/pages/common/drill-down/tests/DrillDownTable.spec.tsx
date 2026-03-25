@@ -524,6 +524,30 @@ describe('<DrillDownTable />', () => {
                 expect(screen.getByText(outcome)).toBeInTheDocument()
             },
         )
+
+        it('should use fetchedData when DrillDownDataProvider context is not available', () => {
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: data,
+                isFetching: false,
+            } as any)
+
+            render(
+                <Provider store={mockStore(defaultState)}>
+                    <table>
+                        <TicketDrillDownTableContent
+                            metricData={metricData}
+                            columnConfig={{
+                                showMetric: false,
+                                metricTitle: '',
+                                metricValueFormat: 'decimal',
+                            }}
+                        />
+                    </table>
+                </Provider>,
+            )
+
+            expect(screen.getByText(ticketSubject)).toBeInTheDocument()
+        })
     })
 
     describe('with Convert campaign sales content', () => {
@@ -1146,5 +1170,135 @@ describe('<DrillDownTable />', () => {
                 expect(screen.getByText(expectedLabel)).toBeInTheDocument()
             },
         )
+    })
+
+    describe('with AiAgentDrillDownMetricName.AllAgentsCsatCard', () => {
+        const metricData: DrillDownMetric = {
+            metricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
+            title: 'Average CSAT',
+        }
+
+        const baseRow = {
+            ticket: {
+                id: '200001',
+                subject: 'CSAT ticket subject',
+                description: 'CSAT ticket description',
+                channel: 'email',
+                isRead: true,
+                created: '2025-09-01T10:00:00.000Z',
+                contactReason: null,
+                status: 'closed',
+            },
+            assignee: { id: 42, name: 'Support Agent' },
+            rowData: {
+                'AIAgentCSAT.ticketId': '200001',
+            },
+            slas: {},
+            outcome: null,
+            intent: 'Returns::Refund',
+            order: {},
+            product: { titles: [], variants: [] },
+        }
+
+        it('should render CSAT header title and surveyScore cell', () => {
+            const rowWithSurveyScore = { ...baseRow, surveyScore: '5' }
+            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                data: [rowWithSurveyScore],
+                isFetching: false,
+            } as any)
+
+            renderTable(metricData, TicketDrillDownTableContent)
+
+            expect(
+                screen.getByRole('columnheader', { name: /CSAT/i }),
+            ).toBeInTheDocument()
+            expect(screen.getByText('5')).toBeInTheDocument()
+        })
+
+        it('should render Handover tag when outcome starts with Handover', () => {
+            const rowWithHandoverOutcome = {
+                ...baseRow,
+                outcome: 'Handover::With message',
+            }
+            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                data: [rowWithHandoverOutcome],
+                isFetching: false,
+            } as any)
+
+            renderTable(metricData, TicketDrillDownTableContent)
+
+            expect(screen.getByText('Handover')).toBeInTheDocument()
+        })
+
+        it('should render Automated tag when outcome does not start with Handover', () => {
+            const rowWithAutomatedOutcome = {
+                ...baseRow,
+                outcome: 'Automated',
+            }
+            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                data: [rowWithAutomatedOutcome],
+                isFetching: false,
+            } as any)
+
+            renderTable(metricData, TicketDrillDownTableContent)
+
+            expect(screen.getByText('Automated')).toBeInTheDocument()
+        })
+    })
+
+    describe('with KnowledgeMetric.Tickets', () => {
+        const metricData = {
+            metricName: KnowledgeMetric.Tickets,
+        } as DrillDownMetric
+
+        const baseRow = {
+            ticket: {
+                id: '300001',
+                subject: 'Knowledge ticket subject',
+                description: null,
+                channel: 'email',
+                isRead: true,
+                created: '2025-09-01T10:00:00.000Z',
+                contactReason: null,
+                status: 'closed',
+            },
+            assignee: { id: 42, name: 'Support Agent' },
+            slas: {},
+            outcome: null,
+            intent: null,
+            order: {},
+            product: { titles: [], variants: [] },
+            metricValue: 1,
+        }
+
+        it('should render Automated outcome tag when outcome equals Automated', () => {
+            const rowWithAutomatedOutcome = {
+                ...baseRow,
+                outcome: 'Automated',
+            }
+            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                data: [rowWithAutomatedOutcome],
+                isFetching: false,
+            } as any)
+
+            renderTable(metricData, TicketDrillDownTableContent)
+
+            expect(screen.getByText('Automated')).toBeInTheDocument()
+        })
+
+        it('should render Handover outcome tag when outcome is not Automated', () => {
+            const rowWithHandoverOutcome = {
+                ...baseRow,
+                outcome: 'Handover',
+            }
+            useEnrichedDrillDownDataUnpaginatedMock.mockReturnValue({
+                data: [rowWithHandoverOutcome],
+                isFetching: false,
+            } as any)
+
+            renderTable(metricData, TicketDrillDownTableContent)
+
+            expect(screen.getByText('Handover')).toBeInTheDocument()
+        })
     })
 })

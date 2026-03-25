@@ -10,6 +10,7 @@ import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
+import { AIAgentCSATDimension } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
 import { TicketInsightsTaskMeasure } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
@@ -191,7 +192,8 @@ const formatTicketDrillDownRowDataInternal = (
     const intent = getAIIntent({ row, customFieldsIds })
     const surveyScore =
         row[TicketSatisfactionSurveyDimension.SurveyScore] ||
-        row[TicketInsightsTaskMeasure.AvgSurveyScore]
+        row[TicketInsightsTaskMeasure.AvgSurveyScore] ||
+        row[AIAgentCSATDimension.SurveyScore]
     return {
         ticket: {
             id: (ticketIdField && row[ticketIdField]) || null,

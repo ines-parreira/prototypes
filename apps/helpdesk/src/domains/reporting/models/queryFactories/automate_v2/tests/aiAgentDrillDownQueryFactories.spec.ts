@@ -4,15 +4,21 @@ import {
     AIAgentAutomatedInteractionsV2FilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import { AIAgentClosedTicketsDimension } from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
+import {
+    AIAgentCSATDimension,
+    AIAgentCSATFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import { HandoverInteractionsFilterMember } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
     allAgentsClosedTicketsDrillDownQueryFactory,
+    allAgentsCsatDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
+    supportAgentCsatDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -538,5 +544,126 @@ describe('allAgentsClosedTicketsDrillDownQueryFactory', () => {
                 [AIAgentClosedTicketsDimension.TicketId, OrderDirection.Desc],
             ],
         })
+    })
+})
+
+describe('allAgentsCsatDrillDownQueryFactory', () => {
+    it('should return correct metricName', () => {
+        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        expect(result.metricName).toBe(
+            METRIC_NAMES.AI_AGENT_ALL_AGENTS_CSAT_DRILL_DOWN,
+        )
+    })
+
+    it('should include TicketId and SurveyScore in dimensions', () => {
+        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        expect(result.dimensions).toContain(AIAgentCSATDimension.TicketId)
+        expect(result.dimensions).toContain(AIAgentCSATDimension.SurveyScore)
+    })
+
+    it('should have empty measures', () => {
+        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        expect(result.measures).toEqual([])
+    })
+
+    it('should include periodStart filter with AfterDate operator', () => {
+        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        const periodStartFilter = result.filters?.find(
+            (f) =>
+                'member' in f &&
+                f.member === AIAgentCSATFilterMember.PeriodStart,
+        )
+        expect(periodStartFilter).toBeDefined()
+        if (periodStartFilter && 'operator' in periodStartFilter) {
+            expect(periodStartFilter.operator).toBe(
+                ReportingFilterOperator.AfterDate,
+            )
+            expect(periodStartFilter.values).toEqual([
+                mockFilters.period.start_datetime,
+            ])
+        }
+    })
+
+    it('should include periodEnd filter with BeforeDate operator', () => {
+        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        const periodEndFilter = result.filters?.find(
+            (f) =>
+                'member' in f && f.member === AIAgentCSATFilterMember.PeriodEnd,
+        )
+        expect(periodEndFilter).toBeDefined()
+        if (periodEndFilter && 'operator' in periodEndFilter) {
+            expect(periodEndFilter.operator).toBe(
+                ReportingFilterOperator.BeforeDate,
+            )
+            expect(periodEndFilter.values).toEqual([
+                mockFilters.period.end_datetime,
+            ])
+        }
+    })
+
+    it('should set correct limit', () => {
+        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
+    })
+
+    it('should set empty order when no sorting provided', () => {
+        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        expect(result.order).toEqual([])
+    })
+
+    it('should set order when sorting is provided', () => {
+        const result = allAgentsCsatDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+            OrderDirection.Desc,
+        )
+        expect(result.order).toEqual([
+            [AIAgentCSATDimension.SurveyScore, OrderDirection.Desc],
+        ])
+    })
+})
+
+describe('supportAgentCsatDrillDownQueryFactory', () => {
+    it('should return correct metricName', () => {
+        const result = supportAgentCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        expect(result.metricName).toBe(
+            METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_CSAT_DRILL_DOWN,
+        )
+    })
+
+    it('should include TicketId and SurveyScore in dimensions', () => {
+        const result = supportAgentCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        expect(result.dimensions).toContain(AIAgentCSATDimension.TicketId)
+        expect(result.dimensions).toContain(AIAgentCSATDimension.SurveyScore)
+    })
+
+    it('should set correct limit', () => {
+        const result = supportAgentCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
+    })
+
+    it('should include aiAgentRole fixed filter for support agent', () => {
+        const result = supportAgentCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        const roleFilter = result.filters?.find(
+            (f) =>
+                'member' in f &&
+                f.member === AIAgentCSATFilterMember.AiAgentRole,
+        )
+        expect(roleFilter).toEqual({
+            member: AIAgentCSATFilterMember.AiAgentRole,
+            operator: ReportingFilterOperator.Equals,
+            values: [AIAgentSkills.AIAgentSupport],
+        })
+    })
+
+    it('should set order when sorting is provided', () => {
+        const result = supportAgentCsatDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+            OrderDirection.Desc,
+        )
+        expect(result.order).toEqual([
+            [AIAgentCSATDimension.SurveyScore, OrderDirection.Desc],
+        ])
     })
 })

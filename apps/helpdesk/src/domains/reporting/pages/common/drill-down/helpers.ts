@@ -23,10 +23,12 @@ import {
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
     allAgentsClosedTicketsDrillDownQueryFactory,
+    allAgentsCsatDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
+    supportAgentCsatDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
@@ -472,6 +474,10 @@ export const getDrillDownQuery = (
             return supportAgentAutomatedInteractionsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard:
             return allAgentsClosedTicketsDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.AllAgentsCsatCard:
+            return allAgentsCsatDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.SupportAgentCsatCard:
+            return supportAgentCsatDrillDownQueryFactory
         case VoiceOfCustomerMetricWithDrillDown.IntentPerProduct: {
             const { drillDownQuery } =
                 VoiceOfCustomerMetricWithDrillDownConfig[
@@ -1009,6 +1015,14 @@ export const getDrillDownMetricColumn = (
             AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard
     ) {
         metricTitle = ''
+        metricValueFormat = 'decimal'
+    } else if (
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AllAgentsCsatCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportAgentCsatCard
+    ) {
+        metricTitle = 'CSAT'
         metricValueFormat = 'decimal'
     } else if (isAiAgentMetric(metricData)) {
         metricTitle = metricData.title || ''
