@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { getLDClient } from '@repo/feature-flags'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { useAreFlagsLoading } from '@repo/feature-flags'
+import { fireEvent, render } from '@testing-library/react'
 
 import { categories, notifications } from '../../data'
 import type { Settings } from '../../types'
@@ -9,7 +9,7 @@ import EventSettings from '../EventSettings'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
-    getLDClient: jest.fn(),
+    useAreFlagsLoading: jest.fn(),
 }))
 
 jest.mock(
@@ -87,14 +87,12 @@ const notificationsWithSettings = categories
 
 describe('EventSettings', () => {
     beforeEach(() => {
-        const mockLDClient = {
-            waitForInitialization: jest.fn().mockResolvedValueOnce(undefined),
-        }
-        ;(getLDClient as jest.Mock).mockReturnValue(mockLDClient)
+        ;(useAreFlagsLoading as jest.Mock).mockReturnValue(false)
     })
+
     it.each(notificationsWithSettings.map((n) => [n.type, n.settings?.label]))(
         'should render event %s',
-        async (_, label) => {
+        (_, label) => {
             const { getByText } = render(
                 <EventSettings
                     settings={settings}
@@ -103,28 +101,34 @@ describe('EventSettings', () => {
                 />,
             )
 
-            await getLDClient()?.waitForInitialization()
-
-            await waitFor(() => {
-                expect(getByText(label as string)).toBeInTheDocument()
-            })
+            expect(getByText(label as string)).toBeInTheDocument()
         },
     )
 
-    it('should call a function to handle a channel change', async () => {
+    it('should render nothing while flags are loading', () => {
+        ;(useAreFlagsLoading as jest.Mock).mockReturnValue(true)
+
+        const { container } = render(
+            <EventSettings
+                settings={settings}
+                onChangeChannel={jest.fn()}
+                onChangeSound={jest.fn()}
+            />,
+        )
+
+        expect(container).toBeEmptyDOMElement()
+    })
+
+    it('should call a function to handle a channel change', () => {
         const onChangeChannel = jest.fn()
 
-        const { getAllByRole, findAllByRole } = render(
+        const { getAllByRole } = render(
             <EventSettings
                 settings={settings}
                 onChangeChannel={onChangeChannel}
                 onChangeSound={jest.fn()}
             />,
         )
-
-        await getLDClient()?.waitForInitialization()
-
-        await findAllByRole('checkbox')
 
         const checkbox = getAllByRole('checkbox')[0]
         fireEvent.click(checkbox)
@@ -136,20 +140,16 @@ describe('EventSettings', () => {
         )
     })
 
-    it('should call a function to handle a sound change', async () => {
+    it('should call a function to handle a sound change', () => {
         const onChangeSound = jest.fn()
 
-        const { getAllByRole, findAllByRole } = render(
+        const { getAllByRole } = render(
             <EventSettings
                 settings={settings}
                 onChangeChannel={jest.fn()}
                 onChangeSound={onChangeSound}
             />,
         )
-
-        await getLDClient()?.waitForInitialization()
-
-        await findAllByRole('combobox')
 
         const combobox = getAllByRole('combobox')[0]
         fireEvent.change(combobox, { target: { value: 'sound 1' } })

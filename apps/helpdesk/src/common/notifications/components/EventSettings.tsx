@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 
-import useLaunchDarklyClient from 'common/hooks/useLaunchDarklyClient'
+import { useAreFlagsLoading } from '@repo/feature-flags'
+
 import TableBody from 'pages/common/components/table/TableBody'
 import TableWrapper from 'pages/common/components/table/TableWrapper'
 import type { SoundValue } from 'services/NotificationSounds'
@@ -27,9 +28,9 @@ export default function EventSettings({
     onChangeChannel,
     onChangeSound,
 }: Props) {
-    const { isLdInitialized } = useLaunchDarklyClient()
+    const areFlagsLoading = useAreFlagsLoading()
 
-    if (!isLdInitialized) {
+    if (areFlagsLoading) {
         return null
     }
 
