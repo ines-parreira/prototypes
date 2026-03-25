@@ -67,6 +67,19 @@ describe('deleteUnusedKeys', () => {
     })
 })
 
+describe('translationsAvailableKeys', () => {
+    it('should include aiPoweredChatDisclaimerText in the general section', () => {
+        const key =
+            translationsAvailableKeys.general[
+                'texts.aiPoweredChatDisclaimerText'
+            ]
+
+        expect(key).toBeDefined()
+        expect(key.maxLength).toBe(100)
+        expect(key.isRichText).toBe(true)
+    })
+})
+
 describe('translationsAvailableKeys filter functions', () => {
     describe('filterByAutomateSubscriber', () => {
         const keyWithAutomateFilter =

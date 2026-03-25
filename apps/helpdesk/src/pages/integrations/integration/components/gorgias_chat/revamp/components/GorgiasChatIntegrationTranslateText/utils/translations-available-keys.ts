@@ -60,6 +60,10 @@ export const translationsAvailableKeys = {
             maxLength: 35,
         },
         'texts.inputInitialPlaceholder': { maxLength: 50 },
+        'texts.aiPoweredChatDisclaimerText': {
+            maxLength: 100,
+            isRichText: true,
+        },
     },
     intro: {
         'texts.introductionText': {
