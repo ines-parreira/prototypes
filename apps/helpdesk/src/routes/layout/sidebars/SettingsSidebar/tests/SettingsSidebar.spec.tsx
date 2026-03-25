@@ -126,7 +126,7 @@ describe('SettingsSidebar', () => {
         expect(await screen.findByText('Users')).toBeInTheDocument()
         expect(screen.getByText('Teams')).toBeInTheDocument()
         expect(screen.getByText('Access management')).toBeInTheDocument()
-        expect(screen.getByText('Billing & usage')).toBeInTheDocument()
+        expect(screen.getByText('Billing and usage')).toBeInTheDocument()
         expect(screen.getByText('HTTP integration')).toBeInTheDocument()
         expect(screen.getByText('REST API')).toBeInTheDocument()
         expect(screen.getByText('Audit logs')).toBeInTheDocument()

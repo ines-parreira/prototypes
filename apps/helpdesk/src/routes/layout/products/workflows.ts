@@ -27,7 +27,7 @@ export const workflowsSections: Record<
     },
     [WorkflowsSection.FieldsAndTags]: {
         id: WorkflowsSection.FieldsAndTags,
-        label: 'Fields and Tags',
+        label: 'Fields and tags',
         icon: 'tag',
         requiredRole: UserRole.Agent,
     },
@@ -63,7 +63,7 @@ export const workflowsRoutes: Record<WorkflowsRoute, WorkflowsRouteConfig> = {
     },
     [WorkflowsRoute.OrderManagement]: {
         path: 'order-management',
-        label: 'Order Management',
+        label: 'Order management',
         requiredRole: UserRole.Agent,
     },
     [WorkflowsRoute.Rules]: {
@@ -77,7 +77,7 @@ export const workflowsRoutes: Record<WorkflowsRoute, WorkflowsRouteConfig> = {
     },
     [WorkflowsRoute.TicketAssignment]: {
         path: 'ticket-assignment',
-        label: 'Ticket Assignment',
+        label: 'Ticket assignment',
         requiredRole: UserRole.Admin,
     },
     [WorkflowsRoute.AutoMerge]: {
@@ -97,22 +97,22 @@ export const workflowsRoutes: Record<WorkflowsRoute, WorkflowsRouteConfig> = {
     },
     [WorkflowsRoute.ArticleRecommendations]: {
         path: 'article-recommendations',
-        label: 'Article Recommendations',
+        label: 'Article recommendations',
         requiredRole: UserRole.Agent,
     },
     [WorkflowsRoute.TicketFields]: {
         path: 'ticket-fields',
-        label: 'Ticket Fields',
+        label: 'Ticket fields',
         requiredRole: UserRole.Admin,
     },
     [WorkflowsRoute.CustomerFields]: {
         path: 'customer-fields',
-        label: 'Customer Fields',
+        label: 'Customer fields',
         requiredRole: UserRole.Admin,
     },
     [WorkflowsRoute.FieldConditions]: {
         path: 'ticket-field-conditions',
-        label: 'Field Conditions',
+        label: 'Field conditions',
         requiredRole: UserRole.Admin,
     },
     [WorkflowsRoute.Tags]: {

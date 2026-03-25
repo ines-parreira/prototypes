@@ -117,7 +117,7 @@ export function NavigationSidebar() {
                     flexDirection={isCollapsed ? 'column' : 'row'}
                 >
                     <Tooltip
-                        placement="top"
+                        placement="right"
                         trigger={
                             <Button
                                 onClick={() => {
@@ -139,7 +139,7 @@ export function NavigationSidebar() {
                         <TooltipContent title="Settings" />
                     </Tooltip>
                     <Tooltip
-                        placement="top"
+                        placement="right"
                         trigger={
                             <Button
                                 icon="circle-help"

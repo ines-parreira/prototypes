@@ -74,7 +74,7 @@ export function useSettingsNavigation() {
             {
                 id: 'billing',
                 to: 'billing',
-                text: 'Billing & usage',
+                text: 'Billing and usage',
                 requiredRole: UserRole.Admin,
                 onClick: () =>
                     logEvent(

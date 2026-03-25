@@ -64,11 +64,13 @@ export function SidebarProductHeader({
                     <Button
                         variant="tertiary"
                         leadingSlot={
-                            icon ? <Box pr="xs">{icon}</Box> : undefined
+                            icon ? <Box ml="xs">{icon}</Box> : undefined
                         }
                         trailingSlot="arrow-chevron-down"
                     >
-                        <Heading>{selectedItem.name}</Heading>
+                        <Box pl="sm">
+                            <Heading>{selectedItem.name}</Heading>
+                        </Box>
                     </Button>
                 )
             }

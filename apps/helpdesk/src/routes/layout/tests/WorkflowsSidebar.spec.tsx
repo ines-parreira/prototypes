@@ -106,10 +106,10 @@ describe('WorkflowsSidebar', () => {
     it('should render Tools section with workflow items', async () => {
         renderWorkflowsSidebar()
         expect(await screen.findByText('Flows')).toBeInTheDocument()
-        expect(screen.getByText('Order Management')).toBeInTheDocument()
+        expect(screen.getByText('Order management')).toBeInTheDocument()
         expect(screen.getByText('Rules')).toBeInTheDocument()
         expect(screen.getByText('Macros')).toBeInTheDocument()
-        expect(screen.getByText('Ticket Assignment')).toBeInTheDocument()
+        expect(screen.getByText('Ticket assignment')).toBeInTheDocument()
         expect(screen.getByText('Auto-merge')).toBeInTheDocument()
         expect(screen.getByText('CSAT')).toBeInTheDocument()
         expect(screen.getByText('SLAs')).toBeInTheDocument()
@@ -117,9 +117,9 @@ describe('WorkflowsSidebar', () => {
 
     it('should render Fields and Tags section', async () => {
         renderWorkflowsSidebar()
-        expect(await screen.findByText('Ticket Fields')).toBeInTheDocument()
-        expect(screen.getByText('Customer Fields')).toBeInTheDocument()
-        expect(screen.getByText('Field Conditions')).toBeInTheDocument()
+        expect(await screen.findByText('Ticket fields')).toBeInTheDocument()
+        expect(screen.getByText('Customer fields')).toBeInTheDocument()
+        expect(screen.getByText('Field conditions')).toBeInTheDocument()
         expect(screen.getByText('Tags')).toBeInTheDocument()
     })
 
@@ -135,7 +135,7 @@ describe('WorkflowsSidebar', () => {
         renderWorkflowsSidebar()
 
         expect(await screen.findByText('Flows')).toBeInTheDocument()
-        expect(screen.getByText('Order Management')).toBeInTheDocument()
+        expect(screen.getByText('Order management')).toBeInTheDocument()
     })
 
     it('should not render AI Agent related items when hasAccess is false', () => {
@@ -150,7 +150,7 @@ describe('WorkflowsSidebar', () => {
         renderWorkflowsSidebar()
 
         expect(screen.queryByText('Flows')).not.toBeInTheDocument()
-        expect(screen.queryByText('Order Management')).not.toBeInTheDocument()
+        expect(screen.queryByText('Order management')).not.toBeInTheDocument()
     })
 
     it('should not render AI Agent related items when no integrations exist', () => {
@@ -163,7 +163,7 @@ describe('WorkflowsSidebar', () => {
         renderWorkflowsSidebar()
 
         expect(screen.queryByText('Flows')).not.toBeInTheDocument()
-        expect(screen.queryByText('Order Management')).not.toBeInTheDocument()
+        expect(screen.queryByText('Order management')).not.toBeInTheDocument()
     })
 
     it('should not render AI Agent related items when isLoading is true', () => {
@@ -178,7 +178,7 @@ describe('WorkflowsSidebar', () => {
         renderWorkflowsSidebar()
 
         expect(screen.queryByText('Flows')).not.toBeInTheDocument()
-        expect(screen.queryByText('Order Management')).not.toBeInTheDocument()
+        expect(screen.queryByText('Order management')).not.toBeInTheDocument()
     })
 
     it('should render Article Recommendations when enabled in settings and AI agent access is available', async () => {
@@ -196,7 +196,7 @@ describe('WorkflowsSidebar', () => {
         renderWorkflowsSidebar()
 
         expect(
-            await screen.findByText('Article Recommendations'),
+            await screen.findByText('Article recommendations'),
         ).toBeInTheDocument()
     })
 
@@ -208,7 +208,7 @@ describe('WorkflowsSidebar', () => {
         renderWorkflowsSidebar()
 
         expect(
-            screen.queryByText('Article Recommendations'),
+            screen.queryByText('Article recommendations'),
         ).not.toBeInTheDocument()
     })
 
@@ -224,7 +224,7 @@ describe('WorkflowsSidebar', () => {
         renderWorkflowsSidebar()
 
         expect(
-            screen.queryByText('Article Recommendations'),
+            screen.queryByText('Article recommendations'),
         ).not.toBeInTheDocument()
     })
 

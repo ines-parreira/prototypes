@@ -13,7 +13,7 @@ export function NavigationSidebarNotificationsButton() {
 
     return (
         <Tooltip
-            placement="top"
+            placement="right"
             trigger={
                 <div className={css.container}>
                     <Button

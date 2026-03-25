@@ -84,12 +84,12 @@ export const analyticsSections: Record<
     },
     [StatsNavbarViewSections.TicketInsights]: {
         id: 'ticket-insights',
-        label: 'Ticket Insights',
+        label: 'Ticket insights',
         icon: 'inbox',
     },
     [StatsNavbarViewSections.QualityManagement]: {
         id: 'quality-management',
-        label: 'Quality Management',
+        label: 'Quality management',
         icon: 'wavy-check',
     },
     [StatsNavbarViewSections.Voice]: {
@@ -193,7 +193,7 @@ export function useStatsNavbarConfig() {
                     {
                         id: 'support-performance-busiest-times',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_BUSIEST_TIMES,
-                        label: 'Busiest Times',
+                        label: 'Busiest times',
                         canduId: 'statistics-link-busiest-times-of-days',
                     },
                     {
