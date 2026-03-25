@@ -77,6 +77,15 @@ export function TicketInfobarNavigation({
                         title: 'Details',
                     }}
                 />
+                {hasTimeline && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.Timeline}
+                        icon="history"
+                        tooltip={{
+                            title: 'Customer Timeline',
+                        }}
+                    />
+                )}
                 {hasUIVisionMilestone2 && hasShopify && (
                     <InfobarNavigationItem
                         name={TicketInfobarTab.Shopify}
@@ -137,15 +146,6 @@ export function TicketInfobarNavigation({
                         icon="app-yotpo"
                         tooltip={{
                             title: 'Yotpo',
-                        }}
-                    />
-                )}
-                {hasTimeline && (
-                    <InfobarNavigationItem
-                        name={TicketInfobarTab.Timeline}
-                        icon="history"
-                        tooltip={{
-                            title: 'Customer Timeline',
                         }}
                     />
                 )}

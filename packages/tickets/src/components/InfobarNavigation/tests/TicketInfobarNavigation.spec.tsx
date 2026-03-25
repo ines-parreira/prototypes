@@ -163,6 +163,51 @@ describe('TicketInfobarNavigation', () => {
         expect(onChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Timeline)
     })
 
+    it('should render the "Timeline" tab above integration tabs', async () => {
+        mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+        render(
+            <TicketInfobarNavigation
+                hasTimeline
+                hasShopify
+                hasSmile
+                hasYotpo
+            />,
+        )
+
+        const customerButton = screen
+            .getByLabelText('customer-info')
+            .closest('button')
+        const timelineButton = screen
+            .getByLabelText('history')
+            .closest('button')
+        const shopifyButton = screen
+            .getByLabelText('app-shopify')
+            .closest('button')
+        const smileButton = screen
+            .getByLabelText('emoji-smile')
+            .closest('button')
+        const yotpoButton = screen.getByLabelText('app-yotpo').closest('button')
+
+        expect(customerButton).toBeInTheDocument()
+        expect(timelineButton).toBeInTheDocument()
+        expect(shopifyButton).toBeInTheDocument()
+        expect(smileButton).toBeInTheDocument()
+        expect(yotpoButton).toBeInTheDocument()
+
+        expect(customerButton?.compareDocumentPosition(timelineButton!)).toBe(
+            Node.DOCUMENT_POSITION_FOLLOWING,
+        )
+        expect(timelineButton?.compareDocumentPosition(shopifyButton!)).toBe(
+            Node.DOCUMENT_POSITION_FOLLOWING,
+        )
+        expect(timelineButton?.compareDocumentPosition(smileButton!)).toBe(
+            Node.DOCUMENT_POSITION_FOLLOWING,
+        )
+        expect(timelineButton?.compareDocumentPosition(yotpoButton!)).toBe(
+            Node.DOCUMENT_POSITION_FOLLOWING,
+        )
+    })
+
     describe('Recharge tab', () => {
         it('should render the "Recharge" tab when useHelpdeskV2MS2Flag is true and hasRecharge is true', async () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
