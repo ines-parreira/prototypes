@@ -1,8 +1,8 @@
 import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
-import { useMedianPurchaseTimeTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useMedianPerchaseTimeTrend'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import { useAiAgentMedianPurchaseTimeTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentMedianPurchaseTimeTrend'
 
 export const AnalyticsAiAgentMedianPurchaseTimeCard = ({
     chartId,
@@ -13,7 +13,7 @@ export const AnalyticsAiAgentMedianPurchaseTimeCard = ({
         chartConfig: chartConfig!,
         chartId,
         dashboard,
-        useTrend: useMedianPurchaseTimeTrend,
+        useTrend: useAiAgentMedianPurchaseTimeTrend,
         isAiAgentTrendCard: true,
     })
 

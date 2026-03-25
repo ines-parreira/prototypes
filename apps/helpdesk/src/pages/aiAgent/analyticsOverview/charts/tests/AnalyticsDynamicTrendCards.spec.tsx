@@ -28,12 +28,14 @@ import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analytic
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
 import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
+import { AnalyticsAiAgentOrdersInfluencedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentOrdersInfluencedCard'
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
 import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSalesHandoverInteractionsCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsAiAgentSupportDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
+import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
 import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts//AnalyticsOverviewAutomationRateCard'
 import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
@@ -212,6 +214,18 @@ describe('Analytics Dynamic Trend Cards', () => {
             },
         },
         {
+            name: 'AnalyticsAiAgentTotalSalesCard',
+            Component: AnalyticsAiAgentTotalSalesCard,
+            config: {
+                label: 'Total sales',
+                description:
+                    'The revenue influenced by a Shopping Assistant interaction, measured from orders placed within 3 days of the interaction',
+                metricFormat: 'currency-precision-1' as const,
+                value: 7800,
+                prevValue: 7500,
+            },
+        },
+        {
             name: 'AnalyticsAiAgentMedianPurchaseTimeCard',
             Component: AnalyticsAiAgentMedianPurchaseTimeCard,
             config: {
@@ -221,6 +235,18 @@ describe('Analytics Dynamic Trend Cards', () => {
                 metricFormat: 'decimal' as const,
                 value: 42,
                 prevValue: 38,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentOrdersInfluencedCard',
+            Component: AnalyticsAiAgentOrdersInfluencedCard,
+            config: {
+                label: 'Orders influenced',
+                description:
+                    'The number of orders placed within 3 days of a Shopping Assistant conversation without a direct handover.',
+                metricFormat: 'decimal' as const,
+                value: 1029,
+                prevValue: 1000,
             },
         },
         {

@@ -227,6 +227,14 @@ export const METRIC_NAMES = {
         'ai-agent-shopping-assistant-discount-codes-applied',
     AI_AGENT_SHOPPING_ASSISTANT_BUY_THROUGH_RATE:
         'ai-agent-shopping-assistant-buy-through-rate',
+    AI_AGENT_SHOPPING_ASSISTANT_TOTAL_SALES:
+        'ai-agent-shopping-assistant-total-sales',
+    AI_AGENT_SHOPPING_ASSISTANT_ORDERS_INFLUENCED:
+        'ai-agent-shopping-assistant-orders-influenced',
+    AI_AGENT_SHOPPING_ASSISTANT_MEDIAN_PURCHASE_TIME:
+        'ai-agent-shopping-assistant-median-purchase-time',
+    AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_ORDER_VALUE:
+        'ai-agent-shopping-assistant-average-order-value',
     // Agent Experience
     AGENTXP_ONLINE_TIME: 'agentxp-online-time',
     AGENTXP_ONLINE_TIME_PER_AGENT: 'agentxp-online-time-per-agent',
@@ -998,7 +1006,12 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_USAGE,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_APPLIED,
     ],
-    [MetricScope.AiSalesAgentOrdersPerformance]: [],
+    [MetricScope.AiSalesAgentOrdersPerformance]: [
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TOTAL_SALES,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_ORDERS_INFLUENCED,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_MEDIAN_PURCHASE_TIME,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_ORDER_VALUE,
+    ],
     [MetricScope.AiAgentAutomatedInteractions]: [],
     [MetricScope.AiAgentTimeSaved]: [],
     [MetricScope.FlowDataset]: [

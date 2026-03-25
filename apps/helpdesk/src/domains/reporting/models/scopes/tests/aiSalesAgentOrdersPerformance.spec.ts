@@ -1,6 +1,19 @@
-import { aiSalesAgentOrdersPerformanceScope } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
+import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import {
+    aiSalesAgentOrdersPerformanceScope,
+    averageOrderValue,
+    averageOrderValueQueryV2Factory,
+    medianPurchaseTime,
+    medianPurchaseTimeQueryV2Factory,
+    totalSalesAmountUsd,
+    totalSalesAmountUsdQueryV2Factory,
+} from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
-import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
+import type {
+    AggregationWindow,
+    ApiStatsFilters,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 describe('aiSalesAgentOrdersPerformanceScope', () => {
@@ -180,5 +193,188 @@ describe('aiSalesAgentOrdersPerformanceScope', () => {
         expect(result).not.toContainEqual(
             expect.objectContaining({ member: 'integrationId' }),
         )
+    })
+})
+
+describe('totalSalesAmountUsd queries', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const granularity = 'day' as AggregationWindow
+    const context = { filters, timezone, granularity }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    describe('totalSalesAmountUsd', () => {
+        it('creates query with totalSalesAmountUsd measure', () => {
+            expect(totalSalesAmountUsd.build(context)).toEqual({
+                metricName:
+                    METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TOTAL_SALES,
+                scope: 'ai-sales-agent-orders-performance',
+                measures: ['totalSalesAmountUsd'],
+                timezone: 'utc',
+                filters: periodFilters,
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'day' },
+                ],
+            })
+        })
+    })
+
+    describe('totalSalesAmountUsdQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(totalSalesAmountUsdQueryV2Factory(context)).toEqual(
+                totalSalesAmountUsd.build(context),
+            )
+        })
+
+        it('sets the correct metricName', () => {
+            const result = totalSalesAmountUsdQueryV2Factory(context)
+            expect(result.metricName).toBe(
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_TOTAL_SALES,
+            )
+        })
+
+        it('queries the totalSalesAmountUsd measure', () => {
+            const result = totalSalesAmountUsdQueryV2Factory(context)
+            expect(result.measures).toContain('totalSalesAmountUsd')
+        })
+    })
+})
+
+describe('medianPurchaseTime queries', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const granularity = 'day' as AggregationWindow
+    const context = { filters, timezone, granularity }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    describe('medianPurchaseTime', () => {
+        it('creates query with medianPurchaseTime measure', () => {
+            expect(medianPurchaseTime.build(context)).toEqual({
+                metricName:
+                    METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_MEDIAN_PURCHASE_TIME,
+                scope: 'ai-sales-agent-orders-performance',
+                measures: ['medianPurchaseTime'],
+                timezone: 'utc',
+                filters: periodFilters,
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'day' },
+                ],
+            })
+        })
+    })
+
+    describe('medianPurchaseTimeQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(medianPurchaseTimeQueryV2Factory(context)).toEqual(
+                medianPurchaseTime.build(context),
+            )
+        })
+
+        it('sets the correct metricName', () => {
+            const result = medianPurchaseTimeQueryV2Factory(context)
+            expect(result.metricName).toBe(
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_MEDIAN_PURCHASE_TIME,
+            )
+        })
+
+        it('queries the medianPurchaseTime measure', () => {
+            const result = medianPurchaseTimeQueryV2Factory(context)
+            expect(result.measures).toContain('medianPurchaseTime')
+        })
+    })
+})
+
+describe('averageOrderValue queries', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const granularity = 'day' as AggregationWindow
+    const context = { filters, timezone, granularity }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    describe('averageOrderValue', () => {
+        it('creates query with averageOrderValue measure', () => {
+            expect(averageOrderValue.build(context)).toEqual({
+                metricName:
+                    METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_ORDER_VALUE,
+                scope: 'ai-sales-agent-orders-performance',
+                measures: ['averageOrderValue'],
+                timezone: 'utc',
+                filters: periodFilters,
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'day' },
+                ],
+            })
+        })
+    })
+
+    describe('averageOrderValueQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(averageOrderValueQueryV2Factory(context)).toEqual(
+                averageOrderValue.build(context),
+            )
+        })
+
+        it('sets the correct metricName', () => {
+            const result = averageOrderValueQueryV2Factory(context)
+            expect(result.metricName).toBe(
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_ORDER_VALUE,
+            )
+        })
+
+        it('queries the averageOrderValue measure', () => {
+            const result = averageOrderValueQueryV2Factory(context)
+            expect(result.measures).toContain('averageOrderValue')
+        })
     })
 })

@@ -5,7 +5,6 @@ import { fetchCoverageRateTrend } from 'domains/reporting/hooks/automate/useCove
 import { fetchDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import { fetchAiAgentAllAgentsHandoverInteractionsTrend } from 'domains/reporting/pages/automate/aiSalesAgent/hooks/useAiAgentAllAgentsHandoverInteractionsTrend'
-import { fetchGmvInfluencedTrend } from 'domains/reporting/pages/automate/aiSalesAgent/metrics/useGmvInfluencedTrend'
 import { ReportsIDs } from 'domains/reporting/pages/dashboards/constants'
 import type { ReportConfig } from 'domains/reporting/pages/dashboards/types'
 import {
@@ -31,6 +30,7 @@ import { fetchAiAgentAllAgentsCostSavedTrend } from 'pages/aiAgent/analyticsAiAg
 import { fetchAiAgentAllAgentsFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsFRTTrend'
 import { fetchAiAgentClosedTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentClosedTicketsTrend'
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
+import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchAiAgentZeroTouchTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
 import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
 import { STATS_ROUTES } from 'routes/constants'
@@ -112,7 +112,7 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchGmvInfluencedTrend,
+                        fetch: fetchAiAgentTotalSalesTrend,
                         metricFormat: 'currency-precision-1',
                     },
                 ],
