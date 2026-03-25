@@ -1,3 +1,6 @@
+Object.defineProperty(window, 'innerWidth', { value: 1280, writable: true })
+Object.defineProperty(window, 'innerHeight', { value: 1024, writable: true })
+
 const makeMockStorage = () => {
     const store = new Map()
     return {

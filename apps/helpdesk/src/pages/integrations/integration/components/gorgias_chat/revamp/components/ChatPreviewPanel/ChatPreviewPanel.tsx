@@ -6,7 +6,6 @@ import {
     ButtonGroup,
     ButtonGroupItem,
     Icon,
-    Size,
     Text,
     TextVariant,
 } from '@gorgias/axiom'
@@ -170,14 +169,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                         </ButtonGroup>
                     )}
                 </Box>
-                <Box
-                    flexGrow={1}
-                    className={css.content}
-                    paddingLeft={Size.Md}
-                    paddingRight={Size.Md}
-                    paddingBottom={Size.Xxl}
-                    paddingTop={Size.Xxl}
-                >
+                <Box flexGrow={1} className={css.content}>
                     {appId && (
                         <ChatPreview ref={chatPreviewRef} appId={appId} />
                     )}
