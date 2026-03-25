@@ -4,7 +4,9 @@ import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
+import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
 import { GorgiasAutomateChatIntegrationRevamp } from '../GorgiasAutomateChatIntegration'
@@ -14,6 +16,18 @@ import { useOrderManagement } from '../hooks/useOrderManagement'
 
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
 const mockUseStoreIntegration = jest.mocked(useStoreIntegration)
+
+jest.mock('models/workflows/queries', () => ({
+    useListWorkflowEntryPoints: jest.fn(),
+}))
+const mockUseListWorkflowEntryPoints = jest.mocked(useListWorkflowEntryPoints)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+)
+const mockUseGorgiasChatCreationWizardContext = jest.mocked(
+    useGorgiasChatCreationWizardContext,
+)
 
 jest.mock('../hooks/useArticleRecommendation')
 const mockUseArticleRecommendation = jest.mocked(useArticleRecommendation)
@@ -139,15 +153,6 @@ jest.mock(
     }),
 )
 
-jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
-    () => ({
-        useGorgiasChatCreationWizardContext: () => ({
-            resetPreview: jest.fn(),
-        }),
-    }),
-)
-
 const defaultServerSettings = {
     id: 1,
     applicationId: 123,
@@ -198,6 +203,15 @@ const defaultProps = {
 describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+            updateWorkflowEntryPoints: jest.fn(),
+            reloadPreview: jest.fn(),
+            displayPage: jest.fn(),
+        } as any)
+        mockUseListWorkflowEntryPoints.mockReturnValue({
+            data: {},
+            isLoading: false,
+        } as any)
         mockUseStoreIntegration.mockReturnValue({
             storeIntegration: undefined,
             isConnected: true,
@@ -531,6 +545,118 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
             expect(
                 mockHandleChatApplicationAutomationSettingsUpdate,
             ).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('workflow entry points effect', () => {
+        it('should call updateWorkflowEntryPoints on mount when labels are loaded', () => {
+            const mockUpdateWorkflowEntryPoints = jest.fn()
+            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+                updateWorkflowEntryPoints: mockUpdateWorkflowEntryPoints,
+                reloadPreview: jest.fn(),
+                displayPage: jest.fn(),
+            } as any)
+
+            render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+
+            expect(mockUpdateWorkflowEntryPoints).toHaveBeenCalledWith([])
+        })
+
+        it('should call updateWorkflowEntryPoints with correct shape after flows change', async () => {
+            const mockUpdateWorkflowEntryPoints = jest.fn()
+            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+                updateWorkflowEntryPoints: mockUpdateWorkflowEntryPoints,
+                reloadPreview: jest.fn(),
+                displayPage: jest.fn(),
+            } as any)
+            mockUseListWorkflowEntryPoints.mockReturnValue({
+                data: { 'wf-1': 'My Flow Label' },
+                isLoading: false,
+            } as any)
+
+            const user = userEvent.setup()
+            render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+
+            await user.click(screen.getByRole('button', { name: 'Add Flow' }))
+
+            expect(mockUpdateWorkflowEntryPoints).toHaveBeenLastCalledWith([
+                {
+                    workflow_id: 'wf-1',
+                    language: 'en-US',
+                    label: 'My Flow Label',
+                },
+            ])
+        })
+
+        it('should not call updateWorkflowEntryPoints while labels are loading and pendingFlows is non-empty', async () => {
+            const mockUpdateWorkflowEntrypoints = jest.fn()
+            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+                updateWorkflowEntryPoints: mockUpdateWorkflowEntrypoints,
+                reloadPreview: jest.fn(),
+                displayPage: jest.fn(),
+            } as any)
+            mockUseListWorkflowEntryPoints.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            } as any)
+
+            const user = userEvent.setup()
+            render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+
+            mockUpdateWorkflowEntrypoints.mockClear()
+
+            await user.click(screen.getByRole('button', { name: 'Add Flow' }))
+
+            expect(mockUpdateWorkflowEntrypoints).not.toHaveBeenCalled()
+        })
+
+        it('should not call updateWorkflowEntryPoints on mount when labels are loading and pendingFlows is null', () => {
+            const mockUpdateWorkflowEntryPoints = jest.fn()
+            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+                updateWorkflowEntryPoints: mockUpdateWorkflowEntryPoints,
+                reloadPreview: jest.fn(),
+                displayPage: jest.fn(),
+            } as any)
+            mockUseListWorkflowEntryPoints.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            } as any)
+
+            render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+
+            expect(mockUpdateWorkflowEntryPoints).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('display page and reload preview effect', () => {
+        it('should call displayPage with homepage on mount', () => {
+            const mockDisplayPage = jest.fn()
+            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+                updateWorkflowEntryPoints: jest.fn(),
+                reloadPreview: jest.fn(),
+                displayPage: mockDisplayPage,
+            } as any)
+
+            render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+
+            expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
+        })
+
+        it('should call reloadPreview on unmount', () => {
+            const mockReloadPreview = jest.fn()
+            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+                updateWorkflowEntryPoints: jest.fn(),
+                reloadPreview: mockReloadPreview,
+                displayPage: jest.fn(),
+            } as any)
+
+            const { unmount } = render(
+                <GorgiasAutomateChatIntegrationRevamp {...defaultProps} />,
+            )
+
+            unmount()
+
+            expect(mockReloadPreview).toHaveBeenCalled()
         })
     })
 })

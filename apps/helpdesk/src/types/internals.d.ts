@@ -4,6 +4,7 @@ import { Language } from 'constants/languages'
 import type {
     GorgiasChatPosition,
     GorgiasChatPreviewApplicationSettings,
+    GorgiasChatPreviewSelfServiceConfiguration,
 } from 'models/integration/types'
 import { Page } from 'services/statusPageManager/types'
 import { Account } from 'state/currentAccount/types'
@@ -65,6 +66,9 @@ declare global {
             setPosition(position: GorgiasChatPosition): void
             updateSettings?: (
                 settings: GorgiasChatPreviewApplicationSettings,
+            ) => void
+            updateSelfServiceConfiguration?: (
+                selfServiceConfiguration: GorgiasChatPreviewSelfServiceConfiguration,
             ) => void
             setLanguage?: (language: Language) => Promise<void>
         }

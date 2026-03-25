@@ -98,6 +98,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
     isAiAgentEnabled = false,
 }: Props) => {
     const dispatch = useAppDispatch()
+    const { reloadPreview } = useGorgiasChatCreationWizardContext()
     const surveysSettings = useAppSelector(getSurveysSettingsJS)
     const sendCsatGlobal = surveysSettings?.data?.send_survey_for_chat ?? false
 
@@ -179,8 +180,6 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
         }
     }
 
-    const { resetPreview } = useGorgiasChatCreationWizardContext()
-
     const onSave = handleSubmit(onSubmit)
 
     return (
@@ -188,7 +187,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
             <SaveChangesPrompt
                 when={isDirty}
                 onSave={onSave}
-                onDiscard={resetPreview}
+                onDiscard={reloadPreview}
                 shouldRedirectAfterSave
             />
             <GorgiasChatRevampLayout

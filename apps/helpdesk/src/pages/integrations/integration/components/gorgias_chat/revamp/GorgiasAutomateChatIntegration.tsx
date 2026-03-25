@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import type { Map } from 'immutable'
 
 import type { GorgiasChatIntegration } from 'models/integration/types'
+import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { AutomateFeatures } from 'pages/automate/common/types'
 import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
@@ -31,6 +32,9 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
     const { isConnected } = useStoreIntegration(integration)
     const gorgiasChatIntegration = integration.toJS() as GorgiasChatIntegration
     const appId = gorgiasChatIntegration?.meta?.app_id
+
+    const { updateWorkflowEntryPoints, reloadPreview, displayPage } =
+        useGorgiasChatCreationWizardContext()
 
     const {
         applicationsAutomationSettings,
@@ -77,9 +81,39 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
         automationSettingsWorkflows,
     } = useFlows({ integration })
 
+    const { data: entrypointsLabels, isLoading: isEntrypointsLabelsLoading } =
+        useListWorkflowEntryPoints({
+            ids: (pendingFlows || []).map((flow) => flow.workflow_id),
+            language: primaryLanguage,
+        })
+
     const handleFlowsChange = (updatedWorkflows: Workflow[]) => {
         setPendingFlows(updatedWorkflows)
     }
+
+    useEffect(() => {
+        if (!isEntrypointsLabelsLoading || pendingFlows?.length === 0) {
+            const workflowEntryPoints = (pendingFlows || []).map((flow) => ({
+                workflow_id: flow.workflow_id,
+                language: primaryLanguage,
+                label: entrypointsLabels?.[flow.workflow_id],
+            }))
+
+            updateWorkflowEntryPoints(workflowEntryPoints)
+        }
+    }, [
+        pendingFlows,
+        primaryLanguage,
+        entrypointsLabels,
+        isEntrypointsLabelsLoading,
+        updateWorkflowEntryPoints,
+    ])
+
+    useEffect(() => {
+        displayPage('homepage')
+
+        return reloadPreview
+    }, [reloadPreview, displayPage])
 
     const isOrderManagementEnabled =
         pendingOrderManagement ?? serverOrderManagementEnabled
@@ -90,8 +124,6 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
         pendingOrderManagement === null &&
         pendingArticleRecommendation === null &&
         pendingFlows === null
-
-    const { resetPreview } = useGorgiasChatCreationWizardContext()
 
     const handleSave = async () => {
         if (!serverSettings) return
@@ -119,6 +151,10 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
         setPendingFlows(null)
     }
 
+    const handleFlowsCardFocus = useCallback(() => {
+        displayPage('homepage')
+    }, [displayPage])
+
     if (!isConnected) {
         return (
             <GorgiasChatRevampLayout integration={integration}>
@@ -134,7 +170,7 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
             <SaveChangesPrompt
                 when={!isSaveDisabled}
                 onSave={handleSave}
-                onDiscard={resetPreview}
+                onDiscard={reloadPreview}
                 shouldRedirectAfterSave
             />
             <GorgiasChatRevampLayout
@@ -156,6 +192,7 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
                             pendingFlows ?? automationSettingsWorkflows
                         }
                         onChange={handleFlowsChange}
+                        onFocus={handleFlowsCardFocus}
                     />
                     {orderManagementEnabledInSettings && (
                         <OrderManagementCard

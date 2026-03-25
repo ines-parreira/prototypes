@@ -8,6 +8,7 @@ import { TicketChannel } from 'business/types/ticket'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
+import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { DndProvider } from 'utils/wrappers/DndProvider'
@@ -22,6 +23,9 @@ jest.mock('settings/automate/hooks/useIsAutomateSettings')
 jest.mock('models/workflows/queries', () => ({
     useListWorkflowEntryPoints: jest.fn(),
 }))
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+)
 
 const mockHistoryPush = jest.fn()
 jest.mock('react-router-dom', () => ({
@@ -43,6 +47,11 @@ const mockUseIsAutomateSettings = useIsAutomateSettings as jest.MockedFunction<
 const mockUseListWorkflowEntryPoints =
     useListWorkflowEntryPoints as jest.MockedFunction<
         typeof useListWorkflowEntryPoints
+    >
+
+const mockUseGorgiasChatCreationWizardContext =
+    useGorgiasChatCreationWizardContext as jest.MockedFunction<
+        typeof useGorgiasChatCreationWizardContext
     >
 
 const mockChannel: SelfServiceChatChannel = {
@@ -102,6 +111,9 @@ describe('FlowsSettings', () => {
         })
         mockUseIsAutomateSettings.mockReturnValue(false)
         mockUseListWorkflowEntryPoints.mockReturnValue({} as any)
+        mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+            displayPage: jest.fn(),
+        } as any)
     })
 
     describe('rendering', () => {

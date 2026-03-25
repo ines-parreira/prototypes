@@ -15,6 +15,7 @@ import type {
     GorgiasChatPosition,
     GorgiasChatPreviewApplicationSettings,
 } from 'models/integration/types'
+import type { GorgiasChatWorkflowEntrypoint } from 'models/integration/types/gorgiasChat'
 
 import { ChatPreview } from './components/ChatPreview/ChatPreview'
 import type { ChatPreviewHandle } from './components/ChatPreview/ChatPreview'
@@ -29,6 +30,10 @@ export type ChatPreviewPanelHandle = {
     closeChat: () => void
     openChat: () => void
     updateLanguage: (language: Language) => Promise<void>
+    updateWorkflowEntryPoints: (
+        workflowEntrypoints: GorgiasChatWorkflowEntrypoint[],
+    ) => void
+    reloadPreview: () => void
 }
 
 type Props = {
@@ -39,6 +44,10 @@ type Props = {
 export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
     ({ appId, headerActions }: Props, ref) => {
         const chatPreviewRef = useRef<ChatPreviewHandle>(null)
+        const [selectedPage, setSelectedPage] = useState<
+            'homepage' | 'conversation'
+        >('homepage')
+        const [reloadKey, setReloadKey] = useState(0)
 
         const withGorgiasChat = (
             callback: (
@@ -69,10 +78,12 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
         }
 
         const displayPage = (page: 'homepage' | 'conversation') => {
-            withGorgiasChat((gorgiasChat) => {
-                setSelectedPage(page)
-                gorgiasChat.setPage(page)
-            })
+            if (page !== selectedPage) {
+                withGorgiasChat((gorgiasChat) => {
+                    setSelectedPage(page)
+                    gorgiasChat.setPage(page)
+                })
+            }
         }
 
         const closeChat = () => {
@@ -121,15 +132,15 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             )
         }
 
-        useImperativeHandle(ref, () => ({
-            displayPage,
-            updatePosition,
-            updateSettings,
-            updateTexts,
-            closeChat,
-            openChat,
-            updateLanguage,
-        }))
+        const updateWorkflowEntryPoints = (
+            workflowEntryPoints: GorgiasChatWorkflowEntrypoint[],
+        ) => {
+            withGorgiasChat((gorgiasChat) => {
+                gorgiasChat.updateSelfServiceConfiguration?.({
+                    workflowsEntrypoints: workflowEntryPoints,
+                })
+            })
+        }
 
         const handlePageChange = (page: string) => {
             if (page === 'conversation' || page === 'homepage') {
@@ -138,9 +149,21 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             }
         }
 
-        const [selectedPage, setSelectedPage] = useState<
-            'homepage' | 'conversation'
-        >('homepage')
+        const reloadPreview = () => {
+            setReloadKey(reloadKey + 1)
+        }
+
+        useImperativeHandle(ref, () => ({
+            displayPage,
+            updatePosition,
+            updateSettings,
+            updateTexts,
+            closeChat,
+            openChat,
+            updateLanguage,
+            updateWorkflowEntryPoints,
+            reloadPreview,
+        }))
 
         return (
             <Box flexDirection="column" className={css.panel}>
@@ -171,7 +194,11 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 </Box>
                 <Box flexGrow={1} className={css.content}>
                     {appId && (
-                        <ChatPreview ref={chatPreviewRef} appId={appId} />
+                        <ChatPreview
+                            key={reloadKey}
+                            ref={chatPreviewRef}
+                            appId={appId}
+                        />
                     )}
                 </Box>
             </Box>

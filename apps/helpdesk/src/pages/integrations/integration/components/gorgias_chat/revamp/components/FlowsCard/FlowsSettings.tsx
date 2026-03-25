@@ -4,7 +4,6 @@ import { keyBy } from 'lodash'
 
 import { Box, Button, Menu, MenuItem } from '@gorgias/axiom'
 
-import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
@@ -17,12 +16,12 @@ export const FlowsSettings = ({
     workflowEntrypoints,
     configurations,
     automationSettingsWorkflows,
-    primaryLanguage,
     shopName,
     shopType,
     channelType,
     channel,
     onChange,
+    onFocus,
 }: FlowsSettingsProps) => {
     const isAutomateSettings = useIsAutomateSettings()
 
@@ -61,11 +60,6 @@ export const FlowsSettings = ({
     }, [automationSettingsWorkflows, workflowEntrypoints, configurationsMap])
 
     const enabledWorkflows = workflows.filter((workflow) => workflow.enabled)
-
-    useListWorkflowEntryPoints({
-        ids: workflows.map((w) => w.workflow_id),
-        language: primaryLanguage,
-    })
 
     const { getLanguagesMismatchWarning } = useLanguagesMismatchWarnings(
         channel.type,
@@ -144,6 +138,7 @@ export const FlowsSettings = ({
                             variant="secondary"
                             trailingSlot="arrow-chevron-down"
                             isDisabled={isAddDisabled}
+                            onFocus={onFocus}
                         >
                             Add flow
                         </Button>

@@ -31,7 +31,7 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
         onSubmit,
     } = useAppearanceForm({ integration, loading })
 
-    const { resetPreview } = useGorgiasChatCreationWizardContext()
+    const { reloadPreview } = useGorgiasChatCreationWizardContext()
 
     const onSave = handleSubmit(onSubmit)
 
@@ -40,7 +40,7 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
             <SaveChangesPrompt
                 when={isDirty}
                 onSave={onSave}
-                onDiscard={resetPreview}
+                onDiscard={reloadPreview}
                 shouldRedirectAfterSave
             />
             <GorgiasChatRevampLayout

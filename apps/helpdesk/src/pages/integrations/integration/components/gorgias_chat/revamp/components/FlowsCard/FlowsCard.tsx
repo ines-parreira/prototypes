@@ -26,6 +26,7 @@ type FlowsCardProps = {
         updatedWorkflows: Workflow[],
         action: 'add' | 'remove' | 'reorder',
     ) => void
+    onFocus?: () => void
 }
 
 export function FlowsCard({
@@ -38,6 +39,7 @@ export function FlowsCard({
     workflowConfigurations,
     automationSettingsWorkflows,
     onChange,
+    onFocus,
 }: FlowsCardProps) {
     if (isLoading) {
         return <Skeleton height={200} />
@@ -63,6 +65,7 @@ export function FlowsCard({
                     configurations={workflowConfigurations}
                     automationSettingsWorkflows={automationSettingsWorkflows}
                     onChange={onChange}
+                    onFocus={onFocus}
                 />
             </Box>
         </Card>

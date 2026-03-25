@@ -45,4 +45,5 @@ export type FlowsSettingsProps = {
         updatedWorkflows: Workflow[],
         action: 'add' | 'remove' | 'reorder',
     ) => void
+    onFocus?: () => void
 }

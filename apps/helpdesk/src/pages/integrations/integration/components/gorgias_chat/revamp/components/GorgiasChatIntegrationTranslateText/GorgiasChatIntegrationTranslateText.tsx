@@ -59,7 +59,7 @@ export const GorgiasChatIntegrationTranslateTextRevamp = ({
         integrationChat,
     } = useGorgiasTranslateText({ integration })
 
-    const { resetPreview } = useGorgiasChatCreationWizardContext()
+    const { reloadPreview } = useGorgiasChatCreationWizardContext()
 
     const sections = useTranslateSections({
         isAutomateSubscriber,
@@ -156,7 +156,7 @@ export const GorgiasChatIntegrationTranslateTextRevamp = ({
             <SaveChangesPrompt
                 when={hasChanges}
                 onSave={submitData}
-                onDiscard={resetPreview}
+                onDiscard={reloadPreview}
                 shouldRedirectAfterSave
             />
             <GorgiasChatRevampLayout

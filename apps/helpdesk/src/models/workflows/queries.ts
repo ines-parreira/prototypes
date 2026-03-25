@@ -583,7 +583,7 @@ export const useListWorkflowEntryPoints = ({
             const client = await getGorgiasWfApiClient()
             const response = await client.WfEntrypointController_list(
                 {
-                    ids: ids as Paths.WfEntrypointControllerList.QueryParameters['ids'],
+                    ids: ids as [string, ...string[]],
                     language,
                 },
                 {},

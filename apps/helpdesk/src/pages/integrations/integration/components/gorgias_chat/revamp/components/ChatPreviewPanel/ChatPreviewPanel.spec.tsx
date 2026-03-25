@@ -1,6 +1,6 @@
 import { createRef } from 'react'
 
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { ButtonGroupItemProps, ButtonGroupProps } from '@gorgias/axiom'
@@ -36,6 +36,8 @@ jest.mock('@gorgias/axiom', () => {
     }
 })
 
+let mockMountCount = 0
+
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/components/ChatPreview/ChatPreview',
     () => {
@@ -49,10 +51,15 @@ jest.mock(
             updateSettings: jest.fn(),
             updateTexts: jest.fn(),
             setLanguage: jest.fn().mockResolvedValue(undefined),
+            updateSelfServiceConfiguration: jest.fn(),
         }
 
         const ChatPreview = React.forwardRef(
             (_props: { appId: string }, ref: React.Ref<ChatPreviewHandle>) => {
+                React.useEffect(() => {
+                    mockMountCount++
+                }, [])
+
                 React.useImperativeHandle(ref, () => ({
                     iframeRef: {
                         current: mockHasGorgiasChat
@@ -85,6 +92,7 @@ describe('ChatPreviewPanel', () => {
         mockIsLoaded = true
         mockHasError = false
         mockHasGorgiasChat = true
+        mockMountCount = 0
     })
 
     const renderComponent = (appId: string | null = 'test-app-id') => {
@@ -120,6 +128,13 @@ describe('ChatPreviewPanel', () => {
 
             await user.click(screen.getByTestId('button-group-item-homepage'))
 
+            expect(mockGorgiasChat.setPage).not.toHaveBeenCalledWith('homepage')
+
+            await user.click(
+                screen.getByTestId('button-group-item-conversation'),
+            )
+            await user.click(screen.getByTestId('button-group-item-homepage'))
+
             expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('homepage')
             expect(mockGorgiasChat.open).toHaveBeenCalled()
         })
@@ -148,6 +163,8 @@ describe('ChatPreviewPanel', () => {
             expect(ref.current?.closeChat).toBeDefined()
             expect(ref.current?.openChat).toBeDefined()
             expect(ref.current?.updateLanguage).toBeDefined()
+            expect(ref.current?.updateWorkflowEntryPoints).toBeDefined()
+            expect(ref.current?.reloadPreview).toBeDefined()
         })
 
         it('displayPage calls GorgiasChat.setPage', () => {
@@ -238,6 +255,28 @@ describe('ChatPreviewPanel', () => {
                 ref.current?.updateLanguage(Language.French),
             ).resolves.toBeUndefined()
         })
+
+        it('updateWorkflowEntrypoints calls GorgiasChat.updateSelfServiceConfiguration with the provided entrypoints', () => {
+            const { ref } = renderComponent()
+            const entrypoints = [{ id: 'flow-1' }, { id: 'flow-2' }] as any
+
+            ref.current?.updateWorkflowEntryPoints(entrypoints)
+
+            expect(
+                mockGorgiasChat.updateSelfServiceConfiguration,
+            ).toHaveBeenCalledWith({ workflowsEntrypoints: entrypoints })
+        })
+
+        it('reloadPreview causes ChatPreview to remount', () => {
+            const { ref } = renderComponent()
+            expect(mockMountCount).toBe(1)
+
+            act(() => {
+                ref.current?.reloadPreview()
+            })
+
+            expect(mockMountCount).toBe(2)
+        })
     })
 
     describe('withGorgiasChat guards', () => {
@@ -293,6 +332,39 @@ describe('ChatPreviewPanel', () => {
             await expect(
                 ref.current?.updateLanguage(Language.French),
             ).resolves.toBeUndefined()
+        })
+
+        it('does not call GorgiasChat.updateSelfServiceConfiguration when isLoaded is false', () => {
+            mockIsLoaded = false
+            const { ref } = renderComponent()
+
+            ref.current?.updateWorkflowEntryPoints([])
+
+            expect(
+                mockGorgiasChat.updateSelfServiceConfiguration,
+            ).not.toHaveBeenCalled()
+        })
+
+        it('does not call GorgiasChat.updateSelfServiceConfiguration when hasError is true', () => {
+            mockHasError = true
+            const { ref } = renderComponent()
+
+            ref.current?.updateWorkflowEntryPoints([])
+
+            expect(
+                mockGorgiasChat.updateSelfServiceConfiguration,
+            ).not.toHaveBeenCalled()
+        })
+
+        it('does not call GorgiasChat.updateSelfServiceConfiguration when GorgiasChat is not present in the iframe window', () => {
+            mockHasGorgiasChat = false
+            const { ref } = renderComponent()
+
+            ref.current?.updateWorkflowEntryPoints([])
+
+            expect(
+                mockGorgiasChat.updateSelfServiceConfiguration,
+            ).not.toHaveBeenCalled()
         })
     })
 })

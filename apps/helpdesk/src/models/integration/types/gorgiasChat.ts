@@ -145,6 +145,16 @@ export type GorgiasChatPreviewApplicationSettings = {
     language?: Language
 }
 
+export type GorgiasChatWorkflowEntrypoint = {
+    workflow_id: string
+    language: string
+    label: string | undefined
+}
+
+export type GorgiasChatPreviewSelfServiceConfiguration = {
+    workflowsEntrypoints?: GorgiasChatWorkflowEntrypoint[]
+}
+
 export enum GorgiasChatStatusEnum {
     ONLINE = 'online',
     OFFLINE = 'offline',

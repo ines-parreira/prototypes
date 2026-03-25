@@ -196,6 +196,54 @@ describe('useChatPreviewPanel', () => {
         expect(() => result.current.displayPage('homepage')).not.toThrow()
     })
 
+    it('reloadPreview does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.reloadPreview()).not.toThrow()
+    })
+
+    it('reloadPreview calls reloadPreview on the ref when attached', () => {
+        const mockReloadPreview = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = { reloadPreview: mockReloadPreview }
+        }
+
+        result.current.reloadPreview()
+
+        expect(mockReloadPreview).toHaveBeenCalled()
+    })
+
+    it('updateWorkflowEntryPoints does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.updateWorkflowEntryPoints([])).not.toThrow()
+    })
+
+    it('updateWorkflowEntryPoints calls displayPage with homepage and updateWorkflowEntryPoints on the ref when attached', () => {
+        const mockDisplayPage = jest.fn()
+        const mockUpdateWorkflowEntrypoints = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                displayPage: mockDisplayPage,
+                updateWorkflowEntryPoints: mockUpdateWorkflowEntrypoints,
+            }
+        }
+
+        const entrypoints = [{ id: 'flow-1' }] as any
+        result.current.updateWorkflowEntryPoints(entrypoints)
+
+        expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
+        expect(mockUpdateWorkflowEntrypoints).toHaveBeenCalledWith(entrypoints)
+    })
+
     it('updateLanguage does not throw when ref is unattached', async () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -259,7 +307,8 @@ describe('useGorgiasChatCreationWizardContext', () => {
             updateLegalDisclaimer: jest.fn(),
             updateLegalDisclaimerEnabled: jest.fn(),
             updateLanguage: jest.fn(),
-            resetPreview: jest.fn(),
+            updateWorkflowEntryPoints: jest.fn(),
+            reloadPreview: jest.fn(),
         }
 
         const wrapper = ({ children }: { children: ReactNode }) => (

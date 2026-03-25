@@ -45,7 +45,7 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
     () => ({
         useGorgiasChatCreationWizardContext: () => ({
-            resetPreview: jest.fn(),
+            reloadPreview: jest.fn(),
         }),
     }),
 )

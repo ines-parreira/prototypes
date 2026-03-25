@@ -1,10 +1,20 @@
-import { createContext, useContext, useEffect, useRef, useState } from 'react'
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react'
 
 import { toHex } from 'color2k'
 
 import type { Language } from 'constants/languages'
 import type { GorgiasChatPosition } from 'models/integration/types'
-import type { GorgiasChatLauncherSettings } from 'models/integration/types/gorgiasChat'
+import type {
+    GorgiasChatLauncherSettings,
+    GorgiasChatWorkflowEntrypoint,
+} from 'models/integration/types/gorgiasChat'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import { ChatPreviewPanel } from '../ChatPreviewPanel'
@@ -34,25 +44,23 @@ export const useChatPreviewPanel = () => {
         useCollapsibleColumn()
 
     const [appId, setAppId] = useState<string | null>(null)
-    const [previewKey, setPreviewKey] = useState(0)
     const chatPreviewPanelRef = useRef<ChatPreviewPanelHandle>(null)
 
     const chatPreviewPortal = warpToCollapsibleColumn(
-        <ChatPreviewPanel
-            key={previewKey}
-            ref={chatPreviewPanelRef}
-            appId={appId}
-        />,
+        <ChatPreviewPanel ref={chatPreviewPanelRef} appId={appId} />,
     )
 
-    const showPreviewPanel = (appId: string | null) => {
-        setAppId(appId)
-        setIsCollapsibleColumnOpen(true)
-    }
+    const showPreviewPanel = useCallback(
+        (appId: string | null) => {
+            setAppId(appId)
+            setIsCollapsibleColumnOpen(true)
+        },
+        [setIsCollapsibleColumnOpen],
+    )
 
-    const hidePreviewPanel = () => {
+    const hidePreviewPanel = useCallback(() => {
         setIsCollapsibleColumnOpen(false)
-    }
+    }, [setIsCollapsibleColumnOpen])
 
     useEffect(() => {
         return () => {
@@ -60,76 +68,103 @@ export const useChatPreviewPanel = () => {
         }
     }, [setIsCollapsibleColumnOpen])
 
-    const closeChat = () => {
+    const closeChat = useCallback(() => {
         chatPreviewPanelRef.current?.closeChat()
-    }
+    }, [])
 
-    const openChat = () => {
+    const openChat = useCallback(() => {
         chatPreviewPanelRef.current?.openChat()
-    }
+    }, [])
 
-    const displayPage = (page: 'homepage' | 'conversation') => {
+    const displayPage = useCallback((page: 'homepage' | 'conversation') => {
         chatPreviewPanelRef.current?.displayPage(page)
-    }
+    }, [])
 
-    const updateMainColor = (color: string) => {
-        let normalizedColor = color
+    const updateMainColor = useCallback(
+        (color: string) => {
+            let normalizedColor = color
 
-        try {
-            normalizedColor = toHex(color)
-        } catch {
-            normalizedColor = '#808080'
-        }
+            try {
+                normalizedColor = toHex(color)
+            } catch {
+                normalizedColor = '#808080'
+            }
 
-        chatPreviewPanelRef.current?.updateSettings({
-            decoration: {
-                mainColor: normalizedColor,
-            },
-        })
-        openChat()
-    }
+            chatPreviewPanelRef.current?.updateSettings({
+                decoration: {
+                    mainColor: normalizedColor,
+                },
+            })
+            openChat()
+        },
+        [openChat],
+    )
 
-    const updatePosition = (position: GorgiasChatPosition) => {
-        closeChat()
-        chatPreviewPanelRef.current?.updatePosition(position)
-    }
+    const updatePosition = useCallback(
+        (position: GorgiasChatPosition) => {
+            closeChat()
+            chatPreviewPanelRef.current?.updatePosition(position)
+        },
+        [closeChat],
+    )
 
-    const updateHeaderPictureUrl = (imageUrl: string | undefined) => {
-        chatPreviewPanelRef.current?.updateSettings({
-            decoration: { headerPictureUrl: imageUrl },
-        })
-        displayPage('homepage')
-        openChat()
-    }
+    const updateHeaderPictureUrl = useCallback(
+        (imageUrl: string | undefined) => {
+            chatPreviewPanelRef.current?.updateSettings({
+                decoration: { headerPictureUrl: imageUrl },
+            })
+            displayPage('homepage')
+            openChat()
+        },
+        [displayPage, openChat],
+    )
 
-    const updateTexts = (texts: Record<string, string>) => {
+    const updateTexts = useCallback((texts: Record<string, string>) => {
         chatPreviewPanelRef.current?.updateTexts(texts)
-    }
+    }, [])
 
-    const updateLauncher = (settings: GorgiasChatLauncherSettings) => {
-        chatPreviewPanelRef.current?.updateSettings({
-            decoration: { launcher: settings },
-        })
-        closeChat()
-    }
+    const updateLauncher = useCallback(
+        (settings: GorgiasChatLauncherSettings) => {
+            chatPreviewPanelRef.current?.updateSettings({
+                decoration: { launcher: settings },
+            })
+            closeChat()
+        },
+        [closeChat],
+    )
 
-    const updateLegalDisclaimer = (privacyPolicyDisclaimer: string) => {
-        chatPreviewPanelRef.current?.updateTexts({ privacyPolicyDisclaimer })
-    }
+    const updateLegalDisclaimer = useCallback(
+        (privacyPolicyDisclaimer: string) => {
+            chatPreviewPanelRef.current?.updateTexts({
+                privacyPolicyDisclaimer,
+            })
+        },
+        [],
+    )
 
-    const updateLegalDisclaimerEnabled = (enabled: boolean) => {
+    const updateLegalDisclaimerEnabled = useCallback((enabled: boolean) => {
         chatPreviewPanelRef.current?.updateSettings({
             preferences: { privacyPolicyDisclaimerEnabled: enabled },
         })
-    }
+    }, [])
 
-    const updateLanguage = async (language: Language) => {
+    const updateLanguage = useCallback(async (language: Language) => {
         await chatPreviewPanelRef.current?.updateLanguage(language)
-    }
+    }, [])
 
-    const resetPreview = () => {
-        setPreviewKey((k) => k + 1)
-    }
+    const updateWorkflowEntryPoints = useCallback(
+        (workflowEntryPoints: GorgiasChatWorkflowEntrypoint[]) => {
+            displayPage('homepage')
+            chatPreviewPanelRef.current?.updateWorkflowEntryPoints(
+                workflowEntryPoints,
+            )
+        },
+        [displayPage],
+    )
+
+    const reloadPreview = useCallback(() => {
+        chatPreviewPanelRef.current?.reloadPreview()
+    }, [])
 
     return {
         chatPreviewPortal,
@@ -146,6 +181,7 @@ export const useChatPreviewPanel = () => {
         updateLegalDisclaimer,
         updateLegalDisclaimerEnabled,
         updateLanguage,
-        resetPreview,
+        updateWorkflowEntryPoints,
+        reloadPreview,
     }
 }

@@ -125,7 +125,7 @@ describe('ChatPreview', () => {
                 screen.getByRole('button', { name: /reload preview/i }),
             )
 
-            expect(screen.getByText('Loading Preview...')).toBeInTheDocument()
+            expect(screen.getByText('Loading preview...')).toBeInTheDocument()
         })
 
         it('should refetch the snippet when reload is clicked after a snippet fetch failure', async () => {
