@@ -13,13 +13,18 @@ import css from './CustomerInfoFieldList.less'
 type Props = {
     fields: FieldConfig[]
     context: FieldRenderContext
+    showOverflowToggle?: boolean
 }
 
-export function CustomerInfoFieldList({ fields, context }: Props) {
+export function CustomerInfoFieldList({
+    fields,
+    context,
+    showOverflowToggle = true,
+}: Props) {
     return (
         <OverflowList
             className={css.overflowList}
-            nonExpandedLineCount={7}
+            nonExpandedLineCount={showOverflowToggle ? 7 : Infinity}
             gap="xxs"
         >
             {fields.map((field) => (
@@ -30,22 +35,26 @@ export function CustomerInfoFieldList({ fields, context }: Props) {
                     className={css.overflowListItem}
                 />
             ))}
-            <Box className={css.overflowListToggle}>
-                <OverflowListShowMore
-                    leadingSlot="arrow-chevron-down"
-                    className={css.overflowListToggle}
-                >
-                    Show more
-                </OverflowListShowMore>
-            </Box>
-            <Box className={css.overflowListToggle}>
-                <OverflowListShowLess
-                    leadingSlot="arrow-chevron-up"
-                    className={css.overflowListToggle}
-                >
-                    Show less
-                </OverflowListShowLess>
-            </Box>
+            {showOverflowToggle && (
+                <Box className={css.overflowListToggle}>
+                    <OverflowListShowMore
+                        leadingSlot="arrow-chevron-down"
+                        className={css.overflowListToggle}
+                    >
+                        Show more
+                    </OverflowListShowMore>
+                </Box>
+            )}
+            {showOverflowToggle && (
+                <Box className={css.overflowListToggle}>
+                    <OverflowListShowLess
+                        leadingSlot="arrow-chevron-up"
+                        className={css.overflowListToggle}
+                    >
+                        Show less
+                    </OverflowListShowLess>
+                </Box>
+            )}
         </OverflowList>
     )
 }

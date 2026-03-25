@@ -1,6 +1,9 @@
-import { useState } from 'react'
-
-import { Box, Button, Text } from '@gorgias/axiom'
+import {
+    Disclosure,
+    DisclosureHeader,
+    DisclosurePanel,
+    Text,
+} from '@gorgias/axiom'
 
 import { CustomerInfoFieldList } from '../CustomerInfoFieldList'
 import type { FieldConfig, FieldRenderContext } from '../types'
@@ -16,33 +19,18 @@ export function CollapsibleFieldSection({
     label,
     fields,
     context,
-    defaultExpanded = true,
+    defaultExpanded = false,
 }: Props) {
-    const [isExpanded, setIsExpanded] = useState(defaultExpanded)
-
     return (
-        <Box flexDirection="column">
-            <Box
-                justifyContent="space-between"
-                alignItems="center"
-                paddingTop="sm"
-                paddingBottom="sm"
-            >
-                <Text variant="bold">{label}</Text>
-                <Button
-                    variant="tertiary"
-                    icon={
-                        isExpanded ? 'arrow-chevron-up' : 'arrow-chevron-down'
-                    }
-                    aria-label={
-                        isExpanded ? `Collapse ${label}` : `Expand ${label}`
-                    }
-                    onClick={() => setIsExpanded((v) => !v)}
+        <Disclosure defaultExpanded={defaultExpanded}>
+            <DisclosureHeader title={<Text variant="bold">{label}</Text>} />
+            <DisclosurePanel>
+                <CustomerInfoFieldList
+                    fields={fields}
+                    context={context}
+                    showOverflowToggle={false}
                 />
-            </Box>
-            {isExpanded && (
-                <CustomerInfoFieldList fields={fields} context={context} />
-            )}
-        </Box>
+            </DisclosurePanel>
+        </Disclosure>
     )
 }

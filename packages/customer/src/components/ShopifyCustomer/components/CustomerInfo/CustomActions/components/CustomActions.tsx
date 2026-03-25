@@ -32,7 +32,7 @@ export function CustomActions({
     }
 
     return (
-        <Box marginTop="md" marginBottom="md" flexWrap="wrap" gap="sm">
+        <Box flexWrap="wrap" gap="sm">
             <Box gap="xxxs" flexWrap="wrap">
                 {buttons.map((button, index) => (
                     <Box

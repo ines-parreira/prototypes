@@ -882,13 +882,9 @@ describe('CustomerInfo', () => {
             await waitFor(() => {
                 expect(
                     screen.getAllByRole('button', {
-                        name: /collapse address/i,
+                        name: /address/i,
                     }),
                 ).toHaveLength(2)
-                expect(screen.getByText('123 Main St')).toBeInTheDocument()
-                expect(screen.getByText('New York')).toBeInTheDocument()
-                expect(screen.getByText('456 Oak Ave')).toBeInTheDocument()
-                expect(screen.getByText('Los Angeles')).toBeInTheDocument()
             })
         })
 
@@ -925,7 +921,7 @@ describe('CustomerInfo', () => {
 
             expect(
                 screen.queryByRole('button', {
-                    name: /collapse address/i,
+                    name: /address/i,
                 }),
             ).not.toBeInTheDocument()
         })
@@ -965,25 +961,22 @@ describe('CustomerInfo', () => {
                 />,
             )
 
-            await waitFor(() => {
-                expect(screen.getByText('123 Main St')).toBeInTheDocument()
+            const trigger = await waitFor(() => {
+                const btn = screen.getByRole('button', {
+                    name: /address/i,
+                })
+                expect(btn).toHaveAttribute('aria-expanded', 'false')
+                return btn
             })
 
-            await user.click(
-                screen.getByRole('button', {
-                    name: /collapse address/i,
-                }),
-            )
+            await user.click(trigger)
 
-            expect(screen.queryByText('123 Main St')).not.toBeInTheDocument()
+            expect(trigger).toHaveAttribute('aria-expanded', 'true')
+            expect(screen.getByText('123 Main St')).toBeVisible()
 
-            await user.click(
-                screen.getByRole('button', {
-                    name: /expand address/i,
-                }),
-            )
+            await user.click(trigger)
 
-            expect(screen.getByText('123 Main St')).toBeInTheDocument()
+            expect(trigger).toHaveAttribute('aria-expanded', 'false')
         })
 
         it('renders non-address section with its label', async () => {
@@ -1028,12 +1021,10 @@ describe('CustomerInfo', () => {
             await waitFor(() => {
                 expect(
                     screen.getByRole('button', {
-                        name: /collapse default address/i,
+                        name: /default address/i,
                     }),
                 ).toBeInTheDocument()
             })
-
-            expect(screen.getByText('789 Pine Rd')).toBeInTheDocument()
         })
     })
 
