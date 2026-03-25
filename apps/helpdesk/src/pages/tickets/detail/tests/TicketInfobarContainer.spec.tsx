@@ -20,8 +20,6 @@ import { UserRole } from 'config/types/user'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-import { OpportunityType } from 'pages/aiAgent/opportunities/enums'
-import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
 import type { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import { getCurrentUser } from 'state/currentUser/selectors'
@@ -235,17 +233,6 @@ jest.mock('state/widgets/actions')
 
 jest.mock('state/ui/ticketAIAgentFeedback')
 
-jest.mock('@gorgias/axiom', () => ({
-    Dot: () => <span aria-label="notification dot" />,
-}))
-
-jest.mock(
-    'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId',
-    () => ({
-        useFindTopOpportunityByTicketId: jest.fn(),
-    }),
-)
-
 jest.mock('pages/tickets/detail/IntegrationTabContent', () => ({
     __esModule: true,
     default: ({ widgetType }: { widgetType: string }) => (
@@ -292,9 +279,6 @@ jest.mock(
 const mockedGetAIAgentMessages = assumeMock(getAIAgentMessages)
 const mockedGetIntegrationsData = assumeMock(getIntegrationsData)
 const mockedGetIntegrationsByType = jest.mocked(getIntegrationsByType)
-const mockedUseFindTopOpportunityByTicketId = assumeMock(
-    useFindTopOpportunityByTicketId,
-)
 const mockedChangeTicketMessage = assumeMock(changeTicketMessage)
 
 const ticketsStore: Partial<RootState> = {
@@ -377,12 +361,6 @@ describe('<TicketInfobarContainer />', () => {
         } as any)
 
         mockedGetIntegrationsData.mockReturnValue(fromJS({}))
-        mockedUseFindTopOpportunityByTicketId.mockReturnValue({
-            topOpportunity: null,
-            isLoading: false,
-            isError: false,
-            refetch: jest.fn(),
-        })
     })
 
     it('should render infobar for active customer', () => {
@@ -855,47 +833,6 @@ describe('<TicketInfobarContainer />', () => {
 
             expect(
                 screen.queryByText('TimelineContent Component'),
-            ).not.toBeInTheDocument()
-        })
-    })
-
-    describe('opportunity indicator', () => {
-        it('shows on AI Feedback tab when top opportunity exists', () => {
-            mockedUseFindTopOpportunityByTicketId.mockReturnValue({
-                topOpportunity: {
-                    id: '123',
-                    type: OpportunityType.FILL_KNOWLEDGE_GAP,
-                    resources: [],
-                    key: '',
-                    insight: '',
-                },
-                isLoading: false,
-                isError: false,
-                refetch: jest.fn(),
-            })
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
-
-            expect(
-                screen.getByLabelText('notification dot'),
-            ).toBeInTheDocument()
-        })
-
-        it('does not show when no opportunity exists', () => {
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/123' },
-            )
-
-            expect(
-                screen.queryByLabelText('notification dot'),
             ).not.toBeInTheDocument()
         })
     })

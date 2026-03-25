@@ -14,7 +14,6 @@ import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 import { Navbar } from 'reactstrap'
 
-import { Dot } from '@gorgias/axiom'
 import { IntegrationType, useGetTicket } from '@gorgias/helpdesk-queries'
 
 import { AutoQA } from 'auto_qa'
@@ -25,7 +24,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useNotify } from 'hooks/useNotify'
 import { useSearchParam } from 'hooks/useSearchParam'
 import useSyncWidgetEditSession from 'hooks/useSyncWidgetEditSession'
-import { useFindTopOpportunityByTicketId } from 'pages/aiAgent/opportunities/hooks/useFindTopOpportunityByTicketId'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
 import CustomerSyncForm from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm'
 import { channelToCommunicationIcon } from 'pages/common/components/infobar/Infobar/TicketTimelineWidget/channelToCommunicationIcon'
@@ -117,9 +115,6 @@ export const TicketInfobarContainer = ({
     const shopperId = currentTicketData?.data?.customer?.id
 
     const customerIntegrations = useAppSelector(getIntegrationsData)
-    const shopifyIntegrations = useAppSelector(
-        getIntegrationsByType(IntegrationType.Shopify),
-    )
     const rechargeIntegrations = useAppSelector(
         getIntegrationsByType(IntegrationType.Recharge),
     )
@@ -134,13 +129,6 @@ export const TicketInfobarContainer = ({
     )
     const yotpoIntegrations = useAppSelector(
         getIntegrationsByType(IntegrationType.Yotpo),
-    )
-    const shopIntegrationId = useMemo(
-        () =>
-            shopifyIntegrations.find((integration) =>
-                customerIntegrations.has(String(integration.id)),
-            )?.id,
-        [shopifyIntegrations, customerIntegrations],
     )
     const rechargeIntegration = useMemo(
         () =>
@@ -190,11 +178,6 @@ export const TicketInfobarContainer = ({
         )
         return entry ? (entry[0] as string) : null
     }, [sources])
-
-    const { topOpportunity } = useFindTopOpportunityByTicketId(
-        shopIntegrationId ?? 0,
-        ticketId ? ticketId.toString() : '',
-    )
 
     const { onFeedbackTabOpened } = useFeedbackTracking({
         ticketId,
@@ -426,7 +409,6 @@ export const TicketInfobarContainer = ({
                           name: TicketInfobarTab.AIFeedback,
                           icon: AI_FEEDBACK_TAB.ICON,
                           label: AI_FEEDBACK_TAB.LABEL,
-                          hasIndicator: !!topOpportunity,
                       },
                   ]
                 : []),
@@ -436,7 +418,7 @@ export const TicketInfobarContainer = ({
                 label: AUTO_QA_TAB.LABEL,
             },
         ]
-    }, [canAccessAIFeedback, hasAIAgent, isEditWidgetPage, topOpportunity])
+    }, [canAccessAIFeedback, hasAIAgent, isEditWidgetPage])
 
     return (
         <div
@@ -454,7 +436,6 @@ export const TicketInfobarContainer = ({
                             })}
                             onClick={() => handleChangeTab(tab.name)}
                         >
-                            {tab.hasIndicator && <Dot color="purple" />}
                             <i className="icon material-icons">{tab.icon}</i>
                             {tab.label}
                         </div>
