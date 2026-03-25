@@ -36,6 +36,20 @@ jest.mock(
     }),
 )
 
+jest.mock('../GorgiasChatCreationWizard/components/SaveChangesPrompt', () => ({
+    __esModule: true,
+    default: () => null,
+}))
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useGorgiasChatCreationWizardContext: () => ({
+            resetPreview: jest.fn(),
+        }),
+    }),
+)
+
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationTranslateText/components/TranslateSection',
     () => ({

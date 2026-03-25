@@ -17,12 +17,14 @@ import css from './SaveChangesPrompt.less'
 type Props = {
     when: boolean
     onSave: () => Promise<unknown> | void
+    onDiscard?: () => void
     shouldRedirectAfterSave?: boolean
 }
 
 const SaveChangesPrompt: React.FC<Props> = ({
     when,
     onSave,
+    onDiscard,
     shouldRedirectAfterSave = false,
 }) => {
     const isDiscarding = useRef(false)
@@ -66,6 +68,7 @@ const SaveChangesPrompt: React.FC<Props> = ({
     }
 
     const handleDiscard = () => {
+        onDiscard?.()
         redirectToOriginalLocation()
     }
 

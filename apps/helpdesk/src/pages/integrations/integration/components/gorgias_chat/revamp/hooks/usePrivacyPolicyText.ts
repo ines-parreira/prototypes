@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import { produce } from 'immer'
 import { set } from 'lodash'
 
@@ -30,6 +31,9 @@ export const usePrivacyPolicyText = ({
         string | undefined
     >(undefined)
 
+    // Tracks the last saved/loaded value to detect unsaved user edits
+    const savedPrivacyPolicyTextRef = useRef<string | undefined>(undefined)
+
     useEffect(() => {
         if (!chatApplicationId) {
             return
@@ -41,9 +45,14 @@ export const usePrivacyPolicyText = ({
 
             const textsPerLanguage =
                 multiLanguage[defaultLanguage as LanguageChat]
-            setPrivacyPolicyText(
-                textsPerLanguage?.texts?.privacyPolicyDisclaimer ?? '',
-            )
+            const text = textsPerLanguage?.texts?.privacyPolicyDisclaimer ?? ''
+
+            // Update ref before state so isPrivacyPolicyTextDirty is false
+            // on the render triggered by setPrivacyPolicyText.
+            // Normalize with sanitizeHtmlDefault so the baseline matches what
+            // TicketRichField produces on initial mount (e.g. adds rel="noreferrer noopener").
+            savedPrivacyPolicyTextRef.current = sanitizeHtmlDefault(text)
+            setPrivacyPolicyText(text)
         })
     }, [chatApplicationId, defaultLanguage])
 
@@ -59,10 +68,20 @@ export const usePrivacyPolicyText = ({
                     text,
                 )
             })
+            savedPrivacyPolicyTextRef.current = text
             void updateApplicationTexts(chatApplicationId, updatedTexts)
         },
         [chatApplicationId, defaultLanguage],
     )
 
-    return { privacyPolicyText, setPrivacyPolicyText, savePrivacyPolicyText }
+    const isPrivacyPolicyTextDirty =
+        privacyPolicyText !== undefined &&
+        privacyPolicyText !== savedPrivacyPolicyTextRef.current
+
+    return {
+        privacyPolicyText,
+        setPrivacyPolicyText,
+        savePrivacyPolicyText,
+        isPrivacyPolicyTextDirty,
+    }
 }

@@ -34,10 +34,15 @@ export const useChatPreviewPanel = () => {
         useCollapsibleColumn()
 
     const [appId, setAppId] = useState<string | null>(null)
+    const [previewKey, setPreviewKey] = useState(0)
     const chatPreviewPanelRef = useRef<ChatPreviewPanelHandle>(null)
 
     const chatPreviewPortal = warpToCollapsibleColumn(
-        <ChatPreviewPanel ref={chatPreviewPanelRef} appId={appId} />,
+        <ChatPreviewPanel
+            key={previewKey}
+            ref={chatPreviewPanelRef}
+            appId={appId}
+        />,
     )
 
     const showPreviewPanel = (appId: string | null) => {
@@ -122,6 +127,10 @@ export const useChatPreviewPanel = () => {
         await chatPreviewPanelRef.current?.updateLanguage(language)
     }
 
+    const resetPreview = () => {
+        setPreviewKey((k) => k + 1)
+    }
+
     return {
         chatPreviewPortal,
         showPreviewPanel,
@@ -137,5 +146,6 @@ export const useChatPreviewPanel = () => {
         updateLegalDisclaimer,
         updateLegalDisclaimerEnabled,
         updateLanguage,
+        resetPreview,
     }
 }

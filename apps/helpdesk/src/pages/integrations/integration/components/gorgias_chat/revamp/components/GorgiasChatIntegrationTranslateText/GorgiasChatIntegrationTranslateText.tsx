@@ -15,8 +15,10 @@ import {
 } from '@gorgias/axiom'
 
 import type { LanguageChat } from 'constants/languages'
+import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import { GorgiasChatRevampLayout } from '../../GorgiasChatRevampLayout'
+import SaveChangesPrompt from '../GorgiasChatCreationWizard/components/SaveChangesPrompt'
 import { TranslateInputRow } from './components/TranslateInputRow'
 import { TranslateSection } from './components/TranslateSection'
 import { TranslateUnsavedChangesModal } from './components/TranslateUnsavedChangesModal'
@@ -56,6 +58,8 @@ export const GorgiasChatIntegrationTranslateTextRevamp = ({
         emailCaptureEnforcement,
         integrationChat,
     } = useGorgiasTranslateText({ integration })
+
+    const { resetPreview } = useGorgiasChatCreationWizardContext()
 
     const sections = useTranslateSections({
         isAutomateSubscriber,
@@ -148,55 +152,69 @@ export const GorgiasChatIntegrationTranslateTextRevamp = ({
     }
 
     return (
-        <GorgiasChatRevampLayout
-            integration={integration}
-            onSave={submitData}
-            isSaveDisabled={!hasChanges || isSubmitting}
-            isSaving={isSubmitting}
-        >
-            <div className={css.content}>
-                <div className={css.header}>
-                    {backButton}
-                    {languageSelector}
+        <>
+            <SaveChangesPrompt
+                when={hasChanges}
+                onSave={submitData}
+                onDiscard={resetPreview}
+                shouldRedirectAfterSave
+            />
+            <GorgiasChatRevampLayout
+                integration={integration}
+                onSave={submitData}
+                isSaveDisabled={!hasChanges || isSubmitting}
+                isSaving={isSubmitting}
+            >
+                <div className={css.content}>
+                    <div className={css.header}>
+                        {backButton}
+                        {languageSelector}
+                    </div>
+
+                    {advancedCustomizationBanner}
+
+                    {sections.map((section) => (
+                        <TranslateSection
+                            key={section.title}
+                            title={section.title}
+                        >
+                            {section.keys.map((key) => (
+                                <TranslateInputRow
+                                    key={`${language?.get('value')}-${key}`}
+                                    keyName={key}
+                                    value={
+                                        get(textsOfSelectedLanguage, key) || ''
+                                    }
+                                    defaultValue={get(translations, key)}
+                                    maxLength={
+                                        section.formPropsValues[key].maxLength
+                                    }
+                                    isRequired={
+                                        section.requiredKeys?.includes(key) ??
+                                        false
+                                    }
+                                    saveValue={saveKeyValue}
+                                />
+                            ))}
+                        </TranslateSection>
+                    ))}
                 </div>
 
-                {advancedCustomizationBanner}
-
-                {sections.map((section) => (
-                    <TranslateSection key={section.title} title={section.title}>
-                        {section.keys.map((key) => (
-                            <TranslateInputRow
-                                key={`${language?.get('value')}-${key}`}
-                                keyName={key}
-                                value={get(textsOfSelectedLanguage, key) || ''}
-                                defaultValue={get(translations, key)}
-                                maxLength={
-                                    section.formPropsValues[key].maxLength
-                                }
-                                isRequired={
-                                    section.requiredKeys?.includes(key) ?? false
-                                }
-                                saveValue={saveKeyValue}
-                            />
-                        ))}
-                    </TranslateSection>
-                ))}
-            </div>
-
-            <TranslateUnsavedChangesModal
-                isOpen={isExitModalOpen}
-                description="Do you want to save your changes before leaving?"
-                onSave={onSaveValuesAndExit}
-                onDiscard={onDiscardChangesAndExit}
-                onClose={onCloseModals}
-            />
-            <TranslateUnsavedChangesModal
-                isOpen={isLanguageChangeModalOpen}
-                description="Do you want to save your changes before switching language?"
-                onSave={onSaveValuesAndSwitchLanguage}
-                onDiscard={onDiscardChangesAndSwitchLanguage}
-                onClose={onCloseModals}
-            />
-        </GorgiasChatRevampLayout>
+                <TranslateUnsavedChangesModal
+                    isOpen={isExitModalOpen}
+                    description="Do you want to save your changes before leaving?"
+                    onSave={onSaveValuesAndExit}
+                    onDiscard={onDiscardChangesAndExit}
+                    onClose={onCloseModals}
+                />
+                <TranslateUnsavedChangesModal
+                    isOpen={isLanguageChangeModalOpen}
+                    description="Do you want to save your changes before switching language?"
+                    onSave={onSaveValuesAndSwitchLanguage}
+                    onDiscard={onDiscardChangesAndSwitchLanguage}
+                    onClose={onCloseModals}
+                />
+            </GorgiasChatRevampLayout>
+        </>
     )
 }

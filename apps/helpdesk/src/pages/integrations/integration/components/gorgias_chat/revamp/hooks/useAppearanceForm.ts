@@ -1,7 +1,8 @@
-import { useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo } from 'react'
 
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
+import type { FieldPath, PathValue } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -97,10 +98,15 @@ export const useAppearanceForm = ({
 }: UseAppearanceFormParams) => {
     const dispatch = useAppDispatch()
 
-    const { handleSubmit, watch, setValue, reset } =
-        useForm<AppearanceFormValues>({
-            defaultValues: buildFormValues(integration),
-        })
+    const {
+        handleSubmit,
+        watch,
+        setValue: setValueRaw,
+        reset,
+        formState: { isDirty: isFormDirty },
+    } = useForm<AppearanceFormValues>({
+        defaultValues: buildFormValues(integration),
+    })
 
     const integrationId: number | undefined = integration.get('id')
     const isSubmitting =
@@ -108,11 +114,12 @@ export const useAppearanceForm = ({
         loading.get('updateIntegration') === integrationId
 
     useEffect(() => {
-        if (loading.get('integration') || isSubmitting) {
+        if (loading.get('integration')) {
             return
         }
         reset(buildFormValues(integration))
-    }, [integration, loading, reset, isSubmitting])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [integration])
 
     const chatApplicationId: string | undefined = integration.getIn([
         'meta',
@@ -124,11 +131,21 @@ export const useAppearanceForm = ({
         [integration],
     )
 
-    const { privacyPolicyText, setPrivacyPolicyText, savePrivacyPolicyText } =
-        usePrivacyPolicyText({
-            chatApplicationId,
-            integrationMeta,
-        })
+    const {
+        privacyPolicyText,
+        setPrivacyPolicyText,
+        savePrivacyPolicyText,
+        isPrivacyPolicyTextDirty,
+    } = usePrivacyPolicyText({ chatApplicationId, integrationMeta })
+
+    // RHF v7 setValue defaults shouldDirty to false — always opt in to dirty tracking
+    const setValue = useCallback(
+        <K extends FieldPath<AppearanceFormValues>>(
+            name: K,
+            value: PathValue<AppearanceFormValues, K>,
+        ) => setValueRaw(name, value, { shouldDirty: true }),
+        [setValueRaw],
+    )
 
     const onSubmit = async (data: AppearanceFormValues) => {
         const mainColor = CSS.supports('color', data.mainColor)
@@ -182,6 +199,7 @@ export const useAppearanceForm = ({
         setValue,
         values: watch(),
         isSubmitting,
+        isDirty: isFormDirty || isPrivacyPolicyTextDirty,
         privacyPolicyText,
         setPrivacyPolicyText,
         onSubmit,

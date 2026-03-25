@@ -5,6 +5,7 @@ import type { Map } from 'immutable'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import { AutomateFeatures } from 'pages/automate/common/types'
+import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { FlowsCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout'
 import { useFlows } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useFlows'
@@ -13,6 +14,7 @@ import { useStoreIntegration } from 'pages/integrations/integration/hooks/useSto
 import { ArticleRecommendationCard } from './components/ArticleRecommendationCard/ArticleRecommendationCard'
 import { ConnectedChannelsEmptyView } from './components/ConnectedChannelsEmptyView/ConnectedChannelsEmptyView'
 import type { Workflow } from './components/FlowsCard/types'
+import SaveChangesPrompt from './components/GorgiasChatCreationWizard/components/SaveChangesPrompt'
 import { OrderManagementCard } from './components/OrderManagementCard/OrderManagementCard'
 import { useArticleRecommendation } from './hooks/useArticleRecommendation'
 import { useOrderManagement } from './hooks/useOrderManagement'
@@ -89,6 +91,8 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
         pendingArticleRecommendation === null &&
         pendingFlows === null
 
+    const { resetPreview } = useGorgiasChatCreationWizardContext()
+
     const handleSave = async () => {
         if (!serverSettings) return
 
@@ -126,46 +130,54 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
     }
 
     return (
-        <GorgiasChatRevampLayout
-            integration={integration}
-            onSave={handleSave}
-            isSaveDisabled={isSaveDisabled}
-            isSaving={isSaving}
-        >
-            <div className={css.cardsWrapper}>
-                <FlowsCard
-                    isLoading={isFlowsLoading}
-                    shopName={shopName}
-                    shopType={shopType}
-                    channel={channel}
-                    primaryLanguage={primaryLanguage}
-                    workflowEntrypoints={workflowEntrypoints}
-                    workflowConfigurations={workflowConfigurations}
-                    automationSettingsWorkflows={
-                        pendingFlows ?? automationSettingsWorkflows
-                    }
-                    onChange={handleFlowsChange}
-                />
-                {orderManagementEnabledInSettings && (
-                    <OrderManagementCard
-                        isEnabled={isOrderManagementEnabled}
-                        isDisabled={isOrderManagementDisabled}
-                        isLoading={isOrderManagementLoading}
-                        showStoreRequired={showStoreRequired}
-                        orderManagementUrl={orderManagementUrl}
-                        onChange={setPendingOrderManagement}
+        <>
+            <SaveChangesPrompt
+                when={!isSaveDisabled}
+                onSave={handleSave}
+                onDiscard={resetPreview}
+                shouldRedirectAfterSave
+            />
+            <GorgiasChatRevampLayout
+                integration={integration}
+                onSave={handleSave}
+                isSaveDisabled={isSaveDisabled}
+                isSaving={isSaving}
+            >
+                <div className={css.cardsWrapper}>
+                    <FlowsCard
+                        isLoading={isFlowsLoading}
+                        shopName={shopName}
+                        shopType={shopType}
+                        channel={channel}
+                        primaryLanguage={primaryLanguage}
+                        workflowEntrypoints={workflowEntrypoints}
+                        workflowConfigurations={workflowConfigurations}
+                        automationSettingsWorkflows={
+                            pendingFlows ?? automationSettingsWorkflows
+                        }
+                        onChange={handleFlowsChange}
                     />
-                )}
-                {articleRecommendationEnabledInSettings && (
-                    <ArticleRecommendationCard
-                        isEnabled={isArticleRecommendationEnabled}
-                        isDisabled={isArticleRecommendationDisabled}
-                        isLoading={isArticleRecommendationLoading}
-                        showHelpCenterRequired={showHelpCenterRequired}
-                        onChange={setPendingArticleRecommendation}
-                    />
-                )}
-            </div>
-        </GorgiasChatRevampLayout>
+                    {orderManagementEnabledInSettings && (
+                        <OrderManagementCard
+                            isEnabled={isOrderManagementEnabled}
+                            isDisabled={isOrderManagementDisabled}
+                            isLoading={isOrderManagementLoading}
+                            showStoreRequired={showStoreRequired}
+                            orderManagementUrl={orderManagementUrl}
+                            onChange={setPendingOrderManagement}
+                        />
+                    )}
+                    {articleRecommendationEnabledInSettings && (
+                        <ArticleRecommendationCard
+                            isEnabled={isArticleRecommendationEnabled}
+                            isDisabled={isArticleRecommendationDisabled}
+                            isLoading={isArticleRecommendationLoading}
+                            showHelpCenterRequired={showHelpCenterRequired}
+                            onChange={setPendingArticleRecommendation}
+                        />
+                    )}
+                </div>
+            </GorgiasChatRevampLayout>
+        </>
     )
 }

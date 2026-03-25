@@ -22,20 +22,33 @@ jest.mock(
         GorgiasChatRevampLayout: ({
             children,
             onSave,
+            isSaveDisabled,
         }: {
             children: React.ReactNode
             onSave: () => void
+            isSaveDisabled: boolean
         }) => (
             <>
-                <button onClick={onSave}>Save</button>
+                <button onClick={onSave} disabled={isSaveDisabled}>
+                    Save
+                </button>
                 {children}
             </>
         ),
     }),
 )
 
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatCreationWizard/components/SaveChangesPrompt',
+    () => ({
+        __esModule: true,
+        default: () => null,
+    }),
+)
+
 jest.mock('../components/ChatPreviewPanel/hooks/useChatPreviewPanel', () => ({
     useChatPreviewPanel: jest.fn(),
+    useGorgiasChatCreationWizardContext: () => ({ resetPreview: jest.fn() }),
 }))
 
 jest.mock(
@@ -430,9 +443,11 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
             )
             renderComponent({ integration: deactivatedIntegration })
 
-            const { onDisplayChatChange } =
+            // displayChat defaults to false for a deactivated integration, so
+            // change another field first to make the form dirty before saving
+            const { onShowOutsideBusinessHoursChange } =
                 mockChatVisibilityCard.mock.calls[0][0]
-            act(() => onDisplayChatChange(false))
+            act(() => onShowOutsideBusinessHoursChange(false))
 
             await user.click(screen.getByRole('button', { name: 'Save' }))
 
@@ -631,6 +646,9 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
             const user = userEvent.setup()
             renderComponent()
 
+            const { onChange } = mockChatAvailabilityCard.mock.calls[0][0]
+            act(() => onChange('always-online'))
+
             await user.click(screen.getByRole('button', { name: 'Save' }))
 
             expect(mockUpdateOrCreateIntegration).toHaveBeenCalledWith(
@@ -655,7 +673,7 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
 
             const { onSendCsatChange } =
                 mockChatShopperExperienceCard.mock.calls[0][0]
-            onSendCsatChange(true)
+            act(() => onSendCsatChange(true))
 
             await user.click(screen.getByRole('button', { name: 'Save' }))
 
@@ -666,6 +684,25 @@ describe('GorgiasChatIntegrationPreferencesRevamp', () => {
                     }),
                 }),
             )
+        })
+    })
+
+    describe('save button disabled state', () => {
+        it('should be disabled by default', () => {
+            renderComponent()
+
+            expect(screen.getByRole('button', { name: 'Save' })).toBeDisabled()
+        })
+
+        it('should become enabled after a field is changed', async () => {
+            renderComponent()
+
+            const { onChange } = mockChatAvailabilityCard.mock.calls[0][0]
+            act(() => onChange('always-online'))
+
+            expect(
+                screen.getByRole('button', { name: 'Save' }),
+            ).not.toBeDisabled()
         })
     })
 })

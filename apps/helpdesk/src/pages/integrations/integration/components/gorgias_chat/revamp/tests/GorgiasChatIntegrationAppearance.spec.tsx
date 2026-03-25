@@ -80,18 +80,41 @@ jest.mock(
             children,
             onSave,
             isSaving,
+            isSaveDisabled,
         }: {
             children: ReactNode
             onSave: () => void
             isSaving: boolean
+            isSaveDisabled: boolean
         }) => (
             <div>
-                <button onClick={onSave} data-saving={isSaving}>
+                <button
+                    onClick={onSave}
+                    data-saving={isSaving}
+                    disabled={isSaveDisabled}
+                >
                     Save
                 </button>
                 {children}
             </div>
         ),
+    }),
+)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatCreationWizard/components/SaveChangesPrompt',
+    () => ({
+        __esModule: true,
+        default: () => null,
+    }),
+)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useGorgiasChatCreationWizardContext: () => ({
+            resetPreview: jest.fn(),
+        }),
     }),
 )
 
@@ -487,6 +510,12 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             const user = userEvent.setup()
             const { getByRole } = renderComponent()
 
+            act(() => {
+                const { onMainColorChange } = mockBrandCard.mock
+                    .calls[0][0] as BrandCardProps
+                onMainColorChange('#00FF00')
+            })
+
             await user.click(getByRole('button', { name: 'Save' }))
 
             expect(mockUpdateOrCreateIntegration).toHaveBeenCalledWith(
@@ -501,8 +530,8 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
                 id: 1,
                 name: 'Test Chat',
                 decoration: expect.objectContaining({
-                    main_color: '#FF0000',
-                    conversation_color: '#FF0000',
+                    main_color: '#00FF00',
+                    conversation_color: '#00FF00',
                 }),
             })
         })
@@ -513,6 +542,14 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
 
             await waitFor(() => {
                 expect(mockGetApplicationTexts).toHaveBeenCalled()
+            })
+
+            act(() => {
+                const { onLegalDisclaimerTextChange } = mockLegalCard.mock
+                    .calls[
+                    mockLegalCard.mock.calls.length - 1
+                ][0] as LegalCardProps
+                onLegalDisclaimerTextChange('Updated disclaimer')
             })
 
             await user.click(getByRole('button', { name: 'Save' }))
@@ -538,6 +575,12 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             })
 
             const { getByRole } = renderComponent(integrationWithInvalidColor)
+
+            act(() => {
+                const { onNameChange } = mockAvatarCard.mock
+                    .calls[0][0] as AvatarCardProps
+                onNameChange('New Chat Name')
+            })
 
             await user.click(getByRole('button', { name: 'Save' }))
 
@@ -602,6 +645,26 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
                     mainColor: '#ABCDEF',
                 }),
             )
+        })
+    })
+
+    describe('save button disabled state', () => {
+        it('should be disabled by default', () => {
+            const { getByRole } = renderComponent()
+
+            expect(getByRole('button', { name: 'Save' })).toBeDisabled()
+        })
+
+        it('should become enabled after a field is changed', () => {
+            const { getByRole } = renderComponent()
+
+            act(() => {
+                const { onMainColorChange } = mockBrandCard.mock
+                    .calls[0][0] as BrandCardProps
+                onMainColorChange('#00FF00')
+            })
+
+            expect(getByRole('button', { name: 'Save' })).not.toBeDisabled()
         })
     })
 })

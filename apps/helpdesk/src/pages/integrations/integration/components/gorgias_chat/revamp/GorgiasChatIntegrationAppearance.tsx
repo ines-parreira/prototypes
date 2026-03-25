@@ -1,5 +1,7 @@
 import type { Map } from 'immutable'
 
+import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatCreationWizard/components/SaveChangesPrompt'
 import { AvatarCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/AvatarCard/AvatarCard'
 import { BrandCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/BrandCard/BrandCard'
 import { ChatLauncherCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/ChatLauncherCard/ChatLauncherCard'
@@ -23,56 +25,74 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
         setValue,
         values,
         isSubmitting,
+        isDirty,
         privacyPolicyText,
         setPrivacyPolicyText,
         onSubmit,
     } = useAppearanceForm({ integration, loading })
 
+    const { resetPreview } = useGorgiasChatCreationWizardContext()
+
+    const onSave = handleSubmit(onSubmit)
+
     return (
-        <GorgiasChatRevampLayout
-            integration={integration}
-            onSave={handleSubmit(onSubmit)}
-            isSaving={isSubmitting}
-        >
-            <div className={css.appearanceTab}>
-                <div className={css.cardsWrapper}>
-                    <BrandCard
-                        mainColor={values.mainColor}
-                        headerPictureUrl={values.headerPictureUrl}
-                        onMainColorChange={(value) =>
-                            setValue('mainColor', value)
-                        }
-                        onHeaderLogoUrlChange={(url) =>
-                            setValue('headerPictureUrl', url)
-                        }
-                    />
-                    <ChatLauncherCard
-                        launcher={values.launcher}
-                        mainColor={values.mainColor}
-                        position={values.position}
-                        onLauncherChange={(launcher) =>
-                            setValue('launcher', launcher)
-                        }
-                        onPositionChange={(position) =>
-                            setValue('position', position)
-                        }
-                    />
-                    <LegalCard
-                        legalDisclaimerText={privacyPolicyText}
-                        legalDisclaimerEnabled={values.legalDisclaimerEnabled}
-                        onLegalDisclaimerTextChange={setPrivacyPolicyText}
-                        onLegalDisclaimerEnabledChange={(value) =>
-                            setValue('legalDisclaimerEnabled', value)
-                        }
-                    />
-                    <AvatarCard
-                        name={values.name}
-                        avatar={values.avatar}
-                        onNameChange={(value) => setValue('name', value)}
-                        onAvatarChange={(avatar) => setValue('avatar', avatar)}
-                    />
+        <>
+            <SaveChangesPrompt
+                when={isDirty}
+                onSave={onSave}
+                onDiscard={resetPreview}
+                shouldRedirectAfterSave
+            />
+            <GorgiasChatRevampLayout
+                integration={integration}
+                onSave={onSave}
+                isSaving={isSubmitting}
+                isSaveDisabled={!isDirty}
+            >
+                <div className={css.appearanceTab}>
+                    <div className={css.cardsWrapper}>
+                        <BrandCard
+                            mainColor={values.mainColor}
+                            headerPictureUrl={values.headerPictureUrl}
+                            onMainColorChange={(value) =>
+                                setValue('mainColor', value)
+                            }
+                            onHeaderLogoUrlChange={(url) =>
+                                setValue('headerPictureUrl', url)
+                            }
+                        />
+                        <ChatLauncherCard
+                            launcher={values.launcher}
+                            mainColor={values.mainColor}
+                            position={values.position}
+                            onLauncherChange={(launcher) =>
+                                setValue('launcher', launcher)
+                            }
+                            onPositionChange={(position) =>
+                                setValue('position', position)
+                            }
+                        />
+                        <LegalCard
+                            legalDisclaimerText={privacyPolicyText}
+                            legalDisclaimerEnabled={
+                                values.legalDisclaimerEnabled
+                            }
+                            onLegalDisclaimerTextChange={setPrivacyPolicyText}
+                            onLegalDisclaimerEnabledChange={(value) =>
+                                setValue('legalDisclaimerEnabled', value)
+                            }
+                        />
+                        <AvatarCard
+                            name={values.name}
+                            avatar={values.avatar}
+                            onNameChange={(value) => setValue('name', value)}
+                            onAvatarChange={(avatar) =>
+                                setValue('avatar', avatar)
+                            }
+                        />
+                    </div>
                 </div>
-            </div>
-        </GorgiasChatRevampLayout>
+            </GorgiasChatRevampLayout>
+        </>
     )
 }

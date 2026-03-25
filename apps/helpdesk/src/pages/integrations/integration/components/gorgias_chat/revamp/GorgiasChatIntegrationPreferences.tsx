@@ -3,6 +3,7 @@ import { useEffect, useMemo } from 'react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import moment from 'moment'
+import type { FieldPath, PathValue } from 'react-hook-form'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -15,6 +16,8 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { GorgiasChatIntegration } from 'models/integration/types'
+import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import SaveChangesPrompt from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatCreationWizard/components/SaveChangesPrompt'
 import { ChatAutomationCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatAutomationCard/ChatAutomationCard'
 import { ChatAvailabilityCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatAvailabilityCard/ChatAvailabilityCard'
 import { ChatEmailCaptureCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatEmailCaptureCard/ChatEmailCaptureCard'
@@ -103,10 +106,15 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
         [integrationMap],
     )
 
-    const { handleSubmit, watch, setValue, reset } =
-        useForm<PreferencesFormValues>({
-            defaultValues: buildFormValues(integration, sendCsatGlobal),
-        })
+    const {
+        handleSubmit,
+        watch,
+        setValue,
+        reset,
+        formState: { isDirty },
+    } = useForm<PreferencesFormValues>({
+        defaultValues: buildFormValues(integration, sendCsatGlobal),
+    })
 
     useEffect(() => {
         if (loading.get('integration')) {
@@ -115,6 +123,11 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
         reset(buildFormValues(integration, sendCsatGlobal))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [integration])
+
+    const setFieldValue = <K extends FieldPath<PreferencesFormValues>>(
+        name: K,
+        value: PathValue<PreferencesFormValues, K>,
+    ) => setValue(name, value, { shouldDirty: true })
 
     const values = watch()
     const isSubmitting = loading.get('updateIntegration') === integration.id
@@ -166,90 +179,114 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
         }
     }
 
+    const { resetPreview } = useGorgiasChatCreationWizardContext()
+
+    const onSave = handleSubmit(onSubmit)
+
     return (
-        <GorgiasChatRevampLayout
-            integration={integrationMap}
-            onSave={handleSubmit(onSubmit)}
-            isSaving={isSubmitting}
-        >
-            <div className={css.preferencesTab}>
-                <div className={css.cardsWrapper}>
-                    {isAiAgentEnabled && (
-                        <ChatAvailabilityCard
-                            liveChatAvailability={values.liveChatAvailability}
-                            onChange={(value) =>
-                                setValue('liveChatAvailability', value)
+        <>
+            <SaveChangesPrompt
+                when={isDirty}
+                onSave={onSave}
+                onDiscard={resetPreview}
+                shouldRedirectAfterSave
+            />
+            <GorgiasChatRevampLayout
+                integration={integrationMap}
+                onSave={onSave}
+                isSaving={isSubmitting}
+                isSaveDisabled={!isDirty}
+            >
+                <div className={css.preferencesTab}>
+                    <div className={css.cardsWrapper}>
+                        {isAiAgentEnabled && (
+                            <ChatAvailabilityCard
+                                liveChatAvailability={
+                                    values.liveChatAvailability
+                                }
+                                onChange={(value) =>
+                                    setFieldValue('liveChatAvailability', value)
+                                }
+                            />
+                        )}
+                        <ChatVisibilityCard
+                            displayChat={values.displayChat}
+                            showOutsideBusinessHours={
+                                values.showOutsideBusinessHours
+                            }
+                            showOnMobile={values.showOnMobile}
+                            displayCampaignsWhenHidden={
+                                values.displayCampaignsWhenHidden
+                            }
+                            onDisplayChatChange={(value) =>
+                                setFieldValue('displayChat', value)
+                            }
+                            onShowOutsideBusinessHoursChange={(value) =>
+                                setFieldValue('showOutsideBusinessHours', value)
+                            }
+                            onShowOnMobileChange={(value) =>
+                                setFieldValue('showOnMobile', value)
+                            }
+                            onDisplayCampaignsWhenHiddenChange={(value) =>
+                                setFieldValue(
+                                    'displayCampaignsWhenHidden',
+                                    value,
+                                )
                             }
                         />
-                    )}
-                    <ChatVisibilityCard
-                        displayChat={values.displayChat}
-                        showOutsideBusinessHours={
-                            values.showOutsideBusinessHours
-                        }
-                        showOnMobile={values.showOnMobile}
-                        displayCampaignsWhenHidden={
-                            values.displayCampaignsWhenHidden
-                        }
-                        onDisplayChatChange={(value) =>
-                            setValue('displayChat', value)
-                        }
-                        onShowOutsideBusinessHoursChange={(value) =>
-                            setValue('showOutsideBusinessHours', value)
-                        }
-                        onShowOnMobileChange={(value) =>
-                            setValue('showOnMobile', value)
-                        }
-                        onDisplayCampaignsWhenHiddenChange={(value) =>
-                            setValue('displayCampaignsWhenHidden', value)
-                        }
-                    />
-                    {isAiAgentEnabled && (
-                        <ChatWaitTimeCard
-                            autoResponderEnabled={values.autoResponderEnabled}
-                            autoResponderReply={values.autoResponderReply}
-                            onAutoResponderEnabledChange={(value) =>
-                                setValue('autoResponderEnabled', value)
+                        {isAiAgentEnabled && (
+                            <ChatWaitTimeCard
+                                autoResponderEnabled={
+                                    values.autoResponderEnabled
+                                }
+                                autoResponderReply={values.autoResponderReply}
+                                onAutoResponderEnabledChange={(value) =>
+                                    setFieldValue('autoResponderEnabled', value)
+                                }
+                                onAutoResponderReplyChange={(value) =>
+                                    setFieldValue('autoResponderReply', value)
+                                }
+                            />
+                        )}
+                        {isAiAgentEnabled && (
+                            <ChatAutomationCard
+                                controlTicketVolume={values.controlTicketVolume}
+                                onControlTicketVolumeChange={(value) =>
+                                    setFieldValue('controlTicketVolume', value)
+                                }
+                            />
+                        )}
+                        <ChatEmailCaptureCard
+                            emailCaptureEnabled={values.emailCaptureEnabled}
+                            emailCaptureEnforcement={
+                                values.emailCaptureEnforcement
                             }
-                            onAutoResponderReplyChange={(value) =>
-                                setValue('autoResponderReply', value)
+                            onEmailCaptureEnabledChange={(value) =>
+                                setFieldValue('emailCaptureEnabled', value)
                             }
-                        />
-                    )}
-                    {isAiAgentEnabled && (
-                        <ChatAutomationCard
-                            controlTicketVolume={values.controlTicketVolume}
-                            onControlTicketVolumeChange={(value) =>
-                                setValue('controlTicketVolume', value)
+                            onEmailCaptureEnforcementChange={(value) =>
+                                setFieldValue('emailCaptureEnforcement', value)
                             }
                         />
-                    )}
-                    <ChatEmailCaptureCard
-                        emailCaptureEnabled={values.emailCaptureEnabled}
-                        emailCaptureEnforcement={values.emailCaptureEnforcement}
-                        onEmailCaptureEnabledChange={(value) =>
-                            setValue('emailCaptureEnabled', value)
-                        }
-                        onEmailCaptureEnforcementChange={(value) =>
-                            setValue('emailCaptureEnforcement', value)
-                        }
-                    />
-                    <ChatShopperExperienceCard
-                        linkedEmailIntegration={values.linkedEmailIntegration}
-                        sendChatTranscript={values.sendChatTranscript}
-                        sendCsat={values.sendCsat}
-                        onLinkedEmailIntegrationChange={(value) =>
-                            setValue('linkedEmailIntegration', value)
-                        }
-                        onSendChatTranscriptChange={(value) =>
-                            setValue('sendChatTranscript', value)
-                        }
-                        onSendCsatChange={(value) =>
-                            setValue('sendCsat', value)
-                        }
-                    />
+                        <ChatShopperExperienceCard
+                            linkedEmailIntegration={
+                                values.linkedEmailIntegration
+                            }
+                            sendChatTranscript={values.sendChatTranscript}
+                            sendCsat={values.sendCsat}
+                            onLinkedEmailIntegrationChange={(value) =>
+                                setFieldValue('linkedEmailIntegration', value)
+                            }
+                            onSendChatTranscriptChange={(value) =>
+                                setFieldValue('sendChatTranscript', value)
+                            }
+                            onSendCsatChange={(value) =>
+                                setFieldValue('sendCsat', value)
+                            }
+                        />
+                    </div>
                 </div>
-            </div>
-        </GorgiasChatRevampLayout>
+            </GorgiasChatRevampLayout>
+        </>
     )
 }

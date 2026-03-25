@@ -46,7 +46,7 @@ export const GorgiasChatRevampLayout = ({
                 breadcrumbItems={breadcrumbItems}
                 backButtonLink={chatIntegrationsLink}
                 title="Settings"
-                onSave={onSave ?? (() => {})}
+                onSave={onSave}
                 isSaveDisabled={isSaveDisabled}
                 isSaveLoading={isSaving}
             />

@@ -259,6 +259,7 @@ describe('useGorgiasChatCreationWizardContext', () => {
             updateLegalDisclaimer: jest.fn(),
             updateLegalDisclaimerEnabled: jest.fn(),
             updateLanguage: jest.fn(),
+            resetPreview: jest.fn(),
         }
 
         const wrapper = ({ children }: { children: ReactNode }) => (
