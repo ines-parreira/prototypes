@@ -45,7 +45,7 @@ export function getViewTicketUpdates(
 export const createView = async (viewDraft: ViewDraft) => {
     const res = await client.post<View>(
         '/api/views/',
-        _omit(viewDraft, 'search'),
+        _omit(viewDraft, 'search', 'created_datetime', 'deactivated_datetime'),
     )
     return res.data
 }

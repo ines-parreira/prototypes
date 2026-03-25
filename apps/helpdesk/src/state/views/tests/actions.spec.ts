@@ -1196,6 +1196,7 @@ describe('actions', () => {
                 allItemsSelected: true,
                 filters_ast: 'foo filters',
                 search: 'foo search',
+                created_datetime: '2024-01-01T00:00:00Z',
             }
             const viewToCreate = view.merge(propsToRemove)
             const mockServer = new MockAdapter(client)

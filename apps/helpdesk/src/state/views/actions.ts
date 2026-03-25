@@ -281,7 +281,7 @@ export function submitView(view: ViewImmutable) {
         } else {
             promise = client.post<View>(
                 '/api/views/',
-                viewToSend.delete('id').toJS(),
+                viewToSend.delete('id').delete('created_datetime').toJS(),
             )
         }
 

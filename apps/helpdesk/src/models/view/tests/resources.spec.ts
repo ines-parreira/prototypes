@@ -63,8 +63,13 @@ describe('view resources', () => {
             mockedServer.onPost('/api/views/').reply(200, view)
 
             const res = await createView(draftView)
-            expect(res).toMatchSnapshot()
-            expect(mockedServer.history).toMatchSnapshot()
+            expect(res).toEqual(view)
+
+            const postBody = JSON.parse(mockedServer.history.post[0].data)
+            expect(postBody).not.toHaveProperty('search')
+            expect(postBody).not.toHaveProperty('created_datetime')
+            expect(postBody).toHaveProperty('category')
+            expect(postBody).not.toHaveProperty('deactivated_datetime')
         })
 
         it('should reject an error on fail', () => {
