@@ -10,6 +10,8 @@ import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 import type { User } from '@gorgias/helpdesk-types'
 
 import { IntegrationType } from 'models/integration/types'
+import { STANDALONE_AI_HIDDEN_SIDEBAR_ITEMS } from 'providers/standalone-ai/constants'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import {
     SettingsSection,
     settingsSections,
@@ -33,6 +35,7 @@ export type SettingsNavbarSection = {
 export function useSettingsNavigation() {
     const isAgentUnavailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
     const isHistoricalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
+    const { isStandaloneAiAgent } = useStandaloneAiContext()
     const { data: currentUser } = useGetCurrentUser({
         query: {
             select: (data: { data: User }) => data.data,
@@ -244,7 +247,7 @@ export function useSettingsNavigation() {
     }, [isAgentUnavailabilityEnabled, isHistoricalImportsEnabled, currentUser])
 
     const sections = useMemo(() => {
-        return sectionsWithoutRoleFilters
+        const roleFiltered = sectionsWithoutRoleFilters
             .filter((section) => filterUserByRole(currentUser, section))
             .map((section) => {
                 return {
@@ -254,7 +257,18 @@ export function useSettingsNavigation() {
                     ),
                 }
             })
-    }, [sectionsWithoutRoleFilters, currentUser])
+
+        if (!isStandaloneAiAgent) return roleFiltered
+
+        return roleFiltered
+            .map((section) => ({
+                ...section,
+                items: section.items.filter(
+                    (item) => !STANDALONE_AI_HIDDEN_SIDEBAR_ITEMS.has(item.id),
+                ),
+            }))
+            .filter((section) => section.items.length > 0)
+    }, [sectionsWithoutRoleFilters, currentUser, isStandaloneAiAgent])
 
     return { sections }
 }

@@ -45,6 +45,15 @@ jest.mock('pages/automate/common/hooks/useStoreIntegrations', () => ({
     ]),
 }))
 jest.mock('hooks/aiAgent/useAiAgentAccess')
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(() => ({
+        isStandaloneAiAgent: false,
+        accessFeaturesMapped: {
+            statistics: { canRead: true, canWrite: true },
+            userManagement: { canRead: true, canWrite: true },
+        },
+    })),
+}))
 
 const mockUseIsArticleRecommendationsEnabledWhileSunset = jest.fn()
 jest.mock(

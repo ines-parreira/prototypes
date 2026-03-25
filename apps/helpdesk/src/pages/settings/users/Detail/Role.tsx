@@ -4,12 +4,10 @@ import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import type { UserRole } from 'config/types/user'
 import { ORDERED_ROLES_META_BY_USER_ROLE } from 'config/user'
-import {
-    STANDALONE_AI_ALLOWED_ROLES,
-    useStandaloneAiAccess,
-} from 'hooks/useStandaloneAiAccess'
 import { PreviewRadioButton } from 'pages/common/components/PreviewRadioButton'
 import { RoleLabel } from 'pages/common/utils/labels'
+import { STANDALONE_AI_ALLOWED_ROLES } from 'providers/standalone-ai/constants'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 
 import type { AgentState } from './types'
 
@@ -31,7 +29,7 @@ export const Role = ({
     isViewingAccountOwner,
 }: Props) => {
     const isDisabled = isSelf || isViewingAccountOwner
-    const { isStandaloneAiAgent } = useStandaloneAiAccess()
+    const { isStandaloneAiAgent } = useStandaloneAiContext()
 
     const visibleRoles = isStandaloneAiAgent
         ? ORDERED_ROLES_META_BY_USER_ROLE.filter(([key]) =>

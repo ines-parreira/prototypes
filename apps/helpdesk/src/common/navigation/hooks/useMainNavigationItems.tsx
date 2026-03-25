@@ -8,9 +8,9 @@ import { LegacyBadge as Badge } from '@gorgias/axiom'
 
 import { UserRole } from 'config/types/user'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { hasRole } from 'utils'
 
-import { useStandaloneAiAccess } from '../../../hooks/useStandaloneAiAccess'
 import {
     BASE_STATS_PATH,
     STANDALONE_AI_AGENT_STATS_PATH,
@@ -47,7 +47,7 @@ export const useMainNavigationItems = (
     const hasAiAgentMenu = useHasAiAgentMenu()
     const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled)
 
-    const { isStandaloneAiAgent } = useStandaloneAiAccess()
+    const { isStandaloneAiAgent } = useStandaloneAiContext()
 
     return useMemo(() => {
         const menuItems: Array<MenuItem & { onlyIf?: boolean }> = [

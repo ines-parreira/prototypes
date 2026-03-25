@@ -6,17 +6,16 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { UserRole } from 'config/types/user'
 import { ORDERED_ROLES_META_BY_USER_ROLE } from 'config/user'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
-import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 
 import { Role } from '../Role'
 import type { AgentState } from '../types'
 
-jest.mock('hooks/useStandaloneAiAccess', () => ({
-    ...jest.requireActual('hooks/useStandaloneAiAccess'),
-    useStandaloneAiAccess: jest.fn(),
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(),
 }))
 
-const mockUseStandaloneAiAccess = jest.mocked(useStandaloneAiAccess)
+const mockUseStandaloneAiContext = jest.mocked(useStandaloneAiContext)
 
 const props = {
     role: UserRole.Agent,
@@ -27,7 +26,7 @@ const props = {
 }
 
 beforeEach(() => {
-    mockUseStandaloneAiAccess.mockReturnValue(createMockStandaloneAiAccess())
+    mockUseStandaloneAiContext.mockReturnValue(createMockStandaloneAiAccess())
 })
 
 describe('Role', () => {
@@ -39,7 +38,7 @@ describe('Role', () => {
     })
 
     it('should render only Admin, Lead, and Observer roles when standalone AI agent', () => {
-        mockUseStandaloneAiAccess.mockReturnValue(
+        mockUseStandaloneAiContext.mockReturnValue(
             createMockStandaloneAiAccess({
                 isStandaloneAiAgent: true,
                 statistics: { canRead: true, canWrite: true },

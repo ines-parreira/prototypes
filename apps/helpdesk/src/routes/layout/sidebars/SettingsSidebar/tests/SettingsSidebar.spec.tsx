@@ -12,6 +12,8 @@ import {
     mockGetCurrentUserHandler,
 } from '@gorgias/helpdesk-mocks'
 
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { SettingsSidebar } from '../SettingsSidebar'
@@ -32,6 +34,10 @@ jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
 }))
 
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(),
+}))
+
 jest.mock('common/navigation', () => ({
     ...jest.requireActual('common/navigation'),
     Navbar: jest.fn(({ children }) => <div>{children}</div>),
@@ -42,6 +48,7 @@ const mockUseCustomAgentUnavailableStatusesFlag = assumeMock(
 )
 
 const mockUseFlag = assumeMock(useFlag)
+const mockUseStandaloneAiContext = assumeMock(useStandaloneAiContext)
 
 const mockCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
     HttpResponse.json({
@@ -87,6 +94,12 @@ describe('SettingsSidebar', () => {
     beforeEach(() => {
         server.use(mockCurrentUser.handler, mockAccount.handler)
         mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(false)
+        mockUseStandaloneAiContext.mockReturnValue(
+            createMockStandaloneAiAccess({
+                statistics: { canRead: true, canWrite: true },
+                userManagement: { canRead: true, canWrite: true },
+            }),
+        )
     })
 
     afterEach(() => {
@@ -174,6 +187,42 @@ describe('SettingsSidebar', () => {
         expect(await screen.findByText('Email Import')).toBeInTheDocument()
         expect(screen.getByText('Zendesk import')).toBeInTheDocument()
         expect(screen.queryByText('Imports')).not.toBeInTheDocument()
+    })
+
+    it('should hide restricted items for standalone AI accounts', async () => {
+        mockUseStandaloneAiContext.mockReturnValue(
+            createMockStandaloneAiAccess({
+                isStandaloneAiAgent: true,
+                statistics: { canRead: true, canWrite: true },
+                userManagement: { canRead: true, canWrite: true },
+            }),
+        )
+
+        renderSettingsSidebar()
+
+        expect(await screen.findByText('Installed apps')).toBeInTheDocument()
+        expect(screen.getByText('App store')).toBeInTheDocument()
+        expect(screen.getByText('Store')).toBeInTheDocument()
+        expect(screen.getByText('Users')).toBeInTheDocument()
+        expect(screen.getByText('Access management')).toBeInTheDocument()
+        expect(screen.getByText('Billing & usage')).toBeInTheDocument()
+        expect(screen.getByText('REST API')).toBeInTheDocument()
+        expect(screen.getByText('Audit logs')).toBeInTheDocument()
+        expect(screen.getByText('Password & 2FA')).toBeInTheDocument()
+        expect(screen.getByText('Notifications')).toBeInTheDocument()
+        expect(screen.getByText('Email')).toBeInTheDocument()
+        expect(screen.getByText('Chat')).toBeInTheDocument()
+
+        expect(screen.queryByText('Business hours')).not.toBeInTheDocument()
+        expect(screen.queryByText('Help Center')).not.toBeInTheDocument()
+        expect(screen.queryByText('Phone numbers')).not.toBeInTheDocument()
+        expect(screen.queryByText('Voice')).not.toBeInTheDocument()
+        expect(screen.queryByText('SMS')).not.toBeInTheDocument()
+        expect(screen.queryByText('Contact form')).not.toBeInTheDocument()
+        expect(screen.queryByText('Teams')).not.toBeInTheDocument()
+        expect(screen.queryByText('HTTP integration')).not.toBeInTheDocument()
+        expect(screen.queryByText('Email Import')).not.toBeInTheDocument()
+        expect(screen.queryByText('Zendesk import')).not.toBeInTheDocument()
     })
 
     describe('collapsed state', () => {

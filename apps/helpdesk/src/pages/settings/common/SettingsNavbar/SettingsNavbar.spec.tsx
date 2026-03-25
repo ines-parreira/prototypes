@@ -108,6 +108,10 @@ jest.mock('./Section', () => ({
     ),
 }))
 
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(),
+}))
+
 jest.mock('./AutomateUpgradeBadge', () => ({
     AutomateUpgradeBadge: () => <span data-testid="automate-badge">Badge</span>,
 }))
@@ -126,6 +130,10 @@ const mockUseIsArticleRecommendationsEnabledWhileSunset = jest.mocked(
     require('pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset')
         .useIsArticleRecommendationsEnabledWhileSunset,
 )
+const mockUseStandaloneAiContext = jest.mocked(
+    require('providers/standalone-ai/StandaloneAiContext')
+        .useStandaloneAiContext,
+)
 
 describe('SettingsNavbar', () => {
     beforeEach(() => {
@@ -138,6 +146,13 @@ describe('SettingsNavbar', () => {
         mockUseStoreIntegrations.mockReturnValue([])
         mockUseIsArticleRecommendationsEnabledWhileSunset.mockReturnValue({
             enabled: false,
+        })
+        mockUseStandaloneAiContext.mockReturnValue({
+            isStandaloneAiAgent: false,
+            accessFeaturesMapped: {
+                statistics: { canRead: true, canWrite: true },
+                userManagement: { canRead: true, canWrite: true },
+            },
         })
     })
 

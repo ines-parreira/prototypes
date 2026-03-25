@@ -18,6 +18,7 @@ import { useTheme } from 'core/theme'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import useAppSelector from 'hooks/useAppSelector'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import {
     BASE_STATS_PATH,
     BASE_VOICE_OF_CUSTOMER_PATH,
@@ -25,8 +26,6 @@ import {
 } from 'routes/constants'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { hasRole } from 'utils'
-
-import { useStandaloneAiAccess } from '../../../hooks/useStandaloneAiAccess'
 
 export default function GlobalNavigation() {
     const theme = useTheme()
@@ -49,7 +48,7 @@ export default function GlobalNavigation() {
 
     useNavBarShortcuts()
 
-    const { isStandaloneAiAgent } = useStandaloneAiAccess()
+    const { isStandaloneAiAgent } = useStandaloneAiContext()
 
     return (
         <nav
@@ -184,7 +183,11 @@ export default function GlobalNavigation() {
                         label="Settings"
                         isActive={activeItem === 'settings'}
                         tooltip={<span>Settings</span>}
-                        to="/app/settings"
+                        to={
+                            isStandaloneAiAgent
+                                ? '/app/settings/channels/email'
+                                : '/app/settings'
+                        }
                         data-candu-id="global-navigation-menu-settings-page"
                     />
                     <UserItem />

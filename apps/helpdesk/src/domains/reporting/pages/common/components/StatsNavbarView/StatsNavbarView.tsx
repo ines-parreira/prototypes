@@ -15,12 +15,11 @@ import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
 import { ConvertStatsNavbar } from 'pages/convert/common/components/ConvertStatsNavbar/ConvertStatsNavbar'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { STATS_ROUTES } from 'routes/constants'
 import { currentAccountHasProduct } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { isTeamLead } from 'utils'
-
-import { useStandaloneAiAccess } from '../../../../../../hooks/useStandaloneAiAccess'
 
 type AutoQANavBarLinkProps = {
     isAvailable: boolean
@@ -38,7 +37,7 @@ export function StatsNavbarView() {
         FeatureFlagKey.NewSatisfactionReport,
     )
 
-    const { isStandaloneAiAgent } = useStandaloneAiAccess()
+    const { isStandaloneAiAgent } = useStandaloneAiContext()
 
     const isAutoQANavLinkAvailable = useMemo(
         () => isTeamLeadOrAdmin && hasAccess,

@@ -17,10 +17,9 @@ import {
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import UpgradeIcon from 'pages/common/components/UpgradeIcon'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { STATS_ROUTES } from 'routes/constants'
 import { analyticsSections } from 'routes/layout/products/analytics'
-
-import { useStandaloneAiAccess } from '../../../../hooks/useStandaloneAiAccess'
 
 const OVERVIEW_PATH = `/app/stats/${STATS_ROUTES.AI_AGENT_OVERVIEW}`
 const AUTOMATE_AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.AUTOMATE_AI_AGENTS}`
@@ -31,7 +30,7 @@ const ANALYTICS_AI_AGENT_PATH = `/app/stats/${STATS_ROUTES.ANALYTICS_AI_AGENT}`
 
 export function AutomateStatsNavbar() {
     const { hasAccess } = useAiAgentAccess()
-    const { isStandaloneAiAgent } = useStandaloneAiAccess()
+    const { isStandaloneAiAgent } = useStandaloneAiContext()
 
     const isAiAgentStatsPageEnabled = useFlag(FeatureFlagKey.AIAgentStatsPage)
 

@@ -10,7 +10,7 @@ import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import useAppSelector from 'hooks/useAppSelector'
-import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { getCurrentAutomatePlan, getHasAutomate } from 'state/billing/selectors'
 import { isTrialing } from 'state/currentAccount/selectors'
 import { renderWithRouter } from 'utils/testing'
@@ -32,14 +32,14 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
 
-jest.mock('hooks/useStandaloneAiAccess', () => ({
-    useStandaloneAiAccess: jest.fn(),
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(),
 }))
 
 const mockUseFlag = assumeMock(useFlag)
 const mockUseCanUseAiSalesAgent = assumeMock(useCanUseAiSalesAgent)
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
-const mockUseStandaloneAiAccess = assumeMock(useStandaloneAiAccess)
+const mockUseStandaloneAiContext = assumeMock(useStandaloneAiContext)
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -63,7 +63,7 @@ describe('<AutomateStatsNavbar />', () => {
             hasAccess: false,
             isLoading: false,
         })
-        mockUseStandaloneAiAccess.mockReturnValue(
+        mockUseStandaloneAiContext.mockReturnValue(
             createMockStandaloneAiAccess(),
         )
     })
@@ -312,7 +312,7 @@ describe('<AutomateStatsNavbar />', () => {
             hasAccess: true,
             isLoading: false,
         })
-        mockUseStandaloneAiAccess.mockReturnValue(
+        mockUseStandaloneAiContext.mockReturnValue(
             createMockStandaloneAiAccess({
                 isStandaloneAiAgent: true,
                 statistics: { canRead: true, canWrite: true },

@@ -12,8 +12,8 @@ import {
 import { UserRole } from 'config/types/user'
 import { useReportChartRestrictions } from 'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
-import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import {
     BASE_STATS_PATH,
     STANDALONE_AI_AGENT_STATS_PATH,
@@ -47,10 +47,10 @@ jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({
 }))
 const useHasAiAgentMenuMock = assumeMock(useHasAiAgentMenu)
 
-jest.mock('hooks/useStandaloneAiAccess', () => ({
-    useStandaloneAiAccess: jest.fn(),
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(),
 }))
-const useStandaloneAiAccessMock = assumeMock(useStandaloneAiAccess)
+const useStandaloneAiContextMock = assumeMock(useStandaloneAiContext)
 
 jest.mock(
     'domains/reporting/pages/report-chart-restrictions/useReportChartRestrictions',
@@ -89,7 +89,7 @@ describe('GlobalNavigation', () => {
         useReportChartRestrictionsMock.mockReturnValue({
             isModuleRestrictedToCurrentUser: () => false,
         } as any)
-        useStandaloneAiAccessMock.mockReturnValue(
+        useStandaloneAiContextMock.mockReturnValue(
             createMockStandaloneAiAccess({
                 statistics: { canRead: true, canWrite: true },
             }),
@@ -225,7 +225,7 @@ describe('GlobalNavigation', () => {
     })
 
     it('should link statistics to STANDALONE_AI_AGENT_STATS_PATH when standalone AI agent', () => {
-        useStandaloneAiAccessMock.mockReturnValue(
+        useStandaloneAiContextMock.mockReturnValue(
             createMockStandaloneAiAccess({
                 isStandaloneAiAgent: true,
                 statistics: { canRead: true, canWrite: true },

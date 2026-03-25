@@ -20,6 +20,7 @@ import ManageTags from 'pages/settings/tags/ManageTags'
 import TicketAssignment from 'pages/settings/ticketAssignment/TicketAssignment'
 import PasswordAnd2FA from 'pages/settings/yourProfile/PasswordAnd2FA'
 import YourProfileContainer from 'pages/settings/yourProfile/YourProfileContainer'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
@@ -85,6 +86,7 @@ export function SettingRoutes() {
     const { path } = useRouteMatch()
     const currentProduct = useCurrentRouteProduct()
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
+    const { isStandaloneAiAgent } = useStandaloneAiContext()
 
     if (hasWayfindingMS1Flag && currentProduct.id === Product.Workflows) {
         return <WorkflowsRoutes />
@@ -113,60 +115,12 @@ export function SettingRoutes() {
                 <Route path={`${path}/channels`}>
                     <Channels />
                 </Route>
-                <Route path={`${path}/contact-form`}>
-                    <ContactForm />
-                </Route>
-                <Route path={`${path}/convert`}>
-                    <Convert />
-                </Route>
-                <Route
-                    path={`${path}/${CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER]}`}
-                >
-                    <CustomFields objectType={OBJECT_TYPES.CUSTOMER} />
-                </Route>
-                <Route
-                    path={`${path}/${CUSTOM_FIELD_ROUTES[OBJECT_TYPES.TICKET]}`}
-                >
-                    <CustomFields objectType={OBJECT_TYPES.TICKET} />
-                </Route>
-                <Route path={`${path}/${CUSTOM_FIELD_CONDITIONS_ROUTE}`}>
-                    <ConditionalFields />
-                </Route>
-                <Route path={`${path}/help-center`}>
-                    <HelpCenter />
-                </Route>
-                <Route path={`${path}/import-zendesk`}>
-                    <ImportZendeskRoute />
-                </Route>
-                <Route path={`${path}/import-email`}>
-                    <ImportEmailsRoute />
-                </Route>
-                <Route path={`${path}/historical-imports`}>
-                    <HistoricalImportsRoute />
-                </Route>
                 <Route path={`${path}/integrations`}>
                     <Integrations />
-                </Route>
-                <Route path={`${path}/phone-numbers`}>
-                    <PhoneNumbers />
-                </Route>
-                <Route path={`${path}/macros`}>
-                    <Macros />
-                </Route>
-                <Route path={`${path}/rules`}>
-                    <Rules />
-                </Route>
-                <Route path={`${path}/sla`}>
-                    <SLA />
-                </Route>
-
-                <Route path={`${path}/teams`}>
-                    <Teams />
                 </Route>
                 <Route path={`${path}/users`}>
                     <Users />
                 </Route>
-
                 <Route path={`${path}/profile`} exact>
                     {renderAppSettings(YourProfileContainer)}
                 </Route>
@@ -186,85 +140,154 @@ export function SettingRoutes() {
                         roleParams: [ADMIN_ROLE, PageSection.Audit],
                     })}
                 </Route>
-                <Route path={`${path}/manage-tags`} exact>
-                    {renderAppSettings(ManageTags, {
-                        roleParams: [AGENT_ROLE, PageSection.ManageTags],
-                    })}
-                </Route>
                 <Route path={`${path}/access`} exact>
                     {renderAppSettings(Access, {
                         roleParams: [ADMIN_ROLE, PageSection.Access],
                     })}
                 </Route>
-                <Route path={`${path}/agent-statuses`} exact>
-                    {renderAppSettings(AgentStatuses, {
-                        roleParams: [ADMIN_ROLE, PageSection.Access],
-                    })}
-                </Route>
-                <Route path={`${path}/business-hours`}>
-                    {renderAppSettings(BusinessHoursPage, {
-                        roleParams: [ADMIN_ROLE, PageSection.BusinessHours],
-                    })}
-                </Route>
-                <Route path={`${path}/sidebar`}>
-                    {renderAppSettings(SidebarSettings, {
-                        roleParams: [ADMIN_ROLE, PageSection.SidebarSettings],
-                    })}
-                </Route>
-                <Route path={`${path}/ticket-assignment`} exact>
-                    {renderAppSettings(TicketAssignment)}
-                </Route>
-                <Route path={`${path}/auto-merge`} exact>
-                    {renderAppSettings(AutoMergeSettings)}
-                </Route>
-
-                <Route path={`${path}/automate`}>
-                    {renderAppSettings(PaywalledAutomate, {
-                        roleParams: [AGENT_ROLE],
-                    })}
-                </Route>
-                <Route
-                    path={`${path}/article-recommendations/:shopType?/:shopName?`}
-                >
-                    {renderAppSettings(PaywalledArticleRecommendations, {
-                        roleParams: [AGENT_ROLE],
-                    })}
-                </Route>
-                <Route path={`${path}/flows/:shopType?/:shopName?`}>
-                    {renderAppSettings(PaywalledFlows, {
-                        roleParams: [AGENT_ROLE],
-                    })}
-                </Route>
-                <Route path={`${path}/order-management/:shopType?/:shopName?`}>
-                    {renderAppSettings(PaywalledOrderManagement, {
-                        roleParams: [AGENT_ROLE],
-                    })}
-                </Route>
                 <Route path={`${path}/store-management`}>
                     <StoreManagement />
                 </Route>
-                <Route path={`${path}/satisfaction-surveys`} exact>
-                    {renderAppSettings(SatisfactionSurveyView, {
-                        roleParams: [
-                            ADMIN_ROLE,
-                            PageSection.SatisfactionSurveys,
-                        ],
-                        paywallParams: [
-                            AccountFeature.SatisfactionSurveys,
-                            undefined,
-                            {
-                                [AccountFeature.SatisfactionSurveys]: {
-                                    ...defaultPaywallConfigs[
-                                        AccountFeature.SatisfactionSurveys
-                                    ],
-                                    preview: assetsUrl(
-                                        '/img/paywalls/screens/satisfaction-surveys-settings.png',
-                                    ),
-                                } as PaywallConfig,
-                            },
-                        ],
-                    })}
-                </Route>
+
+                {!isStandaloneAiAgent && (
+                    <>
+                        <Route path={`${path}/contact-form`}>
+                            <ContactForm />
+                        </Route>
+                        <Route path={`${path}/convert`}>
+                            <Convert />
+                        </Route>
+                        <Route
+                            path={`${path}/${CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER]}`}
+                        >
+                            <CustomFields objectType={OBJECT_TYPES.CUSTOMER} />
+                        </Route>
+                        <Route
+                            path={`${path}/${CUSTOM_FIELD_ROUTES[OBJECT_TYPES.TICKET]}`}
+                        >
+                            <CustomFields objectType={OBJECT_TYPES.TICKET} />
+                        </Route>
+                        <Route
+                            path={`${path}/${CUSTOM_FIELD_CONDITIONS_ROUTE}`}
+                        >
+                            <ConditionalFields />
+                        </Route>
+                        <Route path={`${path}/help-center`}>
+                            <HelpCenter />
+                        </Route>
+                        <Route path={`${path}/import-zendesk`}>
+                            <ImportZendeskRoute />
+                        </Route>
+                        <Route path={`${path}/import-email`}>
+                            <ImportEmailsRoute />
+                        </Route>
+                        <Route path={`${path}/historical-imports`}>
+                            <HistoricalImportsRoute />
+                        </Route>
+                        <Route path={`${path}/phone-numbers`}>
+                            <PhoneNumbers />
+                        </Route>
+                        <Route path={`${path}/macros`}>
+                            <Macros />
+                        </Route>
+                        <Route path={`${path}/rules`}>
+                            <Rules />
+                        </Route>
+                        <Route path={`${path}/sla`}>
+                            <SLA />
+                        </Route>
+
+                        <Route path={`${path}/teams`}>
+                            <Teams />
+                        </Route>
+                        <Route path={`${path}/manage-tags`} exact>
+                            {renderAppSettings(ManageTags, {
+                                roleParams: [
+                                    AGENT_ROLE,
+                                    PageSection.ManageTags,
+                                ],
+                            })}
+                        </Route>
+                        <Route path={`${path}/agent-statuses`} exact>
+                            {renderAppSettings(AgentStatuses, {
+                                roleParams: [ADMIN_ROLE, PageSection.Access],
+                            })}
+                        </Route>
+                        <Route path={`${path}/business-hours`}>
+                            {renderAppSettings(BusinessHoursPage, {
+                                roleParams: [
+                                    ADMIN_ROLE,
+                                    PageSection.BusinessHours,
+                                ],
+                            })}
+                        </Route>
+                        <Route path={`${path}/sidebar`}>
+                            {renderAppSettings(SidebarSettings, {
+                                roleParams: [
+                                    ADMIN_ROLE,
+                                    PageSection.SidebarSettings,
+                                ],
+                            })}
+                        </Route>
+                        <Route path={`${path}/ticket-assignment`} exact>
+                            {renderAppSettings(TicketAssignment)}
+                        </Route>
+                        <Route path={`${path}/auto-merge`} exact>
+                            {renderAppSettings(AutoMergeSettings)}
+                        </Route>
+
+                        <Route path={`${path}/automate`}>
+                            {renderAppSettings(PaywalledAutomate, {
+                                roleParams: [AGENT_ROLE],
+                            })}
+                        </Route>
+                        <Route
+                            path={`${path}/article-recommendations/:shopType?/:shopName?`}
+                        >
+                            {renderAppSettings(
+                                PaywalledArticleRecommendations,
+                                {
+                                    roleParams: [AGENT_ROLE],
+                                },
+                            )}
+                        </Route>
+                        <Route path={`${path}/flows/:shopType?/:shopName?`}>
+                            {renderAppSettings(PaywalledFlows, {
+                                roleParams: [AGENT_ROLE],
+                            })}
+                        </Route>
+                        <Route
+                            path={`${path}/order-management/:shopType?/:shopName?`}
+                        >
+                            {renderAppSettings(PaywalledOrderManagement, {
+                                roleParams: [AGENT_ROLE],
+                            })}
+                        </Route>
+                        <Route path={`${path}/satisfaction-surveys`} exact>
+                            {renderAppSettings(SatisfactionSurveyView, {
+                                roleParams: [
+                                    ADMIN_ROLE,
+                                    PageSection.SatisfactionSurveys,
+                                ],
+                                paywallParams: [
+                                    AccountFeature.SatisfactionSurveys,
+                                    undefined,
+                                    {
+                                        [AccountFeature.SatisfactionSurveys]: {
+                                            ...defaultPaywallConfigs[
+                                                AccountFeature
+                                                    .SatisfactionSurveys
+                                            ],
+                                            preview: assetsUrl(
+                                                '/img/paywalls/screens/satisfaction-surveys-settings.png',
+                                            ),
+                                        } as PaywallConfig,
+                                    },
+                                ],
+                            })}
+                        </Route>
+                    </>
+                )}
             </Switch>
         </HelpCenterApiClientProvider>
     )

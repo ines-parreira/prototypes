@@ -64,6 +64,24 @@ jest.mock(
         ),
 )
 
+jest.mock('providers/standalone-ai/StandaloneAiProvider', () => ({
+    StandaloneAiProvider: ({ children }: { children: React.ReactNode }) => (
+        <div data-testid="standalone-ai-provider">{children}</div>
+    ),
+}))
+
+jest.mock('@repo/navigation', () => ({
+    NavigationProvider: ({ children }: { children: React.ReactNode }) => (
+        <div data-testid="navigation-provider">{children}</div>
+    ),
+}))
+
+jest.mock('common/navigation/components/NavBarProvider', () => ({
+    NavBarProvider: ({ children }: { children: React.ReactNode }) => (
+        <div data-testid="navbar-provider">{children}</div>
+    ),
+}))
+
 jest.mock('../App', () => ({
     __esModule: true,
     default: ({ children }: { children: React.ReactNode }) => (

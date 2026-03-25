@@ -21,10 +21,10 @@ import {
     basicMonthlyAutomationPlan,
 } from 'fixtures/plans'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
-import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { IntegrationType } from 'models/integration/constants'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { STATS_ROUTES } from 'routes/constants'
 import type { RootState, StoreDispatch } from 'state/types'
 import { renderWithRouter } from 'utils/testing'
@@ -35,10 +35,10 @@ jest.mock('pages/aiAgent/trial/hooks/useTrialAccess')
 const useTrialAccessMock = assumeMock(useTrialAccess)
 useTrialAccessMock.mockReturnValue(createMockTrialAccess())
 
-jest.mock('hooks/useStandaloneAiAccess', () => ({
-    useStandaloneAiAccess: jest.fn(),
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(),
 }))
-const useStandaloneAiAccessMock = assumeMock(useStandaloneAiAccess)
+const useStandaloneAiContextMock = assumeMock(useStandaloneAiContext)
 
 jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
@@ -85,7 +85,7 @@ describe('StatsNavbarViewV2', () => {
         useDashboardActionsMock.mockReturnValue({
             getDashboardsHandler: () => mockData,
         } as any)
-        useStandaloneAiAccessMock.mockReturnValue(
+        useStandaloneAiContextMock.mockReturnValue(
             createMockStandaloneAiAccess({
                 statistics: { canRead: true, canWrite: true },
             }),
@@ -330,7 +330,7 @@ describe('StatsNavbarViewV2', () => {
     })
 
     it('should render only AutomateStatsNavbar when standalone AI agent', () => {
-        useStandaloneAiAccessMock.mockReturnValue(
+        useStandaloneAiContextMock.mockReturnValue(
             createMockStandaloneAiAccess({
                 isStandaloneAiAgent: true,
                 statistics: { canRead: true, canWrite: true },

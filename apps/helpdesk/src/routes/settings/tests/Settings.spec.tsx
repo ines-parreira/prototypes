@@ -13,6 +13,7 @@ import UserAuditList from 'pages/settings/audit/UserAuditList'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
 import BusinessHoursPage from 'pages/settings/businessHours/BusinessHoursPage'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import SatisfactionSurveyView from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
 import ManageTags from 'pages/settings/tags/ManageTags'
 import TicketAssignment from 'pages/settings/ticketAssignment/TicketAssignment'
@@ -47,6 +48,7 @@ import {
     SettingRoutes,
 } from '../Settings'
 import { SLA } from '../SLA'
+import { StoreManagement } from '../StoreManagement'
 import { Teams } from '../Teams'
 import { Users } from '../Users'
 
@@ -101,6 +103,15 @@ jest.mock('routes/hooks/useCurrentRouteProduct', () => ({
 jest.mock('routes/settings/Workflows', () => ({
     WorkflowsRoutes: () => <div>WorkflowsRoutes</div>,
 }))
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(() => ({
+        isStandaloneAiAgent: false,
+        accessFeaturesMapped: {
+            statistics: { canRead: true, canWrite: true },
+            userManagement: { canRead: true, canWrite: true },
+        },
+    })),
+}))
 
 const mockedRoute = Route as jest.Mock
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
@@ -127,194 +138,206 @@ const testingMap = [
     {
         callOrder: 3,
         exact: undefined,
-        path: `${basePath}/contact-form`,
-        component: ContactForm,
-    },
-    {
-        callOrder: 4,
-        exact: undefined,
-        path: `${basePath}/convert`,
-        component: Convert,
-    },
-    {
-        callOrder: 5,
-        exact: undefined,
-        path: `${basePath}/${CUSTOM_FIELD_ROUTES['Customer']}`,
-        component: CustomFields,
-    },
-    {
-        callOrder: 6,
-        exact: undefined,
-        path: `${basePath}/${CUSTOM_FIELD_ROUTES['Ticket']}`,
-        component: CustomFields,
-    },
-    {
-        callOrder: 7,
-        exact: undefined,
-        path: `${basePath}/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
-        component: ConditionalFields,
-    },
-    {
-        callOrder: 8,
-        exact: undefined,
-        path: `${basePath}/help-center`,
-        component: HelpCenter,
-    },
-    {
-        callOrder: 9,
-        exact: undefined,
-        path: `${basePath}/import-zendesk`,
-        component: ImportZendeskRoute,
-    },
-    {
-        callOrder: 10,
-        exact: undefined,
-        path: `${basePath}/import-email`,
-        component: ImportEmailsRoute,
-    },
-    {
-        callOrder: 11,
-        exact: undefined,
-        path: `${basePath}/historical-imports`,
-        component: HistoricalImportsRoute,
-    },
-    {
-        callOrder: 12,
-        exact: undefined,
         path: `${basePath}/integrations`,
         component: Integrations,
     },
     {
-        callOrder: 13,
-        exact: undefined,
-        path: `${basePath}/phone-numbers`,
-        component: PhoneNumbers,
-    },
-    {
-        callOrder: 14,
-        exact: undefined,
-        path: `${basePath}/macros`,
-        component: Macros,
-    },
-    {
-        callOrder: 15,
-        exact: undefined,
-        path: `${basePath}/rules`,
-        component: Rules,
-    },
-    {
-        callOrder: 16,
-        exact: undefined,
-        path: `${basePath}/sla`,
-        component: SLA,
-    },
-    {
-        callOrder: 17,
-        exact: undefined,
-        path: `${basePath}/teams`,
-        component: Teams,
-    },
-    {
-        callOrder: 18,
+        callOrder: 4,
         exact: undefined,
         path: `${basePath}/users`,
         component: Users,
     },
     {
-        callOrder: 19,
+        callOrder: 5,
         exact: true,
         path: `${basePath}/profile`,
         component: YourProfileContainer,
     },
     {
-        callOrder: 20,
+        callOrder: 6,
         exact: true,
         path: `${basePath}/notifications`,
         component: NotificationsSettings,
     },
     {
-        callOrder: 21,
+        callOrder: 7,
         exact: true,
         path: `${basePath}/password-2fa`,
         component: PasswordAnd2FA,
     },
     {
-        callOrder: 22,
+        callOrder: 8,
         exact: true,
         path: `${basePath}/api`,
         component: APIView,
     },
     {
-        callOrder: 23,
+        callOrder: 9,
         exact: true,
         path: `${basePath}/audit`,
         component: UserAuditList,
     },
     {
-        callOrder: 24,
-        exact: true,
-        path: `${basePath}/manage-tags`,
-        component: ManageTags,
-    },
-    {
-        callOrder: 25,
+        callOrder: 10,
         exact: true,
         path: `${basePath}/access`,
         component: Access,
     },
     {
+        callOrder: 11,
+        exact: undefined,
+        path: `${basePath}/store-management`,
+        component: StoreManagement,
+    },
+    {
+        callOrder: 12,
+        exact: undefined,
+        path: `${basePath}/contact-form`,
+        component: ContactForm,
+    },
+    {
+        callOrder: 13,
+        exact: undefined,
+        path: `${basePath}/convert`,
+        component: Convert,
+    },
+    {
+        callOrder: 14,
+        exact: undefined,
+        path: `${basePath}/${CUSTOM_FIELD_ROUTES['Customer']}`,
+        component: CustomFields,
+    },
+    {
+        callOrder: 15,
+        exact: undefined,
+        path: `${basePath}/${CUSTOM_FIELD_ROUTES['Ticket']}`,
+        component: CustomFields,
+    },
+    {
+        callOrder: 16,
+        exact: undefined,
+        path: `${basePath}/${CUSTOM_FIELD_CONDITIONS_ROUTE}`,
+        component: ConditionalFields,
+    },
+    {
+        callOrder: 17,
+        exact: undefined,
+        path: `${basePath}/help-center`,
+        component: HelpCenter,
+    },
+    {
+        callOrder: 18,
+        exact: undefined,
+        path: `${basePath}/import-zendesk`,
+        component: ImportZendeskRoute,
+    },
+    {
+        callOrder: 19,
+        exact: undefined,
+        path: `${basePath}/import-email`,
+        component: ImportEmailsRoute,
+    },
+    {
+        callOrder: 20,
+        exact: undefined,
+        path: `${basePath}/historical-imports`,
+        component: HistoricalImportsRoute,
+    },
+    {
+        callOrder: 21,
+        exact: undefined,
+        path: `${basePath}/phone-numbers`,
+        component: PhoneNumbers,
+    },
+    {
+        callOrder: 22,
+        exact: undefined,
+        path: `${basePath}/macros`,
+        component: Macros,
+    },
+    {
+        callOrder: 23,
+        exact: undefined,
+        path: `${basePath}/rules`,
+        component: Rules,
+    },
+    {
+        callOrder: 24,
+        exact: undefined,
+        path: `${basePath}/sla`,
+        component: SLA,
+    },
+    {
+        callOrder: 25,
+        exact: undefined,
+        path: `${basePath}/teams`,
+        component: Teams,
+    },
+    {
         callOrder: 26,
+        exact: true,
+        path: `${basePath}/manage-tags`,
+        component: ManageTags,
+    },
+    {
+        callOrder: 27,
         exact: true,
         path: `${basePath}/agent-statuses`,
         component: AgentStatuses,
     },
     {
-        callOrder: 27,
-        exact: false,
+        callOrder: 28,
+        exact: undefined,
         path: `${basePath}/business-hours`,
         component: BusinessHoursPage,
     },
     {
-        callOrder: 28,
+        callOrder: 29,
         exact: undefined,
         path: `${basePath}/sidebar`,
         component: SidebarSettings,
     },
     {
-        callOrder: 29,
+        callOrder: 30,
         exact: true,
         path: `${basePath}/ticket-assignment`,
         component: TicketAssignment,
     },
     {
-        callOrder: 30,
+        callOrder: 31,
         exact: true,
         path: `${basePath}/auto-merge`,
         component: AutoMergeSettings,
     },
     {
-        callOrder: 31,
+        callOrder: 32,
         exact: undefined,
         path: `${basePath}/automate`,
         component: PaywalledAutomate,
     },
     {
-        callOrder: 32,
+        callOrder: 33,
         exact: undefined,
         path: `${basePath}/article-recommendations/:shopType?/:shopName?`,
         component: PaywalledArticleRecommendations,
     },
     {
-        callOrder: 33,
+        callOrder: 34,
         exact: undefined,
         path: `${basePath}/flows/:shopType?/:shopName?`,
         component: PaywalledFlows,
     },
     {
-        callOrder: 34,
+        callOrder: 35,
         exact: undefined,
         path: `${basePath}/order-management/:shopType?/:shopName?`,
         component: PaywalledOrderManagement,
+    },
+    {
+        callOrder: 36,
+        exact: true,
+        path: `${basePath}/satisfaction-surveys`,
+        component: SatisfactionSurveyView,
     },
 ]
 

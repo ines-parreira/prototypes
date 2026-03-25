@@ -14,6 +14,7 @@ import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import {
     CUSTOM_FIELD_CONDITIONS_ROUTE,
     CUSTOM_FIELD_ROUTES,
@@ -68,6 +69,7 @@ const SettingsNavbar = () => {
     const isAgentUnavailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
 
     const isHistoricalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
+    const { isStandaloneAiAgent } = useStandaloneAiContext()
 
     return (
         <Navbar activeContent={ActiveContent.Settings} title="Settings">
@@ -76,145 +78,174 @@ const SettingsNavbar = () => {
                 value={expandedCategories}
                 onValueChange={onCategoryChange}
             >
-                <Section id="productivity" value={Sections.Productivity}>
-                    <Navigation.SectionContent className={css.sectionContent}>
-                        <Item to="macros" text="Macros" />
-                        <Item
-                            to="flows"
-                            text="Flows"
+                {!isStandaloneAiAgent && (
+                    <>
+                        <Section
+                            id="productivity"
+                            value={Sections.Productivity}
+                        >
+                            <Navigation.SectionContent
+                                className={css.sectionContent}
+                            >
+                                <Item to="macros" text="Macros" />
+                                <Item
+                                    to="flows"
+                                    text="Flows"
+                                    requiredRole={UserRole.Agent}
+                                    shouldRender={shouldRender}
+                                />
+                                <Item
+                                    to="order-management"
+                                    text="Order Management"
+                                    requiredRole={UserRole.Agent}
+                                    shouldRender={shouldRender}
+                                />
+                                {isArticleRecEnabledWhileSunset && (
+                                    <Item
+                                        to="article-recommendations"
+                                        text="Article Recommendations"
+                                        requiredRole={UserRole.Agent}
+                                        shouldRender={shouldRender}
+                                    />
+                                )}
+                                <Item
+                                    to="automate"
+                                    text="AI Agent"
+                                    requiredRole={UserRole.Agent}
+                                    shouldRender={shouldRenderAutomate}
+                                    extra={<AutomateUpgradeBadge />}
+                                />
+                            </Navigation.SectionContent>
+                        </Section>
+                        <Section
+                            id="ticket-customer-data"
+                            value={Sections.Ticket}
                             requiredRole={UserRole.Agent}
-                            shouldRender={shouldRender}
-                        />
-                        <Item
-                            to="order-management"
-                            text="Order Management"
+                        >
+                            <Navigation.SectionContent
+                                className={css.sectionContent}
+                            >
+                                <Item
+                                    to={
+                                        CUSTOM_FIELD_ROUTES[OBJECT_TYPES.TICKET]
+                                    }
+                                    text="Ticket Fields"
+                                    requiredRole={UserRole.Admin}
+                                />
+                                <Item
+                                    to={
+                                        CUSTOM_FIELD_ROUTES[
+                                            OBJECT_TYPES.CUSTOMER
+                                        ]
+                                    }
+                                    text="Customer Fields"
+                                    requiredRole={UserRole.Admin}
+                                />
+                                <Item
+                                    to={CUSTOM_FIELD_CONDITIONS_ROUTE}
+                                    text="Field Conditions"
+                                    requiredRole={UserRole.Admin}
+                                />
+                                <Item
+                                    to="manage-tags"
+                                    text="Tags"
+                                    requiredRole={UserRole.Agent}
+                                />
+                                <Item
+                                    to="sla"
+                                    text="SLAs"
+                                    requiredRole={UserRole.Agent}
+                                />
+                                <Item
+                                    to="satisfaction-surveys"
+                                    text="Satisfaction survey"
+                                    requiredRole={UserRole.Admin}
+                                />
+                            </Navigation.SectionContent>
+                        </Section>
+                        <Section
+                            id="ticket-management"
+                            value={Sections.TicketManagement}
                             requiredRole={UserRole.Agent}
-                            shouldRender={shouldRender}
-                        />
-                        {isArticleRecEnabledWhileSunset && (
-                            <Item
-                                to="article-recommendations"
-                                text="Article Recommendations"
-                                requiredRole={UserRole.Agent}
-                                shouldRender={shouldRender}
-                            />
-                        )}
-                        <Item
-                            to="automate"
-                            text="AI Agent"
-                            requiredRole={UserRole.Agent}
-                            shouldRender={shouldRenderAutomate}
-                            extra={<AutomateUpgradeBadge />}
-                        />
-                    </Navigation.SectionContent>
-                </Section>
-
-                <Section
-                    id="ticket-customer-data"
-                    value={Sections.Ticket}
-                    requiredRole={UserRole.Agent}
-                >
-                    <Navigation.SectionContent className={css.sectionContent}>
-                        <Item
-                            to={CUSTOM_FIELD_ROUTES[OBJECT_TYPES.TICKET]}
-                            text="Ticket Fields"
-                            requiredRole={UserRole.Admin}
-                        />
-                        <Item
-                            to={CUSTOM_FIELD_ROUTES[OBJECT_TYPES.CUSTOMER]}
-                            text="Customer Fields"
-                            requiredRole={UserRole.Admin}
-                        />
-                        <Item
-                            to={CUSTOM_FIELD_CONDITIONS_ROUTE}
-                            text="Field Conditions"
-                            requiredRole={UserRole.Admin}
-                        />
-                        <Item
-                            to="manage-tags"
-                            text="Tags"
-                            requiredRole={UserRole.Agent}
-                        />
-                        <Item
-                            to="sla"
-                            text="SLAs"
-                            requiredRole={UserRole.Agent}
-                        />
-                        <Item
-                            to="satisfaction-surveys"
-                            text="Satisfaction survey"
-                            requiredRole={UserRole.Admin}
-                        />
-                    </Navigation.SectionContent>
-                </Section>
-
-                <Section
-                    id="ticket-management"
-                    value={Sections.TicketManagement}
-                    requiredRole={UserRole.Agent}
-                >
-                    <Navigation.SectionContent className={css.sectionContent}>
-                        <Item
-                            to="rules"
-                            text="Rules"
-                            requiredRole={UserRole.Agent}
-                        />
-                        <Item
-                            to="ticket-assignment"
-                            text="Ticket Assignment"
-                            requiredRole={UserRole.Admin}
-                        />
-                        <Item
-                            to="auto-merge"
-                            text="Auto-merge"
-                            requiredRole={UserRole.Admin}
-                        />
-                        <Item
-                            to="business-hours"
-                            text="Business hours"
-                            requiredRole={UserRole.Admin}
-                        />
-                        <Item
-                            to="sidebar"
-                            text="Default views"
-                            requiredRole={UserRole.Admin}
-                        />
-                    </Navigation.SectionContent>
-                </Section>
+                        >
+                            <Navigation.SectionContent
+                                className={css.sectionContent}
+                            >
+                                <Item
+                                    to="rules"
+                                    text="Rules"
+                                    requiredRole={UserRole.Agent}
+                                />
+                                <Item
+                                    to="ticket-assignment"
+                                    text="Ticket Assignment"
+                                    requiredRole={UserRole.Admin}
+                                />
+                                <Item
+                                    to="auto-merge"
+                                    text="Auto-merge"
+                                    requiredRole={UserRole.Admin}
+                                />
+                                <Item
+                                    to="business-hours"
+                                    text="Business hours"
+                                    requiredRole={UserRole.Admin}
+                                />
+                                <Item
+                                    to="sidebar"
+                                    text="Default views"
+                                    requiredRole={UserRole.Admin}
+                                />
+                            </Navigation.SectionContent>
+                        </Section>
+                    </>
+                )}
 
                 <Section id="channels" value={Sections.Channels}>
                     <Navigation.SectionContent className={css.sectionContent}>
-                        <Item to="help-center" text="Help Center" />
-                        <Item
-                            to="phone-numbers"
-                            text="Phone numbers"
-                            requiredRole={UserRole.Admin}
-                        />
+                        {!isStandaloneAiAgent && (
+                            <>
+                                <Item to="help-center" text="Help Center" />
+                                <Item
+                                    to="phone-numbers"
+                                    text="Phone numbers"
+                                    requiredRole={UserRole.Admin}
+                                />
+                            </>
+                        )}
+
                         <Item
                             to={`channels/${IntegrationType.Email}`}
                             text="Email"
                             requiredRole={UserRole.Admin}
                         />
-                        <Item
-                            to={`channels/${IntegrationType.Phone}`}
-                            text="Voice"
-                            requiredRole={UserRole.Admin}
-                        />
-                        <Item
-                            to={`channels/${IntegrationType.Sms}`}
-                            text="SMS"
-                            requiredRole={UserRole.Admin}
-                        />
+                        {!isStandaloneAiAgent && (
+                            <>
+                                <Item
+                                    to={`channels/${IntegrationType.Phone}`}
+                                    text="Voice"
+                                    requiredRole={UserRole.Admin}
+                                />
+                                <Item
+                                    to={`channels/${IntegrationType.Sms}`}
+                                    text="SMS"
+                                    requiredRole={UserRole.Admin}
+                                />
+                            </>
+                        )}
+
                         <Item
                             to={`channels/${IntegrationType.GorgiasChat}`}
                             text="Chat"
                             requiredRole={UserRole.Admin}
                         />
-                        <Item
-                            to="contact-form"
-                            text="Contact form"
-                            requiredRole={UserRole.Admin}
-                        />
+                        {!isStandaloneAiAgent && (
+                            <Item
+                                to="contact-form"
+                                text="Contact form"
+                                requiredRole={UserRole.Admin}
+                            />
+                        )}
                     </Navigation.SectionContent>
                 </Section>
 
@@ -236,12 +267,14 @@ const SettingsNavbar = () => {
                             text="App store"
                             requiredRole={UserRole.Admin}
                         />
-                        <Item
-                            to={`integrations/${IntegrationType.Http}`}
-                            exact
-                            text="HTTP integration"
-                            requiredRole={UserRole.Admin}
-                        />
+                        {!isStandaloneAiAgent && (
+                            <Item
+                                to={`integrations/${IntegrationType.Http}`}
+                                exact
+                                text="HTTP integration"
+                                requiredRole={UserRole.Admin}
+                            />
+                        )}
                     </Navigation.SectionContent>
                 </Section>
 
@@ -261,18 +294,23 @@ const SettingsNavbar = () => {
                             text="Users"
                             requiredRole={UserRole.Admin}
                         />
-                        <Item
-                            to="teams"
-                            text="Teams"
-                            requiredRole={UserRole.Admin}
-                        />
-                        {isAgentUnavailabilityEnabled && (
-                            <Item
-                                to="agent-statuses"
-                                text="Agent unavailability"
-                                requiredRole={UserRole.Admin}
-                            />
+                        {!isStandaloneAiAgent && (
+                            <>
+                                <Item
+                                    to="teams"
+                                    text="Teams"
+                                    requiredRole={UserRole.Admin}
+                                />
+                                {isAgentUnavailabilityEnabled && (
+                                    <Item
+                                        to="agent-statuses"
+                                        text="Agent unavailability"
+                                        requiredRole={UserRole.Admin}
+                                    />
+                                )}
+                            </>
                         )}
+
                         <Item
                             to="access"
                             text="Access management"
@@ -307,36 +345,41 @@ const SettingsNavbar = () => {
                             text="REST API"
                             requiredRole={UserRole.Admin}
                         />
-                        {isHistoricalImportsEnabled ? (
-                            <Item
-                                to="historical-imports"
-                                text="Imports"
-                                requiredRole={UserRole.Admin}
-                            />
-                        ) : (
-                            <>
+                        {!isStandaloneAiAgent &&
+                            (isHistoricalImportsEnabled ? (
                                 <Item
-                                    to="import-email"
-                                    text="Email Import"
+                                    to="historical-imports"
+                                    text="Imports"
                                     requiredRole={UserRole.Admin}
                                 />
-                                <Item
-                                    to="import-zendesk"
-                                    text="Zendesk import"
-                                    requiredRole={UserRole.Admin}
-                                />
-                            </>
-                        )}
+                            ) : (
+                                <>
+                                    <Item
+                                        to="import-email"
+                                        text="Email Import"
+                                        requiredRole={UserRole.Admin}
+                                    />
+                                    <Item
+                                        to="import-zendesk"
+                                        text="Zendesk import"
+                                        requiredRole={UserRole.Admin}
+                                    />
+                                </>
+                            ))}
                     </Navigation.SectionContent>
                 </Section>
 
-                <Section id="profile" value={Sections.Profile}>
-                    <Navigation.SectionContent className={css.sectionContent}>
-                        <Item to="profile" text="Your profile" />
-                        <Item to="notifications" text="Notifications" />
-                        <Item to="password-2fa" text="Password & 2FA" />
-                    </Navigation.SectionContent>
-                </Section>
+                {!isStandaloneAiAgent && (
+                    <Section id="profile" value={Sections.Profile}>
+                        <Navigation.SectionContent
+                            className={css.sectionContent}
+                        >
+                            <Item to="profile" text="Your profile" />
+                            <Item to="notifications" text="Notifications" />
+                            <Item to="password-2fa" text="Password & 2FA" />
+                        </Navigation.SectionContent>
+                    </Section>
+                )}
             </Navigation.Root>
         </Navbar>
     )

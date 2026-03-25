@@ -1,9 +1,12 @@
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { UserRole } from '@repo/utils'
 
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
+
+import { StandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 
 const ACTIONS = {
     canRead: false,
@@ -30,11 +33,11 @@ const STANDALONE_AI_ACCESS_BY_ROLE = {
     },
 } as const
 
-export const STANDALONE_AI_ALLOWED_ROLES = new Set(
-    Object.keys(STANDALONE_AI_ACCESS_BY_ROLE) as UserRole[],
-)
+type Props = {
+    children: ReactNode
+}
 
-export const useStandaloneAiAccess = () => {
+export const StandaloneAiProvider = ({ children }: Props) => {
     const isStandaloneAiAgent = useFlag(FeatureFlagKey.AiStandaloneAgent, false)
 
     const { data: currentUser } = useGetCurrentUser()
@@ -59,8 +62,17 @@ export const useStandaloneAiAccess = () => {
         return access
     }, [isStandaloneAiAgent, roleName])
 
-    return {
-        accessFeaturesMapped,
-        isStandaloneAiAgent,
-    }
+    const value = useMemo(
+        () => ({
+            accessFeaturesMapped,
+            isStandaloneAiAgent,
+        }),
+        [accessFeaturesMapped, isStandaloneAiAgent],
+    )
+
+    return (
+        <StandaloneAiContext.Provider value={value}>
+            {children}
+        </StandaloneAiContext.Provider>
+    )
 }

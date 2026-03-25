@@ -10,8 +10,8 @@ import { StaticRouter } from 'react-router-dom'
 import { UserRole } from 'config/types/user'
 import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useStandaloneAiAccess } from 'hooks/useStandaloneAiAccess'
 import { useHasAiAgentMenu } from 'pages/aiAgent/hooks/useHasAiAgentMenu'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { getHasAutomate } from 'state/billing/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { closePanels } from 'state/layout/actions'
@@ -44,10 +44,10 @@ jest.mock('pages/aiAgent/hooks/useHasAiAgentMenu', () => ({
 }))
 const useHasAiAgentMenuMock = assumeMock(useHasAiAgentMenu)
 
-jest.mock('hooks/useStandaloneAiAccess', () => ({
-    useStandaloneAiAccess: jest.fn(),
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(),
 }))
-const useStandaloneAiAccessMock = assumeMock(useStandaloneAiAccess)
+const useStandaloneAiContextMock = assumeMock(useStandaloneAiContext)
 
 const wrapper = ({ children }: { children?: ReactNode }) => (
     <StaticRouter location="/app">{children}</StaticRouter>
@@ -64,7 +64,7 @@ describe('MainNavigation', () => {
         useAppDispatchMock.mockReturnValue(dispatch)
         getHasAutomateMock.mockReturnValue(true)
         useHasAiAgentMenuMock.mockReturnValue(true)
-        useStandaloneAiAccessMock.mockReturnValue(
+        useStandaloneAiContextMock.mockReturnValue(
             createMockStandaloneAiAccess(),
         )
     })
