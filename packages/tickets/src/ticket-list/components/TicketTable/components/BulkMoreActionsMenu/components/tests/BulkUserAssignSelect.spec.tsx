@@ -81,7 +81,7 @@ describe('BulkUserAssignSelect', () => {
         const trigger = await waitUntilLoaded()
         await user.click(trigger)
 
-        const searchInput = screen.getByRole('searchbox')
+        const searchInput = await screen.findByRole('searchbox')
         await user.type(searchInput, 'Ali')
         expect(searchInput).toHaveValue('Ali')
 
@@ -91,6 +91,6 @@ describe('BulkUserAssignSelect', () => {
         })
 
         await user.click(trigger)
-        expect(screen.getByRole('searchbox')).toHaveValue('')
+        expect(await screen.findByRole('searchbox')).toHaveValue('')
     })
 })

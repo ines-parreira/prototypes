@@ -11,6 +11,7 @@ import {
     mockTicketTag,
     mockUpdateTicketHandler,
 } from '@gorgias/helpdesk-mocks'
+import type { TicketTag } from '@gorgias/helpdesk-queries'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { TicketInfobarTicketDetailsTags } from '../components/InfobarTicketTags'
@@ -153,6 +154,43 @@ describe('TicketInfobarTicketDetailsTags', () => {
         }
     }
 
+    const createUpdateTicketCapture = () => {
+        const requests: Array<{ tags: TicketTag[] }> = []
+        const mockUpdateTicketCapture = mockUpdateTicketHandler(
+            async ({ request }) => {
+                const body = await request.clone().json()
+                requests.push(body)
+
+                return HttpResponse.json(
+                    mockTicket({
+                        id: Number(ticketId),
+                        tags: body.tags,
+                    }),
+                )
+            },
+        )
+
+        return {
+            handler: mockUpdateTicketCapture.handler,
+            requests,
+        }
+    }
+
+    const createCreateTagCapture = (createdTag = mockTag({ id: 100 })) => {
+        let requestBody: { name: string } | undefined
+        const mockCreateTagCapture = mockCreateTagHandler(
+            async ({ request }) => {
+                requestBody = await request.clone().json()
+                return HttpResponse.json(createdTag)
+            },
+        )
+
+        return {
+            handler: mockCreateTagCapture.handler,
+            getRequestBody: () => requestBody,
+        }
+    }
+
     describe('Initial rendering', () => {
         it('should render the component with add button', async () => {
             render(<TicketInfobarTicketDetailsTags ticketId={ticketId} />, {
@@ -247,8 +285,12 @@ describe('TicketInfobarTicketDetailsTags', () => {
 
     describe('Adding tags', () => {
         it('should add a new tag when selected from dropdown', async () => {
-            const waitForUpdateTicketRequest =
-                mockUpdateTicket.waitForRequest(server)
+            const updateTicketCapture = createUpdateTicketCapture()
+            server.use(
+                mockGetTicket.handler,
+                mockListTags.handler,
+                updateTicketCapture.handler,
+            )
 
             const { user } = render(
                 <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
@@ -265,29 +307,35 @@ describe('TicketInfobarTicketDetailsTags', () => {
             })
             await user.click(documentationOption)
 
-            await waitForUpdateTicketRequest(async (request) => {
-                const body = await request.clone().json()
-                expect(body.tags).toHaveLength(3)
-                expect(body.tags).toEqual(
-                    expect.arrayContaining([
-                        expect.objectContaining({ id: 1, name: 'Bug' }),
-                        expect.objectContaining({
-                            id: 2,
-                            name: 'Feature Request',
-                        }),
-                        expect.objectContaining({
-                            id: 3,
-                            name: 'Documentation',
-                        }),
-                    ]),
-                )
+            await waitFor(() => {
+                expect(updateTicketCapture.requests).toHaveLength(1)
             })
+            const [updateTicketRequestBody] = updateTicketCapture.requests
+            expect(updateTicketRequestBody.tags).toHaveLength(3)
+            expect(updateTicketRequestBody.tags).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({ id: 1, name: 'Bug' }),
+                    expect.objectContaining({
+                        id: 2,
+                        name: 'Feature Request',
+                    }),
+                    expect.objectContaining({
+                        id: 3,
+                        name: 'Documentation',
+                    }),
+                ]),
+            )
 
             await waitForQueriesSettled()
         })
 
         it('should add multiple tags when selected', async () => {
-            const waitForFirstRequest = mockUpdateTicket.waitForRequest(server)
+            const updateTicketCapture = createUpdateTicketCapture()
+            server.use(
+                mockGetTicket.handler,
+                mockListTags.handler,
+                updateTicketCapture.handler,
+            )
             const { user } = render(
                 <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
@@ -303,17 +351,18 @@ describe('TicketInfobarTicketDetailsTags', () => {
             })
             await user.click(documentationOption)
 
-            await waitForFirstRequest(async (request) => {
-                const body = await request.clone().json()
-                expect(body.tags).toEqual(
-                    expect.arrayContaining([
-                        expect.objectContaining({
-                            id: 3,
-                            name: 'Documentation',
-                        }),
-                    ]),
-                )
+            await waitFor(() => {
+                expect(updateTicketCapture.requests).toHaveLength(1)
             })
+            const [firstRequestBody] = updateTicketCapture.requests
+            expect(firstRequestBody.tags).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        id: 3,
+                        name: 'Documentation',
+                    }),
+                ]),
+            )
             await waitForQueriesSettled()
 
             await openTagMenu(user)
@@ -322,20 +371,20 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 name: 'Marketing',
             })
 
-            const waitForSecondRequest = mockUpdateTicket.waitForRequest(server)
             await user.click(marketingOption)
 
-            await waitForSecondRequest(async (request) => {
-                const body = await request.clone().json()
-                expect(body.tags).toEqual(
-                    expect.arrayContaining([
-                        expect.objectContaining({
-                            id: 4,
-                            name: 'Marketing',
-                        }),
-                    ]),
-                )
+            await waitFor(() => {
+                expect(updateTicketCapture.requests).toHaveLength(2)
             })
+            const secondRequestBody = updateTicketCapture.requests[1]
+            expect(secondRequestBody.tags).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        id: 4,
+                        name: 'Marketing',
+                    }),
+                ]),
+            )
 
             await waitFor(() => {
                 const marketingTags = screen.getAllByText('Marketing')
@@ -346,8 +395,12 @@ describe('TicketInfobarTicketDetailsTags', () => {
         }, 10000)
 
         it('should maintain tag sort order when adding new tags', async () => {
-            const waitForUpdateTicketRequest =
-                mockUpdateTicket.waitForRequest(server)
+            const updateTicketCapture = createUpdateTicketCapture()
+            server.use(
+                mockGetTicket.handler,
+                mockListTags.handler,
+                updateTicketCapture.handler,
+            )
 
             const { user } = render(
                 <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
@@ -364,12 +417,14 @@ describe('TicketInfobarTicketDetailsTags', () => {
             })
             await user.click(salesOption)
 
-            await waitForUpdateTicketRequest(async (request) => {
-                const body = await request.clone().json()
-                const ids = body.tags.map((tag: { id: number }) => tag.id)
-                const sortedIds = [...ids].sort((a, b) => a - b)
-                expect(ids).toEqual(sortedIds)
+            await waitFor(() => {
+                expect(updateTicketCapture.requests).toHaveLength(1)
             })
+            const [updateTicketRequestBody] = updateTicketCapture.requests
+            const names = updateTicketRequestBody.tags.map(
+                (tag: { name: string }) => tag.name,
+            )
+            expect(names).toEqual(['Bug', 'Feature Request', 'Sales'])
 
             await waitForQueriesSettled()
         })
@@ -382,6 +437,8 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 name: 'NewTag',
                 decoration: null,
             })
+            const createTagCapture = createCreateTagCapture(createdTag)
+            const updateTicketCapture = createUpdateTicketCapture()
 
             const mockCreateTagCustom = mockCreateTagHandler(async () =>
                 HttpResponse.json(createdTag),
@@ -422,11 +479,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 mockCreateTagCustom.handler,
                 mockUpdateTicket.handler,
             )
-
-            const waitForCreateTagRequest =
-                mockCreateTagCustom.waitForRequest(server)
-            const waitForUpdateTicketRequest =
-                mockUpdateTicket.waitForRequest(server)
+            server.use(createTagCapture.handler, updateTicketCapture.handler)
             const { user } = render(
                 <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
             )
@@ -461,27 +514,29 @@ describe('TicketInfobarTicketDetailsTags', () => {
                 screen.getByRole('button', { name: /create tag/i }),
             )
 
-            await waitForCreateTagRequest(async (request) => {
-                const body = await request.clone().json()
-                expect(body.name).toBe('NewTag')
+            await waitFor(() => {
+                expect(createTagCapture.getRequestBody()).toBeDefined()
             })
+            const createTagRequestBody = createTagCapture.getRequestBody()!
+            expect(createTagRequestBody.name).toBe('NewTag')
 
-            await waitForUpdateTicketRequest(async (request) => {
-                const body = await request.clone().json()
-                expect(body.tags).toEqual(
-                    expect.arrayContaining([
-                        expect.objectContaining({ id: 1, name: 'Bug' }),
-                        expect.objectContaining({
-                            id: 2,
-                            name: 'Feature Request',
-                        }),
-                        expect.objectContaining({
-                            id: 100,
-                            name: 'NewTag',
-                        }),
-                    ]),
-                )
+            await waitFor(() => {
+                expect(updateTicketCapture.requests).toHaveLength(1)
             })
+            const [updateTicketRequestBody] = updateTicketCapture.requests
+            expect(updateTicketRequestBody.tags).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({ id: 1, name: 'Bug' }),
+                    expect.objectContaining({
+                        id: 2,
+                        name: 'Feature Request',
+                    }),
+                    expect.objectContaining({
+                        id: 100,
+                        name: 'NewTag',
+                    }),
+                ]),
+            )
 
             await waitForQueriesSettled()
         })
@@ -489,8 +544,12 @@ describe('TicketInfobarTicketDetailsTags', () => {
 
     describe('Removing tags', () => {
         it('should remove a tag when close button is clicked', async () => {
-            const waitForUpdateTicketRequest =
-                mockUpdateTicket.waitForRequest(server)
+            const updateTicketCapture = createUpdateTicketCapture()
+            server.use(
+                mockGetTicket.handler,
+                mockListTags.handler,
+                updateTicketCapture.handler,
+            )
 
             const { user } = render(
                 <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
@@ -520,11 +579,12 @@ describe('TicketInfobarTicketDetailsTags', () => {
             const closeButtons = getCloseButtons()
             await user.click(closeButtons[0])
 
-            await waitForUpdateTicketRequest(async (request) => {
-                const body = await request.clone().json()
-                expect(body.tags).toHaveLength(1)
-                expect(body.tags[0].id).toBe(2)
+            await waitFor(() => {
+                expect(updateTicketCapture.requests).toHaveLength(1)
             })
+            const [updateTicketRequestBody] = updateTicketCapture.requests
+            expect(updateTicketRequestBody.tags).toHaveLength(1)
+            expect(updateTicketRequestBody.tags[0].id).toBe(2)
 
             await waitForQueriesSettled()
         })
@@ -633,11 +693,13 @@ describe('TicketInfobarTicketDetailsTags', () => {
             const mockGetTicketWithHidden = mockGetTicketHandler(async () =>
                 HttpResponse.json(ticketWithHiddenTag),
             )
+            const updateTicketCapture = createUpdateTicketCapture()
 
-            server.use(mockGetTicketWithHidden.handler, mockListTags.handler)
-
-            const waitForUpdateTicketRequest =
-                mockUpdateTicket.waitForRequest(server)
+            server.use(
+                mockGetTicketWithHidden.handler,
+                mockListTags.handler,
+                updateTicketCapture.handler,
+            )
 
             const { user } = render(
                 <TicketInfobarTicketDetailsTags ticketId={ticketId} />,
@@ -660,22 +722,23 @@ describe('TicketInfobarTicketDetailsTags', () => {
             })
             await user.click(bugOption)
 
-            await waitForUpdateTicketRequest(async (request) => {
-                const body = await request.clone().json()
-                expect(body.tags).toEqual(
-                    expect.arrayContaining([
-                        expect.objectContaining({
-                            id: 999,
-                            name: 'Hidden Tag',
-                        }),
-                        expect.objectContaining({
-                            id: 2,
-                            name: 'Feature Request',
-                        }),
-                    ]),
-                )
-                expect(body.tags).toHaveLength(2)
+            await waitFor(() => {
+                expect(updateTicketCapture.requests).toHaveLength(1)
             })
+            const [updateTicketRequestBody] = updateTicketCapture.requests
+            expect(updateTicketRequestBody.tags).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        id: 999,
+                        name: 'Hidden Tag',
+                    }),
+                    expect.objectContaining({
+                        id: 2,
+                        name: 'Feature Request',
+                    }),
+                ]),
+            )
+            expect(updateTicketRequestBody.tags).toHaveLength(2)
 
             await waitForQueriesSettled()
         })

@@ -1,13 +1,29 @@
-import { act, waitFor } from '@testing-library/react'
+import { act } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { renderHook } from '../../tests/render.utils'
 import * as useCachedTicketViewNavigationModule from '../useCachedTicketViewNavigation'
 import { useTicketViewNavigation } from '../useTicketViewNavigation'
 
+const mockPush = vi.fn()
+
+const { useHistory } = vi.hoisted(() => ({
+    useHistory: vi.fn(),
+}))
+
+vi.mock('react-router-dom', async () => {
+    const actual = await vi.importActual('react-router-dom')
+    return {
+        ...actual,
+        useHistory,
+    }
+})
+
 describe('useTicketViewNavigation', () => {
     beforeEach(() => {
         vi.restoreAllMocks()
+        mockPush.mockReset()
+        useHistory.mockReturnValue({ push: mockPush })
     })
 
     describe('when not in a view context', () => {
@@ -30,9 +46,8 @@ describe('useTicketViewNavigation', () => {
                 result.current.navigateToTicket(456)
             })
 
-            waitFor(() => {
-                expect(window.location.pathname).toBe('/app/ticket/456')
-            })
+            expect(mockPush).toHaveBeenCalledWith('/app/ticket/456')
+            expect(mockPush).toHaveBeenCalledTimes(1)
         })
     })
 
@@ -61,9 +76,8 @@ describe('useTicketViewNavigation', () => {
                 result.current.handleGoToPreviousViewTicket()
             })
 
-            waitFor(() => {
-                expect(window.location.pathname).toBe('/app/views/1/122')
-            })
+            expect(mockPush).toHaveBeenCalledWith('/app/views/1/122')
+            expect(mockPush).toHaveBeenCalledTimes(1)
         })
 
         it('should navigate to next ticket in view from cache', () => {
@@ -90,9 +104,8 @@ describe('useTicketViewNavigation', () => {
                 result.current.handleGoToNextViewTicket()
             })
 
-            waitFor(() => {
-                expect(window.location.pathname).toBe('/app/views/1/124')
-            })
+            expect(mockPush).toHaveBeenCalledWith('/app/views/1/124')
+            expect(mockPush).toHaveBeenCalledTimes(1)
         })
 
         it('should navigate to ticket with viewId', () => {
@@ -105,9 +118,8 @@ describe('useTicketViewNavigation', () => {
                 result.current.navigateToTicket(456)
             })
 
-            waitFor(() => {
-                expect(window.location.pathname).toBe('/app/views/1/456')
-            })
+            expect(mockPush).toHaveBeenCalledWith('/app/views/1/456')
+            expect(mockPush).toHaveBeenCalledTimes(1)
         })
 
         it('should prefer cache navigation over legacy hidden state', () => {
@@ -276,13 +288,11 @@ describe('useTicketViewNavigation', () => {
                 },
             })
 
-            const initialPathname = window.location.pathname
-
             act(() => {
                 result.current.handleGoToPreviousViewTicket()
             })
 
-            expect(window.location.pathname).toBe(initialPathname)
+            expect(mockPush).not.toHaveBeenCalled()
         })
 
         it('should not navigate when viewId is missing and nextTicketId is available', () => {
@@ -301,13 +311,11 @@ describe('useTicketViewNavigation', () => {
                 },
             })
 
-            const initialPathname = window.location.pathname
-
             act(() => {
                 result.current.handleGoToNextViewTicket()
             })
 
-            expect(window.location.pathname).toBe(initialPathname)
+            expect(mockPush).not.toHaveBeenCalled()
         })
     })
 })
