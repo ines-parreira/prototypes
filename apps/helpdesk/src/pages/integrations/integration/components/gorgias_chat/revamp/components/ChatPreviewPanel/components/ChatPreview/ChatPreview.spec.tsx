@@ -2,6 +2,7 @@ import { createRef } from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -15,6 +16,8 @@ jest.mock('models/integration/queries', () => ({
 const mockUseGetInstallationSnippet = jest.requireMock(
     'models/integration/queries',
 ).useGetInstallationSnippet
+
+const mockRefetchInstallationSnippet = jest.fn()
 
 const SNIPPET_WITH_SCRIPT =
     '<script src="https://chat.example.com/chat.js"></script>'
@@ -33,12 +36,17 @@ const renderComponent = (appId = 'test-app-id') => {
 }
 
 describe('ChatPreview', () => {
+    beforeEach(() => {
+        mockRefetchInstallationSnippet.mockReset()
+    })
+
     describe('loading state', () => {
         it('should show loading when snippet is loaded but widget has not yet signalled ready', () => {
             mockUseGetInstallationSnippet.mockReturnValue({
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             renderComponent()
@@ -51,6 +59,7 @@ describe('ChatPreview', () => {
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             renderComponent()
@@ -66,12 +75,13 @@ describe('ChatPreview', () => {
                 data: undefined,
                 isLoading: false,
                 isError: true,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             renderComponent()
 
             expect(
-                screen.getByText('Chat preview could not be loaded.'),
+                screen.getByText("Couldn't load preview."),
             ).toBeInTheDocument()
         })
 
@@ -80,6 +90,7 @@ describe('ChatPreview', () => {
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             renderComponent()
@@ -94,9 +105,77 @@ describe('ChatPreview', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Chat preview could not be loaded.'),
+                    screen.getByText("Couldn't load preview."),
                 ).toBeInTheDocument()
             })
+        })
+
+        it('should return to loading state when reload button is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: true,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /reload preview/i }),
+            )
+
+            expect(screen.getByText('Loading Preview...')).toBeInTheDocument()
+        })
+
+        it('should refetch the snippet when reload is clicked after a snippet fetch failure', async () => {
+            const user = userEvent.setup()
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: true,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /reload preview/i }),
+            )
+
+            expect(mockRefetchInstallationSnippet).toHaveBeenCalledTimes(1)
+        })
+
+        it('should not refetch the snippet when reload is clicked after a widget error', async () => {
+            const user = userEvent.setup()
+            mockUseGetInstallationSnippet.mockReturnValue({
+                data: { snippet: SNIPPET_WITH_SCRIPT },
+                isLoading: false,
+                isError: false,
+                refetch: mockRefetchInstallationSnippet,
+            })
+
+            renderComponent()
+
+            act(() => {
+                window.dispatchEvent(
+                    new MessageEvent('message', {
+                        data: { type: 'helpdesk-chat-preview-error' },
+                    }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /reload preview/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /reload preview/i }),
+            )
+
+            expect(mockRefetchInstallationSnippet).not.toHaveBeenCalled()
         })
 
         it('should show error state when snippet has no script with a src', async () => {
@@ -104,13 +183,14 @@ describe('ChatPreview', () => {
                 data: { snippet: '<div>no script here</div>' },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             renderComponent()
 
             await waitFor(() => {
                 expect(
-                    screen.getByText('Chat preview could not be loaded.'),
+                    screen.getByText("Couldn't load preview."),
                 ).toBeInTheDocument()
             })
         })
@@ -122,6 +202,7 @@ describe('ChatPreview', () => {
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             renderComponent()
@@ -154,6 +235,7 @@ describe('ChatPreview', () => {
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             const queryClient = mockQueryClient()
@@ -197,6 +279,7 @@ describe('ChatPreview', () => {
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             renderComponent()
@@ -255,6 +338,7 @@ describe('ChatPreview', () => {
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             const { ref } = renderComponent()
@@ -269,6 +353,7 @@ describe('ChatPreview', () => {
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             const { ref } = renderComponent()
@@ -281,6 +366,7 @@ describe('ChatPreview', () => {
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             const { ref } = renderComponent()
@@ -303,6 +389,7 @@ describe('ChatPreview', () => {
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             const { ref } = renderComponent()
@@ -315,6 +402,7 @@ describe('ChatPreview', () => {
                 data: { snippet: SNIPPET_WITH_SCRIPT },
                 isLoading: false,
                 isError: false,
+                refetch: mockRefetchInstallationSnippet,
             })
 
             const { ref } = renderComponent()

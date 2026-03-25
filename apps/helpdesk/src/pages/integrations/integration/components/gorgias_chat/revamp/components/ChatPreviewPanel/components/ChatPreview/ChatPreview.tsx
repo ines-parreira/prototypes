@@ -35,6 +35,7 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
             data: installationSnippet,
             isLoading: installationSnippetLoading,
             isError: installationSnippetError,
+            refetch: refetchInstallationSnippet,
         } = useGetInstallationSnippet(
             {
                 applicationId: appId,
@@ -114,8 +115,16 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
             hasError,
         }))
 
+        const handleReload = () => {
+            setHasError(false)
+            setIsWidgetLoaded(false)
+            if (installationSnippetError) {
+                refetchInstallationSnippet()
+            }
+        }
+
         if (hasError) {
-            return <ChatPreviewErrorState />
+            return <ChatPreviewErrorState onReload={handleReload} />
         }
 
         return (
