@@ -1,5 +1,7 @@
+import type { ReactNode } from 'react'
 import { useCallback, useState } from 'react'
 
+import type { EditShippingAddressModalRenderProps } from '@repo/customer'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 
 import { useGetCustomer } from '@gorgias/helpdesk-queries'
@@ -16,7 +18,15 @@ import { useWidgetOrderProducts } from './useWidgetOrderProducts'
 
 import css from './ShopifyOrdersWidgetContainer.less'
 
-export function ShopifyOrdersWidgetContainer() {
+type Props = {
+    renderEditShippingAddressModal?: (
+        props: EditShippingAddressModalRenderProps,
+    ) => ReactNode
+}
+
+export function ShopifyOrdersWidgetContainer({
+    renderEditShippingAddressModal,
+}: Props) {
     const ticketCustomer = useAppSelector(getTicketCustomer)
     const activeCustomer = useAppSelector(getActiveCustomer)
     const customerId =
@@ -66,6 +76,8 @@ export function ShopifyOrdersWidgetContainer() {
                 onOpenChange={setIsOrderOpen}
                 productsMap={productsMap}
                 integrationId={integrationId}
+                customerId={String(lastOrder.customer?.id ?? '')}
+                renderEditShippingAddressModal={renderEditShippingAddressModal}
             />
         </div>
     )

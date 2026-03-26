@@ -261,6 +261,7 @@ export const TicketInfobarContainer = ({
                 <ConnectedEditOrderShippingAddressModal
                     isOpen={isOpen}
                     onClose={onClose}
+                    modalClassName={css.aboveSidePanel}
                     onChange={(name, value) => {
                         editModalParamsRef.current[name] = value
                     }}
@@ -620,6 +621,9 @@ export const TicketInfobarContainer = ({
                         widgets={widgets}
                         context={WidgetEnvironment.Ticket}
                         isOnNewLayout={isOnNewLayout}
+                        renderEditShippingAddressModal={
+                            renderEditShippingAddressModal
+                        }
                     />
                 </div>
             )}

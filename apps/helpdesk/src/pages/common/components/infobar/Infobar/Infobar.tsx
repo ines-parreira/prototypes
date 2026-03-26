@@ -1,6 +1,7 @@
-import type { KeyboardEvent } from 'react'
+import type { KeyboardEvent, ReactNode } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import type { EditShippingAddressModalRenderProps } from '@repo/customer'
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -64,6 +65,9 @@ type Props = {
     sources: Map<any, any>
     widgets: Map<any, any>
     isOnNewLayout?: boolean
+    renderEditShippingAddressModal?: (
+        props: EditShippingAddressModalRenderProps,
+    ) => ReactNode
 }
 
 const MERGE_ERROR_MESSAGE = `You can only edit customers and orders of the customer associated with this ticket.
@@ -77,6 +81,7 @@ export const Infobar = ({
     sources,
     widgets,
     isOnNewLayout,
+    renderEditShippingAddressModal,
 }: Props) => {
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
@@ -338,7 +343,11 @@ export const Infobar = ({
                 {hasUIVisionMilestone2 &&
                     hasShopifyIntegration &&
                     !isCurrentlyOnCustomerPage(defaultCustomerId) && (
-                        <ShopifyOrdersWidgetContainer />
+                        <ShopifyOrdersWidgetContainer
+                            renderEditShippingAddressModal={
+                                renderEditShippingAddressModal
+                            }
+                        />
                     )}
 
                 {(!hasUIVisionMS1 ||

@@ -51,6 +51,7 @@ type OwnProps = {
         order_id: string
         current_shipping_address: Map<any, any>
     }
+    modalClassName?: string
 }
 
 const defaultCurrentAddressState = fromJS({
@@ -86,6 +87,7 @@ export function EditOrderShippingAddressModal({
     onReset,
     onBulkChange,
     title,
+    modalClassName,
 }: Omit<InfobarModalProps, 'data'> &
     OwnProps &
     ConnectedProps<typeof connector>) {
@@ -265,7 +267,12 @@ export function EditOrderShippingAddressModal({
     ])
 
     return (
-        <Modal size="huge" isOpen={isOpen} onClose={handleCancel()}>
+        <Modal
+            size="huge"
+            isOpen={isOpen}
+            onClose={handleCancel()}
+            className={modalClassName || ''}
+        >
             <ModalHeader title={title} />
             <Form onSubmit={_handleSubmit}>
                 <div className={css.formBody}>

@@ -12,6 +12,8 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import useAppSelector from 'hooks/useAppSelector'
+import { getActiveCustomer } from 'state/customers/selectors'
+import { getTicketCustomer } from 'state/ticket/selectors'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { ShopifyOrdersWidgetContainer } from '../ShopifyOrdersWidgetContainer'
@@ -41,8 +43,16 @@ jest.mock('@repo/ecommerce/shopify/utils', () => ({
 jest.mock(
     'Widgets/modules/Shopify/modules/Order/components/OrderSidePanelWithActions',
     () => ({
-        OrderSidePanelWithActions: ({ isOpen }: { isOpen: boolean }) =>
-            isOpen ? <div>OrderSidePanelWithActions</div> : null,
+        OrderSidePanelWithActions: ({
+            isOpen,
+            customerId,
+        }: {
+            isOpen: boolean
+            customerId?: string
+        }) =>
+            isOpen ? (
+                <div>OrderSidePanelWithActions customerId:{customerId}</div>
+            ) : null,
     }),
 )
 
@@ -125,7 +135,11 @@ function createOrder(overrides: Record<string, any> = {}) {
 beforeEach(() => {
     jest.clearAllMocks()
 
-    mockUseAppSelector.mockReturnValue(undefined)
+    mockUseAppSelector.mockImplementation((selector: any) => {
+        if (selector === getTicketCustomer) return undefined
+        if (selector === getActiveCustomer) return undefined
+        return undefined
+    })
     mockUseTicketInfobarNavigation.mockReturnValue({
         activeTab: TicketInfobarTab.Customer,
         onChangeTab: mockOnChangeTab,
@@ -186,14 +200,14 @@ describe('ShopifyOrdersWidgetContainer', () => {
         renderComponent()
 
         expect(
-            screen.queryByText('OrderSidePanelWithActions'),
+            screen.queryByText(/OrderSidePanelWithActions/),
         ).not.toBeInTheDocument()
 
         await user.click(screen.getByText('#1001'))
 
         await waitFor(() => {
             expect(
-                screen.getByText('OrderSidePanelWithActions'),
+                screen.getByText(/OrderSidePanelWithActions/),
             ).toBeInTheDocument()
         })
     })
@@ -214,6 +228,97 @@ describe('ShopifyOrdersWidgetContainer', () => {
 
         expect(mockOnChangeTab).toHaveBeenCalledWith(TicketInfobarTab.Shopify, {
             shopifyIntegrationId: 42,
+        })
+    })
+
+    it('should use ticketCustomer id when available', async () => {
+        mockUseAppSelector.mockImplementation((selector: any) => {
+            if (selector === getTicketCustomer)
+                return { get: (key: string) => (key === 'id' ? 10 : undefined) }
+            if (selector === getActiveCustomer) return { id: 99 }
+            return undefined
+        })
+
+        mockUseShopifyOrdersSummary.mockReturnValue({
+            lastOrder: null,
+            totalCount: 0,
+            unfulfilledCount: 0,
+            integrationId: undefined,
+        })
+
+        const waitForGetCustomerRequest = mockGetCustomer.waitForRequest(server)
+
+        renderComponent()
+
+        await waitForGetCustomerRequest(async (request) => {
+            expect(request.url).toContain('/customers/10')
+        })
+    })
+
+    it('should fall back to activeCustomer id when ticketCustomer has no id', async () => {
+        const activeCustomer = { id: 20, name: 'Active Customer' }
+
+        mockUseAppSelector.mockImplementation((selector: any) => {
+            if (selector === getTicketCustomer) return undefined
+            if (selector === getActiveCustomer) return activeCustomer
+            return undefined
+        })
+
+        mockUseShopifyOrdersSummary.mockReturnValue({
+            lastOrder: null,
+            totalCount: 0,
+            unfulfilledCount: 0,
+            integrationId: undefined,
+        })
+
+        const waitForGetCustomerRequest = mockGetCustomer.waitForRequest(server)
+
+        renderComponent()
+
+        await waitForGetCustomerRequest(async (request) => {
+            expect(request.url).toContain('/customers/20')
+        })
+    })
+
+    it('should pass customerId from lastOrder.customer.id to OrderSidePanelWithActions', async () => {
+        const user = userEvent.setup()
+
+        mockUseShopifyOrdersSummary.mockReturnValue({
+            lastOrder: createOrder({ customer: { id: 123 } }),
+            totalCount: 1,
+            unfulfilledCount: 0,
+            integrationId: 42,
+        })
+
+        renderComponent()
+
+        await user.click(screen.getByText('#1001'))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('OrderSidePanelWithActions customerId:123'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('should pass empty customerId when lastOrder has no customer', async () => {
+        const user = userEvent.setup()
+
+        mockUseShopifyOrdersSummary.mockReturnValue({
+            lastOrder: createOrder(),
+            totalCount: 1,
+            unfulfilledCount: 0,
+            integrationId: 42,
+        })
+
+        renderComponent()
+
+        await user.click(screen.getByText('#1001'))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('OrderSidePanelWithActions customerId:'),
+            ).toBeInTheDocument()
         })
     })
 })
