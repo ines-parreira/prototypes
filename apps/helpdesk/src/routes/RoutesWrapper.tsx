@@ -19,9 +19,15 @@ export default function RoutesWrapper() {
 
     const routes = renderPanelRoutes ? <PanelRoutes /> : <Routes />
 
+    /* The key="wayfinding" / key="legacy" props on the two layout providers ensure React fully unmounts the old tree before mounting the new one whenever the flag changes, closing the window where PanelGroup could render without its Panels context. */
+
     if (hasWayfindingMS1Flag) {
-        return <AppLayout hasPanel={renderPanelRoutes}>{routes}</AppLayout>
+        return (
+            <AppLayout key="wayfinding" hasPanel={renderPanelRoutes}>
+                {routes}
+            </AppLayout>
+        )
     }
 
-    return <SidebarProvider>{routes}</SidebarProvider>
+    return <SidebarProvider key="legacy">{routes}</SidebarProvider>
 }
