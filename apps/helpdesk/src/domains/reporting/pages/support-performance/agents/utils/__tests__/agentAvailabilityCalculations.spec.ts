@@ -16,6 +16,7 @@ const {
     ONLINE_TIME_COLUMN,
     AVAILABLE_STATUS_COLUMN,
     UNAVAILABLE_STATUS_COLUMN,
+    ON_CALL_STATUS_COLUMN,
 } = AGENT_AVAILABILITY_COLUMNS
 describe('agentAvailabilityCalculations', () => {
     const mockAgents: AgentAvailabilityData[] = [
@@ -51,7 +52,7 @@ describe('agentAvailabilityCalculations', () => {
                 expect(result).toBe(16200)
             })
 
-            it('should calculate total for Available column using online time only', () => {
+            it('should calculate total for Available column using online time', () => {
                 // Uses online values: 1200 + 2400 + 1800 = 5400
                 const result = calculateTotal(
                     mockAgents,
@@ -60,7 +61,7 @@ describe('agentAvailabilityCalculations', () => {
                 expect(result).toBe(5400)
             })
 
-            it('should calculate total for non-Available status columns using total time', () => {
+            it('should calculate total for Unavailable column using online time only', () => {
                 const agentsWithUnavailable: AgentAvailabilityData[] = [
                     {
                         id: 1,
@@ -81,33 +82,72 @@ describe('agentAvailabilityCalculations', () => {
                         },
                     },
                 ]
-                // Uses total values: 1000 + 2000 = 3000
+                // Uses online values: 600 + 1200 = 1800
                 const result = calculateTotal(
                     agentsWithUnavailable,
                     UNAVAILABLE_STATUS_COLUMN,
                 )
-                expect(result).toBe(3000)
+                expect(result).toBe(1800)
             })
 
-            it('should calculate total for custom status columns', () => {
+            it('should calculate total for custom availability status columns using online time only', () => {
                 const agentsWithCustomStatus = [
                     {
                         id: 1,
                         name: 'Alice',
-                        agent_status_custom_break: 600,
+                        agent_status_custom_break: {
+                            total: 600,
+                            online: 500,
+                            offline: 100,
+                        },
                     },
                     {
                         id: 2,
                         name: 'Bob',
-                        agent_status_custom_break: 900,
+                        agent_status_custom_break: {
+                            total: 900,
+                            online: 700,
+                            offline: 200,
+                        },
                     },
                 ]
 
+                // Uses online values: 500 + 700 = 1200
                 const result = calculateTotal(
                     agentsWithCustomStatus,
                     'agent_status_custom_break',
                 )
-                expect(result).toBe(1500)
+                expect(result).toBe(1200)
+            })
+
+            it('should calculate total for call-related status columns using online time only', () => {
+                const agentsOnCall: AgentAvailabilityData[] = [
+                    {
+                        id: 1,
+                        name: 'Alice',
+                        'agent_status_on-call': {
+                            total: 1000,
+                            online: 600,
+                            offline: 400,
+                        },
+                    },
+                    {
+                        id: 2,
+                        name: 'Bob',
+                        'agent_status_on-call': {
+                            total: 2000,
+                            online: 1200,
+                            offline: 800,
+                        },
+                    },
+                ]
+
+                // Uses online values: 600 + 1200 = 1800
+                const result = calculateTotal(
+                    agentsOnCall,
+                    ON_CALL_STATUS_COLUMN,
+                )
+                expect(result).toBe(1800)
             })
         })
 
@@ -354,6 +394,35 @@ describe('agentAvailabilityCalculations', () => {
                     AVAILABLE_STATUS_COLUMN,
                 )
                 expect(result).toBe(1800)
+            })
+
+            it('should calculate average for Unavailable column using online time only', () => {
+                const agentsWithUnavailable: AgentAvailabilityData[] = [
+                    {
+                        id: 1,
+                        name: 'Alice',
+                        agent_status_unavailable: {
+                            total: 1000,
+                            online: 600,
+                            offline: 400,
+                        },
+                    },
+                    {
+                        id: 2,
+                        name: 'Bob',
+                        agent_status_unavailable: {
+                            total: 2000,
+                            online: 1200,
+                            offline: 800,
+                        },
+                    },
+                ]
+
+                const result = calculateAverage(
+                    agentsWithUnavailable,
+                    UNAVAILABLE_STATUS_COLUMN,
+                )
+                expect(result).toBe(900)
             })
 
             it('should handle decimal averages correctly', () => {

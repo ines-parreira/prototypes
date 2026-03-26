@@ -10,7 +10,10 @@ import thunk from 'redux-thunk'
 import type { User } from 'config/types/user'
 import { ThemeProvider } from 'core/theme'
 import { AGENT_AVAILABILITY_COLUMNS } from 'domains/reporting/pages/support-performance/agents/constants'
-import type { AgentAvailabilityData } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
+import type {
+    AgentAvailabilityData,
+    StatusBreakdown,
+} from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
 import { defaultStatsFilters } from 'domains/reporting/state/stats/statsSlice'
 import { initialState as statsTablesInitialState } from 'domains/reporting/state/ui/stats/statsTablesReducer'
 import { OrderDirection } from 'models/api/types'
@@ -185,6 +188,29 @@ export const mockCustomStatusWithData = {
         ],
     },
 }
+
+// Pair of breakdowns where total and online rank agents in opposite order.
+// Agent with mockBreakdownHighTotalLowOnline ranks higher by total, lower by online.
+// Agent with mockBreakdownLowTotalHighOnline ranks lower by total, higher by online.
+export const mockBreakdownHighTotalLowOnline: StatusBreakdown = {
+    total: 3600,
+    online: 1000,
+    offline: 2600,
+}
+
+export const mockBreakdownLowTotalHighOnline: StatusBreakdown = {
+    total: 2000,
+    online: 1500,
+    offline: 500,
+}
+
+export const ORDERING_TEST_CASES = [
+    ['agent_status_available', 2, 1],
+    ['agent_status_unavailable', 2, 1],
+    ['agent_status_on-call', 2, 1],
+    ['agent_status_wrapping-up', 2, 1],
+    ['agent_status_custom-status', 2, 1],
+] as const
 
 export const defaultHookReturn = {
     isFetching: false,

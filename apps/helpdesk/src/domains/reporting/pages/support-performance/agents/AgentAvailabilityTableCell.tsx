@@ -12,23 +12,15 @@ import {
     getColumnAlignment,
     getColumnWidth,
 } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityTableConfig'
-import { AGENT_AVAILABILITY_COLUMNS } from 'domains/reporting/pages/support-performance/agents/constants'
 import type { StatusBreakdown } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
 import BodyCell from 'pages/common/components/table/cells/BodyCell'
 
-const { AVAILABLE_STATUS_COLUMN } = AGENT_AVAILABILITY_COLUMNS
-
 export function getColumnValue(
     columnData: number | StatusBreakdown | undefined,
-    column?: AgentAvailabilityColumn,
 ): number | undefined {
     if (columnData === undefined || columnData === null) return undefined
     if (typeof columnData === 'number') return columnData
-    // For Available column, show only online time (not total which includes offline)
-    if (column === AVAILABLE_STATUS_COLUMN) {
-        return columnData.online
-    }
-    return columnData.total
+    return columnData.online
 }
 
 export function isStatusBreakdown(
@@ -67,7 +59,7 @@ export function AgentAvailabilityTableCell({
     isTableScrolled,
     columnIndex,
 }: AgentAvailabilityTableCellProps) {
-    const value = getColumnValue(columnData, column)
+    const value = getColumnValue(columnData)
     const hasBreakdown = isStatusBreakdown(columnData)
 
     // Show "-" if value is 0 or undefined

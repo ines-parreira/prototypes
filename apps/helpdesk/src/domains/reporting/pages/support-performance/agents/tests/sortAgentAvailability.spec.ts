@@ -1,5 +1,10 @@
 import { sortAgentAvailability } from 'domains/reporting/pages/support-performance/agents/sortAgentAvailability'
-import { mockTransformedAgents } from 'domains/reporting/pages/support-performance/agents/tests/fixtures'
+import {
+    mockBreakdownHighTotalLowOnline,
+    mockBreakdownLowTotalHighOnline,
+    mockTransformedAgents,
+    ORDERING_TEST_CASES,
+} from 'domains/reporting/pages/support-performance/agents/tests/fixtures'
 import { OrderDirection } from 'models/api/types'
 
 describe('sortAgentAvailability', () => {
@@ -56,27 +61,29 @@ describe('sortAgentAvailability', () => {
     })
 
     describe('client-side sorting (status columns)', () => {
-        it('should sort by status total ascending', () => {
-            const result = sortAgentAvailability(mockTransformedAgents, {
-                field: 'agent_status_available',
-                direction: OrderDirection.Asc,
-            })
+        it.each(ORDERING_TEST_CASES)(
+            'should sort %s by the correct metric (online or total)',
+            (column, expectedFirstId, expectedSecondId) => {
+                const agents = [
+                    {
+                        ...mockTransformedAgents[0],
+                        [column]: mockBreakdownHighTotalLowOnline,
+                    },
+                    {
+                        ...mockTransformedAgents[1],
+                        [column]: mockBreakdownLowTotalHighOnline,
+                    },
+                ]
 
-            expect(result[0].id).toBe(1)
-            expect(result[1].id).toBe(3)
-            expect(result[2].id).toBe(2)
-        })
+                const result = sortAgentAvailability(agents, {
+                    field: column,
+                    direction: OrderDirection.Desc,
+                })
 
-        it('should sort by status total descending', () => {
-            const result = sortAgentAvailability(mockTransformedAgents, {
-                field: 'agent_status_available',
-                direction: OrderDirection.Desc,
-            })
-
-            expect(result[0].id).toBe(2)
-            expect(result[1].id).toBe(3)
-            expect(result[2].id).toBe(1)
-        })
+                expect(result[0].id).toBe(expectedFirstId)
+                expect(result[1].id).toBe(expectedSecondId)
+            },
+        )
 
         it('should handle undefined values by treating them as 0', () => {
             const agentsWithUndefined = [

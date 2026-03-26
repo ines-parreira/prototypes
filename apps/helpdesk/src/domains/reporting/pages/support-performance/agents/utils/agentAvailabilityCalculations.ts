@@ -2,28 +2,20 @@ import type { AgentAvailabilityColumn } from 'domains/reporting/pages/support-pe
 import { AGENT_AVAILABILITY_COLUMNS } from 'domains/reporting/pages/support-performance/agents/constants'
 import type { StatusBreakdown } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
 
-const { AGENT_NAME_COLUMN, AVAILABLE_STATUS_COLUMN } =
-    AGENT_AVAILABILITY_COLUMNS
+const { AGENT_NAME_COLUMN } = AGENT_AVAILABILITY_COLUMNS
 type AgentAvailabilityData = {
     id: number
     name: string
     [key: string]: number | string | StatusBreakdown | undefined
 }
 
-// Extract numeric value from column data
-// Online time column is a number, status columns are StatusBreakdown objects
-// For Available column, use only online time (not total which includes offline)
 function getNumericValue(
     value: number | string | StatusBreakdown | undefined,
-    column?: AgentAvailabilityColumn,
 ): number {
     if (value == null) return 0
     if (typeof value === 'number') return value
     if (typeof value === 'object' && 'total' in value) {
-        if (column === AVAILABLE_STATUS_COLUMN) {
-            return value.online
-        }
-        return value.total
+        return value.online
     }
     return 0
 }
@@ -31,8 +23,8 @@ function getNumericValue(
 /**
  * Calculates the total sum of values for a given column across all agents.
  * Returns 0 for non-numeric values and for the agent name column.
- * For status columns, uses the .total property from StatusBreakdown objects,
- * except for Available column which uses .online only.
+ * For status columns, uses the online duration for availability statuses and
+ * the total duration for call-related statuses.
  */
 export const calculateTotal = (
     agents: AgentAvailabilityData[],
@@ -41,7 +33,7 @@ export const calculateTotal = (
     if (column === AGENT_NAME_COLUMN) return 0
     return agents.reduce((sum, agent) => {
         const value = agent[column]
-        return sum + getNumericValue(value, column)
+        return sum + getNumericValue(value)
     }, 0)
 }
 

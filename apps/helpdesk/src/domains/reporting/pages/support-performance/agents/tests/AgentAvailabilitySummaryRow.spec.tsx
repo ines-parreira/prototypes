@@ -5,7 +5,12 @@ import type { AgentAvailabilityColumn } from 'domains/reporting/pages/support-pe
 import { AGENT_AVAILABILITY_COLUMNS } from 'domains/reporting/pages/support-performance/agents/constants'
 import type { AgentAvailabilityData } from 'domains/reporting/pages/support-performance/agents/utils/transformAvailabilityData'
 
-const { AGENT_NAME_COLUMN, ONLINE_TIME_COLUMN } = AGENT_AVAILABILITY_COLUMNS
+const {
+    AGENT_NAME_COLUMN,
+    ONLINE_TIME_COLUMN,
+    AVAILABLE_STATUS_COLUMN,
+    UNAVAILABLE_STATUS_COLUMN,
+} = AGENT_AVAILABILITY_COLUMNS
 
 const mockAgents: AgentAvailabilityData[] = [
     {
@@ -13,28 +18,56 @@ const mockAgents: AgentAvailabilityData[] = [
         name: 'Alice',
         email: 'alice@example.com',
         agent_online_time: 3600,
-        agent_status_available: 1800,
+        agent_status_available: {
+            total: 1800,
+            online: 1500,
+            offline: 300,
+        },
+        agent_status_unavailable: {
+            total: 1200,
+            online: 900,
+            offline: 300,
+        },
     },
     {
         id: 2,
         name: 'Bob',
         email: 'bob@example.com',
         agent_online_time: 7200,
-        agent_status_available: 3600,
+        agent_status_available: {
+            total: 3600,
+            online: 3000,
+            offline: 600,
+        },
+        agent_status_unavailable: {
+            total: 2400,
+            online: 1800,
+            offline: 600,
+        },
     },
     {
         id: 3,
         name: 'Charlie',
         email: 'charlie@example.com',
         agent_online_time: 5400,
-        agent_status_available: 2700,
+        agent_status_available: {
+            total: 2700,
+            online: 2100,
+            offline: 600,
+        },
+        agent_status_unavailable: {
+            total: 1800,
+            online: 1200,
+            offline: 600,
+        },
     },
 ]
 
 const columnsOrder: AgentAvailabilityColumn[] = [
     AGENT_NAME_COLUMN,
     ONLINE_TIME_COLUMN,
-    'agent_status_available',
+    AVAILABLE_STATUS_COLUMN,
+    UNAVAILABLE_STATUS_COLUMN,
 ]
 
 const renderRow = (
@@ -68,12 +101,12 @@ describe('AgentAvailabilitySummaryRow', () => {
         {
             row: 'total' as const,
             label: 'Total',
-            expectedValues: ['4h 30m', '2h 15m'],
+            expectedValues: ['4h 30m', '1h 50m', '1h 05m'],
         },
         {
             row: 'average' as const,
             label: 'Average',
-            expectedValues: ['1h 30m', '45m'],
+            expectedValues: ['1h 30m', '36m 40s', '21m 40s'],
         },
     ])(
         '$row row shows $label label and aggregated values',
@@ -106,6 +139,6 @@ describe('AgentAvailabilitySummaryRow', () => {
         renderRow({ agents: agentsWithPartialData })
 
         expect(screen.getByText('1h')).toBeInTheDocument()
-        expect(screen.getByText('-')).toBeInTheDocument()
+        expect(screen.getAllByText('-')).toHaveLength(2)
     })
 })
