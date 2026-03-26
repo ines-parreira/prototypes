@@ -1,4 +1,4 @@
-import client from 'models/api/resources'
+import client from '@repo/api-resources'
 
 import { CHURN_MITIGATION_OFFER_ZAPIER_URL } from './constants'
 

@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 
+import client from '@repo/api-resources'
 import { useQueryClient } from '@tanstack/react-query'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
@@ -7,7 +8,6 @@ import { Link } from 'react-router-dom'
 
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
-import client from 'models/api/resources'
 import { bundleKeys } from 'models/convert/bundle/queries'
 import type { Bundle, BundleActionResponse } from 'models/convert/bundle/types'
 import BundleManualInstallationCard from 'pages/convert/bundles/components/BundleManualInstallationCard/BundleManualInstallationCard'

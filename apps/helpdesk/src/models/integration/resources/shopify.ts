@@ -1,3 +1,5 @@
+import client from '@repo/api-resources'
+
 import type {
     ShopifyCollection,
     ShopifyCollectionResponse,
@@ -7,8 +9,6 @@ import type {
     ShopifySegmentResponse,
 } from 'models/integration/types'
 import { ShopifyTags } from 'models/integration/types'
-
-import client from '../../api/resources'
 
 export const fetchShopTags = async (
     integrationId: number,

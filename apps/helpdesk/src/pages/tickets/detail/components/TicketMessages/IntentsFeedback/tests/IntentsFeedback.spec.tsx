@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { logEvent } from '@repo/logging'
 import { fireEvent, render, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -10,7 +11,6 @@ import thunk from 'redux-thunk'
 
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
-import client from 'models/api/resources'
 import { message } from 'models/ticket/tests/mocks'
 import type { TicketMessageIntent } from 'models/ticket/types'
 

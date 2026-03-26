@@ -11,8 +11,6 @@ exports[`Agents resources fetchAgents should resolve with a list of agents on su
     },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "X-CSRF-Token": "abcd",
-      "X-Gorgias-User-Client": "web",
     },
     "maxBodyLength": -1,
     "maxContentLength": -1,

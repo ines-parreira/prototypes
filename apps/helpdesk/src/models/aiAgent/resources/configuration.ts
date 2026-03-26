@@ -1,3 +1,4 @@
+import gorgiasAppsAuthInterceptor from '@repo/api-resources/gorgiasAppsAuth'
 import { isProduction, isStaging } from '@repo/utils'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
@@ -5,7 +6,6 @@ import axios from 'axios'
 import type { HelpCenter } from 'models/helpCenter/types'
 import type { AiAgentChannel } from 'pages/aiAgent/constants'
 
-import gorgiasAppsAuthInterceptor from '../../../utils/gorgiasAppsAuth'
 import type {
     AccountConfiguration,
     AccountConfigurationResponse,

@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { getLDClient } from '@repo/feature-flags'
 import MockAdapter from 'axios-mock-adapter'
 import type { MockStoreEnhanced } from 'redux-mock-store'
@@ -5,7 +6,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { BASE_VIEW_ID } from 'constants/view'
-import client from 'models/api/resources'
 import { searchTickets as modelSearchTickets } from 'models/ticket/resources'
 import type { Ticket } from 'models/ticket/types'
 import type { StoreDispatch } from 'state/types'

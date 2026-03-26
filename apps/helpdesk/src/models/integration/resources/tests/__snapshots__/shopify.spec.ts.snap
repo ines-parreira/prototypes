@@ -13,8 +13,6 @@ exports[`Shopify shop tag resources fetchShopTags() should fetch shop Customer t
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -66,8 +64,6 @@ exports[`Shopify shop tag resources fetchShopTags() should fetch shop Order tags
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,

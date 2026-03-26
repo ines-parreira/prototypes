@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
 
@@ -5,7 +6,6 @@ import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/helpdesk-clien
 import type { SearchVoiceCalls200 } from '@gorgias/helpdesk-types'
 
 import { voiceCall } from 'fixtures/voiceCalls'
-import client from 'models/api/resources'
 import { CancelToken } from 'tests/axiosRuntime'
 
 import {

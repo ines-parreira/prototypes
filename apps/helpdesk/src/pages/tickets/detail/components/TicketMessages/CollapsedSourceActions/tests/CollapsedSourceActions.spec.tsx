@@ -1,5 +1,6 @@
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -7,7 +8,6 @@ import configureMockStore from 'redux-mock-store'
 import { message } from 'models/ticket/tests/mocks'
 import type { RootState, StoreDispatch } from 'state/types'
 
-import client from '../../../../../../../models/api/resources'
 import type { TicketMessageIntent } from '../../../../../../../models/ticket/types'
 import CollapsedSourceActions from '../CollapsedSourceActions'
 

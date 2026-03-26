@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react'
 
+import client from '@repo/api-resources'
 import { useAsyncFn } from '@repo/hooks'
 import classnames from 'classnames'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import client from 'models/api/resources'
 import type { Bundle } from 'models/convert/bundle/types'
 import {
     BundleInstallationMethodResponse,

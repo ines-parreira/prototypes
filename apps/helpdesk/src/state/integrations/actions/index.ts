@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
 import { isAxiosError } from 'axios'
@@ -8,7 +9,6 @@ import _sortBy from 'lodash/sortBy'
 import moment from 'moment'
 
 import { isChannel } from 'config'
-import client from 'models/api/resources'
 import type {
     ApiListResponseLegacyPagination,
     GorgiasApiError,

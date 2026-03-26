@@ -1,6 +1,5 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
-
-import client from 'models/api/resources'
 
 import {
     fetchEcommerceItemByExternalId,
@@ -22,7 +21,7 @@ import {
     mockProductCollections,
 } from './mocks'
 
-jest.mock('utils/gorgiasAppsAuth', () => ({
+jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
     gorgiasAppsAuthInterceptor: jest.fn().mockImplementation((config) => {
         config.headers = {
             ...config.headers,

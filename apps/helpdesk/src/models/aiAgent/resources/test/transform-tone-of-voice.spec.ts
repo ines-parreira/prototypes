@@ -1,6 +1,8 @@
+import 'tests/mockGorgiasAppsAuth'
+
+import authClient from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
-import authClient from 'models/api/resources'
 import { PRODUCT_RECOMMENDATION_MESSAGE_ID } from 'pages/aiAgent/Onboarding_V2/constants/previewConstants'
 
 import { apiClient } from '../message-processing'

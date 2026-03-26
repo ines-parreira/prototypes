@@ -1,8 +1,8 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
 import { macros as macrosFixtures } from 'fixtures/macro'
-import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
 import { Cancel, CancelToken } from 'tests/axiosRuntime'
 

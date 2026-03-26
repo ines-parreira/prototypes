@@ -1,4 +1,5 @@
-import client from '../api/resources'
+import client from '@repo/api-resources'
+
 import type { ApiListResponse } from '../api/types'
 import type { RuleRecipe } from './types'
 

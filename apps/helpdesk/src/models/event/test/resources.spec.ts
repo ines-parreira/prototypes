@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import { OrderDirection } from 'models/api/types'
@@ -6,7 +7,6 @@ import {
     events as eventsFixtures,
     eventsServerMeta,
 } from '../../../fixtures/event'
-import client from '../../api/resources'
 import { fetchEvents } from '../resources'
 import { EventSortableProperties } from '../types'
 

@@ -9,7 +9,7 @@ jest.mock('@repo/utils', () => ({
 
 jest.mock('@gorgias/knowledge-service-client')
 
-jest.mock('utils/gorgiasAppsAuth', () => ({
+jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
     GorgiasAppAuthService: jest.fn(),
     authInterceptor: jest.fn(),
 }))

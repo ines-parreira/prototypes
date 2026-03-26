@@ -1,7 +1,6 @@
+import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
 import axios from 'axios'
 import memoize from 'memoize-one'
-
-import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
 import { AbilityRules, AppAbility, createAbility } from './ability'
 import { helpCenterAPI } from './client'

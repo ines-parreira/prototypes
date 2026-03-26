@@ -1,8 +1,8 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import _omit from 'lodash/omit'
 
 import { view } from 'fixtures/views'
-import client from 'models/api/resources'
 
 import {
     createView,

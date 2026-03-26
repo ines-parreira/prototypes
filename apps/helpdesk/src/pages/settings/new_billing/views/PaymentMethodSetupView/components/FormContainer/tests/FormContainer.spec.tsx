@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import type { SelectedPlans } from '@repo/billing'
 import {
     BILLING_BASE_PATH,
@@ -25,7 +26,6 @@ import {
     currentProductsUsage,
     products,
 } from 'fixtures/plans'
-import client from 'models/api/resources'
 import { ProductType } from 'models/billing/types'
 import { FormContainer } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/FormContainer/FormContainer'
 import type { BillingContactDetailResponse } from 'state/billing/types'

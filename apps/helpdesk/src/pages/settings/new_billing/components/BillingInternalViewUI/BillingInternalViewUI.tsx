@@ -3,11 +3,11 @@ import { Button } from '@gorgias/axiom'
 import type { BillingState } from 'models/billing/types'
 import { SubscriptionStatus } from 'models/billing/types'
 
-import ProductCardForCoupon from '../../components/ProductCardForCoupon'
-import UpcomingInvoiceCard from '../../components/UpcomingInvoiceCard'
 import { useDeactivateAccountWithSideEffects } from '../../hooks/useDeactivateAccountWithSideEffects'
 import { useReactivateAccountWithSideEffects } from '../../hooks/useReactivateAccountWithSideEffects'
 import { useSetIsVettedWithSideEffects } from '../../hooks/useSetIsVettedWithSideEffects'
+import ProductCardForCoupon from '../ProductCardForCoupon/ProductCardForCoupon'
+import UpcomingInvoiceCard from '../UpcomingInvoiceCard/UpcomingInvoiceCard'
 
 import css from './BillingInternalViewUI.less'
 

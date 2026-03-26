@@ -20,8 +20,6 @@ exports[`actions createJob() should call the job API with the view JSON in it's 
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -70,8 +68,6 @@ exports[`actions createJob() should call the job API with the view id in it's pa
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -129,8 +125,6 @@ exports[`actions deleteView() should update the active view with the same type w
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -215,8 +209,6 @@ exports[`actions fetchViewItems should fetch current page with cursor 1`] = `
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
         "x-gorgias-search-engine": "ES",
       },
       "maxBodyLength": -1,
@@ -294,8 +286,6 @@ exports[`actions fetchViewItems should fetch current page without cursor 2`] = `
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
         "x-gorgias-search-engine": "ES",
       },
       "maxBodyLength": -1,
@@ -373,8 +363,6 @@ exports[`actions fetchViewItems should fetch next page 2`] = `
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
         "x-gorgias-search-engine": "ES",
       },
       "maxBodyLength": -1,
@@ -452,8 +440,6 @@ exports[`actions fetchViewItems should fetch prev page 2`] = `
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
         "x-gorgias-search-engine": "ES",
       },
       "maxBodyLength": -1,
@@ -512,8 +498,6 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
         "x-gorgias-search-engine": "ES",
       },
       "maxBodyLength": -1,
@@ -572,8 +556,6 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
         "x-gorgias-search-engine": "ES",
       },
       "maxBodyLength": -1,
@@ -632,8 +614,6 @@ exports[`actions fetchViewItems should not dispatch FETCH_LIST_VIEW_SUCCESS beca
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
         "x-gorgias-search-engine": "ES",
       },
       "maxBodyLength": -1,
@@ -758,8 +738,6 @@ exports[`actions submitView() should create view when id is 0 1`] = `
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -824,8 +802,6 @@ exports[`actions submitView() should update view 1`] = `
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,

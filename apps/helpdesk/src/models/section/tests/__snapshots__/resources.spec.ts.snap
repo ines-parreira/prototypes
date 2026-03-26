@@ -32,8 +32,6 @@ exports[`section resources createSection should resolve with a new Section on su
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -131,8 +129,6 @@ exports[`section resources updateSection should resolve with an updated Section 
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,

@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import type { AxiosResponse } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
@@ -17,7 +18,6 @@ import {
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-import client from 'models/api/resources'
 import {
     IntegrationDataItemType,
     IntegrationType,

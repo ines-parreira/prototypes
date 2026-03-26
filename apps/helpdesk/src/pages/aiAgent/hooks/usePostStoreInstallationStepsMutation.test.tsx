@@ -16,7 +16,7 @@ import { mockPostStoreInstallationStep } from 'pages/aiAgent/fixtures//post-stor
 import { usePostStoreInstallationStepsMutation } from './usePostStoreInstallationStepsMutation'
 
 // Mock the auth interceptor to prevent auth requests
-jest.mock('utils/gorgiasAppsAuth', () => ({
+jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
     __esModule: true,
     default: (config: any) => {
         // Add a dummy token to bypass auth

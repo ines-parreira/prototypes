@@ -1,4 +1,5 @@
-import client from 'models/api/resources'
+import client from '@repo/api-resources'
+
 import type { Job, JobRequestPayload } from 'models/job/types'
 
 export const JOBS_PATH = '/api/jobs/'

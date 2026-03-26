@@ -1,3 +1,4 @@
+import { createClient } from '@repo/api-resources'
 import type {
     AxiosInstance,
     AxiosRequestConfig,
@@ -16,7 +17,6 @@ import type {
     PollingConfig,
     Refund,
 } from 'constants/integrations/types/shopify'
-import { createClient } from 'models/api/resources'
 import type {
     ApiListResponseCursorPagination,
     ApiListResponseLegacyPagination,

@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import {
@@ -5,7 +6,6 @@ import {
     bigCommerceCalculateOrderRefundDataResponseApiFixture,
     bigCommerceCustomerFixture,
 } from 'fixtures/bigcommerce'
-import client from 'models/api/resources'
 import {
     getBigCommerceAvailablePaymentOptionsData,
     getBigCommerceOrderRefundData,

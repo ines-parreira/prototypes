@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import client from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Call } from '@twilio/voice-sdk'
 import type { AxiosError } from 'axios'
@@ -18,7 +19,6 @@ import {
     sendTwilioSocketEvent,
 } from 'hooks/integrations/phone/twilioCall.utils'
 import { useCallMessageListener } from 'hooks/integrations/phone/useCallMessageListener'
-import client from 'models/api/resources'
 import { TwilioMessageType } from 'models/voiceCall/twilioMessageTypes'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import {

@@ -1,9 +1,11 @@
+import 'tests/mockGorgiasAppsAuth'
+
+import authClient from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import type { CreatePlaygroundBody } from 'models/aiAgentPlayground/types'
 import { customToneOfVoicePreviewFixture } from 'pages/aiAgent/fixtures/customToneOfVoicePreview.fixture'
 
-import authClient from '../../../../models/api/resources'
 import {
     apiClient,
     createBaseUrl,

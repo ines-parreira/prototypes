@@ -1,5 +1,6 @@
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { render, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 
 import { discountCodeResult } from 'fixtures/discountCodes'
 import { integrationsState } from 'fixtures/integrations'
-import client from 'models/api/resources'
 
 import DiscountCodeResults from '../DiscountCodeResults'
 

@@ -13,8 +13,6 @@ exports[`event resources fetchEvents should format option value to snake_case 1`
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -66,8 +64,6 @@ exports[`event resources fetchEvents should resolve with an Event list on succes
     },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "X-CSRF-Token": "abcd",
-      "X-Gorgias-User-Client": "web",
     },
     "maxBodyLength": -1,
     "maxContentLength": -1,

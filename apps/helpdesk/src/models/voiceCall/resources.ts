@@ -1,6 +1,7 @@
+import client from '@repo/api-resources'
+
 import { searchVoiceCalls as apiSearchVoiceCalls } from '@gorgias/helpdesk-client'
 
-import client from 'models/api/resources'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 import type {

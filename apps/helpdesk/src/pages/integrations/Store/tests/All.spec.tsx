@@ -1,5 +1,6 @@
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -9,7 +10,6 @@ import thunk from 'redux-thunk'
 
 import { INTEGRATION_TYPE_CONFIG } from 'config'
 import { dummyAppListData } from 'fixtures/apps'
-import client from 'models/api/resources'
 import type { HelpdeskPlan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import { IntegrationType } from 'models/integration/constants'

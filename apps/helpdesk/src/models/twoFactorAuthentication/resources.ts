@@ -1,4 +1,5 @@
-import client from '../api/resources'
+import client from '@repo/api-resources'
+
 import type { AuthenticatorData, RecoveryCode } from './types'
 
 export const fetchAuthenticatorData = async (

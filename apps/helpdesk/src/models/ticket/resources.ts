@@ -1,8 +1,8 @@
+import client from '@repo/api-resources'
 import { stringify } from 'qs'
 
 import { searchTickets as apiSearchTickets } from '@gorgias/helpdesk-client'
 
-import client from 'models/api/resources'
 import type {
     ApiListResponseCursorPagination,
     ApiPaginationParams,

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -11,7 +12,6 @@ import { SearchType } from '@gorgias/helpdesk-queries'
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
 import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
-import client from 'models/api/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import useSearch from '../useSearch'

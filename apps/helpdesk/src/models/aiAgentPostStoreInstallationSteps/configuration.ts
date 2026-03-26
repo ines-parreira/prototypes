@@ -1,7 +1,6 @@
+import gorgiasAppsAuthInterceptor from '@repo/api-resources/gorgiasAppsAuth'
 import { isProduction, isStaging } from '@repo/utils'
 import axios from 'axios'
-
-import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
 import type {
     CreatePostStoreInstallationStepPayload,

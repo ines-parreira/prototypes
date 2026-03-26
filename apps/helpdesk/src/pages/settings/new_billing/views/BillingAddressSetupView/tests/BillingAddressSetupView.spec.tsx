@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
@@ -9,7 +10,6 @@ import MockAdapter from 'axios-mock-adapter'
 import { act } from 'react-dom/test-utils'
 
 import { billingContact } from 'fixtures/resources'
-import client from 'models/api/resources'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { BillingAddressSetupView } from '../BillingAddressSetupView'

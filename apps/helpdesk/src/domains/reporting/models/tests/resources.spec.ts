@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { reportError } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
@@ -23,7 +24,6 @@ import type {
     ReportingResponse,
 } from 'domains/reporting/models/types'
 import { EnrichmentFields } from 'domains/reporting/models/types'
-import client from 'models/api/resources'
 
 jest.mock('@repo/logging')
 const reportErrorMock = assumeMock(reportError)

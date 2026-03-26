@@ -41,7 +41,7 @@ jest.mocked(notify).mockImplementation(mockNotify)
 
 // Mock tracking services
 jest.mock('@repo/logging')
-jest.mock('utils/gorgiasAppsAuth')
+jest.mock('@repo/api-resources/gorgiasAppsAuth')
 
 // Mock aiAgent queries
 jest.mock('models/aiAgent/queries')

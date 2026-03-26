@@ -1,0 +1,48 @@
+{
+    "name": "@repo/api-resources",
+    "version": "1.0.0",
+    "description": "Shared API resources package",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts",
+        "./gorgiasAppsAuth": "./src/gorgiasAppsAuth.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "lint:unused": "knip --directory ../.. --workspace @repo/api-resources --no-progress",
+        "test": "vitest run --configLoader=runner",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage --silent",
+        "test:watch": "vitest watch --configLoader=runner",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
+        "@repo/utils": "workspace:*",
+        "axios": "^1.10.0",
+        "axios-rate-limit": "^1.4.0",
+        "react": "catalog:react",
+        "react-dom": "catalog:react"
+    },
+    "devDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
+        "@repo/config": "workspace:*",
+        "@repo/utils": "workspace:*",
+        "@testing-library/jest-dom": "catalog:test",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@types/react": "catalog:react",
+        "@types/react-dom": "catalog:react",
+        "@vitest/coverage-v8": "catalog:test",
+        "axios": "^1.10.0",
+        "axios-mock-adapter": "^1.22.0",
+        "axios-rate-limit": "^1.4.0",
+        "mockdate": "^3.0.5",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "react": "catalog:react",
+        "react-dom": "catalog:react",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}

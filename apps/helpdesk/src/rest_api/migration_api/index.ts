@@ -1,9 +1,8 @@
+import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
 import { isProduction, isStaging } from '@repo/utils'
 import memoize from 'memoize-one'
 import type { Document } from 'openapi-client-axios'
 import OpenAPIClientAxios from 'openapi-client-axios'
-
-import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
 import type { Client } from './client.generated'
 import OpenAPIDoc from './migration.openapi.json'

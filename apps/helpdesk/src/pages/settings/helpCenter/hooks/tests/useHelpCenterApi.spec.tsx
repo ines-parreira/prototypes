@@ -14,7 +14,7 @@ import {
     useHelpCenterApi,
 } from '../useHelpCenterApi'
 
-jest.mock('utils/gorgiasAppsAuth', () => {
+jest.mock('@repo/api-resources/gorgiasAppsAuth', () => {
     return {
         GorgiasAppAuthService: jest.fn().mockImplementation(() => ({
             accessToken: 'mock-token',

@@ -1,4 +1,5 @@
-import client from '../../../../../models/api/resources'
+import client from '@repo/api-resources'
+
 import type { ApiListResponseLegacyPagination } from '../../../../../models/api/types'
 import type { EmailDomain } from '../../../../../models/integration/types'
 

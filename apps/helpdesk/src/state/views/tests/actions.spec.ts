@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -14,7 +15,6 @@ import { baseView, getExpirationTimeForCount } from 'config/views'
 import { customer } from 'fixtures/customer'
 import { mockSearchRank } from 'fixtures/searchRank'
 import { ticket } from 'fixtures/ticket'
-import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
 import {
     searchCustomers,

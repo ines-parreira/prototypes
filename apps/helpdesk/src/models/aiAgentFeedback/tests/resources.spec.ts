@@ -1,3 +1,4 @@
+import gorgiasAppsAuthInterceptor from '@repo/api-resources/gorgiasAppsAuth'
 import { assumeMock } from '@repo/testing'
 import type { InternalAxiosRequestConfig } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
@@ -8,14 +9,13 @@ import {
     getAIAgentTicketMessagesFeedback,
     submitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/resources'
-import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
 import { ReportIssueOption } from '../constants'
 import type { DeleteMessageFeedback, SubmitMessageFeedback } from '../types'
 
 const mockedServer = new MockAdapter(apiClient)
 
-jest.mock('utils/gorgiasAppsAuth', () => ({
+jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
     __esModule: true,
     default: jest.fn(),
 }))

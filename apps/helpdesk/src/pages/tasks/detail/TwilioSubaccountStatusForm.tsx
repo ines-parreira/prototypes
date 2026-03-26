@@ -1,13 +1,13 @@
 import type { FormEvent } from 'react'
 import React, { useEffect, useState } from 'react'
 
+import client from '@repo/api-resources'
 import { useAsyncFn } from '@repo/hooks'
 import { Container, Form, FormGroup, Input, Label } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import client from 'models/api/resources'
 import PageHeader from 'pages/common/components/PageHeader'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import { notify } from 'state/notifications/actions'

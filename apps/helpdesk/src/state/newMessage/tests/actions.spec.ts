@@ -28,7 +28,7 @@ import {
 } from 'fixtures/macro'
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { ticket } from 'fixtures/ticket'
-import client from 'models/api/resources'
+import client from '@repo/api-resources'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import type { MacroAction } from 'models/macroAction/types'
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'

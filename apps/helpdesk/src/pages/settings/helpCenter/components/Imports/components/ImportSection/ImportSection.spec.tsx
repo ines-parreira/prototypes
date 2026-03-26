@@ -91,7 +91,7 @@ jest.mock('pages/settings/helpCenter/hooks/useCurrentHelpCenter')
     getSingleHelpCenterResponseFixture,
 )
 
-jest.mock('utils/gorgiasAppsAuth', () => ({
+jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
     GorgiasAppAuthService: jest.fn().mockImplementation(() => ({
         getAccessToken: jest.fn().mockResolvedValue('Bearer mock-token'),
     })),

@@ -1,8 +1,7 @@
+import { createClient } from '@repo/api-resources'
 import { reportError } from '@repo/logging'
 import type { AxiosInstance, CancelTokenSource } from 'axios'
 import axios, { AxiosError, isAxiosError, isCancel } from 'axios'
-
-import { createClient } from 'models/api/resources'
 
 export const PREDICTION_REQUEST_TIMEOUT = 2000
 export const PHRASE_PREDICTION_ERROR_TAG_NAME = 'phrase_prediction'

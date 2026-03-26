@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import { AxiosError, CanceledError } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
@@ -7,7 +8,6 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import client from 'models/api/resources'
 import { searchCustomers } from 'models/customer/resources'
 import type { Customer } from 'models/customer/types'
 import * as actions from 'state/infobar/actions'

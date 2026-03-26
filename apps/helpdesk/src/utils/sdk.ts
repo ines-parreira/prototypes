@@ -1,3 +1,4 @@
+import { gorgiasAppsAuthInterceptor } from '@repo/api-resources'
 import { isProduction, isStaging } from '@repo/utils'
 
 import * as convert from '@gorgias/convert-client'
@@ -6,7 +7,6 @@ import * as helpdesk from '@gorgias/helpdesk-client'
 import * as knowledgeService from '@gorgias/knowledge-service-client'
 
 import { getGorgiasRevenueAddonApiBaseUrl } from 'rest_api/revenue_addon_api/client'
-import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
 export function initSDKs() {
     const KNOWLEDGE_SERVICE_BASE_URL = isProduction()

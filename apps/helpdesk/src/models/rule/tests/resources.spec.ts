@@ -1,7 +1,7 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import { rules as rulesFixtures } from '../../../fixtures/rule'
-import client from '../../api/resources'
 import {
     activateRule,
     createRule,

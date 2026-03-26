@@ -1,8 +1,8 @@
+import client from '@repo/api-resources'
 import { screen } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { MemoryRouter } from 'react-router-dom'
 
-import client from 'models/api/resources'
 import {
     payingWithCreditCard,
     payWithShopify,

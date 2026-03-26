@@ -1,5 +1,6 @@
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { render } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -10,8 +11,6 @@ import thunk from 'redux-thunk'
 import { dummyErrorLogList } from 'fixtures/appErrors'
 import { dummyAppDetail } from 'fixtures/apps'
 import AppAdvanced from 'pages/integrations/Advanced/AppAdvanced'
-
-import client from '../../../../models/api/resources'
 
 const mockStore = configureMockStore([thunk])
 const store = mockStore({ currentAccount: fromJS({ domain: '20-1 rpz' }) })

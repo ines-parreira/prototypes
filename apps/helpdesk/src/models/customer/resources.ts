@@ -1,8 +1,8 @@
+import client from '@repo/api-resources'
 import type { CancelToken } from 'axios'
 
 import { searchCustomers as apiSearchCustomers } from '@gorgias/helpdesk-client'
 
-import client from 'models/api/resources'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 import type { Customer } from 'models/customer/types'
 import type {

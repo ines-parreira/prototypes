@@ -1,5 +1,6 @@
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -11,7 +12,6 @@ import { MemoryRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 
 import { convertBundle } from 'fixtures/convertBundle'
-import client from 'models/api/resources'
 import { useListBundles } from 'models/convert/bundle/queries'
 import { BundleInstallationMethodResponse } from 'models/convert/bundle/types'
 import * as useIsManualInstallationMethodRequired from 'pages/convert/common/hooks/useIsManualInstallationMethodRequired'

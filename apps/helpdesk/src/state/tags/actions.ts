@@ -1,10 +1,10 @@
+import client from '@repo/api-resources'
 import type { AxiosError, AxiosRequestConfig } from 'axios'
 import { isCancel } from 'axios'
 import type { List } from 'immutable'
 
 import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
 
-import client from 'models/api/resources'
 import { fetchTags as fetchTagsResources } from 'models/tag/resources'
 import type { OrderByOrderDir, TagDraft } from 'models/tag/types'
 import GorgiasApi from 'services/gorgiasApi'

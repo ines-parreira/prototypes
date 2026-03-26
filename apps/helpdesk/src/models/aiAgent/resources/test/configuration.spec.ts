@@ -1,8 +1,10 @@
+import 'tests/mockGorgiasAppsAuth'
+
+import authClient from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import type { HandoverConfigurationResponse } from 'models/aiAgent/types'
 import { AiAgentOnboardingState } from 'models/aiAgent/types'
-import authClient from 'models/api/resources'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { AiAgentChannel } from 'pages/aiAgent/constants'
 import { getAccountConfigurationWithHttpIntegrationFixture } from 'pages/aiAgent/fixtures/accountConfiguration.fixture'

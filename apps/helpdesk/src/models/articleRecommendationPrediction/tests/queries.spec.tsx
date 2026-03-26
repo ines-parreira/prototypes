@@ -1,5 +1,7 @@
 import React from 'react'
 
+import 'tests/mockGorgiasAppsAuth'
+
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, waitFor } from '@testing-library/react'

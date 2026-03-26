@@ -1,5 +1,6 @@
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -9,7 +10,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
-import client from 'models/api/resources'
 import {
     useGetHTTPEvent,
     useGetHTTPEvents,

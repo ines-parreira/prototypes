@@ -1,7 +1,7 @@
+import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 
 import { defaultMergeTicketsView } from 'config/views'
-import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
 import { TicketSearchSortableProperties } from 'models/search/types'
 import { searchTickets as modelSearchTickets } from 'models/ticket/resources'

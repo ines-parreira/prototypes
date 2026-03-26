@@ -1,4 +1,5 @@
-import client from '../api/resources'
+import client from '@repo/api-resources'
+
 import type { LanguageDetectResult } from './types'
 
 export const detectLanguage = async (text: string): Promise<string> => {

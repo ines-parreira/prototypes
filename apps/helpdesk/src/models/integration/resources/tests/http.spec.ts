@@ -1,7 +1,7 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import { apiListCursorPaginationResponse } from 'fixtures/axiosResponse'
-import client from 'models/api/resources'
 
 import { getHTTPEvent, getHTTPEvents } from '../http'
 

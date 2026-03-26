@@ -1,6 +1,7 @@
 import type { ChangeEvent } from 'react'
 import { useCallback, useMemo, useState } from 'react'
 
+import client from '@repo/api-resources'
 import { useAsyncFn, useDebouncedEffect } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classnames from 'classnames'
@@ -15,7 +16,6 @@ import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { useModalManager } from 'hooks/useModalManager'
-import client from 'models/api/resources'
 import {
     DISCOUNT_MODAL_NAME,
     DISCOUNTS_PER_PAGE,

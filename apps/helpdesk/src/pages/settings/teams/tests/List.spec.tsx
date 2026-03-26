@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
@@ -5,7 +6,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { teams } from 'fixtures/teams'
-import client from 'models/api/resources'
 import { renderWithRouter } from 'utils/testing'
 
 import TeamList from '../List'

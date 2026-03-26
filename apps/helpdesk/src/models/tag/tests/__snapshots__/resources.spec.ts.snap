@@ -33,8 +33,6 @@ exports[`tag resources createTag should resolve with a new Tag on success 2`] = 
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -103,8 +101,6 @@ exports[`tag resources fetchTags should resolve with a Tag list on success 1`] =
     },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "X-CSRF-Token": "abcd",
-      "X-Gorgias-User-Client": "web",
     },
     "maxBodyLength": -1,
     "maxContentLength": -1,
@@ -221,8 +217,6 @@ exports[`tag resources updateTag should resolve with the updated tag on success 
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,

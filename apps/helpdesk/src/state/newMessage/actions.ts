@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
+import client from '@repo/api-resources'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
@@ -32,7 +33,6 @@ import { UNSUPPORTED_HYPERLINKS_CHANNELS_FOR_VIDEOS } from 'config/integrations/
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
 import { ShopifyProductCardContentType } from 'constants/integrations/shopify'
 import { isCustomFieldValueEmpty } from 'custom-fields/helpers/isCustomFieldValueEmpty'
-import client from 'models/api/resources'
 import type { Customer } from 'models/customer/types'
 import type { DiscountCode } from 'models/discountCodes/types'
 import type { MacroAction } from 'models/macroAction/types'

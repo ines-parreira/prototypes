@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
@@ -13,7 +14,6 @@ import type { ListSatisfactionSurveys200, Tag } from '@gorgias/helpdesk-types'
 
 import { agents } from 'fixtures/agents'
 import { teams } from 'fixtures/teams'
-import client from 'models/api/resources'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     ecommerceStoreFixture,

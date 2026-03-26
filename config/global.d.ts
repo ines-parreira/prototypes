@@ -11,6 +11,8 @@ declare global {
         DEVELOPMENT: boolean
         PRODUCTION: boolean
         STAGING: boolean
+        CSRF_TOKEN: string
+        GORGIAS_RELEASE: string
         IMAGE_PROXY_SIGN_KEY: string | null | undefined
         IMAGE_PROXY_URL: string
         GORGIAS_STATE: GorgiasStateShared

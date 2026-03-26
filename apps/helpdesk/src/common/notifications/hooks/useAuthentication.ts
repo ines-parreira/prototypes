@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import client from 'models/api/resources'
+import client from '@repo/api-resources'
 
 export default function useAuthentication() {
     const [{ userToken, apiKey }, setAuthentication] = useState({

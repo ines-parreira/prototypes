@@ -1,7 +1,6 @@
+import gorgiasAppsAuthInterceptor from '@repo/api-resources/gorgiasAppsAuth'
 import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
-
-import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
 import {
     apiClient,
@@ -9,7 +8,7 @@ import {
     startSalesTrial,
 } from '../configuration'
 
-jest.mock('utils/gorgiasAppsAuth', () => ({
+jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
     __esModule: true,
     default: jest.fn(),
 }))

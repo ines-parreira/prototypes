@@ -1,7 +1,7 @@
 import { memo } from 'react'
 
 import { useSalesCoupons } from 'models/billing/queries'
-import { BillingInternalViewUI } from 'pages/settings/new_billing/components/BillingInternalViewUI'
+import { BillingInternalViewUI } from 'pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
 
 export default memo(BillingInternalView)

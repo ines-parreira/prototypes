@@ -1,5 +1,6 @@
+import client from '@repo/api-resources'
+
 import type { GenericAttachment } from 'common/types'
-import client from 'models/api/resources'
 
 /**
  * Upload file action meant to be used by another action

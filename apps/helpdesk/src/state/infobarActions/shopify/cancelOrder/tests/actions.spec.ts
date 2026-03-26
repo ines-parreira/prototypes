@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -12,7 +13,6 @@ import {
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
 } from '../../../../../fixtures/shopify'
-import client from '../../../../../models/api/resources'
 import type { GorgiasAction, StoreDispatch } from '../../../../types'
 import * as actions from '../../cancelOrder/actions'
 import { initialState } from '../reducers'

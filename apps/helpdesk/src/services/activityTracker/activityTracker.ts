@@ -1,10 +1,9 @@
+import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
 import { reportError } from '@repo/logging'
 import { isDevelopment } from '@repo/utils'
 import type { AxiosError } from 'axios'
 
 import BrowserEventTracker from '@gorgias/event-tracker-browser'
-
-import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
 import {
     ActivityEvents,

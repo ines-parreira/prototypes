@@ -1,6 +1,5 @@
+import client from '@repo/api-resources'
 import { stringify } from 'qs'
-
-import client from 'models/api/resources'
 
 import type { StoreMapping } from './types'
 

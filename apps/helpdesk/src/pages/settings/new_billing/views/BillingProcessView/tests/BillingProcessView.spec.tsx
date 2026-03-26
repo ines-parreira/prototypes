@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -22,7 +23,6 @@ import {
     VOICE_PRODUCT_ID,
     voicePlan1,
 } from 'fixtures/plans'
-import client from 'models/api/resources'
 import { ProductType } from 'models/billing/types'
 import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'

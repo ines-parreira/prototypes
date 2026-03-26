@@ -1,6 +1,7 @@
 import type { FormEvent } from 'react'
 import React, { useState } from 'react'
 
+import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
@@ -9,7 +10,6 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Button, Container, Form, FormGroup, Input, Label } from 'reactstrap'
 
-import client from 'models/api/resources'
 import PageHeader from 'pages/common/components/PageHeader'
 import PhoneNumberInput from 'pages/common/forms/PhoneNumberInput/PhoneNumberInput'
 import SelectField from 'pages/common/forms/SelectField/SelectField'

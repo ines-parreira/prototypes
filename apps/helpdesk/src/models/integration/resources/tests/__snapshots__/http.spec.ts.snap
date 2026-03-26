@@ -13,8 +13,6 @@ exports[`HTTP event resources getHTTPEvent should resolve with an existing Custo
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -62,8 +60,6 @@ exports[`HTTP event resources getHTTPEvents should resolve with a list of http e
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,

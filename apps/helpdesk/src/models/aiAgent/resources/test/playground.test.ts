@@ -1,6 +1,7 @@
-import MockAdapter from 'axios-mock-adapter'
+import 'tests/mockGorgiasAppsAuth'
 
-import authClient from 'models/api/resources'
+import authClient from '@repo/api-resources'
+import MockAdapter from 'axios-mock-adapter'
 
 import { apiClient as aiAgentApiClient } from '../message-processing'
 import { createTestSession, submitTestSessionMessage } from '../playground'

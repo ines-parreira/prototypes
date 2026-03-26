@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { userEvent } from '@repo/testing'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -16,7 +17,6 @@ import {
     bigCommerceOrderFixture,
 } from 'fixtures/bigcommerce'
 import { integrationsState } from 'fixtures/integrations'
-import client from 'models/api/resources'
 import * as bigcommerceApi from 'models/integration/resources/bigcommerce'
 import type {
     BigCommerceOrder,

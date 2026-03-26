@@ -17,7 +17,7 @@ import { renderWithRouter } from 'utils/testing'
 import VoiceIntegrationVoicemail from '../VoiceIntegrationVoicemail'
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-jest.mock('models/api/resources')
+jest.mock('@repo/api-resources')
 
 const ivrIntegration: PhoneIntegration = {
     id: 1,

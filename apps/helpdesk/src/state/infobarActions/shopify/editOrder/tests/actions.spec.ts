@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -11,7 +12,6 @@ import {
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
 } from '../../../../../fixtures/shopify'
-import client from '../../../../../models/api/resources'
 import { IntegrationType } from '../../../../../models/integration/types'
 import type { StoreDispatch } from '../../../../types'
 import * as actions from '../actions'

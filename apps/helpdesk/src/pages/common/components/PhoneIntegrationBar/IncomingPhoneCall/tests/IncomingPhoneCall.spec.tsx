@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { act, cleanup, fireEvent, screen } from '@testing-library/react'
@@ -15,7 +16,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import goToTicket from 'common/utils/goToTicket'
-import client from 'models/api/resources'
 import * as hooks from 'pages/common/components/PhoneIntegrationBar/hooks'
 import useMicrophonePermissions from 'pages/integrations/integration/components/voice/useMicrophonePermissions'
 import type { RootState, StoreDispatch } from 'state/types'

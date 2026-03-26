@@ -1,7 +1,8 @@
-import { createClient } from 'models/api/resources'
+import { createClient } from '@repo/api-resources'
+import gorgiasAppsAuthInterceptor from '@repo/api-resources/gorgiasAppsAuth'
+
 import type { ApiPaginationParams } from 'models/api/types'
 import type { IntegrationDataItem } from 'models/integration/types/misc'
-import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
 
 import type {
     AdditionalInfoKey,

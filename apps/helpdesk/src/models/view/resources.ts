@@ -1,8 +1,8 @@
+import client from '@repo/api-resources'
 import _omit from 'lodash/omit'
 
 import type { CursorPaginationMeta } from '@gorgias/helpdesk-queries'
 
-import client from 'models/api/resources'
 import type {
     ApiListResponseCursorPagination,
     ApiPaginationParams,

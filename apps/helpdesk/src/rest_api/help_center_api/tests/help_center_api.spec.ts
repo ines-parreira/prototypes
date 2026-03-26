@@ -8,7 +8,7 @@ import {
 
 const MOCK_TOKEN = 'mock-token'
 
-jest.mock('utils/gorgiasAppsAuth', () => {
+jest.mock('@repo/api-resources/gorgiasAppsAuth', () => {
     return {
         GorgiasAppAuthService: jest.fn().mockImplementation(() => ({
             accessToken: MOCK_TOKEN,

@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import { renderHook } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -5,7 +6,6 @@ import { fromJS } from 'immutable'
 import { account } from 'fixtures/account'
 import { user } from 'fixtures/users'
 import useAppSelector from 'hooks/useAppSelector'
-import client from 'models/api/resources'
 import { TrialType } from 'pages/aiAgent/components/ShoppingAssistant/types/ShoppingAssistant'
 
 import {
@@ -16,7 +16,7 @@ import {
 jest.mock('hooks/useAppSelector', () => jest.fn())
 const mockUseAppSelector = assumeMock(useAppSelector)
 
-jest.mock('models/api/resources', () => ({
+jest.mock('@repo/api-resources', () => ({
     post: jest.fn(),
 }))
 

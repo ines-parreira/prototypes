@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { flushPromises } from '@repo/testing'
 import {
     act,
@@ -17,7 +18,6 @@ import {
     events as eventsFixtures,
     eventsServerMeta as eventsMetaFixtures,
 } from 'fixtures/event'
-import client from 'models/api/resources'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { fetchEvents } from 'models/event/resources'
 import type { Event } from 'models/event/types'

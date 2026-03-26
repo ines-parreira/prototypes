@@ -1,6 +1,6 @@
+import client from '@repo/api-resources'
 import _pick from 'lodash/pick'
 
-import client from '../api/resources'
 import type { ApiListResponseLegacyPagination } from '../api/types'
 import type { Section, SectionDraft } from './types'
 

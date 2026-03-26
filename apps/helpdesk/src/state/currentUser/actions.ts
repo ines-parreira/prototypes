@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
+import client from '@repo/api-resources'
 import { history } from '@repo/routing'
 import {
     DateAndTimeFormatting,
@@ -18,7 +19,6 @@ import type {
     UserSetting,
 } from 'config/types/user'
 import { UserRole, UserSettingType } from 'config/types/user'
-import client from 'models/api/resources'
 import { check2FARequired } from 'pages/settings/yourProfile/twoFactorAuthentication/utils'
 import { fetchChats } from 'state/chats/actions'
 import * as currentAccountSelectors from 'state/currentAccount/selectors'

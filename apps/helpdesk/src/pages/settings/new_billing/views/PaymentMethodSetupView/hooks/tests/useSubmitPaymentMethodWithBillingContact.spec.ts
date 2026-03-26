@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { reportError } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { useStripe } from '@stripe/react-stripe-js'
@@ -7,7 +8,6 @@ import MockAdapter from 'axios-mock-adapter'
 import { confirmBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import client from 'models/api/resources'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
 
 import { useSubmitPaymentMethodWithBillingContact } from '../useSubmitPaymentMethodWithBillingContact'

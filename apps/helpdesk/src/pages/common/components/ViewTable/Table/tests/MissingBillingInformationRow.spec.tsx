@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import { AddressElement, Elements, useElements } from '@stripe/react-stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
@@ -10,7 +11,6 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { UserRole } from 'config/types/user'
 import { billingContact } from 'fixtures/resources'
-import client from 'models/api/resources'
 import { PaymentMethodType } from 'state/billing/types'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

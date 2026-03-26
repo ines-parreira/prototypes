@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
+import client from '@repo/api-resources'
 import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
@@ -31,7 +32,6 @@ import {
 import goToTicket from 'common/utils/goToTicket'
 import { DEFAULT_ACTIONS } from 'config'
 import type { CustomFields, CustomFieldState } from 'custom-fields/types'
-import client from 'models/api/resources'
 import { getCustomer } from 'models/customer/resources'
 import type {
     EcommerceStore,

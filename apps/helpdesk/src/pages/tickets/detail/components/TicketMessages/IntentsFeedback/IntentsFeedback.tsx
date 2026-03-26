@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 
+import client from '@repo/api-resources'
 import { useAsyncFn } from '@repo/hooks'
 import type { AxiosError } from 'axios'
 import _difference from 'lodash/difference'
@@ -7,7 +8,6 @@ import _isEqual from 'lodash/isEqual'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import client from 'models/api/resources'
 import type { TicketMessage, TicketMessageIntent } from 'models/ticket/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'

@@ -1,5 +1,6 @@
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -24,7 +25,6 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import client from 'models/api/resources'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import TicketFields from '../TicketFields'

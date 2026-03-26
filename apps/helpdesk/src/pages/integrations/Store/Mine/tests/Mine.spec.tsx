@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -6,7 +7,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { dummyAppListData as appData } from 'fixtures/apps'
-import client from 'models/api/resources'
 import { IntegrationType } from 'models/integration/types'
 import { renderWithRouter } from 'utils/testing'
 

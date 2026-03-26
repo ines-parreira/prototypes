@@ -1,7 +1,8 @@
+import client from '@repo/api-resources'
+
 import type { User, UserDraft } from 'config/types/user'
 import { USER_ROLES } from 'config/user'
 import type { FetchAgentsOptions } from 'models/agents/types'
-import client from 'models/api/resources'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 

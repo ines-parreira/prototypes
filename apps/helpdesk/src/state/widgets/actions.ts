@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 import type { Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
@@ -5,7 +6,6 @@ import _last from 'lodash/last'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
 
-import client from 'models/api/resources'
 import type { CustomerEcommerceData } from 'models/customerEcommerceData/types'
 import { fetchWidgets as fetchWidgetsRequest } from 'models/widget/resources'
 import type {

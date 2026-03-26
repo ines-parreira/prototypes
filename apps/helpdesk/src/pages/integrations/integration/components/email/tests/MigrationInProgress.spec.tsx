@@ -1,11 +1,11 @@
 import React from 'react'
 
+import client from '@repo/api-resources'
 import { cleanup, render, screen } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import client from 'models/api/resources'
 import type { EmailMigrationInboundVerification } from 'models/integration/types'
 import { mockStore } from 'utils/testing'
 

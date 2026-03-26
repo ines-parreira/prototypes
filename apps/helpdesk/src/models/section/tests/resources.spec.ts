@@ -1,8 +1,8 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import _omit from 'lodash/omit'
 
 import { section } from '../../../fixtures/section'
-import client from '../../api/resources'
 import {
     createSection,
     deleteSection,

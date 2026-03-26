@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { BILLING_PAYMENT_PATH } from '@repo/billing'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -8,7 +9,6 @@ import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { act } from 'react-dom/test-utils'
 
-import client from 'models/api/resources'
 import { FormContainer } from 'pages/settings/new_billing/views/BillingAddressSetupView/components/FormContainer'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 

@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import client from '@repo/api-resources'
 import { useFlag } from '@repo/feature-flags'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
 import { render } from '@testing-library/react'
@@ -10,7 +11,6 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import client from 'models/api/resources'
 import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
 
 import TicketHeaderWrapper from '../TicketHeaderWrapper'

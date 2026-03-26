@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -11,7 +12,6 @@ import type { Client } from 'rest_api/gorgias_chat_protected_api/client.generate
 import type { InstallationStatus } from 'rest_api/gorgias_chat_protected_api/types'
 import * as constants from 'state/integrations/constants'
 
-import client from '../../../models/api/resources'
 import type { Integration } from '../../../models/integration/types'
 import {
     GorgiasChatStatusEnum,

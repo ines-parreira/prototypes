@@ -30,7 +30,7 @@ import { renderWithRouter } from 'utils/testing'
 import { ToneOfVoiceStep } from './ToneOfVoiceStep'
 
 // Mock the auth interceptor to prevent auth requests
-jest.mock('utils/gorgiasAppsAuth', () => ({
+jest.mock('@repo/api-resources/gorgiasAppsAuth', () => ({
     __esModule: true,
     default: (config: InternalAxiosRequestConfig) => {
         config.headers = {

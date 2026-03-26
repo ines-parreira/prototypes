@@ -1,5 +1,6 @@
 import React from 'react'
 
+import client from '@repo/api-resources'
 import {
     cleanup,
     fireEvent,
@@ -10,7 +11,6 @@ import {
 import MockAdapter from 'axios-mock-adapter'
 import { Provider } from 'react-redux'
 
-import client from 'models/api/resources'
 import { EmailMigrationInboundVerificationStatus } from 'models/integration/types'
 import { UPDATE_EMAIL_MIGRATION_VERIFICATION_STATUS } from 'state/integrations/constants'
 import { mockStore } from 'utils/testing'

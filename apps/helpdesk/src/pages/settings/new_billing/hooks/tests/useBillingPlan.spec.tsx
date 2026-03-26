@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { DATE_FORMAT } from '@repo/billing'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -29,7 +30,6 @@ import {
     VOICE_PRODUCT_ID,
     voicePlan0,
 } from 'fixtures/plans'
-import client from 'models/api/resources'
 import type {
     AutomatePlan,
     ConvertPlan,
@@ -57,7 +57,7 @@ const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,
 ])
 
-jest.mock('models/api/resources', () => ({
+jest.mock('@repo/api-resources', () => ({
     get: jest.fn(),
     put: jest.fn(() => {
         return {

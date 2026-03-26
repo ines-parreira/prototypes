@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
@@ -7,7 +8,6 @@ import {
     shopifyProductFixture,
     shopifyVariantFixture,
 } from 'fixtures/shopify'
-import client from 'models/api/resources'
 import { CampaignStatus } from 'pages/convert/campaigns/types/enums/CampaignStatus.enum'
 
 import { CampaignConfigurationBuilder } from '../constructor'

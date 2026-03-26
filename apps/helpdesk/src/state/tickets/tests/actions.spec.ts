@@ -1,10 +1,10 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import client from '../../../models/api/resources'
 import { JobType } from '../../../models/job/types'
 import type { RootState, StoreDispatch } from '../../types'
 import * as actions from '../actions'

@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -6,7 +7,6 @@ import MockAdapter from 'axios-mock-adapter'
 import { MemoryRouter } from 'react-router-dom'
 
 import { billingContact } from 'fixtures/resources'
-import client from 'models/api/resources'
 import { BillingInformationSection } from 'pages/settings/new_billing/views/PaymentInformationView/components/BillingInformationSection'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 

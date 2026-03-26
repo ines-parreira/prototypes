@@ -1,6 +1,7 @@
+import client from '@repo/api-resources'
+
 import { searchTickets as helpdeskSearchTickets } from '@gorgias/helpdesk-client'
 
-import client from 'models/api/resources'
 import { SearchType } from 'models/search/types'
 
 import type {

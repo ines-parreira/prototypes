@@ -3,8 +3,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import MockDate from 'mockdate'
 
-import client from 'models/api/resources'
-
+import client from '../client'
 import { buildGorgiasAppsAuthInterceptor } from '../gorgiasAppsAuth'
 
 const TOKEN_EXAMPLE =
@@ -17,7 +16,7 @@ describe('gorgiasAppsAuth', () => {
 
     beforeEach(() => {
         const interceptor = buildGorgiasAppsAuthInterceptor()
-        // eslint-disable-next-line no-restricted-properties
+
         axiosClient = axios.create()
         axiosClient.interceptors.request.use(interceptor)
 
@@ -34,7 +33,7 @@ describe('gorgiasAppsAuth', () => {
         MockDate.reset()
     })
 
-    it('should pass access token to headers', async () => {
+    it('passes the access token in the request headers', async () => {
         await axiosClient.get('/test')
 
         expect(mockAppAPI.history.get.length).toBe(1)
@@ -43,7 +42,7 @@ describe('gorgiasAppsAuth', () => {
         })
     })
 
-    it('should renew token if it is expired', async () => {
+    it('renews the token when it is expired', async () => {
         await axiosClient.get('/test')
 
         MockDate.set(new Date(3000, 1, 1))
@@ -53,7 +52,7 @@ describe('gorgiasAppsAuth', () => {
         expect(mockGorgiasAPI.history.post.length).toBe(2)
     })
 
-    it('should make only 1 auth call in case of parallel requests', async () => {
+    it('makes a single auth call for parallel requests', async () => {
         await Promise.all([
             axiosClient.get('/test'),
             axiosClient.get('/test'),

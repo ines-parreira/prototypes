@@ -26,7 +26,7 @@ const chatIntegration = fromJS({
     id: '174',
 })
 
-jest.mock('models/api/resources')
+jest.mock('@repo/api-resources')
 
 jest.mock('pages/convert/bundles/hooks/useGetConvertBundle')
 const useGetConvertBundleMock = assumeMock(useGetConvertBundle)

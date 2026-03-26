@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import PushJS from 'push.js'
 import type { MockStoreEnhanced } from 'redux-mock-store'
@@ -5,7 +6,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import type { RecentChatTicket } from '../../../business/types/recentChats'
-import client from '../../../models/api/resources'
 import type { Ticket } from '../../../models/ticket/types'
 import browserNotification from '../../../services/browserNotification'
 import type { StoreDispatch } from '../../types'

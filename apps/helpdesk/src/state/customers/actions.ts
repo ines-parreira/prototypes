@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
 import type { List } from 'immutable'
@@ -9,7 +10,6 @@ import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { appQueryClient } from 'api/queryClient'
 import * as viewsConfig from 'config/views'
-import client from 'models/api/resources'
 import type { Customer, CustomerDraft } from 'models/customer/types'
 import { ViewType } from 'models/view/types'
 import { notify } from 'state/notifications/actions'

@@ -72,8 +72,6 @@ exports[`list whatsapp message template resources listWhatsAppMessageTemplates s
       },
       "headers": {
         "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,

@@ -1,6 +1,6 @@
+import client from '@repo/api-resources'
 import type { AxiosRequestConfig } from 'axios'
 
-import client from 'models/api/resources'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 

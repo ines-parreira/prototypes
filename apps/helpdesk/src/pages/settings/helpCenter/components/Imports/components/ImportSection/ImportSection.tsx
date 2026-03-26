@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useAsyncFn } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -21,7 +22,6 @@ import { useMigrationApi } from 'pages/settings/helpCenter/hooks/useMigrationApi
 import settingsCss from 'pages/settings/settings.less'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
 import { CSV_MIGRATION_PROVIDER_TYPE } from '../CsvColumnMatching/utils'
 import ImportArticlesModal from './components/ImportArticlesModal'

@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
@@ -10,7 +11,6 @@ import thunk from 'redux-thunk'
 import type { Tag } from '@gorgias/helpdesk-queries'
 import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
 
-import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
 import type { TagDraft } from 'models/tag/types'
 import { notify } from 'state/notifications/actions'

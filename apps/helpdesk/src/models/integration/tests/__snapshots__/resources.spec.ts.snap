@@ -110,8 +110,6 @@ exports[`integration resource fetchIntegrations should return the integrations 1
     },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "X-CSRF-Token": "abcd",
-      "X-Gorgias-User-Client": "web",
     },
     "maxBodyLength": -1,
     "maxContentLength": -1,

@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -7,7 +8,6 @@ import thunk from 'redux-thunk'
 
 import { applications as mockApplications } from 'fixtures/applications'
 import { dummyAppData } from 'fixtures/apps'
-import client from 'models/api/resources'
 import type { Integration } from 'models/integration/types'
 import { TrialPeriod } from 'models/integration/types/app'
 import App, { Tab } from 'pages/integrations/integration/components/app/App'

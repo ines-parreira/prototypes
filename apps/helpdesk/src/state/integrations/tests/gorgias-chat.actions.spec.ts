@@ -1,3 +1,6 @@
+import 'tests/mockGorgiasAppsAuth'
+
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import type {
@@ -6,7 +9,6 @@ import type {
 } from 'models/integration/types'
 import { GorgiasChatMinimumSnippetVersion } from 'models/integration/types'
 
-import client from '../../../models/api/resources'
 import { getGorgiasChatProtectedApiClient } from '../../../rest_api/gorgias_chat_protected_api/client'
 import type { Client } from '../../../rest_api/gorgias_chat_protected_api/client.generated'
 import type {

@@ -1,7 +1,7 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
-import client from '../../../../../../models/api/resources'
 import { IntegrationType } from '../../../../../../models/integration/types'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import * as notificationActions from '../../../../../../state/notifications/actions'

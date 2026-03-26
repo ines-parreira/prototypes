@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import client from '@repo/api-resources'
 import { renderHook, userEvent } from '@repo/testing'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
@@ -11,7 +12,6 @@ import {
     bigCommerceConsignmentFixture,
     bigCommerceLineItemFixture,
 } from 'fixtures/bigcommerce'
-import client from 'models/api/resources'
 
 import { ShippingMethod, useShippingMethods } from '../ShippingMethod'
 

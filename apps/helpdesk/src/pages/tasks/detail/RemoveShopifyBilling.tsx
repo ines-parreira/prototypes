@@ -1,11 +1,11 @@
 import type { FormEvent } from 'react'
 import React, { useState } from 'react'
 
+import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 import classnames from 'classnames'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import client from 'models/api/resources'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import cssSettings from 'pages/settings/settings.less'

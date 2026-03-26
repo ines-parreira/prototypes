@@ -1,9 +1,9 @@
-import client from 'models/api/resources'
+import client from '@repo/api-resources'
 
 import type { Props } from '../sendSupportTicket'
 import { sendSupportTicket } from '../sendSupportTicket'
 
-jest.mock('models/api/resources', () => ({
+jest.mock('@repo/api-resources', () => ({
     get: jest.fn(),
 }))
 

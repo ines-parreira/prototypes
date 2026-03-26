@@ -1,9 +1,9 @@
+import client from '@repo/api-resources'
 import { history } from '@repo/routing'
 import type { AxiosError, AxiosResponse, CancelToken } from 'axios'
 import { isCancel } from 'axios'
 import _noop from 'lodash/noop'
 
-import client from 'models/api/resources'
 import { searchCustomers } from 'models/customer/resources'
 import type { Customer } from 'models/customer/types'
 import type { ActionExecutedEvent } from 'services/socketManager/types'

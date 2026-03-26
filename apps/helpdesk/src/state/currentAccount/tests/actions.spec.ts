@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
@@ -18,7 +19,6 @@ import {
     basicMonthlyHelpdeskPlan,
     HELPDESK_PRODUCT_ID,
 } from 'fixtures/plans'
-import client from 'models/api/resources'
 import {
     submitAgentAvailabilityTableConfigView,
     submitAgentTableConfigView,

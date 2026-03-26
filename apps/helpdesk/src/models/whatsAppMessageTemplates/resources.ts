@@ -1,4 +1,5 @@
-import client from 'models/api/resources'
+import client from '@repo/api-resources'
+
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 
 import type {

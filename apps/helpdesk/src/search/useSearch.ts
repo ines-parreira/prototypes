@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 
+import client from '@repo/api-resources'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 
@@ -7,7 +8,6 @@ import type { SearchBody } from '@gorgias/helpdesk-queries'
 
 import { handleError } from 'hooks/agents/errorHandler'
 import useAppDispatch from 'hooks/useAppDispatch'
-import client from 'models/api/resources'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 
 async function postSearch<T>(params: SearchBody) {

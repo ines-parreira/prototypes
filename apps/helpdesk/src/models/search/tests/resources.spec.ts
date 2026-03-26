@@ -1,6 +1,6 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
-import client from 'models/api/resources'
 import {
     search,
     SEARCH_ENDPOINT,

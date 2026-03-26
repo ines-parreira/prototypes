@@ -1,9 +1,9 @@
+import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import { authenticatorData as authenticatorDataFixture } from '../../../fixtures/authenticatorData'
 import { recoveryCodes as recoveryCodesFixture } from '../../../fixtures/recoveryCodes'
-import client from '../../api/resources'
 import {
     createRecoveryCodes,
     deleteTwoFASecret,

@@ -1,11 +1,10 @@
 import type React from 'react'
 import { useEffect, useRef, useState } from 'react'
 
+import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
 import type { AxiosError } from 'axios'
 import { parse as parseQueryString } from 'qs'
 import { useHistory, useLocation } from 'react-router-dom'
-
-import { GorgiasAppAuthService } from 'utils/gorgiasAppsAuth'
 
 import useAppDispatch from '../../../../hooks/useAppDispatch'
 import type { CsvColumnPreview } from '../../../../models/helpCenter/types'

@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
@@ -5,7 +6,6 @@ import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { MemoryRouter } from 'react-router-dom'
 
-import client from 'models/api/resources'
 import type { BillingState } from 'models/billing/types'
 import {
     payingWithAchCredit,

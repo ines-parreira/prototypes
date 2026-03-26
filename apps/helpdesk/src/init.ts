@@ -16,6 +16,7 @@ import moment from 'moment-timezone'
 
 import './polyfills'
 
+import { initializeNewReleaseHandler } from '@repo/api-resources'
 import { initLaunchDarkly } from '@repo/feature-flags'
 import {
     initDatadogLogger,
@@ -29,7 +30,6 @@ import { envVars, getEnvironment, isProduction, isStaging } from '@repo/utils'
 import { store } from 'common/store'
 import type { EditableUserProfile } from 'config/types/user'
 import GreyArea from 'domains/reporting/pages/common/components/charts/ChartPluginGreyArea'
-import { initializeNewReleaseHandler } from 'models/api/resources'
 import {
     getCurrentAutomatePlan,
     getCurrentHelpdeskPlan,
@@ -110,7 +110,7 @@ export function initApp() {
         delete window.SEGMENT_EVENTS_TO_TRACK
     }
 
-    initializeNewReleaseHandler(store)
+    initializeNewReleaseHandler()
 
     // Dispatch system messages as notifications
     transformSystemMessagesToNotifications(

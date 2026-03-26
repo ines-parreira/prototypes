@@ -1,7 +1,7 @@
 import type { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { AxiosHeaders } from 'axios'
 
-import gorgiasApiClient from 'models/api/resources'
+import gorgiasApiClient from './client'
 
 function isValidAccessToken(token: string | null): boolean {
     if (!token) {
@@ -10,11 +10,10 @@ function isValidAccessToken(token: string | null): boolean {
 
     const { exp } = JSON.parse(atob(token.split('.')[1]))
     const expirationDate = new Date(exp * 1000)
+
     return new Date() < expirationDate
 }
 
-// This function should not be imported to the production code, it is exported just for tests
-// Use default export instead
 export const buildGorgiasAppsAuthInterceptor = () => {
     const authService = new GorgiasAppAuthService()
 
@@ -36,7 +35,6 @@ export class GorgiasAppAuthService {
     }
 
     private async renewAccessToken() {
-        // Prevent multiple /auth calls if parallel requests are made
         if (this.authPendingRequest) {
             await this.authPendingRequest
             return
@@ -47,6 +45,7 @@ export class GorgiasAppAuthService {
         const {
             data: { token },
         } = await this.authPendingRequest
+
         this.setAccessToken(token)
         this.authPendingRequest = null
     }
@@ -55,6 +54,7 @@ export class GorgiasAppAuthService {
         if (!isValidAccessToken(this.accessToken)) {
             await this.renewAccessToken()
         }
+
         return this.accessToken ? `Bearer ${this.accessToken}` : ''
     }
 
@@ -67,11 +67,6 @@ export class GorgiasAppAuthService {
     }
 }
 
-// This axios interceptor is adding JWT token to headers
-// If token was not created or expired, it makes a call to `/gorgias-apps/auth` to renew it
-//
-// Should be used like this:
-// import gorgiasAppsAuthInterceptor from 'utils/gorgiasAppsAuth'
-// ...
-// axiosClient.interceptors.request.use(gorgiasAppsAuthInterceptor)
-export default buildGorgiasAppsAuthInterceptor()
+export const gorgiasAppsAuthInterceptor = buildGorgiasAppsAuthInterceptor()
+
+export default gorgiasAppsAuthInterceptor

@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import type { SelectedPlans } from '@repo/billing'
 import type { AxiosError } from 'axios'
 import type { Map } from 'immutable'
@@ -16,7 +17,6 @@ import type {
     TableView,
 } from 'domains/reporting/state/ui/stats/types'
 import { getAccountSettings } from 'models/account/resources'
-import client from 'models/api/resources'
 import type { GorgiasApiError } from 'models/api/types'
 import { isGorgiasApiError } from 'models/api/types'
 import GorgiasApi from 'services/gorgiasApi'

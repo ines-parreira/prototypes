@@ -1,8 +1,8 @@
+import client from '@repo/api-resources'
 import { useAsyncFn } from '@repo/hooks'
 import { useQueryClient } from '@tanstack/react-query'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import client from 'models/api/resources'
 import { bundleKeys } from 'models/convert/bundle/queries'
 import type { BundleActionResponse } from 'models/convert/bundle/types'
 import { BundleInstallationMethod } from 'models/convert/bundle/types'

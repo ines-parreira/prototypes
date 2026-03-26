@@ -132,10 +132,24 @@ jest.mock('push.js', () => {
     return new mockPushJS()
 })
 
-// Mock axios implementation
-jest.mock('../models/api/resources.ts')
 window.CSRF_TOKEN = 'abcd'
 window.GORGIAS_RELEASE = '1'
+
+jest.mock('@repo/api-resources', () => {
+    const axiosModule = jest.requireActual('axios') as typeof import('axios')
+    const axios = axiosModule.default
+    const gorgiasAppsAuthInterceptor = jest.fn()
+
+    return {
+        __esModule: true,
+        createClient: () => axios,
+        default: axios,
+        gorgiasAppsAuthInterceptor,
+        handleNewRelease: jest.fn(),
+        initializeNewReleaseHandler: jest.fn(),
+        timeoutTime: 10800000,
+    }
+})
 
 // Required until we have some dispatch in
 // react query callbacks

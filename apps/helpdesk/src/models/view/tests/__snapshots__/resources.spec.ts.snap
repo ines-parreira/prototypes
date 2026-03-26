@@ -13,8 +13,6 @@ exports[`view resources fetchViewsPaginated should resolve with a View list on s
     },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "X-CSRF-Token": "abcd",
-      "X-Gorgias-User-Client": "web",
     },
     "maxBodyLength": -1,
     "maxContentLength": -1,
@@ -634,8 +632,6 @@ exports[`view resources updateView should resolve with an updated View on succes
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,

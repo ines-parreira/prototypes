@@ -51,8 +51,6 @@ exports[`team resources createTeam should resolve with a new Team on success 2`]
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,
@@ -92,8 +90,6 @@ exports[`team resources deleteTeam should resolve on success 1`] = `
     },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "X-CSRF-Token": "abcd",
-      "X-Gorgias-User-Client": "web",
     },
     "maxBodyLength": -1,
     "maxContentLength": -1,
@@ -157,8 +153,6 @@ exports[`team resources fetchTeamMembers should resolve with the team members on
     },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "X-CSRF-Token": "abcd",
-      "X-Gorgias-User-Client": "web",
     },
     "maxBodyLength": -1,
     "maxContentLength": -1,
@@ -227,8 +221,6 @@ exports[`team resources fetchTeams should resolve with a Team list on success 1`
     },
     "headers": {
       "Accept": "application/json, text/plain, */*",
-      "X-CSRF-Token": "abcd",
-      "X-Gorgias-User-Client": "web",
     },
     "maxBodyLength": -1,
     "maxContentLength": -1,
@@ -371,8 +363,6 @@ exports[`team resources updateTeam should resolve with the updated team on succe
       "headers": {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json",
-        "X-CSRF-Token": "abcd",
-        "X-Gorgias-User-Client": "web",
       },
       "maxBodyLength": -1,
       "maxContentLength": -1,

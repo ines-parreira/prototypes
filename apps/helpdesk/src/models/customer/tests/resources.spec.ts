@@ -1,10 +1,10 @@
+import client from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import MockAdapter from 'axios-mock-adapter'
 
 import { searchCustomers as apiSearchCustomers } from '@gorgias/helpdesk-client'
 
 import { customer } from 'fixtures/customer'
-import client from 'models/api/resources'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     getCustomer,

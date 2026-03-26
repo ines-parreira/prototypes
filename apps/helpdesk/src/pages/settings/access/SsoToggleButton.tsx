@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react'
 
-import client from 'models/api/resources'
+import client from '@repo/api-resources'
+
 import ToggleInput from 'pages/common/forms/ToggleInput'
 
 import { ConfirmationModal } from '../helpCenter/components/ConfirmationModal'

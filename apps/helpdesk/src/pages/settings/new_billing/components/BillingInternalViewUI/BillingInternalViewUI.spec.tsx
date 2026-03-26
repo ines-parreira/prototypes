@@ -1,11 +1,11 @@
+import client from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import MockDate from 'mockdate'
 
 import useAppDispatch from 'hooks/useAppDispatch'
-import client from 'models/api/resources'
 import type {
     BillingState,
     CouponSummary,
@@ -120,6 +120,7 @@ useReactivateTrialMock.mockImplementation(() => {
 describe('BillingInternalViewUI', () => {
     beforeEach(() => {
         mockedServer.reset()
+        mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
         useExtendTrialMutateMock.mockClear()
         useReactivateTrialMutateMock.mockClear()
     })
@@ -357,19 +358,22 @@ describe('BillingInternalViewUI', () => {
         mockedServer.onPost('/billing/deactivate-account').reply(200, {})
         await user.click(deactivateButton)
 
-        expect(mockedServer.history.post.length).toBe(1)
+        await waitFor(() => expect(mockedServer.history.post.length).toBe(1))
         expect(mockedServer.history.post[0].url).toBe(
             '/billing/deactivate-account',
         )
 
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            allowHTML: true,
-            message: 'Account has been successfully banned and deactivated.',
-            noAutoDismiss: false,
-            showDismissButton: true,
-            status: NotificationStatus.Success,
-            style: 'alert',
-        })
+        await waitFor(() =>
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                allowHTML: true,
+                message:
+                    'Account has been successfully banned and deactivated.',
+                noAutoDismiss: false,
+                showDismissButton: true,
+                status: NotificationStatus.Success,
+                style: 'alert',
+            }),
+        )
     })
 
     it('should be always possible to reactivate an account if deactivated', async () => {
@@ -388,19 +392,21 @@ describe('BillingInternalViewUI', () => {
         mockedServer.onPost('/billing/reactivate-account').reply(200, {})
         await user.click(reactivateButton)
 
-        expect(mockedServer.history.post.length).toBe(1)
+        await waitFor(() => expect(mockedServer.history.post.length).toBe(1))
         expect(mockedServer.history.post[0].url).toBe(
             '/billing/reactivate-account',
         )
 
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            allowHTML: true,
-            message: 'Account has been successfully reactivated.',
-            noAutoDismiss: false,
-            showDismissButton: true,
-            status: NotificationStatus.Success,
-            style: 'alert',
-        })
+        await waitFor(() =>
+            expect(notify).toHaveBeenNthCalledWith(1, {
+                allowHTML: true,
+                message: 'Account has been successfully reactivated.',
+                noAutoDismiss: false,
+                showDismissButton: true,
+                status: NotificationStatus.Success,
+                style: 'alert',
+            }),
+        )
     })
 
     it('should be always possible to vet an account', async () => {
@@ -419,17 +425,19 @@ describe('BillingInternalViewUI', () => {
         mockedServer.onPost('/billing/vet-account').reply(200, {})
         await user.click(vetButton)
 
-        expect(mockedServer.history.post.length).toBe(1)
+        await waitFor(() => expect(mockedServer.history.post.length).toBe(1))
         expect(mockedServer.history.post[0].url).toBe('/billing/vet-account')
 
-        expect(notify).toHaveBeenLastCalledWith({
-            allowHTML: true,
-            message: 'Account has been successfully (un)vetted.',
-            noAutoDismiss: false,
-            showDismissButton: true,
-            status: NotificationStatus.Success,
-            style: 'alert',
-        })
+        await waitFor(() =>
+            expect(notify).toHaveBeenLastCalledWith({
+                allowHTML: true,
+                message: 'Account has been successfully (un)vetted.',
+                noAutoDismiss: false,
+                showDismissButton: true,
+                status: NotificationStatus.Success,
+                style: 'alert',
+            }),
+        )
     })
 
     it('should be always possible to unvet an account', async () => {
@@ -456,16 +464,18 @@ describe('BillingInternalViewUI', () => {
         mockedServer.onPost('/billing/vet-account').reply(200, {})
         await user.click(unvetButton)
 
-        expect(mockedServer.history.post.length).toBe(1)
+        await waitFor(() => expect(mockedServer.history.post.length).toBe(1))
         expect(mockedServer.history.post[0].url).toBe('/billing/vet-account')
 
-        expect(notify).toHaveBeenLastCalledWith({
-            allowHTML: true,
-            message: 'Account has been successfully (un)vetted.',
-            noAutoDismiss: false,
-            showDismissButton: true,
-            status: NotificationStatus.Success,
-            style: 'alert',
-        })
+        await waitFor(() =>
+            expect(notify).toHaveBeenLastCalledWith({
+                allowHTML: true,
+                message: 'Account has been successfully (un)vetted.',
+                noAutoDismiss: false,
+                showDismissButton: true,
+                status: NotificationStatus.Success,
+                style: 'alert',
+            }),
+        )
     })
 })

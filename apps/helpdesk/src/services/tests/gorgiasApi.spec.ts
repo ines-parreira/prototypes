@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { isCancel } from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import type { List } from 'immutable'
@@ -10,7 +11,6 @@ import {
     shopifyCancelOrderPayloadFixture,
     shopifyInvoicePayloadFixture,
 } from 'fixtures/shopify'
-import client from 'models/api/resources'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import type { Event } from 'models/event/types'
 import {
@@ -25,6 +25,24 @@ import {
 } from 'models/integration/types'
 import { ViewVisibility } from 'models/view/types'
 import GorgiasApi from 'services/gorgiasApi'
+
+jest.mock('@repo/api-resources', () => {
+    const axios = jest.requireActual('axios').default
+    const client = axios.create({
+        headers: {
+            'X-CSRF-Token': 'abcd',
+            'X-Gorgias-User-Client': 'web',
+        },
+    })
+
+    return {
+        __esModule: true,
+        createClient: jest.fn(() => client),
+        default: client,
+        handleNewRelease: jest.fn(),
+        initializeNewReleaseHandler: jest.fn(),
+    }
+})
 
 describe('services', () => {
     describe('GorgiasApi', () => {

@@ -1,9 +1,9 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import { Set } from 'immutable'
 import _pick from 'lodash/pick'
 
 import { teams as teamsFixtures } from 'fixtures/teams'
-import client from 'models/api/resources'
 import { OrderDirection } from 'models/api/types'
 import { Cancel, CancelToken } from 'tests/axiosRuntime'
 

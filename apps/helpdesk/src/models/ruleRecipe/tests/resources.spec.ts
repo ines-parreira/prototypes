@@ -1,7 +1,7 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import { emptyRuleRecipeFixture } from '../../../fixtures/ruleRecipe'
-import client from '../../api/resources'
 import { fetchRuleRecipes } from '../resources'
 
 const mockedServer = new MockAdapter(client)

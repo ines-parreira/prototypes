@@ -1,10 +1,10 @@
+import client from '@repo/api-resources'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosResponse } from 'axios'
 
 import { appQueryClient } from 'api/queryClient'
 import { reportingRetryDelayHandler, reportingRetryHandler } from 'api/utils'
-import client from 'models/api/resources'
 
 export const ARTICLE_RECOMMENDATIONS_ENDPOINT =
     '/api/reporting/article-recommendations/'

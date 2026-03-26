@@ -1,9 +1,9 @@
+import client from '@repo/api-resources'
+
 import type {
     WhatsAppCodeVerificationMethod,
     WhatsAppMigrationProgress,
 } from 'models/integration/types'
-
-import client from '../../api/resources'
 
 export const getMigrationProgress = async ({
     phone_number,

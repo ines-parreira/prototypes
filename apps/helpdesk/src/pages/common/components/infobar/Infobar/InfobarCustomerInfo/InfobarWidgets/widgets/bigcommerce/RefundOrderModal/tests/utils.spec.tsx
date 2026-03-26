@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS, Map as ImmutableMap } from 'immutable'
 
@@ -6,7 +7,6 @@ import {
     bigCommerceCalculateOrderRefundDataResponseApiFixture,
     bigCommerceOrderFixture,
 } from 'fixtures/bigcommerce'
-import client from 'models/api/resources'
 import type {
     BigCommerceAvailablePaymentOptionsData,
     BigCommerceOrder,

@@ -1,10 +1,10 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import { dummyErrorLogList } from 'fixtures/appErrors'
 import { dummyAppData, dummyAppListData } from 'fixtures/apps'
 import { integrationsState } from 'fixtures/integrations'
 import { integrationDataItemProductFixture } from 'fixtures/shopify'
-import client from 'models/api/resources'
 
 import {
     disconnectApp,

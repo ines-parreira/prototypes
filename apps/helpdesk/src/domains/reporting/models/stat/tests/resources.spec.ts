@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import { FIRST_RESPONSE_TIME } from 'domains/reporting/config/stats'
@@ -6,7 +7,6 @@ import {
     fetchStat,
 } from 'domains/reporting/models/stat/resources'
 import { firstResponseTime } from 'fixtures/stats'
-import client from 'models/api/resources'
 
 const mockedServer = new MockAdapter(client)
 

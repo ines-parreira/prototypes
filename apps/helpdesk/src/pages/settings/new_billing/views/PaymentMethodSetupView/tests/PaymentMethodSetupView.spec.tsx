@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import type { Stripe } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
@@ -10,7 +11,6 @@ import { createBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
 import { account } from 'fixtures/account'
 import { products } from 'fixtures/plans'
 import { billingContact } from 'fixtures/resources'
-import client from 'models/api/resources'
 import {
     payingWithCreditCard,
     trial,

@@ -1,7 +1,7 @@
+import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 
 import { billingContact } from 'fixtures/resources'
-import client from 'models/api/resources'
 
 import {
     getAiAgentGeneration6Plan,

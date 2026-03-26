@@ -1,6 +1,6 @@
+import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 
-import client from '../../../../../models/api/resources'
 import type {
     PhoneIntegrationIvrSettings,
     PhoneIntegrationVoicemailSettings,

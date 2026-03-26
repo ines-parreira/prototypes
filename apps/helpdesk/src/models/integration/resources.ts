@@ -1,5 +1,6 @@
+import client from '@repo/api-resources'
+
 import type { Product } from 'constants/integrations/types/shopify'
-import client from 'models/api/resources'
 import type {
     ApiListResponse,
     ApiListResponseCursorPagination,

@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 
+import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -8,7 +9,6 @@ import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import client from 'models/api/resources'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { getCurrentUser } from 'state/currentUser/selectors'

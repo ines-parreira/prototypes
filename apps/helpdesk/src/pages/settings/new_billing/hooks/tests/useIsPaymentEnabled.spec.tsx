@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
@@ -7,7 +8,6 @@ import MockAdapter from 'axios-mock-adapter'
 
 import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
 import useAppDispatch from 'hooks/useAppDispatch'
-import client from 'models/api/resources'
 import type { CreditCard } from 'models/billing/types'
 import {
     payingWithAchCredit,

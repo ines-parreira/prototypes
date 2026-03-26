@@ -1,6 +1,7 @@
 import type { FormEvent } from 'react'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 
+import client from '@repo/api-resources'
 import { getMoneySymbol } from '@repo/utils'
 import type { AxiosError } from 'axios'
 import { isAxiosError } from 'axios'
@@ -19,7 +20,6 @@ import { LegacyButton as Button, LegacyLabel as Label } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import client from 'models/api/resources'
 import {
     DISCOUNT_CHOICES,
     DISCOUNT_TYPE,

@@ -1,8 +1,8 @@
+import client from '@repo/api-resources'
 import type { AxiosRequestConfig } from 'axios'
 
 import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
-import client from 'models/api/resources'
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import { deepMapKeysToSnakeCase } from 'models/api/utils'
 

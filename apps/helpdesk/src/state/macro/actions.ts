@@ -1,3 +1,4 @@
+import client from '@repo/api-resources'
 import type { AxiosError, CancelToken } from 'axios'
 import { isCancel } from 'axios'
 import type { List, Map } from 'immutable'
@@ -5,7 +6,6 @@ import { fromJS } from 'immutable'
 
 import type { ListMacrosParams, Macro } from '@gorgias/helpdesk-queries'
 
-import client from 'models/api/resources'
 import { fetchMacros as fetchMacrosRequest } from 'models/macro/resources'
 import GorgiasApi from 'services/gorgiasApi'
 import { notify } from 'state/notifications/actions'
