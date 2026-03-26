@@ -529,6 +529,12 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentDecreaseInResolutionTimeCard',
             Component: AnalyticsAiAgentDecreaseInResolutionTimeCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName:
+                    AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard,
+                title: 'Resolution time',
+            },
             config: {
                 label: 'Decrease in resolution time',
                 description:
@@ -541,6 +547,12 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSupportDecreaseInResolutionTimeCard',
             Component: AnalyticsAiAgentSupportDecreaseInResolutionTimeCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName:
+                    AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard,
+                title: 'Resolution time',
+            },
             config: {
                 label: 'Decrease in resolution time',
                 description:

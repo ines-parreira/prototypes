@@ -26,11 +26,13 @@ import {
     allAgentsCsatDrillDownQueryFactory,
     allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
+    allAgentsResolutionTimeDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
     supportAgentCsatDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
+    supportAgentResolutionTimeDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
     intentHandoverDrillDownQueryFactory,
@@ -455,6 +457,10 @@ export const getDrillDownQuery = (
             return supportAgentHandoverInteractionsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.AllAgentsFRTCard:
             return allAgentsFRTDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard:
+            return allAgentsResolutionTimeDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard:
+            return supportAgentResolutionTimeDrillDownQueryFactory
         case AiSalesAgentChart.AiSalesDiscountOffered:
             return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesDiscountOffered
@@ -1090,6 +1096,14 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === AiAgentDrillDownMetricName.AllAgentsFRTCard
     ) {
         metricTitle = 'First response time'
+        metricValueFormat = 'duration'
+    } else if (
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard
+    ) {
+        metricTitle = 'Decrease in resolution time'
         metricValueFormat = 'duration'
     } else if (isAiAgentMetric(metricData)) {
         metricTitle = metricData.title || ''

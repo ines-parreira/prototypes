@@ -207,6 +207,12 @@ export const LegacyTicketDrillDownTableContent = ({
     const isAiAgentFRTMetric =
         metricData.metricName === AiAgentDrillDownMetricName.AllAgentsFRTCard
 
+    const isAiAgentResolutionTimeMetric =
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard
+
     const { data, isFetching } = useEnrichedDrillDownData(
         getDrillDownQuery(metricData),
         metricData,
@@ -223,7 +229,8 @@ export const LegacyTicketDrillDownTableContent = ({
             isAiInsightsCsatMetric ||
             isAiAgentAutomatedInteractionsMetric ||
             isAiAgentClosedTicketsMetric ||
-            isAiAgentFRTMetric
+            isAiAgentFRTMetric ||
+            isAiAgentResolutionTimeMetric
         ) {
             return 280
         }
@@ -472,6 +479,7 @@ export const LegacyTicketDrillDownTableContent = ({
                     isAiAgentAutomatedInteractionsMetric ||
                     isAiAgentClosedTicketsMetric ||
                     isAiAgentFRTMetric ||
+                    isAiAgentResolutionTimeMetric ||
                     isKnowledgeMetric
                 ) && (
                     <HeaderCellProperty
@@ -486,7 +494,8 @@ export const LegacyTicketDrillDownTableContent = ({
                     isAiInsightsCsatMetric ||
                     isAiAgentAutomatedInteractionsMetric ||
                     isAiAgentClosedTicketsMetric ||
-                    isAiAgentFRTMetric) && (
+                    isAiAgentFRTMetric ||
+                    isAiAgentResolutionTimeMetric) && (
                     <HeaderCellProperty
                         title="Intent"
                         width={columnWidths.intent}
@@ -751,6 +760,7 @@ export const LegacyTicketDrillDownTableContent = ({
                                 isAiAgentAutomatedInteractionsMetric ||
                                 isAiAgentClosedTicketsMetric ||
                                 isAiAgentFRTMetric ||
+                                isAiAgentResolutionTimeMetric ||
                                 isKnowledgeMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
@@ -784,7 +794,8 @@ export const LegacyTicketDrillDownTableContent = ({
                                 isAiInsightsCsatMetric ||
                                 isAiAgentAutomatedInteractionsMetric ||
                                 isAiAgentClosedTicketsMetric ||
-                                isAiAgentFRTMetric) && (
+                                isAiAgentFRTMetric ||
+                                isAiAgentResolutionTimeMetric) && (
                                 <BodyCell width={columnWidths.intent}>
                                     {item.intent ? (
                                         <TruncateMultilineCellContent

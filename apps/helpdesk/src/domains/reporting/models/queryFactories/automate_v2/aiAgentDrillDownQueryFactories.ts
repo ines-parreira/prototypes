@@ -19,6 +19,11 @@ import {
     AIAgentDecreaseInFRTDimension,
     AIAgentDecreaseInFRTFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInFRTCube'
+import type { AIAgentDecreaseInResolutionTimeCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInResolutionTimeCube'
+import {
+    AIAgentDecreaseInResolutionTimeDimension,
+    AIAgentDecreaseInResolutionTimeFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInResolutionTimeCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import {
@@ -300,4 +305,53 @@ export const allAgentsFRTDrillDownQueryFactory = (
     order: sorting
         ? [[AIAgentDecreaseInFRTDimension.FirstResponseTime, sorting]]
         : [],
+})
+
+const buildResolutionTimePeriodFilters = (filters: StatsFilters) => [
+    {
+        member: AIAgentDecreaseInResolutionTimeFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [filters.period.start_datetime],
+    },
+    {
+        member: AIAgentDecreaseInResolutionTimeFilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [filters.period.end_datetime],
+    },
+]
+
+export const allAgentsResolutionTimeDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AIAgentDecreaseInResolutionTimeCube> => ({
+    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_RESOLUTION_TIME_DRILLDOWN,
+    measures: [],
+    dimensions: [
+        AIAgentDecreaseInResolutionTimeDimension.TicketId,
+        AIAgentDecreaseInResolutionTimeDimension.ResolutionTime,
+    ],
+    filters: buildResolutionTimePeriodFilters(filters),
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting
+        ? [[AIAgentDecreaseInResolutionTimeDimension.TicketId, sorting]]
+        : [],
+})
+
+export const supportAgentResolutionTimeDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AIAgentDecreaseInResolutionTimeCube> => ({
+    ...allAgentsResolutionTimeDrillDownQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILLDOWN,
+    filters: [
+        {
+            member: AIAgentDecreaseInResolutionTimeFilterMember.AiAgentSkill,
+            operator: ReportingFilterOperator.Equals,
+            values: [AIAgentSkills.AIAgentSupport],
+        },
+        ...buildResolutionTimePeriodFilters(filters),
+    ],
 })

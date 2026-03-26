@@ -221,6 +221,12 @@ export const TicketDrillDownTableContent = ({
     const isAiAgentFRTMetric =
         metricData.metricName === AiAgentDrillDownMetricName.AllAgentsFRTCard
 
+    const isAiAgentResolutionTimeMetric =
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard ||
+        metricData.metricName ===
+            AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard
+
     // Fetch data directly (used by legacy table, or when context is not available)
     const fetchedData = useEnrichedDrillDownData(
         getDrillDownQuery(metricData),
@@ -255,7 +261,8 @@ export const TicketDrillDownTableContent = ({
             isAiInsightsCsatMetric ||
             isAiAgentAutomatedInteractionsMetric ||
             isAiAgentClosedTicketsMetric ||
-            isAiAgentFRTMetric
+            isAiAgentFRTMetric ||
+            isAiAgentResolutionTimeMetric
         ) {
             return 280
         }
@@ -316,6 +323,7 @@ export const TicketDrillDownTableContent = ({
             isAiAgentAutomatedInteractionsMetric ||
             isAiAgentClosedTicketsMetric ||
             isAiAgentFRTMetric ||
+            isAiAgentResolutionTimeMetric ||
             hasCustomerColumn ||
             isKnowledgeMetric
         )
@@ -324,7 +332,8 @@ export const TicketDrillDownTableContent = ({
             isAiInsightsCsatMetric ||
             isAiAgentAutomatedInteractionsMetric ||
             isAiAgentClosedTicketsMetric ||
-            isAiAgentFRTMetric
+            isAiAgentFRTMetric ||
+            isAiAgentResolutionTimeMetric
 
         return [
             columnWidths.ticket,
@@ -591,6 +600,7 @@ export const TicketDrillDownTableContent = ({
                     isAiAgentAutomatedInteractionsMetric ||
                     isAiAgentClosedTicketsMetric ||
                     isAiAgentFRTMetric ||
+                    isAiAgentResolutionTimeMetric ||
                     isKnowledgeMetric
                 ) && (
                     <DrillDownHeaderCellWithTooltip
@@ -606,7 +616,8 @@ export const TicketDrillDownTableContent = ({
                     isAiInsightsCsatMetric ||
                     isAiAgentAutomatedInteractionsMetric ||
                     isAiAgentClosedTicketsMetric ||
-                    isAiAgentFRTMetric) && (
+                    isAiAgentFRTMetric ||
+                    isAiAgentResolutionTimeMetric) && (
                     <DrillDownHeaderCellWithTooltip
                         title="Intent"
                         width={columnWidths.intent}
@@ -890,6 +901,7 @@ export const TicketDrillDownTableContent = ({
                                 isAiAgentAutomatedInteractionsMetric ||
                                 isAiAgentClosedTicketsMetric ||
                                 isAiAgentFRTMetric ||
+                                isAiAgentResolutionTimeMetric ||
                                 isKnowledgeMetric
                             ) && (
                                 <BodyCell width={columnWidths.contactReason}>
@@ -923,7 +935,8 @@ export const TicketDrillDownTableContent = ({
                                 isAiInsightsCsatMetric ||
                                 isAiAgentAutomatedInteractionsMetric ||
                                 isAiAgentClosedTicketsMetric ||
-                                isAiAgentFRTMetric) && (
+                                isAiAgentFRTMetric ||
+                                isAiAgentResolutionTimeMetric) && (
                                 <BodyCell width={columnWidths.intent}>
                                     {item.intent ? (
                                         <DrillDownTruncateMultilineCellContent

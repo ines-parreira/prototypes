@@ -12,6 +12,10 @@ import {
     AIAgentDecreaseInFRTDimension,
     AIAgentDecreaseInFRTFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInFRTCube'
+import {
+    AIAgentDecreaseInResolutionTimeDimension,
+    AIAgentDecreaseInResolutionTimeFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInResolutionTimeCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import { HandoverInteractionsFilterMember } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import {
@@ -20,11 +24,13 @@ import {
     allAgentsCsatDrillDownQueryFactory,
     allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
+    allAgentsResolutionTimeDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
     supportAgentCsatDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
+    supportAgentResolutionTimeDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
@@ -737,6 +743,101 @@ describe('allAgentsFRTDrillDownQueryFactory', () => {
             [
                 AIAgentDecreaseInFRTDimension.FirstResponseTime,
                 OrderDirection.Asc,
+            ],
+        ])
+    })
+})
+
+describe('allAgentsResolutionTimeDrillDownQueryFactory', () => {
+    it('returns query with period filters only and correct metricName', () => {
+        expect(
+            allAgentsResolutionTimeDrillDownQueryFactory(filters, timezone),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_ALL_AGENTS_RESOLUTION_TIME_DRILLDOWN,
+            measures: [],
+            dimensions: [
+                AIAgentDecreaseInResolutionTimeDimension.TicketId,
+                AIAgentDecreaseInResolutionTimeDimension.ResolutionTime,
+            ],
+            filters: [
+                {
+                    member: AIAgentDecreaseInResolutionTimeFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [filters.period.start_datetime],
+                },
+                {
+                    member: AIAgentDecreaseInResolutionTimeFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [filters.period.end_datetime],
+                },
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('includes sorting order when sorting is provided', () => {
+        const result = allAgentsResolutionTimeDrillDownQueryFactory(
+            filters,
+            timezone,
+            OrderDirection.Asc,
+        )
+        expect(result.order).toEqual([
+            [
+                AIAgentDecreaseInResolutionTimeDimension.TicketId,
+                OrderDirection.Asc,
+            ],
+        ])
+    })
+})
+
+describe('supportAgentResolutionTimeDrillDownQueryFactory', () => {
+    it('returns query with AIAgentSupport skill filter and period filters', () => {
+        expect(
+            supportAgentResolutionTimeDrillDownQueryFactory(filters, timezone),
+        ).toEqual({
+            metricName:
+                METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILLDOWN,
+            measures: [],
+            dimensions: [
+                AIAgentDecreaseInResolutionTimeDimension.TicketId,
+                AIAgentDecreaseInResolutionTimeDimension.ResolutionTime,
+            ],
+            filters: [
+                {
+                    member: AIAgentDecreaseInResolutionTimeFilterMember.AiAgentSkill,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [AIAgentSkills.AIAgentSupport],
+                },
+                {
+                    member: AIAgentDecreaseInResolutionTimeFilterMember.PeriodStart,
+                    operator: ReportingFilterOperator.AfterDate,
+                    values: [filters.period.start_datetime],
+                },
+                {
+                    member: AIAgentDecreaseInResolutionTimeFilterMember.PeriodEnd,
+                    operator: ReportingFilterOperator.BeforeDate,
+                    values: [filters.period.end_datetime],
+                },
+            ],
+            timezone,
+            limit: DRILLDOWN_QUERY_LIMIT,
+            order: [],
+        })
+    })
+
+    it('includes sorting order when sorting is provided', () => {
+        const result = supportAgentResolutionTimeDrillDownQueryFactory(
+            filters,
+            timezone,
+            OrderDirection.Desc,
+        )
+        expect(result.order).toEqual([
+            [
+                AIAgentDecreaseInResolutionTimeDimension.TicketId,
+                OrderDirection.Desc,
             ],
         ])
     })

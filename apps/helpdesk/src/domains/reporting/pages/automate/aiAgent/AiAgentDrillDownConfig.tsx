@@ -76,5 +76,13 @@ export const AiAgentDrillDownConfig: DomainConfig<AiAgentDrillDownMetrics> = {
             showMetric: true,
             domain: Domain.AiAgent,
         },
+        [AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard]: {
+            showMetric: true,
+            domain: Domain.AiAgent,
+        },
+        [AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard]: {
+            showMetric: true,
+            domain: Domain.AiAgent,
+        },
     },
 }

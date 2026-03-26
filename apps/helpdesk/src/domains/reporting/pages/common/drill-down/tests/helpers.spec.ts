@@ -31,11 +31,13 @@ import {
     allAgentsCsatDrillDownQueryFactory,
     allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
+    allAgentsResolutionTimeDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
     supportAgentCsatDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
+    supportAgentResolutionTimeDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
     intentHandoverDrillDownQueryFactory,
@@ -293,6 +295,12 @@ const allAgentsCsatDrillDownQueryFactoryMock = assumeMock(
 )
 const supportAgentCsatDrillDownQueryFactoryMock = assumeMock(
     supportAgentCsatDrillDownQueryFactory,
+)
+const allAgentsResolutionTimeDrillDownQueryFactoryMock = assumeMock(
+    allAgentsResolutionTimeDrillDownQueryFactory,
+)
+const supportAgentResolutionTimeDrillDownQueryFactoryMock = assumeMock(
+    supportAgentResolutionTimeDrillDownQueryFactory,
 )
 
 jest.mock('AIJourney/queries/aiJourneyDrillDownQueries')
@@ -1579,6 +1587,33 @@ describe('getDrillDownQuery', () => {
         )
     })
 
+    it('should call allAgentsResolutionTimeDrillDownQueryFactory for AllAgentsResolutionTimeCard', () => {
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName: AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            allAgentsResolutionTimeDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
+    it('should call supportAgentResolutionTimeDrillDownQueryFactory for SupportAgentResolutionTimeCard', () => {
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName:
+                AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(
+            supportAgentResolutionTimeDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(statsFilters, timezone)
+    })
+
     it('should be populated with AiSalesDiscountOffered', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -2622,6 +2657,17 @@ describe('getDrillDownMetric', () => {
         },
         {
             metricData: {
+                metricName:
+                    AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard,
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: 'Decrease in resolution time',
+                showMetric: true,
+                metricValueFormat: 'duration',
+            },
+        },
+        {
+            metricData: {
                 metricName: AiAgentDrillDownMetricName.SupportAgentCsatCard,
             } as AiAgentMetrics,
             expectedValues: {
@@ -2667,6 +2713,17 @@ describe('getDrillDownMetric', () => {
                 metricTitle: 'Handover',
                 showMetric: false,
                 metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName:
+                    AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard,
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: 'Decrease in resolution time',
+                showMetric: true,
+                metricValueFormat: 'duration',
             },
         },
     ]

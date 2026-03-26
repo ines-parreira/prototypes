@@ -112,6 +112,10 @@ export const METRIC_NAMES = {
     AI_AGENT_SUPPORT_AGENT_CSAT_DRILL_DOWN:
         'ai-agent-support-agent-csat-drill-down',
     AI_AGENT_ALL_AGENTS_FRT_DRILLDOWN: 'ai-agent-all-agents-frt-drill-down',
+    AI_AGENT_ALL_AGENTS_RESOLUTION_TIME_DRILLDOWN:
+        'ai-agent-all-agents-resolution-time-drill-down',
+    AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILLDOWN:
+        'ai-agent-support-agent-resolution-time-drill-down',
 
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',

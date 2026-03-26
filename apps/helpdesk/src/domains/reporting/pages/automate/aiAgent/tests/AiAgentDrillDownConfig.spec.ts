@@ -32,6 +32,8 @@ jest.mock(
         allAgentsCsatDrillDownQueryFactory: jest.fn(),
         supportAgentCsatDrillDownQueryFactory: jest.fn(),
         allAgentsFRTDrillDownQueryFactory: jest.fn(),
+        allAgentsResolutionTimeDrillDownQueryFactory: jest.fn(),
+        supportAgentResolutionTimeDrillDownQueryFactory: jest.fn(),
     }),
 )
 jest.mock(
@@ -63,12 +65,18 @@ describe('AiAgentDrillDownConfig', () => {
         )
     })
 
-    const metricsWithShowMetricFalse = Object.values(
-        AiAgentDrillDownMetricName,
-    ).filter((name) => name !== AiAgentDrillDownMetricName.AllAgentsFRTCard)
+    const metricsWithShowMetric = [
+        AiAgentDrillDownMetricName.AllAgentsFRTCard,
+        AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard,
+        AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard,
+    ]
 
-    it.each(metricsWithShowMetricFalse)(
-        'should include %s in metricsConfig with showMetric false',
+    it.each(
+        Object.values(AiAgentDrillDownMetricName).filter(
+            (m) => !metricsWithShowMetric.includes(m),
+        ),
+    )(
+        'should include %s in metricsConfig with showMetric: false',
         (metricName) => {
             expect(AiAgentDrillDownConfig.metricsConfig[metricName]).toEqual({
                 showMetric: false,
@@ -77,16 +85,15 @@ describe('AiAgentDrillDownConfig', () => {
         },
     )
 
-    it('should include AllAgentsFRTCard in metricsConfig with showMetric true', () => {
-        expect(
-            AiAgentDrillDownConfig.metricsConfig[
-                AiAgentDrillDownMetricName.AllAgentsFRTCard
-            ],
-        ).toEqual({
-            showMetric: true,
-            domain: Domain.AiAgent,
-        })
-    })
+    it.each(metricsWithShowMetric)(
+        'should include %s in metricsConfig with showMetric: true',
+        (metricName) => {
+            expect(AiAgentDrillDownConfig.metricsConfig[metricName]).toEqual({
+                showMetric: true,
+                domain: Domain.AiAgent,
+            })
+        },
+    )
 
     it('should call getDrillDownQuery with metricData and pass result to useEnrichedDrillDownData', () => {
         const mockQueryFactory = jest.fn()
