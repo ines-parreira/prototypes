@@ -76,9 +76,9 @@ describe('createTicketTableColumns', () => {
             dateTimePreferences,
         })
 
-        expect(columns.find((c) => c.id === 'subject')).toEqual(
+        expect(columns.find((c) => c.id === 'ticket')).toEqual(
             expect.objectContaining({
-                id: 'subject',
+                id: 'ticket',
                 header: 'Ticket',
                 enableHiding: false,
             }),
@@ -109,7 +109,7 @@ describe('createTicketTableColumns', () => {
         ).toEqual(expect.objectContaining({ enableSorting: true }))
     })
 
-    describe('subject column (TicketCell)', () => {
+    describe('ticket column (TicketCell)', () => {
         it('renders the ticket subject and excerpt', () => {
             const ticket = mockTicketCompact({
                 id: 1,
@@ -117,7 +117,7 @@ describe('createTicketTableColumns', () => {
                 excerpt: 'I need help with my order',
             })
 
-            renderColumn('subject', ticket)
+            renderColumn('ticket', ticket)
 
             expect(screen.getByText('Help with order')).toBeInTheDocument()
             expect(
@@ -131,7 +131,7 @@ describe('createTicketTableColumns', () => {
                 subject: 'Original subject',
             })
 
-            renderColumn('subject', ticket, {
+            renderColumn('ticket', ticket, {
                 translationMap: {
                     1: mockTicketTranslationCompact({
                         subject: 'Translated subject',
@@ -145,7 +145,7 @@ describe('createTicketTableColumns', () => {
 
         it('renders "No subject" when the subject is empty', () => {
             renderColumn(
-                'subject',
+                'ticket',
                 mockTicketCompact({
                     id: 1,
                     subject: '',
@@ -162,7 +162,7 @@ describe('createTicketTableColumns', () => {
                 ],
             })
 
-            renderColumn('subject', mockTicketCompact({ id: 1 }), {
+            renderColumn('ticket', mockTicketCompact({ id: 1 }), {
                 currentUserId: 1,
             })
 
@@ -170,14 +170,14 @@ describe('createTicketTableColumns', () => {
         })
     })
 
-    describe('subject_text column (SubjectOnlyCell)', () => {
+    describe('subject column (SubjectOnlyCell)', () => {
         it('renders translated subject when showTranslatedContent is true', () => {
             const ticket = mockTicketCompact({
                 id: 42,
                 subject: 'Original subject',
             })
 
-            renderColumn('subject_text', ticket, {
+            renderColumn('subject', ticket, {
                 translationMap: {
                     42: mockTicketTranslationCompact({
                         subject: 'Translated subject',
@@ -191,7 +191,7 @@ describe('createTicketTableColumns', () => {
 
         it('renders "No subject" when the subject is empty', () => {
             renderColumn(
-                'subject_text',
+                'subject',
                 mockTicketCompact({
                     id: 42,
                     subject: '',

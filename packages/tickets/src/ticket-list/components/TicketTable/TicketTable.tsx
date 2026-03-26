@@ -302,13 +302,28 @@ export function TicketTable({
         )
     }
 
+    if (!viewResponse) {
+        return (
+            <div className={css.container}>
+                <TicketListEmptyPlaceholder
+                    isLoading={true}
+                    emptyStateVariant={EmptyViewsState.Empty}
+                    isInboxView={isInboxView}
+                />
+            </div>
+        )
+    }
+
     return (
         <div className={css.container}>
             <DataTable
+                key={viewId}
+                persistenceId={`ticket-table-${viewId}`}
                 data={displayedTickets}
                 columns={columns}
                 isLoading={isLoading || isFetchingNextPage}
                 onRowClick={handleRowClick}
+                overflow="scroll"
                 selection={{
                     enable: true,
                     multiple: true,
@@ -339,6 +354,7 @@ export function TicketTable({
                     enable: true,
                     defaultVisibleColumns,
                     onVisibleColumnsChange: onColumnVisibilityChange,
+                    persist: true,
                 }}
                 renderEmptyState={() => (
                     <TicketListEmptyPlaceholder

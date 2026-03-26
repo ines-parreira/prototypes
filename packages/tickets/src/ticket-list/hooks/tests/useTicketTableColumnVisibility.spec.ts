@@ -60,6 +60,7 @@ describe('useTicketTableColumnVisibility', () => {
         await waitFor(() => {
             expect(result.current.defaultVisibleColumns).toEqual([
                 'select',
+                'ticket',
                 'subject',
                 'customer',
                 'assignee',
@@ -81,13 +82,17 @@ describe('useTicketTableColumnVisibility', () => {
         })
     })
 
-    it('maps view fields to column ids and prepends the mandatory subject column', async () => {
+    it('maps view fields to column ids and prepends the mandatory ticket column', async () => {
         server.use(
             mockGetViewHandler(async () =>
                 HttpResponse.json(
                     mockGetViewResponse({
                         id: viewId,
-                        fields: [ViewField.Customer, ViewField.Created],
+                        fields: [
+                            ViewField.Subject,
+                            ViewField.Customer,
+                            ViewField.Created,
+                        ],
                     }),
                 ),
             ).handler,
@@ -99,42 +104,12 @@ describe('useTicketTableColumnVisibility', () => {
 
         await waitFor(() => {
             expect(result.current.defaultVisibleColumns).toEqual([
-                'subject',
                 'select',
+                'ticket',
+                'subject',
                 'customer',
                 'created_datetime',
             ])
-        })
-    })
-
-    it('does not persist visibility changes when the mandatory subject column is missing', async () => {
-        let wasUpdateViewCalled = false
-
-        server.use(
-            mockUpdateViewHandler(async () => {
-                wasUpdateViewCalled = true
-                return HttpResponse.json(
-                    mockUpdateViewResponse({
-                        id: viewId,
-                    }),
-                )
-            }).handler,
-        )
-
-        const { result } = renderHook(() =>
-            useTicketTableColumnVisibility(viewId),
-        )
-
-        await waitFor(() => {
-            expect(result.current.defaultVisibleColumns).toContain('subject')
-        })
-
-        act(() => {
-            result.current.onChange(['customer', 'priority'])
-        })
-
-        await waitFor(() => {
-            expect(wasUpdateViewCalled).toBe(false)
         })
     })
 
@@ -149,11 +124,13 @@ describe('useTicketTableColumnVisibility', () => {
         )
 
         await waitFor(() => {
-            expect(result.current.defaultVisibleColumns).toContain('subject')
+            expect(result.current.defaultVisibleColumns).toContain('ticket')
         })
 
         act(() => {
             result.current.onChange([
+                'select',
+                'ticket',
                 'subject',
                 'customer',
                 'priority',

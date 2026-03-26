@@ -144,7 +144,7 @@ vi.mock('../../hooks/useTicketsList', () => ({
 
 vi.mock('../../hooks/useTicketTableColumnVisibility', () => ({
     useTicketTableColumnVisibility: () => ({
-        defaultVisibleColumns: ['subject'],
+        defaultVisibleColumns: ['ticket', 'subject'],
         onChange: vi.fn(),
     }),
 }))
@@ -218,7 +218,7 @@ vi.mock('../../hooks/useTicketListActions', () => ({
 vi.mock('./TicketTableColumns', () => ({
     createTicketTableColumns: () => [
         {
-            id: 'subject',
+            id: 'ticket',
             accessorKey: 'subject',
             header: 'Ticket',
         },

@@ -50,7 +50,7 @@ export function createTicketTableColumns({
 }: TicketTableColumnsParams): DataTableColumnDef<TicketCompact>[] {
     return [
         columnHelper.display({
-            id: 'subject',
+            id: 'ticket',
             header: 'Ticket',
             enableSorting: false,
             enableHiding: false,
@@ -68,7 +68,7 @@ export function createTicketTableColumns({
             ),
         }),
         columnHelper.display({
-            id: 'subject_text',
+            id: 'subject',
             header: 'Subject',
             enableSorting: false,
             cell: (cell) => (
