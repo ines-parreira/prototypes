@@ -71,7 +71,7 @@ const ManageTags = () => {
         async ({
             orderBy = sort,
             orderDir = reverse ? OrderDirection.Desc : OrderDirection.Asc,
-            search,
+            search: searchParam = search,
             direction,
             refreshPreviousPage,
         }: {
@@ -92,7 +92,7 @@ const ManageTags = () => {
                           ? meta.next_cursor
                           : undefined,
                 order_by: `${orderBy}:${orderDir}` as OrderByOrderDir,
-                search,
+                search: searchParam,
             }
 
             try {
