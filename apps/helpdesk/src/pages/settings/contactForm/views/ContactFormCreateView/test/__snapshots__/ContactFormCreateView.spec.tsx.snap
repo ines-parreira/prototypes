@@ -285,11 +285,23 @@ exports[`<ContactFormCreateView /> should preserve valid classnames to have prop
                     type="button"
                     value="515"
                   >
-                    <img
-                      alt="logo"
+                    <span
                       class="dropdownLogo"
-                      src="/assets/img/integrations/bigcommerce.svg"
-                    />
+                    >
+                      <span
+                        class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-appicon-b14f"
+                        data-name="icon"
+                      >
+                        <svg
+                          aria-label="app-bicommerce"
+                          role="img"
+                        >
+                          <use
+                            href="#app-bicommerce"
+                          />
+                        </svg>
+                      </span>
+                    </span>
                     <span>
                       gorgiastest.mybigcommerce.com
                     </span>

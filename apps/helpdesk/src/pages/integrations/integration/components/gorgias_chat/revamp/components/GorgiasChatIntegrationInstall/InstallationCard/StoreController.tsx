@@ -4,7 +4,7 @@ import { useAsyncFn } from '@repo/hooks'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
-import { Button, ButtonIntent, ButtonVariant } from '@gorgias/axiom'
+import { Button, ButtonIntent, ButtonVariant, Icon, Text } from '@gorgias/axiom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -14,6 +14,7 @@ import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration
 import { StoreNameDropdown } from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/StoreNameDropdown'
 import DisconnectStoreModal from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationInstall/InstallationCard/DisconnectStoreModal'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
+import { getStoreIconNameFromType } from 'state/integrations/helpers'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 
 import css from './StoreController.less'
@@ -116,10 +117,6 @@ const StoreController = ({
         [isDisconnectPending],
     )
 
-    const isStoreSelectorDisabled = useMemo(() => {
-        return (!isChangingStore && !!storeIntegration) || isConnectPending
-    }, [isChangingStore, storeIntegration, isConnectPending])
-
     const storeControllButtons = useMemo(() => {
         if (!storeIntegration || isChangingStore) {
             return (
@@ -175,13 +172,36 @@ const StoreController = ({
     return (
         <div className={css.storeController}>
             <div className={css.storeNameDropdown}>
-                <StoreNameDropdown
-                    gorgiasChatIntegrations={fromJS(gorgiasChatIntegrations)}
-                    storeIntegrations={fromJS(storeIntegrations)}
-                    storeIntegrationId={localStoreIntegrationId}
-                    onChange={setLocalStoreIntegrationId}
-                    isDisabled={isStoreSelectorDisabled}
-                />
+                {storeIntegration && !isChangingStore ? (
+                    <div className={css.storeLink}>
+                        <Icon
+                            name={getStoreIconNameFromType(
+                                storeIntegration.type,
+                            )}
+                        />
+                        {storeIntegration.type === IntegrationType.Shopify ? (
+                            <a
+                                href={`https://${storeIntegration.name}.myshopify.com`}
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                {storeIntegration.name}
+                            </a>
+                        ) : (
+                            <Text>{storeIntegration.name}</Text>
+                        )}
+                    </div>
+                ) : (
+                    <StoreNameDropdown
+                        gorgiasChatIntegrations={fromJS(
+                            gorgiasChatIntegrations,
+                        )}
+                        storeIntegrations={fromJS(storeIntegrations)}
+                        storeIntegrationId={localStoreIntegrationId}
+                        onChange={setLocalStoreIntegrationId}
+                        isDisabled={isConnectPending}
+                    />
+                )}
             </div>
             <div className={css.buttons}>{storeControllButtons}</div>
             <DisconnectStoreModal

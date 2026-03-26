@@ -9,8 +9,10 @@ import {
     DropdownToggle,
 } from 'reactstrap'
 
+import { Icon } from '@gorgias/axiom'
+
 import warningIcon from 'assets/img/icons/warning.svg'
-import { getIconFromType } from 'state/integrations/helpers'
+import { getStoreIconNameFromType } from 'state/integrations/helpers'
 
 import css from './StoreNameDropdown.less'
 
@@ -90,15 +92,14 @@ export const StoreNameDropdown = ({
                 >
                     {storeIntegration ? (
                         <span className={css.dropdownValue}>
-                            {getIconFromType(storeIntegration.get('type')) && (
-                                <img
-                                    src={getIconFromType(
+                            <span className={css.dropdownLogo}>
+                                <Icon
+                                    name={getStoreIconNameFromType(
                                         storeIntegration.get('type'),
                                     )}
-                                    className={css.dropdownLogo}
-                                    alt="logo"
+                                    size="sm"
                                 />
-                            )}
+                            </span>
                             {storeIntegration.get('name')}
                         </span>
                     ) : (
@@ -123,13 +124,14 @@ export const StoreNameDropdown = ({
                             key={option?.get('id')}
                             value={option?.get('id')}
                         >
-                            {getIconFromType(option?.get('type')) && (
-                                <img
-                                    src={getIconFromType(option?.get('type'))}
-                                    className={css.dropdownLogo}
-                                    alt="logo"
+                            <span className={css.dropdownLogo}>
+                                <Icon
+                                    name={getStoreIconNameFromType(
+                                        option?.get('type'),
+                                    )}
+                                    size="sm"
                                 />
-                            )}
+                            </span>
                             <span>{option?.get('name')}</span>
                             <span className={css.dropdownInfo}>
                                 {!option?.get('deactivated_datetime') ? (

@@ -169,11 +169,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         type="button"
                         value="1"
                       >
-                        <img
-                          alt="logo"
+                        <span
                           class="dropdownLogo"
-                          src="/assets/img/integrations/shopify.png"
-                        />
+                        >
+                          <span
+                            class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-appicon-b14f"
+                            data-name="icon"
+                          >
+                            <svg
+                              aria-label="app-shopify"
+                              role="img"
+                            >
+                              <use
+                                href="#app-shopify"
+                              />
+                            </svg>
+                          </span>
+                        </span>
                         <span>
                           myStore1
                         </span>
@@ -188,11 +200,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                         type="button"
                         value="2"
                       >
-                        <img
-                          alt="logo"
+                        <span
                           class="dropdownLogo"
-                          src="/assets/img/integrations/shopify.png"
-                        />
+                        >
+                          <span
+                            class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-appicon-b14f"
+                            data-name="icon"
+                          >
+                            <svg
+                              aria-label="app-shopify"
+                              role="img"
+                            >
+                              <use
+                                href="#app-shopify"
+                              />
+                            </svg>
+                          </span>
+                        </span>
                         <span>
                           myStore2
                         </span>
@@ -8936,11 +8960,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                       <span
                         class="dropdownValue"
                       >
-                        <img
-                          alt="logo"
+                        <span
                           class="dropdownLogo"
-                          src="/assets/img/integrations/shopify.png"
-                        />
+                        >
+                          <span
+                            class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-appicon-b14f"
+                            data-name="icon"
+                          >
+                            <svg
+                              aria-label="app-shopify"
+                              role="img"
+                            >
+                              <use
+                                href="#app-shopify"
+                              />
+                            </svg>
+                          </span>
+                        </span>
                         MY ONLY SHOPIFY STORE
                       </span>
                     </button>
@@ -8957,11 +8993,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should preselect shopify i
                         type="button"
                         value="1"
                       >
-                        <img
-                          alt="logo"
+                        <span
                           class="dropdownLogo"
-                          src="/assets/img/integrations/shopify.png"
-                        />
+                        >
+                          <span
+                            class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-appicon-b14f"
+                            data-name="icon"
+                          >
+                            <svg
+                              aria-label="app-shopify"
+                              role="img"
+                            >
+                              <use
+                                href="#app-shopify"
+                              />
+                            </svg>
+                          </span>
+                        </span>
                         <span>
                           MY ONLY SHOPIFY STORE
                         </span>
@@ -13297,11 +13345,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         type="button"
                         value="1"
                       >
-                        <img
-                          alt="logo"
+                        <span
                           class="dropdownLogo"
-                          src="/assets/img/integrations/shopify.png"
-                        />
+                        >
+                          <span
+                            class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-appicon-b14f"
+                            data-name="icon"
+                          >
+                            <svg
+                              aria-label="app-shopify"
+                              role="img"
+                            >
+                              <use
+                                href="#app-shopify"
+                              />
+                            </svg>
+                          </span>
+                        </span>
                         <span>
                           myStore1
                         </span>
@@ -13316,11 +13376,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         type="button"
                         value="2"
                       >
-                        <img
-                          alt="logo"
+                        <span
                           class="dropdownLogo"
-                          src="/assets/img/integrations/shopify.png"
-                        />
+                        >
+                          <span
+                            class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-appicon-b14f"
+                            data-name="icon"
+                          >
+                            <svg
+                              aria-label="app-shopify"
+                              role="img"
+                            >
+                              <use
+                                href="#app-shopify"
+                              />
+                            </svg>
+                          </span>
+                        </span>
                         <span>
                           myStore2
                         </span>
@@ -13335,11 +13407,23 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should submit and call the
                         type="button"
                         value="3"
                       >
-                        <img
-                          alt="logo"
+                        <span
                           class="dropdownLogo"
-                          src="/assets/img/integrations/shopify.png"
-                        />
+                        >
+                          <span
+                            class="ui-icon-icon-b14f ui-icon-sm-b14f ui-icon-appicon-b14f"
+                            data-name="icon"
+                          >
+                            <svg
+                              aria-label="app-shopify"
+                              role="img"
+                            >
+                              <use
+                                href="#app-shopify"
+                              />
+                            </svg>
+                          </span>
+                        </span>
                         <span>
                           myStore3
                         </span>

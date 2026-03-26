@@ -67,10 +67,15 @@ jest.mock('models/selfServiceConfiguration/utils', () => ({
     ),
 }))
 
+jest.mock('state/integrations/helpers', () => ({
+    getStoreIconNameFromType: jest.fn(() => 'app-shopify'),
+}))
+
 describe('StoreController', () => {
     const mockStoreIntegration = {
         id: 1,
         type: IntegrationType.Shopify,
+        name: 'test-shop',
         shop: 'test-shop.myshopify.com',
     }
 
@@ -79,6 +84,7 @@ describe('StoreController', () => {
         {
             id: 2,
             type: IntegrationType.Shopify,
+            name: 'another-shop',
             shop: 'another-shop.myshopify.com',
         },
     ]
@@ -110,36 +116,33 @@ describe('StoreController', () => {
         return render(<StoreController {...defaultProps} {...props} />)
     }
 
-    describe('StoreNameDropdown', () => {
-        it('should render StoreNameDropdown with correct props', () => {
-            renderComponent()
+    describe('Store display', () => {
+        it('should render store link when store is connected', () => {
+            const { getByRole } = renderComponent()
 
-            expect(mockStoreNameDropdown).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    storeIntegrationId: mockStoreIntegration.id,
-                    isDisabled: true,
-                }),
+            const link = getByRole('link')
+            expect(link).toHaveAttribute(
+                'href',
+                expect.stringContaining('myshopify.com'),
             )
+            expect(link).toHaveAttribute('target', '_blank')
         })
 
-        it('should pass onChange handler to StoreNameDropdown', () => {
+        it('should not render StoreNameDropdown when store is connected', () => {
             renderComponent()
 
-            expect(mockStoreNameDropdown).toHaveBeenCalledWith(
-                expect.objectContaining({
-                    onChange: expect.any(Function),
-                }),
-            )
+            expect(mockStoreNameDropdown).not.toHaveBeenCalled()
         })
 
-        it('should enable dropdown when no store is connected', () => {
+        it('should render StoreNameDropdown when no store is connected', () => {
             renderComponent({
                 storeIntegration: undefined,
             })
 
             expect(mockStoreNameDropdown).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    isDisabled: false,
+                    storeIntegrationId: null,
+                    onChange: expect.any(Function),
                 }),
             )
         })
@@ -234,7 +237,7 @@ describe('StoreController', () => {
             expect(lastModalCall[0].isOpen).toBe(true)
         })
 
-        it('should enable dropdown when Change button is clicked', () => {
+        it('should show dropdown when Change button is clicked', () => {
             renderComponent()
 
             const buttonCalls = mockButton.mock.calls as any[]
@@ -246,10 +249,7 @@ describe('StoreController', () => {
                 changeButton[0].onClick()
             })
 
-            const dropdownCalls = mockStoreNameDropdown.mock.calls as any[]
-            const lastDropdownCall = dropdownCalls[dropdownCalls.length - 1]
-
-            expect(lastDropdownCall[0].isDisabled).toBe(false)
+            expect(mockStoreNameDropdown).toHaveBeenCalled()
         })
     })
 
