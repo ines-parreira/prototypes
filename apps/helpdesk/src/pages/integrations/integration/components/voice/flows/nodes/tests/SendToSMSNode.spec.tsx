@@ -1,7 +1,9 @@
 import type { ComponentProps } from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { Form } from '@repo/forms'
 import { screen, waitFor } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -13,7 +15,9 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { SendToSMSStep } from '@gorgias/helpdesk-types'
 
+import { PhoneUseCase } from 'business/twilio'
 import { FlowProvider } from 'core/ui/flows'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import type { TextToSpeechContext as TextToSpeechContextType } from '../../../VoiceMessageTTS/TextToSpeechContext'
@@ -266,5 +270,131 @@ describe('SendToSMSNode', () => {
 
         const { container } = renderComponent(step, flow as any)
         expect(container.querySelector('div')).toBeNull()
+    })
+
+    describe('marketing phone number filtering', () => {
+        const mockStandardIntegration = {
+            id: 123,
+            name: 'Standard SMS',
+            meta: {
+                phone_number_id: 1,
+            },
+        }
+
+        const mockMarketingIntegration = {
+            id: 456,
+            name: 'Marketing SMS',
+            meta: {
+                phone_number_id: 2,
+            },
+        }
+
+        const mockPhoneNumbersWithUseCase = {
+            1: {
+                id: 1,
+                phone_number_friendly: '+1 (555) 123-4567',
+                usecase: PhoneUseCase.Standard,
+            },
+            2: {
+                id: 2,
+                phone_number_friendly: '+1 (555) 987-6543',
+                usecase: PhoneUseCase.Marketing,
+            },
+        }
+
+        const renderComponentWithPhoneNumbers = (
+            step: SendToSMSStep,
+            flowData: VoiceFlowFormValues,
+        ) => {
+            const props = {
+                id: step.id,
+                data: step,
+            } as ComponentProps<typeof SendToSMSNode>
+
+            return renderWithStoreAndQueryClientProvider(
+                <FlowProvider>
+                    <VoiceFlowProvider selectedNode={step.id}>
+                        <Form
+                            defaultValues={flowData}
+                            onValidSubmit={jest.fn()}
+                        >
+                            <TextToSpeechContext.Provider
+                                value={
+                                    {
+                                        integrationId: 123,
+                                    } as TextToSpeechContextType
+                                }
+                            >
+                                <SendToSMSNode {...props} />
+                            </TextToSpeechContext.Provider>
+                        </Form>
+                    </VoiceFlowProvider>
+                </FlowProvider>,
+                {
+                    entities: {
+                        newPhoneNumbers: mockPhoneNumbersWithUseCase,
+                    } as any,
+                } as any,
+            )
+        }
+
+        beforeEach(() => {
+            const mockHandlers = mockListIntegrationsHandler(async () =>
+                HttpResponse.json({
+                    data: [mockStandardIntegration, mockMarketingIntegration],
+                } as ListIntegrations200),
+            )
+            server.use(mockHandlers.handler)
+        })
+
+        it('should filter out marketing phone numbers when feature flag is enabled', async () => {
+            const user = userEvent.setup()
+            mockFeatureFlags({
+                [FeatureFlagKey.MarketingPhoneNumber]: true,
+            })
+
+            renderComponentWithPhoneNumbers(mockDefaultStep, mockFlowData)
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByText('Standard SMS (+1 (555) 123-4567)'),
+                ).toHaveLength(2)
+            })
+
+            // The first combobox is the SMS integration select
+            const comboboxes = screen.getAllByRole('combobox')
+            await user.click(comboboxes[0])
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Marketing SMS (+1 (555) 987-6543)'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should show all phone numbers when feature flag is disabled', async () => {
+            const user = userEvent.setup()
+            mockFeatureFlags({
+                [FeatureFlagKey.MarketingPhoneNumber]: false,
+            })
+
+            renderComponentWithPhoneNumbers(mockDefaultStep, mockFlowData)
+
+            await waitFor(() => {
+                expect(
+                    screen.getAllByText('Standard SMS (+1 (555) 123-4567)'),
+                ).toHaveLength(2)
+            })
+
+            // The first combobox is the SMS integration select
+            const comboboxes = screen.getAllByRole('combobox')
+            await user.click(comboboxes[0])
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Marketing SMS (+1 (555) 987-6543)'),
+                ).toBeInTheDocument()
+            })
+        })
     })
 })

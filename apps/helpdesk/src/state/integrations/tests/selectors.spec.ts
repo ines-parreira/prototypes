@@ -417,6 +417,7 @@ describe('integrations selectors', () => {
                         address: state.entities.newPhoneNumbers[1].phone_number,
                         isDeactivated: false,
                         channel: 'phone',
+                        usecase: state.entities.newPhoneNumbers[1].usecase,
                     },
                 ]),
             )
@@ -447,6 +448,7 @@ describe('integrations selectors', () => {
                         address: state.entities.newPhoneNumbers[1].phone_number,
                         isDeactivated: false,
                         channel: 'sms',
+                        usecase: state.entities.newPhoneNumbers[1].usecase,
                     },
                 ]),
             )

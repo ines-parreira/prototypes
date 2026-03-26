@@ -1,7 +1,9 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { uniq } from 'lodash'
 
+import { PhoneUseCase } from 'business/twilio'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -185,6 +187,14 @@ function getReplyChannelsForTicket(
         }, [])
 }
 
+type SenderWithUseCase = Sender & {
+    usecase?: PhoneUseCase
+}
+
+function isMarketingSender(sender: SenderWithUseCase): boolean {
+    return sender.usecase === PhoneUseCase.Marketing
+}
+
 export function useSendersForSelectedChannel(): {
     senders: Sender[]
     selectedSender: Maybe<Sender>
@@ -193,7 +203,12 @@ export function useSendersForSelectedChannel(): {
 } {
     const dispatch = useAppDispatch()
     const { selectedChannel } = useOutboundChannels()
-    const senders = useAppSelector((state) =>
+
+    const isMarketingPhoneNumberEnabled = useFlag(
+        FeatureFlagKey.MarketingPhoneNumber,
+    )
+
+    const allSenders = useAppSelector((state) =>
         selectedChannel
             ? getSendersForChannel(selectedChannel)(state).map(
                   (sourceAddress) =>
@@ -201,6 +216,15 @@ export function useSendersForSelectedChannel(): {
               )
             : [],
     )
+
+    const senders = useMemo(() => {
+        const isSmsChannel = selectedChannel === TicketMessageSourceType.Sms
+        if (!isSmsChannel || !isMarketingPhoneNumberEnabled) {
+            return allSenders
+        }
+        return allSenders.filter((sender) => !isMarketingSender(sender))
+    }, [allSenders, selectedChannel, isMarketingPhoneNumberEnabled])
+
     const from: SourceAddress = useAppSelector(
         getNewMessageSourceProperty('from'),
     )?.toJS()

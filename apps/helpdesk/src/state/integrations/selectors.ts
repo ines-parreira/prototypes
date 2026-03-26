@@ -452,6 +452,7 @@ export const makeGetPhoneChannels = (
                     address: phoneNumber?.phone_number,
                     isDeactivated: !!integration.get('deactivated_datetime'),
                     channel: type,
+                    usecase: phoneNumber?.usecase,
                 }) as Map<any, any>
             }) as List<any>
         },

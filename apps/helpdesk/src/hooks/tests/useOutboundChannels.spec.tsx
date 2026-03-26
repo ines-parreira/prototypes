@@ -1,8 +1,10 @@
 // sort-imports-ignore
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import React from 'react'
 
+import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -11,6 +13,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
+import { PhoneUseCase } from 'business/twilio'
 import { applications as mockApplications } from 'fixtures/applications'
 import { channels as mockChannels } from 'fixtures/channels'
 import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
@@ -692,6 +695,80 @@ describe('useSendersForSelectedChannel()', () => {
                     },
                 ])
             })
+        })
+    })
+
+    describe('marketing phone number filtering', () => {
+        const createSmsStore = () =>
+            configureMockStore()({
+                newMessage: fromJS({
+                    newMessage: {
+                        source: {
+                            type: 'sms',
+                        },
+                    },
+                }),
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            id: 1,
+                            type: 'sms',
+                            name: 'Standard SMS',
+                            meta: {
+                                phone_number_id: 101,
+                            },
+                        },
+                        {
+                            id: 2,
+                            type: 'sms',
+                            name: 'Marketing SMS',
+                            meta: {
+                                phone_number_id: 102,
+                            },
+                        },
+                    ],
+                }),
+                entities: {
+                    newPhoneNumbers: {
+                        101: {
+                            id: 101,
+                            name: 'Standard Phone',
+                            phone_number: '+1234567890',
+                            usecase: PhoneUseCase.Standard,
+                        },
+                        102: {
+                            id: 102,
+                            name: 'Marketing Phone',
+                            phone_number: '+0987654321',
+                            usecase: PhoneUseCase.Marketing,
+                        },
+                    },
+                },
+            })
+
+        it('should filter out marketing phone numbers when feature flag is enabled', () => {
+            mockFeatureFlags({
+                [FeatureFlagKey.MarketingPhoneNumber]: true,
+            })
+
+            const store = createSmsStore()
+            const { result } = renderHookWithStore(store)
+
+            expect(result.current?.senders).toHaveLength(1)
+            expect(result.current?.senders[0]).toMatchObject({
+                address: '+1234567890',
+            })
+        })
+
+        it('should show all phone numbers when feature flag is disabled', () => {
+            mockFeatureFlags({
+                [FeatureFlagKey.MarketingPhoneNumber]: false,
+            })
+
+            const store = createSmsStore()
+            const { result } = renderHookWithStore(store)
+
+            expect(result.current?.senders).toHaveLength(2)
         })
     })
 })

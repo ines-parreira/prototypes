@@ -1,17 +1,21 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { FormField } from '@repo/forms'
 import { useWatch } from 'react-hook-form'
 
 import { LegacyBanner as Banner } from '@gorgias/axiom'
+import type { Integration } from '@gorgias/helpdesk-queries'
 import { useListIntegrations } from '@gorgias/helpdesk-queries'
 import type { SendToSMSStep } from '@gorgias/helpdesk-types'
 import { CustomRecordingType } from '@gorgias/helpdesk-types'
 import { validateVoiceMessage } from '@gorgias/helpdesk-validators'
 
+import { PhoneUseCase } from 'business/twilio'
 import type { NodeProps } from 'core/ui/flows'
 import { StepCardIcon } from 'core/ui/flows/components/StepCardIcon'
 import useAppSelector from 'hooks/useAppSelector'
+import type { NewPhoneNumber } from 'models/phoneNumber/types'
 import TextArea from 'pages/common/forms/TextArea'
 import SmsIntegrationSelect from 'pages/integrations/integration/components/sms/SmsIntegrationSelect'
 import { getIntegrationName } from 'pages/integrations/integration/components/sms/utils'
@@ -23,15 +27,43 @@ import { VoiceStepNode } from './VoiceStepNode'
 
 import css from './VoiceStepNode.less'
 
+function isMarketingIntegration(
+    integration: Integration,
+    phoneNumbers: Record<number, NewPhoneNumber>,
+): boolean {
+    if (typeof integration.meta?.phone_number_id !== 'number') {
+        return false
+    }
+    const phoneNumber = phoneNumbers[integration.meta.phone_number_id]
+    return phoneNumber?.usecase === PhoneUseCase.Marketing
+}
+
 export function SendToSMSNode(props: NodeProps<SendToSMSNode>) {
     const { id } = props.data
     const step: SendToSMSStep | null = useWatch({ name: `steps.${id}` })
+
+    const isMarketingPhoneNumberEnabled = useFlag(
+        FeatureFlagKey.MarketingPhoneNumber,
+    )
 
     // we don't have the API exposed to get the phone numbers, so we use the selector
     const phoneNumbers = useAppSelector(getNewPhoneNumbers)
 
     const { data: smsIntegrationsData } = useListIntegrations({ type: 'sms' })
-    const smsIntegrations = smsIntegrationsData?.data?.data || []
+    const allSmsIntegrations = smsIntegrationsData?.data?.data
+
+    const smsIntegrations = useMemo(() => {
+        if (!allSmsIntegrations) {
+            return []
+        }
+        if (!isMarketingPhoneNumberEnabled) {
+            return allSmsIntegrations
+        }
+        return allSmsIntegrations.filter(
+            (integration) => !isMarketingIntegration(integration, phoneNumbers),
+        )
+    }, [allSmsIntegrations, phoneNumbers, isMarketingPhoneNumberEnabled])
+
     const chosenSmsIntegration = smsIntegrations.find(
         (integration) => integration.id === step?.sms_integration_id,
     )
