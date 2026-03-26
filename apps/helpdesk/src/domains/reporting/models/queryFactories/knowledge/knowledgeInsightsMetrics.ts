@@ -66,7 +66,7 @@ export type KnowledgeIntentMetric = {
 type ResourceMetricsParams = {
     resourceSourceId: number
     resourceSourceSetId: number
-    shopIntegrationId: number
+    shopIntegrationId?: number
     timezone: string
     enabled?: boolean
     dateRange: {
@@ -87,7 +87,7 @@ type ResourceMetricsResult = {
 }
 
 type AllResourcesMetricsParams = {
-    shopIntegrationId: number
+    shopIntegrationId?: number
     timezone: string
     enabled?: boolean
     loadIntents?: boolean
@@ -566,10 +566,12 @@ export const useResourceMetrics = ({
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [String(resourceSourceSetId)],
             },
-            [FilterKey.Stores]: {
-                operator: LogicalOperatorEnum.ONE_OF,
-                values: [shopIntegrationId],
-            },
+            ...(shopIntegrationId && {
+                [FilterKey.Stores]: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [shopIntegrationId],
+                },
+            }),
         }
     }, [resourceSourceId, resourceSourceSetId, shopIntegrationId, dateRange])
 
@@ -911,10 +913,12 @@ export const useAllResourcesMetrics = ({
                 start_datetime: dateRange.start_datetime,
                 end_datetime: dateRange.end_datetime,
             },
-            [FilterKey.Stores]: {
-                operator: LogicalOperatorEnum.ONE_OF,
-                values: [shopIntegrationId],
-            },
+            ...(shopIntegrationId && {
+                [FilterKey.Stores]: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [shopIntegrationId],
+                },
+            }),
         }
     }, [shopIntegrationId, dateRange])
 
@@ -1135,10 +1139,12 @@ export function useRecentTickets({
                 start_datetime: dateRange.start_datetime,
                 end_datetime: dateRange.end_datetime,
             },
-            [FilterKey.Stores]: {
-                operator: LogicalOperatorEnum.ONE_OF,
-                values: [shopIntegrationId],
-            },
+            ...(shopIntegrationId && {
+                [FilterKey.Stores]: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [shopIntegrationId],
+                },
+            }),
         }
     }, [dateRange, shopIntegrationId])
 

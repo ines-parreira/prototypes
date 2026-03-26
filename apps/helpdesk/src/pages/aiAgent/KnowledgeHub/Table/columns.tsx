@@ -245,7 +245,7 @@ export const getColumns = (
                                     resourceSourceId: Number(row.id),
                                     resourceSourceSetId:
                                         metrics.resourceSourceSetId,
-                                    shopIntegrationId: shopIntegrationId ?? 0,
+                                    shopIntegrationId: shopIntegrationId,
                                     dateRange: metricsDateRange,
                                     ...(outcomeCustomFieldId && {
                                         outcomeCustomFieldId,
@@ -313,7 +313,7 @@ export const getColumns = (
                                     resourceSourceId: Number(row.id),
                                     resourceSourceSetId:
                                         metrics.resourceSourceSetId,
-                                    shopIntegrationId: shopIntegrationId ?? 0,
+                                    shopIntegrationId: shopIntegrationId,
                                     dateRange: metricsDateRange,
                                     ...(outcomeCustomFieldId && {
                                         outcomeCustomFieldId,
@@ -379,7 +379,7 @@ export const getColumns = (
                                     resourceSourceId: Number(row.id),
                                     resourceSourceSetId:
                                         metrics.resourceSourceSetId,
-                                    shopIntegrationId: shopIntegrationId ?? 0,
+                                    shopIntegrationId: shopIntegrationId,
                                     dateRange: metricsDateRange,
                                     ...(outcomeCustomFieldId && {
                                         outcomeCustomFieldId,

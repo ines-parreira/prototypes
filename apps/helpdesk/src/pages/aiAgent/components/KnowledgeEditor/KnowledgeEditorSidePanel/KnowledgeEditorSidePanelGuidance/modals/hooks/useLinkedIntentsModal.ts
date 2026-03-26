@@ -81,7 +81,8 @@ export const useLinkedIntentsModal = (isOpen: boolean, onClose: () => void) => {
                 storeState.guidanceArticle?.locale,
             guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id,
             guidanceShopIntegrationId:
-                storeState.config.guidanceHelpCenter?.shop_integration_id ?? 0,
+                storeState.config.guidanceHelpCenter?.shop_integration_id ??
+                undefined,
             selectedIntentIds:
                 storeState.state.guidance?.intents ?? EMPTY_INTENT_IDS,
         })),

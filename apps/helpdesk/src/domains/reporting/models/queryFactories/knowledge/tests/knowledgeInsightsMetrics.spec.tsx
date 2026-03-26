@@ -2797,6 +2797,33 @@ describe('useAllResourcesMetrics', () => {
 
         expect(result.current.data).toEqual([])
     })
+
+    it('should not include Stores filter when shopIntegrationId is not provided', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: { allData: [] },
+        })
+
+        renderHook(
+            () =>
+                useAllResourcesMetrics({
+                    timezone: 'America/New_York',
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        const firstCallQuery = (useMetricPerDimensionV2 as jest.Mock).mock
+            .calls[0][0]
+        expect(firstCallQuery.filters).not.toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    member: 'TicketInsightsTask.shopIntegrationId',
+                }),
+            ]),
+        )
+    })
 })
 
 describe('createV1Query edge cases', () => {
@@ -3648,6 +3675,42 @@ describe('useRecentTickets', () => {
         )
 
         expect(result.current.data).toHaveLength(1)
+    })
+
+    it('should not add shopIntegrationId filter when shopIntegrationId is 0', () => {
+        ;(useMetricPerDimensionV2 as jest.Mock).mockReturnValue({
+            data: undefined,
+            isFetching: false,
+            isError: false,
+        })
+        ;(useGetTicket as jest.Mock).mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+        })
+
+        renderHook(
+            () =>
+                useRecentTickets({
+                    resourceSourceId: 100,
+                    resourceSourceSetId: 200,
+                    shopIntegrationId: 0,
+                    timezone: 'America/New_York',
+                    enabled: true,
+                    dateRange: testDateRange,
+                }),
+            { wrapper },
+        )
+
+        const queryPassedToMetric = (useMetricPerDimensionV2 as jest.Mock).mock
+            .calls[0][0]
+        expect(queryPassedToMetric.filters).not.toContainEqual(
+            expect.objectContaining({
+                member: 'TicketInsightsTask.shopIntegrationId',
+                values: ['0'],
+                operator: 'equals',
+            }),
+        )
     })
 })
 

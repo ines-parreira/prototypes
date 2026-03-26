@@ -157,7 +157,7 @@ export type KnowledgeMetrics = {
     metricName: KnowledgeMetric
     resourceSourceId: number
     resourceSourceSetId: number
-    shopIntegrationId: number
+    shopIntegrationId?: number
     outcomeCustomFieldId?: number
     intentCustomFieldId?: number
     dateRange: {

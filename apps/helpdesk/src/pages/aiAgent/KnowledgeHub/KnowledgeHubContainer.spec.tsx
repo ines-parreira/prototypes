@@ -2876,7 +2876,7 @@ describe('KnowledgeHubContainer', () => {
             renderComponent()
 
             expect(mockUseAllResourcesMetrics).toHaveBeenCalledWith({
-                shopIntegrationId: 0,
+                shopIntegrationId: undefined,
                 timezone: 'America/New_York',
                 enabled: false,
                 loadIntents: false,

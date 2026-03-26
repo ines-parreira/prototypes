@@ -235,7 +235,7 @@ export const KnowledgeHubContainer = () => {
     const metricsDateRange = useMemo(() => getLast28DaysDateRange(), [])
 
     const allResourcesMetrics = useAllResourcesMetrics({
-        shopIntegrationId: shopIntegrationId || 0,
+        shopIntegrationId: shopIntegrationId,
         timezone: timezone ?? 'UTC',
         enabled: !!shopIntegrationId,
         loadIntents: false,
