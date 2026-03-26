@@ -1,5 +1,3 @@
-import { useState } from 'react'
-
 import { Icon, StatusButton, Text } from '@gorgias/axiom'
 import type { User } from '@gorgias/helpdesk-queries'
 
@@ -11,21 +9,23 @@ import css from '../../../../../../components/TicketAssignee/components/SelectSt
 type BulkUserAssignSelectProps = {
     onChange: (user: User | null) => void | Promise<void>
     isDisabled?: boolean
+    isOpen: boolean
+    onOpenChange: (open: boolean) => void
 }
 
 export function BulkUserAssignSelect({
     onChange,
     isDisabled = false,
+    isOpen,
+    onOpenChange,
 }: BulkUserAssignSelectProps) {
-    const [isOpen, setIsOpen] = useState(false)
-
     return (
         <UserSelectBase
             value={null}
             onChange={onChange}
             isDisabled={isDisabled}
             isOpen={isOpen}
-            onOpenChange={setIsOpen}
+            onOpenChange={onOpenChange}
             aria-label="Assign agent"
             minWidth={SELECT_WIDTH}
             maxWidth={SELECT_WIDTH}

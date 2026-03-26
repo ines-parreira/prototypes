@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import {
     Button,
@@ -26,13 +26,16 @@ type TagOption = {
 type BulkAddTagSelectProps = {
     onChange: (tag: TicketTag) => void | Promise<void>
     isDisabled?: boolean
+    isOpen: boolean
+    onOpenChange: (open: boolean) => void
 }
 
 export function BulkAddTagSelect({
     onChange,
     isDisabled = false,
+    isOpen,
+    onOpenChange,
 }: BulkAddTagSelectProps) {
-    const [isOpen, setIsOpen] = useState(false)
     const { dispatchNotification } = useTicketsLegacyBridge()
     const { createTicketTag, isCreating } = useCreateTicketTag()
     const { tags, search, setSearch, isLoading, shouldLoadMore, onLoad } =
@@ -92,12 +95,12 @@ export function BulkAddTagSelect({
 
     const handleOpenChange = useCallback(
         (open: boolean) => {
-            setIsOpen(open)
+            onOpenChange(open)
             if (!open) {
                 setSearch('')
             }
         },
-        [setSearch],
+        [onOpenChange, setSearch],
     )
 
     return (

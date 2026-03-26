@@ -59,13 +59,34 @@ const waitUntilLoaded = async () => {
     return trigger
 }
 
+const renderBulkUserAssignSelect = ({
+    onChange = vi.fn(),
+    isOpen = false,
+    onOpenChange = vi.fn(),
+}: {
+    onChange?: (typeof BulkUserAssignSelect extends (props: infer P) => unknown
+        ? P
+        : never)['onChange']
+    isOpen?: boolean
+    onOpenChange?: (open: boolean) => void
+} = {}) =>
+    render(
+        <BulkUserAssignSelect
+            onChange={onChange}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+        />,
+    )
+
 describe('BulkUserAssignSelect', () => {
     it('calls onChange with the selected user', async () => {
         const onChange = vi.fn()
-        const { user } = render(<BulkUserAssignSelect onChange={onChange} />)
+        const { user } = renderBulkUserAssignSelect({
+            onChange,
+            isOpen: true,
+        })
 
-        const trigger = await waitUntilLoaded()
-        await user.click(trigger)
+        await waitUntilLoaded()
 
         const aliceOptions = await screen.findAllByText('Alice')
         await user.click(aliceOptions[aliceOptions.length - 1])
@@ -76,21 +97,39 @@ describe('BulkUserAssignSelect', () => {
     })
 
     it('clears search when dropdown is closed', async () => {
-        const { user } = render(<BulkUserAssignSelect onChange={vi.fn()} />)
+        const onOpenChange = vi.fn()
+        const { user, rerender } = renderBulkUserAssignSelect({
+            isOpen: true,
+            onOpenChange,
+        })
 
         const trigger = await waitUntilLoaded()
-        await user.click(trigger)
 
         const searchInput = await screen.findByRole('searchbox')
         await user.type(searchInput, 'Ali')
         expect(searchInput).toHaveValue('Ali')
 
         await user.click(trigger)
+        expect(onOpenChange).toHaveBeenCalledWith(false)
+
+        rerender(
+            <BulkUserAssignSelect
+                onChange={vi.fn()}
+                isOpen={false}
+                onOpenChange={onOpenChange}
+            />,
+        )
         await waitFor(() => {
             expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
         })
 
-        await user.click(trigger)
+        rerender(
+            <BulkUserAssignSelect
+                onChange={vi.fn()}
+                isOpen={true}
+                onOpenChange={onOpenChange}
+            />,
+        )
         expect(await screen.findByRole('searchbox')).toHaveValue('')
     })
 })

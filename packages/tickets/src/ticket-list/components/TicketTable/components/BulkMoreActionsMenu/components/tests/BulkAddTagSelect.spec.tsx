@@ -50,37 +50,52 @@ beforeEach(() => {
 
 const getAddTagTrigger = () => screen.getByRole('button', { name: /^add tag/i })
 
-const openAndWaitForOptions = async (
-    user: ReturnType<typeof render>['user'],
-) => {
-    const trigger = getAddTagTrigger()
-    await user.click(trigger)
+const renderBulkAddTagSelect = ({
+    onChange = vi.fn(),
+    isOpen = false,
+    onOpenChange = vi.fn(),
+}: {
+    onChange?: (typeof BulkAddTagSelect extends (props: infer P) => unknown
+        ? P
+        : never)['onChange']
+    isOpen?: boolean
+    onOpenChange?: (open: boolean) => void
+} = {}) =>
+    render(
+        <BulkAddTagSelect
+            onChange={onChange}
+            isOpen={isOpen}
+            onOpenChange={onOpenChange}
+        />,
+    )
+
+const waitForOptions = async () => {
     await waitFor(() => {
         expect(screen.getByRole('searchbox')).toBeInTheDocument()
     })
-    return trigger
 }
 
 describe('BulkAddTagSelect', () => {
     it('loads tags on render', () => {
-        render(<BulkAddTagSelect onChange={vi.fn()} />)
+        renderBulkAddTagSelect()
 
         expect(mockUseListTagsSearch).toHaveBeenCalledWith()
     })
 
     it('opens the dropdown when the trigger is clicked', async () => {
-        const { user } = render(<BulkAddTagSelect onChange={vi.fn()} />)
+        const onOpenChange = vi.fn()
+        const { user } = renderBulkAddTagSelect({ onOpenChange })
 
-        await openAndWaitForOptions(user)
+        await user.click(getAddTagTrigger())
 
-        expect(screen.getByRole('searchbox')).toBeInTheDocument()
+        expect(onOpenChange).toHaveBeenCalledWith(true)
     })
 
     it('calls onChange with the selected tag', async () => {
         const onChange = vi.fn()
-        const { user } = render(<BulkAddTagSelect onChange={onChange} />)
+        const { user } = renderBulkAddTagSelect({ onChange, isOpen: true })
 
-        await openAndWaitForOptions(user)
+        await waitForOptions()
         const vipOptions = await screen.findAllByText('VIP')
         await user.click(vipOptions[vipOptions.length - 1])
 
@@ -99,9 +114,9 @@ describe('BulkAddTagSelect', () => {
             onLoad: vi.fn(),
         } as unknown as ReturnType<typeof useListTagsSearch>)
 
-        const { user } = render(<BulkAddTagSelect onChange={vi.fn()} />)
+        renderBulkAddTagSelect({ isOpen: true })
 
-        await openAndWaitForOptions(user)
+        await waitForOptions()
 
         await waitFor(() => {
             expect(screen.getByText('Create tag:')).toBeInTheDocument()
@@ -119,9 +134,9 @@ describe('BulkAddTagSelect', () => {
             onLoad: vi.fn(),
         } as unknown as ReturnType<typeof useListTagsSearch>)
 
-        const { user } = render(<BulkAddTagSelect onChange={vi.fn()} />)
+        renderBulkAddTagSelect({ isOpen: true })
 
-        await openAndWaitForOptions(user)
+        await waitForOptions()
 
         expect(screen.queryByText('Create tag:')).not.toBeInTheDocument()
     })
@@ -143,9 +158,9 @@ describe('BulkAddTagSelect', () => {
         } as unknown as ReturnType<typeof useListTagsSearch>)
 
         const onChange = vi.fn()
-        const { user } = render(<BulkAddTagSelect onChange={onChange} />)
+        const { user } = renderBulkAddTagSelect({ onChange, isOpen: true })
 
-        await openAndWaitForOptions(user)
+        await waitForOptions()
         await waitFor(() => {
             expect(screen.getByText('Create tag:')).toBeInTheDocument()
         })
@@ -160,6 +175,7 @@ describe('BulkAddTagSelect', () => {
 
     it('clears search when dropdown is closed', async () => {
         const mockSetSearch = vi.fn()
+        const onOpenChange = vi.fn()
         mockUseListTagsSearch.mockReturnValue({
             tags: [tag1, tag2],
             search: '',
@@ -169,14 +185,15 @@ describe('BulkAddTagSelect', () => {
             onLoad: vi.fn(),
         } as unknown as ReturnType<typeof useListTagsSearch>)
 
-        const { user } = render(<BulkAddTagSelect onChange={vi.fn()} />)
+        const { user } = renderBulkAddTagSelect({
+            isOpen: true,
+            onOpenChange,
+        })
 
-        await openAndWaitForOptions(user)
+        await waitForOptions()
         await user.keyboard('{Escape}')
 
-        await waitFor(() => {
-            expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
-        })
+        expect(onOpenChange).toHaveBeenCalledWith(false)
         expect(mockSetSearch).toHaveBeenCalledWith('')
     })
 })

@@ -17,6 +17,10 @@ type Props = {
     viewId: number
     selectedCount: number
     isDisabled: boolean
+    isAssignUserOpen: boolean
+    onAssignUserOpenChange: (open: boolean) => void
+    isAddTagOpen: boolean
+    onAddTagOpenChange: (open: boolean) => void
     onSetStatus: (status: TicketStatus) => void | Promise<void>
     onAssignUser: (user: User | null) => void | Promise<void>
     onAssignTeam: (team: Team | null) => void | Promise<void>
@@ -35,6 +39,10 @@ export function TicketTableBulkActions({
     viewId,
     selectedCount,
     isDisabled,
+    isAssignUserOpen,
+    onAssignUserOpenChange,
+    isAddTagOpen,
+    onAddTagOpenChange,
     onSetStatus,
     onAssignUser,
     onAssignTeam,
@@ -60,6 +68,8 @@ export function TicketTableBulkActions({
                         <BulkUserAssignSelect
                             onChange={onAssignUser}
                             isDisabled={isDisabled}
+                            isOpen={isAssignUserOpen}
+                            onOpenChange={onAssignUserOpenChange}
                         />
                         <BulkTeamAssignSelect
                             onChange={onAssignTeam}
@@ -68,6 +78,8 @@ export function TicketTableBulkActions({
                         <BulkAddTagSelect
                             onChange={onAddTag}
                             isDisabled={isDisabled}
+                            isOpen={isAddTagOpen}
+                            onOpenChange={onAddTagOpenChange}
                         />
                         <BulkMoreActionsMenu
                             viewId={viewId}

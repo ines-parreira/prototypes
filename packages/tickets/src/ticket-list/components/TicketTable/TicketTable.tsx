@@ -15,10 +15,13 @@ import {
     EmptyViewsState,
     isInboxView as getIsInboxView,
 } from '../../../utils/views'
+import { useBulkActionMenuState } from '../../hooks/useBulkActionMenuState'
+import { useIsTrashLikeView } from '../../hooks/useIsTrashLikeView'
 import { useMarkTicketAsRead } from '../../hooks/useMarkTicketAsRead'
 import { useSortOrder } from '../../hooks/useSortOrder'
 import { useTicketListActions } from '../../hooks/useTicketListActions'
 import { useTicketsList } from '../../hooks/useTicketsList'
+import { useTicketTableBulkActionShortcuts } from '../../hooks/useTicketTableBulkActionShortcuts'
 import { useTicketTableColumnVisibility } from '../../hooks/useTicketTableColumnVisibility'
 import { useViewVisibleTickets } from '../../hooks/useViewVisibleTickets'
 import { getPlaceholderKind } from '../../utils/getPlaceholderKind'
@@ -247,15 +250,42 @@ export function TicketTable({
         onActionComplete: clearSelection,
         onApplyMacro,
     })
-
+    const { canUseRestrictedBulkActions } = useBulkActionMenuState()
+    const isTrashLikeView = useIsTrashLikeView(viewId)
+    const hasSelection = selectedTicketIds.size > 0
+    const [isAssignUserOpen, setIsAssignUserOpen] = useState(false)
+    const [isAddTagOpen, setIsAddTagOpen] = useState(false)
     useEffect(() => {
         if (
             previousDisplayedTicketIdsKey !== undefined &&
             previousDisplayedTicketIdsKey !== displayedTicketIdsKey
         ) {
             clearSelection()
+            setIsAssignUserOpen(false)
+            setIsAddTagOpen(false)
         }
     }, [clearSelection, displayedTicketIdsKey, previousDisplayedTicketIdsKey])
+
+    useTicketTableBulkActionShortcuts({
+        hasSelection,
+        isBulkActionLoading,
+        canUseRestrictedBulkActions,
+        isTrashLikeView,
+        handleOpenAssignUser: () => {
+            setIsAddTagOpen(false)
+            setIsAssignUserOpen(true)
+        },
+        handleOpenTags: () => {
+            setIsAssignUserOpen(false)
+            setIsAddTagOpen(true)
+        },
+        handleApplyMacro,
+        handleSetStatus,
+        handleMarkAsRead,
+        handleMarkAsUnread,
+        handleMoveToTrash,
+        handleDeleteForever,
+    })
 
     const handleUndeleteFromTrashView = useCallback(async () => {
         await handleUndelete({ removeFromCurrentViewCache: true })
@@ -327,6 +357,10 @@ export function TicketTable({
                     viewId={viewId}
                     selectedCount={selectedTicketIds.size}
                     isDisabled={isBulkActionLoading}
+                    isAssignUserOpen={isAssignUserOpen}
+                    onAssignUserOpenChange={setIsAssignUserOpen}
+                    isAddTagOpen={isAddTagOpen}
+                    onAddTagOpenChange={setIsAddTagOpen}
                     onSetStatus={handleSetStatus}
                     onAssignUser={handleAssignUser}
                     onAssignTeam={handleAssignTeam}
