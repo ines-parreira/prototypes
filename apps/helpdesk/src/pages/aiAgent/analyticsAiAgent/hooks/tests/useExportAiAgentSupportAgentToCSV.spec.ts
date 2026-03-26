@@ -1,4 +1,4 @@
-import { useFlagWithLoading } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { act, renderHook } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
@@ -6,6 +6,7 @@ import { useStatsFilters } from 'domains/reporting/hooks/support-performance/use
 import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
 import { useDownloadSupportAgentChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData'
+import { useDownloadSupportAgentsPerformanceByChannelData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentsPerformanceByChannelData'
 import { useDownloadSupportInteractionsByIntentData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsByIntentData'
 import { useDownloadSupportInteractionsTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportInteractionsTimeSeriesData'
 import { useExportAiAgentSupportAgentToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentSupportAgentToCSV'
@@ -24,6 +25,9 @@ jest.mock(
 )
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentChannelPerformanceData',
+)
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadSupportAgentsPerformanceByChannelData',
 )
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData',
@@ -45,6 +49,9 @@ const mockedUseDownloadSupportInteractionsTimeSeriesData = jest.mocked(
 )
 const mockedUseDownloadSupportAgentChannelPerformanceData = jest.mocked(
     useDownloadSupportAgentChannelPerformanceData,
+)
+const mockedUseDownloadSupportAgentsPerformanceByChannelData = jest.mocked(
+    useDownloadSupportAgentsPerformanceByChannelData,
 )
 const mockedUseDownloadIntentPerformanceData = jest.mocked(
     useDownloadIntentPerformanceData,
@@ -114,6 +121,15 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             isLoading: false,
         })
 
+        mockedUseDownloadSupportAgentsPerformanceByChannelData.mockReturnValue({
+            files: {
+                'support-agents-channel-performance.csv':
+                    'channel,interactions\nChat,900',
+            },
+            fileName: 'support-agents-channel-performance.csv',
+            isLoading: false,
+        })
+
         mockedUseDownloadIntentPerformanceData.mockReturnValue({
             files: {
                 'intent-performance.csv':
@@ -176,7 +192,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
     })
 
     it('should return isLoading as true when channel performance data is loading', () => {
-        mockedUseDownloadSupportAgentChannelPerformanceData.mockReturnValue({
+        mockedUseDownloadSupportAgentsPerformanceByChannelData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: true,
@@ -236,9 +252,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             ),
         ).toBe(true)
         expect(
-            fileNames.some((name) =>
-                name.includes('support-agent-channel-performance'),
-            ),
+            fileNames.some((name) => name.includes('channel-performance')),
         ).toBe(true)
         expect(
             fileNames.some((name) => name.includes('intent-performance')),
@@ -268,6 +282,82 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         )
     })
 
+    describe('channel data based on AiAgentAnalyticsDashboardsTables flag', () => {
+        it('uses support agents channel performance data when the tables flag is enabled', async () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useExportAiAgentSupportAgentToCSV(),
+            )
+
+            await act(async () => {
+                await result.current.triggerDownload()
+            })
+
+            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+            expect(
+                Object.keys(filesArg).some((name) =>
+                    name.includes('support-agents-channel-performance'),
+                ),
+            ).toBe(true)
+            expect(
+                Object.keys(filesArg).some(
+                    (name) => name === 'support-agent-channel-performance.csv',
+                ),
+            ).toBe(false)
+        })
+
+        it('uses legacy channel performance data when the tables flag is disabled', async () => {
+            mockUseFlagWithLoading.mockImplementation((flag) => ({
+                value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+                isLoading: false,
+            }))
+
+            const { result } = renderHook(() =>
+                useExportAiAgentSupportAgentToCSV(),
+            )
+
+            await act(async () => {
+                await result.current.triggerDownload()
+            })
+
+            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+            expect(
+                Object.keys(filesArg).some(
+                    (name) => name === 'support-agent-channel-performance.csv',
+                ),
+            ).toBe(true)
+            expect(
+                Object.keys(filesArg).some((name) =>
+                    name.includes('support-agents-channel-performance'),
+                ),
+            ).toBe(false)
+        })
+
+        it('reflects isLoading from legacy channel data when the tables flag is disabled', () => {
+            mockUseFlagWithLoading.mockImplementation((flag) => ({
+                value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+                isLoading: false,
+            }))
+            mockedUseDownloadSupportAgentChannelPerformanceData.mockReturnValue(
+                {
+                    files: {},
+                    fileName: '',
+                    isLoading: true,
+                },
+            )
+
+            const { result } = renderHook(() =>
+                useExportAiAgentSupportAgentToCSV(),
+            )
+
+            expect(result.current.isLoading).toBe(true)
+        })
+    })
+
     it('should handle empty download data files', async () => {
         mockedUseDownloadSupportInteractionsByIntentData.mockReturnValue({
             files: {},
@@ -279,7 +369,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             isLoading: false,
         })
 
-        mockedUseDownloadSupportAgentChannelPerformanceData.mockReturnValue({
+        mockedUseDownloadSupportAgentsPerformanceByChannelData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: false,

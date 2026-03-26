@@ -8,6 +8,8 @@ import {
     aiSalesAgentHandoverInteractionsPerChannelQueryFactoryV2,
     aiSalesAgentHandoverInteractionsV2QueryFactory,
     aiSupportHandoverInteractions,
+    aiSupportHandoverInteractionsPerChannel,
+    aiSupportHandoverInteractionsPerChannelQueryFactoryV2,
     aiSupportHandoverInteractionsV2QueryFactory,
     handoverInteractions,
     handoverInteractionsPerChannel,
@@ -204,6 +206,31 @@ describe('handoverInteractionsScope', () => {
         })
     })
 
+    describe('aiSupportHandoverInteractionsPerChannel', () => {
+        it('creates query with channel dimension and aiAgentSkill filter for ai-agent-support', () => {
+            const actual =
+                aiSupportHandoverInteractionsPerChannel.build(context)
+
+            expect(actual).toEqual({
+                metricName:
+                    'ai-agent-support-handover-interactions-per-channel',
+                scope: 'handover-interactions',
+                measures: ['handoverInteractionsCount'],
+                dimensions: ['channel'],
+                timezone: 'utc',
+                filters: [
+                    ...periodFilters,
+                    {
+                        member: 'aiAgentSkill',
+                        operator: 'one-of',
+                        values: ['ai-agent-support'],
+                    },
+                ],
+                time_dimensions: timeDimensions,
+            })
+        })
+    })
+
     describe('QueryV2Factory methods', () => {
         describe('handoverInteractionsV2QueryFactory', () => {
             it('returns the same result as calling build directly', () => {
@@ -270,6 +297,18 @@ describe('handoverInteractionsScope', () => {
                 expect(
                     aiAgentHandoverInteractionsPerIntentQueryFactoryV2(context),
                 ).toEqual(aiAgentHandoverInteractionsPerIntent.build(context))
+            })
+        })
+
+        describe('aiSupportHandoverInteractionsPerChannelQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                expect(
+                    aiSupportHandoverInteractionsPerChannelQueryFactoryV2(
+                        context,
+                    ),
+                ).toEqual(
+                    aiSupportHandoverInteractionsPerChannel.build(context),
+                )
             })
         })
     })

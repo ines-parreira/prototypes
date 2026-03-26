@@ -68,6 +68,14 @@ export const METRIC_NAMES = {
         'ai-agent-shopping-assistant-automated-interactions-per-channel',
     AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_PER_CHANNEL:
         'ai-agent-shopping-assistant-handover-interactions-per-channel',
+    AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_CHANNEL:
+        'ai-agent-support-automated-interactions-per-channel',
+    AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_CHANNEL:
+        'ai-agent-support-handover-interactions-per-channel',
+    AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL:
+        'ai-agent-support-agent-time-saved-per-channel',
+    AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_CHANNEL:
+        'ai-agent-support-agent-decrease-in-first-response-time-per-channel',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
         'ai-agent-handover-interactions-per-intent',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
@@ -994,6 +1002,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SALES_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_CHANNEL,
     ],
 
     // P5
@@ -1053,9 +1062,14 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.AiAgentAutomatedInteractions]: [
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
     ],
-    [MetricScope.AiAgentDecreaseInFirstResponseTime]: [],
-    [MetricScope.AiAgentTimeSaved]: [],
+    [MetricScope.AiAgentDecreaseInFirstResponseTime]: [
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_CHANNEL,
+    ],
+    [MetricScope.AiAgentTimeSaved]: [
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL,
+    ],
     [MetricScope.FlowDataset]: [
         METRIC_NAMES.FLOW_DATASET_HANDOVER_INTERACTIONS,
     ],

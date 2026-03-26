@@ -1,6 +1,13 @@
-import { aiAgentTimeSavedScope } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
+import {
+    aiAgentTimeSavedScope,
+    overallTimeSavedByAgentPerChannel,
+    overallTimeSavedByAgentPerChannelQueryFactoryV2,
+} from 'domains/reporting/models/scopes/aiAgentTimeSaved'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
-import type { ApiStatsFilters } from 'domains/reporting/models/stat/types'
+import type {
+    ApiStatsFilters,
+    StatsFilters,
+} from 'domains/reporting/models/stat/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 describe('aiAgentTimeSavedScope', () => {
@@ -142,5 +149,55 @@ describe('aiAgentTimeSavedScope', () => {
         expect(result).not.toContainEqual(
             expect.objectContaining({ member: 'integrationId' }),
         )
+    })
+})
+
+describe('overallTimeSavedByAgentPerChannel', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with correct metricName, scope, measures, dimensions, and aiAgentSkill filter', () => {
+        expect(overallTimeSavedByAgentPerChannel.build(context)).toEqual({
+            metricName: 'ai-agent-support-agent-time-saved-per-channel',
+            scope: 'ai-agent-time-saved',
+            measures: ['averageTimeSavedByAgent'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: [
+                ...periodFilters,
+                {
+                    member: 'aiAgentSkill',
+                    operator: 'one-of',
+                    values: ['ai-agent-support'],
+                },
+            ],
+        })
+    })
+
+    describe('overallTimeSavedByAgentPerChannelQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                overallTimeSavedByAgentPerChannelQueryFactoryV2(context),
+            ).toEqual(overallTimeSavedByAgentPerChannel.build(context))
+        })
     })
 })

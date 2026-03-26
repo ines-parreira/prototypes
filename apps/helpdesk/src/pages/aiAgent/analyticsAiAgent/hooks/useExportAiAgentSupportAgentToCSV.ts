@@ -12,6 +12,7 @@ import { saveZippedFiles } from 'utils/file'
 import { ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT } from '../config/aiAgentSupportAgentLayoutConfig'
 import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
 import { useDownloadSupportAgentChannelPerformanceData } from './useDownloadSupportAgentChannelPerformanceData'
+import { useDownloadSupportAgentsPerformanceByChannelData } from './useDownloadSupportAgentsPerformanceByChannelData'
 import { useDownloadSupportInteractionsByIntentData } from './useDownloadSupportInteractionsByIntentData'
 import { useDownloadSupportInteractionsTimeSeriesData } from './useDownloadSupportInteractionsTimeSeriesData'
 
@@ -22,6 +23,11 @@ export const useExportAiAgentSupportAgentToCSV = () => {
         value: isAnalyticsDashboardsTrendCardsEnabled,
         isLoading: isTrendCardsFlagLoading,
     } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+    const {
+        value: isAnalyticsDashboardsTablesEnabled,
+        isLoading: isTablesFFLoading,
+    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
+
     const { cleanStatsFilters } = useStatsFilters()
 
     const supportAgentDashboard = useMemo(
@@ -45,13 +51,18 @@ export const useExportAiAgentSupportAgentToCSV = () => {
         useDownloadSupportInteractionsByIntentData()
     const supportInteractionsTimeSeriesData =
         useDownloadSupportInteractionsTimeSeriesData()
-    const channelPerformanceData =
-        useDownloadSupportAgentChannelPerformanceData()
+    const allAgentsChannelData =
+        useDownloadSupportAgentsPerformanceByChannelData()
+    const legacyChannelData = useDownloadSupportAgentChannelPerformanceData()
+    const channelPerformanceData = isAnalyticsDashboardsTablesEnabled
+        ? allAgentsChannelData
+        : legacyChannelData
     const intentPerformanceData = useDownloadIntentPerformanceData()
 
     const isLoading =
         isKpiLoading ||
         isTrendCardsFlagLoading ||
+        isTablesFFLoading ||
         supportInteractionsByIntentData.isLoading ||
         supportInteractionsTimeSeriesData.isLoading ||
         channelPerformanceData.isLoading ||
