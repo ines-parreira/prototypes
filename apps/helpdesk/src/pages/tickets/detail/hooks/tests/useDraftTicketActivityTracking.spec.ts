@@ -1,11 +1,10 @@
+import * as activityTracker from '@repo/activity-tracker'
+import { ActivityEvents } from '@repo/activity-tracker'
 import { renderHook } from '@repo/testing'
-
-import * as activityTracker from 'services/activityTracker'
-import { ActivityEvents } from 'services/activityTracker'
 
 import useDraftTicketActivityTracking from '../useDraftTicketActivityTracking'
 
-jest.mock('services/activityTracker')
+jest.mock('@repo/activity-tracker')
 
 describe('useDraftTicketActivityTracking', () => {
     const mockLogActivityEvent = jest.spyOn(activityTracker, 'logActivityEvent')

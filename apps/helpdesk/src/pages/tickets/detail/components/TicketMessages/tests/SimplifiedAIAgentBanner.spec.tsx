@@ -1,3 +1,4 @@
+import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
@@ -15,7 +16,6 @@ import {
     useSubmitAIAgentTicketMessagesFeedback,
 } from 'models/aiAgentFeedback/queries'
 import type { TicketMessage } from 'models/ticket/types'
-import { isSessionImpersonated } from 'services/activityTracker/utils'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import SimplifiedAIAgentBanner from '../SimplifiedAIAgentBanner'
@@ -41,7 +41,7 @@ const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
 jest.mock('models/aiAgentFeedback/queries')
 jest.mock('hooks/useAppDispatch')
 jest.mock('../../../hooks/useAIAgentResourcesWithFeedback')
-jest.mock('services/activityTracker/utils', () => ({
+jest.mock('@repo/activity-tracker/utils', () => ({
     isSessionImpersonated: jest.fn(() => false),
 }))
 

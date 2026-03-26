@@ -67,6 +67,9 @@ catalogs:
     '@gorgias/realtime': '1.1.0'
   events:
     '@gorgias/events': '^0.14.1'
+  event-tracker:
+    '@gorgias/event-tracker-api': '1.2.0'
+    '@gorgias/event-tracker-browser': '2.0.4'
   react:
     react: '18.2.0'
     react-dom: '18.2.0'

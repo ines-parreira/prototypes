@@ -164,7 +164,7 @@ jest.mock('hooks/useRecentItems/useRecentItems', () => () => ({
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
-jest.mock('services/activityTracker')
+jest.mock('@repo/activity-tracker')
 
 jest.spyOn(customFieldsUtils, 'mergeFieldsStateWithMacroValues')
 const spiedMergeFieldsStateWithMacroValues = assumeMock(

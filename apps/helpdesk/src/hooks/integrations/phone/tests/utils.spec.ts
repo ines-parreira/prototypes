@@ -1,3 +1,5 @@
+import { ActivityEvents } from '@repo/activity-tracker'
+import * as activityTracker from '@repo/activity-tracker'
 import { reportError } from '@repo/logging'
 import * as envUtils from '@repo/utils'
 import { waitFor } from '@testing-library/react'
@@ -36,13 +38,11 @@ import {
 import { CALL_FAILED_MICROPHONE_PERMISSION_ERROR } from 'pages/common/components/PhoneIntegrationBar/constants'
 import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
-import { ActivityEvents } from 'services/activityTracker'
-import * as activityTracker from 'services/activityTracker'
 
 jest.mock('common/notifications')
 jest.mock('@repo/logging')
 jest.mock('@twilio/voice-sdk')
-jest.mock('services/activityTracker')
+jest.mock('@repo/activity-tracker')
 jest.mock('api/queryClient')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),

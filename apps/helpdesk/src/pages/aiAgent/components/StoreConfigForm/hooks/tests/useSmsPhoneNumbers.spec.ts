@@ -1,13 +1,13 @@
+import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
-import { isSessionImpersonated } from 'services/activityTracker/utils'
 
 import { useSmsPhoneNumbers } from '../useSmsPhoneNumbers'
 
 jest.mock('hooks/useAppSelector')
-jest.mock('services/activityTracker/utils')
+jest.mock('@repo/activity-tracker/utils')
 
 const mockUseAppSelector = jest.mocked(useAppSelector)
 const mockIsSessionImpersonated = jest.mocked(isSessionImpersonated)

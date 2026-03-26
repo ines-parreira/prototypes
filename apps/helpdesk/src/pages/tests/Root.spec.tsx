@@ -1,11 +1,11 @@
 import type { ReactNode } from 'react'
 
+import activityTracker from '@repo/activity-tracker'
 import { history } from '@repo/routing'
 import { render, screen } from '@testing-library/react'
 import type { Location } from 'history'
 import type { Store } from 'redux'
 
-import activityTracker from 'services/activityTracker'
 import type { RootState } from 'state/types'
 import type { GorgiasInitialState } from 'types'
 
@@ -62,7 +62,7 @@ jest.mock('main/app', () => ({
     ),
 }))
 jest.mock('routes', () => () => <div>RoutesWrapper</div>)
-jest.mock('services/activityTracker', () => ({ createUserContext: jest.fn() }))
+jest.mock('@repo/activity-tracker', () => ({ createUserContext: jest.fn() }))
 jest.mock(
     'pages/common/components/CurrentUserRealtimeAvailabilityUpdates',
     () => ({

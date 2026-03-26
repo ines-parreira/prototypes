@@ -12,3 +12,4 @@ export {
     reportSentryError,
     unregisterAppActivityTrackerHooks,
 } from './activityTracker'
+export { checkIfTrackerIsEnabled, isSessionImpersonated } from './utils'

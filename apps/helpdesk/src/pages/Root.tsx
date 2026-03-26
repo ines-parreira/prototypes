@@ -1,5 +1,6 @@
 import { useLayoutEffect } from 'react'
 
+import activityTracker from '@repo/activity-tracker'
 import { FeatureFlagsProvider } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { envVars, NodeEnv } from '@repo/utils'
@@ -21,7 +22,6 @@ import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useCon
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 import RoutesWrapper from 'routes'
 import { useCanduRouter } from 'routes/hooks/useCanduRouter'
-import activityTracker from 'services/activityTracker'
 import type { RootState } from 'state/types'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 

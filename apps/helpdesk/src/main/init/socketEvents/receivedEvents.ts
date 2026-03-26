@@ -1,3 +1,4 @@
+import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
@@ -20,7 +21,6 @@ import type { UseListVoiceCalls } from 'models/voiceCall/queries'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import { isVoiceCall } from 'models/voiceCall/types'
 import { throttledUpdateCustomerCache } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers'
-import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
 import type { SocketManager } from 'services/socketManager/socketManager'
 import type {
     AccountUpdatedEvent,

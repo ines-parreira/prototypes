@@ -19,7 +19,7 @@ jest.mock('services/userActivityManager')
 jest.mock('state/currentUser/actions')
 jest.mock('state/views/actions')
 jest.mock('@repo/logging')
-jest.mock('services/activityTracker')
+jest.mock('@repo/activity-tracker')
 
 describe('useSharedLogic', () => {
     let dispatch: jest.Mock

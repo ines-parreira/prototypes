@@ -1,5 +1,6 @@
 import { useEffect, useMemo } from 'react'
 
+import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -14,7 +15,6 @@ import {
 } from 'models/ticket/predicates'
 import type { TicketMessage as TicketMessage_DEPRECATED } from 'models/ticket/types'
 import type { HighlightedElements } from 'pages/tickets/detail/components/AuditLogEvent'
-import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { AUTOMATION_BOT_EMAIL_ACROSS_ALL_ACCOUNTS } from 'state/agents/constants'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { shouldDisplayAuditLogEvents as getShouldDisplayAuditLogEvents } from 'state/ticket/selectors'

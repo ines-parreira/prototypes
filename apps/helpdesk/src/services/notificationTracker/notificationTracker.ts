@@ -1,9 +1,9 @@
+import { ingestionEndpoint, reportSentryError } from '@repo/activity-tracker'
 import { GorgiasAppAuthService } from '@repo/api-resources/gorgiasAppsAuth'
 
 import EventTracker from '@gorgias/event-tracker-api'
 
 import { UserRole } from 'config/types/user'
-import { ingestionEndpoint, reportSentryError } from 'services/activityTracker'
 
 import { checkIfAiAgentOnboardingNotificationIsEnabled } from './utils'
 

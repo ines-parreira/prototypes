@@ -28,8 +28,8 @@ import {
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import * as voiceCallTypes from 'models/voiceCall/types'
 import { history } from '@repo/routing'
-import * as activityTracker from 'services/activityTracker'
-import { ActivityEvents } from 'services/activityTracker'
+import * as activityTracker from '@repo/activity-tracker'
+import { ActivityEvents } from '@repo/activity-tracker'
 import browserNotification from 'services/browserNotification'
 import type {
     CustomerExternalDataUpdatedEvent,
@@ -87,7 +87,7 @@ jest.mock('state/views/actions')
 jest.mock('state/entities/viewsCount/actions')
 jest.mock('state/ticket/actions')
 jest.mock('state/currentUser/actions')
-jest.mock('services/activityTracker')
+jest.mock('@repo/activity-tracker')
 jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerInfo/helpers',
     () => ({

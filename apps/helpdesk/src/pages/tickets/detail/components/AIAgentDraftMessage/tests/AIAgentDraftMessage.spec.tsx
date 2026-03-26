@@ -1,3 +1,4 @@
+import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { useMeasure } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { NavigationProvider } from '@repo/navigation'
@@ -12,7 +13,6 @@ import scrollIntoView from 'scroll-into-view-if-needed'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { message } from 'models/ticket/tests/mocks'
 import { useAIAgentSendFeedback } from 'pages/tickets/detail/hooks/useAIAgentSendFeedback'
-import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import type { RootState } from 'state/types'
 import { getSelectedAIMessage } from 'state/ui/ticketAIAgentFeedback'
@@ -48,7 +48,7 @@ jest.mock('@repo/hooks', () => ({
     useMeasure: jest.fn(),
 }))
 
-jest.mock('services/activityTracker/utils', () => ({
+jest.mock('@repo/activity-tracker/utils', () => ({
     isSessionImpersonated: jest.fn(() => false),
 }))
 

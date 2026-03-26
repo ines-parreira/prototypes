@@ -1,4 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
+import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
 import client from '@repo/api-resources'
 import { logEvent, reportError, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
@@ -51,7 +52,6 @@ import type {
     AttachmentPosition,
     AttachmentType,
 } from 'pages/convert/campaigns/types/CampaignAttachment'
-import { ActivityEvents, logActivityEvent } from 'services/activityTracker'
 import { isNewChannel } from 'services/channels'
 import {
     getCurrentAccountState,

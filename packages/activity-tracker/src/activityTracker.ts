@@ -123,7 +123,9 @@ export const registerAppActivityTrackerHooks = async () => {
     if (isActivityTrackerEnabled) {
         unregisterBrowserHooks = activityTrackerInstance.registerBrowserHooks({
             startEvent: { eventTrigger: ActivityEvents.UserOpenedApp },
-            terminationEvent: { eventTrigger: ActivityEvents.UserClosedApp },
+            terminationEvent: {
+                eventTrigger: ActivityEvents.UserClosedApp,
+            },
             focusEvent: { eventTrigger: ActivityEvents.UserOpenedApp },
             blurEvent: { eventTrigger: ActivityEvents.UserClosedApp },
         })

@@ -1,10 +1,9 @@
+import * as activityTracker from '@repo/activity-tracker'
 import { renderHook } from '@repo/testing'
-
-import * as activityTracker from 'services/activityTracker'
 
 import useActivityTracker from '../useActivityTracker'
 
-jest.mock('services/activityTracker')
+jest.mock('@repo/activity-tracker')
 
 describe('useActivityTracking', () => {
     beforeEach(() => {

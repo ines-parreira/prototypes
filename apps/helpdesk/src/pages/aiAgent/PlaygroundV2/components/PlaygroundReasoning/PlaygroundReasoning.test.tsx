@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom'
 
+import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -17,7 +18,6 @@ import {
 
 import { user } from 'fixtures/users'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
-import { isSessionImpersonated } from 'services/activityTracker/utils'
 
 import type { PlaygroundReasoningStatelessProps } from './PlaygroundReasoning'
 import {
@@ -25,7 +25,7 @@ import {
     PlaygroundReasoningStateless,
 } from './PlaygroundReasoning'
 
-jest.mock('services/activityTracker/utils', () => ({
+jest.mock('@repo/activity-tracker/utils', () => ({
     isSessionImpersonated: jest.fn(() => false),
 }))
 

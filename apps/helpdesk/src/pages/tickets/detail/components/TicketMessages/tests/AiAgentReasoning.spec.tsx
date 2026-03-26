@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
@@ -30,7 +31,6 @@ import { KnowledgeSourceSideBarProvider } from 'pages/tickets/detail/components/
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { knowledgeResourceShouldBeLink } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
-import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
 import type { RootState, StoreDispatch } from 'state/types'
 
@@ -205,7 +205,7 @@ jest.mock('models/knowledgeService/queries', () => ({
     },
 }))
 
-jest.mock('services/activityTracker/utils', () => ({
+jest.mock('@repo/activity-tracker/utils', () => ({
     isSessionImpersonated: jest.fn(() => false),
 }))
 
@@ -1610,7 +1610,7 @@ describe('AiAgentReasoning', () => {
         it('should show execution ID when impersonated', () => {
             const originalIsSessionImpersonated = isSessionImpersonated
             jest.spyOn(
-                require('services/activityTracker/utils'),
+                require('@repo/activity-tracker/utils'),
                 'isSessionImpersonated',
             ).mockReturnValue(true)
 
@@ -1654,7 +1654,7 @@ describe('AiAgentReasoning', () => {
             ).toBeInTheDocument()
 
             jest.spyOn(
-                require('services/activityTracker/utils'),
+                require('@repo/activity-tracker/utils'),
                 'isSessionImpersonated',
             ).mockReturnValue(originalIsSessionImpersonated)
         })
@@ -1662,7 +1662,7 @@ describe('AiAgentReasoning', () => {
         it('should show execution ID in error state when impersonated but NOT show feedback component', () => {
             const originalIsSessionImpersonated = isSessionImpersonated
             jest.spyOn(
-                require('services/activityTracker/utils'),
+                require('@repo/activity-tracker/utils'),
                 'isSessionImpersonated',
             ).mockReturnValue(true)
 
@@ -1724,7 +1724,7 @@ describe('AiAgentReasoning', () => {
             ).not.toBeInTheDocument()
 
             jest.spyOn(
-                require('services/activityTracker/utils'),
+                require('@repo/activity-tracker/utils'),
                 'isSessionImpersonated',
             ).mockReturnValue(originalIsSessionImpersonated)
         })

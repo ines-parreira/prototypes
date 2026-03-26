@@ -1,0 +1,45 @@
+{
+    "name": "@repo/activity-tracker",
+    "version": "1.0.0",
+    "description": "Shared browser activity tracking package",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts",
+        "./utils": "./src/utils.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "lint:unused": "knip --directory ../.. --workspace @repo/activity-tracker --no-progress",
+        "test": "vitest run --configLoader=runner",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage --silent",
+        "test:watch": "vitest watch --configLoader=runner",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "@gorgias/event-tracker-api": "catalog:event-tracker",
+        "@gorgias/event-tracker-browser": "catalog:event-tracker",
+        "@repo/api-resources": "workspace:*",
+        "@repo/feature-flags": "workspace:*",
+        "@repo/logging": "workspace:*",
+        "@repo/utils": "workspace:*",
+        "axios": "^1.10.0"
+    },
+    "devDependencies": {
+        "@gorgias/event-tracker-api": "catalog:event-tracker",
+        "@gorgias/event-tracker-browser": "catalog:event-tracker",
+        "@repo/api-resources": "workspace:*",
+        "@repo/config": "workspace:*",
+        "@repo/feature-flags": "workspace:*",
+        "@repo/logging": "workspace:*",
+        "@repo/utils": "workspace:*",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@vitest/coverage-v8": "catalog:test",
+        "axios": "^1.10.0",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}

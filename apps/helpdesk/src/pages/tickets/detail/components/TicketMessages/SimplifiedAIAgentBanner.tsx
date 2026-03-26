@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { useCanAccessAIFeedback, useFeedbackTracking } from '@repo/ai-agent'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import classNames from 'classnames'
@@ -14,7 +15,6 @@ import FailedWorkflowMessage from 'pages/tickets/detail/components/TicketMessage
 import { getFailedWorkflowData } from 'pages/tickets/detail/components/TicketMessages/AiAgentFailedWorkflowMessage.util'
 import Body from 'pages/tickets/detail/components/TicketMessages/Body'
 import css from 'pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner.less'
-import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 export type SimplifiedAIAgentBannerProps = {

@@ -36,8 +36,8 @@ import type { PhoneNumber } from 'models/phoneNumber/types'
 import { SEARCH_ENDPOINT } from 'models/search/resources'
 import { SearchType } from 'models/search/types'
 import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
-import * as activityTracker from 'services/activityTracker'
-import { ActivityEvents } from 'services/activityTracker'
+import * as activityTracker from '@repo/activity-tracker'
+import { ActivityEvents } from '@repo/activity-tracker'
 import { AccountSettingType } from 'state/currentAccount/types'
 import * as integrationSelectors from 'state/integrations/selectors'
 import * as actions from 'state/newMessage/actions'
@@ -105,7 +105,7 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 
-jest.mock('services/activityTracker')
+jest.mock('@repo/activity-tracker')
 
 describe('actions', () => {
     let mockServer: MockAdapter

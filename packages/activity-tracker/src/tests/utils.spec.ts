@@ -1,17 +1,17 @@
-import { checkIfTrackerIsEnabled } from 'services/activityTracker/utils'
+import { checkIfTrackerIsEnabled } from '../utils'
 
-const variationMock = jest.fn()
-const waitForInitializationMock = jest.fn(() => Promise.resolve())
+const variationMock = vi.fn()
+const waitForInitializationMock = vi.fn(() => Promise.resolve())
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    getLDClient: jest.fn(() => ({
+vi.mock('@repo/feature-flags', async (importOriginal) => ({
+    ...(await importOriginal<typeof import('@repo/feature-flags')>()),
+    useFlag: vi.fn((flag, defaultValue) => defaultValue),
+    getLDClient: vi.fn(() => ({
         variation: variationMock,
         waitForInitialization: waitForInitializationMock,
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({})),
+        on: vi.fn(),
+        off: vi.fn(),
+        allFlags: vi.fn(() => ({})),
     })),
 }))
 

@@ -1,6 +1,12 @@
 import { useMemo, useState } from 'react'
 
 import {
+    ActivityEvents,
+    clearActivityTrackerSession,
+    logActivityEvent,
+    unregisterAppActivityTrackerHooks,
+} from '@repo/activity-tracker'
+import {
     useAgentPhoneStatus,
     useCustomAgentUnavailableStatusesFlag,
     UserInfoHeaderContainer,
@@ -21,12 +27,6 @@ import DropdownItemLabel from 'pages/common/components/dropdown/DropdownItemLabe
 import NoticeableIndicator from 'pages/common/components/NoticeableIndicator'
 import Screen from 'pages/common/components/screens/Screen'
 import Screens from 'pages/common/components/screens/Screens'
-import {
-    ActivityEvents,
-    clearActivityTrackerSession,
-    logActivityEvent,
-    unregisterAppActivityTrackerHooks,
-} from 'services/activityTracker'
 import { getCurrentUser, getCurrentUserId } from 'state/currentUser/selectors'
 
 import AvailabilityToggle from './AvailabilityToggle'

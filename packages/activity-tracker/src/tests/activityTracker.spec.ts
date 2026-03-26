@@ -1,5 +1,3 @@
-import { waitFor } from '@testing-library/react'
-
 import BrowserEventTracker from '@gorgias/event-tracker-browser'
 
 import {
@@ -7,34 +5,45 @@ import {
     AGENT_ACTIVITY_HEALTHCHECK_INTERVAL,
 } from '../constants'
 
-jest.mock('../utils', () => {
+type ActivityTrackerModule = typeof import('../activityTracker')
+
+vi.mock('../utils', () => {
     return {
-        checkIfTrackerIsEnabled: jest.fn().mockReturnValue(true),
+        checkIfTrackerIsEnabled: vi.fn().mockResolvedValue(true),
     }
 })
 
 describe('activityTracker', () => {
-    let activityTracker: typeof import('../activityTracker')
-    beforeEach(async () => {
-        document.hasFocus = jest.fn(() => true)
+    let activityTracker: ActivityTrackerModule
 
-        return import('../activityTracker').then((module) => {
-            jest.resetModules()
-            activityTracker = module
-        })
+    beforeEach(async () => {
+        vi.clearAllMocks()
+        vi.resetModules()
+        document.hasFocus = vi.fn(() => true)
+        activityTracker = await import('../activityTracker')
+    })
+
+    afterEach(async () => {
+        await activityTracker.unregisterAppActivityTrackerHooks()
+        vi.restoreAllMocks()
+        vi.useRealTimers()
     })
 
     it('should return an instance of BrowserEventTracker', () => {
-        expect(activityTracker.default).toBeInstanceOf(BrowserEventTracker)
+        expect(activityTracker.default.constructor.name).toBe(
+            BrowserEventTracker.name,
+        )
     })
 
     it('should log an event', async () => {
-        const logEventSpy = jest.spyOn(activityTracker.default, 'logEvent')
+        const logEventSpy = vi
+            .spyOn(activityTracker.default, 'logEvent')
+            .mockImplementation(() => undefined)
         activityTracker.logActivityEvent(
             ActivityEvents.UserStartedDraftingTicket,
         )
 
-        await waitFor(() => {
+        await vi.waitFor(() => {
             expect(logEventSpy).toHaveBeenCalledWith(
                 ActivityEvents.UserStartedDraftingTicket,
             )
@@ -42,7 +51,7 @@ describe('activityTracker', () => {
     })
 
     it('should register activity browser event hooks', async () => {
-        const registerBrowserHooksSpy = jest.spyOn(
+        const registerBrowserHooksSpy = vi.spyOn(
             activityTracker.default,
             'registerBrowserHooks',
         )
@@ -60,12 +69,12 @@ describe('activityTracker', () => {
     })
 
     it('should unregister activity browser event hooks', async () => {
-        const mockUnregisterReturn = jest.fn()
-        const registerBrowserHooksSpy = jest.spyOn(
+        const mockUnregisterReturn = vi.fn()
+        const registerBrowserHooksSpy = vi.spyOn(
             activityTracker.default,
             'registerBrowserHooks',
         )
-        registerBrowserHooksSpy.mockReturnValue(mockUnregisterReturn)
+        registerBrowserHooksSpy.mockReturnValue(mockUnregisterReturn as never)
 
         const unregister = await activityTracker.registerActivityTrackerHooks({
             startEvent: {
@@ -78,7 +87,7 @@ describe('activityTracker', () => {
     })
 
     it('should register app activity browser event hooks', async () => {
-        const registerBrowserHooksSpy = jest.spyOn(
+        const registerBrowserHooksSpy = vi.spyOn(
             activityTracker.default,
             'registerBrowserHooks',
         )
@@ -101,12 +110,12 @@ describe('activityTracker', () => {
     })
 
     it('should unregister app activity browser event hooks', async () => {
-        const mockUnregisterReturn = jest.fn()
-        const registerBrowserHooksSpy = jest.spyOn(
+        const mockUnregisterReturn = vi.fn()
+        const registerBrowserHooksSpy = vi.spyOn(
             activityTracker.default,
             'registerBrowserHooks',
         )
-        registerBrowserHooksSpy.mockReturnValue(mockUnregisterReturn)
+        registerBrowserHooksSpy.mockReturnValue(mockUnregisterReturn as never)
 
         await activityTracker.registerAppActivityTrackerHooks()
         await activityTracker.unregisterAppActivityTrackerHooks()
@@ -115,27 +124,25 @@ describe('activityTracker', () => {
     })
 
     it('should not perform a healthcheck if the window is not focused', async () => {
-        const eventTrackerLogEventSpy = jest.spyOn(
-            activityTracker.default,
-            'logEvent',
-        )
-        document.hasFocus = jest.fn(() => false)
-        jest.useFakeTimers()
+        const eventTrackerLogEventSpy = vi
+            .spyOn(activityTracker.default, 'logEvent')
+            .mockImplementation(() => undefined)
+        document.hasFocus = vi.fn(() => false)
+        vi.useFakeTimers()
 
         await activityTracker.registerAppActivityTrackerHooks()
-        jest.advanceTimersByTime(AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
+        vi.advanceTimersByTime(AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
 
         expect(eventTrackerLogEventSpy).not.toHaveBeenCalled()
     })
 
     it('should perform a healthcheck every AGENT_ACTIVITY_HEALTHCHECK_INTERVAL', async () => {
-        const eventTrackerLogEventSpy = jest.spyOn(
-            activityTracker.default,
-            'logEvent',
-        )
-        jest.useFakeTimers()
+        const eventTrackerLogEventSpy = vi
+            .spyOn(activityTracker.default, 'logEvent')
+            .mockImplementation(() => undefined)
+        vi.useFakeTimers()
         await activityTracker.registerAppActivityTrackerHooks()
-        jest.advanceTimersByTime(AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
+        vi.advanceTimersByTime(AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
 
         expect(eventTrackerLogEventSpy).toHaveBeenCalledTimes(1)
         expect(eventTrackerLogEventSpy).toHaveBeenCalledWith(
@@ -144,14 +151,13 @@ describe('activityTracker', () => {
     })
 
     it('should stop the healthcheck', async () => {
-        const eventTrackerLogEventSpy = jest.spyOn(
-            activityTracker.default,
-            'logEvent',
-        )
-        jest.useFakeTimers()
+        const eventTrackerLogEventSpy = vi
+            .spyOn(activityTracker.default, 'logEvent')
+            .mockImplementation(() => undefined)
+        vi.useFakeTimers()
 
         await activityTracker.registerAppActivityTrackerHooks()
-        jest.advanceTimersByTime(AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
+        vi.advanceTimersByTime(AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
 
         expect(eventTrackerLogEventSpy).toHaveBeenCalledTimes(1)
         expect(eventTrackerLogEventSpy).toHaveBeenCalledWith(
@@ -160,13 +166,13 @@ describe('activityTracker', () => {
 
         eventTrackerLogEventSpy.mockClear()
         await activityTracker.unregisterAppActivityTrackerHooks()
-        jest.advanceTimersByTime(AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
+        vi.advanceTimersByTime(AGENT_ACTIVITY_HEALTHCHECK_INTERVAL)
 
         expect(eventTrackerLogEventSpy).not.toHaveBeenCalled()
     })
 
     it('should clear activity tracker session', async () => {
-        const clearSessionSpy = jest.spyOn(
+        const clearSessionSpy = vi.spyOn(
             activityTracker.default,
             'clearSession',
         )

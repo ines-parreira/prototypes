@@ -21,7 +21,7 @@ jest.mock(
         }) as Record<string, unknown>,
 )
 
-jest.mock('services/activityTracker')
+jest.mock('@repo/activity-tracker')
 
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourceSideBarProvider',

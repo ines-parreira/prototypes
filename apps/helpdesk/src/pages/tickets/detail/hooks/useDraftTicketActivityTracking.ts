@@ -4,7 +4,7 @@ import {
     ActivityEvents,
     logActivityEvent,
     registerActivityTrackerHooks,
-} from 'services/activityTracker'
+} from '@repo/activity-tracker'
 
 export default function useDraftTicketActivityTracking(
     draftTicketId: string | null,

@@ -1,3 +1,5 @@
+import { ActivityEvents } from '@repo/activity-tracker'
+import * as activityTracker from '@repo/activity-tracker'
 import { Call } from '@twilio/voice-sdk'
 import { EventEmitter } from 'events'
 import { fromJS } from 'immutable'
@@ -15,13 +17,11 @@ import {
 } from 'hooks/integrations/phone/twilioCall.utils'
 import type { VoiceDeviceActions } from 'pages/integrations/integration/components/voice/types'
 import slice from 'pages/integrations/integration/components/voice/voiceDeviceSlice'
-import { ActivityEvents } from 'services/activityTracker'
-import * as activityTracker from 'services/activityTracker'
 
 jest.mock('common/notifications')
 jest.mock('@repo/logging')
 jest.mock('@twilio/voice-sdk')
-jest.mock('services/activityTracker')
+jest.mock('@repo/activity-tracker')
 jest.mock('api/queryClient')
 
 const dispatch = jest.fn()

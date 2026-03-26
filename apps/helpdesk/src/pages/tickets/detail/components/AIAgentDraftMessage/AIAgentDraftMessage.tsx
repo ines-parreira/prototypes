@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { fromJS } from 'immutable'
 import scrollIntoView from 'scroll-into-view-if-needed'
@@ -11,7 +12,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 import type { TicketMessage } from 'models/ticket/types'
-import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { applyMacro, applyMacroAction } from 'state/ticket/actions'
 

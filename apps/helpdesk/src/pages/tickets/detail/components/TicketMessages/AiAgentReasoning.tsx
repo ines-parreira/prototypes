@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import type { AiAgentReasoningState } from '@repo/ai-agent'
 import {
     AiAgentMessageType,
@@ -17,7 +18,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import type { TicketMessage } from 'models/ticket/types'
 import { useAiAgentReasoning } from 'pages/aiAgent/hooks/useAiAgentReasoning'
 import { useIsEvoliTicket } from 'pages/tickets/detail/hooks/useIsEvoliTicket'
-import { isSessionImpersonated } from 'services/activityTracker/utils'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getTicketState } from 'state/ticket/selectors'
 

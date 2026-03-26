@@ -1,5 +1,11 @@
 import type { ReactNode } from 'react'
 
+import {
+    ActivityEvents,
+    clearActivityTrackerSession,
+    logActivityEvent,
+    unregisterAppActivityTrackerHooks,
+} from '@repo/activity-tracker'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { shortcutManager } from '@repo/utils'
@@ -9,12 +15,6 @@ import { StaticRouter } from 'react-router-dom'
 
 import { THEME_NAME, themeTokenMap, useTheme } from 'core/theme'
 import { useAxiomMigration } from 'hooks/useAxiomMigration'
-import {
-    ActivityEvents,
-    clearActivityTrackerSession,
-    logActivityEvent,
-    unregisterAppActivityTrackerHooks,
-} from 'services/activityTracker'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { ignoreHTML } from 'tests/ignoreHTML'
 
@@ -36,8 +36,8 @@ jest.mock('hooks/useAppSelector', () => (fn: () => void) => fn())
 jest.mock('hooks/useAxiomMigration', () => ({ useAxiomMigration: jest.fn() }))
 const useAxiomMigrationMock = useAxiomMigration as jest.Mock
 
-jest.mock('services/activityTracker', () => ({
-    ...jest.requireActual('services/activityTracker'),
+jest.mock('@repo/activity-tracker', () => ({
+    ...jest.requireActual('@repo/activity-tracker'),
     clearActivityTrackerSession: jest.fn(),
     logActivityEvent: jest.fn(),
     unregisterAppActivityTrackerHooks: jest.fn(),

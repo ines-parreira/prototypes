@@ -1,9 +1,8 @@
-import { useEffectOnce } from '@repo/hooks'
-
 import {
     registerAppActivityTrackerHooks,
     unregisterAppActivityTrackerHooks,
-} from 'services/activityTracker'
+} from '@repo/activity-tracker'
+import { useEffectOnce } from '@repo/hooks'
 
 export default function useActivityTracker() {
     useEffectOnce(() => {
