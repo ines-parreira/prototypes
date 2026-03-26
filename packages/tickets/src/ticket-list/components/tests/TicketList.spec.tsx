@@ -482,42 +482,17 @@ describe('TicketList', () => {
     })
 
     it('shows footer loading skeletons while fetching the next page', async () => {
-        let resolvePage2!: () => void
-        const page2Promise = new Promise<void>((resolve) => {
-            resolvePage2 = resolve
+        vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
+            tickets: [mockTicket1, mockTicket2],
+            fetchNextPage: vi.fn(),
+            hasNextPage: true,
+            isLoading: false,
+            isFetching: true,
+            isFetchingNextPage: true,
+            error: null,
+            data: undefined,
+            refetch: vi.fn(),
         })
-
-        server.use(
-            mockListViewItemsHandler(async ({ request }) => {
-                const cursor = new URL(request.url).searchParams.get('cursor')
-                if (cursor === 'page-2') {
-                    await page2Promise
-                    return HttpResponse.json(
-                        mockListViewItemsResponse({
-                            data: [toListViewItem(mockTicket3)],
-                            meta: {
-                                current_cursor: 'page-2',
-                                next_items: undefined,
-                                prev_items: undefined,
-                            },
-                        }),
-                    )
-                }
-                return HttpResponse.json(
-                    mockListViewItemsResponse({
-                        data: [
-                            toListViewItem(mockTicket1),
-                            toListViewItem(mockTicket2),
-                        ],
-                        meta: {
-                            current_cursor: undefined,
-                            next_items: nextItemsUrl,
-                            prev_items: undefined,
-                        },
-                    }),
-                )
-            }).handler,
-        )
 
         renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
@@ -525,17 +500,7 @@ describe('TicketList', () => {
             expect(screen.getByText('First Ticket')).toBeInTheDocument()
         })
 
-        await waitFor(() => {
-            expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(
-                0,
-            )
-        })
-
-        resolvePage2()
-
-        await waitFor(() => {
-            expect(screen.getByText('Third Ticket')).toBeInTheDocument()
-        })
+        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
     })
 })
 

@@ -1,27 +1,35 @@
-import { useMemo } from 'react'
+import { useMemo, useSyncExternalStore } from 'react'
+
+import type { InfiniteData } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
+
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { useSortOrder } from '../ticket-list/hooks/useSortOrder'
-import { useTicketsList } from '../ticket-list/hooks/useTicketsList'
+import type { UseTicketsListParams } from '../ticket-list/hooks/useTicketsList'
 import type { useTicketsLegacyBridge } from '../utils/LegacyBridge'
 
 type TicketViewNavigation = ReturnType<
     typeof useTicketsLegacyBridge
 >['ticketViewNavigation']
 
-function getTicketViewNavigationFromTickets({
-    tickets,
+function getCachedTicketViewNavigation({
+    cachedList,
     ticketId,
 }: {
-    tickets?: Array<{ id?: number }>
+    cachedList?: InfiniteData<{ data?: Array<{ id?: number }> }>
     ticketId?: number
 }): TicketViewNavigation | undefined {
-    if (!tickets || !ticketId) {
+    if (!cachedList || ticketId == null) {
         return undefined
     }
 
-    const navigableTickets = tickets.filter(
-        (ticket): ticket is { id: number } => typeof ticket.id === 'number',
+    const navigableTickets = cachedList.pages.flatMap((page) =>
+        (page.data ?? []).filter(
+            (ticket): ticket is { id: number } => typeof ticket.id === 'number',
+        ),
     )
+
     const ticketIndex = navigableTickets.findIndex(
         (ticket) => ticket.id === ticketId,
     )
@@ -54,18 +62,31 @@ export function useCachedTicketViewNavigation({
     viewId?: number
     ticketId?: number
 }) {
+    const queryClient = useQueryClient()
     const [sortOrder] = useSortOrder(viewId ?? 0)
-    const { tickets } = useTicketsList(viewId ?? 0, {
-        params: viewId ? { order_by: sortOrder } : undefined,
-        enabled: Boolean(viewId),
-    })
+
+    const params =
+        viewId != null
+            ? ({ order_by: sortOrder } satisfies UseTicketsListParams)
+            : undefined
+
+    const queryKey = queryKeys.views.listViewItems(viewId ?? 0, params)
+
+    const cachedList = useSyncExternalStore(
+        (onStoreChange) => queryClient.getQueryCache().subscribe(onStoreChange),
+        () =>
+            queryClient.getQueryData<
+                InfiniteData<{ data?: Array<{ id?: number }> }>
+            >(queryKey),
+        () => undefined,
+    )
 
     return useMemo(
         () =>
-            getTicketViewNavigationFromTickets({
-                tickets,
+            getCachedTicketViewNavigation({
+                cachedList,
                 ticketId,
             }),
-        [tickets, ticketId],
+        [cachedList, ticketId],
     )
 }
