@@ -29,6 +29,7 @@ import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
     allAgentsClosedTicketsDrillDownQueryFactory,
     allAgentsCsatDrillDownQueryFactory,
+    allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
@@ -244,6 +245,9 @@ const shoppingAssistantHandoverInteractionsDrillDownQueryFactoryMock =
     assumeMock(shoppingAssistantHandoverInteractionsDrillDownQueryFactory)
 const supportAgentHandoverInteractionsDrillDownQueryFactoryMock = assumeMock(
     supportAgentHandoverInteractionsDrillDownQueryFactory,
+)
+const allAgentsFRTDrillDownQueryFactoryMock = assumeMock(
+    allAgentsFRTDrillDownQueryFactory,
 )
 const discountCodesOfferedDrillDownQueryFactoryMock = assumeMock(
     discountCodesOfferedDrillDownQueryFactory,
@@ -1538,6 +1542,28 @@ describe('getDrillDownQuery', () => {
         ).toHaveBeenCalledWith(statsFilters, timezone)
     })
 
+    it('should be populated with AllAgentsFRTCard', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName: AiAgentDrillDownMetricName.AllAgentsFRTCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(allAgentsFRTDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+        )
+    })
+
     it('should be populated with AiSalesDiscountOffered', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -2495,6 +2521,16 @@ describe('getDrillDownMetric', () => {
                 metricTitle: 'CSAT',
                 showMetric: false,
                 metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName: AiAgentDrillDownMetricName.AllAgentsFRTCard,
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: 'First response time',
+                showMetric: true,
+                metricValueFormat: 'duration',
             },
         },
         {

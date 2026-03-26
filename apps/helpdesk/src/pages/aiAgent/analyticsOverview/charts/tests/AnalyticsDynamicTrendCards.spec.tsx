@@ -434,6 +434,11 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentAllAgentsFRTCard',
             Component: AnalyticsAiAgentAllAgentsFRTCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName: AiAgentDrillDownMetricName.AllAgentsFRTCard,
+                title: 'First response time',
+            },
             config: {
                 label: 'Decrease in first response time',
                 description:

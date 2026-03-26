@@ -72,5 +72,9 @@ export const AiAgentDrillDownConfig: DomainConfig<AiAgentDrillDownMetrics> = {
             showMetric: false,
             domain: Domain.AiAgent,
         },
+        [AiAgentDrillDownMetricName.AllAgentsFRTCard]: {
+            showMetric: true,
+            domain: Domain.AiAgent,
+        },
     },
 }

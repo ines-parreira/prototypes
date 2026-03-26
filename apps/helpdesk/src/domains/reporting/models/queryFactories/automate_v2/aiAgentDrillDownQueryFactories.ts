@@ -14,6 +14,11 @@ import {
     AIAgentCSATDimension,
     AIAgentCSATFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
+import type { AIAgentDecreaseInFRTCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInFRTCube'
+import {
+    AIAgentDecreaseInFRTDimension,
+    AIAgentDecreaseInFRTFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInFRTCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import {
@@ -197,6 +202,19 @@ const buildClosedTicketsPeriodFilters = (filters: StatsFilters) => [
     },
 ]
 
+const buildFRTPeriodFilters = (filters: StatsFilters) => [
+    {
+        member: AIAgentDecreaseInFRTFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [filters.period.start_datetime],
+    },
+    {
+        member: AIAgentDecreaseInFRTFilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [filters.period.end_datetime],
+    },
+]
+
 export const allAgentsClosedTicketsDrillDownQueryFactory = (
     filters: StatsFilters,
     timezone: string,
@@ -263,4 +281,23 @@ export const supportAgentCsatDrillDownQueryFactory = (
     timezone,
     limit: DRILLDOWN_QUERY_LIMIT,
     order: sorting ? [[AIAgentCSATDimension.SurveyScore, sorting]] : [],
+})
+
+export const allAgentsFRTDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AIAgentDecreaseInFRTCube> => ({
+    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_FRT_DRILLDOWN,
+    measures: [],
+    dimensions: [
+        AIAgentDecreaseInFRTDimension.TicketId,
+        AIAgentDecreaseInFRTDimension.FirstResponseTime,
+    ],
+    filters: buildFRTPeriodFilters(filters),
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting
+        ? [[AIAgentDecreaseInFRTDimension.FirstResponseTime, sorting]]
+        : [],
 })

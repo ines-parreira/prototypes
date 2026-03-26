@@ -24,6 +24,7 @@ import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
     allAgentsClosedTicketsDrillDownQueryFactory,
     allAgentsCsatDrillDownQueryFactory,
+    allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
@@ -446,6 +447,8 @@ export const getDrillDownQuery = (
             return shoppingAssistantHandoverInteractionsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard:
             return supportAgentHandoverInteractionsDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.AllAgentsFRTCard:
+            return allAgentsFRTDrillDownQueryFactory
         case AiSalesAgentChart.AiSalesDiscountOffered:
             return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesDiscountOffered
@@ -1024,6 +1027,11 @@ export const getDrillDownMetricColumn = (
     ) {
         metricTitle = 'CSAT'
         metricValueFormat = 'decimal'
+    } else if (
+        metricData.metricName === AiAgentDrillDownMetricName.AllAgentsFRTCard
+    ) {
+        metricTitle = 'First response time'
+        metricValueFormat = 'duration'
     } else if (isAiAgentMetric(metricData)) {
         metricTitle = metricData.title || ''
         metricValueFormat = 'decimal-to-percent'

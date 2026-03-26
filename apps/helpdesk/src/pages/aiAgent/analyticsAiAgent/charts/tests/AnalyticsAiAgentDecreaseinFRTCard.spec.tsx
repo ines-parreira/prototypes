@@ -1,15 +1,15 @@
 import { render, screen, waitFor } from '@testing-library/react'
 
-import { useDecreaseInFirstResponseTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { AnalyticsAiAgentDecreaseinFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseinFRTCard'
+import { useDecreaseInFirstResponseTimeMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useDecreaseInFirstResponseTimeMetric'
 
 jest.mock(
-    'domains/reporting/hooks/automate/useDecreaseInFirstResponseTimeTrend',
+    'pages/aiAgent/analyticsAiAgent/hooks/useDecreaseInFirstResponseTimeMetric',
 )
-const mockUseDecreaseInFirstResponseTimeTrend = jest.mocked(
-    useDecreaseInFirstResponseTimeTrend,
+const mockUseDecreaseInFirstResponseTimeMetric = jest.mocked(
+    useDecreaseInFirstResponseTimeMetric,
 )
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
@@ -30,10 +30,11 @@ describe('AnalyticsAiAgentDecreaseinFRTCard', () => {
             userTimezone: 'UTC',
         } as any)
 
-        mockUseDecreaseInFirstResponseTimeTrend.mockReturnValue({
+        mockUseDecreaseInFirstResponseTimeMetric.mockReturnValue({
             isFetching: false,
             isError: false,
             data: {
+                label: 'Decrease in first response time',
                 value: 88770,
                 prevValue: 88200,
             },
@@ -45,10 +46,11 @@ describe('AnalyticsAiAgentDecreaseinFRTCard', () => {
     })
 
     it('should render loading state initially', () => {
-        mockUseDecreaseInFirstResponseTimeTrend.mockReturnValue({
+        mockUseDecreaseInFirstResponseTimeMetric.mockReturnValue({
             isFetching: true,
             isError: false,
             data: {
+                label: 'Decrease in first response time',
                 value: 0,
                 prevValue: 0,
             },
@@ -151,5 +153,17 @@ describe('AnalyticsAiAgentDecreaseinFRTCard', () => {
             ).toBeInTheDocument()
             expect(screen.getByText('1d 39m')).toBeInTheDocument()
         })
+    })
+
+    it('should render without crashing when trend data is null', () => {
+        mockUseDecreaseInFirstResponseTimeMetric.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: null as any,
+        })
+
+        expect(() =>
+            render(<AnalyticsAiAgentDecreaseinFRTCard />),
+        ).not.toThrow()
     })
 })

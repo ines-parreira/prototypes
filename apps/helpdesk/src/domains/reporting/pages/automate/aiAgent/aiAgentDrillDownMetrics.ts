@@ -9,4 +9,5 @@ export enum AiAgentDrillDownMetricName {
     AllAgentsClosedTicketsCard = 'all_agents_closed_tickets_card',
     AllAgentsCsatCard = 'all_agents_csat_card',
     SupportAgentCsatCard = 'support_agent_csat_card',
+    AllAgentsFRTCard = 'all_agents_decrease_in_frt_card',
 }

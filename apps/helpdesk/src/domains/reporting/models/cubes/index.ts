@@ -8,6 +8,7 @@ import type { AutomationBillingEventCubeWithJoins } from 'domains/reporting/mode
 import type { AIAgentAutomatedInteractionsV2Cube } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import type { AIAgentClosedTicketsCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
 import type { AIAgentCSATCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
+import type { AIAgentDecreaseInFRTCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInFRTCube'
 import type { AIAgentAutomatedInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import type { AutomatedTicketsCube } from 'domains/reporting/models/cubes/automate_v2/AutomatedTicketsCube'
 import type { AutomationDatasetCube } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
@@ -60,6 +61,7 @@ export type Cubes =
     | AIAgentAutomatedInteractionsCube
     | AIAgentAutomatedInteractionsV2Cube
     | AIAgentClosedTicketsCube
+    | AIAgentDecreaseInFRTCube
     | HandoverInteractionsCube
     | AIAgentCSATCube
     | SuccessRateCube

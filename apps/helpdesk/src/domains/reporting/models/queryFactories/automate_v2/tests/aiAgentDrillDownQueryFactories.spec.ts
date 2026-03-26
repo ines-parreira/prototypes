@@ -8,12 +8,17 @@ import {
     AIAgentCSATDimension,
     AIAgentCSATFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
+import {
+    AIAgentDecreaseInFRTDimension,
+    AIAgentDecreaseInFRTFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInFRTCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import { HandoverInteractionsFilterMember } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
     allAgentsClosedTicketsDrillDownQueryFactory,
     allAgentsCsatDrillDownQueryFactory,
+    allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
@@ -664,6 +669,75 @@ describe('supportAgentCsatDrillDownQueryFactory', () => {
         )
         expect(result.order).toEqual([
             [AIAgentCSATDimension.SurveyScore, OrderDirection.Desc],
+        ])
+    })
+})
+
+describe('allAgentsFRTDrillDownQueryFactory', () => {
+    const filters: StatsFilters = mockFilters
+    const timezone = 'UTC'
+
+    it('should return correct metricName', () => {
+        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
+        expect(result.metricName).toBe(
+            METRIC_NAMES.AI_AGENT_ALL_AGENTS_FRT_DRILLDOWN,
+        )
+    })
+
+    it('should include TicketId and FirstResponseTime in dimensions', () => {
+        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
+        expect(result.dimensions).toContain(
+            AIAgentDecreaseInFRTDimension.TicketId,
+        )
+        expect(result.dimensions).toContain(
+            AIAgentDecreaseInFRTDimension.FirstResponseTime,
+        )
+    })
+
+    it('should have empty measures', () => {
+        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
+        expect(result.measures).toEqual([])
+    })
+
+    it('should include periodStart filter with AfterDate operator', () => {
+        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
+        expect(result.filters).toContainEqual({
+            member: AIAgentDecreaseInFRTFilterMember.PeriodStart,
+            operator: ReportingFilterOperator.AfterDate,
+            values: [filters.period.start_datetime],
+        })
+    })
+
+    it('should include periodEnd filter with BeforeDate operator', () => {
+        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
+        expect(result.filters).toContainEqual({
+            member: AIAgentDecreaseInFRTFilterMember.PeriodEnd,
+            operator: ReportingFilterOperator.BeforeDate,
+            values: [filters.period.end_datetime],
+        })
+    })
+
+    it('should have limit equal to DRILLDOWN_QUERY_LIMIT', () => {
+        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
+        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
+    })
+
+    it('returns empty order when no sorting provided', () => {
+        const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
+        expect(result.order).toEqual([])
+    })
+
+    it('includes sorting order when sorting is provided', () => {
+        const result = allAgentsFRTDrillDownQueryFactory(
+            filters,
+            timezone,
+            OrderDirection.Asc,
+        )
+        expect(result.order).toEqual([
+            [
+                AIAgentDecreaseInFRTDimension.FirstResponseTime,
+                OrderDirection.Asc,
+            ],
         ])
     })
 })

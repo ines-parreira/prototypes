@@ -31,6 +31,7 @@ jest.mock(
         allAgentsClosedTicketsDrillDownQueryFactory: jest.fn(),
         allAgentsCsatDrillDownQueryFactory: jest.fn(),
         supportAgentCsatDrillDownQueryFactory: jest.fn(),
+        allAgentsFRTDrillDownQueryFactory: jest.fn(),
     }),
 )
 jest.mock(
@@ -62,7 +63,11 @@ describe('AiAgentDrillDownConfig', () => {
         )
     })
 
-    it.each(Object.values(AiAgentDrillDownMetricName))(
+    const metricsWithShowMetricFalse = Object.values(
+        AiAgentDrillDownMetricName,
+    ).filter((name) => name !== AiAgentDrillDownMetricName.AllAgentsFRTCard)
+
+    it.each(metricsWithShowMetricFalse)(
         'should include %s in metricsConfig with showMetric false',
         (metricName) => {
             expect(AiAgentDrillDownConfig.metricsConfig[metricName]).toEqual({
@@ -71,6 +76,17 @@ describe('AiAgentDrillDownConfig', () => {
             })
         },
     )
+
+    it('should include AllAgentsFRTCard in metricsConfig with showMetric true', () => {
+        expect(
+            AiAgentDrillDownConfig.metricsConfig[
+                AiAgentDrillDownMetricName.AllAgentsFRTCard
+            ],
+        ).toEqual({
+            showMetric: true,
+            domain: Domain.AiAgent,
+        })
+    })
 
     it('should call getDrillDownQuery with metricData and pass result to useEnrichedDrillDownData', () => {
         const mockQueryFactory = jest.fn()

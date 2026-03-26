@@ -5,6 +5,7 @@ import type { TicketQAScoreCubeWithJoins } from 'domains/reporting/models/cubes/
 import type { AIAgentAutomatedInteractionsV2Cube } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import type { AIAgentClosedTicketsCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentClosedTicketsCube'
 import type { AIAgentCSATCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
+import type { AIAgentDecreaseInFRTCube } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInFRTCube'
 import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import type { SuccessRateCube } from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
 import type { ConvertOrderConversionCube } from 'domains/reporting/models/cubes/ConvertOrderConversionCube'
@@ -86,6 +87,7 @@ export type DrillDownReportingQuery = ReportingQuery<
     | AiSalesAgentConversationsCube
     | AiSalesAgentOrdersCube
     | SuccessRateCube
+    | AIAgentDecreaseInFRTCube
     | HandoverInteractionsCube
     | TicketProductsEnrichedCube
     | TicketFirstHumanAgentResponseTimeCube
