@@ -1,4 +1,4 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -17,6 +17,7 @@ import {
 import { useCanUseAiSalesAgent } from 'hooks/aiAgent/useCanUseAiSalesAgent'
 import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialAccess } from 'pages/aiAgent/trial/hooks/useTrialAccess'
+import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
 import { STATS_ROUTES } from 'routes/constants'
 import type { RootState } from 'state/types'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'
@@ -28,7 +29,7 @@ const useTrialAccessMock = assumeMock(useTrialAccess)
 useTrialAccessMock.mockReturnValue(createMockTrialAccess())
 
 jest.mock('@repo/feature-flags')
-const useFlagMock = assumeMock(useFlag)
+const useFlagMock = assumeMock(useFlagWithLoading)
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardActions')
 const useDashboardActionsMock = assumeMock(useDashboardActions)
@@ -39,6 +40,10 @@ useDashboardActionsMock.mockReturnValue({
 jest.mock('hooks/aiAgent/useCanUseAiSalesAgent')
 const useCanUseAiSalesAgentMock = assumeMock(useCanUseAiSalesAgent)
 useCanUseAiSalesAgentMock.mockReturnValue(false)
+
+jest.mock('pages/common/hooks/useIsConvertSubscriber')
+const useIsConvertSubscriberMock = assumeMock(useIsConvertSubscriber)
+useIsConvertSubscriberMock.mockReturnValue(false)
 
 const defaultState: Partial<RootState> = {
     currentAccount: fromJS(account),
@@ -66,7 +71,7 @@ describe('useStatsNavbarConfig', () => {
         })
 
         it('should not include QualityManagement when NewSatisfactionReport flag is disabled', () => {
-            useFlagMock.mockReturnValue(false)
+            useFlagMock.mockReturnValue({ value: false, isLoading: false })
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
                 () => useStatsNavbarConfig(),
@@ -80,10 +85,10 @@ describe('useStatsNavbarConfig', () => {
         })
 
         it('should include QualityManagement when NewSatisfactionReport flag is enabled', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.NewSatisfactionReport) return true
-                return false
-            })
+            useFlagMock.mockImplementation((flag) => ({
+                value: flag === FeatureFlagKey.NewSatisfactionReport,
+                isLoading: false,
+            }))
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
                 () => useStatsNavbarConfig(),
@@ -94,6 +99,90 @@ describe('useStatsNavbarConfig', () => {
             expect(sectionIds).toContain(
                 StatsNavbarViewSections.QualityManagement,
             )
+        })
+    })
+
+    describe('Satisfaction item in SupportPerformance', () => {
+        it('should include satisfaction when NewSatisfactionReport flag is disabled', () => {
+            useFlagMock.mockReturnValue({ value: false, isLoading: false })
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () => useStatsNavbarConfig(),
+                defaultState,
+            )
+            const supportPerfSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.SupportPerformance,
+            )
+            const satisfactionItem = supportPerfSection?.items?.find(
+                (item) => item.id === 'support-performance-satisfaction',
+            )
+
+            expect(satisfactionItem).toBeDefined()
+            expect(satisfactionItem?.route).toBe(
+                STATS_ROUTES.SUPPORT_PERFORMANCE_SATISFACTION,
+            )
+        })
+
+        it('should not include satisfaction when NewSatisfactionReport flag is enabled', () => {
+            useFlagMock.mockImplementation((flag) => ({
+                value: flag === FeatureFlagKey.NewSatisfactionReport,
+                isLoading: false,
+            }))
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () => useStatsNavbarConfig(),
+                defaultState,
+            )
+            const supportPerfSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.SupportPerformance,
+            )
+            const satisfactionItem = supportPerfSection?.items?.find(
+                (item) => item.id === 'support-performance-satisfaction',
+            )
+
+            expect(satisfactionItem).toBeUndefined()
+        })
+    })
+
+    describe('Help Center item in SupportPerformance', () => {
+        it('should include help-center when HelpCenterAnalytics flag is enabled', () => {
+            useFlagMock.mockImplementation((flag) => ({
+                value: flag === FeatureFlagKey.HelpCenterAnalytics,
+                isLoading: false,
+            }))
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () => useStatsNavbarConfig(),
+                defaultState,
+            )
+            const supportPerfSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.SupportPerformance,
+            )
+            const helpCenterItem = supportPerfSection?.items?.find(
+                (item) => item.id === 'support-performance-help-center',
+            )
+
+            expect(helpCenterItem).toBeDefined()
+            expect(helpCenterItem?.route).toBe(
+                STATS_ROUTES.SUPPORT_PERFORMANCE_HELP_CENTER,
+            )
+        })
+
+        it('should not include help-center when HelpCenterAnalytics flag is disabled', () => {
+            useFlagMock.mockReturnValue({ value: false, isLoading: false })
+
+            const { result } = renderHookWithStoreAndQueryClientProvider(
+                () => useStatsNavbarConfig(),
+                defaultState,
+            )
+            const supportPerfSection = result.current.sections.find(
+                (s) => s.id === StatsNavbarViewSections.SupportPerformance,
+            )
+            const helpCenterItem = supportPerfSection?.items?.find(
+                (item) => item.id === 'support-performance-help-center',
+            )
+
+            expect(helpCenterItem).toBeUndefined()
         })
     })
 
@@ -141,13 +230,28 @@ describe('useStatsNavbarConfig', () => {
     describe('Auto QA placement', () => {
         describe('when NewSatisfactionReport flag is disabled', () => {
             beforeEach(() => {
-                useFlagMock.mockReturnValue(false)
+                useFlagMock.mockReturnValue({ value: false, isLoading: false })
             })
 
-            it('should include Auto QA under SupportPerformance', () => {
+            it('should include Auto QA under SupportPerformance when user is admin with AI agent access', () => {
+                const stateWithAdminAndAutomation: Partial<RootState> = {
+                    billing: fromJS(billingState),
+                    currentUser: fromJS({
+                        role: { name: UserRole.Admin },
+                    }) as Map<any, any>,
+                    currentAccount: fromJS({
+                        current_subscription: {
+                            products: {
+                                [AUTOMATION_PRODUCT_ID]:
+                                    basicMonthlyAutomationPlan.plan_id,
+                            },
+                        },
+                    }),
+                }
+
                 const { result } = renderHookWithStoreAndQueryClientProvider(
                     () => useStatsNavbarConfig(),
-                    defaultState,
+                    stateWithAdminAndAutomation,
                 )
                 const supportPerfSection = result.current.sections.find(
                     (s) => s.id === StatsNavbarViewSections.SupportPerformance,
@@ -161,15 +265,29 @@ describe('useStatsNavbarConfig', () => {
                     STATS_ROUTES.QUALITY_MANAGEMENT_AUTO_QA,
                 )
             })
+
+            it('should not include Auto QA under SupportPerformance when user lacks access', () => {
+                const { result } = renderHookWithStoreAndQueryClientProvider(
+                    () => useStatsNavbarConfig(),
+                    defaultState,
+                )
+                const supportPerfSection = result.current.sections.find(
+                    (s) => s.id === StatsNavbarViewSections.SupportPerformance,
+                )
+                const autoQAItem = supportPerfSection?.items?.find(
+                    (item) => item.id === 'auto-qa',
+                )
+
+                expect(autoQAItem).toBeUndefined()
+            })
         })
 
         describe('when NewSatisfactionReport flag is enabled', () => {
             beforeEach(() => {
-                useFlagMock.mockImplementation((flag) => {
-                    if (flag === FeatureFlagKey.NewSatisfactionReport)
-                        return true
-                    return false
-                })
+                useFlagMock.mockImplementation((flag) => ({
+                    value: flag === FeatureFlagKey.NewSatisfactionReport,
+                    isLoading: false,
+                }))
             })
 
             it('should not include Auto QA under SupportPerformance', () => {
@@ -296,7 +414,7 @@ describe('useStatsNavbarConfig', () => {
         })
 
         it('should mark Campaigns as requiresUpgrade when account is not a convert subscriber', () => {
-            useFlagMock.mockReturnValue(false)
+            useFlagMock.mockReturnValue({ value: false, isLoading: false })
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
                 () => useStatsNavbarConfig(),
@@ -313,10 +431,7 @@ describe('useStatsNavbarConfig', () => {
         })
 
         it('should not mark Campaigns as requiresUpgrade when account is a convert subscriber', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.RevenueBetaTesters) return true
-                return false
-            })
+            useIsConvertSubscriberMock.mockReturnValue(true)
 
             const { result } = renderHookWithStoreAndQueryClientProvider(
                 () => useStatsNavbarConfig(),
@@ -381,10 +496,10 @@ describe('useStatsNavbarConfig', () => {
         })
 
         it('should include automate-ai-agent item when AIAgentStatsPage flag is enabled', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AIAgentStatsPage) return true
-                return false
-            })
+            useFlagMock.mockImplementation((flag) => ({
+                value: flag === FeatureFlagKey.AIAgentStatsPage,
+                isLoading: false,
+            }))
 
             const stateWithAutomation: Partial<RootState> = {
                 billing: fromJS(billingState),
@@ -414,11 +529,10 @@ describe('useStatsNavbarConfig', () => {
         })
 
         it('should include ai-sales-agent item when AiShoppingAssistantEnabled flag is enabled', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiShoppingAssistantEnabled)
-                    return true
-                return false
-            })
+            useFlagMock.mockImplementation((flag) => ({
+                value: flag === FeatureFlagKey.AiShoppingAssistantEnabled,
+                isLoading: false,
+            }))
 
             const stateWithAutomation: Partial<RootState> = {
                 billing: fromJS(billingState),
@@ -452,11 +566,10 @@ describe('useStatsNavbarConfig', () => {
 
         it('should not mark ai-sales-agent as requiresUpgrade when user can use it', () => {
             useCanUseAiSalesAgentMock.mockReturnValue(true)
-            useFlagMock.mockImplementation((flag) => {
-                if (flag === FeatureFlagKey.AiShoppingAssistantEnabled)
-                    return true
-                return false
-            })
+            useFlagMock.mockImplementation((flag) => ({
+                value: flag === FeatureFlagKey.AiShoppingAssistantEnabled,
+                isLoading: false,
+            }))
 
             const stateWithAutomation: Partial<RootState> = {
                 billing: fromJS(billingState),
@@ -485,13 +598,12 @@ describe('useStatsNavbarConfig', () => {
         })
 
         it('should include trailingSlot on analytics items when AiAgentAnalyticsDashboardsNewScreens flag is enabled', () => {
-            useFlagMock.mockImplementation((flag) => {
-                if (
-                    flag === FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens
-                )
-                    return true
-                return false
-            })
+            useFlagMock.mockImplementation((flag) => ({
+                value:
+                    flag ===
+                    FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
+                isLoading: false,
+            }))
 
             const stateWithAutomation: Partial<RootState> = {
                 billing: fromJS(billingState),

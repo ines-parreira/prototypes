@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import type { UserRole } from '@repo/utils'
 
 import { Tag } from '@gorgias/axiom'
@@ -109,15 +109,19 @@ export function useStatsNavbarConfig() {
     const { getDashboardsHandler } = useDashboardActions()
     const isConvertSubscriber = useIsConvertSubscriber()
     const isTeamLeadOrAdmin = isTeamLead(user)
-    const isNewSatisfactionReportEnabled = useFlag(
+    const { value: isNewSatisfactionReportEnabled } = useFlagWithLoading(
         FeatureFlagKey.NewSatisfactionReport,
     )
-    const isAiAgentStatsPageEnabled = useFlag(FeatureFlagKey.AIAgentStatsPage)
-    const isAiSalesAgentAnalyticsEnabled = useFlag(
+    const { value: isAiAgentStatsPageEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AIAgentStatsPage,
+    )
+    const { value: isAiSalesAgentAnalyticsEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiShoppingAssistantEnabled,
     )
-    const isAnalyticsDashboardsNewScreensEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens,
+    const { value: isAnalyticsDashboardsNewScreensEnabled } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
+    const { value: isHelpCenterAnalyticsEnabled } = useFlagWithLoading(
+        FeatureFlagKey.HelpCenterAnalytics,
     )
 
     const isAutoQANavLinkAvailable = useMemo(
@@ -201,28 +205,37 @@ export function useStatsNavbarConfig() {
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_CHANNELS,
                         label: 'Channels',
                     },
-                    {
-                        id: 'support-performance-satisfaction',
-                        route: STATS_ROUTES.SUPPORT_PERFORMANCE_SATISFACTION,
-                        label: 'Satisfaction',
-                    },
+                    ...(!isNewSatisfactionReportEnabled
+                        ? [
+                              {
+                                  id: 'support-performance-satisfaction',
+                                  route: STATS_ROUTES.SUPPORT_PERFORMANCE_SATISFACTION,
+                                  label: 'Satisfaction',
+                              },
+                          ]
+                        : []),
                     {
                         id: 'support-performance-revenue',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_REVENUE,
                         label: 'Revenue',
                     },
-                    {
-                        id: 'support-performance-help-center',
-                        route: STATS_ROUTES.SUPPORT_PERFORMANCE_HELP_CENTER,
-                        label: 'Help Center',
-                        canduId: 'statistics-link-help-center',
-                    },
+                    ...(isHelpCenterAnalyticsEnabled
+                        ? [
+                              {
+                                  id: 'support-performance-help-center',
+                                  route: STATS_ROUTES.SUPPORT_PERFORMANCE_HELP_CENTER,
+                                  label: 'Help Center',
+                                  canduId: 'statistics-link-help-center',
+                              },
+                          ]
+                        : []),
                     {
                         id: 'support-performance-slas',
                         route: STATS_ROUTES.SUPPORT_PERFORMANCE_SERVICE_LEVEL_AGREEMENT,
                         label: 'SLAs',
                     },
-                    ...(!isNewSatisfactionReportEnabled
+                    ...(!isNewSatisfactionReportEnabled &&
+                    isAutoQANavLinkAvailable
                         ? [
                               {
                                   id: 'auto-qa',
@@ -397,6 +410,7 @@ export function useStatsNavbarConfig() {
     }, [
         isNewSatisfactionReportEnabled,
         isAutoQANavLinkAvailable,
+        isHelpCenterAnalyticsEnabled,
         hasVoiceFeature,
         hasAccess,
         isAiAgentStatsPageEnabled,
