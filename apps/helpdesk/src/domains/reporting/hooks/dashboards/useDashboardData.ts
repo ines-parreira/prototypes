@@ -204,6 +204,7 @@ export const useDashboardData = (
     dashboard: DashboardSchema,
     isAiAgentDashboard?: boolean,
     chartConfigs?: Record<string, ChartConfig | undefined>,
+    extra?: Record<string, number>,
 ) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
@@ -273,6 +274,7 @@ export const useDashboardData = (
         userTimezone,
         granularity,
         queryGroups.configurableCharts,
+        extra,
     )
 
     const loading = useMemo(() => {

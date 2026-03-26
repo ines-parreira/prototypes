@@ -21,6 +21,7 @@ import {
 import type { MetricWithDecile } from 'domains/reporting/hooks/types'
 import {
     fetchStatsMetricPerDimension,
+    mapMetricValues,
     useStatsMetricPerDimension,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import { getStatsTrendHook } from 'domains/reporting/hooks/useStatsMetricTrend'
@@ -57,6 +58,10 @@ export type BarChartMetricConfig = {
     interpretAs: TrendDirection
     dimensions: AutomationDimension[]
     queryFactory(ctx: Context): BuiltQuery
+    valueTransform?: (
+        value: number | null,
+        extra?: ExtraConfigProps,
+    ) => number | null
 }
 
 export type LineChartMetricConfig = {
@@ -71,6 +76,7 @@ export type LineChartMetricConfig = {
 
 export type ExtraConfigProps = {
     stores?: StoreIntegration[]
+    costSavedPerInteraction?: number
 }
 
 const MAP_ENGAGEMENT_TYPE_NAME: Record<string, string> = {
@@ -217,13 +223,23 @@ export const useAutomationMetricPerAutomationFeatureType = (
     query: MetricQueryFactory,
     filters: StatsFilters,
     timezone: string,
+    valueTransform?: (
+        value: number | null,
+        extra?: ExtraConfigProps,
+    ) => number | null,
+    extra?: ExtraConfigProps,
 ) => {
     const data = useStatsMetricPerDimension(
         query({ filters, timezone, dimensions: ['automationFeatureType'] }),
         'automationFeatureType',
     )
 
-    return formatBarChartData(data, 'automationFeatureType')
+    return formatBarChartData(
+        valueTransform
+            ? mapMetricValues(data, (v) => valueTransform(v, extra))
+            : data,
+        'automationFeatureType',
+    )
 }
 
 export const useAutomationMetricPerEngagementType = (
@@ -243,6 +259,11 @@ export const useAutomationMetricPerChannel = (
     query: MetricQueryFactory,
     filters: StatsFilters,
     timezone: string,
+    valueTransform?: (
+        value: number | null,
+        extra?: ExtraConfigProps,
+    ) => number | null,
+    extra?: ExtraConfigProps,
 ) => {
     const data = useStatsMetricPerDimension(
         query({
@@ -253,7 +274,12 @@ export const useAutomationMetricPerChannel = (
         'channel',
     )
 
-    return formatBarChartData(data, 'channel')
+    return formatBarChartData(
+        valueTransform
+            ? mapMetricValues(data, (v) => valueTransform(v, extra))
+            : data,
+        'channel',
+    )
 }
 
 export const useAutomationMetricPerStoreIntegrationId = (
@@ -261,6 +287,10 @@ export const useAutomationMetricPerStoreIntegrationId = (
     filters: StatsFilters,
     timezone: string,
     extra?: ExtraConfigProps,
+    valueTransform?: (
+        value: number | null,
+        extra?: ExtraConfigProps,
+    ) => number | null,
 ) => {
     const data = useStatsMetricPerDimension(
         query({
@@ -271,7 +301,13 @@ export const useAutomationMetricPerStoreIntegrationId = (
         'storeIntegrationId',
     )
 
-    return formatBarChartData(data, 'storeIntegrationId', extra)
+    return formatBarChartData(
+        valueTransform
+            ? mapMetricValues(data, (v) => valueTransform(v, extra))
+            : data,
+        'storeIntegrationId',
+        extra,
+    )
 }
 
 export const getBarChartDataHooks = (
@@ -281,6 +317,10 @@ export const getBarChartDataHooks = (
     timezone: string,
     period?: { start_datetime: string; end_datetime: string },
     extra?: ExtraConfigProps,
+    valueTransform?: (
+        value: number | null,
+        extra?: ExtraConfigProps,
+    ) => number | null,
 ) => {
     const dimensionConfigs: ConfigurableGraphGroupingConfig[] = dimensions.map(
         (dimensionId) => {
@@ -295,6 +335,8 @@ export const getBarChartDataHooks = (
                                 query,
                                 filters,
                                 timezone,
+                                valueTransform,
+                                extra,
                             ),
                         period,
                     }
@@ -308,6 +350,8 @@ export const getBarChartDataHooks = (
                                 query,
                                 filters,
                                 timezone,
+                                valueTransform,
+                                extra,
                             ),
                         period,
                     }
@@ -322,6 +366,7 @@ export const getBarChartDataHooks = (
                                 filters,
                                 timezone,
                                 extra,
+                                valueTransform,
                             ),
                         period,
                     }
@@ -343,7 +388,20 @@ export const getBarChartDataHooks = (
     )
 
     return {
-        useTrendData: () => getStatsTrendHook(query)(filters, timezone),
+        useTrendData: () => {
+            const trendResult = getStatsTrendHook(query)(filters, timezone)
+            if (!valueTransform || !trendResult.data) return trendResult
+            return {
+                ...trendResult,
+                data: {
+                    value: valueTransform(trendResult.data.value, extra),
+                    prevValue: valueTransform(
+                        trendResult.data.prevValue,
+                        extra,
+                    ),
+                },
+            }
+        },
         dimensions: dimensionConfigs,
     }
 }
@@ -378,6 +436,7 @@ export const getBarChartGraphConfig = (
             userTimezone,
             period,
             extra,
+            metric.valueTransform,
         ),
     }))
 }
@@ -664,6 +723,7 @@ export const getLineChartGraphConfig = (
 
 export const fetchExtraConfig = async (
     dimension: string,
+    outerExtra?: ExtraConfigProps,
 ): Promise<ExtraConfigProps> => {
     let stores: StoreIntegration[] = []
     if (dimension === 'storeIntegrationId') {
@@ -671,7 +731,10 @@ export const fetchExtraConfig = async (
         stores = data?.data
     }
 
-    return { stores }
+    return {
+        ...outerExtra,
+        stores,
+    }
 }
 
 export const fetchConfigurableBarChartDownloadData =
@@ -682,6 +745,7 @@ export const fetchConfigurableBarChartDownloadData =
         filters: StatsFilters,
         timezone: string,
         __: ReportingGranularity,
+        outerExtra?: Record<string, number>,
     ) => {
         const metric =
             metrics.find((m) => m.measure === savedMeasure) ?? metrics[0]
@@ -696,9 +760,16 @@ export const fetchConfigurableBarChartDownloadData =
             dimension as AutomationDimension,
         )
 
-        const extra = await fetchExtraConfig(dimension)
+        const extra = await fetchExtraConfig(dimension, {
+            costSavedPerInteraction: outerExtra?.costSavedPerInteraction,
+        })
+
+        const { valueTransform } = metric
+        const transformedResponse = valueTransform
+            ? mapMetricValues(response, (v) => valueTransform(v, extra))
+            : response
         const { data } = formatBarChartData(
-            response,
+            transformedResponse,
             dimension as AutomationDimension,
             extra,
         )

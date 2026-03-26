@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { dynamicOverallAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
 import { dynamicOverallAutomationRateQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
+import { dynamicAverageTimeSavedByAgentQueryFactoryV2 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
 import type {
     ChartConfig,
     DashboardSchema,
@@ -13,6 +14,8 @@ import {
     useStoreIntegrations,
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import type { BarChartMetricConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 import { DEPRECATED_AutomationRateComboChart } from './DEPRECATED_AutomationRateComboChart'
 
@@ -39,6 +42,26 @@ export const OVERVIEW_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         queryFactory: dynamicOverallAutomatedInteractionsQueryFactoryV2,
         dimensions: ['channel', 'storeIntegrationId', 'automationFeatureType'],
     },
+    {
+        measure: 'averageTimeSavedByAgent',
+        name: 'Time saved by agent',
+        metricFormat: 'duration' as const,
+        interpretAs: 'more-is-better' as const,
+        queryFactory: dynamicAverageTimeSavedByAgentQueryFactoryV2,
+        dimensions: ['channel', 'storeIntegrationId', 'automationFeatureType'],
+    },
+    {
+        measure: 'costSaved',
+        name: 'Cost saved',
+        metricFormat: 'currency-precision-1' as const,
+        interpretAs: 'more-is-better' as const,
+        queryFactory: dynamicOverallAutomatedInteractionsQueryFactoryV2,
+        dimensions: ['channel', 'storeIntegrationId', 'automationFeatureType'],
+        valueTransform: (v, extra) =>
+            v !== null && extra?.costSavedPerInteraction != null
+                ? v * extra.costSavedPerInteraction
+                : null,
+    },
 ]
 
 export const AnalyticsOverviewConfigurableBarGraph = ({
@@ -48,6 +71,9 @@ export const AnalyticsOverviewConfigurableBarGraph = ({
 }: Props) => {
     const { statsFilters, userTimezone } = useAutomateFilters()
     const stores = useStoreIntegrations()
+    const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
+        AGENT_COST_PER_TICKET,
+    )
 
     const metrics = useMemo(
         () =>
@@ -55,9 +81,9 @@ export const AnalyticsOverviewConfigurableBarGraph = ({
                 OVERVIEW_BAR_CHART_METRICS,
                 statsFilters,
                 userTimezone,
-                { stores },
+                { stores, costSavedPerInteraction },
             ),
-        [statsFilters, userTimezone, stores],
+        [statsFilters, userTimezone, stores, costSavedPerInteraction],
     )
 
     return (

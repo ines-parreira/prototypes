@@ -22,6 +22,7 @@ export type ConfigurableGraphFetch = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
+    extra?: Record<string, number>,
 ) => Promise<{
     files: Record<string, string>
 }>
@@ -36,6 +37,7 @@ export const useConfigurableGraphsReportData = (
         savedDimension: string | null | undefined
         chartId: string
     }[],
+    extra?: Record<string, number>,
 ) => {
     const [graphData, setGraphData] = useState<{
         isFetching: boolean
@@ -53,6 +55,7 @@ export const useConfigurableGraphsReportData = (
                 cleanStatsFilters,
                 userTimezone,
                 granularity,
+                extra,
             ),
         )
         void Promise.all(promises)
@@ -63,7 +66,7 @@ export const useConfigurableGraphsReportData = (
                 })
             })
             .catch(() => setGraphData({ isFetching: false, files: {} }))
-    }, [fetchGraphData, cleanStatsFilters, granularity, userTimezone])
+    }, [fetchGraphData, cleanStatsFilters, granularity, userTimezone, extra])
 
     return graphData
 }

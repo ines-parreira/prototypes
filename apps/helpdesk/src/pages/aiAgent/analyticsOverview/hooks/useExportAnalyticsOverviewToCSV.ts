@@ -10,6 +10,8 @@ import {
     ManagedDashboardId,
     ManagedDashboardsTabId,
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
+import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import { saveZippedFiles } from 'utils/file'
 
 import { AnalyticsOverviewReportConfig } from '../AnalyticsOverviewReportConfig'
@@ -30,6 +32,14 @@ export const useExportAnalyticsOverviewToCSV = () => {
             FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
         )
     const { cleanStatsFilters } = useStatsFilters()
+    const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
+        AGENT_COST_PER_TICKET,
+    )
+
+    const extraData = useMemo(
+        () => ({ costSavedPerInteraction }),
+        [costSavedPerInteraction],
+    )
 
     const { layoutConfig } = useGetManagedDashboardsLayoutConfig({
         dashboardId: ManagedDashboardId.AiAgentOverview,
@@ -57,6 +67,7 @@ export const useExportAnalyticsOverviewToCSV = () => {
             analyticsOverviewDashboard,
             true,
             AnalyticsOverviewReportConfig.charts,
+            extraData,
         )
 
     const automationRateByFeatureData = useDownloadAutomationRateByFeatureData()

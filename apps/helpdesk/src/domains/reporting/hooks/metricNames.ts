@@ -54,6 +54,8 @@ export const METRIC_NAMES = {
         'ai-agent-overall-automation-rate-per-intent',
     AI_AGENT_AUTOMATED_INTERACTIONS_PER_INTENT:
         'ai-agent-automated-interactions-per-intent',
+    AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT:
+        'ai-agent-dynamic-average-time-saved-by-agent',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
         'ai-agent-handover-interactions-per-intent',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
@@ -990,6 +992,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.OverallTimeSavedByAgent]: [
         METRIC_NAMES.OVERALL_TIME_SAVED_BY_AGENT_PER_ORDER_MANAGEMENT_TYPE,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT,
     ],
     [MetricScope.AiAgentCoverageRate]: [
         METRIC_NAMES.AI_AGENT_ALL_AGENTS_COVERAGE_RATE,

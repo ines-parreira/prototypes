@@ -310,6 +310,7 @@ describe('useDownloadDashboardData', () => {
                     chartId: configurableChartId,
                 }),
             ]),
+            undefined,
         )
     })
 

@@ -146,6 +146,7 @@ describe('useConfigurableGraphs', () => {
                 defaultStatsFilters,
                 'America/New_York',
                 ReportingGranularity.Week,
+                undefined,
             )
         })
     })

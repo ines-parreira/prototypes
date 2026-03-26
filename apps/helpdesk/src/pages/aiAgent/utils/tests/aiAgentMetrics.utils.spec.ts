@@ -42,7 +42,11 @@ import type {
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 
 jest.mock('@gorgias/helpdesk-client')
-jest.mock('domains/reporting/hooks/useStatsMetricPerDimension')
+jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
+    ...jest.requireActual('domains/reporting/hooks/useStatsMetricPerDimension'),
+    useStatsMetricPerDimension: jest.fn(),
+    fetchStatsMetricPerDimension: jest.fn(),
+}))
 jest.mock('domains/reporting/hooks/useStatsMetricTrend')
 jest.mock('domains/reporting/hooks/useStatsTimeSeries')
 jest.mock('pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod')
@@ -229,6 +233,32 @@ describe('useAutomationMetricPerAutomationFeatureType', () => {
             'automationFeatureType',
         )
     })
+
+    it('should apply valueTransform to each value when provided', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: AutomationFeatureType.AiAgent, value: 10 },
+                    { dimension: AutomationFeatureType.Flows, value: 20 },
+                ],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerAutomationFeatureType(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                (v) => (v !== null ? v * 2 : null),
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { name: 'AI Agent', value: 20 },
+            { name: 'Flows', value: 40 },
+        ])
+    })
 })
 
 describe('useAutomationMetricPerChannel', () => {
@@ -352,6 +382,32 @@ describe('useAutomationMetricPerChannel', () => {
             mockBuiltQuery,
             'channel',
         )
+    })
+
+    it('should apply valueTransform to each value when provided', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: 'email', value: 10 },
+                    { dimension: 'chat', value: 20 },
+                ],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerChannel(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                (v) => (v !== null ? v * 2 : null),
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { name: 'Email', value: 20 },
+            { name: 'Chat', value: 40 },
+        ])
     })
 })
 
@@ -518,6 +574,27 @@ describe('useAutomationMetricPerStoreIntegrationId', () => {
             mockBuiltQuery,
             'storeIntegrationId',
         )
+    })
+
+    it('should apply valueTransform to each value when provided', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [{ dimension: '123', value: 10 }],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerStoreIntegrationId(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                undefined,
+                (v) => (v !== null ? v * 2 : null),
+            ),
+        )
+
+        expect(result.current.data).toEqual([{ name: 'Store 123', value: 20 }])
     })
 })
 
@@ -865,6 +942,78 @@ describe('getBarChartDataHooks', () => {
         ) {
             expect(dimension.period).toEqual(customPeriod)
         }
+    })
+
+    it('should apply valueTransform in useChartData for each dimension', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [{ dimension: 'email', value: 10 }],
+            },
+        } as any)
+
+        const valueTransform = (v: number | null) => (v !== null ? v * 3 : null)
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['channel'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+            undefined,
+            valueTransform,
+        )
+
+        const { result } = renderHook(() => dimensions[0].useChartData())
+
+        expect(result.current.data).toEqual([{ name: 'Email', value: 30 }])
+    })
+
+    it('should apply valueTransform to trend data value and prevValue', () => {
+        mockTrendHook.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: { value: 100, prevValue: 80 },
+        })
+
+        const valueTransform = (v: number | null) => (v !== null ? v * 2 : null)
+        const { useTrendData } = getBarChartDataHooks(
+            mockQuery,
+            ['channel'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+            undefined,
+            valueTransform,
+        )
+
+        const { result } = renderHook(() => useTrendData())
+
+        expect(result.current.data).toEqual({ value: 200, prevValue: 160 })
+    })
+
+    it('should not apply valueTransform to trend data when data is undefined', () => {
+        mockTrendHook.mockReturnValue({
+            isFetching: false,
+            isError: false,
+            data: undefined,
+        })
+
+        const valueTransform = jest.fn((v: number | null) =>
+            v !== null ? v * 2 : null,
+        )
+        const { useTrendData } = getBarChartDataHooks(
+            mockQuery,
+            ['channel'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+            undefined,
+            valueTransform,
+        )
+
+        renderHook(() => useTrendData())
+
+        expect(valueTransform).not.toHaveBeenCalled()
     })
 })
 
@@ -2522,6 +2671,39 @@ describe('fetchConfigurableBarChartDownloadData', () => {
         const csvContent = Object.values(result.files)[0]
         expect(csvContent).toContain('unknownDim')
     })
+
+    it('applies valueTransform to raw metric values before building CSV', async () => {
+        fetchStatsMetricPerDimensionMock.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+            data: {
+                value: null,
+                decile: null,
+                allData: [],
+                allValues: [{ dimension: 'chat', value: 10, decile: null }],
+            },
+        })
+
+        const fetch = fetchConfigurableBarChartDownloadData([
+            {
+                ...mockBarMetric,
+                metricFormat: 'decimal',
+                valueTransform: (v) => (v !== null ? v * 3 : null),
+            },
+        ])
+
+        const result = await fetch(
+            'automationRate',
+            'channel',
+            defaultFilters,
+            defaultTimezone,
+            ReportingGranularity.Day,
+        )
+
+        const csvContent = Object.values(result.files)[0]
+        expect(csvContent).toContain('30')
+        expect(csvContent).not.toContain('"10"')
+    })
 })
 
 describe('fetchConfigurableLineChartDownloadData', () => {
@@ -2809,13 +2991,17 @@ describe('fetchExtraConfig', () => {
         const result = await fetchExtraConfig('storeIntegrationId')
 
         expect(listStoresMock).toHaveBeenCalled()
-        expect(result).toEqual({ stores: mockStores })
+        expect(result).toEqual({
+            stores: mockStores,
+        })
     })
 
     it('returns empty stores without calling listStores for other dimensions', async () => {
-        const result = await fetchExtraConfig('channel')
+        const result = await fetchExtraConfig('channel', {
+            costSavedPerInteraction: 3.1,
+        })
 
         expect(listStoresMock).not.toHaveBeenCalled()
-        expect(result).toEqual({ stores: [] })
+        expect(result).toEqual({ stores: [], costSavedPerInteraction: 3.1 })
     })
 })

@@ -9,6 +9,7 @@ import { useDownloadAutomationRateByFeatureData } from 'pages/aiAgent/analyticsO
 import { useDownloadAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateTimeSeriesData'
 import { useExportAnalyticsOverviewToCSV } from 'pages/aiAgent/analyticsOverview/hooks/useExportAnalyticsOverviewToCSV'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import * as fileUtils from 'utils/file'
 
 jest.mock('@repo/feature-flags')
@@ -24,6 +25,7 @@ jest.mock(
 jest.mock(
     'pages/aiAgent/analyticsOverview/hooks/useDownloadAutomationRateTimeSeriesData',
 )
+jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
@@ -41,6 +43,9 @@ const mockedUseDownloadAutomationRateByFeatureData = jest.mocked(
 )
 const mockedUseDownloadAutomationRateTimeSeriesData = jest.mocked(
     useDownloadAutomationRateTimeSeriesData,
+)
+const mockedUseMoneySavedPerInteractionWithAutomate = jest.mocked(
+    useMoneySavedPerInteractionWithAutomate,
 )
 const mockedSaveZippedFiles = jest.mocked(fileUtils.saveZippedFiles)
 
@@ -108,6 +113,8 @@ describe('useExportAnalyticsOverviewToCSV', () => {
             fileName: 'automation-rate-timeseries.csv',
             isLoading: false,
         })
+
+        mockedUseMoneySavedPerInteractionWithAutomate.mockReturnValue(1)
     })
 
     it('should return isLoading as false when all data is loaded', () => {
@@ -324,6 +331,7 @@ describe('useExportAnalyticsOverviewToCSV', () => {
             expect.any(Object),
             true,
             AnalyticsOverviewReportConfig.charts,
+            { costSavedPerInteraction: expect.any(Number) },
         )
     })
 })

@@ -11,6 +11,7 @@ import * as automateFiltersHooks from 'domains/reporting/hooks/automate/useAutom
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { AnalyticsOverviewConfigurableBarGraph } from 'pages/aiAgent/analyticsOverview/components/AnalyticsOverviewConfigurableBarGraph/AnalyticsOverviewConfigurableBarGraph'
 import { getBarChartGraphConfig } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import * as useMoneySavedHooks from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 jest.mock('@repo/feature-flags')
 jest.mock('@gorgias/helpdesk-queries')
@@ -38,6 +39,7 @@ jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
 }))
 const getBarChartGraphConfigMock = assumeMock(getBarChartGraphConfig)
 const useListStoresMock = assumeMock(useListStores)
+const MOCK_COST_SAVED_PER_INTERACTION = 3.1
 
 const useFlagWithLoadingMocked = assumeMock(useFlagWithLoading)
 
@@ -101,6 +103,10 @@ describe('AnalyticsOverviewConfigurableBarGraph', () => {
 
         useListStoresMock.mockReturnValue({ data: [] } as any)
         getBarChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
+        jest.spyOn(
+            useMoneySavedHooks,
+            'useMoneySavedPerInteractionWithAutomate',
+        ).mockReturnValue(MOCK_COST_SAVED_PER_INTERACTION)
 
         useFlagWithLoadingMocked.mockReturnValue({
             value: true,
@@ -151,6 +157,30 @@ describe('AnalyticsOverviewConfigurableBarGraph', () => {
             button.getAttribute('aria-expanded'),
         )
         expect(hasDropdown).toBe(false)
+    })
+
+    it('should render metric selector when multiple metrics are present', () => {
+        const secondMetricConfig: ConfigurableGraphMetricConfig = {
+            ...defaultMetricConfig,
+            measure: 'averageTimeSavedByAgent',
+            name: 'Average time saved by agent',
+            metricFormat: 'duration',
+            useTrendData: jest.fn().mockReturnValue({
+                isFetching: false,
+                isError: false,
+                data: { value: 120, prevValue: 100 },
+            }),
+        }
+        getBarChartGraphConfigMock.mockReturnValue([
+            defaultMetricConfig,
+            secondMetricConfig,
+        ])
+
+        render(<AnalyticsOverviewConfigurableBarGraph />)
+
+        expect(
+            screen.getByRole('button', { name: /Overall automation rate/i }),
+        ).toBeInTheDocument()
     })
 
     it('should render all legend items', () => {
@@ -244,7 +274,10 @@ describe('AnalyticsOverviewConfigurableBarGraph', () => {
             expect.anything(),
             expect.anything(),
             expect.anything(),
-            { stores: mockStores },
+            {
+                stores: mockStores,
+                costSavedPerInteraction: MOCK_COST_SAVED_PER_INTERACTION,
+            },
         )
     })
 
