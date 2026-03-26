@@ -8,12 +8,30 @@ import { ThemeProvider } from 'core/theme'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import { IntentStatus } from '../../types'
+import { MetricCell } from '../SharedTableComponents/MetricCells'
 import { IntentsTable } from './IntentsTable'
 import type { TransformedIntent } from './useIntentsTable'
 import { useIntentsTable } from './useIntentsTable'
 
 jest.mock('./useIntentsTable')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
+jest.mock('../SharedTableComponents/MetricCells', () => ({
+    MetricCell: jest.fn(() => null),
+}))
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+    () => ({
+        useGetCustomTicketsFieldsDefinitionData: jest.fn(() => ({
+            outcomeCustomFieldId: undefined,
+            intentCustomFieldId: undefined,
+            sentimentCustomFieldId: null,
+            isLoading: false,
+        })),
+    }),
+)
+jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations', () => ({
+    useGetTicketChannelsStoreIntegrations: jest.fn(() => []),
+}))
 
 const mockUseIntentsTable = useIntentsTable as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
@@ -525,6 +543,178 @@ describe('IntentsTable', () => {
             renderComponent()
 
             expect(screen.getByText('Showing 0 of 0 items')).toBeInTheDocument()
+        })
+    })
+
+    describe('Metric columns', () => {
+        const mockUseGetCustomTicketsFieldsDefinitionData = jest.requireMock(
+            'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+        ).useGetCustomTicketsFieldsDefinitionData as jest.Mock
+
+        const mockMetricCell = MetricCell as jest.Mock
+
+        const intentsWithMetrics: TransformedIntent[] = [
+            {
+                id: 'order',
+                name: 'order',
+                formattedName: 'Order',
+                toggleState: 'enabled',
+                metrics: {
+                    ticketVolume: 100,
+                    ticketVolumePercent: 50,
+                    handoverCount: 20,
+                    handoverPercent: 20,
+                },
+                children: [
+                    {
+                        id: 'order::status',
+                        name: 'order::status',
+                        formattedName: 'Status',
+                        toggleState: 'enabled',
+                        status: IntentStatus.NotLinked,
+                        parentId: 'order',
+                        articles: [],
+                        metrics: {
+                            ticketVolume: 100,
+                            ticketVolumePercent: 50,
+                            handoverCount: 20,
+                            handoverPercent: 20,
+                        },
+                    },
+                ],
+            },
+        ]
+
+        it('should show skeleton when metrics are loading', async () => {
+            const user = userEvent.setup()
+
+            mockUseIntentsTable.mockReturnValue({
+                intents: mockIntents,
+                isLoading: false,
+                isMetricsLoading: true,
+                isError: false,
+            })
+
+            renderComponent()
+
+            const expandButton = screen.getAllByRole('button', {
+                name: /expand/i,
+            })[0]
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                const skeletons = screen.getAllByLabelText('Loading')
+                expect(skeletons.length).toBeGreaterThan(0)
+            })
+        })
+
+        it('should show -- when intent has no metrics', () => {
+            mockUseIntentsTable.mockReturnValue({
+                intents: mockIntents,
+                isLoading: false,
+                isMetricsLoading: false,
+                isError: false,
+            })
+
+            renderComponent()
+
+            const dashCells = screen.getAllByText('--')
+            expect(dashCells.length).toBeGreaterThan(0)
+        })
+
+        it('should show plain text metric value when custom field IDs are missing', async () => {
+            mockUseIntentsTable.mockReturnValue({
+                intents: intentsWithMetrics,
+                isLoading: false,
+                isMetricsLoading: false,
+                isError: false,
+                metricsDateRange: {
+                    start_datetime: '2024-01-01',
+                    end_datetime: '2024-01-28',
+                },
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Order')).toBeInTheDocument()
+            })
+
+            expect(mockMetricCell).not.toHaveBeenCalled()
+            expect(screen.getByText('50%')).toBeInTheDocument()
+        })
+
+        it('should render MetricCell when metrics, dateRange and custom field IDs are available', async () => {
+            mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
+                outcomeCustomFieldId: 10,
+                intentCustomFieldId: 20,
+                sentimentCustomFieldId: null,
+                isLoading: false,
+            })
+
+            mockUseIntentsTable.mockReturnValue({
+                intents: intentsWithMetrics,
+                isLoading: false,
+                isMetricsLoading: false,
+                isError: false,
+                metricsDateRange: {
+                    start_datetime: '2024-01-01',
+                    end_datetime: '2024-01-28',
+                },
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Order')).toBeInTheDocument()
+            })
+
+            expect(mockMetricCell).toHaveBeenCalled()
+        })
+
+        it('should show -- when ticket volume is 0', async () => {
+            mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
+                outcomeCustomFieldId: 10,
+                intentCustomFieldId: 20,
+                sentimentCustomFieldId: null,
+                isLoading: false,
+            })
+
+            const intentsWithZeroVolume: TransformedIntent[] = [
+                {
+                    id: 'order',
+                    name: 'order',
+                    formattedName: 'Order',
+                    toggleState: 'enabled',
+                    metrics: {
+                        ticketVolume: 0,
+                        ticketVolumePercent: 0,
+                        handoverCount: 0,
+                        handoverPercent: 0,
+                    },
+                    children: [],
+                },
+            ]
+
+            mockUseIntentsTable.mockReturnValue({
+                intents: intentsWithZeroVolume,
+                isLoading: false,
+                isMetricsLoading: false,
+                isError: false,
+                metricsDateRange: {
+                    start_datetime: '2024-01-01',
+                    end_datetime: '2024-01-28',
+                },
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Order')).toBeInTheDocument()
+            })
+
+            const dashCells = screen.getAllByText('--')
+            expect(dashCells.length).toBeGreaterThan(0)
         })
     })
 })

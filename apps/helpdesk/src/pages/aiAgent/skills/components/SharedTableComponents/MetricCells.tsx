@@ -1,0 +1,102 @@
+import { DrillDownModalTrigger } from '@repo/reporting'
+
+import { Box, ProgressBar, Text } from '@gorgias/axiom'
+
+import type {
+    IntentMetric,
+    KnowledgeMetric,
+} from 'domains/reporting/state/ui/stats/types'
+
+import { useIntentDrillDownTrigger } from '../../hooks/useIntentDrillDownTrigger'
+import { useKnowledgeDrillDownTrigger } from '../../hooks/useKnowledgeDrillDownTrigger'
+
+import css from './MetricCells.less'
+
+type BaseMetricCellProps = {
+    value: number
+    displayValue: string
+    dateRange: { start_datetime: string; end_datetime: string }
+    outcomeCustomFieldId?: number
+    intentCustomFieldId?: number
+    showProgressBar?: boolean
+    title?: string
+}
+
+type KnowledgeMetricCellProps = BaseMetricCellProps & {
+    type: 'knowledge'
+    metricName: KnowledgeMetric
+    resourceSourceId: number
+    resourceSourceSetId: number
+    shopIntegrationId: number
+}
+
+type IntentMetricCellProps = BaseMetricCellProps & {
+    type: 'intent'
+    metricName: IntentMetric
+    intentName: string
+    integrationIds: string[]
+    outcomeValue?: string
+}
+
+type MetricCellProps = KnowledgeMetricCellProps | IntentMetricCellProps
+
+export const MetricCell = (props: MetricCellProps) => {
+    const knowledgeData = props.type === 'knowledge' ? props : null
+    const intentData = props.type === 'intent' ? props : null
+
+    const {
+        openDrillDownModal: openKnowledgeDrillDown,
+        tooltipText: knowledgeTooltip,
+    } = useKnowledgeDrillDownTrigger({
+        metricName:
+            knowledgeData?.metricName ??
+            ('knowledge_tickets' as KnowledgeMetric),
+        resourceSourceId: knowledgeData?.resourceSourceId ?? 0,
+        resourceSourceSetId: knowledgeData?.resourceSourceSetId ?? 0,
+        shopIntegrationId: knowledgeData?.shopIntegrationId ?? 0,
+        dateRange: props.dateRange,
+        outcomeCustomFieldId: props.outcomeCustomFieldId,
+        intentCustomFieldId: props.intentCustomFieldId,
+    })
+
+    const {
+        openDrillDownModal: openIntentDrillDown,
+        tooltipText: intentTooltip,
+    } = useIntentDrillDownTrigger({
+        metricName:
+            intentData?.metricName ?? ('intent_ticket_volume' as IntentMetric),
+        intentName: intentData?.intentName ?? '',
+        integrationIds: intentData?.integrationIds ?? [],
+        outcomeCustomFieldId: props.outcomeCustomFieldId,
+        intentCustomFieldId: props.intentCustomFieldId ?? 0,
+        outcomeValue: intentData?.outcomeValue,
+        dateRange: props.dateRange,
+        title: intentData?.title,
+    })
+
+    const openDrillDownModal =
+        props.type === 'knowledge'
+            ? openKnowledgeDrillDown
+            : openIntentDrillDown
+    const tooltipText =
+        props.type === 'knowledge' ? knowledgeTooltip : intentTooltip
+
+    return (
+        <Box
+            flexDirection="column"
+            gap="xxs"
+            width="100%"
+            className={css.metricCell}
+        >
+            <DrillDownModalTrigger
+                openDrillDownModal={openDrillDownModal}
+                tooltipText={tooltipText}
+            >
+                <Text size="sm">{props.displayValue}</Text>
+            </DrillDownModalTrigger>
+            {props.showProgressBar && (
+                <ProgressBar value={props.value} maxValue={100} size="xs" />
+            )}
+        </Box>
+    )
+}

@@ -18,7 +18,10 @@ import css from 'domains/reporting/pages/common/drill-down/DrillDownTable.less'
 import { getDrillDownQuery } from 'domains/reporting/pages/common/drill-down/helpers'
 import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/types'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
-import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
+import {
+    IntentMetric,
+    KnowledgeMetric,
+} from 'domains/reporting/state/ui/stats/types'
 
 export const DrillDownTable: FunctionComponent<{
     metricData: DrillDownMetric
@@ -31,11 +34,14 @@ export const DrillDownTable: FunctionComponent<{
     const [itemsPerPage, setItemsPerPage] = useState(10)
     const [currentPage, setCurrentPage] = useState(1)
 
-    const isKnowledgeMetric = Object.values(KnowledgeMetric)
+    const useKnowledgeFormatter = [
+        ...Object.values(KnowledgeMetric),
+        ...Object.values(IntentMetric),
+    ]
         .map(String)
         .includes(String(metricData.metricName))
 
-    const formatter = isKnowledgeMetric
+    const formatter = useKnowledgeFormatter
         ? formatKnowledgeTicketDrillDownRowData
         : formatTicketDrillDownRowData
 

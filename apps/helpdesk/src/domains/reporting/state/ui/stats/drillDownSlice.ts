@@ -23,6 +23,7 @@ import type {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    IntentMetric,
     KnowledgeMetric,
     ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
@@ -253,6 +254,19 @@ export type AIInsightsCustomFieldsTicketCountMetrics = {
     integrationIds: string[]
 } & CommonMetrics
 
+export type IntentMetrics = {
+    metricName: IntentMetric
+    outcomeFieldId?: number
+    outcomeFieldValues?: string[]
+    intentFieldValues: string[]
+    intentFieldId: number
+    integrationIds: string[]
+    dateRange: {
+        start_datetime: string
+        end_datetime: string
+    }
+} & CommonMetrics
+
 export type AIInsightsCoverageRateMetrics = {
     metricName: AIInsightsMetric.TicketDrillDownPerCoverageRate
     outcomeFieldId: number
@@ -330,6 +344,7 @@ export type DrillDownMetric =
     | VoiceOfCustomerMetrics
     | AIJourneyMetrics
     | KnowledgeMetrics
+    | IntentMetrics
 
 export type DrillDownState = {
     isOpen: boolean

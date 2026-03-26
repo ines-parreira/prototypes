@@ -21,6 +21,8 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import { getColumns } from './columns'
@@ -38,8 +40,15 @@ interface IntentsTableProps {
 export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const helpCenterId = storeConfiguration?.guidanceHelpCenterId || 0
+    const shopName = storeConfiguration?.storeName || ''
 
-    const { intents, isLoading } = useIntentsTable(helpCenterId)
+    const { intents, isLoading, isMetricsLoading, metricsDateRange } =
+        useIntentsTable(helpCenterId)
+
+    const { outcomeCustomFieldId, intentCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
+
+    const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
 
     const [searchTerm, setSearchTerm] = useState('')
     const [statsDisplayMode, setStatsDisplayMode] =
@@ -101,13 +110,25 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
         () =>
             getColumns({
                 statsDisplayMode,
-                isMetricsLoading: false,
+                isMetricsLoading,
                 onToggleEnabled: handleToggleEnabled,
                 onLinkToSkill: handleLinkToSkill,
                 expandedRows,
                 onToggleExpanded: handleToggleExpanded,
+                outcomeCustomFieldId,
+                intentCustomFieldId,
+                integrationIds,
+                metricsDateRange,
             }),
-        [statsDisplayMode, expandedRows],
+        [
+            statsDisplayMode,
+            isMetricsLoading,
+            expandedRows,
+            outcomeCustomFieldId,
+            intentCustomFieldId,
+            integrationIds,
+            metricsDateRange,
+        ],
     )
 
     const renderRows = (rows: Row<TransformedIntent>[]) => {

@@ -5,6 +5,7 @@ import { renderHook } from '@testing-library/react'
 
 import { useListIntents } from 'models/helpCenter/queries'
 
+import { useIntentsMetrics } from '../../hooks/useIntentsMetrics'
 import { IntentStatus } from '../../types'
 import { useIntentsTable } from './useIntentsTable'
 
@@ -12,7 +13,12 @@ jest.mock('models/helpCenter/queries', () => ({
     useListIntents: jest.fn(),
 }))
 
+jest.mock('../../hooks/useIntentsMetrics', () => ({
+    useIntentsMetrics: jest.fn(),
+}))
+
 const mockUseListIntents = useListIntents as jest.Mock
+const mockUseIntentsMetrics = useIntentsMetrics as jest.Mock
 
 describe('useIntentsTable', () => {
     const queryClient = new QueryClient({
@@ -27,6 +33,16 @@ describe('useIntentsTable', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
+
+        mockUseIntentsMetrics.mockReturnValue({
+            data: new Map(),
+            isLoading: false,
+            isError: false,
+            metricsDateRange: {
+                start_datetime: '2024-01-01',
+                end_datetime: '2024-01-28',
+            },
+        })
     })
 
     it('should return empty array when no intents data', () => {
@@ -419,6 +435,218 @@ describe('useIntentsTable', () => {
             const l2Intent = result.current.intents[0].children?.[0]
             expect(l2Intent?.status).toBe(IntentStatus.Handover)
             expect(l2Intent?.toggleState).toBe('disabled')
+        })
+    })
+
+    describe('Metrics enrichment', () => {
+        it('should enrich L2 intents with metrics data', () => {
+            const metricsMap = new Map([
+                [
+                    'order::status',
+                    {
+                        ticketVolume: 100,
+                        ticketVolumePercent: 50,
+                        handoverCount: 20,
+                        handoverPercent: 20,
+                    },
+                ],
+            ])
+
+            mockUseIntentsMetrics.mockReturnValue({
+                data: metricsMap,
+                isLoading: false,
+                isError: false,
+                metricsDateRange: {
+                    start_datetime: '2024-01-01',
+                    end_datetime: '2024-01-28',
+                },
+            })
+
+            mockUseListIntents.mockReturnValue({
+                data: {
+                    intents: [
+                        {
+                            name: 'order::status',
+                            status: IntentStatus.NotLinked,
+                            help_center_id: 123,
+                            articles: [],
+                        },
+                    ],
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(() => useIntentsTable(123), {
+                wrapper,
+            })
+
+            const l2Intent = result.current.intents[0].children?.[0]
+            expect(l2Intent?.metrics).toEqual({
+                ticketVolume: 100,
+                ticketVolumePercent: 50,
+                handoverCount: 20,
+                handoverPercent: 20,
+            })
+        })
+
+        it('should aggregate L2 metrics into L1 metrics', () => {
+            const metricsMap = new Map([
+                [
+                    'order::status',
+                    {
+                        ticketVolume: 100,
+                        ticketVolumePercent: 50,
+                        handoverCount: 20,
+                        handoverPercent: 20,
+                    },
+                ],
+                [
+                    'order::cancel',
+                    {
+                        ticketVolume: 50,
+                        ticketVolumePercent: 25,
+                        handoverCount: 10,
+                        handoverPercent: 20,
+                    },
+                ],
+                [
+                    'order',
+                    {
+                        ticketVolume: 150,
+                        ticketVolumePercent: 75,
+                        handoverCount: 30,
+                        handoverPercent: 20,
+                    },
+                ],
+            ])
+
+            mockUseIntentsMetrics.mockReturnValue({
+                data: metricsMap,
+                isLoading: false,
+                isError: false,
+                metricsDateRange: {
+                    start_datetime: '2024-01-01',
+                    end_datetime: '2024-01-28',
+                },
+            })
+
+            mockUseListIntents.mockReturnValue({
+                data: {
+                    intents: [
+                        {
+                            name: 'order::status',
+                            status: IntentStatus.NotLinked,
+                            help_center_id: 123,
+                            articles: [],
+                        },
+                        {
+                            name: 'order::cancel',
+                            status: IntentStatus.NotLinked,
+                            help_center_id: 123,
+                            articles: [],
+                        },
+                    ],
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(() => useIntentsTable(123), {
+                wrapper,
+            })
+
+            const l1Intent = result.current.intents[0]
+            expect(l1Intent.metrics?.ticketVolume).toBe(150)
+            expect(l1Intent.metrics?.handoverCount).toBe(30)
+            expect(l1Intent.metrics?.ticketVolumePercent).toBe(75)
+            expect(l1Intent.metrics?.handoverPercent).toBe(20)
+        })
+
+        it('should not add metrics to L1 when children have no metrics', () => {
+            mockUseIntentsMetrics.mockReturnValue({
+                data: new Map(),
+                isLoading: false,
+                isError: false,
+                metricsDateRange: {
+                    start_datetime: '2024-01-01',
+                    end_datetime: '2024-01-28',
+                },
+            })
+
+            mockUseListIntents.mockReturnValue({
+                data: {
+                    intents: [
+                        {
+                            name: 'order::status',
+                            status: IntentStatus.NotLinked,
+                            help_center_id: 123,
+                            articles: [],
+                        },
+                    ],
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(() => useIntentsTable(123), {
+                wrapper,
+            })
+
+            const l1Intent = result.current.intents[0]
+            expect(l1Intent.metrics).toBeUndefined()
+        })
+
+        it('should return metrics loading state', () => {
+            mockUseIntentsMetrics.mockReturnValue({
+                data: new Map(),
+                isLoading: true,
+                isError: false,
+                metricsDateRange: {
+                    start_datetime: '2024-01-01',
+                    end_datetime: '2024-01-28',
+                },
+            })
+
+            mockUseListIntents.mockReturnValue({
+                data: {
+                    intents: [],
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(() => useIntentsTable(123), {
+                wrapper,
+            })
+
+            expect(result.current.isMetricsLoading).toBe(true)
+        })
+
+        it('should return metrics error state', () => {
+            mockUseIntentsMetrics.mockReturnValue({
+                data: new Map(),
+                isLoading: false,
+                isError: true,
+                metricsDateRange: {
+                    start_datetime: '2024-01-01',
+                    end_datetime: '2024-01-28',
+                },
+            })
+
+            mockUseListIntents.mockReturnValue({
+                data: {
+                    intents: [],
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(() => useIntentsTable(123), {
+                wrapper,
+            })
+
+            expect(result.current.isMetricsError).toBe(true)
         })
     })
 })

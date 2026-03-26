@@ -105,6 +105,11 @@ export enum KnowledgeMetric {
     CSAT = 'knowledge_csat',
 }
 
+export enum IntentMetric {
+    TicketVolume = 'intent_ticket_volume',
+    Handover = 'intent_handover',
+}
+
 export enum ConvertMetric {
     CampaignSalesCount = 'campaign_sales_count',
 }

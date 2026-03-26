@@ -13,7 +13,7 @@ import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
 import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
 
 import type { TransformedArticle } from '../../types'
-import { MetricCell } from './MetricCells'
+import { MetricCell } from '../SharedTableComponents/MetricCells'
 import { SortableHeaderCell } from './SortableHeaderCell'
 
 import css from './SkillsTable.less'
@@ -192,6 +192,7 @@ export const getColumns = ({
 
             return (
                 <MetricCell
+                    type="knowledge"
                     value={Number(percentageValue)}
                     metricName={KnowledgeMetric.Tickets}
                     resourceSourceId={row.original.id}
@@ -201,6 +202,7 @@ export const getColumns = ({
                     outcomeCustomFieldId={outcomeCustomFieldId}
                     intentCustomFieldId={intentCustomFieldId}
                     displayValue={displayValue}
+                    title="Tickets"
                     showProgressBar={true}
                 />
             )
@@ -253,6 +255,7 @@ export const getColumns = ({
 
             return (
                 <MetricCell
+                    type="knowledge"
                     value={Number(percentageValue)}
                     metricName={KnowledgeMetric.HandoverTickets}
                     resourceSourceId={row.original.id}
@@ -262,6 +265,7 @@ export const getColumns = ({
                     outcomeCustomFieldId={outcomeCustomFieldId}
                     intentCustomFieldId={intentCustomFieldId}
                     displayValue={displayValue}
+                    title="Handover tickets"
                     showProgressBar={true}
                 />
             )
@@ -304,6 +308,7 @@ export const getColumns = ({
 
             return (
                 <MetricCell
+                    type="knowledge"
                     value={csat}
                     metricName={KnowledgeMetric.CSAT}
                     resourceSourceId={row.original.id}
@@ -313,6 +318,7 @@ export const getColumns = ({
                     outcomeCustomFieldId={outcomeCustomFieldId}
                     intentCustomFieldId={intentCustomFieldId}
                     displayValue={formattedCsat}
+                    title="CSAT"
                     showProgressBar={false}
                 />
             )

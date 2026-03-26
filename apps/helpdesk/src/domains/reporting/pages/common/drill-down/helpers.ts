@@ -33,6 +33,10 @@ import {
     supportAgentHandoverInteractionsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
+    intentHandoverDrillDownQueryFactory,
+    intentTicketVolumeDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/intents/intentInsightsMetrics'
+import {
     knowledgeCSATDrillDownQueryFactory,
     knowledgeHandoverTicketsDrillDownQueryFactory,
     knowledgeTicketsDrillDownQueryFactory,
@@ -106,6 +110,7 @@ import type {
     AiAgentMetrics,
     AiSalesAgentMetrics,
     DrillDownMetric,
+    IntentMetrics,
     KnowledgeMetrics,
 } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { ProductsPerTicketColumn } from 'domains/reporting/state/ui/stats/productsPerTicketSlice'
@@ -115,6 +120,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    IntentMetric,
     KnowledgeMetric,
     ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
@@ -771,6 +777,59 @@ export const getDrillDownQuery = (
                 )
             }
         }
+        case IntentMetric.TicketVolume:
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) => {
+                const intentMetricData = metricData as IntentMetrics
+                const filtersWithPeriod: StatsFilters = {
+                    ...statsFilters,
+                    [FilterKey.Period]: {
+                        start_datetime:
+                            intentMetricData.dateRange.start_datetime,
+                        end_datetime: intentMetricData.dateRange.end_datetime,
+                    },
+                }
+
+                return intentTicketVolumeDrillDownQueryFactory(
+                    filtersWithPeriod,
+                    timezone,
+                    intentMetricData.intentFieldId,
+                    intentMetricData.intentFieldValues,
+                    intentMetricData.outcomeFieldId,
+                    sorting,
+                    intentMetricData.integrationIds,
+                )
+            }
+        case IntentMetric.Handover:
+            return (
+                statsFilters: StatsFilters,
+                timezone: string,
+                sorting?: OrderDirection,
+            ) => {
+                const intentMetricData = metricData as IntentMetrics
+                const filtersWithPeriod: StatsFilters = {
+                    ...statsFilters,
+                    [FilterKey.Period]: {
+                        start_datetime:
+                            intentMetricData.dateRange.start_datetime,
+                        end_datetime: intentMetricData.dateRange.end_datetime,
+                    },
+                }
+
+                return intentHandoverDrillDownQueryFactory(
+                    filtersWithPeriod,
+                    timezone,
+                    intentMetricData.intentFieldId,
+                    intentMetricData.intentFieldValues,
+                    intentMetricData.outcomeFieldId,
+                    sorting,
+                    intentMetricData.integrationIds,
+                    intentMetricData.outcomeFieldValues,
+                )
+            }
     }
 }
 const queryBuilderWithAgentFilter =
@@ -1074,6 +1133,12 @@ export const getDrillDownMetricColumn = (
         metricData.metricName === KnowledgeMetric.Tickets ||
         metricData.metricName === KnowledgeMetric.HandoverTickets ||
         metricData.metricName === KnowledgeMetric.CSAT
+    ) {
+        metricTitle = metricData.title || ''
+        metricValueFormat = 'decimal'
+    } else if (
+        metricData.metricName === IntentMetric.TicketVolume ||
+        metricData.metricName === IntentMetric.Handover
     ) {
         metricTitle = metricData.title || ''
         metricValueFormat = 'decimal'

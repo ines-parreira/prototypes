@@ -1,21 +1,32 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import { ThemeProvider } from 'core/theme'
-import { KnowledgeMetric } from 'domains/reporting/state/ui/stats/types'
+import {
+    IntentMetric,
+    KnowledgeMetric,
+} from 'domains/reporting/state/ui/stats/types'
 
+import { useIntentDrillDownTrigger } from '../../hooks/useIntentDrillDownTrigger'
 import { useKnowledgeDrillDownTrigger } from '../../hooks/useKnowledgeDrillDownTrigger'
 import { MetricCell } from './MetricCells'
 
 jest.mock('../../hooks/useKnowledgeDrillDownTrigger')
+jest.mock('../../hooks/useIntentDrillDownTrigger')
 
 const mockUseKnowledgeDrillDownTrigger =
     useKnowledgeDrillDownTrigger as jest.Mock
+const mockUseIntentDrillDownTrigger = useIntentDrillDownTrigger as jest.Mock
+const mockStore = configureMockStore([thunk])
 
 describe('MetricCell', () => {
     const mockOpenDrillDownModal = jest.fn()
 
     const defaultProps = {
+        type: 'knowledge' as const,
         value: 50,
         metricName: KnowledgeMetric.Tickets,
         resourceSourceId: 123,
@@ -37,13 +48,20 @@ describe('MetricCell', () => {
             openDrillDownModal: mockOpenDrillDownModal,
             tooltipText: 'View tickets',
         })
+        mockUseIntentDrillDownTrigger.mockReturnValue({
+            openDrillDownModal: mockOpenDrillDownModal,
+            tooltipText: 'View intent tickets',
+        })
     })
 
     const renderComponent = (props = {}) => {
+        const store = mockStore({})
         return render(
-            <ThemeProvider>
-                <MetricCell {...defaultProps} {...props} />
-            </ThemeProvider>,
+            <Provider store={store}>
+                <ThemeProvider>
+                    <MetricCell {...defaultProps} {...props} />
+                </ThemeProvider>
+            </Provider>,
         )
     }
 
@@ -175,6 +193,98 @@ describe('MetricCell', () => {
             },
             outcomeCustomFieldId: undefined,
             intentCustomFieldId: undefined,
+        })
+    })
+
+    describe('intent type', () => {
+        const intentProps = {
+            type: 'intent' as const,
+            value: 30,
+            metricName: IntentMetric.TicketVolume,
+            intentName: 'order::status',
+            integrationIds: ['integration-1'],
+            dateRange: {
+                start_datetime: '2023-01-01',
+                end_datetime: '2023-01-31',
+            },
+            outcomeCustomFieldId: 111,
+            intentCustomFieldId: 222,
+            displayValue: '30%',
+            showProgressBar: true,
+        }
+
+        const renderIntent = (props = {}) => {
+            const store = mockStore({})
+            return render(
+                <Provider store={store}>
+                    <ThemeProvider>
+                        <MetricCell {...intentProps} {...props} />
+                    </ThemeProvider>
+                </Provider>,
+            )
+        }
+
+        it('should render the display value for intent type', () => {
+            renderIntent()
+
+            expect(screen.getByText('30%')).toBeInTheDocument()
+        })
+
+        it('should render progress bar for intent type', () => {
+            renderIntent()
+
+            expect(screen.getByRole('progressbar')).toHaveAttribute(
+                'aria-valuenow',
+                '30',
+            )
+        })
+
+        it('should call openDrillDownModal from intent trigger when clicked', async () => {
+            const user = userEvent.setup()
+            renderIntent()
+
+            await user.click(screen.getByText('30%'))
+
+            expect(mockOpenDrillDownModal).toHaveBeenCalledTimes(1)
+        })
+
+        it('should initialize useIntentDrillDownTrigger with correct parameters', () => {
+            renderIntent()
+
+            expect(mockUseIntentDrillDownTrigger).toHaveBeenCalledWith({
+                metricName: IntentMetric.TicketVolume,
+                intentName: 'order::status',
+                integrationIds: ['integration-1'],
+                outcomeCustomFieldId: 111,
+                intentCustomFieldId: 222,
+                outcomeValue: undefined,
+                dateRange: {
+                    start_datetime: '2023-01-01',
+                    end_datetime: '2023-01-31',
+                },
+                title: undefined,
+            })
+        })
+
+        it('should pass outcomeValue for handover metric type', () => {
+            renderIntent({
+                metricName: IntentMetric.Handover,
+                outcomeValue: 'ai_agent_handover',
+                displayValue: '10%',
+            })
+
+            expect(mockUseIntentDrillDownTrigger).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    metricName: IntentMetric.Handover,
+                    outcomeValue: 'ai_agent_handover',
+                }),
+            )
+        })
+
+        it('should not render progress bar when showProgressBar is false', () => {
+            renderIntent({ showProgressBar: false })
+
+            expect(screen.queryByRole('progressbar')).not.toBeInTheDocument()
         })
     })
 })

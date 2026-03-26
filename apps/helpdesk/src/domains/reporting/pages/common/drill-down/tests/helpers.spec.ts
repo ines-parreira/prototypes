@@ -38,6 +38,10 @@ import {
     supportAgentHandoverInteractionsDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
+    intentHandoverDrillDownQueryFactory,
+    intentTicketVolumeDrillDownQueryFactory,
+} from 'domains/reporting/models/queryFactories/intents/intentInsightsMetrics'
+import {
     knowledgeCSATDrillDownQueryFactory,
     knowledgeHandoverTicketsDrillDownQueryFactory,
     knowledgeTicketsDrillDownQueryFactory,
@@ -113,6 +117,7 @@ import type {
     ChannelsMetrics,
     ConvertMetrics,
     DrillDownMetric,
+    IntentMetrics,
     SatisfactionAverageSurveyScoreMetrics,
     SatisfactionMetrics,
     SentimentForProductMetrics,
@@ -128,6 +133,7 @@ import {
     AutoQAMetric,
     ChannelsTableColumns,
     ConvertMetric,
+    IntentMetric,
     KnowledgeMetric,
     ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
@@ -178,6 +184,9 @@ jest.mock(
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
 jest.mock(
     'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories',
+)
+jest.mock(
+    'domains/reporting/models/queryFactories/intents/intentInsightsMetrics',
 )
 jest.mock(
     'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
@@ -318,6 +327,12 @@ const knowledgeTicketsDrillDownQueryFactoryMock = assumeMock(
 )
 const knowledgeHandoverTicketsDrillDownQueryFactoryMock = assumeMock(
     knowledgeHandoverTicketsDrillDownQueryFactory,
+)
+const intentTicketVolumeDrillDownQueryFactoryMock = assumeMock(
+    intentTicketVolumeDrillDownQueryFactory,
+)
+const intentHandoverDrillDownQueryFactoryMock = assumeMock(
+    intentHandoverDrillDownQueryFactory,
 )
 const knowledgeCSATDrillDownQueryFactoryMock = assumeMock(
     knowledgeCSATDrillDownQueryFactory,
@@ -1982,6 +1997,78 @@ describe('getDrillDownQuery', () => {
         )
     })
 
+    it('should be populated with IntentMetric.TicketVolume', () => {
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: '2025-01-28T23:59:59.000',
+                start_datetime: '2025-01-01T00:00:00.000',
+            },
+        }
+        const timezone = 'UTC'
+        const dateRange = {
+            start_datetime: '2025-01-01T00:00:00.000',
+            end_datetime: '2025-01-28T23:59:59.000',
+        }
+        const intentMetricData: IntentMetrics = {
+            metricName: IntentMetric.TicketVolume,
+            intentFieldId: 10,
+            intentFieldValues: ['order::status'],
+            outcomeFieldId: 20,
+            integrationIds: ['integration-1'],
+            dateRange,
+        }
+
+        getDrillDownQuery(intentMetricData)(statsFilters, timezone)
+
+        expect(
+            intentTicketVolumeDrillDownQueryFactoryMock,
+        ).toHaveBeenCalledWith(
+            expect.objectContaining({ period: dateRange }),
+            timezone,
+            10,
+            ['order::status'],
+            20,
+            undefined,
+            ['integration-1'],
+        )
+    })
+
+    it('should be populated with IntentMetric.Handover', () => {
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: '2025-01-28T23:59:59.000',
+                start_datetime: '2025-01-01T00:00:00.000',
+            },
+        }
+        const timezone = 'UTC'
+        const dateRange = {
+            start_datetime: '2025-01-01T00:00:00.000',
+            end_datetime: '2025-01-28T23:59:59.000',
+        }
+        const intentMetricData: IntentMetrics = {
+            metricName: IntentMetric.Handover,
+            intentFieldId: 10,
+            intentFieldValues: ['order::cancel'],
+            outcomeFieldId: 20,
+            outcomeFieldValues: ['ai_agent_handover'],
+            integrationIds: ['integration-1'],
+            dateRange,
+        }
+
+        getDrillDownQuery(intentMetricData)(statsFilters, timezone)
+
+        expect(intentHandoverDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            expect.objectContaining({ period: dateRange }),
+            timezone,
+            10,
+            ['order::cancel'],
+            20,
+            undefined,
+            ['integration-1'],
+            ['ai_agent_handover'],
+        )
+    })
+
     it('should be populated with automated_interactions_card', () => {
         const periodStart = moment()
         const periodEnd = periodStart.add(7, 'days')
@@ -2539,6 +2626,45 @@ describe('getDrillDownMetric', () => {
             } as AiAgentMetrics,
             expectedValues: {
                 metricTitle: 'CSAT',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName: IntentMetric.TicketVolume,
+                title: 'Ticket volume',
+                intentFieldId: 10,
+                intentFieldValues: ['order::status'],
+                outcomeFieldId: 20,
+                integrationIds: ['integration-1'],
+                dateRange: {
+                    start_datetime: '2025-01-01T00:00:00.000',
+                    end_datetime: '2025-01-28T23:59:59.000',
+                },
+            } as IntentMetrics,
+            expectedValues: {
+                metricTitle: 'Ticket volume',
+                showMetric: false,
+                metricValueFormat: 'decimal',
+            },
+        },
+        {
+            metricData: {
+                metricName: IntentMetric.Handover,
+                title: 'Handover',
+                intentFieldId: 10,
+                intentFieldValues: ['order::cancel'],
+                outcomeFieldId: 20,
+                outcomeFieldValues: ['ai_agent_handover'],
+                integrationIds: ['integration-1'],
+                dateRange: {
+                    start_datetime: '2025-01-01T00:00:00.000',
+                    end_datetime: '2025-01-28T23:59:59.000',
+                },
+            } as IntentMetrics,
+            expectedValues: {
+                metricTitle: 'Handover',
                 showMetric: false,
                 metricValueFormat: 'decimal',
             },

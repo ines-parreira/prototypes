@@ -54,6 +54,7 @@ import type {
 import {
     AIInsightsMetric,
     AutoQAMetric,
+    IntentMetric,
     KnowledgeMetric,
     SatisfactionMetric,
 } from 'domains/reporting/state/ui/stats/types'
@@ -151,7 +152,9 @@ export const TicketDrillDownTableContent = ({
     const isKnowledgeMetric =
         metricData.metricName === KnowledgeMetric.Tickets ||
         metricData.metricName === KnowledgeMetric.HandoverTickets ||
-        metricData.metricName === KnowledgeMetric.CSAT
+        metricData.metricName === KnowledgeMetric.CSAT ||
+        metricData.metricName === IntentMetric.TicketVolume ||
+        metricData.metricName === IntentMetric.Handover
 
     const { showMetric, metricTitle, metricValueFormat } = columnConfig
 

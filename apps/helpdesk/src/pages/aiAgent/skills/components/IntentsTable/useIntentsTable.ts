@@ -2,15 +2,17 @@ import { useMemo } from 'react'
 
 import { useListIntents } from 'models/helpCenter/queries'
 
+import { useIntentsMetrics } from '../../hooks/useIntentsMetrics'
 import type { ArticleInIntentDto, IntentResponseDto } from '../../types'
 import { IntentStatus } from '../../types'
 import { formatIntentName } from '../../utils'
 import { INTENT_DESCRIPTIONS } from './intentDescriptions'
 
 export interface IntentMetrics {
-    tickets: number | null
-    handoverTickets: number | null
-    resourceSourceSetId: number
+    ticketVolume: number
+    ticketVolumePercent: number
+    handoverCount: number
+    handoverPercent: number
 }
 
 export type ToggleState = 'enabled' | 'disabled' | 'indeterminate'
@@ -44,6 +46,13 @@ export const useIntentsTable = (helpCenterId: number) => {
     const { data, isLoading, isError } = useListIntents(helpCenterId, {
         enabled: !!helpCenterId,
     })
+
+    const {
+        data: metricsMap,
+        isLoading: isMetricsLoading,
+        isError: isMetricsError,
+        metricsDateRange,
+    } = useIntentsMetrics(!!helpCenterId)
 
     const transformedIntents = useMemo<TransformedIntent[]>(() => {
         if (!data?.intents) return []
@@ -98,6 +107,7 @@ export const useIntentsTable = (helpCenterId: number) => {
                 status: intentStatus,
                 parentId: l1Name,
                 articles: publishedArticles,
+                metrics: metricsMap.get(intent.name),
             }
 
             if (!childrenMap.has(l1Name)) {
@@ -110,14 +120,18 @@ export const useIntentsTable = (helpCenterId: number) => {
             const children = childrenMap.get(parentName) ?? []
             parentIntent.children = children
             parentIntent.toggleState = calculateL1ToggleState(children)
+            parentIntent.metrics = metricsMap.get(parentName)
         })
 
         return Array.from(l1ParentsMap.values())
-    }, [data])
+    }, [data, metricsMap])
 
     return {
         intents: transformedIntents,
         isLoading,
         isError,
+        isMetricsLoading,
+        isMetricsError,
+        metricsDateRange,
     }
 }

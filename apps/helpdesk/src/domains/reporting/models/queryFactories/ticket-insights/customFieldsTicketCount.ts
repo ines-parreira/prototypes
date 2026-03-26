@@ -417,17 +417,27 @@ export const customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory
         outcomeFieldId?: number,
         sorting?: OrderDirection,
         integrationIds?: string[],
+        outcomeFieldValues?: string[],
     ): ReportingQuery<HelpdeskMessageCubeWithJoins> => {
-        const customFieldsValuesToMatch =
+        const intentFields =
             intentFieldId && intentFieldValues
-                ? [
-                      ...addFieldIdToCustomFieldValues(
-                          intentFieldId,
-                          intentFieldValues,
-                      ),
-                      `${outcomeFieldId}::`,
-                  ]
-                : [`${outcomeFieldId}::`]
+                ? addFieldIdToCustomFieldValues(
+                      intentFieldId,
+                      intentFieldValues,
+                  )
+                : []
+
+        const outcomeFields =
+            outcomeFieldId && outcomeFieldValues
+                ? addFieldIdToCustomFieldValues(
+                      outcomeFieldId,
+                      outcomeFieldValues,
+                  )
+                : outcomeFieldId
+                  ? [`${outcomeFieldId}::`]
+                  : []
+
+        const customFieldsValuesToMatch = [...intentFields, ...outcomeFields]
 
         return {
             metricName:

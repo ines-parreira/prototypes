@@ -10,9 +10,12 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
+import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'domains/reporting/hooks/automate/types'
+import { IntentMetric } from 'domains/reporting/state/ui/stats/types'
 import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
 
 import { IntentStatus } from '../../types'
+import { MetricCell } from '../SharedTableComponents/MetricCells'
 import { SortableHeaderCell } from '../SkillsTable/SortableHeaderCell'
 import type { TransformedIntent } from './useIntentsTable'
 
@@ -45,14 +48,23 @@ interface GetColumnsParams {
     onLinkToSkill: (intentId: string) => void
     expandedRows: Set<string>
     onToggleExpanded: (rowId: string) => void
+    outcomeCustomFieldId?: number
+    intentCustomFieldId?: number
+    integrationIds?: string[]
+    metricsDateRange?: { start_datetime: string; end_datetime: string }
 }
 
 export const getColumns = ({
+    statsDisplayMode,
     isMetricsLoading = false,
     onToggleEnabled,
     onLinkToSkill,
     expandedRows,
     onToggleExpanded,
+    outcomeCustomFieldId,
+    intentCustomFieldId,
+    integrationIds = [],
+    metricsDateRange,
 }: GetColumnsParams): ColumnDef<TransformedIntent>[] => {
     const hasExpandedRows = expandedRows.size > 0
 
@@ -124,38 +136,105 @@ export const getColumns = ({
         },
         {
             id: COLUMN_IDS.TICKET_VOLUME,
-            accessorFn: (row) => row.metrics?.tickets ?? null,
+            accessorFn: (row) => row.metrics?.ticketVolume ?? null,
             header: (info) => (
                 <SortableHeaderCell
                     label="Ticket volume"
                     sortDirection={info.column.getIsSorted()}
                 />
             ),
-            cell: () => {
+            cell: ({ row }) => {
                 if (isMetricsLoading) {
                     return <Skeleton width={40} />
                 }
 
-                return <Text>--</Text>
+                const metrics = row.original.metrics
+
+                if (!metrics || metrics.ticketVolume === 0) {
+                    return <Text>--</Text>
+                }
+
+                const displayValue =
+                    statsDisplayMode === 'percentage'
+                        ? `${metrics.ticketVolumePercent}%`
+                        : String(metrics.ticketVolume)
+
+                if (
+                    !metricsDateRange ||
+                    !outcomeCustomFieldId ||
+                    !intentCustomFieldId
+                ) {
+                    return <Text>{displayValue}</Text>
+                }
+
+                return (
+                    <MetricCell
+                        type="intent"
+                        metricName={IntentMetric.TicketVolume}
+                        value={metrics.ticketVolumePercent}
+                        intentName={row.original.name}
+                        displayValue={displayValue}
+                        title="Ticket volume"
+                        outcomeCustomFieldId={outcomeCustomFieldId}
+                        intentCustomFieldId={intentCustomFieldId}
+                        integrationIds={integrationIds}
+                        dateRange={metricsDateRange}
+                        showProgressBar={true}
+                    />
+                )
             },
             enableSorting: true,
             sortUndefined: -1,
         },
         {
             id: COLUMN_IDS.HANDOVER,
-            accessorFn: (row) => row.metrics?.handoverTickets ?? null,
+            accessorFn: (row) => row.metrics?.handoverCount ?? null,
             header: (info) => (
                 <SortableHeaderCell
                     label="Handover"
                     sortDirection={info.column.getIsSorted()}
                 />
             ),
-            cell: () => {
+            cell: ({ row }) => {
                 if (isMetricsLoading) {
                     return <Skeleton width={40} />
                 }
 
-                return <Text>--</Text>
+                const metrics = row.original.metrics
+
+                if (!metrics || metrics.handoverCount === 0) {
+                    return <Text>--</Text>
+                }
+
+                const displayValue =
+                    statsDisplayMode === 'percentage'
+                        ? `${metrics.handoverPercent}%`
+                        : String(metrics.handoverCount)
+
+                if (
+                    !metricsDateRange ||
+                    !outcomeCustomFieldId ||
+                    !intentCustomFieldId
+                ) {
+                    return <Text>{displayValue}</Text>
+                }
+
+                return (
+                    <MetricCell
+                        type="intent"
+                        metricName={IntentMetric.Handover}
+                        value={metrics.handoverPercent}
+                        intentName={row.original.name}
+                        displayValue={displayValue}
+                        title="Handover"
+                        outcomeCustomFieldId={outcomeCustomFieldId}
+                        intentCustomFieldId={intentCustomFieldId}
+                        integrationIds={integrationIds}
+                        dateRange={metricsDateRange}
+                        outcomeValue={CUSTOM_FIELD_AI_AGENT_HANDOVER}
+                        showProgressBar={true}
+                    />
+                )
             },
             enableSorting: true,
             sortUndefined: -1,

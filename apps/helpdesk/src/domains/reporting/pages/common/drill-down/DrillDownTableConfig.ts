@@ -8,6 +8,7 @@ import {
 } from 'domains/reporting/hooks/useDrillDownData'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { AiAgentDrillDownConfig } from 'domains/reporting/pages/automate/aiAgent/AiAgentDrillDownConfig'
+import { IntentMetricConfig } from 'domains/reporting/pages/automate/aiAgent/IntentMetricConfig'
 import { AiInsightsMetricConfig } from 'domains/reporting/pages/automate/AiInsightsMetricConfig'
 import { AiSalesAgentDrillDownConfig } from 'domains/reporting/pages/automate/aiSalesAgent/AiSalesAgentDrillDownConfig'
 import type {
@@ -54,6 +55,7 @@ import type {
     AIInsightsMetric,
     AutoQAMetric,
     ChannelsTableColumns,
+    IntentMetric,
     KnowledgeMetric,
     ProductInsightsTableColumns,
     SatisfactionAverageSurveyScoreMetric,
@@ -128,6 +130,7 @@ const TicketDrillDownConfig: DomainConfig<
     | ProductInsightsTableColumns.ReturnMentions
     | ProductsPerTicketColumn.TicketVolume
     | KnowledgeMetric
+    | IntentMetric
 > = {
     drillDownHook: useTicketDrillDownHook,
     tableComponent: TicketDrillDownTableContent,
@@ -151,6 +154,7 @@ const TicketDrillDownConfig: DomainConfig<
         ...VoiceOfCustomerMetricWithDrillDownConfig,
         ...TicketVolumeConfig,
         ...KnowledgeMetricConfig,
+        ...IntentMetricConfig,
     },
 }
 
