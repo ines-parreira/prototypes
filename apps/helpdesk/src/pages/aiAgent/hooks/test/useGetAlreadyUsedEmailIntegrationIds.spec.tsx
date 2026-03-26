@@ -64,7 +64,7 @@ const defaultOnboardingData: OnboardingData = {
     salesDiscountMax: 0.8,
     scopes: [AiAgentScopes.SUPPORT, AiAgentScopes.SALES],
     shopName: 'acme',
-    currentStepName: 'channels',
+    currentStepName: 'tone of voice',
     emailIntegrationIds: [],
     chatIntegrationIds: [],
     completedDatetime: undefined,

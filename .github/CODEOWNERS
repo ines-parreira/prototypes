@@ -49,7 +49,6 @@ apps/helpdesk/src/AIJourney/ @gorgias/ai-journey
 
 apps/helpdesk/src/pages/aiAgent/Activation/ @gorgias/cxp-coaching-trust
 apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard/ @gorgias/cxp-coaching-trust
-apps/helpdesk/src/pages/aiAgent/Onboarding/ @gorgias/cxp-coaching-trust
 apps/helpdesk/src/pages/aiAgent/components/Knowledge/ @gorgias/cxp-coaching-trust
 apps/helpdesk/src/pages/aiAgent/components/KnowledgeEditor/ @gorgias/cxp-coaching-trust
 apps/helpdesk/src/pages/aiAgent/KnowledgeHub/ @gorgias/cxp-coaching-trust

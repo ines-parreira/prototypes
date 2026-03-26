@@ -252,14 +252,18 @@ describe('AiAgentOnboarding', () => {
     })
 
     it('should preserve shop context when current step is invalid', async () => {
+        mockUseShopifyIntegrationAndScope.mockReturnValue({
+            integration: null,
+        })
+
         renderComponent(
-            '/app/ai-agent/shopify/shopify-store/onboarding/channels',
+            '/app/ai-agent/shopify/shopify-store/onboarding/invalid-step',
             '/app/ai-agent/:shopType/:shopName/onboarding/:step',
         )
 
         await waitFor(() => {
             expect(history.location.pathname).toBe(
-                '/app/ai-agent/shopify/shopify-store/onboarding/shopify integration',
+                `/app/ai-agent/shopify/shopify-store/onboarding/${WizardStepEnum.SHOPIFY_INTEGRATION}`,
             )
         })
     })

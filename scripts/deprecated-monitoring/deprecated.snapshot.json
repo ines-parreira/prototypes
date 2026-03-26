@@ -2015,14 +2015,13 @@
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "ADMIN_ROLE",
       "comment": "*\n * @deprecated Use UserRole enum instead from @repo/utils package\n * @date 2025-11-18\n * @type permissions-migration\n ",
-      "count": 27,
+      "count": 26,
       "filePath": "apps/helpdesk/src/config/user.ts",
       "usages": [
         {
           "name": "ADMIN_ROLE",
           "files": [
             "apps/helpdesk/src/fixtures/users.ts",
-            "apps/helpdesk/src/pages/aiAgent/Onboarding/settings.ts",
             "apps/helpdesk/src/pages/settings/common/SettingsNavbar/tests/Item.spec.tsx",
             "apps/helpdesk/src/routes/Routes.tsx",
             "apps/helpdesk/src/routes/settings/Billing.tsx",
