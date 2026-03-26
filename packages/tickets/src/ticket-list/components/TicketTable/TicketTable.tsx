@@ -309,7 +309,6 @@ export function TicketTable({
                 columns={columns}
                 isLoading={isLoading || isFetchingNextPage}
                 onRowClick={handleRowClick}
-                layout="fixed"
                 selection={{
                     enable: true,
                     multiple: true,

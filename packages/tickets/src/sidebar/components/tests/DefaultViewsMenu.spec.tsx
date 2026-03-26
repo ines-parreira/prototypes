@@ -59,21 +59,25 @@ describe('DefaultViewsMenu', () => {
         render(<DefaultViewsMenu />)
 
         expect(
-            screen.getByRole('button', { name: /filter default views/i }),
+            screen.getByRole('button', { name: /slider-filter/i }),
         ).toBeInTheDocument()
     })
 
     it('should show system view labels in the menu after opening', async () => {
         const { user } = render(<DefaultViewsMenu />)
 
-        await user.click(
-            screen.getByRole('button', { name: /filter default views/i }),
-        )
+        await user.click(screen.getByRole('button', { name: /slider-filter/i }))
 
         await waitFor(() => {
-            expect(screen.getByText('Assigned to me')).toBeInTheDocument()
-            expect(screen.getByText('Unassigned')).toBeInTheDocument()
-            expect(screen.getByText('All')).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: /assigned to me/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: /unassigned/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: /all/i }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -95,15 +99,21 @@ describe('DefaultViewsMenu', () => {
 
         const { user } = render(<DefaultViewsMenu />)
 
-        await user.click(
-            screen.getByRole('button', { name: /filter default views/i }),
-        )
+        await user.click(screen.getByRole('button', { name: /slider-filter/i }))
 
         await waitFor(() => {
-            expect(screen.getByText('Assigned to me')).toBeInTheDocument()
-            expect(screen.getByText('Unassigned')).toBeInTheDocument()
-            expect(screen.getByText('All')).toBeInTheDocument()
-            expect(screen.getByText('Custom')).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: /assigned to me/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: /unassigned/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: /all/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: /custom/i }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -119,7 +129,7 @@ describe('DefaultViewsMenu', () => {
         render(<DefaultViewsMenu />)
 
         expect(
-            screen.getByRole('button', { name: /filter default views/i }),
+            screen.getByRole('button', { name: /slider-filter/i }),
         ).toBeDisabled()
     })
 
@@ -135,7 +145,7 @@ describe('DefaultViewsMenu', () => {
         render(<DefaultViewsMenu />)
 
         expect(
-            screen.getByRole('button', { name: /filter default views/i }),
+            screen.getByRole('button', { name: /slider-filter/i }),
         ).toBeDisabled()
     })
 
@@ -150,15 +160,17 @@ describe('DefaultViewsMenu', () => {
 
         const { user } = render(<DefaultViewsMenu />)
 
-        await user.click(
-            screen.getByRole('button', { name: /filter default views/i }),
-        )
+        await user.click(screen.getByRole('button', { name: /slider-filter/i }))
 
         await waitFor(() => {
-            expect(screen.getByText('Assigned to me')).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: /assigned to me/i }),
+            ).toBeInTheDocument()
         })
 
-        await user.click(screen.getByText('Assigned to me'))
+        await user.click(
+            screen.getByRole('option', { name: /assigned to me/i }),
+        )
 
         expect(mockUpdateVisibility).not.toHaveBeenCalled()
     })
@@ -166,15 +178,17 @@ describe('DefaultViewsMenu', () => {
     it('should call updateVisibility with correct hidden views when a view is deselected', async () => {
         const { user } = render(<DefaultViewsMenu />)
 
-        await user.click(
-            screen.getByRole('button', { name: /filter default views/i }),
-        )
+        await user.click(screen.getByRole('button', { name: /slider-filter/i }))
 
         await waitFor(() => {
-            expect(screen.getByText('Assigned to me')).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: /assigned to me/i }),
+            ).toBeInTheDocument()
         })
 
-        await user.click(screen.getByText('Assigned to me'))
+        await user.click(
+            screen.getByRole('option', { name: /assigned to me/i }),
+        )
 
         await waitFor(() => {
             expect(mockUpdateVisibility).toHaveBeenCalledWith({
