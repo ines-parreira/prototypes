@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlagWithLoading } from '@repo/feature-flags'
 import { act, renderHook } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
@@ -33,7 +33,7 @@ jest.mock('utils/file', () => ({
     saveZippedFiles: jest.fn(),
 }))
 
-const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedBuildKpiDashboard = jest.mocked(buildCustomDashboard)
@@ -60,7 +60,10 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseFlag.mockReturnValue(true)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
 
         mockedBuildKpiDashboard.mockReturnValue({
             id: 0,
@@ -125,6 +128,17 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
 
         expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should return isLoading as true when trend cards flag is loading', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
+
+        expect(result.current.isLoading).toBe(true)
     })
 
     it('should return isLoading as true when KPI data is loading', () => {
@@ -232,7 +246,10 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
     })
 
     it('should call buildCustomDashboard with the layout and feature flag value', () => {
-        mockUseFlag.mockReturnValue(true)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
         renderHook(() => useExportAiAgentSupportAgentToCSV())
         expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
             'ai-agent-support-agent',

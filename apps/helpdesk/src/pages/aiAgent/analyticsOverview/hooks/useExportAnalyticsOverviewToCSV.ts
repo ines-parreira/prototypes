@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
@@ -21,12 +21,14 @@ import { useDownloadAutomationRateTimeSeriesData } from './useDownloadAutomation
 const REPORT_NAME = 'analytics-overview'
 
 export const useExportAnalyticsOverviewToCSV = () => {
-    const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
-    )
-    const isNewChartsEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
-    )
+    const {
+        value: isAnalyticsDashboardsTrendCardsEnabled,
+        isLoading: isTrendCardsFlagLoading,
+    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+    const { value: isNewChartsEnabled, isLoading: isChartsFlagLoading } =
+        useFlagWithLoading(
+            FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
+        )
     const { cleanStatsFilters } = useStatsFilters()
 
     const { layoutConfig } = useGetManagedDashboardsLayoutConfig({
@@ -80,6 +82,8 @@ export const useExportAnalyticsOverviewToCSV = () => {
 
     const isLoading =
         isKpiLoading ||
+        isTrendCardsFlagLoading ||
+        isChartsFlagLoading ||
         (!isNewChartsEnabled &&
             (automationRateByFeatureData.isLoading ||
                 automationRateTimeSeriesData.isLoading))

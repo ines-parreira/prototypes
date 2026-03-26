@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlagWithLoading } from '@repo/feature-flags'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
@@ -39,7 +39,7 @@ jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
 const getLineChartGraphConfigMock = assumeMock(getLineChartGraphConfig)
 const useListStoresMock = assumeMock(useListStores)
 
-const useFlagMocked = assumeMock(useFlag)
+const useFlagWithLoadingMocked = assumeMock(useFlagWithLoading)
 
 describe('AnalyticsOverviewConfigurableLineGraph', () => {
     const mockTimeSeriesData = [
@@ -97,7 +97,10 @@ describe('AnalyticsOverviewConfigurableLineGraph', () => {
 
         useListStoresMock.mockReturnValue({ data: [] } as any)
         getLineChartGraphConfigMock.mockReturnValue([defaultMetricConfig])
-        useFlagMocked.mockReturnValue(true)
+        useFlagWithLoadingMocked.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
     })
 
     afterEach(() => {

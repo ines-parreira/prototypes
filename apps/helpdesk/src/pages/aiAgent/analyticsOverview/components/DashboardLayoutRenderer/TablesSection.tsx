@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { Box, ButtonGroup, ButtonGroupItem, Heading } from '@gorgias/axiom'
 
@@ -25,7 +25,7 @@ export const TablesSection = ({
     reportConfig,
     onTabChange,
 }: TablesSectionProps) => {
-    const isAnalyticsDashboardsTablesEnabled = useFlag(
+    const { value: isAnalyticsDashboardsTablesEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
     )
 

@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
@@ -19,12 +19,14 @@ import { saveZippedFiles } from 'utils/file'
 const REPORT_NAME = 'ai-agent-all-agents'
 
 export const useExportAiAgentAllAgentsToCSV = () => {
-    const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
-    )
-    const isAnalyticsDashboardsTablesEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
-    )
+    const {
+        value: isAnalyticsDashboardsTrendCardsEnabled,
+        isLoading: isTrendCardsFlagLoading,
+    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+    const {
+        value: isAnalyticsDashboardsTablesEnabled,
+        isLoading: isTablesFlagLoading,
+    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
     const { cleanStatsFilters } = useStatsFilters()
 
     const allAgentsDashboard = useMemo(
@@ -63,6 +65,8 @@ export const useExportAiAgentAllAgentsToCSV = () => {
 
     const isLoading =
         isKpiLoading ||
+        isTrendCardsFlagLoading ||
+        isTablesFlagLoading ||
         automatedInteractionsBySkillData.isLoading ||
         automationRateTimeSeriesData.isLoading ||
         channelPerformanceData.isLoading ||

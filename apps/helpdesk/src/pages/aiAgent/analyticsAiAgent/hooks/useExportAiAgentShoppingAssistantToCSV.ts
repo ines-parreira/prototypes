@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
@@ -22,12 +22,15 @@ import { saveZippedFiles } from 'utils/file'
 const REPORT_NAME = 'ai-agent-shopping-assistant'
 
 export const useExportAiAgentShoppingAssistantToCSV = () => {
-    const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
-    )
-    const isNewChartsEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
-    )
+    const {
+        value: isAnalyticsDashboardsTrendCardsEnabled,
+        isLoading: isTrendCardsFlagLoading,
+    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+    const { value: isNewChartsEnabled, isLoading: isChartsFlagLoading } =
+        useFlagWithLoading(
+            FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
+        )
+
     const { cleanStatsFilters } = useStatsFilters()
 
     const { layoutConfig } = useGetManagedDashboardsLayoutConfig({
@@ -50,7 +53,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
         ],
     )
 
-    const { files: trendCardsFiles, isLoading: isKpiLoading } =
+    const { files: dashboardDataFiles, isLoading: isKpiLoading } =
         useDashboardData(
             shoppingAssistantDashboard,
             true,
@@ -65,6 +68,8 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
 
     const isLoading =
         isKpiLoading ||
+        isTrendCardsFlagLoading ||
+        isChartsFlagLoading ||
         (!isNewChartsEnabled &&
             (totalSalesByProductData.isLoading ||
                 gmvInfluenceTimeSeriesData.isLoading ||
@@ -74,9 +79,9 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
     const files = useMemo(
         () =>
             isNewChartsEnabled
-                ? trendCardsFiles
+                ? dashboardDataFiles
                 : {
-                      ...trendCardsFiles,
+                      ...dashboardDataFiles,
                       ...totalSalesByProductData.files,
                       ...gmvInfluenceTimeSeriesData.files,
                       ...channelPerformanceData.files,
@@ -84,7 +89,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
                   },
         [
             isNewChartsEnabled,
-            trendCardsFiles,
+            dashboardDataFiles,
             totalSalesByProductData.files,
             gmvInfluenceTimeSeriesData.files,
             channelPerformanceData.files,

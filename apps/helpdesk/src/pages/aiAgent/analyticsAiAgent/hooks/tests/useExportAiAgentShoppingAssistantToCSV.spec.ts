@@ -1,4 +1,4 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { act, renderHook } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
@@ -37,7 +37,7 @@ jest.mock('utils/file', () => ({
     saveZippedFiles: jest.fn(),
 }))
 
-const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
@@ -89,7 +89,10 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseFlag.mockReturnValue(false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
 
         mockedUseGetManagedDashboardsLayoutConfig.mockReturnValue({
             layoutConfig: { sections: [] } as any,
@@ -150,6 +153,37 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
+    it('should return isLoading as true when trend cards flag is loading', () => {
+        mockUseFlagWithLoading.mockImplementation((key) => {
+            if (key === FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+                return { value: false, isLoading: true }
+            return { value: false, isLoading: false }
+        })
+
+        const { result } = renderHook(() =>
+            useExportAiAgentShoppingAssistantToCSV(),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isLoading as true when charts flag is loading', () => {
+        mockUseFlagWithLoading.mockImplementation((key) => {
+            if (
+                key ===
+                FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
+            )
+                return { value: false, isLoading: true }
+            return { value: false, isLoading: false }
+        })
+
+        const { result } = renderHook(() =>
+            useExportAiAgentShoppingAssistantToCSV(),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
     it('should return isLoading as true when KPI data is loading', () => {
         mockedUseDashboardData.mockReturnValue({
             files: {},
@@ -180,7 +214,10 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
     })
 
     it('should call buildCustomDashboard with the name, layout, and both feature flags', () => {
-        mockUseFlag.mockReturnValue(true)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
         renderHook(() => useExportAiAgentShoppingAssistantToCSV())
         expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
             'ai-agent-shopping-assistant',
@@ -202,13 +239,9 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
 
     describe('when isNewChartsEnabled is false', () => {
         beforeEach(() => {
-            mockUseFlag.mockImplementation((key) => {
-                if (
-                    key ===
-                    FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
-                )
-                    return false
-                return false
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
             })
         })
 
@@ -342,7 +375,10 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
 
     describe('when isNewChartsEnabled is true', () => {
         beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
         })
 
         it('should return isLoading as false even when old download hooks are loading', () => {

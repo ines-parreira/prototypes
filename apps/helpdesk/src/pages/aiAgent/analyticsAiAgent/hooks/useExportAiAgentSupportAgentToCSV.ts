@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
@@ -18,9 +18,10 @@ import { useDownloadSupportInteractionsTimeSeriesData } from './useDownloadSuppo
 const REPORT_NAME = 'ai-agent-support-agent'
 
 export const useExportAiAgentSupportAgentToCSV = () => {
-    const isAnalyticsDashboardsTrendCardsEnabled = useFlag(
-        FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards,
-    )
+    const {
+        value: isAnalyticsDashboardsTrendCardsEnabled,
+        isLoading: isTrendCardsFlagLoading,
+    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
     const { cleanStatsFilters } = useStatsFilters()
 
     const supportAgentDashboard = useMemo(
@@ -50,6 +51,7 @@ export const useExportAiAgentSupportAgentToCSV = () => {
 
     const isLoading =
         isKpiLoading ||
+        isTrendCardsFlagLoading ||
         supportInteractionsByIntentData.isLoading ||
         supportInteractionsTimeSeriesData.isLoading ||
         channelPerformanceData.isLoading ||

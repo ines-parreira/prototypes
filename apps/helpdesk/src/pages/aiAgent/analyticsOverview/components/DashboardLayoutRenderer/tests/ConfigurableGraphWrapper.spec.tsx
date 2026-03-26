@@ -1,6 +1,6 @@
 import type { ComponentType, ReactNode } from 'react'
 
-import { useFlag } from '@repo/feature-flags'
+import { useFlagWithLoading } from '@repo/feature-flags'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 import { ConfigurableGraphType } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
@@ -62,7 +62,7 @@ jest.mock('@repo/reporting', () => ({
     ),
 }))
 
-const useFlagMocked = assumeMock(useFlag)
+const useFlagWithLoadingMocked = assumeMock(useFlagWithLoading)
 
 const defaultDimension = {
     id: 'overall',
@@ -98,7 +98,10 @@ const defaultProps = {
 
 describe('ConfigurableGraphWrapper', () => {
     beforeEach(() => {
-        useFlagMocked.mockReturnValue(true)
+        useFlagWithLoadingMocked.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
         useDashboardContextMock.mockReturnValue(null)
     })
 
@@ -114,7 +117,10 @@ describe('ConfigurableGraphWrapper', () => {
     })
 
     it('renders DeprecatedChart when feature flag is off', () => {
-        useFlagMocked.mockReturnValue(false)
+        useFlagWithLoadingMocked.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
 
         render(<ConfigurableGraphWrapper {...defaultProps} />)
 

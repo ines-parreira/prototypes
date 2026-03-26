@@ -1,4 +1,4 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { act, renderHook } from '@testing-library/react'
 
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
@@ -41,7 +41,7 @@ jest.mock('utils/file', () => ({
     saveZippedFiles: jest.fn(),
 }))
 
-const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseDashboardData = jest.mocked(useDashboardData)
 const mockedBuildKpiDashboard = jest.mocked(buildCustomDashboard)
@@ -74,7 +74,10 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
-        mockUseFlag.mockReturnValue(true)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
 
         mockedBuildKpiDashboard.mockReturnValue({
             id: 0,
@@ -158,6 +161,30 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should return isLoading as true when trend cards flag is loading', () => {
+        mockUseFlagWithLoading.mockImplementation((key) => {
+            if (key === FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+                return { value: true, isLoading: true }
+            return { value: true, isLoading: false }
+        })
+
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isLoading as true when tables flag is loading', () => {
+        mockUseFlagWithLoading.mockImplementation((key) => {
+            if (key === FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
+                return { value: true, isLoading: true }
+            return { value: true, isLoading: false }
+        })
+
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
+
+        expect(result.current.isLoading).toBe(true)
     })
 
     it('should return isLoading as true when KPI data is loading', () => {
@@ -267,7 +294,10 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
     })
 
     it('should call buildCustomDashboard with the layout and feature flag value', () => {
-        mockUseFlag.mockReturnValue(true)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
         renderHook(() => useExportAiAgentAllAgentsToCSV())
         expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
             'ai-agent-all-agents',
@@ -288,7 +318,10 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
 
     describe('channel data based on AiAgentAnalyticsDashboardsTables flag', () => {
         it('uses all agents channel performance data when the tables flag is enabled', async () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
 
             const { result } = renderHook(() =>
                 useExportAiAgentAllAgentsToCSV(),
@@ -312,10 +345,10 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         })
 
         it('uses legacy channel performance data when the tables flag is disabled', async () => {
-            mockUseFlag.mockImplementation(
-                (flag) =>
-                    flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
-            )
+            mockUseFlagWithLoading.mockImplementation((flag) => ({
+                value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+                isLoading: false,
+            }))
 
             const { result } = renderHook(() =>
                 useExportAiAgentAllAgentsToCSV(),
@@ -339,10 +372,10 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         })
 
         it('reflects isLoading from legacy channel data when the tables flag is disabled', () => {
-            mockUseFlag.mockImplementation(
-                (flag) =>
-                    flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
-            )
+            mockUseFlagWithLoading.mockImplementation((flag) => ({
+                value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+                isLoading: false,
+            }))
             mockedUseDownloadChannelPerformanceData.mockReturnValue({
                 files: {},
                 fileName: '',
@@ -359,7 +392,10 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
 
     describe('intent data based on AiAgentAnalyticsDashboardsTables flag', () => {
         it('uses all agents intent performance data when the tables flag is enabled', async () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
 
             const { result } = renderHook(() =>
                 useExportAiAgentAllAgentsToCSV(),
@@ -383,10 +419,10 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         })
 
         it('uses legacy intent performance data when the tables flag is disabled', async () => {
-            mockUseFlag.mockImplementation(
-                (flag) =>
-                    flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
-            )
+            mockUseFlagWithLoading.mockImplementation((flag) => ({
+                value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+                isLoading: false,
+            }))
 
             const { result } = renderHook(() =>
                 useExportAiAgentAllAgentsToCSV(),
@@ -410,10 +446,10 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         })
 
         it('reflects isLoading from legacy intent data when the tables flag is disabled', () => {
-            mockUseFlag.mockImplementation(
-                (flag) =>
-                    flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
-            )
+            mockUseFlagWithLoading.mockImplementation((flag) => ({
+                value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+                isLoading: false,
+            }))
             mockedUseDownloadIntentPerformanceData.mockReturnValue({
                 files: {},
                 fileName: '',

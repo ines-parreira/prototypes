@@ -1,4 +1,5 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlagWithLoading } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -11,7 +12,7 @@ import type {
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: { AiAgentAnalyticsDashboardsTables: 'tables-flag' },
-    useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
 
 jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
@@ -20,7 +21,7 @@ jest.mock('domains/reporting/pages/dashboards/DashboardComponent', () => ({
     ),
 }))
 
-const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+const mockUseFlagWithLoading = assumeMock(useFlagWithLoading)
 
 const { createContext, useContext } =
     jest.requireActual<typeof import('react')>('react')
@@ -96,7 +97,10 @@ const makeSection = (
 
 describe('TablesSection', () => {
     beforeEach(() => {
-        mockUseFlag.mockReturnValue(false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
     })
     describe('title', () => {
         it('should render tableTitle when provided', () => {
@@ -325,7 +329,10 @@ describe('TablesSection', () => {
         })
 
         it('should hide tables with requiresFeatureFlag when the flag is off', () => {
-            mockUseFlag.mockReturnValue(false)
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
 
             render(
                 <TablesSection
@@ -346,7 +353,10 @@ describe('TablesSection', () => {
         })
 
         it('should show tables with requiresFeatureFlag when the flag is on', () => {
-            mockUseFlag.mockReturnValue(true)
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
 
             render(
                 <TablesSection
@@ -363,7 +373,10 @@ describe('TablesSection', () => {
         })
 
         it('should show only non-flagged tables when the flag is off and some tables are flagged', () => {
-            mockUseFlag.mockReturnValue(false)
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
 
             render(
                 <TablesSection
@@ -384,7 +397,10 @@ describe('TablesSection', () => {
         })
 
         it('should render nothing when all tables require the flag and it is off', () => {
-            mockUseFlag.mockReturnValue(false)
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
 
             const { container } = render(
                 <TablesSection

@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import type { ConfigurableGraphMetricConfig } from '@repo/reporting'
 import { ConfigurableGraph } from '@repo/reporting'
 
@@ -30,7 +30,7 @@ export const ConfigurableGraphWrapper = ({
     dashboard,
     chartConfig,
 }: Props) => {
-    const isAnalyticsDashboardsNewChartsEnable = useFlag(
+    const { value: isAnalyticsDashboardsNewChartsEnabled } = useFlagWithLoading(
         FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
     )
     const dashboardContext = useDashboardContext()
@@ -46,7 +46,7 @@ export const ConfigurableGraphWrapper = ({
         .flatMap((s) => s.items)
         .find((item) => item.chartId === analyticsChartId)
 
-    return isAnalyticsDashboardsNewChartsEnable ? (
+    return isAnalyticsDashboardsNewChartsEnabled ? (
         <ConfigurableGraph
             // remount with the correct saved initialMeasure/initialDimension
             // if the managed dashboard API loads slower on refresh
