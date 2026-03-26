@@ -9,7 +9,7 @@ import type {
 import type React from 'react'
 import { Component } from 'react'
 
-import { shortcutManager } from '@repo/utils'
+import { linkify, shortcutManager } from '@repo/utils'
 import classnames from 'classnames'
 import type { ContentBlock } from 'draft-js'
 import {
@@ -48,7 +48,6 @@ import {
     linkifyWithTemplate,
 } from 'pages/common/draftjs/plugins/utils'
 import { extractUrlsFromString } from 'utils'
-import { linkify } from 'utils/linkify'
 
 import type { notify } from '../../../../state/notifications/actions'
 import type { ConnectedAction } from '../../../../state/types'

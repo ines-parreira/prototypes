@@ -4,7 +4,7 @@ import type {
     TouchEvent as TouchEventReact,
 } from 'react'
 
-import { envVars, isProduction, isStaging } from '@repo/utils'
+import { envVars, isProduction, isStaging, linkify } from '@repo/utils'
 import crypto from 'crypto'
 import { EditorState, Modifier } from 'draft-js'
 import escodegen from 'escodegen'
@@ -45,7 +45,6 @@ import type { RootState } from './state/types'
 import type { ViewsState } from './state/views/types'
 import type { NonEmptyArray, Schemas } from './types'
 import { sanitizeHtmlDefault } from './utils/html'
-import { linkify } from './utils/linkify'
 
 export type Message = {
     id: number

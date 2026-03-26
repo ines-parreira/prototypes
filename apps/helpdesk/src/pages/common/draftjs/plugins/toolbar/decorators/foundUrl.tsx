@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { linkify } from '@repo/utils'
 import type { ContentBlock, ContentState } from 'draft-js'
 import type { Map } from 'immutable'
 
@@ -8,7 +9,6 @@ import type {
     DecoratorComponentProps,
     DecoratorStrategyCallback,
 } from 'pages/common/draftjs/plugins/types'
-import { linkify } from 'utils/linkify'
 
 import LinkPopover from '../components/LinkPopover'
 

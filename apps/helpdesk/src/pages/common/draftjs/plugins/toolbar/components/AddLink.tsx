@@ -20,6 +20,7 @@ import {
     useFloating,
     useInteractions,
 } from '@floating-ui/react'
+import { linkify } from '@repo/utils'
 import { EditorState, Modifier, SelectionState } from 'draft-js'
 import ReactPlayer from 'react-player'
 import type { ConnectedProps } from 'react-redux'
@@ -49,7 +50,6 @@ import {
     getSelectedEntityKey,
     getSelectedText,
 } from 'utils/editor'
-import { linkify } from 'utils/linkify'
 
 import type { ToolbarContextType } from '../ToolbarContext'
 import { ToolbarContext, withToolbarContext } from '../ToolbarContext'

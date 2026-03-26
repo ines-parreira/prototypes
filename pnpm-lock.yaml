@@ -65,6 +65,9 @@ catalogs:
     '@types/htmlparser2':
       specifier: 3.10.2
       version: 3.10.2
+    '@types/linkify-it':
+      specifier: 2.1.0
+      version: 2.1.0
     '@types/linkifyjs':
       specifier: 2.1.3
       version: 2.1.3
@@ -80,6 +83,9 @@ catalogs:
     linkify-element:
       specifier: ^4.3.2
       version: 4.3.2
+    linkify-it:
+      specifier: 2.0.3
+      version: 2.0.3
     linkify-string:
       specifier: ^4.3.2
       version: 4.3.2
@@ -861,7 +867,7 @@ importers:
         specifier: ^4.3.2
         version: 4.3.2(linkifyjs@4.3.2)
       linkify-it:
-        specifier: 2.0.3
+        specifier: catalog:html
         version: 2.0.3
       linkify-string:
         specifier: catalog:html
@@ -1249,7 +1255,7 @@ importers:
         specifier: 1.2.1
         version: 1.2.1
       '@types/linkify-it':
-        specifier: 2.1.0
+        specifier: catalog:html
         version: 2.1.0
       '@types/linkifyjs':
         specifier: catalog:html
@@ -3326,6 +3332,9 @@ importers:
       linkify-element:
         specifier: catalog:html
         version: 4.3.2(linkifyjs@4.3.2)
+      linkify-it:
+        specifier: catalog:html
+        version: 2.0.3
       linkify-string:
         specifier: catalog:html
         version: 4.3.2(linkifyjs@4.3.2)
@@ -3378,6 +3387,9 @@ importers:
       '@types/htmlparser2':
         specifier: catalog:html
         version: 3.10.2
+      '@types/linkify-it':
+        specifier: catalog:html
+        version: 2.1.0
       '@types/linkifyjs':
         specifier: catalog:html
         version: 2.1.3

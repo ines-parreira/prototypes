@@ -4,7 +4,12 @@ export * from './datetime'
 export * from './currency'
 export * from './html'
 export * from './string'
-export * from './url'
+export {
+    linkify,
+    attachSearchParamsToUrl,
+    encodeRFC3986URIComponent,
+    ensureHTTPS,
+} from './url'
 export {
     UserRole,
     USER_ROLES,
