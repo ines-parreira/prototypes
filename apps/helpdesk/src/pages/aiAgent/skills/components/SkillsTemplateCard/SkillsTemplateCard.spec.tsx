@@ -13,11 +13,6 @@ const mockSkillTemplate: SkillTemplate = {
     id: 'order-status',
     name: 'Order status, tracking or delivery timing',
     guidanceId: 'order-status-guidance',
-    tag: 'Order',
-    style: {
-        color: 'content-accent-default',
-        background: 'surface-accent-default',
-    },
     intents: [
         {
             name: 'order::status',
@@ -82,6 +77,26 @@ describe('SkillsTemplateCard', () => {
             renderComponent()
 
             expect(screen.getByText('+1')).toBeInTheDocument()
+        })
+
+        it('shows a tooltip on a linked intent tag on hover', async () => {
+            jest.useFakeTimers()
+            renderComponent()
+
+            const linkedTagTrigger = screen
+                .getByText('Shipping / Delay')
+                .closest('[data-name="tooltip-trigger"]') as HTMLElement
+
+            await act(async () => {
+                linkedTagTrigger.focus()
+                jest.runAllTimers()
+            })
+
+            expect(
+                screen.getByRole('tooltip', { hidden: true }),
+            ).toHaveTextContent('Intent already linked to an existing skill')
+
+            jest.useRealTimers()
         })
 
         it('shows a tooltip with the hidden intent names on hover', async () => {

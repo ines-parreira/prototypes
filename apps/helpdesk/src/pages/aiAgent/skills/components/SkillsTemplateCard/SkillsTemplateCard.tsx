@@ -57,18 +57,30 @@ export const SkillsTemplateCard: React.FC<Props> = ({
                     {skillTemplate.name}
                 </Text>
                 <Box className={css.tagsContainer}>
-                    {displayedIntents.map((intent) => (
-                        <Tag
-                            key={intent.name}
-                            color={
-                                intent.status === IntentStatus.Linked
-                                    ? TagColor.Grey
-                                    : undefined
-                            }
-                        >
-                            {formatIntentName(intent.name)}
-                        </Tag>
-                    ))}
+                    {displayedIntents.map((intent) => {
+                        const isLinked = intent.status === IntentStatus.Linked
+
+                        if (isLinked) {
+                            return (
+                                <Tooltip
+                                    key={intent.name}
+                                    trigger={
+                                        <Tag size="sm" color={TagColor.Grey}>
+                                            {formatIntentName(intent.name)}
+                                        </Tag>
+                                    }
+                                >
+                                    <TooltipContent title="Intent already linked to an existing skill" />
+                                </Tooltip>
+                            )
+                        }
+
+                        return (
+                            <Tag key={intent.name} size="sm">
+                                {formatIntentName(intent.name)}
+                            </Tag>
+                        )
+                    })}
                     {remainingCount > 0 && (
                         <Tooltip
                             trigger={

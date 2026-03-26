@@ -14,8 +14,6 @@ export type SkillTemplate = {
     name: string
     guidanceId: string
     guidance?: GuidanceTemplate
-    tag: string
-    style: { color: string; background: string }
     intents: Intent[]
 }
 

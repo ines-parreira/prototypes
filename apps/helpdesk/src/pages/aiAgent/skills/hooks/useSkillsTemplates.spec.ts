@@ -85,10 +85,6 @@ describe('useSkillsTemplates', () => {
             'WHEN: The customer asks about promo codes or free shipping',
         ],
         [
-            'Subscription modification (pause, skip, resume)',
-            'WHEN: The customer asks to modify their subscription (pause, skip or resume)',
-        ],
-        [
             'Subscription cancellations',
             'WHEN: The customer asks to cancel their subscription',
         ],

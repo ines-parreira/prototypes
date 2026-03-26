@@ -30,7 +30,8 @@ describe('SkillsHeader', () => {
     it('should call callbacks when buttons are clicked', async () => {
         const user = userEvent.setup()
         const onViewIntents = jest.fn()
-        const onCreateSkill = jest.fn()
+        const onCreateSkillFromScratch = jest.fn()
+        const onCreateSkillFromTemplate = jest.fn()
         const mockWindowOpen = jest.fn()
         window.open = mockWindowOpen
 
@@ -38,7 +39,8 @@ describe('SkillsHeader', () => {
             <ThemeProvider>
                 <SkillsHeader
                     onViewIntents={onViewIntents}
-                    onCreateSkill={onCreateSkill}
+                    onCreateSkillFromScratch={onCreateSkillFromScratch}
+                    onCreateSkillFromTemplate={onCreateSkillFromTemplate}
                 />
             </ThemeProvider>,
         )
@@ -59,12 +61,12 @@ describe('SkillsHeader', () => {
         await user.click(
             screen.getByRole('menuitem', { name: /From scratch/i }),
         )
-        expect(onCreateSkill).toHaveBeenCalledTimes(1)
+        expect(onCreateSkillFromScratch).toHaveBeenCalledTimes(1)
 
         await user.click(screen.getByRole('button', { name: /Create skill/i }))
         await user.click(
             screen.getByRole('menuitem', { name: /From template/i }),
         )
-        expect(onCreateSkill).toHaveBeenCalledTimes(2)
+        expect(onCreateSkillFromTemplate).toHaveBeenCalledTimes(1)
     })
 })

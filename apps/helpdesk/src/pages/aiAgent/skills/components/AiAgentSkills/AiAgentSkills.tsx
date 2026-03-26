@@ -4,7 +4,9 @@ import { Box, Skeleton } from '@gorgias/axiom'
 
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { RecommendedSkillsSection } from 'pages/aiAgent/skills/components/RecommendedSkillsSection/RecommendedSkillsSection'
+import { SkillsTemplateModal } from 'pages/aiAgent/skills/components/SkillsTemplateModal/SkillsTemplateModal'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
+import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
 
 import { IntentsTable } from '../IntentsTable/IntentsTable'
 import { SkillsEmptyState } from '../SkillsEmptyState/SkillsEmptyState'
@@ -20,7 +22,20 @@ const SkillsLoading = () => {
 export const AiAgentSkills = () => {
     const { hasLinkedSkills, isLoading } = useHasLinkedSkills()
     const [isIntentsTableOpen, setIsIntentsTableOpen] = useState(false)
+    const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
     const noop = () => {}
+
+    const skillsTemplates = useSkillsTemplates()
+
+    const handleCreateSkillsFromTemplate = () => {
+        // Logic on creating a Skill from template will be applied in the future iteration
+        // oxlint-disable-next-line no-console
+        console.log('Create skill from template')
+    }
+
+    const handleOpenTemplateModal = () => {
+        setIsTemplateModalOpen(true)
+    }
 
     const handleViewIntents = () => {
         setIsIntentsTableOpen(true)
@@ -30,13 +45,17 @@ export const AiAgentSkills = () => {
         <Box flexDirection="column" width="100%">
             <SkillsHeader
                 onViewIntents={handleViewIntents}
-                onCreateSkill={noop}
+                onCreateSkillFromScratch={noop}
+                onCreateSkillFromTemplate={handleOpenTemplateModal}
             />
 
             <Box flexDirection="column" className={css.content}>
                 {/* This section will be displayed only when there are unused templates.
                 The logic related to this will be applied in the next iteration */}
-                <RecommendedSkillsSection />
+                <RecommendedSkillsSection
+                    skillsTemplates={skillsTemplates}
+                    onCreateSkillsFromTemplate={handleCreateSkillsFromTemplate}
+                />
 
                 {isLoading ? (
                     <SkillsLoading />
@@ -53,6 +72,12 @@ export const AiAgentSkills = () => {
             />
 
             <DrillDownModal isLegacy={false} />
+            <SkillsTemplateModal
+                skillsTemplates={skillsTemplates}
+                isOpen={isTemplateModalOpen}
+                onOpenChange={setIsTemplateModalOpen}
+                onCreateSkillsFromTemplate={handleCreateSkillsFromTemplate}
+            />
         </Box>
     )
 }

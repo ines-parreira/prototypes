@@ -1,17 +1,19 @@
 import { Box, Heading, Text } from '@gorgias/axiom'
 
 import { SkillsTemplateCard } from 'pages/aiAgent/skills/components/SkillsTemplateCard/SkillsTemplateCard'
-import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
+import type { SkillTemplate } from 'pages/aiAgent/skills/types'
 
 import css from './RecommendedSkillsSection.less'
 
-export const RecommendedSkillsSection = () => {
-    const skillsTemplates = useSkillsTemplates()
+type Props = {
+    skillsTemplates: SkillTemplate[]
+    onCreateSkillsFromTemplate: () => void
+}
 
-    const handleCreateSkillsFromTemplate = () => {
-        // Logic on creating a Skill from template will be applied in the future iteration
-    }
-
+export const RecommendedSkillsSection: React.FC<Props> = ({
+    skillsTemplates,
+    onCreateSkillsFromTemplate,
+}) => {
     // Logic related to fetching stats, ordering skills template based on stat and
     // checking the availablity of skills template will be applied in the next iteration
     // (https://linear.app/gorgias/issue/COACH-2381/create-recommended-skills-section)
@@ -27,7 +29,7 @@ export const RecommendedSkillsSection = () => {
             {/* Full available templates display and ordering logic will be applied in the next iteration */}
             <SkillsTemplateCard
                 skillTemplate={skillsTemplates[0]}
-                onCreateSkillsFromTemplate={handleCreateSkillsFromTemplate}
+                onCreateSkillsFromTemplate={onCreateSkillsFromTemplate}
                 className={css.templateCard}
                 hasStats
                 hasCTA

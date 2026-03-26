@@ -4,14 +4,16 @@ import css from './SkillsHeader.less'
 
 export type SkillsHeaderProps = {
     onViewIntents?: () => void
-    onCreateSkill?: () => void
+    onCreateSkillFromScratch?: () => void
+    onCreateSkillFromTemplate?: () => void
 }
 
 const LEARNING_RESOURCES_URL = 'https://link.gorgias.com/bdb652'
 
 export const SkillsHeader = ({
     onViewIntents,
-    onCreateSkill,
+    onCreateSkillFromScratch,
+    onCreateSkillFromTemplate,
 }: SkillsHeaderProps) => {
     const handleLearningResources = () => {
         window.open(LEARNING_RESOURCES_URL, '_blank', 'noopener,noreferrer')
@@ -54,12 +56,12 @@ export const SkillsHeader = ({
                     <MenuItem
                         id="create-skill-from-scratch"
                         label="From scratch"
-                        onAction={onCreateSkill}
+                        onAction={onCreateSkillFromScratch}
                     />
                     <MenuItem
                         id="create-skill-from-template"
                         label="From template"
-                        onAction={onCreateSkill}
+                        onAction={onCreateSkillFromTemplate}
                     />
                 </Menu>
             </Box>
