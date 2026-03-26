@@ -4,6 +4,7 @@ import { AutomationSkillType } from 'domains/reporting/models/scopes//constants'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 export const aiAgentAutomatedInteractionsScope = defineScope({
     scope: MetricScope.AiAgentAutomatedInteractions,
@@ -85,3 +86,25 @@ export const dynamicShoppingAssistantAutomatedInteractions =
 export const dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2 = (
     ctx: AiAgentAutomatedInteractionsContext,
 ) => dynamicShoppingAssistantAutomatedInteractions.build(ctx)
+
+export const aiSalesAgentAutomatedInteractionsPerChannel =
+    aiAgentAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['automatedInteractionsCount'] as const,
+            dimensions: ['channel'],
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'aiAgentSkill',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationSkillType.AiAgentSales],
+                },
+            ] as any,
+        }))
+
+export const aiSalesAgentAutomatedInteractionsPerChannelQueryFactoryV2 = (
+    ctx: Context,
+) => aiSalesAgentAutomatedInteractionsPerChannel.build(ctx)

@@ -1,6 +1,9 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { AutomationSkillType } from 'domains/reporting/models/scopes/constants'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 export const aiSalesAgentOrdersPerformanceScope = defineScope({
     scope: MetricScope.AiSalesAgentOrdersPerformance,
@@ -109,3 +112,47 @@ export const dynamicOrdersInfluencedCount = aiSalesAgentOrdersPerformanceScope
 
 export const dynamicOrdersInfluencedCountQueryFactoryV2 = (ctx: Context) =>
     dynamicOrdersInfluencedCount.build(ctx)
+
+export const aiAgentSalesTotalSalesPerChannel =
+    aiSalesAgentOrdersPerformanceScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_TOTAL_SALES_PER_CHANNEL,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['totalSalesAmountUsd'] as const,
+            dimensions: ['channel'] as const,
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'aiAgentSkill',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationSkillType.AiAgentSales],
+                },
+            ] as any,
+        }))
+
+export const aiAgentSalesTotalSalesPerChannelQueryV2Factory = (
+    ctx: AiSalesAgentOrdersPerformanceContext,
+) => aiAgentSalesTotalSalesPerChannel.build(ctx)
+
+export const aiAgentSalesOrdersInfluencedPerChannel =
+    aiSalesAgentOrdersPerformanceScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_ORDERS_INFLUENCED_PER_CHANNEL,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['ordersInfluencedCount'] as const,
+            dimensions: ['channel'] as const,
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'aiAgentSkill',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationSkillType.AiAgentSales],
+                },
+            ] as any,
+        }))
+
+export const aiAgentSalesOrdersInfluencedPerChannelQueryV2Factory = (
+    ctx: AiSalesAgentOrdersPerformanceContext,
+) => aiAgentSalesOrdersInfluencedPerChannel.build(ctx)

@@ -32,7 +32,7 @@ import {
     SHOPPING_ASSISTANT_BAR_CHART_METRICS,
 } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsShoppingAssistantConfigurableBar/AnalyticsShoppingAssistantConfigurableBar'
 import { fetchAiSalesAgentConversionRateTrend } from 'pages/aiAgent/analyticsAiAgent/charts/useAiSalesAgentConversionRateTrend'
-import { ShoppingAssistantChannelTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable'
+import { ShoppingAssistantChannelTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTableWrapper'
 import { ShoppingAssistantTopProductsTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable'
 import { fetchAiAgentAverageDiscountAmountTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAverageDiscountAmountTrend'
 import { fetchAiAgentAverageOrderValueTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAverageOrderValueTrend'
@@ -375,7 +375,7 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable]: {
-                chartComponent: ShoppingAssistantChannelTable,
+                chartComponent: ShoppingAssistantChannelTableWrapper,
                 label: 'Channel',
                 csvProducer: null,
                 description: 'Performance breakdown by channel',

@@ -4,6 +4,8 @@ import {
     aiAgentAutomatedInteractionsPerIntent,
     aiAgentAutomatedInteractionsPerIntentQueryFactoryV2,
     aiAgentAutomatedInteractionsScope,
+    aiSalesAgentAutomatedInteractionsPerChannel,
+    aiSalesAgentAutomatedInteractionsPerChannelQueryFactoryV2,
     dynamicShoppingAssistantAutomatedInteractions,
     dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2,
 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
@@ -362,6 +364,63 @@ describe('aiAgentAutomatedInteractionsPerIntent', () => {
             expect(
                 aiAgentAutomatedInteractionsPerIntentQueryFactoryV2(context),
             ).toEqual(aiAgentAutomatedInteractionsPerIntent.build(context))
+        })
+    })
+})
+
+describe('aiSalesAgentAutomatedInteractionsPerChannel', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    const salesSkillFilter = {
+        member: 'aiAgentSkill',
+        operator: 'one-of',
+        values: ['ai-agent-sales'],
+    }
+
+    it('builds query with channel dimension and AiAgentSales skill filter', () => {
+        const actual =
+            aiSalesAgentAutomatedInteractionsPerChannel.build(context)
+
+        expect(actual).toEqual({
+            metricName:
+                'ai-agent-shopping-assistant-automated-interactions-per-channel',
+            scope: 'ai-agent-automated-interactions',
+            measures: ['automatedInteractionsCount'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: [...periodFilters, salesSkillFilter],
+        })
+    })
+
+    describe('aiSalesAgentAutomatedInteractionsPerChannelQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiSalesAgentAutomatedInteractionsPerChannelQueryFactoryV2(
+                    context,
+                ),
+            ).toEqual(
+                aiSalesAgentAutomatedInteractionsPerChannel.build(context),
+            )
         })
     })
 })

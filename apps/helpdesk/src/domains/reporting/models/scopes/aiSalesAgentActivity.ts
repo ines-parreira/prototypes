@@ -1,6 +1,9 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { AutomationSkillType } from 'domains/reporting/models/scopes/constants'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
+import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 export const aiSalesAgentActivityScope = defineScope({
     scope: MetricScope.AiSalesAgentActivity,
@@ -68,3 +71,25 @@ export const dynamicRevenuePerInteraction = aiSalesAgentActivityScope
 
 export const dynamicRevenuePerInteractionQueryFactoryV2 = (ctx: Context) =>
     dynamicRevenuePerInteraction.build(ctx)
+
+export const aiAgentSalesRevenuePerInteractionPerChannel =
+    aiSalesAgentActivityScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_REVENUE_PER_INTERACTION_PER_CHANNEL,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['revenuePerInteraction'] as const,
+            dimensions: ['channel'] as const,
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'aiAgentSkill',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationSkillType.AiAgentSales],
+                },
+            ] as any,
+        }))
+
+export const aiAgentSalesRevenuePerInteractionPerChannelQueryV2Factory = (
+    ctx: AiSalesAgentActivityContext,
+) => aiAgentSalesRevenuePerInteractionPerChannel.build(ctx)

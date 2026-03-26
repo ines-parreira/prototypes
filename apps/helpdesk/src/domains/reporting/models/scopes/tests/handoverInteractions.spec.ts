@@ -4,6 +4,8 @@ import {
     aiAgentHandoverInteractionsPerIntentQueryFactoryV2,
     aiAgentHandoverInteractionsV2QueryFactory,
     aiSalesAgentHandoverInteractions,
+    aiSalesAgentHandoverInteractionsPerChannel,
+    aiSalesAgentHandoverInteractionsPerChannelQueryFactoryV2,
     aiSalesAgentHandoverInteractionsV2QueryFactory,
     aiSupportHandoverInteractions,
     aiSupportHandoverInteractionsV2QueryFactory,
@@ -292,6 +294,60 @@ describe('handoverInteractionsScope', () => {
                 ],
                 time_dimensions: timeDimensions,
             })
+        })
+    })
+})
+
+describe('aiSalesAgentHandoverInteractionsPerChannel', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    const salesSkillFilter = {
+        member: 'aiAgentSkill',
+        operator: 'one-of',
+        values: ['ai-agent-sales'],
+    }
+
+    it('builds query with channel dimension and AiAgentSales skill filter', () => {
+        const actual = aiSalesAgentHandoverInteractionsPerChannel.build(context)
+
+        expect(actual).toEqual({
+            metricName:
+                'ai-agent-shopping-assistant-handover-interactions-per-channel',
+            scope: 'handover-interactions',
+            measures: ['handoverInteractionsCount'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: [...periodFilters, salesSkillFilter],
+        })
+    })
+
+    describe('aiSalesAgentHandoverInteractionsPerChannelQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiSalesAgentHandoverInteractionsPerChannelQueryFactoryV2(
+                    context,
+                ),
+            ).toEqual(aiSalesAgentHandoverInteractionsPerChannel.build(context))
         })
     })
 })

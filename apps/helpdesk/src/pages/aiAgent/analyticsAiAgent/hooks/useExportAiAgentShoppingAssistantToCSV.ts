@@ -8,6 +8,7 @@ import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/man
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
+import { useDownloadAiAgentSalesPerformanceByChannelData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentSalesPerformanceByChannelData'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
@@ -30,6 +31,10 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
         useFlagWithLoading(
             FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
         )
+    const {
+        value: isAnalyticsDashboardsTablesEnabled,
+        isLoading: isTableFlagLoading,
+    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
     const { cleanStatsFilters } = useStatsFilters()
 
@@ -62,33 +67,34 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
 
     const totalSalesByProductData = useDownloadTotalSalesByProductData()
     const gmvInfluenceTimeSeriesData = useDownloadGmvInfluenceTimeSeriesData()
-    const channelPerformanceData =
+    const newSalesChannelData =
+        useDownloadAiAgentSalesPerformanceByChannelData()
+    const legacySalesChannelData =
         useDownloadShoppingAssistantChannelPerformanceData()
+    const channelPerformanceData = isAnalyticsDashboardsTablesEnabled
+        ? newSalesChannelData
+        : legacySalesChannelData
     const topProductsData = useDownloadShoppingAssistantTopProductsData()
 
     const isLoading =
         isKpiLoading ||
         isTrendCardsFlagLoading ||
         isChartsFlagLoading ||
-        (!isNewChartsEnabled &&
-            (totalSalesByProductData.isLoading ||
-                gmvInfluenceTimeSeriesData.isLoading ||
-                channelPerformanceData.isLoading ||
-                topProductsData.isLoading))
+        isTableFlagLoading ||
+        totalSalesByProductData.isLoading ||
+        gmvInfluenceTimeSeriesData.isLoading ||
+        channelPerformanceData.isLoading ||
+        topProductsData.isLoading
 
     const files = useMemo(
-        () =>
-            isNewChartsEnabled
-                ? dashboardDataFiles
-                : {
-                      ...dashboardDataFiles,
-                      ...totalSalesByProductData.files,
-                      ...gmvInfluenceTimeSeriesData.files,
-                      ...channelPerformanceData.files,
-                      ...topProductsData.files,
-                  },
+        () => ({
+            ...dashboardDataFiles,
+            ...totalSalesByProductData.files,
+            ...gmvInfluenceTimeSeriesData.files,
+            ...channelPerformanceData.files,
+            ...topProductsData.files,
+        }),
         [
-            isNewChartsEnabled,
             dashboardDataFiles,
             totalSalesByProductData.files,
             gmvInfluenceTimeSeriesData.files,

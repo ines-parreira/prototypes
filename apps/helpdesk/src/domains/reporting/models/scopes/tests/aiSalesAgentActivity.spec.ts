@@ -1,5 +1,7 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
+    aiAgentSalesRevenuePerInteractionPerChannel,
+    aiAgentSalesRevenuePerInteractionPerChannelQueryV2Factory,
     aiSalesAgentActivityScope,
     dynamicRevenuePerInteraction,
     dynamicRevenuePerInteractionQueryFactoryV2,
@@ -319,5 +321,63 @@ describe('dynamicRevenuePerInteractionQueryFactoryV2', () => {
         expect(dynamicRevenuePerInteractionQueryFactoryV2(ctx)).toEqual(
             dynamicRevenuePerInteraction.build(ctx),
         )
+    })
+})
+
+describe('aiAgentSalesRevenuePerInteractionPerChannel', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with channel dimension, period filters, and aiAgentSkill filter', () => {
+        const actual =
+            aiAgentSalesRevenuePerInteractionPerChannel.build(context)
+
+        expect(actual).toEqual({
+            metricName:
+                'ai-agent-sales-performance-revenue-per-interaction-per-channel',
+            scope: 'ai-sales-agent-activity',
+            measures: ['revenuePerInteraction'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: [
+                ...periodFilters,
+                {
+                    member: 'aiAgentSkill',
+                    operator: 'one-of',
+                    values: ['ai-agent-sales'],
+                },
+            ],
+        })
+    })
+
+    describe('aiAgentSalesRevenuePerInteractionPerChannelQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentSalesRevenuePerInteractionPerChannelQueryV2Factory(
+                    context,
+                ),
+            ).toEqual(
+                aiAgentSalesRevenuePerInteractionPerChannel.build(context),
+            )
+        })
     })
 })

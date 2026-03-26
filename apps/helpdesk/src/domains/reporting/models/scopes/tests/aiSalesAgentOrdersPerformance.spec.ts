@@ -1,5 +1,9 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
+    aiAgentSalesOrdersInfluencedPerChannel,
+    aiAgentSalesOrdersInfluencedPerChannelQueryV2Factory,
+    aiAgentSalesTotalSalesPerChannel,
+    aiAgentSalesTotalSalesPerChannelQueryV2Factory,
     aiSalesAgentOrdersPerformanceScope,
     averageOrderValue,
     averageOrderValueQueryV2Factory,
@@ -564,5 +568,110 @@ describe('dynamicOrdersInfluencedCountQueryFactoryV2', () => {
         expect(dynamicOrdersInfluencedCountQueryFactoryV2(ctx)).toEqual(
             dynamicOrdersInfluencedCount.build(ctx),
         )
+    })
+})
+
+describe('aiAgentSalesTotalSalesPerChannel', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with channel dimension, period filters, and aiAgentSkill filter', () => {
+        const actual = aiAgentSalesTotalSalesPerChannel.build(context)
+
+        expect(actual).toEqual({
+            metricName: 'ai-agent-sales-performance-total-sales-per-channel',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['totalSalesAmountUsd'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: [
+                ...periodFilters,
+                {
+                    member: 'aiAgentSkill',
+                    operator: 'one-of',
+                    values: ['ai-agent-sales'],
+                },
+            ],
+        })
+    })
+
+    describe('aiAgentSalesTotalSalesPerChannelQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentSalesTotalSalesPerChannelQueryV2Factory(context),
+            ).toEqual(aiAgentSalesTotalSalesPerChannel.build(context))
+        })
+    })
+})
+
+describe('aiAgentSalesOrdersInfluencedPerChannel', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with channel dimension, period filters, and aiAgentSkill filter', () => {
+        const actual = aiAgentSalesOrdersInfluencedPerChannel.build(context)
+
+        expect(actual).toEqual({
+            metricName:
+                'ai-agent-sales-performance-orders-influenced-per-channel',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['ordersInfluencedCount'],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: [
+                ...periodFilters,
+                {
+                    member: 'aiAgentSkill',
+                    operator: 'one-of',
+                    values: ['ai-agent-sales'],
+                },
+            ],
+        })
+    })
+
+    describe('aiAgentSalesOrdersInfluencedPerChannelQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentSalesOrdersInfluencedPerChannelQueryV2Factory(context),
+            ).toEqual(aiAgentSalesOrdersInfluencedPerChannel.build(context))
+        })
     })
 })

@@ -5,6 +5,7 @@ import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboar
 import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
+import { useDownloadAiAgentSalesPerformanceByChannelData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentSalesPerformanceByChannelData'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
@@ -25,6 +26,9 @@ jest.mock(
 )
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData',
+)
+jest.mock(
+    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentSalesPerformanceByChannelData',
 )
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData',
@@ -49,6 +53,9 @@ const mockedUseDownloadTotalSalesByProductData = jest.mocked(
 )
 const mockedUseDownloadGmvInfluenceTimeSeriesData = jest.mocked(
     useDownloadGmvInfluenceTimeSeriesData,
+)
+const mockedUseDownloadAiAgentSalesPerformanceByChannelData = jest.mocked(
+    useDownloadAiAgentSalesPerformanceByChannelData,
 )
 const mockedUseDownloadShoppingAssistantChannelPerformanceData = jest.mocked(
     useDownloadShoppingAssistantChannelPerformanceData,
@@ -78,6 +85,11 @@ const gmvInfluenceTimeSeriesFiles = {
 const channelPerformanceFiles = {
     'shopping-assistant-channel-performance.csv':
         'channel,automation_rate\nChat,85%',
+}
+
+const newSalesChannelFiles = {
+    '2024-01-01_2024-01-31-ai_agent_sales_performance_by_channel_table.csv':
+        '"AI Agent Sales Performance By Channel"\r\n"email"',
 }
 
 const topProductsFiles = {
@@ -128,6 +140,12 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
 
         mockedUseDownloadGmvInfluenceTimeSeriesData.mockReturnValue({
             files: gmvInfluenceTimeSeriesFiles,
+            isLoading: false,
+        })
+
+        mockedUseDownloadAiAgentSalesPerformanceByChannelData.mockReturnValue({
+            files: newSalesChannelFiles,
+            fileName: Object.keys(newSalesChannelFiles)[0],
             isLoading: false,
         })
 
@@ -198,6 +216,79 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
+    it('should return isLoading as true when total sales by product data is loading', () => {
+        mockedUseDownloadTotalSalesByProductData.mockReturnValue({
+            files: {},
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() =>
+            useExportAiAgentShoppingAssistantToCSV(),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isLoading as true when GMV influence time series is loading', () => {
+        mockedUseDownloadGmvInfluenceTimeSeriesData.mockReturnValue({
+            files: {},
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() =>
+            useExportAiAgentShoppingAssistantToCSV(),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isLoading as true when channel performance data is loading', () => {
+        mockedUseDownloadShoppingAssistantChannelPerformanceData.mockReturnValue(
+            {
+                files: {},
+                isLoading: true,
+            },
+        )
+
+        const { result } = renderHook(() =>
+            useExportAiAgentShoppingAssistantToCSV(),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isLoading as true when top products data is loading', () => {
+        mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() =>
+            useExportAiAgentShoppingAssistantToCSV(),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should return isLoading as true when top products data is loading even when isNewChartsEnabled is true', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+        mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() =>
+            useExportAiAgentShoppingAssistantToCSV(),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
     it('should call saveZippedFiles when triggerDownload is called', async () => {
         const { result } = renderHook(() =>
             useExportAiAgentShoppingAssistantToCSV(),
@@ -237,70 +328,113 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
         )
     })
 
-    describe('when isNewChartsEnabled is false', () => {
-        beforeEach(() => {
-            mockUseFlagWithLoading.mockReturnValue({
-                value: false,
+    it('should include all expected files in the ZIP', async () => {
+        const { result } = renderHook(() =>
+            useExportAiAgentShoppingAssistantToCSV(),
+        )
+
+        await act(async () => {
+            await result.current.triggerDownload()
+        })
+
+        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+        const fileNames = Object.keys(filesArg)
+
+        expect(fileNames).toHaveLength(5)
+        expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
+        expect(
+            fileNames.some((name) => name.includes('total-sales-by-product')),
+        ).toBe(true)
+        expect(
+            fileNames.some((name) => name.includes('gmv-influence-timeseries')),
+        ).toBe(true)
+        expect(
+            fileNames.some((name) =>
+                name.includes('shopping-assistant-channel-performance'),
+            ),
+        ).toBe(true)
+        expect(
+            fileNames.some((name) =>
+                name.includes('shopping-assistant-top-products'),
+            ),
+        ).toBe(true)
+    })
+
+    it('should include all expected files in the ZIP when isNewChartsEnabled is true', async () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+
+        const { result } = renderHook(() =>
+            useExportAiAgentShoppingAssistantToCSV(),
+        )
+
+        await act(async () => {
+            await result.current.triggerDownload()
+        })
+
+        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+        const fileNames = Object.keys(filesArg)
+
+        expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
+        expect(
+            fileNames.some((name) => name.includes('total-sales-by-product')),
+        ).toBe(true)
+        expect(
+            fileNames.some((name) => name.includes('gmv-influence-timeseries')),
+        ).toBe(true)
+        expect(
+            fileNames.some((name) =>
+                name.includes('shopping-assistant-top-products'),
+            ),
+        ).toBe(true)
+    })
+
+    it('should include only dashboard files when download data files are empty', async () => {
+        mockedUseDownloadTotalSalesByProductData.mockReturnValue({
+            files: {},
+            isLoading: false,
+        })
+        mockedUseDownloadGmvInfluenceTimeSeriesData.mockReturnValue({
+            files: {},
+            isLoading: false,
+        })
+        mockedUseDownloadShoppingAssistantChannelPerformanceData.mockReturnValue(
+            {
+                files: {},
                 isLoading: false,
-            })
+            },
+        )
+        mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: false,
         })
 
-        it('should return isLoading as true when total sales by product data is loading', () => {
-            mockedUseDownloadTotalSalesByProductData.mockReturnValue({
-                files: {},
-                isLoading: true,
-            })
+        const { result } = renderHook(() =>
+            useExportAiAgentShoppingAssistantToCSV(),
+        )
 
-            const { result } = renderHook(() =>
-                useExportAiAgentShoppingAssistantToCSV(),
-            )
-
-            expect(result.current.isLoading).toBe(true)
+        await act(async () => {
+            await result.current.triggerDownload()
         })
 
-        it('should return isLoading as true when GMV influence time series is loading', () => {
-            mockedUseDownloadGmvInfluenceTimeSeriesData.mockReturnValue({
-                files: {},
-                isLoading: true,
-            })
+        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+        const fileNames = Object.keys(filesArg)
 
-            const { result } = renderHook(() =>
-                useExportAiAgentShoppingAssistantToCSV(),
-            )
+        expect(fileNames).toHaveLength(1)
+        expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
+    })
 
-            expect(result.current.isLoading).toBe(true)
-        })
-
-        it('should return isLoading as true when channel performance data is loading', () => {
-            mockedUseDownloadShoppingAssistantChannelPerformanceData.mockReturnValue(
-                {
-                    files: {},
-                    isLoading: true,
-                },
-            )
-
-            const { result } = renderHook(() =>
-                useExportAiAgentShoppingAssistantToCSV(),
-            )
-
-            expect(result.current.isLoading).toBe(true)
-        })
-
-        it('should return isLoading as true when top products data is loading', () => {
-            mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
-                files: {},
-                fileName: '',
-                isLoading: true,
+    describe('sales channel data based on AiAgentAnalyticsDashboardsTables flag', () => {
+        it('uses new sales channel data when the tables flag is enabled', async () => {
+            mockUseFlagWithLoading.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
+                    return { value: true, isLoading: false }
+                return { value: false, isLoading: false }
             })
 
-            const { result } = renderHook(() =>
-                useExportAiAgentShoppingAssistantToCSV(),
-            )
-
-            expect(result.current.isLoading).toBe(true)
-        })
-
-        it('should include all expected files in the ZIP', async () => {
             const { result } = renderHook(() =>
                 useExportAiAgentShoppingAssistantToCSV(),
             )
@@ -312,18 +446,32 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
             const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
             const fileNames = Object.keys(filesArg)
 
-            expect(fileNames).toHaveLength(5)
-            expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
             expect(
                 fileNames.some((name) =>
-                    name.includes('total-sales-by-product'),
+                    name.includes(
+                        'ai_agent_sales_performance_by_channel_table',
+                    ),
                 ),
             ).toBe(true)
             expect(
                 fileNames.some((name) =>
-                    name.includes('gmv-influence-timeseries'),
+                    name.includes('shopping-assistant-channel-performance'),
                 ),
-            ).toBe(true)
+            ).toBe(false)
+        })
+
+        it('uses legacy channel data when the tables flag is disabled', async () => {
+            const { result } = renderHook(() =>
+                useExportAiAgentShoppingAssistantToCSV(),
+            )
+
+            await act(async () => {
+                await result.current.triggerDownload()
+            })
+
+            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+            const fileNames = Object.keys(filesArg)
+
             expect(
                 fileNames.some((name) =>
                     name.includes('shopping-assistant-channel-performance'),
@@ -331,95 +479,26 @@ describe('useExportAiAgentShoppingAssistantToCSV', () => {
             ).toBe(true)
             expect(
                 fileNames.some((name) =>
-                    name.includes('shopping-assistant-top-products'),
+                    name.includes(
+                        'ai_agent_sales_performance_by_channel_table',
+                    ),
                 ),
-            ).toBe(true)
+            ).toBe(false)
         })
 
-        it('should include only dashboard files when download data files are empty', async () => {
-            mockedUseDownloadTotalSalesByProductData.mockReturnValue({
-                files: {},
-                isLoading: false,
-            })
-            mockedUseDownloadGmvInfluenceTimeSeriesData.mockReturnValue({
-                files: {},
-                isLoading: false,
-            })
-            mockedUseDownloadShoppingAssistantChannelPerformanceData.mockReturnValue(
-                {
-                    files: {},
-                    isLoading: false,
-                },
-            )
-            mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
-                files: {},
-                fileName: '',
-                isLoading: false,
-            })
-
-            const { result } = renderHook(() =>
-                useExportAiAgentShoppingAssistantToCSV(),
-            )
-
-            await act(async () => {
-                await result.current.triggerDownload()
-            })
-
-            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-            const fileNames = Object.keys(filesArg)
-
-            expect(fileNames).toHaveLength(1)
-            expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
-        })
-    })
-
-    describe('when isNewChartsEnabled is true', () => {
-        beforeEach(() => {
-            mockUseFlagWithLoading.mockReturnValue({
-                value: true,
-                isLoading: false,
-            })
-        })
-
-        it('should return isLoading as false even when old download hooks are loading', () => {
-            mockedUseDownloadTotalSalesByProductData.mockReturnValue({
-                files: {},
-                isLoading: true,
-            })
-            mockedUseDownloadGmvInfluenceTimeSeriesData.mockReturnValue({
-                files: {},
-                isLoading: true,
-            })
+        it('reflects isLoading from legacy channel data when the tables flag is disabled', () => {
             mockedUseDownloadShoppingAssistantChannelPerformanceData.mockReturnValue(
                 {
                     files: {},
                     isLoading: true,
                 },
             )
-            mockedUseDownloadShoppingAssistantTopProductsData.mockReturnValue({
-                files: {},
-                fileName: '',
-                isLoading: true,
-            })
 
             const { result } = renderHook(() =>
                 useExportAiAgentShoppingAssistantToCSV(),
             )
 
-            expect(result.current.isLoading).toBe(false)
-        })
-
-        it('should include only dashboard files in the ZIP', async () => {
-            const { result } = renderHook(() =>
-                useExportAiAgentShoppingAssistantToCSV(),
-            )
-
-            await act(async () => {
-                await result.current.triggerDownload()
-            })
-
-            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-            expect(filesArg).toEqual(dashboardFiles)
+            expect(result.current.isLoading).toBe(true)
         })
     })
 })

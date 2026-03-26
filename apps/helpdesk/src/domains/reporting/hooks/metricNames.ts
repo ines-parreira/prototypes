@@ -56,6 +56,18 @@ export const METRIC_NAMES = {
         'ai-agent-automated-interactions-per-intent',
     AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT:
         'ai-agent-dynamic-average-time-saved-by-agent',
+    AI_AGENT_SALES_AUTOMATED_INTERACTIONS_PER_CHANNEL:
+        'ai-agent-sales-automated-interactions-per-channel',
+    AI_AGENT_SALES_HANDOVER_INTERACTIONS_PER_CHANNEL:
+        'ai-agent-sales-handover-interactions-per-channel',
+    AI_AGENT_SALES_AGENT_TIME_SAVED_PER_CHANNEL:
+        'ai-agent-sales-agent-time-saved-per-channel',
+    AI_AGENT_SALES_AGENT_DECREASE_IN_FRT_PER_CHANNEL:
+        'ai-agent-sales-agent-decrease-in-first-response-time-per-channel',
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_PER_CHANNEL:
+        'ai-agent-shopping-assistant-automated-interactions-per-channel',
+    AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_PER_CHANNEL:
+        'ai-agent-shopping-assistant-handover-interactions-per-channel',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
         'ai-agent-handover-interactions-per-intent',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
@@ -220,6 +232,12 @@ export const METRIC_NAMES = {
         'ai-sales-agent-shopping-assistant-handover-interactions-per-channel',
     AI_SALES_AGENT_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_PER_CHANNEL:
         'ai-sales-agent-shopping-assistant-orders-influenced-per-channel',
+    AI_AGENT_SALES_PERFORMANCE_ORDERS_INFLUENCED_PER_CHANNEL:
+        'ai-agent-sales-performance-orders-influenced-per-channel',
+    AI_AGENT_SALES_PERFORMANCE_TOTAL_SALES_PER_CHANNEL:
+        'ai-agent-sales-performance-total-sales-per-channel',
+    AI_AGENT_SALES_PERFORMANCE_REVENUE_PER_INTERACTION_PER_CHANNEL:
+        'ai-agent-sales-performance-revenue-per-interaction-per-channel',
     AI_SALES_AGENT_SHOPPING_ASSISTANT_TOP_PRODUCTS:
         'ai-sales-agent-shopping-assistant-top-products',
     AI_AGENT_SHOPPING_ASSISTANT_CONVERSION_RATE:
@@ -975,6 +993,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SALES_HANDOVER_INTERACTIONS,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_PER_CHANNEL,
     ],
 
     // P5
@@ -1013,6 +1032,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_PRODUCT_RECOMMENDATIONS,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
+        METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_REVENUE_PER_INTERACTION_PER_CHANNEL,
     ],
     [MetricScope.AiSalesAgentDiscounts]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_DISCOUNT_CODES_OFFERED,
@@ -1027,12 +1047,15 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AVERAGE_ORDER_VALUE,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_TOTAL_SALES_AMOUNT,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_COUNT,
+        METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_TOTAL_SALES_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_ORDERS_INFLUENCED_PER_CHANNEL,
     ],
     [MetricScope.AiAgentAutomatedInteractions]: [
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
     ],
-    [MetricScope.AiAgentTimeSaved]: [],
     [MetricScope.AiAgentDecreaseInFirstResponseTime]: [],
+    [MetricScope.AiAgentTimeSaved]: [],
     [MetricScope.FlowDataset]: [
         METRIC_NAMES.FLOW_DATASET_HANDOVER_INTERACTIONS,
     ],
