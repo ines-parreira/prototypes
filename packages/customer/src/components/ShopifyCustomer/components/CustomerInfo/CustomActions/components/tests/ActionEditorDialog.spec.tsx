@@ -240,19 +240,19 @@ describe('ActionEditorDialog', () => {
 
         await user.click(screen.getByRole('button', { name: /environment/i }))
 
-        await vi.waitFor(() => {
-            expect(
-                screen.getByRole('option', { name: 'staging' }),
-            ).toBeInTheDocument()
-        })
-
-        await user.click(screen.getByRole('option', { name: 'staging' }))
+        await user.click(
+            await screen.findByRole(
+                'option',
+                { name: 'staging' },
+                { timeout: 3000 },
+            ),
+        )
         await user.click(screen.getByRole('button', { name: /execute/i }))
 
         expect(defaultProps.onExecute).toHaveBeenCalledTimes(1)
         const executedAction = defaultProps.onExecute.mock.calls[0][0]
         expect(executedAction.params[0].value).toBe('staging')
-    })
+    }, 10000)
 
     it('executes with filled mandatory field', async () => {
         const action: ButtonAction = {

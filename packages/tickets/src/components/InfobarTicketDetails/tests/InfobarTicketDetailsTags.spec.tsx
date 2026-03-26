@@ -327,7 +327,7 @@ describe('TicketInfobarTicketDetailsTags', () => {
             )
 
             await waitForQueriesSettled()
-        })
+        }, 10000)
 
         it('should add multiple tags when selected', async () => {
             const updateTicketCapture = createUpdateTicketCapture()

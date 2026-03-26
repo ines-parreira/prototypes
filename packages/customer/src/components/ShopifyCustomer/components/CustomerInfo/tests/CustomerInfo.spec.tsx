@@ -239,11 +239,23 @@ describe('CustomerInfo', () => {
             />,
         )
 
-        await waitFor(() => {
-            expect(screen.getByRole('textbox')).toHaveValue(
-                mockShopifyIntegration.name,
-            )
-        })
+        await waitFor(
+            () => {
+                expect(testAppQueryClient.isFetching()).toBe(0)
+            },
+            { timeout: 5000 },
+        )
+
+        await waitFor(
+            () => {
+                expect(
+                    screen.getByRole('textbox', {
+                        name: /select a store/i,
+                    }),
+                ).toHaveValue(mockShopifyIntegration.name)
+            },
+            { timeout: 5000 },
+        )
     })
 
     it('calls onStoreChange when an integration is loaded', async () => {

@@ -99,6 +99,46 @@ const emptyCustomWidgetListResponse = {
     uri: '/api/widgets',
 }
 
+type UpdateWidgetRequestBody = {
+    template: {
+        widgets: Array<{
+            path: string
+            meta: {
+                custom: {
+                    links: Array<{ label: string; url: string }>
+                    buttons: Array<{
+                        label: string
+                        action: { url: string }
+                    }>
+                }
+            }
+        }>
+    }
+}
+
+function createUpdateWidgetCapture() {
+    let requestBody: UpdateWidgetRequestBody | undefined
+
+    const updateWidgetMock = mockUpdateWidgetHandler(
+        async ({ request, data }) => {
+            requestBody = (await request.json()) as UpdateWidgetRequestBody
+
+            return HttpResponse.json(data)
+        },
+    )
+
+    return {
+        handler: updateWidgetMock.handler,
+        getRequestBody: () => requestBody,
+    }
+}
+
+function findCustomerWidget(requestBody: UpdateWidgetRequestBody | undefined) {
+    return requestBody?.template.widgets.find(
+        (widget) => widget.path === 'customer',
+    )
+}
+
 function renderComponent() {
     const listWidgetsMock = mockListWidgetsHandler(async () =>
         HttpResponse.json(widgetListResponse),
@@ -244,11 +284,11 @@ describe('CustomActionsSection', () => {
 
     describe('Submit interactions', () => {
         it('adds a new link via the dialog', async () => {
-            const updateWidgetMock = mockUpdateWidgetHandler()
+            const updateWidgetCapture = createUpdateWidgetCapture()
             const listWidgetsMock = mockListWidgetsHandler(async () =>
                 HttpResponse.json(widgetListResponse),
             )
-            server.use(listWidgetsMock.handler, updateWidgetMock.handler)
+            server.use(listWidgetsMock.handler, updateWidgetCapture.handler)
 
             const { user } = render(
                 <CustomActionsSection integrationName="Shopify" />,
@@ -276,7 +316,6 @@ describe('CustomActionsSection', () => {
                 'https://new-link.com',
             )
 
-            const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
             const saveButton = within(dialog).getByRole('button', {
                 name: /save/i,
             })
@@ -286,27 +325,27 @@ describe('CustomActionsSection', () => {
             })
             await user.click(saveButton)
 
-            await waitForUpdateRequest(async (request) => {
-                const body = await request.clone().json()
-                const customerWidget = body.template.widgets.find(
-                    (w: { path: string }) => w.path === 'customer',
-                )
-                expect(customerWidget.meta.custom.links).toHaveLength(2)
-                expect(customerWidget.meta.custom.links[1].label).toBe(
-                    'New Link',
-                )
-                expect(customerWidget.meta.custom.links[1].url).toBe(
-                    'https://new-link.com',
-                )
+            await waitFor(() => {
+                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
             })
+
+            const customerWidget = findCustomerWidget(
+                updateWidgetCapture.getRequestBody(),
+            )
+
+            expect(customerWidget?.meta.custom.links).toHaveLength(2)
+            expect(customerWidget?.meta.custom.links[1].label).toBe('New Link')
+            expect(customerWidget?.meta.custom.links[1].url).toBe(
+                'https://new-link.com',
+            )
         }, 10000)
 
         it('edits an existing link via the dialog', async () => {
-            const updateWidgetMock = mockUpdateWidgetHandler()
+            const updateWidgetCapture = createUpdateWidgetCapture()
             const listWidgetsMock = mockListWidgetsHandler(async () =>
                 HttpResponse.json(widgetListResponse),
             )
-            server.use(listWidgetsMock.handler, updateWidgetMock.handler)
+            server.use(listWidgetsMock.handler, updateWidgetCapture.handler)
 
             const { user } = render(
                 <CustomActionsSection integrationName="Shopify" />,
@@ -335,33 +374,39 @@ describe('CustomActionsSection', () => {
             await user.clear(urlInput)
             await user.type(urlInput, 'https://updated-link.com')
 
-            const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
+            const saveButton = within(dialog).getByRole('button', {
+                name: /save/i,
+            })
 
-            await user.click(
-                within(dialog).getByRole('button', { name: /save/i }),
+            await waitFor(() => {
+                expect(saveButton).toBeEnabled()
+            })
+
+            await user.click(saveButton)
+
+            await waitFor(() => {
+                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
+            })
+
+            const customerWidget = findCustomerWidget(
+                updateWidgetCapture.getRequestBody(),
             )
 
-            await waitForUpdateRequest(async (request) => {
-                const body = await request.json()
-                const customerWidget = body.template.widgets.find(
-                    (w: { path: string }) => w.path === 'customer',
-                )
-                expect(customerWidget.meta.custom.links).toHaveLength(1)
-                expect(customerWidget.meta.custom.links[0].label).toBe(
-                    'Updated Link',
-                )
-                expect(customerWidget.meta.custom.links[0].url).toBe(
-                    'https://updated-link.com',
-                )
-            })
+            expect(customerWidget?.meta.custom.links).toHaveLength(1)
+            expect(customerWidget?.meta.custom.links[0].label).toBe(
+                'Updated Link',
+            )
+            expect(customerWidget?.meta.custom.links[0].url).toBe(
+                'https://updated-link.com',
+            )
         })
 
         it('adds a new button via the dialog', async () => {
-            const updateWidgetMock = mockUpdateWidgetHandler()
+            const updateWidgetCapture = createUpdateWidgetCapture()
             const listWidgetsMock = mockListWidgetsHandler(async () =>
                 HttpResponse.json(widgetListResponse),
             )
-            server.use(listWidgetsMock.handler, updateWidgetMock.handler)
+            server.use(listWidgetsMock.handler, updateWidgetCapture.handler)
 
             const { user } = render(
                 <CustomActionsSection integrationName="Shopify" />,
@@ -396,7 +441,6 @@ describe('CustomActionsSection', () => {
                 'https://api.new-button.com',
             )
 
-            const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
             const saveButton = within(dialog).getByRole('button', {
                 name: /save/i,
             })
@@ -406,27 +450,29 @@ describe('CustomActionsSection', () => {
             })
             await user.click(saveButton)
 
-            await waitForUpdateRequest(async (request) => {
-                const body = await request.clone().json()
-                const customerWidget = body.template.widgets.find(
-                    (w: { path: string }) => w.path === 'customer',
-                )
-                expect(customerWidget.meta.custom.buttons).toHaveLength(2)
-                expect(customerWidget.meta.custom.buttons[1].label).toBe(
-                    'New Button',
-                )
-                expect(customerWidget.meta.custom.buttons[1].action.url).toBe(
-                    'https://api.new-button.com',
-                )
+            await waitFor(() => {
+                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
             })
+
+            const customerWidget = findCustomerWidget(
+                updateWidgetCapture.getRequestBody(),
+            )
+
+            expect(customerWidget?.meta.custom.buttons).toHaveLength(2)
+            expect(customerWidget?.meta.custom.buttons[1].label).toBe(
+                'New Button',
+            )
+            expect(customerWidget?.meta.custom.buttons[1].action.url).toBe(
+                'https://api.new-button.com',
+            )
         }, 10000)
 
         it('edits an existing button via the dialog', async () => {
-            const updateWidgetMock = mockUpdateWidgetHandler()
+            const updateWidgetCapture = createUpdateWidgetCapture()
             const listWidgetsMock = mockListWidgetsHandler(async () =>
                 HttpResponse.json(widgetListResponse),
             )
-            server.use(listWidgetsMock.handler, updateWidgetMock.handler)
+            server.use(listWidgetsMock.handler, updateWidgetCapture.handler)
 
             const { user } = render(
                 <CustomActionsSection integrationName="Shopify" />,
@@ -459,35 +505,41 @@ describe('CustomActionsSection', () => {
             await user.clear(urlInput)
             await user.type(urlInput, 'https://api.updated-button.com')
 
-            const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
+            const saveButton = within(dialog).getByRole('button', {
+                name: /save/i,
+            })
 
-            await user.click(
-                within(dialog).getByRole('button', { name: /save/i }),
+            await waitFor(() => {
+                expect(saveButton).toBeEnabled()
+            })
+
+            await user.click(saveButton)
+
+            await waitFor(() => {
+                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
+            })
+
+            const customerWidget = findCustomerWidget(
+                updateWidgetCapture.getRequestBody(),
             )
 
-            await waitForUpdateRequest(async (request) => {
-                const body = await request.json()
-                const customerWidget = body.template.widgets.find(
-                    (w: { path: string }) => w.path === 'customer',
-                )
-                expect(customerWidget.meta.custom.buttons).toHaveLength(1)
-                expect(customerWidget.meta.custom.buttons[0].label).toBe(
-                    'Updated Button',
-                )
-                expect(customerWidget.meta.custom.buttons[0].action.url).toBe(
-                    'https://api.updated-button.com',
-                )
-            })
-        })
+            expect(customerWidget?.meta.custom.buttons).toHaveLength(1)
+            expect(customerWidget?.meta.custom.buttons[0].label).toBe(
+                'Updated Button',
+            )
+            expect(customerWidget?.meta.custom.buttons[0].action.url).toBe(
+                'https://api.updated-button.com',
+            )
+        }, 10000)
     })
 
     describe('Delete interactions', () => {
         it('deletes a button', async () => {
-            const updateWidgetMock = mockUpdateWidgetHandler()
+            const updateWidgetCapture = createUpdateWidgetCapture()
             const listWidgetsMock = mockListWidgetsHandler(async () =>
                 HttpResponse.json(widgetListResponse),
             )
-            server.use(listWidgetsMock.handler, updateWidgetMock.handler)
+            server.use(listWidgetsMock.handler, updateWidgetCapture.handler)
 
             const { user } = render(
                 <CustomActionsSection integrationName="Shopify" />,
@@ -497,29 +549,29 @@ describe('CustomActionsSection', () => {
                 expect(screen.getByText('Test Button')).toBeInTheDocument()
             })
 
-            const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
-
             await user.click(
                 screen.getByRole('button', {
                     name: /delete test button/i,
                 }),
             )
 
-            await waitForUpdateRequest(async (request) => {
-                const body = await request.json()
-                const customerWidget = body.template.widgets.find(
-                    (w: { path: string }) => w.path === 'customer',
-                )
-                expect(customerWidget.meta.custom.buttons).toHaveLength(0)
+            await waitFor(() => {
+                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
             })
+
+            const customerWidget = findCustomerWidget(
+                updateWidgetCapture.getRequestBody(),
+            )
+
+            expect(customerWidget?.meta.custom.buttons).toHaveLength(0)
         })
 
         it('deletes a link', async () => {
-            const updateWidgetMock = mockUpdateWidgetHandler()
+            const updateWidgetCapture = createUpdateWidgetCapture()
             const listWidgetsMock = mockListWidgetsHandler(async () =>
                 HttpResponse.json(widgetListResponse),
             )
-            server.use(listWidgetsMock.handler, updateWidgetMock.handler)
+            server.use(listWidgetsMock.handler, updateWidgetCapture.handler)
 
             const { user } = render(
                 <CustomActionsSection integrationName="Shopify" />,
@@ -529,21 +581,21 @@ describe('CustomActionsSection', () => {
                 expect(screen.getByText('Test Link')).toBeInTheDocument()
             })
 
-            const waitForUpdateRequest = updateWidgetMock.waitForRequest(server)
-
             await user.click(
                 screen.getByRole('button', {
                     name: /delete test link/i,
                 }),
             )
 
-            await waitForUpdateRequest(async (request) => {
-                const body = await request.json()
-                const customerWidget = body.template.widgets.find(
-                    (w: { path: string }) => w.path === 'customer',
-                )
-                expect(customerWidget.meta.custom.links).toHaveLength(0)
+            await waitFor(() => {
+                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
             })
+
+            const customerWidget = findCustomerWidget(
+                updateWidgetCapture.getRequestBody(),
+            )
+
+            expect(customerWidget?.meta.custom.links).toHaveLength(0)
         })
     })
 })

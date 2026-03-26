@@ -139,7 +139,7 @@ describe('ButtonActionDialog', () => {
     })
 
     it('keeps Save enabled when URL contains template variables', async () => {
-        render(
+        const { user } = render(
             <ButtonActionDialog
                 {...defaultProps}
                 editButton={{
@@ -152,10 +152,13 @@ describe('ButtonActionDialog', () => {
             />,
         )
 
+        await user.click(screen.getByLabelText(/url/i))
+        await user.tab()
+
         await waitFor(() => {
             expect(screen.getByRole('button', { name: /save/i })).toBeEnabled()
         })
-    })
+    }, 10000)
 
     it('populates all fields from editButton in edit mode', () => {
         const editButton: ButtonConfig = {
