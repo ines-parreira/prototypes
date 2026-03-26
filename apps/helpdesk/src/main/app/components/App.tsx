@@ -39,6 +39,7 @@ import { useRedirectDeprecatedTicketRoutes } from 'tickets/core/hooks'
 
 import ImpersonationBanner from '../../../AlertBanners/components/ImpersonationBanner'
 import useActivityTracker from '../hooks/useActivityTracker'
+import useApplyWayfindingMs1 from '../hooks/useApplyWayfindingMs1'
 import useAppShortcuts from '../hooks/useAppShortcuts'
 import usePollingManager from '../hooks/usePollingManager'
 import { useSetBanners } from '../hooks/useSetBanners'
@@ -73,6 +74,7 @@ export default function App({ children }: Props) {
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
 
     useApplyTheme()
+    useApplyWayfindingMs1()
     useAppShortcuts()
     usePollingManager()
     useSetBanners()

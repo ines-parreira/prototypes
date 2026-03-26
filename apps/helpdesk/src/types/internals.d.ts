@@ -71,6 +71,9 @@ declare global {
                 selfServiceConfiguration: GorgiasChatPreviewSelfServiceConfiguration,
             ) => void
             setLanguage?: (language: Language) => Promise<void>
+            on(event: string, callback: (data?: unknown) => void): void
+            off(event: string, callback: (data?: unknown) => void): void
+            init(): Promise<void>
         }
         GorgiasCanduRouter?: {
             route: (url: string) => void

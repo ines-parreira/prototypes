@@ -4,6 +4,7 @@ import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
+import { useIsChatReady } from 'hooks/useIsChatReady'
 import { Product, productConfig } from 'routes/layout/productConfig'
 
 import { useCurrentRouteProduct } from '../../hooks/useCurrentRouteProduct'
@@ -41,6 +42,11 @@ jest.mock('routes/layout/NavigationSidebarSpotlightButton', () => ({
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(() => ({ hasAccess: true })),
 }))
+
+jest.mock('hooks/useIsChatReady', () => ({
+    useIsChatReady: jest.fn().mockReturnValue(true),
+}))
+const mockUseIsChatReady = assumeMock(useIsChatReady)
 
 jest.mock('routes/layout/sidebars', () => ({
     InboxSidebar: () => <div>InboxSidebar</div>,
@@ -154,6 +160,24 @@ describe('NavigationSidebar', () => {
             await act(() => user.click(toggleChatButton))
 
             expect(mockToggleChat).toHaveBeenCalledTimes(1)
+        })
+
+        it('should render the chat button when chat is ready', () => {
+            mockUseIsChatReady.mockReturnValue(true)
+            render(<NavigationSidebar />, { wrapper })
+
+            expect(
+                screen.getByRole('button', { name: /open chat/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render the chat button when chat is not ready', () => {
+            mockUseIsChatReady.mockReturnValue(false)
+            render(<NavigationSidebar />, { wrapper })
+
+            expect(
+                screen.queryByRole('button', { name: /open chat/i }),
+            ).not.toBeInTheDocument()
         })
     })
 

@@ -101,6 +101,7 @@ jest.mock('../../hooks/useAppShortcuts', () => jest.fn(() => undefined))
 jest.mock('../../hooks/usePollingManager', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useSharedLogic', () => jest.fn(() => undefined))
 jest.mock('../../hooks/useActivityTracker', () => jest.fn(() => undefined))
+jest.mock('../../hooks/useApplyWayfindingMs1', () => jest.fn(() => undefined))
 
 const mockUseAxiomMigration = useAxiomMigration as jest.MockedFunction<
     typeof useAxiomMigration

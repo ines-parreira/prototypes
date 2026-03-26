@@ -9,6 +9,7 @@ import { history } from '@repo/routing'
 import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import UserItem from 'common/navigation/components/UserItem'
+import { useIsChatReady } from 'hooks/useIsChatReady'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
 import { usePreviousProductNavigation } from 'routes/hooks/usePreviousProductNavigation'
 import { NavigationSidebarNotificationsButton } from 'routes/layout/NavigationSidebarNotificationsButton'
@@ -25,6 +26,7 @@ export function NavigationSidebar() {
     const currentProduct = useCurrentRouteProduct()
     const prevNonStickyPathname = usePreviousProductNavigation()
     const { isCollapsed, toggleCollapse } = useSidebar()
+    const isChatReady = useIsChatReady()
 
     const CurrentContent = currentProduct.sidebar
     const isSticky =
@@ -138,20 +140,22 @@ export function NavigationSidebar() {
                     >
                         <TooltipContent title="Settings" />
                     </Tooltip>
-                    <Tooltip
-                        placement="right"
-                        trigger={
-                            <Button
-                                icon="circle-help"
-                                onClick={toggleChat}
-                                variant="tertiary"
-                                size="sm"
-                                aria-label="Open chat"
-                            />
-                        }
-                    >
-                        <TooltipContent title="Open chat" />
-                    </Tooltip>
+                    {isChatReady && (
+                        <Tooltip
+                            placement="right"
+                            trigger={
+                                <Button
+                                    icon="circle-help"
+                                    onClick={toggleChat}
+                                    variant="tertiary"
+                                    size="sm"
+                                    aria-label="Open chat"
+                                />
+                            }
+                        >
+                            <TooltipContent title="Open chat" />
+                        </Tooltip>
+                    )}
                     <NavigationSidebarNotificationsButton />
                 </Box>
             </SidebarFooter>
