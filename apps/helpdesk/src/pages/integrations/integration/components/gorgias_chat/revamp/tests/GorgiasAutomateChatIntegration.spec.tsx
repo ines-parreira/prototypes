@@ -121,22 +121,17 @@ jest.mock(
 )
 jest.mock('../components/FlowsCard/FlowsCard', () => ({
     FlowsCard: ({
-        onChange,
+        onAdd,
     }: {
         automationSettingsWorkflows: {
             workflow_id: string
             enabled: boolean
         }[]
-        onChange: (
-            workflows: { workflow_id: string; enabled: boolean }[],
-            action: 'add' | 'remove' | 'reorder',
-        ) => void
+        onAdd: (workflows: { workflow_id: string; enabled: boolean }[]) => void
     }) => (
         <div data-testid="flows-card">
             <button
-                onClick={() =>
-                    onChange([{ workflow_id: 'wf-1', enabled: true }], 'add')
-                }
+                onClick={() => onAdd([{ workflow_id: 'wf-1', enabled: true }])}
                 aria-label="Add Flow"
             >
                 Add Flow

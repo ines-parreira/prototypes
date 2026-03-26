@@ -1,7 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
+import { TicketChannel } from 'business/types/ticket'
+
 import { useArticleRecommendation } from '../../hooks/useArticleRecommendation'
+import { useFlows } from '../../hooks/useFlows'
 import { useOrderManagement } from '../../hooks/useOrderManagement'
 import { ConnectedChannelsChatView } from './ConnectedChannelsChatView'
 
@@ -13,13 +16,22 @@ jest.mock('react-router-dom', () => ({
     })),
 }))
 
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 jest.mock('../../hooks/useArticleRecommendation')
+jest.mock('../../hooks/useFlows')
 jest.mock('../../hooks/useOrderManagement')
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ArticleRecommendationCard/ArticleRecommendationCard',
     () => ({
         ArticleRecommendationCard: () => <div>ArticleRecommendationCard</div>,
+    }),
+)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard',
+    () => ({
+        FlowsCard: () => <div>FlowsCard</div>,
     }),
 )
 
@@ -39,13 +51,25 @@ const mockedUseArticleRecommendation =
         typeof useArticleRecommendation
     >
 
+const mockedUseFlows = useFlows as jest.MockedFunction<typeof useFlows>
+
 const mockedUseOrderManagement = useOrderManagement as jest.MockedFunction<
     typeof useOrderManagement
 >
 
+const mockChannel = {
+    type: TicketChannel.Chat,
+    value: { meta: { app_id: 'test-app-id' } },
+} as any
+
+const mockedUseSelfServiceChatChannels = jest.requireMock(
+    'pages/automate/common/hooks/useSelfServiceChatChannels',
+).default as jest.MockedFunction<() => unknown[]>
+
 describe('ConnectedChannelsChatView', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockedUseSelfServiceChatChannels.mockReturnValue([])
         mockedUseArticleRecommendation.mockReturnValue({
             hasChatChannels: true,
             enabledInSettings: true,
@@ -54,6 +78,17 @@ describe('ConnectedChannelsChatView', () => {
             isLoading: false,
             showHelpCenterRequired: false,
             handleToggle: jest.fn(),
+        })
+        mockedUseFlows.mockReturnValue({
+            isLoading: false,
+            channel: mockChannel,
+            primaryLanguage: 'en',
+            workflowEntrypoints: [],
+            workflowConfigurations: [],
+            automationSettingsWorkflows: [],
+            handleFlowAdd: jest.fn(),
+            handleFlowRemove: jest.fn(),
+            handleFlowReorder: jest.fn(),
         })
         mockedUseOrderManagement.mockReturnValue({
             enabledInSettings: true,
@@ -159,5 +194,37 @@ describe('ConnectedChannelsChatView', () => {
         expect(
             screen.queryByText('OrderManagementCard'),
         ).not.toBeInTheDocument()
+    })
+
+    it('should render the flows card when channel is defined', () => {
+        render(
+            <MemoryRouter>
+                <ConnectedChannelsChatView />
+            </MemoryRouter>,
+        )
+
+        expect(screen.getByText('FlowsCard')).toBeInTheDocument()
+    })
+
+    it('should not render the flows card when channel is undefined', () => {
+        mockedUseFlows.mockReturnValue({
+            isLoading: false,
+            channel: undefined,
+            primaryLanguage: 'en',
+            workflowEntrypoints: [],
+            workflowConfigurations: [],
+            automationSettingsWorkflows: [],
+            handleFlowAdd: jest.fn(),
+            handleFlowRemove: jest.fn(),
+            handleFlowReorder: jest.fn(),
+        })
+
+        render(
+            <MemoryRouter>
+                <ConnectedChannelsChatView />
+            </MemoryRouter>,
+        )
+
+        expect(screen.queryByText('FlowsCard')).not.toBeInTheDocument()
     })
 })

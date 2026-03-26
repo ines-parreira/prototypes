@@ -5,9 +5,18 @@ import { isEqual } from 'lodash'
 import { Box } from '@gorgias/axiom'
 
 import { FlowItem } from './FlowItem'
-import type { FlowsListProps, Workflow } from './types'
+import type { Workflow, WorkflowConfiguration } from './types'
 
 import css from './FlowsList.less'
+
+type FlowsListProps = {
+    items: Workflow[]
+    channelType: string
+    configurationsMap: Record<string, WorkflowConfiguration>
+    getEditFlowLink: (workflowId: string) => string
+    onReorder: (reorderedWorkflows: Workflow[]) => void
+    onRemove: (workflowId: string) => void
+}
 
 export function FlowsList({
     items,

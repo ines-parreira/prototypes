@@ -1,8 +1,7 @@
 import { Redirect, useParams } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
-
-import { ConnectedChannelsView } from './ConnectedChannelsView'
+import { ConnectedChannelsChatView } from 'pages/automate/connectedChannels/revamp/components/ConnectedChannelsChatView/ConnectedChannelsChatView'
 
 export const ConnectedChannelsViewContainerRevamp = () => {
     const { shopName } = useParams<{
@@ -14,5 +13,5 @@ export const ConnectedChannelsViewContainerRevamp = () => {
         return <Redirect to="/app/automation/connected-channels" />
     }
 
-    return <ConnectedChannelsView />
+    return <ConnectedChannelsChatView />
 }

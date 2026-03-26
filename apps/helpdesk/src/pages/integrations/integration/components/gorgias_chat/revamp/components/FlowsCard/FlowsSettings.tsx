@@ -4,13 +4,31 @@ import { keyBy } from 'lodash'
 
 import { Box, Button, Menu, MenuItem } from '@gorgias/axiom'
 
+import type { SelfServiceConfiguration } from 'models/selfServiceConfiguration/types'
+import type { SelfServiceChannel } from 'pages/automate/common/hooks/useSelfServiceChannels'
 import useLanguagesMismatchWarnings from 'pages/automate/workflows/hooks/useLanguagesMismatchWarnings'
+import type { Components } from 'rest_api/workflows_api/client.generated'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
 
 import { FlowsList } from './FlowsList'
-import type { FlowsSettingsProps, Workflow } from './types'
+import type { Workflow } from './types'
 import { FLOWS_LIMIT } from './types'
 import { getChannelLanguages } from './utils'
+
+type FlowsSettingsProps = {
+    workflowEntrypoints: SelfServiceConfiguration['workflowsEntrypoints']
+    configurations: Components.Schemas.ListWfConfigurationsResponseDto
+    automationSettingsWorkflows: Workflow[]
+    primaryLanguage: string
+    shopName: string
+    shopType: string
+    channel: SelfServiceChannel
+    channelType: string
+    onAdd?: (updatedWorkflows: Workflow[]) => void
+    onRemove?: (updatedWorkflows: Workflow[]) => void
+    onReorder?: (updatedWorkflows: Workflow[]) => void
+    onFocus?: () => void
+}
 
 export const FlowsSettings = ({
     workflowEntrypoints,
@@ -20,7 +38,9 @@ export const FlowsSettings = ({
     shopType,
     channelType,
     channel,
-    onChange,
+    onAdd,
+    onRemove,
+    onReorder,
     onFocus,
 }: FlowsSettingsProps) => {
     const isAutomateSettings = useIsAutomateSettings()
@@ -97,27 +117,21 @@ export const FlowsSettings = ({
     }
 
     const handleAddFlow = (workflowId: string) => {
-        onChange?.(
-            [
-                ...enabledWorkflows,
-                {
-                    workflow_id: workflowId,
-                    enabled: true,
-                },
-            ],
-            'add',
-        )
+        onAdd?.([
+            ...enabledWorkflows,
+            {
+                workflow_id: workflowId,
+                enabled: true,
+            },
+        ])
     }
 
     const handleRemoveFlow = (workflowId: string) => {
-        onChange?.(
-            enabledWorkflows.filter((w) => w.workflow_id !== workflowId),
-            'remove',
-        )
+        onRemove?.(enabledWorkflows.filter((w) => w.workflow_id !== workflowId))
     }
 
     const handleReorderFlows = (reorderedWorkflows: Workflow[]) => {
-        onChange?.(reorderedWorkflows, 'reorder')
+        onReorder?.(reorderedWorkflows)
     }
 
     return (

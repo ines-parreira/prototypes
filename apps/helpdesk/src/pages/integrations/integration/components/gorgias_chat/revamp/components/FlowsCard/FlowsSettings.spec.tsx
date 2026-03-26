@@ -90,7 +90,9 @@ const defaultProps = {
     shopType: 'shopify',
     channelType: 'chat',
     channel: mockChannel,
-    onChange: jest.fn(),
+    onAdd: jest.fn(),
+    onRemove: jest.fn(),
+    onReorder: jest.fn(),
 }
 
 const renderComponent = (props: Partial<typeof defaultProps> = {}) => {
@@ -207,15 +209,15 @@ describe('FlowsSettings', () => {
             expect(addButton).toBeAriaDisabled()
         })
 
-        it('should call onChange with add action when flow is selected', async () => {
+        it('should call onAdd when flow is selected', async () => {
             const user = userEvent.setup()
-            const onChange = jest.fn()
+            const onAdd = jest.fn()
             renderComponent({
                 automationSettingsWorkflows: [
                     { workflow_id: 'workflow-1', enabled: false },
                     { workflow_id: 'workflow-2', enabled: false },
                 ],
-                onChange,
+                onAdd,
             })
 
             const addButton = screen.getByRole('button', { name: /add flow/i })
@@ -231,23 +233,22 @@ describe('FlowsSettings', () => {
                 screen.getByRole('menuitem', { name: 'Order Status Flow' }),
             )
 
-            expect(onChange).toHaveBeenCalledWith(
-                [{ workflow_id: 'workflow-1', enabled: true }],
-                'add',
-            )
+            expect(onAdd).toHaveBeenCalledWith([
+                { workflow_id: 'workflow-1', enabled: true },
+            ])
         })
     })
 
     describe('remove flow', () => {
-        it('should call onChange with remove action when flow is removed', async () => {
+        it('should call onRemove when flow is removed', async () => {
             const user = userEvent.setup()
-            const onChange = jest.fn()
+            const onRemove = jest.fn()
             renderComponent({
                 automationSettingsWorkflows: [
                     { workflow_id: 'workflow-1', enabled: true },
                     { workflow_id: 'workflow-2', enabled: true },
                 ],
-                onChange,
+                onRemove,
             })
 
             const removeButtons = screen.getAllByRole('button', {
@@ -255,10 +256,9 @@ describe('FlowsSettings', () => {
             })
             await user.click(removeButtons[0])
 
-            expect(onChange).toHaveBeenCalledWith(
-                [{ workflow_id: 'workflow-2', enabled: true }],
-                'remove',
-            )
+            expect(onRemove).toHaveBeenCalledWith([
+                { workflow_id: 'workflow-2', enabled: true },
+            ])
         })
     })
 

@@ -5,9 +5,18 @@ import { Box, Button, Text } from '@gorgias/axiom'
 
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
-import type { FlowItemProps } from './types'
-
 import css from './FlowItem.less'
+
+type FlowItemProps = {
+    index: number
+    label: string
+    channelType: string
+    editUrl: string
+    onMove: (dragIndex: number, hoverIndex: number) => void
+    onDrop: () => void
+    onCancel: () => void
+    onDelete: () => void
+}
 
 export const FlowItem = ({
     index,

@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import {
     createContext,
     useCallback,
@@ -39,7 +40,7 @@ export const useGorgiasChatCreationWizardContext =
         return context
     }
 
-export const useChatPreviewPanel = () => {
+export const useChatPreviewPanel = (headerActions?: ReactNode) => {
     const { setIsCollapsibleColumnOpen, warpToCollapsibleColumn } =
         useCollapsibleColumn()
 
@@ -47,7 +48,11 @@ export const useChatPreviewPanel = () => {
     const chatPreviewPanelRef = useRef<ChatPreviewPanelHandle>(null)
 
     const chatPreviewPortal = warpToCollapsibleColumn(
-        <ChatPreviewPanel ref={chatPreviewPanelRef} appId={appId} />,
+        <ChatPreviewPanel
+            ref={chatPreviewPanelRef}
+            appId={appId}
+            headerActions={headerActions}
+        />,
     )
 
     const showPreviewPanel = useCallback(

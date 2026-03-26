@@ -1,13 +1,9 @@
-import { useConnectedChannelsPreviewPanel } from 'pages/automate/connectedChannels/revamp/hooks/useConnectedChannelsPreviewPanel'
-
 import { OrderManagementFlowsCard } from './components/OrderManagementFlowsCard/OrderManagementFlowsCard'
 import { useOrderManagementFlows } from './components/OrderManagementFlowsCard/useOrderManagementFlows'
 
 import css from './OrderManagementView.less'
 
 export const OrderManagementViewRevamp = () => {
-    useConnectedChannelsPreviewPanel()
-
     const {
         isLoading,
         isUpdatePending,

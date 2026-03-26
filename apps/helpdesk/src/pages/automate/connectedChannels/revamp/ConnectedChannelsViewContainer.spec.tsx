@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 import { billingState } from 'fixtures/billing'
 import type { RootState } from 'state/types'
 
-import { ConnectedChannelsViewContainerRevamp as ConnectedChannelsViewContainer } from '../ConnectedChannelsViewContainer'
+import { ConnectedChannelsViewContainerRevamp as ConnectedChannelsViewContainer } from './ConnectedChannelsViewContainer'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -20,9 +20,12 @@ jest.mock('react-router-dom', () => ({
 
 jest.mock('hooks/aiAgent/useAiAgentAccess')
 
-jest.mock('../ConnectedChannelsView', () => ({
-    ConnectedChannelsView: () => <div>ConnectedChannelsView</div>,
-}))
+jest.mock(
+    'pages/automate/connectedChannels/revamp/components/ConnectedChannelsChatView/ConnectedChannelsChatView',
+    () => ({
+        ConnectedChannelsChatView: () => <div>ConnectedChannelsView</div>,
+    }),
+)
 
 const mockStore = configureMockStore([thunk])
 

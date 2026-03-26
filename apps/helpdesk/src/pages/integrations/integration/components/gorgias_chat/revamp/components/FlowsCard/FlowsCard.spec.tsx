@@ -35,7 +35,9 @@ const defaultProps = {
     workflowEntrypoints: undefined,
     workflowConfigurations: [],
     automationSettingsWorkflows: [],
-    onChange: jest.fn(),
+    onAdd: jest.fn(),
+    onRemove: jest.fn(),
+    onReorder: jest.fn(),
 }
 
 const renderComponent = (

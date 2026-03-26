@@ -5,13 +5,9 @@ import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelf
 import type { Components } from 'rest_api/workflows_api/client.generated'
 
 import { FlowsSettings } from './FlowsSettings'
+import type { Workflow } from './types'
 
 import css from './FlowsCard.less'
-
-type Workflow = {
-    workflow_id: string
-    enabled: boolean
-}
 
 type FlowsCardProps = {
     isLoading?: boolean
@@ -22,10 +18,9 @@ type FlowsCardProps = {
     workflowEntrypoints: SelfServiceConfiguration['workflowsEntrypoints']
     workflowConfigurations: Components.Schemas.ListWfConfigurationsResponseDto
     automationSettingsWorkflows: Workflow[]
-    onChange: (
-        updatedWorkflows: Workflow[],
-        action: 'add' | 'remove' | 'reorder',
-    ) => void
+    onAdd: (updatedWorkflows: Workflow[]) => void
+    onRemove: (updatedWorkflows: Workflow[]) => void
+    onReorder: (updatedWorkflows: Workflow[]) => void
     onFocus?: () => void
 }
 
@@ -38,7 +33,9 @@ export function FlowsCard({
     workflowEntrypoints,
     workflowConfigurations,
     automationSettingsWorkflows,
-    onChange,
+    onAdd,
+    onRemove,
+    onReorder,
     onFocus,
 }: FlowsCardProps) {
     if (isLoading) {
@@ -50,7 +47,7 @@ export function FlowsCard({
             <Box flexDirection="column" gap="md">
                 <Box flexDirection="column" gap="xs">
                     <Heading size="md">Flows</Heading>
-                    <Text size="md" color="var(--content-neutral-secondary)">
+                    <Text size="md" color="content-neutral-secondary">
                         Show up to 6 flows on your chat to proactively resolve
                         top customer requests.
                     </Text>
@@ -64,7 +61,9 @@ export function FlowsCard({
                     primaryLanguage={primaryLanguage}
                     configurations={workflowConfigurations}
                     automationSettingsWorkflows={automationSettingsWorkflows}
-                    onChange={onChange}
+                    onAdd={onAdd}
+                    onRemove={onRemove}
+                    onReorder={onReorder}
                     onFocus={onFocus}
                 />
             </Box>

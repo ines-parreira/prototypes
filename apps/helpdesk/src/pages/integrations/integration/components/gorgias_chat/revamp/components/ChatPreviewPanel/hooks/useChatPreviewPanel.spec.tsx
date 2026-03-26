@@ -44,7 +44,7 @@ describe('useChatPreviewPanel', () => {
         expect(mockSetIsCollapsibleColumnOpen).toHaveBeenCalledWith(true)
     })
 
-    it('renders ChatPreviewPanel via warpToCollapsibleColumn', () => {
+    it('renders ChatPreviewPanel via warpToCollapsibleColumn by default', () => {
         renderHook(() => useChatPreviewPanel())
 
         expect(mockWarpToCollapsibleColumn).toHaveBeenCalledWith(

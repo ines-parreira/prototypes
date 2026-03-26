@@ -98,7 +98,6 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
                 language: primaryLanguage,
                 label: entrypointsLabels?.[flow.workflow_id],
             }))
-
             updateWorkflowEntryPoints(workflowEntryPoints)
         }
     }, [
@@ -191,7 +190,9 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
                         automationSettingsWorkflows={
                             pendingFlows ?? automationSettingsWorkflows
                         }
-                        onChange={handleFlowsChange}
+                        onAdd={handleFlowsChange}
+                        onRemove={handleFlowsChange}
+                        onReorder={handleFlowsChange}
                         onFocus={handleFlowsCardFocus}
                     />
                     {orderManagementEnabledInSettings && (

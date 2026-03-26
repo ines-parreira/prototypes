@@ -1,16 +1,7 @@
 import { render, screen } from '@testing-library/react'
 
-import { useConnectedChannelsPreviewPanel } from 'pages/automate/connectedChannels/revamp/hooks/useConnectedChannelsPreviewPanel'
-
 import { useOrderManagementFlows } from '../components/OrderManagementFlowsCard/useOrderManagementFlows'
 import { OrderManagementViewRevamp } from '../OrderManagementView'
-
-jest.mock(
-    'pages/automate/connectedChannels/revamp/hooks/useConnectedChannelsPreviewPanel',
-    () => ({
-        useConnectedChannelsPreviewPanel: jest.fn(),
-    }),
-)
 
 jest.mock(
     '../components/OrderManagementFlowsCard/useOrderManagementFlows',
@@ -48,12 +39,6 @@ describe('OrderManagementViewRevamp', () => {
         render(<OrderManagementViewRevamp />)
 
         expect(screen.getByText('OrderManagementFlowsCard')).toBeInTheDocument()
-    })
-
-    it('should call useConnectedChannelsPreviewPanel on mount', () => {
-        render(<OrderManagementViewRevamp />)
-
-        expect(useConnectedChannelsPreviewPanel).toHaveBeenCalled()
     })
 
     it('should call useOrderManagementFlows on mount', () => {

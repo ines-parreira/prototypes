@@ -52,6 +52,17 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
             notificationMessage?: string,
             silentNotification?: boolean,
         ) => {
+            const previousSettings =
+                applicationsAutomationSettings[
+                    applicationAutomationSettings.applicationId.toString()
+                ]
+
+            void dispatch(
+                chatApplicationAutomationSettingsUpdated(
+                    applicationAutomationSettings,
+                ),
+            )
+
             try {
                 const { articleRecommendation, orderManagement, workflows } =
                     applicationAutomationSettings
@@ -77,6 +88,14 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
                     }),
                 )
             } catch {
+                if (previousSettings) {
+                    void dispatch(
+                        chatApplicationAutomationSettingsUpdated(
+                            previousSettings,
+                        ),
+                    )
+                }
+
                 if (silentNotification) {
                     return
                 }
@@ -88,7 +107,7 @@ const useApplicationsAutomationSettings = (applicationsIds: string[]) => {
                 )
             }
         },
-        [],
+        [applicationsAutomationSettings],
     )
 
     return {
