@@ -5,6 +5,7 @@ import type { IconName } from '@gorgias/axiom'
 import {
     Box,
     Button,
+    DropdownIcon,
     Heading,
     Icon,
     Menu,
@@ -46,7 +47,7 @@ export function SidebarProductHeader({
         <Menu
             selectedKeys={[selectedItem.id]}
             selectionMode="single"
-            trigger={
+            trigger={({ isOpen }) =>
                 isCollapsed && selectedItem.icon ? (
                     <Tooltip
                         placement="right"
@@ -66,7 +67,7 @@ export function SidebarProductHeader({
                         leadingSlot={
                             icon ? <Box ml="xs">{icon}</Box> : undefined
                         }
-                        trailingSlot="arrow-chevron-down"
+                        trailingSlot={<DropdownIcon isOpen={isOpen} />}
                     >
                         <Box pl="sm">
                             <Heading>{selectedItem.name}</Heading>
