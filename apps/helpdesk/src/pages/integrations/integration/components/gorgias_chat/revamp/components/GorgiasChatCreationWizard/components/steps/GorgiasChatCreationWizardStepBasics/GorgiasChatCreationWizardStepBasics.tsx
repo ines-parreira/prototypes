@@ -1,8 +1,6 @@
-/* istanbul ignore file */
 import type React from 'react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { fromJS } from 'immutable'
@@ -10,34 +8,22 @@ import type { Map } from 'immutable'
 
 import { Card, Heading } from '@gorgias/axiom'
 
-import type {
-    GORGIAS_CHAT_LIVE_CHAT_OFFLINE,
-    LanguageItem,
-} from 'config/integrations/gorgias_chat'
 import {
-    getGorgiasChatLanguageOptionsPlainJS,
-    getHasShopifyScriptTagScopes,
     GORGIAS_CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     GORGIAS_CHAT_AUTO_RESPONDER_REPLY_DYNAMIC,
     GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
-    GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
     GORGIAS_CHAT_OFFLINE_MODE_ENABLED_DATETIME_DEFAULT,
     GORGIAS_CHAT_WIDGET_AVATAR_TYPE_DEFAULT,
     GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_DEFAULT,
-    GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_PRIVACY_POLICY_DISCLAIMER_ENABLED_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
-    mapIntegrationLanguagesToLanguagePicker,
-    mapLanguagePickerToIntegrationLanguages,
 } from 'config/integrations/gorgias_chat'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import type { StoreIntegration } from 'models/integration/types'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
-    GorgiasChatCreationWizardInstallationMethod,
     GorgiasChatCreationWizardStatus,
     GorgiasChatCreationWizardSteps,
     IntegrationType,
@@ -45,33 +31,22 @@ import {
 } from 'models/integration/types'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useNavigateWizardSteps from 'pages/common/components/wizard/hooks/useNavigateWizardSteps'
-import type { Language } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LanguagePicker'
 import { LanguagePicker } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LanguagePicker'
 import { GorgiasChatCreationWizardStep } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatCreationWizardStep'
 import { updateOrCreateIntegration } from 'state/integrations/actions'
-import {
-    getIntegrationsByTypes,
-    makeGetRedirectUri,
-} from 'state/integrations/selectors'
+import { makeGetRedirectUri } from 'state/integrations/selectors'
 
 import useLogWizardEvent from '../../../hooks/useLogWizardEvent'
 import { GorgiasChatCreationWizardFooter } from '../../GorgiasChatCreationWizardFooter'
 import SaveChangesPrompt from '../../SaveChangesPrompt'
 import { ChatTitleField } from './ChatTitleField'
 import DiscardNewChatPrompt from './DiscardNewChatPrompt'
+import { useBasicsForm } from './hooks/useBasicsForm'
 import { InstallationPlatformSettings } from './InstallationPlatformSettings'
 import { LiveChatAvailabilitySettings } from './LiveChatAvailabilitySettings'
 import { ShopifyScriptTagScopeModal } from './ShopifyScriptTagScopeModal'
 
 import css from './GorgiasChatCreationWizardStepBasics.less'
-
-type SubmitForm = {
-    type: IntegrationType.GorgiasChat
-    id?: number
-    name: string
-    decoration?: Record<string, any>
-    meta?: Record<string, any>
-}
 
 type Props = {
     isUpdate: boolean
@@ -84,23 +59,28 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
     isSubmitting,
     integration,
 }) => {
-    const logWizardEvent = useLogWizardEvent()
-
     const dispatch = useAppDispatch()
-
+    const logWizardEvent = useLogWizardEvent()
     const navigateWizardSteps = useNavigateWizardSteps()
+
+    const {
+        values,
+        isDirty,
+        hasIncompleteFields,
+        isStoreRequired,
+        isStoreOfShopifyType,
+        hasShopifyScriptTagScope,
+        gorgiasChatIntegrations,
+        storeIntegrations,
+        languagePickerLanguages,
+        availableLanguages,
+        handlers,
+    } = useBasicsForm({ integration, isUpdate })
 
     const [hasSubmitted, setHasSubmitted] = useState(false)
     const [hasFailedSubmit, setHasFailedSubmit] = useState(false)
-
-    const [currentName, setCurrentName] = useState<string>()
-    const [currentLanguage, setCurrentLanguage] = useState<string>()
-    const [currentLanguages, setCurrentLanguages] = useState<LanguageItem[]>()
     const [oAuthFlowTriggered, setOAuthFlowTriggered] = useState(false)
-    const [
-        isModalUpdateShopifyPermissionsOpen,
-        setIsModalUpdateShopifyPermissionsOpen,
-    ] = useState(false)
+    const [isShopifyModalOpen, setIsShopifyModalOpen] = useState(false)
     const [redirectAction, setRedirectAction] = useState<{
         redirectId: number | null
         redirectToNextStep: boolean
@@ -108,6 +88,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         redirectId: null,
         redirectToNextStep: false,
     })
+
+    const getRedirectUri = useAppSelector(makeGetRedirectUri)
+    const redirectUri = getRedirectUri(IntegrationType.Shopify)
 
     useEffect(() => {
         if (redirectAction.redirectId) {
@@ -124,234 +107,84 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
         navigateWizardSteps,
     ])
 
-    useEffect(() => {
-        // Used to keep saving the correct `language` with `languages` for the time being.
-        // Also used to set the correct language to preview as of today.
-        setCurrentLanguage(currentLanguages?.find((x) => x.primary)?.language)
-    }, [currentLanguages])
-
-    const gorgiasChatIntegrations = useAppSelector(
-        getIntegrationsByTypes([IntegrationType.GorgiasChat]),
-    )
-
-    const allStoreIntegrations = useAppSelector(
-        getIntegrationsByTypes([
-            IntegrationType.Shopify,
-            IntegrationType.BigCommerce,
-            IntegrationType.Magento2,
-        ]),
-    )
-
-    const storeIntegrations = allStoreIntegrations
-
-    const enableNewLanguages = useFlag(FeatureFlagKey.EnableNewLanguages)
-
-    const [currentStoreIntegration, setCurrentStoreIntegration] = useState<
-        StoreIntegration | false
-    >()
-    const [currentLiveChatAvailability, setCurrentLiveChatAvailability] =
-        useState<
-            | typeof GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
-            | typeof GORGIAS_CHAT_LIVE_CHAT_OFFLINE
-        >()
-
-    const liveChatAvailability =
-        currentLiveChatAvailability ||
-        integration.getIn(
-            ['meta', 'preferences', 'live_chat_availability'],
-            GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY,
-        )
-
-    const name = currentName ?? integration.get('name')
-
-    const getRedirectUri = useAppSelector(makeGetRedirectUri)
-    const redirectUri = getRedirectUri(IntegrationType.Shopify)
-
-    const language: string =
-        currentLanguage ||
-        integration.getIn(
-            ['meta', 'language'],
-            GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
-        )
-
-    const languagePickerLanguages = useMemo(
-        () => mapIntegrationLanguagesToLanguagePicker(integration),
-        [integration],
-    )
-
-    const availableLanguages = useMemo(
-        () => getGorgiasChatLanguageOptionsPlainJS(enableNewLanguages),
-        [enableNewLanguages],
-    )
-
-    const handleLanguageChange = useCallback((languages: Language[]) => {
-        const integrationLanguages =
-            mapLanguagePickerToIntegrationLanguages(languages)
-        setCurrentLanguages(integrationLanguages)
-    }, [])
-
-    const storeIntegration =
-        currentStoreIntegration ??
-        (isUpdate
-            ? storeIntegrations.find(
-                  (storeIntegration) =>
-                      storeIntegration?.id ===
-                      integration.getIn(['meta', 'shop_integration_id']),
-              )
-            : storeIntegrations.length === 1
-              ? storeIntegrations[0]
-              : undefined)
-
-    const isStoreOfShopifyType =
-        storeIntegration && isShopifyIntegration(storeIntegration)
-
-    const hasShopifyScriptTagScope =
-        storeIntegration &&
-        getHasShopifyScriptTagScopes({
-            storeIntegration,
-        })
-
-    const retriggerOAuthFlow = () => {
-        setOAuthFlowTriggered(true)
-        setIsModalUpdateShopifyPermissionsOpen(false)
-        const shopName =
-            storeIntegration && isShopifyIntegration(storeIntegration)
-                ? storeIntegration.meta.shop_name
-                : undefined
-        void onSave()?.then(() => {
-            if (shopName) {
-                window.location.href = redirectUri.replace(
-                    '{shop_name}',
-                    shopName,
-                )
+    const goToCreatedIntegrationWizard = useCallback(
+        (id: number, shouldGoToNextStep = false) => {
+            if (!isUpdate) {
+                setRedirectAction({
+                    redirectId: id,
+                    redirectToNextStep: shouldGoToNextStep,
+                })
+                return
             }
-        })
-    }
-
-    const [currentInstallationMethod, setCurrentInstallationMethod] =
-        useState<GorgiasChatCreationWizardInstallationMethod>()
-
-    const installationMethod =
-        currentInstallationMethod ??
-        integration.getIn(
-            ['meta', 'wizard', 'installation_method'],
-            GorgiasChatCreationWizardInstallationMethod.OneClick,
-        )
-
-    const isStoreRequired =
-        installationMethod ===
-        GorgiasChatCreationWizardInstallationMethod.OneClick
-
-    const hasIncompleteFields = !name || (isStoreRequired && !storeIntegration)
-
-    const handleInstallationPlatformChange = (value: string) => {
-        if (value === 'ecommerce-platforms') {
-            if (!currentStoreIntegration && storeIntegrations.length === 1) {
-                setCurrentStoreIntegration(storeIntegrations[0])
+            if (shouldGoToNextStep) {
+                navigateWizardSteps.goToNextStep()
             }
-            setCurrentInstallationMethod(
-                GorgiasChatCreationWizardInstallationMethod.OneClick,
-            )
-        } else {
-            setCurrentInstallationMethod(
-                GorgiasChatCreationWizardInstallationMethod.Manual,
-            )
-            setCurrentStoreIntegration(false)
-        }
-    }
+        },
+        [isUpdate, navigateWizardSteps],
+    )
 
-    const handleStoreChange = (storeIntegrationId: number) => {
-        const selectedStore = storeIntegrations.find(
-            (integration) => integration.id === storeIntegrationId,
-        )
-        setCurrentStoreIntegration(selectedStore)
-        if (!name && selectedStore) {
-            setCurrentName(selectedStore.name)
-        }
-    }
+    const buildForm = useCallback(
+        (shouldGoToNextStep: boolean) => {
+            const introductionText =
+                GORGIAS_CHAT_WIDGET_TEXTS[values.language]?.introductionText
+            const offlineIntroductionText =
+                GORGIAS_CHAT_WIDGET_TEXTS[values.language]
+                    ?.offlineIntroductionText
 
-    const goToCreatedIntegrationWizard = (
-        id: number,
-        shouldGoToNextStep = false,
-    ) => {
-        if (!isUpdate) {
-            setRedirectAction({
-                redirectId: id,
-                redirectToNextStep: shouldGoToNextStep,
-            })
-            return
-        }
-        if (shouldGoToNextStep) {
-            navigateWizardSteps.goToNextStep()
-        }
-    }
-
-    const isPristine =
-        currentName === undefined &&
-        currentStoreIntegration === undefined &&
-        currentLanguage === undefined &&
-        currentLiveChatAvailability === undefined &&
-        currentInstallationMethod === undefined
-
-    const introductionText =
-        GORGIAS_CHAT_WIDGET_TEXTS[language]?.introductionText
-    const offlineIntroductionText =
-        GORGIAS_CHAT_WIDGET_TEXTS[language]?.offlineIntroductionText
-
-    const onSave = (
-        shouldGoToNextStep = false,
-        isContinueLater = false,
-        shouldCheckShopifyPermissions = false,
-    ) => {
-        if (hasIncompleteFields) {
-            setHasFailedSubmit(true)
-            return
-        }
-
-        if (
-            isStoreOfShopifyType &&
-            shouldCheckShopifyPermissions &&
-            isStoreRequired &&
-            !hasShopifyScriptTagScope
-        ) {
-            setIsModalUpdateShopifyPermissionsOpen(true)
-            return
-        }
-
-        let form: SubmitForm = {
-            type: IntegrationType.GorgiasChat,
-            name,
-        }
-
-        if (isUpdate) {
-            form = {
-                ...form,
-                id: integration.get('id'),
-                meta: (integration.get('meta') as Map<any, any>)
-                    .setIn(
-                        ['preferences', 'live_chat_availability'],
-                        liveChatAvailability,
-                    )
-                    .set('language', language)
-                    .setIn(
-                        ['wizard', 'step'],
-                        shouldGoToNextStep
-                            ? GorgiasChatCreationWizardSteps.Branding
-                            : GorgiasChatCreationWizardSteps.Basics,
-                    )
-                    .setIn(
-                        ['wizard', 'installation_method'],
-                        installationMethod,
-                    )
-                    .toJS(),
-                decoration: (integration.get('decoration') as Map<any, any>)
-                    .set('introduction_text', introductionText)
-                    .set('offline_introduction_text', offlineIntroductionText)
-                    .toJS(),
+            const baseForm = {
+                type: IntegrationType.GorgiasChat as const,
+                name: values.name,
             }
-        } else {
-            form = {
-                ...form,
+
+            const storeMetaFields = {
+                languages: values.languages,
+                shop_name: values.storeIntegration
+                    ? getShopNameFromStoreIntegration(values.storeIntegration)
+                    : null,
+                shop_type: values.storeIntegration
+                    ? values.storeIntegration.type
+                    : null,
+                shop_integration_id: values.storeIntegration
+                    ? values.storeIntegration.id
+                    : null,
+            }
+
+            if (isUpdate) {
+                return {
+                    ...baseForm,
+                    id: integration.get('id'),
+                    meta: {
+                        ...(integration.get('meta') as Map<any, any>)
+                            .setIn(
+                                ['preferences', 'live_chat_availability'],
+                                values.liveChatAvailability,
+                            )
+                            .set('language', values.language)
+                            .setIn(
+                                ['wizard', 'step'],
+                                shouldGoToNextStep
+                                    ? GorgiasChatCreationWizardSteps.Branding
+                                    : GorgiasChatCreationWizardSteps.Basics,
+                            )
+                            .setIn(
+                                ['wizard', 'installation_method'],
+                                values.installationMethod,
+                            )
+                            .toJS(),
+                        ...storeMetaFields,
+                    },
+                    decoration: (integration.get('decoration') as Map<any, any>)
+                        .set('introduction_text', introductionText)
+                        .set(
+                            'offline_introduction_text',
+                            offlineIntroductionText,
+                        )
+                        .toJS(),
+                }
+            }
+
+            return {
+                ...baseForm,
                 decoration: {
                     conversation_color: GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
                     main_color: GORGIAS_CHAT_DEFAULT_COLOR_REVAMP,
@@ -365,9 +198,9 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                     },
                 },
                 meta: {
-                    language,
+                    language: values.language,
                     preferences: {
-                        live_chat_availability: liveChatAvailability,
+                        live_chat_availability: values.liveChatAvailability,
                         privacy_policy_disclaimer_enabled:
                             GORGIAS_CHAT_WIDGET_PRIVACY_POLICY_DISCLAIMER_ENABLED_DEFAULT,
                         email_capture_enforcement:
@@ -385,59 +218,108 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         step: shouldGoToNextStep
                             ? GorgiasChatCreationWizardSteps.Branding
                             : GorgiasChatCreationWizardSteps.Basics,
-                        installation_method: installationMethod,
+                        installation_method: values.installationMethod,
                     },
+                    ...storeMetaFields,
                 },
             }
-        }
+        },
+        [values, isUpdate, integration],
+    )
 
-        form.meta = {
-            ...form.meta,
-            languages: currentLanguages ?? [{ language, primary: true }],
-            shop_name: storeIntegration
-                ? getShopNameFromStoreIntegration(storeIntegration)
-                : null,
-            shop_type: storeIntegration ? storeIntegration.type : null,
-            shop_integration_id: storeIntegration ? storeIntegration.id : null,
-        }
+    const onSave = useCallback(
+        (
+            shouldGoToNextStep = false,
+            isContinueLater = false,
+            shouldCheckShopifyPermissions = false,
+        ) => {
+            if (hasIncompleteFields) {
+                setHasFailedSubmit(true)
+                return
+            }
 
-        return dispatch(
-            updateOrCreateIntegration(
-                fromJS(form),
-                undefined,
-                true,
-                ({ id }) => {
-                    logWizardEvent(
-                        isContinueLater
-                            ? SegmentEvent.ChatWidgetWizardSaveLaterClicked
-                            : SegmentEvent.ChatWidgetWizardStepCompleted,
-                        {
-                            live_chat_availability: liveChatAvailability,
-                            installation_method: installationMethod,
-                            shop_type: storeIntegration
-                                ? storeIntegration.type
-                                : undefined,
-                        },
-                    )
+            if (
+                isStoreOfShopifyType &&
+                shouldCheckShopifyPermissions &&
+                isStoreRequired &&
+                !hasShopifyScriptTagScope
+            ) {
+                setIsShopifyModalOpen(true)
+                return
+            }
 
-                    setHasSubmitted(true)
-                    goToCreatedIntegrationWizard(id, shouldGoToNextStep)
-                },
-                shouldGoToNextStep,
-                'Changes saved',
-            ),
-        )
-    }
+            const form = buildForm(shouldGoToNextStep)
+
+            return dispatch(
+                updateOrCreateIntegration(
+                    fromJS(form),
+                    undefined,
+                    true,
+                    ({ id }) => {
+                        logWizardEvent(
+                            isContinueLater
+                                ? SegmentEvent.ChatWidgetWizardSaveLaterClicked
+                                : SegmentEvent.ChatWidgetWizardStepCompleted,
+                            {
+                                live_chat_availability:
+                                    values.liveChatAvailability,
+                                installation_method: values.installationMethod,
+                                shop_type: values.storeIntegration
+                                    ? values.storeIntegration.type
+                                    : undefined,
+                            },
+                        )
+
+                        setHasSubmitted(true)
+                        goToCreatedIntegrationWizard(id, shouldGoToNextStep)
+                    },
+                    shouldGoToNextStep,
+                    'Changes saved',
+                ),
+            )
+        },
+        [
+            hasIncompleteFields,
+            isStoreOfShopifyType,
+            isStoreRequired,
+            hasShopifyScriptTagScope,
+            buildForm,
+            dispatch,
+            logWizardEvent,
+            values.liveChatAvailability,
+            values.installationMethod,
+            values.storeIntegration,
+            goToCreatedIntegrationWizard,
+        ],
+    )
+
+    const retriggerOAuthFlow = useCallback(() => {
+        setOAuthFlowTriggered(true)
+        setIsShopifyModalOpen(false)
+        const shopName =
+            values.storeIntegration &&
+            isShopifyIntegration(values.storeIntegration)
+                ? values.storeIntegration.meta.shop_name
+                : undefined
+        void onSave()?.then(() => {
+            if (shopName) {
+                window.location.href = redirectUri.replace(
+                    '{shop_name}',
+                    shopName,
+                )
+            }
+        })
+    }, [values.storeIntegration, onSave, redirectUri])
 
     const hasStoreError =
-        hasFailedSubmit && isStoreRequired && !storeIntegration
+        hasFailedSubmit && isStoreRequired && !values.storeIntegration
 
     return (
         <>
             <DiscardNewChatPrompt
                 when={
                     !isUpdate &&
-                    !isPristine &&
+                    isDirty &&
                     !oAuthFlowTriggered &&
                     !redirectAction.redirectId
                 }
@@ -445,16 +327,13 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
             <SaveChangesPrompt
                 onSave={() => onSave()}
                 when={
-                    isUpdate &&
-                    !isPristine &&
-                    !hasSubmitted &&
-                    !oAuthFlowTriggered
+                    isUpdate && isDirty && !hasSubmitted && !oAuthFlowTriggered
                 }
                 shouldRedirectAfterSave
             />
             <ShopifyScriptTagScopeModal
-                isOpen={isModalUpdateShopifyPermissionsOpen}
-                onClose={() => setIsModalUpdateShopifyPermissionsOpen(false)}
+                isOpen={isShopifyModalOpen}
+                onClose={() => setIsShopifyModalOpen(false)}
                 onConfirm={retriggerOAuthFlow}
             />
             <GorgiasChatCreationWizardStep
@@ -501,28 +380,30 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                         </Heading>
                         <div className={css.cardBody}>
                             <ChatTitleField
-                                name={name}
+                                name={values.name}
                                 hasFailedSubmit={hasFailedSubmit}
-                                onChange={setCurrentName}
+                                onChange={handlers.handleNameChange}
                             />
                             <LanguagePicker
                                 languages={languagePickerLanguages}
                                 availableLanguages={availableLanguages}
-                                onSelectLanguageChange={handleLanguageChange}
+                                onSelectLanguageChange={
+                                    handlers.handleLanguageChange
+                                }
                                 label="Default language"
                                 size="sm"
                             />
                             <InstallationPlatformSettings
                                 isStoreRequired={isStoreRequired}
                                 onInstallationPlatformChange={
-                                    handleInstallationPlatformChange
+                                    handlers.handleInstallationPlatformChange
                                 }
-                                storeIntegration={storeIntegration}
+                                storeIntegration={values.storeIntegration}
                                 gorgiasChatIntegrations={
                                     gorgiasChatIntegrations
                                 }
                                 storeIntegrations={storeIntegrations}
-                                onStoreChange={handleStoreChange}
+                                onStoreChange={handlers.handleStoreChange}
                                 hasStoreError={hasStoreError}
                                 isStoreOfShopifyType={isStoreOfShopifyType}
                                 hasShopifyScriptTagScope={
@@ -531,8 +412,10 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                                 retriggerOAuthFlow={retriggerOAuthFlow}
                             />
                             <LiveChatAvailabilitySettings
-                                value={liveChatAvailability}
-                                onChange={setCurrentLiveChatAvailability}
+                                value={values.liveChatAvailability}
+                                onChange={
+                                    handlers.handleLiveChatAvailabilityChange
+                                }
                             />
                         </div>
                     </div>

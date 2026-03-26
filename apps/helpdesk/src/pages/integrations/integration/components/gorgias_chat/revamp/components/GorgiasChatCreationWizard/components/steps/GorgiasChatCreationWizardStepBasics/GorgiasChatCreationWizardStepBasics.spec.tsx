@@ -2,7 +2,7 @@ import type React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { act, fireEvent, render, waitFor } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -570,5 +570,104 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         fireEvent.click(getByRole('button', { name: 'Continue' }))
         expect(queryAllByText('This field is required.')).toHaveLength(0)
+    })
+
+    it('should redirect to created integration wizard after successful creation', async () => {
+        const { getByRole, getByLabelText } = render(
+            <MemoryRouter>
+                <Provider store={mockStore(mockStoreState)}>
+                    <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                        <GorgiasChatCreationWizardStepBasics {...minProps} />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>,
+        )
+
+        fireEvent.change(getByLabelText('Chat title*', { selector: 'input' }), {
+            target: { value: 'Test Chat Title' },
+        })
+
+        fireEvent.click(
+            getByLabelText('Any other website', { selector: 'input' }),
+        )
+
+        const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
+
+        expect(spy).toHaveBeenCalledTimes(1)
+        const [, , , onSuccess] = spy.mock.calls[0]
+
+        act(() => {
+            if (typeof onSuccess === 'function') {
+                onSuccess({ id: 123 })
+            }
+        })
+
+        await waitFor(() => {
+            expect(history.replace).toHaveBeenCalledWith(
+                '/app/settings/channels/gorgias_chat/123/create-wizard',
+            )
+        })
+    })
+
+    it('should navigate to next step after successful update with shouldGoToNextStep', async () => {
+        const integrationWithName = fromJS({
+            id: 1,
+            name: 'Existing Chat',
+            meta: {
+                shop_integration_id: null,
+                language: 'en-US',
+                preferences: {
+                    live_chat_availability: 'auto-based-on-agent-availability',
+                },
+                wizard: {
+                    installation_method:
+                        GorgiasChatCreationWizardInstallationMethod.Manual,
+                },
+            },
+            decoration: {},
+            type: IntegrationType.GorgiasChat,
+        })
+
+        const { getByRole, getByLabelText } = render(
+            <MemoryRouter>
+                <Provider store={mockStore(mockStoreState)}>
+                    <Wizard
+                        steps={[
+                            GorgiasChatCreationWizardSteps.Basics,
+                            GorgiasChatCreationWizardSteps.Branding,
+                        ]}
+                    >
+                        <GorgiasChatCreationWizardStepBasics
+                            {...minProps}
+                            integration={integrationWithName}
+                            isUpdate
+                        />
+                    </Wizard>
+                </Provider>
+            </MemoryRouter>,
+        )
+
+        fireEvent.change(getByLabelText('Chat title*', { selector: 'input' }), {
+            target: { value: 'Updated Chat Title' },
+        })
+
+        const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+
+        fireEvent.click(getByRole('button', { name: 'Continue' }))
+
+        expect(spy).toHaveBeenCalledTimes(1)
+        const [, , , onSuccess, goToNextStep] = spy.mock.calls[0]
+
+        expect(goToNextStep).toBe(true)
+
+        act(() => {
+            if (typeof onSuccess === 'function') {
+                onSuccess({ id: 1 })
+            }
+        })
+
+        expect(history.replace).not.toHaveBeenCalled()
     })
 })
