@@ -19,7 +19,7 @@ import type {
 import { useToggle } from '@repo/hooks'
 import { Link } from 'react-router-dom'
 
-import { Banner, Box, Button, Icon } from '@gorgias/axiom'
+import { Banner, Box, Button } from '@gorgias/axiom'
 
 import PageHeader from 'pages/common/components/PageHeader'
 import { useAgentStatusLegacyBridgeFunctions } from 'pages/settings/agentUnavailability/useAgentStatusLegacyBridgeFunctions'
@@ -126,7 +126,7 @@ function AgentUnavailabilityStatuses() {
                             target="_blank"
                             rel="noopener noreferrer"
                             variant="tertiary"
-                            trailingSlot={<Icon name="external-link" />}
+                            trailingSlot="external-link"
                         >
                             Learning resources
                         </Button>
