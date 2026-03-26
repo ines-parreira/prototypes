@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { JourneyTypeEnum } from '@gorgias/convert-client'
@@ -16,6 +16,7 @@ import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import {
     JourneyFlowsFilter,
     JourneyFlowsFilterFromContext,
+    JourneyFlowsFilterFromSavedContext,
 } from 'domains/reporting/pages/common/filters/JourneyFlowsFilter'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
@@ -76,121 +77,244 @@ describe('JourneyFlowsFilter', () => {
 
     const renderComponent = (
         value = withLogicalOperator(mockJourneys.map((j) => j.id)),
+        journeys = mockJourneys,
     ) =>
         renderWithStore(
             <JourneyFlowsFilter
                 value={value}
-                journeys={mockJourneys}
+                journeys={journeys}
                 dispatchUpdate={dispatchUpdate}
             />,
             defaultState,
         )
 
-    it('should render filter with label', () => {
-        renderComponent()
+    describe('trigger label', () => {
+        it('should render filter with label', () => {
+            renderComponent()
 
-        expect(screen.getByText(FLOWS_FILTER_NAME)).toBeInTheDocument()
-    })
+            expect(screen.getByText(FLOWS_FILTER_NAME)).toBeInTheDocument()
+        })
 
-    it('should show "All Flows" when all flows are selected', () => {
-        renderComponent()
+        it('should show "All Flows" when all flows are selected', () => {
+            renderComponent()
 
-        expect(screen.getByText('All Flows')).toBeInTheDocument()
-    })
+            expect(screen.getByText('All Flows')).toBeInTheDocument()
+        })
 
-    it('should render available flow options when dropdown is opened', async () => {
-        const user = userEvent.setup()
-        renderComponent()
+        it('should show "Select value..." preview when no flows are selected', () => {
+            renderComponent(withLogicalOperator([]))
 
-        await user.click(screen.getByText('All Flows'))
+            expect(
+                screen.getByText(FILTER_VALUE_PLACEHOLDER),
+            ).toBeInTheDocument()
+        })
 
-        expect(
-            screen.getByRole('option', {
-                name: JOURNEY_TYPE_MAP_TO_STRING[JourneyTypeEnum.CartAbandoned],
-            }),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByRole('option', {
-                name: JOURNEY_TYPE_MAP_TO_STRING[JourneyTypeEnum.PostPurchase],
-            }),
-        ).toBeInTheDocument()
-    })
+        it('should show flow name as preview when only one flow is selected', () => {
+            renderComponent(withLogicalOperator(['flow-1']))
 
-    it('should dispatch update when deselecting a flow', async () => {
-        const user = userEvent.setup()
-        renderComponent()
+            expect(
+                screen.getByRole('button', {
+                    name: new RegExp(
+                        JOURNEY_TYPE_MAP_TO_STRING[
+                            JourneyTypeEnum.CartAbandoned
+                        ],
+                    ),
+                }),
+            ).toBeInTheDocument()
+        })
 
-        await user.click(screen.getByText('All Flows'))
-        await user.click(
-            screen.getByRole('option', {
-                name: JOURNEY_TYPE_MAP_TO_STRING[JourneyTypeEnum.CartAbandoned],
-            }),
-        )
+        it('should show "+N" format as preview when multiple but not all flows are selected', () => {
+            const threeJourneys: JourneyApiDTO[] = [
+                ...mockJourneys,
+                {
+                    id: 'flow-3',
+                    type: JourneyTypeEnum.SessionAbandoned,
+                    account_id: 1,
+                    created_datetime: '2025-01-01',
+                    state: 'active',
+                    store_integration_id: 1,
+                    store_name: 'test',
+                    store_type: 'shopify',
+                },
+            ]
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: ['flow-2'],
-            operator: LogicalOperatorEnum.ONE_OF,
+            renderComponent(
+                withLogicalOperator(['flow-1', 'flow-2']),
+                threeJourneys,
+            )
+
+            expect(
+                screen.getByText(
+                    `${JOURNEY_TYPE_MAP_TO_STRING[JourneyTypeEnum.CartAbandoned]} +1`,
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should default to all selected when value is undefined', () => {
+            renderWithStore(
+                <JourneyFlowsFilter
+                    value={undefined}
+                    journeys={mockJourneys}
+                    dispatchUpdate={dispatchUpdate}
+                />,
+                defaultState,
+            )
+
+            expect(screen.getByText('All Flows')).toBeInTheDocument()
         })
     })
 
-    it('should dispatch update when selecting a flow', async () => {
-        const user = userEvent.setup()
-        renderComponent(withLogicalOperator(['flow-1']))
+    describe('dropdown options', () => {
+        it('should render available flow options when dropdown is opened', async () => {
+            const user = userEvent.setup()
+            renderComponent()
 
-        await user.click(
-            screen.getByText(
-                JOURNEY_TYPE_MAP_TO_STRING[JourneyTypeEnum.CartAbandoned],
-            ),
-        )
-        await user.click(
-            screen.getByRole('option', {
-                name: JOURNEY_TYPE_MAP_TO_STRING[JourneyTypeEnum.PostPurchase],
-            }),
-        )
+            await act(async () => {
+                await user.click(screen.getByText('All Flows'))
+            })
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: ['flow-1', 'flow-2'],
-            operator: LogicalOperatorEnum.ONE_OF,
+            expect(
+                screen.getByRole('option', {
+                    name: JOURNEY_TYPE_MAP_TO_STRING[
+                        JourneyTypeEnum.CartAbandoned
+                    ],
+                }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', {
+                    name: JOURNEY_TYPE_MAP_TO_STRING[
+                        JourneyTypeEnum.PostPurchase
+                    ],
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show "Deselect all" toggle when all flows are selected', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await act(async () => {
+                await user.click(screen.getByText('All Flows'))
+            })
+
+            expect(
+                screen.getByRole('option', {
+                    name: new RegExp(FILTER_DESELECT_ALL_LABEL),
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show "Select all" toggle when not all flows are selected', async () => {
+            const user = userEvent.setup()
+            renderComponent(withLogicalOperator(['flow-1']))
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', {
+                        name: new RegExp(
+                            JOURNEY_TYPE_MAP_TO_STRING[
+                                JourneyTypeEnum.CartAbandoned
+                            ],
+                        ),
+                    }),
+                )
+            })
+
+            expect(
+                screen.getByRole('option', {
+                    name: new RegExp(FILTER_SELECT_ALL_LABEL),
+                }),
+            ).toBeInTheDocument()
         })
     })
 
-    it('should dispatch update on select all', async () => {
-        const user = userEvent.setup()
-        renderComponent(withLogicalOperator([]))
+    describe('selection changes', () => {
+        it('should dispatch update when deselecting a flow', async () => {
+            const user = userEvent.setup()
+            renderComponent()
 
-        await user.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-        await user.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+            await act(async () => {
+                await user.click(screen.getByText('All Flows'))
+                await user.click(
+                    screen.getByRole('option', {
+                        name: JOURNEY_TYPE_MAP_TO_STRING[
+                            JourneyTypeEnum.CartAbandoned
+                        ],
+                    }),
+                )
+            })
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: ['flow-1', 'flow-2'],
-            operator: LogicalOperatorEnum.ONE_OF,
+            expect(dispatchUpdate).toHaveBeenCalledWith({
+                values: ['flow-2'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            })
         })
-    })
 
-    it('should dispatch update on deselect all', async () => {
-        const user = userEvent.setup()
-        renderComponent()
+        it('should dispatch update when selecting a flow', async () => {
+            const user = userEvent.setup()
+            renderComponent(withLogicalOperator(['flow-1']))
 
-        await user.click(screen.getByText('All Flows'))
-        await user.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', {
+                        name: new RegExp(
+                            JOURNEY_TYPE_MAP_TO_STRING[
+                                JourneyTypeEnum.CartAbandoned
+                            ],
+                        ),
+                    }),
+                )
+                await user.click(
+                    screen.getByRole('option', {
+                        name: JOURNEY_TYPE_MAP_TO_STRING[
+                            JourneyTypeEnum.PostPurchase
+                        ],
+                    }),
+                )
+            })
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: [],
-            operator: LogicalOperatorEnum.ONE_OF,
+            expect(dispatchUpdate).toHaveBeenCalledWith({
+                values: ['flow-1', 'flow-2'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            })
         })
-    })
 
-    it('should default to all selected when value is undefined', () => {
-        renderWithStore(
-            <JourneyFlowsFilter
-                value={undefined}
-                journeys={mockJourneys}
-                dispatchUpdate={dispatchUpdate}
-            />,
-            defaultState,
-        )
+        it('should dispatch update with all IDs when clicking "Select all"', async () => {
+            const user = userEvent.setup()
+            renderComponent(withLogicalOperator([]))
 
-        expect(screen.getByText('All Flows')).toBeInTheDocument()
+            await act(async () => {
+                await user.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
+                await user.click(
+                    screen.getByRole('option', {
+                        name: new RegExp(FILTER_SELECT_ALL_LABEL),
+                    }),
+                )
+            })
+
+            expect(dispatchUpdate).toHaveBeenCalledWith({
+                values: ['flow-1', 'flow-2'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            })
+        })
+
+        it('should dispatch update with empty array when clicking "Deselect all"', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await act(async () => {
+                await user.click(screen.getByText('All Flows'))
+                await user.click(
+                    screen.getByRole('option', {
+                        name: /Deselect all/,
+                    }),
+                )
+            })
+
+            expect(dispatchUpdate).toHaveBeenCalledWith({
+                values: [],
+                operator: LogicalOperatorEnum.ONE_OF,
+            })
+        })
     })
 
     describe('JourneyFlowsFilterFromContext', () => {
@@ -209,8 +333,14 @@ describe('JourneyFlowsFilter', () => {
 
             expect(screen.getByText(FLOWS_FILTER_NAME)).toBeInTheDocument()
 
-            await user.click(screen.getByText('All Flows'))
-            await user.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
+            await act(async () => {
+                await user.click(screen.getByText('All Flows'))
+                await user.click(
+                    screen.getByRole('option', {
+                        name: new RegExp(FILTER_DESELECT_ALL_LABEL),
+                    }),
+                )
+            })
 
             expect(spy).toHaveBeenCalledWith({
                 journeyFlows: {
@@ -240,6 +370,17 @@ describe('JourneyFlowsFilter', () => {
 
             const { container } = renderWithStore(
                 <JourneyFlowsFilterFromContext />,
+                defaultState,
+            )
+
+            expect(container).toBeEmptyDOMElement()
+        })
+    })
+
+    describe('JourneyFlowsFilterFromSavedContext', () => {
+        it('should return null', () => {
+            const { container } = renderWithStore(
+                <JourneyFlowsFilterFromSavedContext />,
                 defaultState,
             )
 

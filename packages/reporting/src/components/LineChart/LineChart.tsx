@@ -33,6 +33,7 @@ import type {
 } from '../../types'
 import { formatMetricValueOrString } from '../../utils/helpers'
 import { ChartTooltip } from '../ChartTooltip/ChartTooltip'
+import { TimeSeriesChartSkeleton } from '../TimeSeriesChart/TimeSeriesChartSkeleton'
 import { TrendBadge } from '../TrendBadge/TrendBadge'
 import { toChartData } from './utils'
 
@@ -68,7 +69,6 @@ export const LineChart = ({
     metricFormat,
     onMetricChange,
     prevValue,
-    skeletonHeight = 250,
     title,
     tooltipData,
     value,
@@ -82,7 +82,19 @@ export const LineChart = ({
         compact: true,
     })
     if (isLoading) {
-        return <Skeleton height={skeletonHeight} />
+        return (
+            <Card elevation="mid">
+                <Box
+                    flexDirection="column"
+                    width={containerWidth}
+                    height={containerHeight}
+                    gap="lg"
+                >
+                    <Skeleton width={200} height={50} />
+                    <TimeSeriesChartSkeleton chartHeight={320} />
+                </Box>
+            </Card>
+        )
     }
 
     const hasValue = value !== undefined && value !== null && value !== 0

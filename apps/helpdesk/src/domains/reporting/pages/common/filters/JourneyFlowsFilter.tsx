@@ -1,22 +1,36 @@
 import { useCallback, useMemo } from 'react'
 
-import _noop from 'lodash/noop'
-
+import {
+    ListSection,
+    MultiSelect,
+    MultiSelectItem,
+    Quantity,
+    SelectTrigger,
+    Size,
+    Text,
+    TextVariant,
+} from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 
 import { JOURNEY_TYPE_MAP_TO_STRING } from 'AIJourney/constants'
 import { useJourneyContext } from 'AIJourney/providers'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type {
+    StatsFiltersWithLogicalOperator,
+    WithLogicalOperator,
+} from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import type { DropdownOption } from 'domains/reporting/pages/types'
+import { MultiSelectFilterTrigger } from 'domains/reporting/pages/common/filters/MultiSelectFilterTrigger'
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+
+const SELECT_ALL_ID = 'select-all'
+
+type FilterOption = { id: string; label: string; value: string; count?: number }
+type FilterSection = { id: string; items: FilterOption[] }
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.JourneyFlows]
@@ -34,36 +48,69 @@ export const JourneyFlowsFilter = ({
     journeys,
     dispatchUpdate,
 }: Props) => {
-    const allIds = useMemo(() => journeys.map((j) => j.id), [journeys])
-    const currentValue = value ?? {
+    const options = useMemo(
+        () =>
+            journeys.map((j) => ({
+                id: j.id,
+                label: JOURNEY_TYPE_MAP_TO_STRING[j.type],
+            })),
+        [journeys],
+    )
+
+    const allIds = useMemo(() => options.map((o) => o.id), [options])
+    const currentValue: WithLogicalOperator<string> = value ?? {
         operator: LogicalOperatorEnum.ONE_OF,
         values: allIds,
     }
 
-    const filterOptionGroups = useMemo(
+    const allSelected = currentValue.values.length === allIds.length
+
+    const toggleAllOption = useMemo<FilterOption>(
+        () => ({
+            id: SELECT_ALL_ID,
+            label: allSelected ? 'Deselect all' : 'Select all',
+            value: SELECT_ALL_ID,
+            count: currentValue.values.length,
+        }),
+        [allSelected, currentValue.values.length],
+    )
+
+    const filterOptions = useMemo<FilterOption[]>(
+        () =>
+            options.map((o) => ({
+                id: o.id,
+                label: o.label,
+                value: o.id,
+            })),
+        [options],
+    )
+
+    const sections = useMemo<FilterSection[]>(
         () => [
-            {
-                options: journeys.map((journey) => ({
-                    label: JOURNEY_TYPE_MAP_TO_STRING[journey.type],
-                    value: journey.id,
-                })),
-            },
+            { id: 'toggle', items: [toggleAllOption] },
+            { id: 'items', items: filterOptions },
         ],
-        [journeys],
+        [toggleAllOption, filterOptions],
     )
 
     const selectedOptions = useMemo(
-        () =>
-            journeys
-                .filter((j) => currentValue.values.includes(j.id))
-                .map((j) => ({
-                    label: JOURNEY_TYPE_MAP_TO_STRING[j.type],
-                    value: j.id,
-                })),
-        [journeys, currentValue.values],
+        () => [
+            ...(allSelected ? [toggleAllOption] : []),
+            ...filterOptions.filter((o) =>
+                currentValue.values.includes(o.value),
+            ),
+        ],
+        [filterOptions, currentValue.values, allSelected, toggleAllOption],
     )
 
-    const allSelected = currentValue.values.length === allIds.length
+    const triggerPreview = useMemo(() => {
+        if (currentValue.values.length === 0) return 'Select value...'
+        if (allSelected) return 'All Flows'
+        const [first, ...rest] = filterOptions.filter((o) =>
+            currentValue.values.includes(o.value),
+        )
+        return rest.length > 0 ? `${first.label} +${rest.length}` : first.label
+    }, [currentValue.values, allSelected, filterOptions])
 
     const handleFilterValuesChange = useCallback(
         (values: string[]) => {
@@ -75,33 +122,64 @@ export const JourneyFlowsFilter = ({
         [dispatchUpdate, currentValue.operator],
     )
 
-    const onOptionChange = (opt: DropdownOption) => {
-        const id = opt.value
-        if (currentValue.values.includes(id)) {
-            handleFilterValuesChange(
-                currentValue.values.filter((v) => v !== id),
-            )
-        } else {
-            handleFilterValuesChange([...currentValue.values, id])
-        }
-    }
+    const handleSelect = useCallback(
+        (selected: FilterOption[]) => {
+            const hadSelectAll = allSelected
+            const hasSelectAll = selected.some((o) => o.id === SELECT_ALL_ID)
+
+            if (!hadSelectAll && hasSelectAll) {
+                handleFilterValuesChange(allIds)
+            } else if (hadSelectAll && !hasSelectAll) {
+                handleFilterValuesChange([])
+            } else {
+                handleFilterValuesChange(
+                    selected
+                        .filter((o) => o.id !== SELECT_ALL_ID)
+                        .map((o) => o.value),
+                )
+            }
+        },
+        [allSelected, allIds, handleFilterValuesChange],
+    )
 
     return (
-        <Filter
-            filterName={FilterLabels[FilterKey.JourneyFlows]}
-            displayLabel={allSelected ? 'All Flows' : undefined}
-            filterOptionGroups={filterOptionGroups}
-            selectedOptions={selectedOptions}
-            onChangeOption={onOptionChange}
-            logicalOperators={[]}
-            onChangeLogicalOperator={_noop}
-            onSelectAll={() => handleFilterValuesChange(allIds)}
-            onRemoveAll={() => handleFilterValuesChange([])}
-            isMultiple
-            isPersistent
-            showQuickSelect
-            showSearch={false}
-        />
+        <MultiSelect<FilterOption, FilterSection>
+            onSelect={handleSelect}
+            isSearchable
+            aria-label="flows-filter"
+            items={sections}
+            selectedItems={selectedOptions}
+            trigger={({ ref }) => (
+                <SelectTrigger ref={ref}>
+                    <MultiSelectFilterTrigger>
+                        <Text variant={TextVariant.Bold} size={Size.Sm}>
+                            Flows
+                        </Text>
+                        <Text variant={TextVariant.Regular} size={Size.Sm}>
+                            {triggerPreview}
+                        </Text>
+                    </MultiSelectFilterTrigger>
+                </SelectTrigger>
+            )}
+        >
+            {(section) => (
+                <ListSection id={section.id} items={section.items}>
+                    {(option) => (
+                        <MultiSelectItem
+                            label={option.label}
+                            trailingSlot={
+                                option.count !== undefined ? (
+                                    <Quantity
+                                        quantity={option.count}
+                                        size={Size.Md}
+                                    />
+                                ) : undefined
+                            }
+                        />
+                    )}
+                </ListSection>
+            )}
+        </MultiSelect>
     )
 }
 

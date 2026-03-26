@@ -1,23 +1,36 @@
 import { useCallback, useMemo } from 'react'
 
-import _noop from 'lodash/noop'
-
+import {
+    ListSection,
+    MultiSelect,
+    MultiSelectItem,
+    Quantity,
+    SelectTrigger,
+    Size,
+    Text,
+    TextVariant,
+} from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
 import { useJourneyContext } from 'AIJourney/providers'
-import { useClientSideFilterSearch } from 'domains/reporting/hooks/filters/useClientSideFilterSearch'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
+import type {
+    StatsFiltersWithLogicalOperator,
+    WithLogicalOperator,
+} from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import type { DropdownOption } from 'domains/reporting/pages/types'
+import { MultiSelectFilterTrigger } from 'domains/reporting/pages/common/filters/MultiSelectFilterTrigger'
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+
+const SELECT_ALL_ID = 'select-all'
+
+type FilterOption = { id: string; label: string; value: string; count?: number }
+type FilterSection = { id: string; items: FilterOption[] }
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.JourneyCampaigns]
@@ -28,10 +41,6 @@ type Props = {
             undefined
         >,
     ) => void
-}
-
-function getCampaignLabel(campaign: JourneyApiDTO): string {
-    return campaign.campaign?.title ?? 'Untitled'
 }
 
 export function filterNonDraftCampaigns(
@@ -47,36 +56,69 @@ export const JourneyCampaignsFilter = ({
     campaigns,
     dispatchUpdate,
 }: Props) => {
-    const allIds = useMemo(() => campaigns.map((c) => c.id), [campaigns])
-    const currentValue = value ?? {
+    const options = useMemo(
+        () =>
+            campaigns.map((c) => ({
+                id: c.id,
+                label: c.campaign?.title ?? 'Untitled',
+            })),
+        [campaigns],
+    )
+
+    const allIds = useMemo(() => options.map((o) => o.id), [options])
+    const currentValue: WithLogicalOperator<string> = value ?? {
         operator: LogicalOperatorEnum.ONE_OF,
         values: allIds,
     }
 
-    const filterOptionGroups = useMemo(
+    const allSelected = currentValue.values.length === allIds.length
+
+    const toggleAllOption = useMemo<FilterOption>(
+        () => ({
+            id: SELECT_ALL_ID,
+            label: allSelected ? 'Deselect all' : 'Select all',
+            value: SELECT_ALL_ID,
+            count: currentValue.values.length,
+        }),
+        [allSelected, currentValue.values.length],
+    )
+
+    const filterOptions = useMemo<FilterOption[]>(
+        () =>
+            options.map((o) => ({
+                id: o.id,
+                label: o.label,
+                value: o.id,
+            })),
+        [options],
+    )
+
+    const sections = useMemo<FilterSection[]>(
         () => [
-            {
-                options: campaigns.map((campaign) => ({
-                    label: getCampaignLabel(campaign),
-                    value: campaign.id,
-                })),
-            },
+            { id: 'toggle', items: [toggleAllOption] },
+            { id: 'items', items: filterOptions },
         ],
-        [campaigns],
+        [toggleAllOption, filterOptions],
     )
 
     const selectedOptions = useMemo(
-        () =>
-            campaigns
-                .filter((c) => currentValue.values.includes(c.id))
-                .map((c) => ({
-                    label: getCampaignLabel(c),
-                    value: c.id,
-                })),
-        [campaigns, currentValue.values],
+        () => [
+            ...(allSelected ? [toggleAllOption] : []),
+            ...filterOptions.filter((o) =>
+                currentValue.values.includes(o.value),
+            ),
+        ],
+        [filterOptions, currentValue.values, allSelected, toggleAllOption],
     )
 
-    const allSelected = currentValue.values.length === allIds.length
+    const triggerPreview = useMemo(() => {
+        if (currentValue.values.length === 0) return 'Select value...'
+        if (allSelected) return 'All Campaigns'
+        const [first, ...rest] = filterOptions.filter((o) =>
+            currentValue.values.includes(o.value),
+        )
+        return rest.length > 0 ? `${first.label} +${rest.length}` : first.label
+    }, [currentValue.values, allSelected, filterOptions])
 
     const handleFilterValuesChange = useCallback(
         (values: string[]) => {
@@ -88,37 +130,64 @@ export const JourneyCampaignsFilter = ({
         [dispatchUpdate, currentValue.operator],
     )
 
-    const onOptionChange = (opt: DropdownOption) => {
-        const id = opt.value
-        if (currentValue.values.includes(id)) {
-            handleFilterValuesChange(
-                currentValue.values.filter((v) => v !== id),
-            )
-        } else {
-            handleFilterValuesChange([...currentValue.values, id])
-        }
-    }
+    const handleSelect = useCallback(
+        (selected: FilterOption[]) => {
+            const hadSelectAll = allSelected
+            const hasSelectAll = selected.some((o) => o.id === SELECT_ALL_ID)
 
-    const clientSideFilter = useClientSideFilterSearch(filterOptionGroups)
+            if (!hadSelectAll && hasSelectAll) {
+                handleFilterValuesChange(allIds)
+            } else if (hadSelectAll && !hasSelectAll) {
+                handleFilterValuesChange([])
+            } else {
+                handleFilterValuesChange(
+                    selected
+                        .filter((o) => o.id !== SELECT_ALL_ID)
+                        .map((o) => o.value),
+                )
+            }
+        },
+        [allSelected, allIds, handleFilterValuesChange],
+    )
 
     return (
-        <Filter
-            search={clientSideFilter.value}
-            filterName={FilterLabels[FilterKey.JourneyCampaigns]}
-            displayLabel={allSelected ? 'All Campaigns' : undefined}
-            filterOptionGroups={clientSideFilter.result}
-            selectedOptions={selectedOptions}
-            onSearch={clientSideFilter.onSearch}
-            onChangeOption={onOptionChange}
-            logicalOperators={[]}
-            onChangeLogicalOperator={_noop}
-            onSelectAll={() => handleFilterValuesChange(allIds)}
-            onRemoveAll={() => handleFilterValuesChange([])}
-            isMultiple
-            isPersistent
-            showQuickSelect
-            showSearch
-        />
+        <MultiSelect<FilterOption, FilterSection>
+            onSelect={handleSelect}
+            isSearchable
+            aria-label="campaigns-filter"
+            items={sections}
+            selectedItems={selectedOptions}
+            trigger={({ ref }) => (
+                <SelectTrigger ref={ref}>
+                    <MultiSelectFilterTrigger>
+                        <Text variant={TextVariant.Bold} size={Size.Sm}>
+                            Campaigns
+                        </Text>
+                        <Text variant={TextVariant.Regular} size={Size.Sm}>
+                            {triggerPreview}
+                        </Text>
+                    </MultiSelectFilterTrigger>
+                </SelectTrigger>
+            )}
+        >
+            {(section) => (
+                <ListSection id={section.id} items={section.items}>
+                    {(option) => (
+                        <MultiSelectItem
+                            label={option.label}
+                            trailingSlot={
+                                option.count !== undefined ? (
+                                    <Quantity
+                                        quantity={option.count}
+                                        size={Size.Md}
+                                    />
+                                ) : undefined
+                            }
+                        />
+                    )}
+                </ListSection>
+            )}
+        </MultiSelect>
     )
 }
 

@@ -1,0 +1,18 @@
+:local {
+    .compactTrigger {
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-xxs);
+        cursor: pointer;
+        width: max-content;
+        padding: 0px var(--spacing-xs);
+
+        &:hover {
+            border-color: var(--border-neutral-hover);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--border-primary-default);
+            outline-offset: 1px;
+        }
+    }
+}

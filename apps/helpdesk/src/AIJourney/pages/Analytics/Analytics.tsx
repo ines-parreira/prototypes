@@ -403,6 +403,7 @@ export const Analytics = () => {
                         FilterKey.JourneyCampaigns,
                         FilterKey.Handover,
                     ]}
+                    compact
                     withSavedFilters={false}
                     filterSettingsOverrides={{
                         [FilterKey.Period]: {

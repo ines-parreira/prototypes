@@ -23,7 +23,7 @@ const CHART_HEIGHT = 400
 
 const DEFAULT_NODE_WIDTH = 10
 const DEFAULT_NODE_PADDING = 24
-const DEFAULT_LABEL_WIDTH = 160
+const DEFAULT_LABEL_WIDTH = 90
 const DEFAULT_MIN_LINK_WIDTH = 3
 
 export const SankeyChart = <NodeName extends string = string>({

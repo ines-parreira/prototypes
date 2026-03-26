@@ -1,7 +1,10 @@
 import type { SankeyLinkClickPayload } from '@repo/reporting'
 
 import { ConversationFunnelCard } from 'AIJourney/components/ConversationFunnelCard/ConversationFunnelCard'
-import { SANKEY_NODE_TO_ENGAGEMENT_CATEGORY } from 'AIJourney/constants'
+import {
+    SANKEY_HOVERABLE_NODES,
+    SANKEY_NODE_TO_ENGAGEMENT_CATEGORY,
+} from 'AIJourney/constants'
 import type { SankeyNodeName } from 'AIJourney/constants'
 import { useAIJourneySankeyMetrics } from 'AIJourney/hooks'
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
@@ -53,11 +56,7 @@ export const AiJourneySankeyChart = ({
             nodeWidth={23}
             nodePadding={12}
             minNodeHeight={6}
-            hoverableNodeNames={
-                Object.keys(
-                    SANKEY_NODE_TO_ENGAGEMENT_CATEGORY,
-                ) as SankeyNodeName[]
-            }
+            hoverableNodeNames={SANKEY_HOVERABLE_NODES}
             onLinkClick={handleSankeyLinkClick}
         />
     )

@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -8,6 +8,7 @@ import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
 import {
     HandoverFilter,
     HandoverFilterFromContext,
+    HandoverFilterFromSavedContext,
 } from 'domains/reporting/pages/common/filters/HandoverFilter'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import type { RootState } from 'state/types'
@@ -37,64 +38,102 @@ describe('HandoverFilter', () => {
             defaultState,
         )
 
-    it('should render filter with label', () => {
-        renderComponent()
+    describe('trigger label', () => {
+        it('should render filter with label', () => {
+            renderComponent()
 
-        expect(screen.getByText(HANDOVER_FILTER_NAME)).toBeInTheDocument()
-    })
+            expect(screen.getByText(HANDOVER_FILTER_NAME)).toBeInTheDocument()
+        })
 
-    it('should show "All" when both options are selected', () => {
-        renderComponent()
+        it('should show "All" when both options are selected', () => {
+            renderComponent()
 
-        expect(screen.getByText('All')).toBeInTheDocument()
-    })
+            expect(screen.getByText('All')).toBeInTheDocument()
+        })
 
-    it('should render Yes/No options when dropdown is opened', async () => {
-        const user = userEvent.setup()
-        renderComponent()
+        it('should show "None" when no options are selected', () => {
+            renderComponent(withLogicalOperator([]))
 
-        await user.click(screen.getByText('All'))
+            expect(screen.getByText('None')).toBeInTheDocument()
+        })
 
-        expect(screen.getByRole('option', { name: 'Yes' })).toBeInTheDocument()
-        expect(screen.getByRole('option', { name: 'No' })).toBeInTheDocument()
-    })
+        it('should show "Yes" when only yes is selected', () => {
+            renderComponent(withLogicalOperator(['yes']))
 
-    it('should dispatch update when deselecting an option', async () => {
-        const user = userEvent.setup()
-        renderComponent()
+            expect(
+                screen.getByRole('button', { name: /Yes/ }),
+            ).toBeInTheDocument()
+        })
 
-        await user.click(screen.getByText('All'))
-        await user.click(screen.getByRole('option', { name: 'Yes' }))
+        it('should show "No" when only no is selected', () => {
+            renderComponent(withLogicalOperator(['no']))
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: ['no'],
-            operator: LogicalOperatorEnum.ONE_OF,
+            expect(
+                screen.getByRole('button', { name: /No/ }),
+            ).toBeInTheDocument()
+        })
+
+        it('should default to all selected when value is undefined', () => {
+            renderWithStore(
+                <HandoverFilter
+                    value={undefined}
+                    dispatchUpdate={dispatchUpdate}
+                />,
+                defaultState,
+            )
+
+            expect(screen.getByText('All')).toBeInTheDocument()
         })
     })
 
-    it('should dispatch update when selecting an option', async () => {
-        const user = userEvent.setup()
-        renderComponent(withLogicalOperator(['yes']))
+    describe('dropdown options', () => {
+        it('should render Yes/No options when dropdown is opened', async () => {
+            const user = userEvent.setup()
+            renderComponent()
 
-        await user.click(screen.getByText('Yes'))
-        await user.click(screen.getByRole('option', { name: 'No' }))
+            await act(async () => {
+                await user.click(screen.getByText('All'))
+            })
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: ['yes', 'no'],
-            operator: LogicalOperatorEnum.ONE_OF,
+            expect(
+                screen.getByRole('option', { name: 'Yes' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: 'No' }),
+            ).toBeInTheDocument()
         })
     })
 
-    it('should default to all selected when value is undefined', () => {
-        renderWithStore(
-            <HandoverFilter
-                value={undefined}
-                dispatchUpdate={dispatchUpdate}
-            />,
-            defaultState,
-        )
+    describe('selection changes', () => {
+        it('should dispatch update when deselecting an option', async () => {
+            const user = userEvent.setup()
+            renderComponent()
 
-        expect(screen.getByText('All')).toBeInTheDocument()
+            await act(async () => {
+                await user.click(screen.getByText('All'))
+                await user.click(screen.getByRole('option', { name: 'Yes' }))
+            })
+
+            expect(dispatchUpdate).toHaveBeenCalledWith({
+                values: ['no'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            })
+        })
+
+        it('should dispatch update when selecting an option', async () => {
+            const user = userEvent.setup()
+            renderComponent(withLogicalOperator(['yes']))
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: /Yes/ }))
+                await user.click(screen.getByRole('option', { name: 'No' }))
+            })
+
+            expect(dispatchUpdate).toHaveBeenCalledWith({
+                values: ['yes', 'no'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            })
+        })
     })
 
     describe('HandoverFilterFromContext', () => {
@@ -110,8 +149,10 @@ describe('HandoverFilter', () => {
 
             expect(screen.getByText(HANDOVER_FILTER_NAME)).toBeInTheDocument()
 
-            await user.click(screen.getByText('All'))
-            await user.click(screen.getByRole('option', { name: 'Yes' }))
+            await act(async () => {
+                await user.click(screen.getByText('All'))
+                await user.click(screen.getByRole('option', { name: 'Yes' }))
+            })
 
             expect(spy).toHaveBeenCalledWith({
                 handover: {
@@ -119,6 +160,17 @@ describe('HandoverFilter', () => {
                     operator: LogicalOperatorEnum.ONE_OF,
                 },
             })
+        })
+    })
+
+    describe('HandoverFilterFromSavedContext', () => {
+        it('should return null', () => {
+            const { container } = renderWithStore(
+                <HandoverFilterFromSavedContext />,
+                defaultState,
+            )
+
+            expect(container).toBeEmptyDOMElement()
         })
     })
 })

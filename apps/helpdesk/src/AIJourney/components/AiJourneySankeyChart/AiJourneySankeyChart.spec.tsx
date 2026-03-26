@@ -117,7 +117,6 @@ describe('<AiJourneySankeyChart />', () => {
                     'Replied only',
                     'Used discount (no reply)',
                     'Clicked (no reply)',
-                    'No engagement',
                 ],
             }),
             expect.anything(),

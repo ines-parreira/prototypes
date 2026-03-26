@@ -1,13 +1,19 @@
 import { useCallback, useMemo } from 'react'
 
-import _noop from 'lodash/noop'
+import {
+    ListSection,
+    MultiSelect,
+    MultiSelectItem,
+    SelectTrigger,
+    Size,
+    Text,
+    TextVariant,
+} from '@gorgias/axiom'
 
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
-import Filter from 'domains/reporting/pages/common/components/Filter'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
-import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import type { DropdownOption } from 'domains/reporting/pages/types'
+import { MultiSelectFilterTrigger } from 'domains/reporting/pages/common/filters/MultiSelectFilterTrigger'
 import { getPageStatsFiltersWithLogicalOperators } from 'domains/reporting/state/stats/selectors'
 import { mergeStatsFiltersWithLogicalOperator } from 'domains/reporting/state/stats/statsSlice'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -19,6 +25,9 @@ const HANDOVER_OPTIONS = [
 ]
 
 const ALL_VALUES = HANDOVER_OPTIONS.map((o) => o.value)
+
+type FilterOption = { id: string; label: string; value: string }
+type FilterSection = { id: string; items: FilterOption[] }
 
 type Props = {
     value: StatsFiltersWithLogicalOperator[FilterKey.Handover]
@@ -36,19 +45,6 @@ export const HandoverFilter = ({ value, dispatchUpdate }: Props) => {
         values: ALL_VALUES,
     }
 
-    const filterOptionGroups = useMemo(
-        () => [{ options: HANDOVER_OPTIONS }],
-        [],
-    )
-
-    const selectedOptions = useMemo(
-        () =>
-            HANDOVER_OPTIONS.filter((o) =>
-                currentValue.values.includes(o.value),
-            ),
-        [currentValue.values],
-    )
-
     const allSelected = currentValue.values.length === ALL_VALUES.length
 
     const handleFilterValuesChange = useCallback(
@@ -61,35 +57,57 @@ export const HandoverFilter = ({ value, dispatchUpdate }: Props) => {
         [dispatchUpdate, currentValue.operator],
     )
 
-    const onOptionChange = (opt: DropdownOption) => {
-        const id = opt.value
-        if (currentValue.values.includes(id)) {
-            handleFilterValuesChange(
-                currentValue.values.filter((v) => v !== id),
-            )
-        } else {
-            handleFilterValuesChange([...currentValue.values, id])
-        }
-    }
+    const filterOptions = useMemo<FilterOption[]>(
+        () =>
+            HANDOVER_OPTIONS.map((o) => ({
+                id: o.value,
+                label: o.label,
+                value: o.value,
+            })),
+        [],
+    )
+
+    const selectedOptions = useMemo(
+        () =>
+            filterOptions.filter((o) => currentValue.values.includes(o.value)),
+        [filterOptions, currentValue.values],
+    )
+
+    const triggerPreview = useMemo(() => {
+        if (currentValue.values.length === 0) return 'None'
+        if (allSelected) return 'All'
+        return selectedOptions.map((o) => o.label).join(', ')
+    }, [currentValue.values.length, allSelected, selectedOptions])
+
+    const sections: FilterSection[] = [{ id: 'items', items: filterOptions }]
 
     return (
-        <Filter
-            search=""
-            filterName={FilterLabels[FilterKey.Handover]}
-            displayLabel={allSelected ? 'All' : undefined}
-            filterOptionGroups={filterOptionGroups}
-            selectedOptions={selectedOptions}
-            onSearch={_noop}
-            onChangeOption={onOptionChange}
-            logicalOperators={[]}
-            onChangeLogicalOperator={_noop}
-            onSelectAll={() => handleFilterValuesChange(ALL_VALUES)}
-            onRemoveAll={() => handleFilterValuesChange([])}
-            isMultiple
-            isPersistent
-            showQuickSelect={false}
-            showSearch={false}
-        />
+        <MultiSelect<FilterOption, FilterSection>
+            onSelect={(selected) =>
+                handleFilterValuesChange(selected.map((o) => o.value))
+            }
+            aria-label="handover-filter"
+            items={sections}
+            selectedItems={selectedOptions}
+            trigger={({ ref }) => (
+                <SelectTrigger ref={ref}>
+                    <MultiSelectFilterTrigger>
+                        <Text variant={TextVariant.Bold} size={Size.Sm}>
+                            Handover
+                        </Text>
+                        <Text variant={TextVariant.Regular} size={Size.Sm}>
+                            {triggerPreview}
+                        </Text>
+                    </MultiSelectFilterTrigger>
+                </SelectTrigger>
+            )}
+        >
+            {(section) => (
+                <ListSection id={section.id} items={section.items}>
+                    {(option) => <MultiSelectItem label={option.label} />}
+                </ListSection>
+            )}
+        </MultiSelect>
     )
 }
 

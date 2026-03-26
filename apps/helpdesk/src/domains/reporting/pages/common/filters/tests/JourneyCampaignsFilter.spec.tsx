@@ -1,23 +1,16 @@
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import { FilterKey } from 'domains/reporting/models/stat/types'
-import {
-    FILTER_DESELECT_ALL_LABEL,
-    FILTER_SELECT_ALL_LABEL,
-    LogicalOperatorEnum,
-} from 'domains/reporting/pages/common/components/Filter/constants'
-import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
+import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import {
     JourneyCampaignsFilter,
     JourneyCampaignsFilterFromContext,
 } from 'domains/reporting/pages/common/filters/JourneyCampaignsFilter'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
-import { FILTER_VALUE_PLACEHOLDER } from 'pages/common/forms/FilterInput/constants'
 import type { RootState } from 'state/types'
 import { renderWithStore } from 'utils/testing'
 
@@ -36,8 +29,6 @@ jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
 const mockUseJourneyContext =
     require('AIJourney/providers/JourneyProvider/JourneyProvider')
         .useJourneyContext as jest.Mock
-
-const CAMPAIGNS_FILTER_NAME = FilterLabels[FilterKey.JourneyCampaigns]
 
 const mockCampaigns: JourneyApiDTO[] = [
     {
@@ -109,124 +100,215 @@ describe('JourneyCampaignsFilter', () => {
             defaultState,
         )
 
-    it('should render filter with label', () => {
-        renderComponent()
+    describe('trigger label', () => {
+        it('should render "Campaigns" as the filter label', () => {
+            renderComponent()
 
-        expect(screen.getByText(CAMPAIGNS_FILTER_NAME)).toBeInTheDocument()
-    })
+            expect(screen.getByText('Campaigns')).toBeInTheDocument()
+        })
 
-    it('should show "All Campaigns" when all campaigns are selected', () => {
-        renderComponent()
+        it('should show "All Campaigns" preview when all campaigns are selected', () => {
+            renderComponent()
 
-        expect(screen.getByText('All Campaigns')).toBeInTheDocument()
-    })
+            expect(screen.getByText('All Campaigns')).toBeInTheDocument()
+        })
 
-    it('should render available campaign options when dropdown is opened', async () => {
-        const user = userEvent.setup()
-        renderComponent()
+        it('should show "Select value..." preview when no campaigns are selected', () => {
+            renderComponent(withLogicalOperator([]))
 
-        await user.click(screen.getByText('All Campaigns'))
+            expect(screen.getByText('Select value...')).toBeInTheDocument()
+        })
 
-        expect(
-            screen.getByRole('option', { name: 'Summer Sale' }),
-        ).toBeInTheDocument()
-        expect(
-            screen.getByRole('option', { name: 'Winter Promo' }),
-        ).toBeInTheDocument()
-    })
+        it('should show campaign name as preview when only one campaign is selected', () => {
+            renderComponent(withLogicalOperator(['campaign-1']))
 
-    it('should dispatch update when deselecting a campaign', async () => {
-        const user = userEvent.setup()
-        renderComponent()
+            expect(
+                screen.getByRole('button', { name: /Summer Sale/ }),
+            ).toBeInTheDocument()
+        })
 
-        await user.click(screen.getByText('All Campaigns'))
-        await user.click(screen.getByRole('option', { name: 'Summer Sale' }))
+        it('should show "+N" format as preview when multiple but not all campaigns are selected', () => {
+            const threeCampaigns: JourneyApiDTO[] = [
+                ...mockCampaigns,
+                {
+                    id: 'campaign-3',
+                    type: JourneyTypeEnum.Campaign,
+                    account_id: 1,
+                    created_datetime: '2025-01-03',
+                    state: 'active',
+                    store_integration_id: 1,
+                    store_name: 'test',
+                    store_type: 'shopify',
+                    campaign: { title: 'Spring Drop', state: 'active' },
+                },
+            ]
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: ['campaign-2'],
-            operator: LogicalOperatorEnum.ONE_OF,
+            renderComponent(
+                withLogicalOperator(['campaign-1', 'campaign-2']),
+                threeCampaigns,
+            )
+
+            expect(screen.getByText('Summer Sale +1')).toBeInTheDocument()
+        })
+
+        it('should default to all selected when value is undefined', () => {
+            renderWithStore(
+                <JourneyCampaignsFilter
+                    value={undefined}
+                    campaigns={mockCampaigns}
+                    dispatchUpdate={dispatchUpdate}
+                />,
+                defaultState,
+            )
+
+            expect(screen.getByText('All Campaigns')).toBeInTheDocument()
         })
     })
 
-    it('should dispatch update when selecting a campaign', async () => {
-        const user = userEvent.setup()
-        renderComponent(withLogicalOperator(['campaign-1']))
+    describe('dropdown options', () => {
+        it('should render available campaign options when dropdown is opened', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+            await act(async () => {
+                await user.click(screen.getByText('All Campaigns'))
+            })
 
-        await user.click(screen.getByText('Summer Sale'))
-        await user.click(screen.getByRole('option', { name: 'Winter Promo' }))
+            expect(
+                screen.getByRole('option', { name: 'Summer Sale' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('option', { name: 'Winter Promo' }),
+            ).toBeInTheDocument()
+        })
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: ['campaign-1', 'campaign-2'],
-            operator: LogicalOperatorEnum.ONE_OF,
+        it('should show "Deselect all" toggle when all campaigns are selected', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+            await act(async () => {
+                await user.click(screen.getByText('All Campaigns'))
+            })
+
+            expect(
+                screen.getByRole('option', { name: /Deselect all/ }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show "Select all" toggle when not all campaigns are selected', async () => {
+            const user = userEvent.setup()
+            renderComponent(withLogicalOperator(['campaign-1']))
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Summer Sale/ }),
+                )
+            })
+
+            expect(
+                screen.getByRole('option', { name: /Select all/ }),
+            ).toBeInTheDocument()
+        })
+
+        it('should use "Untitled" for campaigns without a title', async () => {
+            const user = userEvent.setup()
+            const untitledCampaign: JourneyApiDTO = {
+                id: 'campaign-untitled',
+                type: JourneyTypeEnum.Campaign,
+                account_id: 1,
+                created_datetime: '2025-01-01',
+                state: 'active',
+                store_integration_id: 1,
+                store_name: 'test',
+                store_type: 'shopify',
+            }
+
+            renderWithStore(
+                <JourneyCampaignsFilter
+                    value={withLogicalOperator([untitledCampaign.id])}
+                    campaigns={[untitledCampaign]}
+                    dispatchUpdate={dispatchUpdate}
+                />,
+                defaultState,
+            )
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /All Campaigns/ }),
+                )
+            })
+
+            expect(
+                screen.getByRole('option', { name: 'Untitled' }),
+            ).toBeInTheDocument()
         })
     })
 
-    it('should dispatch update on select all', async () => {
-        const user = userEvent.setup()
-        renderComponent(withLogicalOperator([]))
+    describe('selection changes', () => {
+        it('should dispatch update when deselecting a campaign', async () => {
+            const user = userEvent.setup()
+            renderComponent()
 
-        await user.click(screen.getByText(FILTER_VALUE_PLACEHOLDER))
-        await user.click(screen.getByText(FILTER_SELECT_ALL_LABEL))
+            await act(async () => {
+                await user.click(screen.getByText('All Campaigns'))
+                await user.click(
+                    screen.getByRole('option', { name: 'Summer Sale' }),
+                )
+            })
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: ['campaign-1', 'campaign-2'],
-            operator: LogicalOperatorEnum.ONE_OF,
+            expect(dispatchUpdate).toHaveBeenCalledWith({
+                values: ['campaign-2'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            })
         })
-    })
 
-    it('should dispatch update on deselect all', async () => {
-        const user = userEvent.setup()
-        renderComponent()
+        it('should dispatch update when selecting a campaign', async () => {
+            const user = userEvent.setup()
+            renderComponent(withLogicalOperator(['campaign-1']))
 
-        await user.click(screen.getByText('All Campaigns'))
-        await user.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Summer Sale/ }),
+                )
+                await user.click(
+                    screen.getByRole('option', { name: 'Winter Promo' }),
+                )
+            })
 
-        expect(dispatchUpdate).toHaveBeenCalledWith({
-            values: [],
-            operator: LogicalOperatorEnum.ONE_OF,
+            expect(dispatchUpdate).toHaveBeenCalledWith({
+                values: ['campaign-1', 'campaign-2'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            })
         })
-    })
 
-    it('should default to all selected when value is undefined', () => {
-        renderWithStore(
-            <JourneyCampaignsFilter
-                value={undefined}
-                campaigns={mockCampaigns}
-                dispatchUpdate={dispatchUpdate}
-            />,
-            defaultState,
-        )
+        it('should dispatch update with all IDs when clicking "Select all"', async () => {
+            const user = userEvent.setup()
+            renderComponent(withLogicalOperator([]))
 
-        expect(screen.getByText('All Campaigns')).toBeInTheDocument()
-    })
+            await act(async () => {
+                await user.click(screen.getByText('Select value...'))
+                await user.click(
+                    screen.getByRole('option', { name: /Select all/ }),
+                )
+            })
+            expect(dispatchUpdate).toHaveBeenCalledWith({
+                values: ['campaign-1', 'campaign-2'],
+                operator: LogicalOperatorEnum.ONE_OF,
+            })
+        })
 
-    it('should use "Untitled" for campaigns without a title', async () => {
-        const user = userEvent.setup()
-        const untitledCampaign: JourneyApiDTO = {
-            id: 'campaign-untitled',
-            type: JourneyTypeEnum.Campaign,
-            account_id: 1,
-            created_datetime: '2025-01-01',
-            state: 'active',
-            store_integration_id: 1,
-            store_name: 'test',
-            store_type: 'shopify',
-        }
+        it('should dispatch update with empty array when clicking "Deselect all"', async () => {
+            const user = userEvent.setup()
+            renderComponent()
 
-        renderWithStore(
-            <JourneyCampaignsFilter
-                value={withLogicalOperator([untitledCampaign.id])}
-                campaigns={[untitledCampaign]}
-                dispatchUpdate={dispatchUpdate}
-            />,
-            defaultState,
-        )
+            await act(async () => {
+                await user.click(screen.getByText('All Campaigns'))
+                await user.click(
+                    screen.getByRole('option', { name: /Deselect all/ }),
+                )
+            })
 
-        await user.click(screen.getByText('All Campaigns'))
-
-        expect(
-            screen.getByRole('option', { name: 'Untitled' }),
-        ).toBeInTheDocument()
+            expect(dispatchUpdate).toHaveBeenCalledWith({
+                values: [],
+                operator: LogicalOperatorEnum.ONE_OF,
+            })
+        })
     })
 
     describe('JourneyCampaignsFilterFromContext', () => {
@@ -243,10 +325,14 @@ describe('JourneyCampaignsFilter', () => {
 
             renderWithStore(<JourneyCampaignsFilterFromContext />, defaultState)
 
-            expect(screen.getByText(CAMPAIGNS_FILTER_NAME)).toBeInTheDocument()
+            expect(screen.getByText('Campaigns')).toBeInTheDocument()
 
-            await user.click(screen.getByText('All Campaigns'))
-            await user.click(screen.getByText(FILTER_DESELECT_ALL_LABEL))
+            await act(async () => {
+                await user.click(screen.getByText('All Campaigns'))
+                await user.click(
+                    screen.getByRole('option', { name: /Deselect all/ }),
+                )
+            })
 
             expect(spy).toHaveBeenCalledWith({
                 journeyCampaigns: {
@@ -264,7 +350,9 @@ describe('JourneyCampaignsFilter', () => {
 
             renderWithStore(<JourneyCampaignsFilterFromContext />, defaultState)
 
-            await user.click(screen.getByText('All Campaigns'))
+            await act(async () => {
+                await user.click(screen.getByText('All Campaigns'))
+            })
 
             expect(
                 screen.getByRole('option', { name: 'Summer Sale' }),
