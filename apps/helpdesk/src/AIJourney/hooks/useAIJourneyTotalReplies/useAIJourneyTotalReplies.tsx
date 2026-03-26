@@ -1,8 +1,16 @@
+import { useMemo } from 'react'
+
+import { JOURNEY_COMPLETE_REASON } from 'AIJourney/constants'
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import type { AIJourneyMetricResult } from 'AIJourney/types/AIJourneyTypes'
 import { aiJourneyRepliedMessagesQueryFactory } from 'AIJourney/utils/analytics-factories/factories'
-import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
+import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
+import {
+    AiSalesAgentConversationsDimension,
+    AiSalesAgentConversationsMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 
 type UseAIJourneyTotalRepliesOptions = {
@@ -11,6 +19,29 @@ type UseAIJourneyTotalRepliesOptions = {
     filters: FilterType
     journeyIds?: string[]
     forceEmpty?: boolean
+}
+
+const sumRepliesExcludingOptedOut = (
+    allData: Record<string, string | number | null>[] | undefined,
+): number => {
+    if (!allData) return 0
+    return allData.reduce((total, rawRow) => {
+        const replyCount = rawRow[AiSalesAgentConversationsDimension.ReplyCount]
+        const journeyCompleteReason = rawRow[
+            AiSalesAgentConversationsDimension.JourneyCompleteReason
+        ] as string
+        const isOptedOutAfterOneReply =
+            String(replyCount) === '1' &&
+            journeyCompleteReason === JOURNEY_COMPLETE_REASON.OPTED_OUT
+        if (isOptedOutAfterOneReply) return total
+        return (
+            total +
+            (parseFloat(
+                (rawRow[AiSalesAgentConversationsMeasure.Count] as string) ??
+                    '0',
+            ) || 0)
+        )
+    }, 0)
 }
 
 export const useAIJourneyTotalReplies = ({
@@ -22,26 +53,53 @@ export const useAIJourneyTotalReplies = ({
 }: UseAIJourneyTotalRepliesOptions): AIJourneyMetricResult => {
     const enabled = !forceEmpty
 
-    const { data: trendData, isFetching } = useMetricTrend(
-        aiJourneyRepliedMessagesQueryFactory(
-            integrationId,
-            filters,
-            userTimezone,
-            journeyIds,
-        ),
-        aiJourneyRepliedMessagesQueryFactory(
-            integrationId,
-            {
-                ...filters,
-                period: getPreviousPeriod(filters.period),
-            },
-            userTimezone,
-            journeyIds,
-        ),
-        undefined,
-        undefined,
-        enabled,
+    const { data: currentData, isFetching: isFetchingCurrent } =
+        useMetricPerDimension<string, AiSalesAgentConversationsCube>(
+            aiJourneyRepliedMessagesQueryFactory(
+                integrationId,
+                filters,
+                userTimezone,
+                journeyIds,
+            ),
+            undefined,
+            enabled,
+        )
+
+    const { data: prevData, isFetching: isFetchingPrev } =
+        useMetricPerDimension<string, AiSalesAgentConversationsCube>(
+            aiJourneyRepliedMessagesQueryFactory(
+                integrationId,
+                {
+                    ...filters,
+                    period: getPreviousPeriod(filters.period),
+                },
+                userTimezone,
+                journeyIds,
+            ),
+            undefined,
+            enabled,
+        )
+
+    const value = useMemo(
+        () =>
+            sumRepliesExcludingOptedOut(
+                currentData?.allData as Record<
+                    string,
+                    string | number | null
+                >[],
+            ),
+        [currentData],
     )
+
+    const prevValue = useMemo(
+        () =>
+            sumRepliesExcludingOptedOut(
+                prevData?.allData as Record<string, string | number | null>[],
+            ),
+        [prevData],
+    )
+
+    const isFetching = isFetchingCurrent || isFetchingPrev
 
     return {
         trend: {
@@ -49,12 +107,8 @@ export const useAIJourneyTotalReplies = ({
             isError: false,
             data: {
                 label: 'Recipients who replied',
-                value: forceEmpty
-                    ? 0
-                    : isFetching
-                      ? null
-                      : (trendData?.value ?? null),
-                prevValue: forceEmpty ? 0 : (trendData?.prevValue ?? null),
+                value: forceEmpty ? 0 : isFetching ? null : value,
+                prevValue: forceEmpty ? 0 : isFetching ? null : prevValue,
             },
         },
         interpretAs: 'more-is-better',

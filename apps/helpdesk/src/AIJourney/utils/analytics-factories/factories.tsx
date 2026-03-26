@@ -12,10 +12,7 @@ import {
     AiSalesAgentOrdersFilterMember,
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
-import {
-    OutcomeFilter,
-    SourceFilter,
-} from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
+import { SourceFilter } from 'domains/reporting/models/queryFactories/ai-sales-agent/constants'
 import {
     aiSalesAgentConversationsDefaultFiltersMembers,
     aiSalesAgentOrdersDefaultFiltersMembers,
@@ -431,7 +428,10 @@ export const aiJourneyRepliedMessagesQueryFactory = (
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_REPLIED_MESSAGES,
         measures: [AiSalesAgentConversationsMeasure.Count],
-        dimensions: [],
+        dimensions: [
+            AiSalesAgentConversationsDimension.ReplyCount,
+            AiSalesAgentConversationsDimension.JourneyCompleteReason,
+        ],
         filters: [
             {
                 member: AiSalesAgentConversationsDimension.Source,
@@ -447,11 +447,6 @@ export const aiJourneyRepliedMessagesQueryFactory = (
                 member: AiSalesAgentConversationsDimension.Replied,
                 operator: ReportingFilterOperator.Equals,
                 values: ['1'],
-            },
-            {
-                member: AiSalesAgentConversationsDimension.JourneyCompleteReason,
-                operator: ReportingFilterOperator.NotEquals,
-                values: [JOURNEY_COMPLETE_REASON.OPTED_OUT],
             },
             ...statsFiltersToReportingFilters(
                 aiSalesAgentConversationsDefaultFiltersMembers,
@@ -1029,11 +1024,6 @@ export const AIJourneyDiscountCodesOfferedQueryFactory = (
         dimensions: [],
         filters: [
             {
-                member: AiSalesAgentConversationsDimension.IsSalesOpportunity,
-                operator: ReportingFilterOperator.Equals,
-                values: ['1'],
-            },
-            {
                 member: AiSalesAgentConversationsDimension.DiscountCode,
                 operator: ReportingFilterOperator.Set,
                 values: [],
@@ -1131,35 +1121,21 @@ export const aiJourneySankeyConversationsQueryFactory = (
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_SANKEY_CONVERSATIONS,
         measures: [AiSalesAgentConversationsMeasure.Count],
-        dimensions: [AiSalesAgentConversationsDimension.EngagementCategory],
+        dimensions: [
+            AiSalesAgentConversationsDimension.EngagementCategory,
+            AiSalesAgentConversationsDimension.JourneyCompleteReason,
+            AiSalesAgentConversationsDimension.ReplyCount,
+        ],
         filters: [
             {
                 member: AiSalesAgentConversationsDimension.Source,
                 operator: ReportingFilterOperator.In,
-                values: [
-                    SourceFilter.AiJourney,
-                    SourceFilter.ShoppingAssistant,
-                ],
+                values: [SourceFilter.AiJourney],
             },
             {
                 member: AiSalesAgentConversationsDimension.StoreIntegrationId,
                 operator: ReportingFilterOperator.Equals,
                 values: [integrationId],
-            },
-            {
-                member: AiSalesAgentConversationsDimension.Outcome,
-                operator: ReportingFilterOperator.NotEquals,
-                values: [OutcomeFilter.Handover],
-            },
-            {
-                member: AiSalesAgentConversationsDimension.JourneyCompleteReason,
-                operator: ReportingFilterOperator.NotEquals,
-                values: [JOURNEY_COMPLETE_REASON.OPTED_OUT],
-            },
-            {
-                member: AiSalesAgentConversationsDimension.Source,
-                operator: ReportingFilterOperator.Equals,
-                values: ['ai-journey'],
             },
             ...statsFiltersToReportingFilters(
                 {

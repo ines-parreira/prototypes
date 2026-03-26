@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import type { FilterType } from 'AIJourney/hooks/useFilters/useFilters'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
 import type { AIJourneyMetricResult } from 'AIJourney/types/AIJourneyTypes'
-import { calculateRate } from 'AIJourney/utils'
+import { calculateRatiusToPercentage } from 'AIJourney/utils'
 import {
     AIJourneyDiscountCodesOfferedQueryFactory,
     AIJourneyDiscountCodesUsedQueryFactory,
@@ -17,7 +17,7 @@ const useDiscountCodesRateAppliedTrend = (
 ): AIJourneyMetricResult => {
     const rateValue = useMemo(
         () =>
-            calculateRate({
+            calculateRatiusToPercentage({
                 numerator: usedMetric.trend.data?.value,
                 denominator: offeredMetric.trend.data?.value,
             }),
@@ -26,7 +26,7 @@ const useDiscountCodesRateAppliedTrend = (
 
     const ratePrevValue = useMemo(
         () =>
-            calculateRate({
+            calculateRatiusToPercentage({
                 numerator: usedMetric.trend.data?.prevValue,
                 denominator: offeredMetric.trend.data?.prevValue,
             }),

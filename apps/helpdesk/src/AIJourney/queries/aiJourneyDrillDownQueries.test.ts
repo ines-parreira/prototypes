@@ -263,11 +263,6 @@ describe('aiJourneyDrillDownQueries', () => {
                         values: ['1'],
                     },
                     {
-                        member: 'AiSalesAgentConversations.journeyCompleteReason',
-                        operator: 'notEquals',
-                        values: ['Eligibility::Shopper Opted Out'],
-                    },
-                    {
                         member: 'AiSalesAgentConversations.periodStart',
                         operator: 'afterDate',
                         values: ['2025-08-29T12:00:00.000'],
@@ -314,11 +309,6 @@ describe('aiJourneyDrillDownQueries', () => {
                         values: ['1'],
                     },
                     {
-                        member: 'AiSalesAgentConversations.journeyCompleteReason',
-                        operator: 'notEquals',
-                        values: ['Eligibility::Shopper Opted Out'],
-                    },
-                    {
                         member: 'AiSalesAgentConversations.periodStart',
                         operator: 'afterDate',
                         values: ['2025-08-29T12:00:00.000'],
@@ -363,11 +353,6 @@ describe('aiJourneyDrillDownQueries', () => {
                         member: 'AiSalesAgentConversations.replied',
                         operator: 'equals',
                         values: ['1'],
-                    },
-                    {
-                        member: 'AiSalesAgentConversations.journeyCompleteReason',
-                        operator: 'notEquals',
-                        values: ['Eligibility::Shopper Opted Out'],
                     },
                     {
                         member: 'AiSalesAgentConversations.periodStart',
@@ -420,11 +405,6 @@ describe('aiJourneyDrillDownQueries', () => {
                         member: 'AiSalesAgentConversations.replied',
                         operator: 'equals',
                         values: ['1'],
-                    },
-                    {
-                        member: 'AiSalesAgentConversations.journeyCompleteReason',
-                        operator: 'notEquals',
-                        values: ['Eligibility::Shopper Opted Out'],
                     },
                     {
                         member: 'AiSalesAgentConversations.periodStart',
@@ -852,11 +832,6 @@ describe('aiJourneyDrillDownQueries', () => {
             expect(query).toEqual({
                 dimensions: ['AiSalesAgentConversations.ticketId'],
                 filters: [
-                    {
-                        member: 'AiSalesAgentConversations.isSalesOpportunity',
-                        operator: 'equals',
-                        values: ['1'],
-                    },
                     {
                         member: 'AiSalesAgentConversations.discountCode',
                         operator: 'set',

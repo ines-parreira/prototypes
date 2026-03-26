@@ -1,7 +1,11 @@
 import { renderHook } from '@testing-library/react'
 
+import { JOURNEY_COMPLETE_REASON } from 'AIJourney/constants'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
-import { AiSalesAgentConversationsDimension } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
+import {
+    AiSalesAgentConversationsDimension,
+    AiSalesAgentConversationsMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
     AiSalesAgentOrdersDimension,
     AiSalesAgentOrdersMeasure,
@@ -21,9 +25,17 @@ const mockFilters = {
 }
 const mockJourneyIds = ['journey-1', 'journey-2']
 
-const makeQ1Row = (engagementCategory: string, count: string) => ({
+const makeQ1Row = (
+    engagementCategory: string,
+    count: string | null,
+    replyCount?: string | null,
+    journeyCompleteReason?: string | null,
+) => ({
     [AiSalesAgentConversationsDimension.EngagementCategory]: engagementCategory,
-    'AiSalesAgentConversations.count': count,
+    [AiSalesAgentConversationsMeasure.Count]: count,
+    [AiSalesAgentConversationsDimension.ReplyCount]: replyCount ?? null,
+    [AiSalesAgentConversationsDimension.JourneyCompleteReason]:
+        journeyCompleteReason ?? null,
     decile: null,
 })
 
@@ -219,6 +231,119 @@ describe('useAIJourneySankeyMetrics', () => {
                 (l) => l.source === 'No engagement' && l.target === 'Converted',
             )?.value,
         ).toBe(2)
+    })
+
+    it('handles undefined allData in conversationsQuery gracefully', () => {
+        ;(useMetricPerDimension as jest.Mock).mockImplementation((query) => {
+            if (query.measures[0] === 'AiSalesAgentConversations.count') {
+                return {
+                    data: {
+                        allValues: [],
+                        allData: undefined,
+                        value: null,
+                        decile: null,
+                    },
+                    isFetching: false,
+                    isError: false,
+                }
+            }
+            return {
+                data: {
+                    allValues: [],
+                    allData: [],
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            }
+        })
+
+        const { result } = renderSankeyHook()
+
+        expect(result.current.isLoading).toBe(false)
+        expect(result.current.isError).toBe(false)
+        expect(result.current.data).toEqual({ nodes: [], links: [] })
+    })
+
+    it('treats null count as zero and skips the row contribution', () => {
+        ;(useMetricPerDimension as jest.Mock).mockImplementation((query) => {
+            if (query.measures[0] === 'AiSalesAgentConversations.count') {
+                return {
+                    data: {
+                        allValues: [],
+                        allData: [makeQ1Row('no_engagement', null)],
+                        value: null,
+                        decile: null,
+                    },
+                    isFetching: false,
+                    isError: false,
+                }
+            }
+            return {
+                data: {
+                    allValues: [],
+                    allData: [],
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            }
+        })
+
+        const { result } = renderSankeyHook()
+        const { links } = result.current.data
+
+        expect(links.find((l) => l.source === 'Conversations')).toBeUndefined()
+    })
+
+    it('reclassifies opted-out-after-one-reply rows to no_engagement', () => {
+        ;(useMetricPerDimension as jest.Mock).mockImplementation((query) => {
+            if (query.measures[0] === 'AiSalesAgentConversations.count') {
+                return {
+                    data: {
+                        allValues: [],
+                        allData: [
+                            makeQ1Row(
+                                'replied_and_clicked',
+                                '10',
+                                '1',
+                                JOURNEY_COMPLETE_REASON.OPTED_OUT,
+                            ),
+                        ],
+                        value: null,
+                        decile: null,
+                    },
+                    isFetching: false,
+                    isError: false,
+                }
+            }
+            return {
+                data: {
+                    allValues: [],
+                    allData: [],
+                    value: null,
+                    decile: null,
+                },
+                isFetching: false,
+                isError: false,
+            }
+        })
+
+        const { result } = renderSankeyHook()
+        const { links } = result.current.data
+
+        expect(
+            links.find((l) => l.target === 'Replied + clicked'),
+        ).toBeUndefined()
+        expect(
+            links.find(
+                (l) =>
+                    l.source === 'Conversations' &&
+                    l.target === 'No engagement',
+            )?.value,
+        ).toBe(10)
     })
 
     it('clamps negative node values to zero', () => {

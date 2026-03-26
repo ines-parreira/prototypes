@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import type { SankeyChartData } from '@repo/reporting'
 
 import {
+    JOURNEY_COMPLETE_REASON,
     SANKEY_ENGAGEMENT_CATEGORY,
     SANKEY_NODES_NAMES,
 } from 'AIJourney/constants'
@@ -13,6 +14,10 @@ import {
     aiJourneySankeyOrdersQueryFactory,
 } from 'AIJourney/utils/analytics-factories/factories'
 import { useMetricPerDimension } from 'domains/reporting/hooks/useMetricPerDimension'
+import {
+    AiSalesAgentConversationsDimension,
+    AiSalesAgentConversationsMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import {
@@ -46,10 +51,11 @@ export const useAIJourneySankeyMetrics = (
     isLoading: boolean
     isError: boolean
 } => {
-    const conversationsQuery = useMetricPerDimension<
-        string,
-        AiSalesAgentConversationsCube
-    >(
+    const {
+        data: conversationsQuery,
+        isError: conversationsHasErrors,
+        isFetching: isFetchingConversations,
+    } = useMetricPerDimension<string, AiSalesAgentConversationsCube>(
         aiJourneySankeyConversationsQueryFactory(
             integrationId,
             filters,
@@ -59,7 +65,11 @@ export const useAIJourneySankeyMetrics = (
         undefined,
     )
 
-    const ordersQuery = useMetricPerDimension<string, AiSalesAgentOrdersCube>(
+    const {
+        data: ordersQuery,
+        isError: ordersHasErrors,
+        isFetching: isFetchingOrders,
+    } = useMetricPerDimension<string, AiSalesAgentOrdersCube>(
         aiJourneySankeyOrdersQueryFactory(
             integrationId,
             filters,
@@ -70,17 +80,47 @@ export const useAIJourneySankeyMetrics = (
     )
 
     const data = useMemo<SankeyChartData<SankeyNodeName>>(() => {
-        if (!conversationsQuery.data || !ordersQuery.data) {
+        if (!conversationsQuery || !ordersQuery) {
             return EMPTY_DATA
         }
 
         const conversationCountByCategory = new Map<string, number>()
-        conversationsQuery.data.allValues?.forEach(({ dimension, value }) => {
-            conversationCountByCategory.set(dimension as string, value ?? 0)
+        conversationsQuery.allData?.forEach((row) => {
+            const rawRow = row as Record<string, string | number | null>
+            const engagementCategory = rawRow[
+                AiSalesAgentConversationsDimension.EngagementCategory
+            ] as string
+            const journeyCompleteReason = rawRow[
+                AiSalesAgentConversationsDimension.JourneyCompleteReason
+            ] as string
+            const replyCount =
+                rawRow[AiSalesAgentConversationsDimension.ReplyCount]
+            const count =
+                parseFloat(
+                    (rawRow[
+                        AiSalesAgentConversationsMeasure.Count
+                    ] as string) ?? '0',
+                ) || 0
+
+            const isOptedOutAfterOneReply =
+                String(replyCount) === '1' &&
+                journeyCompleteReason === JOURNEY_COMPLETE_REASON.OPTED_OUT
+
+            const effectiveCategory = isOptedOutAfterOneReply
+                ? SANKEY_ENGAGEMENT_CATEGORY.NO_ENGAGEMENT
+                : engagementCategory
+
+            if (effectiveCategory) {
+                conversationCountByCategory.set(
+                    effectiveCategory,
+                    (conversationCountByCategory.get(effectiveCategory) ?? 0) +
+                        count,
+                )
+            }
         })
 
         const convertedConversationsByCategory = new Map<string, number>()
-        ordersQuery.data.allData.forEach((row) => {
+        ordersQuery.allData.forEach((row) => {
             const rawRow = row as Record<string, string | number | null>
             const category = rawRow[
                 AiSalesAgentOrdersDimension.EngagementCategory
@@ -307,11 +347,11 @@ export const useAIJourneySankeyMetrics = (
             .map((name) => ({ name, color: NODE_COLORS[name] }))
 
         return { nodes, links }
-    }, [conversationsQuery.data, ordersQuery.data])
+    }, [conversationsQuery, ordersQuery])
 
     return {
         data,
-        isLoading: conversationsQuery.isFetching || ordersQuery.isFetching,
-        isError: conversationsQuery.isError || ordersQuery.isError,
+        isLoading: isFetchingConversations || isFetchingOrders,
+        isError: conversationsHasErrors || ordersHasErrors,
     }
 }
