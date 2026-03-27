@@ -88,6 +88,7 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
                             <Quantity
                                 quantity={viewCount}
                                 color={isActiveView ? 'purple' : undefined}
+                                compact
                                 maxQuantity={5000}
                             />
                         )
