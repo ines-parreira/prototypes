@@ -240,14 +240,16 @@ describe('JourneysTable', () => {
     })
 
     describe('Pagination rendering', () => {
-        it('should render pagination in bottom toolbar when there are 10 or fewer rows', () => {
+        it('should not render pagination in bottom toolbar when there are 10 or fewer total rows', () => {
             const smallDataSet = mockJourneyData.slice(0, 3)
             renderComponent({ data: smallDataSet })
 
-            expect(screen.getByRole('table')).toBeInTheDocument()
+            expect(
+                document.querySelector('[data-name="pagination"]'),
+            ).not.toBeInTheDocument()
         })
 
-        it('should not render pagination in bottom toolbar when there are more than 10 rows', () => {
+        it('should render pagination in bottom toolbar when there are more than 10 total rows', () => {
             const largeDataSet: JourneyApiDTO[] = Array.from(
                 { length: 15 },
                 (_, index) => ({
@@ -264,7 +266,9 @@ describe('JourneysTable', () => {
 
             renderComponent({ data: largeDataSet })
 
-            expect(screen.getByRole('table')).toBeInTheDocument()
+            expect(
+                document.querySelector('[data-name="pagination"]'),
+            ).toBeInTheDocument()
         })
 
         it('should handle exactly 10 rows', () => {

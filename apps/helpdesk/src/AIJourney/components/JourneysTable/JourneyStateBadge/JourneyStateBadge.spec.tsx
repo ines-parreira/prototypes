@@ -107,7 +107,7 @@ describe('JourneyStateBadge', () => {
                 },
                 {
                     state: JourneyStatusEnum.Active,
-                    expectedColor: 'blue',
+                    expectedColor: 'green',
                 },
             ]
 

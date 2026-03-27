@@ -127,7 +127,7 @@ export const Campaigns = () => {
     }, [keyKpisConfig])
 
     return (
-        <Box m="md" width="100%" flexDirection="column">
+        <Box width="100%" flexDirection="column">
             <PageHeader title="Campaigns">
                 <Button
                     onClick={() =>
@@ -140,14 +140,7 @@ export const Campaigns = () => {
                 </Button>
             </PageHeader>
 
-            <Box
-                m="md"
-                padding="xs"
-                gap="lg"
-                margin={0}
-                flexDirection="column"
-                className={css.container}
-            >
+            <Box className={css.filtersPanel}>
                 <FiltersPanelWrapper
                     persistentFilters={[FilterKey.Period]}
                     withSavedFilters={false}
@@ -159,6 +152,14 @@ export const Campaigns = () => {
                         },
                     }}
                 />
+            </Box>
+
+            <Box
+                gap="lg"
+                margin={0}
+                flexDirection="column"
+                className={css.container}
+            >
                 <CampaignsTable
                     columns={visibleColumns}
                     data={campaignRows || []}

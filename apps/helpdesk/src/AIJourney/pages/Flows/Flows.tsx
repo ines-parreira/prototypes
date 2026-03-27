@@ -170,16 +170,9 @@ export const Flows = () => {
     }, [configuredFlows, unconfiguredFlows])
 
     return (
-        <Box m="md" width="100%" flexDirection="column">
+        <Box width="100%" flexDirection="column">
             <PageHeader title="Flows" />
-            <Box
-                m="md"
-                padding="xs"
-                gap="lg"
-                margin={0}
-                flexDirection="column"
-                className={css.container}
-            >
+            <Box className={css.filtersPanel}>
                 <FiltersPanelWrapper
                     persistentFilters={[FilterKey.Period]}
                     withSavedFilters={false}
@@ -191,6 +184,13 @@ export const Flows = () => {
                         },
                     }}
                 />
+            </Box>
+            <Box
+                gap="lg"
+                margin={0}
+                flexDirection="column"
+                className={css.container}
+            >
                 <JourneysTable
                     columns={visibleColumns}
                     data={tableRows || []}

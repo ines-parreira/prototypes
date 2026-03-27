@@ -3,6 +3,7 @@ import {
     Box,
     Button,
     HeaderRowGroup,
+    Size,
     TableBodyContent,
     TableHeader,
     TableRoot,
@@ -57,37 +58,45 @@ export const JourneysTable = <TData, TValue>({
         },
     })
 
-    const shouldRenderPaginationComponent = table.getRowModel().rows.length > 10
+    const shouldRenderPaginationComponent =
+        table.getFilteredRowModel().rows.length > 10
     const tableToolbarBottonRowElements: ToolbarRow =
-        shouldRenderPaginationComponent ? {} : { right: ['pagination'] }
+        shouldRenderPaginationComponent ? { right: ['pagination'] } : {}
 
     return (
         <>
             <div className={styles.tableWrapper}>
-                <TableToolbar<TData>
-                    table={table}
-                    bottomRow={{
-                        left: ['search'],
-                        right: [
-                            'totalCount',
-                            {
-                                key: 'edit',
-                                content: (
-                                    <Button
-                                        onClick={onEditColumns}
-                                        intent="regular"
-                                        leadingSlot="columns"
-                                        size="sm"
-                                        variant="tertiary"
-                                    >
-                                        Edit table
-                                    </Button>
-                                ),
-                            },
-                        ],
-                    }}
-                />
-                <TableRoot withBorder className={styles.tableRoot}>
+                <Box
+                    paddingLeft={Size.Lg}
+                    paddingRight={Size.Lg}
+                    display="block"
+                >
+                    <TableToolbar<TData>
+                        table={table}
+                        topRow={{ left: ['search'] }}
+                        bottomRow={{
+                            left: ['totalCount'],
+                            right: [
+                                {
+                                    key: 'edit',
+                                    content: (
+                                        <Button
+                                            onClick={onEditColumns}
+                                            intent="regular"
+                                            leadingSlot="columns"
+                                            size="sm"
+                                            variant="tertiary"
+                                        >
+                                            Edit table
+                                        </Button>
+                                    ),
+                                },
+                            ],
+                        }}
+                    />
+                </Box>
+
+                <TableRoot withBorder={false} className={styles.tableRoot}>
                     <TableHeader>
                         <HeaderRowGroup
                             headerGroups={table.getHeaderGroups()}
@@ -106,10 +115,16 @@ export const JourneysTable = <TData, TValue>({
                         )}
                     />
                 </TableRoot>
-                <TableToolbar
-                    table={table}
-                    bottomRow={tableToolbarBottonRowElements}
-                />
+                <Box
+                    paddingRight={Size.Lg}
+                    display="flex"
+                    justifyContent="flex-end"
+                >
+                    <TableToolbar
+                        table={table}
+                        bottomRow={tableToolbarBottonRowElements}
+                    />
+                </Box>
             </div>
             <DrillDownModal />
         </>

@@ -2,11 +2,12 @@ import { useCallback, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import type { ColumnDef } from '@gorgias/axiom'
+import type { ColumnDef, ToolbarRow } from '@gorgias/axiom'
 import {
     Box,
     Button,
     HeaderRowGroup,
+    Size,
     TableBodyContent,
     TableHeader,
     TableRoot,
@@ -217,33 +218,46 @@ export default function CampaignsTable<TData, TValue>({
             } as CampaignsTableMeta,
         },
     })
+
+    const shouldRenderPaginationComponent =
+        table.getFilteredRowModel().rows.length > 10
+    const tableToolbarBottonRowElements: ToolbarRow =
+        shouldRenderPaginationComponent ? { right: ['pagination'] } : {}
+
     return (
         <>
             <div className={styles.tableWrapper}>
-                <TableToolbar<TData>
-                    table={table}
-                    bottomRow={{
-                        left: ['search'],
-                        right: [
-                            'totalCount',
-                            {
-                                key: 'edit',
-                                content: (
-                                    <Button
-                                        onClick={onEditColumns}
-                                        intent="regular"
-                                        leadingSlot="columns"
-                                        size="md"
-                                        variant="tertiary"
-                                    >
-                                        Edit table
-                                    </Button>
-                                ),
-                            },
-                        ],
-                    }}
-                />
-                <TableRoot withBorder>
+                <Box
+                    paddingLeft={Size.Lg}
+                    paddingRight={Size.Lg}
+                    display="block"
+                >
+                    <TableToolbar<TData>
+                        table={table}
+                        topRow={{ left: ['search'] }}
+                        bottomRow={{
+                            left: ['totalCount'],
+                            right: [
+                                {
+                                    key: 'edit',
+                                    content: (
+                                        <Button
+                                            onClick={onEditColumns}
+                                            intent="regular"
+                                            leadingSlot="columns"
+                                            size="sm"
+                                            variant="tertiary"
+                                        >
+                                            Edit table
+                                        </Button>
+                                    ),
+                                },
+                            ],
+                        }}
+                    />
+                </Box>
+
+                <TableRoot withBorder={false}>
                     <TableHeader>
                         <HeaderRowGroup
                             headerGroups={table.getHeaderGroups()}
@@ -262,10 +276,16 @@ export default function CampaignsTable<TData, TValue>({
                         )}
                     />
                 </TableRoot>
-                <TableToolbar
-                    table={table}
-                    bottomRow={{ right: ['pagination'] }}
-                />
+                <Box
+                    paddingRight={Size.Lg}
+                    display="flex"
+                    justifyContent="flex-end"
+                >
+                    <TableToolbar
+                        table={table}
+                        bottomRow={tableToolbarBottonRowElements}
+                    />
+                </Box>
             </div>
             <RemoveCampaignConfirmation
                 isOpen={isRemoveModalOpen}

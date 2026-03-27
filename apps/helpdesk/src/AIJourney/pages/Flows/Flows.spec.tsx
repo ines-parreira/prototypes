@@ -9,6 +9,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { journeyTableDataMetrics } from 'AIJourney/components/JourneysTable/constants'
 import { useAIJourneyTableKpis } from 'AIJourney/hooks/useAIJourneyTableKpis/useAIJourneyTableKpis'
 import { useJourneyContext } from 'AIJourney/providers'
 import { appQueryClient } from 'api/queryClient'
@@ -186,6 +187,12 @@ describe('<Flows />', () => {
 
     describe('Metrics display', () => {
         it('should display metrics for configured flows', () => {
+            mockUseLocalStorage.mockReturnValue([
+                journeyTableDataMetrics,
+                jest.fn(),
+                jest.fn(),
+            ])
+
             useAIJourneyTableKpisMock.mockReturnValue({
                 metrics: {
                     'journey-1': {

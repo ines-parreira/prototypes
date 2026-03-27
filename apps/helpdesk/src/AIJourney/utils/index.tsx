@@ -111,7 +111,7 @@ export const getFlowStateLabelAndColor = (
             label = 'Paused'
             break
         case JourneyStatusEnum.Active:
-            color = 'blue'
+            color = 'green'
             label = 'Active'
             break
         default:

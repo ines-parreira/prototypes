@@ -406,4 +406,44 @@ describe('CampaignsTable', () => {
             })
         })
     })
+
+    it('should not render pagination in bottom toolbar when there are 10 or fewer total rows', () => {
+        renderWithRouter(
+            wrapper(<CampaignsTable columns={columns} data={mockFields} />),
+        )
+
+        expect(
+            document.querySelector('[data-name="pagination"]'),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should render pagination in bottom toolbar when there are more than 10 total rows', () => {
+        const largeDataSet: TableRow[] = Array.from(
+            { length: 11 },
+            (_, index) => ({
+                id: String(index + 1),
+                account_id: 1,
+                created_datetime: '2025-07-04T12:24:29.121874',
+                state: 'active',
+                store_integration_id: 2,
+                store_name: `Test Store ${index + 1}`,
+                store_type: 'shopify',
+                type: 'campaign',
+                campaign: {
+                    title: `Campaign ${index + 1}`,
+                    state: 'draft',
+                    has_included_audiences: true,
+                },
+                metrics: DEFAULT_TABLE_METRICS,
+            }),
+        )
+
+        renderWithRouter(
+            wrapper(<CampaignsTable columns={columns} data={largeDataSet} />),
+        )
+
+        expect(
+            document.querySelector('[data-name="pagination"]'),
+        ).toBeInTheDocument()
+    })
 })
