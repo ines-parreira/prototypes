@@ -15,11 +15,17 @@
         "test": "vitest run --configLoader=runner",
         "test:ci:cover": "vitest run --configLoader=runner --coverage --silent",
         "test:watch": "vitest watch --configLoader=runner",
-        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true",
+        "postinstall": "tsx scripts/generate-sdk-version-hash.ts"
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@repo/browser-storage": "workspace:*",
         "@repo/utils": "workspace:*",
+        "@tanstack/query-async-storage-persister": "catalog:rest-api-sdk",
+        "@tanstack/react-query": "catalog:rest-api-sdk",
+        "@tanstack/react-query-devtools": "catalog:rest-api-sdk",
+        "@tanstack/react-query-persist-client": "catalog:rest-api-sdk",
         "axios": "^1.10.0",
         "axios-rate-limit": "^1.4.0",
         "react": "catalog:react",
@@ -27,9 +33,15 @@
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@repo/browser-storage": "workspace:*",
         "@repo/config": "workspace:*",
         "@repo/utils": "workspace:*",
+        "@tanstack/query-async-storage-persister": "catalog:rest-api-sdk",
+        "@tanstack/react-query": "catalog:rest-api-sdk",
+        "@tanstack/react-query-devtools": "catalog:rest-api-sdk",
+        "@tanstack/react-query-persist-client": "catalog:rest-api-sdk",
         "@testing-library/jest-dom": "catalog:test",
+        "@testing-library/react": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
@@ -42,6 +54,7 @@
         "prettier": "catalog:prettier",
         "react": "catalog:react",
         "react-dom": "catalog:react",
+        "tsx": "catalog:typescript",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test"
     }

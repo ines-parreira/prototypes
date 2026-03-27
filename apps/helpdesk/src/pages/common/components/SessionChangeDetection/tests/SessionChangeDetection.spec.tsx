@@ -9,6 +9,10 @@ import SessionChangeDetection, {
     USER_CHANGE_EXPLANATION,
 } from '../SessionChangeDetection'
 
+jest.mock('@repo/api-resources', () => ({
+    clearPersistedQueryCache: jest.fn().mockResolvedValue(undefined),
+}))
+
 describe('<SessionChangeDetection />', () => {
     describe('Logout event', () => {
         it('renders a pop-up once it receives the expected message', async () => {
@@ -41,14 +45,16 @@ describe('<SessionChangeDetection />', () => {
             )
         })
 
-        it('actually logs out the user', () => {
+        it('actually logs out the user', async () => {
             jest.useFakeTimers()
 
             const seconds = 1
 
             logout.logoutUser(seconds)
 
-            jest.advanceTimersByTime((seconds + 1) * 1000)
+            await act(async () => {
+                jest.advanceTimersByTime((seconds + 1) * 1000)
+            })
 
             expect(window.location.href).toContain('/logout')
 
@@ -70,7 +76,7 @@ describe('<SessionChangeDetection />', () => {
             jest.useRealTimers()
         })
 
-        it('renders a pop-up once it receives the expected message and reloads after a while', () => {
+        it('renders a pop-up once it receives the expected message and reloads after a while', async () => {
             jest.useFakeTimers()
 
             render(<SessionChangeDetection />)
@@ -89,7 +95,9 @@ describe('<SessionChangeDetection />', () => {
 
             // The page should reload after a delay
             expect(window.location.reload).not.toHaveBeenCalled()
-            jest.advanceTimersByTime(10_000)
+            await act(async () => {
+                jest.advanceTimersByTime(10_000)
+            })
             expect(window.location.reload).toHaveBeenCalledTimes(1)
         })
     })

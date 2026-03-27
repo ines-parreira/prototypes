@@ -59,7 +59,7 @@
         "rulesync": "^7.18.0",
         "semver": "^7.7.1",
         "taze": "^19.1.0",
-        "tsx": "^4.20.3",
+        "tsx": "catalog:typescript",
         "typescript": "catalog:typescript"
     },
     "engines": {

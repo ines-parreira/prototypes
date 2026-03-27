@@ -1,11 +1,10 @@
 import { useLayoutEffect } from 'react'
 
 import activityTracker from '@repo/activity-tracker'
+import { QueryClientProvider } from '@repo/api-resources'
 import { FeatureFlagsProvider } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { envVars, NodeEnv } from '@repo/utils'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { createDragDropManager } from 'dnd-core'
 import Immutable from 'immutable'
 import installDevTools from 'immutable-devtools'
@@ -15,7 +14,6 @@ import { Router } from 'react-router-dom'
 import { CompatRouter } from 'react-router-dom-v5-compat'
 import type { Store } from 'redux'
 
-import { appQueryClient } from 'api/queryClient'
 import { Main } from 'main/app'
 import { CurrentUserRealtimeAvailabilityUpdates } from 'pages/common/components/CurrentUserRealtimeAvailabilityUpdates'
 import { RevenueAddonApiClientProvider } from 'pages/convert/common/hooks/useConvertApi'
@@ -51,7 +49,7 @@ const Root = ({ store }: Props) => {
     })
 
     return (
-        <QueryClientProvider client={appQueryClient}>
+        <QueryClientProvider>
             <Provider store={store}>
                 <DndProvider manager={manager}>
                     <FeatureFlagsProvider>
@@ -70,16 +68,6 @@ const Root = ({ store }: Props) => {
                     </FeatureFlagsProvider>
                 </DndProvider>
             </Provider>
-            {envVars.NODE_ENV !== NodeEnv.Production && (
-                <ReactQueryDevtools
-                    initialIsOpen={false}
-                    position="bottom-left"
-                    panelPosition="bottom"
-                    toggleButtonProps={{
-                        style: { marginLeft: '54px', marginBottom: '15px' },
-                    }}
-                />
-            )}
         </QueryClientProvider>
     )
 }

@@ -11,7 +11,7 @@ import type { GorgiasInitialState } from 'types'
 
 import Root from '../Root'
 
-jest.mock('@tanstack/react-query', () => ({
+jest.mock('@repo/api-resources', () => ({
     QueryClientProvider: ({ children }: { children: ReactNode }) => (
         <div>
             <p>QueryClientProvider</p>
