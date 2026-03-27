@@ -111,6 +111,22 @@ describe('useLastSelectedProduct', () => {
         })
     })
 
+    describe('lastSelectedProductId', () => {
+        it('should return null when no product has been stored', () => {
+            const { result } = renderHook(() => useLastSelectedProduct())
+
+            expect(result.current.lastSelectedProductId).toBeNull()
+        })
+
+        it('should return the stored product id', () => {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(42))
+
+            const { result } = renderHook(() => useLastSelectedProduct())
+
+            expect(result.current.lastSelectedProductId).toBe(42)
+        })
+    })
+
     describe('setLastSelectedProductId', () => {
         it('should save product id to localStorage', () => {
             const { result } = renderHook(() => useLastSelectedProduct())

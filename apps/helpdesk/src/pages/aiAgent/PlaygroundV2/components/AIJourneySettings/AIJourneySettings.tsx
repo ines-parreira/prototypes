@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { RefObject } from 'react'
 
 import classNames from 'classnames'
+import _debounce from 'lodash/debounce'
 
 import {
     LegacyBanner as Banner,
@@ -19,6 +20,7 @@ import {
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { MAX_WAIT_TIME } from 'AIJourney/constants'
+import { useAIJourneyProductList } from 'AIJourney/hooks'
 import { AudienceSelect } from 'AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect'
 import type {
     OrderStatus,
@@ -76,6 +78,8 @@ const ORDER_STATUS_OPTIONS: OrderStatusOption[] = [
     { value: 'order_fulfilled', label: 'Order Fulfilled' },
 ]
 
+const SEARCH_DEBOUNCE_MS = 250
+
 export const AIJourneySettings: React.FC = () => {
     const {
         aiJourneySettings,
@@ -86,9 +90,44 @@ export const AIJourneySettings: React.FC = () => {
         setAIJourneySettings,
         shopName,
         productList,
+        shopifyIntegration,
     } = useAIJourneyContext()
 
     const { emit } = useEvents()
+
+    const integrationId = shopifyIntegration?.id
+
+    const [searchInput, setSearchInput] = useState('')
+    const [debouncedSearch, setDebouncedSearch] = useState('')
+
+    const { productList: searchProductList, isLoading: isLoadingSearch } =
+        useAIJourneyProductList({
+            integrationId,
+            filter: debouncedSearch || undefined,
+        })
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const debouncedSetSearch = useCallback(
+        _debounce((value: string) => {
+            setDebouncedSearch(value)
+        }, SEARCH_DEBOUNCE_MS),
+        [],
+    )
+
+    const handleProductSearchChange = (value: string) => {
+        setSearchInput(value)
+        debouncedSetSearch(value)
+    }
+
+    const handleProductOpenChange = (isOpen: boolean) => {
+        if (!isOpen) {
+            setSearchInput('')
+            setDebouncedSearch('')
+        }
+    }
+
+    const isSearching = debouncedSearch.length > 0
+    const displayProducts = isSearching ? searchProductList : productList
 
     const {
         selectedProduct,
@@ -147,13 +186,14 @@ export const AIJourneySettings: React.FC = () => {
     const aiJourneyStoreUrl = `/app/ai-journey/${shopName}`
 
     const productOptions = useMemo(() => {
-        return productList.map((product) => ({
+        return displayProducts.map((product) => ({
             id: product.id,
             label: product.title,
             img: product.image?.src,
             alt: product.image?.alt,
+            product,
         }))
-    }, [productList])
+    }, [displayProducts])
 
     const selectedJourneyOption = useMemo(() => {
         return [...flowsOptions, ...campaignsOptions].find(
@@ -162,19 +202,23 @@ export const AIJourneySettings: React.FC = () => {
     }, [flowsOptions, campaignsOptions, currentJourney])
 
     const selectedProductOption = useMemo(() => {
-        return productOptions.find(
-            (option) => selectedProduct && option.id === selectedProduct.id,
+        if (!selectedProduct) return null
+        return (
+            productOptions.find(
+                (option) => option.id === selectedProduct.id,
+            ) ?? {
+                id: selectedProduct.id,
+                label: selectedProduct.title,
+                img: selectedProduct.image?.src,
+                alt: selectedProduct.image?.alt,
+                product: selectedProduct,
+            }
         )
     }, [productOptions, selectedProduct])
 
     useEffect(() => {
         emit(PlaygroundEvent.RESET_CONVERSATION)
     }, [selectedJourneyOption?.id, emit])
-
-    const getProductById = useCallback(
-        (id: number) => productList.find((product) => product.id === id),
-        [productList],
-    )
 
     const handleDiscountField = (value: string) => {
         if (value === '') {
@@ -260,7 +304,7 @@ export const AIJourneySettings: React.FC = () => {
                 maxHeight={300}
                 isSearchable
                 //@ts-ignore
-                value={selectedJourneyOption as Section}
+                value={selectedJourneyOption ?? null}
             >
                 {(section: Section) => (
                     <ListSection
@@ -283,7 +327,7 @@ export const AIJourneySettings: React.FC = () => {
                         <SelectTrigger>
                             <TextField
                                 inputRef={ref as RefObject<HTMLInputElement>}
-                                value={selectedText}
+                                value={selectedText ?? ''}
                                 label="Product"
                                 isFocused={isOpen}
                                 leadingSlot={
@@ -303,15 +347,17 @@ export const AIJourneySettings: React.FC = () => {
                     )}
                     items={productOptions}
                     selectedItem={selectedProductOption}
-                    onSelect={(value) => {
-                        const product = getProductById(value.id)
-                        if (!product) return
+                    onSelect={(value: (typeof productOptions)[number]) => {
                         setAIJourneySettings({
-                            selectedProduct: product,
+                            selectedProduct: value.product,
                         })
                     }}
                     isDisabled={false}
                     isSearchable
+                    searchValue={searchInput}
+                    onSearchChange={handleProductSearchChange}
+                    onOpenChange={handleProductOpenChange}
+                    isLoading={isLoadingSearch}
                 >
                     {(option: (typeof productOptions)[number]) => (
                         <ListItem

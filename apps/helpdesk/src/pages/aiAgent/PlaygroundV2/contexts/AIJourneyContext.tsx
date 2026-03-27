@@ -20,7 +20,10 @@ import type {
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { MAX_WAIT_TIME } from 'AIJourney/constants'
-import { useAIJourneyProductList } from 'AIJourney/hooks'
+import {
+    useAIJourneyProductList,
+    useStoredProductResolution,
+} from 'AIJourney/hooks'
 import {
     useJourneyData,
     useJourneys,
@@ -267,18 +270,20 @@ const WrappedAIJourneyProvider = ({
         }
     }, [flows, campaigns, localSettings.journeyId, areJourneysLoading])
 
-    useEffect(() => {
-        if (
-            productList.length > 0 &&
-            !localSettings.selectedProduct &&
-            !isLoadingProducts
-        ) {
-            setLocalSettings((prev) => ({
-                ...prev,
-                selectedProduct: productList[0],
-            }))
-        }
-    }, [productList, localSettings.selectedProduct, isLoadingProducts])
+    const handleProductResolved = useCallback((product: Product) => {
+        setLocalSettings((prev) => ({
+            ...prev,
+            selectedProduct: product,
+        }))
+    }, [])
+
+    const { setLastSelectedProductId } = useStoredProductResolution({
+        integrationId: shopifyIntegration?.id,
+        productList,
+        isLoadingProducts,
+        selectedProduct: localSettings.selectedProduct ?? null,
+        onProductResolved: handleProductResolved,
+    })
 
     const currentJourney = useMemo(
         () =>
@@ -290,8 +295,7 @@ const WrappedAIJourneyProvider = ({
 
     const { data: journeyData, isLoading: isLoadingJourneyData } =
         useJourneyData(currentJourney?.id, {
-            enabled:
-                currentJourney && !!shopifyIntegration && !!currentJourney?.id,
+            enabled: !!currentJourney?.id && !!shopifyIntegration,
         })
 
     const [followUpMessagesSent, setFollowUpMessagesSent] = useState<number>(0)
@@ -354,12 +358,15 @@ const WrappedAIJourneyProvider = ({
 
     const setAIJourneySettings = useCallback(
         (newSettings: Partial<AIJourneySettings>) => {
+            if (newSettings.selectedProduct) {
+                setLastSelectedProductId(newSettings.selectedProduct.id)
+            }
             setLocalSettings((prev) => ({
                 ...prev,
                 ...newSettings,
             }))
         },
-        [],
+        [setLastSelectedProductId],
     )
 
     const resetFollowUpMessagesSent = useCallback(() => {

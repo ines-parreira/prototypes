@@ -29,5 +29,5 @@ export const useLastSelectedProduct = () => {
         [lastSelectedProductId, setLastSelectedProductId],
     )
 
-    return { setLastSelectedProductId, resolveProduct }
+    return { lastSelectedProductId, setLastSelectedProductId, resolveProduct }
 }

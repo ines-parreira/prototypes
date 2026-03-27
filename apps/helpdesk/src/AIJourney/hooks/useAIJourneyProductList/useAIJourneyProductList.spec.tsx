@@ -83,6 +83,164 @@ describe('useAIJourneyProductList', () => {
         })
     })
 
+    describe('With filter (search mode)', () => {
+        beforeEach(() => {
+            jest.clearAllMocks()
+
+            useListProductsMock.mockReturnValue({
+                data: {
+                    pages: [
+                        {
+                            data: {
+                                data: productMockedData,
+                            },
+                        },
+                    ],
+                },
+                isLoading: false,
+                fetchNextPage: jest.fn(),
+                hasNextPage: false,
+                isFetchingNextPage: false,
+            } as any)
+        })
+
+        it('should pass filter param to useListProducts', () => {
+            renderHook(() =>
+                useAIJourneyProductList({
+                    integrationId: 1,
+                    filter: 'sneakers',
+                }),
+            )
+
+            expect(useListProductsMock).toHaveBeenCalledWith(
+                1,
+                true,
+                { limit: 100, filter: 'sneakers' },
+                expect.objectContaining({
+                    keepPreviousData: true,
+                    queryKey: [
+                        'integration',
+                        'shopify',
+                        1,
+                        'products',
+                        'list',
+                        'sneakers',
+                    ],
+                }),
+            )
+        })
+
+        it('should not pass filter param when filter is empty', () => {
+            renderHook(() => useAIJourneyProductList({ integrationId: 1 }))
+
+            expect(useListProductsMock).toHaveBeenCalledWith(
+                1,
+                true,
+                { limit: 100 },
+                expect.objectContaining({
+                    keepPreviousData: false,
+                    queryKey: [
+                        'integration',
+                        'shopify',
+                        1,
+                        'products',
+                        'list',
+                        '',
+                    ],
+                }),
+            )
+        })
+
+        it('should return all matching products without 5-item cap when searching', () => {
+            const { result } = renderHook(() =>
+                useAIJourneyProductList({
+                    integrationId: 1,
+                    filter: 'product',
+                }),
+            )
+
+            // 6 active products with image and title exist in mock data
+            expect(result.current.productList.length).toBe(6)
+        })
+
+        it('should restore 5-item cap when filter is removed', () => {
+            const { result: searchResult } = renderHook(() =>
+                useAIJourneyProductList({
+                    integrationId: 1,
+                    filter: 'product',
+                }),
+            )
+
+            expect(searchResult.current.productList.length).toBe(6)
+
+            const { result: defaultResult } = renderHook(() =>
+                useAIJourneyProductList({ integrationId: 1 }),
+            )
+
+            expect(defaultResult.current.productList.length).toBe(5)
+        })
+
+        it('should not auto-paginate when searching', () => {
+            const fetchNextPageMock = jest.fn()
+
+            useListProductsMock.mockReturnValue({
+                data: {
+                    pages: [
+                        {
+                            data: {
+                                data: [shopifyProductResult()[0]],
+                            },
+                        },
+                    ],
+                },
+                isLoading: false,
+                fetchNextPage: fetchNextPageMock,
+                hasNextPage: true,
+                isFetchingNextPage: false,
+            } as any)
+
+            renderHook(() =>
+                useAIJourneyProductList({
+                    integrationId: 1,
+                    filter: 'something',
+                }),
+            )
+
+            expect(fetchNextPageMock).not.toHaveBeenCalled()
+        })
+
+        it('should still filter out inactive and imageless products when searching', () => {
+            useListProductsMock.mockReturnValue({
+                data: {
+                    pages: [
+                        {
+                            data: {
+                                data: [
+                                    shopifyProductResult()[0],
+                                    shopifyProductWithInactiveStatus,
+                                    shopifyProductWithoutImageAndTitle,
+                                ],
+                            },
+                        },
+                    ],
+                },
+                isLoading: false,
+                fetchNextPage: jest.fn(),
+                hasNextPage: false,
+                isFetchingNextPage: false,
+            } as any)
+
+            const { result } = renderHook(() =>
+                useAIJourneyProductList({
+                    integrationId: 1,
+                    filter: 'test',
+                }),
+            )
+
+            expect(result.current.productList.length).toBe(1)
+        })
+    })
+
     describe('Pagination behavior', () => {
         it('should fetch next page when fewer than 5 active products are available', () => {
             const fetchNextPageMock = jest.fn()

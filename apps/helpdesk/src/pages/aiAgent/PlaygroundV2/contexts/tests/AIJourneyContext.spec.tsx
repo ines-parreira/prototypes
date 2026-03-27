@@ -7,6 +7,10 @@ import thunk from 'redux-thunk'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
 import {
+    useAIJourneyProductList,
+    useStoredProductResolution,
+} from '../../../../../AIJourney/hooks'
+import {
     useJourneyData,
     useJourneys,
     useUpdateJourney,
@@ -32,7 +36,13 @@ jest.mock('AIJourney/hooks', () => ({
         isLoading: false,
         error: null,
     })),
+    useStoredProductResolution: jest.fn(() => ({
+        setLastSelectedProductId: jest.fn(),
+    })),
 }))
+
+const mockUseAIJourneyProductList = useAIJourneyProductList as jest.Mock
+const mockUseStoredProductResolution = useStoredProductResolution as jest.Mock
 
 jest.mock('hooks/useAppSelector')
 
@@ -773,6 +783,26 @@ describe('AIJourneyContext', () => {
                 })
             })
 
+            it('should fall back to undefined when max_follow_up_messages is missing from config', () => {
+                mockUseJourneyData.mockReturnValue({
+                    data: {
+                        configuration: {
+                            include_image: true,
+                            offer_discount: false,
+                        },
+                    },
+                    isLoading: false,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(
+                    result.current.aiJourneySettings.totalFollowUp,
+                ).toBeUndefined()
+            })
+
             it('should handle journey data without message_instructions', () => {
                 mockUseJourneyData.mockReturnValue({
                     data: {
@@ -1469,6 +1499,92 @@ describe('AIJourneyContext', () => {
                 })
 
                 expect(result.current.hasInvalidFields).toBe(true)
+            })
+        })
+
+        describe('product persistence via localStorage', () => {
+            const mockProduct = { id: 42, title: 'Stored Product' }
+
+            it('should persist product ID to localStorage when selectedProduct changes', () => {
+                const mockSetLastSelectedProductId = jest.fn()
+                mockUseStoredProductResolution.mockReturnValue({
+                    setLastSelectedProductId: mockSetLastSelectedProductId,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        selectedProduct: mockProduct as any,
+                    })
+                })
+
+                expect(mockSetLastSelectedProductId).toHaveBeenCalledWith(42)
+            })
+
+            it('should not call setLastSelectedProductId when updating non-product settings', () => {
+                const mockSetLastSelectedProductId = jest.fn()
+                mockUseStoredProductResolution.mockReturnValue({
+                    setLastSelectedProductId: mockSetLastSelectedProductId,
+                })
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    result.current.setAIJourneySettings({
+                        totalFollowUp: 5,
+                    })
+                })
+
+                expect(mockSetLastSelectedProductId).not.toHaveBeenCalled()
+            })
+
+            it('should pass correct params to useStoredProductResolution', () => {
+                mockUseAIJourneyProductList.mockReturnValue({
+                    productList: [mockProduct],
+                    isLoading: false,
+                })
+
+                renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                expect(mockUseStoredProductResolution).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        integrationId: 123,
+                        productList: [mockProduct],
+                        isLoadingProducts: false,
+                        selectedProduct: null,
+                        onProductResolved: expect.any(Function),
+                    }),
+                )
+            })
+
+            it('should update selectedProduct when onProductResolved is called', () => {
+                let capturedOnProductResolved: (product: any) => void
+
+                mockUseStoredProductResolution.mockImplementation(
+                    ({ onProductResolved }) => {
+                        capturedOnProductResolved = onProductResolved
+                        return { setLastSelectedProductId: jest.fn() }
+                    },
+                )
+
+                const { result } = renderHook(() => useAIJourneyContext(), {
+                    wrapper: createWrapper(),
+                })
+
+                act(() => {
+                    capturedOnProductResolved(mockProduct)
+                })
+
+                expect(
+                    result.current.aiJourneySettings.selectedProduct,
+                ).toEqual(mockProduct)
             })
         })
     })

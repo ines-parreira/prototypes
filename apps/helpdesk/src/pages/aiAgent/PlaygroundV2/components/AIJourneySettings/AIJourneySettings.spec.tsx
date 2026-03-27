@@ -7,6 +7,7 @@ import { userEvent } from '@testing-library/user-event'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
 
+import { useAIJourneyProductList } from 'AIJourney/hooks'
 import type { Product } from 'constants/integrations/types/shopify'
 import { shopifyProductResult } from 'fixtures/shopify'
 
@@ -18,6 +19,10 @@ import { useEvents } from '../../contexts/EventsContext'
 import { PlaygroundEvent } from '../../types'
 import { AIJourneySettings } from './AIJourneySettings'
 
+jest.mock('lodash/debounce', () =>
+    jest.fn((fn: (...args: unknown[]) => unknown) => fn),
+)
+
 jest.mock('../../contexts/AIJourneyContext', () => ({
     ...jest.requireActual('../../contexts/AIJourneyContext'),
     useAIJourneyContext: jest.fn(),
@@ -26,6 +31,14 @@ jest.mock('../../contexts/AIJourneyContext', () => ({
 jest.mock('../../contexts/EventsContext', () => ({
     ...jest.requireActual('../../contexts/EventsContext'),
     useEvents: jest.fn(),
+}))
+
+jest.mock('AIJourney/hooks', () => ({
+    ...jest.requireActual('AIJourney/hooks'),
+    useAIJourneyProductList: jest.fn(() => ({
+        productList: [],
+        isLoading: false,
+    })),
 }))
 
 jest.mock('AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect', () => ({
@@ -46,6 +59,7 @@ jest.mock('AIJourney/pages/Setup/fields/AudienceSelect/AudienceSelect', () => ({
 
 const mockUseAIJourneyContext = assumeMock(useAIJourneyContext)
 const mockUseEvents = assumeMock(useEvents)
+const mockUseAIJourneyProductList = assumeMock(useAIJourneyProductList)
 
 const mockProducts = shopifyProductResult().map(
     (product) => product.data,
@@ -364,6 +378,137 @@ describe('AIJourneySettings', () => {
                 const productImage = screen.getByAltText('selected product')
                 expect(productImage).toBeInTheDocument()
                 expect(productImage).toHaveAttribute('src', '')
+            })
+        })
+
+        describe('Product search', () => {
+            it('should trigger search when typing in product dropdown', async () => {
+                const user = userEvent.setup()
+
+                renderComponent()
+
+                const productField = screen.getByRole('textbox', {
+                    name: /product/i,
+                })
+                await user.click(productField)
+
+                const searchInput = await screen.findByRole('searchbox')
+                await user.type(searchInput, 'test')
+
+                await waitFor(() => {
+                    expect(mockUseAIJourneyProductList).toHaveBeenCalledWith(
+                        expect.objectContaining({
+                            filter: 'test',
+                        }),
+                    )
+                })
+            })
+
+            it('should reset search when dropdown closes', async () => {
+                const user = userEvent.setup()
+                const searchProducts = [
+                    { ...mockProducts[0], id: 5555, title: 'Found Item' },
+                ]
+                mockUseAIJourneyProductList.mockReturnValue({
+                    productList: searchProducts,
+                    isLoading: false,
+                })
+
+                renderComponent()
+
+                const productField = screen.getByRole('textbox', {
+                    name: /product/i,
+                })
+                await user.click(productField)
+
+                const searchInput = await screen.findByRole('searchbox')
+                await user.type(searchInput, 'q')
+
+                // Confirm search was triggered
+                await waitFor(() => {
+                    expect(searchInput).toHaveValue('q')
+                })
+
+                // Select an option to close dropdown
+                const option = await screen.findByRole('option', {
+                    name: /found item/i,
+                })
+                await user.click(option)
+
+                // After close, useAIJourneyProductList should be called with filter: undefined
+                await waitFor(() => {
+                    const lastCall =
+                        mockUseAIJourneyProductList.mock.calls[
+                            mockUseAIJourneyProductList.mock.calls.length - 1
+                        ]
+                    expect(lastCall[0]).toEqual(
+                        expect.objectContaining({ filter: undefined }),
+                    )
+                })
+            })
+
+            it('should display search results including products without images', async () => {
+                const user = userEvent.setup()
+                const searchResults = [
+                    {
+                        ...mockProducts[0],
+                        id: 7777,
+                        title: 'Searched Product',
+                    },
+                    {
+                        ...mockProducts[0],
+                        id: 8888,
+                        title: 'No Image Product',
+                        image: undefined,
+                    },
+                ]
+                mockUseAIJourneyProductList.mockReturnValue({
+                    productList: searchResults,
+                    isLoading: false,
+                })
+
+                renderComponent()
+
+                const productField = screen.getByRole('textbox', {
+                    name: /product/i,
+                })
+                await user.click(productField)
+
+                const searchInput = await screen.findByRole('searchbox')
+                await user.type(searchInput, 'Product')
+
+                const options = await screen.findAllByRole('option')
+                expect(options.length).toBeGreaterThanOrEqual(2)
+            })
+        })
+
+        describe('Selected product fallback', () => {
+            it('should construct fallback option when selected product is not in current list', () => {
+                const orphanProduct: Product = {
+                    ...mockProducts[0],
+                    id: 99999,
+                    title: 'Orphan Product',
+                    image: {
+                        ...mockProducts[0].image!,
+                        src: 'orphan.jpg',
+                        alt: 'orphan',
+                    },
+                }
+
+                mockUseAIJourneyContext.mockReturnValue(
+                    createMockAIJourneyContextValue({
+                        aiJourneySettings: {
+                            ...AI_JOURNEY_DEFAULT_STATE,
+                            selectedProduct: orphanProduct,
+                        },
+                    }),
+                )
+
+                renderComponent()
+
+                // selectedProduct.image.src is rendered in the trigger
+                const productImage = screen.getByAltText('selected product')
+                expect(productImage).toHaveAttribute('src', 'orphan.jpg')
             })
         })
     })

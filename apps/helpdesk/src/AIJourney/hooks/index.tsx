@@ -19,3 +19,4 @@ export { useAIJourneyConversionRate } from './useAIJourneyConversionRate/useAIJo
 export { useAIJourneySankeyMetrics } from './useAIJourneySankeyMetrics/useAIJourneySankeyMetrics'
 export { useAIJourneyDiscountCodeUsageMetrics } from './useAIJourneyDiscountCodeUsageMetrics/useAIJourneyDiscountCodeUsageMetrics'
 export { useAIJourneyTotalReplies } from './useAIJourneyTotalReplies/useAIJourneyTotalReplies'
+export { useStoredProductResolution } from './useStoredProductResolution/useStoredProductResolution'

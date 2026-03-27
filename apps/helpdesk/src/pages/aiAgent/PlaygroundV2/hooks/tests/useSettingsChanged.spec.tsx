@@ -46,6 +46,9 @@ jest.mock('AIJourney/hooks', () => ({
         isLoading: false,
         error: null,
     })),
+    useStoredProductResolution: jest.fn(() => ({
+        setLastSelectedProductId: jest.fn(),
+    })),
 }))
 
 jest.mock('pages/aiAgent/PlaygroundV2/contexts/EventsContext', () => ({
