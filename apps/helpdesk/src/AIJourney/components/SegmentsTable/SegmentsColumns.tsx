@@ -7,6 +7,8 @@ import type { Segment } from 'AIJourney/pages/Segments/Segments'
 
 import { SegmentMoreOptions } from './SegmentMoreOptions/SegmentMoreOptions'
 
+import css from './SegmentsColumns.less'
+
 export type SegmentsTableMeta = {
     onSegmentClick: (segment: Segment) => void
     onEditClick: (segment: Segment) => void
@@ -23,12 +25,14 @@ export const segmentColumns: ColumnDef<Segment>[] = [
             const { onSegmentClick } = info.table.options
                 .meta as SegmentsTableMeta
             return (
-                <Text
+                <button
                     onClick={() => onSegmentClick(info.row.original)}
-                    variant={TextVariant.Bold}
+                    className={css.titleButton}
                 >
-                    {info.row.original.name}
-                </Text>
+                    <Text variant={TextVariant.Bold}>
+                        {info.row.original.name}
+                    </Text>
+                </button>
             )
         },
         enableSorting: true,

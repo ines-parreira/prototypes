@@ -1,6 +1,8 @@
+import { useRef, useState } from 'react'
+
 import { Box, Button, Heading, Size } from '@gorgias/axiom'
 
-import { SegmentsTable } from 'AIJourney/components'
+import { SegmentsSidePanel, SegmentsTable } from 'AIJourney/components'
 
 export type Segment = {
     id: number
@@ -31,6 +33,22 @@ const MOCK_SEGMENTS: Segment[] = [
 ]
 
 export const Segments = () => {
+    const selectedSegmentRef = useRef<Segment | undefined>(undefined)
+    const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
+
+    const openSidePanel = (segment: Segment) => {
+        selectedSegmentRef.current = segment
+        setIsSidePanelOpen(true)
+    }
+
+    const handleClose = () => {
+        setIsSidePanelOpen(false)
+    }
+
+    const handleDuplicateClick = (segment: Segment) => {
+        openSidePanel({ ...segment, name: `${segment.name} (copy)` })
+    }
+
     return (
         <Box width="100%" flexDirection="column">
             <Box m={Size.Lg} flexDirection="column">
@@ -39,7 +57,10 @@ export const Segments = () => {
                     <Button
                         variant="secondary"
                         leadingSlot="cloud"
-                        onClick={() => {}}
+                        onClick={() => {
+                            selectedSegmentRef.current = undefined
+                            setIsSidePanelOpen(true)
+                        }}
                     >
                         Create segment
                     </Button>
@@ -47,10 +68,15 @@ export const Segments = () => {
             </Box>
             <SegmentsTable
                 data={MOCK_SEGMENTS}
-                onSegmentClick={() => {}}
-                onEditClick={() => {}}
-                onDuplicateClick={() => {}}
+                onSegmentClick={openSidePanel}
+                onEditClick={openSidePanel}
+                onDuplicateClick={handleDuplicateClick}
                 onDeleteClick={() => {}}
+            />
+            <SegmentsSidePanel
+                isOpen={isSidePanelOpen}
+                onClose={handleClose}
+                segment={selectedSegmentRef.current}
             />
         </Box>
     )
