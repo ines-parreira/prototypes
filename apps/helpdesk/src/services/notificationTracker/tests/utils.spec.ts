@@ -1,23 +1,21 @@
-import { checkIfAiAgentOnboardingNotificationIsEnabled } from '../utils'
+import { fetchFlag } from '@repo/feature-flags'
 
-const variationMock = jest.fn()
-const waitForInitializationMock = jest.fn(() => Promise.resolve())
+import { checkIfAiAgentOnboardingNotificationIsEnabled } from '../utils'
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    getLDClient: jest.fn(() => ({
-        variation: variationMock,
-        waitForInitialization: waitForInitializationMock,
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({})),
+    fetchFlag: jest.fn(async (_flag: string, defaultValue = false) => ({
+        flag: defaultValue,
+        error: null,
     })),
 }))
 
+const fetchFlagMock = jest.mocked(fetchFlag)
+
 describe('utils', () => {
     beforeEach(() => {
-        variationMock.mockReturnValue(true)
+        fetchFlagMock.mockResolvedValue({ flag: true, error: null })
     })
 
     describe('checkIfAiAgentOnboardingNotificationIsEnabled', () => {
@@ -28,7 +26,7 @@ describe('utils', () => {
         })
 
         it('should return false if the feature flag is disabled', async () => {
-            variationMock.mockReturnValue(false)
+            fetchFlagMock.mockResolvedValue({ flag: false, error: null })
 
             const result = await checkIfAiAgentOnboardingNotificationIsEnabled()
 

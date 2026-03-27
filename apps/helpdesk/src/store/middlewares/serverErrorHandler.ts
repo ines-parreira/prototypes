@@ -1,4 +1,4 @@
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
+import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 import _get from 'lodash/get'
 import _some from 'lodash/some'
 import type { Middleware } from 'redux'
@@ -57,18 +57,20 @@ const serverErrorHandler: Middleware<
                 window.location.hash
             const loginUrl = `${window.location.origin}/login?next=${encodeURIComponent(nextPath)}`
 
-            if (
-                getLDClient().variation(
+            void (async () => {
+                const { flag: shouldWaitForActiveTab } = await fetchFlag(
                     FeatureFlagKey.DontTriggerLoginsOnInactiveTabs,
                     false,
                 )
-            ) {
-                void waitForDocumentVisible().then(() => {
+
+                if (shouldWaitForActiveTab) {
+                    await waitForDocumentVisible()
                     window.location.href = loginUrl
-                })
-            } else {
+                    return
+                }
+
                 window.location.href = loginUrl
-            }
+            })()
         }, 3000)
 
         return next(action)

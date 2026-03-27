@@ -1,6 +1,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import client from '@repo/api-resources'
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
+import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
@@ -607,10 +607,10 @@ const getRecipientsArray = (
 
 export const applyMacroAction =
     (action: Map<any, any>) =>
-    (
+    async (
         dispatch: StoreDispatch,
         getState: () => RootState,
-    ): ReturnType<StoreDispatch> => {
+    ): Promise<ReturnType<StoreDispatch>> => {
         const state = getState()
         const { ticket, currentUser } = state
 
@@ -621,9 +621,10 @@ export const applyMacroAction =
 
         const args = action.get('arguments') as Map<any, any>
 
-        const flags = getLDClient().allFlags()
-        const isMacroResponseCcBccEnabled =
-            flags?.[FeatureFlagKey.MacroResponseTextCcBcc]
+        const { flag: isMacroResponseCcBccEnabled } = await fetchFlag(
+            FeatureFlagKey.MacroResponseTextCcBcc,
+            false,
+        )
 
         if (
             name === MacroActionName.SetResponseText &&
@@ -691,7 +692,7 @@ export const applyMacro =
         shouldUpdateNewMessage = true,
         topRankMacroState?: TopRankMacroState,
     ) =>
-    (
+    async (
         dispatch: StoreDispatch,
         getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
@@ -717,9 +718,10 @@ export const applyMacro =
             })
         }
 
-        const flags = getLDClient().allFlags()
-        const isMacroForwardByEmailEnabled =
-            !!flags?.[FeatureFlagKey.MacroForwardByEmail]
+        const { flag: isMacroForwardByEmailEnabled } = await fetchFlag(
+            FeatureFlagKey.MacroForwardByEmail,
+            false,
+        )
 
         const renderedMacro = macro.update(
             'actions',
@@ -754,18 +756,18 @@ export const applyMacro =
         })
 
         if (shouldUpdateNewMessage) {
-            ;(renderedMacro.get('actions', fromJS([])) as List<any>).forEach(
-                (action: Map<any, any>) => {
-                    if (
-                        [
-                            MacroActionName.SetResponseText,
-                            MacroActionName.AddAttachments,
-                        ].includes(action.get('name'))
-                    ) {
-                        dispatch(applyMacroAction(action))
-                    }
-                },
-            )
+            for (const action of (
+                renderedMacro.get('actions', fromJS([])) as List<any>
+            ).toArray()) {
+                if (
+                    [
+                        MacroActionName.SetResponseText,
+                        MacroActionName.AddAttachments,
+                    ].includes(action.get('name'))
+                ) {
+                    await dispatch(applyMacroAction(action))
+                }
+            }
             dispatch({
                 type: newMessageTypes.NEW_MESSAGE_RECORD_MACRO,
                 macro,

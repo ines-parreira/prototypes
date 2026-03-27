@@ -1,12 +1,10 @@
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
+import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 
 export const checkIfAiAgentOnboardingNotificationIsEnabled = async () => {
-    const launchDarklyClient = getLDClient()
-    await launchDarklyClient.waitForInitialization()
-    const isAiAgentOnboardingNotificationEnabled =
-        !!launchDarklyClient.variation(
-            FeatureFlagKey.AiAgentOnboardingNotification,
-        )
+    const { flag: isAiAgentOnboardingNotificationEnabled } = await fetchFlag(
+        FeatureFlagKey.AiAgentOnboardingNotification,
+        false,
+    )
 
-    return isAiAgentOnboardingNotificationEnabled
+    return !!isAiAgentOnboardingNotificationEnabled
 }
