@@ -41,6 +41,7 @@ type Props<T extends OrderData = OrderData> = {
     integrationId?: number
     ticketId?: string
     customerId?: string
+    ticketCustomerId?: number | null
     renderEditShippingAddressModal?: (
         props: EditShippingAddressModalRenderProps,
     ) => ReactNode
@@ -60,6 +61,7 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
     integrationId,
     ticketId,
     customerId,
+    ticketCustomerId,
     renderEditShippingAddressModal,
     hasPrevious,
     hasNext,
@@ -141,7 +143,9 @@ export function OrderSidePanelWithActions<T extends OrderData = OrderData>({
                 onNavigatePrevious={onNavigatePrevious}
                 onNavigateNext={onNavigateNext}
             />
-            <CustomerContext.Provider value={{ customerId: null }}>
+            <CustomerContext.Provider
+                value={{ customerId: ticketCustomerId ?? null }}
+            >
                 <IntegrationContext.Provider
                     value={{
                         integration: fromJS({}),

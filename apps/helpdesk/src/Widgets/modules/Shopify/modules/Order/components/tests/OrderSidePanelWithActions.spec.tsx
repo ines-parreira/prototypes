@@ -58,10 +58,23 @@ jest.mock(
     }),
 )
 
-jest.mock('Widgets/modules/Shopify/modules/DraftOrderModal', () => ({
-    __esModule: true,
-    default: () => null,
-}))
+jest.mock('Widgets/modules/Shopify/modules/DraftOrderModal', () => {
+    const { useContext } = require('react')
+    const { CustomerContext } = require('providers/infobar/CustomerContext')
+    return {
+        __esModule: true,
+        default: function MockDraftOrderModal() {
+            const { customerId } = useContext(CustomerContext)
+            return (
+                <div
+                    data-customerid={
+                        customerId === null ? 'null' : String(customerId)
+                    }
+                />
+            )
+        },
+    }
+})
 
 jest.mock(
     'Widgets/modules/Shopify/modules/Order/modules/RefundOrderModal',
@@ -89,7 +102,10 @@ const mockHookReturn = () => ({
     onClose: jest.fn(),
 })
 
-function renderComponent(integrationId?: number) {
+function renderComponent(
+    integrationId?: number,
+    ticketCustomerId?: number | null,
+) {
     const queryClient = new QueryClient({
         defaultOptions: { queries: { retry: false } },
     })
@@ -115,18 +131,19 @@ function renderComponent(integrationId?: number) {
         open: cancelOpen,
     })
 
-    render(
+    const result = render(
         <QueryClientProvider client={queryClient}>
             <OrderSidePanelWithActions
                 order={null}
                 isOpen={false}
                 onOpenChange={jest.fn()}
                 integrationId={integrationId}
+                ticketCustomerId={ticketCustomerId}
             />
         </QueryClientProvider>,
     )
 
-    return { editOpen, duplicateOpen, refundOpen, cancelOpen }
+    return { editOpen, duplicateOpen, refundOpen, cancelOpen, ...result }
 }
 
 const testOrder = { id: 1, name: '#1001' } as unknown as OrderData
@@ -212,6 +229,26 @@ describe('OrderSidePanelWithActions', () => {
             const { cancelOpen } = renderComponent(undefined)
             capturedOnCancel!(testOrder)
             expect(cancelOpen).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('CustomerContext.Provider', () => {
+        it('provides ticketCustomerId when it is a number', () => {
+            const { container } = renderComponent(undefined, 123)
+            const el = container.querySelector('[data-customerid]')
+            expect(el).toHaveAttribute('data-customerid', '123')
+        })
+
+        it('provides null when ticketCustomerId is undefined', () => {
+            const { container } = renderComponent(undefined, undefined)
+            const el = container.querySelector('[data-customerid]')
+            expect(el).toHaveAttribute('data-customerid', 'null')
+        })
+
+        it('provides null when ticketCustomerId is null', () => {
+            const { container } = renderComponent(undefined, null)
+            const el = container.querySelector('[data-customerid]')
+            expect(el).toHaveAttribute('data-customerid', 'null')
         })
     })
 })

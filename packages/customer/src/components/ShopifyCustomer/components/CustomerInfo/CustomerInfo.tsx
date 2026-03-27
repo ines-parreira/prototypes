@@ -26,6 +26,7 @@ export type OrderSidePanelRenderProps = {
     integrationId?: number
     ticketId?: string
     customerId?: string
+    ticketCustomerId?: number | null
     renderEditShippingAddressModal?: (
         props: EditShippingAddressModalRenderProps,
     ) => ReactNode
@@ -202,6 +203,7 @@ export function CustomerInfo({
                 integrationId: selectedIntegration?.id,
                 ticketId,
                 customerId: selectedExternalId,
+                ticketCustomerId: customerId ?? null,
                 renderEditShippingAddressModal,
                 hasPrevious,
                 hasNext,
