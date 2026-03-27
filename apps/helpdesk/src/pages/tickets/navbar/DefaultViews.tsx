@@ -3,6 +3,7 @@ import {
     SYSTEM_VIEW_DEFINITIONS,
     useExpandableDefaultViews,
 } from '@repo/tickets'
+import { useCurrentUserRole } from '@repo/users'
 
 import { Box, Button, Text } from '@gorgias/axiom'
 
@@ -15,6 +16,7 @@ type Props = {
 }
 
 export function DefaultViews({ viewCount }: Props) {
+    const { isAdmin } = useCurrentUserRole()
     const { displayedViews, showToggle, isExpanded, toggleExpanded } =
         useExpandableDefaultViews()
 
@@ -31,7 +33,7 @@ export function DefaultViews({ viewCount }: Props) {
                 paddingTop="xxxs"
             >
                 <Text variant="medium">Default views</Text>
-                <DefaultViewsMenu />
+                {isAdmin && <DefaultViewsMenu />}
             </Box>
             <Box flexDirection="column" gap="xxxxs">
                 <RecentChats />

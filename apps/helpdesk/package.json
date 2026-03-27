@@ -116,6 +116,7 @@
         "@repo/routing": "workspace:*",
         "@repo/ticket-thread": "workspace:*",
         "@repo/tickets": "workspace:*",
+        "@repo/users": "workspace:*",
         "@repo/utils": "workspace:*",
         "@repo/voice": "workspace:*",
         "@sentry/react": "catalog:sentry",

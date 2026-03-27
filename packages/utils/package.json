@@ -17,6 +17,7 @@
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/routing": "workspace:*",
         "htmlparser2": "catalog:html",

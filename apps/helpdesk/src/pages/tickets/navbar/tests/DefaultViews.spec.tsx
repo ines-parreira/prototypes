@@ -4,6 +4,7 @@ import {
     SYSTEM_VIEW_DEFINITIONS,
     useExpandableDefaultViews,
 } from '@repo/tickets'
+import { useCurrentUserRole } from '@repo/users'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -16,6 +17,13 @@ jest.mock('@repo/tickets', () => ({
     DefaultViewsMenu: jest.fn(),
     useExpandableDefaultViews: jest.fn(),
 }))
+
+jest.mock('@repo/users', () => ({
+    ...jest.requireActual('@repo/users'),
+    useCurrentUserRole: jest.fn(),
+}))
+
+const mockUseCurrentUserRole = assumeMock(useCurrentUserRole)
 
 jest.mock('../TicketNavbarViewLinkItem', () => ({
     TicketNavbarViewLinkItem: ({
@@ -77,6 +85,10 @@ describe('DefaultViews', () => {
 
     beforeEach(() => {
         MockDefaultViewsMenu.mockReturnValue(<div>DefaultViewsMenu</div>)
+        mockUseCurrentUserRole.mockReturnValue({
+            isAdmin: true,
+            hasRole: jest.fn(),
+        })
         mockUseExpandableDefaultViews.mockReturnValue({
             displayedViews: [inboxView, unassignedView],
             showToggle: false,
@@ -91,10 +103,21 @@ describe('DefaultViews', () => {
         expect(screen.getByText('Default views')).toBeInTheDocument()
     })
 
-    it('should render the DefaultViewsMenu', () => {
+    it('should render the DefaultViewsMenu for admin users', () => {
         renderComponent()
 
         expect(screen.getByText('DefaultViewsMenu')).toBeInTheDocument()
+    })
+
+    it('should not render the DefaultViewsMenu for non-admin users', () => {
+        mockUseCurrentUserRole.mockReturnValue({
+            isAdmin: false,
+            hasRole: jest.fn(),
+        })
+
+        renderComponent()
+
+        expect(screen.queryByText('DefaultViewsMenu')).not.toBeInTheDocument()
     })
 
     it('should render RecentChats', () => {

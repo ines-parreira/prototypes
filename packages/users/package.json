@@ -27,6 +27,7 @@
         "@gorgias/helpdesk-client": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
         "@repo/hooks": "workspace:*",
         "@repo/utils": "workspace:*",
