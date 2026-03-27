@@ -60,6 +60,7 @@ describe('getTicketStatus', () => {
 describe('getRemainingSnoozeTime', () => {
     beforeEach(() => {
         vi.useFakeTimers()
+        vi.setSystemTime(FIXED_NOW)
     })
 
     afterEach(() => {
