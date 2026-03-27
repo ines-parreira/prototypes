@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { SidebarContext } from '@repo/navigation'
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -24,11 +24,9 @@ const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 const mockToggleCollapse = jest.fn()
 
 const wrapper = ({ children }: any) => (
-    <SidebarContext.Provider
-        value={{ isCollapsed: false, toggleCollapse: mockToggleCollapse }}
-    >
+    <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
         {children}
-    </SidebarContext.Provider>
+    </MockSidebarProvider>
 )
 
 describe('SidebarProductHeader', () => {
@@ -179,14 +177,12 @@ describe('SidebarProductHeader', () => {
                 />,
                 {
                     wrapper: ({ children }) => (
-                        <SidebarContext.Provider
-                            value={{
-                                isCollapsed: true,
-                                toggleCollapse: mockToggleCollapse,
-                            }}
+                        <MockSidebarProvider
+                            isCollapsed={true}
+                            toggleCollapse={mockToggleCollapse}
                         >
                             {children}
-                        </SidebarContext.Provider>
+                        </MockSidebarProvider>
                     ),
                 },
             )
@@ -205,14 +201,12 @@ describe('SidebarProductHeader', () => {
                 />,
                 {
                     wrapper: ({ children }) => (
-                        <SidebarContext.Provider
-                            value={{
-                                isCollapsed: true,
-                                toggleCollapse: mockToggleCollapse,
-                            }}
+                        <MockSidebarProvider
+                            isCollapsed={true}
+                            toggleCollapse={mockToggleCollapse}
                         >
                             {children}
-                        </SidebarContext.Provider>
+                        </MockSidebarProvider>
                     ),
                 },
             )

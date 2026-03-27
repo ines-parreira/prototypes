@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { SidebarContext } from '@repo/navigation'
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { act, render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
@@ -272,11 +272,9 @@ describe('ActionDrivenNavigation', () => {
         return render(
             <Provider store={store}>
                 <MemoryRouter>
-                    <SidebarContext.Provider
-                        value={{ isCollapsed, toggleCollapse: jest.fn() }}
-                    >
+                    <MockSidebarProvider isCollapsed={isCollapsed}>
                         <ActionDrivenNavigation />
-                    </SidebarContext.Provider>
+                    </MockSidebarProvider>
                 </MemoryRouter>
             </Provider>,
         )

@@ -1,4 +1,4 @@
-import { SidebarContext } from '@repo/navigation'
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
 import { act, render, screen } from '@testing-library/react'
@@ -67,11 +67,9 @@ const mockToggleChat = jest.requireMock('utils').toggleChat as jest.Mock
 const mockToggleCollapse = jest.fn()
 
 const wrapper = ({ children }: any) => (
-    <SidebarContext.Provider
-        value={{ isCollapsed: false, toggleCollapse: mockToggleCollapse }}
-    >
+    <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
         {children}
-    </SidebarContext.Provider>
+    </MockSidebarProvider>
 )
 
 describe('NavigationSidebar', () => {
@@ -114,14 +112,12 @@ describe('NavigationSidebar', () => {
         it('should render footer with UserItem and buttons - collapsed state', () => {
             render(<NavigationSidebar />, {
                 wrapper: ({ children }) => (
-                    <SidebarContext.Provider
-                        value={{
-                            isCollapsed: true,
-                            toggleCollapse: mockToggleCollapse,
-                        }}
+                    <MockSidebarProvider
+                        isCollapsed={true}
+                        toggleCollapse={mockToggleCollapse}
                     >
                         {children}
-                    </SidebarContext.Provider>
+                    </MockSidebarProvider>
                 ),
             })
             expect(screen.getByText('UserItem')).toBeInTheDocument()
@@ -208,14 +204,12 @@ describe('NavigationSidebar', () => {
         it('should not render back button when sidebar is collapsed', () => {
             render(<NavigationSidebar />, {
                 wrapper: ({ children }) => (
-                    <SidebarContext.Provider
-                        value={{
-                            isCollapsed: true,
-                            toggleCollapse: mockToggleCollapse,
-                        }}
+                    <MockSidebarProvider
+                        isCollapsed={true}
+                        toggleCollapse={mockToggleCollapse}
                     >
                         {children}
-                    </SidebarContext.Provider>
+                    </MockSidebarProvider>
                 ),
             })
             expect(

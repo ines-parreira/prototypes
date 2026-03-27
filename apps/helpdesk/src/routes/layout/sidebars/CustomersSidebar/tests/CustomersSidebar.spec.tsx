@@ -1,4 +1,4 @@
-import { SidebarContext } from '@repo/navigation'
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -7,11 +7,9 @@ import { CustomersSidebar } from 'routes/layout/sidebars/CustomersSidebar/Custom
 const renderCustomersSidebar = (isCollapsed = false) => {
     return render(
         <MemoryRouter>
-            <SidebarContext.Provider
-                value={{ isCollapsed, toggleCollapse: jest.fn() }}
-            >
+            <MockSidebarProvider isCollapsed={isCollapsed}>
                 <CustomersSidebar />
-            </SidebarContext.Provider>
+            </MockSidebarProvider>
         </MemoryRouter>,
     )
 }

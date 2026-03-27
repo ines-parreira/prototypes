@@ -3,6 +3,7 @@ import {
     SidebarFooter,
     SidebarRoot,
     useSidebar,
+    useSidebarShortcuts,
 } from '@repo/navigation'
 import { history } from '@repo/routing'
 
@@ -27,6 +28,8 @@ export function NavigationSidebar() {
     const prevNonStickyPathname = usePreviousProductNavigation()
     const { isCollapsed, toggleCollapse } = useSidebar()
     const isChatReady = useIsChatReady()
+
+    useSidebarShortcuts()
 
     const CurrentContent = currentProduct.sidebar
     const isSticky =

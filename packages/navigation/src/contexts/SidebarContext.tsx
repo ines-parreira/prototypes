@@ -1,10 +1,12 @@
 import { createContext, useCallback, useContext, useMemo } from 'react'
 
 import { useLocalStorage } from '@repo/hooks'
+import { logEvent, SegmentEvent } from '@repo/logging'
 
-type SidebarContextValue = {
+export type SidebarContextValue = {
     isCollapsed: boolean
     toggleCollapse: () => void
+    onSidebarShortcutToggle: () => void
 }
 
 export const SidebarContext = createContext<SidebarContextValue | null>(null)
@@ -26,9 +28,16 @@ export function SidebarProvider({
         [setIsCollapsed],
     )
 
+    const onSidebarShortcutToggle = useCallback(() => {
+        logEvent(SegmentEvent.NavigationPanelVisibilityStateToggled, {
+            visible: !isCollapsed,
+        })
+        toggleCollapse()
+    }, [isCollapsed, toggleCollapse])
+
     const value = useMemo(
-        () => ({ isCollapsed, toggleCollapse }),
-        [isCollapsed, toggleCollapse],
+        () => ({ isCollapsed, toggleCollapse, onSidebarShortcutToggle }),
+        [isCollapsed, toggleCollapse, onSidebarShortcutToggle],
     )
 
     return (

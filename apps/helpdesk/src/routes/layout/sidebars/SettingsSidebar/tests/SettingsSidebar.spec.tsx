@@ -1,6 +1,6 @@
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { SidebarContext } from '@repo/navigation'
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -78,11 +78,9 @@ describe('SettingsSidebar', () => {
         isCollapsed = false,
     ) => {
         return renderWithStoreAndQueryClientAndRouter(
-            <SidebarContext.Provider
-                value={{ isCollapsed, toggleCollapse: jest.fn() }}
-            >
+            <MockSidebarProvider isCollapsed={isCollapsed}>
                 <SettingsSidebar />
-            </SidebarContext.Provider>,
+            </MockSidebarProvider>,
             state,
         )
     }

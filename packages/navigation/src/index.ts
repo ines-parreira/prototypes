@@ -42,3 +42,5 @@ export {
     SidebarProvider,
     useSidebar,
 } from './contexts/SidebarContext'
+
+export { useSidebarShortcuts } from './hooks/useSidebarShortcuts'

@@ -1,4 +1,4 @@
-import { SidebarContext } from '@repo/navigation'
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -67,11 +67,9 @@ describe('WorkflowsSidebar', () => {
         isCollapsed = false,
     ) => {
         return renderWithStoreAndQueryClientAndRouter(
-            <SidebarContext.Provider
-                value={{ isCollapsed, toggleCollapse: jest.fn() }}
-            >
+            <MockSidebarProvider isCollapsed={isCollapsed}>
                 <WorkflowsSidebar />
-            </SidebarContext.Provider>,
+            </MockSidebarProvider>,
             state,
         )
     }

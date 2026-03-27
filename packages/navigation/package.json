@@ -4,7 +4,8 @@
     "description": "All things navigation!",
     "private": true,
     "exports": {
-        ".": "./src/index.ts"
+        ".": "./src/index.ts",
+        "./fixtures": "./src/fixtures/MockSidebarProvider.tsx"
     },
     "scripts": {
         "format:check": "prettier --check .",
@@ -18,6 +19,8 @@
     },
     "peerDependencies": {
         "@repo/hooks": "workspace:*",
+        "@repo/logging": "workspace:*",
+        "@repo/utils": "workspace:*",
         "@gorgias/axiom": "catalog:axiom",
         "history": "catalog:react-router",
         "react": "catalog:react",

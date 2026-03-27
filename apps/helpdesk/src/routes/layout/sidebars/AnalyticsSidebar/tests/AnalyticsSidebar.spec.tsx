@@ -1,4 +1,4 @@
-import { SidebarContext } from '@repo/navigation'
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -61,11 +61,7 @@ const mockSections = [
 
 const wrapper = ({ children }: any) => (
     <MemoryRouter>
-        <SidebarContext.Provider
-            value={{ isCollapsed: false, toggleCollapse: jest.fn() }}
-        >
-            {children}
-        </SidebarContext.Provider>
+        <MockSidebarProvider>{children}</MockSidebarProvider>
     </MemoryRouter>
 )
 
@@ -90,11 +86,9 @@ describe('AnalyticsSidebar', () => {
 
         it('renders upgrade icon only for items with requiresUpgrade', async () => {
             renderWithRouter(
-                <SidebarContext.Provider
-                    value={{ isCollapsed: false, toggleCollapse: jest.fn() }}
-                >
+                <MockSidebarProvider>
                     <AnalyticsSidebar />
-                </SidebarContext.Provider>,
+                </MockSidebarProvider>,
             )
 
             expect(
@@ -171,11 +165,9 @@ describe('AnalyticsSidebar', () => {
             })
 
             renderWithRouter(
-                <SidebarContext.Provider
-                    value={{ isCollapsed: false, toggleCollapse: jest.fn() }}
-                >
+                <MockSidebarProvider>
                     <AnalyticsSidebar />
-                </SidebarContext.Provider>,
+                </MockSidebarProvider>,
             )
 
             await user.click(screen.getByText('Automate'))
@@ -186,14 +178,9 @@ describe('AnalyticsSidebar', () => {
 
     describe('when collapsed', () => {
         const collapsedWrapper = ({ children }: any) => (
-            <SidebarContext.Provider
-                value={{
-                    isCollapsed: true,
-                    toggleCollapse: jest.fn(),
-                }}
-            >
+            <MockSidebarProvider isCollapsed={true}>
                 {children}
-            </SidebarContext.Provider>
+            </MockSidebarProvider>
         )
 
         it('renders CollapsedAnalyticsSidebar', () => {

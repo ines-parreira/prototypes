@@ -1,5 +1,5 @@
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
-import { SidebarContext } from '@repo/navigation'
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
@@ -35,9 +35,9 @@ const wrapper = ({
     children: React.ReactNode
     isCollapsed?: boolean
 }) => (
-    <SidebarContext.Provider value={{ isCollapsed, toggleCollapse: jest.fn() }}>
+    <MockSidebarProvider isCollapsed={isCollapsed}>
         {children}
-    </SidebarContext.Provider>
+    </MockSidebarProvider>
 )
 
 describe('AccordionItemTrigger', () => {

@@ -1,40 +1,26 @@
-import React from 'react'
-
 import { render, screen } from '@testing-library/react'
 
-import { SidebarContext } from '../../../contexts/SidebarContext'
+import { MockSidebarProvider } from '../../../fixtures/MockSidebarProvider'
 import { SidebarContent } from '../SidebarContent'
-
-const wrapper = ({
-    children,
-    isCollapsed = false,
-}: {
-    children: React.ReactNode
-    isCollapsed?: boolean
-}) => (
-    <SidebarContext.Provider value={{ isCollapsed, toggleCollapse: vi.fn() }}>
-        {children}
-    </SidebarContext.Provider>
-)
 
 describe('SidebarContent', () => {
     it('should render children', () => {
-        render(<SidebarContent>content</SidebarContent>, {
-            wrapper,
-        })
+        render(
+            <MockSidebarProvider>
+                <SidebarContent>content</SidebarContent>
+            </MockSidebarProvider>,
+        )
         const el = screen.getByText('content')
         expect(el).toBeInTheDocument()
     })
 
     it('should render children when sidebar is collapsed', () => {
         render(
-            <SidebarContent>
-                <div data-testid="content">content</div>
-            </SidebarContent>,
-            {
-                wrapper: ({ children }) =>
-                    wrapper({ children, isCollapsed: true }),
-            },
+            <MockSidebarProvider isCollapsed={true}>
+                <SidebarContent>
+                    <div data-testid="content">content</div>
+                </SidebarContent>
+            </MockSidebarProvider>,
         )
         const el = screen.getByText('content')
         expect(el).toBeInTheDocument()

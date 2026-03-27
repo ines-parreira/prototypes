@@ -1,8 +1,21 @@
+import { logEvent, SegmentEvent } from '@repo/logging'
 import { act, renderHook } from '@testing-library/react'
 
 import { SidebarProvider, useSidebar } from '../SidebarContext'
 
+vi.mock('@repo/logging', () => ({
+    logEvent: vi.fn(),
+    SegmentEvent: {
+        NavigationPanelVisibilityStateToggled:
+            'NavigationPanelVisibilityStateToggled',
+    },
+}))
+
 describe('SidebarContext', () => {
+    beforeEach(() => {
+        localStorage.clear()
+    })
+
     describe('useSidebar', () => {
         it('should throw error when used outside provider', () => {
             expect(() => {
@@ -45,6 +58,33 @@ describe('SidebarContext', () => {
             })
 
             expect(result.current.isCollapsed).toBe(false)
+        })
+
+        it('should toggle isCollapsed when onSidebarShortcutToggle is called', () => {
+            const { result } = renderHook(() => useSidebar(), {
+                wrapper: SidebarProvider,
+            })
+
+            act(() => {
+                result.current.onSidebarShortcutToggle()
+            })
+
+            expect(result.current.isCollapsed).toBe(true)
+        })
+
+        it('should log event with current visibility state when onSidebarShortcutToggle is called', () => {
+            const { result } = renderHook(() => useSidebar(), {
+                wrapper: SidebarProvider,
+            })
+
+            act(() => {
+                result.current.onSidebarShortcutToggle()
+            })
+
+            expect(logEvent).toHaveBeenCalledWith(
+                SegmentEvent.NavigationPanelVisibilityStateToggled,
+                { visible: true },
+            )
         })
     })
 
