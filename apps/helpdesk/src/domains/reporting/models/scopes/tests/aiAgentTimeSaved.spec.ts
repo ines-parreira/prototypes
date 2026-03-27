@@ -1,5 +1,7 @@
 import {
     aiAgentTimeSavedScope,
+    dynamicAiAgentTimeSaved,
+    dynamicAiAgentTimeSavedQueryFactoryV2,
     overallTimeSavedByAgentPerChannel,
     overallTimeSavedByAgentPerChannelQueryFactoryV2,
 } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
@@ -198,6 +200,109 @@ describe('overallTimeSavedByAgentPerChannel', () => {
             expect(
                 overallTimeSavedByAgentPerChannelQueryFactoryV2(context),
             ).toEqual(overallTimeSavedByAgentPerChannel.build(context))
+        })
+    })
+})
+
+describe('dynamicAiAgentTimeSaved', () => {
+    const baseFilters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    const context = {
+        filters: baseFilters,
+        timezone: 'utc',
+    }
+
+    describe('dynamicAiAgentTimeSaved', () => {
+        it('creates query without dimensions when no dimension provided', () => {
+            expect(
+                dynamicAiAgentTimeSaved.build({
+                    ...context,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName: 'ai-agent-dynamic-time-saved-by-agent',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                dimensions: [],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
+        })
+
+        it('creates query with the provided dimension', () => {
+            expect(
+                dynamicAiAgentTimeSaved.build({
+                    ...context,
+                    dimensions: ['channel'],
+                }),
+            ).toEqual({
+                metricName: 'ai-agent-dynamic-time-saved-by-agent',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                dimensions: ['channel'],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
+        })
+    })
+
+    describe('dynamicAiAgentTimeSavedQueryFactoryV2', () => {
+        it('returns query with empty dimensions when no dimension provided', () => {
+            const result = dynamicAiAgentTimeSavedQueryFactoryV2({
+                ...context,
+                dimensions: [],
+            })
+
+            expect(result).toEqual({
+                metricName: 'ai-agent-dynamic-time-saved-by-agent',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                dimensions: [],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
+        })
+
+        it('returns query with the provided dimension', () => {
+            const result = dynamicAiAgentTimeSavedQueryFactoryV2({
+                ...context,
+                dimensions: ['storeIntegrationId'],
+            })
+
+            expect(result).toEqual({
+                metricName: 'ai-agent-dynamic-time-saved-by-agent',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                dimensions: ['storeIntegrationId'],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
+        })
+
+        it('returns the same result as calling build directly with the dimension', () => {
+            const ctx = { ...context, dimensions: ['channel'] as const }
+
+            expect(dynamicAiAgentTimeSavedQueryFactoryV2(ctx)).toEqual(
+                dynamicAiAgentTimeSaved.build(ctx),
+            )
         })
     })
 })

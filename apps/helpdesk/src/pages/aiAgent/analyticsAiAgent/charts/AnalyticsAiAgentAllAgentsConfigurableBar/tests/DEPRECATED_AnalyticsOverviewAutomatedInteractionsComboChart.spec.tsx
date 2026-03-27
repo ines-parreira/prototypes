@@ -4,8 +4,8 @@ import { userEvent } from '@testing-library/user-event'
 import * as automatedInteractionsBySkillHook from 'domains/reporting/hooks/automate/useAutomatedInteractionsBySkill'
 import * as automateFiltersHook from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { DEPRECATED_AnalyticsOverviewAutomatedInteractionsComboChart as AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsConfigurableBar/DEPRECATED_AnalyticsOverviewAutomatedInteractionsComboChart'
 import * as automatedInteractionsMetricHook from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric'
-import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
 
 jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
 jest.mock('domains/reporting/hooks/automate/useAutomatedInteractionsBySkill')

@@ -14,7 +14,10 @@ import {
     useStatsTimeSeries,
     useStatsTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useStatsTimeSeries'
-import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
+import {
+    AutomationFeatureType,
+    AutomationSkillType,
+} from 'domains/reporting/models/scopes/constants'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
@@ -26,10 +29,12 @@ import {
     getBarChartGraphConfig,
     getLineChartDataHooks,
     getLineChartGraphConfig,
+    useAutomationMetricPerAiAgentRole,
     useAutomationMetricPerAutomationFeatureType,
     useAutomationMetricPerChannel,
     useAutomationMetricPerEngagementType,
     useAutomationMetricPerStoreIntegrationId,
+    useAutomationTimeSeriesPerAiAgentRole,
     useAutomationTimeSeriesPerAutomationFeatureType,
     useAutomationTimeSeriesPerChannel,
     useAutomationTimeSeriesPerEngagementType,
@@ -754,6 +759,99 @@ describe('useAutomationMetricPerEngagementType', () => {
     })
 })
 
+describe('useAutomationMetricPerAiAgentRole', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('should return dimension value as-is for role names', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: 'ai-agent-sales', value: 10 },
+                    { dimension: 'ai-agent-support', value: 20 },
+                ],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerAiAgentRole(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { name: 'Shopping Assistant', value: 10 },
+            { name: 'Support Agent', value: 20 },
+        ])
+    })
+
+    it('should return empty array when allValues is undefined', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: { allValues: undefined },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerAiAgentRole(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([])
+    })
+
+    it('should return isLoading derived from isFetching', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            isFetching: true,
+            data: null,
+        })
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerAiAgentRole(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should call query and useStatsMetricPerDimension with aiAgentRole dimension', () => {
+        const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+        mockQuery.mockReturnValue(mockBuiltQuery)
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: null,
+        })
+
+        renderHook(() =>
+            useAutomationMetricPerAiAgentRole(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith({
+            filters: defaultFilters,
+            timezone: defaultTimezone,
+            dimensions: ['aiAgentRole'],
+        })
+        expect(useStatsMetricPerDimensionMock).toHaveBeenCalledWith(
+            mockBuiltQuery,
+            'aiAgentRole',
+        )
+    })
+})
+
 describe('getBarChartDataHooks', () => {
     const mockTrendHook = jest.fn()
     const mockTrendResult = {
@@ -902,6 +1000,55 @@ describe('getBarChartDataHooks', () => {
         expect(result.current.data).toEqual([
             { name: 'Search bar', value: 10 },
             { name: 'Ask anything', value: 5 },
+        ])
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should return aiAgentRole dimension config with correct shape', () => {
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['aiAgentRole'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+        )
+
+        expect(dimensions).toHaveLength(1)
+        expect(dimensions[0]).toMatchObject({
+            id: 'aiAgentRole',
+            name: 'Role',
+            configurableGraphType: ConfigurableGraphType.Bar,
+            period,
+        })
+    })
+
+    it('should return aiAgentRole useChartData that calls useStatsMetricPerDimension with aiAgentRole dimension and returns formatted data', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: AutomationSkillType.AiAgentSales, value: 10 },
+                    {
+                        dimension: AutomationSkillType.AiAgentSupport,
+                        value: 20,
+                    },
+                ],
+            },
+        } as any)
+
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['aiAgentRole'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+        )
+
+        const { result } = renderHook(() => dimensions[0].useChartData())
+
+        expect(result.current.data).toEqual([
+            { name: 'Shopping Assistant', value: 10 },
+            { name: 'Support Agent', value: 20 },
         ])
         expect(result.current.isLoading).toBe(false)
     })
@@ -1752,6 +1899,105 @@ describe('useAutomationTimeSeriesPerEngagementType', () => {
     })
 })
 
+describe('useAutomationTimeSeriesPerAiAgentRole', () => {
+    const defaultGranularity = ReportingGranularity.Day
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('should return role names as-is in MultipleTimeSeriesDataItem', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                'ai-agent-sales': [[{ dateTime: '2025-01-01', value: 10 }]],
+                'ai-agent-support': [[{ dateTime: '2025-01-01', value: 20 }]],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerAiAgentRole(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            {
+                label: 'Shopping Assistant',
+                values: [{ date: 'Jan 1', value: 10 }],
+            },
+            { label: 'Support Agent', values: [{ date: 'Jan 1', value: 20 }] },
+        ])
+    })
+
+    it('should return empty array when data is undefined', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerAiAgentRole(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.data).toEqual([])
+    })
+
+    it('should return isLoading derived from isFetching', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: true,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerAiAgentRole(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should call query with filters, timezone, aiAgentRole dimension, and granularity', () => {
+        const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+        mockQuery.mockReturnValue(mockBuiltQuery)
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        renderHook(() =>
+            useAutomationTimeSeriesPerAiAgentRole(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith({
+            filters: defaultFilters,
+            timezone: defaultTimezone,
+            dimensions: ['aiAgentRole'],
+            granularity: defaultGranularity,
+        })
+        expect(useStatsTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+            mockBuiltQuery,
+        )
+    })
+})
+
 describe('getLineChartDataHooks', () => {
     const mockTrendHook = jest.fn()
     const mockTrendQuery = jest.fn()
@@ -1881,6 +2127,24 @@ describe('getLineChartDataHooks', () => {
         expect(dimensions[0]).toMatchObject({
             id: 'engagementType',
             name: 'Engagement type',
+            configurableGraphType: ConfigurableGraphType.MultipleTimeSeries,
+        })
+    })
+
+    it('should return aiAgentRole dimension config with MultipleTimeSeries chart type', () => {
+        const { dimensions } = getLineChartDataHooks(
+            mockTrendQuery,
+            mockTimeSeriesQuery,
+            ['aiAgentRole'],
+            defaultFilters,
+            defaultTimezone,
+            defaultGranularity,
+        )
+
+        expect(dimensions).toHaveLength(1)
+        expect(dimensions[0]).toMatchObject({
+            id: 'aiAgentRole',
+            name: 'Role',
             configurableGraphType: ConfigurableGraphType.MultipleTimeSeries,
         })
     })
@@ -2184,6 +2448,71 @@ describe('getLineChartDataHooks', () => {
                 mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['engagementType'],
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            )
+
+            const { result } = renderHook(() => dimensions[0].useChartData())
+
+            expect(result.current.isLoading).toBe(true)
+        })
+
+        it('aiAgentRole useChartData calls useStatsTimeSeriesPerDimension with aiAgentRole dimension and returns formatted data', () => {
+            const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+            mockTimeSeriesQuery.mockReturnValue(mockBuiltQuery)
+            useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+                data: {
+                    [AutomationSkillType.AiAgentSales]: [
+                        [{ dateTime: '2025-01-01', value: 10 }],
+                    ],
+                    [AutomationSkillType.AiAgentSupport]: [
+                        [{ dateTime: '2025-01-01', value: 20 }],
+                    ],
+                },
+                isFetching: false,
+            } as any)
+
+            const { dimensions } = getLineChartDataHooks(
+                mockTrendQuery,
+                mockTimeSeriesQuery,
+                ['aiAgentRole'],
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            )
+
+            const { result } = renderHook(() => dimensions[0].useChartData())
+
+            expect(mockTimeSeriesQuery).toHaveBeenCalledWith({
+                filters: defaultFilters,
+                timezone: defaultTimezone,
+                dimensions: ['aiAgentRole'],
+                granularity: defaultGranularity,
+            })
+            expect(result.current.data).toEqual([
+                {
+                    label: 'Shopping Assistant',
+                    values: [{ date: 'Jan 1', value: 10 }],
+                },
+                {
+                    label: 'Support Agent',
+                    values: [{ date: 'Jan 1', value: 20 }],
+                },
+            ])
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        it('aiAgentRole useChartData returns isLoading true when fetching', () => {
+            useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+                data: undefined,
+                isFetching: true,
+            } as any)
+
+            const { dimensions } = getLineChartDataHooks(
+                mockTrendQuery,
+                mockTimeSeriesQuery,
+                ['aiAgentRole'],
                 defaultFilters,
                 defaultTimezone,
                 defaultGranularity,

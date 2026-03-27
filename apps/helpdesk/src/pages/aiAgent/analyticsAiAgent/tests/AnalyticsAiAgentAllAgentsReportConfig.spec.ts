@@ -80,7 +80,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
     it('should have all agents trend combo chart config', () => {
         const config =
             AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart
+                AnalyticsAiAgentAllAgentsChart.ConfigurableBarGraph
             ]
 
         expect(config).toBeDefined()
@@ -90,7 +90,7 @@ describe('AnalyticsAiAgentAllAgentsReportConfig', () => {
     it('should have all agents trend line chart config', () => {
         const config =
             AnalyticsAiAgentAllAgentsReportConfig.charts[
-                AnalyticsAiAgentAllAgentsChart.AllAgentsTrendLineChart
+                AnalyticsAiAgentAllAgentsChart.ConfigurableLineGraph
             ]
 
         expect(config).toBeDefined()

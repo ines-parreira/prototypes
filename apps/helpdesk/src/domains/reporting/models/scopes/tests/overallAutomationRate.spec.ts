@@ -3,6 +3,8 @@ import {
     aiAgentAutomationRateQueryFactoryV2,
     automationRatePerFeature,
     automationRatePerFeatureQueryFactoryV2,
+    dynamicAiAgentAutomationRate,
+    dynamicAiAgentAutomationRateQueryFactoryV2,
     dynamicOverallAutomationRate,
     dynamicOverallAutomationRateQueryFactoryV2,
     dynamicOverallAutomationRateTimeseries,
@@ -448,6 +450,105 @@ describe('overallAutomationRateScope', () => {
                 })
 
                 expect(factoryResult).toEqual(buildResult)
+            })
+        })
+    })
+
+    describe('dynamicAiAgentAutomationRate', () => {
+        const aiAgentFilter = {
+            member: 'automationFeatureType',
+            operator: 'one-of',
+            values: ['ai-agent'],
+        }
+
+        it('creates query without dimensions when no dimension provided', () => {
+            expect(
+                dynamicAiAgentAutomationRate.build({
+                    ...context,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName: 'ai-agent-dynamic-ai-agent-automation-rate',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                dimensions: [],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    aiAgentFilter,
+                ],
+            })
+        })
+
+        it('creates query with the provided dimension', () => {
+            expect(
+                dynamicAiAgentAutomationRate.build({
+                    ...context,
+                    dimensions: ['channel'],
+                }),
+            ).toEqual({
+                metricName: 'ai-agent-dynamic-ai-agent-automation-rate',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                dimensions: ['channel'],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    aiAgentFilter,
+                ],
+            })
+        })
+
+        describe('dynamicAiAgentAutomationRateQueryFactoryV2', () => {
+            it('returns query with empty dimensions when no dimension provided', () => {
+                expect(
+                    dynamicAiAgentAutomationRateQueryFactoryV2({
+                        ...context,
+                        dimensions: [],
+                    }),
+                ).toEqual(
+                    dynamicAiAgentAutomationRate.build({
+                        ...context,
+                        dimensions: [],
+                    }),
+                )
+            })
+
+            it('returns query with the provided dimension', () => {
+                const factoryResult =
+                    dynamicAiAgentAutomationRateQueryFactoryV2({
+                        ...context,
+                        dimensions: ['storeIntegrationId'],
+                    })
+
+                expect(factoryResult.dimensions).toEqual(['storeIntegrationId'])
+                expect(factoryResult.filters).toContainEqual(aiAgentFilter)
+            })
+
+            it('returns the same result as calling build directly with the dimension', () => {
+                const ctx = { ...context, dimensions: ['channel'] as const }
+
+                expect(dynamicAiAgentAutomationRateQueryFactoryV2(ctx)).toEqual(
+                    dynamicAiAgentAutomationRate.build(ctx),
+                )
             })
         })
     })

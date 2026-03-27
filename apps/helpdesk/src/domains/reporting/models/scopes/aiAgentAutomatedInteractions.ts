@@ -159,3 +159,17 @@ export const dynamicAiShoppingAgentAutomatedInteractionsTimeseries =
 export const dynamicAiShoppingAgentAutomatedInteractionsTimeseriesQueryFactoryV2 =
     (ctx: AiAgentAutomatedInteractionsContext) =>
         dynamicAiShoppingAgentAutomatedInteractionsTimeseries.build(ctx)
+
+export const dynamicAllAgentsAutomatedInteractions =
+    aiAgentAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS,
+        )
+        .defineQuery(({ ctx }) => ({
+            measures: ['automatedInteractionsCount'],
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicAllAgentsAutomatedInteractionsQueryFactoryV2 = (
+    ctx: Context,
+) => dynamicAllAgentsAutomatedInteractions.build(ctx)

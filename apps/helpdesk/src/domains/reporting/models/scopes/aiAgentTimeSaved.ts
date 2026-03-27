@@ -57,3 +57,13 @@ export const overallTimeSavedByAgentPerChannel = aiAgentTimeSavedScope
 export const overallTimeSavedByAgentPerChannelQueryFactoryV2 = (
     ctx: AiAgentTimeSavedContext,
 ) => overallTimeSavedByAgentPerChannel.build(ctx)
+
+export const dynamicAiAgentTimeSaved = aiAgentTimeSavedScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_TIME_SAVED_BY_AGENT)
+    .defineQuery(({ ctx }) => ({
+        measures: ['averageTimeSavedByAgent'],
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicAiAgentTimeSavedQueryFactoryV2 = (ctx: Context) =>
+    dynamicAiAgentTimeSaved.build(ctx)

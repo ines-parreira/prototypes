@@ -14,10 +14,15 @@ import { useExportAiAgentAllAgentsToCSV } from 'pages/aiAgent/analyticsAiAgent/h
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import * as fileUtils from 'utils/file'
 
+import { useGetManagedDashboardsLayoutConfig } from '../../../../../domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
+
 jest.mock('@repo/feature-flags')
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/dashboards/useDashboardData')
 jest.mock('pages/aiAgent/analyticsOverview/utils/buildCustomDashboard')
+jest.mock(
+    'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig',
+)
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAutomatedInteractionsBySkillData',
 )
@@ -44,6 +49,9 @@ jest.mock('utils/file', () => ({
 const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 const mockedUseStatsFilters = jest.mocked(useStatsFilters)
 const mockedUseDashboardData = jest.mocked(useDashboardData)
+const mockedUseGetManagedDashboardsLayoutConfig = jest.mocked(
+    useGetManagedDashboardsLayoutConfig,
+)
 const mockedBuildKpiDashboard = jest.mocked(buildCustomDashboard)
 const mockedUseDownloadAutomatedInteractionsBySkillData = jest.mocked(
     useDownloadAutomatedInteractionsBySkillData,
@@ -86,6 +94,11 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
             children: [],
             emoji: null,
         } as any)
+
+        mockedUseGetManagedDashboardsLayoutConfig.mockReturnValue({
+            layoutConfig: { sections: [] } as any,
+            isLoading: false,
+        })
 
         mockedUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {
@@ -187,6 +200,21 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
+    it('should return isLoading as true when charts and dropdowns flag is loading', () => {
+        mockUseFlagWithLoading.mockImplementation((key) => {
+            if (
+                key ===
+                FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
+            )
+                return { value: true, isLoading: true }
+            return { value: true, isLoading: false }
+        })
+
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
     it('should return isLoading as true when KPI data is loading', () => {
         mockedUseDashboardData.mockReturnValue({
             files: {},
@@ -200,6 +228,14 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
     })
 
     it('should return isLoading as true when automated interactions by skill data is loading', () => {
+        mockUseFlagWithLoading.mockImplementation((key) => {
+            if (
+                key ===
+                FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
+            )
+                return { value: false, isLoading: false }
+            return { value: true, isLoading: false }
+        })
         mockedUseDownloadAutomatedInteractionsBySkillData.mockReturnValue({
             files: {},
             fileName: '',
@@ -212,6 +248,14 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
     })
 
     it('should return isLoading as true when automation rate time series data is loading', () => {
+        mockUseFlagWithLoading.mockImplementation((key) => {
+            if (
+                key ===
+                FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
+            )
+                return { value: false, isLoading: false }
+            return { value: true, isLoading: false }
+        })
         mockedUseDownloadAiAgentAutomationRateTimeSeriesData.mockReturnValue({
             files: {},
             fileName: '',
@@ -271,6 +315,39 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
         const fileNames = Object.keys(filesArg)
 
+        expect(fileNames.length).toBe(3)
+        expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
+        expect(
+            fileNames.some((name) =>
+                name.includes('all-agents-channel-performance'),
+            ),
+        ).toBe(true)
+        expect(
+            fileNames.some((name) =>
+                name.includes('all-agents-intent-performance'),
+            ),
+        ).toBe(true)
+    })
+
+    it('should include skill and timeseries files in the ZIP when new charts flag is disabled', async () => {
+        mockUseFlagWithLoading.mockImplementation((key) => {
+            if (
+                key ===
+                FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns
+            )
+                return { value: false, isLoading: false }
+            return { value: true, isLoading: false }
+        })
+
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
+
+        await act(async () => {
+            await result.current.triggerDownload()
+        })
+
+        const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+        const fileNames = Object.keys(filesArg)
+
         expect(fileNames.length).toBe(5)
         expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
         expect(
@@ -284,7 +361,9 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
             ),
         ).toBe(true)
         expect(
-            fileNames.some((name) => name.includes('channel-performance')),
+            fileNames.some((name) =>
+                name.includes('all-agents-channel-performance'),
+            ),
         ).toBe(true)
         expect(
             fileNames.some((name) =>
@@ -302,6 +381,7 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
             'ai-agent-all-agents',
             expect.any(Object),
+            true,
             true,
         )
     })

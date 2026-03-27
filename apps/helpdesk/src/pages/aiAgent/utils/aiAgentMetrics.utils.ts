@@ -32,7 +32,10 @@ import {
     useStatsTimeSeriesPerDimension,
 } from 'domains/reporting/hooks/useStatsTimeSeries'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
-import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
+import {
+    AutomationFeatureType,
+    AutomationSkillType,
+} from 'domains/reporting/models/scopes/constants'
 import type {
     BuiltQuery,
     Context,
@@ -49,6 +52,7 @@ type AutomationDimension =
     | 'automationFeatureType'
     | 'storeIntegrationId'
     | 'engagementType'
+    | 'aiAgentRole'
 type LineAutomationDimension = 'overall' | AutomationDimension
 
 export type BarChartMetricConfig = {
@@ -93,6 +97,11 @@ const MAP_AUTOMATION_FEATURE_NAME: Record<string, string> = {
     [AutomationFeatureType.ArticleRecommendation]: 'Article Recommendation',
 }
 
+const MAP_AI_AGENT_ROLE_NAME: Record<string, string> = {
+    [AutomationSkillType.AiAgentSupport]: 'Support Agent',
+    [AutomationSkillType.AiAgentSales]: 'Shopping Assistant',
+}
+
 export const formatChannelName = (channel: string): string => {
     const channelNames: Record<string, string> = {
         email: 'Email',
@@ -128,6 +137,8 @@ const formatDimensionName = (dimension: string) => {
             return 'Feature'
         case 'engagementType':
             return 'Engagement type'
+        case 'aiAgentRole':
+            return 'Role'
         default:
             return dimension
     }
@@ -192,6 +203,17 @@ const formatBarChartData = (
                             metricValue.dimension.toString(),
                             extra?.stores,
                         ),
+                        value: metricValue.value,
+                    })) ?? [],
+                isLoading: !!data?.isFetching,
+            }
+        case 'aiAgentRole':
+            return {
+                data:
+                    data?.data?.allValues?.map((metricValue) => ({
+                        name: MAP_AI_AGENT_ROLE_NAME[
+                            metricValue.dimension.toString()
+                        ],
                         value: metricValue.value,
                     })) ?? [],
                 isLoading: !!data?.isFetching,
@@ -310,6 +332,23 @@ export const useAutomationMetricPerStoreIntegrationId = (
     )
 }
 
+export const useAutomationMetricPerAiAgentRole = (
+    query: MetricQueryFactory,
+    filters: StatsFilters,
+    timezone: string,
+) => {
+    const data = useStatsMetricPerDimension(
+        query({
+            filters,
+            timezone,
+            dimensions: ['aiAgentRole'],
+        }),
+        'aiAgentRole',
+    )
+
+    return formatBarChartData(data, 'aiAgentRole')
+}
+
 export const getBarChartDataHooks = (
     query: MetricQueryFactory,
     dimensions: AutomationDimension[],
@@ -377,6 +416,19 @@ export const getBarChartDataHooks = (
                         configurableGraphType: ConfigurableGraphType.Bar,
                         useChartData: () =>
                             useAutomationMetricPerEngagementType(
+                                query,
+                                filters,
+                                timezone,
+                            ),
+                        period,
+                    }
+                case 'aiAgentRole':
+                    return {
+                        id: dimensionId,
+                        name: formatDimensionName(dimensionId),
+                        configurableGraphType: ConfigurableGraphType.Bar,
+                        useChartData: () =>
+                            useAutomationMetricPerAiAgentRole(
                                 query,
                                 filters,
                                 timezone,
@@ -507,6 +559,13 @@ const formatMultiTimeSeriesData = (
                       values: formatTimeSeriesValues(values[0]),
                   }))
                 : []
+        case 'aiAgentRole':
+            return data
+                ? Object.entries(data).map(([metricName, values]) => ({
+                      label: MAP_AI_AGENT_ROLE_NAME[metricName],
+                      values: formatTimeSeriesValues(values[0]),
+                  }))
+                : []
         default:
             return data
                 ? Object.entries(data).map(([metricName, values]) => ({
@@ -602,6 +661,27 @@ export const useAutomationTimeSeriesPerStoreIntegrationId = (
     }
 }
 
+export const useAutomationTimeSeriesPerAiAgentRole = (
+    query: MetricQueryFactory,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+) => {
+    const data = useStatsTimeSeriesPerDimension(
+        query({
+            filters,
+            timezone,
+            dimensions: ['aiAgentRole'],
+            granularity,
+        }),
+    )
+
+    return {
+        data: formatMultiTimeSeriesData(data.data, 'aiAgentRole'),
+        isLoading: data.isFetching,
+    }
+}
+
 export const getLineChartDataHooks = (
     trendQuery: MetricQueryFactory,
     timeSeriesQuery: MetricQueryFactory,
@@ -682,6 +762,20 @@ export const getLineChartDataHooks = (
                                 timezone,
                                 granularity,
                                 extra,
+                            ),
+                    }
+                case 'aiAgentRole':
+                    return {
+                        id: dimensionId,
+                        name: formatDimensionName(dimensionId),
+                        configurableGraphType:
+                            ConfigurableGraphType.MultipleTimeSeries,
+                        useChartData: () =>
+                            useAutomationTimeSeriesPerAiAgentRole(
+                                timeSeriesQuery,
+                                filters,
+                                timezone,
+                                granularity,
                             ),
                     }
             }

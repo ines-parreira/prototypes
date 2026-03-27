@@ -12,6 +12,10 @@ import {
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent/charts//AnalyticsAiAgentCoverageRateCard'
+import {
+    ALL_AGENTS_BAR_CHART_METRICS,
+    AnalyticsAiAgentAllAgentsConfigurableBar,
+} from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsConfigurableBar/AnalyticsAiAgentAllAgentsConfigurableBar'
 import { AnalyticsAiAgentAllAgentsCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsCsatCard'
 import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
@@ -32,16 +36,9 @@ import { fetchAiAgentClosedTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/h
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchAiAgentZeroTouchTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
-import { AnalyticsOverviewAutomatedInteractionsComboChart } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsComboChart'
+import { fetchConfigurableBarChartDownloadData } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
 
-// Mock fetch functions - these will be replaced with real data fetchers later
-const fetchAllAgentsTrendBreakdown = async () =>
-    ({
-        isLoading: false,
-        fileName: 'all-agents-breakdown.csv',
-        files: {},
-    }) as any
 const fetchAllAgentsTrendData = async () =>
     ({
         isLoading: false,
@@ -62,8 +59,8 @@ export enum AnalyticsAiAgentAllAgentsChart {
     CostSavedCard = 'cost_saved_card',
     DecreaseInResolutionTimeCard = 'decrease_in_resolution_time_card',
     DecreaseInFRTCard = 'decrease_in_frt_all_agents_card',
-    AllAgentsTrendComboChart = 'all_agents_trend_combo_chart',
-    AllAgentsTrendLineChart = 'all_agents_trend_line_chart',
+    ConfigurableBarGraph = 'all_agents_configurable_bar_graph',
+    ConfigurableLineGraph = 'all_agents_configurable_line_graph',
     ChannelPerformanceTable = 'channel_performance_table',
     IntentPerformanceTable = 'intent_performance_table',
 }
@@ -267,31 +264,33 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 metricFormat: 'duration',
                 interpretAs: 'more-is-better',
             },
-            [AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart]: {
-                chartComponent:
-                    AnalyticsOverviewAutomatedInteractionsComboChart,
-                label: 'Automated interactions',
+            [AnalyticsAiAgentAllAgentsChart.ConfigurableBarGraph]: {
+                chartComponent: AnalyticsAiAgentAllAgentsConfigurableBar,
+                label: 'All Agents Configurable Bar',
                 csvProducer: [
                     {
-                        type: DataExportFormat.Table,
-                        fetch: fetchAllAgentsTrendBreakdown,
+                        type: DataExportFormat.ConfigurableBarGraph,
+                        fetch: fetchConfigurableBarChartDownloadData(
+                            ALL_AGENTS_BAR_CHART_METRICS,
+                        ),
                     },
                 ],
-                description: 'Breakdown of automated interactions by skill',
+                description: 'Configurable bar for all AI agent metrics',
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
             },
-            [AnalyticsAiAgentAllAgentsChart.AllAgentsTrendLineChart]: {
+            [AnalyticsAiAgentAllAgentsChart.ConfigurableLineGraph]: {
                 chartComponent: AnalyticsAllAgentsLineChart,
-                label: 'Automation rate',
+                label: 'All Agents Configurable Line',
                 csvProducer: [
                     {
                         type: DataExportFormat.Table,
                         fetch: fetchAllAgentsTrendData,
                     },
                 ],
-                description: 'Automation rate trend over time',
+                description:
+                    'Configurable line for all AI agent metrics over time',
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',

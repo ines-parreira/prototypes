@@ -4,6 +4,7 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
+import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import { ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentAllAgentsLayoutConfig'
@@ -13,6 +14,10 @@ import { useDownloadAllAgentsPerformanceByIntentData } from 'pages/aiAgent/analy
 import { useDownloadAutomatedInteractionsBySkillData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAutomatedInteractionsBySkillData'
 import { useDownloadChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData'
 import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
+import {
+    ManagedDashboardId,
+    ManagedDashboardsTabId,
+} from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { saveZippedFiles } from 'utils/file'
 
@@ -23,23 +28,38 @@ export const useExportAiAgentAllAgentsToCSV = () => {
         value: isAnalyticsDashboardsTrendCardsEnabled,
         isLoading: isTrendCardsFlagLoading,
     } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+    const { value: isNewChartsEnabled, isLoading: isChartsFlagLoading } =
+        useFlagWithLoading(
+            FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
+        )
     const {
         value: isAnalyticsDashboardsTablesEnabled,
         isLoading: isTablesFlagLoading,
     } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
     const { cleanStatsFilters } = useStatsFilters()
 
+    const { layoutConfig } = useGetManagedDashboardsLayoutConfig({
+        dashboardId: ManagedDashboardId.AiAgentAnalytics,
+        defaultLayoutConfig: ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT,
+        tabId: ManagedDashboardsTabId.AllAgents,
+    })
+
     const allAgentsDashboard = useMemo(
         () =>
             buildCustomDashboard(
                 REPORT_NAME,
-                ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT,
+                layoutConfig,
                 isAnalyticsDashboardsTrendCardsEnabled,
+                isNewChartsEnabled,
             ),
-        [isAnalyticsDashboardsTrendCardsEnabled],
+        [
+            isAnalyticsDashboardsTrendCardsEnabled,
+            layoutConfig,
+            isNewChartsEnabled,
+        ],
     )
 
-    const { files: trendCardsFiles, isLoading: isKpiLoading } =
+    const { files: dashboardDataFiles, isLoading: isKpiLoading } =
         useDashboardData(
             allAgentsDashboard,
             true,
@@ -67,25 +87,35 @@ export const useExportAiAgentAllAgentsToCSV = () => {
         isKpiLoading ||
         isTrendCardsFlagLoading ||
         isTablesFlagLoading ||
-        automatedInteractionsBySkillData.isLoading ||
-        automationRateTimeSeriesData.isLoading ||
+        isChartsFlagLoading ||
+        (!isNewChartsEnabled &&
+            (automatedInteractionsBySkillData.isLoading ||
+                automationRateTimeSeriesData.isLoading)) ||
         channelPerformanceData.isLoading ||
         intentPerformanceData.isLoading
 
     const files = useMemo(
-        () => ({
-            ...trendCardsFiles,
-            ...automatedInteractionsBySkillData.files,
-            ...automationRateTimeSeriesData.files,
-            ...channelPerformanceData.files,
-            ...intentPerformanceData.files,
-        }),
+        () =>
+            isNewChartsEnabled
+                ? {
+                      ...dashboardDataFiles,
+                      ...channelPerformanceData.files,
+                      ...intentPerformanceData.files,
+                  }
+                : {
+                      ...dashboardDataFiles,
+                      ...automatedInteractionsBySkillData.files,
+                      ...automationRateTimeSeriesData.files,
+                      ...channelPerformanceData.files,
+                      ...intentPerformanceData.files,
+                  },
         [
-            trendCardsFiles,
+            dashboardDataFiles,
             automatedInteractionsBySkillData.files,
             automationRateTimeSeriesData.files,
             channelPerformanceData.files,
             intentPerformanceData.files,
+            isNewChartsEnabled,
         ],
     )
 

@@ -11,6 +11,10 @@ export const METRIC_NAMES = {
         'ai-agent-dynamic-shopping-assistant-automated-interactions',
     AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES:
         'ai-agent-dynamic-shopping-assistant-automated-interactions-timeseries',
+    AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS:
+        'ai-agent-dynamic-all-agents-automated-interactions',
+    AI_AGENT_DYNAMIC_TIME_SAVED_BY_AGENT:
+        'ai-agent-dynamic-time-saved-by-agent',
     AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_TOTAL_SALES_AMOUNT:
         'ai-agent-dynamic-shopping-assistant-total-sales-amount',
     AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_TOTAL_SALES_AMOUNT_TIMESERIES:
@@ -42,6 +46,8 @@ export const METRIC_NAMES = {
         'ai-agent-dynamic-automation-rate',
     AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE_TIMESERIES:
         'ai-agent-dynamic-automation-rate-timeseries',
+    AI_AGENT_DYNAMIC_AI_AGENT_AUTOMATION_RATE:
+        'ai-agent-dynamic-ai-agent-automation-rate',
     AI_AGENT_AUTOMATION_RATE_PER_FEATURE:
         'ai-agent-automation-rate-per-feature',
     OVERALL_AUTOMATION_RATE_PER_ORDER_MANAGEMENT_TYPE:
@@ -1022,6 +1028,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_AUTOMATION_RATE_PER_FEATURE,
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE,
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATION_RATE_TIMESERIES,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_AI_AGENT_AUTOMATION_RATE,
     ],
     [MetricScope.OverallAutomatedInteractions]: [
         METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS,
@@ -1076,12 +1083,14 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS,
     ],
     [MetricScope.AiAgentDecreaseInFirstResponseTime]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_CHANNEL,
     ],
     [MetricScope.AiAgentTimeSaved]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_TIME_SAVED_BY_AGENT,
     ],
     [MetricScope.FlowDataset]: [
         METRIC_NAMES.FLOW_DATASET_HANDOVER_INTERACTIONS,

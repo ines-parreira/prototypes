@@ -10,6 +10,8 @@ import {
     aiSupportAgentAutomatedInteractionsPerChannelQueryFactoryV2,
     dynamicAiShoppingAgentAutomatedInteractionsTimeseries,
     dynamicAiShoppingAgentAutomatedInteractionsTimeseriesQueryFactoryV2,
+    dynamicAllAgentsAutomatedInteractions,
+    dynamicAllAgentsAutomatedInteractionsQueryFactoryV2,
     dynamicShoppingAssistantAutomatedInteractions,
     dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2,
 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
@@ -579,6 +581,118 @@ describe('aiSupportAgentAutomatedInteractionsPerChannel', () => {
             ).toEqual(
                 aiSupportAgentAutomatedInteractionsPerChannel.build(context),
             )
+        })
+    })
+
+    describe('dynamicAllAgentsAutomatedInteractions', () => {
+        const baseFilters: ApiStatsFilters = {
+            period: {
+                start_datetime: '2025-09-03T00:00:00.000',
+                end_datetime: '2025-09-03T23:59:59.000',
+            },
+        }
+
+        const periodFilters = [
+            {
+                member: 'periodStart',
+                operator: 'afterDate',
+                values: ['2025-09-03T00:00:00.000'],
+            },
+            {
+                member: 'periodEnd',
+                operator: 'beforeDate',
+                values: ['2025-09-03T23:59:59.000'],
+            },
+        ]
+
+        const context = {
+            filters: baseFilters,
+            timezone: 'utc',
+        }
+
+        describe('dynamicAllAgentsAutomatedInteractions', () => {
+            it('creates query without dimensions when no dimension provided', () => {
+                expect(
+                    dynamicAllAgentsAutomatedInteractions.build({
+                        ...context,
+                        dimensions: [],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'ai-agent-dynamic-all-agents-automated-interactions',
+                    scope: 'ai-agent-automated-interactions',
+                    measures: ['automatedInteractionsCount'],
+                    dimensions: [],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                })
+            })
+
+            it('creates query with the provided dimension', () => {
+                expect(
+                    dynamicAllAgentsAutomatedInteractions.build({
+                        ...context,
+                        dimensions: ['channel'],
+                    }),
+                ).toEqual({
+                    metricName:
+                        'ai-agent-dynamic-all-agents-automated-interactions',
+                    scope: 'ai-agent-automated-interactions',
+                    measures: ['automatedInteractionsCount'],
+                    dimensions: ['channel'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                })
+            })
+        })
+
+        describe('dynamicAllAgentsAutomatedInteractionsQueryFactoryV2', () => {
+            it('returns query with empty dimensions when no dimension provided', () => {
+                const result =
+                    dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
+                        ...context,
+                        dimensions: [],
+                    })
+
+                expect(result).toEqual({
+                    metricName:
+                        'ai-agent-dynamic-all-agents-automated-interactions',
+                    scope: 'ai-agent-automated-interactions',
+                    measures: ['automatedInteractionsCount'],
+                    dimensions: [],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                })
+            })
+
+            it('returns query with the provided dimension', () => {
+                const result =
+                    dynamicAllAgentsAutomatedInteractionsQueryFactoryV2({
+                        ...context,
+                        dimensions: ['channel'],
+                    })
+
+                expect(result).toEqual({
+                    metricName:
+                        'ai-agent-dynamic-all-agents-automated-interactions',
+                    scope: 'ai-agent-automated-interactions',
+                    measures: ['automatedInteractionsCount'],
+                    dimensions: ['channel'],
+                    timezone: 'utc',
+                    filters: periodFilters,
+                })
+            })
+
+            it('returns the same result as calling build directly with the dimension', () => {
+                const ctx = {
+                    ...context,
+                    dimensions: ['storeIntegrationId'] as const,
+                }
+
+                expect(
+                    dynamicAllAgentsAutomatedInteractionsQueryFactoryV2(ctx),
+                ).toEqual(dynamicAllAgentsAutomatedInteractions.build(ctx))
+            })
         })
     })
 })

@@ -93,13 +93,13 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                 items: [
                     {
                         chartId:
-                            AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart,
+                            AnalyticsAiAgentAllAgentsChart.ConfigurableBarGraph,
                         gridSize: 6,
                         visibility: true,
                     },
                     {
                         chartId:
-                            AnalyticsAiAgentAllAgentsChart.AllAgentsTrendLineChart,
+                            AnalyticsAiAgentAllAgentsChart.ConfigurableLineGraph,
                         gridSize: 6,
                         visibility: true,
                     },

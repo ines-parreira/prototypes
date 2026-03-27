@@ -150,7 +150,7 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             const visualizationsSection =
                 ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[1]
             expect(visualizationsSection.items[0].chartId).toBe(
-                AnalyticsAiAgentAllAgentsChart.AllAgentsTrendComboChart,
+                AnalyticsAiAgentAllAgentsChart.ConfigurableBarGraph,
             )
             expect(visualizationsSection.items[0].gridSize).toBe(6)
         })
@@ -159,7 +159,7 @@ describe('aiAgentAllAgentsLayoutConfig', () => {
             const visualizationsSection =
                 ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT.sections[1]
             expect(visualizationsSection.items[1].chartId).toBe(
-                AnalyticsAiAgentAllAgentsChart.AllAgentsTrendLineChart,
+                AnalyticsAiAgentAllAgentsChart.ConfigurableLineGraph,
             )
             expect(visualizationsSection.items[1].gridSize).toBe(6)
         })

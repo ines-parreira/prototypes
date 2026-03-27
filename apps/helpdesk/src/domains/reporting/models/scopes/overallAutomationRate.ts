@@ -76,6 +76,25 @@ export const dynamicOverallAutomationRate = overallAutomationRateScope
 export const dynamicOverallAutomationRateQueryFactoryV2 = (ctx: Context) =>
     dynamicOverallAutomationRate.build(ctx)
 
+export const dynamicAiAgentAutomationRate = overallAutomationRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_AI_AGENT_AUTOMATION_RATE)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['automationRate'],
+        filters: createScopeFilters(
+            {
+                ...ctx.filters,
+                automationFeatureType: withLogicalOperator([
+                    AutomationFeatureType.AiAgent,
+                ]),
+            },
+            config,
+        ),
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicAiAgentAutomationRateQueryFactoryV2 = (ctx: Context) =>
+    dynamicAiAgentAutomationRate.build(ctx)
+
 export const overallAutomationRatePerOrderManagementType =
     overallAutomationRateScope
         .defineMetricName(
