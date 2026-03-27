@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import type { MetricTrendWithCurrency } from 'domains/reporting/hooks/useMetricTrend'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
-import { AnalyticsShoppingAssistantLineChart } from '../AnalyticsShoppingAssistantLineChart'
+import { DEPRECATED_AnalyticsShoppingAssistantLineChart } from '../DEPRECATED_AnalyticsShoppingAssistantLineChart'
 
 jest.mock(
     'domains/reporting/hooks/support-performance/useStatsFilters',
@@ -73,9 +73,9 @@ jest.mock(
     }),
 )
 
-describe('AnalyticsShoppingAssistantLineChart', () => {
+describe('DEPRECATED_AnalyticsShoppingAssistantLineChart', () => {
     it('should render ShoppingAssistantLineChart component', () => {
-        render(<AnalyticsShoppingAssistantLineChart />)
+        render(<DEPRECATED_AnalyticsShoppingAssistantLineChart />)
 
         expect(
             screen.getByText('ShoppingAssistantLineChart'),
@@ -83,7 +83,7 @@ describe('AnalyticsShoppingAssistantLineChart', () => {
     })
 
     it('should pass filters to ShoppingAssistantLineChart', () => {
-        render(<AnalyticsShoppingAssistantLineChart />)
+        render(<DEPRECATED_AnalyticsShoppingAssistantLineChart />)
 
         expect(screen.getByTestId('filters-passed')).toHaveTextContent(
             'filters-present',

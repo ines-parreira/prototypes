@@ -11,6 +11,8 @@ import {
     dynamicOrdersInfluencedCountQueryFactoryV2,
     dynamicTotalSalesAmount,
     dynamicTotalSalesAmountQueryFactoryV2,
+    dynamicTotalSalesAmountTimeseries,
+    dynamicTotalSalesAmountTimeseriesQueryFactoryV2,
     medianPurchaseTime,
     medianPurchaseTimeQueryV2Factory,
     totalSalesAmountUsd,
@@ -659,5 +661,116 @@ describe('aiAgentSalesOrdersInfluencedPerChannel', () => {
                 aiAgentSalesOrdersInfluencedPerChannelQueryV2Factory(context),
             ).toEqual(aiAgentSalesOrdersInfluencedPerChannel.build(context))
         })
+    })
+})
+
+describe('dynamicTotalSalesAmountTimeseries', () => {
+    const filters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const context = { filters, timezone: 'utc' }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('creates query with time_dimensions using granularity from context', () => {
+        expect(
+            dynamicTotalSalesAmountTimeseries.build({
+                ...context,
+                granularity: 'day' as AggregationWindow,
+                dimensions: [],
+            }),
+        ).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-total-sales-amount-timeseries',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['totalSalesAmount'],
+            time_dimensions: [
+                { dimension: 'eventDatetime', granularity: 'day' },
+            ],
+            dimensions: [],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    it('creates query with the provided dimensions', () => {
+        expect(
+            dynamicTotalSalesAmountTimeseries.build({
+                ...context,
+                granularity: 'day' as AggregationWindow,
+                dimensions: ['channel'],
+            }),
+        ).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-total-sales-amount-timeseries',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['totalSalesAmount'],
+            time_dimensions: [
+                { dimension: 'eventDatetime', granularity: 'day' },
+            ],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+})
+
+describe('dynamicTotalSalesAmountTimeseriesQueryFactoryV2', () => {
+    const filters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const context = { filters, timezone: 'utc' }
+
+    it('returns the same result as calling build directly', () => {
+        const ctx = {
+            ...context,
+            granularity: 'day' as AggregationWindow,
+            dimensions: [] as const,
+        }
+
+        expect(dynamicTotalSalesAmountTimeseriesQueryFactoryV2(ctx)).toEqual(
+            dynamicTotalSalesAmountTimeseries.build(ctx),
+        )
+    })
+
+    it('returns query with time_dimensions when granularity is provided', () => {
+        const result = dynamicTotalSalesAmountTimeseriesQueryFactoryV2({
+            ...context,
+            granularity: 'week' as AggregationWindow,
+            dimensions: [],
+        })
+
+        expect(result.time_dimensions).toEqual([
+            { dimension: 'eventDatetime', granularity: 'week' },
+        ])
+    })
+
+    it('returns query with the provided dimensions', () => {
+        const result = dynamicTotalSalesAmountTimeseriesQueryFactoryV2({
+            ...context,
+            granularity: 'day' as AggregationWindow,
+            dimensions: ['channel'],
+        })
+
+        expect(result.dimensions).toEqual(['channel'])
     })
 })

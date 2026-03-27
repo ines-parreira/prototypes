@@ -137,3 +137,22 @@ export const aiAgentSalesOrdersInfluencedPerChannel =
 export const aiAgentSalesOrdersInfluencedPerChannelQueryV2Factory = (
     ctx: AiSalesAgentOrdersPerformanceContext,
 ) => aiAgentSalesOrdersInfluencedPerChannel.build(ctx)
+
+export const dynamicTotalSalesAmountTimeseries =
+    aiSalesAgentOrdersPerformanceScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_TOTAL_SALES_AMOUNT_TIMESERIES,
+        )
+        .defineQuery(({ ctx }) => ({
+            measures: ['totalSalesAmount'],
+            time_dimensions: [
+                {
+                    dimension: 'eventDatetime',
+                    granularity: ctx.granularity,
+                },
+            ],
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicTotalSalesAmountTimeseriesQueryFactoryV2 = (ctx: Context) =>
+    dynamicTotalSalesAmountTimeseries.build(ctx)

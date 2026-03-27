@@ -69,6 +69,25 @@ export const dynamicRevenuePerInteraction = aiSalesAgentActivityScope
 export const dynamicRevenuePerInteractionQueryFactoryV2 = (ctx: Context) =>
     dynamicRevenuePerInteraction.build(ctx)
 
+export const dynamicRevenuePerInteractionTimeseries = aiSalesAgentActivityScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION_TIMESERIES,
+    )
+    .defineQuery(({ ctx }) => ({
+        measures: ['revenuePerInteraction'],
+        time_dimensions: [
+            {
+                dimension: 'eventDatetime',
+                granularity: ctx.granularity,
+            },
+        ],
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicRevenuePerInteractionTimeseriesQueryFactoryV2 = (
+    ctx: Context,
+) => dynamicRevenuePerInteractionTimeseries.build(ctx)
+
 export const aiAgentSalesRevenuePerInteractionPerChannel =
     aiSalesAgentActivityScope
         .defineMetricName(

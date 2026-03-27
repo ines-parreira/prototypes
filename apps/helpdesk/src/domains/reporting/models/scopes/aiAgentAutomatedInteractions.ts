@@ -130,3 +130,32 @@ export const aiSupportAgentAutomatedInteractionsPerChannel =
 export const aiSupportAgentAutomatedInteractionsPerChannelQueryFactoryV2 = (
     ctx: Context,
 ) => aiSupportAgentAutomatedInteractionsPerChannel.build(ctx)
+
+export const dynamicAiShoppingAgentAutomatedInteractionsTimeseries =
+    aiAgentAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['automatedInteractionsCount'],
+            filters: createScopeFilters(
+                {
+                    ...ctx.filters,
+                    aiAgentRole: withLogicalOperator([
+                        AutomationSkillType.AiAgentSales,
+                    ]),
+                },
+                config,
+            ),
+            time_dimensions: [
+                {
+                    dimension: 'eventDatetime',
+                    granularity: ctx.granularity,
+                },
+            ],
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicAiShoppingAgentAutomatedInteractionsTimeseriesQueryFactoryV2 =
+    (ctx: AiAgentAutomatedInteractionsContext) =>
+        dynamicAiShoppingAgentAutomatedInteractionsTimeseries.build(ctx)

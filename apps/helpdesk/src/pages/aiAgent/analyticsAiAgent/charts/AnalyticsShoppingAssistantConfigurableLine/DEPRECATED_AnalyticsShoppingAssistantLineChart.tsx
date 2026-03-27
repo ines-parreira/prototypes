@@ -4,7 +4,7 @@ import { useGmvInfluenceOverTimeSeries } from 'domains/reporting/pages/automate/
 
 import { ShoppingAssistantLineChart } from '../../components/AiAgentLineChart/ShoppingAssistantLineChart'
 
-export const AnalyticsShoppingAssistantLineChart = () => {
+export const DEPRECATED_AnalyticsShoppingAssistantLineChart = () => {
     const { statsFilters, userTimezone, granularity } = useAutomateFilters()
 
     const gmvTrend = useGmvInfluencedTrend(statsFilters, userTimezone)

@@ -18,7 +18,6 @@ import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAge
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
 import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountUsageCard'
-import { AnalyticsShoppingAssistantLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsShoppingAssistantLineChart'
 import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsAiAgentOrdersInfluencedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentOrdersInfluencedCard'
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
@@ -31,6 +30,10 @@ import {
     AnalyticsShoppingAssistantConfigurableBar,
     SHOPPING_ASSISTANT_BAR_CHART_METRICS,
 } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsShoppingAssistantConfigurableBar/AnalyticsShoppingAssistantConfigurableBar'
+import {
+    AnalyticsShoppingAssistantConfigurableLine,
+    SHOPPING_ASSISTANT_LINE_CHART_METRICS,
+} from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsShoppingAssistantConfigurableLine/AnalyticsShoppingAssistantConfigurableLine'
 import { fetchAiSalesAgentConversionRateTrend } from 'pages/aiAgent/analyticsAiAgent/charts/useAiSalesAgentConversionRateTrend'
 import { ShoppingAssistantChannelTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTableWrapper'
 import { ShoppingAssistantTopProductsTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable'
@@ -44,16 +47,11 @@ import { fetchAiAgentOrdersInfluencedTrend } from 'pages/aiAgent/analyticsAiAgen
 import { fetchAiAgentProductRecommendationsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentProductRecommendationsTrend'
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
-import { fetchConfigurableBarChartDownloadData } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import {
+    fetchConfigurableBarChartDownloadData,
+    fetchConfigurableLineChartDownloadData,
+} from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
-
-// Mock fetch functions - these will be replaced with real data fetchers later
-const fetchShoppingAssistantTrendData = async () =>
-    ({
-        isLoading: false,
-        fileName: 'shopping-assistant-trend.csv',
-        files: {},
-    }) as any
 
 export enum AnalyticsAiAgentShoppingAssistantChart {
     TotalSalesCard = 'total_sales_card',
@@ -360,12 +358,14 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentShoppingAssistantChart.ConfigurableLineGraph]: {
-                chartComponent: AnalyticsShoppingAssistantLineChart,
+                chartComponent: AnalyticsShoppingAssistantConfigurableLine,
                 label: 'Shopping Assistant Configurable Line',
                 csvProducer: [
                     {
-                        type: DataExportFormat.Table,
-                        fetch: fetchShoppingAssistantTrendData,
+                        type: DataExportFormat.ConfigurableLineGraph,
+                        fetch: fetchConfigurableLineChartDownloadData(
+                            SHOPPING_ASSISTANT_LINE_CHART_METRICS,
+                        ),
                     },
                 ],
                 description:
