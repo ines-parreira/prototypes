@@ -25,7 +25,13 @@ import {
     logEvent,
 } from '@repo/logging'
 import type { SegmentEvent } from '@repo/logging'
-import { envVars, getEnvironment, isProduction, isStaging } from '@repo/utils'
+import {
+    envVars,
+    getEnvironment,
+    identifyUser as identifyHotjarUser,
+    isProduction,
+    isStaging,
+} from '@repo/utils'
 
 import { store } from 'common/store'
 import type { EditableUserProfile } from 'config/types/user'
@@ -37,7 +43,6 @@ import {
 import { notify } from 'state/notifications/actions'
 import type { RootState } from 'state/types'
 import { transformSystemMessagesToNotifications } from 'utils'
-import { identifyUser as identifyHotjarUser } from 'utils/hotjar'
 import { initSDKs } from 'utils/sdk'
 
 const initMoment = (currentUser: EditableUserProfile) => {

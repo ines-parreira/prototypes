@@ -10,7 +10,6 @@ import { user } from 'fixtures/users'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { GorgiasInitialState, InitialReactQueryState } from 'types'
-import { identifyUser } from 'utils/hotjar'
 import { initSDKs } from 'utils/sdk'
 
 type fromJSType = typeof fromJS
@@ -55,12 +54,12 @@ jest.mock('state/billing/selectors', () => ({
 jest.mock('utils/sdk')
 jest.mock('@repo/logging')
 jest.mock('@repo/feature-flags')
-jest.mock('utils/hotjar')
 jest.mock('state/notifications/actions')
 
 jest.mock('@repo/utils')
 const envVarsMock = envUtils.envVars as envUtils.EnvVars
 const getEnvironmentMock = assumeMock(envUtils.getEnvironment)
+const identifyHotjarUserMock = assumeMock(envUtils.identifyUser)
 const isDevelopmentMock = assumeMock(envUtils.isDevelopment)
 const isStagingMock = assumeMock(envUtils.isStaging)
 const isProductionMock = assumeMock(envUtils.isProduction)
@@ -70,6 +69,7 @@ const logEventMock = assumeMock(logging.logEvent)
 describe('init', () => {
     beforeEach(() => {
         getEnvironmentMock.mockReturnValue(envUtils.GorgiasUIEnv.Development)
+        identifyHotjarUserMock.mockClear()
         isDevelopmentMock.mockReturnValue(false)
         isStagingMock.mockReturnValue(false)
         isProductionMock.mockReturnValue(false)
@@ -191,7 +191,7 @@ describe('init', () => {
         it('should identify hotjar user', () => {
             initApp()
 
-            expect(identifyUser).toHaveBeenCalledWith({
+            expect(identifyHotjarUserMock).toHaveBeenCalledWith({
                 serverVersion: defaultGorgiasRelease,
                 clientVersion: defaultWebAppRelease,
                 currentUser: defaultGorgiasState.currentUser,
