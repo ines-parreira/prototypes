@@ -386,188 +386,198 @@ export const Infobar = ({
                         )}
                     </div>
                 )}
-
-                <div className={css.content}>
-                    {mode === 'loading' ? (
-                        <Loader />
-                    ) : mode === 'selected' ? (
-                        <>
-                            <div className="m-3">
-                                <Button
-                                    className={css.selectionBackButton}
-                                    intent="secondary"
-                                    onClick={resetSelected}
-                                    leadingIcon="arrow_back"
+                {!hasUIVisionMilestone2 && (
+                    <div className={css.content}>
+                        {mode === 'loading' ? (
+                            <Loader />
+                        ) : mode === 'selected' ? (
+                            <>
+                                <div className="m-3">
+                                    <Button
+                                        className={css.selectionBackButton}
+                                        intent="secondary"
+                                        onClick={resetSelected}
+                                        leadingIcon="arrow_back"
+                                    >
+                                        Back
+                                    </Button>
+                                    <InfobarCustomerActions
+                                        customer={customer}
+                                        sources={sources}
+                                        selectedCustomer={selectedCustomer}
+                                        toggleMergeCustomerModal={(
+                                            showMergeCustomerModal: boolean,
+                                        ) =>
+                                            setShowMergeCustomerModal(
+                                                showMergeCustomerModal,
+                                            )
+                                        }
+                                        setCustomer={handleSetCustomer}
+                                    />
+                                </div>
+                                <ActionButtonContext.Provider
+                                    value={{
+                                        actionError: MERGE_ERROR_MESSAGE,
+                                    }}
                                 >
-                                    Back
-                                </Button>
-                                <InfobarCustomerActions
-                                    customer={customer}
-                                    sources={sources}
-                                    selectedCustomer={selectedCustomer}
-                                    toggleMergeCustomerModal={(
-                                        showMergeCustomerModal: boolean,
-                                    ) =>
-                                        setShowMergeCustomerModal(
-                                            showMergeCustomerModal,
-                                        )
-                                    }
-                                    setCustomer={handleSetCustomer}
+                                    <InfobarCustomerInfo
+                                        isEditing={isEditing}
+                                        widgets={widgets}
+                                        sources={sources
+                                            .setIn(
+                                                ['ticket', 'customer'],
+                                                selectedCustomer,
+                                            )
+                                            .set('customer', selectedCustomer)}
+                                        customer={selectedCustomer}
+                                        onEditCustomer={handleEditCustomer}
+                                        onSyncToShopify={handleSyncToShopify}
+                                    />
+                                    <MergeCustomersContainer
+                                        isTicketContext={
+                                            !(
+                                                sources.get(
+                                                    'ticket',
+                                                    fromJS({}),
+                                                ) as Map<any, any>
+                                            ).isEmpty()
+                                        }
+                                        display={showMergeCustomerModal}
+                                        destinationCustomer={customer}
+                                        sourceCustomer={selectedCustomer}
+                                        onSuccess={() => {
+                                            returnToCurrentCustomerProfile()
+                                        }}
+                                        onClose={() => {
+                                            setShowMergeCustomerModal(false)
+                                        }}
+                                    />
+                                </ActionButtonContext.Provider>
+                            </>
+                        ) : mode === 'results' ? (
+                            <>
+                                <div className="m-3">
+                                    <Button
+                                        intent="secondary"
+                                        onClick={() => resetSearch()}
+                                        leadingIcon="arrow_back"
+                                    >
+                                        Back
+                                    </Button>
+                                </div>
+                                <InfobarSearchResultsList
+                                    errorMessage={searchErrorMessage}
+                                    searchResults={searchResults}
+                                    defaultCustomerId={defaultCustomerId}
+                                    onCustomerClick={onSearchResultClick}
                                 />
-                            </div>
-                            <ActionButtonContext.Provider
-                                value={{
-                                    actionError: MERGE_ERROR_MESSAGE,
-                                }}
-                            >
+                            </>
+                        ) : identifier ? (
+                            <>
                                 <InfobarCustomerInfo
                                     isEditing={isEditing}
                                     widgets={widgets}
-                                    sources={sources
-                                        .setIn(
-                                            ['ticket', 'customer'],
-                                            selectedCustomer,
-                                        )
-                                        .set('customer', selectedCustomer)}
-                                    customer={selectedCustomer}
+                                    sources={sources}
+                                    customer={customer}
                                     onEditCustomer={handleEditCustomer}
                                     onSyncToShopify={handleSyncToShopify}
                                 />
-                                <MergeCustomersContainer
-                                    isTicketContext={
-                                        !(
-                                            sources.get(
-                                                'ticket',
-                                                fromJS({}),
-                                            ) as Map<any, any>
-                                        ).isEmpty()
-                                    }
-                                    display={showMergeCustomerModal}
-                                    destinationCustomer={customer}
-                                    sourceCustomer={selectedCustomer}
-                                    onSuccess={() => {
-                                        returnToCurrentCustomerProfile()
-                                    }}
-                                    onClose={() => {
-                                        setShowMergeCustomerModal(false)
-                                    }}
-                                />
-                            </ActionButtonContext.Provider>
-                        </>
-                    ) : mode === 'results' ? (
-                        <>
-                            <div className="m-3">
-                                <Button
-                                    intent="secondary"
-                                    onClick={() => resetSearch()}
-                                    leadingIcon="arrow_back"
-                                >
-                                    Back
-                                </Button>
-                            </div>
-                            <InfobarSearchResultsList
-                                errorMessage={searchErrorMessage}
-                                searchResults={searchResults}
-                                defaultCustomerId={defaultCustomerId}
-                                onCustomerClick={onSearchResultClick}
-                            />
-                        </>
-                    ) : identifier ? (
-                        <>
-                            <InfobarCustomerInfo
-                                isEditing={isEditing}
-                                widgets={widgets}
-                                sources={sources}
-                                customer={customer}
-                                onEditCustomer={handleEditCustomer}
-                                onSyncToShopify={handleSyncToShopify}
-                            />
-                            {!suggestedCustomer.isEmpty() &&
-                                !isWidgetEditing && (
-                                    <>
-                                        <div className="d-none d-md-block">
-                                            <div
-                                                className={
-                                                    css.infobarSectionSeparator
-                                                }
-                                            />
-                                            <div
-                                                className={
-                                                    css.suggestedCustomer
-                                                }
-                                            >
-                                                <h4>
-                                                    Merge customer profiles?
-                                                </h4>
-                                                <p>
-                                                    Another customer profile
-                                                    looks similar to this one.
-                                                    Merging customer profiles
-                                                    gives you a unified customer
-                                                    view.
-                                                </p>
-                                                <Button
-                                                    className="mr-2"
-                                                    onClick={handleMergeClick}
-                                                    leadingIcon="call_merge"
+                                {!suggestedCustomer.isEmpty() &&
+                                    !isWidgetEditing && (
+                                        <>
+                                            <div className="d-none d-md-block">
+                                                <div
+                                                    className={
+                                                        css.infobarSectionSeparator
+                                                    }
+                                                />
+                                                <div
+                                                    className={
+                                                        css.suggestedCustomer
+                                                    }
                                                 >
-                                                    Merge
-                                                </Button>
+                                                    <h4>
+                                                        Merge customer profiles?
+                                                    </h4>
+                                                    <p>
+                                                        Another customer profile
+                                                        looks similar to this
+                                                        one. Merging customer
+                                                        profiles gives you a
+                                                        unified customer view.
+                                                    </p>
+                                                    <Button
+                                                        className="mr-2"
+                                                        onClick={
+                                                            handleMergeClick
+                                                        }
+                                                        leadingIcon="call_merge"
+                                                    >
+                                                        Merge
+                                                    </Button>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <ActionButtonContext.Provider
-                                            value={{
-                                                actionError:
-                                                    MERGE_ERROR_MESSAGE,
-                                            }}
-                                        >
-                                            <InfobarCustomerInfo
-                                                isEditing={isEditing}
-                                                widgets={widgets}
-                                                sources={sources
-                                                    .setIn(
-                                                        ['ticket', 'customer'],
-                                                        suggestedCustomer,
-                                                    )
-                                                    .set(
-                                                        'customer',
-                                                        suggestedCustomer,
-                                                    )}
-                                                customer={suggestedCustomer}
-                                                displayTabs={false}
-                                                onEditCustomer={
-                                                    handleEditCustomer
-                                                }
-                                                onSyncToShopify={
-                                                    handleSyncToShopify
-                                                }
-                                            />
-                                            <MergeCustomersContainer
-                                                isTicketContext={
-                                                    !(
-                                                        sources.get(
-                                                            'ticket',
-                                                            fromJS({}),
-                                                        ) as Map<any, any>
-                                                    ).isEmpty()
-                                                }
-                                                display={showMergeCustomerModal}
-                                                destinationCustomer={customer}
-                                                sourceCustomer={
-                                                    suggestedCustomer
-                                                }
-                                                onClose={() => {
-                                                    setShowMergeCustomerModal(
-                                                        false,
-                                                    )
+                                            <ActionButtonContext.Provider
+                                                value={{
+                                                    actionError:
+                                                        MERGE_ERROR_MESSAGE,
                                                 }}
-                                            />
-                                        </ActionButtonContext.Provider>
-                                    </>
-                                )}
-                        </>
-                    ) : null}
-                </div>
+                                            >
+                                                <InfobarCustomerInfo
+                                                    isEditing={isEditing}
+                                                    widgets={widgets}
+                                                    sources={sources
+                                                        .setIn(
+                                                            [
+                                                                'ticket',
+                                                                'customer',
+                                                            ],
+                                                            suggestedCustomer,
+                                                        )
+                                                        .set(
+                                                            'customer',
+                                                            suggestedCustomer,
+                                                        )}
+                                                    customer={suggestedCustomer}
+                                                    displayTabs={false}
+                                                    onEditCustomer={
+                                                        handleEditCustomer
+                                                    }
+                                                    onSyncToShopify={
+                                                        handleSyncToShopify
+                                                    }
+                                                />
+                                                <MergeCustomersContainer
+                                                    isTicketContext={
+                                                        !(
+                                                            sources.get(
+                                                                'ticket',
+                                                                fromJS({}),
+                                                            ) as Map<any, any>
+                                                        ).isEmpty()
+                                                    }
+                                                    display={
+                                                        showMergeCustomerModal
+                                                    }
+                                                    destinationCustomer={
+                                                        customer
+                                                    }
+                                                    sourceCustomer={
+                                                        suggestedCustomer
+                                                    }
+                                                    onClose={() => {
+                                                        setShowMergeCustomerModal(
+                                                            false,
+                                                        )
+                                                    }}
+                                                />
+                                            </ActionButtonContext.Provider>
+                                        </>
+                                    )}
+                            </>
+                        ) : null}
+                    </div>
+                )}
                 {isEditing && (
                     <InfobarWidgetsEditionTools
                         widgets={widgets}

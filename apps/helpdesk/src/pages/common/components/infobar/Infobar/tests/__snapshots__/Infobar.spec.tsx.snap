@@ -267,9 +267,6 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
           Edit Customer
         </button>
       </div>
-      <div>
-        MergeCustomersContainer
-      </div>
     </div>
   </div>
 </div>
@@ -577,9 +574,14 @@ exports[`<Infobar/> should render selected customer 1`] = `
               Back
             </span>
           </button>
-          <button>
-            Set Customer
-          </button>
+          <div>
+            <button>
+              Set Customer
+            </button>
+            <button>
+              ToggleMerge
+            </button>
+          </div>
         </div>
         <div
           data-testid="InfobarCustomerInfo"
@@ -594,9 +596,6 @@ exports[`<Infobar/> should render selected customer 1`] = `
           >
             Edit Customer
           </button>
-        </div>
-        <div>
-          MergeCustomersContainer
         </div>
       </div>
     </div>

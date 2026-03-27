@@ -140,7 +140,25 @@ jest.mock('pages/customers/common/components/CustomerForm', () => {
 
 jest.mock(
     'pages/common/components/MergeCustomers/MergeCustomersContainer',
-    () => () => <div>MergeCustomersContainer</div>,
+    () =>
+        ({
+            display,
+            onClose,
+            onSuccess,
+        }: {
+            display: boolean
+            onClose: () => void
+            onSuccess?: () => void
+        }) =>
+            display ? (
+                <div data-testid="MergeCustomersContainer">
+                    MergeCustomersContainer
+                    <button onClick={onClose}>CloseMerge</button>
+                    {onSuccess && (
+                        <button onClick={onSuccess}>MergeSuccess</button>
+                    )}
+                </div>
+            ) : null,
 )
 
 jest.mock('pages/common/components/infobar/Infobar/InfobarSearchResultsList')
@@ -150,8 +168,19 @@ jest.mock(
     'pages/common/components/infobar/Infobar/InfobarCustomerActions',
     () => ({
         __esModule: true,
-        default: ({ setCustomer }: { setCustomer: () => void }) => (
-            <button onClick={setCustomer}>Set Customer</button>
+        default: ({
+            setCustomer,
+            toggleMergeCustomerModal,
+        }: {
+            setCustomer: () => void
+            toggleMergeCustomerModal: (show: boolean) => void
+        }) => (
+            <div>
+                <button onClick={setCustomer}>Set Customer</button>
+                <button onClick={() => toggleMergeCustomerModal(true)}>
+                    ToggleMerge
+                </button>
+            </div>
         ),
     }),
 )
@@ -805,6 +834,192 @@ describe('<Infobar/>', () => {
                 name: 'Update customer: John Doe',
             })
             expect(modalTitle).toBeInTheDocument()
+        })
+    })
+
+    describe('setShowMergeCustomerModal', () => {
+        it('should show merge modal when handleMergeClick is called from suggested customer', async () => {
+            mockedSimilarCustomer.mockImplementation(
+                () => () =>
+                    Promise.resolve({
+                        customer: fromJS({ id: 10 }),
+                    }),
+            )
+
+            const { getByText, queryByTestId } = renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+            )
+
+            await waitFor(() => getByText(/Merge customer profiles/))
+
+            expect(
+                queryByTestId('MergeCustomersContainer'),
+            ).not.toBeInTheDocument()
+
+            fireEvent.click(getByText('Merge'))
+
+            expect(queryByTestId('MergeCustomersContainer')).toBeInTheDocument()
+        })
+
+        it('should hide merge modal when onClose is called from suggested customer merge', async () => {
+            mockedSimilarCustomer.mockImplementation(
+                () => () =>
+                    Promise.resolve({
+                        customer: fromJS({ id: 10 }),
+                    }),
+            )
+
+            const { getByText, queryByTestId } = renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+            )
+
+            await waitFor(() => getByText(/Merge customer profiles/))
+            fireEvent.click(getByText('Merge'))
+
+            expect(queryByTestId('MergeCustomersContainer')).toBeInTheDocument()
+
+            fireEvent.click(getByText('CloseMerge'))
+
+            expect(
+                queryByTestId('MergeCustomersContainer'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show merge modal via toggleMergeCustomerModal from selected customer actions', async () => {
+            mockedFetchPreviewCustomer.mockImplementation(
+                (id) => () =>
+                    Promise.resolve({
+                        type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
+                        resp: { id },
+                    }),
+            )
+            mockedSearch.mockImplementation(
+                () => () =>
+                    Promise.resolve({
+                        resp: {
+                            data: {
+                                data: [{ entity: { id: 7 }, highlights: {} }],
+                            },
+                        },
+                    }),
+            )
+
+            const { getByTestId, getByText, queryByTestId } = renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+            )
+
+            fireEvent.change(getByTestId('Search'), {
+                target: { value: 'query' },
+            })
+            fireEvent.keyDown(getByTestId('Search'), { key: 'Enter' })
+
+            const searchResults = await waitFor(() =>
+                getByTestId('InfobarSearchResultsList'),
+            )
+            fireEvent.click(searchResults)
+
+            await waitFor(() => getByText('ToggleMerge'))
+
+            fireEvent.click(getByText('ToggleMerge'))
+
+            expect(queryByTestId('MergeCustomersContainer')).toBeInTheDocument()
+        })
+
+        it('should hide merge modal when onClose is called from selected customer merge', async () => {
+            mockedFetchPreviewCustomer.mockImplementation(
+                (id) => () =>
+                    Promise.resolve({
+                        type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
+                        resp: { id },
+                    }),
+            )
+            mockedSearch.mockImplementation(
+                () => () =>
+                    Promise.resolve({
+                        resp: {
+                            data: {
+                                data: [{ entity: { id: 7 }, highlights: {} }],
+                            },
+                        },
+                    }),
+            )
+
+            const { getByTestId, getByText, queryByTestId } = renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+            )
+
+            fireEvent.change(getByTestId('Search'), {
+                target: { value: 'query' },
+            })
+            fireEvent.keyDown(getByTestId('Search'), { key: 'Enter' })
+
+            const searchResults = await waitFor(() =>
+                getByTestId('InfobarSearchResultsList'),
+            )
+            fireEvent.click(searchResults)
+
+            await waitFor(() => getByText('ToggleMerge'))
+            fireEvent.click(getByText('ToggleMerge'))
+
+            expect(queryByTestId('MergeCustomersContainer')).toBeInTheDocument()
+
+            fireEvent.click(getByText('CloseMerge'))
+
+            expect(
+                queryByTestId('MergeCustomersContainer'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should reset to current customer profile on merge success from selected customer', async () => {
+            mockedFetchPreviewCustomer.mockImplementation(
+                (id) => () =>
+                    Promise.resolve({
+                        type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
+                        resp: { id },
+                    }),
+            )
+            mockedSearch.mockImplementation(
+                () => () =>
+                    Promise.resolve({
+                        resp: {
+                            data: {
+                                data: [{ entity: { id: 7 }, highlights: {} }],
+                            },
+                        },
+                    }),
+            )
+
+            const { getByTestId, getByText, queryByText } = renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+            )
+
+            fireEvent.change(getByTestId('Search'), {
+                target: { value: 'query' },
+            })
+            fireEvent.keyDown(getByTestId('Search'), { key: 'Enter' })
+
+            const searchResults = await waitFor(() =>
+                getByTestId('InfobarSearchResultsList'),
+            )
+            fireEvent.click(searchResults)
+
+            await waitFor(() => getByText('ToggleMerge'))
+            fireEvent.click(getByText('ToggleMerge'))
+            fireEvent.click(getByText('MergeSuccess'))
+
+            await waitFor(() => {
+                expect(queryByText('ToggleMerge')).not.toBeInTheDocument()
+            })
         })
     })
 
