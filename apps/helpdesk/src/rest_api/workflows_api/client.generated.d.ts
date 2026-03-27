@@ -30,6 +30,7 @@ declare namespace Components {
                 | 'shipbob'
                 | 'dear-systems'
                 | 'deposco'
+                | 'bluebox'
         }
         export interface CreateTokenBodyDto {
             auth_code: string
@@ -1029,6 +1030,7 @@ declare namespace Components {
                           | 'shipbob'
                           | 'dear-systems'
                           | 'deposco'
+                          | 'bluebox'
                   }
               }
         export interface GetAutomationEventResponseDto {
@@ -5502,6 +5504,7 @@ declare namespace Components {
                           | 'shipbob'
                           | 'dear-systems'
                           | 'deposco'
+                          | 'bluebox'
                   }
               }
         )[]
@@ -6590,6 +6593,7 @@ declare namespace Components {
                 | 'shipbob'
                 | 'dear-systems'
                 | 'deposco'
+                | 'bluebox'
             error: boolean
         }[]
         export type ListWfConfigurationTemplatesResponseDto = {
@@ -15835,6 +15839,7 @@ declare namespace Components {
                           | 'shipbob'
                           | 'dear-systems'
                           | 'deposco'
+                          | 'bluebox'
                   }
               }
         export type UpsertAppRequestResponseDto =
@@ -15871,6 +15876,7 @@ declare namespace Components {
                           | 'shipbob'
                           | 'dear-systems'
                           | 'deposco'
+                          | 'bluebox'
                   }
               }
         export interface UpsertStoreAppRequestBodyDto {
@@ -21158,10 +21164,18 @@ declare namespace Paths {
     }
     namespace AutomationEventControllerGet {
         namespace Parameters {
+            export type AccountId = number
+            export type CreatedDatetime = string
+            export type ObjectId = string
             export type Uuid = string
         }
         export interface PathParameters {
             uuid: Parameters.Uuid
+        }
+        export interface QueryParameters {
+            account_id: Parameters.AccountId
+            object_id: Parameters.ObjectId
+            created_datetime: Parameters.CreatedDatetime
         }
         namespace Responses {
             export type $200 = Components.Schemas.GetAutomationEventResponseDto
@@ -21780,7 +21794,10 @@ export interface OperationMethods {
      * AutomationEventController_get
      */
     'AutomationEventController_get'(
-        parameters: Parameters<Paths.AutomationEventControllerGet.PathParameters>,
+        parameters: Parameters<
+            Paths.AutomationEventControllerGet.QueryParameters &
+                Paths.AutomationEventControllerGet.PathParameters
+        >,
         data?: any,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.AutomationEventControllerGet.Responses.$200>
@@ -22110,7 +22127,10 @@ export interface PathsDictionary {
          * AutomationEventController_get
          */
         'get'(
-            parameters: Parameters<Paths.AutomationEventControllerGet.PathParameters>,
+            parameters: Parameters<
+                Paths.AutomationEventControllerGet.QueryParameters &
+                    Paths.AutomationEventControllerGet.PathParameters
+            >,
             data?: any,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.AutomationEventControllerGet.Responses.$200>

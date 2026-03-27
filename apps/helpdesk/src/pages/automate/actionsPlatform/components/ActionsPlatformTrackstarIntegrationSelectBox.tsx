@@ -18,11 +18,12 @@ const TRACKSTAR_INTEGRATIONS = [
     'shipbob',
     'dear-systems',
     'deposco',
+    'bluebox',
 ] as const
-type AvailableIntegraion = (typeof TRACKSTAR_INTEGRATIONS)[number]
+type AvailableIntegration = (typeof TRACKSTAR_INTEGRATIONS)[number]
 type Props = {
-    value: AvailableIntegraion
-    onChange: (value: AvailableIntegraion) => void
+    value: AvailableIntegration
+    onChange: (value: AvailableIntegration) => void
     isDisabled?: boolean
 }
 
