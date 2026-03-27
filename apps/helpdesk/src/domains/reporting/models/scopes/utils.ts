@@ -265,21 +265,6 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                 }
                 break
 
-            case 'aiAgentRole':
-                if (
-                    statFilters.aiAgentSkill &&
-                    hasFilter(statFilters.aiAgentSkill)
-                ) {
-                    filters.push(
-                        createStandardFilter(
-                            'aiAgentRole',
-                            statFilters.aiAgentSkill.operator,
-                            statFilters.aiAgentSkill.values,
-                        ),
-                    )
-                }
-                break
-
             case 'score':
             case 'communicationSkills':
             case 'languageProficiency':
@@ -310,9 +295,9 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'shopName':
             case 'source':
             case 'eventType':
+            case 'aiAgentRole':
             case 'automationFeatureType':
             case 'engagementType':
-            case 'aiAgentSkill':
             case 'currency':
             case 'orderId':
                 {

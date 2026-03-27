@@ -15,7 +15,7 @@ export const AnalyticsAiAgentAllAgentsCsatCard = ({
         chartConfig: chartConfig!,
         chartId,
         dashboard,
-        useTrend: useAiAgentSupportAgentCsatTrend, // AIAgentCSATCube has no AiAgentSkill dimension, same hook covers All Agents scope
+        useTrend: useAiAgentSupportAgentCsatTrend, // AIAgentCSATCube has no AiAgentRole dimension, same hook covers All Agents scope
         isAiAgentTrendCard: true,
     })
 

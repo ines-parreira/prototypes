@@ -173,7 +173,7 @@ describe('shoppingAssistantAutomatedInteractionsDrillDownQueryFactory', () => {
         )
     })
 
-    it('should include aiAgentSkill filter with AIAgentSales value', () => {
+    it('should include aiAgentRole filter with AIAgentSales value', () => {
         const result =
             shoppingAssistantAutomatedInteractionsDrillDownQueryFactory(
                 mockFilters,
@@ -183,7 +183,7 @@ describe('shoppingAssistantAutomatedInteractionsDrillDownQueryFactory', () => {
             (f) =>
                 'member' in f &&
                 f.member ===
-                    AIAgentAutomatedInteractionsV2FilterMember.AiAgentSkill,
+                    AIAgentAutomatedInteractionsV2FilterMember.AiAgentRole,
         )
         expect(skillFilter).toBeDefined()
         if (skillFilter && 'operator' in skillFilter) {
@@ -293,7 +293,7 @@ describe('supportAgentAutomatedInteractionsDrillDownQueryFactory', () => {
         )
     })
 
-    it('should include aiAgentSkill filter with AIAgentSupport value', () => {
+    it('should include aiAgentRole filter with AIAgentSupport value', () => {
         const result = supportAgentAutomatedInteractionsDrillDownQueryFactory(
             mockFilters,
             'UTC',
@@ -302,7 +302,7 @@ describe('supportAgentAutomatedInteractionsDrillDownQueryFactory', () => {
             (f) =>
                 'member' in f &&
                 f.member ===
-                    AIAgentAutomatedInteractionsV2FilterMember.AiAgentSkill,
+                    AIAgentAutomatedInteractionsV2FilterMember.AiAgentRole,
         )
         expect(skillFilter).toBeDefined()
         if (skillFilter && 'operator' in skillFilter) {
@@ -437,7 +437,7 @@ describe('shoppingAssistantHandoverInteractionsDrillDownQueryFactory', () => {
             dimensions: ['HandoverInteractions.ticketId'],
             filters: [
                 {
-                    member: 'HandoverInteractions.aiAgentSkill',
+                    member: 'HandoverInteractions.aiAgentRole',
                     operator: 'equals',
                     values: [AIAgentSkills.AIAgentSales],
                 },
@@ -476,7 +476,7 @@ describe('supportAgentHandoverInteractionsDrillDownQueryFactory', () => {
             dimensions: ['HandoverInteractions.ticketId'],
             filters: [
                 {
-                    member: 'HandoverInteractions.aiAgentSkill',
+                    member: 'HandoverInteractions.aiAgentRole',
                     operator: 'equals',
                     values: [AIAgentSkills.AIAgentSupport],
                 },

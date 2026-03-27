@@ -66,7 +66,7 @@ export enum APIOnlyFilterKey {
     Source = 'source',
     EventType = 'eventType',
     AutomationFeatureType = 'automationFeatureType',
-    AiAgentSkill = 'aiAgentSkill',
+    AiAgentRole = 'aiAgentRole',
     EngagementType = 'engagementType',
     Currency = 'currency',
     OrderId = 'orderId',
@@ -338,7 +338,7 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.Source]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.EventType]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.AutomationFeatureType]?: WithLogicalOperator<string>
-    [APIOnlyFilterKey.AiAgentSkill]?: WithLogicalOperator<string>
+    [APIOnlyFilterKey.AiAgentRole]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.EngagementType]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.Currency]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.OrderId]?: WithLogicalOperator<number>

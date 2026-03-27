@@ -12,7 +12,7 @@ const handoverInteractionsScope = defineScope({
     scope: MetricScope.HandoverInteractions,
     measures: ['handoverInteractionsCount'],
     dimensions: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'aiIntentCustomField',
         'automationFeatureType',
         'channel',
@@ -24,7 +24,7 @@ const handoverInteractionsScope = defineScope({
     ],
     timeDimensions: ['eventDatetime'],
     filters: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'automationFeatureType',
         'channel',
         'customField',
@@ -109,7 +109,7 @@ export const aiSalesAgentHandoverInteractions = handoverInteractionsScope
         filters: [
             ...createScopeFilters(ctx.filters, config),
             {
-                member: 'aiAgentSkill',
+                member: 'aiAgentRole',
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [AutomationSkillType.AiAgentSales],
             },
@@ -127,7 +127,7 @@ export const aiSupportHandoverInteractions = handoverInteractionsScope
         filters: [
             ...createScopeFilters(ctx.filters, config),
             {
-                member: 'aiAgentSkill',
+                member: 'aiAgentRole',
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [AutomationSkillType.AiAgentSupport],
             },
@@ -208,7 +208,7 @@ export const aiSalesAgentHandoverInteractionsPerChannel =
             filters: [
                 ...createScopeFilters(ctx.filters, config),
                 {
-                    member: 'aiAgentSkill',
+                    member: 'aiAgentRole',
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: [AutomationSkillType.AiAgentSales],
                 },

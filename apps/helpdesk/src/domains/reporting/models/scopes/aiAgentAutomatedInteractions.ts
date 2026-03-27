@@ -10,7 +10,7 @@ export const aiAgentAutomatedInteractionsScope = defineScope({
     scope: MetricScope.AiAgentAutomatedInteractions,
     measures: ['automatedInteractionsCount'],
     dimensions: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'aiIntentCustomField',
         'channel',
         'customField',
@@ -20,7 +20,7 @@ export const aiAgentAutomatedInteractionsScope = defineScope({
     ],
     timeDimensions: ['eventDatetime'],
     filters: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'channel',
         'customField',
         'customFieldId',
@@ -74,7 +74,7 @@ export const dynamicShoppingAssistantAutomatedInteractions =
             filters: createScopeFilters(
                 {
                     ...ctx.filters,
-                    aiAgentSkill: withLogicalOperator([
+                    aiAgentRole: withLogicalOperator([
                         AutomationSkillType.AiAgentSales,
                     ]),
                 },
@@ -98,7 +98,7 @@ export const aiSalesAgentAutomatedInteractionsPerChannel =
             filters: [
                 ...createScopeFilters(ctx.filters, config),
                 {
-                    member: 'aiAgentSkill',
+                    member: 'aiAgentRole',
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: [AutomationSkillType.AiAgentSales],
                 },

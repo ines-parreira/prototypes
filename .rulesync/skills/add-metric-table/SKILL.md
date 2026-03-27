@@ -13,7 +13,7 @@ Ask the user for the following information if not already provided:
 
 1. **Table name** – e.g., `SkillBreakdown` (PascalCase, used for component and hook names)
 2. **Dashboard section** – `analyticsOverview` or `analyticsAiAgent` (determines paths, column config, and CSV export registration target)
-3. **Dimension name** – the API dimension key, e.g., `aiAgentSkill`, `channel`
+3. **Dimension name** – the API dimension key, e.g., `aiAgentRole`, `channel`
 4. **Entities** – the list of dimension values to show rows for, e.g., `['skill_a', 'skill_b']`
 5. **Name formatter** – how to display entity values: `displayNames` static record, `formatName` function (when a shared `formatXxxName` already exists), or `none` (show raw values)
 6. **Feature name column label** – e.g., `Skill name`, `Channel`

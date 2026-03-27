@@ -13,7 +13,6 @@ export const aiAgentDecreaseInFirstResponseTimeScope = defineScope({
     ],
     dimensions: [
         'aiAgentRole',
-        'aiAgentSkill',
         'channel',
         'customField',
         'engagementType',
@@ -24,7 +23,7 @@ export const aiAgentDecreaseInFirstResponseTimeScope = defineScope({
     timeDimensions: ['eventDatetime'],
     filters: [
         'aiAgentRole',
-        'aiAgentSkill',
+        'aiAgentRole',
         'channel',
         'customField',
         'customFieldId',

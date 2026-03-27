@@ -6,7 +6,7 @@ export const aiAgentSuccessRateScope = defineScope({
     scope: MetricScope.AiAgentSuccessRate,
     measures: ['successRate'],
     dimensions: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'aiIntentCustomField',
         'channel',
         'customField',
@@ -16,7 +16,7 @@ export const aiAgentSuccessRateScope = defineScope({
     ],
     timeDimensions: ['eventDatetime'],
     filters: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'channel',
         'customFieldId',
         'engagementType',

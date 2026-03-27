@@ -64,10 +64,10 @@ describe('aiAgentAutomatedInteractionsScope', () => {
         )
     })
 
-    it('includes aiAgentSkill filter when provided', () => {
+    it('includes aiAgentRole filter when provided', () => {
         const filters: ApiStatsFilters = {
             ...baseFilters,
-            aiAgentSkill: {
+            aiAgentRole: {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['support'],
             },
@@ -79,20 +79,20 @@ describe('aiAgentAutomatedInteractionsScope', () => {
 
         expect(result).toContainEqual(
             expect.objectContaining({
-                member: 'aiAgentSkill',
+                member: 'aiAgentRole',
                 operator: 'one-of',
             }),
         )
     })
 
-    it('omits aiAgentSkill filter when not provided', () => {
+    it('omits aiAgentRole filter when not provided', () => {
         const result = createScopeFilters(
             baseFilters,
             aiAgentAutomatedInteractionsScope.config,
         )
 
         expect(result).not.toContainEqual(
-            expect.objectContaining({ member: 'aiAgentSkill' }),
+            expect.objectContaining({ member: 'aiAgentRole' }),
         )
     })
 
@@ -190,7 +190,7 @@ describe('aiAgentAutomatedInteractionsScope', () => {
     })
 
     const salesSkillFilter = {
-        member: 'aiAgentSkill',
+        member: 'aiAgentRole',
         operator: 'one-of',
         values: ['ai-agent-sales'],
     }
@@ -394,7 +394,7 @@ describe('aiSalesAgentAutomatedInteractionsPerChannel', () => {
     ]
 
     const salesSkillFilter = {
-        member: 'aiAgentSkill',
+        member: 'aiAgentRole',
         operator: 'one-of',
         values: ['ai-agent-sales'],
     }

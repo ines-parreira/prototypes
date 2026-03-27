@@ -9,7 +9,7 @@ export const aiAgentTimeSavedScope = defineScope({
     scope: MetricScope.AiAgentTimeSaved,
     measures: ['averageTimeSavedByAgent', 'medianTimeSavedByAgent'],
     dimensions: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'channel',
         'customField',
         'storeIntegrationId',
@@ -17,7 +17,7 @@ export const aiAgentTimeSavedScope = defineScope({
     ],
     timeDimensions: ['eventDatetime'],
     filters: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'channel',
         'customField',
         'customFieldId',

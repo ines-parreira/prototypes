@@ -10,7 +10,7 @@ const overallAutomationRateScope = defineScope({
     scope: MetricScope.OverallAutomationRate,
     measures: ['automationRate'],
     dimensions: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'automationFeatureType',
         'channel',
         'flowId',
@@ -19,7 +19,7 @@ const overallAutomationRateScope = defineScope({
     ],
     timeDimensions: ['eventDatetime'],
     filters: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'automationFeatureType',
         'channel',
         'periodEnd',

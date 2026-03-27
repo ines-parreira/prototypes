@@ -40,10 +40,10 @@ describe('aiAgentSuccessRateScope', () => {
         )
     })
 
-    it('includes aiAgentSkill filter when provided', () => {
+    it('includes aiAgentRole filter when provided', () => {
         const filters: ApiStatsFilters = {
             ...baseFilters,
-            aiAgentSkill: {
+            aiAgentRole: {
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: ['support'],
             },
@@ -55,20 +55,20 @@ describe('aiAgentSuccessRateScope', () => {
 
         expect(result).toContainEqual(
             expect.objectContaining({
-                member: 'aiAgentSkill',
+                member: 'aiAgentRole',
                 operator: 'one-of',
             }),
         )
     })
 
-    it('omits aiAgentSkill filter when not provided', () => {
+    it('omits aiAgentRole filter when not provided', () => {
         const result = createScopeFilters(
             baseFilters,
             aiAgentSuccessRateScope.config,
         )
 
         expect(result).not.toContainEqual(
-            expect.objectContaining({ member: 'aiAgentSkill' }),
+            expect.objectContaining({ member: 'aiAgentRole' }),
         )
     })
 

@@ -7,7 +7,7 @@ export enum HandoverInteractionsDimension {
 export enum HandoverInteractionsFilterMember {
     PeriodStart = 'HandoverInteractions.periodStart',
     PeriodEnd = 'HandoverInteractions.periodEnd',
-    AiAgentSkill = 'HandoverInteractions.aiAgentSkill',
+    AiAgentRole = 'HandoverInteractions.aiAgentRole',
     FeatureType = 'HandoverInteractions.featureType',
 }
 

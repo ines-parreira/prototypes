@@ -5,7 +5,7 @@ export enum SuccessRateDimension {
 }
 
 export enum SuccessRateFilterMember {
-    AiAgentSkill = 'SuccessRate.aiAgentSkill',
+    AiAgentRole = 'SuccessRate.aiAgentRole',
     StoreIntegrationId = 'SuccessRate.storeIntegrationId',
     PeriodStart = 'SuccessRate.periodStart',
     PeriodEnd = 'SuccessRate.periodEnd',

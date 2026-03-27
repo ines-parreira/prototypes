@@ -347,7 +347,7 @@ describe('aiAgentSalesRevenuePerInteractionPerChannel', () => {
         },
     ]
 
-    it('builds query with channel dimension, period filters, and aiAgentSkill filter', () => {
+    it('builds query with channel dimension and period filters', () => {
         const actual =
             aiAgentSalesRevenuePerInteractionPerChannel.build(context)
 
@@ -358,14 +358,7 @@ describe('aiAgentSalesRevenuePerInteractionPerChannel', () => {
             measures: ['revenuePerInteraction'],
             dimensions: ['channel'],
             timezone: 'utc',
-            filters: [
-                ...periodFilters,
-                {
-                    member: 'aiAgentSkill',
-                    operator: 'one-of',
-                    values: ['ai-agent-sales'],
-                },
-            ],
+            filters: periodFilters,
         })
     })
 

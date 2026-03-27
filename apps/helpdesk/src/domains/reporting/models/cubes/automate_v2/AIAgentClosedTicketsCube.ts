@@ -7,7 +7,7 @@ export enum AIAgentClosedTicketsDimension {
 export enum AIAgentClosedTicketsFilterMember {
     PeriodStart = 'AIAgentClosedTickets.periodStart',
     PeriodEnd = 'AIAgentClosedTickets.periodEnd',
-    AiAgentSkill = 'AIAgentClosedTickets.aiAgentSkill',
+    AiAgentRole = 'AIAgentClosedTickets.aiAgentRole',
 }
 
 export type AIAgentClosedTicketsCube = Cube<

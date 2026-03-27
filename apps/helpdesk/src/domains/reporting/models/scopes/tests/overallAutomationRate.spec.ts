@@ -436,7 +436,7 @@ describe('overallAutomationRateScope', () => {
             })
 
             it('returns the same result as calling build directly with the dimension', () => {
-                const dimension = 'aiAgentSkill'
+                const dimension = 'aiAgentRole'
                 const factoryResult =
                     dynamicOverallAutomationRateQueryFactoryV2({
                         ...context,

@@ -6,7 +6,7 @@ export const aiAgentCoverageRateScope = defineScope({
     scope: MetricScope.AiAgentCoverageRate,
     measures: ['coverageRate'],
     dimensions: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'aiIntentCustomField',
         'channel',
         'customField',
@@ -14,7 +14,7 @@ export const aiAgentCoverageRateScope = defineScope({
     ],
     timeDimensions: ['eventDatetime'],
     filters: [
-        'aiAgentSkill',
+        'aiAgentRole',
         'channel',
         'customFieldId',
         'engagementType',

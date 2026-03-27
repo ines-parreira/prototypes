@@ -594,7 +594,7 @@ describe('aiAgentSalesTotalSalesPerChannel', () => {
         },
     ]
 
-    it('builds query with channel dimension, period filters, and aiAgentSkill filter', () => {
+    it('builds query with channel dimension and period filters', () => {
         const actual = aiAgentSalesTotalSalesPerChannel.build(context)
 
         expect(actual).toEqual({
@@ -603,14 +603,7 @@ describe('aiAgentSalesTotalSalesPerChannel', () => {
             measures: ['totalSalesAmountUsd'],
             dimensions: ['channel'],
             timezone: 'utc',
-            filters: [
-                ...periodFilters,
-                {
-                    member: 'aiAgentSkill',
-                    operator: 'one-of',
-                    values: ['ai-agent-sales'],
-                },
-            ],
+            filters: periodFilters,
         })
     })
 
@@ -646,7 +639,7 @@ describe('aiAgentSalesOrdersInfluencedPerChannel', () => {
         },
     ]
 
-    it('builds query with channel dimension, period filters, and aiAgentSkill filter', () => {
+    it('builds query with channel dimension and period filters', () => {
         const actual = aiAgentSalesOrdersInfluencedPerChannel.build(context)
 
         expect(actual).toEqual({
@@ -656,14 +649,7 @@ describe('aiAgentSalesOrdersInfluencedPerChannel', () => {
             measures: ['ordersInfluencedCount'],
             dimensions: ['channel'],
             timezone: 'utc',
-            filters: [
-                ...periodFilters,
-                {
-                    member: 'aiAgentSkill',
-                    operator: 'one-of',
-                    values: ['ai-agent-sales'],
-                },
-            ],
+            filters: periodFilters,
         })
     })
 

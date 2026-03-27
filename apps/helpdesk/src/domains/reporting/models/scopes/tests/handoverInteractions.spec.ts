@@ -100,7 +100,7 @@ describe('handoverInteractionsScope', () => {
     })
 
     describe('aiSalesAgentHandoverInteractions', () => {
-        it('creates query with aiAgentSkill filter for ai-agent-sales', () => {
+        it('creates query with aiAgentRole filter for ai-agent-sales', () => {
             const actual = aiSalesAgentHandoverInteractions.build(context)
 
             expect(actual).toEqual({
@@ -111,7 +111,7 @@ describe('handoverInteractionsScope', () => {
                 filters: [
                     ...periodFilters,
                     {
-                        member: 'aiAgentSkill',
+                        member: 'aiAgentRole',
                         operator: 'one-of',
                         values: ['ai-agent-sales'],
                     },
@@ -122,7 +122,7 @@ describe('handoverInteractionsScope', () => {
     })
 
     describe('aiSupportHandoverInteractions', () => {
-        it('creates query with aiAgentSkill filter for ai-agent-support', () => {
+        it('creates query with aiAgentRole filter for ai-agent-support', () => {
             const actual = aiSupportHandoverInteractions.build(context)
 
             expect(actual).toEqual({
@@ -133,7 +133,7 @@ describe('handoverInteractionsScope', () => {
                 filters: [
                     ...periodFilters,
                     {
-                        member: 'aiAgentSkill',
+                        member: 'aiAgentRole',
                         operator: 'one-of',
                         values: ['ai-agent-support'],
                     },
@@ -361,7 +361,7 @@ describe('aiSalesAgentHandoverInteractionsPerChannel', () => {
     ]
 
     const salesSkillFilter = {
-        member: 'aiAgentSkill',
+        member: 'aiAgentRole',
         operator: 'one-of',
         values: ['ai-agent-sales'],
     }

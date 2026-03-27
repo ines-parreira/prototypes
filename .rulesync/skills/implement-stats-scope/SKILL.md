@@ -140,7 +140,7 @@ For each filter in the scope's `filters` array that lacks a switch case:
 
 - **Simple string/number/boolean filters** (where `statFilters[filterKey]` works directly): add to the catch-all block. Example of the catch-all block:
   ```typescript
-  case 'aiAgentSkill':
+  case 'aiAgentRole':
       {
           const filter = statFilters[filterKey]
           if (filter && hasFilter(filter)) {
@@ -234,7 +234,7 @@ describe('{scopeName}Scope', () => {
             ...baseFilters,
             // Add the appropriate statFilters key for this filter
             // e.g., for 'channel': channels: { operator: 'one-of', values: ['email'] }
-            // e.g., for 'aiAgentSkill': aiAgentSkill: { operator: 'one-of', values: ['support'] }
+            // e.g., for 'aiAgentRole': aiAgentRole: { operator: 'one-of', values: ['support'] }
         }
         const result = createScopeFilters(filters, {scopeName}Scope.config)
 
@@ -255,7 +255,7 @@ describe('{scopeName}Scope', () => {
 
 To know the correct `statFilters` key for each filter, look at how the filter is handled in `utils.ts`:
 - `case 'channel'` reads from `statFilters.channels`
-- `case 'aiAgentSkill'` reads from `statFilters.aiAgentSkill`
+- `case 'aiAgentRole'` reads from `statFilters.aiAgentRole`
 - `case 'storeIntegrationId'` reads from `statFilters.storeIntegrations`
 - etc.
 

@@ -811,7 +811,7 @@ describe('successRateV2DrillDownQueryFactory', () => {
             dimensions: [SuccessRateDimension.TicketId],
             filters: [
                 {
-                    member: SuccessRateFilterMember.AiAgentSkill,
+                    member: SuccessRateFilterMember.AiAgentRole,
                     operator: ReportingFilterOperator.Equals,
                     values: [AIAgentSkills.AIAgentSales],
                 },
@@ -844,7 +844,7 @@ describe('successRateV2DrillDownQueryFactory', () => {
             dimensions: [SuccessRateDimension.TicketId],
             filters: [
                 {
-                    member: SuccessRateFilterMember.AiAgentSkill,
+                    member: SuccessRateFilterMember.AiAgentRole,
                     operator: ReportingFilterOperator.Equals,
                     values: [AIAgentSkills.AIAgentSales],
                 },
@@ -879,7 +879,7 @@ describe('successRateV2DrillDownQueryFactory', () => {
             dimensions: [SuccessRateDimension.TicketId],
             filters: [
                 {
-                    member: SuccessRateFilterMember.AiAgentSkill,
+                    member: SuccessRateFilterMember.AiAgentRole,
                     operator: ReportingFilterOperator.Equals,
                     values: [AIAgentSkills.AIAgentSales],
                 },

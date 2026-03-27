@@ -91,7 +91,7 @@ export const shoppingAssistantAutomatedInteractionsDrillDownQueryFactory = (
     dimensions: [AIAgentAutomatedInteractionsV2Dimension.TicketId],
     filters: [
         {
-            member: AIAgentAutomatedInteractionsV2FilterMember.AiAgentSkill,
+            member: AIAgentAutomatedInteractionsV2FilterMember.AiAgentRole,
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSales],
         },
@@ -115,7 +115,7 @@ export const supportAgentAutomatedInteractionsDrillDownQueryFactory = (
     dimensions: [AIAgentAutomatedInteractionsV2Dimension.TicketId],
     filters: [
         {
-            member: AIAgentAutomatedInteractionsV2FilterMember.AiAgentSkill,
+            member: AIAgentAutomatedInteractionsV2FilterMember.AiAgentRole,
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSupport],
         },
@@ -161,7 +161,7 @@ export const shoppingAssistantHandoverInteractionsDrillDownQueryFactory = (
     dimensions: [HandoverInteractionsDimension.TicketId],
     filters: [
         {
-            member: HandoverInteractionsFilterMember.AiAgentSkill,
+            member: HandoverInteractionsFilterMember.AiAgentRole,
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSales],
         },
@@ -183,7 +183,7 @@ export const supportAgentHandoverInteractionsDrillDownQueryFactory = (
     dimensions: [HandoverInteractionsDimension.TicketId],
     filters: [
         {
-            member: HandoverInteractionsFilterMember.AiAgentSkill,
+            member: HandoverInteractionsFilterMember.AiAgentRole,
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSupport],
         },
