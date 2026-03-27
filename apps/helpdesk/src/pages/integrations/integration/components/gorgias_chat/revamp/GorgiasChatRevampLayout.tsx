@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 import type { Map } from 'immutable'
 
 import { IntegrationType } from 'models/integration/types'
-import ChatSettingsPageHeader from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatSettingsPageHeader/ChatSettingsPageHeader'
+import { ChatSettingsPageHeader } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatSettingsPageHeader/ChatSettingsPageHeader'
 
 import { GorgiasChatRevampNavigation } from './GorgiasChatRevampNavigation'
 

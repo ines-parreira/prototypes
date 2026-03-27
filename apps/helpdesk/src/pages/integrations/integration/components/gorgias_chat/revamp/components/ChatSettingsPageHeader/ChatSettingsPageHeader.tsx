@@ -37,7 +37,7 @@ type Props = {
     isSaveLoading?: boolean
 }
 
-const ChatSettingsPageHeader = ({
+export const ChatSettingsPageHeader = ({
     breadcrumbItems = [],
     backButtonLink,
     showBackButton = true,
@@ -122,5 +122,3 @@ const ChatSettingsPageHeader = ({
         </div>
     )
 }
-
-export default ChatSettingsPageHeader

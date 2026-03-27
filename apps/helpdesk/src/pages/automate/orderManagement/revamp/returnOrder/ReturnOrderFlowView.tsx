@@ -1,3 +1,5 @@
+import { OrderManagementFlowHeader } from '../components/OrderManagementFlowHeader/OrderManagementFlowHeader'
+
 export const ReturnOrderFlowView = () => {
-    return null
+    return <OrderManagementFlowHeader title="Return order" flowPath="return" />
 }

@@ -3,7 +3,7 @@ import type React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import ChatSettingsPageHeader from './ChatSettingsPageHeader'
+import { ChatSettingsPageHeader } from './ChatSettingsPageHeader'
 
 const mockPush = jest.fn()
 

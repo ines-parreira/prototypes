@@ -1,0 +1,26 @@
+:local {
+    .pageHeader {
+        padding: var(--spacing-lg);
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+
+        .breadcrumbLink {
+            color: var(--content-neutral-secondary) !important;
+        }
+    }
+
+    .helpLink {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        font-weight: 500;
+        color: var(--content-neutral-default);
+        text-decoration: none;
+        white-space: nowrap;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

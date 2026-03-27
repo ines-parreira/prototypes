@@ -25,6 +25,12 @@ export const BASE_PATH = '/app/settings/order-management'
 
 export function OrderManagementSettings() {
     const { path } = useRouteMatch()
+    const isOnRevampFlowPage = useRouteMatch([
+        `${path}/cancel`,
+        `${path}/return`,
+        `${path}/track`,
+        `${path}/report-issue`,
+    ])
     const { selected } = useStoreSelector(BASE_PATH, [IntegrationType.Shopify])
 
     const selectedName = selected
@@ -46,7 +52,7 @@ export function OrderManagementSettings() {
     return (
         <div className={css.container}>
             {shouldShowScreensRevampWhenAiAgentEnabled ? (
-                <OrderManagementSettingsHeader />
+                !isOnRevampFlowPage && <OrderManagementSettingsHeader />
             ) : (
                 <OrderManagementSettingsLegacyHeader />
             )}

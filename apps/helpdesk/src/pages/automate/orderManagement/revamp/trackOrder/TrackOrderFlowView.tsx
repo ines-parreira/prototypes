@@ -1,3 +1,5 @@
+import { OrderManagementFlowHeader } from '../components/OrderManagementFlowHeader/OrderManagementFlowHeader'
+
 export const TrackOrderFlowView = () => {
-    return null
+    return <OrderManagementFlowHeader title="Track order" flowPath="track" />
 }
