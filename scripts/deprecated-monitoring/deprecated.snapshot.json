@@ -1,6 +1,6 @@
 {
-  "date": "2026-03-25T12:42:09.608Z",
-  "total": 5094,
+  "date": "2026-03-27T13:34:07.116Z",
+  "total": 5090,
   "deprecated": [
     {
       "nodeType": "VariableDeclaration",
@@ -2013,46 +2013,6 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
-      "nodeName": "ADMIN_ROLE",
-      "comment": "*\n * @deprecated Use UserRole enum instead from @repo/utils package\n * @date 2025-11-18\n * @type permissions-migration\n ",
-      "count": 26,
-      "filePath": "apps/helpdesk/src/config/user.ts",
-      "usages": [
-        {
-          "name": "ADMIN_ROLE",
-          "files": [
-            "apps/helpdesk/src/fixtures/users.ts",
-            "apps/helpdesk/src/pages/settings/common/SettingsNavbar/tests/Item.spec.tsx",
-            "apps/helpdesk/src/routes/Routes.tsx",
-            "apps/helpdesk/src/routes/settings/Billing.tsx",
-            "apps/helpdesk/src/routes/settings/Channels.tsx",
-            "apps/helpdesk/src/routes/settings/ConditionalFields.tsx",
-            "apps/helpdesk/src/routes/settings/CustomFields.tsx",
-            "apps/helpdesk/src/routes/settings/ImportEmailsRoute.tsx",
-            "apps/helpdesk/src/routes/settings/ImportZendeskRoute.tsx",
-            "apps/helpdesk/src/routes/settings/Integrations.tsx",
-            "apps/helpdesk/src/routes/settings/PhoneNumbers.tsx",
-            "apps/helpdesk/src/routes/settings/Settings.tsx",
-            "apps/helpdesk/src/routes/settings/StoreManagement.tsx",
-            "apps/helpdesk/src/routes/settings/Teams.tsx",
-            "apps/helpdesk/src/routes/settings/tests/Billing.spec.tsx",
-            "apps/helpdesk/src/routes/settings/tests/Channels.spec.tsx",
-            "apps/helpdesk/src/routes/settings/tests/ConditionalFields.spec.tsx",
-            "apps/helpdesk/src/routes/settings/tests/CustomFields.spec.tsx",
-            "apps/helpdesk/src/routes/settings/tests/Import.spec.tsx",
-            "apps/helpdesk/src/routes/settings/tests/Integrations.spec.tsx",
-            "apps/helpdesk/src/routes/settings/tests/PhoneNumbers.spec.tsx",
-            "apps/helpdesk/src/routes/settings/tests/StoreManagement.spec.tsx",
-            "apps/helpdesk/src/routes/settings/tests/Teams.spec.tsx",
-            "apps/helpdesk/src/routes/settings/tests/Users.spec.tsx",
-            "apps/helpdesk/src/routes/settings/Users.tsx",
-            "apps/helpdesk/src/tests/utils.spec.ts"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "ExportNamedDeclaration",
       "nodeName": "isAdmin",
       "comment": "*\n * @deprecated Use isAdmin from @repo/utils package instead\n * @date 2025-11-18\n * @type permissions-migration\n ",
       "count": 27,
@@ -2087,6 +2047,46 @@
             "apps/helpdesk/src/pages/standalone/tests/schemas.spec.ts",
             "apps/helpdesk/src/split-ticket-view-toggle/components/tests/useIsToggleEnabled.spec.ts",
             "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
+            "apps/helpdesk/src/tests/utils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "ADMIN_ROLE",
+      "comment": "*\n * @deprecated Use UserRole enum instead from @repo/utils package\n * @date 2025-11-18\n * @type permissions-migration\n ",
+      "count": 26,
+      "filePath": "apps/helpdesk/src/config/user.ts",
+      "usages": [
+        {
+          "name": "ADMIN_ROLE",
+          "files": [
+            "apps/helpdesk/src/fixtures/users.ts",
+            "apps/helpdesk/src/pages/settings/common/SettingsNavbar/tests/Item.spec.tsx",
+            "apps/helpdesk/src/routes/Routes.tsx",
+            "apps/helpdesk/src/routes/settings/Billing.tsx",
+            "apps/helpdesk/src/routes/settings/Channels.tsx",
+            "apps/helpdesk/src/routes/settings/ConditionalFields.tsx",
+            "apps/helpdesk/src/routes/settings/CustomFields.tsx",
+            "apps/helpdesk/src/routes/settings/ImportEmailsRoute.tsx",
+            "apps/helpdesk/src/routes/settings/ImportZendeskRoute.tsx",
+            "apps/helpdesk/src/routes/settings/Integrations.tsx",
+            "apps/helpdesk/src/routes/settings/PhoneNumbers.tsx",
+            "apps/helpdesk/src/routes/settings/Settings.tsx",
+            "apps/helpdesk/src/routes/settings/StoreManagement.tsx",
+            "apps/helpdesk/src/routes/settings/Teams.tsx",
+            "apps/helpdesk/src/routes/settings/tests/Billing.spec.tsx",
+            "apps/helpdesk/src/routes/settings/tests/Channels.spec.tsx",
+            "apps/helpdesk/src/routes/settings/tests/ConditionalFields.spec.tsx",
+            "apps/helpdesk/src/routes/settings/tests/CustomFields.spec.tsx",
+            "apps/helpdesk/src/routes/settings/tests/Import.spec.tsx",
+            "apps/helpdesk/src/routes/settings/tests/Integrations.spec.tsx",
+            "apps/helpdesk/src/routes/settings/tests/PhoneNumbers.spec.tsx",
+            "apps/helpdesk/src/routes/settings/tests/StoreManagement.spec.tsx",
+            "apps/helpdesk/src/routes/settings/tests/Teams.spec.tsx",
+            "apps/helpdesk/src/routes/settings/tests/Users.spec.tsx",
+            "apps/helpdesk/src/routes/settings/Users.tsx",
             "apps/helpdesk/src/tests/utils.spec.ts"
           ]
         }
@@ -2544,37 +2544,6 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
-      "nodeName": "isEmail",
-      "comment": "*\n * @deprecated\n * @date 2025-12-03\n * @type migration to @repo/utils\n *\n * Guess if a passed string is an email\n ",
-      "count": 17,
-      "filePath": "apps/helpdesk/src/utils.ts",
-      "usages": [
-        {
-          "name": "isEmail",
-          "files": [
-            "apps/helpdesk/src/pages/common/components/infobar/utils.ts",
-            "apps/helpdesk/src/pages/common/components/ViewTable/tests/FilterTopbar.spec.tsx",
-            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/tests/AddVideo.spec.tsx",
-            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/tests/Toolbar.spec.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationConnectForm.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/shopify/Create.tsx",
-            "apps/helpdesk/src/pages/settings/historicalImports/Modal/form/hooks/useZendeskImportForm.ts",
-            "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/utils/validations.ts",
-            "apps/helpdesk/src/pages/standalone/schemas.ts",
-            "apps/helpdesk/src/pages/standalone/tests/schemas.spec.ts",
-            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/MultiSelectAsyncField/MultiSelectAsyncField.spec.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/ReceiversSelectField.tsx",
-            "apps/helpdesk/src/split-ticket-view-toggle/components/tests/useIsToggleEnabled.spec.ts",
-            "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
-            "apps/helpdesk/src/tests/utils.spec.ts",
-            "apps/helpdesk/src/Widgets/modules/Template/helpers/fieldDataMappers.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "ExportNamedDeclaration",
       "nodeName": "getMoment",
       "comment": "*\n * Return moment()\n *\n * We encapsulate it here so that it's easy to mock during tests.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
       "count": 17,
@@ -2630,6 +2599,36 @@
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationShopifyCheckoutChatInstallationCard.tsx",
             "apps/helpdesk/src/pages/settings/conditionalFields/components/ThenFieldRow.tsx",
             "apps/helpdesk/src/pages/settings/customFields/components/DropdownCSVImport.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "isEmail",
+      "comment": "*\n * @deprecated\n * @date 2025-12-03\n * @type migration to @repo/utils\n *\n * Guess if a passed string is an email\n ",
+      "count": 16,
+      "filePath": "apps/helpdesk/src/utils.ts",
+      "usages": [
+        {
+          "name": "isEmail",
+          "files": [
+            "apps/helpdesk/src/pages/common/components/infobar/utils.ts",
+            "apps/helpdesk/src/pages/common/components/ViewTable/tests/FilterTopbar.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/tests/AddVideo.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/tests/Toolbar.spec.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/CustomerOnboarding/EmailForwarding/EmailIntegrationConnectForm.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/shopify/Create.tsx",
+            "apps/helpdesk/src/pages/settings/historicalImports/Modal/form/hooks/useZendeskImportForm.ts",
+            "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
+            "apps/helpdesk/src/pages/standalone/schemas.ts",
+            "apps/helpdesk/src/pages/standalone/tests/schemas.spec.ts",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/MultiSelectAsyncField/MultiSelectAsyncField.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/ReceiversSelectField.tsx",
+            "apps/helpdesk/src/split-ticket-view-toggle/components/tests/useIsToggleEnabled.spec.ts",
+            "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
+            "apps/helpdesk/src/tests/utils.spec.ts",
+            "apps/helpdesk/src/Widgets/modules/Template/helpers/fieldDataMappers.tsx"
           ]
         }
       ]
@@ -6908,7 +6907,7 @@
     },
     {
       "packageName": "reactstrap",
-      "count": 1008,
+      "count": 1006,
       "usages": [
         {
           "name": "Container",
@@ -6993,7 +6992,7 @@
         },
         {
           "name": "Breadcrumb",
-          "count": 70,
+          "count": 69,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/legacy/cancelOrder/CancelOrderFlowView.tsx",
@@ -7056,7 +7055,6 @@
             "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
             "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskDetail.tsx",
             "apps/helpdesk/src/pages/settings/macros/MacrosSettingsForm.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/utils/generateBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/settings/rules/accountRules/components/RuleFormEditor.tsx",
             "apps/helpdesk/src/pages/settings/rules/RulesLibrary.tsx",
             "apps/helpdesk/src/pages/settings/SLAs/features/PageHeader/PageHeader.tsx",
@@ -7069,7 +7067,7 @@
         },
         {
           "name": "BreadcrumbItem",
-          "count": 70,
+          "count": 69,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/components/GuidanceBreadcrumbs/GuidanceBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/legacy/cancelOrder/CancelOrderFlowView.tsx",
@@ -7132,7 +7130,6 @@
             "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
             "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskDetail.tsx",
             "apps/helpdesk/src/pages/settings/macros/MacrosSettingsForm.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/utils/generateBreadcrumbs.tsx",
             "apps/helpdesk/src/pages/settings/rules/accountRules/components/RuleFormEditor.tsx",
             "apps/helpdesk/src/pages/settings/rules/RulesLibrary.tsx",
             "apps/helpdesk/src/pages/settings/SLAs/features/PageHeader/PageHeader.tsx",
