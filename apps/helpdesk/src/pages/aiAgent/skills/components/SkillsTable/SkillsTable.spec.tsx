@@ -424,7 +424,7 @@ describe('SkillsTable', () => {
 
         it('should show pagination when articles exceed page size', () => {
             const manyArticles: TransformedArticle[] = Array.from(
-                { length: 15 },
+                { length: 25 },
                 (_, i) => ({
                     id: i + 1,
                     title: `Article ${i + 1}`,

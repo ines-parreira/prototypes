@@ -66,9 +66,7 @@ export const getColumns = ({
     integrationIds = [],
     metricsDateRange,
 }: GetColumnsParams): ColumnDef<TransformedIntent>[] => {
-    const hasExpandedRows = expandedRows.size > 0
-
-    const baseColumns: ColumnDef<TransformedIntent>[] = [
+    return [
         {
             id: COLUMN_IDS.EXPAND,
             header: () => null,
@@ -239,10 +237,7 @@ export const getColumns = ({
             enableSorting: true,
             sortUndefined: -1,
         },
-    ]
-
-    if (hasExpandedRows) {
-        baseColumns.push({
+        {
             id: COLUMN_IDS.LINK,
             header: () => null,
             cell: ({ row }) => {
@@ -299,61 +294,53 @@ export const getColumns = ({
                     </div>
                 )
             },
-        })
-    }
-
-    baseColumns.push({
-        id: COLUMN_IDS.ENABLED,
-        accessorKey: 'toggleState',
-        header: (info) => (
-            <SortableHeaderCell
-                label="Enabled"
-                sortDirection={info.column.getIsSorted()}
-            />
-        ),
-        cell: ({ row }) => {
-            const intent = row.original
-            const isParent = !!intent.children
-            const isHandoverOnly = intent.status === IntentStatus.Handover
-            const isDisabled =
-                isParent ||
-                intent.status === IntentStatus.Linked ||
-                isHandoverOnly
-            const toggleValue = intent.toggleState === 'enabled'
-
-            const toggle = (
-                <ToggleField
-                    value={toggleValue}
-                    onChange={(enabled) => onToggleEnabled(intent.id, enabled)}
-                    isDisabled={isDisabled}
-                />
-            )
-
-            if (!isDisabled) {
-                return toggle
-            }
-
-            const tooltipMessage = isParent
-                ? TOOLTIP_MESSAGES.L1_DISABLED
-                : isHandoverOnly
-                  ? TOOLTIP_MESSAGES.HANDOVER_ONLY
-                  : TOOLTIP_MESSAGES.L2_LINKED
-
-            const isIndeterminate = intent.toggleState === 'indeterminate'
-            const trigger = isIndeterminate ? (
-                <div className={css.indeterminateToggle}>{toggle}</div>
-            ) : (
-                toggle
-            )
-
-            return (
-                <Tooltip trigger={trigger}>
-                    <TooltipContent caption={tooltipMessage} />
-                </Tooltip>
-            )
         },
-        enableSorting: false,
-    })
+        {
+            id: COLUMN_IDS.ENABLED,
+            accessorKey: 'toggleState',
+            header: (info) => (
+                <SortableHeaderCell
+                    label="Enabled"
+                    sortDirection={info.column.getIsSorted()}
+                />
+            ),
+            cell: ({ row }) => {
+                const intent = row.original
+                const isParent = !!intent.children
+                const isHandoverOnly = intent.status === IntentStatus.Handover
+                const isDisabled =
+                    isParent ||
+                    intent.status === IntentStatus.Linked ||
+                    isHandoverOnly
+                const toggleValue = intent.toggleState === 'enabled'
 
-    return baseColumns
+                const toggle = (
+                    <ToggleField
+                        value={toggleValue}
+                        onChange={(enabled) =>
+                            onToggleEnabled(intent.id, enabled)
+                        }
+                        isDisabled={isDisabled}
+                    />
+                )
+
+                if (!isDisabled) {
+                    return toggle
+                }
+
+                const tooltipMessage = isParent
+                    ? TOOLTIP_MESSAGES.L1_DISABLED
+                    : isHandoverOnly
+                      ? TOOLTIP_MESSAGES.HANDOVER_ONLY
+                      : TOOLTIP_MESSAGES.L2_LINKED
+
+                return (
+                    <Tooltip trigger={toggle}>
+                        <TooltipContent caption={tooltipMessage} />
+                    </Tooltip>
+                )
+            },
+            enableSorting: false,
+        },
+    ]
 }

@@ -214,7 +214,7 @@ describe('useIntentsTable', () => {
         expect(l1Intent.toggleState).toBe('disabled')
     })
 
-    it('should set L1 toggle state to indeterminate when some children are enabled', () => {
+    it('should set L1 toggle state to enabled when at least one child is enabled', () => {
         mockUseListIntents.mockReturnValue({
             data: {
                 intents: [
@@ -239,7 +239,7 @@ describe('useIntentsTable', () => {
         const { result } = renderHook(() => useIntentsTable(123), { wrapper })
 
         const l1Intent = result.current.intents[0]
-        expect(l1Intent.toggleState).toBe('indeterminate')
+        expect(l1Intent.toggleState).toBe('enabled')
     })
 
     it('should filter only published articles', () => {

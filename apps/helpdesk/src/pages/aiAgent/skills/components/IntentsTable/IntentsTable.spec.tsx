@@ -49,7 +49,7 @@ describe('IntentsTable', () => {
             id: 'order',
             name: 'order',
             formattedName: 'Order',
-            toggleState: 'indeterminate',
+            toggleState: 'enabled',
             children: [
                 {
                     id: 'order::status',

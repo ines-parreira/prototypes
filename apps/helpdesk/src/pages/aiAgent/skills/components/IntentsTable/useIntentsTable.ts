@@ -15,7 +15,7 @@ export interface IntentMetrics {
     handoverPercent: number
 }
 
-export type ToggleState = 'enabled' | 'disabled' | 'indeterminate'
+export type ToggleState = 'enabled' | 'disabled'
 
 export interface TransformedIntent {
     id: string
@@ -33,13 +33,11 @@ export interface TransformedIntent {
 const calculateL1ToggleState = (children: TransformedIntent[]): ToggleState => {
     if (children.length === 0) return 'enabled'
 
-    const enabledCount = children.filter(
+    const hasEnabledChild = children.some(
         (child) => child.toggleState === 'enabled',
-    ).length
+    )
 
-    if (enabledCount === children.length) return 'enabled'
-    if (enabledCount === 0) return 'disabled'
-    return 'indeterminate'
+    return hasEnabledChild ? 'enabled' : 'disabled'
 }
 
 export const useIntentsTable = (helpCenterId: number) => {

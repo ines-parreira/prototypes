@@ -103,7 +103,7 @@ export const SkillsTable = () => {
         paginationConfig: {
             enablePagination: true,
             manualPagination: false,
-            pageSize: 10,
+            pageSize: 20,
             initialPageIndex: 0,
         },
         sortingConfig: {
@@ -169,39 +169,43 @@ export const SkillsTable = () => {
                 </Text>
             </Box>
 
-            <TableRoot withBorder>
-                <TableHeader>
-                    <HeaderRowGroup headerGroups={table.getHeaderGroups()} />
-                </TableHeader>
-                <TableBodyContent
-                    isLoading={isLoading}
-                    rows={table.getRowModel().rows}
-                    columnCount={table.getAllColumns().length}
-                    table={table}
-                    renderRows={renderRows}
-                />
-            </TableRoot>
-
-            {table.getPageCount() > 1 && (
-                <div className={css.pagination}>
-                    <TableToolbar<TransformedArticle>
+            <div className={css.tableRoot}>
+                <TableRoot withBorder>
+                    <TableHeader>
+                        <HeaderRowGroup
+                            headerGroups={table.getHeaderGroups()}
+                        />
+                    </TableHeader>
+                    <TableBodyContent
+                        isLoading={isLoading}
+                        rows={table.getRowModel().rows}
+                        columnCount={table.getAllColumns().length}
                         table={table}
-                        bottomRow={{
-                            right: [
-                                {
-                                    key: 'pagination',
-                                    content: (
-                                        <TablePagination
-                                            table={table}
-                                            pageSizeOptions={[10, 25, 50]}
-                                        />
-                                    ),
-                                },
-                            ],
-                        }}
+                        renderRows={renderRows}
                     />
-                </div>
-            )}
+                </TableRoot>
+
+                {table.getPageCount() > 1 && (
+                    <div className={css.pagination}>
+                        <TableToolbar<TransformedArticle>
+                            table={table}
+                            bottomRow={{
+                                right: [
+                                    {
+                                        key: 'pagination',
+                                        content: (
+                                            <TablePagination
+                                                table={table}
+                                                pageSizeOptions={[20, 50, 100]}
+                                            />
+                                        ),
+                                    },
+                                ],
+                            }}
+                        />
+                    </div>
+                )}
+            </div>
         </Box>
     )
 }
