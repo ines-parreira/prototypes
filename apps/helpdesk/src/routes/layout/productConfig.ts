@@ -38,7 +38,7 @@ export type ProductConfig = {
     name: string
     description?: string
     sidebarContentType?: SidebarContentType
-    sidebar: ComponentType
+    sidebar: ComponentType | null
     urlPatterns: string[]
     icon: IconName
     defaultPath: string
@@ -49,7 +49,7 @@ export const productConfig: Record<Product, ProductConfig> = {
     [Product.Home]: {
         id: Product.Home,
         name: 'Home',
-        sidebar: InboxSidebar,
+        sidebar: null,
         urlPatterns: ['home'],
         icon: 'nav-home',
         defaultPath: '/app/home',

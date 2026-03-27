@@ -286,4 +286,12 @@ describe('NavigationSidebar', () => {
             },
         )
     })
+
+    it('should not render sidebar content for Home product', () => {
+        useCurrentRouteProductMock.mockReturnValue(productConfig[Product.Home])
+        const { container } = render(<NavigationSidebar />, { wrapper })
+        expect(
+            container.querySelector('[data-name="sidebar-content"]'),
+        ).toBeEmptyDOMElement()
+    })
 })

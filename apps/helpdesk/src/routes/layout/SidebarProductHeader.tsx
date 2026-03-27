@@ -70,7 +70,7 @@ export function SidebarProductHeader({
                         trailingSlot={<DropdownIcon isOpen={isOpen} />}
                     >
                         <Box pl="sm">
-                            <Heading>{selectedItem.name}</Heading>
+                            <Heading size="md">{selectedItem.name}</Heading>
                         </Box>
                     </Button>
                 )

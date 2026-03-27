@@ -22,6 +22,7 @@ export function SidebarContent({ children }: SidebarContentProps) {
             gap="md"
             className={css.content}
             alignItems={isCollapsed ? 'center' : undefined}
+            data-name="sidebar-content"
         >
             {children}
         </Box>

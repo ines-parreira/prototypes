@@ -108,7 +108,7 @@ export function NavigationSidebar() {
             </Box>
 
             <SidebarContent>
-                <CurrentContent />
+                {!!CurrentContent && <CurrentContent />}
             </SidebarContent>
 
             <SidebarFooter>
