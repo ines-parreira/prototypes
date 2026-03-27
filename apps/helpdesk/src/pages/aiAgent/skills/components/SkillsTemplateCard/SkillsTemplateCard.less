@@ -19,7 +19,14 @@
         padding: 0 var(--spacing-xs);
     }
 
-    .statsTitle {
-        color: var(--content-neutral-secondary);
+    .stats {
+        // Override DrillDownModalTrigger hover styles
+        :global {
+            span[id^='drill-down']:hover {
+                color: inherit;
+                text-decoration: none;
+                cursor: pointer;
+            }
+        }
     }
 }

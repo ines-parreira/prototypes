@@ -91,7 +91,7 @@ export const SkillTemplatesData: SkillTemplateConfig[] = [
     },
 ]
 
-export const useSkillsTemplates = (): SkillTemplate[] => {
+export const useSkillsTemplates = () => {
     const { isLoading: isLoadingStoreConfiguration, storeConfiguration } =
         useAiAgentStoreConfigurationContext()
 
@@ -105,6 +105,18 @@ export const useSkillsTemplates = (): SkillTemplate[] => {
         const map = new Map<string, Intent>()
         ;(data?.intents ?? []).forEach((intent) => map.set(intent.name, intent))
         return map
+    }, [data])
+
+    const createdTemplateKeys = useMemo(() => {
+        const keys = new Set<string>()
+        data?.intents.forEach((intent) => {
+            intent.articles.forEach((article) => {
+                if (article.template_key) {
+                    keys.add(article.template_key)
+                }
+            })
+        })
+        return keys
     }, [data])
 
     const mappedSkillsTemplates = useMemo(
@@ -128,5 +140,16 @@ export const useSkillsTemplates = (): SkillTemplate[] => {
         [intentsByName, helpCenterId],
     )
 
-    return mappedSkillsTemplates
+    const availableSkillsTemplates = useMemo(
+        () =>
+            mappedSkillsTemplates.filter(
+                (template) => !createdTemplateKeys.has(template.id),
+            ),
+        [mappedSkillsTemplates, createdTemplateKeys],
+    )
+
+    return {
+        allSkillsTemplates: mappedSkillsTemplates,
+        availableSkillsTemplates: availableSkillsTemplates,
+    }
 }

@@ -4,15 +4,36 @@
         flex-direction: column;
         border-radius: var(--spacing-sm);
         border: 1px solid var(--border-neutral-default);
-        padding: var(--spacing-lg) 0 var(--spacing-lg) var(--spacing-lg);
+        padding: var(--spacing-lg) 0;
         gap: var(--spacing-lg);
+    }
+
+    .header {
+        flex-direction: column;
+        gap: var(--spacing-xxxs);
+        padding: 0 var(--spacing-lg);
     }
 
     .description {
         color: var(--content-neutral-secondary);
     }
 
+    .cardsRow {
+        display: flex;
+        flex-direction: row;
+        gap: var(--spacing-md);
+        overflow-x: auto;
+        padding-right: var(--spacing-lg);
+        padding-left: var(--spacing-lg);
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
     .templateCard {
+        flex-shrink: 0;
         width: 400px;
         padding: var(--spacing-md) var(--spacing-lg);
     }

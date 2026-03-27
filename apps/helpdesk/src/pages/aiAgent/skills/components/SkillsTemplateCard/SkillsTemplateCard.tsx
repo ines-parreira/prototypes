@@ -1,9 +1,11 @@
+import { useMemo } from 'react'
+
 import classNames from 'classnames'
 
 import {
     Box,
     Button,
-    ProgressBar,
+    Skeleton,
     Tag,
     TagColor,
     Text,
@@ -11,6 +13,15 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 
+import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'domains/reporting/hooks/automate/types'
+import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
+import { IntentMetric } from 'domains/reporting/state/ui/stats/types'
+import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import type { IntentMetrics } from 'pages/aiAgent/skills/components/IntentsTable/useIntentsTable'
+import { MetricCell } from 'pages/aiAgent/skills/components/SharedTableComponents/MetricCells'
 import { IntentStatus } from 'pages/aiAgent/skills/types'
 import type { SkillTemplate } from 'pages/aiAgent/skills/types'
 import { formatIntentName } from 'pages/aiAgent/skills/utils'
@@ -26,6 +37,8 @@ type Props = {
     hasStats?: boolean
     hasCTA?: boolean
     hasActiveCTA?: boolean
+    stats?: IntentMetrics | null
+    isLoadingStats?: boolean
 }
 
 export const SkillsTemplateCard: React.FC<Props> = ({
@@ -35,13 +48,42 @@ export const SkillsTemplateCard: React.FC<Props> = ({
     hasStats = false,
     hasCTA = false,
     hasActiveCTA = false,
+    stats = null,
+    isLoadingStats = false,
 }) => {
-    const displayedIntents = skillTemplate.intents.slice(0, MAX_VISIBLE_INTENTS)
-    const remainingCount = skillTemplate.intents.length - MAX_VISIBLE_INTENTS
-    const hiddenIntents = skillTemplate.intents.slice(MAX_VISIBLE_INTENTS)
+    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
+    const shopName = storeConfiguration?.storeName || ''
+    const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
+    const { intentCustomFieldId, outcomeCustomFieldId } =
+        useGetCustomTicketsFieldsDefinitionData()
+    const metricsDateRange = useMemo(() => getLast28DaysDateRange(), [])
 
-    const value = 19
-    const maxValue = 100
+    const intentFieldValues = useMemo(
+        () => skillTemplate.intents.map((i) => i.name),
+        [skillTemplate.intents],
+    )
+
+    const hasLongIntentName = skillTemplate.intents.slice(0, 2).some(
+        (intent) =>
+            formatIntentName(intent.name)
+                .split(' ')
+                .filter((word) => word !== '/').length > 2,
+    )
+    const maxVisible = hasLongIntentName ? 1 : MAX_VISIBLE_INTENTS
+
+    const displayedIntents = skillTemplate.intents.slice(0, maxVisible)
+    const remainingCount = skillTemplate.intents.length - maxVisible
+    const hiddenIntents = skillTemplate.intents.slice(maxVisible)
+
+    const ticketVolumeDisplay =
+        stats && stats.ticketVolume > 0
+            ? `${stats.ticketVolume.toLocaleString('en-US')} (${stats.ticketVolumePercent}%)`
+            : '--'
+
+    const handoverDisplay =
+        stats && stats.handoverCount > 0
+            ? `${stats.handoverCount.toLocaleString('en-US')} (${stats.handoverPercent}%)`
+            : '--'
 
     return (
         <Box
@@ -53,9 +95,11 @@ export const SkillsTemplateCard: React.FC<Props> = ({
                 flexDirection="column"
                 gap={hasStats ? 'xs' : 'sm'}
             >
-                <Text variant="bold" size="md">
-                    {skillTemplate.name}
-                </Text>
+                <TruncatedTextWithTooltip tooltipContent={skillTemplate.name}>
+                    <Text variant="bold" size="md">
+                        {skillTemplate.name}
+                    </Text>
+                </TruncatedTextWithTooltip>
                 <Box className={css.tagsContainer}>
                     {displayedIntents.map((intent) => {
                         const isLinked = intent.status === IntentStatus.Linked
@@ -103,31 +147,55 @@ export const SkillsTemplateCard: React.FC<Props> = ({
                 </Box>
             </Box>
             {!!hasStats && (
-                // Actual stats data will be inserted in the next iteration
-                <Box gap="xl">
+                <Box gap="xl" className={css.stats}>
                     <Box flexDirection="column" gap="xxxs">
-                        <Text size="xs" className={css.statsTitle}>
+                        <Text size="xs" color="content-neutral-secondary">
                             Ticket volume
                         </Text>
-                        <Text size="sm" variant="bold">
-                            1,090 (50%)
-                        </Text>
+                        {isLoadingStats ? (
+                            <Skeleton width="80px" height="16px" />
+                        ) : (
+                            <MetricCell
+                                type="intent"
+                                metricName={IntentMetric.TicketVolume}
+                                title="Ticket volume"
+                                intentFieldValues={intentFieldValues}
+                                integrationIds={integrationIds}
+                                dateRange={metricsDateRange}
+                                outcomeCustomFieldId={outcomeCustomFieldId}
+                                intentCustomFieldId={intentCustomFieldId}
+                                value={stats?.ticketVolume ?? 0}
+                                displayValue={ticketVolumeDisplay}
+                                isBold
+                            />
+                        )}
                     </Box>
                     <Box flexDirection="column" gap="xxxs">
-                        <Text size="xs" className={css.statsTitle}>
+                        <Text size="xs" color="content-neutral-secondary">
                             Handover
                         </Text>
-                        <Box gap="xxs" width="100%" alignItems="center">
-                            <Text size="sm" variant="bold">
-                                289 (19%)
-                            </Text>
-                            <Box alignItems="center">
-                                <ProgressBar
-                                    value={value}
-                                    maxValue={maxValue}
-                                />
-                            </Box>
-                        </Box>
+                        {isLoadingStats ? (
+                            <Skeleton width="130px" height="16px" />
+                        ) : (
+                            <MetricCell
+                                type="intent"
+                                metricName={IntentMetric.Handover}
+                                title="Handover tickets"
+                                intentFieldValues={intentFieldValues}
+                                integrationIds={integrationIds}
+                                dateRange={metricsDateRange}
+                                outcomeCustomFieldId={outcomeCustomFieldId}
+                                intentCustomFieldId={intentCustomFieldId}
+                                outcomeValue={CUSTOM_FIELD_AI_AGENT_HANDOVER}
+                                value={stats?.handoverPercent ?? 0}
+                                displayValue={handoverDisplay}
+                                showProgressBar={
+                                    !!stats && stats.handoverCount > 0
+                                }
+                                isRow
+                                isBold
+                            />
+                        )}
                     </Box>
                 </Box>
             )}

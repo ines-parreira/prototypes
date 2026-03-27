@@ -23,9 +23,9 @@ export const AiAgentSkills = () => {
     const { hasLinkedSkills, isLoading } = useHasLinkedSkills()
     const [isIntentsTableOpen, setIsIntentsTableOpen] = useState(false)
     const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
+    const { allSkillsTemplates, availableSkillsTemplates } =
+        useSkillsTemplates()
     const noop = () => {}
-
-    const skillsTemplates = useSkillsTemplates()
 
     const handleCreateSkillsFromTemplate = () => {
         // Logic on creating a Skill from template will be applied in the future iteration
@@ -50,12 +50,14 @@ export const AiAgentSkills = () => {
             />
 
             <Box flexDirection="column" className={css.content}>
-                {/* This section will be displayed only when there are unused templates.
-                The logic related to this will be applied in the next iteration */}
-                <RecommendedSkillsSection
-                    skillsTemplates={skillsTemplates}
-                    onCreateSkillsFromTemplate={handleCreateSkillsFromTemplate}
-                />
+                {availableSkillsTemplates.length > 0 && (
+                    <RecommendedSkillsSection
+                        skillsTemplates={availableSkillsTemplates}
+                        onCreateSkillsFromTemplate={
+                            handleCreateSkillsFromTemplate
+                        }
+                    />
+                )}
 
                 {isLoading ? (
                     <SkillsLoading />
@@ -73,7 +75,7 @@ export const AiAgentSkills = () => {
 
             <DrillDownModal isLegacy={false} />
             <SkillsTemplateModal
-                skillsTemplates={skillsTemplates}
+                skillsTemplates={allSkillsTemplates}
                 isOpen={isTemplateModalOpen}
                 onOpenChange={setIsTemplateModalOpen}
                 onCreateSkillsFromTemplate={handleCreateSkillsFromTemplate}

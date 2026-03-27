@@ -48,10 +48,20 @@ describe('useSkillsTemplates', () => {
         })
     })
 
-    it('should return all skill templates', () => {
+    it('should return all skill templates in allSkillsTemplates', () => {
         const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
 
-        expect(result.current).toHaveLength(SkillTemplatesData.length)
+        expect(result.current.allSkillsTemplates).toHaveLength(
+            SkillTemplatesData.length,
+        )
+    })
+
+    it('should return all available skill templates in availableSkillsTemplates when none are created', () => {
+        const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
+
+        expect(result.current.availableSkillsTemplates).toHaveLength(
+            SkillTemplatesData.length,
+        )
     })
 
     it.each([
@@ -91,7 +101,9 @@ describe('useSkillsTemplates', () => {
     ])('should map "%s" to guidance "%s"', (skillName, guidanceName) => {
         const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
 
-        const template = result.current.find((t) => t.name === skillName)
+        const template = result.current.allSkillsTemplates.find(
+            (t) => t.name === skillName,
+        )
 
         expect(template?.guidance?.name).toBe(guidanceName)
     })
@@ -114,7 +126,7 @@ describe('useSkillsTemplates', () => {
 
         const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
 
-        const template = result.current.find(
+        const template = result.current.allSkillsTemplates.find(
             (t) => t.name === 'Order status, tracking or delivery timing',
         )
         const intent = template?.intents.find((i) => i.name === 'order::status')
@@ -131,11 +143,134 @@ describe('useSkillsTemplates', () => {
 
         const { result } = renderHook(() => useSkillsTemplates(), { wrapper })
 
-        const template = result.current.find(
+        const template = result.current.allSkillsTemplates.find(
             (t) => t.name === 'Order cancellations',
         )
         const intent = template?.intents.find((i) => i.name === 'order::cancel')
 
         expect(intent?.status).toBe('not_linked')
+    })
+
+    describe('template filtering (already created templates)', () => {
+        it('should filter out a template from availableSkillsTemplates when its id matches a template_key in an article', () => {
+            mockUseListIntents.mockReturnValue({
+                data: {
+                    intents: [
+                        {
+                            name: 'order::status',
+                            status: 'linked',
+                            help_center_id: 123,
+                            articles: [
+                                {
+                                    id: 1,
+                                    locale: 'en',
+                                    title: 'Order Status',
+                                    status: 'published',
+                                    template_key:
+                                        'order-status-tracking-or-delivery-timing',
+                                    visibility_status: 'PUBLIC',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(() => useSkillsTemplates(), {
+                wrapper,
+            })
+
+            expect(
+                result.current.availableSkillsTemplates.find(
+                    (t) => t.id === 'order-status-tracking-or-delivery-timing',
+                ),
+            ).toBeUndefined()
+            expect(result.current.availableSkillsTemplates).toHaveLength(
+                SkillTemplatesData.length - 1,
+            )
+            expect(result.current.allSkillsTemplates).toHaveLength(
+                SkillTemplatesData.length,
+            )
+        })
+
+        it('should include a template in availableSkillsTemplates when no article has a matching template_key', () => {
+            mockUseListIntents.mockReturnValue({
+                data: {
+                    intents: [
+                        {
+                            name: 'order::status',
+                            status: 'linked',
+                            help_center_id: 123,
+                            articles: [
+                                {
+                                    id: 1,
+                                    locale: 'en',
+                                    title: 'Order Status',
+                                    status: 'published',
+                                    template_key: null,
+                                    visibility_status: 'PUBLIC',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(() => useSkillsTemplates(), {
+                wrapper,
+            })
+
+            expect(result.current.availableSkillsTemplates).toHaveLength(
+                SkillTemplatesData.length,
+            )
+        })
+
+        it('should only filter templates whose id matches a template_key', () => {
+            mockUseListIntents.mockReturnValue({
+                data: {
+                    intents: [
+                        {
+                            name: 'order::cancel',
+                            status: 'linked',
+                            help_center_id: 123,
+                            articles: [
+                                {
+                                    id: 2,
+                                    locale: 'en',
+                                    title: 'Cancel Order',
+                                    status: 'published',
+                                    template_key: 'order-cancellations',
+                                    visibility_status: 'PUBLIC',
+                                },
+                            ],
+                        },
+                    ],
+                },
+                isLoading: false,
+                isError: false,
+            })
+
+            const { result } = renderHook(() => useSkillsTemplates(), {
+                wrapper,
+            })
+
+            expect(
+                result.current.availableSkillsTemplates.find(
+                    (t) => t.id === 'order-cancellations',
+                ),
+            ).toBeUndefined()
+            expect(
+                result.current.availableSkillsTemplates.find(
+                    (t) => t.id === 'order-status-tracking-or-delivery-timing',
+                ),
+            ).toBeDefined()
+            expect(result.current.availableSkillsTemplates).toHaveLength(
+                SkillTemplatesData.length - 1,
+            )
+        })
     })
 })

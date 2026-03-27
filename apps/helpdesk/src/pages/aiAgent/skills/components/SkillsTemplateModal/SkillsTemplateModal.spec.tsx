@@ -4,10 +4,45 @@ import userEvent from '@testing-library/user-event'
 import { AxiomProvider } from '@gorgias/axiom'
 
 import { ThemeProvider } from 'core/theme'
+import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import type { SkillTemplate } from 'pages/aiAgent/skills/types'
 import { IntentStatus } from 'pages/aiAgent/skills/types'
 
 import { SkillsTemplateModal } from './SkillsTemplateModal'
+
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
+    useAiAgentStoreConfigurationContext: jest.fn(),
+}))
+jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations', () => ({
+    useGetTicketChannelsStoreIntegrations: jest.fn(),
+}))
+jest.mock(
+    'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData',
+    () => ({
+        useGetCustomTicketsFieldsDefinitionData: jest.fn(),
+    }),
+)
+jest.mock(
+    'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics',
+    () => ({
+        getLast28DaysDateRange: jest.fn(() => ({
+            start_datetime: '2024-01-01T00:00:00.000Z',
+            end_datetime: '2024-01-28T23:59:59.000Z',
+        })),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/skills/components/SharedTableComponents/MetricCells',
+    () => ({
+        MetricCell: jest.fn(() => null),
+    }),
+)
+
+const mockUseAiAgentStoreConfigurationContext =
+    useAiAgentStoreConfigurationContext as jest.Mock
+const mockUseGetCustomTicketsFieldsDefinitionData =
+    useGetCustomTicketsFieldsDefinitionData as jest.Mock
 
 const mockTemplates: SkillTemplate[] = [
     {
@@ -63,6 +98,13 @@ const renderComponent = (
 describe('SkillsTemplateModal', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: { storeName: 'test-store' },
+        })
+        mockUseGetCustomTicketsFieldsDefinitionData.mockReturnValue({
+            intentCustomFieldId: 1,
+            outcomeCustomFieldId: 2,
+        })
     })
 
     it('does not render when isOpen is false', () => {

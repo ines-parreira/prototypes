@@ -20,6 +20,8 @@ type BaseMetricCellProps = {
     intentCustomFieldId?: number
     showProgressBar?: boolean
     title?: string
+    isRow?: boolean
+    isBold?: boolean
 }
 
 type KnowledgeMetricCellProps = BaseMetricCellProps & {
@@ -33,7 +35,8 @@ type KnowledgeMetricCellProps = BaseMetricCellProps & {
 type IntentMetricCellProps = BaseMetricCellProps & {
     type: 'intent'
     metricName: IntentMetric
-    intentName: string
+    intentName?: string
+    intentFieldValues?: string[]
     integrationIds: string[]
     outcomeValue?: string
 }
@@ -66,6 +69,7 @@ export const MetricCell = (props: MetricCellProps) => {
         metricName:
             intentData?.metricName ?? ('intent_ticket_volume' as IntentMetric),
         intentName: intentData?.intentName ?? '',
+        optionalIntentFieldValues: intentData?.intentFieldValues,
         integrationIds: intentData?.integrationIds ?? [],
         outcomeCustomFieldId: props.outcomeCustomFieldId,
         intentCustomFieldId: props.intentCustomFieldId ?? 0,
@@ -83,7 +87,7 @@ export const MetricCell = (props: MetricCellProps) => {
 
     return (
         <Box
-            flexDirection="column"
+            flexDirection={props?.isRow ? 'row' : 'column'}
             gap="xxs"
             width="100%"
             className={css.metricCell}
@@ -91,11 +95,16 @@ export const MetricCell = (props: MetricCellProps) => {
             <DrillDownModalTrigger
                 openDrillDownModal={openDrillDownModal}
                 tooltipText={tooltipText}
+                enabled={props.value > 0}
             >
-                <Text size="sm">{props.displayValue}</Text>
+                <Text size="sm" variant={props.isBold ? 'bold' : 'regular'}>
+                    {props.displayValue}
+                </Text>
             </DrillDownModalTrigger>
             {props.showProgressBar && (
-                <ProgressBar value={props.value} maxValue={100} size="xs" />
+                <Box alignItems="center">
+                    <ProgressBar value={props.value} maxValue={100} size="xs" />
+                </Box>
             )}
         </Box>
     )

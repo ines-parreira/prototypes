@@ -49,7 +49,8 @@ const getTooltipText = (metricName: IntentMetric) =>
  */
 export const useIntentDrillDownTrigger = ({
     metricName,
-    intentName,
+    intentName = '',
+    optionalIntentFieldValues,
     integrationIds,
     outcomeCustomFieldId,
     intentCustomFieldId,
@@ -59,7 +60,8 @@ export const useIntentDrillDownTrigger = ({
     segmentEventName = SegmentEvent.AiAgentTicketDrilldownClicked,
 }: {
     metricName: IntentMetric
-    intentName: string
+    intentName?: string
+    optionalIntentFieldValues?: string[]
     integrationIds: string[]
     outcomeCustomFieldId?: number
     intentCustomFieldId: number
@@ -71,6 +73,11 @@ export const useIntentDrillDownTrigger = ({
     const dispatch = useAppDispatch()
     const tooltipText = title || getTooltipText(metricName)
 
+    const intentFieldValues = useMemo(
+        () => optionalIntentFieldValues ?? [intentName],
+        [optionalIntentFieldValues, intentName],
+    )
+
     const metricData: IntentMetrics = useMemo(
         () => ({
             title: tooltipText,
@@ -79,7 +86,7 @@ export const useIntentDrillDownTrigger = ({
                 outcomeFieldId: outcomeCustomFieldId,
             }),
             ...(outcomeValue && { outcomeFieldValues: [outcomeValue] }),
-            intentFieldValues: [intentName],
+            intentFieldValues,
             intentFieldId: intentCustomFieldId,
             integrationIds,
             dateRange,
@@ -89,7 +96,7 @@ export const useIntentDrillDownTrigger = ({
             metricName,
             outcomeCustomFieldId,
             outcomeValue,
-            intentName,
+            intentFieldValues,
             intentCustomFieldId,
             integrationIds,
             dateRange,

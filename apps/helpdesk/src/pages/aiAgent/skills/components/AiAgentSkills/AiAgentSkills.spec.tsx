@@ -8,13 +8,18 @@ import { ThemeProvider } from 'core/theme'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
 import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
 import { IntentStatus } from 'pages/aiAgent/skills/types'
+import type { Intent } from 'pages/aiAgent/skills/types'
 
 import { AiAgentSkills } from './AiAgentSkills'
 
 jest.mock('pages/aiAgent/skills/hooks/useHasLinkedSkills')
 jest.mock('pages/aiAgent/skills/hooks/useSkillsTemplates')
 jest.mock('../SkillsTable/SkillsTable', () => ({
-    SkillsTable: () => <div data-testid="skills-table">Skills Table</div>,
+    SkillsTable: () => (
+        <div role="region" aria-label="Skills Table">
+            Skills Table
+        </div>
+    ),
 }))
 jest.mock('../IntentsTable/IntentsTable', () => ({
     IntentsTable: ({
@@ -23,12 +28,34 @@ jest.mock('../IntentsTable/IntentsTable', () => ({
     }: {
         isOpen: boolean
         onOpenChange: (open: boolean) => void
-    }) => (
-        <div data-testid="intents-table" data-open={isOpen}>
-            Intents Table
-            <button onClick={() => onOpenChange(false)}>Close</button>
-        </div>
-    ),
+    }) =>
+        isOpen ? (
+            <div role="region" aria-label="Intents Table">
+                Intents Table
+                <button onClick={() => onOpenChange(false)}>Close</button>
+            </div>
+        ) : null,
+}))
+jest.mock(
+    'pages/aiAgent/skills/components/RecommendedSkillsSection/RecommendedSkillsSection',
+    () => ({
+        RecommendedSkillsSection: ({
+            skillsTemplates,
+        }: {
+            skillsTemplates: unknown[]
+        }) => (
+            <div>Recommended Skills ({skillsTemplates.length} templates)</div>
+        ),
+    }),
+)
+jest.mock(
+    'pages/aiAgent/skills/components/SkillsTemplateModal/SkillsTemplateModal',
+    () => ({
+        SkillsTemplateModal: () => null,
+    }),
+)
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
+    DrillDownModal: () => null,
 }))
 
 const mockStore = configureMockStore([thunk])
@@ -44,17 +71,13 @@ const mockSkillTemplate = {
     id: 'order-status',
     name: 'Order status',
     guidanceId: 'order-status-guidance',
-    tag: 'Order',
-    style: {
-        color: 'content-accent-default',
-        background: 'surface-accent-default',
-    },
+    guidance: undefined,
     intents: [
         {
-            name: 'order::status',
+            name: 'order::status' as Intent['name'],
             status: IntentStatus.NotLinked,
             help_center_id: 0,
-            articles: [],
+            articles: [] as Intent['articles'],
         },
     ],
 }
@@ -74,9 +97,15 @@ describe('AiAgentSkills', () => {
                 },
             },
         })
-        mockUseSkillsTemplates.mockReturnValue([
-            mockSkillTemplate as ReturnType<typeof useSkillsTemplates>[number],
-        ])
+        mockUseSkillsTemplates.mockReturnValue({
+            allSkillsTemplates: [mockSkillTemplate],
+            availableSkillsTemplates: [mockSkillTemplate],
+        })
+        mockUseHasLinkedSkills.mockReturnValue({
+            hasLinkedSkills: false,
+            isLoading: false,
+            isError: false,
+        })
     })
 
     const renderComponent = () => {
@@ -90,12 +119,6 @@ describe('AiAgentSkills', () => {
     }
 
     it('should show empty state when there are no linked skills', () => {
-        mockUseHasLinkedSkills.mockReturnValue({
-            hasLinkedSkills: false,
-            isLoading: false,
-            isError: false,
-        })
-
         renderComponent()
 
         expect(
@@ -118,7 +141,9 @@ describe('AiAgentSkills', () => {
         expect(
             screen.getByRole('heading', { name: 'Skills' }),
         ).toBeInTheDocument()
-        expect(screen.getByTestId('skills-table')).toBeInTheDocument()
+        expect(
+            screen.getByRole('region', { name: 'Skills Table' }),
+        ).toBeInTheDocument()
     })
 
     it('should show loading state', () => {
@@ -133,6 +158,25 @@ describe('AiAgentSkills', () => {
         expect(screen.getByLabelText('Loading')).toBeInTheDocument()
     })
 
+    it('should show RecommendedSkillsSection when skill templates are available', () => {
+        renderComponent()
+
+        expect(
+            screen.getByText('Recommended Skills (1 templates)'),
+        ).toBeInTheDocument()
+    })
+
+    it('should not show RecommendedSkillsSection when no skill templates are available', () => {
+        mockUseSkillsTemplates.mockReturnValue({
+            allSkillsTemplates: [],
+            availableSkillsTemplates: [],
+        })
+
+        renderComponent()
+
+        expect(screen.queryByText(/Recommended Skills/)).not.toBeInTheDocument()
+    })
+
     describe('Intents Table', () => {
         beforeEach(() => {
             mockUseHasLinkedSkills.mockReturnValue({
@@ -145,22 +189,23 @@ describe('AiAgentSkills', () => {
         it('should render intents table closed by default', () => {
             renderComponent()
 
-            const intentsTable = screen.getByTestId('intents-table')
-            expect(intentsTable).toHaveAttribute('data-open', 'false')
+            expect(
+                screen.queryByRole('region', { name: 'Intents Table' }),
+            ).not.toBeInTheDocument()
         })
 
         it('should open intents table when "View intents" is clicked', async () => {
             const user = userEvent.setup()
             renderComponent()
 
-            const viewIntentsButton = screen.getByRole('button', {
-                name: /view intents/i,
-            })
-            await user.click(viewIntentsButton)
+            await user.click(
+                screen.getByRole('button', { name: /view intents/i }),
+            )
 
             await waitFor(() => {
-                const intentsTable = screen.getByTestId('intents-table')
-                expect(intentsTable).toHaveAttribute('data-open', 'true')
+                expect(
+                    screen.getByRole('region', { name: 'Intents Table' }),
+                ).toBeInTheDocument()
             })
         })
 
@@ -168,22 +213,22 @@ describe('AiAgentSkills', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            const viewIntentsButton = screen.getByRole('button', {
-                name: /view intents/i,
-            })
-            await user.click(viewIntentsButton)
+            await user.click(
+                screen.getByRole('button', { name: /view intents/i }),
+            )
 
             await waitFor(() => {
-                const intentsTable = screen.getByTestId('intents-table')
-                expect(intentsTable).toHaveAttribute('data-open', 'true')
+                expect(
+                    screen.getByRole('region', { name: 'Intents Table' }),
+                ).toBeInTheDocument()
             })
 
-            const closeButton = screen.getByRole('button', { name: /close/i })
-            await user.click(closeButton)
+            await user.click(screen.getByRole('button', { name: /close/i }))
 
             await waitFor(() => {
-                const intentsTable = screen.getByTestId('intents-table')
-                expect(intentsTable).toHaveAttribute('data-open', 'false')
+                expect(
+                    screen.queryByRole('region', { name: 'Intents Table' }),
+                ).not.toBeInTheDocument()
             })
         })
     })
