@@ -5,6 +5,7 @@ import { ShopifyTags } from '../tags/ShopifyTags'
 import { formatTagCount } from '../tags/shopifyTags.utils'
 import type { FieldConfig } from '../types'
 import { formatCreatedAt } from './formatCreatedAt'
+import { resolveMoneyAmount } from './resolveMoneyAmount'
 
 export const FIELD_DEFINITIONS: Record<string, FieldConfig> = {
     totalSpent: {
@@ -14,7 +15,12 @@ export const FIELD_DEFINITIONS: Record<string, FieldConfig> = {
         alwaysVisible: true,
         getValue: (ctx) => ctx.purchaseSummary?.amountSpent?.amount,
         formatValue: (_, ctx) =>
-            formatCurrency(ctx.purchaseSummary?.amountSpent),
+            formatCurrency(
+                resolveMoneyAmount(
+                    ctx.purchaseSummary?.amountSpent,
+                    ctx.shopper?.data?.currency,
+                ),
+            ),
     },
     createdAt: {
         id: 'createdAt',
