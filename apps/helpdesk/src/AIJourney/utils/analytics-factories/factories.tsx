@@ -1178,9 +1178,19 @@ export const aiJourneySankeyOrdersQueryFactory = (
         ],
         filters: [
             {
+                member: AiSalesAgentOrdersDimension.IsInfluenced,
+                operator: ReportingFilterOperator.Equals,
+                values: ['1'],
+            },
+            {
                 member: AiSalesAgentOrdersDimension.IntegrationId,
                 operator: ReportingFilterOperator.Equals,
                 values: [integrationId],
+            },
+            {
+                member: AiSalesAgentOrdersDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
             },
             ...statsFiltersToReportingFilters(
                 {
