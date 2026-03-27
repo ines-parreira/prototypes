@@ -27,7 +27,8 @@
         "react-dnd": "catalog:react-dnd",
         "react-dnd-html5-backend": "catalog:react-dnd",
         "react-dom": "catalog:react",
-        "react-is": "catalog:react"
+        "react-is": "catalog:react",
+        "reactstrap": "8.9.0"
     },
     "devDependencies": {
         "@gorgias/analytics-ui-kit": "catalog:analytics-ui-kit",
@@ -52,6 +53,7 @@
         "prettier": "catalog:prettier",
         "react": "catalog:react",
         "react-dom": "catalog:react",
+        "reactstrap": "8.9.0",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test"
     },

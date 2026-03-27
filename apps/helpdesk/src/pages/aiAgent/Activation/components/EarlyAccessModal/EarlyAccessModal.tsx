@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { formatAmount } from '@repo/billing'
 import cn from 'classnames'
 
 import {
@@ -23,7 +24,6 @@ import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
-import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 
 import css from './EarlyAccessModal.less'
 

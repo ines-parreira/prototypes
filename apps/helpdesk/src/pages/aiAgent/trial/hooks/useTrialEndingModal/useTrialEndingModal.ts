@@ -1,5 +1,7 @@
 import { useMemo } from 'react'
 
+import { formatAmount } from '@repo/billing'
+
 import { useAiAgentUpgradePlan } from 'hooks/aiAgent/useAiAgentUpgradePlan'
 import useAppSelector from 'hooks/useAppSelector'
 import { useBillingState } from 'models/billing/queries'
@@ -21,7 +23,6 @@ import {
 } from 'pages/aiAgent/trial/hooks/useTrialEndingModal/getTrialEndingModalDescription'
 import type { TrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { toPercentage } from 'pages/aiAgent/trial/utils/utils'
-import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
 export type UseTrialEndingModalProps = {

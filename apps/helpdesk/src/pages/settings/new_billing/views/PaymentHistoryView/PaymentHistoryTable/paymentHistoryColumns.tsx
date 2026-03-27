@@ -1,3 +1,4 @@
+import { formatAmount } from '@repo/billing'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
 import moment from 'moment'
@@ -5,7 +6,6 @@ import moment from 'moment'
 import { Button } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
 
-import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import type { Invoice } from 'state/billing/types'
 import { PaymentIntentStatus } from 'state/billing/types'
 

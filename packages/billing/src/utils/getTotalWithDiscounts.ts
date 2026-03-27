@@ -1,11 +1,14 @@
-import type { SelectedPlans } from '@repo/billing'
+import type { ProductType, SelectedPlans } from '../types'
 
-import type { CouponSummary, ProductType } from 'models/billing/types'
+type CouponSummaryLike = {
+    amount_off_in_cents: number | null
+    percent_off: number | null
+    products: ProductType[]
+}
 
-// Calculates the costs all of currently selected products, accounting for coupons.
 export const getTotalWithDiscounts = (
     selectedPlans: SelectedPlans,
-    coupon: CouponSummary | null,
+    coupon: CouponSummaryLike | null,
     totalCancelledAmount: number = 0,
     cancelledProducts: ProductType[] = [],
 ) => {
@@ -33,21 +36,17 @@ export const getTotalWithDiscounts = (
 
     const couponAppliesToAllProducts = coupon.products.length === 0
 
-    // Calculate the amount eligible for discount after subtracting cancelled products
     let amountEligibleForDiscount: number
 
     if (couponAppliesToAllProducts) {
-        // If coupon applies to all products, subtract all cancellations
         amountEligibleForDiscount = totalAmountAfterCancellations
     } else {
-        // If coupon applies to specific products, only include non-cancelled eligible products
         amountEligibleForDiscount = planAmountList.reduce(
             (acc, [type, planAmount]) => {
                 if (!couponAppliesToProduct(coupon, type)) {
                     return acc
                 }
 
-                // If this product is cancelled, don't include it in eligible amount
                 if (cancelledProducts.includes(type)) {
                     return acc
                 }
@@ -69,7 +68,6 @@ export const getTotalWithDiscounts = (
         discount = amountEligibleForDiscount * percentOff
     }
 
-    // Make sure the discount is not larger than the amount eligible for discount
     discount = Math.min(amountEligibleForDiscount, discount)
 
     return {
@@ -80,6 +78,6 @@ export const getTotalWithDiscounts = (
 }
 
 const couponAppliesToProduct = (
-    coupon: CouponSummary,
+    coupon: CouponSummaryLike,
     productType: ProductType,
 ) => coupon.products?.includes(productType) ?? false

@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { formatAmount } from '@repo/billing'
 import classNames from 'classnames'
 
 import {
@@ -19,7 +20,6 @@ import {
 } from 'pages/aiAgent/trial/utils/utils'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalBody from 'pages/common/components/modal/ModalBody'
-import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import css from './TrialTryModal.less'

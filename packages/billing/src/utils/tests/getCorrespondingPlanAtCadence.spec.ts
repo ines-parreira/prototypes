@@ -1,13 +1,57 @@
+import { InvoiceCadence } from '@gorgias/helpdesk-types'
+
 import {
-    basicMonthlyHelpdeskPlan,
-    basicYearlyHelpdeskPlan,
-    basicYearlyHelpdeskPlan2,
-    legacyAutomatePlan,
-} from 'fixtures/plans'
-import { Cadence } from 'models/billing/types'
-import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
+    type AutomatePlan,
+    Cadence,
+    type HelpdeskPlan,
+    HelpdeskPlanTier,
+    ProductType,
+} from '../../types'
+import { getCorrespondingPlanAtCadence } from '../getCorrespondingPlanAtCadence'
 
 describe('getCorrespondingPlanAtInterval', () => {
+    const basicMonthlyHelpdeskPlan: HelpdeskPlan = {
+        product: ProductType.Helpdesk,
+        num_quota_tickets: 100,
+        amount: 1000,
+        currency: 'usd',
+        custom: false,
+        extra_ticket_cost: 0,
+        plan_id: 'basic-monthly',
+        cadence: Cadence.Month,
+        invoice_cadence: InvoiceCadence.Month,
+        name: 'Basic',
+        public: true,
+        integrations: 1,
+        is_legacy: false,
+        features: {} as never,
+        tier: HelpdeskPlanTier.BASIC,
+    }
+    const basicYearlyHelpdeskPlan: HelpdeskPlan = {
+        ...basicMonthlyHelpdeskPlan,
+        plan_id: 'basic-yearly',
+        cadence: Cadence.Year,
+    }
+    const basicYearlyHelpdeskPlan2: HelpdeskPlan = {
+        ...basicMonthlyHelpdeskPlan,
+        plan_id: 'basic-annual',
+        cadence: Cadence.Year,
+    }
+    const legacyAutomatePlan: AutomatePlan = {
+        product: ProductType.Automation,
+        num_quota_tickets: 0,
+        amount: 1000,
+        currency: 'usd',
+        custom: false,
+        extra_ticket_cost: 0,
+        plan_id: 'legacy-automation',
+        cadence: Cadence.Month,
+        invoice_cadence: InvoiceCadence.Month,
+        name: 'Legacy',
+        public: true,
+        features: {} as never,
+    }
+
     it('should return the plan for the given cadence if it exists', () => {
         const result = getCorrespondingPlanAtCadence({
             availablePlans: [basicMonthlyHelpdeskPlan, basicYearlyHelpdeskPlan],
@@ -59,6 +103,6 @@ describe('getCorrespondingPlanAtInterval', () => {
             currentPlan: undefined,
             cadence: Cadence.Year,
         })
-        expect(result).toBeUndefined() // The currentPrice is not provided, so the result is undefined
+        expect(result).toBeUndefined()
     })
 })

@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { formatAmount, getNextTier } from '@repo/billing'
 import type { SelectedPlans } from '@repo/billing'
 import classNames from 'classnames'
 
@@ -17,8 +18,6 @@ import {
 } from 'models/billing/utils'
 
 import warningIcon from '../../../../../assets/img/icons/warning.svg'
-import { formatAmount } from '../../utils/formatAmount'
-import { getNextTier } from '../../utils/getNextTier'
 import { SummaryItemTitle } from './SummaryItemTitle'
 
 import css from './SummaryItem.less'

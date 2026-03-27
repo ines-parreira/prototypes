@@ -1,6 +1,7 @@
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
+    isCardExpired,
 } from '@repo/billing'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import classNames from 'classnames'
@@ -13,7 +14,6 @@ import type {
 } from 'models/billing/types'
 import Loader from 'pages/common/components/Loader/Loader'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
-import { isCardExpired } from 'pages/settings/new_billing/utils/isCardExpired'
 
 import css from './SummaryPaymentSection.less'
 

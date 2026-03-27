@@ -4,6 +4,8 @@ import type { SelectedPlans } from '@repo/billing'
 import {
     BILLING_SUPPORT_EMAIL,
     DATE_FORMAT,
+    getDefaultConvertPlanIndex,
+    handleConvertProductDowngraded,
     ZAPIER_BILLING_HOOK,
 } from '@repo/billing'
 import { useQueryClient } from '@tanstack/react-query'
@@ -26,8 +28,6 @@ import { useConvertApi } from 'pages/convert/common/hooks/useConvertApi'
 import useGetConvertStatus, {
     convertStatusKeys,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
-import { getDefaultConvertPlanIndex } from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
-import { handleConvertProductDowngraded } from 'pages/settings/new_billing/utils/handleConvertProductDowngraded'
 import GorgiasApi from 'services/gorgiasApi'
 import {
     getAvailableAutomatePlans,

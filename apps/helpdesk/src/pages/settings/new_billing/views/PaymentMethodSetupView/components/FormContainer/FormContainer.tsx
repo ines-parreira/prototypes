@@ -1,7 +1,12 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
-import { BILLING_BASE_PATH, BILLING_PAYMENT_PATH } from '@repo/billing'
+import {
+    BILLING_BASE_PATH,
+    BILLING_PAYMENT_PATH,
+    filterTaxIdsByAddress,
+    normalizeStateToCode,
+} from '@repo/billing'
 import { Form } from '@repo/forms'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -18,9 +23,7 @@ import { BillingInformationFields } from 'pages/settings/new_billing/components/
 import Card from 'pages/settings/new_billing/components/Card'
 import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
 import { useStripeElementPaymentState } from 'pages/settings/new_billing/hooks/useStripeElementPaymentState'
-import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
 import { getIsMissingBillingInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingInformation'
-import { normalizeStateToCode } from 'pages/settings/new_billing/utils/normalizeStateToCode'
 import { StripePaymentFields } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentFields/StripePaymentFields'
 import type { ISubscriptionSummaryProps } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'
 import { SubscriptionSummary } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'

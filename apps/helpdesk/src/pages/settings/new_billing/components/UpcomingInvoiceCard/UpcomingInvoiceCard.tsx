@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { DATE_FORMAT } from '@repo/billing'
+import { DATE_FORMAT, formatAmount } from '@repo/billing'
 import moment from 'moment/moment'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
@@ -13,7 +13,6 @@ import { SubscriptionStatus } from 'models/billing/types'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
 import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
-import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 
 import AddSalesCouponModal from '../AddSalesCouponModal'
 

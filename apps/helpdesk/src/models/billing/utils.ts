@@ -1,4 +1,9 @@
-import { ENTERPRISE_PLAN_ID, PRODUCT_INFO } from '@repo/billing'
+import {
+    ENTERPRISE_PLAN_ID,
+    formatAmount,
+    formatNumTickets,
+    PRODUCT_INFO,
+} from '@repo/billing'
 import _capitalize from 'lodash/capitalize'
 import _minBy from 'lodash/minBy'
 
@@ -15,11 +20,6 @@ import type {
     SMSOrVoicePlan,
 } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
-
-import {
-    formatAmount,
-    formatNumTickets,
-} from '../../pages/settings/new_billing/utils/formatAmount'
 
 export const PLAN_NAME_TO_BADGE_COLOR: Record<string, ColorType> = {
     Basic: 'classic',

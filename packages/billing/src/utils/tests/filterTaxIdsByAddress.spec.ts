@@ -1,9 +1,8 @@
-import { filterTaxIdsByAddress } from 'pages/settings/new_billing/utils/filterTaxIdsByAddress'
-import type { BillingContactUpdatePayload } from 'state/billing/types'
-import { TaxIdType } from 'state/billing/types'
+import { TaxIdType } from '../../types'
+import { filterTaxIdsByAddress } from '../filterTaxIdsByAddress'
 
 describe('filterTaxIdsByAddress', () => {
-    const mockTaxIds: BillingContactUpdatePayload['tax_ids'] = {
+    const mockTaxIds = {
         [TaxIdType.eu_vat]: 'FRAB123456789',
         [TaxIdType.au_abn]: '12345678912',
         [TaxIdType.ca_gst_hst]: '123456789RT0002',

@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import type { SelectedPlans } from '@repo/billing'
-import { BILLING_PAYMENT_PATH, PRICING_DETAILS_URL } from '@repo/billing'
+import {
+    BILLING_PAYMENT_PATH,
+    getCorrespondingPlanAtCadence,
+    PRICING_DETAILS_URL,
+} from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -17,7 +21,6 @@ import Loader from 'pages/common/components/Loader/Loader'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
-import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
 import type { TicketPurpose } from 'state/billing/types'
 
 import BackLink from '../../components/BackLink/BackLink'

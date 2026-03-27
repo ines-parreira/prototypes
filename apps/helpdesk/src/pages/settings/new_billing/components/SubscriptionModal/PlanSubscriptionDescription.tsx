@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { ProductSubscriptionDescription } from '@repo/billing'
 import {
     ENTERPRISE_PLAN_ID,
+    formatNumTickets,
     PRODUCT_SUBSCRIPTION_DESCRIPTION,
 } from '@repo/billing'
 import classNames from 'classnames'
@@ -24,7 +25,6 @@ import css from 'pages/settings/new_billing/components/SubscriptionModal/PlanSub
 import SummaryFooter from 'pages/settings/new_billing/components/SummaryFooter/SummaryFooter'
 import { NewSummaryPaymentSection } from 'pages/settings/new_billing/components/SummaryPaymentSection/NewSummaryPaymentSection'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
-import { formatNumTickets } from 'pages/settings/new_billing/utils/formatAmount'
 
 export type PlanSubscriptionDescriptionProps = {
     productType: ProductType

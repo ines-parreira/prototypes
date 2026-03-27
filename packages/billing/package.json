@@ -17,20 +17,30 @@
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@repo/logging": "workspace:*",
         "react": "catalog:react",
-        "react-dom": "catalog:react"
+        "react-dom": "catalog:react",
+        "react-router-dom": "catalog:react-router",
+        "reactstrap": "8.9.0"
     },
     "devDependencies": {
+        "@repo/logging": "workspace:*",
+        "@stripe/stripe-js": "^4.5.0",
+        "@testing-library/react": "catalog:test",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
+        "@types/react-router": "catalog:react-router",
+        "@types/react-router-dom": "catalog:react-router",
         "@vitest/coverage-v8": "catalog:test",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react": "catalog:react",
         "react-dom": "catalog:react",
+        "react-router-dom": "catalog:react-router",
+        "reactstrap": "8.9.0",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test"
     }

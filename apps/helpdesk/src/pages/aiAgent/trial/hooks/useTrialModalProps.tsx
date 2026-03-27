@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react'
 
+import { formatAmount } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -45,7 +46,6 @@ import type {
     TrialFeature,
     TrialTryModalProps,
 } from 'pages/common/components/TrialTryModal/TrialTryModal'
-import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 

@@ -1,4 +1,4 @@
-import { isEmail } from 'utils'
+const isEmail = (value: string) => /^[\w.\-+]+@[\w.-]+\.\w+$/i.test(value)
 
 export const emptyError = (
     value: string,

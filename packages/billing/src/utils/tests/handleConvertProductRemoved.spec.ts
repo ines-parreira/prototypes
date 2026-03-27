@@ -1,10 +1,17 @@
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { assumeMock } from '@repo/testing'
 
 import { handleConvertProductRemoved } from '../handleConvertProductRemoved'
 
-jest.mock('@repo/logging')
-const logEventMock = assumeMock(logEvent)
+vi.mock('@repo/logging', () => ({
+    logEvent: vi.fn(),
+    SegmentEvent: {
+        ConvertBillingProductScheduledDowngrade:
+            'ConvertBillingProductScheduledDowngrade',
+        ConvertBillingProductRemoved: 'ConvertBillingProductRemoved',
+    },
+}))
+
+const logEventMock = vi.mocked(logEvent)
 
 describe('handleConvertProductRemoved', () => {
     it('should log the event', () => {

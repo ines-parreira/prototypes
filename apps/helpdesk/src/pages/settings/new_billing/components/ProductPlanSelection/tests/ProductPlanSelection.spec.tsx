@@ -1,3 +1,4 @@
+import { handleConvertProductRemoved } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -24,7 +25,6 @@ import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
 
 import useAutomatedHelpdeskCancellationFlowAvailable from '../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
-import { handleConvertProductRemoved } from '../../../utils/handleConvertProductRemoved'
 import CancelAAOModal from '../../CancelAAOModal/CancelAAOModal'
 import CancelProductModal from '../../CancelProductModal/CancelProductModal'
 import type { ProductPlanSelectionProps } from '../ProductPlanSelection'
@@ -58,6 +58,10 @@ const CancelProductModalMock = assumeMock(CancelProductModal)
 
 jest.mock('@repo/logging')
 jest.mock('../../CancelAAOModal/CancelAAOModal')
+jest.mock('@repo/billing', () => ({
+    ...jest.requireActual('@repo/billing'),
+    handleConvertProductRemoved: jest.fn(),
+}))
 
 const CancelAAOModalMock = assumeMock(CancelAAOModal)
 
@@ -66,8 +70,6 @@ jest.mock('@repo/feature-flags')
 const useFlagMock = assumeMock(useFlag)
 
 const logEventMock = assumeMock(logEvent)
-
-jest.mock('../../../utils/handleConvertProductRemoved')
 const handleConvertProductRemovedMock = assumeMock(handleConvertProductRemoved)
 
 const mockUpdateSubscription = jest.fn()

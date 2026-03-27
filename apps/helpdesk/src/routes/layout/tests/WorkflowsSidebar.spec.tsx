@@ -229,8 +229,10 @@ describe('WorkflowsSidebar', () => {
     describe('collapsed state', () => {
         it('should render CollapsedWorkflowsSidebar when collapsed', () => {
             renderWorkflowsSidebar(defaultState, true)
-            expect(screen.queryByText('Flows')).not.toBeInTheDocument()
-            expect(screen.queryByText('Rules')).not.toBeInTheDocument()
+            expect(screen.getByRole('radiogroup')).toBeInTheDocument()
+            expect(
+                screen.getByRole('img', { name: 'wrench' }),
+            ).toBeInTheDocument()
         })
     })
 })

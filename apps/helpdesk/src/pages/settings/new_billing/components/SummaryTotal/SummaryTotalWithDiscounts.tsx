@@ -1,8 +1,7 @@
+import { formatAmount } from '@repo/billing'
 import classNames from 'classnames'
 
 import type { Cadence } from 'models/billing/types'
-
-import { formatAmount } from '../../utils/formatAmount'
 
 import css from './SummaryTotal.less'
 

@@ -54,6 +54,7 @@
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
+        "reactstrap": "8.9.0",
         "react-virtuoso": "4.12.8",
         "zod": "catalog:zod",
         "zustand": "catalog:zustand"
@@ -102,6 +103,7 @@
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
+        "reactstrap": "8.9.0",
         "react-virtuoso": "4.12.8",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",

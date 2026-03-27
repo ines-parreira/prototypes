@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react'
 
+import { getDefaultConvertPlanIndex } from '@repo/billing'
 import { useLocation } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
@@ -8,7 +9,6 @@ import { ProductType } from 'models/billing/types'
 import css from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal.less'
 import CanduActionInfobar from 'pages/settings/new_billing/components/CanduActionInfobar'
 import SubscriptionModal from 'pages/settings/new_billing/components/SubscriptionModal/SubscriptionModal'
-import { getDefaultConvertPlanIndex } from 'pages/settings/new_billing/utils/getDefaultConvertPlanIndex'
 import {
     getAvailableConvertPlans,
     getCheapestConvertPlan,

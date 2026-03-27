@@ -5,6 +5,8 @@ import type { SelectedPlans } from '@repo/billing'
 import {
     DATE_FORMAT,
     ENTERPRISE_PLAN_ID,
+    formatNumTickets,
+    handleConvertProductRemoved,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
@@ -32,14 +34,12 @@ import {
 } from 'models/billing/utils'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
-import { handleConvertProductRemoved } from 'pages/settings/new_billing/utils/handleConvertProductRemoved'
 import { getCurrentPlansByProduct } from 'state/billing/selectors'
 import { TicketPurpose } from 'state/billing/types'
 import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
 import useIsCancellationAvailable from '../../hooks/useIsCancellationAvailable'
-import { formatNumTickets } from '../../utils/formatAmount'
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
 import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'
 import CancelProductModal from '../CancelProductModal/CancelProductModal'

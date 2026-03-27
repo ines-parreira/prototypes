@@ -1,5 +1,6 @@
+import { emailError } from '@repo/billing'
+
 import { FormInputField } from 'pages/settings/new_billing/components/FormInputField/FormInputField'
-import { emailError } from 'pages/settings/new_billing/utils/validations'
 
 export const EmailField: React.FC = () => (
     <FormInputField

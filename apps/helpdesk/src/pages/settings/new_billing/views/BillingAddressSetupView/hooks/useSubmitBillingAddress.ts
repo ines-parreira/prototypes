@@ -1,6 +1,7 @@
+import { isStripeUserError } from '@repo/billing'
+
 import type { updateBillingContact } from 'models/billing/resources'
 import { useUpdateBillingContactWithSideEffects } from 'pages/settings/new_billing/hooks/useUpdateBillingContactWithSideEffects'
-import { isStripeUserError } from 'pages/settings/new_billing/utils/isStripeUserError'
 import { reportCRMGrowthError } from 'pages/settings/new_billing/utils/reportCRMGrowthError'
 import type { MutationOverrides } from 'types/query'
 

@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useEffect, useMemo, useState } from 'react'
 
+import { getNextTier } from '@repo/billing'
 import type { SelectedPlans } from '@repo/billing'
 import classnames from 'classnames'
 import { useLocation } from 'react-router-dom'
@@ -22,8 +23,6 @@ import ModalBody from 'pages/common/components/modal/ModalBody'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import ToggleInput from 'pages/common/forms/ToggleInput'
 import { useIsConvertSubscriber } from 'pages/common/hooks/useIsConvertSubscriber'
-
-import { getNextTier } from '../../utils/getNextTier'
 
 import css from './AutoUpgradeToggle.less'
 

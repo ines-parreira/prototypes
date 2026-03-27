@@ -1,4 +1,8 @@
-import { BILLING_PAYMENT_PATH } from '@repo/billing'
+import {
+    BILLING_PAYMENT_PATH,
+    formatAmount,
+    getCorrespondingPlanAtCadence,
+} from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -37,8 +41,6 @@ import {
     isOtherCadenceDowngrade,
     isOtherCadenceUpgrade,
 } from 'models/billing/utils'
-import { formatAmount } from 'pages/settings/new_billing/utils/formatAmount'
-import { getCorrespondingPlanAtCadence } from 'pages/settings/new_billing/utils/getCorrespondingPlanAtCadence'
 import type { RootState, StoreDispatch } from 'state/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'

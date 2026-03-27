@@ -1,4 +1,4 @@
-import type { ConvertPlan, Plan } from 'models/billing/types'
+import type { ConvertPlan, Plan } from '../types'
 
 export const getNextTier = (
     availablePlans?: Plan[],

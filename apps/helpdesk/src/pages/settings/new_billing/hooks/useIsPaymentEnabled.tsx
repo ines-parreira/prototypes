@@ -3,11 +3,11 @@ import { useMemo } from 'react'
 import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
+    isCardExpired,
 } from '@repo/billing'
 
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'
 import { useBillingStateWithSideEffects } from 'pages/settings/new_billing/hooks/useBillingStateWithSideEffects'
-import { isCardExpired } from 'pages/settings/new_billing/utils/isCardExpired'
 
 export const useIsPaymentEnabled = () => {
     const { data: billingState } = useBillingStateWithSideEffects()

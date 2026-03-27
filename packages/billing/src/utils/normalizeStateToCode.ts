@@ -1,4 +1,4 @@
-import { states } from 'config/states'
+import { states } from '../config/states'
 
 /**
  * Normalizes state values from full names to 2-letter codes for Stripe AddressElement.
@@ -29,10 +29,6 @@ export function normalizeStateToCode(
     const countryStates = states[country]
     if (!countryStates) return state
 
-    /**
-     * Normalizes a string for accent-insensitive, case-insensitive comparison.
-     * Required to correctly match values like "Québec" vs "Quebec".
-     */
     const normalizeString = (str: string) =>
         str
             .toLowerCase()
