@@ -4,7 +4,6 @@ import { useShoppingAssistantTrialBanner } from 'pages/aiAgent/trial/hooks/useSh
 
 import {
     useAiAgentTrialBanner,
-    useBillingAddressValidationBanner,
     useEmailDisconnectedBanner,
     useEmailDomainVerificationBanner,
     useEmailMigrationBanner,
@@ -60,7 +59,6 @@ describe('useSetBanners', () => {
         expect(useEmailMigrationBanner).toHaveBeenCalledTimes(1)
         expect(useEmailDisconnectedBanner).toHaveBeenCalledTimes(1)
         expect(useZendeskImportFailedBanner).toHaveBeenCalledTimes(1)
-        expect(useBillingAddressValidationBanner).toHaveBeenCalledTimes(1)
         expect(useShoppingAssistantTrialBanner).toHaveBeenCalledTimes(1)
         expect(useAiAgentTrialBanner).toHaveBeenCalledTimes(1)
         expect(

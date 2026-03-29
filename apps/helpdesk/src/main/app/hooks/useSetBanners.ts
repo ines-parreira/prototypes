@@ -2,7 +2,6 @@ import { useShoppingAssistantTrialBanner } from 'pages/aiAgent/trial/hooks/useSh
 
 import {
     useAiAgentTrialBanner,
-    useBillingAddressValidationBanner,
     useEmailDisconnectedBanner,
     useEmailDomainVerificationBanner,
     useEmailMigrationBanner,
@@ -24,7 +23,6 @@ export function useSetBanners() {
     useEmailMigrationBanner()
     useZendeskImportFailedBanner()
     useTrackingBundleInstallationWarningBanner()
-    useBillingAddressValidationBanner()
     useShoppingAssistantTrialBanner()
     useAiAgentTrialBanner()
 }
