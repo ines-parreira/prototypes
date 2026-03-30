@@ -108,12 +108,16 @@ jest.mock('@repo/routing', () => ({
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    fetchFlag: jest.fn(async (_flag, defaultValue = false) => ({
-        flag: defaultValue,
-        error: null,
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
     })),
 }))
-const fetchFlagMock = require('@repo/feature-flags').fetchFlag as jest.Mock
+const variationMock = require('@repo/feature-flags').getLDClient()
+    .variation as jest.Mock
 
 jest.mock('api/queryClient', () => {
     return {
@@ -138,12 +142,7 @@ describe('ticket actions', () => {
             newMessage: newMessageState,
         })
         mockServer = new MockAdapter(client)
-        fetchFlagMock.mockImplementation(
-            async (_flag, defaultValue = false) => ({
-                flag: defaultValue,
-                error: null,
-            }),
-        )
+        variationMock.mockImplementation(() => true)
     })
 
     const endpointMatchers = {
@@ -649,7 +648,7 @@ describe('ticket actions', () => {
         store = mockStore({ ticket: initialState.set('id', 1) })
         return expect(
             store.dispatch(actions.applyMacroAction(action)),
-        ).resolves.toMatchSnapshot()
+        ).toMatchSnapshot()
     })
 
     describe('applyMacro()', () => {
@@ -690,8 +689,8 @@ describe('ticket actions', () => {
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
-        it('notifies a warning', async () => {
-            await store.dispatch(actions.applyMacro(macro, 1))
+        it('notifies a warning', () => {
+            void store.dispatch(actions.applyMacro(macro, 1))
             expect(notify).toBeCalledWith({
                 type: NotificationStatus.Warning,
                 title: 'This customer does not have any Magento2 information',

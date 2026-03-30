@@ -1,21 +1,23 @@
-import { fetchFlag } from '@repo/feature-flags'
-
 import { checkIfTrackerIsEnabled } from '../utils'
+
+const variationMock = vi.fn()
+const waitForInitializationMock = vi.fn(() => Promise.resolve())
 
 vi.mock('@repo/feature-flags', async (importOriginal) => ({
     ...(await importOriginal<typeof import('@repo/feature-flags')>()),
     useFlag: vi.fn((flag, defaultValue) => defaultValue),
-    fetchFlag: vi.fn(async (_flag: string, defaultValue = false) => ({
-        flag: defaultValue,
-        error: null,
+    getLDClient: vi.fn(() => ({
+        variation: variationMock,
+        waitForInitialization: waitForInitializationMock,
+        on: vi.fn(),
+        off: vi.fn(),
+        allFlags: vi.fn(() => ({})),
     })),
 }))
 
-const fetchFlagMock = vi.mocked(fetchFlag)
-
 describe('utils', () => {
     beforeEach(() => {
-        fetchFlagMock.mockResolvedValue({ flag: true, error: null })
+        variationMock.mockReturnValue(true)
         window.USER_IMPERSONATED = null
     })
 
@@ -27,7 +29,7 @@ describe('utils', () => {
         })
 
         it('should return false if the feature flag is disabled', async () => {
-            fetchFlagMock.mockResolvedValue({ flag: false, error: null })
+            variationMock.mockReturnValue(false)
 
             const result = await checkIfTrackerIsEnabled()
 

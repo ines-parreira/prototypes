@@ -1,4 +1,3 @@
-import { fetchFlag } from '@repo/feature-flags'
 import { assumeMock, flushPromises } from '@repo/testing'
 import type { ContentState, SelectionState } from 'draft-js'
 import { EditorState } from 'draft-js'
@@ -12,18 +11,21 @@ import client from '../client'
 import createPredictionPlugin, { clearCache } from '../index'
 import { cachedSelection, predictionKey } from '../state'
 
+const variationMock = jest.fn(() => true)
+
 jest.mock('@repo/logging')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    fetchFlag: jest.fn(async (_flag: string, defaultValue = false) => ({
-        flag: defaultValue,
-        error: null,
+    getLDClient: jest.fn(() => ({
+        variation: variationMock,
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
     })),
 }))
 jest.mock('../client')
-
-const fetchFlagMock = jest.mocked(fetchFlag)
 
 const defaultContext: Map<any, any> = fromJS({})
 
@@ -33,7 +35,7 @@ beforeEach(() => {
     cachedSelection.set(null)
     jest.clearAllMocks()
     jest.useFakeTimers()
-    fetchFlagMock.mockResolvedValue({ flag: true, error: null })
+    variationMock.mockReturnValue(true)
 })
 
 describe('prediction plugin', () => {

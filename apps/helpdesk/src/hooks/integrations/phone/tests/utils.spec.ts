@@ -47,13 +47,16 @@ jest.mock('api/queryClient')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    fetchFlag: jest.fn(async (_flag, defaultValue = false) => ({
-        flag: defaultValue,
-        error: null,
+    getLDClient: jest.fn(() => ({
+        variation: jest.fn((flag, defaultValue) => defaultValue),
+        waitForInitialization: jest.fn(() => Promise.resolve()),
+        on: jest.fn(),
+        off: jest.fn(),
+        allFlags: jest.fn(() => ({})),
     })),
 }))
 
-const fetchFlagMock = require('@repo/feature-flags').fetchFlag as jest.Mock
+const getLDClientMock = require('@repo/feature-flags').getLDClient as jest.Mock
 const requestNotificationPermissionMock =
     requestNotificationPermission as jest.Mock
 
@@ -442,10 +445,7 @@ describe('handleDeviceEvents', () => {
 
         beforeEach(() => {
             variation = jest.fn(() => false)
-            fetchFlagMock.mockImplementation(async () => ({
-                flag: variation(),
-                error: null,
-            }))
+            getLDClientMock.mockReturnValue({ variation })
             requestNotificationPermissionMock.mockReturnValue(true)
         })
 
