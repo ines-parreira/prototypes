@@ -670,4 +670,168 @@ describe('<GorgiasChatCreationWizardStepBasics />', () => {
 
         expect(history.replace).not.toHaveBeenCalled()
     })
+
+    describe('store integration fields', () => {
+        const shopifyStore = {
+            id: 100,
+            name: 'My Shopify Store',
+            type: IntegrationType.Shopify,
+            meta: {
+                oauth: {
+                    access_token: 'token',
+                    refresh_token: 'refresh',
+                    scope: ['read_script_tags', 'write_script_tags'],
+                },
+                shop_name: 'my-store.myshopify.com',
+                webhooks: [],
+            },
+        }
+
+        const bigCommerceStore = {
+            id: 200,
+            name: 'My BigCommerce Store',
+            type: IntegrationType.BigCommerce,
+            meta: {
+                oauth: { access_token: 'token', refresh_token: 'refresh' },
+                store_hash: 'abc123',
+                shop_id: 1,
+                webhooks: [],
+                currency: 'USD',
+            },
+        }
+
+        const storeStateWithShopify = {
+            ...mockStoreState,
+            integrations: fromJS({
+                integrations: [shopifyStore],
+            }),
+        }
+
+        const storeStateWithBigCommerce = {
+            ...mockStoreState,
+            integrations: fromJS({
+                integrations: [bigCommerceStore],
+            }),
+        }
+
+        it('should submit with shop_name, shop_type, and shop_integration_id when creating with Shopify store', () => {
+            const { getByRole, getByLabelText } = render(
+                <MemoryRouter>
+                    <Provider store={mockStore(storeStateWithShopify)}>
+                        <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                            <GorgiasChatCreationWizardStepBasics
+                                {...minProps}
+                            />
+                        </Wizard>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            fireEvent.change(
+                getByLabelText('Chat title*', { selector: 'input' }),
+                {
+                    target: { value: 'Test Chat With Shopify' },
+                },
+            )
+
+            const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+
+            fireEvent.click(getByRole('button', { name: 'Continue' }))
+
+            expect(spy).toHaveBeenCalledTimes(1)
+            const [formData] = spy.mock.calls[0]
+            const form = (formData as Map<string, unknown>).toJS()
+
+            expect(form.meta.shop_name).toBe('my-store.myshopify.com')
+            expect(form.meta.shop_type).toBe(IntegrationType.Shopify)
+            expect(form.meta.shop_integration_id).toBe(100)
+        })
+
+        it('should submit with shop_name, shop_type, and shop_integration_id when creating with BigCommerce store', () => {
+            const { getByRole, getByLabelText } = render(
+                <MemoryRouter>
+                    <Provider store={mockStore(storeStateWithBigCommerce)}>
+                        <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                            <GorgiasChatCreationWizardStepBasics
+                                {...minProps}
+                            />
+                        </Wizard>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            fireEvent.change(
+                getByLabelText('Chat title*', { selector: 'input' }),
+                {
+                    target: { value: 'Test Chat With BigCommerce' },
+                },
+            )
+
+            const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+
+            fireEvent.click(getByRole('button', { name: 'Continue' }))
+
+            expect(spy).toHaveBeenCalledTimes(1)
+            const [formData] = spy.mock.calls[0]
+            const form = (formData as Map<string, unknown>).toJS()
+
+            expect(form.meta.shop_name).toBe('abc123')
+            expect(form.meta.shop_type).toBe(IntegrationType.BigCommerce)
+            expect(form.meta.shop_integration_id).toBe(200)
+        })
+
+        it('should submit with shop_name, shop_type, and shop_integration_id when updating with store', () => {
+            const integrationWithStore = fromJS({
+                id: 1,
+                name: 'Existing Chat',
+                meta: {
+                    shop_integration_id: 100,
+                    language: 'en-US',
+                    preferences: {
+                        live_chat_availability:
+                            'auto-based-on-agent-availability',
+                    },
+                    wizard: {
+                        installation_method:
+                            GorgiasChatCreationWizardInstallationMethod.OneClick,
+                    },
+                },
+                decoration: {},
+                type: IntegrationType.GorgiasChat,
+            })
+
+            const { getByRole, getByLabelText } = render(
+                <MemoryRouter>
+                    <Provider store={mockStore(storeStateWithShopify)}>
+                        <Wizard steps={[GorgiasChatCreationWizardSteps.Basics]}>
+                            <GorgiasChatCreationWizardStepBasics
+                                {...minProps}
+                                integration={integrationWithStore}
+                                isUpdate
+                            />
+                        </Wizard>
+                    </Provider>
+                </MemoryRouter>,
+            )
+
+            fireEvent.change(
+                getByLabelText('Chat title*', { selector: 'input' }),
+                {
+                    target: { value: 'Updated Chat With Store' },
+                },
+            )
+
+            const spy = jest.spyOn(actions, 'updateOrCreateIntegration')
+
+            fireEvent.click(getByRole('button', { name: 'Continue' }))
+
+            expect(spy).toHaveBeenCalledTimes(1)
+            const [formData] = spy.mock.calls[0]
+            const form = (formData as Map<string, unknown>).toJS()
+
+            expect(form.meta.shop_name).toBe('my-store.myshopify.com')
+            expect(form.meta.shop_type).toBe(IntegrationType.Shopify)
+            expect(form.meta.shop_integration_id).toBe(100)
+        })
+    })
 })

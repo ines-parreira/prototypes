@@ -183,7 +183,6 @@ export const useBasicsForm = ({
                     GorgiasChatCreationWizardInstallationMethod.Manual,
                     { shouldDirty: true },
                 )
-                setValue('storeIntegration', false, { shouldDirty: true })
             }
         },
         [setValue, storeIntegrations, values.storeIntegration],

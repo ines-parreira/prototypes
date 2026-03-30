@@ -138,15 +138,20 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
 
             const storeMetaFields = {
                 languages: values.languages,
-                shop_name: values.storeIntegration
-                    ? getShopNameFromStoreIntegration(values.storeIntegration)
-                    : null,
-                shop_type: values.storeIntegration
-                    ? values.storeIntegration.type
-                    : null,
-                shop_integration_id: values.storeIntegration
-                    ? values.storeIntegration.id
-                    : null,
+                shop_name:
+                    isStoreRequired && values.storeIntegration
+                        ? getShopNameFromStoreIntegration(
+                              values.storeIntegration,
+                          )
+                        : null,
+                shop_type:
+                    isStoreRequired && values.storeIntegration
+                        ? values.storeIntegration.type
+                        : null,
+                shop_integration_id:
+                    isStoreRequired && values.storeIntegration
+                        ? values.storeIntegration.id
+                        : null,
             }
 
             if (isUpdate) {
@@ -224,7 +229,7 @@ const GorgiasChatCreationWizardStepBasics: React.FC<Props> = ({
                 },
             }
         },
-        [values, isUpdate, integration],
+        [values, isUpdate, integration, isStoreRequired],
     )
 
     const onSave = useCallback(

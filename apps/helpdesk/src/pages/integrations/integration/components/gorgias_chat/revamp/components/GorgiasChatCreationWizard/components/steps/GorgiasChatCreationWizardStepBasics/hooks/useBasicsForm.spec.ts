@@ -383,7 +383,6 @@ describe('useBasicsForm', () => {
                 expect(result.current.values.installationMethod).toBe(
                     GorgiasChatCreationWizardInstallationMethod.Manual,
                 )
-                expect(result.current.values.storeIntegration).toBe(false)
             })
 
             it('should auto-select store when switching to ecommerce and only one store exists', () => {
