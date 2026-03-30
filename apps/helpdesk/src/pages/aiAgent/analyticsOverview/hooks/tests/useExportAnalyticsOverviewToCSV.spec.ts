@@ -162,7 +162,7 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
-    describe('when isNewChartsEnabled is false', () => {
+    describe('when isGraphsFFEnabled is false', () => {
         beforeEach(() => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: false,
@@ -254,7 +254,7 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         })
     })
 
-    describe('when isNewChartsEnabled is true', () => {
+    describe('when isGraphsFFEnabled is true', () => {
         beforeEach(() => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: true,
@@ -319,6 +319,7 @@ describe('useExportAnalyticsOverviewToCSV', () => {
         expect(mockedBuildCustomDashboard).toHaveBeenCalledWith(
             'analytics-overview',
             expect.any(Object),
+            true,
             true,
             true,
         )

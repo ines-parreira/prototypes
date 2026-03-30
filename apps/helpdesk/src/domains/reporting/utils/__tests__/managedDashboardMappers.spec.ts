@@ -863,6 +863,61 @@ describe('managedDashboardMappers', () => {
             )
         })
 
+        it('should preserve requiresFeatureFlag from default items onto saved items', () => {
+            const defaultConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.PerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.ArticleRecommendationTable,
+                                gridSize: 12,
+                                visibility: true,
+                                requiresFeatureFlag: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const savedConfig: DashboardLayoutConfig = {
+                sections: [
+                    {
+                        id: 'breakdown',
+                        type: ChartType.Table,
+                        items: [
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.PerformanceTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                            {
+                                chartId:
+                                    AnalyticsOverviewChart.ArticleRecommendationTable,
+                                gridSize: 12,
+                                visibility: true,
+                            },
+                        ],
+                    },
+                ],
+            }
+
+            const result = mergeWithDefaults(savedConfig, defaultConfig)
+
+            const items = result.sections[0].items
+            expect(items[0].requiresFeatureFlag).toBeFalsy()
+            expect(items[1].requiresFeatureFlag).toBe(true)
+        })
+
         it('should handle empty saved config', () => {
             const savedConfig: DashboardLayoutConfig = {
                 sections: [],

@@ -8,7 +8,6 @@ import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/man
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AnalyticsAiAgentShoppingAssistantReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
-import { useDownloadAiAgentSalesPerformanceByChannelData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentSalesPerformanceByChannelData'
 import { useDownloadGmvInfluenceTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadGmvInfluenceTimeSeriesData'
 import { useDownloadShoppingAssistantChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantChannelPerformanceData'
 import { useDownloadShoppingAssistantTopProductsData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadShoppingAssistantTopProductsData'
@@ -23,18 +22,14 @@ import { saveZippedFiles } from 'utils/file'
 const REPORT_NAME = 'ai-agent-shopping-assistant'
 
 export const useExportAiAgentShoppingAssistantToCSV = () => {
-    const {
-        value: isAnalyticsDashboardsTrendCardsEnabled,
-        isLoading: isTrendCardsFlagLoading,
-    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-    const { value: isNewChartsEnabled, isLoading: isChartsFlagLoading } =
+    const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+    const { value: isGraphsFFEnabled, isLoading: isGraphsFFLoading } =
         useFlagWithLoading(
             FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
         )
-    const {
-        value: isAnalyticsDashboardsTablesEnabled,
-        isLoading: isTableFlagLoading,
-    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
+    const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
     const { cleanStatsFilters } = useStatsFilters()
 
@@ -48,17 +43,19 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
             buildCustomDashboard(
                 REPORT_NAME,
                 layoutConfig,
-                isAnalyticsDashboardsTrendCardsEnabled,
-                isNewChartsEnabled,
+                isTrendCardsFFEnabled,
+                isGraphsFFEnabled,
+                isTablesFFEnabled,
             ),
         [
-            isAnalyticsDashboardsTrendCardsEnabled,
+            isTrendCardsFFEnabled,
             layoutConfig,
-            isNewChartsEnabled,
+            isGraphsFFEnabled,
+            isTablesFFEnabled,
         ],
     )
 
-    const { files: dashboardDataFiles, isLoading: isKpiLoading } =
+    const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
         useDashboardData(
             shoppingAssistantDashboard,
             true,
@@ -67,39 +64,41 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
 
     const totalSalesByProductData = useDownloadTotalSalesByProductData()
     const gmvInfluenceTimeSeriesData = useDownloadGmvInfluenceTimeSeriesData()
-    const newSalesChannelData =
-        useDownloadAiAgentSalesPerformanceByChannelData()
-    const legacySalesChannelData =
+    const legacySalesChannelTable =
         useDownloadShoppingAssistantChannelPerformanceData()
-    const channelPerformanceData = isAnalyticsDashboardsTablesEnabled
-        ? newSalesChannelData
-        : legacySalesChannelData
     const topProductsData = useDownloadShoppingAssistantTopProductsData()
 
     const isLoading =
-        isKpiLoading ||
-        isTrendCardsFlagLoading ||
-        isChartsFlagLoading ||
-        isTableFlagLoading ||
-        totalSalesByProductData.isLoading ||
-        gmvInfluenceTimeSeriesData.isLoading ||
-        channelPerformanceData.isLoading ||
-        topProductsData.isLoading
+        isDashboardDataLoading ||
+        isTrendCardsFFLoading ||
+        isGraphsFFLoading ||
+        isTablesFFLoading ||
+        (!isGraphsFFEnabled &&
+            (totalSalesByProductData.isLoading ||
+                gmvInfluenceTimeSeriesData.isLoading)) ||
+        (!isTablesFFEnabled &&
+            (legacySalesChannelTable.isLoading || topProductsData.isLoading))
 
     const files = useMemo(
         () => ({
             ...dashboardDataFiles,
-            ...totalSalesByProductData.files,
-            ...gmvInfluenceTimeSeriesData.files,
-            ...channelPerformanceData.files,
-            ...topProductsData.files,
+            ...(!isGraphsFFEnabled && {
+                ...totalSalesByProductData.files,
+                ...gmvInfluenceTimeSeriesData.files,
+            }),
+            ...(!isTablesFFEnabled && {
+                ...legacySalesChannelTable.files,
+                ...topProductsData.files,
+            }),
         }),
         [
             dashboardDataFiles,
             totalSalesByProductData.files,
             gmvInfluenceTimeSeriesData.files,
-            channelPerformanceData.files,
+            legacySalesChannelTable.files,
             topProductsData.files,
+            isGraphsFFEnabled,
+            isTablesFFEnabled,
         ],
     )
 

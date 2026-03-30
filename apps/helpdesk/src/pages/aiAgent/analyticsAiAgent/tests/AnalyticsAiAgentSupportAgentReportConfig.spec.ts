@@ -109,7 +109,11 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         expect(config).toBeDefined()
         expect(config.label).toBe('Channel')
         expect(config.chartType).toBe(ChartType.Table)
-        expect(config.csvProducer).toBeNull()
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(
+            DataExportFormat.ConfigurableTable,
+        )
+        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
     })
 
     it('should have intent performance table config', () => {

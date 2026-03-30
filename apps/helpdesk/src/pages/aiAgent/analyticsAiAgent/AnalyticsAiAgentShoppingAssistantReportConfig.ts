@@ -45,6 +45,7 @@ import { fetchAiAgentDiscountUsageTrend } from 'pages/aiAgent/analyticsAiAgent/h
 import { fetchAiAgentMedianPurchaseTimeTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentMedianPurchaseTimeTrend'
 import { fetchAiAgentOrdersInfluencedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentOrdersInfluencedTrend'
 import { fetchAiAgentProductRecommendationsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentProductRecommendationsTrend'
+import { fetchAiAgentSalesPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSalesPerformanceByChannelMetrics'
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
 import {
@@ -377,7 +378,12 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
             [AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable]: {
                 chartComponent: ShoppingAssistantChannelTableWrapper,
                 label: 'Channel',
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchAiAgentSalesPerformanceByChannelAsConfigurableTable,
+                    },
+                ],
                 description: 'Performance breakdown by channel',
                 chartType: ChartType.Table,
             },

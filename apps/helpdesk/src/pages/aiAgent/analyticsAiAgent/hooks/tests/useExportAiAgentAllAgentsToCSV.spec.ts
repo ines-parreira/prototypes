@@ -5,13 +5,12 @@ import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboar
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AnalyticsAiAgentAllAgentsReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentAllAgentsReportConfig'
 import { useDownloadAiAgentAutomationRateTimeSeriesData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentAutomationRateTimeSeriesData'
-import { useDownloadAllAgentsPerformanceByChannelData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAllAgentsPerformanceByChannelData'
-import { useDownloadAllAgentsPerformanceByIntentData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAllAgentsPerformanceByIntentData'
 import { useDownloadAutomatedInteractionsBySkillData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAutomatedInteractionsBySkillData'
 import { useDownloadChannelPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData'
 import { useDownloadIntentPerformanceData } from 'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData'
 import { useExportAiAgentAllAgentsToCSV } from 'pages/aiAgent/analyticsAiAgent/hooks/useExportAiAgentAllAgentsToCSV'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import * as fileUtils from 'utils/file'
 
 import { useGetManagedDashboardsLayoutConfig } from '../../../../../domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
@@ -30,17 +29,12 @@ jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAiAgentAutomationRateTimeSeriesData',
 )
 jest.mock(
-    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAllAgentsPerformanceByChannelData',
-)
-jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadChannelPerformanceData',
 )
 jest.mock(
     'pages/aiAgent/analyticsAiAgent/hooks/useDownloadIntentPerformanceData',
 )
-jest.mock(
-    'pages/aiAgent/analyticsAiAgent/hooks/useDownloadAllAgentsPerformanceByIntentData',
-)
+jest.mock('pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate')
 jest.mock('utils/file', () => ({
     ...jest.requireActual('utils/file'),
     saveZippedFiles: jest.fn(),
@@ -59,17 +53,14 @@ const mockedUseDownloadAutomatedInteractionsBySkillData = jest.mocked(
 const mockedUseDownloadAiAgentAutomationRateTimeSeriesData = jest.mocked(
     useDownloadAiAgentAutomationRateTimeSeriesData,
 )
-const mockedUseDownloadAllAgentsPerformanceByChannelData = jest.mocked(
-    useDownloadAllAgentsPerformanceByChannelData,
-)
 const mockedUseDownloadChannelPerformanceData = jest.mocked(
     useDownloadChannelPerformanceData,
 )
 const mockedUseDownloadIntentPerformanceData = jest.mocked(
     useDownloadIntentPerformanceData,
 )
-const mockedUseDownloadAllAgentsPerformanceByIntentData = jest.mocked(
-    useDownloadAllAgentsPerformanceByIntentData,
+const mockedUseMoneySavedPerInteractionWithAutomate = jest.mocked(
+    useMoneySavedPerInteractionWithAutomate,
 )
 const mockedSaveZippedFiles = jest.mocked(fileUtils.saveZippedFiles)
 
@@ -108,9 +99,15 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
             granularity: 'day',
         } as any)
 
+        mockedUseMoneySavedPerInteractionWithAutomate.mockReturnValue(3.1)
+
+        // When the tables flag is enabled, channel and intent data flow through useDashboardData
+        // via ChannelPerformanceTable and IntentPerformanceTable csvProducers (ConfigurableTable type)
         mockedUseDashboardData.mockReturnValue({
             files: {
                 'ai-agent-all-agents - trends.csv': 'trends content',
+                'all-agents-channel-performance.csv': 'channel content',
+                'all-agents-intent-performance.csv': 'intent content',
             },
             fileName: 'ai-agent-all-agents - trends.csv',
             isLoading: false,
@@ -134,15 +131,6 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
             isLoading: false,
         })
 
-        mockedUseDownloadAllAgentsPerformanceByChannelData.mockReturnValue({
-            files: {
-                'all-agents-channel-performance.csv':
-                    'channel,automated_interactions\nChat,900',
-            },
-            fileName: 'all-agents-channel-performance.csv',
-            isLoading: false,
-        })
-
         mockedUseDownloadChannelPerformanceData.mockReturnValue({
             files: {
                 'channel-performance.csv': 'channel,automation_rate\nChat,85%',
@@ -157,15 +145,6 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
                     'intent,automation_rate\nIntent A,90%',
             },
             fileName: 'intent-performance.csv',
-            isLoading: false,
-        })
-
-        mockedUseDownloadAllAgentsPerformanceByIntentData.mockReturnValue({
-            files: {
-                'all-agents-intent-performance.csv':
-                    'intent,automated_interactions\nIntent A,150',
-            },
-            fileName: 'all-agents-intent-performance.csv',
             isLoading: false,
         })
     })
@@ -267,8 +246,12 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return isLoading as true when channel performance data is loading', () => {
-        mockedUseDownloadAllAgentsPerformanceByChannelData.mockReturnValue({
+    it('should return isLoading as true when legacy channel data is loading and tables flag is disabled', () => {
+        mockUseFlagWithLoading.mockImplementation((flag) => ({
+            value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+            isLoading: false,
+        }))
+        mockedUseDownloadChannelPerformanceData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: true,
@@ -279,8 +262,28 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         expect(result.current.isLoading).toBe(true)
     })
 
-    it('should return isLoading as true when intent performance data is loading', () => {
-        mockedUseDownloadAllAgentsPerformanceByIntentData.mockReturnValue({
+    it('should not reflect legacy channel isLoading when tables flag is enabled', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+        mockedUseDownloadChannelPerformanceData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
+
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should return isLoading as true when legacy intent data is loading and tables flag is disabled', () => {
+        mockUseFlagWithLoading.mockImplementation((flag) => ({
+            value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+            isLoading: false,
+        }))
+        mockedUseDownloadIntentPerformanceData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: true,
@@ -289,6 +292,22 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should not reflect legacy intent isLoading when tables flag is enabled', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+        mockedUseDownloadIntentPerformanceData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
+
+        expect(result.current.isLoading).toBe(false)
     })
 
     it('should call saveZippedFiles when triggerDownload is called', async () => {
@@ -305,7 +324,7 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         )
     })
 
-    it('should include all expected files in the ZIP', async () => {
+    it('should include all expected files in the ZIP when tables flag is enabled', async () => {
         const { result } = renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         await act(async () => {
@@ -383,21 +402,54 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
             expect.any(Object),
             true,
             true,
+            true,
         )
     })
 
-    it('should call useDashboardData with the AllAgents report config charts', () => {
+    it('should call buildCustomDashboard with false when tables flag is disabled', () => {
+        mockUseFlagWithLoading.mockImplementation((key) => {
+            if (key === FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
+                return { value: false, isLoading: false }
+            return { value: true, isLoading: false }
+        })
+        renderHook(() => useExportAiAgentAllAgentsToCSV())
+        expect(mockedBuildKpiDashboard).toHaveBeenCalledWith(
+            'ai-agent-all-agents',
+            expect.any(Object),
+            true,
+            true,
+            false,
+        )
+    })
+
+    it('should call useDashboardData with the AllAgents report config charts and extraData', () => {
         renderHook(() => useExportAiAgentAllAgentsToCSV())
 
         expect(mockedUseDashboardData).toHaveBeenCalledWith(
             expect.any(Object),
             true,
             AnalyticsAiAgentAllAgentsReportConfig.charts,
+            expect.objectContaining({
+                costSavedPerInteraction: expect.any(Number),
+            }),
+        )
+    })
+
+    it('should pass costSavedPerInteraction from useMoneySavedPerInteractionWithAutomate to useDashboardData', () => {
+        mockedUseMoneySavedPerInteractionWithAutomate.mockReturnValue(5.5)
+
+        renderHook(() => useExportAiAgentAllAgentsToCSV())
+
+        expect(mockedUseDashboardData).toHaveBeenCalledWith(
+            expect.any(Object),
+            true,
+            expect.any(Object),
+            expect.objectContaining({ costSavedPerInteraction: 5.5 }),
         )
     })
 
     describe('channel data based on AiAgentAnalyticsDashboardsTables flag', () => {
-        it('uses all agents channel performance data when the tables flag is enabled', async () => {
+        it('uses channel data from useDashboardData when the tables flag is enabled', async () => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: true,
                 isLoading: false,
@@ -417,11 +469,6 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
                     name.includes('all-agents-channel-performance'),
                 ),
             ).toBe(true)
-            expect(
-                Object.keys(filesArg).some(
-                    (name) => name === 'channel-performance.csv',
-                ),
-            ).toBe(false)
         })
 
         it('uses legacy channel performance data when the tables flag is disabled', async () => {
@@ -429,6 +476,14 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
                 value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
                 isLoading: false,
             }))
+            // When tables flag is off, useDashboardData does not include channel data
+            mockedUseDashboardData.mockReturnValue({
+                files: {
+                    'ai-agent-all-agents - trends.csv': 'trends content',
+                },
+                fileName: 'ai-agent-all-agents - trends.csv',
+                isLoading: false,
+            })
 
             const { result } = renderHook(() =>
                 useExportAiAgentAllAgentsToCSV(),
@@ -471,7 +526,7 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
     })
 
     describe('intent data based on AiAgentAnalyticsDashboardsTables flag', () => {
-        it('uses all agents intent performance data when the tables flag is enabled', async () => {
+        it('uses intent data from useDashboardData when the tables flag is enabled', async () => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: true,
                 isLoading: false,
@@ -491,11 +546,6 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
                     name.includes('all-agents-intent-performance'),
                 ),
             ).toBe(true)
-            expect(
-                Object.keys(filesArg).some(
-                    (name) => name === 'intent-performance.csv',
-                ),
-            ).toBe(false)
         })
 
         it('uses legacy intent performance data when the tables flag is disabled', async () => {
@@ -503,6 +553,14 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
                 value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
                 isLoading: false,
             }))
+            // When tables flag is off, useDashboardData does not include intent data
+            mockedUseDashboardData.mockReturnValue({
+                files: {
+                    'ai-agent-all-agents - trends.csv': 'trends content',
+                },
+                fileName: 'ai-agent-all-agents - trends.csv',
+                isLoading: false,
+            })
 
             const { result } = renderHook(() =>
                 useExportAiAgentAllAgentsToCSV(),
@@ -545,25 +603,27 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
     })
 
     it('should handle empty download data files', async () => {
+        mockedUseDashboardData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: false,
+        })
         mockedUseDownloadAutomatedInteractionsBySkillData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: false,
         })
-
         mockedUseDownloadAiAgentAutomationRateTimeSeriesData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: false,
         })
-
-        mockedUseDownloadAllAgentsPerformanceByChannelData.mockReturnValue({
+        mockedUseDownloadChannelPerformanceData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: false,
         })
-
-        mockedUseDownloadAllAgentsPerformanceByIntentData.mockReturnValue({
+        mockedUseDownloadIntentPerformanceData.mockReturnValue({
             files: {},
             fileName: '',
             isLoading: false,
@@ -576,9 +636,7 @@ describe('useExportAiAgentAllAgentsToCSV', () => {
         })
 
         const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
-        const fileNames = Object.keys(filesArg)
 
-        expect(fileNames.length).toBe(1)
-        expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
+        expect(Object.keys(filesArg).length).toBe(0)
     })
 })

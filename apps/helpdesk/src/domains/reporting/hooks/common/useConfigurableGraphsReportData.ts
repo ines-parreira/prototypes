@@ -62,7 +62,16 @@ export const useConfigurableGraphsReportData = (
             .then((results) => {
                 setGraphData({
                     isFetching: false,
-                    files: Object.assign({}, ...results.map((r) => r.files)),
+                    files: Object.assign(
+                        {},
+                        ...results.map((r) =>
+                            Object.fromEntries(
+                                Object.entries(r.files).filter(
+                                    ([, content]) => content !== '',
+                                ),
+                            ),
+                        ),
+                    ),
                 })
             })
             .catch(() => setGraphData({ isFetching: false, files: {} }))

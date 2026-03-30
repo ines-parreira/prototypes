@@ -1,6 +1,9 @@
 import { renderHook } from '@testing-library/react'
 
+import { ReportingGranularity } from 'domains/reporting/models/types'
+
 import {
+    fetchArticleRecommendationAsConfigurableTable,
     fetchArticleRecommendationMetrics,
     useArticleRecommendationMetrics,
 } from '../useArticleRecommendationMetrics'
@@ -288,5 +291,24 @@ describe('fetchArticleRecommendationMetrics', () => {
                 end_datetime: MOCK_PERIOD.end_datetime,
             }),
         )
+    })
+
+    describe('fetchArticleRecommendationAsConfigurableTable', () => {
+        it('passes filters to the underlying fetch function', async () => {
+            await fetchArticleRecommendationAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                'UTC',
+                ReportingGranularity.Day,
+            )
+
+            expect(mockFetchArticleRecommendations).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    start_datetime: MOCK_PERIOD.start_datetime,
+                    end_datetime: MOCK_PERIOD.end_datetime,
+                }),
+            )
+        })
     })
 })

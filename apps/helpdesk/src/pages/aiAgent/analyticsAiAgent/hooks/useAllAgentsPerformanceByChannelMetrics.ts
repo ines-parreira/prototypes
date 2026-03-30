@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { formatMetricValue } from '@repo/reporting'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import {
@@ -12,7 +13,6 @@ import {
     useEntityMetrics,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import type { ReportFetch } from 'domains/reporting/pages/dashboards/types'
 import {
     ALL_AGENTS_PERFORMANCE_BY_CHANNEL_COLUMNS,
     ALL_AGENTS_PERFORMANCE_BY_CHANNEL_TABLE,
@@ -244,16 +244,19 @@ export const fetchAllAgentsPerformanceByChannelMetrics = async (
     return { fileName, files: { [fileName]: createCsv([headers, ...rows]) } }
 }
 
-export const fetchAllAgentsPerformanceByChannelReport: ReportFetch = async (
-    statsFilters,
-    timezone,
-    _granularity,
-    context,
-) => ({
-    isLoading: false,
-    ...(await fetchAllAgentsPerformanceByChannelMetrics(
-        statsFilters,
+export const fetchAllAgentsPerformanceByChannelAsConfigurableTable: ConfigurableGraphFetch =
+    async (
+        _savedMeasure,
+        _savedDimension,
+        filters,
         timezone,
-        context.costSavedPerInteraction,
-    )),
-})
+        _granularity,
+        extra,
+    ) => {
+        const { files } = await fetchAllAgentsPerformanceByChannelMetrics(
+            filters,
+            timezone,
+            extra?.costSavedPerInteraction,
+        )
+        return { files }
+    }

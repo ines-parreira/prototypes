@@ -1,6 +1,9 @@
 import { renderHook } from '@testing-library/react'
 
-import { useAutomationRateByFeature } from '../useAutomationRateByFeature'
+import {
+    fetchAutomationRateByFeatureData,
+    useAutomationRateByFeature,
+} from '../useAutomationRateByFeature'
 
 jest.mock('domains/reporting/hooks/automate/automateStatsFormulae')
 jest.mock('domains/reporting/hooks/automate/automationTrends')
@@ -11,6 +14,7 @@ jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration', () => ({
 }))
 jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useStatsMetricPerDimension: jest.fn(),
+    fetchStatsMetricPerDimension: jest.fn(),
 }))
 jest.mock('domains/reporting/models/scopes/overallAutomationRate', () => {
     const actual = jest.requireActual(
@@ -49,6 +53,12 @@ const mockUseGetNewStatsFeatureFlagMigration = jest.requireMock(
 const mockUseStatsMetricPerDimension = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
 ).useStatsMetricPerDimension as jest.Mock
+const mockFetchStatsMetricPerDimension = jest.requireMock(
+    'domains/reporting/hooks/useStatsMetricPerDimension',
+).fetchStatsMetricPerDimension as jest.Mock
+const mockAutomationRatePerFeatureQueryFactoryV2 = jest.requireMock(
+    'domains/reporting/models/scopes/overallAutomationRate',
+).automationRatePerFeatureQueryFactoryV2 as jest.Mock
 
 describe('useAutomationRateByFeature', () => {
     beforeEach(() => {
@@ -485,5 +495,66 @@ describe('useAutomationRateByFeature when stage is live or complete', () => {
         const { result } = renderHook(() => useAutomationRateByFeature())
 
         expect(result.current.data).toHaveLength(4)
+    })
+})
+
+const MOCK_STATS_FILTERS = {
+    period: {
+        start_datetime: '2024-01-01T00:00:00Z',
+        end_datetime: '2024-01-31T23:59:59Z',
+    },
+}
+const MOCK_TIMEZONE = 'UTC'
+const MOCK_QUERY = { metricName: 'automation-rate-per-feature' }
+
+const defaultAllValues = [
+    { dimension: 'ai-agent', value: 18 },
+    { dimension: 'flow', value: 7 },
+    { dimension: 'article-recommendation', value: 4 },
+    { dimension: 'order-management', value: 3 },
+]
+
+describe('fetchAutomationRateByFeatureData', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockAutomationRatePerFeatureQueryFactoryV2.mockReturnValue(MOCK_QUERY)
+        mockFetchStatsMetricPerDimension.mockResolvedValue({
+            data: { allValues: defaultAllValues },
+        })
+    })
+
+    it('calls the query factory with filters and timezone', async () => {
+        await fetchAutomationRateByFeatureData(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
+
+        expect(mockAutomationRatePerFeatureQueryFactoryV2).toHaveBeenCalledWith(
+            {
+                filters: MOCK_STATS_FILTERS,
+                timezone: MOCK_TIMEZONE,
+            },
+        )
+    })
+
+    it('passes the query result and dimension key to fetchStatsMetricPerDimension', async () => {
+        await fetchAutomationRateByFeatureData(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
+
+        expect(mockFetchStatsMetricPerDimension).toHaveBeenCalledWith(
+            MOCK_QUERY,
+            'automationFeatureType',
+        )
+    })
+
+    it('returns the result from fetchStatsMetricPerDimension', async () => {
+        const result = await fetchAutomationRateByFeatureData(
+            MOCK_STATS_FILTERS,
+            MOCK_TIMEZONE,
+        )
+
+        expect(result?.data?.allValues).toEqual(defaultAllValues)
     })
 })

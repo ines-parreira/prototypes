@@ -39,6 +39,8 @@ import { fetchAiAgentClosedTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/h
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchAiAgentZeroTouchTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
+import { fetchAllAgentsPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByChannelMetrics'
+import { fetchAllAgentsPerformanceByIntentAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useAllAgentsPerformanceByIntentMetrics'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
@@ -299,14 +301,24 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
             [AnalyticsAiAgentAllAgentsChart.ChannelPerformanceTable]: {
                 chartComponent: ChannelPerformanceBreakdownTableWrapper,
                 label: 'Channel',
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchAllAgentsPerformanceByChannelAsConfigurableTable,
+                    },
+                ],
                 description: 'Performance breakdown by channel',
                 chartType: ChartType.Table,
             },
             [AnalyticsAiAgentAllAgentsChart.IntentPerformanceTable]: {
                 chartComponent: IntentPerformanceBreakdownTableWrapper,
                 label: 'Intent',
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchAllAgentsPerformanceByIntentAsConfigurableTable,
+                    },
+                ],
                 description: 'Performance breakdown by intent',
                 chartType: ChartType.Table,
             },

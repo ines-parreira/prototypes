@@ -396,6 +396,34 @@ describe('TablesSection', () => {
             ).not.toBeInTheDocument()
         })
 
+        it('should show only the non-flagged table when mixed and flag is off', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
+
+            render(
+                <TablesSection
+                    section={makeSection([
+                        { chartId: 'table1' },
+                        { chartId: 'table2', requiresFeatureFlag: true },
+                        { chartId: 'table3', requiresFeatureFlag: true },
+                    ])}
+                    reportConfig={reportConfigMock}
+                />,
+            )
+
+            expect(
+                screen.getByText('DashboardComponent: table1'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('DashboardComponent: table2'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('DashboardComponent: table3'),
+            ).not.toBeInTheDocument()
+        })
+
         it('should render nothing when all tables require the flag and it is off', () => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: false,

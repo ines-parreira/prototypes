@@ -7,81 +7,94 @@ import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboar
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
+import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
+import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 import { saveZippedFiles } from 'utils/file'
 
 import { ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT } from '../config/aiAgentSupportAgentLayoutConfig'
 import { useDownloadIntentPerformanceData } from './useDownloadIntentPerformanceData'
 import { useDownloadSupportAgentChannelPerformanceData } from './useDownloadSupportAgentChannelPerformanceData'
-import { useDownloadSupportAgentsPerformanceByChannelData } from './useDownloadSupportAgentsPerformanceByChannelData'
 import { useDownloadSupportInteractionsByIntentData } from './useDownloadSupportInteractionsByIntentData'
 import { useDownloadSupportInteractionsTimeSeriesData } from './useDownloadSupportInteractionsTimeSeriesData'
 
 const REPORT_NAME = 'ai-agent-support-agent'
 
 export const useExportAiAgentSupportAgentToCSV = () => {
-    const {
-        value: isAnalyticsDashboardsTrendCardsEnabled,
-        isLoading: isTrendCardsFlagLoading,
-    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-    const {
-        value: isAnalyticsDashboardsTablesEnabled,
-        isLoading: isTablesFFLoading,
-    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
+    const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+    const { value: isGraphsFFEnabled, isLoading: isGraphsFFLoading } =
+        useFlagWithLoading(
+            FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
+        )
+    const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
 
     const { cleanStatsFilters } = useStatsFilters()
+    const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
+        AGENT_COST_PER_TICKET,
+    )
+
+    const extraData = useMemo(
+        () => ({ costSavedPerInteraction }),
+        [costSavedPerInteraction],
+    )
 
     const supportAgentDashboard = useMemo(
         () =>
             buildCustomDashboard(
                 REPORT_NAME,
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT,
-                isAnalyticsDashboardsTrendCardsEnabled,
+                isTrendCardsFFEnabled,
+                isGraphsFFEnabled,
+                isTablesFFEnabled,
             ),
-        [isAnalyticsDashboardsTrendCardsEnabled],
+        [isTrendCardsFFEnabled, isGraphsFFEnabled, isTablesFFEnabled],
     )
 
-    const { files: trendCardsFiles, isLoading: isKpiLoading } =
+    const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
         useDashboardData(
             supportAgentDashboard,
             true,
             AnalyticsAiAgentSupportAgentReportConfig.charts,
+            extraData,
         )
 
     const supportInteractionsByIntentData =
         useDownloadSupportInteractionsByIntentData()
     const supportInteractionsTimeSeriesData =
         useDownloadSupportInteractionsTimeSeriesData()
-    const allAgentsChannelData =
-        useDownloadSupportAgentsPerformanceByChannelData()
-    const legacyChannelData = useDownloadSupportAgentChannelPerformanceData()
-    const channelPerformanceData = isAnalyticsDashboardsTablesEnabled
-        ? allAgentsChannelData
-        : legacyChannelData
+    const legacyChannelTable = useDownloadSupportAgentChannelPerformanceData()
     const intentPerformanceData = useDownloadIntentPerformanceData()
 
     const isLoading =
-        isKpiLoading ||
-        isTrendCardsFlagLoading ||
+        isDashboardDataLoading ||
+        isTrendCardsFFLoading ||
+        isGraphsFFLoading ||
         isTablesFFLoading ||
-        supportInteractionsByIntentData.isLoading ||
-        supportInteractionsTimeSeriesData.isLoading ||
-        channelPerformanceData.isLoading ||
+        (!isGraphsFFEnabled &&
+            (supportInteractionsByIntentData.isLoading ||
+                supportInteractionsTimeSeriesData.isLoading)) ||
+        (!isTablesFFEnabled && legacyChannelTable.isLoading) ||
         intentPerformanceData.isLoading
 
     const files = useMemo(
         () => ({
-            ...trendCardsFiles,
-            ...supportInteractionsByIntentData.files,
-            ...supportInteractionsTimeSeriesData.files,
-            ...channelPerformanceData.files,
+            ...dashboardDataFiles,
+            ...(!isGraphsFFEnabled && {
+                ...supportInteractionsByIntentData.files,
+                ...supportInteractionsTimeSeriesData.files,
+            }),
+            ...(!isTablesFFEnabled && { ...legacyChannelTable.files }),
             ...intentPerformanceData.files,
         }),
         [
-            trendCardsFiles,
+            dashboardDataFiles,
             supportInteractionsByIntentData.files,
             supportInteractionsTimeSeriesData.files,
-            channelPerformanceData.files,
+            legacyChannelTable.files,
             intentPerformanceData.files,
+            isGraphsFFEnabled,
+            isTablesFFEnabled,
         ],
     )
 

@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { formatMetricValue } from '@repo/reporting'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import {
@@ -12,7 +13,6 @@ import {
     useEntityMetrics,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import type { ReportFetch } from 'domains/reporting/pages/dashboards/types'
 import {
     ENTITY_DISPLAY_NAMES,
     ORDER_MANAGEMENT_COLUMNS,
@@ -242,16 +242,19 @@ export const fetchOrderManagementMetrics = async (
     return { fileName, files: { [fileName]: createCsv([headers, ...rows]) } }
 }
 
-export const fetchOrderManagementReport: ReportFetch = async (
-    statsFilters,
-    timezone,
-    _granularity,
-    context,
-) => ({
-    isLoading: false,
-    ...(await fetchOrderManagementMetrics(
-        statsFilters,
+export const fetchOrderManagementAsConfigurableTable: ConfigurableGraphFetch =
+    async (
+        _savedMeasure,
+        _savedDimension,
+        filters,
         timezone,
-        context.costSavedPerInteraction,
-    )),
-})
+        _granularity,
+        extra,
+    ) => {
+        const { files } = await fetchOrderManagementMetrics(
+            filters,
+            timezone,
+            extra?.costSavedPerInteraction,
+        )
+        return { files }
+    }

@@ -123,6 +123,7 @@ export enum DataExportFormat {
     Table = 'table',
     ConfigurableBarGraph = 'configurable-bar-graph',
     ConfigurableLineGraph = 'configurable-line-graph',
+    ConfigurableTable = 'configurable-export',
 }
 
 export type DistributionDataExportFetch = {
@@ -191,6 +192,7 @@ export type DataExportFetch =
           type:
               | DataExportFormat.ConfigurableBarGraph
               | DataExportFormat.ConfigurableLineGraph
+              | DataExportFormat.ConfigurableTable
           fetch: ConfigurableGraphFetch
       }
 

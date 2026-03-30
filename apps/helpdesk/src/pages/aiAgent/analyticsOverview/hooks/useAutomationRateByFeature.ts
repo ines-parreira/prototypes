@@ -9,7 +9,10 @@ import {
 } from 'domains/reporting/hooks/automate/automationTrends'
 import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
-import { useStatsMetricPerDimension } from 'domains/reporting/hooks/useStatsMetricPerDimension'
+import {
+    fetchStatsMetricPerDimension,
+    useStatsMetricPerDimension,
+} from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import { AutomationDatasetMeasure } from 'domains/reporting/models/cubes/automate_v2/AutomationDatasetCube'
 import {
     aiAgentAutomatedInteractionsQueryFactory,
@@ -28,6 +31,7 @@ import {
     automationRatePerFeature,
     automationRatePerFeatureQueryFactoryV2,
 } from 'domains/reporting/models/scopes/overallAutomationRate'
+import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
 
 const MAP_DIMENSION_API_TO_UI: Record<string, string> = {
@@ -260,3 +264,15 @@ export const useAutomationRateByFeatureV1 = (
         isError,
     }
 }
+
+export const fetchAutomationRateByFeatureData = async (
+    statsFilters: StatsFilters,
+    timezone: string,
+) =>
+    fetchStatsMetricPerDimension(
+        automationRatePerFeatureQueryFactoryV2({
+            filters: statsFilters,
+            timezone,
+        }),
+        'automationFeatureType',
+    )

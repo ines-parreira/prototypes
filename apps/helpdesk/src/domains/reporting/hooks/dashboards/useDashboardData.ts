@@ -162,7 +162,8 @@ const makeReduceReport =
                 }
                 if (
                     producer.type === DataExportFormat.ConfigurableBarGraph ||
-                    producer.type === DataExportFormat.ConfigurableLineGraph
+                    producer.type === DataExportFormat.ConfigurableLineGraph ||
+                    producer.type === DataExportFormat.ConfigurableTable
                 ) {
                     acc.configurableCharts.push({
                         fetch: producer.fetch,

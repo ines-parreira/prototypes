@@ -1,6 +1,12 @@
 import { renderHook } from '@testing-library/react'
 
-import { fetchFlowsMetrics, useFlowsMetrics } from '../useFlowsMetrics'
+import { ReportingGranularity } from 'domains/reporting/models/types'
+
+import {
+    fetchFlowsAsConfigurableTable,
+    fetchFlowsMetrics,
+    useFlowsMetrics,
+} from '../useFlowsMetrics'
 
 jest.mock('domains/reporting/hooks/automate/useAutomateFilters', () => ({
     useAutomateFilters: jest.fn(),
@@ -523,5 +529,40 @@ describe('fetchFlowsMetrics', () => {
         expect(result.fileName).toBe(
             '2024-01-01_2024-01-31_flows_breakdown_table',
         )
+    })
+
+    describe('fetchFlowsAsConfigurableTable', () => {
+        it('passes filters and timezone to the underlying fetch function', async () => {
+            await fetchFlowsAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+            const [, passedFilters, passedTimezone] =
+                mockFetchEntityMetrics.mock.calls[0]
+            expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+            expect(passedTimezone).toBe(MOCK_TIMEZONE)
+        })
+
+        it('forwards costSavedPerInteraction from extra', async () => {
+            const customCost = 9.99
+            await fetchFlowsAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+                { costSavedPerInteraction: customCost },
+            )
+
+            expect(mockFetchEntityMetrics).toHaveBeenCalledWith(
+                expect.objectContaining({ costSaved: expect.any(Object) }),
+                expect.any(Object),
+                expect.any(String),
+            )
+        })
     })
 })

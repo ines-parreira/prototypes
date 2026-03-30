@@ -22,6 +22,7 @@ import { SupportAgentChannelPerformanceBreakdownTableWrapper } from 'pages/aiAge
 import { SupportInteractionsComboChart } from 'pages/aiAgent/analyticsAiAgent/components/SupportInteractionsComboChart/SupportInteractionsComboChart'
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { fetchAiAgentSupportAgentFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentFRTTrend'
+import { fetchSupportAgentsPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByChannelMetrics'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { STATS_ROUTES } from 'routes/constants'
 
@@ -197,7 +198,12 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                 chartComponent:
                     SupportAgentChannelPerformanceBreakdownTableWrapper,
                 label: 'Channel',
-                csvProducer: null,
+                csvProducer: [
+                    {
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchSupportAgentsPerformanceByChannelAsConfigurableTable,
+                    },
+                ],
                 description: 'Performance breakdown by channel',
                 chartType: ChartType.Table,
             },

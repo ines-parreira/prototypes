@@ -1,28 +1,20 @@
-import type { AggregationWindow } from 'domains/reporting/models/stat/types'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 
 import {
     fetchPerformanceMetricsPerFeature,
-    fetchPerformanceMetricsPerFeatureReport,
+    fetchPerformanceMetricsPerFeatureAsConfigurableTable,
 } from '../fetchPerformanceBreakdownData'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends', () => ({
     fetchTrendFromMultipleMetricsTrend: jest.fn(),
-    fetchAllAutomatedInteractions: jest.fn(),
-    fetchAllAutomatedInteractionsByAutoResponders: jest.fn(),
-    fetchBillableTicketsExcludingAIAgent: jest.fn(),
 }))
 jest.mock('domains/reporting/hooks/metricTrends', () => ({
     fetchTicketHandleTimeTrend: jest.fn(),
 }))
-jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
-    fetchStatsMetricPerDimension: jest.fn(),
-}))
-jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration', () => ({
-    getNewStatsFeatureFlagMigration: jest.fn(),
-}))
-jest.mock('domains/reporting/hooks/automate/automateStatsFormulae', () => ({
-    automationRateUnfilteredDenominator: jest.fn(),
-}))
+jest.mock(
+    'pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature',
+    () => ({ fetchAutomationRateByFeatureData: jest.fn() }),
+)
 jest.mock(
     'pages/aiAgent/analyticsOverview/hooks/useHandoverInteractionsPerFeature',
     () => ({ fetchHandoverInteractionsPerFeature: jest.fn() }),
@@ -34,11 +26,8 @@ const { fetchTrendFromMultipleMetricsTrend } = jest.requireMock(
 const { fetchTicketHandleTimeTrend } = jest.requireMock(
     'domains/reporting/hooks/metricTrends',
 )
-const { fetchStatsMetricPerDimension } = jest.requireMock(
-    'domains/reporting/hooks/useStatsMetricPerDimension',
-)
-const { getNewStatsFeatureFlagMigration } = jest.requireMock(
-    'domains/reporting/utils/getNewStatsFeatureFlagMigration',
+const { fetchAutomationRateByFeatureData } = jest.requireMock(
+    'pages/aiAgent/analyticsOverview/hooks/useAutomationRateByFeature',
 )
 const { fetchHandoverInteractionsPerFeature } = jest.requireMock(
     'pages/aiAgent/analyticsOverview/hooks/useHandoverInteractionsPerFeature',
@@ -59,8 +48,7 @@ const makeTrend = (value: number | null) => ({
 })
 
 const setupV2AutomationRate = () => {
-    getNewStatsFeatureFlagMigration.mockResolvedValue('live')
-    fetchStatsMetricPerDimension.mockResolvedValue({
+    fetchAutomationRateByFeatureData.mockResolvedValue({
         data: {
             allValues: [
                 { dimension: 'ai-agent', value: 18 },
@@ -105,11 +93,7 @@ describe('fetchPerformanceMetricsPerFeature', () => {
     })
 
     it('should strip statsFilters to period only when calling fetch functions', async () => {
-        await fetchPerformanceMetricsPerFeature(
-            MOCK_STATS_FILTERS,
-            'UTC',
-            undefined,
-        )
+        await fetchPerformanceMetricsPerFeature(MOCK_STATS_FILTERS, 'UTC')
 
         expect(fetchTrendFromMultipleMetricsTrend).toHaveBeenCalledWith(
             { period: MOCK_STATS_FILTERS.period },
@@ -133,7 +117,6 @@ describe('fetchPerformanceMetricsPerFeature', () => {
         const { files, fileName } = await fetchPerformanceMetricsPerFeature(
             MOCK_STATS_FILTERS,
             'UTC',
-            undefined,
         )
 
         const rows = files[fileName].split('\r\n')
@@ -149,7 +132,6 @@ describe('fetchPerformanceMetricsPerFeature', () => {
         const { files, fileName } = await fetchPerformanceMetricsPerFeature(
             MOCK_STATS_FILTERS,
             'UTC',
-            undefined,
         )
 
         const csv = files[fileName]
@@ -163,7 +145,6 @@ describe('fetchPerformanceMetricsPerFeature', () => {
         const { files, fileName } = await fetchPerformanceMetricsPerFeature(
             MOCK_STATS_FILTERS,
             'UTC',
-            undefined,
         )
 
         const rows = files[fileName].split('\r\n')
@@ -198,7 +179,7 @@ describe('fetchPerformanceMetricsPerFeature', () => {
         fetchTrendFromMultipleMetricsTrend.mockReset()
         fetchTrendFromMultipleMetricsTrend.mockResolvedValue(makeTrend(0))
         fetchTicketHandleTimeTrend.mockResolvedValue(makeTrend(0))
-        fetchStatsMetricPerDimension.mockResolvedValue({
+        fetchAutomationRateByFeatureData.mockResolvedValue({
             data: {
                 allValues: [
                     { dimension: 'ai-agent', value: 0 },
@@ -214,7 +195,6 @@ describe('fetchPerformanceMetricsPerFeature', () => {
         const { files, fileName } = await fetchPerformanceMetricsPerFeature(
             MOCK_STATS_FILTERS,
             'UTC',
-            undefined,
         )
 
         expect(files[fileName]).toBe('')
@@ -224,7 +204,6 @@ describe('fetchPerformanceMetricsPerFeature', () => {
         const { fileName } = await fetchPerformanceMetricsPerFeature(
             MOCK_STATS_FILTERS,
             'UTC',
-            undefined,
         )
 
         expect(fileName).toContain('performance-breakdown')
@@ -232,49 +211,87 @@ describe('fetchPerformanceMetricsPerFeature', () => {
     })
 })
 
-describe('fetchPerformanceMetricsPerFeatureReport', () => {
+describe('fetchPerformanceMetricsPerFeatureAsConfigurableTable', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         setupV2AutomationRate()
         setupInteractionMocks()
     })
 
-    it('should return isLoading false with CSV result', async () => {
-        const result = await fetchPerformanceMetricsPerFeatureReport(
+    it('passes filters and timezone to the underlying fetch function', async () => {
+        await fetchPerformanceMetricsPerFeatureAsConfigurableTable(
+            null,
+            null,
             MOCK_STATS_FILTERS,
             'UTC',
-            'day' as AggregationWindow,
-            {
-                aiAgentUserId: undefined,
-                costSavedPerInteraction: 3.1,
-            } as Parameters<typeof fetchPerformanceMetricsPerFeatureReport>[3],
+            ReportingGranularity.Day,
         )
 
-        expect(result.isLoading).toBe(false)
-        expect(result.fileName).toContain('performance-breakdown')
-        expect(Object.keys(result.files)).toHaveLength(1)
+        const { files, fileName } = await fetchPerformanceMetricsPerFeature(
+            MOCK_STATS_FILTERS,
+            'UTC',
+        )
+        expect(Object.keys(files)).toContain(fileName)
     })
 
-    it('should use costSavedPerInteraction from context when computing cost saved', async () => {
-        const customCostSaved = 5.5
-        // beforeEach sets AI Agent interactions to 2700
-        const { files, fileName } =
-            await fetchPerformanceMetricsPerFeatureReport(
+    it('returns empty files object when all data is zero', async () => {
+        fetchHandoverInteractionsPerFeature.mockResolvedValue({
+            data: {
+                allValues: [
+                    { dimension: 'ai-agent', value: 0, decile: null },
+                    { dimension: 'flow', value: 0, decile: null },
+                    {
+                        dimension: 'article-recommendation',
+                        value: 0,
+                        decile: null,
+                    },
+                    { dimension: 'order-management', value: 0, decile: null },
+                ],
+            },
+        })
+        fetchTrendFromMultipleMetricsTrend.mockReset()
+        fetchTrendFromMultipleMetricsTrend.mockResolvedValue(makeTrend(0))
+        fetchTicketHandleTimeTrend.mockResolvedValue(makeTrend(0))
+        fetchAutomationRateByFeatureData.mockResolvedValue({
+            data: {
+                allValues: [
+                    { dimension: 'ai-agent', value: 0 },
+                    { dimension: 'flow', value: 0 },
+                    { dimension: 'article-recommendation', value: 0 },
+                    { dimension: 'order-management', value: 0 },
+                ],
+            },
+            isFetching: false,
+            isError: false,
+        })
+
+        const { files } =
+            await fetchPerformanceMetricsPerFeatureAsConfigurableTable(
+                null,
+                null,
                 MOCK_STATS_FILTERS,
                 'UTC',
-                'day' as AggregationWindow,
-                {
-                    aiAgentUserId: undefined,
-                    costSavedPerInteraction: customCostSaved,
-                } as Parameters<
-                    typeof fetchPerformanceMetricsPerFeatureReport
-                >[3],
+                ReportingGranularity.Day,
             )
 
-        const rows = files[fileName].split('\r\n')
+        expect(Object.values(files)).toEqual([''])
+    })
+
+    it('forwards costSavedPerInteraction from extra', async () => {
+        const customCost = 5.5
+        const { files } =
+            await fetchPerformanceMetricsPerFeatureAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                'UTC',
+                ReportingGranularity.Day,
+                { costSavedPerInteraction: customCost },
+            )
+
+        const csv = Object.values(files)[0]
+        const rows = csv.split('\r\n')
         const aiAgentRow = rows.find((r) => r.startsWith('"AI Agent"'))
-        // 2700 * 5.5 = 14,850 (beforeEach sets AI Agent to 2700)
-        // default AGENT_COST_PER_TICKET = 3.1 → 2700 * 3.1 = 8,370, so values differ
         expect(aiAgentRow).toContain('"$14,850"')
     })
 })

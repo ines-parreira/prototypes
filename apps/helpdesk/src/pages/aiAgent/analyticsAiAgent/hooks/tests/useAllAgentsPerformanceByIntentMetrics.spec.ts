@@ -1,8 +1,10 @@
 import { renderHook } from '@testing-library/react'
 
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 
 import {
+    fetchAllAgentsPerformanceByIntentAsConfigurableTable,
     fetchAllAgentsPerformanceByIntentMetrics,
     useAllAgentsPerformanceByIntentMetrics,
 } from '../useAllAgentsPerformanceByIntentMetrics'
@@ -444,6 +446,35 @@ describe('fetchAllAgentsPerformanceByIntentMetrics', () => {
         Object.keys(passedConfig).forEach((key) => {
             expect(typeof passedConfig[key].fetch).toBe('function')
             expect(passedConfig[key].use).toBeUndefined()
+        })
+    })
+
+    describe('fetchAllAgentsPerformanceByIntentAsConfigurableTable', () => {
+        it('passes filters and timezone to the underlying fetch function', async () => {
+            await fetchAllAgentsPerformanceByIntentAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+            const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
+            expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+        })
+
+        it('forwards costSavedPerInteraction from extra to the underlying fetch function', async () => {
+            await fetchAllAgentsPerformanceByIntentAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+                { costSavedPerInteraction: 5.5 },
+            )
+
+            const [passedConfig] = mockFetchEntityMetrics.mock.calls[0]
+            expect(typeof passedConfig.costSaved.fetch).toBe('function')
         })
     })
 })

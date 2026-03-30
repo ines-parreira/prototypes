@@ -4,6 +4,8 @@ import {
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentShoppingAssistantChart } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentShoppingAssistantReportConfig'
 import { ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT } from 'pages/aiAgent/analyticsAiAgent/config/aiAgentShoppingAssistantLayoutConfig'
+import { AnalyticsOverviewChart } from 'pages/aiAgent/analyticsOverview/AnalyticsOverviewReportConfig'
+import { DEFAULT_ANALYTICS_OVERVIEW_LAYOUT } from 'pages/aiAgent/analyticsOverview/config/defaultLayoutConfig'
 import type { DashboardLayoutConfig } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 
@@ -57,6 +59,8 @@ describe('buildCustomDashboard', () => {
         const result = buildCustomDashboard(
             'test',
             ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT,
+            true,
+            false,
             true,
         )
         expect(result.children).toHaveLength(2)
@@ -142,6 +146,75 @@ describe('buildCustomDashboard', () => {
                 savedMeasure: undefined,
                 savedDimension: undefined,
             },
+        })
+    })
+
+    describe('table items with requiresFeatureFlag', () => {
+        it('should include requiresFeatureFlag table items when isTablesFFEnabled is true, regardless of isFeatureFlagEnabled', () => {
+            const result = buildCustomDashboard(
+                'test',
+                DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+                false,
+                false,
+                true,
+            )
+            const tableSection = result.children.find((s) =>
+                (s as any).children?.some(
+                    (c: any) =>
+                        c.config_id === AnalyticsOverviewChart.PerformanceTable,
+                ),
+            ) as { children: { config_id: string }[] } | undefined
+            const chartIds =
+                tableSection?.children.map((c) => c.config_id) ?? []
+            expect(chartIds).toContain(
+                AnalyticsOverviewChart.ArticleRecommendationTable,
+            )
+            expect(chartIds).toContain(
+                AnalyticsOverviewChart.OrderManagementTable,
+            )
+            expect(chartIds).toContain(AnalyticsOverviewChart.FlowsTable)
+        })
+
+        it('should include requiresFeatureFlag table items when isTablesFFEnabled is true, even if isFeatureFlagEnabled is true', () => {
+            const result = buildCustomDashboard(
+                'test',
+                DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+                true,
+                false,
+                true,
+            )
+            const tableSection = result.children.find((s) =>
+                (s as any).children?.some(
+                    (c: any) =>
+                        c.config_id === AnalyticsOverviewChart.PerformanceTable,
+                ),
+            ) as { children: { config_id: string }[] } | undefined
+            const chartIds =
+                tableSection?.children.map((c) => c.config_id) ?? []
+            expect(chartIds).toContain(
+                AnalyticsOverviewChart.ArticleRecommendationTable,
+            )
+            expect(chartIds).toContain(
+                AnalyticsOverviewChart.OrderManagementTable,
+            )
+            expect(chartIds).toContain(AnalyticsOverviewChart.FlowsTable)
+        })
+
+        it('should not include requiresFeatureFlag table items when isTablesFFEnabled is false even if isFeatureFlagEnabled is true', () => {
+            const result = buildCustomDashboard(
+                'test',
+                DEFAULT_ANALYTICS_OVERVIEW_LAYOUT,
+                true,
+                false,
+                false,
+            )
+            const tableSection = result.children.find((s) =>
+                (s as any).children?.some(
+                    (c: any) =>
+                        c.config_id === AnalyticsOverviewChart.PerformanceTable,
+                ),
+            )
+            expect(tableSection).toBeUndefined()
         })
     })
 

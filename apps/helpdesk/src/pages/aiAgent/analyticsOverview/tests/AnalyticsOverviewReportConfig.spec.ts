@@ -161,7 +161,9 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config.chartType).toBe(ChartType.Table)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
-        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Table)
+        expect(config.csvProducer?.[0].type).toBe(
+            DataExportFormat.ConfigurableTable,
+        )
         expect(typeof config.csvProducer?.[0].fetch).toBe('function')
     })
 
@@ -176,7 +178,9 @@ describe('AnalyticsOverviewReportConfig', () => {
         expect(config.chartType).toBe(ChartType.Table)
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
-        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Table)
+        expect(config.csvProducer?.[0].type).toBe(
+            DataExportFormat.ConfigurableTable,
+        )
         expect(typeof config.csvProducer?.[0].fetch).toBe('function')
     })
 

@@ -31,8 +31,7 @@ export const TablesSection = ({
 
     const visibleItems = section.items.filter(
         (item) =>
-            !item.requiresFeatureFlag ||
-            (item.requiresFeatureFlag && isAnalyticsDashboardsTablesEnabled),
+            !item.requiresFeatureFlag || isAnalyticsDashboardsTablesEnabled,
     )
 
     const [activeTableId, setActiveTableId] = useState<string>(

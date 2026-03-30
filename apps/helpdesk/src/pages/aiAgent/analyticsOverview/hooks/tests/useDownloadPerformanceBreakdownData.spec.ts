@@ -23,10 +23,6 @@ jest.mock('domains/reporting/hooks/support-performance/useStatsFilters', () => {
     return { useStatsFilters: jest.fn(() => stableReturn) }
 })
 
-jest.mock('domains/reporting/hooks/automate/useAIAgentUserId', () => ({
-    useAIAgentUserId: jest.fn(() => undefined),
-}))
-
 jest.mock(
     'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate',
     () => ({ useMoneySavedPerInteractionWithAutomate: jest.fn(() => 3.1) }),
@@ -82,7 +78,7 @@ describe('useDownloadPerformanceBreakdownData', () => {
         })
     })
 
-    it('should call fetchPerformanceMetricsPerFeature with period-only filters, timezone, aiAgentUserId, and costSavedPerInteraction', async () => {
+    it('should call fetchPerformanceMetricsPerFeature with period-only filters, timezone, and costSavedPerInteraction', async () => {
         renderHook(() => useDownloadPerformanceBreakdownData())
 
         await waitFor(() =>
@@ -96,7 +92,6 @@ describe('useDownloadPerformanceBreakdownData', () => {
                     },
                 }),
                 'UTC',
-                undefined,
                 3.1,
             ),
         )

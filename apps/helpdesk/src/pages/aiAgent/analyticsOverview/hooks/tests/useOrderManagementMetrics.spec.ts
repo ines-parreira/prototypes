@@ -1,6 +1,9 @@
 import { renderHook } from '@testing-library/react'
 
+import { ReportingGranularity } from 'domains/reporting/models/types'
+
 import {
+    fetchOrderManagementAsConfigurableTable,
     fetchOrderManagementMetrics,
     useOrderManagementMetrics,
 } from '../useOrderManagementMetrics'
@@ -447,5 +450,40 @@ describe('fetchOrderManagementMetrics', () => {
         expect(result.fileName).toBe(
             '2024-01-01_2024-01-31_order-management-breakdown',
         )
+    })
+
+    describe('fetchOrderManagementAsConfigurableTable', () => {
+        it('passes filters and timezone to the underlying fetch function', async () => {
+            await fetchOrderManagementAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+            const [, passedFilters, passedTimezone] =
+                mockFetchEntityMetrics.mock.calls[0]
+            expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+            expect(passedTimezone).toBe(MOCK_TIMEZONE)
+        })
+
+        it('forwards costSavedPerInteraction from extra', async () => {
+            const customCost = 9.99
+            await fetchOrderManagementAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+                { costSavedPerInteraction: customCost },
+            )
+
+            expect(mockFetchEntityMetrics).toHaveBeenCalledWith(
+                expect.objectContaining({ costSaved: expect.any(Object) }),
+                expect.any(Object),
+                expect.any(String),
+            )
+        })
     })
 })

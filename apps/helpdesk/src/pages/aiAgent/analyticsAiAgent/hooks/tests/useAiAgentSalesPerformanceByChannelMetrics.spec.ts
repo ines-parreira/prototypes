@@ -1,6 +1,9 @@
 import { renderHook } from '@testing-library/react'
 
+import { ReportingGranularity } from 'domains/reporting/models/types'
+
 import {
+    fetchAiAgentSalesPerformanceByChannelAsConfigurableTable,
     fetchAiAgentSalesPerformanceByChannelMetrics,
     useAiAgentSalesPerformanceByChannelMetrics,
 } from '../useAiAgentSalesPerformanceByChannelMetrics'
@@ -406,5 +409,20 @@ describe('fetchAiAgentSalesPerformanceByChannelMetrics', () => {
         expect(result.fileName).toBe(
             '2024-01-01_2024-01-31-ai_agent_sales_performance_by_channel_table',
         )
+    })
+
+    describe('fetchAiAgentSalesPerformanceByChannelAsConfigurableTable', () => {
+        it('passes filters and timezone to the underlying fetch function', async () => {
+            await fetchAiAgentSalesPerformanceByChannelAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+            const [, passedFilters] = mockFetchEntityMetrics.mock.calls[0]
+            expect(passedFilters).toEqual({ period: MOCK_STATS_FILTERS.period })
+        })
     })
 })

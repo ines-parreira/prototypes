@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { formatMetricValue } from '@repo/reporting'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import {
@@ -226,3 +227,12 @@ export const fetchAiAgentSalesPerformanceByChannelMetrics = async (
 
     return { fileName, files: { [fileName]: createCsv([headers, ...rows]) } }
 }
+
+export const fetchAiAgentSalesPerformanceByChannelAsConfigurableTable: ConfigurableGraphFetch =
+    async (_savedMeasure, _savedDimension, filters, timezone) => {
+        const { files } = await fetchAiAgentSalesPerformanceByChannelMetrics(
+            filters,
+            timezone,
+        )
+        return { files }
+    }

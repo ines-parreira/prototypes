@@ -96,6 +96,12 @@ export function backendConfigToLayoutConfig(
         return defaultConfig
     }
 
+    const defaultItemMap = new Map(
+        defaultConfig.sections.flatMap((s) =>
+            s.items.map((item) => [item.chartId, item]),
+        ),
+    )
+
     const sections: LayoutSection[] = tab.sections.map(
         (backendSection: Section): LayoutSection => {
             return {
@@ -107,6 +113,9 @@ export function backendConfigToLayoutConfig(
                     visibility: item.metadata?.visible ?? true,
                     measures: item.metadata?.measures,
                     dimensions: item.metadata?.dimensions,
+                    requiresFeatureFlag: defaultItemMap.get(
+                        item.chart_id as AnalyticsChartType,
+                    )?.requiresFeatureFlag,
                 })),
             }
         },
@@ -138,10 +147,14 @@ export function mergeWithDefaults(
             ...savedSection,
             tableTitle: defaultSection.tableTitle,
             items: defaultSection.items
-                .map(
-                    (defaultItem) =>
-                        savedItemMap.get(defaultItem.chartId) ?? defaultItem,
-                )
+                .map((defaultItem) => {
+                    const savedItem = savedItemMap.get(defaultItem.chartId)
+                    if (!savedItem) return defaultItem
+                    return {
+                        ...savedItem,
+                        requiresFeatureFlag: defaultItem.requiresFeatureFlag,
+                    }
+                })
                 .filter(Boolean),
         }
     })

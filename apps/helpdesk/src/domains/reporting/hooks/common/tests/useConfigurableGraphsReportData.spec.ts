@@ -120,6 +120,42 @@ describe('useConfigurableGraphs', () => {
         })
     })
 
+    it('excludes files with empty string content from merged result', async () => {
+        const fetchA = jest
+            .fn()
+            .mockResolvedValue({ files: { 'a.csv': 'dataA' } })
+        const fetchB = jest.fn().mockResolvedValue({ files: { 'b.csv': '' } })
+
+        const { result } = renderHook(() =>
+            useConfigurableGraphsReportData(
+                defaultStatsFilters as any,
+                'UTC',
+                ReportingGranularity.Day,
+                [
+                    {
+                        fetch: fetchA,
+                        savedMeasure: null,
+                        savedDimension: null,
+                        chartId: 'chart1',
+                    },
+                    {
+                        fetch: fetchB,
+                        savedMeasure: null,
+                        savedDimension: null,
+                        chartId: 'chart2',
+                    },
+                ],
+            ),
+        )
+
+        await waitFor(() => {
+            expect(result.current).toEqual({
+                isFetching: false,
+                files: { 'a.csv': 'dataA' },
+            })
+        })
+    })
+
     it('passes correct arguments to each fetch function', async () => {
         const fetchA = jest.fn().mockResolvedValue({ files: {} })
 

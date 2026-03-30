@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { reportError } from '@repo/logging'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
-import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { fetchPerformanceMetricsPerFeature } from 'pages/aiAgent/analyticsOverview/hooks/fetchPerformanceBreakdownData'
@@ -13,7 +12,6 @@ import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/h
 export const useDownloadPerformanceBreakdownData = () => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
-    const aiAgentUserId = useAIAgentUserId()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
     )
@@ -30,7 +28,6 @@ export const useDownloadPerformanceBreakdownData = () => {
         fetchPerformanceMetricsPerFeature(
             filters,
             userTimezone,
-            aiAgentUserId,
             costSavedPerInteraction,
         )
             .then(({ fileName, files }) => {
@@ -41,12 +38,7 @@ export const useDownloadPerformanceBreakdownData = () => {
                 reportError(error, { tags: { team: SentryTeam.CRM_REPORTING } })
                 setIsLoading(false)
             })
-    }, [
-        cleanStatsFilters,
-        userTimezone,
-        aiAgentUserId,
-        costSavedPerInteraction,
-    ])
+    }, [cleanStatsFilters, userTimezone, costSavedPerInteraction])
 
     return {
         files: result?.files ?? {},

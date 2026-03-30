@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { formatMetricValue } from '@repo/reporting'
 
+import type { ConfigurableGraphFetch } from 'domains/reporting/hooks/common/useConfigurableGraphsReportData'
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import {
@@ -13,7 +14,6 @@ import type {
     ArticleRecommendationsParams,
 } from 'domains/reporting/models/articleRecommendations'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import type { ReportFetch } from 'domains/reporting/pages/dashboards/types'
 import {
     ARTICLE_RECOMMENDATION_COLUMNS,
     ARTICLE_RECOMMENDATION_TABLE,
@@ -145,9 +145,8 @@ export const fetchArticleRecommendationMetrics = async (
     }
 }
 
-export const fetchArticleRecommendationReport: ReportFetch = async (
-    statsFilters,
-) => ({
-    isLoading: false,
-    ...(await fetchArticleRecommendationMetrics(statsFilters)),
-})
+export const fetchArticleRecommendationAsConfigurableTable: ConfigurableGraphFetch =
+    async (_savedMeasure, _savedDimension, filters) => {
+        const { files } = await fetchArticleRecommendationMetrics(filters)
+        return { files }
+    }

@@ -35,10 +35,10 @@ import { ORDER_MANAGEMENT_TABLE } from 'pages/aiAgent/analyticsOverview/componen
 import { OrderManagementTable } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/OrderManagementTable'
 import { PERFORMANCE_BREAKDOWN_TABLE } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/columns'
 import { PerformanceBreakdownTable } from 'pages/aiAgent/analyticsOverview/components/PerformanceBreakdownTable/PerformanceBreakdownTable'
-import { fetchPerformanceMetricsPerFeatureReport } from 'pages/aiAgent/analyticsOverview/hooks/fetchPerformanceBreakdownData'
-import { fetchArticleRecommendationReport } from 'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics'
-import { fetchFlowsReport } from 'pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics'
-import { fetchOrderManagementReport } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
+import { fetchPerformanceMetricsPerFeatureAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/fetchPerformanceBreakdownData'
+import { fetchArticleRecommendationAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useArticleRecommendationMetrics'
+import { fetchFlowsAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useFlowsMetrics'
+import { fetchOrderManagementAsConfigurableTable } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
@@ -216,8 +216,8 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 label: PERFORMANCE_BREAKDOWN_TABLE.title,
                 csvProducer: [
                     {
-                        type: DataExportFormat.Table,
-                        fetch: fetchPerformanceMetricsPerFeatureReport,
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchPerformanceMetricsPerFeatureAsConfigurableTable,
                     },
                 ],
                 description: PERFORMANCE_BREAKDOWN_TABLE.description,
@@ -228,8 +228,8 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 label: ORDER_MANAGEMENT_TABLE.title,
                 csvProducer: [
                     {
-                        type: DataExportFormat.Table,
-                        fetch: fetchOrderManagementReport,
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchOrderManagementAsConfigurableTable,
                     },
                 ],
                 description: ORDER_MANAGEMENT_TABLE.description,
@@ -240,8 +240,8 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 label: FLOWS_TABLE.title,
                 csvProducer: [
                     {
-                        type: DataExportFormat.Table,
-                        fetch: fetchFlowsReport,
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchFlowsAsConfigurableTable,
                     },
                 ],
                 description: FLOWS_TABLE.description,
@@ -252,8 +252,8 @@ export const AnalyticsOverviewReportConfig: ReportConfig<AnalyticsOverviewChart>
                 label: ARTICLE_RECOMMENDATION_TABLE.title,
                 csvProducer: [
                     {
-                        type: DataExportFormat.Table,
-                        fetch: fetchArticleRecommendationReport,
+                        type: DataExportFormat.ConfigurableTable,
+                        fetch: fetchArticleRecommendationAsConfigurableTable,
                     },
                 ],
                 description: ARTICLE_RECOMMENDATION_TABLE.description,

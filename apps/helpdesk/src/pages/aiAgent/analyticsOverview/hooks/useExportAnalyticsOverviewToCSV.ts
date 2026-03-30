@@ -23,14 +23,15 @@ import { useDownloadAutomationRateTimeSeriesData } from './useDownloadAutomation
 const REPORT_NAME = 'analytics-overview'
 
 export const useExportAnalyticsOverviewToCSV = () => {
-    const {
-        value: isAnalyticsDashboardsTrendCardsEnabled,
-        isLoading: isTrendCardsFlagLoading,
-    } = useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
-    const { value: isNewChartsEnabled, isLoading: isChartsFlagLoading } =
+    const { value: isTrendCardsFFEnabled, isLoading: isTrendCardsFFLoading } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCards)
+    const { value: isGraphsFFEnabled, isLoading: isGraphsFFLoading } =
         useFlagWithLoading(
             FeatureFlagKey.AiAgentAnalyticsDashboardsChartsAndDropdowns,
         )
+    const { value: isTablesFFEnabled, isLoading: isTablesFFLoading } =
+        useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsTables)
+
     const { cleanStatsFilters } = useStatsFilters()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
@@ -52,17 +53,19 @@ export const useExportAnalyticsOverviewToCSV = () => {
             buildCustomDashboard(
                 REPORT_NAME,
                 layoutConfig,
-                isAnalyticsDashboardsTrendCardsEnabled,
-                isNewChartsEnabled,
+                isTrendCardsFFEnabled,
+                isGraphsFFEnabled,
+                isTablesFFEnabled,
             ),
         [
-            isAnalyticsDashboardsTrendCardsEnabled,
+            isTrendCardsFFEnabled,
             layoutConfig,
-            isNewChartsEnabled,
+            isGraphsFFEnabled,
+            isTablesFFEnabled,
         ],
     )
 
-    const { files: dashboardDataFiles, isLoading: isKpiLoading } =
+    const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =
         useDashboardData(
             analyticsOverviewDashboard,
             true,
@@ -75,27 +78,27 @@ export const useExportAnalyticsOverviewToCSV = () => {
         useDownloadAutomationRateTimeSeriesData()
 
     const files = useMemo(
-        () =>
-            isNewChartsEnabled
-                ? dashboardDataFiles
-                : {
-                      ...dashboardDataFiles,
-                      ...automationRateByFeatureData.files,
-                      ...automationRateTimeSeriesData.files,
-                  },
+        () => ({
+            ...dashboardDataFiles,
+            ...(!isGraphsFFEnabled && {
+                ...automationRateByFeatureData.files,
+                ...automationRateTimeSeriesData.files,
+            }),
+        }),
         [
             dashboardDataFiles,
             automationRateByFeatureData.files,
             automationRateTimeSeriesData.files,
-            isNewChartsEnabled,
+            isGraphsFFEnabled,
         ],
     )
 
     const isLoading =
-        isKpiLoading ||
-        isTrendCardsFlagLoading ||
-        isChartsFlagLoading ||
-        (!isNewChartsEnabled &&
+        isDashboardDataLoading ||
+        isTrendCardsFFLoading ||
+        isGraphsFFLoading ||
+        isTablesFFLoading ||
+        (!isGraphsFFEnabled &&
             (automationRateByFeatureData.isLoading ||
                 automationRateTimeSeriesData.isLoading))
 
