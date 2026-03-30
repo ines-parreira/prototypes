@@ -136,6 +136,7 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
                     srcDoc={iframeSourceDoc || ''}
                     title="helpdesk-chat-preview-iframe"
                     sandbox="allow-scripts allow-same-origin"
+                    tabIndex={-1}
                     style={{ display: isLoaded ? undefined : 'none' }}
                 />
             </>
