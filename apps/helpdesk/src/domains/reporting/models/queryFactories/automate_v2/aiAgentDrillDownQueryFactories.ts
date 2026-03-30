@@ -307,6 +307,23 @@ export const allAgentsFRTDrillDownQueryFactory = (
         : [],
 })
 
+export const supportAgentFRTDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<AIAgentDecreaseInFRTCube> => ({
+    ...allAgentsFRTDrillDownQueryFactory(filters, timezone, sorting),
+    metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_FRT_DRILLDOWN,
+    filters: [
+        {
+            member: AIAgentDecreaseInFRTFilterMember.AiAgentRole,
+            operator: ReportingFilterOperator.Equals,
+            values: [AIAgentSkills.AIAgentSupport],
+        },
+        ...buildFRTPeriodFilters(filters),
+    ],
+})
+
 const buildResolutionTimePeriodFilters = (filters: StatsFilters) => [
     {
         member: AIAgentDecreaseInResolutionTimeFilterMember.PeriodStart,

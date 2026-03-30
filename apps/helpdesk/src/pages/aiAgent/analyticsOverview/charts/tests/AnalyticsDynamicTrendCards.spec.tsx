@@ -23,6 +23,7 @@ import { AnalyticsAiAgentClosedTicketsCard } from 'pages/aiAgent/analyticsAiAgen
 import { AnalyticsAiAgentConversionRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentConversionRateCard'
 import { AnalyticsAiAgentCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCostSavedCard'
 import { AnalyticsAiAgentCoverageRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCoverageRateCard'
+import { AnalyticsAiAgentDecreaseinFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseinFRTCard'
 import { AnalyticsAiAgentDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentDiscountCodesAppliedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountCodesAppliedCard'
 import { AnalyticsAiAgentDiscountsOfferedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDiscountsOfferedCard'
@@ -437,6 +438,23 @@ describe('Analytics Dynamic Trend Cards', () => {
             hasDrillDown: true,
             drillDownParams: {
                 metricName: AiAgentDrillDownMetricName.AllAgentsFRTCard,
+                title: 'First response time',
+            },
+            config: {
+                label: 'Decrease in first response time',
+                description:
+                    'The reduction in the average time shoppers wait for the first reply to their message when AI Agent is used, compared with tickets resolved manually by support agents.',
+                metricFormat: 'duration' as const,
+                value: 3600,
+                prevValue: 4200,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentDecreaseinFRTCard',
+            Component: AnalyticsAiAgentDecreaseinFRTCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName: AiAgentDrillDownMetricName.SupportAgentFRTCard,
                 title: 'First response time',
             },
             config: {

@@ -36,6 +36,7 @@ import {
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
     supportAgentCsatDrillDownQueryFactory,
+    supportAgentFRTDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
     supportAgentResolutionTimeDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
@@ -259,6 +260,9 @@ const supportAgentHandoverInteractionsDrillDownQueryFactoryMock = assumeMock(
 )
 const allAgentsFRTDrillDownQueryFactoryMock = assumeMock(
     allAgentsFRTDrillDownQueryFactory,
+)
+const supportAgentFRTDrillDownQueryFactoryMock = assumeMock(
+    supportAgentFRTDrillDownQueryFactory,
 )
 const discountCodesOfferedDrillDownQueryFactoryMock = assumeMock(
     discountCodesOfferedDrillDownQueryFactory,
@@ -1587,6 +1591,20 @@ describe('getDrillDownQuery', () => {
         )
     })
 
+    it('should call supportAgentFRTDrillDownQueryFactory for SupportAgentFRTCard', () => {
+        const timezone = 'someTimeZone'
+        const drillDownMetric: AiAgentMetrics = {
+            metricName: AiAgentDrillDownMetricName.SupportAgentFRTCard,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(supportAgentFRTDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            statsFilters,
+            timezone,
+        )
+    })
+
     it('should call allAgentsResolutionTimeDrillDownQueryFactory for AllAgentsResolutionTimeCard', () => {
         const timezone = 'someTimeZone'
         const drillDownMetric: AiAgentMetrics = {
@@ -2648,6 +2666,16 @@ describe('getDrillDownMetric', () => {
         {
             metricData: {
                 metricName: AiAgentDrillDownMetricName.AllAgentsFRTCard,
+            } as AiAgentMetrics,
+            expectedValues: {
+                metricTitle: 'First response time',
+                showMetric: true,
+                metricValueFormat: 'duration',
+            },
+        },
+        {
+            metricData: {
+                metricName: AiAgentDrillDownMetricName.SupportAgentFRTCard,
             } as AiAgentMetrics,
             expectedValues: {
                 metricTitle: 'First response time',

@@ -205,7 +205,8 @@ export const LegacyTicketDrillDownTableContent = ({
         AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard
 
     const isAiAgentFRTMetric =
-        metricData.metricName === AiAgentDrillDownMetricName.AllAgentsFRTCard
+        metricData.metricName === AiAgentDrillDownMetricName.AllAgentsFRTCard ||
+        metricData.metricName === AiAgentDrillDownMetricName.SupportAgentFRTCard
 
     const isAiAgentResolutionTimeMetric =
         metricData.metricName ===

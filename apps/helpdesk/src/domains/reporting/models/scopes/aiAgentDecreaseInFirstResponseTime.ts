@@ -23,7 +23,6 @@ export const aiAgentDecreaseInFirstResponseTimeScope = defineScope({
     timeDimensions: ['eventDatetime'],
     filters: [
         'aiAgentRole',
-        'aiAgentRole',
         'channel',
         'customField',
         'customFieldId',
@@ -56,7 +55,7 @@ export const aiAgentSupportAgentDecreaseInFRTPerChannel =
             filters: [
                 ...createScopeFilters(ctx.filters, config),
                 {
-                    member: 'aiAgentSkill',
+                    member: 'aiAgentRole',
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: [AutomationSkillType.AiAgentSupport],
                 },
@@ -66,3 +65,22 @@ export const aiAgentSupportAgentDecreaseInFRTPerChannel =
 export const aiAgentSupportAgentDecreaseInFRTPerChannelQueryFactoryV2 = (
     ctx: AiAgentDecreaseInFirstResponseTimeContext,
 ) => aiAgentSupportAgentDecreaseInFRTPerChannel.build(ctx)
+
+export const aiAgentSupportAgentDecreaseInFRT =
+    aiAgentDecreaseInFirstResponseTimeScope
+        .defineMetricName(METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT)
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['averageDecreaseInFirstResponseTime'] as const,
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'aiAgentRole',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationSkillType.AiAgentSupport],
+                },
+            ] as any,
+        }))
+
+export const aiAgentSupportAgentDecreaseInFRTQueryV2Factory = (
+    ctx: AiAgentDecreaseInFirstResponseTimeContext,
+) => aiAgentSupportAgentDecreaseInFRT.build(ctx)

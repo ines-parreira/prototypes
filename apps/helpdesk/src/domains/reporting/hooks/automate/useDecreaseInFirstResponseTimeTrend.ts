@@ -15,23 +15,31 @@ import type { StatsFilters } from 'domains/reporting/models/stat/types'
 export const useDecreaseInFirstResponseTimeTrend = (
     filters: StatsFilters,
     timezone: string,
+    enabled: boolean = true,
 ) => {
     const aiAgentUserId = useAIAgentUserId()
     const filteredAutomatedInteractions = useFilteredAutomatedInteractions(
         filters,
         timezone,
+        enabled,
     )
 
     const billableTicketsExcludingAIAgent = useBillableTicketsExcludingAIAgent(
         filters,
         timezone,
         aiAgentUserId,
+        enabled,
     )
     const firstResponseTimeExcludingAIAgent =
-        useFirstResponseTimeExcludingAIAgent(filters, timezone, aiAgentUserId)
+        useFirstResponseTimeExcludingAIAgent(
+            filters,
+            timezone,
+            aiAgentUserId,
+            enabled,
+        )
 
     const firstResponseTimeIncludingAIAgent =
-        useFirstResponseTimeIncludingAIAgent(filters, timezone)
+        useFirstResponseTimeIncludingAIAgent(filters, timezone, enabled)
 
     const isFetching =
         filteredAutomatedInteractions.isFetching ||

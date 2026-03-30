@@ -124,6 +124,10 @@ export const METRIC_NAMES = {
     AI_AGENT_SUPPORT_AGENT_CSAT_DRILL_DOWN:
         'ai-agent-support-agent-csat-drill-down',
     AI_AGENT_ALL_AGENTS_FRT_DRILLDOWN: 'ai-agent-all-agents-frt-drill-down',
+    AI_AGENT_SUPPORT_AGENT_FRT_DRILLDOWN:
+        'ai-agent-support-agent-frt-drill-down',
+    AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT:
+        'ai-agent-support-agent-decrease-in-frt',
     AI_AGENT_ALL_AGENTS_RESOLUTION_TIME_DRILLDOWN:
         'ai-agent-all-agents-resolution-time-drill-down',
     AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILLDOWN:
@@ -1087,6 +1091,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     ],
     [MetricScope.AiAgentDecreaseInFirstResponseTime]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT,
     ],
     [MetricScope.AiAgentTimeSaved]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL,

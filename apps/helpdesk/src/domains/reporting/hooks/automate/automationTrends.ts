@@ -170,6 +170,7 @@ export const fetchTrendFromMultipleMetricsTrendPerDimension = <
 export const useFilteredAutomatedInteractions = (
     filters: StatsFilters,
     timezone: string,
+    enabled: boolean = true,
 ) =>
     useTrendFromMultipleMetricsTrend(
         filters,
@@ -178,6 +179,7 @@ export const useFilteredAutomatedInteractions = (
         AutomationDatasetMeasure.AutomatedInteractions,
         automatedInteractionsQueryV2Factory,
         'automatedInteractions',
+        enabled,
     )
 
 export const fetchFilteredAutomatedInteractions = (
@@ -306,6 +308,7 @@ export const useFirstResponseTimeExcludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
     aiAgentUserId: number | undefined,
+    enabled: boolean = true,
 ) =>
     useTrendFromMultipleMetricsTrendPerDimension(
         filters,
@@ -313,6 +316,7 @@ export const useFirstResponseTimeExcludingAIAgent = (
         aiAgentUserId,
         billableTicketDatasetExcludingAIAgentQueryFactory,
         BillableTicketDatasetMeasure.TotalFirstResponseTime,
+        enabled,
     )
 
 export const fetchFirstResponseTimeExcludingAIAgent = (
@@ -357,12 +361,16 @@ export const fetchResolutionTimeExcludingAIAgent = (
 export const useFirstResponseTimeIncludingAIAgent = (
     filters: StatsFilters,
     timezone: string,
+    enabled: boolean = true,
 ) =>
     useTrendFromMultipleMetricsTrend(
         filters,
         timezone,
         billableTicketDatasetQueryFactory,
         BillableTicketDatasetMeasure.TotalFirstResponseTime,
+        undefined,
+        undefined,
+        enabled,
     )
 
 export const fetchFirstResponseTimeIncludingAIAgent = (

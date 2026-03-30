@@ -29,6 +29,7 @@ import {
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
     supportAgentCsatDrillDownQueryFactory,
+    supportAgentFRTDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
     supportAgentResolutionTimeDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
@@ -838,6 +839,55 @@ describe('supportAgentResolutionTimeDrillDownQueryFactory', () => {
             [
                 AIAgentDecreaseInResolutionTimeDimension.TicketId,
                 OrderDirection.Desc,
+            ],
+        ])
+    })
+})
+
+describe('supportAgentFRTDrillDownQueryFactory', () => {
+    it('returns query with AIAgentSupport role filter and period filters', () => {
+        expect(supportAgentFRTDrillDownQueryFactory(filters, timezone)).toEqual(
+            {
+                metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_FRT_DRILLDOWN,
+                measures: [],
+                dimensions: [
+                    AIAgentDecreaseInFRTDimension.TicketId,
+                    AIAgentDecreaseInFRTDimension.FirstResponseTime,
+                ],
+                filters: [
+                    {
+                        member: AIAgentDecreaseInFRTFilterMember.AiAgentRole,
+                        operator: ReportingFilterOperator.Equals,
+                        values: [AIAgentSkills.AIAgentSupport],
+                    },
+                    {
+                        member: AIAgentDecreaseInFRTFilterMember.PeriodStart,
+                        operator: ReportingFilterOperator.AfterDate,
+                        values: [filters.period.start_datetime],
+                    },
+                    {
+                        member: AIAgentDecreaseInFRTFilterMember.PeriodEnd,
+                        operator: ReportingFilterOperator.BeforeDate,
+                        values: [filters.period.end_datetime],
+                    },
+                ],
+                timezone,
+                limit: DRILLDOWN_QUERY_LIMIT,
+                order: [],
+            },
+        )
+    })
+
+    it('includes sorting order when sorting is provided', () => {
+        const result = supportAgentFRTDrillDownQueryFactory(
+            filters,
+            timezone,
+            OrderDirection.Asc,
+        )
+        expect(result.order).toEqual([
+            [
+                AIAgentDecreaseInFRTDimension.FirstResponseTime,
+                OrderDirection.Asc,
             ],
         ])
     })

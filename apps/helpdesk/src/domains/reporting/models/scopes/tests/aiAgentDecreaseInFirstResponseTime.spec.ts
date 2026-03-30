@@ -1,7 +1,9 @@
 import {
     aiAgentDecreaseInFirstResponseTimeScope,
+    aiAgentSupportAgentDecreaseInFRT,
     aiAgentSupportAgentDecreaseInFRTPerChannel,
     aiAgentSupportAgentDecreaseInFRTPerChannelQueryFactoryV2,
+    aiAgentSupportAgentDecreaseInFRTQueryV2Factory,
 } from 'domains/reporting/models/scopes/aiAgentDecreaseInFirstResponseTime'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import type {
@@ -219,7 +221,7 @@ describe('aiAgentSupportAgentDecreaseInFRTPerChannel', () => {
         },
     ]
 
-    it('builds query with correct metricName, scope, measures, dimensions, and aiAgentSkill filter', () => {
+    it('builds query with correct metricName, scope, measures, dimensions, and aiAgentRole filter', () => {
         expect(
             aiAgentSupportAgentDecreaseInFRTPerChannel.build(context),
         ).toEqual({
@@ -232,7 +234,7 @@ describe('aiAgentSupportAgentDecreaseInFRTPerChannel', () => {
             filters: [
                 ...periodFilters,
                 {
-                    member: 'aiAgentSkill',
+                    member: 'aiAgentRole',
                     operator: 'one-of',
                     values: ['ai-agent-support'],
                 },
@@ -247,6 +249,55 @@ describe('aiAgentSupportAgentDecreaseInFRTPerChannel', () => {
                     context,
                 ),
             ).toEqual(aiAgentSupportAgentDecreaseInFRTPerChannel.build(context))
+        })
+    })
+})
+
+describe('aiAgentSupportAgentDecreaseInFRT', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with correct metricName, scope, measures, and aiAgentRole filter', () => {
+        expect(aiAgentSupportAgentDecreaseInFRT.build(context)).toEqual({
+            metricName: 'ai-agent-support-agent-decrease-in-frt',
+            scope: 'ai-agent-decrease-in-first-response-time',
+            measures: ['averageDecreaseInFirstResponseTime'],
+            timezone: 'utc',
+            filters: [
+                ...periodFilters,
+                {
+                    member: 'aiAgentRole',
+                    operator: 'one-of',
+                    values: ['ai-agent-support'],
+                },
+            ],
+        })
+    })
+
+    describe('aiAgentSupportAgentDecreaseInFRTQueryV2Factory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentSupportAgentDecreaseInFRTQueryV2Factory(context),
+            ).toEqual(aiAgentSupportAgentDecreaseInFRT.build(context))
         })
     })
 })

@@ -67,6 +67,7 @@ describe('AiAgentDrillDownConfig', () => {
 
     const metricsWithShowMetric = [
         AiAgentDrillDownMetricName.AllAgentsFRTCard,
+        AiAgentDrillDownMetricName.SupportAgentFRTCard,
         AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard,
         AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard,
     ]

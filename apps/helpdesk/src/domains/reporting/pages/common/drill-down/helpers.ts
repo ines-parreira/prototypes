@@ -31,6 +31,7 @@ import {
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
     supportAgentCsatDrillDownQueryFactory,
+    supportAgentFRTDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
     supportAgentResolutionTimeDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
@@ -457,6 +458,8 @@ export const getDrillDownQuery = (
             return supportAgentHandoverInteractionsDrillDownQueryFactory
         case AiAgentDrillDownMetricName.AllAgentsFRTCard:
             return allAgentsFRTDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.SupportAgentFRTCard:
+            return supportAgentFRTDrillDownQueryFactory
         case AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard:
             return allAgentsResolutionTimeDrillDownQueryFactory
         case AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard:
@@ -1093,7 +1096,8 @@ export const getDrillDownMetricColumn = (
         metricTitle = 'CSAT'
         metricValueFormat = 'decimal'
     } else if (
-        metricData.metricName === AiAgentDrillDownMetricName.AllAgentsFRTCard
+        metricData.metricName === AiAgentDrillDownMetricName.AllAgentsFRTCard ||
+        metricData.metricName === AiAgentDrillDownMetricName.SupportAgentFRTCard
     ) {
         metricTitle = 'First response time'
         metricValueFormat = 'duration'
