@@ -85,6 +85,12 @@ export type SatisfactionSurveyRespondedEventData = {
     body_text?: string
 }
 
+export type TicketSlaPolicyAssignedEventData = {
+    sla_policy_version_id: number
+    sla_policy_name: string
+    sla_policy_uuid: string
+}
+
 export type EventData =
     | TicketTagsAddedEventData
     | TicketTagsRemovedEventData
@@ -101,6 +107,7 @@ export type EventData =
     | TicketSplitEventData
     | TicketSatisfactionSurveySkippedData
     | SatisfactionSurveyRespondedEventData
+    | TicketSlaPolicyAssignedEventData
 
 export enum EventType {
     AccountCreated = 'account-created',
@@ -148,6 +155,7 @@ export enum EventType {
     TicketReopened = 'ticket-reopened',
     TicketSatisfactionSurveySkipped = 'ticket-satisfaction-survey-skipped',
     TicketSelfUnsnoozed = 'ticket-self-unsnoozed',
+    TicketSlaPolicyAssigned = 'ticket-sla-policy-assigned',
     TicketSnoozed = 'ticket-snoozed',
     TicketSubjectUpdated = 'ticket-subject-updated',
     TicketTagsAdded = 'ticket-tags-added',
@@ -251,6 +259,7 @@ export const TICKET_EVENT_TYPES = Object.freeze({
         'TicketUnmarkedSpam',
         'TicketUntrashed',
         'TicketUpdated',
+        'TicketSlaPolicyAssigned',
     ]),
     RuleExecuted: 'rule-executed',
 } as const)

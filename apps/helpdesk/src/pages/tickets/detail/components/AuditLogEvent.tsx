@@ -167,6 +167,7 @@ export class AuditLogEventContainer extends Component<Props, State> {
         [CONTENTFUL_EVENT_TYPES.TicketExcludedFromCSAT]: ['star'],
         [CONTENTFUL_EVENT_TYPES.TicketSatisfactionSurveySkipped]: ['star'],
         [CONTENTFUL_EVENT_TYPES.SatisfactionSurveySent]: ['star'],
+        [CONTENTFUL_EVENT_TYPES.TicketSlaPolicyAssigned]: ['settings'],
     }
 
     state: State = {
@@ -251,6 +252,8 @@ export class AuditLogEventContainer extends Component<Props, State> {
         [CONTENTFUL_EVENT_TYPES.SatisfactionSurveySent]: () => (
             <ActionName>CSAT survey sent</ActionName>
         ),
+        [CONTENTFUL_EVENT_TYPES.TicketSlaPolicyAssigned]: () =>
+            this._renderSlaPolicyAssignedEvent(),
     }
 
     _DETAILS_RENDERERS: Partial<Record<TicketEventType, () => ReactNode>> = {
@@ -305,6 +308,27 @@ export class AuditLogEventContainer extends Component<Props, State> {
         const detailsRenderer = this._DETAILS_RENDERERS[type]
 
         return detailsRenderer ? detailsRenderer() : null
+    }
+
+    _renderSlaPolicyAssignedEvent() {
+        const { event } = this.props
+
+        const data = event.get('data') as Map<any, any>
+        const slaPolicyUuid = data.get('sla_policy_uuid') as string
+
+        return (
+            <ActionName>
+                {`SLA Policy "`}
+                <a
+                    href={`/app/settings/sla/${slaPolicyUuid}`}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    {data.get('sla_policy_name')}
+                </a>
+                {`" assigned`}
+            </ActionName>
+        )
     }
 
     _renderRuleExecutedEvent() {

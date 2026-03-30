@@ -151,6 +151,14 @@ describe('<AuditLogEvent/>', () => {
                     { score: 5, body_text: 'Great service!' },
                 ],
                 [SATISFACTION_SURVEY_EVENT_TYPES.SatisfactionSurveySent, null],
+                [
+                    TICKET_EVENT_TYPES.TicketSlaPolicyAssigned,
+                    {
+                        sla_policy_name: 'Test Policy',
+                        sla_policy_uuid: '1234-1234-1234-1234-1234',
+                        sla_policy_version_id: 1,
+                    },
+                ],
             ])('with event type %s', (eventType, eventData) => {
                 const event = getEvent(eventType, eventData)
                 const { container } = renderWithRouter(
