@@ -86,9 +86,53 @@ describe('shortcutManager utils', () => {
             expect(utils.isEditable(textarea)).toBe(true)
         })
 
+        it('contenteditable true', () => {
+            const editable = document.createElement('div')
+            editable.contentEditable = 'true'
+            expect(utils.isEditable(editable)).toBe(true)
+        })
+
+        it('contenteditable false', () => {
+            const nonEditable = document.createElement('div')
+            nonEditable.contentEditable = 'false'
+            expect(utils.isEditable(nonEditable)).toBe(false)
+        })
+
         it('not editable', () => {
             const notEditable = document.createElement('div')
             expect(utils.isEditable(notEditable)).toBe(false)
+        })
+
+        it('searchbox role', () => {
+            const searchbox = document.createElement('div')
+            searchbox.setAttribute('role', 'searchbox')
+            expect(utils.isEditable(searchbox)).toBe(true)
+        })
+
+        it('textbox role ancestor', () => {
+            const textbox = document.createElement('div')
+            const child = document.createElement('span')
+
+            textbox.setAttribute('role', 'textbox')
+            textbox.appendChild(child)
+
+            expect(utils.isEditable(child)).toBe(true)
+        })
+
+        it('combobox role ancestor', () => {
+            const combobox = document.createElement('div')
+            const child = document.createElement('span')
+
+            combobox.setAttribute('role', 'combobox')
+            combobox.appendChild(child)
+
+            expect(utils.isEditable(child)).toBe(true)
+        })
+
+        it('role-like value does not match editable role selector', () => {
+            const nonEditable = document.createElement('div')
+            nonEditable.setAttribute('role', 'listbox')
+            expect(utils.isEditable(nonEditable)).toBe(false)
         })
     })
 

@@ -71,6 +71,12 @@ const nonEditableInputTypes = [
     'submit',
 ]
 
+const editableRoleSelector = [
+    '[role="textbox"]',
+    '[role="searchbox"]',
+    '[role="combobox"]',
+].join(', ')
+
 export function isEditable(element: Element): boolean {
     return (
         (element.tagName === 'INPUT' &&
@@ -80,6 +86,7 @@ export function isEditable(element: Element): boolean {
         element.tagName === 'SELECT' ||
         element.tagName === 'TEXTAREA' ||
         (!!(element as HTMLElement).contentEditable &&
-            (element as HTMLElement).contentEditable === 'true')
+            (element as HTMLElement).contentEditable === 'true') ||
+        element.closest(editableRoleSelector) !== null
     )
 }
