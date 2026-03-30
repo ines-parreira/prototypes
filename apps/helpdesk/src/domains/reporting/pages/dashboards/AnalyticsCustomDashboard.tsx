@@ -15,7 +15,10 @@ export type DashboardProps = {
     pinnedFilter: FiltersPanelWrapperProps['pinnedFilter']
 }
 
-export const NewDashboard = ({ dashboard, pinnedFilter }: DashboardProps) => {
+export const AnalyticsCustomDashboard = ({
+    dashboard,
+    pinnedFilter,
+}: DashboardProps) => {
     const getGridCellSize = useGridSize()
 
     useCleanStatsFilters()

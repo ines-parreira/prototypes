@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import {
@@ -15,26 +14,21 @@ import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashb
 import { useDashboardById } from 'domains/reporting/hooks/dashboards/useDashboardById'
 import { useDashboardNameValidation } from 'domains/reporting/hooks/dashboards/useDashboardNameValidation'
 import { useReportRestrictions } from 'domains/reporting/hooks/dashboards/useReportRestrictions'
-import { useUpdateDashboardCache } from 'domains/reporting/hooks/dashboards/useUpdateDashboardCache'
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { FiltersPanelWrapper } from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { AnalyticsCustomDashboard } from 'domains/reporting/pages/dashboards/AnalyticsCustomDashboard'
 import { CREATE_REPORT_DESCRIPTION } from 'domains/reporting/pages/dashboards/CreateDashboard/CreateDashboard'
-import { Dashboard } from 'domains/reporting/pages/dashboards/Dashboard'
 import { DashboardActionButton } from 'domains/reporting/pages/dashboards/DashboardActionButton'
 import {
     DASHBOARD_SCHEMA_ERROR,
     DashboardPage,
 } from 'domains/reporting/pages/dashboards/DashboardPage'
-import { NewDashboard } from 'domains/reporting/pages/dashboards/NewDashboard'
 import { PinnedFilterSyncProvider } from 'domains/reporting/pages/dashboards/PinnedFilterSyncProvider'
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { dashboardFromApi } from 'domains/reporting/pages/dashboards/utils'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { renderWithStore } from 'utils/testing'
-
-jest.mock('@repo/feature-flags')
-const useFlagMock = assumeMock(useFlag)
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -44,9 +38,6 @@ const mockUseParams = assumeMock(useParams)
 
 jest.mock('hooks/useAppDispatch')
 const useAppDispatchMock = assumeMock(useAppDispatch)
-
-jest.mock('domains/reporting/hooks/dashboards/useUpdateDashboardCache')
-const useUpdateDashboardCacheMock = assumeMock(useUpdateDashboardCache)
 
 jest.mock('domains/reporting/hooks/dashboards/useDashboardById')
 const useDashboardByIdMock = assumeMock(useDashboardById)
@@ -59,11 +50,8 @@ const FiltersPanelWrapperMock = assumeMock(FiltersPanelWrapper)
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal')
 const DrillDownModalMock = assumeMock(DrillDownModal)
 
-jest.mock('domains/reporting/pages/dashboards/Dashboard')
-const DashboardMock = assumeMock(Dashboard)
-
-jest.mock('domains/reporting/pages/dashboards/NewDashboard')
-const NewDashboardMock = assumeMock(NewDashboard)
+jest.mock('domains/reporting/pages/dashboards/AnalyticsCustomDashboard')
+const AnalyticsCustomDashboardMock = assumeMock(AnalyticsCustomDashboard)
 
 jest.mock('domains/reporting/pages/dashboards/DashboardActionButton')
 const DashboardActionButtonMock = assumeMock(DashboardActionButton)
@@ -124,44 +112,16 @@ describe('DashboardPage', () => {
 
     const dispatchMock = jest.fn()
 
-    const updateDashboardCacheMock = jest.fn()
-
-    const MOVE_CHART_BUTTON = 'chart move'
-    const MOVE_CHART_END_BUTTON = 'chart move end'
     const PIN_FILTER_BUTTON = 'pin filter'
 
     beforeEach(() => {
-        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-            if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
-                return false
-            }
-        })
-
         mockUseParams.mockReturnValue({
             id: dashboardId,
         })
 
         FiltersPanelWrapperMock.mockReturnValue(<div />)
 
-        DashboardMock.mockImplementation(
-            ({ onChartMove, onChartMoveEnd, pinnedFilter }) => (
-                <div>
-                    <button onClick={() => onChartMove(dashboard)}>
-                        {MOVE_CHART_BUTTON}
-                    </button>
-                    <button onClick={() => onChartMoveEnd()}>
-                        {MOVE_CHART_END_BUTTON}
-                    </button>
-                    {pinnedFilter && (
-                        <button onClick={() => pinnedFilter.pin(123, 'filter')}>
-                            {PIN_FILTER_BUTTON}
-                        </button>
-                    )}
-                </div>
-            ),
-        )
-
-        NewDashboardMock.mockImplementation(({ pinnedFilter }) => (
+        AnalyticsCustomDashboardMock.mockImplementation(({ pinnedFilter }) => (
             <div>
                 Dashboard Report with Resize & Drag&Drop
                 {pinnedFilter && (
@@ -200,8 +160,6 @@ describe('DashboardPage', () => {
             },
             isUpdateMutationLoading: false,
         } as any)
-
-        useUpdateDashboardCacheMock.mockReturnValue(updateDashboardCacheMock)
 
         useAppDispatchMock.mockReturnValue(dispatchMock)
 
@@ -270,11 +228,6 @@ describe('DashboardPage', () => {
     })
 
     it('should wrap in PinnedFilterSyncProvider when analytics_filter_id is present', () => {
-        useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-            if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
-                return false
-            }
-        })
         useDashboardByIdMock.mockReturnValue({
             data: { ...dashboard, analytics_filter_id: 1 },
             isLoading: false,
@@ -399,26 +352,10 @@ describe('DashboardPage', () => {
         })
     })
 
-    it('should update dashboard cache when charts are moved', () => {
+    it('should render the new dashboard report', () => {
         renderWithStore(<DashboardPage />, defaultState)
 
-        const chartMoveButton = screen.getByRole('button', {
-            name: MOVE_CHART_BUTTON,
-        })
-        fireEvent.click(chartMoveButton)
-
-        expect(updateDashboardCacheMock).toHaveBeenCalledTimes(1)
-    })
-
-    it('should update dashboard when charts are moved', () => {
-        renderWithStore(<DashboardPage />, defaultState)
-
-        const chartMoveButton = screen.getByRole('button', {
-            name: MOVE_CHART_END_BUTTON,
-        })
-        fireEvent.click(chartMoveButton)
-
-        expect(updateDashboardMock).toHaveBeenCalledTimes(1)
+        expect(AnalyticsCustomDashboardMock).toHaveBeenCalled()
     })
 
     describe('Pinned Filter functionality', () => {
@@ -428,11 +365,6 @@ describe('DashboardPage', () => {
         const errorMessage = `${filterName} could not be set as default filter. Please try again.`
 
         beforeEach(() => {
-            useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-                if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
-                    return false
-                }
-            })
             mockUpdateDashboardHandler = jest.fn()
             useDashboardActionsMock.mockReturnValue({
                 updateDashboardHandler: mockUpdateDashboardHandler,
@@ -476,20 +408,21 @@ describe('DashboardPage', () => {
                 isLoading: false,
             } as any)
 
-            // Update the mock to simulate clicking the same filter that's already pinned
-            DashboardMock.mockImplementation(({ pinnedFilter }) => (
-                <div>
-                    {pinnedFilter && (
-                        <button
-                            onClick={() =>
-                                pinnedFilter.pin(savedFilterId, filterName)
-                            }
-                        >
-                            {PIN_FILTER_BUTTON}
-                        </button>
-                    )}
-                </div>
-            ))
+            AnalyticsCustomDashboardMock.mockImplementation(
+                ({ pinnedFilter }) => (
+                    <div>
+                        {pinnedFilter && (
+                            <button
+                                onClick={() =>
+                                    pinnedFilter.pin(savedFilterId, filterName)
+                                }
+                            >
+                                {PIN_FILTER_BUTTON}
+                            </button>
+                        )}
+                    </div>
+                ),
+            )
 
             renderWithStore(<DashboardPage />, defaultState)
 
@@ -521,20 +454,21 @@ describe('DashboardPage', () => {
                 isLoading: false,
             } as any)
 
-            // Update the mock to simulate clicking a different filter
-            DashboardMock.mockImplementation(({ pinnedFilter }) => (
-                <div>
-                    {pinnedFilter && (
-                        <button
-                            onClick={() =>
-                                pinnedFilter.pin(newFilterId, filterName)
-                            }
-                        >
-                            {PIN_FILTER_BUTTON}
-                        </button>
-                    )}
-                </div>
-            ))
+            AnalyticsCustomDashboardMock.mockImplementation(
+                ({ pinnedFilter }) => (
+                    <div>
+                        {pinnedFilter && (
+                            <button
+                                onClick={() =>
+                                    pinnedFilter.pin(newFilterId, filterName)
+                                }
+                            >
+                                {PIN_FILTER_BUTTON}
+                            </button>
+                        )}
+                    </div>
+                ),
+            )
 
             renderWithStore(<DashboardPage />, defaultState)
 
@@ -554,7 +488,7 @@ describe('DashboardPage', () => {
             })
         })
 
-        it('should pass the correct pinned filter id to Dashboard component', () => {
+        it('should pass the correct pinned filter id to AnalyticsCustomDashboard component', () => {
             const savedFilterId = 789
             useDashboardByIdMock.mockReturnValue({
                 data: { ...dashboard, analytics_filter_id: savedFilterId },
@@ -563,7 +497,7 @@ describe('DashboardPage', () => {
 
             renderWithStore(<DashboardPage />, defaultState)
 
-            expect(DashboardMock).toHaveBeenCalledWith(
+            expect(AnalyticsCustomDashboardMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     pinnedFilter: expect.objectContaining({
                         id: savedFilterId,
@@ -582,7 +516,7 @@ describe('DashboardPage', () => {
 
             renderWithStore(<DashboardPage />, defaultState)
 
-            expect(DashboardMock).toHaveBeenCalledWith(
+            expect(AnalyticsCustomDashboardMock).toHaveBeenCalledWith(
                 expect.objectContaining({
                     pinnedFilter: expect.objectContaining({
                         id: null,
@@ -591,24 +525,6 @@ describe('DashboardPage', () => {
                 }),
                 expect.anything(),
             )
-        })
-    })
-
-    describe('New Dashboard Report functionality', () => {
-        beforeEach(() => {
-            useFlagMock.mockImplementation((flag: FeatureFlagKey) => {
-                if (flag === FeatureFlagKey.ReportingDashboardResizeCharts) {
-                    return true
-                }
-            })
-        })
-
-        it('should render the new dashboard report', () => {
-            renderWithStore(<DashboardPage />, defaultState)
-
-            expect(DashboardMock).not.toHaveBeenCalled()
-
-            expect(NewDashboardMock).toHaveBeenCalled()
         })
     })
 })

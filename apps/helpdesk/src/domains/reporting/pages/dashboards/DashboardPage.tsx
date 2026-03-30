@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useParams } from 'react-router-dom'
 
@@ -9,18 +8,16 @@ import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 import { useDashboardActions } from 'domains/reporting/hooks/dashboards/useDashboardActions'
 import { useDashboardById } from 'domains/reporting/hooks/dashboards/useDashboardById'
 import { useDashboardNameValidation } from 'domains/reporting/hooks/dashboards/useDashboardNameValidation'
-import { useUpdateDashboardCache } from 'domains/reporting/hooks/dashboards/useUpdateDashboardCache'
 import StatsPage, {
     StatsPageContent,
     StatsPageHeader,
     StatsPageWrapper,
 } from 'domains/reporting/pages/common/layout/StatsPage'
+import { AnalyticsCustomDashboard } from 'domains/reporting/pages/dashboards/AnalyticsCustomDashboard'
 import { CreateDashboard } from 'domains/reporting/pages/dashboards/CreateDashboard/CreateDashboard'
-import { Dashboard } from 'domains/reporting/pages/dashboards/Dashboard'
 import { DashboardActionButton } from 'domains/reporting/pages/dashboards/DashboardActionButton'
 import { DashboardName } from 'domains/reporting/pages/dashboards/DashboardName'
 import { DashboardsModal } from 'domains/reporting/pages/dashboards/DashboardsModal/DashboardsModal'
-import { NewDashboard } from 'domains/reporting/pages/dashboards/NewDashboard'
 import { PinnedFilterSyncProvider } from 'domains/reporting/pages/dashboards/PinnedFilterSyncProvider'
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import useAppSelector from 'hooks/useAppSelector'
@@ -75,11 +72,6 @@ const DashboardPageContent = ({
 }: {
     dashboard: DashboardSchema
 }) => {
-    const isDashboardResizeChartsEnabled = useFlag(
-        FeatureFlagKey.ReportingDashboardResizeCharts,
-        false,
-    )
-
     const currentUser = useAppSelector(getCurrentUser)
     const isCurrentUserTeamLead = isTeamLead(currentUser)
 
@@ -88,8 +80,6 @@ const DashboardPageContent = ({
 
     const { updateDashboardHandler, isUpdateMutationLoading } =
         useDashboardActions()
-
-    const updateDashboardCache = useUpdateDashboardCache(dashboard.id)
 
     const handleUpdateCharts = (chartIds: string[]) => {
         updateDashboardHandler({
@@ -143,13 +133,6 @@ const DashboardPageContent = ({
             successMessage,
         })
 
-    const handleMoveCharts = (dashboard: DashboardSchema) => {
-        updateDashboardCache(dashboard)
-    }
-
-    const handleMoveChartsEnd = () =>
-        updateDashboardHandler({ dashboard, successMessage })
-
     const handleActionButtonClick = (isOpen: boolean) => {
         setIsOpen(isOpen)
         logEvent(SegmentEvent.StatDashboardActionsMenuClicked)
@@ -177,19 +160,10 @@ const DashboardPageContent = ({
             />
             <StatsPageContent>
                 {dashboard.children.length ? (
-                    isDashboardResizeChartsEnabled ? (
-                        <NewDashboard
-                            dashboard={dashboard}
-                            pinnedFilter={dashboardPinnedFilter}
-                        />
-                    ) : (
-                        <Dashboard
-                            dashboard={dashboard}
-                            pinnedFilter={dashboardPinnedFilter}
-                            onChartMove={handleMoveCharts}
-                            onChartMoveEnd={handleMoveChartsEnd}
-                        />
-                    )
+                    <AnalyticsCustomDashboard
+                        dashboard={dashboard}
+                        pinnedFilter={dashboardPinnedFilter}
+                    />
                 ) : (
                     <CreateDashboard />
                 )}

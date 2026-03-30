@@ -175,7 +175,6 @@ export enum FeatureFlagKey {
     ProductCardDiscountedPrice = 'product-card-discounted-price',
     RedirectDeprecatedTicketRoutes = 'redirect-deprecated-ticket-routes',
     ReportingAgentsTableAverageAndTotal = 'reporting-agents-table-average-and-total',
-    ReportingDashboardResizeCharts = 'reporting-dashboard-resize-charts',
     ReportingFilteringAndCalculationsTagsReport = 'reporting-filtering-and-calculations-tags-report',
     ReportingHrtAi = 'linear.project_reporting-hrt-ai.hrt-ai',
     ReportingHrtWithoutBots = 'linear.task_CRMREP-4416.frt-without-bots',

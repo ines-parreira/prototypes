@@ -6,8 +6,8 @@ import type { StaticFilter } from 'domains/reporting/models/stat/types'
 import { FilterKey } from 'domains/reporting/models/stat/types'
 import type { OptionalFilter } from 'domains/reporting/pages/common/filters/FiltersPanel'
 import FiltersPanelWrapper from 'domains/reporting/pages/common/filters/FiltersPanelWrapper/FiltersPanelWrapper'
+import { AnalyticsCustomDashboard } from 'domains/reporting/pages/dashboards/AnalyticsCustomDashboard'
 import { DragAndResizeChart } from 'domains/reporting/pages/dashboards/DragAndResizeDashboardGrid/DragAndResizeChart'
-import { NewDashboard } from 'domains/reporting/pages/dashboards/NewDashboard'
 import type { DashboardSchema } from 'domains/reporting/pages/dashboards/types'
 import { DashboardChildType } from 'domains/reporting/pages/dashboards/types'
 import { useFiltersFromDashboard } from 'domains/reporting/pages/dashboards/useFiltersFromDashboard'
@@ -38,7 +38,7 @@ jest.mock('domains/reporting/hooks/dashboards/useDashboardActions', () => ({
 
 const PIN_FILTER_BUTTON = 'pin filter'
 
-describe('NewDashboard', () => {
+describe('AnalyticsCustomDashboard', () => {
     const dashboard: DashboardSchema = {
         id: 1,
         name: 'Test Dashboard',
@@ -85,7 +85,12 @@ describe('NewDashboard', () => {
     })
 
     it('should render filters panel wrapper', () => {
-        render(<NewDashboard dashboard={dashboard} pinnedFilter={undefined} />)
+        render(
+            <AnalyticsCustomDashboard
+                dashboard={dashboard}
+                pinnedFilter={undefined}
+            />,
+        )
 
         expect(FiltersPanelWrapperMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -111,7 +116,7 @@ describe('NewDashboard', () => {
         }
 
         render(
-            <NewDashboard
+            <AnalyticsCustomDashboard
                 dashboard={dashboard}
                 pinnedFilter={mockPinnedFilter}
             />,
@@ -128,7 +133,12 @@ describe('NewDashboard', () => {
     })
 
     it('should render dashboard charts', () => {
-        render(<NewDashboard dashboard={dashboard} pinnedFilter={undefined} />)
+        render(
+            <AnalyticsCustomDashboard
+                dashboard={dashboard}
+                pinnedFilter={undefined}
+            />,
+        )
 
         expect(DragAndResizeChartMock).toHaveBeenCalledWith(
             {
@@ -163,7 +173,7 @@ describe('NewDashboard', () => {
         }
 
         render(
-            <NewDashboard
+            <AnalyticsCustomDashboard
                 dashboard={dashboardWithMultipleCharts}
                 pinnedFilter={undefined}
             />,
@@ -195,7 +205,7 @@ describe('NewDashboard', () => {
         }
 
         const { container } = render(
-            <NewDashboard
+            <AnalyticsCustomDashboard
                 dashboard={emptyDashboard}
                 pinnedFilter={undefined}
             />,
@@ -229,7 +239,7 @@ describe('NewDashboard', () => {
         }
 
         render(
-            <NewDashboard
+            <AnalyticsCustomDashboard
                 dashboard={nestedDashboard}
                 pinnedFilter={undefined}
             />,
@@ -246,13 +256,23 @@ describe('NewDashboard', () => {
     })
 
     it('should call useCleanStatsFilters hook', () => {
-        render(<NewDashboard dashboard={dashboard} pinnedFilter={undefined} />)
+        render(
+            <AnalyticsCustomDashboard
+                dashboard={dashboard}
+                pinnedFilter={undefined}
+            />,
+        )
 
         expect(useCleanStatsFiltersMock).toHaveBeenCalled()
     })
 
     it('should call useFiltersFromDashboard with correct dashboard', () => {
-        render(<NewDashboard dashboard={dashboard} pinnedFilter={undefined} />)
+        render(
+            <AnalyticsCustomDashboard
+                dashboard={dashboard}
+                pinnedFilter={undefined}
+            />,
+        )
 
         expect(useFiltersFromDashboardMock).toHaveBeenCalledWith(dashboard)
     })
@@ -272,7 +292,7 @@ describe('NewDashboard', () => {
         }
 
         render(
-            <NewDashboard
+            <AnalyticsCustomDashboard
                 dashboard={customDashboard}
                 pinnedFilter={undefined}
             />,
@@ -294,7 +314,7 @@ describe('NewDashboard', () => {
             }
 
             render(
-                <NewDashboard
+                <AnalyticsCustomDashboard
                     dashboard={dashboard}
                     pinnedFilter={mockPinnedFilter}
                 />,
@@ -316,7 +336,7 @@ describe('NewDashboard', () => {
             }
 
             const { getByRole } = render(
-                <NewDashboard
+                <AnalyticsCustomDashboard
                     dashboard={dashboard}
                     pinnedFilter={mockPinnedFilter}
                 />,
@@ -330,7 +350,10 @@ describe('NewDashboard', () => {
 
         it('should not render pin filter button when pinnedFilter is undefined', () => {
             const { queryByRole } = render(
-                <NewDashboard dashboard={dashboard} pinnedFilter={undefined} />,
+                <AnalyticsCustomDashboard
+                    dashboard={dashboard}
+                    pinnedFilter={undefined}
+                />,
             )
 
             const pinButton = queryByRole('button', { name: PIN_FILTER_BUTTON })
