@@ -6,6 +6,7 @@ import {
     TicketInfobarTab,
     useTicketInfobarNavigation,
 } from '@repo/navigation'
+import { isAdmin } from '@repo/utils'
 import { useHistory } from 'react-router-dom'
 
 import {
@@ -17,6 +18,7 @@ import {
     Tooltip,
     TooltipContent,
 } from '@gorgias/axiom'
+import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
 import { useTicketInfobarNavigationShortcuts } from '../../hooks/useTicketInfobarNavigationShortcuts'
 import { InfobarNavigationContainer } from './components/InfobarNavigationContainer'
@@ -58,6 +60,11 @@ export function TicketInfobarNavigation({
     useTicketInfobarNavigationShortcuts()
     const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
     const history = useHistory()
+    const { data: currentUser } = useGetCurrentUser({
+        query: {
+            select: (data) => data.data,
+        },
+    })
 
     const handleCustomIntegrationsAction = useCallback(() => {
         onChangeTab(TicketInfobarTab.CustomIntegrations)
@@ -184,7 +191,7 @@ export function TicketInfobarNavigation({
                     }}
                 />
             </ButtonGroup>
-            {hasUIVisionMilestone2 && (
+            {hasUIVisionMilestone2 && currentUser && isAdmin(currentUser) && (
                 <Menu
                     aria-label="Edit widget data"
                     placement="bottom left"

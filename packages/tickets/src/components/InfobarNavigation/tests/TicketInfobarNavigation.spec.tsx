@@ -1,16 +1,42 @@
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import * as repoNavigation from '@repo/navigation'
-import { shortcutManager } from '@repo/utils'
+import { shortcutManager, UserRole } from '@repo/utils'
 import { act, screen, waitFor } from '@testing-library/react'
+import { HttpResponse } from 'msw'
+import { setupServer } from 'msw/node'
 import type { Mock, MockInstance } from 'vitest'
 
-import { render } from '../../../tests/render.utils'
+import { mockGetCurrentUserHandler, mockUser } from '@gorgias/helpdesk-mocks'
+
+import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { TicketInfobarNavigation } from '../TicketInfobarNavigation'
 
 vi.mock('@repo/feature-flags', async (importOriginal) => ({
     ...(await importOriginal()),
     useHelpdeskV2MS2Flag: vi.fn(),
 }))
+
+const adminUser = mockUser({
+    role: { name: UserRole.Admin },
+})
+
+const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
+    HttpResponse.json(adminUser),
+)
+
+const server = setupServer()
+
+beforeAll(() => {
+    server.listen({ onUnhandledRequest: 'error' })
+})
+
+afterEach(() => {
+    server.resetHandlers()
+})
+
+afterAll(() => {
+    server.close()
+})
 
 const mockPush = vi.fn()
 
@@ -41,6 +67,8 @@ describe('TicketInfobarNavigation', () => {
         mockPush.mockClear()
         useHistory.mockReturnValue({ push: mockPush })
         mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+        server.use(mockGetCurrentUser.handler)
+        testAppQueryClient.clear()
 
         useTicketInfobarNavigationMock = vi.spyOn(
             repoNavigation,
@@ -551,7 +579,9 @@ describe('TicketInfobarNavigation', () => {
                     <TicketInfobarNavigation {...{ [prop]: true }} />,
                 )
 
-                await user.click(screen.getByLabelText('Edit Widget data'))
+                await user.click(
+                    await screen.findByLabelText('Edit Widget data'),
+                )
 
                 await user.click(
                     screen.getByRole('menuitem', {
@@ -602,7 +632,7 @@ describe('TicketInfobarNavigation', () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
             const { user } = render(<TicketInfobarNavigation />)
 
-            const settingsButton = screen.getByRole('button', {
+            const settingsButton = await screen.findByRole('button', {
                 name: 'Edit Widget data',
             })
             await user.click(settingsButton)
