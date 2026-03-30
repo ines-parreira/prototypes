@@ -6,6 +6,7 @@ import { useParams } from 'react-router-dom'
 import { IntegrationType, useGetTicket } from '@gorgias/helpdesk-queries'
 
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
+import useHasCustomIntegrations from 'pages/tickets/detail/hooks/useHasCustomIntegrations'
 import useHasIntegration from 'pages/tickets/detail/hooks/useHasIntegration'
 import useHasRecharge from 'pages/tickets/detail/hooks/useHasRecharge'
 import useHasWooCommerce from 'pages/tickets/detail/hooks/useHasWooCommerce'
@@ -30,6 +31,7 @@ export function InfobarNavigationPanel() {
 
     const shopperId = currentTicketData?.data?.customer?.id
 
+    const hasCustomIntegrations = useHasCustomIntegrations()
     const hasShopify = useHasIntegration(IntegrationType.Shopify)
     const hasRecharge = useHasRecharge()
     const hasBigCommerce = useHasIntegration(IntegrationType.Bigcommerce)
@@ -43,6 +45,7 @@ export function InfobarNavigationPanel() {
             <TicketInfobarNavigation
                 hasAIFeedback={hasAIAgent && canAccessAIFeedback}
                 hasBigCommerce={hasBigCommerce}
+                hasCustomIntegrations={hasCustomIntegrations}
                 hasMagento={hasMagento}
                 hasRecharge={hasRecharge}
                 hasShopify={hasShopify}

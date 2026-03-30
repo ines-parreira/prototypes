@@ -27,6 +27,12 @@ import Widgets from './Widgets'
 
 import css from './SourceWrapper.less'
 
+const CUSTOM_INTEGRATION_WIDGET_TYPES: string[] = [
+    CUSTOM_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
+]
+
 export const WIDGET_DATA_TYPES = [
     {
         type: IntegrationType.Shopify,
@@ -311,7 +317,11 @@ export default function SourceWrapper({
     const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
 
     const filteredDataTypes = widgetTypeFilter
-        ? WIDGET_DATA_TYPES.filter((dt) => dt.type === widgetTypeFilter)
+        ? WIDGET_DATA_TYPES.filter((dt) =>
+              widgetTypeFilter === CUSTOM_WIDGET_TYPE
+                  ? CUSTOM_INTEGRATION_WIDGET_TYPES.includes(dt.type)
+                  : dt.type === widgetTypeFilter,
+          )
         : WIDGET_DATA_TYPES
 
     return (

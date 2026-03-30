@@ -4,6 +4,7 @@ export enum TicketInfobarTab {
     BigCommerce = 'bigcommerce',
     Customer = 'customer',
     Magento = 'magento',
+    CustomIntegrations = 'custom-integrations',
     Recharge = 'recharge',
     Shopify = 'shopify',
     Smile = 'smile',

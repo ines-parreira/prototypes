@@ -31,6 +31,7 @@ import { DATE_FEATURE_AVAILABLE } from 'pages/tickets/detail/components/AIAgentF
 import { isTrialMessageFromAIAgent } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
 import TicketFeedback from 'pages/tickets/detail/components/TicketFeedback'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
+import CustomIntegrationsTabContent from 'pages/tickets/detail/CustomIntegrationsTabContent'
 import IntegrationTabContent from 'pages/tickets/detail/IntegrationTabContent'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
@@ -373,7 +374,8 @@ export const TicketInfobarContainer = ({
                 tab === TicketInfobarTab.Magento ||
                 tab === TicketInfobarTab.WooCommerce ||
                 tab === TicketInfobarTab.Smile ||
-                tab === TicketInfobarTab.Yotpo
+                tab === TicketInfobarTab.Yotpo ||
+                tab === TicketInfobarTab.CustomIntegrations
             ) {
                 resetTicketMessage()
             }
@@ -600,6 +602,11 @@ export const TicketInfobarContainer = ({
                         WidgetComponent={YotpoWidget}
                     />
                 ) : null
+            ) : activeTab === TicketInfobarTab.CustomIntegrations ? (
+                <CustomIntegrationsTabContent
+                    sources={sources}
+                    widgets={widgets}
+                />
             ) : (
                 <div
                     className={classNames(css.infoBarContainer, {

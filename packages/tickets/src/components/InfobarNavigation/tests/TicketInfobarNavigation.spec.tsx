@@ -400,6 +400,54 @@ describe('TicketInfobarNavigation', () => {
         })
     })
 
+    describe('Custom Integrations tab', () => {
+        it('should render the "Custom Integrations" tab when useHelpdeskV2MS2Flag is true and hasCustomIntegrations is true', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            render(<TicketInfobarNavigation hasCustomIntegrations />)
+
+            await waitFor(() => {
+                expect(screen.getByLabelText('webhook')).toBeInTheDocument()
+            })
+        })
+
+        it('should not render the "Custom Integrations" tab when useHelpdeskV2MS2Flag is false even if hasCustomIntegrations is true', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(false)
+            render(<TicketInfobarNavigation hasCustomIntegrations />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByLabelText('webhook'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should not render the "Custom Integrations" tab when useHelpdeskV2MS2Flag is true but hasCustomIntegrations is false', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            render(<TicketInfobarNavigation />)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByLabelText('webhook'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('should change to the "Custom Integrations" tab when the icon is clicked', async () => {
+            mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
+            const { user } = render(
+                <TicketInfobarNavigation hasCustomIntegrations />,
+            )
+
+            const button = screen.getByLabelText('webhook').closest('button')
+
+            await user.click(button!)
+
+            expect(onChangeTab).toHaveBeenCalledWith(
+                TicketInfobarTab.CustomIntegrations,
+            )
+        })
+    })
+
     describe('Yotpo tab', () => {
         it('should render the "Yotpo" tab when useHelpdeskV2MS2Flag is true and hasYotpo is true', async () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
@@ -489,6 +537,12 @@ describe('TicketInfobarNavigation', () => {
                 prop: 'hasYotpo',
                 tab: TicketInfobarTab.Yotpo,
                 editType: EditFieldsType.Yotpo,
+            },
+            {
+                label: 'Custom integrations',
+                prop: 'hasCustomIntegrations',
+                tab: TicketInfobarTab.CustomIntegrations,
+                editType: EditFieldsType.Custom,
             },
         ])(
             'should call onChangeTab and onSetEditingWidgetType when $label menu item is clicked',

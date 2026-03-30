@@ -5,7 +5,11 @@ import _values from 'lodash/values'
 
 import { DEFAULT_SOURCE_PATHS } from 'config'
 
-import { STANDALONE_WIDGET_TYPE } from './constants'
+import {
+    CUSTOM_WIDGET_TYPE,
+    CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE,
+    STANDALONE_WIDGET_TYPE,
+} from './constants'
 import { WidgetEnvironment } from './types'
 
 /**
@@ -87,4 +91,42 @@ export function reorderWidgets(items: List<any> = fromJS([])): List<any> {
     return items.map((item: Map<any, any>, i) =>
         item.set('order', i),
     ) as List<any>
+}
+
+export function getWidgetSourcePath(
+    widget: Map<string, unknown>,
+    sources: Map<string, unknown>,
+): string[] | null {
+    const widgetType = widget.get('type') as string
+    const context = widget.get('context') as WidgetEnvironment
+
+    if (widgetType === CUSTOM_WIDGET_TYPE) {
+        return getSourcePathFromContext(context, 'custom') as string[]
+    }
+
+    if (widgetType === CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE) {
+        const sourcePath = getSourcePathFromContext(
+            context,
+            'customer_external_data',
+        ) as string[]
+        const appId = widget.get('app_id') as string
+        if (!appId || !sources.getIn([...sourcePath, appId])) return null
+        return [...sourcePath, appId]
+    }
+
+    if (widgetType === STANDALONE_WIDGET_TYPE) {
+        return []
+    }
+
+    const integrationId = widget.get('integration_id')
+    if (integrationId) {
+        const sourcePath = getSourcePathFromContext(
+            context,
+            'integrations',
+        ) as string[]
+        if (!sources.getIn([...sourcePath, String(integrationId)])) return null
+        return [...sourcePath, String(integrationId)]
+    }
+
+    return null
 }

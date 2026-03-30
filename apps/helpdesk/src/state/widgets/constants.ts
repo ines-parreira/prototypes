@@ -1,3 +1,5 @@
+import { IntegrationType } from 'models/integration/constants'
+
 export const FETCH_WIDGETS_START = 'FETCH_WIDGETS_START'
 export const FETCH_WIDGETS_SUCCESS = 'FETCH_WIDGETS_SUCCESS'
 export const FETCH_WIDGETS_ERROR = 'FETCH_WIDGETS_ERROR'
@@ -33,6 +35,16 @@ export const CUSTOMER_EXTERNAL_DATA_WIDGET_TYPE = 'customer_external_data'
 export const STANDALONE_WIDGET_TYPE = 'standalone'
 
 export const WOOCOMMERCE_WIDGET_TYPE = 'woocommerce'
+
+export const NAMED_INTEGRATION_WIDGET_TYPES = new Set([
+    IntegrationType.Shopify,
+    IntegrationType.Recharge,
+    WOOCOMMERCE_WIDGET_TYPE,
+    IntegrationType.BigCommerce,
+    IntegrationType.Magento2,
+    IntegrationType.Yotpo,
+    IntegrationType.Smile,
+])
 
 export const THIRD_PARTY_APP_NAME_KEY = '__app_name__'
 export const CUSTOMER_EXTERNAL_DATA_KEY = 'external_data'

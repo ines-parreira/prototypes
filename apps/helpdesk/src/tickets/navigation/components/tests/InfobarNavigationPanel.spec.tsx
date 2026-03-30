@@ -27,12 +27,14 @@ jest.mock('@repo/tickets', () => ({
     TicketInfobarNavigation: ({
         hasAIFeedback,
         hasBigCommerce,
+        hasCustomIntegrations,
         hasMagento,
         hasTimeline,
         hasWooCommerce,
     }: {
         hasAIFeedback?: boolean
         hasBigCommerce?: boolean
+        hasCustomIntegrations?: boolean
         hasMagento?: boolean
         hasTimeline?: boolean
         hasWooCommerce?: boolean
@@ -41,6 +43,9 @@ jest.mock('@repo/tickets', () => ({
             <div data-testid="has-ai-feedback">{String(!!hasAIFeedback)}</div>
             <div data-testid="has-timeline">{String(!!hasTimeline)}</div>
             <div data-testid="has-bigcommerce">{String(!!hasBigCommerce)}</div>
+            <div data-testid="has-custom-integrations">
+                {String(!!hasCustomIntegrations)}
+            </div>
             <div data-testid="has-magento">{String(!!hasMagento)}</div>
             <div data-testid="has-woocommerce">{String(!!hasWooCommerce)}</div>
             {hasTimeline && (

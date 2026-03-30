@@ -1,3 +1,5 @@
+import { useCallback } from 'react'
+
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import {
     EditFieldsType,
@@ -24,6 +26,7 @@ import { InfobarToggle } from './components/TicketInfobarNavigationToggle'
 type TicketInfobarNavigationProps = {
     hasAIFeedback?: boolean
     hasBigCommerce?: boolean
+    hasCustomIntegrations?: boolean
     hasMagento?: boolean
     hasRecharge?: boolean
     hasShopify?: boolean
@@ -36,6 +39,7 @@ type TicketInfobarNavigationProps = {
 export function TicketInfobarNavigation({
     hasAIFeedback,
     hasBigCommerce,
+    hasCustomIntegrations,
     hasMagento,
     hasRecharge,
     hasShopify,
@@ -54,6 +58,11 @@ export function TicketInfobarNavigation({
     useTicketInfobarNavigationShortcuts()
     const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
     const history = useHistory()
+
+    const handleCustomIntegrationsAction = useCallback(() => {
+        onChangeTab(TicketInfobarTab.CustomIntegrations)
+        onSetEditingWidgetType(EditFieldsType.Custom)
+    }, [onChangeTab, onSetEditingWidgetType])
 
     return (
         <InfobarNavigationContainer>
@@ -146,6 +155,15 @@ export function TicketInfobarNavigation({
                         icon="app-yotpo"
                         tooltip={{
                             title: 'Yotpo',
+                        }}
+                    />
+                )}
+                {hasUIVisionMilestone2 && hasCustomIntegrations && (
+                    <InfobarNavigationItem
+                        name={TicketInfobarTab.CustomIntegrations}
+                        icon="webhook"
+                        tooltip={{
+                            title: 'Custom Integrations',
                         }}
                     />
                 )}
@@ -266,11 +284,13 @@ export function TicketInfobarNavigation({
                                 }}
                             />
                         )}
-                        <MenuItem
-                            label="Custom integrations"
-                            leadingSlot="webhook"
-                            onAction={() => {}}
-                        />
+                        {hasCustomIntegrations && (
+                            <MenuItem
+                                label="Custom integrations"
+                                leadingSlot="webhook"
+                                onAction={handleCustomIntegrationsAction}
+                            />
+                        )}
                         <MenuItem
                             label="Add new app"
                             leadingSlot="add-plus"
