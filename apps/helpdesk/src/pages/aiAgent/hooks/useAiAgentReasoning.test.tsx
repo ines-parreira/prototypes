@@ -445,6 +445,62 @@ describe('useAiAgentReasoning', () => {
             expect(result.current.reasoningContent).toBe('')
         })
 
+        it('should return unavailable static message when isSilentClose is true and no reasoning content', () => {
+            const mockData = mockReasoningData({
+                reasoning: [] as any,
+            })
+            ;(useGetMessageAiReasoning as jest.Mock).mockReturnValue({
+                data: mockData,
+                refetch: jest.fn(),
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useAiAgentReasoning({
+                        objectId: '123',
+                        objectType: 'TICKET',
+                        messageId: '456',
+                        isSilentClose: true,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.staticMessage).toBe(
+                'Reasoning unavailable for this message.',
+            )
+            expect(result.current.reasoningContent).toBe('')
+        })
+
+        it('should not return isSilentClose static message when reasoning content exists', () => {
+            const mockData = mockReasoningData({
+                reasoning: [
+                    {
+                        responseType: ReasoningResponseType.RESPONSE,
+                        value: 'Actual reasoning',
+                        targetId: 'response-1',
+                    } as any,
+                ] as any,
+            })
+            ;(useGetMessageAiReasoning as jest.Mock).mockReturnValue({
+                data: mockData,
+                refetch: jest.fn(),
+            })
+
+            const { result } = renderHook(
+                () =>
+                    useAiAgentReasoning({
+                        objectId: '123',
+                        objectType: 'TICKET',
+                        messageId: '456',
+                        isSilentClose: true,
+                    }),
+                { wrapper },
+            )
+
+            expect(result.current.reasoningContent).toBe('Actual reasoning')
+            expect(result.current.staticMessage).toBeUndefined()
+        })
+
         it('should return unavailable message when execution ended but no reasoning', () => {
             const mockData = mockReasoningData({
                 reasoning: [] as any,

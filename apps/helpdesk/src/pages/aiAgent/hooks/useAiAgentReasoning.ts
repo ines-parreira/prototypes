@@ -16,6 +16,7 @@ export interface UseAiAgentReasoningParams {
     messageId: string
     enabled?: boolean
     isHandover?: boolean
+    isSilentClose?: boolean
     refetchInterval?: number | false
 }
 
@@ -35,6 +36,7 @@ export const useAiAgentReasoning = ({
     messageId,
     enabled = true,
     isHandover = false,
+    isSilentClose = false,
     refetchInterval,
 }: UseAiAgentReasoningParams) => {
     const showReasoningForCanceledTasks = useFlag(
@@ -135,7 +137,10 @@ export const useAiAgentReasoning = ({
                             reasoningResources: [],
                         }
                     }
-                    if (messageAiReasoning.execution?.endDatetime) {
+                    if (
+                        isSilentClose ||
+                        messageAiReasoning.execution?.endDatetime
+                    ) {
                         return {
                             reasoningContent: '',
                             staticMessage:
@@ -191,6 +196,7 @@ export const useAiAgentReasoning = ({
             messageAiReasoning?.canceledTasks,
             showReasoningForCanceledTasks,
             isHandover,
+            isSilentClose,
         ])
 
     const reasoningMetadata = useGetResourcesReasoningMetadata({

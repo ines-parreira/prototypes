@@ -4,6 +4,7 @@ import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import type { AiAgentReasoningState } from '@repo/ai-agent'
 import {
     AiAgentMessageType,
+    REASONING_CUTOFF_DATE,
     useCanAccessAIFeedback,
     useFeedbackTracking,
     useReasoningTracking,
@@ -37,11 +38,15 @@ const EVOLI_STATIC_MESSAGE =
 export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const ticket = useAppSelector(getTicketState)
     const isEvoliTicket = useIsEvoliTicket()
+    const isMessageAfterEvoliCutoff =
+        new Date(message.created_datetime).getTime() >
+        REASONING_CUTOFF_DATE.getTime()
 
     const [state, setState] = useState<AiAgentReasoningState>(
-        isEvoliTicket ? 'static' : 'collapsed',
+        isEvoliTicket && !isMessageAfterEvoliCutoff ? 'static' : 'collapsed',
     )
     const [isRetriable] = useState(true)
+    const [isQueryEnabled, setIsQueryEnabled] = useState(false)
 
     const account = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector((state) => state.currentUser)
@@ -61,6 +66,9 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const isHandover =
         (message.meta as Record<string, unknown>)?.ai_agent_message_type ===
         AiAgentMessageType.HANDOVER_TO_AGENT
+    const isSilentClose =
+        (message.meta as Record<string, unknown>)?.ai_agent_message_type ===
+        AiAgentMessageType.CLOSE_TICKET
 
     const { activeTab, onChangeTab } = useTicketInfobarNavigation()
 
@@ -80,6 +88,11 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         messageId,
     })
 
+    const isReasoningQueryEnabled =
+        isQueryEnabled &&
+        !!messageId &&
+        (!isEvoliTicket || isMessageAfterEvoliCutoff)
+
     const {
         reasoningContent,
         reasoningResources,
@@ -91,8 +104,9 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
         objectId: ticketId.toString(),
         objectType: 'TICKET',
         messageId: messageId.toString(),
-        enabled: !isEvoliTicket && state !== 'collapsed' && !!messageId,
+        enabled: isReasoningQueryEnabled,
         isHandover,
+        isSilentClose,
     })
 
     useEffect(() => {
@@ -110,12 +124,17 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
 
     const handleToggleExpansion = useCallback(() => {
         if (state === 'collapsed') {
-            setState('loading')
+            setIsQueryEnabled(true)
             onReasoningOpened()
+            if (reasoningContent) {
+                setState('expanded')
+            } else {
+                setState('loading')
+            }
         } else if (state === 'expanded') {
             setState('collapsed')
         }
-    }, [state, onReasoningOpened])
+    }, [state, onReasoningOpened, reasoningContent])
 
     const handleTryAgain = useCallback(() => {
         setState('loading')
@@ -217,7 +236,9 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                                 color="content-accent-default"
                             />
                         )}
-                        {isEvoliTicket ? EVOLI_STATIC_MESSAGE : staticMessage}
+                        {isEvoliTicket && !isMessageAfterEvoliCutoff
+                            ? EVOLI_STATIC_MESSAGE
+                            : staticMessage}
                     </span>
                 ) : (
                     <>

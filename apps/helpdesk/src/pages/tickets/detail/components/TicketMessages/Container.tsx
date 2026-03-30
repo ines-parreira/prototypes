@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { Component } from 'react'
 
+import { AiAgentMessageType } from '@repo/ai-agent'
 import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
 import classNamesBind from 'classnames/bind'
@@ -95,6 +96,21 @@ export class Container extends Component<Props> {
         const isInternalNote =
             message.source?.type === TicketMessageSourceType.InternalNote
 
+        const messageType = (message.meta as Record<string, unknown>)
+            ?.ai_agent_message_type
+
+        const isExplicitHandoverOrClose =
+            messageType === AiAgentMessageType.HANDOVER_TO_AGENT ||
+            messageType === AiAgentMessageType.CLOSE_TICKET
+
+        // Older messages may not have message type info in meta — fall back to
+        // isAIAgentInternalNote, since AI agent internal notes are always
+        // handover or close actions
+        const isHandoverOrCloseInternalNote =
+            isInternalNote &&
+            (isExplicitHandoverOrClose ||
+                (messageType == null && isAIAgentInternalNote))
+
         const hasTicketThreadRevamp =
             !!flags?.[FeatureFlagKey.TicketThreadRevamp]
 
@@ -103,6 +119,15 @@ export class Container extends Component<Props> {
 
         const onlyShowReasoningWhileImpersonating =
             !!flags?.[FeatureFlagKey.OnlyShowReasoningWhileImpersonating]
+
+        const isRegularAiAgentReply =
+            !isInternalNote && message.via === TicketVia.Api
+
+        const isEligibleForReasoning =
+            isRegularAiAgentReply || isHandoverOrCloseInternalNote
+
+        const shouldShowMessageBody =
+            !isAIAgentInternalNote || isHandoverOrCloseInternalNote
 
         const sender = fromJS(message.sender || {}) as Map<any, any>
         let avatar
@@ -267,14 +292,13 @@ export class Container extends Component<Props> {
                                 isMessageDeleted={isMessageDeleted}
                                 isAI={isAIAgentMessage}
                             />
-                            {!isAIAgentInternalNote && children}
+                            {shouldShowMessageBody && children}
                             {isAIAgentMessage &&
                                 shouldTicketHaveReasoning !== null &&
                                 (isTicketAfterFeedbackCollectionPeriod ? (
                                     showAiReasoning &&
                                     message.id &&
-                                    !isInternalNote &&
-                                    message.via === TicketVia.Api &&
+                                    isEligibleForReasoning &&
                                     shouldTicketHaveReasoning &&
                                     (isImpersonated ||
                                         !onlyShowReasoningWhileImpersonating) ? (
