@@ -95,6 +95,9 @@ export function SidebarProductHeader({
                     />
                 )}
                 <SidebarProductHeaderMenuItem
+                    item={productConfig[Product.Convert]}
+                />
+                <SidebarProductHeaderMenuItem
                     item={productConfig[Product.Analytics]}
                 />
             </MenuSection>

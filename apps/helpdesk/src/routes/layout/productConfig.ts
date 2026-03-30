@@ -10,6 +10,7 @@ import { WORKFLOWS_DEFAULT_PATH } from 'routes/layout/products/workflows'
 import {
     AiAgentSidebar,
     AnalyticsSidebar,
+    ConvertSidebar,
     CustomersSidebar,
     InboxSidebar,
     MarketingSidebar,
@@ -28,6 +29,7 @@ export enum Product {
     AiAgent = 'aiAgent',
     Marketing = 'marketing',
     Analytics = 'analytics',
+    Convert = 'convert',
     Workflows = 'workflows',
     Customers = 'customers',
     Settings = 'settings',
@@ -93,6 +95,16 @@ export const productConfig: Record<Product, ProductConfig> = {
         icon: 'chart-bar-vertical',
         color: 'teal',
         defaultPath: ANALYTICS_DEFAULT_PATH,
+    },
+    [Product.Convert]: {
+        id: Product.Convert,
+        name: 'Convert',
+        description: 'Turn visitors into buyers',
+        sidebar: ConvertSidebar,
+        urlPatterns: ['convert'],
+        icon: 'attach-money',
+        color: 'yellow',
+        defaultPath: '/app/convert/overview',
     },
     [Product.Workflows]: {
         id: Product.Workflows,

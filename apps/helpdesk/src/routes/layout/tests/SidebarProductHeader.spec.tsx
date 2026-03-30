@@ -84,6 +84,9 @@ describe('SidebarProductHeader', () => {
             expect(
                 screen.getByRole('menuitemradio', { name: /Customers/ }),
             ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitemradio', { name: /Convert/ }),
+            ).toBeInTheDocument()
         })
 
         it('should not render Marketing menu item when AiJourneyEnabled flag is off', async () => {
@@ -220,6 +223,9 @@ describe('SidebarProductHeader', () => {
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('menuitemradio', { name: /Inbox/ }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('menuitemradio', { name: /Convert/ }),
             ).toBeInTheDocument()
         })
     })
