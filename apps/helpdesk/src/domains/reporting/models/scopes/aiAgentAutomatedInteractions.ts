@@ -173,3 +173,23 @@ export const dynamicAllAgentsAutomatedInteractions =
 export const dynamicAllAgentsAutomatedInteractionsQueryFactoryV2 = (
     ctx: Context,
 ) => dynamicAllAgentsAutomatedInteractions.build(ctx)
+
+export const dynamicAllAgentsAutomatedInteractionsTimeseries =
+    aiAgentAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS_TIMESERIES,
+        )
+        .defineQuery(({ ctx }) => ({
+            measures: ['automatedInteractionsCount'],
+            time_dimensions: [
+                {
+                    dimension: 'eventDatetime',
+                    granularity: ctx.granularity,
+                },
+            ],
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2 = (
+    ctx: Context,
+) => dynamicAllAgentsAutomatedInteractionsTimeseries.build(ctx)

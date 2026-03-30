@@ -76,8 +76,8 @@ export const dynamicOverallAutomationRate = overallAutomationRateScope
 export const dynamicOverallAutomationRateQueryFactoryV2 = (ctx: Context) =>
     dynamicOverallAutomationRate.build(ctx)
 
-export const dynamicAiAgentAutomationRate = overallAutomationRateScope
-    .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_AI_AGENT_AUTOMATION_RATE)
+export const dynamicAllAgentsAutomationRate = overallAutomationRateScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATION_RATE)
     .defineQuery(({ ctx, config }) => ({
         measures: ['automationRate'],
         filters: createScopeFilters(
@@ -92,8 +92,8 @@ export const dynamicAiAgentAutomationRate = overallAutomationRateScope
         dimensions: ctx.dimensions,
     }))
 
-export const dynamicAiAgentAutomationRateQueryFactoryV2 = (ctx: Context) =>
-    dynamicAiAgentAutomationRate.build(ctx)
+export const dynamicAllAgentsAutomationRateQueryFactoryV2 = (ctx: Context) =>
+    dynamicAllAgentsAutomationRate.build(ctx)
 
 export const overallAutomationRatePerOrderManagementType =
     overallAutomationRateScope
@@ -153,3 +153,32 @@ export const overallAutomationRatePerFlows = overallAutomationRateScope
 
 export const overallAutomationRatePerFlowsQueryFactoryV2 = (ctx: Context) =>
     overallAutomationRatePerFlows.build(ctx)
+
+export const dynamicAllAgentsAutomationRateTimeseries =
+    overallAutomationRateScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATION_RATE_TIMESERIES,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['automationRate'],
+            filters: createScopeFilters(
+                {
+                    ...ctx.filters,
+                    automationFeatureType: withLogicalOperator([
+                        AutomationFeatureType.AiAgent,
+                    ]),
+                },
+                config,
+            ),
+            time_dimensions: [
+                {
+                    dimension: 'eventDatetime',
+                    granularity: ctx.granularity,
+                },
+            ],
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2 = (
+    ctx: Context,
+) => dynamicAllAgentsAutomationRateTimeseries.build(ctx)

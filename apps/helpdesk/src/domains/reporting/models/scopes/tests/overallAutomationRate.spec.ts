@@ -3,8 +3,10 @@ import {
     aiAgentAutomationRateQueryFactoryV2,
     automationRatePerFeature,
     automationRatePerFeatureQueryFactoryV2,
-    dynamicAiAgentAutomationRate,
-    dynamicAiAgentAutomationRateQueryFactoryV2,
+    dynamicAllAgentsAutomationRate,
+    dynamicAllAgentsAutomationRateQueryFactoryV2,
+    dynamicAllAgentsAutomationRateTimeseries,
+    dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2,
     dynamicOverallAutomationRate,
     dynamicOverallAutomationRateQueryFactoryV2,
     dynamicOverallAutomationRateTimeseries,
@@ -454,7 +456,7 @@ describe('overallAutomationRateScope', () => {
         })
     })
 
-    describe('dynamicAiAgentAutomationRate', () => {
+    describe('dynamicAllAgentsAutomationRate', () => {
         const aiAgentFilter = {
             member: 'automationFeatureType',
             operator: 'one-of',
@@ -463,12 +465,12 @@ describe('overallAutomationRateScope', () => {
 
         it('creates query without dimensions when no dimension provided', () => {
             expect(
-                dynamicAiAgentAutomationRate.build({
+                dynamicAllAgentsAutomationRate.build({
                     ...context,
                     dimensions: [],
                 }),
             ).toEqual({
-                metricName: 'ai-agent-dynamic-ai-agent-automation-rate',
+                metricName: 'ai-agent-dynamic-all-agents-automation-rate',
                 scope: 'overall-automation-rate',
                 measures: ['automationRate'],
                 dimensions: [],
@@ -491,12 +493,12 @@ describe('overallAutomationRateScope', () => {
 
         it('creates query with the provided dimension', () => {
             expect(
-                dynamicAiAgentAutomationRate.build({
+                dynamicAllAgentsAutomationRate.build({
                     ...context,
                     dimensions: ['channel'],
                 }),
             ).toEqual({
-                metricName: 'ai-agent-dynamic-ai-agent-automation-rate',
+                metricName: 'ai-agent-dynamic-all-agents-automation-rate',
                 scope: 'overall-automation-rate',
                 measures: ['automationRate'],
                 dimensions: ['channel'],
@@ -520,12 +522,12 @@ describe('overallAutomationRateScope', () => {
         describe('dynamicAiAgentAutomationRateQueryFactoryV2', () => {
             it('returns query with empty dimensions when no dimension provided', () => {
                 expect(
-                    dynamicAiAgentAutomationRateQueryFactoryV2({
+                    dynamicAllAgentsAutomationRateQueryFactoryV2({
                         ...context,
                         dimensions: [],
                     }),
                 ).toEqual(
-                    dynamicAiAgentAutomationRate.build({
+                    dynamicAllAgentsAutomationRate.build({
                         ...context,
                         dimensions: [],
                     }),
@@ -534,7 +536,7 @@ describe('overallAutomationRateScope', () => {
 
             it('returns query with the provided dimension', () => {
                 const factoryResult =
-                    dynamicAiAgentAutomationRateQueryFactoryV2({
+                    dynamicAllAgentsAutomationRateQueryFactoryV2({
                         ...context,
                         dimensions: ['storeIntegrationId'],
                     })
@@ -546,9 +548,110 @@ describe('overallAutomationRateScope', () => {
             it('returns the same result as calling build directly with the dimension', () => {
                 const ctx = { ...context, dimensions: ['channel'] as const }
 
-                expect(dynamicAiAgentAutomationRateQueryFactoryV2(ctx)).toEqual(
-                    dynamicAiAgentAutomationRate.build(ctx),
-                )
+                expect(
+                    dynamicAllAgentsAutomationRateQueryFactoryV2(ctx),
+                ).toEqual(dynamicAllAgentsAutomationRate.build(ctx))
+            })
+        })
+    })
+
+    describe('dynamicAllAgentsAutomationRateTimeseries', () => {
+        const aiAgentFilter = {
+            member: 'automationFeatureType',
+            operator: 'one-of',
+            values: ['ai-agent'],
+        }
+
+        const periodFilters = [
+            {
+                member: 'periodStart',
+                operator: 'afterDate',
+                values: ['2025-09-03T00:00:00.000'],
+            },
+            {
+                member: 'periodEnd',
+                operator: 'beforeDate',
+                values: ['2025-09-03T23:59:59.000'],
+            },
+        ]
+
+        it('creates query with time_dimensions using granularity from context', () => {
+            expect(
+                dynamicAllAgentsAutomationRateTimeseries.build({
+                    ...context,
+                    granularity: 'day' as AggregationWindow,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName:
+                    'ai-agent-dynamic-all-agents-automation-rate-timeseries',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'day' },
+                ],
+                dimensions: [],
+                timezone: 'utc',
+                filters: [...periodFilters, aiAgentFilter],
+            })
+        })
+
+        it('creates query with the provided dimensions', () => {
+            expect(
+                dynamicAllAgentsAutomationRateTimeseries.build({
+                    ...context,
+                    granularity: 'week' as AggregationWindow,
+                    dimensions: ['channel'],
+                }),
+            ).toEqual({
+                metricName:
+                    'ai-agent-dynamic-all-agents-automation-rate-timeseries',
+                scope: 'overall-automation-rate',
+                measures: ['automationRate'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'week' },
+                ],
+                dimensions: ['channel'],
+                timezone: 'utc',
+                filters: [...periodFilters, aiAgentFilter],
+            })
+        })
+
+        describe('dynamicAiAgentAutomationRateTimeseriesQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                const ctx = {
+                    ...context,
+                    granularity: 'day' as AggregationWindow,
+                    dimensions: ['channel'] as const,
+                }
+
+                expect(
+                    dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2(ctx),
+                ).toEqual(dynamicAllAgentsAutomationRateTimeseries.build(ctx))
+            })
+
+            it('returns query with time_dimensions when granularity is provided', () => {
+                const result =
+                    dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2({
+                        ...context,
+                        granularity: 'month' as AggregationWindow,
+                        dimensions: [],
+                    })
+
+                expect(result.time_dimensions).toEqual([
+                    { dimension: 'eventDatetime', granularity: 'month' },
+                ])
+            })
+
+            it('returns query with the provided dimensions', () => {
+                const result =
+                    dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2({
+                        ...context,
+                        granularity: 'day' as AggregationWindow,
+                        dimensions: ['storeIntegrationId'],
+                    })
+
+                expect(result.dimensions).toEqual(['storeIntegrationId'])
             })
         })
     })

@@ -2,9 +2,9 @@ import { useMemo } from 'react'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { dynamicAllAgentsAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
-import { dynamicAiAgentTimeSavedQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
+import { dynamicAllAgentsTimeSavedQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
 import { dynamicTotalSalesAmountQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
-import { dynamicAiAgentAutomationRateQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
+import { dynamicAllAgentsAutomationRateQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type {
     ChartConfig,
     DashboardSchema,
@@ -30,7 +30,7 @@ export const ALL_AGENTS_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         name: 'AI Agent automation rate',
         metricFormat: 'decimal-to-percent' as const,
         interpretAs: 'more-is-better' as const,
-        queryFactory: dynamicAiAgentAutomationRateQueryFactoryV2,
+        queryFactory: dynamicAllAgentsAutomationRateQueryFactoryV2,
         dimensions: ['channel', 'storeIntegrationId', 'aiAgentRole'],
     },
     {
@@ -54,7 +54,7 @@ export const ALL_AGENTS_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         name: 'Time saved by agents',
         metricFormat: 'duration' as const,
         interpretAs: 'more-is-better' as const,
-        queryFactory: dynamicAiAgentTimeSavedQueryFactoryV2,
+        queryFactory: dynamicAllAgentsTimeSavedQueryFactoryV2,
         dimensions: ['channel', 'storeIntegrationId', 'aiAgentRole'],
     },
 ]

@@ -72,7 +72,7 @@ function TimeSeriesRenderer({
             data={data ?? []}
             isLoading={isLoading}
             valueFormatter={groupingConfig.valueFormatter}
-            yAxisFormatter={groupingConfig.yAxisFormatter}
+            yAxisFormatter={groupingConfig.valueFormatter}
             dateFormatter={groupingConfig.dateFormatter}
         />
     )
@@ -90,7 +90,7 @@ function MultipleTimeSeriesRenderer({
             data={data ?? []}
             isLoading={isLoading}
             valueFormatter={groupingConfig.valueFormatter}
-            yAxisFormatter={groupingConfig.yAxisFormatter}
+            yAxisFormatter={groupingConfig.valueFormatter}
             dateFormatter={groupingConfig.dateFormatter}
         />
     )

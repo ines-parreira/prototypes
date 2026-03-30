@@ -12,6 +12,8 @@ import {
     dynamicAiShoppingAgentAutomatedInteractionsTimeseriesQueryFactoryV2,
     dynamicAllAgentsAutomatedInteractions,
     dynamicAllAgentsAutomatedInteractionsQueryFactoryV2,
+    dynamicAllAgentsAutomatedInteractionsTimeseries,
+    dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2,
     dynamicShoppingAssistantAutomatedInteractions,
     dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2,
 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
@@ -692,6 +694,96 @@ describe('aiSupportAgentAutomatedInteractionsPerChannel', () => {
                 expect(
                     dynamicAllAgentsAutomatedInteractionsQueryFactoryV2(ctx),
                 ).toEqual(dynamicAllAgentsAutomatedInteractions.build(ctx))
+            })
+        })
+    })
+
+    describe('dynamicAllAgentsAutomatedInteractionsTimeseries', () => {
+        it('creates query with time_dimensions using granularity from context', () => {
+            expect(
+                dynamicAllAgentsAutomatedInteractionsTimeseries.build({
+                    ...context,
+                    granularity: 'day' as AggregationWindow,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName:
+                    'ai-agent-dynamic-all-agents-automated-interactions-timeseries',
+                scope: 'ai-agent-automated-interactions',
+                measures: ['automatedInteractionsCount'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'day' },
+                ],
+                dimensions: [],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
+        })
+
+        it('creates query with the provided dimensions', () => {
+            expect(
+                dynamicAllAgentsAutomatedInteractionsTimeseries.build({
+                    ...context,
+                    granularity: 'week' as AggregationWindow,
+                    dimensions: ['channel'],
+                }),
+            ).toEqual({
+                metricName:
+                    'ai-agent-dynamic-all-agents-automated-interactions-timeseries',
+                scope: 'ai-agent-automated-interactions',
+                measures: ['automatedInteractionsCount'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'week' },
+                ],
+                dimensions: ['channel'],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
+        })
+
+        describe('dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2', () => {
+            it('returns the same result as calling build directly', () => {
+                const ctx = {
+                    ...context,
+                    granularity: 'day' as AggregationWindow,
+                    dimensions: ['channel'] as const,
+                }
+
+                expect(
+                    dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2(
+                        ctx,
+                    ),
+                ).toEqual(
+                    dynamicAllAgentsAutomatedInteractionsTimeseries.build(ctx),
+                )
+            })
+
+            it('returns query with time_dimensions when granularity is provided', () => {
+                const result =
+                    dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2(
+                        {
+                            ...context,
+                            granularity: 'month' as AggregationWindow,
+                            dimensions: [],
+                        },
+                    )
+
+                expect(result.time_dimensions).toEqual([
+                    { dimension: 'eventDatetime', granularity: 'month' },
+                ])
+            })
+
+            it('returns query with the provided dimensions', () => {
+                const result =
+                    dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2(
+                        {
+                            ...context,
+                            granularity: 'day' as AggregationWindow,
+                            dimensions: ['storeIntegrationId'],
+                        },
+                    )
+
+                expect(result.dimensions).toEqual(['storeIntegrationId'])
             })
         })
     })

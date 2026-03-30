@@ -5,7 +5,7 @@ import * as aiAgentAutomationRateTrendHooks from 'domains/reporting/hooks/automa
 import * as statsHooks from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
-import { AIAgentAutomationLineChart } from '../AIAgentAutomationLineChart'
+import { DEPRECATED_AIAgentAutomationLineChart } from '../DEPRECATED_AIAgentAutomationLineChart'
 
 jest.mock('domains/reporting/hooks/automate/useAIAgentAutomationRateTrend')
 jest.mock(
@@ -13,7 +13,7 @@ jest.mock(
 )
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 
-describe('AIAgentAutomationLineChart', () => {
+describe('DEPRECATED_AIAgentAutomationLineChart', () => {
     const mockTimeSeriesData = [
         [
             {
@@ -105,26 +105,26 @@ describe('AIAgentAutomationLineChart', () => {
     })
 
     it('should render the metric title', () => {
-        render(<AIAgentAutomationLineChart />)
+        render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         expect(screen.getByText('Automation rate')).toBeInTheDocument()
     })
 
     it('should render the metric value from automation rate hook', () => {
-        render(<AIAgentAutomationLineChart />)
+        render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         expect(screen.getByText('32%')).toBeInTheDocument()
     })
 
     it('should render the trend badge', () => {
-        const { container } = render(<AIAgentAutomationLineChart />)
+        const { container } = render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         const trendBadge = container.querySelector('.trend')
         expect(trendBadge).toBeInTheDocument()
     })
 
     it('should render with positive trend icon', () => {
-        const { container } = render(<AIAgentAutomationLineChart />)
+        const { container } = render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         const icons = container.querySelectorAll('svg')
         const hasTrendIcon = Array.from(icons).some((icon) =>
@@ -134,7 +134,7 @@ describe('AIAgentAutomationLineChart', () => {
     })
 
     it('should render responsive container for chart', () => {
-        const { container } = render(<AIAgentAutomationLineChart />)
+        const { container } = render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         const responsiveContainer = container.querySelector(
             '.recharts-responsive-container',
@@ -143,7 +143,7 @@ describe('AIAgentAutomationLineChart', () => {
     })
 
     it('should render TimeSeriesChart component', () => {
-        render(<AIAgentAutomationLineChart />)
+        render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         expect(screen.getByText('Automation rate')).toBeInTheDocument()
     })
@@ -161,7 +161,7 @@ describe('AIAgentAutomationLineChart', () => {
             },
         })
 
-        const { container } = render(<AIAgentAutomationLineChart />)
+        const { container } = render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         const trendingDownIcon = container.querySelector(
             '[aria-label="trending-down"]',
@@ -182,7 +182,7 @@ describe('AIAgentAutomationLineChart', () => {
             },
         })
 
-        render(<AIAgentAutomationLineChart />)
+        render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         expect(screen.getByText('Automation rate')).toBeInTheDocument()
     })
@@ -197,7 +197,7 @@ describe('AIAgentAutomationLineChart', () => {
             data: undefined,
         })
 
-        render(<AIAgentAutomationLineChart />)
+        render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         expect(screen.getByText('Automation rate')).toBeInTheDocument()
     })
@@ -212,7 +212,7 @@ describe('AIAgentAutomationLineChart', () => {
             isError: false,
         })
 
-        render(<AIAgentAutomationLineChart />)
+        render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         expect(screen.getByText('Automation rate')).toBeInTheDocument()
     })
@@ -227,13 +227,13 @@ describe('AIAgentAutomationLineChart', () => {
             isError: false,
         })
 
-        render(<AIAgentAutomationLineChart />)
+        render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         expect(screen.getByText('Automation rate')).toBeInTheDocument()
     })
 
     it('should render chart with time series data', () => {
-        const { container } = render(<AIAgentAutomationLineChart />)
+        const { container } = render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         const responsiveContainer = container.querySelector(
             '.recharts-responsive-container',
@@ -251,7 +251,7 @@ describe('AIAgentAutomationLineChart', () => {
             isError: false,
         })
 
-        const { container } = render(<AIAgentAutomationLineChart />)
+        const { container } = render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         const areaChart = container.querySelector('.recharts-area')
         expect(areaChart).not.toBeInTheDocument()
@@ -269,7 +269,7 @@ describe('AIAgentAutomationLineChart', () => {
             isError: false,
         })
 
-        const { container } = render(<AIAgentAutomationLineChart />)
+        const { container } = render(<DEPRECATED_AIAgentAutomationLineChart />)
 
         const responsiveContainer = container.querySelector(
             '.recharts-responsive-container',
@@ -290,7 +290,9 @@ describe('AIAgentAutomationLineChart', () => {
                 data: undefined,
             })
 
-            const { container } = render(<AIAgentAutomationLineChart />)
+            const { container } = render(
+                <DEPRECATED_AIAgentAutomationLineChart />,
+            )
 
             expect(screen.getByText('Automation rate')).toBeInTheDocument()
 
@@ -308,7 +310,9 @@ describe('AIAgentAutomationLineChart', () => {
                 isError: false,
             })
 
-            const { container } = render(<AIAgentAutomationLineChart />)
+            const { container } = render(
+                <DEPRECATED_AIAgentAutomationLineChart />,
+            )
 
             expect(screen.getByText('Automation rate')).toBeInTheDocument()
 
@@ -335,7 +339,9 @@ describe('AIAgentAutomationLineChart', () => {
                 isError: false,
             })
 
-            const { container } = render(<AIAgentAutomationLineChart />)
+            const { container } = render(
+                <DEPRECATED_AIAgentAutomationLineChart />,
+            )
 
             expect(screen.getByText('Automation rate')).toBeInTheDocument()
 
@@ -365,7 +371,9 @@ describe('AIAgentAutomationLineChart', () => {
                 isError: false,
             })
 
-            const { container } = render(<AIAgentAutomationLineChart />)
+            const { container } = render(
+                <DEPRECATED_AIAgentAutomationLineChart />,
+            )
 
             expect(screen.getByText('Automation rate')).toBeInTheDocument()
 

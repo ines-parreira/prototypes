@@ -32,7 +32,6 @@ type TimeSeriesGroupingConfig = {
     configurableGraphType: 'timeSeries'
     useChartData: () => { data: TimeSeriesDataItem[]; isLoading: boolean }
     valueFormatter?: (value: number) => string
-    yAxisFormatter?: (value: number) => string
     dateFormatter?: (date: string) => string
 }
 
@@ -45,7 +44,6 @@ type MultipleTimeSeriesGroupingConfig = {
         isLoading: boolean
     }
     valueFormatter?: (value: number) => string
-    yAxisFormatter?: (value: number) => string
     dateFormatter?: (date: string) => string
 }
 

@@ -16,6 +16,10 @@ import {
     ALL_AGENTS_BAR_CHART_METRICS,
     AnalyticsAiAgentAllAgentsConfigurableBar,
 } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsConfigurableBar/AnalyticsAiAgentAllAgentsConfigurableBar'
+import {
+    ALL_AGENTS_LINE_CHART_METRICS,
+    AnalyticsAiAgentAllAgentsConfigurableLine,
+} from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsConfigurableLine/AnalyticsAiAgentAllAgentsConfigurableLine'
 import { AnalyticsAiAgentAllAgentsCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsCsatCard'
 import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
@@ -24,7 +28,6 @@ import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAge
 import { AnalyticsAiAgentClosedTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentClosedTicketsCard'
 import { AnalyticsAiAgentCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentCostSavedCard'
 import { AnalyticsAiAgentDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseInResolutionTimeCard'
-import { AnalyticsAllAgentsLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsAllAgentsLineChart'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
@@ -36,15 +39,11 @@ import { fetchAiAgentClosedTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/h
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchAiAgentZeroTouchTicketsTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
-import { fetchConfigurableBarChartDownloadData } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
+import {
+    fetchConfigurableBarChartDownloadData,
+    fetchConfigurableLineChartDownloadData,
+} from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
-
-const fetchAllAgentsTrendData = async () =>
-    ({
-        isLoading: false,
-        fileName: 'all-agents-trend.csv',
-        files: {},
-    }) as any
 
 export enum AnalyticsAiAgentAllAgentsChart {
     AutomationRateCard = 'automation_rate_card',
@@ -281,12 +280,14 @@ export const AnalyticsAiAgentAllAgentsReportConfig: ReportConfig<AnalyticsAiAgen
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentAllAgentsChart.ConfigurableLineGraph]: {
-                chartComponent: AnalyticsAllAgentsLineChart,
+                chartComponent: AnalyticsAiAgentAllAgentsConfigurableLine,
                 label: 'All Agents Configurable Line',
                 csvProducer: [
                     {
-                        type: DataExportFormat.Table,
-                        fetch: fetchAllAgentsTrendData,
+                        type: DataExportFormat.ConfigurableLineGraph,
+                        fetch: fetchConfigurableLineChartDownloadData(
+                            ALL_AGENTS_LINE_CHART_METRICS,
+                        ),
                     },
                 ],
                 description:

@@ -11,9 +11,8 @@ import { useAIAgentAutomationRateTrend } from 'domains/reporting/hooks/automate/
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { NUMBER_TICK_FORMATTER } from 'domains/reporting/pages/utils'
-
-import { DATE_FORMAT } from '../../constants'
-import { formatPreviousPeriod } from '../../utils/formatPreviousPeriod'
+import { DATE_FORMAT } from 'pages/aiAgent/analyticsOverview/constants'
+import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
 const METRIC_TITLE = 'Automation rate'
 
@@ -29,7 +28,7 @@ const formatTooltipValue = (value: number) => {
     return `${percentage}%`
 }
 
-export const AIAgentAutomationLineChart = () => {
+export const DEPRECATED_AIAgentAutomationLineChart = () => {
     const { statsFilters, userTimezone, granularity } = useAutomateFilters()
 
     const { data: timeSeriesData } = useAIAgentAutomationRateTimeSeriesData(
