@@ -9,6 +9,7 @@ export enum AIAgentCSATFilterMember {
     PeriodStart = 'AIAgentCSAT.periodStart',
     PeriodEnd = 'AIAgentCSAT.periodEnd',
     AiAgentRole = 'AIAgentCSAT.aiAgentRole',
+    SurveyScore = 'AIAgentCSAT.surveyScore',
 }
 
 export type AIAgentCSATCube = Cube<

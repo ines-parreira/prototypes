@@ -623,6 +623,17 @@ describe('allAgentsCsatDrillDownQueryFactory', () => {
         expect(result.order).toEqual([])
     })
 
+    it('should filter out unscored tickets with surveyScore >= 1', () => {
+        const result = allAgentsCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        expect(result.filters).toContainEqual(
+            expect.objectContaining({
+                member: AIAgentCSATFilterMember.SurveyScore,
+                operator: ReportingFilterOperator.Gte,
+                values: ['1'],
+            }),
+        )
+    })
+
     it('should set order when sorting is provided', () => {
         const result = allAgentsCsatDrillDownQueryFactory(
             mockFilters,
@@ -666,6 +677,17 @@ describe('supportAgentCsatDrillDownQueryFactory', () => {
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSupport],
         })
+    })
+
+    it('should filter out unscored tickets with surveyScore >= 1', () => {
+        const result = supportAgentCsatDrillDownQueryFactory(mockFilters, 'UTC')
+        expect(result.filters).toContainEqual(
+            expect.objectContaining({
+                member: AIAgentCSATFilterMember.SurveyScore,
+                operator: ReportingFilterOperator.Gte,
+                values: ['1'],
+            }),
+        )
     })
 
     it('should set order when sorting is provided', () => {

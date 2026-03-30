@@ -245,6 +245,11 @@ const buildCsatPeriodFilters = (filters: StatsFilters) => [
         operator: ReportingFilterOperator.BeforeDate,
         values: [filters.period.end_datetime],
     },
+    {
+        member: AIAgentCSATFilterMember.SurveyScore,
+        operator: ReportingFilterOperator.Gte,
+        values: ['1'],
+    },
 ]
 
 export const allAgentsCsatDrillDownQueryFactory = (
