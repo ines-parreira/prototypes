@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -7,6 +8,32 @@ import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudience
 import { useAudienceSegments } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
 
 import { AudienceSelect } from './AudienceSelect'
+
+jest.mock('@repo/feature-flags', () => ({
+    useFlag: jest.fn(),
+    FeatureFlagKey: {
+        AiJourneySegmentsUiEnabled: 'AiJourneySegmentsUiEnabled',
+    },
+}))
+
+jest.mock(
+    'AIJourney/components/CreateNewSegmentButton/CreateNewSegmentButton',
+    () => ({
+        CreateNewSegmentButton: ({ onClick }: { onClick: () => void }) => (
+            <button onClick={onClick}>Create new segment</button>
+        ),
+    }),
+)
+
+jest.mock('AIJourney/components/SegmentsSidePanel/SegmentsSidePanel', () => ({
+    SegmentsSidePanel: ({
+        isOpen,
+        onClose,
+    }: {
+        isOpen: boolean
+        onClose: () => void
+    }) => (isOpen ? <button onClick={onClose}>Close side panel</button> : null),
+}))
 
 jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
@@ -20,6 +47,7 @@ jest.mock('AIJourney/queries/useAudienceSegments/useAudienceSegments', () => ({
     useAudienceSegments: jest.fn(),
 }))
 
+const mockUseFlag = useFlag as jest.Mock
 const mockUseJourneyContext = useJourneyContext as jest.Mock
 const mockUseAudienceLists = useAudienceLists as jest.Mock
 const mockUseAudienceSegments = useAudienceSegments as jest.Mock
@@ -44,7 +72,7 @@ const renderComponent = async (
             </FormProvider>
         )
     }
-    await await act(async () => {
+    await act(async () => {
         render(<Wrapper />)
     })
     return { onSubmit }
@@ -53,6 +81,7 @@ const renderComponent = async (
 describe('<AudienceSelect />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(false)
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: { id: 123 },
         })
@@ -341,6 +370,91 @@ describe('<AudienceSelect />', () => {
 
             expect(mockUseAudienceLists).toHaveBeenCalledWith(undefined)
             expect(mockUseAudienceSegments).toHaveBeenCalledWith(undefined)
+        })
+    })
+
+    describe('segments side panel', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('shows CreateNewSegmentButton in footer when feature flag is enabled', async () => {
+            const user = userEvent.setup()
+            await renderComponent('include')
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Create new segment'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('clicking CreateNewSegmentButton closes the multi-select and opens the side panel', async () => {
+            const user = userEvent.setup()
+            await renderComponent('include')
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Create new segment'),
+                ).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await user.click(screen.getByText('Create new segment'))
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /Close side panel/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('closing the side panel hides it', async () => {
+            const user = userEvent.setup()
+            await renderComponent('include')
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Create new segment'),
+                ).toBeInTheDocument()
+            })
+            await act(async () => {
+                await user.click(screen.getByText('Create new segment'))
+            })
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /Close side panel/i }),
+                ).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Close side panel/i }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('button', { name: /Close side panel/i }),
+                ).not.toBeInTheDocument()
+            })
         })
     })
 })

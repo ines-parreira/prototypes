@@ -1,9 +1,12 @@
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Controller, useFormContext, useWatch } from 'react-hook-form'
 
 import { ListItem, ListSection, MultiSelectField } from '@gorgias/axiom'
 
+import { CreateNewSegmentButton } from 'AIJourney/components/CreateNewSegmentButton/CreateNewSegmentButton'
+import { SegmentsSidePanel } from 'AIJourney/components/SegmentsSidePanel/SegmentsSidePanel'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
 import { useAudienceSegments } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
@@ -24,6 +27,13 @@ const fieldProps = {
 export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     const { control } = useFormContext()
     const { currentIntegration } = useJourneyContext()
+
+    const isAiJourneySegmentsEnabled = useFlag(
+        FeatureFlagKey.AiJourneySegmentsUiEnabled,
+    )
+
+    const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
+    const [isMultiSelectOpen, setIsMultiSelectOpen] = useState(false)
 
     const { fieldName, excludeFieldName, label } = fieldProps[type]
 
@@ -66,39 +76,57 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     }, [audienceLists, audienceSegments])
 
     return (
-        <Controller
-            name={fieldName}
-            control={control}
-            render={({ field }) => (
-                <MultiSelectField
-                    isSearchable
-                    items={sections}
-                    label={label}
-                    maxHeight={250}
-                    onChange={(value: typeof sections) =>
-                        field.onChange(value.map((e) => e.id))
-                    }
-                    placeholder="Select audience"
-                    value={(field.value ?? []).map((id: string) => ({
-                        id,
-                        name: '',
-                        items: [],
-                    }))}
-                    isDisabled={
-                        isLoadingAudienceLists || isLoadingAudienceSegments
-                    }
-                >
-                    {(section) => (
-                        <ListSection
-                            id={section.name}
-                            name={section.name}
-                            items={section.items}
-                        >
-                            {(option) => <ListItem label={option.name} />}
-                        </ListSection>
-                    )}
-                </MultiSelectField>
-            )}
-        />
+        <>
+            <Controller
+                name={fieldName}
+                control={control}
+                render={({ field }) => (
+                    <MultiSelectField
+                        isSearchable
+                        items={sections}
+                        isOpen={isMultiSelectOpen}
+                        onOpenChange={setIsMultiSelectOpen}
+                        footer={
+                            isAiJourneySegmentsEnabled ? (
+                                <CreateNewSegmentButton
+                                    onClick={() => {
+                                        setIsMultiSelectOpen(false)
+                                        setIsSidePanelOpen(true)
+                                    }}
+                                />
+                            ) : undefined
+                        }
+                        label={label}
+                        maxHeight={250}
+                        onChange={(value: typeof sections) =>
+                            field.onChange(value.map((e) => e.id))
+                        }
+                        placeholder="Select audience"
+                        value={(field.value ?? []).map((id: string) => ({
+                            id,
+                            name: '',
+                            items: [],
+                        }))}
+                        isDisabled={
+                            isLoadingAudienceLists || isLoadingAudienceSegments
+                        }
+                    >
+                        {(section) => (
+                            <ListSection
+                                id={section.name}
+                                name={section.name}
+                                items={section.items}
+                            >
+                                {(option) => <ListItem label={option.name} />}
+                            </ListSection>
+                        )}
+                    </MultiSelectField>
+                )}
+            />
+            <SegmentsSidePanel
+                isOpen={isSidePanelOpen}
+                onClose={() => setIsSidePanelOpen(false)}
+            />
+        </>
     )
 }

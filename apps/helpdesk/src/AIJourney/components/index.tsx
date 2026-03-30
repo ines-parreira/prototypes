@@ -22,3 +22,4 @@ export { AudienceHealthSection } from './AudienceHealthSection/AudienceHealthSec
 export { AiJourneySankeyChart } from './AiJourneySankeyChart/AiJourneySankeyChart'
 export { SegmentsTable } from './SegmentsTable/SegmentsTable'
 export { SegmentsSidePanel } from './SegmentsSidePanel/SegmentsSidePanel'
+export { CreateNewSegmentButton } from './CreateNewSegmentButton/CreateNewSegmentButton'
