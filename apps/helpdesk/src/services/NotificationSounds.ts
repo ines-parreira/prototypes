@@ -38,6 +38,17 @@ export default class NotificationSounds {
 
     private buffers: Record<SoundValue, AudioBuffer>
 
+    // Holds the most recent sound request that arrived while the AudioContext
+    // was suspended (before any user interaction). Played on first interaction,
+    // but only if the toast is still visible (within the 5s toast duration).
+    private pendingPlay: {
+        soundValue: SoundValue
+        volume: number
+        queuedAt: number
+    } | null = null
+
+    private static readonly TOAST_DURATION_MS = 5000
+
     constructor() {
         const audioCtx = new AudioContext()
         const gainNode = audioCtx.createGain()
@@ -48,6 +59,28 @@ export default class NotificationSounds {
 
         this.buffers = {} as Record<SoundValue, AudioBuffer>
         void this.loadSounds()
+
+        // Browser autoplay policy suspends AudioContext until user interaction.
+        // resume() must be called from within a user gesture handler — calling
+        // it from a WebSocket callback is not a user gesture and will be denied.
+        const resumeOnInteraction = async () => {
+            await audioCtx.resume()
+            if (
+                this.pendingPlay &&
+                Date.now() - this.pendingPlay.queuedAt <
+                    NotificationSounds.TOAST_DURATION_MS
+            ) {
+                this.playBuffer(
+                    this.pendingPlay.soundValue,
+                    this.pendingPlay.volume,
+                )
+            }
+            this.pendingPlay = null
+            document.removeEventListener('click', resumeOnInteraction)
+            document.removeEventListener('keydown', resumeOnInteraction)
+        }
+        document.addEventListener('click', resumeOnInteraction)
+        document.addEventListener('keydown', resumeOnInteraction)
     }
 
     private async loadSound(url: string) {
@@ -68,13 +101,20 @@ export default class NotificationSounds {
         }
     }
 
-    public play(soundValue: SoundValue, volume: number) {
+    private playBuffer(soundValue: SoundValue, volume: number) {
         const buffer = this.buffers[soundValue]
-
         const source = this.audioCtx.createBufferSource()
         source.buffer = buffer
         this.gainNode.gain.value = volume / 10
         source.connect(this.gainNode)
         source.start(0)
+    }
+
+    public play(soundValue: SoundValue, volume: number) {
+        if (this.audioCtx.state === 'suspended') {
+            this.pendingPlay = { soundValue, volume, queuedAt: Date.now() }
+            return
+        }
+        this.playBuffer(soundValue, volume)
     }
 }

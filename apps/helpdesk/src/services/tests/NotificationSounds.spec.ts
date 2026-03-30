@@ -12,6 +12,15 @@ describe('NotificationSounds', () => {
     let sourceConnect: jest.Mock
     let sourceStart: jest.Mock
     let source: { buffer: string; connect: jest.Mock; start: jest.Mock }
+    let resume: jest.Mock
+    let audioCtxObj: {
+        createBufferSource: jest.Mock
+        createGain: jest.Mock
+        decodeAudioData: jest.Mock
+        destination: string
+        resume: jest.Mock
+        state: string
+    }
 
     let arrayBuffer: jest.Mock
     let fetchMock: jest.Mock
@@ -32,15 +41,17 @@ describe('NotificationSounds', () => {
 
         createGain = jest.fn(() => gainNode)
         decodeAudioData = jest.fn()
-        const destination = 'destination'
-        const audioCtx = {
+        resume = jest.fn(() => Promise.resolve())
+        audioCtxObj = {
             createBufferSource,
             createGain,
             decodeAudioData,
-            destination,
+            destination: 'destination',
+            resume,
+            state: 'running',
         }
 
-        audioContext = jest.fn(() => audioCtx)
+        audioContext = jest.fn(() => audioCtxObj)
         global.AudioContext = audioContext
 
         arrayBuffer = jest.fn()
@@ -72,5 +83,46 @@ describe('NotificationSounds', () => {
 
         expect(sourceConnect).toHaveBeenCalledWith(gainNode)
         expect(sourceStart).toHaveBeenCalledWith(0)
+    })
+
+    it('should queue sound when context is suspended and play it on first user interaction', async () => {
+        sounds.forEach((sound) => {
+            decodeAudioData.mockResolvedValueOnce(sound.value)
+        })
+
+        audioCtxObj.state = 'suspended'
+        const ns = new NotificationSounds()
+        await flushPromises()
+
+        ns.play('intuition', 10)
+        expect(sourceStart).not.toHaveBeenCalled()
+
+        document.dispatchEvent(new MouseEvent('click'))
+        await flushPromises()
+
+        expect(resume).toHaveBeenCalled()
+        expect(source.buffer).toBe('intuition')
+        expect(sourceStart).toHaveBeenCalledWith(0)
+    })
+
+    it('should not play queued sound if toast has already expired when user interacts', async () => {
+        sounds.forEach((sound) => {
+            decodeAudioData.mockResolvedValueOnce(sound.value)
+        })
+
+        jest.spyOn(Date, 'now').mockReturnValueOnce(0).mockReturnValueOnce(6000)
+
+        audioCtxObj.state = 'suspended'
+        const ns = new NotificationSounds()
+        await flushPromises()
+
+        ns.play('intuition', 10)
+        expect(sourceStart).not.toHaveBeenCalled()
+
+        document.dispatchEvent(new MouseEvent('click'))
+        await flushPromises()
+
+        expect(resume).toHaveBeenCalled()
+        expect(sourceStart).not.toHaveBeenCalled()
     })
 })

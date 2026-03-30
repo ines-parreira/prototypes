@@ -10,6 +10,8 @@ const audioContext = jest.fn(() => ({
     })),
     decodeAudioData: jest.fn(),
     destination: 'destination',
+    resume: jest.fn(() => Promise.resolve()),
+    state: 'running',
 }))
 
 global.AudioContext = audioContext as unknown as typeof AudioContext
