@@ -4,9 +4,5 @@ import Context from '../Context'
 
 export function usePanels() {
     const ctx = useContext(Context)
-    if (!ctx) {
-        throw new Error('usePanels may only be used within Panels')
-    }
-
     return ctx
 }
