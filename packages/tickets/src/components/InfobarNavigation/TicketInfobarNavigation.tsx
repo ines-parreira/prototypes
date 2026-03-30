@@ -150,7 +150,7 @@ export function TicketInfobarNavigation({
                 {hasUIVisionMilestone2 && hasSmile && (
                     <InfobarNavigationItem
                         name={TicketInfobarTab.Smile}
-                        icon="emoji-smile"
+                        icon="app-smile"
                         tooltip={{
                             title: 'Smile',
                         }}
@@ -274,7 +274,7 @@ export function TicketInfobarNavigation({
                         {hasSmile && (
                             <MenuItem
                                 label="Smile"
-                                leadingSlot="emoji-smile"
+                                leadingSlot="app-smile"
                                 onAction={() => {
                                     onChangeTab(TicketInfobarTab.Smile)
                                     onSetEditingWidgetType(EditFieldsType.Smile)

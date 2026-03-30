@@ -53,7 +53,7 @@ describe('EditOrderFieldsSidePanel', () => {
         isOpen: true,
         onOpenChange: vi.fn(),
         preferences: defaultPreferences,
-        onSave: vi.fn().mockResolvedValue(undefined),
+        onConfirm: vi.fn(),
         context: mockContext,
     }
 
@@ -73,25 +73,25 @@ describe('EditOrderFieldsSidePanel', () => {
         expect(screen.getByText('Billing address')).toBeInTheDocument()
     })
 
-    it('has save button disabled when no changes are made', () => {
+    it('has confirm button disabled when no changes are made', () => {
         render(<EditOrderFieldsSidePanel {...defaultProps} />)
 
-        expect(screen.getByRole('button', { name: /save/i })).toBeDisabled()
+        expect(screen.getByRole('button', { name: /confirm/i })).toBeDisabled()
     })
 
-    it('enables save and calls onSave with updated preferences after toggling a field', async () => {
+    it('enables confirm and calls onConfirm with updated preferences after toggling a field', async () => {
         const { user } = render(<EditOrderFieldsSidePanel {...defaultProps} />)
 
         const toggles = screen.getAllByRole('switch')
         // toggles[0] = "Order details" toggle-all, [1]=tags, [2]=store, [3]=id
         await user.click(toggles[1])
 
-        const saveButton = screen.getByRole('button', { name: /save/i })
+        const saveButton = screen.getByRole('button', { name: /confirm/i })
         expect(saveButton).not.toBeDisabled()
 
         await user.click(saveButton)
 
-        const savedPrefs = defaultProps.onSave.mock.calls[0][0]
+        const savedPrefs = defaultProps.onConfirm.mock.calls[0][0]
         expect(savedPrefs.sections.orderDetails.fields).toEqual([
             { id: 'tags', visible: false },
             { id: 'store', visible: true },
@@ -106,9 +106,9 @@ describe('EditOrderFieldsSidePanel', () => {
         const sectionToggle = screen.getAllByRole('switch')[0]
         await user.click(sectionToggle)
 
-        await user.click(screen.getByRole('button', { name: /save/i }))
+        await user.click(screen.getByRole('button', { name: /confirm/i }))
 
-        const savedPrefs = defaultProps.onSave.mock.calls[0][0]
+        const savedPrefs = defaultProps.onConfirm.mock.calls[0][0]
         expect(
             savedPrefs.sections.orderDetails.fields.every(
                 (f: { visible: boolean }) => f.visible === false,
@@ -123,7 +123,7 @@ describe('EditOrderFieldsSidePanel', () => {
         expect(disclaimers.length).toBeGreaterThanOrEqual(2)
     })
 
-    it('toggles non-configurable section visibility and calls onSave', async () => {
+    it('toggles non-configurable section visibility and calls onConfirm', async () => {
         const { user } = render(<EditOrderFieldsSidePanel {...defaultProps} />)
 
         // Find the Shipping address section toggle — non-configurable sections come
@@ -135,9 +135,9 @@ describe('EditOrderFieldsSidePanel', () => {
         const shippingAddressToggle = switches[switches.length - 2]
         await user.click(shippingAddressToggle)
 
-        await user.click(screen.getByRole('button', { name: /save/i }))
+        await user.click(screen.getByRole('button', { name: /confirm/i }))
 
-        const savedPrefs = defaultProps.onSave.mock.calls[0][0]
+        const savedPrefs = defaultProps.onConfirm.mock.calls[0][0]
         expect(savedPrefs.sections.shippingAddress.sectionVisible).toBe(false)
     })
 })

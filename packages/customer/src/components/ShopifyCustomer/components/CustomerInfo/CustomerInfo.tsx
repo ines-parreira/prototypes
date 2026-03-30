@@ -143,6 +143,7 @@ export function CustomerInfo({
                 onSaveOrderPreferences={saveOrderPreferences}
                 orderContext={orderContext}
                 onClose={() => onSetEditingWidgetType(null)}
+                sections={sections}
             />
         )
     }

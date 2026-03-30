@@ -1,65 +1,24 @@
 import { useMemo } from 'react'
 
-import { FIELD_DEFINITIONS } from '../fieldDefinitions/fields'
-import { SECTION_CONFIGS } from '../fieldDefinitions/sectionConfig'
-import type { FieldConfig, SectionKey } from '../types'
+import {
+    deriveCustomerFields,
+    deriveSections,
+} from './customerFieldPreferences.utils'
+import type { SectionFieldData } from './customerFieldPreferences.utils'
 import { useWidgetFieldPreferences } from './useWidgetFieldPreferences'
 
-export type SectionFieldData = {
-    key: SectionKey
-    label: string
-    fields: FieldConfig[]
-}
+export type { SectionFieldData }
 
 export function useCustomerFieldPreferences() {
     const { preferences, savePreferences, isLoading } =
         useWidgetFieldPreferences()
 
-    const customerFields = useMemo(() => {
-        const alwaysVisible = Object.values(FIELD_DEFINITIONS).filter(
-            (f) => f.alwaysVisible,
-        )
+    const customerFields = useMemo(
+        () => deriveCustomerFields(preferences),
+        [preferences],
+    )
 
-        const fieldsList = Array.isArray(preferences?.fields)
-            ? preferences.fields
-            : []
-
-        const togglable = fieldsList
-            .filter(
-                (f) =>
-                    f.visible &&
-                    FIELD_DEFINITIONS[f.id] &&
-                    !FIELD_DEFINITIONS[f.id].alwaysVisible,
-            )
-            .map((f) => FIELD_DEFINITIONS[f.id])
-
-        return [...alwaysVisible, ...togglable]
-    }, [preferences])
-
-    const sections = useMemo(() => {
-        const result: SectionFieldData[] = []
-
-        for (const config of SECTION_CONFIGS) {
-            if (config.key === 'customer') continue
-
-            const sectionPrefs = preferences?.sections?.[config.key]?.fields
-            if (!sectionPrefs) continue
-
-            const visibleFields = sectionPrefs
-                .filter((f) => f.visible && config.fieldDefinitions[f.id])
-                .map((f) => config.fieldDefinitions[f.id])
-
-            if (visibleFields.length > 0) {
-                result.push({
-                    key: config.key,
-                    label: config.label,
-                    fields: visibleFields,
-                })
-            }
-        }
-
-        return result
-    }, [preferences])
+    const sections = useMemo(() => deriveSections(preferences), [preferences])
 
     return { customerFields, sections, preferences, savePreferences, isLoading }
 }

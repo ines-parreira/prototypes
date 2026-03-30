@@ -1,0 +1,51 @@
+import { FIELD_DEFINITIONS } from '../fieldDefinitions/fields'
+import { SECTION_CONFIGS } from '../fieldDefinitions/sectionConfig'
+import type { FieldConfig, SectionKey, ShopifyFieldPreferences } from '../types'
+
+export type SectionFieldData = {
+    key: SectionKey
+    label: string
+    fields: FieldConfig[]
+}
+
+export function deriveCustomerFields(
+    preferences: ShopifyFieldPreferences,
+): FieldConfig[] {
+    const alwaysVisible = Object.values(FIELD_DEFINITIONS).filter(
+        (f) => f.alwaysVisible,
+    )
+    const fieldsList = Array.isArray(preferences.fields)
+        ? preferences.fields
+        : []
+    const togglable = fieldsList
+        .filter(
+            (f) =>
+                f.visible &&
+                FIELD_DEFINITIONS[f.id] &&
+                !FIELD_DEFINITIONS[f.id].alwaysVisible,
+        )
+        .map((f) => FIELD_DEFINITIONS[f.id])
+    return [...alwaysVisible, ...togglable]
+}
+
+export function deriveSections(
+    preferences: ShopifyFieldPreferences,
+): SectionFieldData[] {
+    const result: SectionFieldData[] = []
+    for (const config of SECTION_CONFIGS) {
+        if (config.key === 'customer') continue
+        const sectionPrefs = preferences.sections?.[config.key]?.fields
+        if (!sectionPrefs) continue
+        const visibleFields = sectionPrefs
+            .filter((f) => f.visible && config.fieldDefinitions[f.id])
+            .map((f) => config.fieldDefinitions[f.id])
+        if (visibleFields.length > 0) {
+            result.push({
+                key: config.key,
+                label: config.label,
+                fields: visibleFields,
+            })
+        }
+    }
+    return result
+}

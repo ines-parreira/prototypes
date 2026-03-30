@@ -1,6 +1,7 @@
-import { useCallback, useContext } from 'react'
+import { useCallback } from 'react'
 
 import {
+    Box,
     Button,
     OverlayContent,
     OverlayFooter,
@@ -8,10 +9,6 @@ import {
     SidePanel,
 } from '@gorgias/axiom'
 
-import {
-    NotificationStatus,
-    ShopifyCustomerContext,
-} from '../../../ShopifyCustomerContext'
 import { getEnrichedFields } from '../fieldDefinitions/getEnrichedFields'
 import { SECTION_CONFIGS } from '../fieldDefinitions/sectionConfig'
 import type {
@@ -33,7 +30,7 @@ type Props = {
     isOpen: boolean
     onOpenChange: (open: boolean) => void
     preferences: ShopifyFieldPreferences
-    onSave: (preferences: ShopifyFieldPreferences) => Promise<void>
+    onConfirm: (preferences: ShopifyFieldPreferences) => void
     context: FieldRenderContext
 }
 
@@ -41,28 +38,20 @@ export function EditShopifyFieldsSidePanel({
     isOpen,
     onOpenChange,
     preferences,
-    onSave,
+    onConfirm,
     context,
 }: Props) {
-    const { dispatchNotification } = useContext(ShopifyCustomerContext)
-
     const init = useCallback(
         () => initShopifySections(preferences),
         [preferences],
     )
 
-    const {
-        localSections,
-        setLocalSections,
-        isSaving,
-        setIsSaving,
-        isSavingRef,
-        hasChanges,
-    } = useEditablePanelState({
-        init,
-        isEqual: shopifySectionsEqual,
-        isOpen,
-    })
+    const { localSections, setLocalSections, hasChanges } =
+        useEditablePanelState({
+            init,
+            isEqual: shopifySectionsEqual,
+            isOpen,
+        })
 
     const handleToggleVisibility = useCallback(
         (sectionKey: SectionKey, id: string) => {
@@ -109,36 +98,17 @@ export function EditShopifyFieldsSidePanel({
         [setLocalSections],
     )
 
-    const handleSave = useCallback(async () => {
-        isSavingRef.current = true
-        setIsSaving(true)
-        try {
-            const sections: ShopifyFieldPreferences['sections'] = {}
-            for (const config of SECTION_CONFIGS) {
-                sections[config.key] = { fields: localSections[config.key] }
-            }
-            await onSave({
-                fields: localSections.customer,
-                sections,
-            })
-            onOpenChange(false)
-        } catch {
-            dispatchNotification({
-                status: NotificationStatus.Error,
-                message: 'Failed to save field preferences',
-            })
-        } finally {
-            isSavingRef.current = false
-            setIsSaving(false)
+    const handleConfirm = useCallback(() => {
+        const sections: ShopifyFieldPreferences['sections'] = {}
+        for (const config of SECTION_CONFIGS) {
+            sections[config.key] = { fields: localSections[config.key] }
         }
-    }, [
-        localSections,
-        onSave,
-        onOpenChange,
-        dispatchNotification,
-        isSavingRef,
-        setIsSaving,
-    ])
+        onConfirm({
+            fields: localSections.customer,
+            sections,
+        })
+        onOpenChange(false)
+    }, [localSections, onConfirm, onOpenChange])
 
     return (
         <SidePanel
@@ -184,15 +154,22 @@ export function EditShopifyFieldsSidePanel({
                 </div>
             </OverlayContent>
 
-            <OverlayFooter>
-                <Button
-                    variant="primary"
-                    onClick={handleSave}
-                    isDisabled={!hasChanges || isSaving}
-                    isLoading={isSaving}
-                >
-                    Save
-                </Button>
+            <OverlayFooter hideCancelButton>
+                <Box gap="xs" justifyContent="flex-end" width="100%">
+                    <Button
+                        variant="secondary"
+                        onClick={() => onOpenChange(false)}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="primary"
+                        onClick={handleConfirm}
+                        isDisabled={!hasChanges}
+                    >
+                        Confirm
+                    </Button>
+                </Box>
             </OverlayFooter>
         </SidePanel>
     )

@@ -11,7 +11,7 @@ import { StorePicker } from '../StorePicker'
 import { CustomActions, TemplateResolverProvider } from './CustomActions'
 import { CustomerInfoFieldList } from './CustomerInfoFieldList'
 import { CollapsibleFieldSection } from './editPanels/CollapsibleFieldSection'
-import { createAddressFieldDefinitions } from './fieldDefinitions/addressFieldDefinitions'
+import { resolveSectionFields } from './fieldDefinitions/resolveSectionFields'
 import { MetafieldsSection } from './MetafieldsSection'
 import type { FieldConfig, FieldRenderContext } from './types'
 import type { SectionFieldData } from './widget/useCustomerFieldPreferences'
@@ -118,32 +118,17 @@ export function CustomerDetailsPanel({
                             storeName={selectedIntegration?.name}
                         />
                         {sections.map((section) => {
-                            if (section.key === 'addresses') {
-                                const addresses =
-                                    context.shopper?.data?.addresses ?? []
-                                return addresses.map((_, index) => {
-                                    const fieldDefs =
-                                        createAddressFieldDefinitions(index)
-                                    const fields = section.fields
-                                        .map((f) => fieldDefs[f.id])
-                                        .filter(Boolean)
-                                    return (
-                                        <CollapsibleFieldSection
-                                            key={`address-${index}`}
-                                            label="Address"
-                                            fields={fields}
-                                            context={context}
-                                        />
-                                    )
-                                })
-                            }
-                            return (
-                                <CollapsibleFieldSection
-                                    key={section.key}
-                                    label={section.label}
-                                    fields={section.fields}
-                                    context={context}
-                                />
+                            const addresses =
+                                context.shopper?.data?.addresses ?? []
+                            return resolveSectionFields(section, addresses).map(
+                                (rs) => (
+                                    <CollapsibleFieldSection
+                                        key={rs.key}
+                                        label={rs.label}
+                                        fields={rs.fields}
+                                        context={context}
+                                    />
+                                ),
                             )
                         })}
                     </>

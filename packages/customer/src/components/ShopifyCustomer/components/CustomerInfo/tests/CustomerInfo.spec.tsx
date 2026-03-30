@@ -609,7 +609,7 @@ describe('CustomerInfo', () => {
         })
 
         expect(
-            screen.getByRole('button', { name: /confirm/i }),
+            screen.getByRole('button', { name: /save/i }),
         ).toBeInTheDocument()
 
         expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
@@ -757,7 +757,7 @@ describe('CustomerInfo', () => {
         })
     })
 
-    it('calls onSetEditingWidgetType(null) when Confirm is clicked in IntermediateEditPanel', async () => {
+    it('calls onSetEditingWidgetType(null) when Cancel is clicked in IntermediateEditPanel', async () => {
         const onSetEditingWidgetType = vi.fn()
         mockUseTicketInfobarNavigation.mockReturnValue({
             shopifyIntegrationId: undefined,
@@ -780,11 +780,11 @@ describe('CustomerInfo', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', { name: /confirm/i }),
+                screen.getByRole('button', { name: /cancel/i }),
             ).toBeInTheDocument()
         })
 
-        await user.click(screen.getByRole('button', { name: /confirm/i }))
+        await user.click(screen.getByRole('button', { name: /cancel/i }))
 
         expect(onSetEditingWidgetType).toHaveBeenCalledWith(null)
     })

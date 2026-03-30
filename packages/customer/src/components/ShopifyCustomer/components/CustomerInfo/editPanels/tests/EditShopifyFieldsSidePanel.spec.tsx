@@ -40,7 +40,7 @@ describe('EditShopifyFieldsSidePanel', () => {
         isOpen: true,
         onOpenChange: vi.fn(),
         preferences: defaultPreferences,
-        onSave: vi.fn().mockResolvedValue(undefined),
+        onConfirm: vi.fn(),
         context: mockContext,
     }
 
@@ -80,13 +80,13 @@ describe('EditShopifyFieldsSidePanel', () => {
         expect(screen.getByText('Created at')).toBeInTheDocument()
     })
 
-    it('has save button disabled when no changes are made', () => {
+    it('has confirm button disabled when no changes are made', () => {
         render(<EditShopifyFieldsSidePanel {...defaultProps} />)
 
-        expect(screen.getByRole('button', { name: /save/i })).toBeDisabled()
+        expect(screen.getByRole('button', { name: /confirm/i })).toBeDisabled()
     })
 
-    it('enables save button after toggling a field', async () => {
+    it('enables confirm button after toggling a field', async () => {
         const { user } = render(
             <EditShopifyFieldsSidePanel {...defaultProps} />,
         )
@@ -96,12 +96,12 @@ describe('EditShopifyFieldsSidePanel', () => {
 
         await waitFor(() => {
             expect(
-                screen.getByRole('button', { name: /save/i }),
+                screen.getByRole('button', { name: /confirm/i }),
             ).not.toBeDisabled()
         })
     }, 10000)
 
-    it('calls onSave with updated preferences on save', async () => {
+    it('calls onConfirm with updated preferences on confirm', async () => {
         const { user } = render(
             <EditShopifyFieldsSidePanel {...defaultProps} />,
         )
@@ -109,7 +109,7 @@ describe('EditShopifyFieldsSidePanel', () => {
         const toggles = screen.getAllByRole('switch')
         await user.click(toggles[1])
 
-        const saveButton = screen.getByRole('button', { name: /save/i })
+        const saveButton = screen.getByRole('button', { name: /confirm/i })
 
         await waitFor(() => {
             expect(saveButton).toBeEnabled()
@@ -117,10 +117,10 @@ describe('EditShopifyFieldsSidePanel', () => {
         await user.click(saveButton)
 
         await waitFor(() => {
-            expect(defaultProps.onSave).toHaveBeenCalledTimes(1)
+            expect(defaultProps.onConfirm).toHaveBeenCalledTimes(1)
         })
 
-        const savedPrefs = defaultProps.onSave.mock.calls[0][0]
+        const savedPrefs = defaultProps.onConfirm.mock.calls[0][0]
         expect(savedPrefs.fields).toEqual([{ id: 'note', visible: true }])
         expect(savedPrefs.sections).toBeDefined()
         expect(savedPrefs.sections.customer.fields).toEqual([
@@ -165,9 +165,9 @@ describe('EditShopifyFieldsSidePanel', () => {
         const sectionToggle = screen.getAllByRole('switch')[0]
         await user.click(sectionToggle)
 
-        await user.click(screen.getByRole('button', { name: /save/i }))
+        await user.click(screen.getByRole('button', { name: /confirm/i }))
 
-        const savedPrefs = defaultProps.onSave.mock.calls[0][0]
+        const savedPrefs = defaultProps.onConfirm.mock.calls[0][0]
         expect(savedPrefs.fields).toEqual([
             { id: 'note', visible: false },
             { id: 'createdAt', visible: false },

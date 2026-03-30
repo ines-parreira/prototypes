@@ -211,9 +211,7 @@ describe('TicketInfobarNavigation', () => {
         const shopifyButton = screen
             .getByLabelText('app-shopify')
             .closest('button')
-        const smileButton = screen
-            .getByLabelText('emoji-smile')
-            .closest('button')
+        const smileButton = screen.getByLabelText('app-smile').closest('button')
         const yotpoButton = screen.getByLabelText('app-yotpo').closest('button')
 
         expect(customerButton).toBeInTheDocument()
@@ -399,7 +397,7 @@ describe('TicketInfobarNavigation', () => {
             render(<TicketInfobarNavigation hasSmile />)
 
             await waitFor(() => {
-                expect(screen.getByLabelText('emoji-smile')).toBeInTheDocument()
+                expect(screen.getByLabelText('app-smile')).toBeInTheDocument()
             })
         })
 
@@ -409,7 +407,7 @@ describe('TicketInfobarNavigation', () => {
 
             await waitFor(() => {
                 expect(
-                    screen.queryByLabelText('emoji-smile'),
+                    screen.queryByLabelText('app-smile'),
                 ).not.toBeInTheDocument()
             })
         })
@@ -418,9 +416,7 @@ describe('TicketInfobarNavigation', () => {
             mockUseHelpdeskV2MS2Flag.mockReturnValue(true)
             const { user } = render(<TicketInfobarNavigation hasSmile />)
 
-            const button = screen
-                .getByLabelText('emoji-smile')
-                .closest('button')
+            const button = screen.getByLabelText('app-smile').closest('button')
 
             await user.click(button!)
 
