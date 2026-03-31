@@ -1,36 +1,42 @@
+@attachment-card-size: 120px;
+
 :local {
-    .item {
-        display: inline-flex;
-        align-items: center;
-        height: 40px;
-        width: 120px;
-        padding: var(--spacing-xxs);
+    .cardSurface {
+        position: relative;
         border: 1px solid var(--border-neutral-default);
         border-radius: var(--spacing-xxs);
         background-color: var(--elevation-neutral-default);
         color: var(--content-neutral-default);
+        overflow: hidden;
+        text-decoration: none;
         cursor: pointer;
 
-        &:hover {
-            background-color: var(--hover-default);
+        &::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-color: transparent;
+            border-radius: inherit;
+            pointer-events: none;
         }
 
-        &.preview {
-            position: relative;
-            padding: 0;
-
+        &:hover {
             &::after {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background-color: transparent;
-                border-radius: inherit;
-                pointer-events: none;
-            }
-
-            &:hover::after {
                 background-color: var(--hover-default);
             }
+        }
+    }
+
+    .attachment {
+        display: inline-flex;
+        align-items: center;
+        height: 40px;
+        width: @attachment-card-size;
+        padding: var(--spacing-xxs);
+
+        &.preview {
+            padding: 0;
+            width: 40px;
         }
     }
 

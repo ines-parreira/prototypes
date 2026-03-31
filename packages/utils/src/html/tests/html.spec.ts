@@ -1,4 +1,9 @@
-import { linkifyHtml, parseHtml, sanitizeHtmlDefault } from '../html'
+import {
+    extractGorgiasVideoDivFromHtmlContent,
+    linkifyHtml,
+    parseHtml,
+    sanitizeHtmlDefault,
+} from '../html'
 
 describe('parseHtml', () => {
     afterEach(() => {
@@ -157,5 +162,59 @@ describe('sanitizeHtmlDefault', () => {
         expect(sanitizeHtmlDefault('<img src="data:foo" />')).toBe(
             '<img src="data:foo" />',
         )
+    })
+})
+
+describe('extractGorgiasVideoDivFromHtmlContent', () => {
+    it('should properly extract video HTML', () => {
+        const dataset: {
+            rawHtml: string
+            expectedHtmlFinal: string
+            expectedVideoUrls: string[]
+        }[] = [
+            {
+                rawHtml: `<p>hello</p><a href="#">here</a>`,
+                expectedHtmlFinal: `<p>hello</p><a href="#">here</a>`,
+                expectedVideoUrls: [],
+            },
+            {
+                rawHtml: `<p>hello<div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div></p><a href="#">here</a>`,
+                expectedHtmlFinal: `<p>hello</p><a href="#">here</a>`,
+                expectedVideoUrls: [
+                    'https://www.youtube.com/watch?v=4sLFpe-xbhk',
+                ],
+            },
+            {
+                rawHtml: `<p>hello<div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div></p><a href="#">here</a><div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk2" width="600"></div>`,
+                expectedHtmlFinal: `<p>hello</p><a href="#">here</a>`,
+                expectedVideoUrls: [
+                    'https://www.youtube.com/watch?v=4sLFpe-xbhk',
+                    'https://www.youtube.com/watch?v=4sLFpe-xbhk2',
+                ],
+            },
+            // Extra space produced by draftjs because ending by a video should be removed.
+            {
+                rawHtml: `<p>hello</p><div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div><div><br /></div>`,
+                expectedHtmlFinal: `<p>hello</p>`,
+                expectedVideoUrls: [
+                    'https://www.youtube.com/watch?v=4sLFpe-xbhk',
+                ],
+            },
+            // Extra space made on purpose by the agent (not ending by a video) should NOT be removed.
+            {
+                rawHtml: `<div>A</div><div><br /></div>`,
+                expectedHtmlFinal: `<div>A</div><div><br /></div>`,
+                expectedVideoUrls: [],
+            },
+        ]
+
+        for (const data of dataset) {
+            expect(extractGorgiasVideoDivFromHtmlContent(data.rawHtml)).toEqual(
+                {
+                    htmlCleaned: data.expectedHtmlFinal,
+                    videoUrls: data.expectedVideoUrls,
+                },
+            )
+        }
     })
 })

@@ -1,4 +1,4 @@
-import { replaceAttachmentURL, shortcutManager } from '@repo/utils'
+import { proxifyURL, replaceAttachmentURL, shortcutManager } from '@repo/utils'
 import type * as Utils from '@repo/utils'
 import { act, screen, waitFor } from '@testing-library/react'
 
@@ -53,6 +53,9 @@ vi.mock('@repo/utils', async (importOriginal) => {
         replaceAttachmentURL: vi.fn((url: string, size?: string) =>
             size ? `${url}?size=${size}` : `${url}?download=1`,
         ),
+        proxifyURL: vi.fn((url: string, size?: string) =>
+            size ? `${url}?proxy=${size}` : `${url}?proxy=cw-1`,
+        ),
         shortcutManager: {
             pause: vi.fn(),
             unpause: vi.fn(),
@@ -90,6 +93,7 @@ vi.mock('yet-another-react-lightbox/plugins/thumbnails', () => ({
 }))
 
 const mockReplaceAttachmentURL = vi.mocked(replaceAttachmentURL)
+const mockProxifyURL = vi.mocked(proxifyURL)
 const mockShortcutManagerPause = vi.mocked(shortcutManager.pause)
 const mockShortcutManagerUnpause = vi.mocked(shortcutManager.unpause)
 
@@ -184,6 +188,107 @@ describe('MessageAttachments', () => {
             'https://cdn.example.com/terms.pdf?download=1',
         )
         expect(screen.getByText('pdf')).toBeInTheDocument()
+    })
+
+    it('renders a custom regular attachments section header', () => {
+        const attachments = [
+            makeAttachment({
+                name: 'terms.pdf',
+                url: 'https://cdn.example.com/terms.pdf',
+                content_type: 'application/pdf',
+            }),
+        ]
+
+        render(
+            <MessageAttachments
+                item={makeItem(attachments)}
+                attachmentsLabel="Files"
+            />,
+        )
+
+        expect(screen.getByText('Files')).toBeInTheDocument()
+        expect(screen.queryByText('Attachments')).not.toBeInTheDocument()
+    })
+
+    it('renders linked products and regular attachments in separate sections', async () => {
+        const attachments = [
+            makeAttachment({
+                name: 'manual.pdf',
+                url: 'https://cdn.example.com/manual.pdf',
+                content_type: 'application/pdf',
+            }),
+            makeAttachment({
+                name: 'Classic Tee',
+                url: 'https://cdn.example.com/product.png',
+                content_type: 'application/productCard',
+                extra: {
+                    price: 31.24,
+                    compare_at_price: 55.55,
+                    variant_name: 'Blue / M',
+                    product_link:
+                        'https://shop.example.com/products/classic-tee',
+                    currency: 'USD',
+                },
+            }),
+        ]
+
+        render(<MessageAttachments item={makeItem(attachments)} />)
+
+        expect(screen.getByText('Attachments')).toBeInTheDocument()
+        expect(screen.getByText('Linked products')).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: 'manual.pdf' }),
+        ).toHaveAttribute(
+            'href',
+            'https://cdn.example.com/manual.pdf?download=1',
+        )
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('img', { name: 'Classic Tee' }),
+            ).toHaveAttribute(
+                'src',
+                'https://cdn.example.com/product.png?proxy=120x120',
+            )
+        })
+
+        expect(mockProxifyURL).toHaveBeenCalledWith(
+            'https://cdn.example.com/product.png',
+            '120x120',
+        )
+    })
+
+    it('renders discount offer attachments in linked products', () => {
+        const attachments = [
+            makeAttachment({
+                name: 'manual.pdf',
+                url: 'https://cdn.example.com/manual.pdf',
+                content_type: 'application/pdf',
+            }),
+            makeAttachment({
+                name: 'Spring campaign offer',
+                url: 'https://cdn.example.com/discount-offer',
+                content_type: 'application/discountOffer',
+                extra: {
+                    discount_offer_code: '10OFF',
+                    discount_offer_type: 'percentage',
+                    discount_offer_value: 10,
+                    discount_offer_id: '10OFF',
+                },
+            }),
+        ]
+
+        render(<MessageAttachments item={makeItem(attachments)} />)
+
+        expect(screen.getByText('Linked products')).toBeInTheDocument()
+        expect(screen.getByText('Attachments')).toBeInTheDocument()
+        expect(screen.getByText('10OFF')).toBeInTheDocument()
+        expect(
+            screen.getByRole('link', { name: 'manual.pdf' }),
+        ).toHaveAttribute(
+            'href',
+            'https://cdn.example.com/manual.pdf?download=1',
+        )
     })
 
     it('opens the lightbox for the clicked image and pauses shortcuts', async () => {

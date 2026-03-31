@@ -1,6 +1,6 @@
 {
-  "date": "2026-03-27T13:34:07.116Z",
-  "total": 5090,
+  "date": "2026-03-30T16:54:06.544Z",
+  "total": 5103,
   "deprecated": [
     {
       "nodeType": "VariableDeclaration",
@@ -2722,6 +2722,34 @@
       ]
     },
     {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "extractGorgiasVideoDivFromHtmlContent",
+      "comment": "*\n * Extract `<div class=\"gorgias-video-container\" data-video-src=\"https://www.youtube.com/watch?v=4sLFpe-xbhk\" width=\"600\"></div>` elements from html, and return `data-video-src` urls separately.\n *\n * @deprecated use the @repo/utils version instead\n * @date 2026-03-23\n * @type migration to @repo/utils\n ",
+      "count": 14,
+      "filePath": "apps/helpdesk/src/utils.ts",
+      "usages": [
+        {
+          "name": "extractGorgiasVideoDivFromHtmlContent",
+          "files": [
+            "apps/helpdesk/src/pages/common/components/infobar/utils.ts",
+            "apps/helpdesk/src/pages/common/components/ViewTable/tests/FilterTopbar.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/tests/AddVideo.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/tests/Toolbar.spec.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/components/CampaignPreview/components/ChatCampaign/ChatCampaign.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/shopify/Create.tsx",
+            "apps/helpdesk/src/pages/settings/importZendesk/zendesk/ImportZendeskCreate.tsx",
+            "apps/helpdesk/src/pages/standalone/tests/schemas.spec.ts",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Content.tsx",
+            "apps/helpdesk/src/split-ticket-view-toggle/components/tests/useIsToggleEnabled.spec.ts",
+            "apps/helpdesk/src/state/newMessage/tests/actions.spec.ts",
+            "apps/helpdesk/src/tests/utils.spec.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/processContent.ts",
+            "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/processContent.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
       "nodeType": "VariableDeclaration",
       "nodeName": "LinkAlert",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Banner variant=\"inline\" />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
@@ -5336,7 +5364,7 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1421,
+      "count": 1420,
       "usages": [
         {
           "name": "LegacyButton",
@@ -5916,7 +5944,7 @@
         },
         {
           "name": "LegacyTooltip",
-          "count": 291,
+          "count": 290,
           "files": [
             "apps/helpdesk/src/AIJourney/components/FieldPresentation/FieldPresentation.tsx",
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
@@ -5950,7 +5978,6 @@
             "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardActionButton.tsx",
             "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardsModal/ChartIcon.tsx",
             "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardsNavbarBlock/DashboardsNavbarBlock.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/dashboards/DraggableGridCell.tsx",
             "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/ScoredSurveysChart/TicketIdBodyCell.tsx",
             "apps/helpdesk/src/domains/reporting/pages/sla/components/SlaStatusCell.tsx",
             "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/components/VoCSidePanelTrigger/VoCSidePanelTrigger.tsx",

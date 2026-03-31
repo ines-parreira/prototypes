@@ -1,0 +1,27 @@
+@import (reference) './Attachment.less';
+
+:local {
+    .container {
+        width: @attachment-card-size;
+    }
+
+    .card {
+        width: @attachment-card-size;
+        height: @attachment-card-size;
+        padding: var(--spacing-xs);
+        cursor: default;
+
+        &:hover {
+            &::after {
+                background-color: transparent;
+            }
+        }
+    }
+
+    .name {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+}

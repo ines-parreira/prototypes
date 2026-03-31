@@ -226,7 +226,7 @@
         "react-loading-skeleton": "3.1.0",
         "react-markdown": "^10.1.0",
         "react-paginate": "6.3.0",
-        "react-player": "^2.11.0",
+        "react-player": "catalog:video",
         "react-rating-stars-component": "2.2.0",
         "react-redux": "7.2.3",
         "react-router": "catalog:react-router",

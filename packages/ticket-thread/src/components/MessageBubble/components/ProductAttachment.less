@@ -1,0 +1,34 @@
+@import (reference) './Attachment.less';
+
+:local {
+    .card {
+        width: @attachment-card-size;
+        cursor: pointer;
+        color: var(--content-neutral-default);
+        text-decoration: none;
+
+        &:hover {
+            .imageFrame {
+                &::after {
+                    background-color: var(--hover-default);
+                }
+            }
+        }
+    }
+
+    .name {
+        display: -webkit-box;
+        overflow: hidden;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+
+    .image {
+        width: @attachment-card-size;
+        height: @attachment-card-size;
+    }
+
+    .compareAtPrice {
+        text-decoration: line-through;
+    }
+}

@@ -1,14 +1,7 @@
-import { useMemo } from 'react'
-
-import {
-    linkifyHtml,
-    linkifyString,
-    parseMedia,
-    sanitizeHtmlDefault,
-} from '@repo/utils'
 import classNames from 'classnames'
 
 import { Banner, IconName } from '@gorgias/axiom'
+import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
 import { getMessageContent } from './utils/getMessageContent'
@@ -21,6 +14,7 @@ export type MessageBodyItem = {
         body_text?: string | null
         stripped_html?: string | null
         stripped_text?: string | null
+        translations?: TicketMessageTranslation | null
         meta?: unknown
         id?: number | null
     }
@@ -32,49 +26,15 @@ type MessageBodyProps = {
 }
 
 export function MessageBody({ className, item }: MessageBodyProps) {
-    const { meta } = item.data
-    const {
-        messageId,
-        content,
-        strippedContent,
-        isHtml,
-        isStripped,
-        isStrippedContentHtml,
-    } = getMessageContent(item)
     const { isMessageExpanded } = useExpandedMessages()
-    const isExpanded = isMessageExpanded(messageId)
-
-    const showingStrippedContent = isStripped && !isExpanded
-    const contentToRender = showingStrippedContent ? strippedContent : content
-
-    const sanitizedHtml = useMemo(() => {
-        const parsedMedia = parseMedia(contentToRender, '1000x')
-
-        const linkifiedContent = isHtml
-            ? linkifyHtml(parsedMedia)
-            : linkifyString(parsedMedia)
-
-        return sanitizeHtmlDefault(linkifiedContent)
-    }, [contentToRender, isHtml])
-
+    const isExpanded = isMessageExpanded(item.data.id)
+    const { sanitizedHtml, isHtml, isStripped, isTruncated } =
+        getMessageContent(item, isExpanded)
     const displayedContent = sanitizedHtml !== 'null' ? sanitizedHtml : ''
-
-    const messageMeta = meta as {
-        body_html_truncated?: boolean
-        body_text_truncated?: boolean
-    } | null
 
     if (!displayedContent && !isStripped) {
         return null
     }
-
-    const isTruncated = showingStrippedContent
-        ? isStrippedContentHtml
-            ? messageMeta?.body_html_truncated
-            : messageMeta?.body_text_truncated
-        : isHtml
-          ? messageMeta?.body_html_truncated
-          : messageMeta?.body_text_truncated
 
     return (
         <>

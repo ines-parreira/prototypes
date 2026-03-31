@@ -1247,6 +1247,10 @@ export function castGorgiasVideosForUnsupportedSources({
 
 /**
  * Extract `<div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div>` elements from html, and return `data-video-src` urls separately.
+ *
+ * @deprecated use the @repo/utils version instead
+ * @date 2026-03-23
+ * @type migration to @repo/utils
  */
 export function extractGorgiasVideoDivFromHtmlContent(html: string): {
     htmlCleaned: string

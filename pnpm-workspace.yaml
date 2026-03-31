@@ -198,3 +198,5 @@ catalogs:
     'react-images': '^0.5.19'
     '@types/react-images': '0.5.3'
     'yet-another-react-lightbox': '^3.29.1'
+  video:
+    'react-player': '^2.11.0'

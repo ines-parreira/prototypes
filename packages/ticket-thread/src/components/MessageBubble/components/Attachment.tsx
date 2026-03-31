@@ -34,10 +34,12 @@ export function Attachment({ attachment, onImageClick }: AttachmentProps) {
                             replaceAttachmentURL(attachment.url, '120x80') ?? ''
                         }
                         alt={attachment.name ?? 'Image attachment'}
-                        width="40px"
-                        height="40px"
                         fit="cover"
-                        className={cn(css.item, css.preview)}
+                        className={cn(
+                            css.cardSurface,
+                            css.attachment,
+                            css.preview,
+                        )}
                         aria-label={attachment.name ?? 'Image attachment'}
                         onClick={() => onImageClick(attachment)}
                         fallback={
@@ -53,7 +55,7 @@ export function Attachment({ attachment, onImageClick }: AttachmentProps) {
                         href={replaceAttachmentURL(attachment.url) || '#'}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className={css.item}
+                        className={cn(css.cardSurface, css.attachment)}
                         aria-label={attachment.name ?? 'Attachment'}
                     >
                         <Box

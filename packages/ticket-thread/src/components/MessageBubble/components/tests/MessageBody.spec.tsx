@@ -1,15 +1,19 @@
 import { screen } from '@testing-library/react'
 
-import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
+import {
+    mockTicketMessage,
+    mockTicketMessageTranslation,
+} from '@gorgias/helpdesk-mocks'
 
 import type { TicketThreadRegularMessageItem } from '../../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../../hooks/types'
 import { render } from '../../../../tests/render.utils'
+import type { DisplayedTicketThreadRegularMessageItem } from '../../../TicketMessage/hooks/useDisplayedTicketMessage'
 import { MessageBody } from '../MessageBody'
 
-function makeItem(
-    data: TicketThreadRegularMessageItem['data'],
-): TicketThreadRegularMessageItem {
+type MessageBodyData = DisplayedTicketThreadRegularMessageItem['data']
+
+function makeItem(data: MessageBodyData): TicketThreadRegularMessageItem {
     return {
         _tag: TicketThreadItemTag.Messages.Message,
         data,
@@ -17,7 +21,7 @@ function makeItem(
     }
 }
 
-function renderMessageBody(data: TicketThreadRegularMessageItem['data']) {
+function renderMessageBody(data: MessageBodyData) {
     return render(<MessageBody item={makeItem(data)} />)
 }
 
@@ -65,6 +69,28 @@ describe('MessageBody', () => {
         expect(
             screen.queryByText('Hello world. And a long quoted reply.'),
         ).not.toBeInTheDocument()
+    })
+
+    it('renders translated stripped content without treating the message as stripped', () => {
+        const message = mockTicketMessage({
+            body_html: '<p>Hello world</p>',
+            body_text: 'Hello world',
+            stripped_html: '<p>Hello world</p>',
+            stripped_text: 'Hello world',
+            meta: null,
+        }) as MessageBodyData
+
+        const data: MessageBodyData = {
+            ...message,
+            translations: mockTicketMessageTranslation({
+                stripped_html: '<p>Bonjour le monde</p>',
+                stripped_text: 'Bonjour le monde',
+            }),
+        }
+
+        renderMessageBody(data)
+
+        expect(screen.getByText('Bonjour le monde')).toBeInTheDocument()
     })
 
     it('shows a truncation banner when the message is too large', () => {

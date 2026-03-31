@@ -125,3 +125,39 @@ export function sanitizeHtmlDefault(html: string): string {
         },
     })
 }
+
+/**
+ * Extract `<div class="gorgias-video-container" data-video-src="https://www.youtube.com/watch?v=4sLFpe-xbhk" width="600"></div>` elements from html, and return `data-video-src` urls separately.
+ */
+export function extractGorgiasVideoDivFromHtmlContent(html: string): {
+    htmlCleaned: string
+    videoUrls: string[]
+} {
+    const regex = new RegExp(
+        '<div class="gorgias-video-container" data-video-src="(.+?)".+?></div>',
+        'g',
+    )
+
+    const urls = []
+    let result: RegExpExecArray | null
+    while ((result = regex.exec(html)) !== null) {
+        urls.push(result[1])
+    }
+
+    let htmlCleaned = html.replace(regex, '')
+
+    // Remove the ending `<div><br /></div>` if any when ending with a video content.
+    // This is an unwanted extra space produced by draftjs editor because there will be an empty line below the video when content ends by a video.
+    if (
+        html.match(
+            /<div class="gorgias-video-container" data-video-src=".+?".+?>(<\/div><div><br.{0,2}><\/div>)$/,
+        )
+    ) {
+        htmlCleaned = htmlCleaned.replace(/<div><br.{0,2}><\/div>$/, '')
+    }
+
+    return {
+        htmlCleaned: htmlCleaned,
+        videoUrls: urls,
+    }
+}

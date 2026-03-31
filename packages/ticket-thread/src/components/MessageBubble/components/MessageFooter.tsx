@@ -8,6 +8,7 @@ import type {
     TicketThreadRegularMessageItem,
 } from '../../../hooks/messages/types'
 import { MessageAttachments } from './MessageAttachments'
+import { MessageVideos } from './MessageVideos'
 import { TranslationsDropdown } from './TranslationsDropdown'
 import { getMessageContent } from './utils/getMessageContent'
 
@@ -42,6 +43,7 @@ export function MessageFooter({
                     </Tag>
                 </Box>
             )}
+            <MessageVideos item={item} />
             {showTranslations && isNumber(messageId) && (
                 <TranslationsDropdown
                     messageId={messageId}

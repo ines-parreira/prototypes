@@ -8,6 +8,7 @@ import {
 } from '@repo/tickets'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
+import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
 import type { TicketThreadRegularMessageItem } from '../../../hooks/messages/types'
 
@@ -15,9 +16,18 @@ type UseDisplayedTicketMessageParams = {
     item: TicketThreadRegularMessageItem
 }
 
+export type DisplayedTicketThreadRegularMessageItem = Omit<
+    TicketThreadRegularMessageItem,
+    'data'
+> & {
+    data: TicketThreadRegularMessageItem['data'] & {
+        translations?: TicketMessageTranslation | null
+    }
+}
+
 export function useDisplayedTicketMessage({
     item,
-}: UseDisplayedTicketMessageParams): TicketThreadRegularMessageItem {
+}: UseDisplayedTicketMessageParams): DisplayedTicketThreadRegularMessageItem {
     const ticketId = item.data.ticket_id
     const { display } = useTicketMessageDisplayState(item.data.id ?? 0)
     const { getMessageTranslation } = useTicketMessageTranslations({
@@ -41,10 +51,7 @@ export function useDisplayedTicketMessage({
                 ...item,
                 data: {
                     ...item.data,
-                    stripped_html:
-                        translation.stripped_html ?? item.data.stripped_html,
-                    stripped_text:
-                        translation.stripped_text ?? item.data.stripped_text,
+                    translations: translation,
                 },
             }
         }

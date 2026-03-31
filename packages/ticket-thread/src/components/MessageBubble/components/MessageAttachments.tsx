@@ -16,6 +16,9 @@ import type {
     TicketThreadRegularMessageItem,
 } from '../../../hooks/messages/types'
 import { Attachment } from './Attachment'
+import { DiscountOfferAttachment } from './DiscountOfferAttachment'
+import { isProductAttachment, ProductAttachment } from './ProductAttachment'
+import { isDiscountOfferAttachment } from './utils/discountOffer'
 import { isImage } from './utils/image'
 
 type MessageAttachmentsProps = {
@@ -23,18 +26,70 @@ type MessageAttachmentsProps = {
         | TicketThreadRegularMessageItem
         | TicketThreadInternalNoteItem
         | TicketThreadAiAgentMessageItem
+    attachmentsLabel?: string
 }
 
-export function MessageAttachments({ item }: MessageAttachmentsProps) {
+function SectionHeader({ icon, label }: { icon: IconName; label: string }) {
+    return (
+        <Box alignItems="center" gap="xxxxs">
+            <Icon name={icon} size="sm" color="content-neutral-secondary" />
+            <Text size="sm" color="content-neutral-secondary">
+                {label}
+            </Text>
+        </Box>
+    )
+}
+
+function partitionAttachments(attachments: TicketMessageAttachment[]) {
+    const failed: TicketMessageAttachment[] = []
+    const linked: TicketMessageAttachment[] = []
+    const regular: TicketMessageAttachment[] = []
+    const images: TicketMessageAttachment[] = []
+
+    for (const attachment of attachments) {
+        if (attachment.public === false) {
+            failed.push(attachment)
+            continue
+        }
+
+        if (isImage(attachment)) {
+            images.push(attachment)
+        }
+
+        if (
+            isProductAttachment(attachment) ||
+            isDiscountOfferAttachment(attachment)
+        ) {
+            linked.push(attachment)
+        } else {
+            regular.push(attachment)
+        }
+    }
+
+    return {
+        failed,
+        linked,
+        regular,
+        images,
+    }
+}
+
+export function MessageAttachments({
+    item,
+    attachmentsLabel = 'Attachments',
+}: MessageAttachmentsProps) {
     const [isLightboxOpen, setIsLightboxOpen] = useState(false)
     const [currentImage, setCurrentImage] = useState(0)
 
     const attachments = item.data.attachments
     if (!attachments || attachments.length === 0) return null
 
-    const failedAttachments = attachments.filter((a) => a.public === false)
-    const publicAttachments = attachments.filter((a) => a.public !== false)
-    const images = publicAttachments.filter(isImage)
+    const {
+        failed: failedAttachments,
+        linked: linkedAttachments,
+        regular: regularAttachments,
+        images,
+    } = partitionAttachments(attachments)
 
     function openLightbox(attachment: TicketMessageAttachment) {
         const index = images.findIndex((img) => img.url === attachment.url)
@@ -61,23 +116,46 @@ export function MessageAttachments({ item }: MessageAttachmentsProps) {
                     description={`There are ${failedAttachments.length} attachment(s) that couldn't be downloaded.`}
                 />
             )}
-            <Box alignItems="center" gap="xxxxs">
-                <Icon
-                    name={IconName.PaperclipAttachment}
-                    size="sm"
-                    color="content-neutral-secondary"
-                />
-                <Text color="content-neutral-secondary">Attachments</Text>
-            </Box>
-            <Box flexWrap="wrap" gap="xs">
-                {publicAttachments.map((attachment, idx) => (
-                    <Attachment
-                        key={`${attachment.url}-${idx}`}
-                        attachment={attachment}
-                        onImageClick={openLightbox}
+            {linkedAttachments.length > 0 && (
+                <Box flexDirection="column" gap="xs">
+                    <SectionHeader
+                        icon={IconName.LinkHorizontal}
+                        label="Linked products"
                     />
-                ))}
-            </Box>
+                    <Box flexWrap="wrap" gap="xs">
+                        {linkedAttachments.map((attachment, idx) =>
+                            isProductAttachment(attachment) ? (
+                                <ProductAttachment
+                                    key={`${attachment.url}-${idx}`}
+                                    attachment={attachment}
+                                />
+                            ) : (
+                                <DiscountOfferAttachment
+                                    key={`${attachment.url}-${idx}`}
+                                    attachment={attachment}
+                                />
+                            ),
+                        )}
+                    </Box>
+                </Box>
+            )}
+            {regularAttachments.length > 0 && (
+                <Box flexDirection="column" gap="xs">
+                    <SectionHeader
+                        icon={IconName.PaperclipAttachment}
+                        label={attachmentsLabel}
+                    />
+                    <Box flexWrap="wrap" gap="xs">
+                        {regularAttachments.map((attachment, idx) => (
+                            <Attachment
+                                key={`${attachment.url}-${idx}`}
+                                attachment={attachment}
+                                onImageClick={openLightbox}
+                            />
+                        ))}
+                    </Box>
+                </Box>
+            )}
             <YetAnotherLightbox
                 open={isLightboxOpen}
                 index={currentImage}

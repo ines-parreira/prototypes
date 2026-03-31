@@ -404,6 +404,10 @@ catalogs:
     ua-parser-js:
       specifier: ^1.0.37
       version: 1.0.37
+  video:
+    react-player:
+      specifier: ^2.11.0
+      version: 2.11.0
   voice:
     '@twilio/voice-sdk':
       specifier: ^2.11.1
@@ -1021,7 +1025,7 @@ importers:
         specifier: 6.3.0
         version: 6.3.0(react@18.2.0)
       react-player:
-        specifier: ^2.11.0
+        specifier: catalog:video
         version: 2.11.0(react@18.2.0)
       react-rating-stars-component:
         specifier: 2.2.0
@@ -3158,6 +3162,9 @@ importers:
       react-dom:
         specifier: catalog:react
         version: 18.2.0(react@18.2.0)
+      react-player:
+        specifier: catalog:video
+        version: 2.11.0(react@18.2.0)
       react-router:
         specifier: catalog:react-router
         version: 5.2.0(react@18.2.0)
