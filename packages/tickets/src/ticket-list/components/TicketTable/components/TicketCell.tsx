@@ -1,4 +1,4 @@
-import { Box, DataTableBaseCell, Text } from '@gorgias/axiom'
+import { Box, DataTableBaseCell, OverflowTooltip, Text } from '@gorgias/axiom'
 import type {
     TicketCompact,
     TicketTranslationCompact,
@@ -29,30 +29,33 @@ export function TicketCell({
         })
 
     return (
-        <DataTableBaseCell
-            flexDirection="column"
-            gap="xxxxs"
-            alignItems="stretch"
-        >
-            <Text
-                variant={ticket.is_unread ? 'bold' : 'regular'}
-                overflow="ellipsis"
-            >
-                {displaySubject}
-            </Text>
+        <DataTableBaseCell gap="xs">
             <Box
-                flexDirection="row"
-                justifyContent="space-between"
-                alignItems="baseline"
-                gap="xxxs"
+                flex={1}
+                minWidth={0}
+                flexDirection="column"
+                gap="xs"
+                alignItems="stretch"
             >
-                <Text
-                    size="xs"
-                    color="content-neutral-secondary"
-                    overflow="ellipsis"
-                >
-                    {displayExcerpt}
-                </Text>
+                <OverflowTooltip placement="right">
+                    <Text
+                        variant={ticket.is_unread ? 'bold' : 'regular'}
+                        overflow="ellipsis"
+                    >
+                        {displaySubject}
+                    </Text>
+                </OverflowTooltip>
+                <OverflowTooltip placement="right">
+                    <Text
+                        size="sm"
+                        color="content-neutral-secondary"
+                        overflow="ellipsis"
+                    >
+                        {displayExcerpt}
+                    </Text>
+                </OverflowTooltip>
+            </Box>
+            <Box flexShrink={0}>
                 <TicketListItemAgentsViewing agents={otherAgentsViewing} />
             </Box>
         </DataTableBaseCell>

@@ -57,6 +57,10 @@ export function TicketTable({
 
     const [pageSize, setPageSize] = useState(20)
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
+    const hasSelection = useMemo(
+        () => Object.values(rowSelection).some(Boolean),
+        [rowSelection],
+    )
 
     const ticketsListParams = useMemo(
         () => ({ order_by: sortOrder, limit: pageSize }),
@@ -73,7 +77,7 @@ export function TicketTable({
         refetch,
     } = useTicketsList(viewId, {
         params: ticketsListParams,
-        pauseUpdates: false,
+        pauseUpdates: hasSelection,
         enableStaleUpdates: !view?.deactivated_datetime,
     })
     const placeholderKind = getPlaceholderKind({
@@ -252,7 +256,6 @@ export function TicketTable({
     })
     const { canUseRestrictedBulkActions } = useBulkActionMenuState()
     const isTrashLikeView = useIsTrashLikeView(viewId)
-    const hasSelection = selectedTicketIds.size > 0
     const [isAssignUserOpen, setIsAssignUserOpen] = useState(false)
     const [isAddTagOpen, setIsAddTagOpen] = useState(false)
     useEffect(() => {
@@ -318,7 +321,10 @@ export function TicketTable({
         <div className={css.container}>
             <DataTable
                 key={viewId}
-                persistenceId={`ticket-table-${viewId}`}
+                persistence={{
+                    enable: true,
+                    localStorage: { id: `ticket-table-${viewId}` },
+                }}
                 data={displayedTickets}
                 columns={columns}
                 isLoading={isLoading || isFetchingNextPage}
@@ -327,19 +333,20 @@ export function TicketTable({
                 selection={{
                     enable: true,
                     multiple: true,
-                    initial: rowSelection,
+                    value: rowSelection,
                     onChange: setRowSelection,
                 }}
                 sorting={{
                     enable: true,
                     manual: true,
-                    initial: sortingInitial,
+                    value: sortingInitial,
                     onChange: handleSortingChange,
+                    persist: false,
                 }}
                 pagination={{
                     enable: true,
                     manual: true,
-                    pageSize,
+                    value: { pageIndex: currentPageIndex, pageSize },
                     hasNextPage:
                         (currentPageIndex + 1) * pageSize < tickets.length ||
                         !!hasNextPage,
@@ -349,6 +356,7 @@ export function TicketTable({
                         setPageSize(size)
                         setCurrentPageIndex(0)
                     },
+                    persist: true,
                 }}
                 columnEditing={{
                     enable: true,

@@ -24,6 +24,7 @@ export function DateTimeCell({ datetime, preferences }: Props) {
     return (
         <DataTableBaseCell alignItems="stretch">
             <Tooltip
+                placement="right"
                 trigger={() => (
                     <Text overflow="ellipsis">
                         {formattedDatetime.cellLabel}

@@ -106,3 +106,77 @@ export const ticketMessageSourceToIconName = (
             return IconName.CircleHelp
     }
 }
+
+export const ticketMessageSourceToLabel = (
+    ticketMessageSource: TicketMessageSource,
+): string => {
+    switch (ticketMessageSource) {
+        case TicketMessageSourceType.InternalNote:
+            return 'Internal note'
+        case TicketMessageSourceType.Email:
+        case TicketMessageSourceType.HelpCenterContactForm:
+        case TicketMessageSourceType.ContactForm:
+        case LegacyChannelSlug.ContactForm:
+            return 'Email'
+        case TicketMessageSourceType.Chat:
+        case TicketMessageSourceType.ChatContactForm:
+        case TicketMessageSourceType.ChatOfflineCapture:
+            return 'Chat'
+        case TicketMessageSourceType.Api:
+            return 'API'
+        case TicketMessageSourceType.Aircall:
+        case TicketMessageSourceType.OttspottCall:
+        case TicketMessageSourceType.Phone:
+        case TicketMessageSourceType.Twilio:
+            return 'Phone'
+        case TicketMessageSourceType.Sms:
+            return 'SMS'
+        case LegacyChannelSlug.HelpCenter:
+            return 'Help Center'
+        case TicketMessageSourceType.SystemMessage:
+            return 'System message'
+        case LegacyChannelSlug.FacebookMention:
+        case LegacyChannelSlug.FacebookRecommendations:
+        case TicketMessageSourceType.FacebookComment:
+        case TicketMessageSourceType.FacebookReviewComment:
+        case TicketMessageSourceType.Facebook:
+        case TicketMessageSourceType.FacebookReview:
+        case TicketMessageSourceType.FacebookPost:
+        case TicketMessageSourceType.FacebookMentionPost:
+        case TicketMessageSourceType.FacebookMentionComment:
+            return 'Facebook'
+        case TicketMessageSourceType.FacebookMessage:
+        case TicketMessageSourceType.FacebookMessenger:
+            return 'Messenger'
+        case LegacyChannelSlug.Twitter:
+        case TicketMessageSourceType.TwitterTweet:
+        case TicketMessageSourceType.TwitterQuotedTweet:
+        case TicketMessageSourceType.TwitterMentionTweet:
+        case TicketMessageSourceType.TwitterDirectMessage:
+            return 'X'
+        case TicketMessageSourceType.Instagram:
+        case TicketMessageSourceType.InstagramAdComment:
+        case TicketMessageSourceType.InstagramAdMedia:
+        case TicketMessageSourceType.InstagramComment:
+        case TicketMessageSourceType.InstagramMedia:
+        case LegacyChannelSlug.InstagramMention:
+        case TicketMessageSourceType.InstagramMentionMedia:
+        case TicketMessageSourceType.InstagramMentionComment:
+            return 'Instagram'
+        case TicketMessageSourceType.InstagramDirectMessage:
+            return 'Instagram DM'
+        case TicketMessageSourceType.YotpoReview:
+        case TicketMessageSourceType.YotpoReviewPublicComment:
+        case TicketMessageSourceType.YotpoReviewPrivateComment:
+            return 'Yotpo'
+        case LegacyChannelSlug.Whatsapp:
+        case TicketMessageSourceType.WhatsappMessage:
+            return 'WhatsApp'
+        case TicketMessageSourceType.TiktokShop:
+            return 'TikTok Shop'
+        case TicketMessageSourceType.GoogleBusinessMessages:
+            return 'Google Business Messages'
+        default:
+            return 'Unknown channel'
+    }
+}

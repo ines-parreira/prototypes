@@ -403,6 +403,19 @@ describe('createTicketTableColumns', () => {
 
             expect(container.querySelector('svg')).toBeInTheDocument()
         })
+
+        it('wraps the channel icon in a tooltip trigger', () => {
+            const { container } = renderColumn(
+                'channel',
+                mockTicketCompact({ channel: TicketMessageSourceType.Email }),
+            )
+
+            const trigger = container.querySelector(
+                '[data-name="tooltip-trigger"]',
+            )
+
+            expect(trigger).toBeInTheDocument()
+        })
     })
 
     describe('datetime columns', () => {

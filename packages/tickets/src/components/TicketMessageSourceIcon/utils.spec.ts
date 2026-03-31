@@ -1,0 +1,65 @@
+import {
+    LegacyChannelSlug,
+    TicketMessageSourceType,
+} from '@gorgias/helpdesk-types'
+
+import { ticketMessageSourceToLabel } from './utils'
+
+describe('ticketMessageSourceToLabel', () => {
+    it.each([
+        [TicketMessageSourceType.InternalNote, 'Internal note'],
+        [TicketMessageSourceType.Email, 'Email'],
+        [TicketMessageSourceType.HelpCenterContactForm, 'Email'],
+        [TicketMessageSourceType.ContactForm, 'Email'],
+        [LegacyChannelSlug.ContactForm, 'Email'],
+        [TicketMessageSourceType.Chat, 'Chat'],
+        [TicketMessageSourceType.ChatContactForm, 'Chat'],
+        [TicketMessageSourceType.ChatOfflineCapture, 'Chat'],
+        [TicketMessageSourceType.Api, 'API'],
+        [TicketMessageSourceType.Aircall, 'Phone'],
+        [TicketMessageSourceType.OttspottCall, 'Phone'],
+        [TicketMessageSourceType.Phone, 'Phone'],
+        [TicketMessageSourceType.Twilio, 'Phone'],
+        [TicketMessageSourceType.Sms, 'SMS'],
+        [LegacyChannelSlug.HelpCenter, 'Help Center'],
+        [TicketMessageSourceType.SystemMessage, 'System message'],
+        [LegacyChannelSlug.FacebookMention, 'Facebook'],
+        [LegacyChannelSlug.FacebookRecommendations, 'Facebook'],
+        [TicketMessageSourceType.FacebookComment, 'Facebook'],
+        [TicketMessageSourceType.FacebookReviewComment, 'Facebook'],
+        [TicketMessageSourceType.Facebook, 'Facebook'],
+        [TicketMessageSourceType.FacebookReview, 'Facebook'],
+        [TicketMessageSourceType.FacebookPost, 'Facebook'],
+        [TicketMessageSourceType.FacebookMentionPost, 'Facebook'],
+        [TicketMessageSourceType.FacebookMentionComment, 'Facebook'],
+        [TicketMessageSourceType.FacebookMessage, 'Messenger'],
+        [TicketMessageSourceType.FacebookMessenger, 'Messenger'],
+        [LegacyChannelSlug.Twitter, 'X'],
+        [TicketMessageSourceType.TwitterTweet, 'X'],
+        [TicketMessageSourceType.TwitterQuotedTweet, 'X'],
+        [TicketMessageSourceType.TwitterMentionTweet, 'X'],
+        [TicketMessageSourceType.TwitterDirectMessage, 'X'],
+        [TicketMessageSourceType.Instagram, 'Instagram'],
+        [TicketMessageSourceType.InstagramAdComment, 'Instagram'],
+        [TicketMessageSourceType.InstagramAdMedia, 'Instagram'],
+        [TicketMessageSourceType.InstagramComment, 'Instagram'],
+        [TicketMessageSourceType.InstagramMedia, 'Instagram'],
+        [LegacyChannelSlug.InstagramMention, 'Instagram'],
+        [TicketMessageSourceType.InstagramMentionMedia, 'Instagram'],
+        [TicketMessageSourceType.InstagramMentionComment, 'Instagram'],
+        [TicketMessageSourceType.InstagramDirectMessage, 'Instagram DM'],
+        [TicketMessageSourceType.YotpoReview, 'Yotpo'],
+        [TicketMessageSourceType.YotpoReviewPublicComment, 'Yotpo'],
+        [TicketMessageSourceType.YotpoReviewPrivateComment, 'Yotpo'],
+        [LegacyChannelSlug.Whatsapp, 'WhatsApp'],
+        [TicketMessageSourceType.WhatsappMessage, 'WhatsApp'],
+        [TicketMessageSourceType.TiktokShop, 'TikTok Shop'],
+        [
+            TicketMessageSourceType.GoogleBusinessMessages,
+            'Google Business Messages',
+        ],
+        ['unknown-channel' as any, 'Unknown channel'],
+    ])('maps %s to %s', (source, expectedLabel) => {
+        expect(ticketMessageSourceToLabel(source)).toBe(expectedLabel)
+    })
+})

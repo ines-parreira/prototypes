@@ -18,6 +18,7 @@ import { useCreateTicketTag } from '../../../components/InfobarTicketDetails/com
 import { useListTagsSearch } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { TicketStatus } from '../../../types/ticket'
+import * as useTicketsListModule from '../../hooks/useTicketsList'
 import { TicketTable } from './TicketTable'
 
 const { pushMock } = vi.hoisted(() => ({
@@ -131,7 +132,7 @@ vi.mock('../../hooks/useSortOrder', () => ({
 }))
 
 vi.mock('../../hooks/useTicketsList', () => ({
-    useTicketsList: () => ({
+    useTicketsList: vi.fn(() => ({
         tickets: mockState.tickets,
         fetchNextPage: vi.fn(),
         hasNextPage: false,
@@ -139,7 +140,7 @@ vi.mock('../../hooks/useTicketsList', () => ({
         isFetchingNextPage: false,
         error: null,
         refetch: vi.fn(),
-    }),
+    })),
 }))
 
 vi.mock('../../hooks/useTicketTableColumnVisibility', () => ({
@@ -319,6 +320,7 @@ describe('TicketTable', () => {
         pushMock.mockReset()
         mockState.markAsRead.mockReset()
         mockState.setSortOrder.mockReset()
+        vi.mocked(useTicketsListModule.useTicketsList).mockClear()
         mockUseListTagsSearch.mockReturnValue({
             tags: [vipTag, urgentTag],
             search: '',
@@ -364,6 +366,63 @@ describe('TicketTable', () => {
         expect(
             screen.getByRole('button', { name: 'More actions' }),
         ).toBeEnabled()
+    })
+
+    it('pauses updates while a row is selected and resumes after clearing the selection', async () => {
+        const { user } = renderTicketTable()
+        await waitForTicketTableToBeReady()
+
+        await waitFor(() => {
+            expect(
+                useTicketsListModule.useTicketsList,
+            ).toHaveBeenLastCalledWith(
+                123,
+                expect.objectContaining({
+                    params: {
+                        order_by: 'last_message_datetime:desc',
+                        limit: 20,
+                    },
+                    pauseUpdates: false,
+                    enableStaleUpdates: true,
+                }),
+            )
+        })
+
+        await user.click(screen.getAllByRole('checkbox')[1])
+
+        await waitFor(() => {
+            expect(
+                useTicketsListModule.useTicketsList,
+            ).toHaveBeenLastCalledWith(
+                123,
+                expect.objectContaining({
+                    params: {
+                        order_by: 'last_message_datetime:desc',
+                        limit: 20,
+                    },
+                    pauseUpdates: true,
+                    enableStaleUpdates: true,
+                }),
+            )
+        })
+
+        await user.click(screen.getAllByRole('checkbox')[1])
+
+        await waitFor(() => {
+            expect(
+                useTicketsListModule.useTicketsList,
+            ).toHaveBeenLastCalledWith(
+                123,
+                expect.objectContaining({
+                    params: {
+                        order_by: 'last_message_datetime:desc',
+                        limit: 20,
+                    },
+                    pauseUpdates: false,
+                    enableStaleUpdates: true,
+                }),
+            )
+        })
     })
 
     it('passes the trash-like view context to the bulk menu when the view filters are trash-like', async () => {

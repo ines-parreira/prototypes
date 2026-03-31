@@ -25,7 +25,7 @@ export function SubjectOnlyCell({
 
     return (
         <DataTableBaseCell alignItems="stretch">
-            <OverflowTooltip>
+            <OverflowTooltip placement="right">
                 <Text
                     overflow="ellipsis"
                     variant={ticket.is_unread ? 'bold' : 'regular'}

@@ -11,7 +11,7 @@ export function SingleLineTextCell({ value }: Props) {
 
     return (
         <DataTableBaseCell alignItems="stretch">
-            <OverflowTooltip>
+            <OverflowTooltip placement="right">
                 <Text overflow="ellipsis">{value}</Text>
             </OverflowTooltip>
         </DataTableBaseCell>

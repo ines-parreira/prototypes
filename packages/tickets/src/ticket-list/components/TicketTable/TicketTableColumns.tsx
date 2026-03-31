@@ -55,6 +55,7 @@ export function createTicketTableColumns({
             enableSorting: false,
             enableHiding: false,
             size: 350,
+            minSize: 350,
             maxSize: 350,
             cell: (cell) => (
                 <TicketCell
@@ -71,6 +72,8 @@ export function createTicketTableColumns({
             id: 'subject',
             header: 'Subject',
             enableSorting: false,
+            size: 240,
+            minSize: 200,
             cell: (cell) => (
                 <SubjectOnlyCell
                     ticket={cell.row.original}
@@ -108,6 +111,7 @@ export function createTicketTableColumns({
             id: 'status',
             header: 'Status',
             enableSorting: false,
+            hug: true,
             cell: (cell) => {
                 const ticket = cell.row.original
                 const status = ticket.snooze_datetime
@@ -129,6 +133,7 @@ export function createTicketTableColumns({
                 id: 'last_message_datetime',
                 header: 'Last message',
                 enableSorting: true,
+                hug: true,
                 size: 180,
                 minSize: 160,
                 cell: (cell) => (
@@ -143,20 +148,23 @@ export function createTicketTableColumns({
             id: 'tags',
             header: 'Tags',
             enableSorting: false,
-            size: 240,
-            minSize: 200,
+            size: 280,
+            minSize: 240,
             cell: (cell) => <TagsCell ticket={cell.row.original} />,
         }),
         columnHelper.accessor((ticket) => ticket.priority ?? 'normal', {
             id: 'priority',
             header: 'Priority',
             enableSorting: true,
+            hug: true,
             cell: (cell) => <PriorityCell ticket={cell.row.original} />,
         }),
         columnHelper.accessor((ticket) => ticket.assignee_team?.name ?? null, {
             id: 'assignee_team',
             header: 'Assignee team',
             enableSorting: false,
+            size: 200,
+            minSize: 160,
             cell: (cell) => <SingleLineTextCell value={cell.getValue()} />,
         }),
         columnHelper.accessor(
@@ -175,6 +183,7 @@ export function createTicketTableColumns({
             id: 'id',
             header: 'ID',
             enableSorting: false,
+            hug: true,
             cell: (cell) => <SingleLineTextCell value={cell.getValue()} />,
         }),
         columnHelper.accessor(
@@ -187,6 +196,8 @@ export function createTicketTableColumns({
                 id: 'language',
                 header: 'Language',
                 enableSorting: false,
+                size: 140,
+                minSize: 120,
                 cell: (cell) => <SingleLineTextCell value={cell.getValue()} />,
             },
         ),
@@ -200,6 +211,7 @@ export function createTicketTableColumns({
             id: 'created_datetime',
             header: 'Created',
             enableSorting: true,
+            hug: true,
             size: 180,
             minSize: 160,
             cell: (cell) => (
@@ -213,6 +225,7 @@ export function createTicketTableColumns({
             id: 'updated_datetime',
             header: 'Updated',
             enableSorting: true,
+            hug: true,
             size: 180,
             minSize: 160,
             cell: (cell) => (
@@ -228,6 +241,7 @@ export function createTicketTableColumns({
                 id: 'last_received_message_datetime',
                 header: 'Last received',
                 enableSorting: true,
+                hug: true,
                 size: 180,
                 minSize: 160,
                 cell: (cell) => (
@@ -242,6 +256,7 @@ export function createTicketTableColumns({
             id: 'closed',
             header: 'Closed',
             enableSorting: false,
+            hug: true,
             size: 180,
             minSize: 160,
             cell: (cell) => (
@@ -255,6 +270,7 @@ export function createTicketTableColumns({
             id: 'snooze',
             header: 'Snooze',
             enableSorting: false,
+            hug: true,
             size: 180,
             minSize: 160,
             cell: (cell) => (
