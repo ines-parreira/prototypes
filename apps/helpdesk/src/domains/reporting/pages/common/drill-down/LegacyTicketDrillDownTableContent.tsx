@@ -513,7 +513,7 @@ export const LegacyTicketDrillDownTableContent = ({
                 ) : (
                     data.map((item) => (
                         <TableBodyRow
-                            key={item.ticket.id}
+                            key={`${item.ticket.id}-${item.order?.id ?? ''}`}
                             className={classNames(css.tableRow, {
                                 [css.isHighlighted]: !item.ticket.isRead,
                             })}
