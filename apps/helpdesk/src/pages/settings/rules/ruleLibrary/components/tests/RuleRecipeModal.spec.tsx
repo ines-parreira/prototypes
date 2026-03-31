@@ -75,6 +75,23 @@ describe('RuleRecipeModal', () => {
         expect(baseElement).toMatchSnapshot()
     })
 
+    it('should not render view creation checkbox when views_per_section is empty', () => {
+        render(
+            <Provider store={mockStore(defaultState)}>
+                <RuleRecipeModal
+                    {...minProps}
+                    recipe={{
+                        ...minProps.recipe,
+                        views_per_section: {},
+                    }}
+                />
+            </Provider>,
+        )
+        expect(
+            screen.queryByText(/create the ticket view/i),
+        ).not.toBeInTheDocument()
+    })
+
     it('should render "Install" button on auto-close-spam rule', () => {
         render(
             <Provider store={mockStore(defaultState)}>

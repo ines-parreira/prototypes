@@ -164,7 +164,8 @@ export const RuleRecipeModal = ({
         )
 
     const ViewsCreationCheckbox = () => {
-        if (!views_per_section) return <></>
+        if (!views_per_section || !Object.keys(views_per_section).length)
+            return <></>
 
         const viewNames = _flatten(Object.values(views_per_section)).map(
             ({ name }) => name,
