@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
 import { useHistory, useParams } from 'react-router-dom'
 
@@ -46,6 +47,7 @@ import {
 } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
 import type { FolderSyncStatus } from 'pages/aiAgent/KnowledgeHub/FolderSyncBanner'
 import { FolderSyncBanner } from 'pages/aiAgent/KnowledgeHub/FolderSyncBanner'
+import { GoToSkillsBanner } from 'pages/aiAgent/KnowledgeHub/GoToSkillsBanner/GoToSkillsBanner'
 import { useGetLastWebsiteSync } from 'pages/aiAgent/KnowledgeHub/hooks/useGetLastWebsiteSync'
 import { useKnowledgeHubFaqEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor'
 import { useKnowledgeHubGuidanceEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor'
@@ -85,6 +87,10 @@ export const KnowledgeHubContainer = () => {
     const history = useHistory()
     const [isAddKnowledgeModalOpen, setIsAddKnowledgeModalOpen] =
         useState(false)
+
+    const isKnowledgeIntentManagementSystemEnabled = useFlag(
+        FeatureFlagKey.KnowledgeIntentManagementSystem,
+    )
 
     const {
         shopName,
@@ -669,6 +675,11 @@ export const KnowledgeHubContainer = () => {
             />
             <div className={css.scrollContainer}>
                 <Box paddingLeft="lg" paddingRight="lg" flexDirection="column">
+                    {isKnowledgeIntentManagementSystemEnabled && (
+                        <Box paddingTop="xl" width="100%">
+                            <GoToSkillsBanner shopName={shopName} />
+                        </Box>
+                    )}
                     {selectedFolder && folderSyncStatus && (
                         <Box paddingTop="md">
                             <FolderSyncBanner

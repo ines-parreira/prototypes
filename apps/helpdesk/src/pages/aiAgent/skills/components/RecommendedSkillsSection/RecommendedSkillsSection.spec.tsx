@@ -155,7 +155,7 @@ describe('RecommendedSkillsSection', () => {
 
         expect(
             screen.getByText(
-                'Based on handover rate and ticket volume across your store',
+                'Intents that would benefit most from a dedicated skill, based on your ticket volume and handover rate',
             ),
         ).toBeInTheDocument()
     })
@@ -307,5 +307,51 @@ describe('RecommendedSkillsSection', () => {
         renderComponent()
 
         expect(screen.getByText('200 (50%)')).toBeInTheDocument()
+    })
+
+    it('displays ticket volume percent with 1 decimal place when rounding would produce 0', () => {
+        mockUseIntentsMetrics.mockReturnValue({
+            data: new Map([
+                [
+                    'order::status',
+                    {
+                        ticketVolume: 3,
+                        handoverCount: 0,
+                        ticketVolumePercent: 1.4,
+                        handoverPercent: 0,
+                    },
+                ],
+            ]),
+            isLoading: false,
+            metricsDateRange: defaultMetricsDateRange,
+        })
+        mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 210 })
+
+        renderComponent()
+
+        expect(screen.getByText('3 (1.4%)')).toBeInTheDocument()
+    })
+
+    it('displays handover percent with 1 decimal place', () => {
+        mockUseIntentsMetrics.mockReturnValue({
+            data: new Map([
+                [
+                    'order::status',
+                    {
+                        ticketVolume: 100,
+                        handoverCount: 1,
+                        ticketVolumePercent: 25,
+                        handoverPercent: 1,
+                    },
+                ],
+            ]),
+            isLoading: false,
+            metricsDateRange: defaultMetricsDateRange,
+        })
+        mockUseTotalAiAgentTickets.mockReturnValue({ totalCount: 400 })
+
+        renderComponent()
+
+        expect(screen.getByText('1 (1%)')).toBeInTheDocument()
     })
 })

@@ -23,6 +23,9 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
     const isLinkedIntentsEnabled = useFlag(
         FeatureFlagKey.AddLinkedIntentsFromSidepanel,
     )
+    const isKnowledgeIntentManagementSystemEnabled = useFlag(
+        FeatureFlagKey.KnowledgeIntentManagementSystem,
+    )
     const impact = useGuidanceImpactFromContext()
     const recentTickets = useGuidanceRecentTicketsFromContext()
     const {
@@ -97,9 +100,10 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
         >
             <KnowledgeEditorSidePanelSectionGuidanceDetails sectionId="details" />
 
-            {isLinkedIntentsEnabled && (
-                <KnowledgeEditorSidePanelSectionLinkedIntents sectionId="linked-intents" />
-            )}
+            {isLinkedIntentsEnabled &&
+                !isKnowledgeIntentManagementSystemEnabled && (
+                    <KnowledgeEditorSidePanelSectionLinkedIntents sectionId="linked-intents" />
+                )}
 
             <KnowledgeEditorSidePanelSectionImpact
                 {...impact}

@@ -1,8 +1,12 @@
 import { useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import { Tag } from '@gorgias/axiom'
 
 import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
+import { KnowledgeEditorSidePanelConvertToSkill } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelConvertToSkill'
+import { KnowledgeEditorSidePanelSectionConvertToSkillModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/modals/KnowledgeEditorSidePanelSectionConvertToSkillModal'
 
 import {
     KnowledgeEditorSidePanelFieldAIAgentStatus,
@@ -37,6 +41,12 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
     } = useGuidanceDetailsFromContext()
     const [isTogglingAIAgentStatus, setIsTogglingAIAgentStatus] =
         useState(false)
+    const [isConvertToSkillModalOpen, setIsConvertToSkillModalOpen] =
+        useState(false)
+
+    const isKnowledgeIntentManagementSystemEnabled = useFlag(
+        FeatureFlagKey.KnowledgeIntentManagementSystem,
+    )
 
     const handleAIAgentStatusChange = async () => {
         setIsTogglingAIAgentStatus(true)
@@ -45,6 +55,10 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         } finally {
             setIsTogglingAIAgentStatus(false)
         }
+    }
+
+    const handleConvert = () => {
+        setIsConvertToSkillModalOpen(true)
     }
 
     const columns = [
@@ -109,6 +123,11 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
                 sectionId={sectionId}
             >
                 <KnowledgeEditorSidePanelTwoColumnsContent columns={columns} />
+                {isKnowledgeIntentManagementSystemEnabled && (
+                    <KnowledgeEditorSidePanelConvertToSkill
+                        onConvert={handleConvert}
+                    />
+                )}
             </KnowledgeEditorSidePanelSection>
 
             <KnowledgeEditorSidePanelGuidanceVisibilityConflictModal
@@ -117,6 +136,11 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
                 message={visibilityConflict.message}
                 onClose={closeVisibilityConflictModal}
                 onRebase={rebaseAndEnableVisibility}
+            />
+
+            <KnowledgeEditorSidePanelSectionConvertToSkillModal
+                isOpen={isConvertToSkillModalOpen}
+                onClose={() => setIsConvertToSkillModalOpen(false)}
             />
         </>
     )

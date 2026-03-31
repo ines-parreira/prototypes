@@ -112,7 +112,8 @@ export const RecommendedSkillsSection: React.FC<Props> = ({
                     </Box>
                 </Box>
                 <Text size="md" variant="regular" className={css.description}>
-                    Based on handover rate and ticket volume across your store
+                    Intents that would benefit most from a dedicated skill,
+                    based on your ticket volume and handover rate
                 </Text>
             </Box>
             <Box

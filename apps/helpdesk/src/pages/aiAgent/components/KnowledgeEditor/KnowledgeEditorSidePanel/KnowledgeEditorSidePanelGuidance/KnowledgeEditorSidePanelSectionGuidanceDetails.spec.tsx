@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -6,12 +7,21 @@ import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/Knowledg
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionGuidanceDetails } from './KnowledgeEditorSidePanelSectionGuidanceDetails'
 
+jest.mock('@repo/feature-flags', () => ({
+    useFlag: jest.fn().mockReturnValue(false),
+    FeatureFlagKey: {
+        KnowledgeIntentManagementSystem: 'knowledge-intent-management-system',
+    },
+}))
+
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks',
     () => ({
         useGuidanceDetailsFromContext: jest.fn(),
     }),
 )
+
+const mockUseFlag = useFlag as jest.Mock
 
 jest.mock('../KnowledgeEditorSidePanelCommonFields', () => ({
     KnowledgeEditorSidePanelFieldAIAgentStatus: ({
@@ -163,5 +173,65 @@ describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
         await user.click(screen.getByRole('button', { name: 'Cancel' }))
 
         expect(closeVisibilityConflictModal).toHaveBeenCalledTimes(1)
+    })
+
+    describe('Convert to skill', () => {
+        it('does not render the convert section when feature flag is off', () => {
+            mockUseFlag.mockReturnValue(false)
+            renderComponent()
+
+            expect(
+                screen.queryByRole('button', { name: /convert to skill/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('renders the convert section when feature flag is on', () => {
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('opens the convert to skill modal when Convert button is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Convert guidance into a skill?',
+                }),
+            ).toBeInTheDocument()
+        })
+
+        it('closes the convert to skill modal when Cancel is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+
+            expect(
+                screen.getByRole('heading', {
+                    name: 'Convert guidance into a skill?',
+                }),
+            ).toBeInTheDocument()
+
+            await user.click(screen.getByRole('button', { name: 'Cancel' }))
+
+            expect(
+                screen.queryByRole('heading', {
+                    name: 'Convert guidance into a skill?',
+                }),
+            ).not.toBeInTheDocument()
+        })
     })
 })
