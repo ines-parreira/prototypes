@@ -8,7 +8,10 @@ import type { TicketThreadMessageItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
 import { InstagramCommentMessageWrapper } from '../InstagramCommentMessage/InstagramCommentMessageWrapper'
+import { InstagramDirectMessage } from '../InstagramDirectMessage/InstagramDirectMessage'
 import { InstagramMediaMessageWrapper } from '../InstagramMediaMessage/InstagramMediaMessageWrapper'
+import { InstagramStoryMentionMessage } from '../InstagramStoryMessage/InstagramStoryMentionMessage'
+import { InstagramStoryReplyMessage } from '../InstagramStoryMessage/InstagramStoryReplyMessage'
 import { TicketInternalNote } from '../TicketInternalNote/TicketInternalNote'
 import { TicketMessage } from '../TicketMessage/TicketMessage'
 import { UnimplementedMessage } from '../UnimplementedMessage/UnimplementedMessage'
@@ -69,13 +72,13 @@ export function TicketThreadMessageItem({
             case TicketThreadItemTag.Messages.SocialMediaInstagramComment:
                 return <InstagramCommentMessageWrapper item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage:
-                return <UnimplementedMessage item={item} />
+                return <InstagramDirectMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramMedia:
                 return <InstagramMediaMessageWrapper item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention:
-                return <UnimplementedMessage item={item} />
+                return <InstagramStoryMentionMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply:
-                return <UnimplementedMessage item={item} />
+                return <InstagramStoryReplyMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaTwitterTweet:
                 return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage:

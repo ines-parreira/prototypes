@@ -122,8 +122,8 @@ describe('TicketThreadMessageItem', () => {
             label: 'Instagram DM',
         },
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention,
-            label: 'Instagram story mention',
+            tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
+            label: 'Instagram media',
         },
         {
             tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply,
@@ -443,6 +443,61 @@ describe('TicketThreadMessageItem', () => {
         expect(
             screen.getByRole('button', { name: 'Copy message' }),
         ).toBeInTheDocument()
+    })
+
+    it('renders Instagram DM with message body', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages
+                .SocialMediaInstagramDirectMessage,
+            data: {
+                ...messageData,
+                sender: {
+                    name: 'Alice',
+                    email: 'alice@example.com',
+                    meta: null,
+                },
+                from_agent: false,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('hello')).toBeInTheDocument()
+    })
+
+    it('renders Instagram story mention', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention,
+            data: {
+                ...messageData,
+                sender: {
+                    name: 'Alice',
+                    email: 'alice@example.com',
+                    meta: null,
+                },
+                from_agent: false,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('Story mention')).toBeInTheDocument()
+    })
+
+    it('renders Instagram story reply', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply,
+            data: {
+                ...messageData,
+                sender: {
+                    name: 'Alice',
+                    email: 'alice@example.com',
+                    meta: null,
+                },
+                from_agent: false,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('Story reply')).toBeInTheDocument()
     })
 
     it('shows only copy button for outbound WhatsApp messages', () => {

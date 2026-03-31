@@ -119,6 +119,8 @@ export type SocialMediaInstagramCommentSchema = z.infer<
 export const socialMediaInstagramDirectMessageSchema = z.object({
     source: z.object({
         type: z.enum(SOCIAL_MEDIA_INSTAGRAM_DIRECT_MESSAGE_SOURCES),
+        from: z.object({ name: z.string() }).optional(),
+        to: z.array(z.object({ name: z.string() })).optional(),
     }),
 })
 export type SocialMediaInstagramDirectMessageSchema = z.infer<
