@@ -5,7 +5,10 @@ import {
 
 import { render, renderHook } from '../../../tests/render.utils'
 import { TicketThreadLegacyBridgeProvider } from '../TicketThreadLegacyBridgeProvider'
-import type { CurrentTicketShoppingAssistantData } from '../types'
+import type {
+    CurrentTicketShoppingAssistantData,
+    LegacyBridgeActions,
+} from '../types'
 import { useTicketThreadLegacyBridge } from '../useTicketThreadLegacyBridge'
 
 const currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData = {
@@ -45,6 +48,17 @@ const currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData = {
     ],
 }
 
+const legacyActions: LegacyBridgeActions = {
+    deleteTicketPendingMessage: vi.fn(),
+    retrySubmitTicketMessage: vi.fn(),
+}
+
+const legacyState = {
+    newMessage: {
+        isSubmittingMessage: true,
+    },
+}
+
 describe('useTicketThreadLegacyBridge', () => {
     it('throws when used outside of TicketThreadLegacyBridgeProvider', () => {
         const originalError = console.error
@@ -65,6 +79,8 @@ describe('useTicketThreadLegacyBridge', () => {
             currentTicketRuleSuggestionData: {
                 shouldDisplayDemoSuggestion: false,
             },
+            legacyActions,
+            legacyState,
         })
 
         expect(result.current.currentTicketShoppingAssistantData).toEqual(
@@ -74,6 +90,8 @@ describe('useTicketThreadLegacyBridge', () => {
             result.current.currentTicketRuleSuggestionData
                 .shouldDisplayDemoSuggestion,
         ).toBe(false)
+        expect(result.current.legacyActions).toBe(legacyActions)
+        expect(result.current.legacyState).toBe(legacyState)
     })
 })
 
@@ -87,6 +105,8 @@ describe('TicketThreadLegacyBridgeProvider', () => {
                 currentTicketRuleSuggestionData={{
                     shouldDisplayDemoSuggestion: false,
                 }}
+                legacyActions={legacyActions}
+                legacyState={legacyState}
             >
                 <span>legacy child</span>
             </TicketThreadLegacyBridgeProvider>,

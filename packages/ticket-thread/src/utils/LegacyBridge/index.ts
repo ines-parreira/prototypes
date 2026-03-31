@@ -4,8 +4,11 @@ export type {
     CurrentTicketShoppingAssistantData,
     InstagramCommentHideCommentData,
     InstagramCommentPrivateReplyData,
+    LegacyBridgeActions,
     LegacyBridgeContextType,
     LegacyBridgeInfluencedOrder,
+    LegacyBridgeNewMessageState,
     LegacyBridgeShopifyIntegration,
     LegacyBridgeShopifyOrder,
+    LegacyBridgeState,
 } from './types'

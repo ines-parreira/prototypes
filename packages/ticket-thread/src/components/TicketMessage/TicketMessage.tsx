@@ -2,6 +2,7 @@ import { Box } from '@gorgias/axiom'
 
 import type { TicketThreadRegularMessageItem } from '../../hooks/messages/types'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
+import { MessageErrors } from '../MessageBubble/components/MessageErrors'
 import { MessageFooter } from '../MessageBubble/components/MessageFooter'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
@@ -40,6 +41,13 @@ export function TicketMessage({ item }: TicketMessageProps) {
             </MessageHeaderContainer>
             <MessageBody item={displayedItem} />
             <MessageFooter item={displayedItem} />
+            {item.data.ticket_id && (
+                <MessageErrors
+                    message={displayedItem.data}
+                    ticketId={item.data.ticket_id}
+                    isPending={item.isPending}
+                />
+            )}
         </MessageBubble>
     )
 }

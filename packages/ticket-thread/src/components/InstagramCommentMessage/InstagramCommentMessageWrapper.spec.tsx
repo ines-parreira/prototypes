@@ -8,6 +8,7 @@ import { TicketThreadItemTag } from '../../hooks/types'
 import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
 import { render } from '../../tests/render.utils'
 import { server } from '../../tests/server'
+import type { LegacyBridgeContextType } from '../../utils/LegacyBridge/types'
 import { useTicketThreadLegacyBridge } from '../../utils/LegacyBridge/useTicketThreadLegacyBridge'
 import { InstagramCommentMessageWrapper } from './InstagramCommentMessageWrapper'
 
@@ -26,7 +27,7 @@ beforeEach(() => {
         getCurrentUserHandler().handler,
         http.get('/api/users/:id', () => HttpResponse.json({})),
     )
-    mockUseTicketThreadLegacyBridge.mockReturnValue({
+    const legacyBridgeValue: LegacyBridgeContextType = {
         currentTicketShoppingAssistantData: {
             influencedOrders: [],
             shopifyOrders: [],
@@ -35,7 +36,18 @@ beforeEach(() => {
         currentTicketRuleSuggestionData: { shouldDisplayDemoSuggestion: false },
         onInstagramCommentPrivateReply,
         onInstagramCommentHideComment,
-    })
+        legacyActions: {
+            deleteTicketPendingMessage: vi.fn(),
+            retrySubmitTicketMessage: vi.fn(),
+        },
+        legacyState: {
+            newMessage: {
+                isSubmittingMessage: false,
+            },
+        },
+    }
+
+    mockUseTicketThreadLegacyBridge.mockReturnValue(legacyBridgeValue)
 })
 
 const baseMessageData = mockTicketMessage({

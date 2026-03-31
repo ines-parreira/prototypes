@@ -48,6 +48,21 @@ export type InstagramCommentHideCommentData = {
     shouldHide: boolean
 }
 
+// Temporary bridge for helpdesk Redux actions.
+// Remove these once equivalent actions live in @repo/tickets or @repo/ticket-thread.
+export type LegacyBridgeActions = {
+    deleteTicketPendingMessage: (message: unknown) => unknown
+    retrySubmitTicketMessage: (message: unknown) => unknown
+}
+
+export type LegacyBridgeNewMessageState = {
+    isSubmittingMessage: boolean
+}
+
+export type LegacyBridgeState = {
+    newMessage: LegacyBridgeNewMessageState
+}
+
 export type LegacyBridgeContextType = {
     currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData
     currentTicketRuleSuggestionData: CurrentTicketRuleSuggestionData
@@ -57,4 +72,6 @@ export type LegacyBridgeContextType = {
     onInstagramCommentHideComment?: (
         data: InstagramCommentHideCommentData,
     ) => void
+    legacyActions: LegacyBridgeActions
+    legacyState: LegacyBridgeState
 }

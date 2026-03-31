@@ -4,6 +4,8 @@ import type {
     CurrentTicketShoppingAssistantData,
     InstagramCommentHideCommentData,
     InstagramCommentPrivateReplyData,
+    LegacyBridgeActions,
+    LegacyBridgeState,
 } from './types'
 
 type TicketThreadLegacyBridgeProviderProps = {
@@ -16,6 +18,19 @@ type TicketThreadLegacyBridgeProviderProps = {
     onInstagramCommentHideComment?: (
         data: InstagramCommentHideCommentData,
     ) => void
+    legacyActions?: LegacyBridgeActions
+    legacyState?: LegacyBridgeState
+}
+
+const defaultLegacyActions: LegacyBridgeActions = {
+    deleteTicketPendingMessage: () => undefined,
+    retrySubmitTicketMessage: () => undefined,
+}
+
+const defaultLegacyState: LegacyBridgeState = {
+    newMessage: {
+        isSubmittingMessage: false,
+    },
 }
 /**
  * This component is used to provide a bridge between the legacy application code in the apps/helpdesk
@@ -28,6 +43,8 @@ export const TicketThreadLegacyBridgeProvider = ({
     currentTicketRuleSuggestionData = { shouldDisplayDemoSuggestion: true },
     onInstagramCommentPrivateReply,
     onInstagramCommentHideComment,
+    legacyActions = defaultLegacyActions,
+    legacyState = defaultLegacyState,
 }: TicketThreadLegacyBridgeProviderProps) => {
     return (
         <LegacyBridgeContext.Provider
@@ -36,6 +53,8 @@ export const TicketThreadLegacyBridgeProvider = ({
                 currentTicketRuleSuggestionData,
                 onInstagramCommentPrivateReply,
                 onInstagramCommentHideComment,
+                legacyActions,
+                legacyState,
             }}
         >
             {children}

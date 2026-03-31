@@ -17,6 +17,8 @@ import { TicketThreadLegacyBridgeProvider } from '../utils/LegacyBridge'
 import type {
     CurrentTicketRuleSuggestionData,
     CurrentTicketShoppingAssistantData,
+    LegacyBridgeActions,
+    LegacyBridgeState,
 } from '../utils/LegacyBridge/types'
 
 export const createTestQueryClient = () =>
@@ -38,6 +40,8 @@ export const testAppQueryClient = createTestQueryClient()
 type LegacyBridgeOptions = {
     currentTicketShoppingAssistantData?: CurrentTicketShoppingAssistantData
     currentTicketRuleSuggestionData?: CurrentTicketRuleSuggestionData
+    legacyActions?: LegacyBridgeActions
+    legacyState?: LegacyBridgeState
 }
 
 type RenderOptions = RenderOptionsPrimitive &
@@ -65,6 +69,15 @@ const defaultOptions = {
     currentTicketRuleSuggestionData: {
         shouldDisplayDemoSuggestion: true,
     },
+    legacyActions: {
+        deleteTicketPendingMessage: () => undefined,
+        retrySubmitTicketMessage: () => undefined,
+    },
+    legacyState: {
+        newMessage: {
+            isSubmittingMessage: false,
+        },
+    },
 }
 
 export const render = (element: ReactElement, options?: RenderOptions) => {
@@ -82,6 +95,9 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         currentTicketRuleSuggestionData:
             mergedOptions.currentTicketRuleSuggestionData ??
             defaultOptions.currentTicketRuleSuggestionData,
+        legacyActions:
+            mergedOptions.legacyActions ?? defaultOptions.legacyActions,
+        legacyState: mergedOptions.legacyState ?? defaultOptions.legacyState,
     }
 
     const result = renderPrimitive(element, {
@@ -125,6 +141,9 @@ export const renderHook = <TProps, TResult>(
         currentTicketRuleSuggestionData:
             mergedOptions.currentTicketRuleSuggestionData ??
             defaultOptions.currentTicketRuleSuggestionData,
+        legacyActions:
+            mergedOptions.legacyActions ?? defaultOptions.legacyActions,
+        legacyState: mergedOptions.legacyState ?? defaultOptions.legacyState,
     }
 
     return renderHookPrimitive(hook, {

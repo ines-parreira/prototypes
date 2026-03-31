@@ -92,6 +92,15 @@ beforeEach(() => {
             shopifyIntegrations: [],
         },
         currentTicketRuleSuggestionData: { shouldDisplayDemoSuggestion: false },
+        legacyActions: {
+            deleteTicketPendingMessage: vi.fn(),
+            retrySubmitTicketMessage: vi.fn(),
+        },
+        legacyState: {
+            newMessage: {
+                isSubmittingMessage: false,
+            },
+        },
     })
 })
 
