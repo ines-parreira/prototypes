@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import {
     ReasoningResponseType,
     useGetMessageAiReasoning,
@@ -39,10 +37,6 @@ export const useAiAgentReasoning = ({
     isSilentClose = false,
     refetchInterval,
 }: UseAiAgentReasoningParams) => {
-    const showReasoningForCanceledTasks = useFlag(
-        FeatureFlagKey.ShowReasoningForCanceledTasks,
-    )
-
     const {
         data: messageAiReasoning,
         refetch: refetchMessageAiReasoning,
@@ -73,10 +67,7 @@ export const useAiAgentReasoning = ({
                         reasoning.responseType ===
                         ReasoningResponseType.RESPONSE,
                 )
-                const canceledTasks =
-                    (showReasoningForCanceledTasks &&
-                        messageAiReasoning.canceledTasks) ||
-                    []
+                const canceledTasks = messageAiReasoning.canceledTasks || []
 
                 const fullDetailsReasoning =
                     messageAiReasoning.reasoning.filter(
@@ -194,7 +185,6 @@ export const useAiAgentReasoning = ({
             messageAiReasoning?.execution?.endDatetime,
             messageAiReasoning?.usedTasks,
             messageAiReasoning?.canceledTasks,
-            showReasoningForCanceledTasks,
             isHandover,
             isSilentClose,
         ])
