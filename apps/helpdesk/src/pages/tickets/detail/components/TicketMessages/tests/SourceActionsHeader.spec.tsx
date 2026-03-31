@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useDebouncedValue, useElementSize } from '@repo/hooks'
 import { useTicketMessageTranslation } from '@repo/tickets'
@@ -12,7 +13,6 @@ import {
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
 
-import { appQueryClient } from 'api/queryClient'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

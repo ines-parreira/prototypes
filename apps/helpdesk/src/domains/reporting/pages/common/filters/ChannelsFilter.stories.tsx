@@ -1,13 +1,13 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
-import { appQueryClient } from 'api/queryClient'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { ChannelsFilter } from 'domains/reporting/pages/common/filters/ChannelsFilter'
 import { channels } from 'fixtures/channels'

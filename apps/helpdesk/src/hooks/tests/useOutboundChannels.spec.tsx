@@ -1,9 +1,9 @@
 // sort-imports-ignore
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { mockFeatureFlags } from 'tests/mockFeatureFlags'
 
 import React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
@@ -39,14 +39,18 @@ const {
     getSelectedChannel,
 } = privateFunctions
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: mockQueryClient({
-        cachedData: [
-            [mockChannelsQueryKeys.list(), mockChannels],
-            [mockApplicationsQueryKeys.list(), mockApplications],
-        ],
-    }),
-}))
+beforeEach(() => {
+    appQueryClient.setQueryData(mockChannelsQueryKeys.list(), {
+        data: mockChannels,
+    })
+    appQueryClient.setQueryData(mockApplicationsQueryKeys.list(), {
+        data: mockApplications,
+    })
+})
+
+afterEach(() => {
+    appQueryClient.clear()
+})
 
 jest.mock('services/applications', () => ({
     getApplications: jest.fn(),

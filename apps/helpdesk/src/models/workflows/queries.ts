@@ -1,9 +1,9 @@
+import { appQueryClient } from '@repo/api-resources'
 import type { UseQueryOptions } from '@tanstack/react-query'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import _mapValues from 'lodash/mapValues'
 
-import { appQueryClient } from 'api/queryClient'
 import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
 import type {
     OperationMethods,

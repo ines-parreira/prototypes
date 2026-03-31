@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { assumeMock, renderHook } from '@repo/testing'
 
 import type { DomainEvent } from '@gorgias/events'
@@ -13,7 +14,6 @@ import {
 import * as apiQueries from '@gorgias/helpdesk-queries'
 import { useAccountId } from '@gorgias/realtime'
 
-import { appQueryClient } from 'api/queryClient'
 import { useLiveVoiceUpdates } from 'domains/reporting/pages/voice/hooks/useLiveVoiceUpdates'
 
 jest.mock('@repo/feature-flags')

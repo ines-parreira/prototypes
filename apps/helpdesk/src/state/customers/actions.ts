@@ -1,4 +1,4 @@
-import client from '@repo/api-resources'
+import client, { appQueryClient } from '@repo/api-resources'
 import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
 import type { List } from 'immutable'
@@ -8,7 +8,6 @@ import type { UpsertNotificationAction } from 'reapop/dist/reducers/notification
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import * as viewsConfig from 'config/views'
 import type { Customer, CustomerDraft } from 'models/customer/types'
 import { ViewType } from 'models/view/types'

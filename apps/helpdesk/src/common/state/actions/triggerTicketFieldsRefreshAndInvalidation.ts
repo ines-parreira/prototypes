@@ -1,10 +1,11 @@
+import { appQueryClient } from '@repo/api-resources'
+
 import type {
     listCustomFieldConditions,
     listCustomFields,
 } from '@gorgias/helpdesk-client'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { evaluateCustomFieldsConditions } from 'custom-fields/helpers/evaluateCustomFieldsConditions'
 import type { CustomFieldConditionsEvaluationResults } from 'custom-fields/types'

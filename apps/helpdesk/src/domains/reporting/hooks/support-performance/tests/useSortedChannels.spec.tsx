@@ -1,9 +1,8 @@
 // sort-imports-ignore
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
-// sort-imports-ignore
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -19,12 +18,17 @@ import {
 } from 'domains/reporting/state/ui/stats/channelsSlice'
 import { ChannelsTableColumns } from 'domains/reporting/state/ui/stats/types'
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: mockQueryClient({
-        cachedData: [[mockChannelsQueryKeys.list(), mockChannels]],
-    }),
-}))
 const mockStore = configureMockStore([thunk])
+
+beforeEach(() => {
+    appQueryClient.setQueryData(mockChannelsQueryKeys.list(), {
+        data: mockChannels,
+    })
+})
+
+afterEach(() => {
+    appQueryClient.clear()
+})
 
 describe('useSortedChannels', () => {
     const defaultState = {

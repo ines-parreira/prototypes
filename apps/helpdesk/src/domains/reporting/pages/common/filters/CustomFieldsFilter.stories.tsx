@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -8,7 +9,6 @@ import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import { withDefaultCustomFieldAndLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import CustomFieldsFilter from 'domains/reporting/pages/common/filters/CustomFieldsFilter'
 import { activeParams } from 'domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect'

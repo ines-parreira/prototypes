@@ -1,6 +1,6 @@
+import { appQueryClient } from '@repo/api-resources'
 import { isObject } from 'lodash'
 
-import { appQueryClient } from 'api/queryClient'
 import type {
     TicketChannel,
     TicketMessageSourceType,

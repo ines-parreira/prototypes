@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -8,7 +9,6 @@ import { setupServer } from 'msw/node'
 
 import { mockListSlaPoliciesHandler } from '@gorgias/helpdesk-mocks'
 
-import { appQueryClient } from 'api/queryClient'
 import { SLA_PAGE_TITLE } from 'domains/reporting/pages/sla/constants'
 import { ServiceLevelAgreementsPage } from 'domains/reporting/pages/sla/ServiceLevelAgreementsPage'
 import { VoiceServiceLevelAgreementsChart } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreementsReportConfig'

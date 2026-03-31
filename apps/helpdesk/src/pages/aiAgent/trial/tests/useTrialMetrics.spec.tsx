@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -5,7 +6,6 @@ import moment from 'moment'
 import { Provider } from 'react-redux'
 import type { Store } from 'redux'
 
-import { appQueryClient } from 'api/queryClient'
 import { fetchMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { AiSalesAgentOrdersMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import useAppSelector from 'hooks/useAppSelector'

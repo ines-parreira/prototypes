@@ -51,9 +51,6 @@ const renderHookOptions = {
 }
 
 jest.mock('state/entities/selfServiceConfigurations/selectors')
-jest.mock('api/queryClient', () => ({
-    appQueryClient: mockQueryClient(),
-}))
 
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration', () => ({
     // default export

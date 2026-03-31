@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'
@@ -8,7 +9,6 @@ import configureMockStore from 'redux-mock-store'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 import { action } from 'storybook/actions'
 
-import { appQueryClient } from 'api/queryClient'
 import { billingState } from 'fixtures/billing'
 import { user } from 'fixtures/users'
 

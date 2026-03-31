@@ -1,10 +1,10 @@
 import { ActivityEvents } from '@repo/activity-tracker'
 import * as activityTracker from '@repo/activity-tracker'
+import { appQueryClient } from '@repo/api-resources'
 import { Call } from '@twilio/voice-sdk'
 import { EventEmitter } from 'events'
 import { fromJS } from 'immutable'
 
-import { appQueryClient } from 'api/queryClient'
 import { TwilioSocketEventType } from 'business/twilio'
 import * as api from 'hooks/integrations/phone/api'
 import * as twilioCallUtils from 'hooks/integrations/phone/twilioCall.utils'
@@ -22,8 +22,6 @@ jest.mock('common/notifications')
 jest.mock('@repo/logging')
 jest.mock('@twilio/voice-sdk')
 jest.mock('@repo/activity-tracker')
-jest.mock('api/queryClient')
-
 const dispatch = jest.fn()
 
 const actions = Object.keys(slice.actions).reduce(

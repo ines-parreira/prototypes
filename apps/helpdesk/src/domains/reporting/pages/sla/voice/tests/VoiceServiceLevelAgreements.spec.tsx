@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { HttpResponse } from 'msw'
@@ -5,7 +6,6 @@ import { setupServer } from 'msw/node'
 
 import { mockListSlaPoliciesHandler } from '@gorgias/helpdesk-mocks'
 
-import { appQueryClient } from 'api/queryClient'
 import { VoiceServiceLevelAgreements } from 'domains/reporting/pages/sla/voice/VoiceServiceLevelAgreements'
 import { billingState } from 'fixtures/billing'
 import type { RootState } from 'state/types'

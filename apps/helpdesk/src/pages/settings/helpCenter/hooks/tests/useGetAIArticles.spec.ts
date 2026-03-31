@@ -1,6 +1,5 @@
+import { doNotRetry40XErrorsHandler } from '@repo/api-resources'
 import { assumeMock, renderHook } from '@repo/testing'
-
-import { doNotRetry40XErrorsHandler } from 'api/utils'
 
 import { useGetAIArticlesByHelpCenterAndStore } from '../../queries'
 import { useGetAIArticles } from '../useGetAIArticles'

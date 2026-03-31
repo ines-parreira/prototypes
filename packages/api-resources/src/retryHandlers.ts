@@ -1,9 +1,7 @@
 import { isAxiosError } from 'axios'
 
-import {
-    HTTP_STATUS_TOO_MANY_REQUESTS,
-    QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS,
-} from 'domains/reporting/models/resources'
+const HTTP_STATUS_TOO_MANY_REQUESTS = 429
+const QUERY_ACCEPTED_BUT_RESPONSE_NOT_READY_STATUS = 202
 
 export const reportingRetryHandler = (failureCount: number, error: unknown) => {
     if (isAxiosError(error)) {

@@ -1,13 +1,8 @@
-import { queryCache } from 'api/queryClient'
+import { queryCache } from '@repo/api-resources'
+
 import { store } from 'common/store'
 import { voiceCallsKeys } from 'models/voiceCall/queries'
 import { updateQueryTimestamp } from 'state/queries/actions'
-
-jest.mock('api/queryClient', () => ({
-    queryCache: {
-        subscribe: jest.fn(),
-    },
-}))
 
 jest.mock('common/store', () => ({
     store: {
@@ -23,6 +18,7 @@ const updateQueryTimestampMock = updateQueryTimestamp as jest.Mock
 
 describe('initQueryClient', () => {
     beforeEach(() => {
+        jest.spyOn(queryCache, 'subscribe')
         updateQueryTimestampMock.mockReturnValue({
             type: 'updateQueryTimestamp',
         })

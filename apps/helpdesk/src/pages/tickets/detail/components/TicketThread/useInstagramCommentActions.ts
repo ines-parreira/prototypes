@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import type {
     InstagramCommentHideCommentData,
     InstagramCommentPrivateReplyData,
@@ -7,7 +8,6 @@ import type {
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as infobarActions from 'state/infobar/actions'
 

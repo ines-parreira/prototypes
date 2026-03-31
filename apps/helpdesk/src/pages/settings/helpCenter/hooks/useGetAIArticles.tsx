@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
-import { doNotRetry40XErrorsHandler } from 'api/utils'
+import { doNotRetry40XErrorsHandler } from '@repo/api-resources'
+
 import type { LocaleCode } from 'models/helpCenter/types'
 
 import { useGetAIArticlesByHelpCenterAndStore } from '../queries'

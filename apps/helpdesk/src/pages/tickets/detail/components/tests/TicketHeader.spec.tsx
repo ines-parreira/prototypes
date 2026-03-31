@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -22,7 +23,6 @@ import {
 import { UserSettingType } from '@gorgias/helpdesk-queries'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'

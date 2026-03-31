@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act } from '@testing-library/react'
@@ -8,7 +9,6 @@ import { setupServer } from 'msw/node'
 
 import { mockPrepareCallMonitoringHandler } from '@gorgias/helpdesk-mocks'
 
-import { appQueryClient } from 'api/queryClient'
 import { TwilioSocketEventType } from 'business/twilio'
 import useAppDispatch from 'hooks/useAppDispatch'
 import {

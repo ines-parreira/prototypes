@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { render } from '@testing-library/react'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
@@ -10,13 +11,15 @@ import { SYSTEM_SOURCE_TYPES, USABLE_SOURCE_TYPES } from 'tickets/common/config'
 
 import SourceIcon from '../SourceIcon'
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: {
-        getQueryData: () => ({
-            data: mockChannels,
-        }),
-    },
-}))
+beforeEach(() => {
+    jest.spyOn(appQueryClient, 'getQueryData').mockReturnValue({
+        data: mockChannels,
+    })
+})
+
+afterEach(() => {
+    jest.restoreAllMocks()
+})
 
 describe('SourceIcon component', () => {
     it('should show default icon', () => {

@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { history } from '@repo/routing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
@@ -9,7 +10,6 @@ import { MemoryRouter, useParams } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { appQueryClient } from 'api/queryClient'
 import { billingState } from 'fixtures/billing'
 import { emptyRule, rules } from 'fixtures/rule'
 import { user } from 'fixtures/users'

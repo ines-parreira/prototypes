@@ -57,16 +57,22 @@ const mockedStore = configureMockStore<DeepPartial<RootState>, StoreDispatch>([
     thunk,
 ])
 
-jest.mock('@repo/api-resources', () => ({
-    get: jest.fn(),
-    put: jest.fn(() => {
-        return {
-            data: {
-                products: [],
-            },
-        }
-    }),
-}))
+jest.mock('@repo/api-resources', () => {
+    const { mockQueryClient: createMockQueryClient } = jest.requireActual(
+        'tests/reactQueryTestingUtils',
+    )
+    return {
+        appQueryClient: createMockQueryClient(),
+        get: jest.fn(),
+        put: jest.fn(() => {
+            return {
+                data: {
+                    products: [],
+                },
+            }
+        }),
+    }
+})
 const mockClientGet = assumeMock(client.get)
 const mockClientPut = assumeMock(client.put)
 

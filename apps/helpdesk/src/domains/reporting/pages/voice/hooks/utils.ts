@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { cloneDeep, merge } from 'lodash'
 import debounce from 'lodash/debounce'
 import moment from 'moment/moment'
@@ -13,7 +14,6 @@ import type {
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import { AgentStatus } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
 import { VALID_LIVE_STATUSES } from 'domains/reporting/pages/voice/constants/liveVoice'
 
 export const transformDateToUTCString = (date: string | Date): string => {

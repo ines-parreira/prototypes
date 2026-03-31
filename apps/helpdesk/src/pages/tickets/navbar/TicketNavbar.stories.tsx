@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { SidebarProvider } from '@repo/navigation'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { fromJS, Map } from 'immutable'
@@ -8,7 +9,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import type { Meta } from 'storybook-react-rsbuild'
 
-import { appQueryClient } from 'api/queryClient'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { NotificationsProvider } from 'common/notifications'
 import { account } from 'fixtures/account'

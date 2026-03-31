@@ -1,8 +1,7 @@
+import { appQueryClient } from '@repo/api-resources'
 import { memoize, throttle } from 'lodash'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
-
-import { appQueryClient } from 'api/queryClient'
 
 type CustomFieldsCacheParams = {
     customerId?: number

@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -10,7 +11,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { appQueryClient } from 'api/queryClient'
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import {
     customerDropdownFieldDefinition,

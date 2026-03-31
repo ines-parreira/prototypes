@@ -1,16 +1,14 @@
-// sort-imports-ignore
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-
+import { appQueryClient } from '@repo/api-resources'
+import { useFlag } from '@repo/feature-flags'
+import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { omit } from 'lodash'
 import moment from 'moment'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
-import { useFlag } from '@repo/feature-flags'
 import { channels as mockChannels } from 'fixtures/channels'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import type { Source as MessageSource } from 'models/ticket/types'
-import { assumeMock } from '@repo/testing'
 
 import Source from '../Source'
 
@@ -26,11 +24,15 @@ jest.mock(
         ({ dateTime }: { dateTime: string }) => <div>{dateTime}</div>,
 )
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: mockQueryClient({
-        cachedData: [[mockChannelsQueryKeys.list(), mockChannels]],
-    }),
-}))
+beforeEach(() => {
+    appQueryClient.setQueryData(mockChannelsQueryKeys.list(), {
+        data: mockChannels,
+    })
+})
+
+afterEach(() => {
+    appQueryClient.clear()
+})
 
 const minProps = {
     createdDatetime: moment('2017-12-22').toString(),

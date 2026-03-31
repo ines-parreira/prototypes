@@ -1,7 +1,8 @@
+/* istanbul ignore file */
+import { appQueryClient } from '@repo/api-resources'
+
 import type { SearchTicketsOrderBy } from '@gorgias/helpdesk-types'
 
-/* istanbul ignore file */
-import { appQueryClient } from 'api/queryClient'
 import { viewItemsDefinitionKeys } from 'models/view/queries'
 import { getViewTicketUpdates } from 'models/view/resources'
 

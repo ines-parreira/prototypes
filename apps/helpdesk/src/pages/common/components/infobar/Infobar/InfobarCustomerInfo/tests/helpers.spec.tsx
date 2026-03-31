@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -15,7 +16,6 @@ import {
     mockIntegration,
 } from '@gorgias/helpdesk-mocks'
 
-import { appQueryClient } from 'api/queryClient'
 import { IntegrationType } from 'models/integration/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -31,11 +31,15 @@ import {
 const mockStore = configureStore([])
 const queryClient = mockQueryClient()
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: {
-        invalidateQueries: jest.fn(),
-    },
-}))
+beforeEach(() => {
+    jest.spyOn(appQueryClient, 'invalidateQueries').mockImplementation(
+        jest.fn(),
+    )
+})
+
+afterEach(() => {
+    jest.restoreAllMocks()
+})
 
 describe('useShouldShowProfileSync', () => {
     const store = mockStore({

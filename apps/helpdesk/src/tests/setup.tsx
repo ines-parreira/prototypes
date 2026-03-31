@@ -135,13 +135,19 @@ jest.mock('push.js', () => {
 window.CSRF_TOKEN = 'abcd'
 window.GORGIAS_RELEASE = '1'
 
+// Required until we have some dispatch in
+// react query callbacks
 jest.mock('@repo/api-resources', () => {
     const axiosModule = jest.requireActual('axios') as typeof import('axios')
     const axios = axiosModule.default
     const gorgiasAppsAuthInterceptor = jest.fn()
 
+    const appQueryClient = mockQueryClient()
+
     return {
         __esModule: true,
+        appQueryClient,
+        queryCache: appQueryClient.getQueryCache(),
         createClient: () => axios,
         default: axios,
         gorgiasAppsAuthInterceptor,
@@ -150,10 +156,6 @@ jest.mock('@repo/api-resources', () => {
         timeoutTime: 10800000,
     }
 })
-
-// Required until we have some dispatch in
-// react query callbacks
-jest.mock('api/queryClient', () => ({ appQueryClient: mockQueryClient() }))
 
 jest.mock(
     '../utils/date.ts',

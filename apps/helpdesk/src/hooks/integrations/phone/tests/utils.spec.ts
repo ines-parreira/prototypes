@@ -1,5 +1,6 @@
 import { ActivityEvents } from '@repo/activity-tracker'
 import * as activityTracker from '@repo/activity-tracker'
+import { appQueryClient } from '@repo/api-resources'
 import { reportError } from '@repo/logging'
 import * as envUtils from '@repo/utils'
 import { waitFor } from '@testing-library/react'
@@ -7,7 +8,6 @@ import { Call, Device, TwilioError } from '@twilio/voice-sdk'
 import { EventEmitter } from 'events'
 import { fromJS } from 'immutable'
 
-import { appQueryClient } from 'api/queryClient'
 import {
     TwilioErrorCode,
     TwilioSocketEventType,
@@ -43,7 +43,6 @@ jest.mock('common/notifications')
 jest.mock('@repo/logging')
 jest.mock('@twilio/voice-sdk')
 jest.mock('@repo/activity-tracker')
-jest.mock('api/queryClient')
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),

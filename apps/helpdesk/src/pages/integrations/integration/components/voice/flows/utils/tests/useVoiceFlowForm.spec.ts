@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { act, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -10,7 +11,6 @@ import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { CallRoutingFlow } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 import { renderHookWithQueryClientProvider } from 'tests/reactQueryTestingUtils'

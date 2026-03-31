@@ -1,4 +1,5 @@
-import { appQueryClient } from 'api/queryClient'
+import { appQueryClient } from '@repo/api-resources'
+
 import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
 import type { TicketMessage } from 'models/ticket/types'
 import type { UseListVoiceCalls } from 'models/voiceCall/queries'

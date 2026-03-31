@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, waitFor } from '@testing-library/react'
@@ -18,7 +19,6 @@ import {
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
 import type { TicketMessage } from 'models/ticket/types'
 
 import { withMessageTranslations } from '../withMessageTranslations'

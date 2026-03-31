@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
-import client from '@repo/api-resources'
+import client, { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
@@ -19,7 +19,6 @@ import type {
     TicketPriority,
 } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
 import {
     TicketChannel,
     TicketMessageSourceType,

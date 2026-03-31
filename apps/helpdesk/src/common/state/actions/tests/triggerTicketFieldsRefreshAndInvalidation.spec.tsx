@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
@@ -18,7 +19,6 @@ import {
     ExpressionOperator,
 } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
 import {
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,

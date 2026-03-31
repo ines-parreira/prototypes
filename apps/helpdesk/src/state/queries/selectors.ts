@@ -1,7 +1,7 @@
+import { appQueryClient } from '@repo/api-resources'
 import type { QueryKey } from '@tanstack/react-query'
 import { createSelector } from 'reselect'
 
-import { appQueryClient } from 'api/queryClient'
 import type { RootState } from 'state/types'
 
 import type { QueriesState } from './types'

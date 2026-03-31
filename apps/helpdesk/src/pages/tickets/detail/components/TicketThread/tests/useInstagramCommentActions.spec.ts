@@ -1,20 +1,27 @@
+import { appQueryClient } from '@repo/api-resources'
 import { act, renderHook } from '@testing-library/react'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import useAppDispatch from 'hooks/useAppDispatch'
 import * as infobarActions from 'state/infobar/actions'
 
 import { useInstagramCommentActions } from '../useInstagramCommentActions'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
-jest.mock('api/queryClient', () => ({
-    appQueryClient: { invalidateQueries: jest.fn() },
-}))
 jest.mock('state/infobar/actions', () => ({
     executeAction: jest.fn(),
 }))
+
+beforeEach(() => {
+    jest.spyOn(appQueryClient, 'invalidateQueries').mockImplementation(
+        jest.fn(),
+    )
+})
+
+afterEach(() => {
+    jest.restoreAllMocks()
+})
 
 const mockDispatch = jest.fn()
 const mockPrivateReplyData = {

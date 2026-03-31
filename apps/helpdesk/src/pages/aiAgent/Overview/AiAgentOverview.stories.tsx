@@ -1,13 +1,12 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
-
-import { appQueryClient } from 'api/queryClient'
 
 import { AiAgentOverview } from './AiAgentOverview'
 import { AiAgentOverviewRootStateFixture } from './tests/AiAgentOverviewRootState.fixture'

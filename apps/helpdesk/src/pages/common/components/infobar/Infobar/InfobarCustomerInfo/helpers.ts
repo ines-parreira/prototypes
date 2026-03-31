@@ -1,12 +1,12 @@
 import { useMemo } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { memoize, throttle } from 'lodash'
 
 import { queryKeys, useGetCustomer } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import useAppSelector from 'hooks/useAppSelector'
 import { IntegrationType } from 'models/integration/types'
 import { makeHasIntegrationOfTypes } from 'state/integrations/selectors'

@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -8,7 +9,6 @@ import {
     SLAPolicyMetricUnit,
 } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
 import { VoiceSlaTargetInfoBanner } from 'domains/reporting/pages/sla/voice/VoiceSlaTargetInfoBanner'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 

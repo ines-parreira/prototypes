@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -6,7 +7,6 @@ import type { Meta } from 'storybook-react-rsbuild'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
 import { reportingKeys } from 'domains/reporting/models/queries'
 import {

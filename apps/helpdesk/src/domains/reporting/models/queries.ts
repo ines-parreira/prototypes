@@ -1,9 +1,12 @@
+import {
+    appQueryClient,
+    reportingRetryDelayHandler,
+    reportingRetryHandler,
+} from '@repo/api-resources'
 import type { Query, UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosResponse } from 'axios'
 
-import { appQueryClient } from 'api/queryClient'
-import { reportingRetryDelayHandler, reportingRetryHandler } from 'api/utils'
 import {
     postEnrichedReporting,
     postReportingV1,

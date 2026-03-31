@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -6,7 +7,6 @@ import { Provider } from 'react-redux'
 import { MemoryRouter, useHistory, useParams } from 'react-router-dom'
 import type { Store } from 'redux'
 
-import { appQueryClient } from 'api/queryClient'
 import {
     getLast28DaysDateRange,
     useAllResourcesMetrics,

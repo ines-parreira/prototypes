@@ -1,9 +1,9 @@
 import { createElement } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook } from '@testing-library/react'
 
-import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
 import { getHelpCenterArticle } from 'models/helpCenter/resources'
 import type { LocaleCode } from 'models/helpCenter/types'

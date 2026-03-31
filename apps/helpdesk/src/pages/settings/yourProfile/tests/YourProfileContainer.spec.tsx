@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -10,8 +11,6 @@ import {
     mockUpdateCurrentUserSettingsHandler,
 } from '@gorgias/helpdesk-mocks'
 import { UserSettingType } from '@gorgias/helpdesk-types'
-
-import { appQueryClient } from 'api/queryClient'
 
 import type { CurrentUser } from '../types'
 import YourProfileContainer from '../YourProfileContainer'

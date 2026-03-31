@@ -1,4 +1,4 @@
-import client from '@repo/api-resources'
+import client, { appQueryClient } from '@repo/api-resources'
 import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import type { Map } from 'immutable'
@@ -119,24 +119,21 @@ jest.mock('@repo/feature-flags', () => ({
 const variationMock = require('@repo/feature-flags').getLDClient()
     .variation as jest.Mock
 
-jest.mock('api/queryClient', () => {
-    return {
-        appQueryClient: {
-            invalidateQueries: jest.fn(() => Promise.resolve()),
-            getQueryData: jest.fn(() => undefined),
-            setQueryData: jest.fn(),
-            removeQueries: jest.fn(),
-            clear: jest.fn(),
-        },
-    }
-})
-
 describe('ticket actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
     let mockServer: MockAdapter
 
     beforeEach(() => {
         localStorage.clear()
+        jest.spyOn(appQueryClient, 'invalidateQueries').mockImplementation(
+            jest.fn(() => Promise.resolve()),
+        )
+        jest.spyOn(appQueryClient, 'getQueryData').mockReturnValue(undefined)
+        jest.spyOn(appQueryClient, 'setQueryData').mockImplementation(jest.fn())
+        jest.spyOn(appQueryClient, 'removeQueries').mockImplementation(
+            jest.fn(),
+        )
+        jest.spyOn(appQueryClient, 'clear').mockImplementation(jest.fn())
         store = mockStore({
             ticket: initialState,
             newMessage: newMessageState,
@@ -1008,7 +1005,7 @@ describe('ticket actions', () => {
 
             beforeEach(() => {
                 invalidateQueriesSpy = jest.spyOn(
-                    require('api/queryClient').appQueryClient,
+                    require('@repo/api-resources').appQueryClient,
                     'invalidateQueries',
                 )
             })

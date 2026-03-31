@@ -1,8 +1,8 @@
+import { appQueryClient } from '@repo/api-resources'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { omit } from 'lodash'
 
-import { appQueryClient } from 'api/queryClient'
 import {
     TicketChannel,
     TicketMessageSourceType,

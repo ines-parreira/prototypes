@@ -1,5 +1,8 @@
-// sort-imports-ignore
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import * as activityTracker from '@repo/activity-tracker'
+import { ActivityEvents } from '@repo/activity-tracker'
+import client, { appQueryClient } from '@repo/api-resources'
+import * as LDUtils from '@repo/feature-flags'
+import * as segmentTracker from '@repo/logging'
 import MockAdapter from 'axios-mock-adapter'
 import { ContentState } from 'draft-js'
 import type { Map } from 'immutable'
@@ -14,7 +17,6 @@ import {
     TicketMessageSourceType,
     TicketStatus,
 } from 'business/types/ticket'
-import * as segmentTracker from '@repo/logging'
 import { AttachmentEnum } from 'common/types'
 import * as commonUtils from 'common/utils'
 import { SHOPIFY_INTEGRATION_TYPE } from 'constants/integration'
@@ -28,7 +30,6 @@ import {
 } from 'fixtures/macro'
 import { phoneNumbers } from 'fixtures/newPhoneNumber'
 import { ticket } from 'fixtures/ticket'
-import client from '@repo/api-resources'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import type { MacroAction } from 'models/macroAction/types'
 import { MacroActionName, MacroActionType } from 'models/macroAction/types'
@@ -36,8 +37,6 @@ import type { PhoneNumber } from 'models/phoneNumber/types'
 import { SEARCH_ENDPOINT } from 'models/search/resources'
 import { SearchType } from 'models/search/types'
 import { ProductRecommendationScenario } from 'pages/convert/campaigns/types/CampaignAttachment'
-import * as activityTracker from '@repo/activity-tracker'
-import { ActivityEvents } from '@repo/activity-tracker'
 import { AccountSettingType } from 'state/currentAccount/types'
 import * as integrationSelectors from 'state/integrations/selectors'
 import * as actions from 'state/newMessage/actions'
@@ -65,7 +64,6 @@ import type { RootState, StoreDispatch } from 'state/types'
 import { CancelToken } from 'tests/axiosRuntime'
 import * as utils from 'utils'
 import { convertFromHTML } from 'utils/editor'
-import * as LDUtils from '@repo/feature-flags'
 
 import { getReplyAreaStateSnapshot } from './testUtils'
 
@@ -87,12 +85,6 @@ const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
 )
 const mockedUploadFiles = jest.spyOn(commonUtils, 'uploadFiles')
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: mockQueryClient({
-        cachedData: [[mockChannelsQueryKeys.list(), mockChannels]],
-    }),
-}))
-
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
@@ -113,6 +105,13 @@ describe('actions', () => {
 
     beforeEach(() => {
         mockServer = new MockAdapter(client)
+        appQueryClient.setQueryData(mockChannelsQueryKeys.list(), {
+            data: mockChannels,
+        })
+    })
+
+    afterEach(() => {
+        appQueryClient.clear()
     })
 
     describe('new message', () => {

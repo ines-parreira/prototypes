@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { logEvent, SegmentEvent } from '@repo/logging'
 
 import { TicketMessageSourceType } from 'business/types/ticket'
@@ -47,11 +48,15 @@ function getMockedChannels() {
     ] as Channel[]
 }
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: {
-        getQueryData: jest.fn(() => ({ data: getMockedChannels() })),
-    },
-}))
+beforeEach(() => {
+    jest.spyOn(appQueryClient, 'getQueryData').mockReturnValue({
+        data: getMockedChannels(),
+    })
+})
+
+afterEach(() => {
+    jest.restoreAllMocks()
+})
 
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),

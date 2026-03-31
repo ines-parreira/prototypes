@@ -1,4 +1,5 @@
 import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
+import { appQueryClient } from '@repo/api-resources'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import * as Sentry from '@sentry/react'
@@ -9,7 +10,6 @@ import _find from 'lodash/find'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
 import { store as reduxStore } from 'common/store'
 import { isSpecificTicketPath } from 'common/utils'

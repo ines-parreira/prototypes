@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import moment from 'moment'
 
 import type {
@@ -6,7 +7,6 @@ import type {
 } from '@gorgias/helpdesk-queries'
 import { AgentStatus, queryKeys } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import { VALID_LIVE_STATUSES } from 'domains/reporting/pages/voice/constants/liveVoice'
 import {
     addVoiceCallToLiveCallsQueryCache,

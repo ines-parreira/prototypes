@@ -1,9 +1,9 @@
+import { appQueryClient } from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import { act } from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { appQueryClient } from 'api/queryClient'
 import type { User } from 'config/types/user'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
@@ -43,9 +43,6 @@ const store = mockStore({
 } as RootState)
 jest.mock('domains/reporting/models/resources')
 const reportErrorMock = assumeMock(reportQueryErrorToSentry)
-
-jest.mock('api/queryClient')
-const mockAppQueryClient = assumeMock(appQueryClient as any)
 
 describe('drillDownSlice', () => {
     describe('reducers', () => {
@@ -234,8 +231,8 @@ describe('drillDownSlice', () => {
 
         it('should invalidate Jobs query cache', async () => {
             const invalidateQueryMock = jest.spyOn(
-                mockAppQueryClient,
-                'invalidateQueries' as any,
+                appQueryClient,
+                'invalidateQueries',
             )
 
             await act(async () => {

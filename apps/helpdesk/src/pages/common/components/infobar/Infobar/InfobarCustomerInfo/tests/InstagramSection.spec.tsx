@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -15,7 +16,6 @@ import {
     mockListInstagramProfilesHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import { appQueryClient } from 'api/queryClient'
 import { ThemeProvider } from 'core/theme'
 
 import { InstagramSection } from '../InstagramSection'

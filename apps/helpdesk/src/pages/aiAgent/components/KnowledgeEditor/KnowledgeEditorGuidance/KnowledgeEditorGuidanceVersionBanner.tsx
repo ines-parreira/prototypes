@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { useShallow } from 'zustand/react/shallow'
 
-import { appQueryClient } from 'api/queryClient'
 import { getHelpCenterArticleQuery } from 'models/helpCenter/queries'
 import { useHelpCenterApi } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
 

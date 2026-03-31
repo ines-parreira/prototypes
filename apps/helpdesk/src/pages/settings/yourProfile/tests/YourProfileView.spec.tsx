@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { useFlag } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
@@ -14,7 +15,6 @@ import {
     mockUpdateCurrentUserSettingsHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import { appQueryClient } from 'api/queryClient'
 import { UserRole } from 'config/types/user'
 import { ThemeProvider } from 'core/theme'
 import { notify } from 'state/notifications/actions'

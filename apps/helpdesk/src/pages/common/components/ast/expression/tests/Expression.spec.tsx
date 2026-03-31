@@ -1,10 +1,10 @@
 import type { ComponentProps } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { appQueryClient } from 'api/queryClient'
 import Expression from 'pages/common/components/ast/expression/Expression'
 import { renderWithStore } from 'utils/testing'
 

@@ -1,5 +1,4 @@
-// sort-imports-ignore
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+import { appQueryClient } from '@repo/api-resources'
 
 import { applications as mockApplications } from 'fixtures/applications'
 import { channels as mockChannels } from 'fixtures/channels'
@@ -16,14 +15,18 @@ import {
 } from 'services/applications'
 import { getChannelBySlug } from 'services/channels'
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: mockQueryClient({
-        cachedData: [
-            [mockChannelsQueryKeys.list(), mockChannels],
-            [mockApplicationsQueryKeys.list(), mockApplications],
-        ],
-    }),
-}))
+beforeEach(() => {
+    appQueryClient.setQueryData(mockChannelsQueryKeys.list(), {
+        data: mockChannels,
+    })
+    appQueryClient.setQueryData(mockApplicationsQueryKeys.list(), {
+        data: mockApplications,
+    })
+})
+
+afterEach(() => {
+    appQueryClient.clear()
+})
 
 describe('services', () => {
     describe('applications', () => {

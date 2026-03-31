@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { Form } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -11,7 +12,6 @@ import {
     SLAPolicyMetricUnit,
 } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
 import { TicketChannel } from 'business/types/ticket'
 import type { Channel } from 'models/channel/types'
 import { getChannels } from 'services/channels'

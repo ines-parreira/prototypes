@@ -1,10 +1,10 @@
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+import { appQueryClient } from '@repo/api-resources'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import type { AIJourneyMetrics } from 'AIJourney/types/AIJourneyTypes'
-import { appQueryClient } from 'api/queryClient'
 import { reportQueryErrorToSentry } from 'domains/reporting/models/resources'
 import type {
     Sentiment,

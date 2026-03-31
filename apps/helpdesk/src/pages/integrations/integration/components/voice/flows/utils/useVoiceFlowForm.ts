@@ -1,10 +1,10 @@
+import { appQueryClient } from '@repo/api-resources'
 import cloneDeep from 'lodash/cloneDeep'
 import omit from 'lodash/omit'
 
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateAllPhoneSettings } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
 import { DEFAULT_CALLBACK_REQUESTS } from 'models/integration/constants'
 

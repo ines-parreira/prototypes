@@ -1,12 +1,12 @@
 import React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import type { Meta } from 'storybook-react-rsbuild'
 
-import { appQueryClient } from 'api/queryClient'
 import type { ProductEnrichmentFields } from 'domains/reporting/hooks/voice-of-customer/metricsPerProduct'
 import {
     PRODUCT_ENRICHMENT_ENTITY_ID,

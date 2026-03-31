@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import type { Location } from 'history'
@@ -7,7 +8,6 @@ import { IntegrationType } from 'models/integration/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getShopifyIntegrationsSortedByName } from 'state/integrations/selectors'
 
-import { appQueryClient } from '../../../api/queryClient'
 import { JourneyProvider, useJourneyContext } from './JourneyProvider'
 
 jest.mock('react-router-dom', () => ({

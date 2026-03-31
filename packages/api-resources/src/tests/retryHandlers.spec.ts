@@ -1,15 +1,21 @@
 import type { AxiosError, AxiosResponse } from 'axios'
 import { AxiosHeaders } from 'axios'
+import { describe, expect, it } from 'vitest'
 
 import {
     doNotRetry40XErrorsHandler,
     reportingRetryDelayHandler,
     reportingRetryHandler,
-} from 'api/utils'
-import { axiosSuccessResponse } from 'fixtures/axiosResponse'
+} from '../retryHandlers'
 
-describe('utils', () => {
-    const response: AxiosResponse = axiosSuccessResponse({})
+describe('retryHandlers', () => {
+    const response: AxiosResponse = {
+        data: {},
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: { headers: new AxiosHeaders() },
+    }
 
     const defaultAxiosErrorTemplate: AxiosError = {
         isAxiosError: true,
@@ -19,7 +25,7 @@ describe('utils', () => {
         },
         name: 'someName',
         message: 'someMessage',
-        toJSON: jest.fn(),
+        toJSON: () => ({}),
     }
 
     const axiosErrorWithCode = (code: number): AxiosError => ({
@@ -31,51 +37,15 @@ describe('utils', () => {
     })
 
     describe('doNotRetry40XErrorsHandler', () => {
-        const axiosErrorWithCode = (code: number): AxiosError => ({
-            ...defaultAxiosErrorTemplate,
-            response: {
-                ...response,
-                status: code,
-            },
-        })
-
         it.each([
-            {
-                statusCode: 300,
-                failureCount: 0,
-                shouldRetry: true,
-            },
-            {
-                statusCode: 400,
-                failureCount: 0,
-                shouldRetry: false,
-            },
-            {
-                statusCode: 404,
-                failureCount: 0,
-                shouldRetry: false,
-            },
-            {
-                statusCode: 500,
-                failureCount: 0,
-                shouldRetry: true,
-            },
-            {
-                statusCode: 500,
-                failureCount: 3,
-                shouldRetry: false,
-            },
+            { statusCode: 300, failureCount: 0, shouldRetry: true },
+            { statusCode: 400, failureCount: 0, shouldRetry: false },
+            { statusCode: 404, failureCount: 0, shouldRetry: false },
+            { statusCode: 500, failureCount: 0, shouldRetry: true },
+            { statusCode: 500, failureCount: 3, shouldRetry: false },
         ])(
             `Should retry: $shouldRetry error with status $statusCode and failure count: $failureCount`,
-            ({
-                statusCode,
-                failureCount,
-                shouldRetry,
-            }: {
-                statusCode: number
-                failureCount: number
-                shouldRetry: boolean
-            }) => {
+            ({ statusCode, failureCount, shouldRetry }) => {
                 expect(
                     doNotRetry40XErrorsHandler(
                         failureCount,
@@ -162,16 +132,7 @@ describe('utils', () => {
             },
         ])(
             '$description (status: $statusCode, failureCount: $failureCount)',
-            ({
-                statusCode,
-                failureCount,
-                shouldRetry,
-            }: {
-                statusCode: number
-                failureCount: number
-                shouldRetry: boolean
-                description: string
-            }) => {
+            ({ statusCode, failureCount, shouldRetry }) => {
                 expect(
                     reportingRetryHandler(
                         failureCount,

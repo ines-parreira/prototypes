@@ -1,4 +1,5 @@
-import * as queryClient from 'api/queryClient'
+import * as queryClient from '@repo/api-resources'
+
 import type { RootState } from 'state/types'
 
 import { getQueriesState, getQueryData, getQueryTimestamp } from '../selectors'

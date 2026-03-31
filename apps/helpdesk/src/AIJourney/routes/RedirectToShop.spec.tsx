@@ -1,12 +1,12 @@
 import type { ReactNode } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import { StaticRouter, useHistory } from 'react-router-dom'
 
-import { appQueryClient } from 'api/queryClient'
 import { ThemeProvider } from 'core/theme'
 import { mockStore } from 'utils/testing'
 

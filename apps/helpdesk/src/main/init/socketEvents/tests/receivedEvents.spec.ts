@@ -11,7 +11,7 @@ import _find from 'lodash/find'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
-import { appQueryClient } from 'api/queryClient'
+import { appQueryClient } from '@repo/api-resources'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
 import { TicketStatuses } from 'business/ticket'
 import { store as reduxStore } from 'common/store'

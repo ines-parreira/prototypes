@@ -1,4 +1,5 @@
-import { appQueryClient } from 'api/queryClient'
+import { appQueryClient } from '@repo/api-resources'
+
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 import {
     applicationsQueryKeys,

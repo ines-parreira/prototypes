@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import { useState } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { Map } from 'immutable'
 import { noop } from 'lodash'
@@ -8,7 +9,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
-import { appQueryClient } from 'api/queryClient'
 import { user } from 'fixtures/users'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 

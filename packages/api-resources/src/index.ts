@@ -13,3 +13,8 @@ export {
 export { appQueryClient, queryCache } from './queryClient'
 export type { Meta } from './queryClient'
 export { QueryClientProvider } from './QueryClientProvider'
+export {
+    doNotRetry40XErrorsHandler,
+    reportingRetryDelayHandler,
+    reportingRetryHandler,
+} from './retryHandlers'

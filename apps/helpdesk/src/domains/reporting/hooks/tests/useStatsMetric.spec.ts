@@ -1,7 +1,7 @@
+import { appQueryClient } from '@repo/api-resources'
 import { assumeMock, renderHook } from '@repo/testing'
 import type { UseQueryResult } from '@tanstack/react-query'
 
-import { appQueryClient } from 'api/queryClient'
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
 import {
     fetchStatsMetric,

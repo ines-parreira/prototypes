@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -6,7 +7,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { appQueryClient } from 'api/queryClient'
 import { account } from 'fixtures/account'
 import { renderWithRouter } from 'utils/testing'
 

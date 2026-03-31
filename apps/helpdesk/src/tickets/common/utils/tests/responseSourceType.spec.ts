@@ -1,6 +1,7 @@
+import { appQueryClient } from '@repo/api-resources'
+
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
-import { appQueryClient } from 'api/queryClient'
 import { TicketMessageSourceType, TicketVia } from 'business/types/ticket'
 import type { TicketMessage } from 'models/ticket/types'
 import { voiceCallsKeys } from 'models/voiceCall/queries'

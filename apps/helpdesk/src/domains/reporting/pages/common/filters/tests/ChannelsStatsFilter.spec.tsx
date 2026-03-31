@@ -1,31 +1,33 @@
-// sort-imports-ignore
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-
 import React from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { fireEvent, render } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { TicketChannel } from 'business/types/ticket'
-import { channels as mockChannels } from 'fixtures/channels'
-import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
 import DEPRECATED_ChannelsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_ChannelsStatsFilter'
-import type { Channel } from 'services/channels'
 import {
     initialState,
     mergeStatsFilters,
 } from 'domains/reporting/state/stats/statsSlice'
+import { channels as mockChannels } from 'fixtures/channels'
+import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
+import type { Channel } from 'services/channels'
 import type { RootState } from 'state/types'
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: mockQueryClient({
-        cachedData: [[mockChannelsQueryKeys.list(), mockChannels]],
-    }),
-}))
-
 const mockStore = configureMockStore([thunk])
+
+beforeEach(() => {
+    appQueryClient.setQueryData(mockChannelsQueryKeys.list(), {
+        data: mockChannels,
+    })
+})
+
+afterEach(() => {
+    appQueryClient.clear()
+})
 
 describe('DEPRECATED_ChannelsStatsFilter', () => {
     const defaultState = {

@@ -1,21 +1,18 @@
-import { queryKeys } from '@gorgias/helpdesk-queries'
+import { appQueryClient } from '@repo/api-resources'
 
-import { appQueryClient } from 'api/queryClient'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import {
     getThrottledUpdateForCustomFields,
     throttledUpdateCustomFieldsCache,
 } from '../helpers'
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: {
-        invalidateQueries: jest.fn(),
-    },
-}))
-
 describe('throttledUpdateCustomFieldsCache()', () => {
     beforeEach(() => {
         getThrottledUpdateForCustomFields.cache.clear?.()
+        jest.spyOn(appQueryClient, 'invalidateQueries').mockImplementation(
+            jest.fn(),
+        )
         jest.clearAllMocks()
     })
 

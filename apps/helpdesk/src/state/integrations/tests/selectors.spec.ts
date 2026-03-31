@@ -1,6 +1,4 @@
-// sort-imports-ignore
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-
+import { appQueryClient } from '@repo/api-resources'
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
 import { size } from 'lodash'
@@ -58,14 +56,18 @@ import {
     getStandardPhoneIntegrations,
 } from '../selectors'
 
-jest.mock('api/queryClient', () => ({
-    appQueryClient: mockQueryClient({
-        cachedData: [
-            [mockChannelsQueryKeys.list(), mockChannels],
-            [mockApplicationsQueryKeys.list(), mockApplications],
-        ],
-    }),
-}))
+beforeEach(() => {
+    appQueryClient.setQueryData(mockChannelsQueryKeys.list(), {
+        data: mockChannels,
+    })
+    appQueryClient.setQueryData(mockApplicationsQueryKeys.list(), {
+        data: mockApplications,
+    })
+})
+
+afterEach(() => {
+    appQueryClient.clear()
+})
 
 const state = {
     integrations: fromJS(integrationsState),

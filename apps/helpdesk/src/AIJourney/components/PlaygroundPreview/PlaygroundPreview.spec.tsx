@@ -1,7 +1,6 @@
+import { appQueryClient } from '@repo/api-resources'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
-
-import { appQueryClient } from 'api/queryClient'
 
 import { PlaygroundPreview } from './PlaygroundPreview'
 

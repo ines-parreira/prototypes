@@ -1,10 +1,10 @@
+import { appQueryClient } from '@repo/api-resources'
 import { FormSubmitButton } from '@repo/forms'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 import type { BusinessHoursCreate } from '@gorgias/helpdesk-queries'
 import { queryKeys, useCreateBusinessHours } from '@gorgias/helpdesk-queries'
 
-import { appQueryClient } from 'api/queryClient'
 import { useNotify } from 'hooks/useNotify'
 import Modal from 'pages/common/components/modal/Modal'
 import ModalActionsFooter from 'pages/common/components/modal/ModalActionsFooter'

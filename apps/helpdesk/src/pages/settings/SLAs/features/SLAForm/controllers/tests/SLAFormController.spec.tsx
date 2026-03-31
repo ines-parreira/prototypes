@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import {
     FeatureFlagKey,
     useAreFlagsLoading,
@@ -14,7 +15,6 @@ import {
     mockUpdateSlaPolicyHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import { appQueryClient } from 'api/queryClient'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import SLAFormController from '../SLAFormController'

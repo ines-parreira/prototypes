@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 
+import { appQueryClient } from '@repo/api-resources'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock } from '@repo/testing'
@@ -12,7 +13,6 @@ import { StaticRouter, useHistory } from 'react-router-dom'
 
 import { useLastSelectedStore } from 'AIJourney/hooks'
 import { JourneyProvider } from 'AIJourney/providers'
-import { appQueryClient } from 'api/queryClient'
 import { NavBarProvider } from 'common/navigation/components/NavBarProvider'
 import { ThemeProvider } from 'core/theme'
 import { account } from 'fixtures/account'

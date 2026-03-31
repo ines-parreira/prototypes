@@ -1,3 +1,4 @@
+import { appQueryClient } from '@repo/api-resources'
 import { tryLocalStorage } from '@repo/browser-storage'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -5,7 +6,6 @@ import _isArray from 'lodash/isArray'
 import _isEqual from 'lodash/isEqual'
 import _pick from 'lodash/pick'
 
-import { appQueryClient } from 'api/queryClient'
 import { humanize } from 'business/format'
 import type { TicketVia } from 'business/types/ticket'
 import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
