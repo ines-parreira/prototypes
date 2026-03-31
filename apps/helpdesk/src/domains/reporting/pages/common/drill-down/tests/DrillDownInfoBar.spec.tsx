@@ -150,17 +150,14 @@ describe('<DrillDownInfoBar />', () => {
         })
 
         it.each(Object.values(AiAgentDrillDownMetricName))(
-            'should render special label for AI Agent metric %s',
-            (metric) => {
-                const aiAgentMetricData: DrillDownMetric = {
-                    metricName: metric,
-                }
+            'should render "used to compute the metric" label for AI Agent metric %s',
+            (metricName) => {
                 useDrillDownDataMock.mockReturnValue({
                     totalResults: 150,
                     isFetching: false,
                 } as any)
 
-                renderInfoBar(aiAgentMetricData)
+                renderInfoBar({ metricName } as any)
 
                 expect(
                     screen.getByText(

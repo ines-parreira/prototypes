@@ -13,6 +13,7 @@ import {
 import { AnalyticsAiAgentDecreaseinFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseinFRTCard'
 import { AnalyticsSupportAgentLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsSupportAgentLineChart'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
+import { AnalyticsAiAgentSupportAgentSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentSuccessRateCard'
 import { AnalyticsAiAgentSupportDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
 import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportInteractionsCard'
@@ -22,6 +23,7 @@ import { SupportAgentChannelPerformanceBreakdownTableWrapper } from 'pages/aiAge
 import { SupportInteractionsComboChart } from 'pages/aiAgent/analyticsAiAgent/components/SupportInteractionsComboChart/SupportInteractionsComboChart'
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { fetchAiAgentSupportAgentFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentFRTTrend'
+import { fetchAiAgentSupportAgentSuccessRateTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentSuccessRateTrend'
 import { fetchSupportAgentsPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByChannelMetrics'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { STATS_ROUTES } from 'routes/constants'
@@ -37,6 +39,7 @@ export enum AnalyticsAiAgentSupportAgentChart {
     DecreaseInResolutionTimeCard = 'decrease_in_resolution_time_card',
     AverageCsatCard = 'average_csat_card',
     HandoverInteractionsCard = 'handover_interactions_card',
+    SuccessRateCard = 'support_agent_success_rate_card',
     SupportInteractionsComboChart = 'support_interactions_combo_chart',
     SupportAgentTrendLineChart = 'support_agent_trend_line_chart',
     ChannelPerformanceTable = 'channel_performance_table',
@@ -161,6 +164,22 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                 chartType: ChartType.Card,
                 metricFormat: 'decimal',
                 interpretAs: 'less-is-better',
+            },
+            [AnalyticsAiAgentSupportAgentChart.SuccessRateCard]: {
+                chartComponent: AnalyticsAiAgentSupportAgentSuccessRateCard,
+                label: 'Success rate',
+                csvProducer: [
+                    {
+                        type: DataExportFormat.Trend,
+                        fetch: fetchAiAgentSupportAgentSuccessRateTrend,
+                        metricFormat: 'decimal-to-percent',
+                    },
+                ],
+                description:
+                    'The percentage of AI Agent interactions that were fully resolved without escalation to a human agent.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal-to-percent',
+                interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart]: {
                 chartComponent: SupportInteractionsComboChart,

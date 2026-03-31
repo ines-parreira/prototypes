@@ -30,6 +30,11 @@ import {
     HandoverInteractionsDimension,
     HandoverInteractionsFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
+import type { SuccessRateCube } from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
+import {
+    SuccessRateDimension,
+    SuccessRateFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
 import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
@@ -376,4 +381,52 @@ export const supportAgentResolutionTimeDrillDownQueryFactory = (
         },
         ...buildResolutionTimePeriodFilters(filters),
     ],
+})
+
+const buildSuccessRatePeriodFilters = (filters: StatsFilters) => [
+    {
+        member: SuccessRateFilterMember.PeriodStart,
+        operator: ReportingFilterOperator.AfterDate,
+        values: [filters.period.start_datetime],
+    },
+    {
+        member: SuccessRateFilterMember.PeriodEnd,
+        operator: ReportingFilterOperator.BeforeDate,
+        values: [filters.period.end_datetime],
+    },
+]
+
+export const allAgentsSuccessRateDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<SuccessRateCube> => ({
+    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_SUCCESS_RATE_DRILL_DOWN,
+    measures: [],
+    dimensions: [SuccessRateDimension.TicketId],
+    filters: buildSuccessRatePeriodFilters(filters),
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting ? [[SuccessRateDimension.TicketId, sorting]] : [],
+})
+
+export const supportAgentSuccessRateDrillDownQueryFactory = (
+    filters: StatsFilters,
+    timezone: string,
+    sorting?: OrderDirection,
+): ReportingQuery<SuccessRateCube> => ({
+    metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE_DRILL_DOWN,
+    measures: [],
+    dimensions: [SuccessRateDimension.TicketId],
+    filters: [
+        {
+            member: SuccessRateFilterMember.AiAgentRole,
+            operator: ReportingFilterOperator.Equals,
+            values: [AIAgentSkills.AIAgentSupport],
+        },
+        ...buildSuccessRatePeriodFilters(filters),
+    ],
+    timezone,
+    limit: DRILLDOWN_QUERY_LIMIT,
+    order: sorting ? [[SuccessRateDimension.TicketId, sorting]] : [],
 })

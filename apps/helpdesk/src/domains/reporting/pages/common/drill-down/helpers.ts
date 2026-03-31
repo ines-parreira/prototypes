@@ -27,6 +27,7 @@ import {
     allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     allAgentsResolutionTimeDrillDownQueryFactory,
+    allAgentsSuccessRateDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
@@ -34,6 +35,7 @@ import {
     supportAgentFRTDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
     supportAgentResolutionTimeDrillDownQueryFactory,
+    supportAgentSuccessRateDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import {
     intentHandoverDrillDownQueryFactory,
@@ -464,6 +466,10 @@ export const getDrillDownQuery = (
             return allAgentsResolutionTimeDrillDownQueryFactory
         case AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard:
             return supportAgentResolutionTimeDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.AllAgentsSuccessRateCard:
+            return allAgentsSuccessRateDrillDownQueryFactory
+        case AiAgentDrillDownMetricName.SupportAgentSuccessRateCard:
+            return supportAgentSuccessRateDrillDownQueryFactory
         case AiSalesAgentChart.AiSalesDiscountOffered:
             return AiSalesAgentMetricsWithDrillDownConfig[
                 AiSalesAgentChart.AiSalesDiscountOffered

@@ -19,12 +19,17 @@ import {
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
 import { HandoverInteractionsFilterMember } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import {
+    SuccessRateDimension,
+    SuccessRateFilterMember,
+} from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
+import {
     allAgentsAutomatedInteractionsDrillDownQueryFactory,
     allAgentsClosedTicketsDrillDownQueryFactory,
     allAgentsCsatDrillDownQueryFactory,
     allAgentsFRTDrillDownQueryFactory,
     allAgentsHandoverInteractionsDrillDownQueryFactory,
     allAgentsResolutionTimeDrillDownQueryFactory,
+    allAgentsSuccessRateDrillDownQueryFactory,
     shoppingAssistantAutomatedInteractionsDrillDownQueryFactory,
     shoppingAssistantHandoverInteractionsDrillDownQueryFactory,
     supportAgentAutomatedInteractionsDrillDownQueryFactory,
@@ -32,6 +37,7 @@ import {
     supportAgentFRTDrillDownQueryFactory,
     supportAgentHandoverInteractionsDrillDownQueryFactory,
     supportAgentResolutionTimeDrillDownQueryFactory,
+    supportAgentSuccessRateDrillDownQueryFactory,
 } from 'domains/reporting/models/queryFactories/automate_v2/aiAgentDrillDownQueryFactories'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { AutomationFeatureType } from 'domains/reporting/models/scopes/constants'
@@ -911,6 +917,229 @@ describe('supportAgentFRTDrillDownQueryFactory', () => {
                 AIAgentDecreaseInFRTDimension.FirstResponseTime,
                 OrderDirection.Asc,
             ],
+        ])
+    })
+})
+
+describe('allAgentsSuccessRateDrillDownQueryFactory', () => {
+    it('should return correct metricName', () => {
+        const result = allAgentsSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.metricName).toBe(
+            METRIC_NAMES.AI_AGENT_ALL_AGENTS_SUCCESS_RATE_DRILL_DOWN,
+        )
+    })
+
+    it('should include TicketId in dimensions', () => {
+        const result = allAgentsSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.dimensions).toContain(SuccessRateDimension.TicketId)
+    })
+
+    it('should have empty measures', () => {
+        const result = allAgentsSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.measures).toEqual([])
+    })
+
+    it('should not include aiAgentRole filter', () => {
+        const result = allAgentsSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.filters).not.toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    member: SuccessRateFilterMember.AiAgentRole,
+                }),
+            ]),
+        )
+    })
+
+    it('should include periodStart filter with AfterDate operator', () => {
+        const result = allAgentsSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        const periodStartFilter = result.filters?.find(
+            (f) =>
+                'member' in f &&
+                f.member === SuccessRateFilterMember.PeriodStart,
+        )
+        expect(periodStartFilter).toBeDefined()
+        if (periodStartFilter && 'operator' in periodStartFilter) {
+            expect(periodStartFilter.operator).toBe(
+                ReportingFilterOperator.AfterDate,
+            )
+            expect(periodStartFilter.values).toEqual([
+                mockFilters.period.start_datetime,
+            ])
+        }
+    })
+
+    it('should include periodEnd filter with BeforeDate operator', () => {
+        const result = allAgentsSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        const periodEndFilter = result.filters?.find(
+            (f) =>
+                'member' in f && f.member === SuccessRateFilterMember.PeriodEnd,
+        )
+        expect(periodEndFilter).toBeDefined()
+        if (periodEndFilter && 'operator' in periodEndFilter) {
+            expect(periodEndFilter.operator).toBe(
+                ReportingFilterOperator.BeforeDate,
+            )
+            expect(periodEndFilter.values).toEqual([
+                mockFilters.period.end_datetime,
+            ])
+        }
+    })
+
+    it('should set correct limit', () => {
+        const result = allAgentsSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
+    })
+
+    it('should set empty order when no sorting provided', () => {
+        const result = allAgentsSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.order).toEqual([])
+    })
+
+    it('should set order when sorting is provided', () => {
+        const result = allAgentsSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+            OrderDirection.Desc,
+        )
+        expect(result.order).toEqual([
+            [SuccessRateDimension.TicketId, OrderDirection.Desc],
+        ])
+    })
+})
+
+describe('supportAgentSuccessRateDrillDownQueryFactory', () => {
+    it('should return correct metricName', () => {
+        const result = supportAgentSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.metricName).toBe(
+            METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE_DRILL_DOWN,
+        )
+    })
+
+    it('should include TicketId in dimensions', () => {
+        const result = supportAgentSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.dimensions).toContain(SuccessRateDimension.TicketId)
+    })
+
+    it('should have empty measures', () => {
+        const result = supportAgentSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.measures).toEqual([])
+    })
+
+    it('should include aiAgentRole fixed filter for support agent', () => {
+        const result = supportAgentSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        const roleFilter = result.filters?.find(
+            (f) =>
+                'member' in f &&
+                f.member === SuccessRateFilterMember.AiAgentRole,
+        )
+        expect(roleFilter).toEqual({
+            member: SuccessRateFilterMember.AiAgentRole,
+            operator: ReportingFilterOperator.Equals,
+            values: [AIAgentSkills.AIAgentSupport],
+        })
+    })
+
+    it('should include periodStart filter with AfterDate operator', () => {
+        const result = supportAgentSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        const periodStartFilter = result.filters?.find(
+            (f) =>
+                'member' in f &&
+                f.member === SuccessRateFilterMember.PeriodStart,
+        )
+        expect(periodStartFilter).toBeDefined()
+        if (periodStartFilter && 'operator' in periodStartFilter) {
+            expect(periodStartFilter.operator).toBe(
+                ReportingFilterOperator.AfterDate,
+            )
+            expect(periodStartFilter.values).toEqual([
+                mockFilters.period.start_datetime,
+            ])
+        }
+    })
+
+    it('should include periodEnd filter with BeforeDate operator', () => {
+        const result = supportAgentSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        const periodEndFilter = result.filters?.find(
+            (f) =>
+                'member' in f && f.member === SuccessRateFilterMember.PeriodEnd,
+        )
+        expect(periodEndFilter).toBeDefined()
+        if (periodEndFilter && 'operator' in periodEndFilter) {
+            expect(periodEndFilter.operator).toBe(
+                ReportingFilterOperator.BeforeDate,
+            )
+            expect(periodEndFilter.values).toEqual([
+                mockFilters.period.end_datetime,
+            ])
+        }
+    })
+
+    it('should set correct limit', () => {
+        const result = supportAgentSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.limit).toBe(DRILLDOWN_QUERY_LIMIT)
+    })
+
+    it('should set empty order when no sorting provided', () => {
+        const result = supportAgentSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+        )
+        expect(result.order).toEqual([])
+    })
+
+    it('should set order when sorting is provided', () => {
+        const result = supportAgentSuccessRateDrillDownQueryFactory(
+            mockFilters,
+            'UTC',
+            OrderDirection.Asc,
+        )
+        expect(result.order).toEqual([
+            [SuccessRateDimension.TicketId, OrderDirection.Asc],
         ])
     })
 })

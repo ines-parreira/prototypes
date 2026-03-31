@@ -34,6 +34,8 @@ jest.mock(
         allAgentsFRTDrillDownQueryFactory: jest.fn(),
         allAgentsResolutionTimeDrillDownQueryFactory: jest.fn(),
         supportAgentResolutionTimeDrillDownQueryFactory: jest.fn(),
+        allAgentsSuccessRateDrillDownQueryFactory: jest.fn(),
+        supportAgentSuccessRateDrillDownQueryFactory: jest.fn(),
     }),
 )
 jest.mock(
@@ -42,7 +44,6 @@ jest.mock(
         formatTicketDrillDownRowData: jest.fn(),
     }),
 )
-
 jest.mock('domains/reporting/pages/common/drill-down/helpers')
 const mockGetDrillDownQuery = jest.mocked(getDrillDownQuery)
 

@@ -1,9 +1,13 @@
 import {
+    aiAgentAllAgentsSuccessRateTrend,
+    aiAgentAllAgentsSuccessRateTrendQueryFactory,
     aiAgentSuccessRatePerChannel,
     aiAgentSuccessRatePerChannelQueryFactoryV2,
     aiAgentSuccessRatePerIntent,
     aiAgentSuccessRatePerIntentQueryFactoryV2,
     aiAgentSuccessRateScope,
+    aiSupportAgentSuccessRateTrend,
+    aiSupportAgentSuccessRateTrendQueryFactory,
 } from 'domains/reporting/models/scopes/aiAgentSuccessRate'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import type {
@@ -163,6 +167,72 @@ describe('aiAgentSuccessRateScope', () => {
         expect(result).not.toContainEqual(
             expect.objectContaining({ member: 'integrationId' }),
         )
+    })
+})
+
+describe('aiAgentAllAgentsSuccessRateTrend', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    it('builds query with correct metricName, scope, and measures', () => {
+        const actual = aiAgentAllAgentsSuccessRateTrend.build(context)
+
+        expect(actual).toMatchObject({
+            metricName: 'ai-agent-all-agents-success-rate',
+            scope: 'ai-agent-success-rate',
+            measures: ['successRate'],
+            timezone: 'utc',
+        })
+    })
+
+    describe('aiAgentAllAgentsSuccessRateTrendQueryFactory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentAllAgentsSuccessRateTrendQueryFactory(context),
+            ).toEqual(aiAgentAllAgentsSuccessRateTrend.build(context))
+        })
+    })
+})
+
+describe('aiSupportAgentSuccessRateTrend', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    it('builds query with correct metricName, scope, measures, and aiAgentRole fixed filter', () => {
+        const actual = aiSupportAgentSuccessRateTrend.build(context)
+
+        expect(actual).toMatchObject({
+            metricName: 'ai-agent-support-agent-success-rate',
+            scope: 'ai-agent-success-rate',
+            measures: ['successRate'],
+        })
+        expect(actual.filters).toContainEqual(
+            expect.objectContaining({
+                member: 'aiAgentRole',
+                operator: 'one-of',
+                values: ['ai-agent-support'],
+            }),
+        )
+    })
+
+    describe('aiSupportAgentSuccessRateTrendQueryFactory', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(aiSupportAgentSuccessRateTrendQueryFactory(context)).toEqual(
+                aiSupportAgentSuccessRateTrend.build(context),
+            )
+        })
     })
 })
 

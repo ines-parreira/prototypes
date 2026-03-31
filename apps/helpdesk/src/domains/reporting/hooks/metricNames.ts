@@ -109,6 +109,8 @@ export const METRIC_NAMES = {
         'ai-agent-all-agents-automated-interactions',
     AI_AGENT_ALL_AGENTS_COVERAGE_RATE: 'ai-agent-all-agents-coverage-rate',
     AI_AGENT_COVERAGE_RATE_PER_CHANNEL: 'ai-agent-coverage-rate-per-channel',
+    AI_AGENT_ALL_AGENTS_SUCCESS_RATE: 'ai-agent-all-agents-success-rate',
+    AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE: 'ai-agent-support-agent-success-rate',
     AI_AGENT_SUCCESS_RATE_PER_CHANNEL: 'ai-agent-success-rate-per-channel',
     AI_AGENT_SUCCESS_RATE_PER_INTENT: 'ai-agent-success-rate-per-intent',
     AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILLDOWN:
@@ -236,6 +238,10 @@ export const METRIC_NAMES = {
         'ai-sales-agent-total-number-of-automated-sales-drill-down',
     AI_SALES_AGENT_SUCCESS_RATE_DRILL_DOWN:
         'ai-sales-agent-success-rate-drill-down',
+    AI_AGENT_ALL_AGENTS_SUCCESS_RATE_DRILL_DOWN:
+        'ai-agent-all-agents-success-rate-drill-down',
+    AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE_DRILL_DOWN:
+        'ai-agent-support-agent-success-rate-drill-down',
     AI_SALES_AGENT_TOTAL_PRODUCT_RECOMMENDATIONS_DRILL_DOWN:
         'ai-sales-agent-total-product-recommendations-drill-down',
     AI_SALES_AGENT_DISCOUNT_CODES_OFFERED_DRILL_DOWN:
@@ -1054,6 +1060,8 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_COVERAGE_RATE_PER_CHANNEL,
     ],
     [MetricScope.AiAgentSuccessRate]: [
+        METRIC_NAMES.AI_AGENT_ALL_AGENTS_SUCCESS_RATE,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE,
         METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_INTENT,
     ],

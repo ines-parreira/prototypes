@@ -11,12 +11,12 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             ).toHaveLength(3)
         })
 
-        it('should have kpis section with 7 cards', () => {
+        it('should have kpis section with 8 cards', () => {
             const kpisSection =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
             expect(kpisSection.id).toBe('kpis')
             expect(kpisSection.type).toBe(ChartType.Card)
-            expect(kpisSection.items).toHaveLength(7)
+            expect(kpisSection.items).toHaveLength(8)
         })
 
         it('should have correct KPI cards in kpis section', () => {
@@ -42,6 +42,9 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             )
             expect(kpisSection.items[6].chartId).toBe(
                 AnalyticsAiAgentSupportAgentChart.DecreaseInResolutionTimeCard,
+            )
+            expect(kpisSection.items[7].chartId).toBe(
+                AnalyticsAiAgentSupportAgentChart.SuccessRateCard,
             )
         })
 
@@ -72,6 +75,17 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
                     AnalyticsAiAgentSupportAgentChart.HandoverInteractionsCard,
             )
             expect(handoverCard?.requiresFeatureFlag).toBe(true)
+        })
+
+        it('should have SuccessRateCard with requiresFeatureFlag', () => {
+            const kpisSection =
+                ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[0]
+            const successRateCard = kpisSection.items.find(
+                (item) =>
+                    item.chartId ===
+                    AnalyticsAiAgentSupportAgentChart.SuccessRateCard,
+            )
+            expect(successRateCard?.requiresFeatureFlag).toBe(true)
         })
 
         it('should have all KPI cards with gridSize 3', () => {
@@ -125,13 +139,13 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             expect(breakdownSection.items[1].gridSize).toBe(12)
         })
 
-        it('should have total of 11 charts across all sections', () => {
+        it('should have total of 12 charts across all sections', () => {
             const totalCharts =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections.reduce(
                     (sum, section) => sum + section.items.length,
                     0,
                 )
-            expect(totalCharts).toBe(11)
+            expect(totalCharts).toBe(12)
         })
 
         it('should have all required chart types defined', () => {

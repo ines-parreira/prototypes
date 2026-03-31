@@ -13,4 +13,6 @@ export enum AiAgentDrillDownMetricName {
     SupportAgentFRTCard = 'support_agent_decrease_in_frt_card',
     AllAgentsResolutionTimeCard = 'all_agents_decrease_in_resolution_time_card',
     SupportAgentResolutionTimeCard = 'support_agent_decrease_in_resolution_time_card',
+    AllAgentsSuccessRateCard = 'all_agents_success_rate_card',
+    SupportAgentSuccessRateCard = 'support_agent_success_rate_card',
 }

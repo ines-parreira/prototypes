@@ -14,6 +14,7 @@ import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentAllAgentsCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsCsatCard'
 import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
+import { AnalyticsAiAgentAllAgentsSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsSuccessRateCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
 import { AnalyticsAiAgentAverageOrderValueCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageOrderValueCard'
@@ -34,6 +35,7 @@ import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyt
 import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSalesHandoverInteractionsCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
+import { AnalyticsAiAgentSupportAgentSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentSuccessRateCard'
 import { AnalyticsAiAgentSupportDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
@@ -357,6 +359,45 @@ describe('Analytics Dynamic Trend Cards', () => {
                 label: 'Success rate',
                 description:
                     'The percentage of interactions handled by the AI Agent that are fully resolved without any human escalation.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal-to-percent' as const,
+                interpretAs: 'more-is-better',
+                value: 55.5,
+                prevValue: 12.0,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentAllAgentsSuccessRateCard',
+            Component: AnalyticsAiAgentAllAgentsSuccessRateCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName: AiAgentDrillDownMetricName.AllAgentsSuccessRateCard,
+                title: 'Success rate',
+            },
+            config: {
+                label: 'Success rate',
+                description:
+                    'The percentage of AI Agent interactions that were fully resolved without escalation to a human agent.',
+                chartType: ChartType.Card,
+                metricFormat: 'decimal-to-percent' as const,
+                interpretAs: 'more-is-better',
+                value: 55.5,
+                prevValue: 12.0,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentSupportAgentSuccessRateCard',
+            Component: AnalyticsAiAgentSupportAgentSuccessRateCard,
+            hasDrillDown: true,
+            drillDownParams: {
+                metricName:
+                    AiAgentDrillDownMetricName.SupportAgentSuccessRateCard,
+                title: 'Success rate',
+            },
+            config: {
+                label: 'Success rate',
+                description:
+                    'The percentage of AI Agent interactions that were fully resolved without escalation to a human agent.',
                 chartType: ChartType.Card,
                 metricFormat: 'decimal-to-percent' as const,
                 interpretAs: 'more-is-better',

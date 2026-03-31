@@ -85,6 +85,12 @@ export const ANALYTICS_AI_AGENT_ALL_AGENTS_LAYOUT: DashboardLayoutConfig<Analyti
                         visibility: true,
                         requiresFeatureFlag: true,
                     },
+                    {
+                        chartId: AnalyticsAiAgentAllAgentsChart.SuccessRateCard,
+                        gridSize: 3,
+                        visibility: true,
+                        requiresFeatureFlag: true,
+                    },
                 ],
             },
             {
