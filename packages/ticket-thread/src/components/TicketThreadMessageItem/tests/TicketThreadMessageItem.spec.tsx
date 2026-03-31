@@ -122,10 +122,6 @@ describe('TicketThreadMessageItem', () => {
             label: 'Instagram DM',
         },
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
-            label: 'Instagram media',
-        },
-        {
             tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention,
             label: 'Instagram story mention',
         },
@@ -362,6 +358,63 @@ describe('TicketThreadMessageItem', () => {
         expect(
             screen.getByRole('radio', { name: 'Hide comment' }),
         ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Copy message' }),
+        ).toBeInTheDocument()
+    })
+
+    it('renders Instagram media with sender name', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
+            data: {
+                ...messageData,
+                source: { type: 'instagram-media' },
+                sender: {
+                    name: 'Alice',
+                    email: 'alice@example.com',
+                    meta: null,
+                },
+                from_agent: false,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(screen.getByText('Alice')).toBeInTheDocument()
+    })
+
+    it('shows copy and intents buttons for inbound Instagram media', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
+            data: {
+                ...messageData,
+                source: { type: 'instagram-media' },
+                from_agent: false,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(
+            screen.getByRole('button', { name: 'Message intent' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: 'Copy message' }),
+        ).toBeInTheDocument()
+    })
+
+    it('shows only copy button for outbound Instagram media', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
+            data: {
+                ...messageData,
+                source: { type: 'instagram-media' },
+                from_agent: true,
+            },
+            datetime: '2024-03-21T11:00:00Z',
+        } as TicketThreadMessageItem)
+
+        expect(
+            screen.queryByRole('button', { name: 'Message intent' }),
+        ).not.toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: 'Copy message' }),
         ).toBeInTheDocument()

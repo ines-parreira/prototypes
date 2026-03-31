@@ -8,7 +8,8 @@ const SOCIAL_CHANNEL_ICONS: Record<string, string> = {
         'channel-fb-messenger',
     [TicketThreadItemTag.Messages.SocialMediaInstagramComment]:
         'channel-instagram',
-    [TicketThreadItemTag.Messages.SocialMediaInstagramMedia]: 'comm-instagram',
+    [TicketThreadItemTag.Messages.SocialMediaInstagramMedia]:
+        'channel-instagram',
     [TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage]:
         'channel-instagram-dm',
     [TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention]:
