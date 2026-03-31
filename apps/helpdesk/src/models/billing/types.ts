@@ -205,6 +205,27 @@ export type SubscriptionSummary = {
     current_billing_cycle_end_datetime: string
     coupon: CouponSummary | null
     trial_extended_until: string | null // isoformatted datetime
+    resource_version: number
+    schedule_resource_version?: number
+}
+
+export type InternalProductCatalogPlans = {
+    [productType in ProductType]?: Record<PlanId, Plan>
+}
+
+export type InternalProductCatalogResponse = {
+    plans: InternalProductCatalogPlans
+}
+
+export type InternalSubscriptionUpdatePayload = {
+    current_resource_version: number
+    invoice?: { generate: boolean }
+    new_plans?: Partial<Record<ProductType, PlanId>>
+    new_coupons?: string[]
+}
+
+export type InternalSubscriptionUpdateResponse = {
+    products: Partial<Record<ProductType, PlanId>>
 }
 
 export type CreditCard = {

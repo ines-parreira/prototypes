@@ -4,6 +4,9 @@ import type {
     BillingState,
     ChurnMitigationOfferDecisionEvent,
     CouponForSales,
+    InternalProductCatalogResponse,
+    InternalSubscriptionUpdatePayload,
+    InternalSubscriptionUpdateResponse,
     Plan,
     SubscriptionCycle,
 } from 'models/billing/types'
@@ -119,6 +122,23 @@ export async function setIsAccountVetted({ value }: { value: boolean }) {
 export async function getProductsUsage(): Promise<CurrentProductsUsages> {
     const res = await client.get<CurrentProductsUsages>(
         '/billing/products-usages',
+    )
+    return res.data
+}
+
+export async function getInternalProductCatalogPlans(): Promise<InternalProductCatalogResponse> {
+    const res = await client.get<InternalProductCatalogResponse>(
+        '/api/billing/internal/product-catalog-plans/',
+    )
+    return res.data
+}
+
+export async function updateInternalSubscription(
+    payload: InternalSubscriptionUpdatePayload,
+): Promise<InternalSubscriptionUpdateResponse> {
+    const res = await client.put<InternalSubscriptionUpdateResponse>(
+        '/api/billing/internal/subscription',
+        payload,
     )
     return res.data
 }

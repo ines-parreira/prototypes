@@ -10,17 +10,21 @@ import {
     getBillingContact,
     getBillingState,
     getCouponsForSales,
+    getInternalProductCatalogPlans,
     getProductsUsage,
     reactivateAccount,
     reactivateTrial,
     setIsAccountVetted,
     updateBillingContact,
+    updateInternalSubscription,
     upgradeAiAgentSubscriptionGeneration6Plan,
 } from './resources'
 
 export const billingKeys = {
     all: ['billing'] as const,
     contact: () => [...billingKeys.all, 'contact'] as const,
+    internalProductCatalog: () =>
+        [...billingKeys.all, 'internalProductCatalog'] as const,
 }
 
 export const getBillingStateQuery = {
@@ -191,5 +195,40 @@ export const useProductsUsage = (
     return useQuery({
         ...getProductsUsageQuery,
         ...overrides,
+    })
+}
+
+export const getInternalProductCatalogPlansQuery = {
+    queryKey: billingKeys.internalProductCatalog(),
+    queryFn: getInternalProductCatalogPlans,
+}
+
+export type UseInternalProductCatalogPlans = Awaited<
+    ReturnType<typeof getInternalProductCatalogPlans>
+>
+
+export const useInternalProductCatalogPlans = (
+    overrides?: UseQueryOptions<UseInternalProductCatalogPlans>,
+) => {
+    return useQuery({
+        ...getInternalProductCatalogPlansQuery,
+        staleTime: 10 * 60 * 1000,
+        ...overrides,
+    })
+}
+
+export const useUpdateInternalSubscription = () => {
+    const queryClient = useQueryClient()
+
+    return useMutation({
+        mutationFn: updateInternalSubscription,
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: billingKeys.all,
+            })
+            queryClient.invalidateQueries({
+                queryKey: getSubscriptionQuery.queryKey,
+            })
+        },
     })
 }

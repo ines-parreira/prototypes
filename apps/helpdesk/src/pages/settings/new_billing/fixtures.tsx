@@ -203,6 +203,7 @@ const subscription: SubscriptionSummary = {
     current_billing_cycle_end_datetime: '2024-08-22T00:00:00+00:00',
     coupon: null,
     trial_extended_until: null,
+    resource_version: 1000000000,
 }
 
 export const payingWithCreditCard: BillingState = {

@@ -6,8 +6,10 @@ import { billingContact } from 'fixtures/resources'
 import {
     getAiAgentGeneration6Plan,
     getBillingContact,
+    getInternalProductCatalogPlans,
     getProductsUsage,
     trackBillingEvent,
+    updateInternalSubscription,
     upgradeAiAgentSubscriptionGeneration6Plan,
 } from '../resources'
 import { ProductType } from '../types'
@@ -165,6 +167,93 @@ describe('billing resources', () => {
             await expect(getProductsUsage()).rejects.toThrow(
                 'Request failed with status code 500',
             )
+        })
+    })
+
+    describe('getInternalProductCatalogPlans', () => {
+        it('should fetch internal product catalog plans', async () => {
+            const mockCatalog = {
+                plans: {
+                    helpdesk: {
+                        'advanced-monthly-usd-5-1': {
+                            product: 'helpdesk',
+                            amount: 3000,
+                            plan_id: 'advanced-monthly-usd-5-1',
+                            name: 'Advanced',
+                        },
+                    },
+                },
+            }
+
+            mockedServer
+                .onGet('/api/billing/internal/product-catalog-plans/')
+                .reply(200, mockCatalog)
+
+            const result = await getInternalProductCatalogPlans()
+
+            expect(result).toEqual(mockCatalog)
+        })
+
+        it('should handle errors correctly', async () => {
+            mockedServer
+                .onGet('/api/billing/internal/product-catalog-plans/')
+                .reply(500, { error: 'Server error' })
+
+            await expect(getInternalProductCatalogPlans()).rejects.toThrow(
+                'Request failed with status code 500',
+            )
+        })
+    })
+
+    describe('updateInternalSubscription', () => {
+        it('should send the correct payload and return the response', async () => {
+            const payload = {
+                current_resource_version: 123456789,
+                invoice: { generate: true },
+                new_plans: { helpdesk: 'advanced-monthly-usd-5-1' as const },
+                new_coupons: ['ET0oIdlv'],
+            }
+            const mockResponse = {
+                products: { helpdesk: 'advanced-monthly-usd-5-1' },
+            }
+
+            mockedServer
+                .onPut('/api/billing/internal/subscription')
+                .reply(202, mockResponse)
+
+            const result = await updateInternalSubscription(payload)
+
+            expect(result).toEqual(mockResponse)
+            expect(JSON.parse(mockedServer.history.put[0].data)).toEqual(
+                payload,
+            )
+        })
+
+        it('should preserve error payload from backend', async () => {
+            const payload = {
+                current_resource_version: 123456789,
+                new_plans: { helpdesk: 'advanced-monthly-usd-5-1' as const },
+            }
+
+            mockedServer
+                .onPut('/api/billing/internal/subscription')
+                .reply(409, {
+                    error: {
+                        msg: 'Resource version mismatch',
+                        code: 'stale_resource',
+                    },
+                })
+
+            await expect(
+                updateInternalSubscription(payload),
+            ).rejects.toMatchObject({
+                response: {
+                    status: 409,
+                    data: {
+                        error: { msg: 'Resource version mismatch' },
+                    },
+                },
+            })
         })
     })
 })
