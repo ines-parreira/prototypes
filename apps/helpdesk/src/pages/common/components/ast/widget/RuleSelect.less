@@ -18,11 +18,11 @@
     }
 
     .label {
-        color: var(--main-primary-3) !important; // legacy
+        color: var(--main-primary-3); // legacy
         font-weight: 500;
 
         .btn-group.show & {
-            color: var(--neutral-grey-0) !important; // legacy
+            color: var(--neutral-grey-0); // legacy
         }
     }
 
@@ -60,10 +60,10 @@
 
     .label {
         color: var(--content-additional-blue) !important;
+    }
 
-        .btn-group.show & {
-            color: var(--content-additional-blue) !important;
-        }
+    .btn-group.show .label {
+        color: var(--content-additional-blue) !important;
     }
 
     .options {
