@@ -53,29 +53,40 @@ export const useAIJourneyTotalReplies = ({
 }: UseAIJourneyTotalRepliesOptions): AIJourneyMetricResult => {
     const enabled = !forceEmpty
 
+    const repliedDimensions = [
+        AiSalesAgentConversationsDimension.ReplyCount,
+        AiSalesAgentConversationsDimension.JourneyCompleteReason,
+    ]
+
     const { data: currentData, isFetching: isFetchingCurrent } =
         useMetricPerDimension<string, AiSalesAgentConversationsCube>(
-            aiJourneyRepliedMessagesQueryFactory(
-                integrationId,
-                filters,
-                userTimezone,
-                journeyIds,
-            ),
+            {
+                ...aiJourneyRepliedMessagesQueryFactory(
+                    integrationId,
+                    filters,
+                    userTimezone,
+                    journeyIds,
+                ),
+                dimensions: repliedDimensions,
+            },
             undefined,
             enabled,
         )
 
     const { data: prevData, isFetching: isFetchingPrev } =
         useMetricPerDimension<string, AiSalesAgentConversationsCube>(
-            aiJourneyRepliedMessagesQueryFactory(
-                integrationId,
-                {
-                    ...filters,
-                    period: getPreviousPeriod(filters.period),
-                },
-                userTimezone,
-                journeyIds,
-            ),
+            {
+                ...aiJourneyRepliedMessagesQueryFactory(
+                    integrationId,
+                    {
+                        ...filters,
+                        period: getPreviousPeriod(filters.period),
+                    },
+                    userTimezone,
+                    journeyIds,
+                ),
+                dimensions: repliedDimensions,
+            },
             undefined,
             enabled,
         )

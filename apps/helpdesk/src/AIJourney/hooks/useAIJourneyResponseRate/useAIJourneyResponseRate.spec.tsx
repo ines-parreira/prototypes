@@ -3,10 +3,7 @@ import { renderHook } from '@testing-library/react'
 import useMetricTrend from 'domains/reporting/hooks/useMetricTrend'
 import type { TimeSeriesDataItem } from 'domains/reporting/hooks/useTimeSeries'
 import { useTimeSeries } from 'domains/reporting/hooks/useTimeSeries'
-import {
-    AiSalesAgentConversationsDimension,
-    AiSalesAgentConversationsMeasure,
-} from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
+import { AiSalesAgentConversationsMeasure } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import { ReportingGranularity } from 'domains/reporting/models/types'
 
 import { useAIJourneyResponseRate } from './useAIJourneyResponseRate'
@@ -27,67 +24,26 @@ describe('useAIJourneyResponseRate', () => {
     }
 
     it('should return correct data when values are available', () => {
-        ;(useMetricTrend as jest.Mock).mockImplementation((args) => {
-            if (
-                args.filters.find(
-                    (f: any) =>
-                        f.member === AiSalesAgentConversationsDimension.Replied,
-                )
-            ) {
-                return {
-                    data: { value: 50, prevValue: 20 },
-                    isFetching: false,
-                }
-            }
-
-            return {
-                data: { value: 100, prevValue: 50 },
-                isFetching: false,
-            }
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: { value: 50, prevValue: 40 },
+            isFetching: false,
         })
-        ;(useTimeSeries as jest.Mock).mockImplementation((args) => {
-            if (
-                args.filters.find(
-                    (f: any) =>
-                        f.member === AiSalesAgentConversationsDimension.Replied,
-                )
-            ) {
-                return {
-                    data: [
-                        [
-                            {
-                                dateTime: '2025-07-03',
-                                value: 50,
-                                label: AiSalesAgentConversationsMeasure.Count,
-                            },
-                            {
-                                dateTime: '2025-07-10',
-                                value: 60,
-                                label: AiSalesAgentConversationsMeasure.Count,
-                            },
-                        ],
-                    ] satisfies TimeSeriesDataItem[][],
-                    isFetching: false,
-                }
-            }
-
-            return {
-                data: [
-                    [
-                        {
-                            dateTime: '2025-07-03',
-                            value: 100,
-                            label: AiSalesAgentConversationsMeasure.Count,
-                        },
-                        {
-                            dateTime: '2025-07-10',
-                            value: 120,
-                            label: AiSalesAgentConversationsMeasure.Count,
-                        },
-                    ],
-                ] satisfies TimeSeriesDataItem[][],
-                isFetching: false,
-            }
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: [
+                [
+                    {
+                        dateTime: '2025-07-03',
+                        value: 48,
+                        label: AiSalesAgentConversationsMeasure.ReplyRate,
+                    },
+                    {
+                        dateTime: '2025-07-10',
+                        value: 52,
+                        label: AiSalesAgentConversationsMeasure.ReplyRate,
+                    },
+                ],
+            ] satisfies TimeSeriesDataItem[][],
+            isFetching: false,
         })
 
         const userTimezone = 'America/New_York'
@@ -111,13 +67,13 @@ describe('useAIJourneyResponseRate', () => {
             series: [
                 {
                     dateTime: '2025-07-03',
-                    label: 'AiSalesAgentConversations.count',
-                    value: 50,
+                    label: AiSalesAgentConversationsMeasure.ReplyRate,
+                    value: 48,
                 },
                 {
                     dateTime: '2025-07-10',
-                    label: 'AiSalesAgentConversations.count',
-                    value: 50,
+                    label: AiSalesAgentConversationsMeasure.ReplyRate,
+                    value: 52,
                 },
             ],
             drilldown: {
@@ -127,6 +83,33 @@ describe('useAIJourneyResponseRate', () => {
                 title: 'Response Rate',
             },
         })
+    })
+
+    it('should use the backend ReplyRate measure', () => {
+        ;(useMetricTrend as jest.Mock).mockReturnValue({
+            data: { value: 12, prevValue: 10 },
+            isFetching: false,
+        })
+        ;(useTimeSeries as jest.Mock).mockReturnValue({
+            data: [[]],
+            isFetching: false,
+        })
+
+        renderHook(() =>
+            useAIJourneyResponseRate({
+                integrationId: '123',
+                userTimezone: 'UTC',
+                filters: mockFilters,
+                granularity: ReportingGranularity.Week,
+            }),
+        )
+
+        const metricTrendCall = (useMetricTrend as jest.Mock).mock.calls[0]
+        const query = metricTrendCall[0]
+        expect(query.measures).toEqual([
+            AiSalesAgentConversationsMeasure.ReplyRate,
+        ])
+        expect(query.dimensions).toEqual([])
     })
 
     it('should handle loading state correctly', () => {

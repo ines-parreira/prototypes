@@ -204,6 +204,8 @@ export const METRIC_NAMES = {
     AI_JOURNEY_TOTAL_UNIQUE_CONTACTS: 'ai-journey-total-unique-contacts',
     AI_JOURNEY_TOTAL_UNIQUE_CONTACTS_TIME_SERIES:
         'ai-journey-total-unique-contacts-time-series',
+    AI_JOURNEY_REPLY_RATE: 'ai-journey-reply-rate',
+    AI_JOURNEY_REPLY_RATE_TIME_SERIES: 'ai-journey-reply-rate-time-series',
     AI_JOURNEY_SANKEY_CONVERSATIONS: 'ai-journey-sankey-conversations',
     AI_JOURNEY_SANKEY_ORDERS: 'ai-journey-sankey-orders',
 

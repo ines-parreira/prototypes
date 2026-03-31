@@ -428,10 +428,7 @@ export const aiJourneyRepliedMessagesQueryFactory = (
     return {
         metricName: METRIC_NAMES.AI_JOURNEY_REPLIED_MESSAGES,
         measures: [AiSalesAgentConversationsMeasure.Count],
-        dimensions: [
-            AiSalesAgentConversationsDimension.ReplyCount,
-            AiSalesAgentConversationsDimension.JourneyCompleteReason,
-        ],
+        dimensions: [],
         filters: [
             {
                 member: AiSalesAgentConversationsDimension.Source,
@@ -455,6 +452,73 @@ export const aiJourneyRepliedMessagesQueryFactory = (
             ...journeyFilter,
         ],
         timezone,
+    }
+}
+
+export const aiJourneyReplyRateQueryFactory = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    journeyIds?: string[],
+): ReportingQuery<AiSalesAgentConversationsCube> => {
+    const journeyFilter =
+        journeyIds && journeyIds.length > 0
+            ? [
+                  {
+                      member: AiSalesAgentConversationsDimension.JourneyId,
+                      operator: ReportingFilterOperator.Equals,
+                      values: journeyIds,
+                  },
+              ]
+            : []
+
+    return {
+        metricName: METRIC_NAMES.AI_JOURNEY_REPLY_RATE,
+        measures: [AiSalesAgentConversationsMeasure.ReplyRate],
+        dimensions: [],
+        filters: [
+            {
+                member: AiSalesAgentConversationsDimension.Source,
+                operator: ReportingFilterOperator.Equals,
+                values: ['ai-journey'],
+            },
+            {
+                member: AiSalesAgentConversationsDimension.StoreIntegrationId,
+                operator: ReportingFilterOperator.Equals,
+                values: [integrationId],
+            },
+            ...statsFiltersToReportingFilters(
+                aiSalesAgentConversationsDefaultFiltersMembers,
+                filters,
+            ),
+            ...journeyFilter,
+        ],
+        timezone,
+    }
+}
+
+export const aiJourneyReplyRateTimeSeriesQuery = (
+    integrationId: string,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+    journeyIds?: string[],
+): TimeSeriesQuery<AiSalesAgentConversationsCube> => {
+    return {
+        ...aiJourneyReplyRateQueryFactory(
+            integrationId,
+            filters,
+            timezone,
+            journeyIds,
+        ),
+        metricName: METRIC_NAMES.AI_JOURNEY_REPLY_RATE_TIME_SERIES,
+        timeDimensions: [
+            {
+                dimension: AiSalesAgentConversationsDimension.PeriodStart,
+                granularity,
+                dateRange: getFilterDateRange(filters.period),
+            },
+        ],
     }
 }
 
