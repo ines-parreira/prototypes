@@ -83,7 +83,7 @@ export type ExtraConfigProps = {
     costSavedPerInteraction?: number
 }
 
-const MAP_ENGAGEMENT_TYPE_NAME: Record<string, string> = {
+export const MAP_ENGAGEMENT_TYPE_NAME: Record<string, string> = {
     search_bar: 'Search bar',
     ask_anything: 'Ask anything',
     suggested_product_question: 'Suggested product question',

@@ -2,8 +2,12 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     aiAgentSalesOrdersInfluencedPerChannel,
     aiAgentSalesOrdersInfluencedPerChannelQueryV2Factory,
+    aiAgentSalesOrdersInfluencedPerEngagementType,
+    aiAgentSalesOrdersInfluencedPerEngagementTypeQueryV2Factory,
     aiAgentSalesTotalSalesPerChannel,
     aiAgentSalesTotalSalesPerChannelQueryV2Factory,
+    aiAgentSalesTotalSalesPerEngagementType,
+    aiAgentSalesTotalSalesPerEngagementTypeQueryV2Factory,
     aiSalesAgentOrdersPerformanceScope,
     averageOrderValue,
     averageOrderValueQueryV2Factory,
@@ -264,6 +268,77 @@ describe('totalSalesAmountUsd queries', () => {
             const result = totalSalesAmountUsdQueryV2Factory(context)
             expect(result.measures).toContain('totalSalesAmountUsd')
         })
+    })
+})
+
+describe('engagement type sales performance queries', () => {
+    const context = {
+        filters: {
+            period: {
+                start_datetime: '2025-09-03T00:00:00.000',
+                end_datetime: '2025-09-03T23:59:59.000',
+            },
+        },
+        timezone: 'utc',
+    }
+
+    it('builds total sales per engagement type query', () => {
+        expect(aiAgentSalesTotalSalesPerEngagementType.build(context)).toEqual({
+            metricName:
+                'ai-agent-sales-performance-total-sales-per-engagement-type',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['totalSalesAmountUsd'],
+            dimensions: ['engagementType'],
+            timezone: 'utc',
+            filters: [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+            ],
+        })
+    })
+
+    it('builds orders influenced per engagement type query', () => {
+        expect(
+            aiAgentSalesOrdersInfluencedPerEngagementType.build(context),
+        ).toEqual({
+            metricName:
+                'ai-agent-sales-performance-orders-influenced-per-engagement-type',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['ordersInfluencedCount'],
+            dimensions: ['engagementType'],
+            timezone: 'utc',
+            filters: [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+            ],
+        })
+    })
+
+    it('query factories match build', () => {
+        expect(
+            aiAgentSalesTotalSalesPerEngagementTypeQueryV2Factory(context),
+        ).toEqual(aiAgentSalesTotalSalesPerEngagementType.build(context))
+        expect(
+            aiAgentSalesOrdersInfluencedPerEngagementTypeQueryV2Factory(
+                context,
+            ),
+        ).toEqual(aiAgentSalesOrdersInfluencedPerEngagementType.build(context))
     })
 })
 

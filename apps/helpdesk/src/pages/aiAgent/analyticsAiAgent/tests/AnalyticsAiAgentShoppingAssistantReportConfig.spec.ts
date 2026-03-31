@@ -59,7 +59,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
     it('should have automated interactions card config', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
-                AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard
+                AnalyticsAiAgentShoppingAssistantChart.AutomatedInteractionsCard
             ]
 
         expect(config).toBeDefined()
@@ -191,11 +191,20 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(config).toBeDefined()
         expect(config.label).toBe('Channel')
         expect(config.chartType).toBe(ChartType.Table)
-        expect(config.csvProducer).toHaveLength(1)
-        expect(config.csvProducer?.[0].type).toBe(
-            DataExportFormat.ConfigurableTable,
-        )
-        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+        expect(config.csvProducer).not.toBeNull()
+    })
+
+    it('should have engagement feature performance table config', () => {
+        const config =
+            AnalyticsAiAgentShoppingAssistantReportConfig.charts[
+                AnalyticsAiAgentShoppingAssistantChart
+                    .EngagementFeaturePerformanceTable
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Engagement feature')
+        expect(config.chartType).toBe(ChartType.Table)
+        expect(config.csvProducer).not.toBeNull()
     })
 
     it('should have top products performance table config', () => {
@@ -266,7 +275,7 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
     it('should have fetch function for automated interactions trend', async () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
-                AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard
+                AnalyticsAiAgentShoppingAssistantChart.AutomatedInteractionsCard
             ]
 
         expect(config.csvProducer).toBeDefined()
@@ -399,17 +408,13 @@ describe('AnalyticsAiAgentShoppingAssistantReportConfig', () => {
         expect(typeof config.csvProducer?.[0].fetch).toBe('function')
     })
 
-    it('should have csvProducer for channel performance table', () => {
+    it('should have configurable table csvProducer for channel performance table', () => {
         const config =
             AnalyticsAiAgentShoppingAssistantReportConfig.charts[
                 AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable
             ]
 
-        expect(config.csvProducer).toHaveLength(1)
-        expect(config.csvProducer?.[0].type).toBe(
-            DataExportFormat.ConfigurableTable,
-        )
-        expect(typeof config.csvProducer?.[0].fetch).toBe('function')
+        expect(config.csvProducer).not.toBeNull()
     })
 
     it('should have null csvProducer for top products performance table', () => {

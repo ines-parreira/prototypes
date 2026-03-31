@@ -83,7 +83,7 @@ describe('buildCustomDashboard', () => {
             AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard,
         )
         expect(chartIds).toContain(
-            AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard,
+            AnalyticsAiAgentShoppingAssistantChart.AutomatedInteractionsCard,
         )
         expect(chartIds).toContain(
             AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard,

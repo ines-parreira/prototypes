@@ -37,6 +37,8 @@ import {
 import { fetchAiSalesAgentConversionRateTrend } from 'pages/aiAgent/analyticsAiAgent/charts/useAiSalesAgentConversionRateTrend'
 import { ShoppingAssistantChannelTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTableWrapper'
 import { ShoppingAssistantTopProductsTable } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable'
+import { ShoppingAssistantPerformanceByEngagementFeatureTable } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable'
+import { SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_TABLE } from 'pages/aiAgent/analyticsAiAgent/components/ShoppingAssistantPerformanceByEngagementFeatureTable/columns'
 import { fetchAiAgentAverageDiscountAmountTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAverageDiscountAmountTrend'
 import { fetchAiAgentAverageOrderValueTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAverageOrderValueTrend'
 import { fetchAiAgentDiscountCodesAppliedTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentDiscountCodesAppliedTrend'
@@ -48,6 +50,7 @@ import { fetchAiAgentProductRecommendationsTrend } from 'pages/aiAgent/analytics
 import { fetchAiAgentSalesPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSalesPerformanceByChannelMetrics'
 import { fetchAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 import { fetchRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
+import { fetchShoppingAssistantPerformanceByEngagementFeatureAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useShoppingAssistantPerformanceByEngagementFeatureMetrics'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
@@ -57,7 +60,7 @@ import { STATS_ROUTES } from 'routes/constants'
 export enum AnalyticsAiAgentShoppingAssistantChart {
     TotalSalesCard = 'total_sales_card',
     OrdersInfluencedCard = 'orders_influenced_card',
-    ResolvedInteractionsCard = 'resolved_interactions_card',
+    AutomatedInteractionsCard = 'automated_interactions_card',
     RevenuePerInteractionCard = 'revenue_per_interaction_card',
     AverageDiscountAmountCard = 'average_discount_amount_card',
     AverageOrderValueCard = 'average_order_value_card',
@@ -74,6 +77,7 @@ export enum AnalyticsAiAgentShoppingAssistantChart {
     ConfigurableBarGraph = 'configurable_bar_graph',
     ConfigurableLineGraph = 'configurable_line_graph',
     ChannelPerformanceTable = 'channel_performance_table',
+    EngagementFeaturePerformanceTable = 'engagement_feature_performance_table',
     TopProductsPerformanceTable = 'top_products_performance_table',
 }
 
@@ -115,22 +119,23 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
             },
-            [AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard]: {
-                chartComponent: AnalyticsAiAgentResolvedInteractionsCard,
-                label: 'Automated interactions',
-                csvProducer: [
-                    {
-                        type: DataExportFormat.Trend,
-                        fetch: fetchTotalNumberOfSalesConversationsTrend,
-                        metricFormat: 'decimal',
-                    },
-                ],
-                description:
-                    'The number of interactions handled by Shopping Assistant in which the customer left without asking to talk to a human agent.',
-                chartType: ChartType.Card,
-                metricFormat: 'decimal',
-                interpretAs: 'more-is-better',
-            },
+            [AnalyticsAiAgentShoppingAssistantChart.AutomatedInteractionsCard]:
+                {
+                    chartComponent: AnalyticsAiAgentResolvedInteractionsCard,
+                    label: 'Automated interactions',
+                    csvProducer: [
+                        {
+                            type: DataExportFormat.Trend,
+                            fetch: fetchTotalNumberOfSalesConversationsTrend,
+                            metricFormat: 'decimal',
+                        },
+                    ],
+                    description:
+                        'The number of interactions handled by Shopping Assistant in which the customer left without asking to talk to a human agent.',
+                    chartType: ChartType.Card,
+                    metricFormat: 'decimal',
+                    interpretAs: 'more-is-better',
+                },
             [AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard]:
                 {
                     chartComponent: AnalyticsAiAgentRevenuePerInteractionCard,
@@ -387,6 +392,21 @@ export const AnalyticsAiAgentShoppingAssistantReportConfig: ReportConfig<Analyti
                 description: 'Performance breakdown by channel',
                 chartType: ChartType.Table,
             },
+            [AnalyticsAiAgentShoppingAssistantChart.EngagementFeaturePerformanceTable]:
+                {
+                    chartComponent:
+                        ShoppingAssistantPerformanceByEngagementFeatureTable,
+                    label: 'Engagement feature',
+                    csvProducer: [
+                        {
+                            type: DataExportFormat.ConfigurableTable,
+                            fetch: fetchShoppingAssistantPerformanceByEngagementFeatureAsConfigurableTable,
+                        },
+                    ],
+                    description:
+                        SHOPPING_ASSISTANT_PERFORMANCE_BY_ENGAGEMENT_FEATURE_TABLE.description,
+                    chartType: ChartType.Table,
+                },
             [AnalyticsAiAgentShoppingAssistantChart.TopProductsPerformanceTable]:
                 {
                     chartComponent: ShoppingAssistantTopProductsTable,

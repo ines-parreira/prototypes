@@ -6,6 +6,8 @@ import {
     aiAgentAutomatedInteractionsScope,
     aiSalesAgentAutomatedInteractionsPerChannel,
     aiSalesAgentAutomatedInteractionsPerChannelQueryFactoryV2,
+    aiSalesAgentAutomatedInteractionsPerEngagementType,
+    aiSalesAgentAutomatedInteractionsPerEngagementTypeQueryFactoryV2,
     aiSupportAgentAutomatedInteractionsPerChannel,
     aiSupportAgentAutomatedInteractionsPerChannelQueryFactoryV2,
     aiSupportAgentAutomatedInteractionsPerIntent,
@@ -471,6 +473,62 @@ describe('aiAgentAutomatedInteractionsScope', () => {
                     ),
                 ).toEqual(aiAgentAutomatedInteractionsPerIntent.build(context))
             })
+        })
+    })
+
+    describe('aiSalesAgentAutomatedInteractionsPerEngagementType', () => {
+        const filters: StatsFilters = {
+            period: {
+                start_datetime: '2025-09-03T00:00:00.000',
+                end_datetime: '2025-09-03T23:59:59.000',
+            },
+        }
+        const timezone = 'utc'
+        const context = { filters, timezone }
+
+        it('builds query with engagementType dimension and sales agent filter', () => {
+            const actual =
+                aiSalesAgentAutomatedInteractionsPerEngagementType.build(
+                    context,
+                )
+
+            expect(actual).toEqual({
+                metricName:
+                    'ai-agent-sales-performance-automated-interactions-per-engagement-type',
+                scope: 'ai-agent-automated-interactions',
+                measures: ['automatedInteractionsCount'],
+                dimensions: ['engagementType'],
+                timezone: 'utc',
+                filters: [
+                    {
+                        member: 'periodStart',
+                        operator: 'afterDate',
+                        values: ['2025-09-03T00:00:00.000'],
+                    },
+                    {
+                        member: 'periodEnd',
+                        operator: 'beforeDate',
+                        values: ['2025-09-03T23:59:59.000'],
+                    },
+                    {
+                        member: 'aiAgentRole',
+                        operator: 'one-of',
+                        values: ['ai-agent-sales'],
+                    },
+                ],
+            })
+        })
+
+        it('returns the same result as build directly', () => {
+            expect(
+                aiSalesAgentAutomatedInteractionsPerEngagementTypeQueryFactoryV2(
+                    context,
+                ),
+            ).toEqual(
+                aiSalesAgentAutomatedInteractionsPerEngagementType.build(
+                    context,
+                ),
+            )
         })
     })
 

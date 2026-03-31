@@ -239,3 +239,25 @@ export const aiSalesAgentHandoverInteractionsPerChannel =
 export const aiSalesAgentHandoverInteractionsPerChannelQueryFactoryV2 = (
     ctx: HandoverInteractionsContext,
 ) => aiSalesAgentHandoverInteractionsPerChannel.build(ctx)
+
+export const aiSalesAgentHandoverInteractionsPerEngagementType =
+    handoverInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_HANDOVER_INTERACTIONS_PER_ENGAGEMENT_TYPE,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['handoverInteractionsCount'],
+            dimensions: ['engagementType'],
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'aiAgentRole',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationSkillType.AiAgentSales],
+                },
+            ] as any,
+        }))
+
+export const aiSalesAgentHandoverInteractionsPerEngagementTypeQueryFactoryV2 = (
+    ctx: HandoverInteractionsContext,
+) => aiSalesAgentHandoverInteractionsPerEngagementType.build(ctx)

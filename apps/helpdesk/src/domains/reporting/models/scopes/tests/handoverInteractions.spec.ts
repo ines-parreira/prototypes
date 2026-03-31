@@ -6,6 +6,8 @@ import {
     aiSalesAgentHandoverInteractions,
     aiSalesAgentHandoverInteractionsPerChannel,
     aiSalesAgentHandoverInteractionsPerChannelQueryFactoryV2,
+    aiSalesAgentHandoverInteractionsPerEngagementType,
+    aiSalesAgentHandoverInteractionsPerEngagementTypeQueryFactoryV2,
     aiSalesAgentHandoverInteractionsV2QueryFactory,
     aiSupportHandoverInteractions,
     aiSupportHandoverInteractionsPerChannel,
@@ -230,6 +232,43 @@ describe('handoverInteractionsScope', () => {
                 ],
                 time_dimensions: timeDimensions,
             })
+        })
+    })
+
+    describe('aiSalesAgentHandoverInteractionsPerEngagementType', () => {
+        it('creates query with engagementType dimension and aiAgentRole filter for ai-agent-sales', () => {
+            const actual =
+                aiSalesAgentHandoverInteractionsPerEngagementType.build(context)
+
+            expect(actual).toEqual({
+                metricName:
+                    'ai-agent-sales-performance-handover-interactions-per-engagement-type',
+                scope: 'handover-interactions',
+                measures: ['handoverInteractionsCount'],
+                dimensions: ['engagementType'],
+                timezone: 'utc',
+                filters: [
+                    ...periodFilters,
+                    {
+                        member: 'aiAgentRole',
+                        operator: 'one-of',
+                        values: ['ai-agent-sales'],
+                    },
+                ],
+                time_dimensions: timeDimensions,
+            })
+        })
+
+        it('returns the same result as build directly', () => {
+            expect(
+                aiSalesAgentHandoverInteractionsPerEngagementTypeQueryFactoryV2(
+                    context,
+                ),
+            ).toEqual(
+                aiSalesAgentHandoverInteractionsPerEngagementType.build(
+                    context,
+                ),
+            )
         })
     })
 

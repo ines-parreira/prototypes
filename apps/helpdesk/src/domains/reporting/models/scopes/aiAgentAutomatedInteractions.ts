@@ -109,6 +109,28 @@ export const aiSalesAgentAutomatedInteractionsPerChannelQueryFactoryV2 = (
     ctx: Context,
 ) => aiSalesAgentAutomatedInteractionsPerChannel.build(ctx)
 
+export const aiSalesAgentAutomatedInteractionsPerEngagementType =
+    aiAgentAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_AUTOMATED_INTERACTIONS_PER_ENGAGEMENT_TYPE,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['automatedInteractionsCount'] as const,
+            dimensions: ['engagementType'],
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'aiAgentRole',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationSkillType.AiAgentSales],
+                },
+            ] as any,
+        }))
+
+export const aiSalesAgentAutomatedInteractionsPerEngagementTypeQueryFactoryV2 =
+    (ctx: Context) =>
+        aiSalesAgentAutomatedInteractionsPerEngagementType.build(ctx)
+
 export const aiSupportAgentAutomatedInteractionsPerChannel =
     aiAgentAutomatedInteractionsScope
         .defineMetricName(

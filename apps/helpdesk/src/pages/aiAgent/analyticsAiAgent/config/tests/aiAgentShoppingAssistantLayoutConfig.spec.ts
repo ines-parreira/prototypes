@@ -25,7 +25,7 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             const expectedChartIds = [
                 AnalyticsAiAgentShoppingAssistantChart.TotalSalesCard,
                 AnalyticsAiAgentShoppingAssistantChart.OrdersInfluencedCard,
-                AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard,
+                AnalyticsAiAgentShoppingAssistantChart.AutomatedInteractionsCard,
                 AnalyticsAiAgentShoppingAssistantChart.RevenuePerInteractionCard,
                 AnalyticsAiAgentShoppingAssistantChart.AverageDiscountAmountCard,
                 AnalyticsAiAgentShoppingAssistantChart.AverageOrderValueCard,
@@ -88,21 +88,26 @@ describe('aiAgentShoppingAssistantLayoutConfig', () => {
             expect(visualizationsSection.items[1].gridSize).toBe(6)
         })
 
-        it('should have breakdown section with 2 tables and tableTitle', () => {
+        it('should have breakdown section with 3 tables and tableTitle', () => {
             const breakdownSection =
                 ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT.sections[2]
             expect(breakdownSection.id).toBe('breakdown')
             expect(breakdownSection.type).toBe(ChartType.Table)
             expect(breakdownSection.tableTitle).toBe('Performance breakdown')
-            expect(breakdownSection.items).toHaveLength(2)
+            expect(breakdownSection.items).toHaveLength(3)
             expect(breakdownSection.items[0].chartId).toBe(
-                AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable,
+                AnalyticsAiAgentShoppingAssistantChart.EngagementFeaturePerformanceTable,
             )
             expect(breakdownSection.items[0].gridSize).toBe(12)
+            expect(breakdownSection.items[0].requiresFeatureFlag).toBe(true)
             expect(breakdownSection.items[1].chartId).toBe(
-                AnalyticsAiAgentShoppingAssistantChart.TopProductsPerformanceTable,
+                AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable,
             )
             expect(breakdownSection.items[1].gridSize).toBe(12)
+            expect(breakdownSection.items[2].chartId).toBe(
+                AnalyticsAiAgentShoppingAssistantChart.TopProductsPerformanceTable,
+            )
+            expect(breakdownSection.items[2].gridSize).toBe(12)
         })
 
         it('should have all required chart types defined', () => {

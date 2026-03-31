@@ -66,7 +66,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
     const gmvInfluenceTimeSeriesData = useDownloadGmvInfluenceTimeSeriesData()
     const legacySalesChannelTable =
         useDownloadShoppingAssistantChannelPerformanceData()
-    const topProductsData = useDownloadShoppingAssistantTopProductsData()
+    const legacyTopProductsTable = useDownloadShoppingAssistantTopProductsData()
 
     const isLoading =
         isDashboardDataLoading ||
@@ -77,7 +77,8 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
             (totalSalesByProductData.isLoading ||
                 gmvInfluenceTimeSeriesData.isLoading)) ||
         (!isTablesFFEnabled &&
-            (legacySalesChannelTable.isLoading || topProductsData.isLoading))
+            (legacySalesChannelTable.isLoading ||
+                legacyTopProductsTable.isLoading))
 
     const files = useMemo(
         () => ({
@@ -88,7 +89,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
             }),
             ...(!isTablesFFEnabled && {
                 ...legacySalesChannelTable.files,
-                ...topProductsData.files,
+                ...legacyTopProductsTable.files,
             }),
         }),
         [
@@ -96,7 +97,7 @@ export const useExportAiAgentShoppingAssistantToCSV = () => {
             totalSalesByProductData.files,
             gmvInfluenceTimeSeriesData.files,
             legacySalesChannelTable.files,
-            topProductsData.files,
+            legacyTopProductsTable.files,
             isGraphsFFEnabled,
             isTablesFFEnabled,
         ],

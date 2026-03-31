@@ -138,6 +138,34 @@ export const aiAgentSalesOrdersInfluencedPerChannelQueryV2Factory = (
     ctx: AiSalesAgentOrdersPerformanceContext,
 ) => aiAgentSalesOrdersInfluencedPerChannel.build(ctx)
 
+export const aiAgentSalesTotalSalesPerEngagementType =
+    aiSalesAgentOrdersPerformanceScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_TOTAL_SALES_PER_ENGAGEMENT_TYPE,
+        )
+        .defineQuery(() => ({
+            measures: ['totalSalesAmountUsd'] as const,
+            dimensions: ['engagementType'] as const,
+        }))
+
+export const aiAgentSalesTotalSalesPerEngagementTypeQueryV2Factory = (
+    ctx: AiSalesAgentOrdersPerformanceContext,
+) => aiAgentSalesTotalSalesPerEngagementType.build(ctx)
+
+export const aiAgentSalesOrdersInfluencedPerEngagementType =
+    aiSalesAgentOrdersPerformanceScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_ORDERS_INFLUENCED_PER_ENGAGEMENT_TYPE,
+        )
+        .defineQuery(() => ({
+            measures: ['ordersInfluencedCount'] as const,
+            dimensions: ['engagementType'] as const,
+        }))
+
+export const aiAgentSalesOrdersInfluencedPerEngagementTypeQueryV2Factory = (
+    ctx: AiSalesAgentOrdersPerformanceContext,
+) => aiAgentSalesOrdersInfluencedPerEngagementType.build(ctx)
+
 export const dynamicTotalSalesAmountTimeseries =
     aiSalesAgentOrdersPerformanceScope
         .defineMetricName(

@@ -23,7 +23,7 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                     },
                     {
                         chartId:
-                            AnalyticsAiAgentShoppingAssistantChart.ResolvedInteractionsCard,
+                            AnalyticsAiAgentShoppingAssistantChart.AutomatedInteractionsCard,
                         gridSize: 3,
                         visibility: true,
                     },
@@ -142,6 +142,13 @@ export const ANALYTICS_AI_AGENT_SHOPPING_ASSISTANT_LAYOUT: DashboardLayoutConfig
                 type: ChartType.Table,
                 tableTitle: 'Performance breakdown',
                 items: [
+                    {
+                        chartId:
+                            AnalyticsAiAgentShoppingAssistantChart.EngagementFeaturePerformanceTable,
+                        gridSize: 12,
+                        visibility: true,
+                        requiresFeatureFlag: true,
+                    },
                     {
                         chartId:
                             AnalyticsAiAgentShoppingAssistantChart.ChannelPerformanceTable,

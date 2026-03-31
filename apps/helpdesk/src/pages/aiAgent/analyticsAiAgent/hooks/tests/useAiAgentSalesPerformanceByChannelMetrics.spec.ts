@@ -426,3 +426,74 @@ describe('fetchAiAgentSalesPerformanceByChannelMetrics', () => {
         })
     })
 })
+
+describe('fetchAiAgentSalesPerformanceByChannelAsConfigurableTable', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockFetchEntityMetrics.mockResolvedValue({
+            data: {
+                automatedInteractions: { email: 1200 },
+                handoverInteractions: { email: 45 },
+                totalSales: { email: 6225 },
+                ordersInfluenced: { email: 50 },
+                revenuePerInteraction: { email: 5.0 },
+            },
+            isLoading: false,
+            isError: false,
+        })
+        mockFilterEntitiesWithData.mockReturnValue(['email'])
+        mockAssembleEntityRows.mockReturnValue([
+            {
+                entity: 'email' as const,
+                automatedInteractions: 1200,
+                handoverInteractions: 45,
+                totalSales: 6225,
+                ordersInfluenced: 50,
+                revenuePerInteraction: 5.0,
+            },
+        ])
+        mockGetCsvFileNameWithDates.mockReturnValue('channel-table-filename')
+        mockCreateCsv.mockReturnValue('csv-content')
+    })
+
+    it('returns files from fetchAiAgentSalesPerformanceByChannelMetrics', async () => {
+        const result =
+            await fetchAiAgentSalesPerformanceByChannelAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+        expect(result.files['channel-table-filename']).toBe('csv-content')
+    })
+
+    it('ignores savedMeasure and savedDimension arguments', async () => {
+        const result =
+            await fetchAiAgentSalesPerformanceByChannelAsConfigurableTable(
+                'some-measure',
+                'some-dimension',
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+        expect(result.files['channel-table-filename']).toBe('csv-content')
+    })
+
+    it('returns empty files object when underlying fetch returns empty content', async () => {
+        mockAssembleEntityRows.mockReturnValue([])
+
+        const result =
+            await fetchAiAgentSalesPerformanceByChannelAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+        expect(result.files['channel-table-filename']).toBe('')
+    })
+})

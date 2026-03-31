@@ -2,6 +2,8 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import {
     aiAgentSalesRevenuePerInteractionPerChannel,
     aiAgentSalesRevenuePerInteractionPerChannelQueryV2Factory,
+    aiAgentSalesRevenuePerInteractionPerEngagementType,
+    aiAgentSalesRevenuePerInteractionPerEngagementTypeQueryV2Factory,
     aiSalesAgentActivityScope,
     dynamicRevenuePerInteraction,
     dynamicRevenuePerInteractionQueryFactoryV2,
@@ -231,6 +233,53 @@ describe('revenuePerInteractionQueryV2Factory', () => {
     it('queries the revenuePerInteraction measure', () => {
         const result = revenuePerInteractionQueryV2Factory(context)
         expect(result.measures).toContain('revenuePerInteraction')
+    })
+})
+
+describe('aiAgentSalesRevenuePerInteractionPerEngagementType', () => {
+    const context = {
+        filters: {
+            period: {
+                start_datetime: '2025-09-03T00:00:00.000',
+                end_datetime: '2025-09-03T23:59:59.000',
+            },
+        },
+        timezone: 'UTC',
+    }
+
+    it('builds query with engagementType dimension', () => {
+        expect(
+            aiAgentSalesRevenuePerInteractionPerEngagementType.build(context),
+        ).toEqual({
+            metricName:
+                'ai-agent-sales-performance-revenue-per-interaction-per-engagement-type',
+            scope: 'ai-sales-agent-activity',
+            measures: ['revenuePerInteraction'],
+            dimensions: ['engagementType'],
+            timezone: 'UTC',
+            filters: [
+                {
+                    member: 'periodStart',
+                    operator: 'afterDate',
+                    values: ['2025-09-03T00:00:00.000'],
+                },
+                {
+                    member: 'periodEnd',
+                    operator: 'beforeDate',
+                    values: ['2025-09-03T23:59:59.000'],
+                },
+            ],
+        })
+    })
+
+    it('query factory matches build', () => {
+        expect(
+            aiAgentSalesRevenuePerInteractionPerEngagementTypeQueryV2Factory(
+                context,
+            ),
+        ).toEqual(
+            aiAgentSalesRevenuePerInteractionPerEngagementType.build(context),
+        )
     })
 })
 

@@ -101,3 +101,17 @@ export const aiAgentSalesRevenuePerInteractionPerChannel =
 export const aiAgentSalesRevenuePerInteractionPerChannelQueryV2Factory = (
     ctx: AiSalesAgentActivityContext,
 ) => aiAgentSalesRevenuePerInteractionPerChannel.build(ctx)
+
+export const aiAgentSalesRevenuePerInteractionPerEngagementType =
+    aiSalesAgentActivityScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_REVENUE_PER_INTERACTION_PER_ENGAGEMENT_TYPE,
+        )
+        .defineQuery(() => ({
+            measures: ['revenuePerInteraction'] as const,
+            dimensions: ['engagementType'] as const,
+        }))
+
+export const aiAgentSalesRevenuePerInteractionPerEngagementTypeQueryV2Factory =
+    (ctx: AiSalesAgentActivityContext) =>
+        aiAgentSalesRevenuePerInteractionPerEngagementType.build(ctx)
