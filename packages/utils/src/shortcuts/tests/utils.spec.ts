@@ -66,6 +66,11 @@ describe('shortcutManager utils', () => {
             expect(utils.isEditable(input)).toBe(true)
         })
 
+        it('search input', () => {
+            input.type = 'search'
+            expect(utils.isEditable(input)).toBe(true)
+        })
+
         it('checkbox', () => {
             input.type = 'checkbox'
             expect(utils.isEditable(input)).toBe(false)
@@ -133,6 +138,16 @@ describe('shortcutManager utils', () => {
             const nonEditable = document.createElement('div')
             nonEditable.setAttribute('role', 'listbox')
             expect(utils.isEditable(nonEditable)).toBe(false)
+        })
+
+        it('contenteditable ancestor', () => {
+            const editable = document.createElement('div')
+            const child = document.createElement('span')
+
+            editable.contentEditable = 'true'
+            editable.appendChild(child)
+
+            expect(utils.isEditable(child)).toBe(true)
         })
     })
 

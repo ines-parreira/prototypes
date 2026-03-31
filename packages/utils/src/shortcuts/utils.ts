@@ -78,15 +78,32 @@ const editableRoleSelector = [
 ].join(', ')
 
 export function isEditable(element: Element): boolean {
+    const nativeEditableElement = element.closest('input, select, textarea')
+    const isNativeEditableInput =
+        nativeEditableElement?.tagName === 'INPUT' &&
+        !nonEditableInputTypes.includes(
+            nativeEditableElement.getAttribute('type')?.toLowerCase() as any,
+        )
+    const isNativeEditableControl =
+        isNativeEditableInput ||
+        nativeEditableElement?.tagName === 'SELECT' ||
+        nativeEditableElement?.tagName === 'TEXTAREA'
+
+    let currentElement: Element | null = element
+    let isContentEditable = false
+
+    while (currentElement) {
+        if ((currentElement as HTMLElement).contentEditable === 'true') {
+            isContentEditable = true
+            break
+        }
+
+        currentElement = currentElement.parentElement
+    }
+
     return (
-        (element.tagName === 'INPUT' &&
-            !nonEditableInputTypes.includes(
-                element.getAttribute('type') as any,
-            )) ||
-        element.tagName === 'SELECT' ||
-        element.tagName === 'TEXTAREA' ||
-        (!!(element as HTMLElement).contentEditable &&
-            (element as HTMLElement).contentEditable === 'true') ||
+        isNativeEditableControl ||
+        isContentEditable ||
         element.closest(editableRoleSelector) !== null
     )
 }

@@ -172,4 +172,16 @@ describe('shortcutManager', () => {
 
         expect(counter).toBe(0)
     })
+
+    it('stops shortcuts when the active element is editable even if the event target is not', () => {
+        const input = document.createElement('input')
+        const target = document.createElement('div')
+        const activeElementSpy = vi.spyOn(document, 'activeElement', 'get')
+
+        activeElementSpy.mockReturnValue(input)
+
+        expect(sm._stopCallback({} as never, target, 'left')).toBe(true)
+
+        activeElementSpy.mockRestore()
+    })
 })

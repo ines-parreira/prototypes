@@ -29,6 +29,8 @@ export class ShortcutManager {
         element: Element,
         combo: string,
     ) => {
+        const activeElement = document.activeElement
+
         // if one of the element's parents
         // has the class "shortcuts-enable" then no need to stop.
         // or, if the combo includes 'mod' or 'meta',
@@ -47,7 +49,11 @@ export class ShortcutManager {
 
         // stop on editable elements (input, select, textarea, contentEditable),
         // and buttons.
-        return isEditable(element) || isButton(element)
+        return (
+            isEditable(element) ||
+            (activeElement instanceof Element && isEditable(activeElement)) ||
+            isButton(element)
+        )
     }
 
     _keymap: typeof shortcuts & { [key: string]: KeyMap } = _clone(shortcuts)
