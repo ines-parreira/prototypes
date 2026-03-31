@@ -13,6 +13,7 @@ export const aiAgentDecreaseInFirstResponseTimeScope = defineScope({
     ],
     dimensions: [
         'aiAgentRole',
+        'aiIntentCustomField',
         'channel',
         'customField',
         'engagementType',
@@ -84,3 +85,25 @@ export const aiAgentSupportAgentDecreaseInFRT =
 export const aiAgentSupportAgentDecreaseInFRTQueryV2Factory = (
     ctx: AiAgentDecreaseInFirstResponseTimeContext,
 ) => aiAgentSupportAgentDecreaseInFRT.build(ctx)
+
+export const aiAgentSupportAgentDecreaseInFRTPerIntent =
+    aiAgentDecreaseInFirstResponseTimeScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_INTENT,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['averageDecreaseInFirstResponseTime'] as const,
+            dimensions: ['aiIntentCustomField'],
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'aiAgentRole',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationSkillType.AiAgentSupport],
+                },
+            ] as any,
+        }))
+
+export const aiAgentSupportAgentDecreaseInFRTPerIntentQueryFactoryV2 = (
+    ctx: AiAgentDecreaseInFirstResponseTimeContext,
+) => aiAgentSupportAgentDecreaseInFRTPerIntent.build(ctx)

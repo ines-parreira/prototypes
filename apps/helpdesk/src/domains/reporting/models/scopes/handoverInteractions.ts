@@ -182,7 +182,7 @@ export const aiSupportHandoverInteractionsPerChannel = handoverInteractionsScope
         filters: [
             ...createScopeFilters(ctx.filters, config),
             {
-                member: 'aiAgentSkill',
+                member: 'aiAgentRole',
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [AutomationSkillType.AiAgentSupport],
             },
@@ -196,6 +196,27 @@ export const aiAgentHandoverInteractionsPerIntentQueryFactoryV2 = (
 export const aiSupportHandoverInteractionsPerChannelQueryFactoryV2 = (
     ctx: HandoverInteractionsContext,
 ) => aiSupportHandoverInteractionsPerChannel.build(ctx)
+
+export const aiSupportHandoverInteractionsPerIntent = handoverInteractionsScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_INTENT,
+    )
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['handoverInteractionsCount'],
+        dimensions: ['aiIntentCustomField'],
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'aiAgentRole',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [AutomationSkillType.AiAgentSupport],
+            },
+        ] as any,
+    }))
+
+export const aiSupportHandoverInteractionsPerIntentQueryFactoryV2 = (
+    ctx: HandoverInteractionsContext,
+) => aiSupportHandoverInteractionsPerIntent.build(ctx)
 
 export const aiSalesAgentHandoverInteractionsPerChannel =
     handoverInteractionsScope

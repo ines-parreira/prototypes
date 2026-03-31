@@ -8,6 +8,8 @@ import {
     aiSalesAgentAutomatedInteractionsPerChannelQueryFactoryV2,
     aiSupportAgentAutomatedInteractionsPerChannel,
     aiSupportAgentAutomatedInteractionsPerChannelQueryFactoryV2,
+    aiSupportAgentAutomatedInteractionsPerIntent,
+    aiSupportAgentAutomatedInteractionsPerIntentQueryFactoryV2,
     dynamicAiShoppingAgentAutomatedInteractionsTimeseries,
     dynamicAiShoppingAgentAutomatedInteractionsTimeseriesQueryFactoryV2,
     dynamicAllAgentsAutomatedInteractions,
@@ -553,7 +555,7 @@ describe('aiSupportAgentAutomatedInteractionsPerChannel', () => {
         },
     ]
 
-    it('builds query with correct metricName, measures, channel dimension, and aiAgentSkill filter', () => {
+    it('builds query with correct metricName, measures, channel dimension, and aiAgentRole filter', () => {
         const actual =
             aiSupportAgentAutomatedInteractionsPerChannel.build(context)
 
@@ -566,7 +568,7 @@ describe('aiSupportAgentAutomatedInteractionsPerChannel', () => {
             filters: [
                 ...periodFilters,
                 {
-                    member: 'aiAgentSkill',
+                    member: 'aiAgentRole',
                     operator: 'one-of',
                     values: ['ai-agent-support'],
                 },
@@ -785,6 +787,63 @@ describe('aiSupportAgentAutomatedInteractionsPerChannel', () => {
 
                 expect(result.dimensions).toEqual(['storeIntegrationId'])
             })
+        })
+    })
+})
+
+describe('aiSupportAgentAutomatedInteractionsPerIntent', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with correct metricName, measures, aiIntentCustomField dimension, and aiAgentRole filter', () => {
+        const actual =
+            aiSupportAgentAutomatedInteractionsPerIntent.build(context)
+
+        expect(actual).toEqual({
+            metricName: 'ai-agent-support-automated-interactions-per-intent',
+            scope: 'ai-agent-automated-interactions',
+            measures: ['automatedInteractionsCount'],
+            dimensions: ['aiIntentCustomField'],
+            timezone: 'utc',
+            filters: [
+                ...periodFilters,
+                {
+                    member: 'aiAgentRole',
+                    operator: 'one-of',
+                    values: ['ai-agent-support'],
+                },
+            ],
+        })
+    })
+
+    describe('aiSupportAgentAutomatedInteractionsPerIntentQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiSupportAgentAutomatedInteractionsPerIntentQueryFactoryV2(
+                    context,
+                ),
+            ).toEqual(
+                aiSupportAgentAutomatedInteractionsPerIntent.build(context),
+            )
         })
     })
 })

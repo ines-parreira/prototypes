@@ -3,6 +3,8 @@ import {
     aiAgentSupportAgentDecreaseInFRT,
     aiAgentSupportAgentDecreaseInFRTPerChannel,
     aiAgentSupportAgentDecreaseInFRTPerChannelQueryFactoryV2,
+    aiAgentSupportAgentDecreaseInFRTPerIntent,
+    aiAgentSupportAgentDecreaseInFRTPerIntentQueryFactoryV2,
     aiAgentSupportAgentDecreaseInFRTQueryV2Factory,
 } from 'domains/reporting/models/scopes/aiAgentDecreaseInFirstResponseTime'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
@@ -298,6 +300,61 @@ describe('aiAgentSupportAgentDecreaseInFRT', () => {
             expect(
                 aiAgentSupportAgentDecreaseInFRTQueryV2Factory(context),
             ).toEqual(aiAgentSupportAgentDecreaseInFRT.build(context))
+        })
+    })
+})
+
+describe('aiAgentSupportAgentDecreaseInFRTPerIntent', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with correct metricName, scope, measures, dimensions, and aiAgentRole filter', () => {
+        expect(
+            aiAgentSupportAgentDecreaseInFRTPerIntent.build(context),
+        ).toEqual({
+            metricName:
+                'ai-agent-support-agent-decrease-in-first-response-time-per-intent',
+            scope: 'ai-agent-decrease-in-first-response-time',
+            measures: ['averageDecreaseInFirstResponseTime'],
+            dimensions: ['aiIntentCustomField'],
+            timezone: 'utc',
+            filters: [
+                ...periodFilters,
+                {
+                    member: 'aiAgentRole',
+                    operator: 'one-of',
+                    values: ['ai-agent-support'],
+                },
+            ],
+        })
+    })
+
+    describe('aiAgentSupportAgentDecreaseInFRTPerIntentQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentSupportAgentDecreaseInFRTPerIntentQueryFactoryV2(
+                    context,
+                ),
+            ).toEqual(aiAgentSupportAgentDecreaseInFRTPerIntent.build(context))
         })
     })
 })

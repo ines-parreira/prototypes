@@ -120,7 +120,7 @@ export const aiSupportAgentAutomatedInteractionsPerChannel =
             filters: [
                 ...createScopeFilters(ctx.filters, config),
                 {
-                    member: 'aiAgentSkill',
+                    member: 'aiAgentRole',
                     operator: LogicalOperatorEnum.ONE_OF,
                     values: [AutomationSkillType.AiAgentSupport],
                 },
@@ -130,6 +130,28 @@ export const aiSupportAgentAutomatedInteractionsPerChannel =
 export const aiSupportAgentAutomatedInteractionsPerChannelQueryFactoryV2 = (
     ctx: Context,
 ) => aiSupportAgentAutomatedInteractionsPerChannel.build(ctx)
+
+export const aiSupportAgentAutomatedInteractionsPerIntent =
+    aiAgentAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_INTENT,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['automatedInteractionsCount'] as const,
+            dimensions: ['aiIntentCustomField'],
+            filters: [
+                ...createScopeFilters(ctx.filters, config),
+                {
+                    member: 'aiAgentRole',
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [AutomationSkillType.AiAgentSupport],
+                },
+            ] as any,
+        }))
+
+export const aiSupportAgentAutomatedInteractionsPerIntentQueryFactoryV2 = (
+    ctx: Context,
+) => aiSupportAgentAutomatedInteractionsPerIntent.build(ctx)
 
 export const dynamicAiShoppingAgentAutomatedInteractionsTimeseries =
     aiAgentAutomatedInteractionsScope

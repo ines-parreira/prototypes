@@ -1,4 +1,6 @@
 import {
+    aiAgentSupportAgentTimeSavedPerIntent,
+    aiAgentSupportAgentTimeSavedPerIntentQueryFactoryV2,
     aiAgentTimeSavedScope,
     dynamicAllAgentsTimeSaved,
     dynamicAllAgentsTimeSavedQueryFactoryV2,
@@ -177,7 +179,7 @@ describe('overallTimeSavedByAgentPerChannel', () => {
         },
     ]
 
-    it('builds query with correct metricName, scope, measures, dimensions, and aiAgentSkill filter', () => {
+    it('builds query with correct metricName, scope, measures, dimensions, and aiAgentRole filter', () => {
         expect(overallTimeSavedByAgentPerChannel.build(context)).toEqual({
             metricName: 'ai-agent-support-agent-time-saved-per-channel',
             scope: 'ai-agent-time-saved',
@@ -187,7 +189,7 @@ describe('overallTimeSavedByAgentPerChannel', () => {
             filters: [
                 ...periodFilters,
                 {
-                    member: 'aiAgentSkill',
+                    member: 'aiAgentRole',
                     operator: 'one-of',
                     values: ['ai-agent-support'],
                 },
@@ -200,6 +202,56 @@ describe('overallTimeSavedByAgentPerChannel', () => {
             expect(
                 overallTimeSavedByAgentPerChannelQueryFactoryV2(context),
             ).toEqual(overallTimeSavedByAgentPerChannel.build(context))
+        })
+    })
+})
+
+describe('aiAgentSupportAgentTimeSavedPerIntent', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const context = { filters, timezone }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('builds query with correct metricName, scope, measures, dimensions, and aiAgentRole filter', () => {
+        expect(aiAgentSupportAgentTimeSavedPerIntent.build(context)).toEqual({
+            metricName: 'ai-agent-support-agent-time-saved-per-intent',
+            scope: 'ai-agent-time-saved',
+            measures: ['averageTimeSavedByAgent'],
+            dimensions: ['aiIntentCustomField'],
+            timezone: 'utc',
+            filters: [
+                ...periodFilters,
+                {
+                    member: 'aiAgentRole',
+                    operator: 'one-of',
+                    values: ['ai-agent-support'],
+                },
+            ],
+        })
+    })
+
+    describe('aiAgentSupportAgentTimeSavedPerIntentQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiAgentSupportAgentTimeSavedPerIntentQueryFactoryV2(context),
+            ).toEqual(aiAgentSupportAgentTimeSavedPerIntent.build(context))
         })
     })
 })

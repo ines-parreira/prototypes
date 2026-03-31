@@ -64,7 +64,7 @@ export const useExportAiAgentSupportAgentToCSV = () => {
     const supportInteractionsTimeSeriesData =
         useDownloadSupportInteractionsTimeSeriesData()
     const legacyChannelTable = useDownloadSupportAgentChannelPerformanceData()
-    const intentPerformanceData = useDownloadIntentPerformanceData()
+    const legacyIntentTable = useDownloadIntentPerformanceData()
 
     const isLoading =
         isDashboardDataLoading ||
@@ -74,8 +74,8 @@ export const useExportAiAgentSupportAgentToCSV = () => {
         (!isGraphsFFEnabled &&
             (supportInteractionsByIntentData.isLoading ||
                 supportInteractionsTimeSeriesData.isLoading)) ||
-        (!isTablesFFEnabled && legacyChannelTable.isLoading) ||
-        intentPerformanceData.isLoading
+        (!isTablesFFEnabled &&
+            (legacyChannelTable.isLoading || legacyIntentTable.isLoading))
 
     const files = useMemo(
         () => ({
@@ -84,15 +84,17 @@ export const useExportAiAgentSupportAgentToCSV = () => {
                 ...supportInteractionsByIntentData.files,
                 ...supportInteractionsTimeSeriesData.files,
             }),
-            ...(!isTablesFFEnabled && { ...legacyChannelTable.files }),
-            ...intentPerformanceData.files,
+            ...(!isTablesFFEnabled && {
+                ...legacyChannelTable.files,
+                ...legacyIntentTable.files,
+            }),
         }),
         [
             dashboardDataFiles,
             supportInteractionsByIntentData.files,
             supportInteractionsTimeSeriesData.files,
             legacyChannelTable.files,
-            intentPerformanceData.files,
+            legacyIntentTable.files,
             isGraphsFFEnabled,
             isTablesFFEnabled,
         ],

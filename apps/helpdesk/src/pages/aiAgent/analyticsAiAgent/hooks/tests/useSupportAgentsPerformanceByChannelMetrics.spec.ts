@@ -407,3 +407,85 @@ describe('fetchSupportAgentsPerformanceByChannelMetrics', () => {
         })
     })
 })
+
+describe('fetchSupportAgentsPerformanceByChannelAsConfigurableTable', () => {
+    const mockRow = {
+        entity: 'email' as const,
+        automatedInteractions: 1200,
+        handoverInteractions: 45,
+        timeSaved: 7200,
+        costSaved: 3720,
+        decreaseInFRT: null,
+    }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockFetchEntityMetrics.mockResolvedValue({
+            data: {
+                automatedInteractions: { email: 1200 },
+                handoverInteractions: { email: 45 },
+                timeSaved: { email: 7200 },
+                costSaved: { email: 3720 },
+                decreaseInFRT: { email: null },
+            },
+            isLoading: false,
+            isError: false,
+        })
+        mockFilterEntitiesWithData.mockReturnValue(['email'])
+        mockAssembleEntityRows.mockReturnValue([mockRow])
+        mockGetCsvFileNameWithDates.mockReturnValue(
+            '2024-01-01_2024-01-31-support_agents_performance_by_channel_table',
+        )
+        mockCreateCsv.mockReturnValue('csv-content')
+    })
+
+    it('returns files from the underlying fetch', async () => {
+        const result =
+            await fetchSupportAgentsPerformanceByChannelAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+        expect(result.files).toBeDefined()
+        expect(
+            result.files[
+                '2024-01-01_2024-01-31-support_agents_performance_by_channel_table'
+            ],
+        ).toBe('csv-content')
+    })
+
+    it('returns empty file content when no data is available', async () => {
+        mockAssembleEntityRows.mockReturnValue([])
+
+        const result =
+            await fetchSupportAgentsPerformanceByChannelAsConfigurableTable(
+                null,
+                null,
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+        expect(
+            result.files[
+                '2024-01-01_2024-01-31-support_agents_performance_by_channel_table'
+            ],
+        ).toBe('')
+    })
+
+    it('ignores savedMeasure and savedDimension parameters', async () => {
+        const result =
+            await fetchSupportAgentsPerformanceByChannelAsConfigurableTable(
+                'some-measure',
+                'some-dimension',
+                MOCK_STATS_FILTERS,
+                MOCK_TIMEZONE,
+                ReportingGranularity.Day,
+            )
+
+        expect(result.files).toBeDefined()
+    })
+})

@@ -6,7 +6,7 @@ export enum AIAgentDecreaseInResolutionTimeDimension {
 }
 
 export enum AIAgentDecreaseInResolutionTimeFilterMember {
-    AiAgentSkill = 'AIAgentDecreaseInResolutionTime.aiAgentSkill',
+    AiAgentRole = 'AIAgentDecreaseInResolutionTime.aiAgentRole',
     PeriodStart = 'AIAgentDecreaseInResolutionTime.periodStart',
     PeriodEnd = 'AIAgentDecreaseInResolutionTime.periodEnd',
 }

@@ -375,7 +375,7 @@ export const supportAgentResolutionTimeDrillDownQueryFactory = (
     metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILLDOWN,
     filters: [
         {
-            member: AIAgentDecreaseInResolutionTimeFilterMember.AiAgentSkill,
+            member: AIAgentDecreaseInResolutionTimeFilterMember.AiAgentRole,
             operator: ReportingFilterOperator.Equals,
             values: [AIAgentSkills.AIAgentSupport],
         },

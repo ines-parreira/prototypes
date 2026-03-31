@@ -10,6 +10,8 @@ import {
     aiSupportHandoverInteractions,
     aiSupportHandoverInteractionsPerChannel,
     aiSupportHandoverInteractionsPerChannelQueryFactoryV2,
+    aiSupportHandoverInteractionsPerIntent,
+    aiSupportHandoverInteractionsPerIntentQueryFactoryV2,
     aiSupportHandoverInteractionsV2QueryFactory,
     handoverInteractions,
     handoverInteractionsPerChannel,
@@ -207,7 +209,7 @@ describe('handoverInteractionsScope', () => {
     })
 
     describe('aiSupportHandoverInteractionsPerChannel', () => {
-        it('creates query with channel dimension and aiAgentSkill filter for ai-agent-support', () => {
+        it('creates query with channel dimension and aiAgentRole filter for ai-agent-support', () => {
             const actual =
                 aiSupportHandoverInteractionsPerChannel.build(context)
 
@@ -221,7 +223,7 @@ describe('handoverInteractionsScope', () => {
                 filters: [
                     ...periodFilters,
                     {
-                        member: 'aiAgentSkill',
+                        member: 'aiAgentRole',
                         operator: 'one-of',
                         values: ['ai-agent-support'],
                     },
@@ -333,6 +335,67 @@ describe('handoverInteractionsScope', () => {
                 ],
                 time_dimensions: timeDimensions,
             })
+        })
+    })
+})
+
+describe('aiSupportHandoverInteractionsPerIntent', () => {
+    const filters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+    const timezone = 'utc'
+    const granularity = 'day' as AggregationWindow
+    const context = { filters, timezone, granularity }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    const timeDimensions = [
+        {
+            dimension: 'eventDatetime',
+            granularity: 'day',
+        },
+    ]
+
+    it('builds query with aiIntentCustomField dimension and support-agent filter', () => {
+        const actual = aiSupportHandoverInteractionsPerIntent.build(context)
+
+        expect(actual).toEqual({
+            metricName: 'ai-agent-support-handover-interactions-per-intent',
+            scope: 'handover-interactions',
+            measures: ['handoverInteractionsCount'],
+            dimensions: ['aiIntentCustomField'],
+            timezone: 'utc',
+            filters: [
+                ...periodFilters,
+                {
+                    member: 'aiAgentRole',
+                    operator: 'one-of',
+                    values: ['ai-agent-support'],
+                },
+            ],
+            time_dimensions: timeDimensions,
+        })
+    })
+
+    describe('aiSupportHandoverInteractionsPerIntentQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            expect(
+                aiSupportHandoverInteractionsPerIntentQueryFactoryV2(context),
+            ).toEqual(aiSupportHandoverInteractionsPerIntent.build(context))
         })
     })
 })

@@ -86,12 +86,20 @@ export const METRIC_NAMES = {
         'ai-agent-shopping-assistant-handover-interactions-per-channel',
     AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_CHANNEL:
         'ai-agent-support-automated-interactions-per-channel',
+    AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_INTENT:
+        'ai-agent-support-automated-interactions-per-intent',
     AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_CHANNEL:
         'ai-agent-support-handover-interactions-per-channel',
+    AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_INTENT:
+        'ai-agent-support-handover-interactions-per-intent',
     AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL:
         'ai-agent-support-agent-time-saved-per-channel',
+    AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_INTENT:
+        'ai-agent-support-agent-time-saved-per-intent',
     AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_CHANNEL:
         'ai-agent-support-agent-decrease-in-first-response-time-per-channel',
+    AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_INTENT:
+        'ai-agent-support-agent-decrease-in-first-response-time-per-intent',
     AI_AGENT_HANDOVER_INTERACTIONS_PER_INTENT:
         'ai-agent-handover-interactions-per-intent',
     AI_AGENT_SNOOZED_INTERACTIONS_PER_INTENT:
@@ -113,6 +121,8 @@ export const METRIC_NAMES = {
     AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE: 'ai-agent-support-agent-success-rate',
     AI_AGENT_SUCCESS_RATE_PER_CHANNEL: 'ai-agent-success-rate-per-channel',
     AI_AGENT_SUCCESS_RATE_PER_INTENT: 'ai-agent-success-rate-per-intent',
+    AI_AGENT_SUPPORT_SUCCESS_RATE_PER_INTENT:
+        'ai-agent-support-success-rate-per-intent',
     AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILLDOWN:
         'ai-agent-automated-interactions-drill-down',
     AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILLDOWN:
@@ -1033,6 +1043,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SALES_HANDOVER_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SUPPORT_HANDOVER_INTERACTIONS_PER_INTENT,
     ],
 
     // P5
@@ -1064,6 +1075,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_SUCCESS_RATE,
         METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SUCCESS_RATE_PER_INTENT,
+        METRIC_NAMES.AI_AGENT_SUPPORT_SUCCESS_RATE_PER_INTENT,
     ],
     [MetricScope.AiSalesAgentConversionRate]: [
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_CONVERSION_RATE,
@@ -1100,15 +1112,18 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_TIMESERIES,
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AUTOMATED_INTERACTIONS_PER_INTENT,
         METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS,
         METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_AUTOMATED_INTERACTIONS_TIMESERIES,
     ],
     [MetricScope.AiAgentDecreaseInFirstResponseTime]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_INTENT,
     ],
     [MetricScope.AiAgentTimeSaved]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_INTENT,
         METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT,
     ],
     [MetricScope.FlowDataset]: [

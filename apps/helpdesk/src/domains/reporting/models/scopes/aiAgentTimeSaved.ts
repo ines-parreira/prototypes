@@ -10,6 +10,7 @@ export const aiAgentTimeSavedScope = defineScope({
     measures: ['averageTimeSavedByAgent', 'medianTimeSavedByAgent'],
     dimensions: [
         'aiAgentRole',
+        'aiIntentCustomField',
         'channel',
         'customField',
         'storeIntegrationId',
@@ -47,7 +48,7 @@ export const overallTimeSavedByAgentPerChannel = aiAgentTimeSavedScope
         filters: [
             ...createScopeFilters(ctx.filters, config),
             {
-                member: 'aiAgentSkill',
+                member: 'aiAgentRole',
                 operator: LogicalOperatorEnum.ONE_OF,
                 values: [AutomationSkillType.AiAgentSupport],
             },
@@ -57,6 +58,25 @@ export const overallTimeSavedByAgentPerChannel = aiAgentTimeSavedScope
 export const overallTimeSavedByAgentPerChannelQueryFactoryV2 = (
     ctx: AiAgentTimeSavedContext,
 ) => overallTimeSavedByAgentPerChannel.build(ctx)
+
+export const aiAgentSupportAgentTimeSavedPerIntent = aiAgentTimeSavedScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_INTENT)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['averageTimeSavedByAgent'] as const,
+        dimensions: ['aiIntentCustomField'],
+        filters: [
+            ...createScopeFilters(ctx.filters, config),
+            {
+                member: 'aiAgentRole',
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [AutomationSkillType.AiAgentSupport],
+            },
+        ] as any,
+    }))
+
+export const aiAgentSupportAgentTimeSavedPerIntentQueryFactoryV2 = (
+    ctx: AiAgentTimeSavedContext,
+) => aiAgentSupportAgentTimeSavedPerIntent.build(ctx)
 
 export const dynamicAllAgentsTimeSaved = aiAgentTimeSavedScope
     .defineMetricName(

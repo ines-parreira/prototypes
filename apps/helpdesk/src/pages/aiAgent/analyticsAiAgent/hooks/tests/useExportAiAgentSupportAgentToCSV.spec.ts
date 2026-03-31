@@ -229,7 +229,11 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         expect(result.current.isLoading).toBe(false)
     })
 
-    it('should return isLoading as true when intent performance data is loading', () => {
+    it('should return isLoading as true when legacy intent table is loading and tables flag is disabled', () => {
+        mockUseFlagWithLoading.mockImplementation((flag) => ({
+            value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+            isLoading: false,
+        }))
         mockedUseDownloadIntentPerformanceData.mockReturnValue({
             files: {},
             fileName: '',
@@ -239,6 +243,22 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
 
         expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should not reflect legacy intent table isLoading when tables flag is enabled', () => {
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
+        mockedUseDownloadIntentPerformanceData.mockReturnValue({
+            files: {},
+            fileName: '',
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() => useExportAiAgentSupportAgentToCSV())
+
+        expect(result.current.isLoading).toBe(false)
     })
 
     it('should call saveZippedFiles when triggerDownload is called', async () => {
@@ -272,7 +292,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
         const fileNames = Object.keys(filesArg)
 
-        expect(fileNames.length).toBe(5)
+        expect(fileNames.length).toBe(4)
         expect(fileNames.some((name) => name.includes('trends'))).toBe(true)
         expect(
             fileNames.some((name) =>
@@ -291,7 +311,7 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
         ).toBe(true)
         expect(
             fileNames.some((name) => name.includes('intent-performance')),
-        ).toBe(true)
+        ).toBe(false)
     })
 
     it('should call buildCustomDashboard with the layout and all feature flag values', () => {
@@ -435,6 +455,58 @@ describe('useExportAiAgentSupportAgentToCSV', () => {
             )
 
             expect(result.current.isLoading).toBe(true)
+        })
+
+        it('uses legacy intent table data when the tables flag is disabled', async () => {
+            mockUseFlagWithLoading.mockImplementation((flag) => ({
+                value: flag !== FeatureFlagKey.AiAgentAnalyticsDashboardsTables,
+                isLoading: false,
+            }))
+
+            mockedUseDashboardData.mockReturnValue({
+                files: {
+                    'ai-agent-support-agent - trends.csv': 'trends content',
+                },
+                fileName: 'ai-agent-support-agent - trends.csv',
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useExportAiAgentSupportAgentToCSV(),
+            )
+
+            await act(async () => {
+                await result.current.triggerDownload()
+            })
+
+            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+            expect(
+                Object.keys(filesArg).some((name) =>
+                    name.includes('intent-performance'),
+                ),
+            ).toBe(true)
+        })
+
+        it('excludes legacy intent table data when the tables flag is enabled', async () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+
+            const { result } = renderHook(() =>
+                useExportAiAgentSupportAgentToCSV(),
+            )
+
+            await act(async () => {
+                await result.current.triggerDownload()
+            })
+
+            const [filesArg] = mockedSaveZippedFiles.mock.calls[0]
+            expect(
+                Object.keys(filesArg).some((name) =>
+                    name.includes('intent-performance'),
+                ),
+            ).toBe(false)
         })
     })
 

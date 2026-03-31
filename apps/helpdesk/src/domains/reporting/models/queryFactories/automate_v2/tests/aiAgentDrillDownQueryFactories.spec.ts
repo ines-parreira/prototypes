@@ -836,7 +836,7 @@ describe('supportAgentResolutionTimeDrillDownQueryFactory', () => {
             ],
             filters: [
                 {
-                    member: AIAgentDecreaseInResolutionTimeFilterMember.AiAgentSkill,
+                    member: AIAgentDecreaseInResolutionTimeFilterMember.AiAgentRole,
                     operator: ReportingFilterOperator.Equals,
                     values: [AIAgentSkills.AIAgentSupport],
                 },
