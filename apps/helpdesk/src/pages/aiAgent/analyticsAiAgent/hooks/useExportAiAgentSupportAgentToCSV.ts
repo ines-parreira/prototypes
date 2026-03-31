@@ -4,8 +4,13 @@ import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 
 import { getCsvFileNameWithDates } from 'domains/reporting/hooks/common/utils'
 import { useDashboardData } from 'domains/reporting/hooks/dashboards/useDashboardData'
+import { useGetManagedDashboardsLayoutConfig } from 'domains/reporting/hooks/managed-dashboards/useGetManagedDashboardsLayoutConfig'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AnalyticsAiAgentSupportAgentReportConfig } from 'pages/aiAgent/analyticsAiAgent/AnalyticsAiAgentSupportAgentReportConfig'
+import {
+    ManagedDashboardId,
+    ManagedDashboardsTabId,
+} from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 import { buildCustomDashboard } from 'pages/aiAgent/analyticsOverview/utils/buildCustomDashboard'
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
@@ -39,16 +44,27 @@ export const useExportAiAgentSupportAgentToCSV = () => {
         [costSavedPerInteraction],
     )
 
+    const { layoutConfig } = useGetManagedDashboardsLayoutConfig({
+        dashboardId: ManagedDashboardId.AiAgentAnalytics,
+        defaultLayoutConfig: ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT,
+        tabId: ManagedDashboardsTabId.SupportAgent,
+    })
+
     const supportAgentDashboard = useMemo(
         () =>
             buildCustomDashboard(
                 REPORT_NAME,
-                ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT,
+                layoutConfig,
                 isTrendCardsFFEnabled,
                 isGraphsFFEnabled,
                 isTablesFFEnabled,
             ),
-        [isTrendCardsFFEnabled, isGraphsFFEnabled, isTablesFFEnabled],
+        [
+            isTrendCardsFFEnabled,
+            layoutConfig,
+            isGraphsFFEnabled,
+            isTablesFFEnabled,
+        ],
     )
 
     const { files: dashboardDataFiles, isLoading: isDashboardDataLoading } =

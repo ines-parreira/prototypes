@@ -26,7 +26,7 @@ const formatTooltipValue = (value: number) => {
     return formatMetricValue(value, 'integer')
 }
 
-export const AnalyticsSupportAgentLineChart = () => {
+export const DEPRECATED_AnalyticsSupportAgentLineChart = () => {
     const { statsFilters, userTimezone, granularity } = useAutomateFilters()
 
     const { data: timeSeriesData } =

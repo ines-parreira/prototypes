@@ -104,20 +104,20 @@ describe('aiAgentSupportAgentLayoutConfig', () => {
             expect(visualizationsSection.items).toHaveLength(2)
         })
 
-        it('should have SupportInteractionsComboChart in visualizations section', () => {
+        it('should have Configurable Bar Chart in visualizations section', () => {
             const visualizationsSection =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[1]
             expect(visualizationsSection.items[0].chartId).toBe(
-                AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart,
+                AnalyticsAiAgentSupportAgentChart.ConfigurableBarGraph,
             )
             expect(visualizationsSection.items[0].gridSize).toBe(6)
         })
 
-        it('should have SupportAgentTrendLineChart in visualizations section', () => {
+        it('should have Configurable Line Chart in visualizations section', () => {
             const visualizationsSection =
                 ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT.sections[1]
             expect(visualizationsSection.items[1].chartId).toBe(
-                AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart,
+                AnalyticsAiAgentSupportAgentChart.ConfigurableLineGraph,
             )
             expect(visualizationsSection.items[1].gridSize).toBe(6)
         })

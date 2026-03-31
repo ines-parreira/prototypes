@@ -1,4 +1,3 @@
-import { fetchAiAgentSupportInteractionsTimeSeriesData } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTimeSeriesData'
 import { fetchAiAgentSupportInteractionsTrend } from 'domains/reporting/hooks/automate/useAiAgentSupportInteractionsTrend'
 import { fetchAiAgentTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useAiAgentTimeSavedByAgentsTrend'
 import { fetchDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
@@ -11,22 +10,32 @@ import {
     DataExportFormat,
 } from 'domains/reporting/pages/dashboards/types'
 import { AnalyticsAiAgentDecreaseinFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentDecreaseinFRTCard'
-import { AnalyticsSupportAgentLineChart } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentLineChart/AnalyticsSupportAgentLineChart'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsAiAgentSupportAgentSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentSuccessRateCard'
+import {
+    AnalyticsAiAgentSupportConfigurableBar,
+    SUPPORT_BAR_CHART_METRICS,
+} from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportConfigurableBar/AnalyticsAiAgentSupportConfigurableBar'
+import {
+    AnalyticsAiAgentSupportConfigurableLine,
+    SUPPORT_LINE_CHART_METRICS,
+} from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportConfigurableLine/AnalyticsAiAgentSupportConfigurableLine'
 import { AnalyticsAiAgentSupportDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
 import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportInteractionsCard'
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { SupportAgentChannelPerformanceBreakdownTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentChannelPerformanceBreakdownTableWrapper'
 import { SupportAgentIntentPerformanceBreakdownTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentIntentPerformanceBreakdownTableWrapper'
-import { SupportInteractionsComboChart } from 'pages/aiAgent/analyticsAiAgent/components/SupportInteractionsComboChart/SupportInteractionsComboChart'
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { fetchAiAgentSupportAgentFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentFRTTrend'
 import { fetchAiAgentSupportAgentSuccessRateTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentSuccessRateTrend'
 import { fetchSupportAgentsPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByChannelMetrics'
 import { fetchSupportAgentsPerformanceByIntentAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByIntentMetrics'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
+import {
+    fetchConfigurableBarChartDownloadData,
+    fetchConfigurableLineChartDownloadData,
+} from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
 
 // Mock fetch functions - these will be replaced with real data fetchers later
@@ -41,8 +50,8 @@ export enum AnalyticsAiAgentSupportAgentChart {
     AverageCsatCard = 'average_csat_card',
     HandoverInteractionsCard = 'handover_interactions_card',
     SuccessRateCard = 'support_agent_success_rate_card',
-    SupportInteractionsComboChart = 'support_interactions_combo_chart',
-    SupportAgentTrendLineChart = 'support_agent_trend_line_chart',
+    ConfigurableBarGraph = 'support_configurable_bar_graph',
+    ConfigurableLineGraph = 'support_configurable_line_graph',
     ChannelPerformanceTable = 'channel_performance_table',
     IntentPerformanceTable = 'intent_performance_table',
 }
@@ -182,34 +191,34 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                 metricFormat: 'decimal-to-percent',
                 interpretAs: 'more-is-better',
             },
-            [AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart]: {
-                chartComponent: SupportInteractionsComboChart,
-                label: 'Automated interactions',
+            [AnalyticsAiAgentSupportAgentChart.ConfigurableBarGraph]: {
+                chartComponent: AnalyticsAiAgentSupportConfigurableBar,
+                label: 'Support Agent Configurable Bar',
                 csvProducer: [
                     {
-                        type: DataExportFormat.Table,
-                        fetch: async () => ({
-                            isLoading: false,
-                            fileName: 'support-interactions.csv',
-                            files: {},
-                        }),
+                        type: DataExportFormat.ConfigurableBarGraph,
+                        fetch: fetchConfigurableBarChartDownloadData(
+                            SUPPORT_BAR_CHART_METRICS,
+                        ),
                     },
                 ],
-                description: 'Support interactions by intent',
+                description: 'Configurable bar for support agent metrics',
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',
             },
-            [AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart]: {
-                chartComponent: AnalyticsSupportAgentLineChart,
-                label: 'Automated interactions',
+            [AnalyticsAiAgentSupportAgentChart.ConfigurableLineGraph]: {
+                chartComponent: AnalyticsAiAgentSupportConfigurableLine,
+                label: 'Support Agent Configurable Line',
                 csvProducer: [
                     {
-                        type: DataExportFormat.TimeSeries,
-                        fetch: fetchAiAgentSupportInteractionsTimeSeriesData,
+                        type: DataExportFormat.ConfigurableLineGraph,
+                        fetch: fetchConfigurableLineChartDownloadData(
+                            SUPPORT_LINE_CHART_METRICS,
+                        ),
                     },
                 ],
-                description: 'Automated interactions trend over time',
+                description: 'Configurable line for support agent metrics',
                 chartType: ChartType.Graph,
                 metricFormat: 'decimal',
                 interpretAs: 'more-is-better',

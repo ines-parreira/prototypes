@@ -1,4 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { AutomationSkillType } from 'domains/reporting/models/scopes/constants'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
@@ -89,3 +90,22 @@ export const dynamicAllAgentsTimeSaved = aiAgentTimeSavedScope
 
 export const dynamicAllAgentsTimeSavedQueryFactoryV2 = (ctx: Context) =>
     dynamicAllAgentsTimeSaved.build(ctx)
+
+export const dynamicSupportAgentTimeSaved = aiAgentTimeSavedScope
+    .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_TIME_SAVED)
+    .defineQuery(({ ctx, config }) => ({
+        measures: ['averageTimeSavedByAgent'],
+        filters: createScopeFilters(
+            {
+                ...ctx.filters,
+                aiAgentRole: withLogicalOperator([
+                    AutomationSkillType.AiAgentSupport,
+                ]),
+            },
+            config,
+        ),
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicSupportAgentTimeSavedQueryFactoryV2 = (ctx: Context) =>
+    dynamicSupportAgentTimeSaved.build(ctx)

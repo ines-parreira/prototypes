@@ -6,9 +6,14 @@ import {
     aiAgentSupportAgentDecreaseInFRTPerIntent,
     aiAgentSupportAgentDecreaseInFRTPerIntentQueryFactoryV2,
     aiAgentSupportAgentDecreaseInFRTQueryV2Factory,
+    dynamicSupportAgentDecreaseInFRT,
+    dynamicSupportAgentDecreaseInFRTQueryFactoryV2,
+    dynamicSupportAgentDecreaseInFRTTimeseries,
+    dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2,
 } from 'domains/reporting/models/scopes/aiAgentDecreaseInFirstResponseTime'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import type {
+    AggregationWindow,
     ApiStatsFilters,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
@@ -355,6 +360,173 @@ describe('aiAgentSupportAgentDecreaseInFRTPerIntent', () => {
                     context,
                 ),
             ).toEqual(aiAgentSupportAgentDecreaseInFRTPerIntent.build(context))
+        })
+    })
+})
+
+describe('dynamicSupportAgentDecreaseInFRT', () => {
+    const baseFilters: StatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    const context = {
+        filters: baseFilters,
+        timezone: 'utc',
+    }
+
+    const supportSkillFilter = {
+        member: 'aiAgentRole',
+        operator: 'one-of',
+        values: ['ai-agent-support'],
+    }
+
+    describe('dynamicSupportAgentDecreaseInFRT', () => {
+        it('creates query without dimensions when no dimension provided', () => {
+            expect(
+                dynamicSupportAgentDecreaseInFRT.build({
+                    ...context,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName: 'ai-agent-dynamic-support-agent-decrease-in-frt',
+                scope: 'ai-agent-decrease-in-first-response-time',
+                measures: ['averageDecreaseInFirstResponseTime'],
+                dimensions: [],
+                timezone: 'utc',
+                filters: [...periodFilters, supportSkillFilter],
+            })
+        })
+
+        it('creates query with the provided dimension', () => {
+            expect(
+                dynamicSupportAgentDecreaseInFRT.build({
+                    ...context,
+                    dimensions: ['channel'],
+                }),
+            ).toEqual({
+                metricName: 'ai-agent-dynamic-support-agent-decrease-in-frt',
+                scope: 'ai-agent-decrease-in-first-response-time',
+                measures: ['averageDecreaseInFirstResponseTime'],
+                dimensions: ['channel'],
+                timezone: 'utc',
+                filters: [...periodFilters, supportSkillFilter],
+            })
+        })
+    })
+
+    describe('dynamicSupportAgentDecreaseInFRTQueryFactoryV2', () => {
+        it('returns query with empty dimensions when no dimension provided', () => {
+            const result = dynamicSupportAgentDecreaseInFRTQueryFactoryV2({
+                ...context,
+                dimensions: [],
+            })
+
+            expect(result).toEqual({
+                metricName: 'ai-agent-dynamic-support-agent-decrease-in-frt',
+                scope: 'ai-agent-decrease-in-first-response-time',
+                measures: ['averageDecreaseInFirstResponseTime'],
+                dimensions: [],
+                timezone: 'utc',
+                filters: [...periodFilters, supportSkillFilter],
+            })
+        })
+
+        it('returns query with the provided dimension', () => {
+            const result = dynamicSupportAgentDecreaseInFRTQueryFactoryV2({
+                ...context,
+                dimensions: ['storeIntegrationId'],
+            })
+
+            expect(result).toEqual({
+                metricName: 'ai-agent-dynamic-support-agent-decrease-in-frt',
+                scope: 'ai-agent-decrease-in-first-response-time',
+                measures: ['averageDecreaseInFirstResponseTime'],
+                dimensions: ['storeIntegrationId'],
+                timezone: 'utc',
+                filters: [...periodFilters, supportSkillFilter],
+            })
+        })
+
+        it('returns the same result as calling build directly with the dimension', () => {
+            const ctx = { ...context, dimensions: ['channel'] as const }
+
+            expect(dynamicSupportAgentDecreaseInFRTQueryFactoryV2(ctx)).toEqual(
+                dynamicSupportAgentDecreaseInFRT.build(ctx),
+            )
+        })
+    })
+
+    describe('dynamicSupportAgentDecreaseInFRTTimeseries', () => {
+        it('creates timeseries query with granularity and support role filter', () => {
+            expect(
+                dynamicSupportAgentDecreaseInFRTTimeseries.build({
+                    ...context,
+                    granularity: 'day' as AggregationWindow,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName:
+                    'ai-agent-dynamic-support-agent-decrease-in-frt-timeseries',
+                scope: 'ai-agent-decrease-in-first-response-time',
+                measures: ['averageDecreaseInFirstResponseTime'],
+                dimensions: [],
+                timezone: 'utc',
+                filters: [...periodFilters, supportSkillFilter],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'day' },
+                ],
+            })
+        })
+
+        it('creates timeseries query with the provided dimension', () => {
+            expect(
+                dynamicSupportAgentDecreaseInFRTTimeseries.build({
+                    ...context,
+                    granularity: 'day' as AggregationWindow,
+                    dimensions: ['channel'],
+                }),
+            ).toEqual({
+                metricName:
+                    'ai-agent-dynamic-support-agent-decrease-in-frt-timeseries',
+                scope: 'ai-agent-decrease-in-first-response-time',
+                measures: ['averageDecreaseInFirstResponseTime'],
+                dimensions: ['channel'],
+                timezone: 'utc',
+                filters: [...periodFilters, supportSkillFilter],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'day' },
+                ],
+            })
+        })
+    })
+
+    describe('dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            const ctx = {
+                ...context,
+                granularity: 'day' as AggregationWindow,
+                dimensions: ['channel'] as const,
+            }
+
+            expect(
+                dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2(ctx),
+            ).toEqual(dynamicSupportAgentDecreaseInFRTTimeseries.build(ctx))
         })
     })
 })

@@ -1,4 +1,5 @@
 import { METRIC_NAMES, MetricScope } from 'domains/reporting/hooks/metricNames'
+import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import { AutomationSkillType } from 'domains/reporting/models/scopes/constants'
 import type { Context } from 'domains/reporting/models/scopes/scope'
 import { defineScope } from 'domains/reporting/models/scopes/scope'
@@ -107,3 +108,54 @@ export const aiAgentSupportAgentDecreaseInFRTPerIntent =
 export const aiAgentSupportAgentDecreaseInFRTPerIntentQueryFactoryV2 = (
     ctx: AiAgentDecreaseInFirstResponseTimeContext,
 ) => aiAgentSupportAgentDecreaseInFRTPerIntent.build(ctx)
+
+export const dynamicSupportAgentDecreaseInFRT =
+    aiAgentDecreaseInFirstResponseTimeScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_DECREASE_IN_FRT,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['averageDecreaseInFirstResponseTime'],
+            filters: createScopeFilters(
+                {
+                    ...ctx.filters,
+                    aiAgentRole: withLogicalOperator([
+                        AutomationSkillType.AiAgentSupport,
+                    ]),
+                },
+                config,
+            ),
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicSupportAgentDecreaseInFRTQueryFactoryV2 = (ctx: Context) =>
+    dynamicSupportAgentDecreaseInFRT.build(ctx)
+
+export const dynamicSupportAgentDecreaseInFRTTimeseries =
+    aiAgentDecreaseInFirstResponseTimeScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_DECREASE_IN_FRT_TIMESERIES,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['averageDecreaseInFirstResponseTime'],
+            filters: createScopeFilters(
+                {
+                    ...ctx.filters,
+                    aiAgentRole: withLogicalOperator([
+                        AutomationSkillType.AiAgentSupport,
+                    ]),
+                },
+                config,
+            ),
+            time_dimensions: [
+                {
+                    dimension: 'eventDatetime',
+                    granularity: ctx.granularity,
+                },
+            ],
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2 = (
+    ctx: Context,
+) => dynamicSupportAgentDecreaseInFRTTimeseries.build(ctx)

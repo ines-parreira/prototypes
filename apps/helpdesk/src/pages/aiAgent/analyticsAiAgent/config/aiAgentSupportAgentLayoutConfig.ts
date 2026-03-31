@@ -69,13 +69,13 @@ export const ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT: DashboardLayoutConfig<Anal
                 items: [
                     {
                         chartId:
-                            AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart,
+                            AnalyticsAiAgentSupportAgentChart.ConfigurableBarGraph,
                         gridSize: 6,
                         visibility: true,
                     },
                     {
                         chartId:
-                            AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart,
+                            AnalyticsAiAgentSupportAgentChart.ConfigurableLineGraph,
                         gridSize: 6,
                         visibility: true,
                     },

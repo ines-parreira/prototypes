@@ -237,3 +237,55 @@ export const dynamicAllAgentsAutomatedInteractionsTimeseries =
 export const dynamicAllAgentsAutomatedInteractionsTimeseriesQueryFactoryV2 = (
     ctx: Context,
 ) => dynamicAllAgentsAutomatedInteractionsTimeseries.build(ctx)
+
+export const dynamicSupportAgentAutomatedInteractions =
+    aiAgentAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['automatedInteractionsCount'],
+            filters: createScopeFilters(
+                {
+                    ...ctx.filters,
+                    aiAgentRole: withLogicalOperator([
+                        AutomationSkillType.AiAgentSupport,
+                    ]),
+                },
+                config,
+            ),
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicSupportAgentAutomatedInteractionsQueryFactoryV2 = (
+    ctx: Context,
+) => dynamicSupportAgentAutomatedInteractions.build(ctx)
+
+export const dynamicSupportAgentAutomatedInteractionsTimeseries =
+    aiAgentAutomatedInteractionsScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES,
+        )
+        .defineQuery(({ ctx, config }) => ({
+            measures: ['automatedInteractionsCount'],
+            filters: createScopeFilters(
+                {
+                    ...ctx.filters,
+                    aiAgentRole: withLogicalOperator([
+                        AutomationSkillType.AiAgentSupport,
+                    ]),
+                },
+                config,
+            ),
+            time_dimensions: [
+                {
+                    dimension: 'eventDatetime',
+                    granularity: ctx.granularity,
+                },
+            ],
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicSupportAgentAutomatedInteractionsTimeseriesQueryFactoryV2 =
+    (ctx: Context) =>
+        dynamicSupportAgentAutomatedInteractionsTimeseries.build(ctx)

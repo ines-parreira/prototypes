@@ -90,14 +90,34 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         expect(config.csvProducer).not.toBeNull()
     })
 
-    it('should have support agent trend line chart config', () => {
+    it('should have support agent configurable bar chart config', () => {
         const config =
             AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.SupportAgentTrendLineChart
+                AnalyticsAiAgentSupportAgentChart.ConfigurableBarGraph
             ]
 
         expect(config).toBeDefined()
+        expect(config.label).toBe('Support Agent Configurable Bar')
         expect(config.chartType).toBe(ChartType.Graph)
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(
+            DataExportFormat.ConfigurableBarGraph,
+        )
+    })
+
+    it('should have support agent configurable line chart config', () => {
+        const config =
+            AnalyticsAiAgentSupportAgentReportConfig.charts[
+                AnalyticsAiAgentSupportAgentChart.ConfigurableLineGraph
+            ]
+
+        expect(config).toBeDefined()
+        expect(config.label).toBe('Support Agent Configurable Line')
+        expect(config.chartType).toBe(ChartType.Graph)
+        expect(config.csvProducer).toHaveLength(1)
+        expect(config.csvProducer?.[0].type).toBe(
+            DataExportFormat.ConfigurableLineGraph,
+        )
     })
 
     it('should have channel performance table config', () => {
@@ -190,19 +210,5 @@ describe('AnalyticsAiAgentSupportAgentReportConfig', () => {
         expect(config.csvProducer).not.toBeNull()
         expect(config.csvProducer).toHaveLength(1)
         expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Trend)
-    })
-
-    it('should have support interactions combo chart config', () => {
-        const config =
-            AnalyticsAiAgentSupportAgentReportConfig.charts[
-                AnalyticsAiAgentSupportAgentChart.SupportInteractionsComboChart
-            ]
-
-        expect(config).toBeDefined()
-        expect(config.label).toBe('Automated interactions')
-        expect(config.description).toBe('Support interactions by intent')
-        expect(config.chartType).toBe(ChartType.Graph)
-        expect(config.csvProducer).toHaveLength(1)
-        expect(config.csvProducer?.[0].type).toBe(DataExportFormat.Table)
     })
 })
