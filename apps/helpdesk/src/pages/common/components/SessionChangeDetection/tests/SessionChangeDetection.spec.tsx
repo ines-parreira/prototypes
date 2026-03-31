@@ -9,10 +9,6 @@ import SessionChangeDetection, {
     USER_CHANGE_EXPLANATION,
 } from '../SessionChangeDetection'
 
-jest.mock('@repo/api-resources', () => ({
-    clearPersistedQueryCache: jest.fn().mockResolvedValue(undefined),
-}))
-
 describe('<SessionChangeDetection />', () => {
     describe('Logout event', () => {
         it('renders a pop-up once it receives the expected message', async () => {

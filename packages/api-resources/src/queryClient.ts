@@ -45,7 +45,7 @@ export const appQueryClient = new QueryClient({
              * 5th failure: 32000ms (32 seconds)
              */
             retryDelay: (retryIndex) => Math.min(1000 * 2 ** retryIndex, 30000),
-            cacheTime: 1000 * 60 * 60 * 24, // 24 hours — matches persister maxAge
+            cacheTime: 1000 * 60 * 60 * 24,
         },
     },
 })

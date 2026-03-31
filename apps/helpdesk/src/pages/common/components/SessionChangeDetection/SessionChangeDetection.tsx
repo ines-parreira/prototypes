@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react'
 
-import { clearPersistedQueryCache } from '@repo/api-resources'
-
 import Modal from '../modal/Modal'
 import ModalBody from '../modal/ModalBody'
 import ModalHeader from '../modal/ModalHeader'
@@ -32,8 +30,7 @@ export default function SessionChangeDetection() {
                 // Can happen when logging into another user while already logged in (for example during impersonation)
                 setIsLogout(false)
                 setIsOpen(true)
-                timeout = window.setTimeout(async () => {
-                    await clearPersistedQueryCache()
+                timeout = window.setTimeout(() => {
                     window.location.reload()
                 }, AUTO_LOGOUT_SECONDS * 1000)
             }
