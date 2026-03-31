@@ -1,6 +1,6 @@
 import { Middleware } from 'redux'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import type {
     GorgiasChatPosition,
     GorgiasChatPreviewApplicationSettings,
@@ -70,7 +70,6 @@ declare global {
             updateSelfServiceConfiguration?: (
                 selfServiceConfiguration: GorgiasChatPreviewSelfServiceConfiguration,
             ) => void
-            setLanguage?: (language: Language) => Promise<void>
             on(event: string, callback: (data?: unknown) => void): void
             off(event: string, callback: (data?: unknown) => void): void
             init(): Promise<void>

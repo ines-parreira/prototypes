@@ -2,7 +2,6 @@ import type { ReactNode } from 'react'
 
 import { act, renderHook } from '@testing-library/react'
 
-import { Language } from 'constants/languages'
 import {
     GorgiasChatLauncherType,
     GorgiasChatPositionAlignmentEnum,
@@ -243,40 +242,6 @@ describe('useChatPreviewPanel', () => {
         expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
         expect(mockUpdateWorkflowEntrypoints).toHaveBeenCalledWith(entrypoints)
     })
-
-    it('updateLanguage does not throw when ref is unattached', async () => {
-        const { result } = renderHook(() => useChatPreviewPanel())
-
-        await expect(
-            result.current.updateLanguage(Language.EnglishUs),
-        ).resolves.not.toThrow()
-    })
-
-    it('updateLanguage calls updateLanguage on the ref when attached', async () => {
-        const mockUpdateLanguage = jest.fn().mockResolvedValue(undefined)
-        ;(ChatPreviewPanel as jest.Mock).mockImplementation(
-            jest.fn().mockReturnValue(null),
-        )
-
-        const { result } = renderHook(() => useChatPreviewPanel())
-
-        Object.defineProperty(
-            (ChatPreviewPanel as jest.Mock).mock.instances[0] ?? {},
-            'updateLanguage',
-            { value: mockUpdateLanguage },
-        )
-
-        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
-        if (panelArg?.ref) {
-            panelArg.ref.current = { updateLanguage: mockUpdateLanguage }
-        }
-
-        await act(async () => {
-            await result.current.updateLanguage(Language.French)
-        })
-
-        expect(mockUpdateLanguage).toHaveBeenCalledWith(Language.French)
-    })
 })
 
 describe('useGorgiasChatCreationWizardContext', () => {
@@ -306,7 +271,6 @@ describe('useGorgiasChatCreationWizardContext', () => {
             updateTexts: jest.fn(),
             updateLegalDisclaimer: jest.fn(),
             updateLegalDisclaimerEnabled: jest.fn(),
-            updateLanguage: jest.fn(),
             updateWorkflowEntryPoints: jest.fn(),
             reloadPreview: jest.fn(),
         }

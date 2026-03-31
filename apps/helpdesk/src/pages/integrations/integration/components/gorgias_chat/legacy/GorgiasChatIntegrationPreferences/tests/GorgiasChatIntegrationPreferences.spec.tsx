@@ -18,7 +18,7 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
 } from 'config/integrations/index'
 import { GORGIAS_CHAT_INTEGRATION_TYPE } from 'constants/integration'
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import { user } from 'fixtures/users'
 import type { IntegrationFromType } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
@@ -139,7 +139,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                         display_campaigns_hidden_chat: false,
                     },
                     shop_integration_id: 1,
-                    language: Language.Spanish,
+                    language: LANGUAGE.ES,
                 },
                 name: 'Foo Chat',
             })
@@ -177,7 +177,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                                 GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
                         },
                         shop_integration_id: 1,
-                        language: Language.Spanish,
+                        language: LANGUAGE.ES,
                     },
                     name: 'Foo Chat',
                 })
@@ -225,7 +225,7 @@ describe('<GorgiasChatIntegrationPreferences/>', () => {
                             GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
                     },
                     shop_integration_id: 1,
-                    language: Language.Spanish,
+                    language: LANGUAGE.ES,
                 },
             })
 

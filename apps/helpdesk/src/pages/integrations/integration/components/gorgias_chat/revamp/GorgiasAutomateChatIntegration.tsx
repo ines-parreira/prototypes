@@ -92,12 +92,16 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
     }
 
     useEffect(() => {
-        if (!isEntrypointsLabelsLoading || pendingFlows?.length === 0) {
-            const workflowEntryPoints = (pendingFlows || []).map((flow) => ({
-                workflow_id: flow.workflow_id,
-                language: primaryLanguage,
-                label: entrypointsLabels?.[flow.workflow_id],
-            }))
+        if (pendingFlows === null) return
+        if (!isEntrypointsLabelsLoading || pendingFlows.length === 0) {
+            const workflowEntryPoints = pendingFlows
+                .map((flow) => ({
+                    workflow_id: flow.workflow_id,
+                    language: primaryLanguage,
+                    label: entrypointsLabels?.[flow.workflow_id],
+                }))
+                .filter((flow) => flow.label)
+
             updateWorkflowEntryPoints(workflowEntryPoints)
         }
     }, [

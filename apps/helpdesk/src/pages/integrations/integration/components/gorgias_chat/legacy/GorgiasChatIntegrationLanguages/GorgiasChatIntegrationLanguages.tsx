@@ -2,7 +2,7 @@ import type { Map } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap'
 
-import type { Language } from 'constants/languages'
+import type { LANGUAGE } from 'constants/languages'
 import { IntegrationType } from 'models/integration/constants'
 import type { Option as DropdownOption } from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
 import DropdownButtonWithSearch from 'pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch'
@@ -35,7 +35,7 @@ const GorgiasChatIntegrationLanguages = ({
     })
 
     const onAddLanguage = async (option: DropdownOption) => {
-        await addLanguage({ language: option.value as Language })
+        await addLanguage({ language: option.value as LANGUAGE })
     }
 
     return (

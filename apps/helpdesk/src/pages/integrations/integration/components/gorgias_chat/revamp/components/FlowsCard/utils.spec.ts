@@ -1,6 +1,6 @@
 import { TicketChannel } from 'business/types/ticket'
 import { getLanguagesFromChatConfig } from 'config/integrations/gorgias_chat'
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import { IntegrationType } from 'models/integration/constants'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types'
 import type { GorgiasChatIntegration } from 'models/integration/types'
@@ -46,7 +46,7 @@ const gorgiasChatIntegrationFixture: GorgiasChatIntegration = {
         },
     },
     meta: {
-        languages: [{ language: Language.EnglishUs, primary: true }],
+        languages: [{ language: LANGUAGE.EN_US, primary: true }],
         self_service: { enabled: false },
     },
 }

@@ -10,7 +10,7 @@ import {
     GORGIAS_CHAT_WIDGET_TEXTS,
     mapLanguageOptionsToLanguageDropdown,
 } from 'config/integrations/gorgias_chat'
-import type { Language } from 'constants/languages'
+import type { LANGUAGE } from 'constants/languages'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { IntegrationType } from 'models/integration/constants'
 import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
@@ -77,7 +77,7 @@ export const useLanguagesTable = ({
             return
         }
 
-        const primaryLanguage: Language = integration.getIn([
+        const primaryLanguage: LANGUAGE = integration.getIn([
             'meta',
             'language',
         ])

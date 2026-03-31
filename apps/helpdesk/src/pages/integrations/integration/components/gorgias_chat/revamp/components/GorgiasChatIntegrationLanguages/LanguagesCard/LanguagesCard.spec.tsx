@@ -3,7 +3,7 @@ import type React from 'react'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 
 import { LanguagesCard } from './LanguagesCard'
 
@@ -105,7 +105,7 @@ jest.mock('react-router-dom', () => ({
 }))
 
 const primaryRow = {
-    language: Language.EnglishUs,
+    language: LANGUAGE.EN_US,
     label: 'English - US',
     link: '/app/settings/channels/gorgias-chat/1/languages/en-US',
     primary: true,
@@ -113,7 +113,7 @@ const primaryRow = {
 }
 
 const secondaryRow = {
-    language: Language.French,
+    language: LANGUAGE.FR,
     label: 'French',
     link: '/app/settings/channels/gorgias-chat/1/languages/fr',
     primary: false,

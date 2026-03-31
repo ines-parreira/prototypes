@@ -9,7 +9,7 @@ import {
     getGorgiasChatLanguageByCode,
     mapIntegrationLanguagesToLanguagePicker,
 } from 'config/integrations/gorgias_chat'
-import type { Language as LanguageEnum } from 'constants/languages'
+import type { LANGUAGE as LANGUAGE_ENUM } from 'constants/languages'
 import type { Language } from 'pages/common/components/LanguagePicker/LanguagePicker'
 import InputField from 'pages/common/forms/input/InputField'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
@@ -58,7 +58,7 @@ export const CampaignBasicStep = ({
             fromJS(chatIntegration),
         )
         const campaignLanguage = getGorgiasChatLanguageByCode(
-            campaign.language as LanguageEnum,
+            campaign.language as LANGUAGE_ENUM,
         ) as Language
 
         const exists = mappedLanguages.some(

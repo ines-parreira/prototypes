@@ -1,10 +1,14 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useParams } from 'react-router-dom'
 
+import type { LANGUAGE } from 'constants/languages'
+import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { AutomateFeatures } from 'pages/automate/common/types'
+import { ChatChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector'
 import { ArticleRecommendationCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ArticleRecommendationCard/ArticleRecommendationCard'
+import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { FlowsCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard'
 import { OrderManagementCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/OrderManagementCard/OrderManagementCard'
 
@@ -23,9 +27,24 @@ export const ConnectedChannelsChatView = () => {
 
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
-    const [selectedChannelId] = useState<number | undefined>(
-        () => chatChannels[0]?.value.id,
-    )
+    const [selectedChannelId, setSelectedChannelId] = useState<
+        number | undefined
+    >(() => chatChannels[0]?.value.id)
+
+    const selectedChannel =
+        chatChannels.find((c) => c.value.id === selectedChannelId) ??
+        chatChannels[0]
+
+    const appId = selectedChannel?.value.meta.app_id ?? null
+
+    const selectedChannelLanguage = useMemo(() => {
+        const primaryLanguage: LANGUAGE | undefined =
+            selectedChannel?.value?.meta?.languages?.find((lang) => {
+                return lang.primary === true
+            })?.language
+
+        return primaryLanguage
+    }, [selectedChannel])
 
     const {
         hasChatChannels,
@@ -58,6 +77,54 @@ export const ConnectedChannelsChatView = () => {
         handleFlowRemove,
         handleFlowReorder,
     } = useFlows({ shopName, shopType, selectedChannelId })
+
+    const PreviewPanelHeaderActions = useMemo(() => {
+        return chatChannels.length > 0 ? (
+            <ChatChannelSelector
+                chatChannels={chatChannels}
+                selectedChannelId={selectedChannelId}
+                onSelect={setSelectedChannelId}
+            />
+        ) : undefined
+    }, [selectedChannelId, chatChannels])
+
+    const { showPreviewPanel, chatPreviewPortal, updateWorkflowEntryPoints } =
+        useChatPreviewPanel(PreviewPanelHeaderActions, selectedChannelLanguage)
+
+    useEffect(() => {
+        showPreviewPanel(appId)
+    }, [showPreviewPanel, appId])
+
+    const { data: entrypointsLabels, isLoading: isEntrypointsLabelsLoading } =
+        useListWorkflowEntryPoints({
+            ids: (automationSettingsWorkflows || []).map(
+                (flow) => flow.workflow_id,
+            ),
+            language: primaryLanguage,
+        })
+
+    useEffect(() => {
+        if (!isEntrypointsLabelsLoading && !isFlowsLoading) {
+            const workflowEntryPoints = automationSettingsWorkflows
+                .map((flow) => {
+                    return {
+                        workflow_id: flow.workflow_id,
+                        language: primaryLanguage,
+                        label: entrypointsLabels?.[flow.workflow_id],
+                    }
+                })
+                .filter((flow) => flow.label)
+
+            updateWorkflowEntryPoints(workflowEntryPoints)
+        }
+    }, [
+        isFlowsLoading,
+        primaryLanguage,
+        entrypointsLabels,
+        isEntrypointsLabelsLoading,
+        updateWorkflowEntryPoints,
+        automationSettingsWorkflows,
+    ])
 
     if (!hasChatChannels) {
         return (
@@ -101,6 +168,7 @@ export const ConnectedChannelsChatView = () => {
                     onChange={handleArticleRecommendationToggle}
                 />
             )}
+            {chatPreviewPortal}
         </div>
     )
 }

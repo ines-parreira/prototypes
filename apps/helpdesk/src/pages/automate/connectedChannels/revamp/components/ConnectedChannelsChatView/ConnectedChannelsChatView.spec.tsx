@@ -1,12 +1,29 @@
-import { render, screen } from '@testing-library/react'
+import type { QueryObserverResult } from '@tanstack/react-query'
+import { act, render, screen, waitFor } from '@testing-library/react'
+import type { Dictionary } from 'lodash'
+import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
+import { useListWorkflowEntryPoints } from 'models/workflows/queries'
+import type { SelfServiceChatChannel } from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import type { Workflow } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/types'
+import { mockStore } from 'utils/testing'
 
 import { useArticleRecommendation } from '../../hooks/useArticleRecommendation'
 import { useFlows } from '../../hooks/useFlows'
 import { useOrderManagement } from '../../hooks/useOrderManagement'
 import { ConnectedChannelsChatView } from './ConnectedChannelsChatView'
+
+const renderComponent = () =>
+    render(
+        <Provider store={mockStore({})}>
+            <MemoryRouter>
+                <ConnectedChannelsChatView />
+            </MemoryRouter>
+        </Provider>,
+    )
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -20,6 +37,23 @@ jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 jest.mock('../../hooks/useArticleRecommendation')
 jest.mock('../../hooks/useFlows')
 jest.mock('../../hooks/useOrderManagement')
+jest.mock('models/workflows/queries', () => ({
+    useListWorkflowEntryPoints: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
+}))
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useChatPreviewPanel: jest.fn(() => ({
+            chatPreviewPortal: null,
+            showPreviewPanel: jest.fn(),
+            hidePreviewPanel: jest.fn(),
+            updateWorkflowEntryPoints: jest.fn(),
+        })),
+    }),
+)
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ArticleRecommendationCard/ArticleRecommendationCard',
@@ -28,10 +62,29 @@ jest.mock(
     }),
 )
 
+const mockFlowsCardHandlers: {
+    onAdd?: (updatedWorkflows: Workflow[]) => void
+    onRemove?: (updatedWorkflows: Workflow[]) => void
+    onReorder?: (updatedWorkflows: Workflow[]) => void
+} = {}
+
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard',
     () => ({
-        FlowsCard: () => <div>FlowsCard</div>,
+        FlowsCard: ({
+            onAdd,
+            onRemove,
+            onReorder,
+        }: {
+            onAdd: (updatedWorkflows: Workflow[]) => void
+            onRemove: (updatedWorkflows: Workflow[]) => void
+            onReorder: (updatedWorkflows: Workflow[]) => void
+        }) => {
+            mockFlowsCardHandlers.onAdd = onAdd
+            mockFlowsCardHandlers.onRemove = onRemove
+            mockFlowsCardHandlers.onReorder = onReorder
+            return <div>FlowsCard</div>
+        },
     }),
 )
 
@@ -57,14 +110,28 @@ const mockedUseOrderManagement = useOrderManagement as jest.MockedFunction<
     typeof useOrderManagement
 >
 
+const mockedUseChatPreviewPanel = useChatPreviewPanel as jest.MockedFunction<
+    typeof useChatPreviewPanel
+>
+
+const mockedUseListWorkflowEntryPoints =
+    useListWorkflowEntryPoints as jest.MockedFunction<
+        typeof useListWorkflowEntryPoints
+    >
+
 const mockChannel = {
     type: TicketChannel.Chat,
     value: { meta: { app_id: 'test-app-id' } },
-} as any
+} as SelfServiceChatChannel
 
 const mockedUseSelfServiceChatChannels = jest.requireMock(
     'pages/automate/common/hooks/useSelfServiceChatChannels',
 ).default as jest.MockedFunction<() => unknown[]>
+
+const mockHandleFlowAdd = jest.fn()
+const mockHandleFlowRemove = jest.fn()
+const mockHandleFlowReorder = jest.fn()
+const mockUpdateWorkflowEntryPoints = jest.fn()
 
 describe('ConnectedChannelsChatView', () => {
     beforeEach(() => {
@@ -86,9 +153,9 @@ describe('ConnectedChannelsChatView', () => {
             workflowEntrypoints: [],
             workflowConfigurations: [],
             automationSettingsWorkflows: [],
-            handleFlowAdd: jest.fn(),
-            handleFlowRemove: jest.fn(),
-            handleFlowReorder: jest.fn(),
+            handleFlowAdd: mockHandleFlowAdd,
+            handleFlowRemove: mockHandleFlowRemove,
+            handleFlowReorder: mockHandleFlowReorder,
         })
         mockedUseOrderManagement.mockReturnValue({
             enabledInSettings: true,
@@ -99,6 +166,56 @@ describe('ConnectedChannelsChatView', () => {
             orderManagementUrl:
                 '/app/settings/order-management/shopify/test-shop',
             handleToggle: jest.fn(),
+        })
+        mockedUseChatPreviewPanel.mockReturnValue({
+            chatPreviewPortal: null,
+            showPreviewPanel: jest.fn(),
+            hidePreviewPanel: jest.fn(),
+            openChat: jest.fn(),
+            closeChat: jest.fn(),
+            displayPage: jest.fn(),
+            updateMainColor: jest.fn(),
+            updateWorkflowEntryPoints: mockUpdateWorkflowEntryPoints,
+            reloadPreview: jest.fn(),
+            updatePosition: jest.fn(),
+            updateHeaderPictureUrl: jest.fn(),
+            updateLauncher: jest.fn(),
+            updateTexts: jest.fn(),
+            updateLegalDisclaimer: jest.fn(),
+            updateLegalDisclaimerEnabled: jest.fn(),
+        })
+        mockedUseListWorkflowEntryPoints.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            error: undefined,
+            isError: true,
+            isLoadingError: true,
+            isRefetchError: false,
+            isSuccess: false,
+            status: 'error',
+            dataUpdatedAt: 0,
+            errorUpdatedAt: 0,
+            failureCount: 0,
+            failureReason: undefined,
+            errorUpdateCount: 0,
+            isFetched: false,
+            isFetchedAfterMount: false,
+            isFetching: false,
+            isInitialLoading: false,
+            isPaused: false,
+            isPlaceholderData: false,
+            isPreviousData: false,
+            isRefetching: false,
+            isStale: false,
+            refetch: function (): Promise<
+                QueryObserverResult<Dictionary<string>, unknown>
+            > {
+                throw new Error('Function not implemented.')
+            },
+            remove: function (): void {
+                throw new Error('Function not implemented.')
+            },
+            fetchStatus: 'fetching',
         })
     })
 
@@ -113,11 +230,7 @@ describe('ConnectedChannelsChatView', () => {
             handleToggle: jest.fn(),
         })
 
-        render(
-            <MemoryRouter>
-                <ConnectedChannelsChatView />
-            </MemoryRouter>,
-        )
+        renderComponent()
 
         expect(
             screen.getByText('ConnectedChannelsEmptyView'),
@@ -131,11 +244,7 @@ describe('ConnectedChannelsChatView', () => {
     })
 
     it('should render the article recommendation card when enabledInSettings is true', () => {
-        render(
-            <MemoryRouter>
-                <ConnectedChannelsChatView />
-            </MemoryRouter>,
-        )
+        renderComponent()
 
         expect(
             screen.getByText('ArticleRecommendationCard'),
@@ -153,11 +262,7 @@ describe('ConnectedChannelsChatView', () => {
             handleToggle: jest.fn(),
         })
 
-        render(
-            <MemoryRouter>
-                <ConnectedChannelsChatView />
-            </MemoryRouter>,
-        )
+        renderComponent()
 
         expect(
             screen.queryByText('ArticleRecommendationCard'),
@@ -165,11 +270,7 @@ describe('ConnectedChannelsChatView', () => {
     })
 
     it('should render the order management card when enabledInSettings is true', () => {
-        render(
-            <MemoryRouter>
-                <ConnectedChannelsChatView />
-            </MemoryRouter>,
-        )
+        renderComponent()
 
         expect(screen.getByText('OrderManagementCard')).toBeInTheDocument()
     })
@@ -185,11 +286,7 @@ describe('ConnectedChannelsChatView', () => {
             handleToggle: jest.fn(),
         })
 
-        render(
-            <MemoryRouter>
-                <ConnectedChannelsChatView />
-            </MemoryRouter>,
-        )
+        renderComponent()
 
         expect(
             screen.queryByText('OrderManagementCard'),
@@ -197,11 +294,7 @@ describe('ConnectedChannelsChatView', () => {
     })
 
     it('should render the flows card when channel is defined', () => {
-        render(
-            <MemoryRouter>
-                <ConnectedChannelsChatView />
-            </MemoryRouter>,
-        )
+        renderComponent()
 
         expect(screen.getByText('FlowsCard')).toBeInTheDocument()
     })
@@ -214,17 +307,145 @@ describe('ConnectedChannelsChatView', () => {
             workflowEntrypoints: [],
             workflowConfigurations: [],
             automationSettingsWorkflows: [],
-            handleFlowAdd: jest.fn(),
-            handleFlowRemove: jest.fn(),
-            handleFlowReorder: jest.fn(),
+            handleFlowAdd: mockHandleFlowAdd,
+            handleFlowRemove: mockHandleFlowRemove,
+            handleFlowReorder: mockHandleFlowReorder,
         })
 
-        render(
-            <MemoryRouter>
-                <ConnectedChannelsChatView />
-            </MemoryRouter>,
-        )
+        renderComponent()
 
         expect(screen.queryByText('FlowsCard')).not.toBeInTheDocument()
+    })
+
+    describe('flow handlers', () => {
+        const nextEntrypoints = [
+            { workflow_id: 'wf-1', enabled: true },
+            { workflow_id: 'wf-2', enabled: true },
+        ]
+
+        it('should call handleFlowAdd with the given entrypoints when onAdd is triggered', async () => {
+            renderComponent()
+
+            await act(async () => {
+                await mockFlowsCardHandlers.onAdd!(nextEntrypoints)
+            })
+
+            expect(mockHandleFlowAdd).toHaveBeenCalledWith(nextEntrypoints)
+        })
+
+        it('should call handleFlowRemove with the given entrypoints when onRemove is triggered', async () => {
+            renderComponent()
+
+            await act(async () => {
+                await mockFlowsCardHandlers.onRemove!(nextEntrypoints)
+            })
+
+            expect(mockHandleFlowRemove).toHaveBeenCalledWith(nextEntrypoints)
+        })
+
+        it('should call handleFlowReorder with the given entrypoints when onReorder is triggered', async () => {
+            renderComponent()
+
+            await act(async () => {
+                await mockFlowsCardHandlers.onReorder!(nextEntrypoints)
+            })
+
+            expect(mockHandleFlowReorder).toHaveBeenCalledWith(nextEntrypoints)
+        })
+
+        it('should call updateWorkflowEntryPoints with mapped flows once labels are loaded after onAdd', async () => {
+            const entrypointLabels = {
+                'wf-1': 'Flow One',
+                'wf-2': 'Flow Two',
+            }
+            mockedUseFlows.mockReturnValue({
+                isLoading: false,
+                channel: mockChannel,
+                primaryLanguage: 'en',
+                workflowEntrypoints: [],
+                workflowConfigurations: [],
+                automationSettingsWorkflows: nextEntrypoints,
+                handleFlowAdd: mockHandleFlowAdd,
+                handleFlowRemove: mockHandleFlowRemove,
+                handleFlowReorder: mockHandleFlowReorder,
+            })
+            mockedUseListWorkflowEntryPoints.mockReturnValue({
+                data: entrypointLabels,
+                isLoading: false,
+            } as unknown as ReturnType<typeof useListWorkflowEntryPoints>)
+
+            renderComponent()
+
+            await act(async () => {
+                await mockFlowsCardHandlers.onAdd!(nextEntrypoints)
+            })
+
+            await waitFor(() => {
+                expect(mockUpdateWorkflowEntryPoints).toHaveBeenCalledWith([
+                    {
+                        workflow_id: 'wf-1',
+                        language: 'en',
+                        label: 'Flow One',
+                    },
+                    {
+                        workflow_id: 'wf-2',
+                        language: 'en',
+                        label: 'Flow Two',
+                    },
+                ])
+            })
+        })
+
+        it('should filter out flows without a matching label from updateWorkflowEntryPoints', async () => {
+            const entrypointLabels = {
+                'wf-1': 'Flow One',
+            }
+            mockedUseFlows.mockReturnValue({
+                isLoading: false,
+                channel: mockChannel,
+                primaryLanguage: 'en',
+                workflowEntrypoints: [],
+                workflowConfigurations: [],
+                automationSettingsWorkflows: nextEntrypoints,
+                handleFlowAdd: mockHandleFlowAdd,
+                handleFlowRemove: mockHandleFlowRemove,
+                handleFlowReorder: mockHandleFlowReorder,
+            })
+            mockedUseListWorkflowEntryPoints.mockReturnValue({
+                data: entrypointLabels,
+                isLoading: false,
+            } as unknown as ReturnType<typeof useListWorkflowEntryPoints>)
+
+            renderComponent()
+
+            await act(async () => {
+                await mockFlowsCardHandlers.onAdd!(nextEntrypoints)
+            })
+
+            await waitFor(() => {
+                expect(mockUpdateWorkflowEntryPoints).toHaveBeenCalledWith([
+                    {
+                        workflow_id: 'wf-1',
+                        language: 'en',
+                        label: 'Flow One',
+                    },
+                ])
+            })
+        })
+
+        it('should not call updateWorkflowEntryPoints while entry point labels are still loading', async () => {
+            mockedUseListWorkflowEntryPoints.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+            } as unknown as ReturnType<typeof useListWorkflowEntryPoints>)
+
+            renderComponent()
+
+            await act(async () => {
+                await mockFlowsCardHandlers.onAdd!(nextEntrypoints)
+            })
+
+            expect(mockUpdateWorkflowEntryPoints).not.toHaveBeenCalled()
+        })
     })
 })

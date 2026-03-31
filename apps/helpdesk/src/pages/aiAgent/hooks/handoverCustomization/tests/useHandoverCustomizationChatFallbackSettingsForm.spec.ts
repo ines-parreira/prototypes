@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { act, waitFor } from '@testing-library/react'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import { useNotify } from 'hooks/useNotify'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { CHANGES_SAVED_SUCCESS } from 'pages/aiAgent/constants'
@@ -89,8 +89,8 @@ describe('useHandoverCustomizationChatFallbackSettingsForm', () => {
         meta: {
             app_id: 'test-app-id',
             languages: [
-                { language: Language.EnglishUs },
-                { language: Language.FrenchFr },
+                { language: LANGUAGE.EN_US },
+                { language: LANGUAGE.FR_FR },
             ],
         },
     } as unknown as GorgiasChatIntegration

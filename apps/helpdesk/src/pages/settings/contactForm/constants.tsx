@@ -1,4 +1,4 @@
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 
 import { ContactFormDisplayMode } from './types/formDisplayMode.enum'
 
@@ -6,7 +6,7 @@ export const CONTACT_FORM_EMBEDMENTS_LIMIT = 50
 
 export const CONTACT_FORM_PAGE_TITLE = 'Contact Form'
 
-export const CONTACT_FORM_DEFAULT_LOCALE = Language.EnglishUs
+export const CONTACT_FORM_DEFAULT_LOCALE = LANGUAGE.EN_US
 
 export const CONTACT_FORM_DEFAULT_FORM_DISPLAY_MODE =
     ContactFormDisplayMode.SHOW_AFTER_BUTTON_CLICK

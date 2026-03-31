@@ -8,6 +8,8 @@ import {
 } from 'react'
 import type { RefObject } from 'react'
 
+import { LANGUAGE_TO_LOCALE_MAPPING } from 'constants/languages'
+import type { LANGUAGE } from 'constants/languages'
 import { useGetInstallationSnippet } from 'models/integration/queries'
 
 import { ChatPreviewErrorState } from '../ChatPreviewErrorState/ChatPreviewErrorState'
@@ -18,6 +20,7 @@ import css from './ChatPreview.less'
 
 type Props = {
     appId: string
+    language?: LANGUAGE
 }
 
 export type ChatPreviewHandle = {
@@ -27,7 +30,7 @@ export type ChatPreviewHandle = {
 }
 
 export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
-    ({ appId }, ref) => {
+    ({ appId, language }, ref) => {
         const iframeRef = useRef<HTMLIFrameElement>(null)
         const [isLoaded, setIsWidgetLoaded] = useState(false)
         const [hasError, setHasError] = useState(false)
@@ -83,18 +86,32 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
             const scriptSrc = new URL(script.src)
             scriptSrc.searchParams.set('source', 'manual')
             scriptSrc.searchParams.set('preview', 'true')
+            scriptSrc.searchParams.set(
+                'rev', // rev param is set in order to prevent browser caching
+                String(Math.floor(Math.random() * Number.MAX_SAFE_INTEGER)),
+            )
 
             script.src = scriptSrc.toString()
-
             return `
             <html>
                 <body>
-                    <script type="application/javascript">${iframeBootstrapScript}</script>
+                    <script type="application/javascript">
+                        ${iframeBootstrapScript}
+                        window.GORGIASCHAT_LANGUAGE = "${language ? `'${LANGUAGE_TO_LOCALE_MAPPING[language]}'` : undefined};"
+                        ${
+                            language
+                                ? `
+                                    Object.defineProperty(navigator, 'language', { value: '${LANGUAGE_TO_LOCALE_MAPPING[language]}', configurable: true });
+                                    Object.defineProperty(navigator, 'languages', { value: ['${LANGUAGE_TO_LOCALE_MAPPING[language]}'], configurable: true });
+                                `
+                                : ''
+                        }
+                    </script>
                     ${script.outerHTML}
                 </body>
             </html>
         `
-        }, [installationSnippet?.snippet])
+        }, [installationSnippet?.snippet, language])
 
         useEffect(() => {
             if (

@@ -5,7 +5,7 @@ import { act } from 'react-dom/test-utils'
 
 import { UserSettingType } from '@gorgias/helpdesk-types'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 
 import { useYourProfileMutations } from '../hooks/useYourProfileMutations'
 
@@ -46,7 +46,7 @@ const mockFormValues = {
     email: 'john@example.com',
     bio: 'Software Engineer',
     timezone: 'UTC',
-    language: Language.EnglishUs,
+    language: LANGUAGE.EN_US,
     password_confirmation: '',
     meta: { profile_picture_url: null },
     preferences: {
@@ -470,7 +470,7 @@ describe('useYourProfileMutations', () => {
                 email: 'john@example.com',
                 bio: '',
                 timezone: '',
-                language: Language.EnglishUs,
+                language: LANGUAGE.EN_US,
                 password_confirmation: '',
                 meta: { profile_picture_url: null },
                 preferences: {

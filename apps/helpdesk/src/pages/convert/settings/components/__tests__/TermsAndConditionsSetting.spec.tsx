@@ -4,7 +4,7 @@ import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
-import { Language as MockLanguage } from 'constants/languages'
+import { LANGUAGE as MockLanguage } from 'constants/languages'
 import { chatIntegrationFixtures } from 'fixtures/chat'
 import { TermsAndConditionsSetting } from 'pages/convert/settings/components/TermsAndConditionsSetting'
 import type { DisclaimerSettings } from 'pages/convert/settings/types'
@@ -36,7 +36,7 @@ describe('<TermsAndConditionsSetting />', () => {
 
     it('should show error message when in error', () => {
         const disclaimerMap: Record<string, string> = {}
-        disclaimerMap[MockLanguage.EnglishGb] = 'f'.repeat(281)
+        disclaimerMap[MockLanguage.EN_GB] = 'f'.repeat(281)
         const mockOnError = jest.fn()
         const { getByText } = render(
             <Provider store={store}>
@@ -46,7 +46,7 @@ describe('<TermsAndConditionsSetting />', () => {
                         ...defaultProps.disclaimerSettings,
                         disclaimerEnabled: true,
                         disclaimerMap: disclaimerMap,
-                        selectedLanguage: MockLanguage.EnglishGb,
+                        selectedLanguage: MockLanguage.EN_GB,
                     }}
                     onErrorChange={mockOnError}
                 />

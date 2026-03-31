@@ -5,7 +5,6 @@ import userEvent from '@testing-library/user-event'
 
 import type { ButtonGroupItemProps, ButtonGroupProps } from '@gorgias/axiom'
 
-import { Language } from 'constants/languages'
 import { GorgiasChatPositionAlignmentEnum } from 'models/integration/types'
 
 import type { ChatPreviewPanelHandle } from './ChatPreviewPanel'
@@ -162,7 +161,6 @@ describe('ChatPreviewPanel', () => {
             expect(ref.current?.updateTexts).toBeDefined()
             expect(ref.current?.closeChat).toBeDefined()
             expect(ref.current?.openChat).toBeDefined()
-            expect(ref.current?.updateLanguage).toBeDefined()
             expect(ref.current?.updateWorkflowEntryPoints).toBeDefined()
             expect(ref.current?.reloadPreview).toBeDefined()
         })
@@ -229,33 +227,6 @@ describe('ChatPreviewPanel', () => {
             )
         })
 
-        it('updateLanguage calls GorgiasChat.setLanguage with the provided language', async () => {
-            const { ref } = renderComponent()
-
-            await ref.current?.updateLanguage(Language.French)
-
-            expect(mockGorgiasChat.setLanguage).toHaveBeenCalledWith(
-                Language.French,
-            )
-        })
-
-        it('updateLanguage resolves when setLanguage resolves', async () => {
-            const { ref } = renderComponent()
-
-            await expect(
-                ref.current?.updateLanguage(Language.EnglishUs),
-            ).resolves.toBeUndefined()
-        })
-
-        it('updateLanguage resolves when setLanguage is not defined on gorgiasChat', async () => {
-            mockGorgiasChat.setLanguage = undefined as any
-            const { ref } = renderComponent()
-
-            await expect(
-                ref.current?.updateLanguage(Language.French),
-            ).resolves.toBeUndefined()
-        })
-
         it('updateWorkflowEntrypoints calls GorgiasChat.updateSelfServiceConfiguration with the provided entrypoints', () => {
             const { ref } = renderComponent()
             const entrypoints = [{ id: 'flow-1' }, { id: 'flow-2' }] as any
@@ -305,33 +276,6 @@ describe('ChatPreviewPanel', () => {
             ref.current?.closeChat()
 
             expect(mockGorgiasChat.close).not.toHaveBeenCalled()
-        })
-
-        it('updateLanguage resolves when isLoaded is false', async () => {
-            mockIsLoaded = false
-            const { ref } = renderComponent()
-
-            await expect(
-                ref.current?.updateLanguage(Language.French),
-            ).resolves.toBeUndefined()
-        })
-
-        it('updateLanguage resolves when hasError is true', async () => {
-            mockHasError = true
-            const { ref } = renderComponent()
-
-            await expect(
-                ref.current?.updateLanguage(Language.French),
-            ).resolves.toBeUndefined()
-        })
-
-        it('updateLanguage resolves when GorgiasChat is not present in the iframe window', async () => {
-            mockHasGorgiasChat = false
-            const { ref } = renderComponent()
-
-            await expect(
-                ref.current?.updateLanguage(Language.French),
-            ).resolves.toBeUndefined()
         })
 
         it('does not call GorgiasChat.updateSelfServiceConfiguration when isLoaded is false', () => {

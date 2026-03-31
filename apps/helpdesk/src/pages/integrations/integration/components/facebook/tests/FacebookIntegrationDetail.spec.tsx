@@ -10,7 +10,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { FACEBOOK_INTEGRATION_TYPE } from 'constants/integration'
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import { basicMonthlyHelpdeskPlan } from 'fixtures/plans'
 import { IntegrationType } from 'models/integration/constants'
 import type {
@@ -149,7 +149,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 instagram: {
                     id: '178941234975',
                 },
-                language: Language.Spanish,
+                language: LANGUAGE.ES,
                 name: 'My facebook page',
                 settings: {
                     posts_enabled: true,
@@ -171,7 +171,7 @@ describe('<FacebookIntegrationDetail/>', () => {
         )
 
         fireEvent.change(screen.getByRole('combobox', { name: 'Language' }), {
-            target: { value: Language.Danish },
+            target: { value: LANGUAGE.DA },
         })
 
         screen.getByRole('button', { name: 'Save changes' }).click()
@@ -181,7 +181,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             fromJS(
                 merge(integration, {
                     meta: {
-                        language: Language.Danish,
+                        language: LANGUAGE.DA,
                     },
                 }),
             ),

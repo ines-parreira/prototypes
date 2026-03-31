@@ -1,5 +1,11 @@
 import type { ReactNode } from 'react'
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react'
+import {
+    forwardRef,
+    useImperativeHandle,
+    useMemo,
+    useRef,
+    useState,
+} from 'react'
 
 import {
     Box,
@@ -10,7 +16,7 @@ import {
     TextVariant,
 } from '@gorgias/axiom'
 
-import type { Language } from 'constants/languages'
+import type { LANGUAGE } from 'constants/languages'
 import type {
     GorgiasChatPosition,
     GorgiasChatPreviewApplicationSettings,
@@ -29,7 +35,6 @@ export type ChatPreviewPanelHandle = {
     updateTexts: (texts: Record<string, string>) => void
     closeChat: () => void
     openChat: () => void
-    updateLanguage: (language: Language) => Promise<void>
     updateWorkflowEntryPoints: (
         workflowEntrypoints: GorgiasChatWorkflowEntrypoint[],
     ) => void
@@ -39,15 +44,19 @@ export type ChatPreviewPanelHandle = {
 type Props = {
     appId: string | null
     headerActions?: ReactNode
+    locale?: LANGUAGE
 }
 
 export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
-    ({ appId, headerActions }: Props, ref) => {
+    ({ appId, headerActions, locale }: Props, ref) => {
         const chatPreviewRef = useRef<ChatPreviewHandle>(null)
         const [selectedPage, setSelectedPage] = useState<
             'homepage' | 'conversation'
         >('homepage')
         const [reloadKey, setReloadKey] = useState(0)
+        const chatPreviewKey = useMemo(() => {
+            return `${reloadKey}${locale ? '-' + locale : ''}`
+        }, [reloadKey, locale])
 
         const withGorgiasChat = (
             callback: (
@@ -124,14 +133,6 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             })
         }
 
-        const updateLanguage = (language: Language): Promise<void> => {
-            return (
-                withGorgiasChat((gorgiasChat) =>
-                    gorgiasChat.setLanguage?.(language),
-                ) ?? Promise.resolve()
-            )
-        }
-
         const updateWorkflowEntryPoints = (
             workflowEntryPoints: GorgiasChatWorkflowEntrypoint[],
         ) => {
@@ -160,7 +161,6 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             updateTexts,
             closeChat,
             openChat,
-            updateLanguage,
             updateWorkflowEntryPoints,
             reloadPreview,
         }))
@@ -195,9 +195,10 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 <Box flexGrow={1} className={css.content}>
                     {appId && (
                         <ChatPreview
-                            key={reloadKey}
+                            key={chatPreviewKey}
                             ref={chatPreviewRef}
                             appId={appId}
+                            language={locale}
                         />
                     )}
                 </Box>

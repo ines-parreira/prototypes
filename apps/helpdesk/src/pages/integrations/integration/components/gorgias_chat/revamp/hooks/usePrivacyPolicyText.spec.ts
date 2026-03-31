@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
 
-import { Language, LanguageChat } from 'constants/languages'
+import { LANGUAGE, LanguageChat } from 'constants/languages'
 import { GorgiasChatEmailCaptureType } from 'models/integration/types'
 import {
     getApplicationTexts,
@@ -22,7 +22,7 @@ const mockUpdateApplicationTexts =
 
 const mockIntegrationMeta = {
     app_id: 'app-123',
-    languages: [{ language: Language.EnglishUs, primary: true }],
+    languages: [{ language: LANGUAGE.EN_US, primary: true }],
     self_service: {},
     preferences: {
         email_capture_enforcement: GorgiasChatEmailCaptureType.Optional,

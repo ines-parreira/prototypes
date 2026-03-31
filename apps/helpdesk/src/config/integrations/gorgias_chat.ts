@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 
 import type { Language as LanguagePickerItem } from 'pages/common/components/LanguagePicker/LanguagePicker'
 
-import { Language } from '../../constants/languages'
+import { LANGUAGE } from '../../constants/languages'
 import type {
     GorgiasChatIntegrationMeta,
     GorgiasChatPosition,
@@ -21,15 +21,15 @@ import { widgetTexts } from './widget'
 export const GORGIAS_CHAT_NAME_MAX_LENGTH = 100
 export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
-export const GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT = Language.EnglishUs
+export const GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT = LANGUAGE.EN_US
 
 export interface LanguageItem {
-    language: Language
+    language: LANGUAGE
     primary?: boolean
 }
 
 export type GorgiasChatLanguageOption = {
-    value: Language
+    value: LANGUAGE
     label: string
     isNew?: boolean
 }
@@ -42,7 +42,7 @@ export interface LanguageUI {
 export const GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT: List<LanguageItem> = fromJS(
     [
         {
-            language: Language.EnglishUs,
+            language: LANGUAGE.EN_US,
             primary: true,
         },
     ],
@@ -50,27 +50,25 @@ export const GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT: List<LanguageItem> = fromJS(
 
 export const GORGIAS_CHAT_WIDGET_LANGUAGES_DEFAULT_UI: List<
     Map<string, string>
-> = fromJS([
-    { value: Language.EnglishUs, label: 'English (US)', isDefault: true },
-])
+> = fromJS([{ value: LANGUAGE.EN_US, label: 'English (US)', isDefault: true }])
 
 export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS: List<Map<string, string>> =
     fromJS([
-        { value: Language.EnglishUs, label: 'English - US' },
-        { value: Language.EnglishGb, label: 'English - GB' },
-        { value: Language.FrenchFr, label: 'French - FR' },
-        { value: Language.German, label: 'German' },
-        { value: Language.Spanish, label: 'Spanish' },
-        { value: Language.Czech, label: 'Czech' },
-        { value: Language.Danish, label: 'Danish' },
-        { value: Language.Dutch, label: 'Dutch' },
-        { value: Language.Finnish, label: 'Finnish' },
-        { value: Language.FrenchCa, label: 'French - CA' },
-        { value: Language.Italian, label: 'Italian' },
-        { value: Language.Japanese, label: 'Japanese' },
-        { value: Language.Norwegian, label: 'Norwegian' },
-        { value: Language.PortugueseBrazil, label: 'Portuguese - BR' },
-        { value: Language.Swedish, label: 'Swedish' },
+        { value: LANGUAGE.EN_US, label: 'English - US' },
+        { value: LANGUAGE.EN_GB, label: 'English - GB' },
+        { value: LANGUAGE.FR_FR, label: 'French - FR' },
+        { value: LANGUAGE.DE, label: 'German' },
+        { value: LANGUAGE.ES, label: 'Spanish' },
+        { value: LANGUAGE.CZ, label: 'Czech' },
+        { value: LANGUAGE.DA, label: 'Danish' },
+        { value: LANGUAGE.NL, label: 'Dutch' },
+        { value: LANGUAGE.FI, label: 'Finnish' },
+        { value: LANGUAGE.FR_CA, label: 'French - CA' },
+        { value: LANGUAGE.IT, label: 'Italian' },
+        { value: LANGUAGE.JA, label: 'Japanese' },
+        { value: LANGUAGE.NO, label: 'Norwegian' },
+        { value: LANGUAGE.PT_BR, label: 'Portuguese - BR' },
+        { value: LANGUAGE.SV, label: 'Swedish' },
     ])
 
 // TODO: remove this function and use GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS once all languages are supported without feature flag
@@ -78,26 +76,26 @@ export const getGorgiasChatLanguageOptions = (
     enableNewLanguages?: boolean,
 ): List<Map<string, string>> => {
     const languages = [
-        { value: Language.EnglishUs, label: 'English - US' },
-        { value: Language.EnglishGb, label: 'English - GB', isNew: true },
-        { value: Language.FrenchFr, label: 'French - FR' },
-        { value: Language.German, label: 'German' },
-        { value: Language.Spanish, label: 'Spanish' },
-        { value: Language.Czech, label: 'Czech' },
-        { value: Language.Danish, label: 'Danish' },
-        { value: Language.Dutch, label: 'Dutch' },
-        { value: Language.Finnish, label: 'Finnish', isNew: true },
-        { value: Language.FrenchCa, label: 'French - CA' },
-        { value: Language.Italian, label: 'Italian' },
-        { value: Language.Japanese, label: 'Japanese', isNew: true },
-        { value: Language.Norwegian, label: 'Norwegian' },
+        { value: LANGUAGE.EN_US, label: 'English - US' },
+        { value: LANGUAGE.EN_GB, label: 'English - GB', isNew: true },
+        { value: LANGUAGE.FR_FR, label: 'French - FR' },
+        { value: LANGUAGE.DE, label: 'German' },
+        { value: LANGUAGE.ES, label: 'Spanish' },
+        { value: LANGUAGE.CZ, label: 'Czech' },
+        { value: LANGUAGE.DA, label: 'Danish' },
+        { value: LANGUAGE.NL, label: 'Dutch' },
+        { value: LANGUAGE.FI, label: 'Finnish', isNew: true },
+        { value: LANGUAGE.FR_CA, label: 'French - CA' },
+        { value: LANGUAGE.IT, label: 'Italian' },
+        { value: LANGUAGE.JA, label: 'Japanese', isNew: true },
+        { value: LANGUAGE.NO, label: 'Norwegian' },
         {
-            value: Language.PortugueseBrazil,
+            value: LANGUAGE.PT_BR,
             label: 'Portuguese - BR',
             isNew: true,
         },
 
-        { value: Language.Swedish, label: 'Swedish' },
+        { value: LANGUAGE.SV, label: 'Swedish' },
     ]
 
     const filteredLanguages = enableNewLanguages
@@ -111,25 +109,25 @@ export const getGorgiasChatLanguageOptionsPlainJS = (
     enableNewLanguages?: boolean,
 ): GorgiasChatLanguageOption[] => {
     const languages: GorgiasChatLanguageOption[] = [
-        { value: Language.EnglishUs, label: 'English - US' },
-        { value: Language.EnglishGb, label: 'English - GB', isNew: true },
-        { value: Language.FrenchFr, label: 'French - FR' },
-        { value: Language.German, label: 'German' },
-        { value: Language.Spanish, label: 'Spanish' },
-        { value: Language.Czech, label: 'Czech' },
-        { value: Language.Danish, label: 'Danish' },
-        { value: Language.Dutch, label: 'Dutch' },
-        { value: Language.Finnish, label: 'Finnish', isNew: true },
-        { value: Language.FrenchCa, label: 'French - CA' },
-        { value: Language.Italian, label: 'Italian' },
-        { value: Language.Japanese, label: 'Japanese', isNew: true },
-        { value: Language.Norwegian, label: 'Norwegian' },
+        { value: LANGUAGE.EN_US, label: 'English - US' },
+        { value: LANGUAGE.EN_GB, label: 'English - GB', isNew: true },
+        { value: LANGUAGE.FR_FR, label: 'French - FR' },
+        { value: LANGUAGE.DE, label: 'German' },
+        { value: LANGUAGE.ES, label: 'Spanish' },
+        { value: LANGUAGE.CZ, label: 'Czech' },
+        { value: LANGUAGE.DA, label: 'Danish' },
+        { value: LANGUAGE.NL, label: 'Dutch' },
+        { value: LANGUAGE.FI, label: 'Finnish', isNew: true },
+        { value: LANGUAGE.FR_CA, label: 'French - CA' },
+        { value: LANGUAGE.IT, label: 'Italian' },
+        { value: LANGUAGE.JA, label: 'Japanese', isNew: true },
+        { value: LANGUAGE.NO, label: 'Norwegian' },
         {
-            value: Language.PortugueseBrazil,
+            value: LANGUAGE.PT_BR,
             label: 'Portuguese - BR',
             isNew: true,
         },
-        { value: Language.Swedish, label: 'Swedish' },
+        { value: LANGUAGE.SV, label: 'Swedish' },
     ]
 
     return enableNewLanguages
@@ -247,7 +245,7 @@ export const QUICK_REPLIES_MAX_ITEMS = 3
 export const QUICK_REPLIES_MAX_ITEM_LENGTH = 20
 
 // util functions for gorgias chat languages
-export const getGorgiasChatLanguageByCode = (language: Language) =>
+export const getGorgiasChatLanguageByCode = (language: LANGUAGE) =>
     (GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.toJS() as LanguageUI[]).find(
         (item: LanguageUI) => item.value === language,
     )
@@ -316,7 +314,7 @@ export const mapIntegrationLanguagesToLanguagePicker = (
                 (lang: LanguagePickerItem) => lang.value === language,
             )
         newLanguages.push({
-            value: language as Language,
+            value: language as LANGUAGE,
             label: matchedLanguage?.label as string,
             isDefault: true,
         })
@@ -329,7 +327,7 @@ export const mapLanguagePickerToIntegrationLanguages = (
 ) => {
     const integrationLanguages: LanguageItem[] = languages.map(
         (language: LanguagePickerItem) => ({
-            language: language.value as Language,
+            language: language.value as LANGUAGE,
             ...(language.isDefault ? { primary: language.isDefault } : {}),
         }),
     )
@@ -363,7 +361,7 @@ export const mapLanguageOptionsToLanguageDropdown = (
     // We add the legacy 'language' value as default language if no languages are set
     if (!languagesIntegration.length) {
         languagesIntegration.push({
-            language: languageIntegration as Language,
+            language: languageIntegration as LANGUAGE,
             primary: true,
         })
     }
@@ -407,7 +405,7 @@ export const isTextsMultiLanguage = (value: unknown): boolean => {
     if (value && typeof value === 'object' && value !== null) {
         const objValue = value as Record<string, unknown>
         return Object.keys(objValue).some((key) => {
-            return Object.values(Language).includes(key as Language)
+            return Object.values(LANGUAGE).includes(key as LANGUAGE)
         })
     }
     return false

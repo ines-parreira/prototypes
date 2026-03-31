@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 
-import { Language as LanguageEnum } from 'constants/languages'
+import { LANGUAGE as LanguageEnum } from 'constants/languages'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import SelectField from 'pages/common/forms/SelectField/SelectField'
 import type { Value } from 'pages/common/forms/SelectField/types'
@@ -24,7 +24,7 @@ export interface LanguagePicker {
 export const LanguagePicker: React.FC<LanguagePicker> = (props) => {
     const [defaultLanguage, setDefaultLanguage] = React.useState(
         (props.languages.find((language) => language.isDefault) as Language) ||
-            LanguageEnum.EnglishUs,
+            LanguageEnum.EN_US,
     )
     const [selectedLanguages, setSelectedLanguages] = React.useState(
         props.languages.filter((language) => !language.isDefault),

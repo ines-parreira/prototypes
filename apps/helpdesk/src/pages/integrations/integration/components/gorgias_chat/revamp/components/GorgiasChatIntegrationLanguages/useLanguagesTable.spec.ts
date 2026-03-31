@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { GorgiasChatLauncherType } from 'models/integration/types/gorgiasChat'
 
@@ -52,7 +52,7 @@ const makeIntegration = (overrides = {}) =>
     fromJS({
         id: 1,
         meta: {
-            language: Language.EnglishUs,
+            language: LANGUAGE.EN_US,
             languages: null,
         },
         decoration: {
@@ -88,10 +88,10 @@ describe('useLanguagesTable', () => {
         it('should initialize from meta.languages when it exists', () => {
             const integration = makeIntegration({
                 meta: {
-                    language: Language.EnglishUs,
+                    language: LANGUAGE.EN_US,
                     languages: [
-                        { language: Language.EnglishUs, primary: true },
-                        { language: Language.French, primary: false },
+                        { language: LANGUAGE.EN_US, primary: true },
+                        { language: LANGUAGE.FR, primary: false },
                     ],
                 },
             })
@@ -119,10 +119,10 @@ describe('useLanguagesTable', () => {
         it('should sort languages with primary first', () => {
             const integration = makeIntegration({
                 meta: {
-                    language: Language.EnglishUs,
+                    language: LANGUAGE.EN_US,
                     languages: [
-                        { language: Language.French, primary: false },
-                        { language: Language.EnglishUs, primary: true },
+                        { language: LANGUAGE.FR, primary: false },
+                        { language: LANGUAGE.EN_US, primary: true },
                     ],
                 },
             })
@@ -139,11 +139,11 @@ describe('useLanguagesTable', () => {
         it('should sort non-primary languages alphabetically', () => {
             const integration = makeIntegration({
                 meta: {
-                    language: Language.EnglishUs,
+                    language: LANGUAGE.EN_US,
                     languages: [
-                        { language: Language.German, primary: false },
-                        { language: Language.French, primary: false },
-                        { language: Language.EnglishUs, primary: true },
+                        { language: LANGUAGE.DE, primary: false },
+                        { language: LANGUAGE.FR, primary: false },
+                        { language: LANGUAGE.EN_US, primary: true },
                     ],
                 },
             })
@@ -183,10 +183,10 @@ describe('useLanguagesTable', () => {
         it('should set showActions to true when there are multiple languages', () => {
             const integration = makeIntegration({
                 meta: {
-                    language: Language.EnglishUs,
+                    language: LANGUAGE.EN_US,
                     languages: [
-                        { language: Language.EnglishUs, primary: true },
-                        { language: Language.French, primary: false },
+                        { language: LANGUAGE.EN_US, primary: true },
+                        { language: LANGUAGE.FR, primary: false },
                     ],
                 },
             })
@@ -233,14 +233,14 @@ describe('useLanguagesTable', () => {
 
             await act(async () => {
                 await result.current.addLanguage({
-                    language: Language.French,
+                    language: LANGUAGE.FR,
                 })
             })
 
             expect(mockDispatch).toHaveBeenCalledTimes(1)
             const dispatchedForm = mockDispatch.mock.calls[0][0].form.toJS()
             expect(dispatchedForm.meta.languages).toContainEqual(
-                expect.objectContaining({ language: Language.French }),
+                expect.objectContaining({ language: LANGUAGE.FR }),
             )
         })
     })
@@ -249,10 +249,10 @@ describe('useLanguagesTable', () => {
         it('should set the new language as primary and remove primary from others', async () => {
             const integration = makeIntegration({
                 meta: {
-                    language: Language.EnglishUs,
+                    language: LANGUAGE.EN_US,
                     languages: [
-                        { language: Language.EnglishUs, primary: true },
-                        { language: Language.French, primary: false },
+                        { language: LANGUAGE.EN_US, primary: true },
+                        { language: LANGUAGE.FR, primary: false },
                     ],
                 },
             })
@@ -264,7 +264,7 @@ describe('useLanguagesTable', () => {
 
             await act(async () => {
                 await result.current.updateDefaultLanguage({
-                    language: Language.French,
+                    language: LANGUAGE.FR,
                 })
             })
 
@@ -273,13 +273,12 @@ describe('useLanguagesTable', () => {
             const langs = dispatchedForm.meta.languages
             expect(
                 langs.find(
-                    (l: { language: string }) => l.language === Language.French,
+                    (l: { language: string }) => l.language === LANGUAGE.FR,
                 )?.primary,
             ).toBe(true)
             expect(
                 langs.find(
-                    (l: { language: string }) =>
-                        l.language === Language.EnglishUs,
+                    (l: { language: string }) => l.language === LANGUAGE.EN_US,
                 )?.primary,
             ).toBeUndefined()
         })
@@ -289,10 +288,10 @@ describe('useLanguagesTable', () => {
         it('should remove the deleted language from the list', async () => {
             const integration = makeIntegration({
                 meta: {
-                    language: Language.EnglishUs,
+                    language: LANGUAGE.EN_US,
                     languages: [
-                        { language: Language.EnglishUs, primary: true },
-                        { language: Language.French, primary: false },
+                        { language: LANGUAGE.EN_US, primary: true },
+                        { language: LANGUAGE.FR, primary: false },
                     ],
                 },
             })
@@ -304,7 +303,7 @@ describe('useLanguagesTable', () => {
 
             await act(async () => {
                 await result.current.deleteLanguage({
-                    language: Language.French,
+                    language: LANGUAGE.FR,
                 })
             })
 
@@ -312,7 +311,7 @@ describe('useLanguagesTable', () => {
             const dispatchedForm = mockDispatch.mock.calls[0][0].form.toJS()
             const langs = dispatchedForm.meta.languages
             expect(langs).toHaveLength(1)
-            expect(langs[0].language).toBe(Language.EnglishUs)
+            expect(langs[0].language).toBe(LANGUAGE.EN_US)
         })
     })
 

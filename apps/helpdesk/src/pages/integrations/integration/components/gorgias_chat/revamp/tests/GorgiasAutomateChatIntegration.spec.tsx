@@ -544,19 +544,6 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
     })
 
     describe('workflow entry points effect', () => {
-        it('should call updateWorkflowEntryPoints on mount when labels are loaded', () => {
-            const mockUpdateWorkflowEntryPoints = jest.fn()
-            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
-                updateWorkflowEntryPoints: mockUpdateWorkflowEntryPoints,
-                reloadPreview: jest.fn(),
-                displayPage: jest.fn(),
-            } as any)
-
-            render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
-
-            expect(mockUpdateWorkflowEntryPoints).toHaveBeenCalledWith([])
-        })
-
         it('should call updateWorkflowEntryPoints with correct shape after flows change', async () => {
             const mockUpdateWorkflowEntryPoints = jest.fn()
             mockUseGorgiasChatCreationWizardContext.mockReturnValue({

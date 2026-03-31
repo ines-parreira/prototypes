@@ -7,7 +7,7 @@ import {
     GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
     GORGIAS_CHAT_WIDGET_TEXTS,
 } from 'config/integrations/gorgias_chat'
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import { useChatPreviewProps } from 'pages/convert/campaigns/hooks/useChatPreviewProps'
 
 describe('useChatPreviewProps()', () => {
@@ -37,7 +37,7 @@ describe('useChatPreviewProps()', () => {
                 main_font_family: 'Impact',
             },
             meta: {
-                language: Language.Spanish,
+                language: LANGUAGE.ES,
             },
         })
 
@@ -49,7 +49,7 @@ describe('useChatPreviewProps()', () => {
             expect(result.current).toEqual({
                 position: GORGIAS_CHAT_WIDGET_POSITION_DEFAULT,
                 mainColor: '#000',
-                translatedTexts: GORGIAS_CHAT_WIDGET_TEXTS[Language.Spanish],
+                translatedTexts: GORGIAS_CHAT_WIDGET_TEXTS[LANGUAGE.ES],
                 mainFontFamily: 'Impact',
             })
         })

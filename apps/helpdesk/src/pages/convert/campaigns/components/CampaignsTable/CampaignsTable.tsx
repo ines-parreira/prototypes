@@ -19,7 +19,7 @@ import {
     getGorgiasChatLanguageByCode,
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
-import type { Language } from 'constants/languages'
+import type { LANGUAGE } from 'constants/languages'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import BadgeItem from 'pages/common/components/BadgetItem'
 import IconButton from 'pages/common/components/button/IconButton'
@@ -201,7 +201,7 @@ export const CampaignsTable = ({
             }
 
             const language = getGorgiasChatLanguageByCode(
-                (campaign.language ?? defaultLanguage) as Language,
+                (campaign.language ?? defaultLanguage) as LANGUAGE,
             ) as LanguageUI
 
             const isCampaignActive = isActiveStatus(campaign.status)

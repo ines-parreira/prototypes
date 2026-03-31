@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom'
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 
 import { GorgiasChatIntegrationLanguagesTable } from './GorgiasChatIntegrationLanguagesTable'
 import type { GorgiasChatIntegrationLanguagesTableRowProps } from './GorgiasChatIntegrationLanguagesTableRow'
@@ -33,7 +33,7 @@ const Template: Story = {
 
 const defaultProps: Partial<GorgiasChatIntegrationLanguagesTableRowProps> = {
     language: {
-        language: Language.EnglishUs,
+        language: LANGUAGE.EN_US,
         primary: true,
         label: 'English (US)',
         link: '/integrations/1/chat/languages/en-US',
@@ -51,7 +51,7 @@ export const DefaultWithActions = {
     args: {
         ...defaultProps,
         language: {
-            language: Language.EnglishUs,
+            language: LANGUAGE.EN_US,
             primary: true,
             label: 'English (US)',
             link: '/integrations/1/chat/languages/en-US',
@@ -71,7 +71,7 @@ export const NotDefaultWithActions = {
     args: {
         ...defaultProps,
         language: {
-            language: Language.EnglishUs,
+            language: LANGUAGE.EN_US,
             primary: false,
             label: 'English (US)',
             link: '/integrations/1/chat/languages/en-US',

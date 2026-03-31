@@ -3,7 +3,7 @@ import type React from 'react'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 
 import { DeleteLanguageModal } from './DeleteLanguageModal'
 
@@ -56,7 +56,7 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 const frenchLanguage = {
-    language: Language.French,
+    language: LANGUAGE.FR,
     label: 'French',
     link: '/app/settings/channels/gorgias-chat/1/languages/fr',
     primary: false,

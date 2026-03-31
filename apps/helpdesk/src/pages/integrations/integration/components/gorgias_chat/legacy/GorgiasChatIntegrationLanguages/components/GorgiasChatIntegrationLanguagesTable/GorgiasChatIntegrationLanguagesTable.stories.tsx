@@ -2,7 +2,7 @@ import { BrowserRouter } from 'react-router-dom'
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
 import { GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS } from 'config/integrations/gorgias_chat'
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 
 import { GorgiasChatIntegrationLanguagesTable } from './GorgiasChatIntegrationLanguagesTable'
 import { GorgiasChatIntegrationLanguagesTableRow } from './GorgiasChatIntegrationLanguagesTableRow'
@@ -11,7 +11,7 @@ import type { LanguageItemRow } from './types'
 const rows: LanguageItemRow[] = GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS.map(
     (option) => ({
         language: option?.get('value'),
-        primary: option?.get('value') === Language.EnglishUs,
+        primary: option?.get('value') === LANGUAGE.EN_US,
         label: option?.get('label'),
         link: '#',
         showActions: true,

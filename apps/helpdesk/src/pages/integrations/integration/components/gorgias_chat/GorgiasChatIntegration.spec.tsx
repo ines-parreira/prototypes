@@ -407,6 +407,48 @@ describe('<GorgiasChatIntegration />', () => {
         })
     })
 
+    describe('chatLanguage and useChatPreviewPanel', () => {
+        it('passes the primary language to useChatPreviewPanel', () => {
+            render(
+                <GorgiasChatIntegration
+                    {...defaultProps}
+                    integration={fromJS({
+                        id: 1,
+                        meta: {
+                            app_id: 'app-123',
+                            languages: [
+                                { language: 'fr', primary: false },
+                                { language: 'en', primary: true },
+                            ],
+                        },
+                    })}
+                />,
+            )
+
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
+                undefined,
+                'en',
+            )
+        })
+
+        it('passes undefined as the language to useChatPreviewPanel when the integration has no languages', () => {
+            render(
+                <GorgiasChatIntegration
+                    {...defaultProps}
+                    integration={fromJS({
+                        id: 1,
+                        meta: { app_id: 'app-123' },
+                    })}
+                />,
+            )
+
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
+                undefined,
+                undefined,
+            )
+        })
+    })
+
     it('computes articleRecommendationEnabled as false when integration has no appId', () => {
         mockUseParams.mockReturnValue({
             integrationId: '1',

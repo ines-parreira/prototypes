@@ -11,8 +11,7 @@ import {
 } from '@gorgias/axiom'
 
 import type { LanguageItem } from 'config/integrations/gorgias_chat'
-import type { Language } from 'constants/languages'
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
+import type { LANGUAGE } from 'constants/languages'
 import { LanguagesCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationLanguages/LanguagesCard/LanguagesCard'
 import { useLanguagesTable } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationLanguages/useLanguagesTable'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout'
@@ -40,8 +39,6 @@ export const GorgiasChatIntegrationLanguagesRevamp = ({
         loading,
     })
 
-    const { updateLanguage } = useGorgiasChatCreationWizardContext()
-
     const shopIntegrationId = integration.getIn(['meta', 'shop_integration_id'])
         ? Number(integration.getIn(['meta', 'shop_integration_id']))
         : undefined
@@ -54,12 +51,11 @@ export const GorgiasChatIntegrationLanguagesRevamp = ({
         : undefined
 
     const onAddLanguage = async (option: { value: string; label: string }) => {
-        await addLanguage({ language: option.value as Language })
+        await addLanguage({ language: option.value as LANGUAGE })
     }
 
     const handleUpdateDefaultLanguage = async (language: LanguageItem) => {
         await updateDefaultLanguage(language)
-        await updateLanguage(language.language)
     }
 
     return (

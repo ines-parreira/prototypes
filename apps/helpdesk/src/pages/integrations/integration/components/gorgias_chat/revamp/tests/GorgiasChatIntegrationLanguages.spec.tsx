@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 
 import { GorgiasChatIntegrationLanguagesRevamp } from '../GorgiasChatIntegrationLanguages'
 
@@ -10,7 +10,6 @@ const mockUpdateDefaultLanguage = jest.fn().mockResolvedValue(undefined)
 const mockDeleteLanguage = jest.fn()
 const mockLanguagesCard = jest.fn()
 const mockSelect = jest.fn()
-const mockUpdateLanguage = jest.fn().mockResolvedValue(undefined)
 
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout',
@@ -27,10 +26,10 @@ jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationLanguages/useLanguagesTable',
     () => ({
         useLanguagesTable: jest.fn(() => ({
-            languagesAvailable: [{ value: Language.German, label: 'German' }],
+            languagesAvailable: [{ value: LANGUAGE.DE, label: 'German' }],
             languagesRows: [
                 {
-                    language: Language.EnglishUs,
+                    language: LANGUAGE.EN_US,
                     label: 'English (US)',
                     link: '/app/settings/channels/gorgias-chat/1/languages/en-US',
                     primary: true,
@@ -52,15 +51,6 @@ jest.mock(
             mockLanguagesCard(props)
             return null
         },
-    }),
-)
-
-jest.mock(
-    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
-    () => ({
-        useGorgiasChatCreationWizardContext: jest.fn(() => ({
-            updateLanguage: mockUpdateLanguage,
-        })),
     }),
 )
 
@@ -98,7 +88,7 @@ describe('GorgiasChatIntegrationLanguagesRevamp', () => {
         expect(mockLanguagesCard).toHaveBeenCalledWith(
             expect.objectContaining({
                 languagesRows: expect.arrayContaining([
-                    expect.objectContaining({ language: Language.EnglishUs }),
+                    expect.objectContaining({ language: LANGUAGE.EN_US }),
                 ]),
             }),
         )
@@ -113,10 +103,10 @@ describe('GorgiasChatIntegrationLanguagesRevamp', () => {
         )
 
         const { onSelect } = mockSelect.mock.calls[0][0]
-        await onSelect({ value: Language.French, label: 'French' })
+        await onSelect({ value: LANGUAGE.FR, label: 'French' })
 
         expect(mockAddLanguage).toHaveBeenCalledWith({
-            language: Language.French,
+            language: LANGUAGE.FR,
         })
     })
 
@@ -130,7 +120,7 @@ describe('GorgiasChatIntegrationLanguagesRevamp', () => {
 
         expect(mockSelect).toHaveBeenCalledWith(
             expect.objectContaining({
-                items: [{ value: Language.German, label: 'German' }],
+                items: [{ value: LANGUAGE.DE, label: 'German' }],
             }),
         )
     })
@@ -148,32 +138,11 @@ describe('GorgiasChatIntegrationLanguagesRevamp', () => {
 
         it('calls updateDefaultLanguage with the full language item', async () => {
             const onClickSetDefault = renderAndGetOnClickSetDefault()
-            const language = { language: Language.French }
+            const language = { language: LANGUAGE.FR }
 
             await onClickSetDefault(language)
 
             expect(mockUpdateDefaultLanguage).toHaveBeenCalledWith(language)
-        })
-
-        it('calls updateLanguage with the language code', async () => {
-            const onClickSetDefault = renderAndGetOnClickSetDefault()
-
-            await onClickSetDefault({ language: Language.French })
-
-            expect(mockUpdateLanguage).toHaveBeenCalledWith(Language.French)
-        })
-
-        it('does not call updateLanguage when updateDefaultLanguage rejects', async () => {
-            mockUpdateDefaultLanguage.mockRejectedValueOnce(
-                new Error('update failed'),
-            )
-            const onClickSetDefault = renderAndGetOnClickSetDefault()
-
-            await expect(
-                onClickSetDefault({ language: Language.French }),
-            ).rejects.toThrow('update failed')
-
-            expect(mockUpdateLanguage).not.toHaveBeenCalled()
         })
     })
 
@@ -186,7 +155,7 @@ describe('GorgiasChatIntegrationLanguagesRevamp', () => {
         )
 
         const { onClickDelete } = mockLanguagesCard.mock.calls[0][0]
-        const language = { language: Language.EnglishUs }
+        const language = { language: LANGUAGE.EN_US }
         await onClickDelete(language)
 
         expect(mockDeleteLanguage).toHaveBeenCalledWith(language)

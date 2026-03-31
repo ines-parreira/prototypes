@@ -4,7 +4,7 @@ import classNames from 'classnames'
 
 import { Button, ListItem, Select, SelectField, Tag } from '@gorgias/axiom'
 
-import { Language as LanguageEnum } from 'constants/languages'
+import { LANGUAGE as LanguageEnum } from 'constants/languages'
 
 import css from './LanguagePicker.less'
 
@@ -32,7 +32,7 @@ const mapLanguage = (language: Language): Language => {
 }
 
 const mapDefaultLanguage = (languages: Language[]): Language => {
-    const englishUs = languages.find((l) => l.value === LanguageEnum.EnglishUs)
+    const englishUs = languages.find((l) => l.value === LanguageEnum.EN_US)
 
     return englishUs
         ? { ...englishUs, isDefault: true }

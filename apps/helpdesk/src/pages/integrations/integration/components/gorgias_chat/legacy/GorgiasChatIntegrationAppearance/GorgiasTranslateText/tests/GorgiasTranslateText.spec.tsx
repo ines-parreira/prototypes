@@ -9,7 +9,7 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import { entitiesInitialState } from 'fixtures/entities'
@@ -56,14 +56,14 @@ const integration = fromJS({
     type: 'gorgias_chat',
     name: 'My new chat',
     meta: {
-        Language: Language.EnglishUs,
+        Language: LANGUAGE.EN_US,
         languages: [
             {
-                language: Language.EnglishUs,
+                language: LANGUAGE.EN_US,
                 primary: true,
             },
             {
-                language: Language.Italian,
+                language: LANGUAGE.IT,
             },
         ],
     },

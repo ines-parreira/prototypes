@@ -5,7 +5,7 @@ import {
     getLanguagesFromChatConfig,
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { StoreConfigFormSection } from 'pages/aiAgent/constants'
 import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
@@ -25,10 +25,7 @@ jest.mock('constants/languages')
 const mockedIntegration = {
     meta: {
         app_id: 'test-app-id',
-        languages: [
-            { language: Language.EnglishUs },
-            { language: Language.FrenchFr },
-        ],
+        languages: [{ language: LANGUAGE.EN_US }, { language: LANGUAGE.FR_FR }],
     },
 } as unknown as GorgiasChatIntegration
 
@@ -188,8 +185,8 @@ describe('HandoverCustomizationChatFallbackSettings', () => {
             meta: {
                 app_id: 'new-app-id',
                 languages: [
-                    { language: Language.EnglishUs },
-                    { language: Language.Spanish },
+                    { language: LANGUAGE.EN_US },
+                    { language: LANGUAGE.ES },
                 ],
             },
         } as unknown as GorgiasChatIntegration

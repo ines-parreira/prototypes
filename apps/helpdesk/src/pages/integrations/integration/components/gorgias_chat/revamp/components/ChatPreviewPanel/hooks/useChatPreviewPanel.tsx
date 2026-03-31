@@ -10,7 +10,7 @@ import {
 
 import { toHex } from 'color2k'
 
-import type { Language } from 'constants/languages'
+import type { LANGUAGE } from 'constants/languages'
 import type { GorgiasChatPosition } from 'models/integration/types'
 import type {
     GorgiasChatLauncherSettings,
@@ -40,7 +40,10 @@ export const useGorgiasChatCreationWizardContext =
         return context
     }
 
-export const useChatPreviewPanel = (headerActions?: ReactNode) => {
+export const useChatPreviewPanel = (
+    headerActions?: ReactNode,
+    locale?: LANGUAGE,
+) => {
     const { setIsCollapsibleColumnOpen, warpToCollapsibleColumn } =
         useCollapsibleColumn()
 
@@ -52,6 +55,7 @@ export const useChatPreviewPanel = (headerActions?: ReactNode) => {
             ref={chatPreviewPanelRef}
             appId={appId}
             headerActions={headerActions}
+            locale={locale}
         />,
     )
 
@@ -153,10 +157,6 @@ export const useChatPreviewPanel = (headerActions?: ReactNode) => {
         })
     }, [])
 
-    const updateLanguage = useCallback(async (language: Language) => {
-        await chatPreviewPanelRef.current?.updateLanguage(language)
-    }, [])
-
     const updateWorkflowEntryPoints = useCallback(
         (workflowEntryPoints: GorgiasChatWorkflowEntrypoint[]) => {
             displayPage('homepage')
@@ -185,7 +185,6 @@ export const useChatPreviewPanel = (headerActions?: ReactNode) => {
         updateTexts,
         updateLegalDisclaimer,
         updateLegalDisclaimerEnabled,
-        updateLanguage,
         updateWorkflowEntryPoints,
         reloadPreview,
     }

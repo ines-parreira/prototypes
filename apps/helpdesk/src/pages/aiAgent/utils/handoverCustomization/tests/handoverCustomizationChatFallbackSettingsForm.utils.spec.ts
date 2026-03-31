@@ -1,6 +1,6 @@
 import type { AxiosError } from 'axios'
 
-import { Language, LanguageChat } from 'constants/languages'
+import { LANGUAGE, LanguageChat } from 'constants/languages'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import type { HandoverCustomizationChatFallbackSettingsFormMultiLanguageValues } from 'pages/aiAgent/types'
 import type { TextsMultiLanguage } from 'rest_api/gorgias_chat_protected_api/types'
@@ -22,8 +22,8 @@ describe('handoverCustomizationChatFallbackSettingsForm utils', () => {
             const mockIntegration = {
                 meta: {
                     languages: [
-                        { language: Language.EnglishUs },
-                        { language: Language.FrenchFr },
+                        { language: LANGUAGE.EN_US },
+                        { language: LANGUAGE.FR_FR },
                     ],
                 },
             } as unknown as GorgiasChatIntegration
@@ -64,8 +64,8 @@ describe('handoverCustomizationChatFallbackSettingsForm utils', () => {
             const mockIntegration = {
                 meta: {
                     languages: [
-                        { language: Language.EnglishUs },
-                        { language: Language.FrenchFr },
+                        { language: LANGUAGE.EN_US },
+                        { language: LANGUAGE.FR_FR },
                     ],
                 },
             } as unknown as GorgiasChatIntegration
@@ -104,7 +104,7 @@ describe('handoverCustomizationChatFallbackSettingsForm utils', () => {
         it('should handle empty texts object', () => {
             const mockIntegration = {
                 meta: {
-                    languages: [{ language: Language.EnglishUs }],
+                    languages: [{ language: LANGUAGE.EN_US }],
                 },
             } as unknown as GorgiasChatIntegration
 
@@ -129,7 +129,7 @@ describe('handoverCustomizationChatFallbackSettingsForm utils', () => {
         it('should handle null or undefined values', () => {
             const mockIntegration = {
                 meta: {
-                    languages: [{ language: Language.EnglishUs }],
+                    languages: [{ language: LANGUAGE.EN_US }],
                 },
             } as unknown as GorgiasChatIntegration
 
@@ -158,10 +158,10 @@ describe('handoverCustomizationChatFallbackSettingsForm utils', () => {
             const mockIntegration = {
                 meta: {
                     languages: [
-                        { language: Language.EnglishUs },
-                        { language: Language.FrenchFr },
-                        { language: Language.Spanish },
-                        { language: Language.German },
+                        { language: LANGUAGE.EN_US },
+                        { language: LANGUAGE.FR_FR },
+                        { language: LANGUAGE.ES },
+                        { language: LANGUAGE.DE },
                     ],
                 },
             } as unknown as GorgiasChatIntegration
@@ -466,9 +466,9 @@ describe('handoverCustomizationChatFallbackSettingsForm utils', () => {
             const mockIntegration = {
                 meta: {
                     languages: [
-                        { language: Language.EnglishUs },
-                        { language: Language.FrenchFr },
-                        { language: Language.Spanish },
+                        { language: LANGUAGE.EN_US },
+                        { language: LANGUAGE.FR_FR },
+                        { language: LANGUAGE.ES },
                     ],
                 },
             } as unknown as GorgiasChatIntegration
@@ -485,7 +485,7 @@ describe('handoverCustomizationChatFallbackSettingsForm utils', () => {
         it('should handle single language configuration', () => {
             const mockIntegration = {
                 meta: {
-                    languages: [{ language: Language.EnglishUs }],
+                    languages: [{ language: LANGUAGE.EN_US }],
                 },
             } as unknown as GorgiasChatIntegration
 

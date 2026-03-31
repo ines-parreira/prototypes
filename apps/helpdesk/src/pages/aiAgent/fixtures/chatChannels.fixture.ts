@@ -1,5 +1,5 @@
 import { TicketChannel } from 'business/types/ticket'
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import {
     GorgiasChatAvatarImageType,
     GorgiasChatAvatarNameType,
@@ -45,7 +45,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 app_id: '25',
                 languages: [
                     {
-                        language: Language.EnglishUs,
+                        language: LANGUAGE.EN_US,
                         primary: true,
                     },
                 ],
@@ -117,7 +117,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 app_id: '24',
                 languages: [
                     {
-                        language: Language.EnglishUs,
+                        language: LANGUAGE.EN_US,
                         primary: true,
                     },
                 ],
@@ -188,7 +188,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 app_id: '23',
                 languages: [
                     {
-                        language: Language.EnglishUs,
+                        language: LANGUAGE.EN_US,
                         primary: true,
                     },
                 ],
@@ -259,7 +259,7 @@ export const mockChatChannels: SelfServiceChatChannel[] = [
                 app_id: '20',
                 languages: [
                     {
-                        language: Language.EnglishUs,
+                        language: LANGUAGE.EN_US,
                         primary: true,
                     },
                 ],

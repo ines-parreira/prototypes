@@ -5,6 +5,8 @@ import type { List, Map } from 'immutable'
 import { useParams } from 'react-router-dom'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
+import type { LanguageItem } from 'config/integrations/gorgias_chat'
+import type { LANGUAGE } from 'constants/languages'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { IntegrationType } from 'models/integration/types'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
@@ -55,12 +57,30 @@ export const GorgiasChatIntegration = ({
         subId: string
     }>()
 
+    const chatLanguage = useMemo(() => {
+        const primaryLanguage: LANGUAGE | undefined = integration
+            .getIn(['meta', 'languages'])
+            ?.find(
+                (
+                    lang: Map<
+                        keyof LanguageItem,
+                        LanguageItem[keyof LanguageItem]
+                    >,
+                ) => {
+                    return lang.get('primary') === true
+                },
+            )
+            .get('language')
+
+        return primaryLanguage
+    }, [integration])
+
     const {
         showPreviewPanel,
         hidePreviewPanel,
         chatPreviewPortal,
         ...charPreviewPanelControls
-    } = useChatPreviewPanel()
+    } = useChatPreviewPanel(undefined, chatLanguage)
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
     const { hasAccess } = useAiAgentAccess()
     const { storeIntegration } = useStoreIntegration(integration)
@@ -76,7 +96,6 @@ export const GorgiasChatIntegration = ({
     if (!extra && integrationId) {
         goToDefaultTab()
     }
-
     const chatApplicationIds = useMemo(() => {
         const appId: string = integration.getIn(['meta', 'app_id'])
         if (appId) {

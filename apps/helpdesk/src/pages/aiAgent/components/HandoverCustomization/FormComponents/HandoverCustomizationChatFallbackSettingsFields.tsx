@@ -11,7 +11,7 @@ import {
     getLanguagesFromChatConfig,
     getPrimaryLanguageFromChatConfig,
 } from 'config/integrations/gorgias_chat'
-import type { Language } from 'constants/languages'
+import type { LANGUAGE } from 'constants/languages'
 import { Label } from 'gorgias-design-system/Input/Label'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import { formFieldsConfiguration } from 'pages/aiAgent/utils/handoverCustomization/handoverCustomizationChatFallbackSettingsForm.utils'
@@ -34,7 +34,7 @@ type Props = {
 const mapLocaleToSelectOption = (
     languageCode: string,
 ): React.ComponentProps<typeof SelectField>['options'][number] => {
-    const language = getGorgiasChatLanguageByCode(languageCode as Language)
+    const language = getGorgiasChatLanguageByCode(languageCode as LANGUAGE)
 
     if (!language) {
         return {

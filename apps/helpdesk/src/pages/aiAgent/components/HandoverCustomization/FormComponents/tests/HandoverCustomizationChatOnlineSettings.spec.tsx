@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import type { GorgiasChatIntegration } from 'models/integration/types'
 import {
     GorgiasChatAutoResponderReply,
@@ -27,10 +27,7 @@ const mockedIntegration = {
     id: '1',
     meta: {
         app_id: 'test-app-id',
-        languages: [
-            { language: Language.EnglishUs },
-            { language: Language.FrenchFr },
-        ],
+        languages: [{ language: LANGUAGE.EN_US }, { language: LANGUAGE.FR_FR }],
         shop_name: 'test-store',
         shop_type: 'shopify',
         shop_id: '123',

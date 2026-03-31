@@ -7,7 +7,7 @@ import { createMemoryHistory } from 'history'
 import { fromJS } from 'immutable'
 import { Router } from 'react-router-dom'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import { channelConnection } from 'fixtures/channelConnection'
 import { installBundleMockImplementation } from 'fixtures/convertBundle'
 import { shopifyIntegration } from 'fixtures/integrations'
@@ -55,8 +55,8 @@ const integration = {
     id: 123,
     meta: {
         languages: [
-            { language: Language.FrenchFr, primary: true },
-            { language: Language.EnglishUs },
+            { language: LANGUAGE.FR_FR, primary: true },
+            { language: LANGUAGE.EN_US },
         ],
     },
 }

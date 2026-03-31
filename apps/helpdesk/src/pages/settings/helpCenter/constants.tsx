@@ -1,6 +1,6 @@
 import { isProduction, isStaging } from '@repo/utils'
 
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import InstallationStep from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationManualInstallationTabs/components/InstallationStep'
 
 import type {
@@ -276,7 +276,7 @@ export enum NEXT_ACTION {
 }
 
 export const HELP_CENTER_LANGUAGE_DEFAULT_UI = [
-    { value: Language.EnglishUs, label: 'English', isDefault: true },
+    { value: LANGUAGE.EN_US, label: 'English', isDefault: true },
 ]
 
 export const DEFAULT_ARTICLE_GROUP: Record<string, HelpCenterArticleItem[]> = {}

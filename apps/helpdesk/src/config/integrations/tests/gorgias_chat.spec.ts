@@ -1,4 +1,4 @@
-import { Language } from 'constants/languages'
+import { LANGUAGE } from 'constants/languages'
 import type { GorgiasChatIntegrationMeta } from 'models/integration/types'
 
 import {
@@ -11,27 +11,27 @@ describe('getLanguagesFromChatConfig', () => {
     it('should return an array of languages if meta.languages exists', () => {
         const meta = {
             languages: [
-                { language: Language.EnglishUs, primary: true },
-                { language: Language.FrenchFr, primary: false },
+                { language: LANGUAGE.EN_US, primary: true },
+                { language: LANGUAGE.FR_FR, primary: false },
             ],
         } as Partial<GorgiasChatIntegrationMeta> as GorgiasChatIntegrationMeta
         const result = getLanguagesFromChatConfig(meta)
-        expect(result).toEqual([Language.EnglishUs, Language.FrenchFr])
+        expect(result).toEqual([LANGUAGE.EN_US, LANGUAGE.FR_FR])
     })
 
     it('should return an array with "en-US" as a default language if meta.language and meta.languages are undefined', () => {
         const meta =
             {} as Partial<GorgiasChatIntegrationMeta> as GorgiasChatIntegrationMeta
         const result = getLanguagesFromChatConfig(meta)
-        expect(result).toEqual([Language.EnglishUs])
+        expect(result).toEqual([LANGUAGE.EN_US])
     })
 
     it('should return an array with meta.language if meta.languages is undefined', () => {
         const meta = {
-            language: Language.FrenchFr,
+            language: LANGUAGE.FR_FR,
         } as Partial<GorgiasChatIntegrationMeta> as GorgiasChatIntegrationMeta
         const result = getLanguagesFromChatConfig(meta)
-        expect(result).toEqual([Language.FrenchFr])
+        expect(result).toEqual([LANGUAGE.FR_FR])
     })
 })
 
@@ -39,38 +39,38 @@ describe('getPrimaryLanguageFromChatConfig', () => {
     it('should return the primary language from meta.languages', () => {
         const meta = {
             languages: [
-                { language: Language.FrenchFr, primary: true },
-                { language: Language.EnglishUs },
+                { language: LANGUAGE.FR_FR, primary: true },
+                { language: LANGUAGE.EN_US },
             ],
         } as Partial<GorgiasChatIntegrationMeta> as GorgiasChatIntegrationMeta
         const result = getPrimaryLanguageFromChatConfig(meta)
-        expect(result).toBe(Language.FrenchFr)
+        expect(result).toBe(LANGUAGE.FR_FR)
     })
 
     it('should return "en-US" if both meta.language and meta.languages are undefined', () => {
         const meta =
             {} as Partial<GorgiasChatIntegrationMeta> as GorgiasChatIntegrationMeta
         const result = getPrimaryLanguageFromChatConfig(meta)
-        expect(result).toBe(Language.EnglishUs)
+        expect(result).toBe(LANGUAGE.EN_US)
     })
 
     it('should return meta.language if meta.languages is undefined', () => {
         const meta = {
-            language: Language.FrenchFr,
+            language: LANGUAGE.FR_FR,
         } as Partial<GorgiasChatIntegrationMeta> as GorgiasChatIntegrationMeta
         const result = getPrimaryLanguageFromChatConfig(meta)
-        expect(result).toBe(Language.FrenchFr)
+        expect(result).toBe(LANGUAGE.FR_FR)
     })
 
     it('should return "en-US" if no primary language is specified in meta.languages', () => {
         const meta = {
             languages: [
-                { language: Language.EnglishUs },
-                { language: Language.FrenchFr },
+                { language: LANGUAGE.EN_US },
+                { language: LANGUAGE.FR_FR },
             ],
         } as Partial<GorgiasChatIntegrationMeta> as GorgiasChatIntegrationMeta
         const result = getPrimaryLanguageFromChatConfig(meta)
-        expect(result).toBe(Language.EnglishUs)
+        expect(result).toBe(LANGUAGE.EN_US)
     })
 })
 
@@ -101,12 +101,12 @@ describe('isTextsMultiLanguage', () => {
 
     it('should return true for new multi-language format', () => {
         const newFormat = {
-            [Language.Czech]: {
+            [LANGUAGE.CZ]: {
                 texts: {},
                 sppTexts: {},
                 meta: {},
             },
-            [Language.Danish]: {
+            [LANGUAGE.DA]: {
                 texts: {},
                 sppTexts: {},
                 meta: {},
@@ -117,7 +117,7 @@ describe('isTextsMultiLanguage', () => {
 
     it('should return true if at least one key matches with Language enum', () => {
         const partialNewFormat = {
-            [Language.Czech]: {
+            [LANGUAGE.CZ]: {
                 texts: {},
                 sppTexts: {},
                 meta: {},
