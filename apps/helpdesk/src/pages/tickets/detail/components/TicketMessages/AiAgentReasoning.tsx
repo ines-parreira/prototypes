@@ -336,7 +336,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                     </div>
                 )}
                 {renderBody()}
-                {!isEvoliTicket && renderFooter()}
+                {renderFooter()}
             </div>
             {canAccessAIFeedback && (
                 <Button
