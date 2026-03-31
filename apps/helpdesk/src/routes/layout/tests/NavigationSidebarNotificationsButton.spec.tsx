@@ -1,3 +1,4 @@
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -29,7 +30,11 @@ describe('NavigationSidebarNotificationsButton', () => {
     })
 
     it('should render the notifications button', () => {
-        render(<NavigationSidebarNotificationsButton />)
+        render(
+            <MockSidebarProvider>
+                <NavigationSidebarNotificationsButton />
+            </MockSidebarProvider>,
+        )
         expect(
             screen.getByRole('button', { name: /notifications/i }),
         ).toBeInTheDocument()
@@ -37,21 +42,33 @@ describe('NavigationSidebarNotificationsButton', () => {
 
     it('should not render badge when count is 0', () => {
         useCountMock.mockReturnValue(0)
-        render(<NavigationSidebarNotificationsButton />)
+        render(
+            <MockSidebarProvider>
+                <NavigationSidebarNotificationsButton />
+            </MockSidebarProvider>,
+        )
 
         expect(screen.queryByText('0')).not.toBeInTheDocument()
     })
 
     it('should render badge when count is greater than 0', () => {
         useCountMock.mockReturnValue(5)
-        render(<NavigationSidebarNotificationsButton />)
+        render(
+            <MockSidebarProvider>
+                <NavigationSidebarNotificationsButton />
+            </MockSidebarProvider>,
+        )
 
         expect(screen.getByText('5')).toBeInTheDocument()
     })
 
     it('should render 99+ badge when count is greater than 99', () => {
         useCountMock.mockReturnValue(150)
-        render(<NavigationSidebarNotificationsButton />)
+        render(
+            <MockSidebarProvider>
+                <NavigationSidebarNotificationsButton />
+            </MockSidebarProvider>,
+        )
 
         expect(screen.getByText('99+')).toBeInTheDocument()
     })
@@ -59,7 +76,11 @@ describe('NavigationSidebarNotificationsButton', () => {
     it('should toggle notifications overlay when clicked', async () => {
         const user = userEvent.setup()
         useCountMock.mockReturnValue(5)
-        render(<NavigationSidebarNotificationsButton />)
+        render(
+            <MockSidebarProvider>
+                <NavigationSidebarNotificationsButton />
+            </MockSidebarProvider>,
+        )
 
         await user.click(screen.getByRole('button', { name: /notifications/i }))
 

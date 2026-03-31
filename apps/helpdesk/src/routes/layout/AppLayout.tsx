@@ -8,7 +8,7 @@ import css from './AppLayout.less'
 
 const expandedSidebarPanelConfig = {
     defaultSize: 240,
-    minSize: 200,
+    minSize: 210,
     maxSize: 350,
     prioritise: true,
 }

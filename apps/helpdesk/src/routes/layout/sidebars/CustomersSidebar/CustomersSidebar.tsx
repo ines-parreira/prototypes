@@ -1,10 +1,9 @@
 import {
     NavigationSection,
+    SidebarCollapsedGroup,
     SidebarCollapsedItem,
     useSidebar,
 } from '@repo/navigation'
-
-import { ButtonGroup } from '@gorgias/axiom'
 
 import { CUSTOMERS_DEFAULT_PATH } from 'routes/layout/products/customers'
 
@@ -13,13 +12,13 @@ export function CustomersSidebar() {
 
     if (isCollapsed) {
         return (
-            <ButtonGroup withoutBorder>
+            <SidebarCollapsedGroup>
                 <SidebarCollapsedItem
                     id="all-customers"
                     icon="notebook"
                     label="All customers"
                 />
-            </ButtonGroup>
+            </SidebarCollapsedGroup>
         )
     }
 

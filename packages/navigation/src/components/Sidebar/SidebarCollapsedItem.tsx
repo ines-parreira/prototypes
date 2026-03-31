@@ -15,7 +15,12 @@ export function SidebarCollapsedItem({
     return (
         <Tooltip
             placement="right"
-            trigger={<ButtonGroupItem id={id} icon={icon} />}
+            trigger={
+                <ButtonGroupItem id={id} icon={icon}>
+                    {/* the ButtonGroupItem icon variant with children has a different icon size */}
+                    {label}
+                </ButtonGroupItem>
+            }
         >
             <TooltipContent title={label} />
         </Tooltip>

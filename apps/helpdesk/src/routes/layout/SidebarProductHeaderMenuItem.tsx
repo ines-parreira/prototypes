@@ -1,3 +1,4 @@
+import { useSidebar } from '@repo/navigation'
 import { history } from '@repo/routing'
 
 import { Box, Icon, MenuItem, Tag } from '@gorgias/axiom'
@@ -13,6 +14,8 @@ export function SidebarProductHeaderMenuItem({
     item,
     requiresUpgrade,
 }: SidebarProductHeaderMenuItemProps) {
+    const { isCollapsed } = useSidebar()
+
     return (
         <MenuItem
             id={item.id}
@@ -34,7 +37,12 @@ export function SidebarProductHeaderMenuItem({
             }}
             caption={item.description}
             leadingSlot={
-                <Icon name={item.icon} color={item.color} withBackground />
+                <Icon
+                    name={item.icon}
+                    color={item.color}
+                    size={isCollapsed ? 'lg' : 'md'}
+                    withBackground
+                />
             }
         />
     )

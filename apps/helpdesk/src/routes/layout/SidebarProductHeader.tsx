@@ -38,6 +38,7 @@ export function SidebarProductHeader({
             <Icon
                 name={selectedItem.icon}
                 color={selectedItem.color}
+                size={isCollapsed ? 'lg' : 'md'}
                 withBackground
             />
         ) : null

@@ -99,7 +99,7 @@ export const productConfig: Record<Product, ProductConfig> = {
     [Product.Convert]: {
         id: Product.Convert,
         name: 'Convert',
-        description: 'Turn visitors into buyers',
+        description: 'Launch onsite campaigns',
         sidebar: ConvertSidebar,
         urlPatterns: ['convert'],
         icon: 'attach-money',

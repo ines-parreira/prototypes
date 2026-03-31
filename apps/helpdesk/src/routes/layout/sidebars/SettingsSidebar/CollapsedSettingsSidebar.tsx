@@ -1,7 +1,7 @@
-import { SidebarCollapsedItem } from '@repo/navigation'
+import { SidebarCollapsedGroup, SidebarCollapsedItem } from '@repo/navigation'
 import { history } from '@repo/routing'
 
-import { ButtonGroup, Menu, MenuItem } from '@gorgias/axiom'
+import { Menu, MenuItem } from '@gorgias/axiom'
 
 import { SETTINGS_DEFAULT_PATH } from 'routes/layout/products/settings'
 import { useCollapsedSidebarActiveMatch } from 'routes/layout/sidebars/hooks/useCollapsedSidebarActiveMatch'
@@ -31,9 +31,7 @@ export const CollapsedSettingsSidebar = ({ sections }: Props) => {
     }
 
     return (
-        <ButtonGroup
-            orientation="vertical"
-            withoutBorder
+        <SidebarCollapsedGroup
             onSelectionChange={handleSelectionChange}
             selectedKey={activeMatch?.sectionId}
         >
@@ -67,6 +65,6 @@ export const CollapsedSettingsSidebar = ({ sections }: Props) => {
                     ))}
                 </Menu>
             ))}
-        </ButtonGroup>
+        </SidebarCollapsedGroup>
     )
 }

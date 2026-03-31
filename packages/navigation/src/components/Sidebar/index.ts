@@ -9,3 +9,6 @@ export type { SidebarFooterProps } from './SidebarFooter'
 
 export { SidebarCollapsedItem } from './SidebarCollapsedItem'
 export type { SidebarCollapsedItemProps } from './SidebarCollapsedItem'
+
+export { SidebarCollapsedGroup } from './SidebarCollapsedGroup'
+export type { SidebarCollapsedGroupProps } from './SidebarCollapsedGroup'

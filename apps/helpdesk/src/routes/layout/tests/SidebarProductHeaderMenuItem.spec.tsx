@@ -1,3 +1,4 @@
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { history } from '@repo/routing'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -24,9 +25,11 @@ describe('SidebarProductHeaderMenuItem', () => {
         const item = productConfig[Product.Inbox]
 
         render(
-            <Menu trigger={<Button>Open Menu</Button>}>
-                <SidebarProductHeaderMenuItem item={item} />
-            </Menu>,
+            <MockSidebarProvider>
+                <Menu trigger={<Button>Open Menu</Button>}>
+                    <SidebarProductHeaderMenuItem item={item} />
+                </Menu>
+            </MockSidebarProvider>,
         )
 
         const menuTrigger = screen.getByRole('button', { name: /Open Menu/i })
@@ -45,9 +48,11 @@ describe('SidebarProductHeaderMenuItem', () => {
         const item = productConfig[Product.AiAgent]
 
         render(
-            <Menu trigger={<Button>Open Menu</Button>}>
-                <SidebarProductHeaderMenuItem item={item} requiresUpgrade />
-            </Menu>,
+            <MockSidebarProvider>
+                <Menu trigger={<Button>Open Menu</Button>}>
+                    <SidebarProductHeaderMenuItem item={item} requiresUpgrade />
+                </Menu>
+            </MockSidebarProvider>,
         )
 
         const menuTrigger = screen.getByRole('button', {
@@ -65,9 +70,11 @@ describe('SidebarProductHeaderMenuItem', () => {
         const item = productConfig[Product.Inbox]
 
         render(
-            <Menu trigger={<Button>Open Menu</Button>}>
-                <SidebarProductHeaderMenuItem item={item} />
-            </Menu>,
+            <MockSidebarProvider>
+                <Menu trigger={<Button>Open Menu</Button>}>
+                    <SidebarProductHeaderMenuItem item={item} />
+                </Menu>
+            </MockSidebarProvider>,
         )
 
         await act(() =>
@@ -82,9 +89,11 @@ describe('SidebarProductHeaderMenuItem', () => {
         const item = productConfig[Product.AiAgent]
 
         render(
-            <Menu trigger={<Button>Open Menu</Button>}>
-                <SidebarProductHeaderMenuItem item={item} />
-            </Menu>,
+            <MockSidebarProvider>
+                <Menu trigger={<Button>Open Menu</Button>}>
+                    <SidebarProductHeaderMenuItem item={item} />
+                </Menu>
+            </MockSidebarProvider>,
         )
 
         const menuTrigger = screen.getByRole('button', {

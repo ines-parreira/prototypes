@@ -3,11 +3,12 @@ import {
     SidebarFooter,
     SidebarRoot,
     useSidebar,
+    useSidebarButtonSize,
     useSidebarShortcuts,
 } from '@repo/navigation'
 import { history } from '@repo/routing'
 
-import { Box, Button, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Box, Button, Separator, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import UserItem from 'common/navigation/components/UserItem'
 import { useIsChatReady } from 'hooks/useIsChatReady'
@@ -27,6 +28,7 @@ export function NavigationSidebar() {
     const currentProduct = useCurrentRouteProduct()
     const prevNonStickyPathname = usePreviousProductNavigation()
     const { isCollapsed, toggleCollapse } = useSidebar()
+    const buttonSize = useSidebarButtonSize()
     const isChatReady = useIsChatReady()
 
     useSidebarShortcuts()
@@ -40,8 +42,8 @@ export function NavigationSidebar() {
             <Box
                 justifyContent="space-between"
                 alignItems="center"
-                flexDirection={isCollapsed ? 'column-reverse' : 'row'}
-                gap="md"
+                flexDirection={isCollapsed ? 'column' : 'row'}
+                gap={isCollapsed ? 'sm' : 'xxxs'}
                 pl="xs"
                 pr="xs"
             >
@@ -94,7 +96,7 @@ export function NavigationSidebar() {
                                         ? 'system-bar-collapse'
                                         : 'system-bar-expand'
                                 }
-                                size="sm"
+                                size={buttonSize}
                                 variant="tertiary"
                                 onClick={toggleCollapse}
                                 aria-label={
@@ -111,6 +113,9 @@ export function NavigationSidebar() {
             </Box>
 
             <SidebarContent>
+                {isCollapsed && currentProduct.id !== Product.Inbox && (
+                    <Separator />
+                )}
                 {!!CurrentContent && <CurrentContent />}
             </SidebarContent>
 
@@ -137,7 +142,7 @@ export function NavigationSidebar() {
                                         ? 'secondary'
                                         : 'tertiary'
                                 }
-                                size="sm"
+                                size={buttonSize}
                             />
                         }
                     >
@@ -151,7 +156,7 @@ export function NavigationSidebar() {
                                     icon="circle-help"
                                     onClick={toggleChat}
                                     variant="tertiary"
-                                    size="sm"
+                                    size={buttonSize}
                                     aria-label="Open chat"
                                 />
                             }

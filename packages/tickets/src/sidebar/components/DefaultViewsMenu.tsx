@@ -1,4 +1,4 @@
-import { Box, Button, MultiSelect, MultiSelectItem } from '@gorgias/axiom'
+import { Box, Button, MultiSelect, MultiSelectItem, Text } from '@gorgias/axiom'
 
 import { SYSTEM_VIEW_DEFINITIONS } from '../constants/views'
 import { useDefaultViews } from '../hooks/useDefaultViews'
@@ -50,6 +50,17 @@ export function DefaultViewsMenu() {
                         isDisabled={isLoading || isError}
                     />
                 )}
+                footer={
+                    <Box pl="xs" pr="xs" pb="xxxs" pt="xxxs">
+                        <Text
+                            variant="italic"
+                            color="content-neutral-tertiary"
+                            wrap="wrap"
+                        >
+                            Visible to all users in the account.
+                        </Text>
+                    </Box>
+                }
             >
                 {(view) => (
                     <MultiSelectItem

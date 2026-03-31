@@ -36,3 +36,7 @@ export const SOURCE_PANEL_WIDGET_TYPES = new Set<EditFieldsType>([
     EditFieldsType.Smile,
     EditFieldsType.Custom,
 ])
+
+export const SIDEBAR_BUTTON_SIZE_COLLAPSED = 'md' as const
+export const SIDEBAR_BUTTON_SIZE_EXPANDED = 'sm' as const
+export const SIDEBAR_ICON_SIZE = 'md' as const

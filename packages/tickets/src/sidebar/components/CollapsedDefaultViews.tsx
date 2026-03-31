@@ -1,7 +1,11 @@
-import { SidebarCollapsedItem } from '@repo/navigation'
+import {
+    SIDEBAR_BUTTON_SIZE_COLLAPSED,
+    SidebarCollapsedGroup,
+    SidebarCollapsedItem,
+} from '@repo/navigation'
 import { history } from '@repo/routing'
 
-import { Button, ButtonGroup, Tooltip, TooltipContent } from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useTicketsLegacyBridge } from '../../utils/LegacyBridge'
 import { SYSTEM_VIEW_DEFINITIONS } from '../constants/views'
@@ -27,11 +31,7 @@ export function CollapsedDefaultViews() {
     }
 
     return (
-        <ButtonGroup
-            orientation="vertical"
-            withoutBorder
-            onSelectionChange={handleSelectionChange}
-        >
+        <SidebarCollapsedGroup onSelectionChange={handleSelectionChange}>
             {displayedViews.map((view) => (
                 <SidebarCollapsedItem
                     key={`view-${view.id}`}
@@ -51,7 +51,7 @@ export function CollapsedDefaultViews() {
                                     : 'dots-meatballs-horizontal'
                             }
                             onClick={toggleExpanded}
-                            size="sm"
+                            size={SIDEBAR_BUTTON_SIZE_COLLAPSED}
                             variant="tertiary"
                         />
                     }
@@ -59,6 +59,6 @@ export function CollapsedDefaultViews() {
                     <TooltipContent title={isExpanded ? 'Less' : 'More'} />
                 </Tooltip>
             )}
-        </ButtonGroup>
+        </SidebarCollapsedGroup>
     )
 }

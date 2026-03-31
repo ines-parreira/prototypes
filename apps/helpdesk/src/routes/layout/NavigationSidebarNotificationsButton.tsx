@@ -1,3 +1,5 @@
+import { useSidebarButtonSize } from '@repo/navigation'
+
 import { Button, Quantity, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import { useNotificationsOverlay } from 'common/notifications'
@@ -8,6 +10,7 @@ import css from './NavigationSidebarNotificationsButton.less'
 export function NavigationSidebarNotificationsButton() {
     const [, onToggle] = useNotificationsOverlay()
     const count = useCount()
+    const buttonSize = useSidebarButtonSize()
 
     const rightOffset = count > 99 ? 'l' : count > 9 ? 'm' : 's'
 
@@ -21,7 +24,7 @@ export function NavigationSidebarNotificationsButton() {
                         variant="tertiary"
                         onClick={onToggle}
                         aria-label="Notifications"
-                        size="sm"
+                        size={buttonSize}
                     />
                     {count > 0 && (
                         <div

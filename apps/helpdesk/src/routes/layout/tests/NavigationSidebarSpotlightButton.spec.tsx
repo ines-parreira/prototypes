@@ -1,3 +1,4 @@
+import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -15,11 +16,13 @@ describe('NavigationSidebarSpotlightButton', () => {
     it('should render search button', () => {
         render(<NavigationSidebarSpotlightButton />, {
             wrapper: ({ children }) => (
-                <SpotlightContext.Provider
-                    value={{ isOpen: false, setIsOpen: mockSetIsOpen }}
-                >
-                    {children}
-                </SpotlightContext.Provider>
+                <MockSidebarProvider>
+                    <SpotlightContext.Provider
+                        value={{ isOpen: false, setIsOpen: mockSetIsOpen }}
+                    >
+                        {children}
+                    </SpotlightContext.Provider>
+                </MockSidebarProvider>
             ),
         })
 
@@ -31,11 +34,13 @@ describe('NavigationSidebarSpotlightButton', () => {
         const user = userEvent.setup()
         render(<NavigationSidebarSpotlightButton />, {
             wrapper: ({ children }) => (
-                <SpotlightContext.Provider
-                    value={{ isOpen: false, setIsOpen: mockSetIsOpen }}
-                >
-                    {children}
-                </SpotlightContext.Provider>
+                <MockSidebarProvider>
+                    <SpotlightContext.Provider
+                        value={{ isOpen: false, setIsOpen: mockSetIsOpen }}
+                    >
+                        {children}
+                    </SpotlightContext.Provider>
+                </MockSidebarProvider>
             ),
         })
 
@@ -50,11 +55,13 @@ describe('NavigationSidebarSpotlightButton', () => {
 
         render(<NavigationSidebarSpotlightButton />, {
             wrapper: ({ children }) => (
-                <SpotlightContext.Provider
-                    value={{ isOpen: true, setIsOpen: mockSetIsOpen }}
-                >
-                    {children}
-                </SpotlightContext.Provider>
+                <MockSidebarProvider>
+                    <SpotlightContext.Provider
+                        value={{ isOpen: true, setIsOpen: mockSetIsOpen }}
+                    >
+                        {children}
+                    </SpotlightContext.Provider>
+                </MockSidebarProvider>
             ),
         })
 

@@ -61,7 +61,7 @@ export function TicketNavbarCreateMenu() {
                             trigger={
                                 <Button
                                     icon="add-plus-circle"
-                                    variant="secondary"
+                                    variant="tertiary"
                                 />
                             }
                         >

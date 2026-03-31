@@ -13,6 +13,8 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
+import { Separator } from '@gorgias/axiom'
+
 import { ActiveContent, Navbar } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
 import { Navigation } from 'components/Navigation/Navigation'
@@ -462,6 +464,7 @@ export function TicketNavbarContainer({
         return (
             <>
                 <TicketNavbarCreateMenu />
+                <Separator />
                 <CollapsedDefaultViews />
             </>
         )
