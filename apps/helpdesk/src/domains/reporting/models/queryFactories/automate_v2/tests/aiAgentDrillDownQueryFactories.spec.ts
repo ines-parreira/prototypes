@@ -60,7 +60,7 @@ describe('allAgentsAutomatedInteractionsDrillDownQueryFactory', () => {
             'UTC',
         )
         expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILLDOWN,
+            METRIC_NAMES.AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILL_DOWN,
         )
     })
 
@@ -165,7 +165,7 @@ describe('shoppingAssistantAutomatedInteractionsDrillDownQueryFactory', () => {
                 'UTC',
             )
         expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILLDOWN,
+            METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILL_DOWN,
         )
     })
 
@@ -286,7 +286,7 @@ describe('supportAgentAutomatedInteractionsDrillDownQueryFactory', () => {
             'UTC',
         )
         expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_DRILLDOWN,
+            METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_DRILL_DOWN,
         )
     })
 
@@ -401,7 +401,7 @@ describe('allAgentsHandoverInteractionsDrillDownQueryFactory', () => {
             ),
         ).toEqual({
             metricName:
-                METRIC_NAMES.AI_AGENT_ALL_AGENTS_HANDOVER_INTERACTIONS_DRILLDOWN,
+                METRIC_NAMES.AI_AGENT_ALL_AGENTS_HANDOVER_INTERACTIONS_DRILL_DOWN,
             measures: [],
             dimensions: ['HandoverInteractions.ticketId'],
             filters: [
@@ -439,7 +439,7 @@ describe('shoppingAssistantHandoverInteractionsDrillDownQueryFactory', () => {
             ),
         ).toEqual({
             metricName:
-                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_DRILLDOWN,
+                METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_DRILL_DOWN,
             measures: [],
             dimensions: ['HandoverInteractions.ticketId'],
             filters: [
@@ -478,7 +478,7 @@ describe('supportAgentHandoverInteractionsDrillDownQueryFactory', () => {
             ),
         ).toEqual({
             metricName:
-                METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_HANDOVER_INTERACTIONS_DRILLDOWN,
+                METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_HANDOVER_INTERACTIONS_DRILL_DOWN,
             measures: [],
             dimensions: ['HandoverInteractions.ticketId'],
             filters: [
@@ -512,7 +512,7 @@ describe('allAgentsClosedTicketsDrillDownQueryFactory', () => {
         expect(
             allAgentsClosedTicketsDrillDownQueryFactory(filters, timezone),
         ).toEqual({
-            metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILLDOWN,
+            metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILL_DOWN,
             measures: [],
             dimensions: [AIAgentClosedTicketsDimension.TicketId],
             filters: [
@@ -541,7 +541,7 @@ describe('allAgentsClosedTicketsDrillDownQueryFactory', () => {
                 OrderDirection.Desc,
             ),
         ).toEqual({
-            metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILLDOWN,
+            metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILL_DOWN,
             measures: [],
             dimensions: [AIAgentClosedTicketsDimension.TicketId],
             filters: [
@@ -715,7 +715,7 @@ describe('allAgentsFRTDrillDownQueryFactory', () => {
     it('should return correct metricName', () => {
         const result = allAgentsFRTDrillDownQueryFactory(filters, timezone)
         expect(result.metricName).toBe(
-            METRIC_NAMES.AI_AGENT_ALL_AGENTS_FRT_DRILLDOWN,
+            METRIC_NAMES.AI_AGENT_ALL_AGENTS_FRT_DRILL_DOWN,
         )
     })
 
@@ -783,7 +783,7 @@ describe('allAgentsResolutionTimeDrillDownQueryFactory', () => {
             allAgentsResolutionTimeDrillDownQueryFactory(filters, timezone),
         ).toEqual({
             metricName:
-                METRIC_NAMES.AI_AGENT_ALL_AGENTS_RESOLUTION_TIME_DRILLDOWN,
+                METRIC_NAMES.AI_AGENT_ALL_AGENTS_RESOLUTION_TIME_DRILL_DOWN,
             measures: [],
             dimensions: [
                 AIAgentDecreaseInResolutionTimeDimension.TicketId,
@@ -828,7 +828,7 @@ describe('supportAgentResolutionTimeDrillDownQueryFactory', () => {
             supportAgentResolutionTimeDrillDownQueryFactory(filters, timezone),
         ).toEqual({
             metricName:
-                METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILLDOWN,
+                METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILL_DOWN,
             measures: [],
             dimensions: [
                 AIAgentDecreaseInResolutionTimeDimension.TicketId,
@@ -876,7 +876,7 @@ describe('supportAgentFRTDrillDownQueryFactory', () => {
     it('returns query with AIAgentSupport role filter and period filters', () => {
         expect(supportAgentFRTDrillDownQueryFactory(filters, timezone)).toEqual(
             {
-                metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_FRT_DRILLDOWN,
+                metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_FRT_DRILL_DOWN,
                 measures: [],
                 dimensions: [
                     AIAgentDecreaseInFRTDimension.TicketId,

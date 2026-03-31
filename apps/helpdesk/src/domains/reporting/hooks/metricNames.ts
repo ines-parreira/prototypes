@@ -123,30 +123,30 @@ export const METRIC_NAMES = {
     AI_AGENT_SUCCESS_RATE_PER_INTENT: 'ai-agent-success-rate-per-intent',
     AI_AGENT_SUPPORT_SUCCESS_RATE_PER_INTENT:
         'ai-agent-support-success-rate-per-intent',
-    AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILLDOWN:
+    AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILL_DOWN:
         'ai-agent-automated-interactions-drill-down',
-    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILLDOWN:
+    AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILL_DOWN:
         'ai-agent-shopping-assistant-automated-interactions-drill-down',
-    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_DRILLDOWN:
+    AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_DRILL_DOWN:
         'ai-agent-support-agent-automated-interactions-drill-down',
-    AI_AGENT_ALL_AGENTS_HANDOVER_INTERACTIONS_DRILLDOWN:
+    AI_AGENT_ALL_AGENTS_HANDOVER_INTERACTIONS_DRILL_DOWN:
         'ai-agent-all-agents-handover-interactions-drill-down',
-    AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_DRILLDOWN:
+    AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_DRILL_DOWN:
         'ai-agent-shopping-assistant-handover-interactions-drill-down',
-    AI_AGENT_SUPPORT_AGENT_HANDOVER_INTERACTIONS_DRILLDOWN:
+    AI_AGENT_SUPPORT_AGENT_HANDOVER_INTERACTIONS_DRILL_DOWN:
         'ai-agent-support-agent-handover-interactions-drill-down',
-    AI_AGENT_CLOSED_TICKETS_DRILLDOWN: 'ai-agent-closed-tickets-drill-down',
+    AI_AGENT_CLOSED_TICKETS_DRILL_DOWN: 'ai-agent-closed-tickets-drill-down',
     AI_AGENT_ALL_AGENTS_CSAT_DRILL_DOWN: 'ai-agent-all-agents-csat-drill-down',
     AI_AGENT_SUPPORT_AGENT_CSAT_DRILL_DOWN:
         'ai-agent-support-agent-csat-drill-down',
-    AI_AGENT_ALL_AGENTS_FRT_DRILLDOWN: 'ai-agent-all-agents-frt-drill-down',
-    AI_AGENT_SUPPORT_AGENT_FRT_DRILLDOWN:
+    AI_AGENT_ALL_AGENTS_FRT_DRILL_DOWN: 'ai-agent-all-agents-frt-drill-down',
+    AI_AGENT_SUPPORT_AGENT_FRT_DRILL_DOWN:
         'ai-agent-support-agent-frt-drill-down',
     AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT:
         'ai-agent-support-agent-decrease-in-frt',
-    AI_AGENT_ALL_AGENTS_RESOLUTION_TIME_DRILLDOWN:
+    AI_AGENT_ALL_AGENTS_RESOLUTION_TIME_DRILL_DOWN:
         'ai-agent-all-agents-resolution-time-drill-down',
-    AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILLDOWN:
+    AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILL_DOWN:
         'ai-agent-support-agent-resolution-time-drill-down',
 
     // AI Journey
@@ -207,8 +207,6 @@ export const METRIC_NAMES = {
         'ai-sales-agent-discount-codes-average',
     AI_SALES_AGENT_DISCOUNT_CODES_OFFERED:
         'ai-sales-agent-discount-codes-offered',
-    AI_SALES_AGENT_DISCOUNT_CODES_OFFERED_DRILLDOWN:
-        'ai-sales-agent-discount-codes-offered-drilldown',
     AI_SALES_AGENT_GMV: 'ai-sales-agent-gmv',
     AI_SALES_AGENT_GMV_INFLUENCED: 'ai-sales-agent-gmv-influenced',
     AI_SALES_AGENT_GMV_USD_TIME_SERIES: 'ai-sales-agent-gmv-usd-time-series',

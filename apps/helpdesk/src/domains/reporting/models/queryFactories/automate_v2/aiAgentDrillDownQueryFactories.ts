@@ -74,7 +74,7 @@ export const allAgentsAutomatedInteractionsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<AIAgentAutomatedInteractionsV2Cube> => ({
     metricName:
-        METRIC_NAMES.AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILLDOWN,
+        METRIC_NAMES.AI_AGENT_ALL_AGENTS_AUTOMATED_INTERACTIONS_DRILL_DOWN,
     measures: [],
     dimensions: [AIAgentAutomatedInteractionsV2Dimension.TicketId],
     filters: buildPeriodFilters(filters),
@@ -91,7 +91,7 @@ export const shoppingAssistantAutomatedInteractionsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<AIAgentAutomatedInteractionsV2Cube> => ({
     metricName:
-        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILLDOWN,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_AUTOMATED_INTERACTIONS_DRILL_DOWN,
     measures: [],
     dimensions: [AIAgentAutomatedInteractionsV2Dimension.TicketId],
     filters: [
@@ -115,7 +115,7 @@ export const supportAgentAutomatedInteractionsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<AIAgentAutomatedInteractionsV2Cube> => ({
     metricName:
-        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_DRILLDOWN,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_DRILL_DOWN,
     measures: [],
     dimensions: [AIAgentAutomatedInteractionsV2Dimension.TicketId],
     filters: [
@@ -139,7 +139,7 @@ export const allAgentsHandoverInteractionsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HandoverInteractionsCube> => ({
     metricName:
-        METRIC_NAMES.AI_AGENT_ALL_AGENTS_HANDOVER_INTERACTIONS_DRILLDOWN,
+        METRIC_NAMES.AI_AGENT_ALL_AGENTS_HANDOVER_INTERACTIONS_DRILL_DOWN,
     measures: [],
     dimensions: [HandoverInteractionsDimension.TicketId],
     filters: [
@@ -161,7 +161,7 @@ export const shoppingAssistantHandoverInteractionsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HandoverInteractionsCube> => ({
     metricName:
-        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_DRILLDOWN,
+        METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_HANDOVER_INTERACTIONS_DRILL_DOWN,
     measures: [],
     dimensions: [HandoverInteractionsDimension.TicketId],
     filters: [
@@ -183,7 +183,7 @@ export const supportAgentHandoverInteractionsDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<HandoverInteractionsCube> => ({
     metricName:
-        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_HANDOVER_INTERACTIONS_DRILLDOWN,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_HANDOVER_INTERACTIONS_DRILL_DOWN,
     measures: [],
     dimensions: [HandoverInteractionsDimension.TicketId],
     filters: [
@@ -230,7 +230,7 @@ export const allAgentsClosedTicketsDrillDownQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<AIAgentClosedTicketsCube> => ({
-    metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILLDOWN,
+    metricName: METRIC_NAMES.AI_AGENT_CLOSED_TICKETS_DRILL_DOWN,
     measures: [],
     dimensions: [AIAgentClosedTicketsDimension.TicketId],
     filters: buildClosedTicketsPeriodFilters(filters),
@@ -303,7 +303,7 @@ export const allAgentsFRTDrillDownQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<AIAgentDecreaseInFRTCube> => ({
-    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_FRT_DRILLDOWN,
+    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_FRT_DRILL_DOWN,
     measures: [],
     dimensions: [
         AIAgentDecreaseInFRTDimension.TicketId,
@@ -323,7 +323,7 @@ export const supportAgentFRTDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<AIAgentDecreaseInFRTCube> => ({
     ...allAgentsFRTDrillDownQueryFactory(filters, timezone, sorting),
-    metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_FRT_DRILLDOWN,
+    metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_FRT_DRILL_DOWN,
     filters: [
         {
             member: AIAgentDecreaseInFRTFilterMember.AiAgentRole,
@@ -352,7 +352,7 @@ export const allAgentsResolutionTimeDrillDownQueryFactory = (
     timezone: string,
     sorting?: OrderDirection,
 ): ReportingQuery<AIAgentDecreaseInResolutionTimeCube> => ({
-    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_RESOLUTION_TIME_DRILLDOWN,
+    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_RESOLUTION_TIME_DRILL_DOWN,
     measures: [],
     dimensions: [
         AIAgentDecreaseInResolutionTimeDimension.TicketId,
@@ -372,7 +372,7 @@ export const supportAgentResolutionTimeDrillDownQueryFactory = (
     sorting?: OrderDirection,
 ): ReportingQuery<AIAgentDecreaseInResolutionTimeCube> => ({
     ...allAgentsResolutionTimeDrillDownQueryFactory(filters, timezone, sorting),
-    metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILLDOWN,
+    metricName: METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILL_DOWN,
     filters: [
         {
             member: AIAgentDecreaseInResolutionTimeFilterMember.AiAgentRole,
