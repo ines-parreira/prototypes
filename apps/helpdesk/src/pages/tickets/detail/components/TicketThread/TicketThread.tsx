@@ -52,6 +52,7 @@ export function TicketThread({ submit }: TicketThreadProps) {
         showTicketEvents,
         pendingMessages,
     })
+
     const shopperName = useMemo(
         () => ticket.customer?.name ?? 'Customer',
         [ticket.customer?.name],

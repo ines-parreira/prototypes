@@ -5,6 +5,7 @@ import { replaceAttachmentURL } from '@repo/utils'
 import type { TicketThreadSocialMediaInstagramMediaItem } from '../../hooks/messages/types'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
+import type { InstagramMentionType } from './ViewOnInstagramLink'
 import { ViewOnInstagramLink } from './ViewOnInstagramLink'
 
 import css from './InstagramMediaMessage.less'
@@ -14,16 +15,34 @@ type InstagramMediaMessageProps = {
     actions?: ReactNode
 }
 
+function getInstagramMentionType(
+    sourceType: string,
+    mediaType: string | null | undefined,
+): InstagramMentionType | null {
+    if (sourceType === 'instagram-mention-comment') return 'comment'
+    if (sourceType === 'instagram-mention-media') {
+        return mediaType === 'STORY' ? 'story' : 'post'
+    }
+    return null
+}
+
 export function InstagramMediaMessage({
     item,
     actions,
 }: InstagramMediaMessageProps) {
-    const source = item.data.source as any
-    const channelFrom = source?.from?.name ?? null
-    const channelTo = source?.to?.[0]?.name ?? null
-    const permalink = source?.extra?.permalink ?? null
+    const source = item.data.source
+    const channelFrom = source.from?.name ?? null
+    const channelTo = source.to?.[0]?.name ?? null
+    const permalink = source.extra?.permalink ?? null
+    const fromAgent = item.data.from_agent ?? false
+    const mentionType = fromAgent
+        ? null
+        : getInstagramMentionType(source.type, source.extra?.media_type)
     const imageAttachments = item.data.attachments?.filter(
         (a) => a.content_type?.startsWith('image/') && a.url,
+    )
+    const videoAttachments = item.data.attachments?.filter(
+        (a) => a.content_type?.startsWith('video/') && a.url,
     )
 
     return (
@@ -35,13 +54,27 @@ export function InstagramMediaMessage({
             channelTo={channelTo}
             actions={actions}
         >
-            {permalink && <ViewOnInstagramLink href={permalink} />}
+            {(mentionType || permalink) && (
+                <ViewOnInstagramLink
+                    href={permalink ?? undefined}
+                    mentionType={mentionType ?? undefined}
+                />
+            )}
             {imageAttachments?.map((attachment) => (
                 <img
                     key={attachment.url}
                     src={replaceAttachmentURL(attachment.url!)}
                     alt={attachment.name ?? 'Instagram media'}
                     className={css.image}
+                />
+            ))}
+            {videoAttachments?.map((attachment) => (
+                <video
+                    key={attachment.url}
+                    src={replaceAttachmentURL(attachment.url!)}
+                    aria-label={attachment.name ?? 'Instagram video'}
+                    controls
+                    className={css.video}
                 />
             ))}
             <MessageBody item={item} />

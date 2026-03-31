@@ -35,6 +35,7 @@ export const SOCIAL_MEDIA_INSTAGRAM_MEDIA_SOURCES = [
     'instagram-media',
     'instagram-ad-media',
     'instagram-mention-media',
+    'instagram-mention-comment',
 ] as const
 
 export const SOCIAL_MEDIA_TWITTER_TWEET_SOURCES = [

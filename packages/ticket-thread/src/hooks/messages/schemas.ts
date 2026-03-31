@@ -127,6 +127,14 @@ export type SocialMediaInstagramDirectMessageSchema = z.infer<
 export const socialMediaInstagramMediaSchema = z.object({
     source: z.object({
         type: z.enum(SOCIAL_MEDIA_INSTAGRAM_MEDIA_SOURCES),
+        from: z.object({ name: z.string() }).nullish(),
+        to: z.array(z.object({ name: z.string() })).nullish(),
+        extra: z
+            .object({
+                permalink: z.string().nullish(),
+                media_type: z.string().nullish(),
+            })
+            .nullish(),
     }),
 })
 export type SocialMediaInstagramMediaSchema = z.infer<
