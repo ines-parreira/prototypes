@@ -8,7 +8,7 @@ import { customFieldsTicketCountPerIntentLevelPerTicketDrillDownQueryFactory } f
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import type { ReportingQuery } from 'domains/reporting/models/types'
 import type { OrderDirection } from 'models/api/types'
-import type { IntentMetrics } from 'pages/aiAgent/skills/components/IntentsTable/useIntentsTable'
+import type { IntentMetrics } from 'pages/aiAgent/skills/hooks/useIntentsTable'
 
 type MetricDataRecord = Record<string, string | number | null | undefined>
 

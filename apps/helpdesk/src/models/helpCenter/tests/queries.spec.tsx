@@ -41,6 +41,7 @@ import {
     useStartIngestion,
     useUpdateAllIngestedResourcesStatus,
     useUpdateIngestedResource,
+    useUpdateIntentStatus,
 } from '../queries'
 import * as resources from '../resources'
 
@@ -76,6 +77,7 @@ const getFileIngestionArticleTitlesAndStatus = jest.spyOn(
 )
 const getKnowledgeStatus = jest.spyOn(resources, 'getKnowledgeStatus')
 const listIntents = jest.spyOn(resources, 'listIntents')
+const updateIntentStatus = jest.spyOn(resources, 'updateIntentStatus')
 
 const queryClient = mockQueryClient()
 const wrapper = ({ children }: any) => (
@@ -2632,6 +2634,50 @@ describe('queries', () => {
             })
 
             expect(listIntents).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('useUpdateIntentStatus', () => {
+        it('should call updateIntentStatus with correct params on success', async () => {
+            updateIntentStatus.mockReturnValue(Promise.resolve(null))
+            const { result } = renderHook(() => useUpdateIntentStatus(), {
+                wrapper,
+            })
+
+            await result.current.mutateAsync([
+                undefined,
+                { help_center_id: helpCenterId, intent: 'order::status' },
+                { status: 'handover' },
+            ])
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(updateIntentStatus).toHaveBeenCalledWith(
+                expect.any(Object),
+                { help_center_id: helpCenterId, intent: 'order::status' },
+                { status: 'handover' },
+            )
+        })
+
+        it('should call updateIntentStatus with not_linked status', async () => {
+            updateIntentStatus.mockReturnValue(Promise.resolve(null))
+            const { result } = renderHook(() => useUpdateIntentStatus(), {
+                wrapper,
+            })
+
+            await result.current.mutateAsync([
+                undefined,
+                { help_center_id: helpCenterId, intent: 'order::cancel' },
+                { status: 'not_linked' },
+            ])
+
+            await waitFor(() => expect(result.current.isSuccess).toBe(true))
+
+            expect(updateIntentStatus).toHaveBeenCalledWith(
+                expect.any(Object),
+                { help_center_id: helpCenterId, intent: 'order::cancel' },
+                { status: 'not_linked' },
+            )
         })
     })
 })

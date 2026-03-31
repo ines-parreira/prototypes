@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Provider } from 'react-redux'
@@ -7,13 +8,21 @@ import thunk from 'redux-thunk'
 import { ThemeProvider } from 'core/theme'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
+import type { TransformedIntent } from '../../hooks/useIntentsTable'
+import { useIntentsTable } from '../../hooks/useIntentsTable'
+import type { TransformedArticle } from '../../types'
 import { IntentStatus } from '../../types'
 import { MetricCell } from '../SharedTableComponents/MetricCells'
 import { IntentsTable } from './IntentsTable'
-import type { TransformedIntent } from './useIntentsTable'
-import { useIntentsTable } from './useIntentsTable'
+import { LinkToSkillModal } from './LinkToSkillModal'
 
-jest.mock('./useIntentsTable')
+const mockUpdateIntentStatus = jest.fn().mockResolvedValue(undefined)
+const mockUpdateGuidanceArticle = jest.fn().mockResolvedValue(undefined)
+
+jest.mock('pages/aiAgent/skills/hooks/useIntentsTable', () => ({
+    ...jest.requireActual('pages/aiAgent/skills/hooks/useIntentsTable'),
+    useIntentsTable: jest.fn(),
+}))
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('../SharedTableComponents/MetricCells', () => ({
     MetricCell: jest.fn(() => null),
@@ -32,6 +41,21 @@ jest.mock(
 jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations', () => ({
     useGetTicketChannelsStoreIntegrations: jest.fn(() => []),
 }))
+jest.mock('pages/aiAgent/skills/hooks/useUpdateIntentStatus', () => ({
+    useUpdateIntentStatus: jest.fn(() => ({
+        updateIntentStatus: mockUpdateIntentStatus,
+        isLoading: false,
+    })),
+}))
+jest.mock('pages/aiAgent/hooks/useGuidanceArticleMutation', () => ({
+    useGuidanceArticleMutation: jest.fn(() => ({
+        updateGuidanceArticle: mockUpdateGuidanceArticle,
+        isGuidanceArticleUpdating: false,
+    })),
+}))
+jest.mock('./LinkToSkillModal', () => ({
+    LinkToSkillModal: jest.fn(() => null),
+}))
 
 const mockUseIntentsTable = useIntentsTable as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
@@ -40,6 +64,16 @@ const mockUseAiAgentStoreConfigurationContext =
 const mockStore = configureMockStore([thunk])
 
 Element.prototype.getAnimations = jest.fn(() => [])
+
+const createFindIntent =
+    (intents: TransformedIntent[]) => (intentId: string) => {
+        for (const intent of intents) {
+            if (intent.id === intentId) return intent
+            const child = intent.children?.find((c) => c.id === intentId)
+            if (child) return child
+        }
+        return undefined
+    }
 
 describe('IntentsTable', () => {
     let store: ReturnType<typeof mockStore>
@@ -135,6 +169,8 @@ describe('IntentsTable', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUpdateIntentStatus.mockResolvedValue(undefined)
+        mockUpdateGuidanceArticle.mockResolvedValue(undefined)
 
         store = mockStore({})
 
@@ -146,22 +182,28 @@ describe('IntentsTable', () => {
 
         mockUseIntentsTable.mockReturnValue({
             intents: mockIntents,
+            findIntent: createFindIntent(mockIntents),
             isLoading: false,
             isError: false,
         })
     })
 
     const renderComponent = (props = {}) => {
+        const queryClient = new QueryClient({
+            defaultOptions: { queries: { retry: false } },
+        })
         return render(
-            <Provider store={store}>
-                <ThemeProvider>
-                    <IntentsTable
-                        isOpen={true}
-                        onOpenChange={jest.fn()}
-                        {...props}
-                    />
-                </ThemeProvider>
-            </Provider>,
+            <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                    <ThemeProvider>
+                        <IntentsTable
+                            isOpen={true}
+                            onOpenChange={jest.fn()}
+                            {...props}
+                        />
+                    </ThemeProvider>
+                </Provider>
+            </QueryClientProvider>,
         )
     }
 
@@ -526,6 +568,96 @@ describe('IntentsTable', () => {
         })
     })
 
+    describe('handleLinkToSkillConfirm', () => {
+        const mockLinkToSkillModal = LinkToSkillModal as jest.Mock
+
+        const articleWithLocale: TransformedArticle = {
+            id: 42,
+            title: 'Order Status Guidance',
+            intents: [
+                { name: 'order::cancel', formattedName: 'Order / Cancel' },
+            ],
+            status: 'enabled',
+            publishedVersion: {
+                locale: 'en-US',
+                article_translation_version_id: 1,
+            },
+        }
+
+        const getOnConfirm = () => {
+            const { calls } = mockLinkToSkillModal.mock
+            return calls[calls.length - 1][0].onConfirm as (
+                intentId: string,
+                article: TransformedArticle,
+            ) => void
+        }
+
+        it('should call updateGuidanceArticle with merged intents and published locale', async () => {
+            renderComponent()
+            const onConfirm = getOnConfirm()
+
+            onConfirm('order::status', articleWithLocale)
+
+            await waitFor(() => {
+                expect(mockUpdateGuidanceArticle).toHaveBeenCalledWith(
+                    {
+                        intents: ['order::cancel', 'order::status'],
+                        isCurrent: false,
+                    },
+                    { articleId: 42, locale: 'en-US' },
+                )
+            })
+        })
+
+        it('should fall back to draftVersion locale when publishedVersion is absent', async () => {
+            renderComponent()
+            const onConfirm = getOnConfirm()
+
+            onConfirm('order::status', {
+                ...articleWithLocale,
+                publishedVersion: undefined,
+                draftVersion: {
+                    locale: 'fr-FR',
+                    article_translation_version_id: 2,
+                },
+            })
+
+            await waitFor(() => {
+                expect(mockUpdateGuidanceArticle).toHaveBeenCalledWith(
+                    expect.objectContaining({ isCurrent: false }),
+                    { articleId: 42, locale: 'fr-FR' },
+                )
+            })
+        })
+
+        it('should not call updateGuidanceArticle when article has no locale', () => {
+            renderComponent()
+            const onConfirm = getOnConfirm()
+
+            onConfirm('order::status', {
+                ...articleWithLocale,
+                publishedVersion: undefined,
+                draftVersion: undefined,
+            })
+
+            expect(mockUpdateGuidanceArticle).not.toHaveBeenCalled()
+        })
+
+        it('should dispatch error notification when updateGuidanceArticle rejects', async () => {
+            mockUpdateGuidanceArticle.mockRejectedValue(new Error('API error'))
+            renderComponent()
+            const onConfirm = getOnConfirm()
+
+            onConfirm('order::status', articleWithLocale)
+
+            await waitFor(() => {
+                expect(JSON.stringify(store.getActions())).toContain(
+                    'An error occurred while linking the intent',
+                )
+            })
+        })
+    })
+
     describe('Error handling', () => {
         it('should handle missing help center ID', () => {
             mockUseAiAgentStoreConfigurationContext.mockReturnValue({
@@ -715,6 +847,216 @@ describe('IntentsTable', () => {
 
             const dashCells = screen.getAllByText('--')
             expect(dashCells.length).toBeGreaterThan(0)
+        })
+    })
+
+    describe('Toggle enabled — ON to OFF (disable confirmation modal)', () => {
+        it('should open DisableIntentModal when toggle is turned off', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const expandButton = screen.getAllByRole('button', {
+                name: /expand/i,
+            })[0]
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Status')).toBeInTheDocument()
+            })
+
+            const statusRow = screen
+                .getByText('Status')
+                .closest('tr') as HTMLElement
+            const toggle = statusRow.querySelector(
+                '[role="switch"]',
+            ) as HTMLElement
+            await user.click(toggle)
+
+            await waitFor(() => {
+                expect(screen.getByText('Disable intent?')).toBeInTheDocument()
+            })
+        })
+
+        it('should call updateIntentStatus with handover status when Disable is confirmed', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const expandButton = screen.getAllByRole('button', {
+                name: /expand/i,
+            })[0]
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Status')).toBeInTheDocument()
+            })
+
+            const statusRow = screen
+                .getByText('Status')
+                .closest('tr') as HTMLElement
+            const toggle = statusRow.querySelector(
+                '[role="switch"]',
+            ) as HTMLElement
+            await user.click(toggle)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /disable/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByRole('button', { name: /disable/i }))
+
+            await waitFor(() => {
+                expect(mockUpdateIntentStatus).toHaveBeenCalledWith(
+                    'order::status',
+                    'handover',
+                )
+            })
+        })
+
+        it('should close the modal without calling updateIntentStatus when Cancel is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const expandButton = screen.getAllByRole('button', {
+                name: /expand/i,
+            })[0]
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Status')).toBeInTheDocument()
+            })
+
+            const statusRow = screen
+                .getByText('Status')
+                .closest('tr') as HTMLElement
+            const toggle = statusRow.querySelector(
+                '[role="switch"]',
+            ) as HTMLElement
+            await user.click(toggle)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /cancel/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByRole('button', { name: /cancel/i }))
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByText('Disable intent?'),
+                ).not.toBeInTheDocument()
+            })
+
+            expect(mockUpdateIntentStatus).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('Toggle enabled — OFF to ON (enable directly)', () => {
+        it('should call updateIntentStatus with not_linked status when a disabled intent is enabled', async () => {
+            const user = userEvent.setup()
+            const intentsWithDisabled: TransformedIntent[] = [
+                {
+                    id: 'order',
+                    name: 'order',
+                    formattedName: 'Order',
+                    toggleState: 'disabled',
+                    children: [
+                        {
+                            id: 'order::cancel',
+                            name: 'order::cancel',
+                            formattedName: 'Cancel',
+                            toggleState: 'disabled',
+                            status: IntentStatus.Handover,
+                            parentId: 'order',
+                            articles: [],
+                        },
+                    ],
+                },
+            ]
+
+            mockUseIntentsTable.mockReturnValue({
+                intents: intentsWithDisabled,
+                findIntent: createFindIntent(intentsWithDisabled),
+                isLoading: false,
+                isError: false,
+            })
+
+            renderComponent()
+
+            const expandButton = screen.getByRole('button', { name: /expand/i })
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Cancel')).toBeInTheDocument()
+            })
+
+            const cancelRow = screen
+                .getByText('Cancel')
+                .closest('tr') as HTMLElement
+            const toggle = cancelRow.querySelector(
+                '[role="switch"]',
+            ) as HTMLElement
+            await user.click(toggle)
+
+            await waitFor(() => {
+                expect(mockUpdateIntentStatus).toHaveBeenCalledWith(
+                    'order::cancel',
+                    'not_linked',
+                )
+            })
+        })
+
+        it('should not open the disable modal when enabling an intent', async () => {
+            const user = userEvent.setup()
+            const intentsWithDisabled: TransformedIntent[] = [
+                {
+                    id: 'order',
+                    name: 'order',
+                    formattedName: 'Order',
+                    toggleState: 'disabled',
+                    children: [
+                        {
+                            id: 'order::cancel',
+                            name: 'order::cancel',
+                            formattedName: 'Cancel',
+                            toggleState: 'disabled',
+                            status: IntentStatus.Handover,
+                            parentId: 'order',
+                            articles: [],
+                        },
+                    ],
+                },
+            ]
+
+            mockUseIntentsTable.mockReturnValue({
+                intents: intentsWithDisabled,
+                findIntent: createFindIntent(intentsWithDisabled),
+                isLoading: false,
+                isError: false,
+            })
+
+            renderComponent()
+
+            const expandButton = screen.getByRole('button', { name: /expand/i })
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Cancel')).toBeInTheDocument()
+            })
+
+            const cancelRow = screen
+                .getByText('Cancel')
+                .closest('tr') as HTMLElement
+            const toggle = cancelRow.querySelector(
+                '[role="switch"]',
+            ) as HTMLElement
+            await user.click(toggle)
+
+            expect(
+                screen.queryByText('Disable intent?'),
+            ).not.toBeInTheDocument()
         })
     })
 })

@@ -467,3 +467,13 @@ export const listIntents = async (
     const response = await client.listIntents(pathParams)
     return response.data
 }
+
+export const updateIntentStatus = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.UpdateIntentStatus.PathParameters,
+    data: Paths.UpdateIntentStatus.RequestBody,
+) => {
+    if (!client) return null
+    const response = await client.updateIntentStatus(pathParams, data)
+    return response
+}

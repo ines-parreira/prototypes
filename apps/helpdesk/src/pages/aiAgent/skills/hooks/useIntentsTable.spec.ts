@@ -5,15 +5,15 @@ import { renderHook } from '@testing-library/react'
 
 import { useListIntents } from 'models/helpCenter/queries'
 
-import { useIntentsMetrics } from '../../hooks/useIntentsMetrics'
-import { IntentStatus } from '../../types'
+import { IntentStatus } from '../types'
+import { useIntentsMetrics } from './useIntentsMetrics'
 import { useIntentsTable } from './useIntentsTable'
 
 jest.mock('models/helpCenter/queries', () => ({
     useListIntents: jest.fn(),
 }))
 
-jest.mock('../../hooks/useIntentsMetrics', () => ({
+jest.mock('./useIntentsMetrics', () => ({
     useIntentsMetrics: jest.fn(),
 }))
 

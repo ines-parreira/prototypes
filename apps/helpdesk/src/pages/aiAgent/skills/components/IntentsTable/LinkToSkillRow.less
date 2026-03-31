@@ -1,0 +1,22 @@
+:local {
+    .skillRow {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+        padding: var(--spacing-xxxs) var(--spacing-xs);
+        gap: var(--spacing-xs);
+        margin-bottom: var(--spacing-xxxxs);
+        cursor: pointer;
+        outline: none;
+
+        &.skillRowSelected {
+            background-color: var(--surface-accent-default);
+            border-radius: var(--spacing-xxxs);
+        }
+    }
+
+    .additionalIntentsCount {
+        padding: 0 var(--spacing-xs);
+    }
+}

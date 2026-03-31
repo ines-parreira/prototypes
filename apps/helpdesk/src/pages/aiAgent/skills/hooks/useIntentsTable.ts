@@ -1,12 +1,12 @@
-import { useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { useListIntents } from 'models/helpCenter/queries'
 
-import { useIntentsMetrics } from '../../hooks/useIntentsMetrics'
-import type { ArticleInIntentDto, IntentResponseDto } from '../../types'
-import { IntentStatus } from '../../types'
-import { formatIntentName } from '../../utils'
-import { INTENT_DESCRIPTIONS } from './intentDescriptions'
+import { INTENT_DESCRIPTIONS } from '../components/IntentsTable/intentDescriptions'
+import type { ArticleInIntentDto, IntentResponseDto } from '../types'
+import { IntentStatus } from '../types'
+import { formatIntentName } from '../utils'
+import { useIntentsMetrics } from './useIntentsMetrics'
 
 export interface IntentMetrics {
     ticketVolume: number
@@ -16,6 +16,8 @@ export interface IntentMetrics {
 }
 
 export type ToggleState = 'enabled' | 'disabled'
+
+export const HANDOVER_ONLY_INTENTS = ['other::no reply', 'other::spam']
 
 export interface TransformedIntent {
     id: string
@@ -71,16 +73,14 @@ export const useIntentsTable = (helpCenterId: number) => {
                 (article) => article.status === 'published',
             )
 
-            const isHandoverOnlyIntent =
-                intent.name === 'other::no reply' ||
-                intent.name === 'other::spam'
+            const isHandoverOnlyIntent = HANDOVER_ONLY_INTENTS.includes(
+                intent.name,
+            )
 
-            const toggleState: ToggleState = isHandoverOnlyIntent
-                ? 'disabled'
-                : intent.status === IntentStatus.Linked ||
-                    intent.status === IntentStatus.NotLinked
-                  ? 'enabled'
-                  : 'disabled'
+            const toggleState =
+                !isHandoverOnlyIntent && intent.status !== IntentStatus.Handover
+                    ? 'enabled'
+                    : 'disabled'
 
             const intentStatus = isHandoverOnlyIntent
                 ? IntentStatus.Handover
@@ -124,8 +124,21 @@ export const useIntentsTable = (helpCenterId: number) => {
         return Array.from(l1ParentsMap.values())
     }, [data, metricsMap])
 
+    const findIntent = useCallback(
+        (intentId: string): TransformedIntent | undefined => {
+            for (const intent of transformedIntents) {
+                if (intent.id === intentId) return intent
+                const child = intent.children?.find((c) => c.id === intentId)
+                if (child) return child
+            }
+            return undefined
+        },
+        [transformedIntents],
+    )
+
     return {
         intents: transformedIntents,
+        findIntent,
         isLoading,
         isError,
         isMetricsLoading,

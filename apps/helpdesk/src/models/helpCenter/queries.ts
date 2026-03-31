@@ -60,6 +60,7 @@ import {
     updateArticleTranslation,
     updateHelpCenter,
     updateIngestedResource,
+    updateIntentStatus,
 } from './resources'
 import type { KnowledgeHubArticlesQueryParams } from './types'
 
@@ -1475,5 +1476,17 @@ export const useListIntents = (
             !!client &&
             helpCenterId !== undefined &&
             (overrides === undefined || overrides.enabled),
+    })
+}
+
+export const useUpdateIntentStatus = (
+    overrides?: MutationOverrides<typeof updateIntentStatus>,
+) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ([client = helpCenterClient, pathParams, data]) =>
+            updateIntentStatus(client, pathParams, data),
+        ...overrides,
     })
 }

@@ -1,4 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+
+import { useQueryClient } from '@tanstack/react-query'
+import { POSITIONS } from 'reapop'
 
 import type { Row } from '@gorgias/axiom'
 import {
@@ -22,13 +25,25 @@ import {
 } from '@gorgias/axiom'
 
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
+import useAppDispatch from 'hooks/useAppDispatch'
+import { helpCenterKeys } from 'models/helpCenter/queries'
+import type { LocaleCode } from 'models/helpCenter/types'
+import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
+import { useUpdateIntentStatus } from 'pages/aiAgent/skills/hooks/useUpdateIntentStatus'
+import type { UpdateGuidanceArticle } from 'pages/aiAgent/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
+import type { TransformedIntent } from '../../hooks/useIntentsTable'
+import { useIntentsTable } from '../../hooks/useIntentsTable'
+import { IntentStatus } from '../../types'
+import type { TransformedArticle } from '../../types'
 import { getColumns } from './columns'
 import type { StatsDisplayMode } from './columns'
-import type { TransformedIntent } from './useIntentsTable'
-import { useIntentsTable } from './useIntentsTable'
+import { DisableIntentModal } from './DisableIntentModal'
+import { LinkToSkillModal } from './LinkToSkillModal'
 
 import css from './IntentsTable.less'
 
@@ -42,18 +57,35 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
     const helpCenterId = storeConfiguration?.guidanceHelpCenterId || 0
     const shopName = storeConfiguration?.storeName || ''
 
-    const { intents, isLoading, isMetricsLoading, metricsDateRange } =
-        useIntentsTable(helpCenterId)
+    const {
+        intents,
+        findIntent,
+        isLoading,
+        isMetricsLoading,
+        metricsDateRange,
+    } = useIntentsTable(helpCenterId)
 
     const { outcomeCustomFieldId, intentCustomFieldId } =
         useGetCustomTicketsFieldsDefinitionData()
 
     const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
 
+    const dispatch = useAppDispatch()
+    const queryClient = useQueryClient()
+    const { updateIntentStatus, isLoading: isUpdating } =
+        useUpdateIntentStatus(helpCenterId)
+    const { updateGuidanceArticle, isGuidanceArticleUpdating } =
+        useGuidanceArticleMutation({ guidanceHelpCenterId: helpCenterId })
+
     const [searchTerm, setSearchTerm] = useState('')
     const [statsDisplayMode, setStatsDisplayMode] =
         useState<StatsDisplayMode>('percentage')
     const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set())
+    const [pendingDisableIntent, setPendingDisableIntent] =
+        useState<TransformedIntent | null>(null)
+    const [pendingLinkIntentId, setPendingLinkIntentId] = useState<
+        string | null
+    >(null)
 
     const filteredIntents = useMemo(() => {
         if (!searchTerm.trim()) return intents
@@ -70,21 +102,20 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
         })
     }, [intents, searchTerm])
 
-    const flattenedIntents = useMemo(() => {
-        const flattened: TransformedIntent[] = []
-        filteredIntents.forEach((intent) => {
-            flattened.push(intent)
-            if (expandedRows.has(intent.id) && intent.children) {
-                flattened.push(...intent.children)
-            }
-        })
-        return flattened
-    }, [filteredIntents, expandedRows])
+    const flattenedIntents = useMemo(
+        () =>
+            filteredIntents.flatMap((intent) =>
+                expandedRows.has(intent.id) && intent.children
+                    ? [intent, ...intent.children]
+                    : [intent],
+            ),
+        [filteredIntents, expandedRows],
+    )
 
     const totalCount = intents.length
     const filteredCount = filteredIntents.length
 
-    const handleToggleExpanded = (rowId: string) => {
+    const handleToggleExpanded = useCallback((rowId: string) => {
         setExpandedRows((prev) => {
             const next = new Set(prev)
             if (next.has(rowId)) {
@@ -94,17 +125,112 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
             }
             return next
         })
-    }
+    }, [])
 
-    const handleToggleEnabled = (intentId: string, enabled: boolean) => {
-        // eslint-disable-next-line no-console
-        console.log('Toggle enabled:', intentId, enabled)
-    }
+    const notifySuccess = useCallback(
+        (message: string) =>
+            dispatch(
+                notify({
+                    message,
+                    status: NotificationStatus.Success,
+                    position: POSITIONS.bottomRight,
+                }),
+            ),
+        [dispatch],
+    )
 
-    const handleLinkToSkill = (intentId: string) => {
-        // eslint-disable-next-line no-console
-        console.log('Link to skill:', intentId)
-    }
+    const notifyError = useCallback(
+        (message: string) =>
+            dispatch(
+                notify({
+                    message,
+                    status: NotificationStatus.Error,
+                    position: POSITIONS.bottomRight,
+                }),
+            ),
+        [dispatch],
+    )
+
+    const handleToggleEnabled = useCallback(
+        (intentId: string, enabled: boolean) => {
+            if (!enabled) {
+                const intent = findIntent(intentId)
+                if (intent) {
+                    setPendingDisableIntent(intent)
+                }
+                return
+            }
+
+            updateIntentStatus(intentId, IntentStatus.NotLinked)
+                .then(() => notifySuccess('Intent successfully enabled'))
+                .catch(() =>
+                    notifyError('An error occurred while enabling the intent'),
+                )
+        },
+        [findIntent, updateIntentStatus, notifySuccess, notifyError],
+    )
+
+    const handleDisableConfirm = useCallback(() => {
+        if (!pendingDisableIntent) return
+
+        updateIntentStatus(pendingDisableIntent.id, IntentStatus.Handover)
+            .then(() => {
+                setPendingDisableIntent(null)
+                notifySuccess('Intent successfully disabled')
+            })
+            .catch(() =>
+                notifyError('An error occurred while disabling the intent'),
+            )
+    }, [pendingDisableIntent, updateIntentStatus, notifySuccess, notifyError])
+
+    const handleLinkToSkill = useCallback((intentId: string) => {
+        setPendingLinkIntentId(intentId)
+    }, [])
+
+    const handleDisableClose = useCallback(
+        () => setPendingDisableIntent(null),
+        [],
+    )
+
+    const handleLinkToSkillClose = useCallback(
+        () => setPendingLinkIntentId(null),
+        [],
+    )
+
+    const handleLinkToSkillConfirm = useCallback(
+        (intentId: string, article: TransformedArticle) => {
+            const locale =
+                article.publishedVersion?.locale ?? article.draftVersion?.locale
+            if (!locale) return
+
+            const newIntents = [
+                ...article.intents.map((i) => i.name),
+                intentId,
+            ] as UpdateGuidanceArticle['intents']
+
+            updateGuidanceArticle(
+                { intents: newIntents, isCurrent: false },
+                { articleId: article.id, locale: locale as LocaleCode },
+            )
+                .then(() => {
+                    queryClient.invalidateQueries({
+                        queryKey: helpCenterKeys.intents(helpCenterId),
+                    })
+                    setPendingLinkIntentId(null)
+                    notifySuccess('Intent successfully linked to skill')
+                })
+                .catch(() =>
+                    notifyError('An error occurred while linking the intent'),
+                )
+        },
+        [
+            updateGuidanceArticle,
+            queryClient,
+            helpCenterId,
+            notifySuccess,
+            notifyError,
+        ],
+    )
 
     const columns = useMemo(
         () =>
@@ -123,7 +249,10 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
         [
             statsDisplayMode,
             isMetricsLoading,
+            handleToggleEnabled,
+            handleLinkToSkill,
             expandedRows,
+            handleToggleExpanded,
             outcomeCustomFieldId,
             intentCustomFieldId,
             integrationIds,
@@ -131,7 +260,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
         ],
     )
 
-    const renderRows = (rows: Row<TransformedIntent>[]) => {
+    const renderRows = useCallback((rows: Row<TransformedIntent>[]) => {
         return rows.map((row) => {
             const isChildRow = !!row.original.parentId
             return (
@@ -147,7 +276,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                 </TableRow>
             )
         })
-    }
+    }, [])
 
     const table = useTable<TransformedIntent>({
         data: flattenedIntents,
@@ -249,6 +378,24 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                     </div>
                 </Box>
             </OverlayContent>
+            <DisableIntentModal
+                isOpen={!!pendingDisableIntent}
+                trafficPercent={
+                    pendingDisableIntent?.metrics?.ticketVolumePercent
+                }
+                isLoading={isUpdating}
+                onClose={handleDisableClose}
+                onConfirm={handleDisableConfirm}
+            />
+            <LinkToSkillModal
+                isOpen={!!pendingLinkIntentId}
+                intentId={pendingLinkIntentId}
+                helpCenterId={helpCenterId}
+                shopName={shopName}
+                isLoading={isGuidanceArticleUpdating}
+                onClose={handleLinkToSkillClose}
+                onConfirm={handleLinkToSkillConfirm}
+            />
         </SidePanel>
     )
 }

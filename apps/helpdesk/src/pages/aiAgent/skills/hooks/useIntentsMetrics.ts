@@ -12,7 +12,7 @@ import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { getTimezone } from 'state/currentUser/selectors'
 
-import type { IntentMetrics } from '../components/IntentsTable/useIntentsTable'
+import type { IntentMetrics } from './useIntentsTable'
 import { useTotalAiAgentTickets } from './useTotalAiAgentTickets'
 
 /**

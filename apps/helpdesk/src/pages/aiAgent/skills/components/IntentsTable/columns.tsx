@@ -14,10 +14,11 @@ import { CUSTOM_FIELD_AI_AGENT_HANDOVER } from 'domains/reporting/hooks/automate
 import { IntentMetric } from 'domains/reporting/state/ui/stats/types'
 import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/TruncatedTextWithTooltip'
 
+import type { TransformedIntent } from '../../hooks/useIntentsTable'
+import { HANDOVER_ONLY_INTENTS } from '../../hooks/useIntentsTable'
 import { IntentStatus } from '../../types'
 import { MetricCell } from '../SharedTableComponents/MetricCells'
 import { SortableHeaderCell } from '../SkillsTable/SortableHeaderCell'
-import type { TransformedIntent } from './useIntentsTable'
 
 import css from './IntentsTable.less'
 
@@ -307,7 +308,9 @@ export const getColumns = ({
             cell: ({ row }) => {
                 const intent = row.original
                 const isParent = !!intent.children
-                const isHandoverOnly = intent.status === IntentStatus.Handover
+                const isHandoverOnly = HANDOVER_ONLY_INTENTS.includes(
+                    intent.name,
+                )
                 const isDisabled =
                     isParent ||
                     intent.status === IntentStatus.Linked ||
