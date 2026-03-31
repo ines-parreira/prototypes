@@ -45,17 +45,18 @@ describe('deriveLauncherColors', () => {
 
             expect(result.iconColor).toBe('#000000')
             expect(result.labelColor).toBe('#000000')
-            expect(result.closeIconColor).toBe('#FFFFFF')
-            expect(result.dotsColor).toBe('#FFFFFF')
+            expect(result.closeIconColor).toBe('#000000')
+            expect(result.dotsColor).toBe('#F4F4F6')
         })
 
-        it('should derive colors for #FFFFFF (achromatic)', () => {
+        it('should derive colors for #FFFFFF (achromatic, very bright)', () => {
             const result = deriveLauncherColors('#FFFFFF')
 
-            expect(result.iconColor).toBe('#1C1C1C')
+            // Very bright achromatic → iconColor forced to black for contrast
+            expect(result.iconColor).toBe('#000000')
             expect(result.labelColor).toBe('#1C1C1C')
-            expect(result.closeIconColor).toBe('#1C1C1C')
-            expect(result.dotsColor).toBe('#FFFFFF')
+            expect(result.closeIconColor).toBe('#000000')
+            expect(result.dotsColor).toBe('#F4F4F6')
         })
 
         it('should derive colors for #808080 (achromatic)', () => {
@@ -63,8 +64,8 @@ describe('deriveLauncherColors', () => {
 
             expect(result.iconColor).toBe('#808080')
             expect(result.labelColor).toBe('#1C1C1C')
-            expect(result.closeIconColor).toBe('#1C1C1C')
-            expect(result.dotsColor).toBe('#FFFFFF')
+            expect(result.closeIconColor).toBe('#808080')
+            expect(result.dotsColor).toBe('#F4F4F6')
         })
 
         it('should derive colors for #1B4E40 (darkChromatic)', () => {
@@ -72,8 +73,8 @@ describe('deriveLauncherColors', () => {
 
             expect(result.iconColor).toBe('#1b4e40')
             expect(result.labelColor).toBe('#1b4e40')
-            expect(result.closeIconColor).toBe('#FFFFFF')
-            expect(result.dotsColor).toBe('#FFFFFF')
+            expect(result.closeIconColor).toBe('#1b4e40')
+            expect(result.dotsColor).toBe('#F4F4F6')
         })
 
         it('should derive colors for #3B82F6 (midChromatic)', () => {
@@ -81,8 +82,8 @@ describe('deriveLauncherColors', () => {
 
             expect(result.iconColor).toBe('#3b82f6')
             expect(result.labelColor).toBe('#1C1C1C')
-            expect(result.closeIconColor).toBe('#1C1C1C')
-            expect(result.dotsColor).toBe('#FFFFFF')
+            expect(result.closeIconColor).toBe('#3b82f6')
+            expect(result.dotsColor).toBe('#F4F4F6')
         })
 
         it('should derive colors for #EF4444 (midChromatic)', () => {
@@ -90,77 +91,79 @@ describe('deriveLauncherColors', () => {
 
             expect(result.iconColor).toBe('#ef4444')
             expect(result.labelColor).toBe('#1C1C1C')
-            expect(result.closeIconColor).toBe('#1C1C1C')
-            expect(result.dotsColor).toBe('#FFFFFF')
+            expect(result.closeIconColor).toBe('#ef4444')
+            expect(result.dotsColor).toBe('#F4F4F6')
         })
 
         it('should derive colors for #A7F3D0 (lightChromatic)', () => {
             const result = deriveLauncherColors('#A7F3D0')
 
-            expect(result.iconColor).toBe('#1C1C1C')
+            // lightChromatic → iconColor is brand darkened by 15%
+            expect(result.iconColor).toBe('#62eaaa')
             expect(result.labelColor).toBe('#1C1C1C')
-            expect(result.closeIconColor).toBe('#1C1C1C')
-            expect(result.dotsColor).toBe('#FFFFFF')
+            expect(result.closeIconColor).toBe('#62eaaa')
+            expect(result.dotsColor).toBe('#F4F4F6')
         })
 
         it('should derive colors for #E9D5FF (lightChromatic)', () => {
             const result = deriveLauncherColors('#E9D5FF')
 
-            expect(result.iconColor).toBe('#1C1C1C')
+            // lightChromatic → iconColor is brand darkened by 15%
+            expect(result.iconColor).toBe('#c28aff')
             expect(result.labelColor).toBe('#1C1C1C')
-            expect(result.closeIconColor).toBe('#1C1C1C')
-            expect(result.dotsColor).toBe('#FFFFFF')
+            expect(result.closeIconColor).toBe('#c28aff')
+            expect(result.dotsColor).toBe('#F4F4F6')
         })
     })
 
     describe('glow stops', () => {
-        it('should produce rgba glow stops for all buckets', () => {
+        it('should use white as glowStop0 for all buckets', () => {
             const colors = ['#000000', '#1B4E40', '#3B82F6', '#A7F3D0']
             for (const color of colors) {
                 const result = deriveLauncherColors(color)
-                expect(result.glowStop0).toContain('rgba')
-                expect(result.glowStop50).toContain('rgba')
+                expect(result.glowStop0).toBe('#FFFFFF')
+            }
+        })
+
+        it('should use neutral color as glowStop50 for all buckets', () => {
+            const colors = ['#000000', '#1B4E40', '#3B82F6', '#A7F3D0']
+            for (const color of colors) {
+                const result = deriveLauncherColors(color)
+                expect(result.glowStop50).toMatch(/^#[0-9A-Fa-f]{6}$/)
+            }
+        })
+
+        it('should use rgba as glowStop100 for all buckets', () => {
+            const colors = ['#000000', '#1B4E40', '#3B82F6', '#A7F3D0']
+            for (const color of colors) {
+                const result = deriveLauncherColors(color)
                 expect(result.glowStop100).toContain('rgba')
             }
         })
 
         it('should use #DADADA as glow base for achromatic colors', () => {
+            // achromatic glowStop100 uses #DADADA (218, 218, 218) with GLOW_OPACITY
             const result = deriveLauncherColors('#808080')
-            expect(result.glowStop0).toContain('218')
+            expect(result.glowStop100).toContain('218')
         })
 
         it('should use brand directly as glow base for darkChromatic', () => {
+            // darkChromatic glowStop100 uses brand color
             const result = deriveLauncherColors('#1B4E40')
-            expect(result.glowStop0).toContain('rgba')
-        })
-    })
-
-    describe('gradientScale for near-black', () => {
-        it('should apply 0.9 scale for #000000', () => {
-            const black = deriveLauncherColors('#000000')
-            const gray = deriveLauncherColors('#808080')
-
-            expect(black.glowStop50).toContain('0.405')
-            expect(gray.glowStop50).toContain('0.45')
-        })
-
-        it('should apply 0.9 scale to glow stop100 for #000000', () => {
-            const black = deriveLauncherColors('#000000')
-
-            expect(black.glowStop100).toContain('0.765')
+            expect(result.glowStop100).toContain('rgba')
         })
     })
 
     describe('bloom color', () => {
-        it('should use 0.35 opacity for bloom', () => {
+        it('should use 0.6 opacity for bloom', () => {
             const result = deriveLauncherColors('#3B82F6')
-            expect(result.bloomColor).toContain('0.35')
+            expect(result.bloomColor).toContain('0.6')
         })
 
         it('should use white highlight for achromatic colors', () => {
             const result = deriveLauncherColors('#808080')
             expect(result.bloomColor).toContain('255')
-            expect(result.bloomColor).toContain('0.35')
+            expect(result.bloomColor).toContain('0.6')
         })
     })
 

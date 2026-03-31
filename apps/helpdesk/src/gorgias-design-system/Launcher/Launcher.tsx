@@ -4,9 +4,9 @@ import type React from 'react'
 import styled from '@emotion/styled'
 
 import { gorgiasColors } from 'gorgias-design-system/styles'
-import { getContrastColor } from 'gorgias-design-system/utils'
 
-import BubbleIcon from './icons/BubbleIcon'
+import { deriveLauncherColors } from './deriveLauncherColors'
+import BubbleIconRedesigned from './icons/BubbleIconRedesigned'
 import CloseIcon from './icons/CloseIcon'
 
 const StyledLabel = styled.span<{
@@ -14,6 +14,7 @@ const StyledLabel = styled.span<{
     color: string
 }>`
     position: relative;
+    z-index: 3;
 
     font-size: 14px;
     font-weight: 600;
@@ -34,6 +35,7 @@ const StyledIconContainer = styled.div<{
     hideIcon?: boolean
 }>`
     position: absolute;
+    z-index: 3;
 
     display: flex;
     justify-content: center;
@@ -71,7 +73,7 @@ const StyledBadge = styled.div`
 
     transform: translate(-25%, -25%);
 
-    z-index: 1;
+    z-index: 4;
 
     font-size: 12px;
     font-weight: 600;
@@ -82,9 +84,14 @@ const StyledBadge = styled.div`
     color: ${gorgiasColors.white};
 `
 
+const GradientLayer = styled.div`
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+`
+
 const StyledLauncher = styled.button<{
     showIconOnly: boolean
-    color: string
 }>`
     cursor: pointer;
 
@@ -95,7 +102,7 @@ const StyledLauncher = styled.button<{
 
     position: relative;
 
-    background: ${({ color }) => color};
+    background: transparent;
 
     &,
     &:focus {
@@ -165,7 +172,7 @@ const Launcher: React.FC<LauncherProps & HTMLAttributes<HTMLButtonElement>> = ({
     fillColor = gorgiasColors.primary,
     ...props
 }) => {
-    const textColor = getContrastColor(fillColor)
+    const colors = deriveLauncherColors(fillColor)
 
     const showIconOnly = hasLaunched || !!shouldHideLabel
 
@@ -173,11 +180,29 @@ const Launcher: React.FC<LauncherProps & HTMLAttributes<HTMLButtonElement>> = ({
         unreadMessagesCount > 99 ? '99+' : unreadMessagesCount
 
     return (
-        <StyledLauncher
-            showIconOnly={showIconOnly}
-            color={fillColor}
-            {...props}
-        >
+        <StyledLauncher showIconOnly={showIconOnly} {...props}>
+            <GradientLayer
+                style={{
+                    background: `radial-gradient(circle at center, ${colors.glowStop0} 0%, ${colors.glowStop50} 50%, ${colors.glowStop100} 100%)`,
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    zIndex: 0,
+                }}
+            />
+            <GradientLayer
+                style={{
+                    background: `radial-gradient(ellipse at center, ${colors.sheenStop0} 0%, ${colors.sheenStop100} 100%)`,
+                    zIndex: 1,
+                }}
+            />
+            <GradientLayer
+                style={{
+                    background: `radial-gradient(circle at center, ${colors.bloomColor} 0%, transparent 70%)`,
+                    filter: 'blur(8px)',
+                    zIndex: 2,
+                    inset: '4px',
+                }}
+            />
             {!hasLaunched && unreadMessagesCount > 0 && (
                 <StyledBadge
                     role="status"
@@ -196,16 +221,19 @@ const Launcher: React.FC<LauncherProps & HTMLAttributes<HTMLButtonElement>> = ({
                 isLabelHidden={showIconOnly}
                 hideIcon={hasLaunched}
             >
-                <BubbleIcon color={textColor} />
+                <BubbleIconRedesigned
+                    color={colors.iconColor}
+                    dotsColor={colors.dotsColor}
+                />
             </StyledIconContainer>
             <StyledIconContainer
                 isLabelHidden={showIconOnly}
                 hideIcon={!hasLaunched}
                 isCloseIcon
             >
-                <CloseIcon color={textColor} />
+                <CloseIcon color={colors.closeIconColor} />
             </StyledIconContainer>
-            <StyledLabel showIconOnly={showIconOnly} color={textColor}>
+            <StyledLabel showIconOnly={showIconOnly} color={colors.labelColor}>
                 {label}
             </StyledLabel>
         </StyledLauncher>

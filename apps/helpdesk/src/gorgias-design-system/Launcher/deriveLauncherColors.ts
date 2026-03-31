@@ -35,10 +35,10 @@ const WHITE = '#FFFFFF'
 const DARK = '#1C1C1C'
 
 const GLOW_OPACITY: Record<ColorBucket, number> = {
-    achromatic: 0.25,
-    darkChromatic: 0.2,
-    midChromatic: 0.25,
-    lightChromatic: 0.2,
+    achromatic: 0.45,
+    darkChromatic: 0.3,
+    midChromatic: 0.4,
+    lightChromatic: 0.35,
 }
 
 const NEUTRAL_COLOR: Record<ColorBucket, string> = {
@@ -92,15 +92,27 @@ export function deriveLauncherColors(brandPrimary: string): LauncherColors {
 
     const contrastColor = getContrastIconColor(brand)
 
-    const iconColor = hasBadContrast(brand, 'readable', WHITE)
-        ? contrastColor
-        : brand
+    // Icon color: bucket-based, matching the real chat widget behavior
+    // - lightChromatic: darken by 15% so the icon stays brand-colored but visible
+    // - very bright achromatic (near-white): force black for contrast
+    // - all others: use the brand color as-is
+    const VERY_BRIGHT_THRESHOLD = 0.85
+    let iconColor: string
+    if (bucket === 'lightChromatic') {
+        iconColor = toHex(lighten(brand, -0.15))
+    } else if (bucket === 'achromatic' && l > VERY_BRIGHT_THRESHOLD) {
+        iconColor = '#000000'
+    } else {
+        iconColor = brand
+    }
 
     const labelColor = hasBadContrast(brand, 'aa', WHITE) ? DARK : brand
 
-    const closeIconColor = contrastColor
+    // Close icon uses the same color as the bubble icon (matching gorgias-chat)
+    const closeIconColor = iconColor
 
-    const dotsColor = WHITE
+    // Dots inside the bubble icon (#F4F4F6 matches gorgias-chat's BubbleIcon default)
+    const dotsColor = '#F4F4F6'
 
     let glowColor: string
     if (bucket === 'achromatic') {
@@ -111,22 +123,16 @@ export function deriveLauncherColors(brandPrimary: string): LauncherColors {
         glowColor = brand
     }
 
-    const isBlack = bucket === 'achromatic' && l <= 0.1
-    const gradientScale = isBlack ? 0.9 : 1.0
-
-    const glowStop0 = colorToRGBA(
-        glowColor,
-        GLOW_OPACITY[bucket] * gradientScale,
-    )
-    const glowStop50 = colorToRGBA(brand, 0.45 * gradientScale)
-    const glowStop100 = colorToRGBA(brand, 0.85 * gradientScale)
+    const glowStop0 = WHITE
+    const glowStop50 = NEUTRAL_COLOR[bucket]
+    const glowStop100 = colorToRGBA(glowColor, GLOW_OPACITY[bucket])
 
     const sheenNeutralOpacity = bucket === 'lightChromatic' ? 1.0 : 0.6
     const sheenStop0 = colorToRGBA(NEUTRAL_COLOR[bucket], sheenNeutralOpacity)
     const sheenStop100 = colorToRGBA(brand, SHEEN_OPACITY[bucket])
 
     const highlight = s <= 0.1 ? WHITE : toHex(hsla(h, s, 0.95, a))
-    const bloomColor = colorToRGBA(highlight, 0.35)
+    const bloomColor = colorToRGBA(highlight, 0.6)
 
     let badgeBackgroundColor = brand
     let badgeFontColor = contrastColor
