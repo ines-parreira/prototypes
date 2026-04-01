@@ -243,6 +243,15 @@ catalogs:
     '@gorgias/convert-queries':
       specifier: ^0.2.50
       version: 0.2.50
+    '@gorgias/customer-segmentation-client':
+      specifier: ^0.2.9
+      version: 0.2.9
+    '@gorgias/customer-segmentation-queries':
+      specifier: ^0.2.9
+      version: 0.2.9
+    '@gorgias/customer-segmentation-types':
+      specifier: ^0.2.7
+      version: 0.2.7
     '@gorgias/ecommerce-storage-client':
       specifier: ^0.2.11
       version: 0.2.11
@@ -570,6 +579,15 @@ importers:
       '@gorgias/convert-queries':
         specifier: catalog:rest-api-sdk
         version: 0.2.50(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@gorgias/customer-segmentation-client':
+        specifier: catalog:rest-api-sdk
+        version: 0.2.9
+      '@gorgias/customer-segmentation-queries':
+        specifier: catalog:rest-api-sdk
+        version: 0.2.9(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+      '@gorgias/customer-segmentation-types':
+        specifier: catalog:rest-api-sdk
+        version: 0.2.7
       '@gorgias/design-tokens':
         specifier: catalog:axiom
         version: 0.11.4
@@ -5012,6 +5030,15 @@ packages:
   '@gorgias/convert-types@0.4.23':
     resolution: {integrity: sha512-BK/L0kAOFowz3bhoRorpzQA0oiftZ0B4UpuvDAJJkDAzUbRhygGfn8f1Q9PHgcM54v9MJmAMLPMKohfzDWx+Og==, tarball: https://npm.pkg.github.com/download/@gorgias/convert-types/0.4.23/9bc096fa24fe3164ca5e800b4855015365ec9c86}
 
+  '@gorgias/customer-segmentation-client@0.2.9':
+    resolution: {integrity: sha512-VOS6eQA+J53lSWXYzAPexRGLrjA3RM0YzzxG4kdj+acxKtIEsoyJe8BRJvMzHO+nLgQWcs90vtWkrWZiyDdGEw==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-client/0.2.9/f504bf90c80bfe6d867fa0521f4eee735676f639}
+
+  '@gorgias/customer-segmentation-queries@0.2.9':
+    resolution: {integrity: sha512-6YDj5BpsdkIC5Y5zWglHGGhcCO9c/aJ9j/mIjEeBjSaoRgAxLq5IIabkBZF16Hy+a5qduxG9iHQfisc1JvsMPQ==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-queries/0.2.9/8d2cf5c857250ed02476dd551c6ae35802e0646f}
+
+  '@gorgias/customer-segmentation-types@0.2.7':
+    resolution: {integrity: sha512-FYfe7DIjnJ9HqkQ0ESmUb/Y+mqCE3nvKC19r5B/zm3yhAWqwpz7p6qKQHUf2bbanR54dckchnqB0lWoZeczzzA==, tarball: https://npm.pkg.github.com/download/@gorgias/customer-segmentation-types/0.2.7/96a61daefeec89a97bbd1b4ab895cc6cb9c44134}
+
   '@gorgias/design-tokens@0.11.4':
     resolution: {integrity: sha512-zpJjYuwRU8kaYyug6pRHn4jGi0YCquiIzJS5e4/N2BJTJMTZcUrxmxUQKigDSZ/ppxqSyjLUWmyEZpcAxPf+Xw==, tarball: https://npm.pkg.github.com/download/@gorgias/design-tokens/0.11.4/44e8e159b3a75f452426c6b2a25758afc0e3f673}
 
@@ -5125,6 +5152,9 @@ packages:
 
   '@gorgias/sdk-client@0.9.20':
     resolution: {integrity: sha512-JqKN9D7U2W+VoQrejMvrlCd+4xtIAPjvr6c8tv31GGV64n3Cy6+wb2e5mn4OfCxcFMQukByhArP7urn4s53SvA==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.20/af5e163e50e9e62caedf1e42099ce9fc72353c7b}
+
+  '@gorgias/sdk-client@0.9.21':
+    resolution: {integrity: sha512-YRS90lf1yneSu1SPWNtLiGQHbNEtc2aGJy7vQGi7K/zgLGygOKuYiR/4bnm0Q6G07f6VR9atVbF/wAUAtta/rg==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-client/0.9.21/da71d5d460c1272828c1f111809cf5793fb36828}
 
   '@gorgias/sdk-mocks@0.14.0':
     resolution: {integrity: sha512-IfzkQ9ydCgG36zCZcxDDhsPiwdewzsQ8iE0oEg6sPl+d8PyCG/W7K8QapzEbOmJeGaN6Hag/BwopGBobz6R7uQ==, tarball: https://npm.pkg.github.com/download/@gorgias/sdk-mocks/0.14.0/20d87b7a4f4e10eaadb988c5a75e93892950c157}
@@ -17625,6 +17655,27 @@ snapshots:
 
   '@gorgias/convert-types@0.4.23': {}
 
+  '@gorgias/customer-segmentation-client@0.2.9':
+    dependencies:
+      '@gorgias/customer-segmentation-types': 0.2.7
+      '@gorgias/sdk-client': 0.9.21
+      axios: 1.13.5(debug@4.4.3)
+    transitivePeerDependencies:
+      - debug
+
+  '@gorgias/customer-segmentation-queries@0.2.9(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
+    dependencies:
+      '@gorgias/customer-segmentation-client': 0.2.9
+      '@gorgias/customer-segmentation-types': 0.2.7
+      '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
+    transitivePeerDependencies:
+      - debug
+      - react
+      - react-dom
+      - react-native
+
+  '@gorgias/customer-segmentation-types@0.2.7': {}
+
   '@gorgias/design-tokens@0.11.4': {}
 
   '@gorgias/ecommerce-storage-client@0.2.11':
@@ -17881,6 +17932,12 @@ snapshots:
       - debug
 
   '@gorgias/sdk-client@0.9.20':
+    dependencies:
+      axios: 1.13.5(debug@4.4.3)
+    transitivePeerDependencies:
+      - debug
+
+  '@gorgias/sdk-client@0.9.21':
     dependencies:
       axios: 1.13.5(debug@4.4.3)
     transitivePeerDependencies:

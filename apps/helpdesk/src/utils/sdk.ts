@@ -2,6 +2,7 @@ import { gorgiasAppsAuthInterceptor } from '@repo/api-resources'
 import { isProduction, isStaging } from '@repo/utils'
 
 import * as convert from '@gorgias/convert-client'
+import * as customerSegmentation from '@gorgias/customer-segmentation-client'
 import * as ecommerceStorage from '@gorgias/ecommerce-storage-client'
 import * as helpdesk from '@gorgias/helpdesk-client'
 import * as knowledgeService from '@gorgias/knowledge-service-client'
@@ -19,6 +20,12 @@ export function initSDKs() {
         headers: {
             'X-CSRF-Token': window.CSRF_TOKEN,
             'X-Gorgias-User-Client': 'web',
+        },
+    })
+
+    customerSegmentation.setDefaultConfig({
+        headers: {
+            'X-CSRF-Token': window.CSRF_TOKEN,
         },
     })
 
