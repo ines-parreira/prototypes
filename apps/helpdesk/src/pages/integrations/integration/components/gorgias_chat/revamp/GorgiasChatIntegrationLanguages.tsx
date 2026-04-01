@@ -6,6 +6,7 @@ import {
     ButtonIntent,
     ButtonSize,
     ButtonVariant,
+    Icon,
     ListItem,
     Select,
 } from '@gorgias/axiom'
@@ -61,6 +62,16 @@ export const GorgiasChatIntegrationLanguagesRevamp = ({
     return (
         <GorgiasChatRevampLayout integration={integration}>
             <div className={css.languagesTab}>
+                <LanguagesCard
+                    languagesRows={languagesRows}
+                    isUpdatePending={isUpdatePending}
+                    isOneClickInstallation={isOneClickInstallation}
+                    onClickSetDefault={handleUpdateDefaultLanguage}
+                    onClickDelete={async (language, onSuccess) => {
+                        await deleteLanguage(language)
+                        onSuccess?.()
+                    }}
+                />
                 <div className={css.addLanguageWrapper}>
                     <Select
                         items={languagesAvailable}
@@ -73,11 +84,12 @@ export const GorgiasChatIntegrationLanguagesRevamp = ({
                             <Button
                                 ref={ref}
                                 size={ButtonSize.Md}
-                                variant={ButtonVariant.Primary}
+                                variant={ButtonVariant.Secondary}
                                 intent={ButtonIntent.Regular}
                                 isDisabled={isUpdatePending}
+                                leadingSlot={<Icon name="add-plus" />}
                             >
-                                Add Language
+                                Add language
                             </Button>
                         )}
                     >
@@ -86,16 +98,6 @@ export const GorgiasChatIntegrationLanguagesRevamp = ({
                         )}
                     </Select>
                 </div>
-                <LanguagesCard
-                    languagesRows={languagesRows}
-                    isUpdatePending={isUpdatePending}
-                    isOneClickInstallation={isOneClickInstallation}
-                    onClickSetDefault={handleUpdateDefaultLanguage}
-                    onClickDelete={async (language, onSuccess) => {
-                        await deleteLanguage(language)
-                        onSuccess?.()
-                    }}
-                />
             </div>
         </GorgiasChatRevampLayout>
     )

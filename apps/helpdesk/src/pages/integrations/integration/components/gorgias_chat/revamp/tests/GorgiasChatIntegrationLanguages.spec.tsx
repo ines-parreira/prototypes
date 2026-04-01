@@ -60,7 +60,8 @@ jest.mock('@gorgias/axiom', () => ({
     ),
     ButtonIntent: { Regular: 'regular' },
     ButtonSize: { Md: 'md' },
-    ButtonVariant: { Primary: 'primary' },
+    ButtonVariant: { Primary: 'primary', Secondary: 'secondary' },
+    Icon: ({ name }: { name: string }) => <span data-icon={name} />,
     ListItem: ({ id, label }: { id: string; label: string }) => (
         <li id={id}>{label}</li>
     ),
