@@ -2,9 +2,12 @@ import { render, screen } from '@testing-library/react'
 
 import { KnowledgeEditorGuidanceDiffView } from './KnowledgeEditorGuidanceDiffView'
 
-jest.mock('./DiffReadOnlyEditor', () => ({
-    DiffReadOnlyEditor: () => <div data-testid="diff-read-only-editor" />,
-}))
+jest.mock(
+    'common/knowledge-editor/components/DiffReadOnlyEditor/DiffReadOnlyEditor',
+    () => ({
+        DiffReadOnlyEditor: () => <div data-testid="diff-read-only-editor" />,
+    }),
+)
 
 describe('KnowledgeEditorGuidanceDiffView', () => {
     it('renders the diff editor content', () => {

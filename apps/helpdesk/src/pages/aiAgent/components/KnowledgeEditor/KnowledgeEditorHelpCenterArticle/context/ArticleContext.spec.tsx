@@ -29,7 +29,7 @@ const TestConsumer = () => {
             </div>
             <div data-testid="article-title">{state.title}</div>
             <div data-testid="article-content">{state.content}</div>
-            <div data-testid="article-mode">{state.articleMode}</div>
+            <div data-testid="article-mode">{state.mode}</div>
         </div>
     )
 }

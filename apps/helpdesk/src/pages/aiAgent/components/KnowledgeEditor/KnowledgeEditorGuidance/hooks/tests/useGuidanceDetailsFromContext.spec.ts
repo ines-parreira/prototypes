@@ -44,7 +44,7 @@ describe('useGuidanceDetailsFromContext', () => {
         guidance: mockGuidanceArticle,
         isUpdating: false,
         isAutoSaving: false,
-        guidanceMode: 'edit' as const,
+        mode: 'edit' as const,
         historicalVersion: null,
     }
 
@@ -507,38 +507,38 @@ describe('useGuidanceDetailsFromContext', () => {
         })
     })
 
-    describe('guidanceMode', () => {
+    describe('mode', () => {
         it('should return create mode from state', () => {
             mockUseGuidanceContext.mockReturnValue({
                 ...defaultContextValue,
-                state: { ...defaultState, guidanceMode: 'create' },
+                state: { ...defaultState, mode: 'create' },
             })
 
             const { result } = renderHook(() => useGuidanceDetailsFromContext())
 
-            expect(result.current.guidanceMode).toBe('create')
+            expect(result.current.mode).toBe('create')
         })
 
         it('should return edit mode from state', () => {
             mockUseGuidanceContext.mockReturnValue({
                 ...defaultContextValue,
-                state: { ...defaultState, guidanceMode: 'edit' },
+                state: { ...defaultState, mode: 'edit' },
             })
 
             const { result } = renderHook(() => useGuidanceDetailsFromContext())
 
-            expect(result.current.guidanceMode).toBe('edit')
+            expect(result.current.mode).toBe('edit')
         })
 
         it('should return read mode from state', () => {
             mockUseGuidanceContext.mockReturnValue({
                 ...defaultContextValue,
-                state: { ...defaultState, guidanceMode: 'read' },
+                state: { ...defaultState, mode: 'read' },
             })
 
             const { result } = renderHook(() => useGuidanceDetailsFromContext())
 
-            expect(result.current.guidanceMode).toBe('read')
+            expect(result.current.mode).toBe('read')
         })
     })
 
@@ -658,7 +658,7 @@ describe('useGuidanceDetailsFromContext', () => {
             expect(result.current).toHaveProperty('isUpdating')
             expect(result.current).toHaveProperty('isDraft')
             expect(result.current).toHaveProperty('isViewingHistoricalVersion')
-            expect(result.current).toHaveProperty('guidanceMode')
+            expect(result.current).toHaveProperty('mode')
         })
     })
 })

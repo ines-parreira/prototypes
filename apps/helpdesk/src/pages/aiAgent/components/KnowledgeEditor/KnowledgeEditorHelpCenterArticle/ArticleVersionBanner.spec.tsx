@@ -99,7 +99,7 @@ describe('ArticleVersionBanner', () => {
         mockUseArticleContext.mockReturnValue({
             state: {
                 historicalVersion: null,
-                articleMode: 'read',
+                mode: 'read',
                 currentLocale: 'en',
                 article: { id: 123 } as any,
             },
@@ -245,7 +245,7 @@ describe('ArticleVersionBanner', () => {
             it('renders checked toggle when in diff mode on draft', () => {
                 mockUseArticleContext.mockReturnValue({
                     state: {
-                        articleMode: 'diff',
+                        mode: 'diff',
                         historicalVersion: null,
                         currentLocale: 'en',
                         article: { id: 123 } as any,
@@ -281,7 +281,7 @@ describe('ArticleVersionBanner', () => {
 
                 mockUseArticleContext.mockReturnValue({
                     state: {
-                        articleMode: 'read',
+                        mode: 'read',
                         historicalVersion: null,
                         currentLocale: 'en',
                         article: { id: 123 } as any,
@@ -343,7 +343,7 @@ describe('ArticleVersionBanner', () => {
 
                 mockUseArticleContext.mockReturnValue({
                     state: {
-                        articleMode: 'diff',
+                        mode: 'diff',
                         historicalVersion: null,
                         currentLocale: 'en',
                         article: { id: 123 } as any,
@@ -467,7 +467,7 @@ describe('ArticleVersionBanner', () => {
             })
             mockUseArticleContext.mockReturnValue({
                 state: {
-                    articleMode: 'read',
+                    mode: 'read',
                     historicalVersion,
                     currentLocale: 'en',
                     article: { id: 123 } as any,
@@ -498,7 +498,7 @@ describe('ArticleVersionBanner', () => {
         it('should not render commit message when not provided', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
-                    articleMode: 'read',
+                    mode: 'read',
                     historicalVersion: {
                         ...historicalVersion,
                         commitMessage: undefined,
@@ -556,7 +556,7 @@ describe('ArticleVersionBanner', () => {
             it('renders conversation-specific copy when initialVersionId matches historicalVersion', () => {
                 mockUseArticleContext.mockReturnValue({
                     state: {
-                        articleMode: 'read',
+                        mode: 'read',
                         historicalVersion,
                         currentLocale: 'en',
                         article: { id: 123 } as any,
@@ -585,7 +585,7 @@ describe('ArticleVersionBanner', () => {
             it('renders default copy when initialVersionId differs from viewed version', () => {
                 mockUseArticleContext.mockReturnValue({
                     state: {
-                        articleMode: 'read',
+                        mode: 'read',
                         historicalVersion,
                         currentLocale: 'en',
                         article: { id: 123 } as any,
@@ -636,7 +636,7 @@ describe('ArticleVersionBanner', () => {
             it('should render checked toggle when in diff mode', () => {
                 mockUseArticleContext.mockReturnValue({
                     state: {
-                        articleMode: 'diff',
+                        mode: 'diff',
                         historicalVersion,
                         currentLocale: 'en',
                         article: { id: 123 } as any,
@@ -755,7 +755,7 @@ describe('ArticleVersionBanner', () => {
             it('should dispatch SET_MODE with "read" when toggle is clicked off', async () => {
                 mockUseArticleContext.mockReturnValue({
                     state: {
-                        articleMode: 'diff',
+                        mode: 'diff',
                         historicalVersion,
                         currentLocale: 'en',
                         article: { id: 123 } as any,
@@ -792,7 +792,7 @@ describe('ArticleVersionBanner', () => {
         it('should not render the diff toggle', () => {
             mockUseArticleContext.mockReturnValue({
                 state: {
-                    articleMode: 'read',
+                    mode: 'read',
                     historicalVersion: null,
                     currentLocale: 'en',
                     article: { id: 123 } as any,

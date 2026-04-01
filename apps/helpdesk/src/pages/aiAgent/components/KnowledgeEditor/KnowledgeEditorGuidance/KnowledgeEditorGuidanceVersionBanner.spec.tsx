@@ -73,7 +73,7 @@ const defaultMockState: VersionBannerState = {
 const defaultContextValue = {
     state: {
         historicalVersion: null,
-        guidanceMode: 'read' as const,
+        mode: 'read' as const,
         guidance: { id: 1 },
     },
     dispatch: mockDispatch,
@@ -282,7 +282,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                         publishedDatetime: '2025-03-15T14:30:00Z',
                         commitMessage: 'Fixed typo in greeting',
                     },
-                    guidanceMode: 'read' as const,
+                    mode: 'read' as const,
                     guidance: { id: 1 },
                 },
                 dispatch: mockDispatch,
@@ -313,7 +313,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                         content: 'Old content',
                         publishedDatetime: '2025-03-15T14:30:00Z',
                     },
-                    guidanceMode: 'read' as const,
+                    mode: 'read' as const,
                     guidance: { id: 1 },
                 },
                 dispatch: mockDispatch,
@@ -376,7 +376,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                             content: 'Old content',
                             publishedDatetime: '2025-03-15T14:30:00Z',
                         },
-                        guidanceMode: 'read' as const,
+                        mode: 'read' as const,
                         guidance: { id: 1 },
                     },
                     dispatch: mockDispatch,
@@ -410,7 +410,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                             content: 'Old content',
                             publishedDatetime: '2025-03-15T14:30:00Z',
                         },
-                        guidanceMode: 'read' as const,
+                        mode: 'read' as const,
                         guidance: { id: 1 },
                     },
                     dispatch: mockDispatch,
@@ -450,7 +450,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
             it('renders unchecked toggle when not in diff mode', () => {
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
-                        guidanceMode: 'read',
+                        mode: 'read',
                         historicalVersion: {
                             versionId: 42,
                             version: 3,
@@ -478,7 +478,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
             it('renders checked toggle when in diff mode', () => {
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
-                        guidanceMode: 'diff',
+                        mode: 'diff',
                         historicalVersion: {
                             versionId: 42,
                             version: 3,
@@ -507,7 +507,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 const user = userEvent.setup()
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
-                        guidanceMode: 'read',
+                        mode: 'read',
                         historicalVersion: {
                             versionId: 42,
                             version: 3,
@@ -552,7 +552,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 const user = userEvent.setup()
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
-                        guidanceMode: 'read',
+                        mode: 'read',
                         historicalVersion: {
                             versionId: 42,
                             version: 3,
@@ -596,7 +596,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 const user = userEvent.setup()
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
-                        guidanceMode: 'diff',
+                        mode: 'diff',
                         historicalVersion: {
                             versionId: 42,
                             version: 3,
@@ -630,7 +630,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 })
                 mockUseGuidanceContext.mockReturnValue({
                     state: {
-                        guidanceMode: 'read',
+                        mode: 'read',
                         historicalVersion: {
                             versionId: 42,
                             version: 3,
@@ -679,7 +679,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 it('renders diff toggle when viewing draft with published version', () => {
                     mockUseGuidanceContext.mockReturnValue({
                         state: {
-                            guidanceMode: 'read',
+                            mode: 'read',
                             historicalVersion: null,
                             guidance: { id: 1 },
                         },
@@ -703,7 +703,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                 it('renders checked toggle when in diff mode on draft', () => {
                     mockUseGuidanceContext.mockReturnValue({
                         state: {
-                            guidanceMode: 'diff',
+                            mode: 'diff',
                             historicalVersion: null,
                             guidance: { id: 1 },
                         },
@@ -728,7 +728,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     const user = userEvent.setup()
                     mockUseGuidanceContext.mockReturnValue({
                         state: {
-                            guidanceMode: 'read',
+                            mode: 'read',
                             historicalVersion: null,
                             guidance: { id: 1 },
                         },
@@ -769,7 +769,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     const user = userEvent.setup()
                     mockUseGuidanceContext.mockReturnValue({
                         state: {
-                            guidanceMode: 'read',
+                            mode: 'read',
                             historicalVersion: null,
                             guidance: { id: 1 },
                         },
@@ -823,7 +823,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     const user = userEvent.setup()
                     mockUseGuidanceContext.mockReturnValue({
                         state: {
-                            guidanceMode: 'read',
+                            mode: 'read',
                             historicalVersion: null,
                             guidance: { id: 1 },
                         },
@@ -866,7 +866,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     const user = userEvent.setup()
                     mockUseGuidanceContext.mockReturnValue({
                         state: {
-                            guidanceMode: 'read',
+                            mode: 'read',
                             historicalVersion: null,
                             guidance: { id: 1 },
                         },
@@ -904,7 +904,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     const user = userEvent.setup()
                     mockUseGuidanceContext.mockReturnValue({
                         state: {
-                            guidanceMode: 'read',
+                            mode: 'read',
                             historicalVersion: null,
                             guidance: { id: 1 },
                         },
@@ -934,7 +934,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     const user = userEvent.setup()
                     mockUseGuidanceContext.mockReturnValue({
                         state: {
-                            guidanceMode: 'diff',
+                            mode: 'diff',
                             historicalVersion: null,
                             guidance: { id: 1 },
                         },
@@ -969,7 +969,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
                     })
                     mockUseGuidanceContext.mockReturnValue({
                         state: {
-                            guidanceMode: 'read',
+                            mode: 'read',
                             historicalVersion: null,
                             guidance: { id: 1 },
                         },
@@ -1001,7 +1001,7 @@ describe('KnowledgeEditorGuidanceVersionBanner', () => {
             })
             mockUseGuidanceContext.mockReturnValue({
                 state: {
-                    guidanceMode: 'read',
+                    mode: 'read',
                     historicalVersion: null,
                     guidance: { id: 1 },
                 },

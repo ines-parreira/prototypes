@@ -2,9 +2,9 @@ import { useCallback, useEffect } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
+import { areTrimmedStringsEqual } from 'common/knowledge-editor/utils'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
-import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 
 import { KnowledgeEditorSidePanelGuidance } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelGuidance'
 import { KnowledgeEditorTopBar } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBar'
@@ -48,7 +48,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
     )
 
     const {
-        guidanceMode,
+        mode,
         isFullscreen,
         isDetailsView,
         isUpdating,
@@ -62,7 +62,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
         comparisonVersion,
     } = useGuidanceStore(
         useShallow((storeState) => ({
-            guidanceMode: storeState.state.guidanceMode,
+            mode: storeState.state.mode,
             isFullscreen: storeState.state.isFullscreen,
             isDetailsView: storeState.state.isDetailsView,
             isUpdating: storeState.state.isUpdating,
@@ -84,7 +84,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
     const hasPendingChanges = useGuidanceStore((storeState) => {
         const state = storeState.state
 
-        if (state.guidanceMode === 'read' || state.guidanceMode === 'diff') {
+        if (state.mode === 'read' || state.mode === 'diff') {
             return false
         }
 
@@ -125,14 +125,12 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
         <div className={css.knowledgeEditorContainer}>
             <KnowledgeEditorTopBar
                 onClickPrevious={
-                    guidanceMode !== 'edit' && guidanceMode !== 'diff'
+                    mode !== 'edit' && mode !== 'diff'
                         ? onClickPrevious
                         : undefined
                 }
                 onClickNext={
-                    guidanceMode !== 'edit' && guidanceMode !== 'diff'
-                        ? onClickNext
-                        : undefined
+                    mode !== 'edit' && mode !== 'diff' ? onClickNext : undefined
                 }
                 title="Guidance"
                 isFullscreen={isFullscreen}
@@ -156,7 +154,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                           ? new Date(guidanceLastUpdated)
                           : undefined
                 }
-                guidanceMode={guidanceMode}
+                editorMode={mode}
                 shouldHideFullscreenButton={shouldHideFullscreenButton}
             >
                 <GuidanceToolbarControls />
@@ -166,7 +164,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                     <div className={css.editorContainer}>
                         <KnowledgeEditorGuidanceVersionBanner />
 
-                        {guidanceMode === 'read' && (
+                        {mode === 'read' && (
                             <KnowledgeEditorGuidanceReadView
                                 content={content}
                                 title={title}
@@ -175,7 +173,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                             />
                         )}
 
-                        {guidanceMode === 'diff' && (
+                        {mode === 'diff' && (
                             <KnowledgeEditorGuidanceDiffView
                                 oldTitle={
                                     historicalVersion
@@ -202,8 +200,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                             />
                         )}
 
-                        {(guidanceMode === 'edit' ||
-                            guidanceMode === 'create') && (
+                        {(mode === 'edit' || mode === 'create') && (
                             <KnowledgeEditorGuidanceEditView
                                 content={content}
                                 title={title}

@@ -28,7 +28,7 @@ const defaultMockState = {
 
 const defaultContextState = {
     state: {
-        articleMode: 'edit' as ArticleModeType,
+        mode: 'edit' as ArticleModeType,
     },
 }
 
@@ -97,7 +97,7 @@ describe('ArticleDeleteModal', () => {
     it('renders Cancel button when in read mode', () => {
         mockUseArticleContext.mockReturnValue({
             state: {
-                articleMode: 'read' as ArticleModeType,
+                mode: 'read' as ArticleModeType,
             },
         })
 
@@ -137,7 +137,7 @@ describe('ArticleDeleteModal', () => {
         const user = userEvent.setup()
         mockUseArticleContext.mockReturnValue({
             state: {
-                articleMode: 'read' as ArticleModeType,
+                mode: 'read' as ArticleModeType,
             },
         })
 
@@ -187,7 +187,7 @@ describe('ArticleDeleteModal', () => {
         })
         mockUseArticleContext.mockReturnValue({
             state: {
-                articleMode: 'read' as ArticleModeType,
+                mode: 'read' as ArticleModeType,
             },
         })
 

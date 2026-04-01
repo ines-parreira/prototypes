@@ -73,7 +73,7 @@ const createMockContextValue = (
     overrides: Partial<ArticleContextValue> = {},
 ): ArticleContextValue => {
     const defaultState = {
-        articleMode: 'edit' as const,
+        mode: 'edit' as const,
         isFullscreen: false,
         isDetailsView: true,
         title: 'Test Article',
@@ -235,7 +235,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'read',
+                    mode: 'read',
                 },
             })
             mockContext.dispatch = mockDispatch
@@ -367,7 +367,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'edit',
+                    mode: 'edit',
                     title: 'Original Title',
                     content: '<p>Original content</p>',
                     savedSnapshot: {
@@ -525,7 +525,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'create',
+                    mode: 'create',
                     translationMode: 'new',
                     article: undefined,
                     title: 'New Article',
@@ -602,7 +602,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'create',
+                    mode: 'create',
                     translationMode: 'new',
                     article: undefined,
                     title: 'New Article',
@@ -639,7 +639,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'create',
+                    mode: 'create',
                     translationMode: 'new',
                 },
             })
@@ -671,7 +671,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'create',
+                    mode: 'create',
                     translationMode: 'new',
                 },
             })
@@ -705,7 +705,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'create',
+                    mode: 'create',
                     translationMode: 'new',
                 },
             })
@@ -739,7 +739,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'create',
+                    mode: 'create',
                     translationMode: 'new',
                 },
             })
@@ -773,7 +773,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'create',
+                    mode: 'create',
                     translationMode: 'new',
                 },
             })
@@ -807,7 +807,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'create',
+                    mode: 'create',
                     translationMode: 'new',
                     article: undefined,
                     savedSnapshot: { title: '', content: '' },
@@ -854,7 +854,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'edit',
+                    mode: 'edit',
                     translationMode: 'new',
                     currentLocale: 'fr-FR',
                     savedSnapshot: { title: '', content: '' },
@@ -918,7 +918,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'edit',
+                    mode: 'edit',
                     translationMode: 'new',
                     article: undefined,
                     savedSnapshot: { title: '', content: '' },
@@ -952,7 +952,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'edit',
+                    mode: 'edit',
                     translationMode: 'new',
                     savedSnapshot: { title: '', content: '' },
                 },
@@ -987,7 +987,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'edit',
+                    mode: 'edit',
                     translationMode: 'existing',
                     savedSnapshot: {
                         title: 'Test Article',
@@ -1052,7 +1052,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'edit',
+                    mode: 'edit',
                     translationMode: 'existing',
                     article: undefined,
                     savedSnapshot: { title: 'Old', content: 'Old' },
@@ -1086,7 +1086,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'edit',
+                    mode: 'edit',
                     translationMode: 'existing',
                     savedSnapshot: { title: 'Old', content: 'Old' },
                 },
@@ -1121,7 +1121,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'create',
+                    mode: 'create',
                     translationMode: 'new',
                     savedSnapshot: { title: '', content: '' },
                 },
@@ -1159,7 +1159,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'edit',
+                    mode: 'edit',
                     translationMode: 'existing',
                     savedSnapshot: { title: 'Old', content: 'Old' },
                 },
@@ -1197,7 +1197,7 @@ describe('useArticleAutoSave', () => {
             const mockContext = createMockContextValue({
                 state: {
                     ...createMockContextValue().state,
-                    articleMode: 'edit',
+                    mode: 'edit',
                     translationMode: 'new',
                     savedSnapshot: { title: '', content: '' },
                 },

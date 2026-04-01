@@ -25,7 +25,7 @@ jest.mock('./KnowledgeEditorSnippetLoader', () => ({
     ),
 }))
 
-jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
+jest.mock('pages/aiAgent/components/PlaygroundPanel/PlaygroundPanel', () => ({
     PlaygroundPanel: ({ onClose }: { onClose: () => void }) => (
         <div data-testid="playground-panel" data-name="playground-panel">
             <button onClick={onClose}>Close Playground</button>
@@ -34,6 +34,18 @@ jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    Box: ({
+        children,
+        className,
+        ...props
+    }: Record<string, unknown> & {
+        children?: React.ReactNode
+        className?: string
+    }) => (
+        <div className={className} {...props}>
+            {children}
+        </div>
+    ),
     Card: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="axiom-card">{children}</div>
     ),

@@ -17,7 +17,7 @@ export type GuidanceDetailsData = {
     isUpdating: boolean
     isDraft: boolean
     isViewingHistoricalVersion: boolean
-    guidanceMode: GuidanceModeType
+    mode: GuidanceModeType
     visibilityConflict: {
         isOpen: boolean
         message: string
@@ -52,7 +52,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
         isAutoSaving,
         isGuidanceCurrent,
         historicalPublishedDatetime,
-        guidanceMode,
+        mode,
         createdDatetime,
         lastUpdated,
     } = useGuidanceStore(
@@ -63,7 +63,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
             isGuidanceCurrent: storeState.state.guidance?.isCurrent,
             historicalPublishedDatetime:
                 storeState.state.historicalVersion?.publishedDatetime,
-            guidanceMode: storeState.state.guidanceMode,
+            mode: storeState.state.mode,
             createdDatetime: storeState.guidanceArticle?.createdDatetime,
             lastUpdated: storeState.guidanceArticle?.lastUpdated,
         })),
@@ -112,7 +112,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
                 (isAtLimit && !visibility),
             isDraft,
             isViewingHistoricalVersion,
-            guidanceMode,
+            mode,
             visibilityConflict: {
                 isOpen: visibilityConflict.isOpen,
                 message: visibilityConflict.message,
@@ -130,7 +130,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
             isDraft,
             isDisabled,
             isViewingHistoricalVersion,
-            guidanceMode,
+            mode,
             visibilityConflict.isOpen,
             visibilityConflict.message,
             closeVisibilityConflictModal,

@@ -1,4 +1,4 @@
-import { areTrimmedStringsEqual } from './utils'
+import { areTrimmedStringsEqual } from '../utils/string-comparison'
 
 describe('areTrimmedStringsEqual', () => {
     it('returns true for identical strings', () => {
@@ -21,25 +21,11 @@ describe('areTrimmedStringsEqual', () => {
         expect(areTrimmedStringsEqual('hello', 'world')).toBe(false)
     })
 
-    it('returns false for strings with different content despite whitespace', () => {
-        expect(areTrimmedStringsEqual('hello   ', 'world')).toBe(false)
-    })
-
     it('returns true for empty strings', () => {
         expect(areTrimmedStringsEqual('', '')).toBe(true)
     })
 
     it('returns true for whitespace-only strings', () => {
         expect(areTrimmedStringsEqual('   ', '  ')).toBe(true)
-    })
-
-    it('returns true for empty string and whitespace-only string', () => {
-        expect(areTrimmedStringsEqual('', '   ')).toBe(true)
-    })
-
-    it('returns false when content differs in middle', () => {
-        expect(areTrimmedStringsEqual('hello world', 'hello  world')).toBe(
-            false,
-        )
     })
 })

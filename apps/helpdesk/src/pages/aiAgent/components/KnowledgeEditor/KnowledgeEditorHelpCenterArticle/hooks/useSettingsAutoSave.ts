@@ -373,7 +373,7 @@ export const useSettingsAutoSave = () => {
         ],
     )
 
-    const isCreationMode = state.articleMode === 'create' && !state.article?.id
+    const isCreationMode = state.mode === 'create' && !state.article?.id
 
     const autoSave = useMemo(
         () => ({

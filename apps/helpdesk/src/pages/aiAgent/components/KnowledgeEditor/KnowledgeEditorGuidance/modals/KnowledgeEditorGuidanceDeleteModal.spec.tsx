@@ -28,7 +28,7 @@ const defaultMockState = {
 
 const defaultContextState = {
     state: {
-        guidanceMode: 'edit' as GuidanceModeType,
+        mode: 'edit' as GuidanceModeType,
     },
 }
 
@@ -97,7 +97,7 @@ describe('KnowledgeEditorGuidanceDeleteModal', () => {
     it('renders Cancel button when in read mode', () => {
         mockUseGuidanceContext.mockReturnValue({
             state: {
-                guidanceMode: 'read' as GuidanceModeType,
+                mode: 'read' as GuidanceModeType,
             },
         })
 
@@ -137,7 +137,7 @@ describe('KnowledgeEditorGuidanceDeleteModal', () => {
         const user = userEvent.setup()
         mockUseGuidanceContext.mockReturnValue({
             state: {
-                guidanceMode: 'read' as GuidanceModeType,
+                mode: 'read' as GuidanceModeType,
             },
         })
 
@@ -187,7 +187,7 @@ describe('KnowledgeEditorGuidanceDeleteModal', () => {
         })
         mockUseGuidanceContext.mockReturnValue({
             state: {
-                guidanceMode: 'read' as GuidanceModeType,
+                mode: 'read' as GuidanceModeType,
             },
         })
 

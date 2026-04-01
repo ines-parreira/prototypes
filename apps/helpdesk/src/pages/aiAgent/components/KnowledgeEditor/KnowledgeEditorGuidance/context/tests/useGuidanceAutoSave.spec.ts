@@ -50,7 +50,7 @@ describe('useGuidanceAutoSave', () => {
     const mockOnUpdateFn = jest.fn()
 
     const defaultState: GuidanceState = {
-        guidanceMode: 'edit',
+        mode: 'edit',
         isFullscreen: false,
         isDetailsView: true,
         title: 'Test Title',
@@ -160,7 +160,7 @@ describe('useGuidanceAutoSave', () => {
 
         it('should not trigger autosave when in read mode', () => {
             ;(useGuidanceContext as jest.Mock).mockReturnValue({
-                state: { ...defaultState, guidanceMode: 'read' },
+                state: { ...defaultState, mode: 'read' },
                 dispatch: mockDispatch,
                 config: defaultConfig,
             })
@@ -325,7 +325,7 @@ describe('useGuidanceAutoSave', () => {
             ;(useGuidanceContext as jest.Mock).mockReturnValue({
                 state: {
                     ...defaultState,
-                    guidanceMode: 'create',
+                    mode: 'create',
                     guidance: undefined,
                 },
                 dispatch: mockDispatch,
@@ -350,7 +350,7 @@ describe('useGuidanceAutoSave', () => {
             ;(useGuidanceContext as jest.Mock).mockReturnValue({
                 state: {
                     ...defaultState,
-                    guidanceMode: 'create',
+                    mode: 'create',
                     guidance: undefined,
                     savedSnapshot: { title: '', content: '' },
                 },
@@ -423,7 +423,7 @@ describe('useGuidanceAutoSave', () => {
             ;(useGuidanceContext as jest.Mock).mockReturnValue({
                 state: {
                     ...defaultState,
-                    guidanceMode: 'create',
+                    mode: 'create',
                     guidance: undefined,
                     savedSnapshot: { title: '', content: '' },
                 },
@@ -627,7 +627,7 @@ describe('useGuidanceAutoSave', () => {
             ;(useGuidanceContext as jest.Mock).mockReturnValue({
                 state: {
                     ...defaultState,
-                    guidanceMode: 'create',
+                    mode: 'create',
                     guidance: undefined,
                     savedSnapshot: { title: '', content: '' },
                 },
@@ -683,7 +683,7 @@ describe('useGuidanceAutoSave', () => {
             ;(useGuidanceContext as jest.Mock).mockReturnValue({
                 state: {
                     ...defaultState,
-                    guidanceMode: 'create',
+                    mode: 'create',
                     guidance: undefined,
                     savedSnapshot: { title: '', content: '' },
                 },
@@ -777,7 +777,7 @@ describe('useGuidanceAutoSave', () => {
             ;(useGuidanceContext as jest.Mock).mockReturnValue({
                 state: {
                     ...defaultState,
-                    guidanceMode: 'create',
+                    mode: 'create',
                     guidance: undefined,
                     savedSnapshot: { title: '', content: '' },
                 },

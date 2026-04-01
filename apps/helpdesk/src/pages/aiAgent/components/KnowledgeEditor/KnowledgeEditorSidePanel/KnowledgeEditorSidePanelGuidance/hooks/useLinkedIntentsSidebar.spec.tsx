@@ -4,7 +4,7 @@ import { useLinkedIntentsSidebar } from './useLinkedIntentsSidebar'
 
 type MockGuidanceStoreState = {
     state: {
-        guidanceMode: 'read' | 'edit' | 'create' | 'diff'
+        mode: 'read' | 'edit' | 'create' | 'diff'
         guidance:
             | {
                   id: number
@@ -37,7 +37,7 @@ jest.mock(
 
 const createMockGuidanceStoreState = (): MockGuidanceStoreState => ({
     state: {
-        guidanceMode: 'edit',
+        mode: 'edit',
         guidance: {
             id: 123,
             locale: 'en',
@@ -136,7 +136,7 @@ describe('useLinkedIntentsSidebar', () => {
     })
 
     it('builds diff parts for draft vs published comparisons', () => {
-        mockGuidanceStoreState.state.guidanceMode = 'diff'
+        mockGuidanceStoreState.state.mode = 'diff'
         mockGuidanceStoreState.state.guidance!.intents = ['order::status']
         mockGuidanceStoreState.state.comparisonVersion = {
             intents: ['shipping::delay'],
@@ -158,7 +158,7 @@ describe('useLinkedIntentsSidebar', () => {
     })
 
     it('builds diff parts for historical vs current published comparisons', () => {
-        mockGuidanceStoreState.state.guidanceMode = 'diff'
+        mockGuidanceStoreState.state.mode = 'diff'
         mockGuidanceStoreState.state.historicalVersion = {
             publishedDatetime: '2026-01-01T00:00:00.000Z',
             intents: ['shipping::delay'],

@@ -55,7 +55,7 @@ export const KnowledgeEditorSidePanelHelpCenterArticle = () => {
             state.article.translation.draft_version_id
     }
 
-    const isCreateMode = state.articleMode === 'create'
+    const isCreateMode = state.mode === 'create'
 
     return (
         <KnowledgeEditorSidePanel

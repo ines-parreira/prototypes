@@ -2,7 +2,9 @@ import { useCallback, useMemo, useRef, useState } from 'react'
 
 import classNames from 'classnames'
 import type { ContentBlock, ContentState as ContentStateType } from 'draft-js'
+// eslint-disable-next-line react-doctor/prefer-dynamic-import -- draft-js is required synchronously for ContentState manipulation
 import { EditorState } from 'draft-js'
+// eslint-disable-next-line react-doctor/prefer-dynamic-import -- draft-js plugin requires synchronous import
 import Editor from 'draft-js-plugins-editor'
 
 import { draftjsGorgiasCustomBlockRenderers } from 'common/editor'

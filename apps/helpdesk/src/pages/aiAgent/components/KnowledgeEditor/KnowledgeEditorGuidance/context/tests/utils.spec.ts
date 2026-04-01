@@ -1,4 +1,4 @@
-import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
+import { areTrimmedStringsEqual } from 'common/knowledge-editor/utils'
 
 describe('areTrimmedStringsEqual', () => {
     it('should return true for identical strings', () => {

@@ -61,7 +61,7 @@ describe('useArticleEngagementFromContext', () => {
     const defaultContextValue: Partial<ArticleContextValue> = {
         state: {
             article: mockArticle,
-            articleMode: 'edit',
+            mode: 'edit',
             isFullscreen: false,
             isDetailsView: true,
             title: 'Test Engagement Article',

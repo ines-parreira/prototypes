@@ -7,13 +7,17 @@ import {
     useState,
 } from 'react'
 
-import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
+import {
+    canEdit as baseCanEdit,
+    hasDraft as baseHasDraft,
+    hasPendingChanges as baseHasPendingChanges,
+    isFormValid as baseIsFormValid,
+} from 'common/knowledge-editor/utils'
 import { usePlaygroundPanelInKnowledgeEditor } from 'pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor'
 
 import { articleReducer } from './ArticleReducer'
 import type { ArticleContextConfig, ArticleContextValue } from './types'
 import { createInitialState } from './types'
-import { computeCanEdit, computeHasDraft } from './utils'
 
 const ArticleContext = createContext<ArticleContextValue | null>(null)
 
@@ -65,28 +69,40 @@ export const ArticleContextProvider = ({ config, children }: ProviderProps) => {
         shouldHideFullscreenButton,
     } = usePlaygroundPanelInKnowledgeEditor(state.isFullscreen)
 
-    const hasPendingContentChanges = useMemo(() => {
-        if (state.articleMode === 'read' || state.articleMode === 'diff')
-            return false
-        return (
-            !areTrimmedStringsEqual(state.title, state.savedSnapshot.title) ||
-            state.content !== state.savedSnapshot.content
-        )
-    }, [state.title, state.content, state.savedSnapshot, state.articleMode])
-
-    const isFormValid = useMemo(
-        () => state.title.trim() !== '' && state.content.trim() !== '',
-        [state.title, state.content],
+    const hasPendingContentChanges = useMemo(
+        () => baseHasPendingChanges(state),
+        [state],
     )
 
+    const isFormValid = useMemo(() => baseIsFormValid(state), [state])
+
     const hasDraft = useMemo(
-        () => computeHasDraft(state.article),
+        () =>
+            baseHasDraft(
+                state.article
+                    ? {
+                          draftVersionId:
+                              state.article.translation.draft_version_id,
+                          publishedVersionId:
+                              state.article.translation.published_version_id,
+                      }
+                    : undefined,
+            ),
         [state.article],
     )
 
     const canEdit = useMemo(
-        () => computeCanEdit(state.article, hasDraft),
-        [state.article, hasDraft],
+        () =>
+            state.article
+                ? baseCanEdit({
+                      isCurrent: state.article.translation.is_current,
+                      draftVersionId:
+                          state.article.translation.draft_version_id,
+                      publishedVersionId:
+                          state.article.translation.published_version_id,
+                  })
+                : true,
+        [state.article],
     )
 
     const value = useMemo<ArticleContextValue>(

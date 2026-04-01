@@ -56,7 +56,7 @@ export const useArticleToolbar = (): ArticleToolbarData => {
     }, [dispatch])
 
     const onDiscard = useCallback(() => {
-        if (state.articleMode === 'create') {
+        if (state.mode === 'create') {
             const hasNoContent = !state.title && !state.content
             if (hasNoContent) {
                 config.onClose()
@@ -66,10 +66,10 @@ export const useArticleToolbar = (): ArticleToolbarData => {
         } else {
             dispatch({ type: 'SET_MODAL', payload: 'discard-draft' })
         }
-    }, [state.articleMode, state.title, state.content, config, dispatch])
+    }, [state.mode, state.title, state.content, config, dispatch])
 
     const toolbarState = getToolbarState(
-        state.articleMode,
+        state.mode,
         state.article?.translation.is_current,
         hasDraft,
         state.historicalVersion !== null,

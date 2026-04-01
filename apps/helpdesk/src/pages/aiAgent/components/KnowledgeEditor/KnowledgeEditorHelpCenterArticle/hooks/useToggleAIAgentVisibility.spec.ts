@@ -59,7 +59,7 @@ const createMockContextValue = (
     overrides: Partial<ArticleContextValue> = {},
 ): ArticleContextValue => {
     const defaultState = {
-        articleMode: 'edit' as const,
+        mode: 'edit' as const,
         isFullscreen: false,
         isDetailsView: true,
         title: 'Test Article',

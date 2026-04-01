@@ -2,6 +2,7 @@ import { useCallback, useRef } from 'react'
 
 import { useDebouncedCallback } from '@repo/hooks'
 
+import { areTrimmedStringsEqual } from 'common/knowledge-editor/utils'
 import { useNotify } from 'hooks/useNotify'
 import {
     useCreateArticle,
@@ -12,7 +13,6 @@ import {
     CustomerVisibilityEnum,
     VisibilityStatusEnum,
 } from 'models/helpCenter/types'
-import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
 import { slugify } from 'pages/settings/helpCenter/utils/helpCenter.utils'
 
 import { useArticleContext } from '../context/ArticleContext'
@@ -251,8 +251,7 @@ export const useArticleAutoSave = () => {
 
     const onChangeField = useCallback(
         (field: 'title' | 'content', value: string) => {
-            if (state.articleMode === 'read' || state.articleMode === 'diff')
-                return
+            if (state.mode === 'read' || state.mode === 'diff') return
 
             let newTitle = field === 'title' ? value : state.title
             const newContent = field === 'content' ? value : state.content
@@ -290,7 +289,7 @@ export const useArticleAutoSave = () => {
             triggerAutoSave({
                 title: newTitle,
                 content: newContent,
-                mode: state.articleMode,
+                mode: state.mode,
                 translationMode: state.translationMode,
                 articleId: state.article?.id,
                 savedSnapshot: state.savedSnapshot,
@@ -299,7 +298,7 @@ export const useArticleAutoSave = () => {
         [
             dispatch,
             triggerAutoSave,
-            state.articleMode,
+            state.mode,
             state.translationMode,
             state.title,
             state.content,

@@ -17,7 +17,7 @@ export const KnowledgeEditorGuidanceDeleteModal = () => {
         useDeleteModal()
 
     const cancelButtonText =
-        state.guidanceMode === 'read' ? 'Cancel' : 'Back to editing'
+        state.mode === 'read' ? 'Cancel' : 'Back to editing'
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose} size="sm">

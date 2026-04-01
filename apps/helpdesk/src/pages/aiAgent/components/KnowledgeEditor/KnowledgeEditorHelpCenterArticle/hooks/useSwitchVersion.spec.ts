@@ -86,7 +86,7 @@ describe('useSwitchVersion (Article)', () => {
     ): ArticleContextValue =>
         ({
             state: {
-                articleMode: 'edit',
+                mode: 'edit',
                 isFullscreen: false,
                 isDetailsView: true,
                 title: 'Test Article',

@@ -19,7 +19,7 @@ describe('guidanceReducer', () => {
     }
 
     const initialState: GuidanceState = {
-        guidanceMode: 'edit',
+        mode: 'edit',
         isFullscreen: false,
         isDetailsView: true,
         title: 'Test Title',
@@ -40,42 +40,42 @@ describe('guidanceReducer', () => {
     }
 
     describe('SET_MODE', () => {
-        it('should update guidanceMode to create', () => {
+        it('should update mode to create', () => {
             const result = guidanceReducer(initialState, {
                 type: 'SET_MODE',
                 payload: 'create',
             })
 
-            expect(result.guidanceMode).toBe('create')
+            expect(result.mode).toBe('create')
             expect(result.title).toBe(initialState.title)
         })
 
-        it('should update guidanceMode to read', () => {
+        it('should update mode to read', () => {
             const result = guidanceReducer(initialState, {
                 type: 'SET_MODE',
                 payload: 'read',
             })
 
-            expect(result.guidanceMode).toBe('read')
+            expect(result.mode).toBe('read')
         })
 
-        it('should update guidanceMode to edit', () => {
+        it('should update mode to edit', () => {
             const stateInRead = {
                 ...initialState,
-                guidanceMode: 'read' as const,
+                mode: 'read' as const,
             }
             const result = guidanceReducer(stateInRead, {
                 type: 'SET_MODE',
                 payload: 'edit',
             })
 
-            expect(result.guidanceMode).toBe('edit')
+            expect(result.mode).toBe('edit')
         })
 
         it('should reset hasAutoSavedInSession to false when switching to read mode', () => {
             const stateWithAutoSaved = {
                 ...initialState,
-                guidanceMode: 'edit' as const,
+                mode: 'edit' as const,
                 hasAutoSavedInSession: true,
             }
             const result = guidanceReducer(stateWithAutoSaved, {
@@ -89,7 +89,7 @@ describe('guidanceReducer', () => {
         it('should preserve hasAutoSavedInSession when switching to edit mode', () => {
             const stateWithAutoSaved = {
                 ...initialState,
-                guidanceMode: 'read' as const,
+                mode: 'read' as const,
                 hasAutoSavedInSession: true,
             }
             const result = guidanceReducer(stateWithAutoSaved, {
@@ -100,19 +100,19 @@ describe('guidanceReducer', () => {
             expect(result.hasAutoSavedInSession).toBe(true)
         })
 
-        it('should update guidanceMode to diff', () => {
+        it('should update mode to diff', () => {
             const result = guidanceReducer(initialState, {
                 type: 'SET_MODE',
                 payload: 'diff',
             })
 
-            expect(result.guidanceMode).toBe('diff')
+            expect(result.mode).toBe('diff')
         })
 
         it('should reset hasAutoSavedInSession to false when switching to diff mode', () => {
             const stateWithAutoSaved = {
                 ...initialState,
-                guidanceMode: 'edit' as const,
+                mode: 'edit' as const,
                 hasAutoSavedInSession: true,
             }
             const result = guidanceReducer(stateWithAutoSaved, {
@@ -146,7 +146,7 @@ describe('guidanceReducer', () => {
         it('should clear comparisonVersion outside diff mode', () => {
             const stateWithComparison = {
                 ...initialState,
-                guidanceMode: 'diff' as const,
+                mode: 'diff' as const,
                 comparisonVersion: {
                     title: 'Previous title',
                     content: 'Previous content',
@@ -164,7 +164,7 @@ describe('guidanceReducer', () => {
         it('should preserve hasAutoSavedInSession when switching to create mode', () => {
             const stateWithAutoSaved = {
                 ...initialState,
-                guidanceMode: 'edit' as const,
+                mode: 'edit' as const,
                 hasAutoSavedInSession: true,
             }
             const result = guidanceReducer(stateWithAutoSaved, {
@@ -745,27 +745,27 @@ describe('guidanceReducer', () => {
             expect(result.versionStatus).toBe('latest_draft')
         })
 
-        it('should set guidanceMode to read when switching to current version', () => {
+        it('should set mode to read when switching to current version', () => {
             const result = guidanceReducer(initialState, {
                 type: 'SWITCH_VERSION',
                 payload: newVersionGuidance,
             })
 
-            expect(result.guidanceMode).toBe('read')
+            expect(result.mode).toBe('read')
         })
 
-        it('should preserve guidanceMode when switching to latest_draft', () => {
+        it('should preserve mode when switching to latest_draft', () => {
             const stateCurrent = {
                 ...initialState,
                 versionStatus: 'current' as const,
-                guidanceMode: 'edit' as const,
+                mode: 'edit' as const,
             }
             const result = guidanceReducer(stateCurrent, {
                 type: 'SWITCH_VERSION',
                 payload: newVersionGuidance,
             })
 
-            expect(result.guidanceMode).toBe('edit')
+            expect(result.mode).toBe('edit')
         })
 
         it('should reset hasAutoSavedInSession to false when switching versions', () => {
@@ -938,7 +938,7 @@ describe('guidanceReducer', () => {
                 },
             })
 
-            expect(result.guidanceMode).toBe('read')
+            expect(result.mode).toBe('read')
             expect(result.guidance).toEqual(newArticle)
             expect(result.title).toBe('New Article Title')
             expect(result.content).toBe('New Article Content')
@@ -953,7 +953,7 @@ describe('guidanceReducer', () => {
                 },
             })
 
-            expect(result.guidanceMode).toBe('edit')
+            expect(result.mode).toBe('edit')
             expect(result.guidance).toEqual(newArticle)
         })
 
@@ -1064,17 +1064,17 @@ describe('guidanceReducer', () => {
             expect(result.content).toBe('Historical Content')
         })
 
-        it('should set guidanceMode to read', () => {
+        it('should set mode to read', () => {
             const stateInEdit = {
                 ...initialState,
-                guidanceMode: 'edit' as const,
+                mode: 'edit' as const,
             }
             const result = guidanceReducer(stateInEdit, {
                 type: 'VIEW_HISTORICAL_VERSION',
                 payload: historicalVersionPayload,
             })
 
-            expect(result.guidanceMode).toBe('read')
+            expect(result.mode).toBe('read')
         })
 
         it('should handle null title gracefully', () => {
@@ -1204,7 +1204,7 @@ describe('guidanceReducer', () => {
             },
             title: 'Historical Title',
             content: 'Historical Content',
-            guidanceMode: 'read',
+            mode: 'read',
         }
 
         it('should set historicalVersion to null', () => {
@@ -1273,17 +1273,17 @@ describe('guidanceReducer', () => {
             expect(result.content).toBe(mockGuidance.content)
         })
 
-        it('should reset guidanceMode to read when in diff mode', () => {
+        it('should reset mode to read when in diff mode', () => {
             const stateInDiffMode: GuidanceState = {
                 ...stateWithHistoricalVersion,
-                guidanceMode: 'diff',
+                mode: 'diff',
             }
 
             const result = guidanceReducer(stateInDiffMode, {
                 type: 'CLEAR_HISTORICAL_VERSION',
             })
 
-            expect(result.guidanceMode).toBe('read')
+            expect(result.mode).toBe('read')
         })
     })
 
@@ -1327,7 +1327,7 @@ describe('guidanceReducer', () => {
         it('should preserve other state properties', () => {
             const stateWithOtherProps: GuidanceState = {
                 ...initialState,
-                guidanceMode: 'diff',
+                mode: 'diff',
                 isFullscreen: true,
                 isDetailsView: false,
             }
@@ -1341,7 +1341,7 @@ describe('guidanceReducer', () => {
                 },
             })
 
-            expect(result.guidanceMode).toBe('diff')
+            expect(result.mode).toBe('diff')
             expect(result.isFullscreen).toBe(true)
             expect(result.isDetailsView).toBe(false)
         })

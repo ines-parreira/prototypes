@@ -4,8 +4,8 @@ import { KnowledgeEditorContentSkeleton } from './KnowledgeEditorContentSkeleton
 import { KnowledgeEditorSidePanel } from './KnowledgeEditorSidePanel/KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSkeleton } from './KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSkeleton'
 
+import css from './KnowledgeEditorLoadingShell.less'
 import topBarCss from './KnowledgeEditorTopBar/KnowledgeEditorTopBar.less'
-import css from './shared.less'
 
 export const KnowledgeEditorLoadingShell = () => {
     return (

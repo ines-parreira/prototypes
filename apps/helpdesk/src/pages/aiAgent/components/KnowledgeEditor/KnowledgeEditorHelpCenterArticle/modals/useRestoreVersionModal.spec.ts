@@ -91,7 +91,7 @@ describe('useRestoreVersionModal', () => {
         }> = {},
     ): ArticleContextValue => ({
         state: {
-            articleMode: 'read',
+            mode: 'read',
             isFullscreen: false,
             isDetailsView: true,
             title: 'Current Title',

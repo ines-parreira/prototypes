@@ -42,7 +42,7 @@ type Props = {
     autoSaveError?: boolean
     lastUpdatedDatetime?: Date
 
-    guidanceMode?: GuidanceMode['mode']
+    editorMode?: GuidanceMode['mode']
 
     shouldHideFullscreenButton?: boolean
 }
@@ -64,7 +64,7 @@ export const KnowledgeEditorTopBar = (props: Props) => {
     )
 
     const isEditable = Boolean(
-        props.onChangeTitle || props.guidanceMode === 'edit',
+        props.onChangeTitle || props.editorMode === 'edit',
     )
 
     return (

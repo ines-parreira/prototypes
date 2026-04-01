@@ -5,8 +5,6 @@ import type {
 } from 'models/helpCenter/types'
 
 import {
-    computeCanEdit,
-    computeHasDraft,
     createEmptyTranslation,
     getEditModeFromVisibility,
     mergeContentAndTitle,
@@ -271,108 +269,6 @@ describe('utils', () => {
 
         it('should return "edit" for UNLISTED visibility', () => {
             expect(getEditModeFromVisibility('UNLISTED')).toBe('edit')
-        })
-    })
-
-    describe('computeHasDraft', () => {
-        it('should return false when article is undefined', () => {
-            expect(computeHasDraft(undefined)).toBe(false)
-        })
-
-        it('should return true when published_version_id is null', () => {
-            const article: ArticleWithLocalTranslation = {
-                ...mockArticle,
-                translation: {
-                    ...mockTranslation,
-                    draft_version_id: 123,
-                    published_version_id: null,
-                },
-            }
-
-            expect(computeHasDraft(article)).toBe(true)
-        })
-
-        it('should return true when draft_version_id differs from published_version_id', () => {
-            const article: ArticleWithLocalTranslation = {
-                ...mockArticle,
-                translation: {
-                    ...mockTranslation,
-                    draft_version_id: 456,
-                    published_version_id: 123,
-                },
-            }
-
-            expect(computeHasDraft(article)).toBe(true)
-        })
-
-        it('should return false when draft_version_id equals published_version_id', () => {
-            const article: ArticleWithLocalTranslation = {
-                ...mockArticle,
-                translation: {
-                    ...mockTranslation,
-                    draft_version_id: 123,
-                    published_version_id: 123,
-                },
-            }
-
-            expect(computeHasDraft(article)).toBe(false)
-        })
-
-        it('should return true when both version IDs are null', () => {
-            const article: ArticleWithLocalTranslation = {
-                ...mockArticle,
-                translation: {
-                    ...mockTranslation,
-                    draft_version_id: null,
-                    published_version_id: null,
-                },
-            }
-
-            expect(computeHasDraft(article)).toBe(true)
-        })
-    })
-
-    describe('computeCanEdit', () => {
-        it('should return true when article is undefined', () => {
-            expect(computeCanEdit(undefined, false)).toBe(true)
-            expect(computeCanEdit(undefined, true)).toBe(true)
-        })
-
-        it('should return false when viewing current version and has draft', () => {
-            const article: ArticleWithLocalTranslation = {
-                ...mockArticle,
-                translation: {
-                    ...mockTranslation,
-                    is_current: true,
-                },
-            }
-
-            expect(computeCanEdit(article, true)).toBe(false)
-        })
-
-        it('should return true when viewing current version and no draft', () => {
-            const article: ArticleWithLocalTranslation = {
-                ...mockArticle,
-                translation: {
-                    ...mockTranslation,
-                    is_current: true,
-                },
-            }
-
-            expect(computeCanEdit(article, false)).toBe(true)
-        })
-
-        it('should return true when viewing draft version', () => {
-            const article: ArticleWithLocalTranslation = {
-                ...mockArticle,
-                translation: {
-                    ...mockTranslation,
-                    is_current: false,
-                },
-            }
-
-            expect(computeCanEdit(article, true)).toBe(true)
-            expect(computeCanEdit(article, false)).toBe(true)
         })
     })
 })

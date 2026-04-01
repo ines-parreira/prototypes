@@ -1,16 +1,15 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import cn from 'classnames'
 import { useShallow } from 'zustand/react/shallow'
 
 import { Card } from '@gorgias/axiom'
 
+import { EditorWithPlayground } from 'common/knowledge-editor/components'
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 
-import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
 import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { KnowledgeEditorGuidanceProvider, useGuidanceStore } from './context'
@@ -22,7 +21,7 @@ import type {
 import { KnowledgeEditorGuidanceContent } from './KnowledgeEditorGuidanceContent'
 import { useKnowledgeEditorGuidanceData } from './useKnowledgeEditorGuidanceData'
 
-import css from '../shared.less'
+import css from './KnowledgeEditorGuidance.less'
 
 type Props = {
     shopName: string
@@ -106,26 +105,16 @@ const KnowledgeEditorGuidanceInner = ({
     }
 
     return (
-        <div className={css.splitView}>
+        <EditorWithPlayground
+            playground={playground}
+            draftKnowledge={draftKnowledgeForPlayground}
+        >
             <Card elevation="mid" className={css.editor} padding={0}>
                 <KnowledgeEditorGuidanceContent
                     closeHandlerRef={closeHandlerRef}
                 />
             </Card>
-            <div
-                className={cn(
-                    css.playground,
-                    playground.isOpen
-                        ? css['playground-open']
-                        : css['playground-closed'],
-                )}
-            >
-                <PlaygroundPanel
-                    onClose={playground.onClose}
-                    draftKnowledge={draftKnowledgeForPlayground}
-                />
-            </div>
-        </div>
+        </EditorWithPlayground>
     )
 }
 

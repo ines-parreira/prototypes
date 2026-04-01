@@ -1,3 +1,9 @@
+import {
+    baseEditorReducer,
+    clearHistoricalVersionUpdates,
+    computeTemplateChanges,
+    viewHistoricalVersionUpdates,
+} from 'common/knowledge-editor/state'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
 
 import type { GuidanceReducerAction, GuidanceState } from './types'
@@ -8,48 +14,26 @@ export function guidanceReducer(
     action: GuidanceReducerAction,
 ): GuidanceState {
     switch (action.type) {
-        case 'SET_MODE':
-            return {
-                ...state,
-                guidanceMode: action.payload,
-                hasAutoSavedInSession:
-                    action.payload === 'read' || action.payload === 'diff'
-                        ? false
-                        : state.hasAutoSavedInSession,
-                comparisonVersion:
-                    action.payload === 'diff' ? state.comparisonVersion : null,
-            }
-
-        case 'SET_FULLSCREEN':
-            return { ...state, isFullscreen: action.payload }
-
-        case 'TOGGLE_FULLSCREEN':
-            return { ...state, isFullscreen: !state.isFullscreen }
-
-        case 'SET_DETAILS_VIEW':
-            return { ...state, isDetailsView: action.payload }
-
-        case 'TOGGLE_DETAILS_VIEW':
-            return { ...state, isDetailsView: !state.isDetailsView }
-
         case 'SET_TITLE':
             return {
                 ...state,
                 title: action.payload,
-                hasTemplateChanges: state.isFromTemplate
-                    ? action.payload !== state.savedSnapshot.title ||
-                      state.hasTemplateChanges
-                    : state.hasTemplateChanges,
+                hasTemplateChanges: computeTemplateChanges(
+                    state,
+                    'title',
+                    action.payload,
+                ),
             }
 
         case 'SET_CONTENT':
             return {
                 ...state,
                 content: action.payload,
-                hasTemplateChanges: state.isFromTemplate
-                    ? action.payload !== state.savedSnapshot.content ||
-                      state.hasTemplateChanges
-                    : state.hasTemplateChanges,
+                hasTemplateChanges: computeTemplateChanges(
+                    state,
+                    'content',
+                    action.payload,
+                ),
             }
 
         case 'SET_VISIBILITY':
@@ -82,10 +66,10 @@ export function guidanceReducer(
         case 'MARK_AS_SAVED': {
             const newGuidance = action.payload?.guidance ?? state.guidance
 
+            // Don't update title/content - preserve user's current edits.
+            // Only update savedSnapshot to track what was successfully saved.
             return {
                 ...state,
-                // Don't update title/content - preserve user's current edits.
-                // Only update savedSnapshot to track what was successfully saved.
                 savedSnapshot: {
                     title: action.payload?.title ?? state.savedSnapshot.title,
                     content:
@@ -121,9 +105,6 @@ export function guidanceReducer(
         case 'SET_AUTO_SAVE_ERROR':
             return { ...state, autoSaveError: action.payload }
 
-        case 'SET_VERSION_STATUS':
-            return { ...state, versionStatus: action.payload }
-
         case 'SWITCH_VERSION': {
             const newVersionStatus =
                 state.versionStatus === 'latest_draft'
@@ -140,33 +121,11 @@ export function guidanceReducer(
                 },
                 title: action.payload.title,
                 content: action.payload.content,
-                guidanceMode:
-                    newVersionStatus === 'current'
-                        ? 'read'
-                        : state.guidanceMode,
+                mode: newVersionStatus === 'current' ? 'read' : state.mode,
                 hasAutoSavedInSession: false,
                 historicalVersion: null,
             }
         }
-
-        case 'SET_MODAL':
-            return {
-                ...state,
-                activeModal: action.payload,
-            }
-
-        case 'CLOSE_MODAL':
-            return {
-                ...state,
-                activeModal: null,
-            }
-
-        case 'SET_UPDATING':
-            if (state.isUpdating === action.payload) {
-                return state
-            }
-
-            return { ...state, isUpdating: action.payload }
 
         case 'SWITCH_GUIDANCE':
             return createInitialState(
@@ -176,41 +135,29 @@ export function guidanceReducer(
             )
 
         case 'VIEW_HISTORICAL_VERSION': {
-            const versionTitle = action.payload.title ?? ''
-            const versionContent = action.payload.content ?? ''
+            const updates = viewHistoricalVersionUpdates(action.payload)
             return {
                 ...state,
+                ...updates,
                 historicalVersion: {
-                    versionId: action.payload.id,
-                    version: action.payload.version,
-                    title: versionTitle,
-                    content: versionContent,
+                    ...updates.historicalVersion,
                     intents: action.payload.intents,
-                    publishedDatetime: action.payload.published_datetime,
-                    publisherUserId: action.payload.publisher_user_id,
-                    commitMessage: action.payload.commit_message,
-                    impactDateRange: action.payload.impactDateRange,
                 },
-                title: versionTitle,
-                content: versionContent,
-                guidanceMode: 'read',
+                mode: 'read',
             }
         }
 
-        case 'CLEAR_HISTORICAL_VERSION': {
-            const originalTitle = state.guidance?.title ?? ''
-            const originalContent = state.guidance?.content ?? ''
+        case 'CLEAR_HISTORICAL_VERSION':
             return {
                 ...state,
-                historicalVersion: null,
-                comparisonVersion: null,
-                title: originalTitle,
-                content: originalContent,
-                guidanceMode: 'read',
+                ...clearHistoricalVersionUpdates(
+                    state.guidance?.title ?? '',
+                    state.guidance?.content ?? '',
+                ),
+                mode: 'read',
             }
-        }
 
-        case 'SET_COMPARISON_VERSION': {
+        case 'SET_COMPARISON_VERSION':
             return {
                 ...state,
                 comparisonVersion: {
@@ -219,9 +166,8 @@ export function guidanceReducer(
                     intents: action.payload.intents,
                 },
             }
-        }
 
         default:
-            return state
+            return baseEditorReducer(state, action)
     }
 }

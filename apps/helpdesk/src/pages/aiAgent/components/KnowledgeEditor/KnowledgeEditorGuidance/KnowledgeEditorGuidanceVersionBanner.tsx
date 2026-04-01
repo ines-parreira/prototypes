@@ -25,7 +25,7 @@ export function KnowledgeEditorGuidanceVersionBanner() {
     const { isViewingHistoricalVersion, onGoToLatest } = useVersionHistory()
     const dispatch = useGuidanceStore((storeState) => storeState.dispatch)
     const {
-        guidanceMode,
+        mode,
         guidanceId,
         historicalVersion,
         guidanceHelpCenterId,
@@ -33,7 +33,7 @@ export function KnowledgeEditorGuidanceVersionBanner() {
         initialVersionId,
     } = useGuidanceStore(
         useShallow((storeState) => ({
-            guidanceMode: storeState.state.guidanceMode,
+            mode: storeState.state.mode,
             guidanceId: storeState.state.guidance?.id ?? 0,
             historicalVersion: storeState.state.historicalVersion,
             guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id ?? 0,
@@ -47,7 +47,7 @@ export function KnowledgeEditorGuidanceVersionBanner() {
     const isFromConversation =
         !!initialVersionId && historicalVersion?.versionId === initialVersionId
 
-    const isDiffMode = guidanceMode === 'diff'
+    const isDiffMode = mode === 'diff'
 
     const onToggleDiff = useCallback(async () => {
         if (isDiffMode) {

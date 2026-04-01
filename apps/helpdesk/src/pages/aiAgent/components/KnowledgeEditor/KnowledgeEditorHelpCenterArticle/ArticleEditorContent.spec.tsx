@@ -75,7 +75,7 @@ const createMockContextValue = (
     overrides: ContextOverrides = {},
 ): ArticleContextValue => {
     const defaultState: ArticleContextValue['state'] = {
-        articleMode: 'edit' as const,
+        mode: 'edit' as const,
         isFullscreen: false,
         isDetailsView: true,
         title: 'Test Article',
@@ -416,8 +416,8 @@ describe('ArticleEditorContent', () => {
     })
 
     describe('article mode behavior', () => {
-        it('should render read view when articleMode is read', () => {
-            renderComponent({ state: { articleMode: 'read' } })
+        it('should render read view when mode is read', () => {
+            renderComponent({ state: { mode: 'read' } })
 
             expect(
                 screen.getByText(
@@ -433,8 +433,8 @@ describe('ArticleEditorContent', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should render edit view when articleMode is edit', () => {
-            renderComponent({ state: { articleMode: 'edit' } })
+        it('should render edit view when mode is edit', () => {
+            renderComponent({ state: { mode: 'edit' } })
 
             expect(
                 screen.getByText(
@@ -450,8 +450,8 @@ describe('ArticleEditorContent', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should render edit view when articleMode is create', () => {
-            renderComponent({ state: { articleMode: 'create' } })
+        it('should render edit view when mode is create', () => {
+            renderComponent({ state: { mode: 'create' } })
 
             expect(
                 screen.getByText(
@@ -462,7 +462,7 @@ describe('ArticleEditorContent', () => {
         })
 
         it('should show navigation buttons in read mode', () => {
-            renderComponent({ state: { articleMode: 'read' } })
+            renderComponent({ state: { mode: 'read' } })
 
             expect(
                 screen.getByRole('button', { name: /previous/i }),
@@ -473,7 +473,7 @@ describe('ArticleEditorContent', () => {
         })
 
         it('should hide navigation buttons in edit mode', () => {
-            renderComponent({ state: { articleMode: 'edit' } })
+            renderComponent({ state: { mode: 'edit' } })
 
             expect(
                 screen.queryByRole('button', { name: /previous/i }),
@@ -485,7 +485,7 @@ describe('ArticleEditorContent', () => {
 
         it('should pass correct title in read mode', () => {
             renderComponent({
-                state: { articleMode: 'read', title: 'My Article' },
+                state: { mode: 'read', title: 'My Article' },
             })
 
             expect(screen.getByTestId('topbar-title')).toHaveTextContent(
@@ -495,7 +495,7 @@ describe('ArticleEditorContent', () => {
 
         it('should pass article title in edit mode', () => {
             renderComponent({
-                state: { articleMode: 'edit', title: 'My Article' },
+                state: { mode: 'edit', title: 'My Article' },
             })
 
             expect(screen.getByTestId('topbar-title')).toHaveTextContent(
@@ -504,7 +504,7 @@ describe('ArticleEditorContent', () => {
         })
 
         it('should make title editable in edit mode', () => {
-            renderComponent({ state: { articleMode: 'edit' } })
+            renderComponent({ state: { mode: 'edit' } })
 
             expect(
                 screen.getByRole('textbox', { name: /title input/i }),
@@ -512,17 +512,17 @@ describe('ArticleEditorContent', () => {
         })
 
         it('should not make title editable in read mode', () => {
-            renderComponent({ state: { articleMode: 'read' } })
+            renderComponent({ state: { mode: 'read' } })
 
             expect(
                 screen.queryByRole('textbox', { name: /title input/i }),
             ).not.toBeInTheDocument()
         })
 
-        it('should render diff view when articleMode is diff and historicalVersion exists', () => {
+        it('should render diff view when mode is diff and historicalVersion exists', () => {
             renderComponent({
                 state: {
-                    articleMode: 'diff',
+                    mode: 'diff',
                     historicalVersion: {
                         versionId: 42,
                         version: 3,
@@ -560,10 +560,10 @@ describe('ArticleEditorContent', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should not render diff view when articleMode is diff but no historicalVersion', () => {
+        it('should not render diff view when mode is diff but no historicalVersion', () => {
             renderComponent({
                 state: {
-                    articleMode: 'diff',
+                    mode: 'diff',
                     historicalVersion: null,
                 },
             })
@@ -579,7 +579,7 @@ describe('ArticleEditorContent', () => {
         it('should hide navigation buttons in diff mode', () => {
             renderComponent({
                 state: {
-                    articleMode: 'diff',
+                    mode: 'diff',
                     historicalVersion: {
                         versionId: 42,
                         version: 3,
@@ -605,7 +605,7 @@ describe('ArticleEditorContent', () => {
         it('should show "Help Center article" as title in diff mode', () => {
             renderComponent({
                 state: {
-                    articleMode: 'diff',
+                    mode: 'diff',
                     title: 'Some Title',
                     historicalVersion: {
                         versionId: 42,
@@ -629,7 +629,7 @@ describe('ArticleEditorContent', () => {
         it('should not make title editable in diff mode', () => {
             renderComponent({
                 state: {
-                    articleMode: 'diff',
+                    mode: 'diff',
                     historicalVersion: {
                         versionId: 42,
                         version: 3,
@@ -660,7 +660,7 @@ describe('ArticleEditorContent', () => {
 
             renderComponent({
                 state: {
-                    articleMode: 'diff',
+                    mode: 'diff',
                     title: 'Historical Title',
                     content: '<p>Historical content</p>',
                     article,
@@ -967,7 +967,7 @@ describe('ArticleEditorContent', () => {
     describe('content editing', () => {
         it('should call onChangeField with title field when title is changed', async () => {
             const user = userEvent.setup()
-            renderComponent({ state: { articleMode: 'edit' } })
+            renderComponent({ state: { mode: 'edit' } })
 
             const titleInput = screen.getByRole('textbox', {
                 name: /title input/i,
@@ -982,7 +982,7 @@ describe('ArticleEditorContent', () => {
 
         it('should call onChangeField with content field when content is changed', async () => {
             const user = userEvent.setup()
-            renderComponent({ state: { articleMode: 'edit' } })
+            renderComponent({ state: { mode: 'edit' } })
 
             const contentEditor = screen.getByRole('textbox', {
                 name: /content editor/i,
@@ -1001,7 +1001,7 @@ describe('ArticleEditorContent', () => {
             const article = createMockArticle()
             renderComponent({
                 state: {
-                    articleMode: 'edit',
+                    mode: 'edit',
                     currentLocale: 'fr-FR' as const,
                     article,
                     content: '<p>Custom content</p>',
@@ -1021,7 +1021,7 @@ describe('ArticleEditorContent', () => {
         it('should pass correct props to read view', () => {
             renderComponent({
                 state: {
-                    articleMode: 'read',
+                    mode: 'read',
                     title: 'Read Title',
                     content: '<p>Read content</p>',
                 },
@@ -1064,7 +1064,7 @@ describe('ArticleEditorContent', () => {
         it('should call onClickPrevious when previous button is clicked in read mode', async () => {
             const user = userEvent.setup()
             const { contextValue } = renderComponent({
-                state: { articleMode: 'read' },
+                state: { mode: 'read' },
             })
 
             await user.click(screen.getByRole('button', { name: /previous/i }))
@@ -1075,7 +1075,7 @@ describe('ArticleEditorContent', () => {
         it('should call onClickNext when next button is clicked in read mode', async () => {
             const user = userEvent.setup()
             const { contextValue } = renderComponent({
-                state: { articleMode: 'read' },
+                state: { mode: 'read' },
             })
 
             await user.click(screen.getByRole('button', { name: /next/i }))

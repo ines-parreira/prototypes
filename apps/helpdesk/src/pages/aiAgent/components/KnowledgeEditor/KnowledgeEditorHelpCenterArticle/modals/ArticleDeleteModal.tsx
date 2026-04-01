@@ -17,7 +17,7 @@ export const ArticleDeleteModal = () => {
         useDeleteArticleModal()
 
     const cancelButtonText =
-        state.articleMode === 'read' ? 'Cancel' : 'Back to editing'
+        state.mode === 'read' ? 'Cancel' : 'Back to editing'
 
     return (
         <Modal isOpen={isOpen} onOpenChange={onClose} size="sm">

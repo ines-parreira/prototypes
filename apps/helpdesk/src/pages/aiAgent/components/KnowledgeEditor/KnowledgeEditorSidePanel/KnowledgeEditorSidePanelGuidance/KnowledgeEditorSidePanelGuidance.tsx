@@ -34,7 +34,7 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
         guidanceHelpCenterId,
         publishedVersionId,
         draftVersionId,
-        guidanceMode,
+        mode,
         showMissingKnowledgeCheckbox,
         shouldAddToMissingKnowledge,
         setShouldAddToMissingKnowledge,
@@ -45,7 +45,7 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
             guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id,
             publishedVersionId: storeState.state.guidance?.publishedVersionId,
             draftVersionId: storeState.state.guidance?.draftVersionId,
-            guidanceMode: storeState.state.guidanceMode,
+            mode: storeState.state.mode,
             showMissingKnowledgeCheckbox:
                 storeState.config.showMissingKnowledgeCheckbox,
             shouldAddToMissingKnowledge: storeState.shouldAddToMissingKnowledge,
@@ -79,7 +79,7 @@ const KnowledgeEditorSidePanelGuidanceComponent = () => {
         backendIds['Draft Version ID'] = draftVersionId
     }
 
-    const isCreateMode = guidanceMode === 'create'
+    const isCreateMode = mode === 'create'
 
     return (
         <KnowledgeEditorSidePanel

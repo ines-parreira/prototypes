@@ -1,6 +1,12 @@
-import type { SizeValue } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
+import type {
+    BaseEditorState,
+    HistoricalVersionState as BaseHistoricalVersionState,
+    ImpactDateRange as BaseImpactDateRange,
+    EditorMode,
+    PlaygroundState,
+} from 'common/knowledge-editor/types'
 import type {
     ArticleWithLocalTranslation,
     Category,
@@ -12,7 +18,7 @@ import type {
 import type { OptionItem as LocaleOption } from 'pages/settings/helpCenter/components/articles/ArticleLanguageSelect'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 
-export type ArticleModeType = 'create' | 'edit' | 'read' | 'diff'
+export type ArticleModeType = EditorMode
 
 export const InitialArticleMode = {
     READ: 'read',
@@ -22,21 +28,9 @@ export const InitialArticleMode = {
 export type InitialArticleModeValue =
     (typeof InitialArticleMode)[keyof typeof InitialArticleMode]
 
-export type ImpactDateRange = {
-    start_datetime: string
-    end_datetime: string
-}
+export type ImpactDateRange = BaseImpactDateRange
 
-export type HistoricalVersionState = {
-    versionId: number
-    version: number
-    title: string
-    content: string
-    publishedDatetime: string | null
-    publisherUserId?: number
-    commitMessage?: string
-    impactDateRange?: ImpactDateRange
-} | null
+export type HistoricalVersionState = BaseHistoricalVersionState
 
 export type ArticleTranslationVersion =
     Components.Schemas.ArticleTranslationVersionResponseDto
@@ -55,46 +49,14 @@ export type SettingsChanges = Pick<
     'category_id' | 'customer_visibility' | 'slug' | 'excerpt' | 'seo_meta'
 >
 
-export type ArticleState = {
-    // Mode & UI
-    articleMode: ArticleModeType
-    isFullscreen: boolean
-    isDetailsView: boolean
-
-    // Form data (content)
-    title: string
-    content: string
-
-    // Autosave tracking
-    savedSnapshot: { title: string; content: string }
-    isAutoSaving: boolean
-    hasAutoSavedInSession: boolean
-
+export type ArticleState = BaseEditorState<ModalType> & {
     // Article reference
     article: ArticleWithLocalTranslation | undefined
     translationMode: 'existing' | 'new'
-
     // Locale management
     currentLocale: LocaleCode
-
     // Settings (synced separately)
     pendingSettingsChanges: SettingsChanges
-
-    // Version info
-    versionStatus: GetArticleVersionStatus
-
-    // Historical version (read only mode - viewing old published versions)
-    historicalVersion: HistoricalVersionState
-
-    // Comparison version (used when comparing draft or historical to published)
-    comparisonVersion: { title: string; content: string } | null
-
-    // Modal state
-    activeModal: ModalType
-
-    // Loading
-    isUpdating: boolean
-
     // Template tracking
     templateKey: string | undefined
 }
@@ -213,13 +175,7 @@ export type ArticleContextConfig = {
     initialVersionData?: HistoricalVersionState
 }
 
-export type PlaygroundState = {
-    isOpen: boolean
-    onTest: () => void
-    onClose: () => void
-    sidePanelWidth: SizeValue
-    shouldHideFullscreenButton: boolean
-}
+export type { PlaygroundState }
 
 export type ArticleContextValue = {
     // State
@@ -258,7 +214,7 @@ export const createInitialState = (
         initialArticle?.translation.content ?? template?.content ?? ''
 
     const state: ArticleState = {
-        articleMode: initialMode,
+        mode: initialMode,
         isFullscreen: false,
         isDetailsView: true,
         title,
@@ -285,7 +241,7 @@ export const createInitialState = (
             historicalVersion: initialVersionData,
             title: initialVersionData.title,
             content: initialVersionData.content,
-            articleMode: 'read',
+            mode: 'read',
         }
     }
 

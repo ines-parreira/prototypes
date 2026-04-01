@@ -16,8 +16,6 @@ export {
 } from './types'
 export { createInitialState } from './types'
 export {
-    computeCanEdit,
-    computeHasDraft,
     createEmptyTranslation,
     getEditModeFromVisibility,
     mergeContentAndTitle,

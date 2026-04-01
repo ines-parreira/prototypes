@@ -4,12 +4,11 @@ import { diffWords } from 'diff'
 
 import { Heading } from '@gorgias/axiom'
 
+import { DiffReadOnlyEditor } from 'common/knowledge-editor/components/DiffReadOnlyEditor/DiffReadOnlyEditor'
+import { computeUnifiedDiff } from 'common/knowledge-editor/components/DiffReadOnlyEditor/diffUtils'
 import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEditor/variables.types'
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { contentStateFromTextOrHTML } from 'utils/editor'
-
-import { DiffReadOnlyEditor } from './DiffReadOnlyEditor'
-import { computeUnifiedDiff } from './diffUtils'
 
 import css from './KnowledgeEditorGuidanceDiffView.less'
 

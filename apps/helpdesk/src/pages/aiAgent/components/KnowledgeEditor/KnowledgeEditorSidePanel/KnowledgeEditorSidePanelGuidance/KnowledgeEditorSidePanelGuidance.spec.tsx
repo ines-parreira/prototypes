@@ -44,7 +44,7 @@ const mockUseGuidanceContext = jest.fn(() => ({
             publishedVersionId: 789,
             draftVersionId: 790,
         },
-        guidanceMode: 'edit',
+        mode: 'edit',
     },
     dispatch: mockDispatch,
     playground: {} as any,
@@ -118,7 +118,7 @@ jest.mock(
                 lastUpdatedDatetime: testDate,
                 isUpdating: false,
                 isDraft: false,
-                guidanceMode: 'read',
+                mode: 'read',
                 isViewingHistoricalVersion: false,
                 visibilityConflict: {
                     isOpen: false,
@@ -202,7 +202,7 @@ describe('KnowledgeEditorSidePanelGuidance', () => {
             ...mockUseGuidanceContext(),
             state: {
                 ...mockUseGuidanceContext().state,
-                guidanceMode: 'diff',
+                mode: 'diff',
             },
         })
 

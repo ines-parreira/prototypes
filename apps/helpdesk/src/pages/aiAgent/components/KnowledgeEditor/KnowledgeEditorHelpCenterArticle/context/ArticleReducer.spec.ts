@@ -75,7 +75,7 @@ const createMockVersion = (
 const createInitialState = (
     overrides: Partial<ArticleState> = {},
 ): ArticleState => ({
-    articleMode: 'edit',
+    mode: 'edit',
     isFullscreen: false,
     isDetailsView: true,
     title: 'Test Article',
@@ -102,15 +102,15 @@ const createInitialState = (
 describe('articleReducer', () => {
     describe('Mode & UI actions', () => {
         describe('SET_MODE', () => {
-            it('should set articleMode to the provided value', () => {
-                const state = createInitialState({ articleMode: 'edit' })
+            it('should set mode to the provided value', () => {
+                const state = createInitialState({ mode: 'edit' })
 
                 const result = articleReducer(state, {
                     type: 'SET_MODE',
                     payload: 'read',
                 })
 
-                expect(result.articleMode).toBe('read')
+                expect(result.mode).toBe('read')
             })
 
             it('should not modify other state properties', () => {
@@ -128,7 +128,7 @@ describe('articleReducer', () => {
 
             it('should reset hasAutoSavedInSession to false when switching to read mode', () => {
                 const state = createInitialState({
-                    articleMode: 'edit',
+                    mode: 'edit',
                     hasAutoSavedInSession: true,
                 })
 
@@ -142,7 +142,7 @@ describe('articleReducer', () => {
 
             it('should preserve hasAutoSavedInSession when switching to edit mode', () => {
                 const state = createInitialState({
-                    articleMode: 'read',
+                    mode: 'read',
                     hasAutoSavedInSession: true,
                 })
 
@@ -154,20 +154,20 @@ describe('articleReducer', () => {
                 expect(result.hasAutoSavedInSession).toBe(true)
             })
 
-            it('should update articleMode to diff', () => {
-                const state = createInitialState({ articleMode: 'read' })
+            it('should update mode to diff', () => {
+                const state = createInitialState({ mode: 'read' })
 
                 const result = articleReducer(state, {
                     type: 'SET_MODE',
                     payload: 'diff',
                 })
 
-                expect(result.articleMode).toBe('diff')
+                expect(result.mode).toBe('diff')
             })
 
             it('should reset hasAutoSavedInSession to false when switching to diff mode', () => {
                 const state = createInitialState({
-                    articleMode: 'edit',
+                    mode: 'edit',
                     hasAutoSavedInSession: true,
                 })
 
@@ -181,7 +181,7 @@ describe('articleReducer', () => {
 
             it('should preserve hasAutoSavedInSession when switching to create mode', () => {
                 const state = createInitialState({
-                    articleMode: 'edit',
+                    mode: 'edit',
                     hasAutoSavedInSession: true,
                 })
 
@@ -560,7 +560,7 @@ describe('articleReducer', () => {
                     },
                 })
                 const state = createInitialState({
-                    articleMode: 'read',
+                    mode: 'read',
                     pendingSettingsChanges: {
                         category_id: 5,
                     } as SettingsChanges,
@@ -585,11 +585,11 @@ describe('articleReducer', () => {
                     content: '<p>French content</p>',
                 })
                 expect(result.pendingSettingsChanges).toEqual({})
-                expect(result.articleMode).toBe('read')
+                expect(result.mode).toBe('read')
             })
 
-            it('should set articleMode to edit when translationMode is new', () => {
-                const state = createInitialState({ articleMode: 'read' })
+            it('should set mode to edit when translationMode is new', () => {
+                const state = createInitialState({ mode: 'read' })
 
                 const result = articleReducer(state, {
                     type: 'SWITCH_ARTICLE',
@@ -600,7 +600,7 @@ describe('articleReducer', () => {
                     },
                 })
 
-                expect(result.articleMode).toBe('edit')
+                expect(result.mode).toBe('edit')
                 expect(result.title).toBe('')
                 expect(result.content).toBe('')
             })
@@ -740,7 +740,7 @@ describe('articleReducer', () => {
                     },
                 })
                 const state = createInitialState({
-                    articleMode: 'edit',
+                    mode: 'edit',
                     versionStatus: 'latest_draft',
                 })
 
@@ -762,9 +762,9 @@ describe('articleReducer', () => {
                 })
             })
 
-            it('should set articleMode to read when switching to current version', () => {
+            it('should set mode to read when switching to current version', () => {
                 const article = createMockArticle()
-                const state = createInitialState({ articleMode: 'edit' })
+                const state = createInitialState({ mode: 'edit' })
 
                 const result = articleReducer(state, {
                     type: 'SWITCH_VERSION',
@@ -774,12 +774,12 @@ describe('articleReducer', () => {
                     },
                 })
 
-                expect(result.articleMode).toBe('read')
+                expect(result.mode).toBe('read')
             })
 
-            it('should preserve articleMode when switching to draft version', () => {
+            it('should preserve mode when switching to draft version', () => {
                 const article = createMockArticle()
-                const state = createInitialState({ articleMode: 'read' })
+                const state = createInitialState({ mode: 'read' })
 
                 const result = articleReducer(state, {
                     type: 'SWITCH_VERSION',
@@ -789,7 +789,7 @@ describe('articleReducer', () => {
                     },
                 })
 
-                expect(result.articleMode).toBe('read')
+                expect(result.mode).toBe('read')
             })
 
             it('should reset hasAutoSavedInSession to false when switching versions', () => {
@@ -956,7 +956,7 @@ describe('articleReducer', () => {
 
             it('should preserve other state properties', () => {
                 const state = createInitialState({
-                    articleMode: 'edit',
+                    mode: 'edit',
                     isFullscreen: true,
                     currentLocale: 'fr-FR',
                 })
@@ -969,7 +969,7 @@ describe('articleReducer', () => {
                     },
                 })
 
-                expect(result.articleMode).toBe('edit')
+                expect(result.mode).toBe('edit')
                 expect(result.isFullscreen).toBe(true)
                 expect(result.currentLocale).toBe('fr-FR')
             })
@@ -1021,8 +1021,8 @@ describe('articleReducer', () => {
                 expect(result.content).toBe('<p>Old version content</p>')
             })
 
-            it('should set articleMode to read', () => {
-                const state = createInitialState({ articleMode: 'edit' })
+            it('should set mode to read', () => {
+                const state = createInitialState({ mode: 'edit' })
                 const version = createMockVersion()
 
                 const result = articleReducer(state, {
@@ -1030,7 +1030,7 @@ describe('articleReducer', () => {
                     payload: version,
                 })
 
-                expect(result.articleMode).toBe('read')
+                expect(result.mode).toBe('read')
             })
 
             it('should default title and content to empty string when null', () => {
@@ -1209,7 +1209,7 @@ describe('articleReducer', () => {
             it('should preserve other state properties', () => {
                 const state = createInitialState({
                     isFullscreen: true,
-                    articleMode: 'read',
+                    mode: 'read',
                     currentLocale: 'fr-FR',
                     versionStatus: 'current',
                     historicalVersion: {
@@ -1232,7 +1232,7 @@ describe('articleReducer', () => {
                 })
 
                 expect(result.isFullscreen).toBe(true)
-                expect(result.articleMode).toBe('read')
+                expect(result.mode).toBe('read')
                 expect(result.currentLocale).toBe('fr-FR')
                 expect(result.versionStatus).toBe('current')
             })
@@ -1249,9 +1249,9 @@ describe('articleReducer', () => {
                 expect(result.historicalVersion).toBeNull()
             })
 
-            it('should reset articleMode to read when in diff mode', () => {
+            it('should reset mode to read when in diff mode', () => {
                 const state = createInitialState({
-                    articleMode: 'diff',
+                    mode: 'diff',
                     historicalVersion: {
                         versionId: 10,
                         version: 3,
@@ -1271,7 +1271,7 @@ describe('articleReducer', () => {
                     type: 'CLEAR_HISTORICAL_VERSION',
                 })
 
-                expect(result.articleMode).toBe('read')
+                expect(result.mode).toBe('read')
             })
         })
     })

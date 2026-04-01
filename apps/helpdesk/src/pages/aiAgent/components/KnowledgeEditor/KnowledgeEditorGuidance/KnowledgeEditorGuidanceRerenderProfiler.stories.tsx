@@ -12,7 +12,7 @@ import {
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
+import { areTrimmedStringsEqual } from 'common/knowledge-editor/utils'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import {
@@ -136,7 +136,7 @@ const ProbeRow = ({
 }
 
 const isLegacyHasPendingChanges = (state: GuidanceState) => {
-    if (state.guidanceMode === 'read' || state.guidanceMode === 'diff') {
+    if (state.mode === 'read' || state.mode === 'diff') {
         return false
     }
 
@@ -336,16 +336,10 @@ const LegacyProbeContent = ({ metrics }: { metrics: RenderMetricSink }) => {
 
 const LegacyProbeMode = ({ metrics }: { metrics: RenderMetricSink }) => {
     const {
-        state: { guidanceMode },
+        state: { mode },
     } = useLegacyGuidanceContext()
 
-    return (
-        <ProbeRow
-            probeName="ModeConsumer"
-            value={guidanceMode}
-            metrics={metrics}
-        />
-    )
+    return <ProbeRow probeName="ModeConsumer" value={mode} metrics={metrics} />
 }
 
 const LegacyProbePending = ({ metrics }: { metrics: RenderMetricSink }) => {
@@ -449,11 +443,11 @@ const selectTitle = (storeState: { state: GuidanceState }) =>
 const selectContent = (storeState: { state: GuidanceState }) =>
     storeState.state.content
 const selectMode = (storeState: { state: GuidanceState }) =>
-    storeState.state.guidanceMode
+    storeState.state.mode
 const selectPending = (storeState: { state: GuidanceState }) => {
     const state = storeState.state
 
-    if (state.guidanceMode === 'read' || state.guidanceMode === 'diff') {
+    if (state.mode === 'read' || state.mode === 'diff') {
         return false
     }
 

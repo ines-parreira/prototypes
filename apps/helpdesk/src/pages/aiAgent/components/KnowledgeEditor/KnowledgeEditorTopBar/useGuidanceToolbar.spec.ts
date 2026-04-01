@@ -62,7 +62,7 @@ describe('useGuidanceToolbar', () => {
                     content: 'Test Content',
                     isCurrent: true,
                 },
-                guidanceMode: 'read',
+                mode: 'read',
                 title: 'Test Article',
                 content: 'Test Content',
                 isUpdating: false,
@@ -112,7 +112,7 @@ describe('useGuidanceToolbar', () => {
             setMockContextValue({
                 state: {
                     guidance: { id: 1 },
-                    guidanceMode: 'read',
+                    mode: 'read',
                     isUpdating: true,
                     isAutoSaving: false,
                     historicalVersion: null,
@@ -153,7 +153,7 @@ describe('useGuidanceToolbar', () => {
                         content: 'Content',
                         isCurrent: true,
                     },
-                    guidanceMode: 'read',
+                    mode: 'read',
                     isUpdating: false,
                     isAutoSaving: false,
                     historicalVersion: null,
@@ -192,7 +192,7 @@ describe('useGuidanceToolbar', () => {
                         content: 'Content',
                         isCurrent: true,
                     },
-                    guidanceMode: 'read',
+                    mode: 'read',
                     isUpdating: false,
                     isAutoSaving: false,
                     historicalVersion: null,
@@ -225,7 +225,7 @@ describe('useGuidanceToolbar', () => {
             setMockContextValue({
                 state: {
                     guidance: { id: 1 },
-                    guidanceMode: 'read',
+                    mode: 'read',
                     isUpdating: false,
                     isAutoSaving: false,
                     historicalVersion: null,

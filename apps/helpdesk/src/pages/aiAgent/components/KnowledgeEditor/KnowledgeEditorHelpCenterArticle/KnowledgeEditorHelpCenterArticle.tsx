@@ -1,10 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react'
 
-import cn from 'classnames'
-
 import { Card } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
+import { EditorWithPlayground } from 'common/knowledge-editor/components'
 import { getLast28DaysDateRange } from 'domains/reporting/models/queryFactories/knowledge/knowledgeInsightsMetrics'
 import { useNotify } from 'hooks/useNotify'
 import { isGorgiasApiError } from 'models/api/types'
@@ -12,7 +11,6 @@ import type { ArticleWithLocalTranslation } from 'models/helpCenter/types'
 import CurrentHelpCenterContext from 'pages/settings/helpCenter/contexts/CurrentHelpCenterContext'
 import { SupportedLocalesProvider } from 'pages/settings/helpCenter/providers/SupportedLocales'
 
-import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
 import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { ArticleEditorContent } from './ArticleEditorContent'
@@ -24,7 +22,7 @@ import type {
 import { ArticleContextProvider, useArticleContext } from './context'
 import { useKnowledgeEditorArticleData } from './useKnowledgeEditorArticleData'
 
-import css from '../shared.less'
+import css from './KnowledgeEditorHelpCenterArticle.less'
 
 type Props = {
     isOpen?: boolean
@@ -99,21 +97,11 @@ const ArticleEditorInner = ({
     }
 
     return (
-        <div className={css.splitView}>
+        <EditorWithPlayground playground={playground}>
             <Card elevation="mid" className={css.editor} padding={0}>
                 <ArticleEditorContent closeHandlerRef={closeHandlerRef} />
             </Card>
-            <div
-                className={cn(
-                    css.playground,
-                    playground.isOpen
-                        ? css['playground-open']
-                        : css['playground-closed'],
-                )}
-            >
-                <PlaygroundPanel onClose={playground.onClose} />
-            </div>
-        </div>
+        </EditorWithPlayground>
     )
 }
 

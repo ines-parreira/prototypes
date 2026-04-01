@@ -58,7 +58,7 @@ const baseDetailsData = {
     isUpdating: false,
     isDraft: false,
     isViewingHistoricalVersion: false,
-    guidanceMode: 'read' as const,
+    mode: 'read' as const,
     visibilityConflict: {
         isOpen: false,
         message: '',

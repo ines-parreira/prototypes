@@ -47,6 +47,18 @@ jest.mock('./useKnowledgeEditorArticleData', () => ({
 }))
 
 jest.mock('@gorgias/axiom', () => ({
+    Box: ({
+        children,
+        className,
+        ...props
+    }: Record<string, unknown> & {
+        children?: React.ReactNode
+        className?: string
+    }) => (
+        <div className={className} {...props}>
+            {children}
+        </div>
+    ),
     SidePanel: ({
         isOpen,
         onOpenChange,
@@ -181,7 +193,7 @@ jest.mock('../KnowledgeEditorLoadingShell', () => ({
     ),
 }))
 
-jest.mock('../../PlaygroundPanel/PlaygroundPanel', () => ({
+jest.mock('pages/aiAgent/components/PlaygroundPanel/PlaygroundPanel', () => ({
     PlaygroundPanel: ({ onClose }: { onClose: () => void }) => (
         <div data-testid="playground-panel">
             <button onClick={onClose}>Close Playground</button>

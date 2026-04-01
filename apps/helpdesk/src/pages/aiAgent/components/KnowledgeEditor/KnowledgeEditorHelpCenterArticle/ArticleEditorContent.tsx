@@ -52,22 +52,22 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
         <div className={css.container}>
             <KnowledgeEditorTopBar
                 onClickPrevious={
-                    state.articleMode !== 'edit' && state.articleMode !== 'diff'
+                    state.mode !== 'edit' && state.mode !== 'diff'
                         ? onClickPrevious
                         : undefined
                 }
                 onClickNext={
-                    state.articleMode !== 'edit' && state.articleMode !== 'diff'
+                    state.mode !== 'edit' && state.mode !== 'diff'
                         ? onClickNext
                         : undefined
                 }
                 title={
-                    state.articleMode === 'read' || state.articleMode === 'diff'
+                    state.mode === 'read' || state.mode === 'diff'
                         ? 'Help Center article'
                         : state.title
                 }
                 onChangeTitle={
-                    state.articleMode === 'read' || state.articleMode === 'diff'
+                    state.mode === 'read' || state.mode === 'diff'
                         ? undefined
                         : (title) => onChangeField('title', title)
                 }
@@ -100,14 +100,14 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
                 <div className={css.editorContainer}>
                     <ArticleVersionBanner />
 
-                    {state.articleMode === 'read' && (
+                    {state.mode === 'read' && (
                         <KnowledgeEditorHelpCenterArticleReadView
                             content={state.content}
                             title={state.title}
                         />
                     )}
 
-                    {state.articleMode === 'diff' &&
+                    {state.mode === 'diff' &&
                         (state.historicalVersion ||
                             state.comparisonVersion) && (
                             <KnowledgeEditorHelpCenterArticleDiffView
@@ -139,8 +139,7 @@ export const ArticleEditorContent = ({ closeHandlerRef }: Props) => {
                             />
                         )}
 
-                    {(state.articleMode === 'edit' ||
-                        state.articleMode === 'create') && (
+                    {(state.mode === 'edit' || state.mode === 'create') && (
                         <KnowledgeEditorHelpCenterArticleEditView
                             locale={state.currentLocale}
                             articleId={state.article?.id}

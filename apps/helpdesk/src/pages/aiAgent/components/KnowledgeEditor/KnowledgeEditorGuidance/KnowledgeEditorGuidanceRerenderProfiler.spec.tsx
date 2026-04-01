@@ -4,7 +4,7 @@ import type { MutableRefObject } from 'react'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
+import { areTrimmedStringsEqual } from 'common/knowledge-editor/utils'
 import type { GuidanceArticle } from 'pages/aiAgent/types'
 
 import {
@@ -68,7 +68,7 @@ const mockConfig: GuidanceContextConfig = {
 }
 
 const isLegacyHasPendingChanges = (state: GuidanceState) => {
-    if (state.guidanceMode === 'read' || state.guidanceMode === 'diff') {
+    if (state.mode === 'read' || state.mode === 'diff') {
         return false
     }
 

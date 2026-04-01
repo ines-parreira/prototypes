@@ -46,7 +46,7 @@ function buildIntentDiffParts(
 
 export const useLinkedIntentsSidebar = () => {
     const {
-        guidanceMode,
+        mode,
         guidanceIntentIds,
         historicalVersionIntentIds,
         comparisonVersionIntentIds,
@@ -58,7 +58,7 @@ export const useLinkedIntentsSidebar = () => {
         isAutoSaving,
     } = useGuidanceStore(
         useShallow((storeState) => ({
-            guidanceMode: storeState.state.guidanceMode,
+            mode: storeState.state.mode,
             guidanceIntentIds:
                 storeState.state.guidance?.intents ?? EMPTY_INTENT_IDS,
             historicalVersionIntentIds:
@@ -98,7 +98,7 @@ export const useLinkedIntentsSidebar = () => {
         !isUpdating &&
         !isAutoSaving
 
-    const isDiffMode = guidanceMode === 'diff'
+    const isDiffMode = mode === 'diff'
     const displayedIntentIds = isViewingHistoricalVersion
         ? historicalVersionIntentIds
         : guidanceIntentIds

@@ -46,7 +46,7 @@ describe('usePublishModal', () => {
     }
 
     const defaultState: GuidanceState = {
-        guidanceMode: 'edit',
+        mode: 'edit',
         isFullscreen: false,
         isDetailsView: true,
         title: 'Test Title',

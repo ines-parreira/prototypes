@@ -21,7 +21,7 @@ jest.mock(
                     },
                 },
                 currentLocale: 'en',
-                articleMode: 'edit',
+                mode: 'edit',
             },
             config: {
                 helpCenter: { id: 456 },

@@ -1,13 +1,19 @@
-import type { SizeValue } from '@gorgias/axiom'
 import type { GetArticleVersionStatus } from '@gorgias/help-center-types'
 
+import type {
+    BaseEditorState,
+    HistoricalVersionState as BaseHistoricalVersionState,
+    ImpactDateRange as BaseImpactDateRange,
+    EditorMode,
+    PlaygroundState,
+} from 'common/knowledge-editor/types'
 import type { HelpCenter } from 'models/helpCenter/types'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
 import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
 import type { GuidanceArticle, GuidanceTemplate } from 'pages/aiAgent/types'
 import type { Components } from 'rest_api/help_center_api/client.generated'
 
-export type GuidanceModeType = 'create' | 'edit' | 'read' | 'diff'
+export type GuidanceModeType = EditorMode
 
 export type ModalType =
     | 'unsaved'
@@ -18,66 +24,39 @@ export type ModalType =
     | 'duplicate'
     | null
 
-export type ImpactDateRange = {
-    start_datetime: string
-    end_datetime: string
-}
+export type ImpactDateRange = BaseImpactDateRange
 
-export type HistoricalVersionState = {
-    versionId: number
-    version: number
-    title: string
-    content: string
-    intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
-    publishedDatetime: string | null
-    publisherUserId?: number
-    commitMessage?: string
-    impactDateRange?: ImpactDateRange
-} | null
+export type HistoricalVersionState =
+    | (NonNullable<BaseHistoricalVersionState> & {
+          intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
+      })
+    | null
 
 export type ArticleTranslationVersion =
     Components.Schemas.ArticleTranslationVersionResponseDto
 
-export type GuidanceState = {
-    // Mode & UI
-    guidanceMode: GuidanceModeType
-    isFullscreen: boolean
-    isDetailsView: boolean
-
-    // Form data
+export type GuidanceComparisonVersion = {
     title: string
     content: string
+    intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
+} | null
+
+export type GuidanceState = Omit<
+    BaseEditorState<ModalType>,
+    'comparisonVersion' | 'historicalVersion'
+> & {
+    // Form data
     visibility: boolean
-
-    // Autosave
-    savedSnapshot: { title: string; content: string }
     guidance: GuidanceArticle | undefined
-    isAutoSaving: boolean
-    hasAutoSavedInSession: boolean
+    // Autosave
     autoSaveError: boolean
-
-    // Template tracking (for create mode autosave)
+    // Template tracking
     isFromTemplate: boolean
     hasTemplateChanges: boolean
-
-    // Version info (edit only)
-    versionStatus: GetArticleVersionStatus
-
-    // Historical version (read only mode - viewing old published versions)
+    // Historical version
     historicalVersion: HistoricalVersionState
-
-    // Comparison version (used when comparing draft or historical to published)
-    comparisonVersion: {
-        title: string
-        content: string
-        intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
-    } | null
-
-    // Modal state
-    activeModal: ModalType
-
-    // Loading
-    isUpdating: boolean
+    // Comparison version
+    comparisonVersion: GuidanceComparisonVersion
 }
 
 export type GuidanceReducerAction =
@@ -156,13 +135,7 @@ export type GuidanceContextConfig = {
     initialVersionData?: HistoricalVersionState
 }
 
-export type PlaygroundState = {
-    isOpen: boolean
-    onTest: () => void
-    onClose: () => void
-    sidePanelWidth: SizeValue
-    shouldHideFullscreenButton: boolean
-}
+export type { PlaygroundState } from 'common/knowledge-editor/types'
 
 export type GuidanceContextValue = {
     canEdit: boolean
@@ -201,7 +174,7 @@ export const createInitialState = (
     }
 
     const state: GuidanceState = {
-        guidanceMode: initialMode,
+        mode: initialMode,
         isFullscreen: false,
         isDetailsView: true,
         title: article?.title ?? template?.name ?? '',
@@ -230,7 +203,7 @@ export const createInitialState = (
             historicalVersion: initialVersionData,
             title: initialVersionData.title,
             content: initialVersionData.content,
-            guidanceMode: 'read',
+            mode: 'read',
         }
     }
 

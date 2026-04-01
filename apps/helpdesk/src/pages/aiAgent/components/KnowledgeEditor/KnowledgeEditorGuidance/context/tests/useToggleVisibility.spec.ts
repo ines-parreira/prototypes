@@ -80,7 +80,7 @@ describe('useToggleVisibility', () => {
     }
 
     const mockState: GuidanceState = {
-        guidanceMode: 'edit',
+        mode: 'edit',
         isFullscreen: false,
         isDetailsView: true,
         title: 'Test',

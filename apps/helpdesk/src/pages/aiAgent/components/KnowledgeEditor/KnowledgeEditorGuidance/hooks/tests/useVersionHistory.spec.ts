@@ -48,7 +48,7 @@ const mockGuidance: GuidanceArticle = {
 }
 
 const defaultState: GuidanceState = {
-    guidanceMode: 'read',
+    mode: 'read',
     isFullscreen: false,
     isDetailsView: true,
     title: 'Test Guidance',

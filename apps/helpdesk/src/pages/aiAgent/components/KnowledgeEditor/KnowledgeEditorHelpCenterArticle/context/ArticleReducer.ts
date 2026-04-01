@@ -1,3 +1,9 @@
+import {
+    baseEditorReducer,
+    clearHistoricalVersionUpdates,
+    viewHistoricalVersionUpdates,
+} from 'common/knowledge-editor/state'
+
 import type { ArticleReducerAction, ArticleState } from './types'
 
 export function articleReducer(
@@ -5,38 +11,7 @@ export function articleReducer(
     action: ArticleReducerAction,
 ): ArticleState {
     switch (action.type) {
-        // Mode & UI actions
-        case 'SET_MODE':
-            return {
-                ...state,
-                articleMode: action.payload,
-                hasAutoSavedInSession:
-                    action.payload === 'read' || action.payload === 'diff'
-                        ? false
-                        : state.hasAutoSavedInSession,
-                comparisonVersion:
-                    action.payload === 'diff' ? state.comparisonVersion : null,
-            }
-
-        case 'SET_FULLSCREEN':
-            return { ...state, isFullscreen: action.payload }
-
-        case 'TOGGLE_FULLSCREEN':
-            return { ...state, isFullscreen: !state.isFullscreen }
-
-        case 'SET_DETAILS_VIEW':
-            return { ...state, isDetailsView: action.payload }
-
-        case 'TOGGLE_DETAILS_VIEW':
-            return { ...state, isDetailsView: !state.isDetailsView }
-
         // Form data actions
-        case 'SET_TITLE':
-            return { ...state, title: action.payload }
-
-        case 'SET_CONTENT':
-            return { ...state, content: action.payload }
-
         case 'MARK_CONTENT_AS_SAVED': {
             const newTitle = action.payload?.title ?? state.title
             const newContent = action.payload?.content ?? state.content
@@ -102,8 +77,7 @@ export function articleReducer(
                 content,
                 savedSnapshot: { title, content },
                 pendingSettingsChanges: {},
-                articleMode:
-                    translationMode === 'new' ? 'edit' : state.articleMode,
+                mode: translationMode === 'new' ? 'edit' : state.mode,
             }
         }
 
@@ -121,9 +95,6 @@ export function articleReducer(
             return { ...state, pendingSettingsChanges: {} }
 
         // Version actions
-        case 'SET_VERSION_STATUS':
-            return { ...state, versionStatus: action.payload }
-
         case 'SWITCH_VERSION': {
             const { article, versionStatus } = action.payload
             const title = article.translation.title
@@ -136,22 +107,10 @@ export function articleReducer(
                 savedSnapshot: { title, content },
                 title,
                 content,
-                articleMode:
-                    versionStatus === 'current' ? 'read' : state.articleMode,
+                mode: versionStatus === 'current' ? 'read' : state.mode,
                 hasAutoSavedInSession: false,
             }
         }
-
-        // Modal actions
-        case 'SET_MODAL':
-            return { ...state, activeModal: action.payload }
-
-        case 'CLOSE_MODAL':
-            return { ...state, activeModal: null }
-
-        // Loading actions
-        case 'SET_UPDATING':
-            return { ...state, isUpdating: action.payload }
 
         // Reset actions
         case 'RESET_TO_SERVER':
@@ -167,51 +126,25 @@ export function articleReducer(
             }
 
         // Historical version actions
-        case 'VIEW_HISTORICAL_VERSION': {
-            const versionTitle = action.payload.title ?? ''
-            const versionContent = action.payload.content ?? ''
+        case 'VIEW_HISTORICAL_VERSION':
             return {
                 ...state,
-                historicalVersion: {
-                    versionId: action.payload.id,
-                    version: action.payload.version,
-                    title: versionTitle,
-                    content: versionContent,
-                    publishedDatetime: action.payload.published_datetime,
-                    publisherUserId: action.payload.publisher_user_id,
-                    commitMessage: action.payload.commit_message,
-                    impactDateRange: action.payload.impactDateRange,
-                },
-                title: versionTitle,
-                content: versionContent,
-                articleMode: 'read',
+                ...viewHistoricalVersionUpdates(action.payload),
+                mode: 'read',
             }
-        }
 
-        case 'CLEAR_HISTORICAL_VERSION': {
-            const originalTitle = state.article?.translation.title ?? ''
-            const originalContent = state.article?.translation.content ?? ''
+        case 'CLEAR_HISTORICAL_VERSION':
             return {
                 ...state,
-                historicalVersion: null,
-                comparisonVersion: null,
-                title: originalTitle,
-                content: originalContent,
-                articleMode: 'read',
+                ...clearHistoricalVersionUpdates(
+                    state.article?.translation.title ?? '',
+                    state.article?.translation.content ?? '',
+                ),
+                mode: 'read',
             }
-        }
 
-        case 'SET_COMPARISON_VERSION': {
-            return {
-                ...state,
-                comparisonVersion: {
-                    title: action.payload.title,
-                    content: action.payload.content,
-                },
-            }
-        }
-
+        // Base actions delegated (SET_MODE, SET_FULLSCREEN, TOGGLE_FULLSCREEN, etc.)
         default:
-            return state
+            return baseEditorReducer(state, action)
     }
 }

@@ -66,7 +66,7 @@ describe('useArticleToolbar', () => {
         }> = {},
     ): ArticleContextValue => ({
         state: {
-            articleMode: 'edit',
+            mode: 'edit',
             isFullscreen: false,
             isDetailsView: true,
             title: 'Test Article',
@@ -121,10 +121,10 @@ describe('useArticleToolbar', () => {
     })
 
     describe('toolbar state', () => {
-        it('should return "create" state when articleMode is "create"', () => {
+        it('should return "create" state when mode is "create"', () => {
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
-                    state: { articleMode: 'create', article: undefined },
+                    state: { mode: 'create', article: undefined },
                 }),
             )
 
@@ -137,7 +137,7 @@ describe('useArticleToolbar', () => {
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: {
-                        articleMode: 'edit',
+                        mode: 'edit',
                         article: {
                             ...mockArticle,
                             translation: {
@@ -158,7 +158,7 @@ describe('useArticleToolbar', () => {
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: {
-                        articleMode: 'read',
+                        mode: 'read',
                         article: {
                             ...mockArticle,
                             translation: {
@@ -179,7 +179,7 @@ describe('useArticleToolbar', () => {
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: {
-                        articleMode: 'read',
+                        mode: 'read',
                         article: {
                             ...mockArticle,
                             translation: {
@@ -203,7 +203,7 @@ describe('useArticleToolbar', () => {
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: {
-                        articleMode: 'read',
+                        mode: 'read',
                         article: {
                             ...mockArticle,
                             translation: {
@@ -227,7 +227,7 @@ describe('useArticleToolbar', () => {
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: {
-                        articleMode: 'edit',
+                        mode: 'edit',
                         article: {
                             ...mockArticle,
                             translation: {
@@ -251,7 +251,7 @@ describe('useArticleToolbar', () => {
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: {
-                        articleMode: 'read',
+                        mode: 'read',
                         historicalVersion: {
                             versionId: 10,
                             version: 3,
@@ -280,7 +280,7 @@ describe('useArticleToolbar', () => {
             mockUseArticleContext.mockReturnValue(
                 createMockContext({
                     state: {
-                        articleMode: 'edit',
+                        mode: 'edit',
                         article: {
                             ...mockArticle,
                             translation: {
@@ -399,7 +399,7 @@ describe('useArticleToolbar', () => {
                     canEdit: true,
                     hasDraft: true,
                     state: {
-                        articleMode: 'read',
+                        mode: 'read',
                         article: {
                             ...mockArticle,
                             translation: {
@@ -471,7 +471,7 @@ describe('useArticleToolbar', () => {
                 mockUseArticleContext.mockReturnValue(
                     createMockContext({
                         state: {
-                            articleMode: 'create',
+                            mode: 'create',
                             title: '',
                             content: '',
                             article: undefined,
@@ -493,7 +493,7 @@ describe('useArticleToolbar', () => {
                 mockUseArticleContext.mockReturnValue(
                     createMockContext({
                         state: {
-                            articleMode: 'create',
+                            mode: 'create',
                             title: 'Some title',
                             content: 'Some content',
                             article: undefined,
@@ -517,7 +517,7 @@ describe('useArticleToolbar', () => {
                 mockUseArticleContext.mockReturnValue(
                     createMockContext({
                         state: {
-                            articleMode: 'create',
+                            mode: 'create',
                             title: 'Some title',
                             content: '',
                             article: undefined,
@@ -542,7 +542,7 @@ describe('useArticleToolbar', () => {
             it('should dispatch SET_MODAL with "discard-draft"', () => {
                 mockUseArticleContext.mockReturnValue(
                     createMockContext({
-                        state: { articleMode: 'edit' },
+                        state: { mode: 'edit' },
                     }),
                 )
 

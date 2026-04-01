@@ -72,21 +72,3 @@ export const getEditModeFromVisibility = (
     visibilityStatus: VisibilityStatus,
 ): ArticleModeType =>
     visibilityStatus === VisibilityStatusEnum.PUBLIC ? 'edit' : 'edit'
-
-export const computeHasDraft = (
-    article: ArticleWithLocalTranslation | undefined,
-): boolean => {
-    if (!article) return false
-    const { draft_version_id, published_version_id } = article.translation
-    return !published_version_id || draft_version_id !== published_version_id
-}
-
-export const computeCanEdit = (
-    article: ArticleWithLocalTranslation | undefined,
-    hasDraft: boolean,
-): boolean => {
-    if (!article) return true
-    const isCurrent = article.translation.is_current
-    if (isCurrent && hasDraft) return false
-    return true
-}

@@ -54,14 +54,14 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
         })),
     )
     const {
-        guidanceMode,
+        mode,
         isGuidanceCurrent,
         historicalPublishedDatetime,
         isUpdating,
         isAutoSaving,
     } = useGuidanceStore(
         useShallow((storeState) => ({
-            guidanceMode: storeState.state.guidanceMode,
+            mode: storeState.state.mode,
             isGuidanceCurrent: storeState.state.guidance?.isCurrent,
             historicalPublishedDatetime:
                 storeState.state.historicalVersion?.publishedDatetime,
@@ -112,7 +112,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
     }, [store, onClose, dispatch])
 
     const toolbarState = getToolbarState(
-        guidanceMode,
+        mode,
         isGuidanceCurrent,
         guidanceHasDraft,
         historicalPublishedDatetime !== null &&
@@ -146,7 +146,7 @@ export const useGuidanceToolbar = (): GuidanceToolbarData => {
 }
 
 const getToolbarState = (
-    guidanceMode: GuidanceModeType,
+    mode: GuidanceModeType,
     isCurrent: boolean | undefined,
     hasDraft: boolean,
     isViewingHistoricalVersion: boolean,
@@ -155,12 +155,12 @@ const getToolbarState = (
         return { type: 'viewing-historical-version' }
     }
 
-    if (guidanceMode === 'create') {
+    if (mode === 'create') {
         return { type: 'create' }
     }
 
     const isViewingDraft = isCurrent === false
-    const isEditMode = guidanceMode === 'edit'
+    const isEditMode = mode === 'edit'
 
     if (isViewingDraft) {
         return isEditMode ? { type: 'draft-edit' } : { type: 'draft-view' }

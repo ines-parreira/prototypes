@@ -41,7 +41,7 @@ type MockGuidanceStoreState = {
     }
     dispatch: jest.Mock
     state: {
-        guidanceMode: 'read' | 'edit' | 'create' | 'diff'
+        mode: 'read' | 'edit' | 'create' | 'diff'
         guidance: {
             id: number
             locale: string
@@ -175,7 +175,7 @@ const createMockGuidanceStoreState = (): MockGuidanceStoreState => ({
     config: { guidanceHelpCenter: { id: 456 }, onUpdateFn: jest.fn() },
     dispatch: jest.fn(),
     state: {
-        guidanceMode: 'edit',
+        mode: 'edit',
         guidance: {
             id: 123,
             locale: 'en',
@@ -281,7 +281,7 @@ describe('KnowledgeEditorSidePanelSectionLinkedIntents', () => {
     })
 
     it('renders compared intent tags in diff mode', () => {
-        mockGuidanceStoreState.state.guidanceMode = 'diff'
+        mockGuidanceStoreState.state.mode = 'diff'
         mockGuidanceStoreState.state.guidance.intents = [
             'order::status',
             'return::information',

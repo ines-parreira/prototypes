@@ -1,17 +1,14 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
-import cn from 'classnames'
-
+import { EditorWithPlayground } from 'common/knowledge-editor/components'
+import type { PlaygroundState } from 'common/knowledge-editor/types'
 import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { usePlaygroundPanelInKnowledgeEditor } from 'pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor'
 import type { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
-import { PlaygroundPanel } from '../../PlaygroundPanel/PlaygroundPanel'
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
 import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { KnowledgeEditorSnippetLoader } from './KnowledgeEditorSnippetLoader'
-
-import css from './KnowledgeEditorSnippet.less'
 
 type Props = {
     shopName: string
@@ -81,6 +78,23 @@ export const KnowledgeEditorSnippet = ({
         snippetHelpCenter,
     ])
 
+    const playground = useMemo<PlaygroundState>(
+        () => ({
+            isOpen: isPlaygroundOpen,
+            onTest,
+            onClose: onClosePlayground,
+            sidePanelWidth,
+            shouldHideFullscreenButton,
+        }),
+        [
+            isPlaygroundOpen,
+            onTest,
+            onClosePlayground,
+            sidePanelWidth,
+            shouldHideFullscreenButton,
+        ],
+    )
+
     if (!isOpen) {
         return null
     }
@@ -94,38 +108,24 @@ export const KnowledgeEditorSnippet = ({
     }
 
     return (
-        <div className={css.splitView}>
-            <div className={css.editor}>
-                <KnowledgeEditorSnippetLoader
-                    snippetId={snippetId}
-                    snippetType={snippetType}
-                    helpCenterId={snippetHelpCenter?.id ?? 0}
-                    shopIntegrationId={
-                        snippetHelpCenter?.shop_integration_id ?? 0
-                    }
-                    locale={snippetHelpCenter?.default_locale ?? 'en-US'}
-                    onClose={onClose}
-                    onClickPrevious={onClickPrevious}
-                    onClickNext={onClickNext}
-                    onUpdated={onUpdated}
-                    isFullscreen={isFullscreen}
-                    isPlaygroundOpen={isPlaygroundOpen}
-                    onToggleFullscreen={onToggleFullscreen}
-                    onTest={onTest}
-                    handleVisibilityUpdate={handleVisibilityUpdate}
-                    shouldHideFullscreenButton={shouldHideFullscreenButton}
-                />
-            </div>
-            <div
-                className={cn(
-                    css.playground,
-                    isPlaygroundOpen
-                        ? css['playground-open']
-                        : css['playground-closed'],
-                )}
-            >
-                <PlaygroundPanel onClose={onClosePlayground} />
-            </div>
-        </div>
+        <EditorWithPlayground playground={playground}>
+            <KnowledgeEditorSnippetLoader
+                snippetId={snippetId}
+                snippetType={snippetType}
+                helpCenterId={snippetHelpCenter?.id ?? 0}
+                shopIntegrationId={snippetHelpCenter?.shop_integration_id ?? 0}
+                locale={snippetHelpCenter?.default_locale ?? 'en-US'}
+                onClose={onClose}
+                onClickPrevious={onClickPrevious}
+                onClickNext={onClickNext}
+                onUpdated={onUpdated}
+                isFullscreen={isFullscreen}
+                isPlaygroundOpen={isPlaygroundOpen}
+                onToggleFullscreen={onToggleFullscreen}
+                onTest={onTest}
+                handleVisibilityUpdate={handleVisibilityUpdate}
+                shouldHideFullscreenButton={shouldHideFullscreenButton}
+            />
+        </EditorWithPlayground>
     )
 }

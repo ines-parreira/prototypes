@@ -1,6 +1,5 @@
-import { useCallback, useRef } from 'react'
+import { useCallback } from 'react'
 
-import { useDebouncedCallback } from '@repo/hooks'
 import { useShallow } from 'zustand/react/shallow'
 
 import { useNotify } from 'hooks/useNotify'
@@ -8,27 +7,23 @@ import {
     getPlainTextLength,
     textLimit,
 } from 'pages/aiAgent/components/GuidanceEditor/guidanceTextContent.utils'
-import { areTrimmedStringsEqual } from 'pages/aiAgent/components/KnowledgeEditor/shared/utils'
+import type { BaseAutoSaveParams } from 'pages/aiAgent/components/KnowledgeEditor/shared/use-editor-auto-save'
+import { useEditorAutoSave } from 'pages/aiAgent/components/KnowledgeEditor/shared/use-editor-auto-save'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
+import type { GuidanceArticle } from 'pages/aiAgent/types'
 import { mapGuidanceFormFieldsToGuidanceArticle } from 'pages/aiAgent/utils/guidance.utils'
 
 import {
     useGuidanceStore,
     useGuidanceStoreApi,
 } from './KnowledgeEditorGuidanceContext'
-import type { GuidanceState } from './types'
 import { fromArticleTranslation, fromArticleTranslationResponse } from './utils'
 
-const DEFAULT_AUTOSAVE_DELAY_MS = 1000
-
-type AutoSaveParams = {
-    title: string
-    content: string
+type GuidanceExtra = {
     visibility: boolean
-    mode: 'edit' | 'create'
-    articleId: number | undefined
-    savedSnapshot: GuidanceState['savedSnapshot']
 }
+
+const DEFAULT_AUTOSAVE_DELAY_MS = 1000
 
 export const useGuidanceAutoSave = () => {
     const store = useGuidanceStoreApi()
@@ -56,218 +51,119 @@ export const useGuidanceAutoSave = () => {
             guidanceHelpCenterId: guidanceHelpCenter.id ?? 0,
         })
 
-    const pendingSaveRef = useRef<{
-        title: string
-        content: string
-    } | null>(null)
+    const getCurrentState = useCallback(() => {
+        const state = store.getState().state
+        return {
+            mode: state.mode,
+            title: state.title,
+            content: state.content,
+            savedSnapshot: state.savedSnapshot,
+            articleId: state.guidance?.id,
+            extra: { visibility: state.visibility } as GuidanceExtra,
+        }
+    }, [store])
 
-    const performAutoSave = useCallback(
-        async ({
-            title,
-            content,
-            visibility,
-            mode,
-            articleId,
-            savedSnapshot,
-        }: AutoSaveParams) => {
-            if (!guidanceHelpCenter.id || !guidanceHelpCenter.default_locale) {
-                dispatch({ type: 'SET_AUTO_SAVING', payload: false })
-                return
-            }
+    const isHelpCenterReady = useCallback(
+        () => !!guidanceHelpCenter.id && !!guidanceHelpCenter.default_locale,
+        [guidanceHelpCenter.id, guidanceHelpCenter.default_locale],
+    )
 
-            const titleMatchesSnapshot = areTrimmedStringsEqual(
-                title,
-                savedSnapshot.title,
-            )
-            const contentMatchesSnapshot = content === savedSnapshot.content
-
-            if (titleMatchesSnapshot && contentMatchesSnapshot) {
-                dispatch({ type: 'SET_AUTO_SAVING', payload: false })
-                return
-            }
-            pendingSaveRef.current = { title, content }
-
-            try {
-                if (mode === 'create') {
-                    const response = await createGuidanceArticle(
-                        mapGuidanceFormFieldsToGuidanceArticle(
-                            {
-                                name: title,
-                                content,
-                                isVisible: visibility,
-                            },
-                            guidanceHelpCenter.default_locale,
-                            guidanceTemplate
-                                ? `template_guidance_${guidanceTemplate.id}`
-                                : undefined,
-                            false, // isCurrent
-                        ),
-                    )
-
-                    if (response && pendingSaveRef.current) {
-                        const createdGuidance = fromArticleTranslation(response)
-                        const savedValues = pendingSaveRef.current
-                        dispatch({
-                            type: 'MARK_AS_SAVED',
-                            payload: {
-                                title: savedValues.title,
-                                content: savedValues.content,
-                                guidance: createdGuidance,
-                            },
-                        })
-                        dispatch({ type: 'SET_MODE', payload: 'edit' })
-                        onCreateFn?.(
-                            createdGuidance,
-                            shouldAddToMissingKnowledge,
-                        )
-                    }
-                } else {
-                    if (!articleId) {
-                        dispatch({ type: 'SET_AUTO_SAVING', payload: false })
-                        return
-                    }
-
-                    const response = await updateGuidanceArticle(
-                        mapGuidanceFormFieldsToGuidanceArticle(
-                            {
-                                name: title,
-                                content,
-                                isVisible: visibility,
-                            },
-                            guidanceHelpCenter.default_locale,
-                            undefined,
-                            false,
-                        ),
+    const performSave = useCallback(
+        async (params: BaseAutoSaveParams<GuidanceExtra>) => {
+            if (params.mode === 'create') {
+                const response = await createGuidanceArticle(
+                    mapGuidanceFormFieldsToGuidanceArticle(
                         {
-                            articleId,
-                            locale: guidanceHelpCenter.default_locale,
+                            name: params.title,
+                            content: params.content,
+                            isVisible: params.extra.visibility,
                         },
-                    )
-
-                    if (response && pendingSaveRef.current) {
-                        const savedValues = pendingSaveRef.current
-                        dispatch({
-                            type: 'MARK_AS_SAVED',
-                            payload: {
-                                title: savedValues.title,
-                                content: savedValues.content,
-                                guidance: fromArticleTranslationResponse(
-                                    response,
-                                    {
-                                        id: articleId,
-                                    },
-                                ),
-                            },
-                        })
-                        onUpdateFn?.()
-                    }
-                }
-            } catch {
-                notifyError(
-                    mode === 'create'
-                        ? 'An error occurred while creating guidance.'
-                        : 'An error occurred while saving guidance.',
+                        guidanceHelpCenter.default_locale,
+                        guidanceTemplate
+                            ? `template_guidance_${guidanceTemplate.id}`
+                            : undefined,
+                        false, // isCurrent
+                    ),
                 )
-                dispatch({ type: 'SET_AUTO_SAVE_ERROR', payload: true })
-            } finally {
-                pendingSaveRef.current = null
-                dispatch({ type: 'SET_AUTO_SAVING', payload: false })
+
+                if (!response) return null
+                const createdGuidance = fromArticleTranslation(response)
+                return {
+                    entity: createdGuidance,
+                    shouldSwitchToEditMode: true,
+                }
+            }
+
+            if (!params.articleId) return null
+
+            const response = await updateGuidanceArticle(
+                mapGuidanceFormFieldsToGuidanceArticle(
+                    {
+                        name: params.title,
+                        content: params.content,
+                        isVisible: params.extra.visibility,
+                    },
+                    guidanceHelpCenter.default_locale,
+                    undefined,
+                    false,
+                ),
+                {
+                    articleId: params.articleId,
+                    locale: guidanceHelpCenter.default_locale,
+                },
+            )
+
+            if (!response) return null
+            return {
+                entity: fromArticleTranslationResponse(response, {
+                    id: params.articleId,
+                }),
+                shouldSwitchToEditMode: false,
             }
         },
         [
-            guidanceHelpCenter.id,
             guidanceHelpCenter.default_locale,
             guidanceTemplate,
             createGuidanceArticle,
             updateGuidanceArticle,
-            dispatch,
-            onCreateFn,
-            onUpdateFn,
-            notifyError,
-            shouldAddToMissingKnowledge,
         ],
     )
 
-    const debouncedAutoSave = useDebouncedCallback(
-        performAutoSave,
-        DEFAULT_AUTOSAVE_DELAY_MS,
-    )
-
-    const triggerAutoSave = useCallback(
-        (params: AutoSaveParams) => {
-            dispatch({ type: 'SET_AUTO_SAVING', payload: true })
-            debouncedAutoSave(params)
+    return useEditorAutoSave<GuidanceExtra, GuidanceArticle>({
+        debounceDelay: DEFAULT_AUTOSAVE_DELAY_MS,
+        getCurrentState,
+        isHelpCenterReady,
+        validateContent: (content) => getPlainTextLength(content) <= textLimit,
+        performSave,
+        dispatch: {
+            setTitle: (value) =>
+                dispatch({ type: 'SET_TITLE', payload: value }),
+            setContent: (value) =>
+                dispatch({ type: 'SET_CONTENT', payload: value }),
+            setAutoSaving: (value) =>
+                dispatch({ type: 'SET_AUTO_SAVING', payload: value }),
+            markAsSaved: (snapshot, guidance) => {
+                dispatch({
+                    type: 'MARK_AS_SAVED',
+                    payload: {
+                        title: snapshot.title,
+                        content: snapshot.content,
+                        guidance,
+                    },
+                })
+            },
+            setMode: (mode) => dispatch({ type: 'SET_MODE', payload: mode }),
+            setAutoSaveError: (value) =>
+                dispatch({ type: 'SET_AUTO_SAVE_ERROR', payload: value }),
         },
-        [dispatch, debouncedAutoSave],
-    )
-
-    const onChangeField = useCallback(
-        (field: 'title' | 'content', value: string) => {
-            const currentState = store.getState().state
-
-            if (
-                currentState.guidanceMode === 'read' ||
-                currentState.guidanceMode === 'diff'
-            )
-                return
-
-            let newTitle = field === 'title' ? value : currentState.title
-            const newContent =
-                field === 'content' ? value : currentState.content
-
-            // If content is present but title is empty, use "Untitled" as temporary title
-            // Only do this when the content field is being changed, not the title field
-            const shouldUseUntitled =
-                field === 'content' &&
-                newTitle.trim() === '' &&
-                newContent.trim() !== ''
-            if (shouldUseUntitled) {
-                newTitle = 'Untitled'
-            }
-
-            // Dispatch the state updates
-            if (field === 'title') {
-                dispatch({ type: 'SET_TITLE', payload: value })
-            } else {
-                dispatch({ type: 'SET_CONTENT', payload: value })
-            }
-
-            // If we're using "Untitled" as temporary title, also update the title state
-            if (shouldUseUntitled) {
-                dispatch({ type: 'SET_TITLE', payload: 'Untitled' })
-            }
-
-            const isValid = newTitle.trim() !== '' && newContent.trim() !== ''
-            if (!isValid) {
-                return
-            }
-
-            if (getPlainTextLength(newContent) > textLimit) {
-                return
-            }
-
-            const titleMatches = areTrimmedStringsEqual(
-                newTitle,
-                currentState.savedSnapshot.title,
-            )
-            const contentMatches =
-                newContent === currentState.savedSnapshot.content
-            const hasChanges = !titleMatches || !contentMatches
-
-            if (!hasChanges) {
-                return
-            }
-            triggerAutoSave({
-                title: newTitle,
-                content: newContent,
-                visibility: currentState.visibility,
-                mode: currentState.guidanceMode,
-                articleId: currentState.guidance?.id,
-                savedSnapshot: currentState.savedSnapshot,
-            })
-        },
-        [store, dispatch, triggerAutoSave],
-    )
-
-    return { onChangeField }
+        onCreated: (guidance) =>
+            onCreateFn?.(guidance, shouldAddToMissingKnowledge),
+        onUpdated: () => onUpdateFn?.(),
+        onError: (mode) =>
+            notifyError(
+                mode === 'create'
+                    ? 'An error occurred while creating guidance.'
+                    : 'An error occurred while saving guidance.',
+            ),
+    })
 }

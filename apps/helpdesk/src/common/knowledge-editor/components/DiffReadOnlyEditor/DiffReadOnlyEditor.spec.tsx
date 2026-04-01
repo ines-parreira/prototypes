@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { render, screen } from '@testing-library/react'
+// eslint-disable-next-line react-doctor/prefer-dynamic-import -- test file requires synchronous draft-js imports
 import {
     CharacterMetadata,
     ContentBlock,

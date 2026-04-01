@@ -130,7 +130,7 @@ describe('KnowledgeEditorTopBar', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('shows last saved indicator when guidanceMode is edit', () => {
+    it('shows last saved indicator when editorMode is edit', () => {
         render(
             <Provider store={store}>
                 <KnowledgeEditorTopBar
@@ -141,7 +141,7 @@ describe('KnowledgeEditorTopBar', () => {
                     onClose={jest.fn()}
                     isDetailsView={false}
                     onToggleDetailsView={jest.fn()}
-                    guidanceMode="edit"
+                    editorMode="edit"
                     lastUpdatedDatetime={new Date('2024-01-15T10:30:00Z')}
                 />
             </Provider>,
@@ -152,7 +152,7 @@ describe('KnowledgeEditorTopBar', () => {
         ).toBeInTheDocument()
     })
 
-    it('does not show last saved indicator when guidanceMode is not edit and onChangeTitle is not provided', () => {
+    it('does not show last saved indicator when editorMode is not edit and onChangeTitle is not provided', () => {
         render(
             <Provider store={store}>
                 <KnowledgeEditorTopBar
@@ -163,7 +163,7 @@ describe('KnowledgeEditorTopBar', () => {
                     onClose={jest.fn()}
                     isDetailsView={false}
                     onToggleDetailsView={jest.fn()}
-                    guidanceMode="read"
+                    editorMode="read"
                     lastUpdatedDatetime={new Date('2024-01-15T10:30:00Z')}
                 />
             </Provider>,

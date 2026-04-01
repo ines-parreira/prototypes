@@ -34,7 +34,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         isUpdating,
         isDraft,
         isViewingHistoricalVersion,
-        guidanceMode,
+        mode,
         visibilityConflict,
         closeVisibilityConflictModal,
         rebaseAndEnableVisibility,
@@ -79,7 +79,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
                 <KnowledgeEditorSidePanelFieldStatus
                     key="status"
                     isDraft={isDraft}
-                    mode={guidanceMode}
+                    mode={mode}
                 />
             ),
         },

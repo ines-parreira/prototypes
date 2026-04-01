@@ -44,7 +44,7 @@ export function ArticleVersionBanner() {
         !!config.initialVersionId &&
         state.historicalVersion?.versionId === config.initialVersionId
 
-    const isDiffMode = state.articleMode === 'diff'
+    const isDiffMode = state.mode === 'diff'
 
     const onToggleDiff = useCallback(async () => {
         if (isDiffMode) {
