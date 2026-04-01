@@ -3,13 +3,15 @@ import { useCallback, useEffect, useState } from 'react'
 import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { usePrevious } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { NavigationSection, NavigationSectionItem } from '@repo/navigation'
+import { NavigationSectionItem, useSidebar } from '@repo/navigation'
+import { history } from '@repo/routing'
+import { IconWithDot } from '@repo/tickets'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Link, useLocation } from 'react-router-dom'
 
-import { Quantity, Text } from '@gorgias/axiom'
+import { Box, Button, Menu, MenuItem, Text } from '@gorgias/axiom'
 
 import navbarCss from 'assets/css/navbar.less'
 import { Navigation } from 'components/Navigation/Navigation'
@@ -44,6 +46,7 @@ const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
     const linkClasses = classnames(css.menuItem, {
         [css.hasSomethingNew]: recentTicket.get('is_unread') && !isActive,
     })
+    const { isCollapsed } = useSidebar()
 
     const onClick = () => {
         logEvent(SegmentEvent.RecentActivityClicked, {
@@ -55,7 +58,29 @@ const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
         dispatch(activeViewIdSet(null))
     }
 
+    const ticketId = recentTicket.get('id') as string
+    const to = `/app/ticket/${recentTicket.get('id') as string}`
+
     if (hasWayfindingMS1Flag) {
+        if (isCollapsed) {
+            return (
+                <MenuItem
+                    id={ticketId}
+                    label={customerName}
+                    onAction={() => history.push(to)}
+                    leadingSlot={
+                        <IconWithDot
+                            size="sm"
+                            name={channelToCommunicationIcon(channel)}
+                            isDotVisible={
+                                recentTicket.get('is_unread') && !isActive
+                            }
+                        />
+                    }
+                />
+            )
+        }
+
         return (
             <NavigationSectionItem
                 label={customerName}
@@ -66,7 +91,15 @@ const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
                         ticket: recentTicket.toJS(),
                     })
                 }}
-                leadingSlot={channelToCommunicationIcon(channel)}
+                leadingSlot={
+                    <IconWithDot
+                        size="sm"
+                        name={channelToCommunicationIcon(channel)}
+                        isDotVisible={
+                            recentTicket.get('is_unread') && !isActive
+                        }
+                    />
+                }
             />
         )
     }
@@ -91,6 +124,7 @@ export const RecentChats = () => {
     const previousPathname = usePrevious(location.pathname)
     const chats = useAppSelector((state) => state.chats)
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
+    const { isCollapsed } = useSidebar()
 
     const [dummyState, setDummyState] = useState(false)
 
@@ -106,25 +140,56 @@ export const RecentChats = () => {
 
     const tickets = chats.get('tickets') as List<Map<any, any>>
 
-    if (!tickets || tickets.isEmpty()) {
-        return null
-    }
+    // if (!tickets || tickets.isEmpty()) {
+    //     return null
+    // }
 
     if (hasWayfindingMS1Flag) {
+        const chatItems = tickets
+            .toArray()
+            .map((e, index) => (
+                <RecentChatsItem
+                    key={e!.get('id')}
+                    recentTicket={e!}
+                    position={index! + 1}
+                />
+            ))
+
+        if (isCollapsed) {
+            return (
+                <Menu
+                    trigger={
+                        <Button
+                            variant="tertiary"
+                            icon={
+                                <IconWithDot
+                                    size="md"
+                                    name={'comm-chat-circle'}
+                                    isDotVisible={tickets
+                                        .toArray()
+                                        .some(
+                                            (ticket) =>
+                                                ticket.get('is_unread') &&
+                                                !isCurrentlyOnTicket(
+                                                    ticket.get('id'),
+                                                ),
+                                        )}
+                                />
+                            }
+                        />
+                    }
+                >
+                    {chatItems}
+                </Menu>
+            )
+        }
         return (
-            <NavigationSection
-                id="real-time-messaging"
-                label={<Text variant="regular">Real-time</Text>}
-                trailingSlot={<Quantity quantity={tickets.size} />}
-            >
-                {tickets.toArray().map((e, index) => (
-                    <RecentChatsItem
-                        key={e!.get('id')}
-                        recentTicket={e!}
-                        position={index! + 1}
-                    />
-                ))}
-            </NavigationSection>
+            <Box flexDirection="column" gap="xxxs">
+                <Box pl="xs" pr="xxxs">
+                    <Text variant="medium">Live chats</Text>
+                </Box>
+                <Box flexDirection="column">{chatItems}</Box>
+            </Box>
         )
     }
 

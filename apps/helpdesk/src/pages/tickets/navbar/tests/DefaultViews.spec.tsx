@@ -40,10 +40,6 @@ jest.mock('../TicketNavbarViewLinkItem', () => ({
     ),
 }))
 
-jest.mock('../RecentChats', () => ({
-    RecentChats: () => <div>RecentChats</div>,
-}))
-
 const mockUseExpandableDefaultViews = assumeMock(useExpandableDefaultViews)
 const MockDefaultViewsMenu = assumeMock(DefaultViewsMenu)
 type ExpandableDefaultViewsContext = ReturnType<
@@ -118,12 +114,6 @@ describe('DefaultViews', () => {
         renderComponent()
 
         expect(screen.queryByText('DefaultViewsMenu')).not.toBeInTheDocument()
-    })
-
-    it('should render RecentChats', () => {
-        renderComponent()
-
-        expect(screen.getByText('RecentChats')).toBeInTheDocument()
     })
 
     it('should render view labels for displayed views', () => {

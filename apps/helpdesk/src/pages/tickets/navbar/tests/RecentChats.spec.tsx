@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { StaticRouter } from 'react-router-dom'
 
@@ -21,6 +21,17 @@ jest.mock('@repo/feature-flags', () => ({
 const useHelpdeskV2WayfindingMS1FlagMock = jest.requireMock(
     '@repo/feature-flags',
 ).useHelpdeskV2WayfindingMS1Flag as jest.Mock
+
+jest.mock('@repo/navigation', () => ({
+    ...jest.requireActual('@repo/navigation'),
+    useSidebar: jest.fn(() => ({ isCollapsed: false })),
+}))
+const mockUseSidebar = jest.requireMock('@repo/navigation')
+    .useSidebar as jest.Mock
+
+jest.mock('@repo/routing', () => ({
+    history: { push: jest.fn() },
+}))
 
 jest.mock(
     '@repo/logging',
@@ -64,6 +75,7 @@ describe('RecentChats', () => {
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
         useAppSelectorMock.mockReturnValue(fromJS({ tickets: [recentTicket] }))
+        mockUseSidebar.mockReturnValue({ isCollapsed: false })
 
         activeViewIdSetMock.mockReturnValue({
             type: 'active-view-id-set',
@@ -102,33 +114,29 @@ describe('RecentChats', () => {
             useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
         })
 
-        it('should render the "Real-time" section header', () => {
+        it('should render the "Live chats" section header', () => {
             render(<RecentChats />, { wrapper })
 
-            expect(screen.getByText('Real-time')).toBeInTheDocument()
+            expect(screen.getByText('Live chats')).toBeInTheDocument()
         })
 
-        it('should render customer names after expanding the section', async () => {
-            const user = userEvent.setup()
+        it('should render customer names', () => {
             render(<RecentChats />, { wrapper })
-
-            await user.click(screen.getByText('Real-time'))
 
             expect(screen.getByText('John Doe')).toBeInTheDocument()
         })
 
-        it('should not render anything when there are no tickets', () => {
+        it('should render "Live chats" header even when there are no tickets', () => {
             useAppSelectorMock.mockReturnValue(fromJS({ tickets: [] }))
-            const { container } = render(<RecentChats />, { wrapper })
+            render(<RecentChats />, { wrapper })
 
-            expect(container).toBeEmptyDOMElement()
+            expect(screen.getByText('Live chats')).toBeInTheDocument()
         })
 
         it('should log a segment event when a ticket item is clicked', async () => {
             const user = userEvent.setup()
             render(<RecentChats />, { wrapper })
 
-            await user.click(screen.getByText('Real-time'))
             await user.click(screen.getByText('John Doe'))
 
             expect(logEvent).toHaveBeenCalledWith(
@@ -139,6 +147,35 @@ describe('RecentChats', () => {
                 },
             )
             expect(dispatch).not.toHaveBeenCalled()
+        })
+
+        describe('when sidebar is collapsed', () => {
+            beforeEach(() => {
+                mockUseSidebar.mockReturnValue({ isCollapsed: true })
+            })
+
+            it('should render a menu trigger button', () => {
+                render(<RecentChats />, { wrapper })
+
+                expect(screen.getByRole('button')).toBeInTheDocument()
+            })
+
+            it('should not render the "Live chats" section header', () => {
+                render(<RecentChats />, { wrapper })
+
+                expect(screen.queryByText('Live chats')).not.toBeInTheDocument()
+            })
+
+            it('should render ticket items inside the menu when opened', async () => {
+                const user = userEvent.setup()
+                render(<RecentChats />, { wrapper })
+
+                await user.click(screen.getByRole('button'))
+
+                await waitFor(() => {
+                    expect(screen.getByText('John Doe')).toBeInTheDocument()
+                })
+            })
         })
     })
 })

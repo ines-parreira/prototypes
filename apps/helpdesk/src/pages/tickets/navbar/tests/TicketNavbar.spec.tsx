@@ -524,7 +524,7 @@ describe('<TicketNavbar/>', () => {
             mockUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
         })
 
-        it('should render CollapsedDefaultViews when sidebar is collapsed and wayfinding flag is enabled', () => {
+        it('should render CollapsedDefaultViews and RecentChats when sidebar is collapsed and wayfinding flag is enabled', () => {
             mockUseSidebar.mockReturnValue({
                 isCollapsed: true,
                 toggleCollapse: jest.fn(),
@@ -543,15 +543,16 @@ describe('<TicketNavbar/>', () => {
             )
 
             expect(getByText('CollapsedDefaultViews')).toBeInTheDocument()
+            expect(getByText('RecentChats')).toBeInTheDocument()
         })
 
-        it('should render when sidebar is expanded and wayfinding flag is enabled', () => {
+        it('should render RecentChats and TicketNavbarContent when sidebar is expanded and wayfinding flag is enabled', () => {
             mockUseSidebar.mockReturnValue({
                 isCollapsed: false,
                 toggleCollapse: jest.fn(),
             })
 
-            const { queryAllByTestId } = renderWithRouter(
+            const { queryAllByTestId, getByText } = renderWithRouter(
                 <DndProvider backend={HTML5Backend}>
                     <Provider store={mockStore(store as any)}>
                         <TicketNavbarContainer {...minProps} />
@@ -565,6 +566,7 @@ describe('<TicketNavbar/>', () => {
 
             const navbarContents = queryAllByTestId('TicketNavbarContent')
             expect(navbarContents.length).toBeGreaterThan(0)
+            expect(getByText('RecentChats')).toBeInTheDocument()
         })
     })
 

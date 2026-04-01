@@ -13,7 +13,7 @@ import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
 
-import { Separator } from '@gorgias/axiom'
+import { Box, Separator } from '@gorgias/axiom'
 
 import { ActiveContent, Navbar } from 'common/navigation'
 import { useDesktopOnlyShowGlobalNavFeatureFlag } from 'common/navigation/hooks/useShowGlobalNavFeatureFlag'
@@ -465,7 +465,10 @@ export function TicketNavbarContainer({
             <>
                 <TicketNavbarCreateMenu />
                 <Separator />
-                <CollapsedDefaultViews />
+                <Box flexDirection="column" gap="xs">
+                    <RecentChats />
+                    <CollapsedDefaultViews />
+                </Box>
             </>
         )
     }
@@ -474,7 +477,10 @@ export function TicketNavbarContainer({
         return (
             <>
                 <TicketNavbarCreateMenu />
-                <DefaultViews viewCount={viewsCount} />
+                <Box flexDirection="column" gap="xs">
+                    <RecentChats />
+                    <DefaultViews viewCount={viewsCount} />
+                </Box>
                 <NavigationSectionGroup
                     storageKey="inbox-navigation"
                     defaultExpandedKeys={Object.keys(ViewCategories)}

@@ -7,8 +7,6 @@ import { useCurrentUserRole } from '@repo/users'
 
 import { Box, Button, Text } from '@gorgias/axiom'
 
-import { RecentChats } from 'pages/tickets/navbar/RecentChats'
-
 import { TicketNavbarViewLinkItem } from './TicketNavbarViewLinkItem'
 
 type Props = {
@@ -36,7 +34,6 @@ export function DefaultViews({ viewCount }: Props) {
                 {isAdmin && <DefaultViewsMenu />}
             </Box>
             <Box flexDirection="column" gap="xxxxs">
-                <RecentChats />
                 {displayedViews.map(
                     (view) =>
                         !!view.id &&

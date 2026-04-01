@@ -72,6 +72,7 @@ export { InfobarTicketCustomerInstagramSection } from './components/InfobarTicke
 export {
     CollapsedDefaultViews,
     DefaultViewsMenu,
+    IconWithDot,
     SYSTEM_VIEW_DEFINITIONS,
     TicketSectionActionsMenu,
 } from './sidebar'
