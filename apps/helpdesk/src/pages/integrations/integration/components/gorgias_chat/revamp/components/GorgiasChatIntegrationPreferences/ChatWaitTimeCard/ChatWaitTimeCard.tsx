@@ -35,10 +35,10 @@ export const ChatWaitTimeCard = ({
                 <div className={css.toggleHeader}>
                     <div className={css.cardHeader}>
                         <Heading size="md">
-                            Share wait time with customers
+                            Share wait time with shoppers
                         </Heading>
                         <Text size="md">
-                            Let customers know when to expect a reply while
+                            Let shoppers know when to expect a reply while
                             waiting for your team.
                         </Text>
                     </div>

@@ -29,33 +29,32 @@ export const ChatVisibilityCard = ({
                 <div className={css.cardHeader}>
                     <Heading size="md">Where chat appears</Heading>
                     <Text size="md">
-                        Control when and where your chat widget is visible to
-                        customers.
+                        Control when and where your chat is visible to shoppers.
                     </Text>
                 </div>
 
                 <div className={css.fieldSection}>
                     <ToggleField
-                        label="Display chat"
-                        caption="Turn off to temporarily remove the chat widget from your website without uninstalling it."
+                        label="Show chat"
+                        caption="Turn off to temporarily remove the chat from your website."
                         value={displayChat}
                         onChange={onDisplayChatChange}
                     />
                     <ToggleField
                         label="Show chat outside of business hours"
-                        caption="Automatically hide the widget when your team is offline."
+                        caption="Turn off to hide chat outside of business hours."
                         value={showOutsideBusinessHours}
                         onChange={onShowOutsideBusinessHoursChange}
                     />
                     <ToggleField
                         label="Show on mobile"
-                        caption="Turn off to hide the chat widget from your mobile site."
+                        caption="Turn off to hide the chat from your mobile site."
                         value={showOnMobile}
                         onChange={onShowOnMobileChange}
                     />
                     <ToggleField
-                        label="Display campaigns when chat is hidden"
-                        caption="Keep campaigns visible even when chat is turned off. Customers won't be able to reply."
+                        label="Show campaigns when chat is hidden"
+                        caption="Keep campaigns visible even when chat is turned off. Shoppers won't be able to reply."
                         value={displayCampaignsWhenHidden}
                         onChange={onDisplayCampaignsWhenHiddenChange}
                     />

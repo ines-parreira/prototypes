@@ -105,17 +105,17 @@ describe('ChatAvailabilityCard', () => {
 
         expect(
             screen.getByText(
-                'Customers can only send live chat messages when an agent is available in Gorgias.',
+                'Shoppers can only send live chat messages when an agent is available in Gorgias.',
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Customers can always send live chat messages during business hours.',
+                'Shoppers can always send live chat messages during business hours.',
             ),
         ).toBeInTheDocument()
         expect(
             screen.getByText(
-                'Customers can only send messages using the offline capture.',
+                'Shoppers can only leave messages through the offline form.',
             ),
         ).toBeInTheDocument()
     })

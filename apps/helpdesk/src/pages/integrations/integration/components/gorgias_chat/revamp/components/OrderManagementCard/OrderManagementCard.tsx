@@ -60,8 +60,8 @@ export function OrderManagementCard({
                     className={css.description}
                     color="content-neutral-secondary"
                 >
-                    Allow customers to track and manage their orders directly
-                    within your Chat.
+                    Allow shoppers to track and manage their orders directly
+                    within your chat.
                 </Text>
             </Box>
             <div>

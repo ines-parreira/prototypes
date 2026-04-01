@@ -117,7 +117,7 @@ describe('LegalCard', () => {
         renderComponent()
 
         expect(
-            screen.getByRole('heading', { name: 'Legal disclaimer' }),
+            screen.getByRole('heading', { name: 'Privacy policy' }),
         ).toBeInTheDocument()
     })
 
@@ -196,7 +196,7 @@ describe('LegalCard', () => {
 
             expect(
                 screen.getByRole('checkbox', {
-                    name: /Show legal disclaimer to customers/,
+                    name: /Show privacy policy at the start of a conversation/,
                 }),
             ).not.toBeChecked()
         })
@@ -206,7 +206,7 @@ describe('LegalCard', () => {
 
             expect(
                 screen.getByRole('checkbox', {
-                    name: /Show legal disclaimer to customers/,
+                    name: /Show privacy policy at the start of a conversation/,
                 }),
             ).toBeChecked()
         })
@@ -217,7 +217,7 @@ describe('LegalCard', () => {
 
             await user.click(
                 screen.getByRole('checkbox', {
-                    name: /Show legal disclaimer to customers/,
+                    name: /Show privacy policy at the start of a conversation/,
                 }),
             )
 

@@ -77,7 +77,7 @@ export const ChatShopperExperienceCard = ({
                 <div className={css.cardHeader}>
                     <Heading size="md">Shopper experience</Heading>
                     <Text size="md">
-                        Customize how customers experience chat after the
+                        Customize how shoppers experience chat after the
                         conversation.
                     </Text>
                 </div>
@@ -106,14 +106,14 @@ export const ChatShopperExperienceCard = ({
                             </SelectField>
                         </div>
                         <Text size="sm" className={css.caption}>
-                            Select an email to send conversation transcripts,
-                            offline confirmations, and satisfaction surveys.
+                            Used for conversation transcripts, offline
+                            confirmations, and satisfaction surveys.
                         </Text>
                     </div>
 
                     <CheckBoxField
-                        label="Send conversation transcripts to customers"
-                        caption="If a customer doesn't see your reply in chat, we'll automatically send them a transcript after 30 minutes."
+                        label="Send conversation transcripts to shoppers"
+                        caption="If a shopper doesn't see your reply in chat, we'll automatically send them a transcript after 30 minutes."
                         value={sendChatTranscript}
                         onChange={onSendChatTranscriptChange}
                     />

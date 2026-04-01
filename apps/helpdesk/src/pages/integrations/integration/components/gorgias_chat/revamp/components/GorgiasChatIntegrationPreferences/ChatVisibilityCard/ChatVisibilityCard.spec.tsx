@@ -64,7 +64,7 @@ describe('ChatVisibilityCard', () => {
 
         expect(
             screen.getByText(
-                'Control when and where your chat widget is visible to customers.',
+                'Control when and where your chat is visible to shoppers.',
             ),
         ).toBeInTheDocument()
     })
@@ -72,27 +72,27 @@ describe('ChatVisibilityCard', () => {
     it('should render all four toggle fields', () => {
         renderComponent()
 
-        expect(screen.getByLabelText('Display chat')).toBeInTheDocument()
+        expect(screen.getByLabelText('Show chat')).toBeInTheDocument()
         expect(
             screen.getByLabelText('Show chat outside of business hours'),
         ).toBeInTheDocument()
         expect(screen.getByLabelText('Show on mobile')).toBeInTheDocument()
         expect(
-            screen.getByLabelText('Display campaigns when chat is hidden'),
+            screen.getByLabelText('Show campaigns when chat is hidden'),
         ).toBeInTheDocument()
     })
 
-    describe('Display chat toggle', () => {
+    describe('Show chat toggle', () => {
         it('should render checked when displayChat is true', () => {
             renderComponent({ displayChat: true })
 
-            expect(screen.getByLabelText('Display chat')).toBeChecked()
+            expect(screen.getByLabelText('Show chat')).toBeChecked()
         })
 
         it('should render unchecked when displayChat is false', () => {
             renderComponent({ displayChat: false })
 
-            expect(screen.getByLabelText('Display chat')).not.toBeChecked()
+            expect(screen.getByLabelText('Show chat')).not.toBeChecked()
         })
 
         it('should call onDisplayChatChange when toggled', async () => {
@@ -100,7 +100,7 @@ describe('ChatVisibilityCard', () => {
             const onDisplayChatChange = jest.fn()
             renderComponent({ displayChat: true, onDisplayChatChange })
 
-            await user.click(screen.getByLabelText('Display chat'))
+            await user.click(screen.getByLabelText('Show chat'))
 
             expect(onDisplayChatChange).toHaveBeenCalledWith(false)
         })
@@ -163,12 +163,12 @@ describe('ChatVisibilityCard', () => {
         })
     })
 
-    describe('Display campaigns when hidden toggle', () => {
+    describe('Show campaigns when hidden toggle', () => {
         it('should render unchecked when displayCampaignsWhenHidden is false', () => {
             renderComponent({ displayCampaignsWhenHidden: false })
 
             expect(
-                screen.getByLabelText('Display campaigns when chat is hidden'),
+                screen.getByLabelText('Show campaigns when chat is hidden'),
             ).not.toBeChecked()
         })
 
@@ -176,7 +176,7 @@ describe('ChatVisibilityCard', () => {
             renderComponent({ displayCampaignsWhenHidden: true })
 
             expect(
-                screen.getByLabelText('Display campaigns when chat is hidden'),
+                screen.getByLabelText('Show campaigns when chat is hidden'),
             ).toBeChecked()
         })
 
@@ -189,7 +189,7 @@ describe('ChatVisibilityCard', () => {
             })
 
             await user.click(
-                screen.getByLabelText('Display campaigns when chat is hidden'),
+                screen.getByLabelText('Show campaigns when chat is hidden'),
             )
 
             expect(onDisplayCampaignsWhenHiddenChange).toHaveBeenCalledWith(

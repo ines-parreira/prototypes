@@ -35,7 +35,7 @@ export const AvatarCard = ({
             <div className={css.cardContent}>
                 <div className={css.cardHeader}>
                     <Heading size="md">
-                        How your team appears to customers
+                        How your team appears to shoppers
                     </Heading>
                     <Text size="md">
                         Choose how your team&apos;s name and profile appear in
@@ -116,7 +116,7 @@ export const AvatarCard = ({
                                     value={
                                         GorgiasChatAvatarImageType.AGENT_PICTURE
                                     }
-                                    label="Profile picture"
+                                    label="Agent photo"
                                 />
                                 <Radio
                                     value={
@@ -137,11 +137,11 @@ export const AvatarCard = ({
 
                     <div className={css.fieldSection}>
                         <Text variant="bold" size="md">
-                            Avatar logo
+                            Logo
                         </Text>
                         <Text size="sm" className={css.caption}>
-                            Upload a logo to use as your team&apos;s or bot
-                            avatar. Recommended size 100 × 100 px. Max 500 KB.
+                            This logo appears as your team&apos;s avatar in
+                            chat. Recommended size 100 × 100 px. Max 500 KB.
                         </Text>
                         <LogoUpload
                             url={avatar.companyLogoUrl}

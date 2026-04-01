@@ -26,7 +26,7 @@ jest.mock('@gorgias/axiom', () => ({
     }) => (
         <input
             type="checkbox"
-            aria-label="Share wait time with customers"
+            aria-label="Share wait time with shoppers"
             checked={value}
             onChange={(e) => onChange(e.target.checked)}
         />
@@ -95,7 +95,7 @@ describe('ChatWaitTimeCard', () => {
 
         expect(
             screen.getByRole('heading', {
-                name: 'Share wait time with customers',
+                name: 'Share wait time with shoppers',
             }),
         ).toBeInTheDocument()
     })
@@ -105,7 +105,7 @@ describe('ChatWaitTimeCard', () => {
 
         expect(
             screen.getByText(
-                'Let customers know when to expect a reply while waiting for your team.',
+                'Let shoppers know when to expect a reply while waiting for your team.',
             ),
         ).toBeInTheDocument()
     })
@@ -138,7 +138,7 @@ describe('ChatWaitTimeCard', () => {
             renderComponent({ autoResponderEnabled: true })
 
             expect(
-                screen.getByLabelText('Share wait time with customers'),
+                screen.getByLabelText('Share wait time with shoppers'),
             ).toBeChecked()
         })
 
@@ -146,7 +146,7 @@ describe('ChatWaitTimeCard', () => {
             renderComponent({ autoResponderEnabled: false })
 
             expect(
-                screen.getByLabelText('Share wait time with customers'),
+                screen.getByLabelText('Share wait time with shoppers'),
             ).not.toBeChecked()
         })
 
@@ -159,7 +159,7 @@ describe('ChatWaitTimeCard', () => {
             })
 
             await user.click(
-                screen.getByLabelText('Share wait time with customers'),
+                screen.getByLabelText('Share wait time with shoppers'),
             )
 
             expect(onAutoResponderEnabledChange).toHaveBeenCalledWith(true)
@@ -174,7 +174,7 @@ describe('ChatWaitTimeCard', () => {
             })
 
             await user.click(
-                screen.getByLabelText('Share wait time with customers'),
+                screen.getByLabelText('Share wait time with shoppers'),
             )
 
             expect(onAutoResponderEnabledChange).toHaveBeenCalledWith(false)

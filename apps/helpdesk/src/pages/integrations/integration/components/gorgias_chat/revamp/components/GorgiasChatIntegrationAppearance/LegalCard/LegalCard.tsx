@@ -57,11 +57,10 @@ export const LegalCard = ({
         <Card className={css.card} elevation={Elevation.Mid}>
             <div className={css.cardContent}>
                 <div className={css.cardHeader}>
-                    <Heading size="md">Legal disclaimer</Heading>
+                    <Heading size="md">Privacy policy</Heading>
                     <Text size="md" variant="regular">
-                        Add any required legal notices, including an AI-powered
-                        chat disclosure, that customers will see when starting a
-                        conversation.
+                        Add your privacy policy that shoppers will see in the
+                        chat.
                     </Text>
                 </div>
                 <div className={css.legalMainContent}>
@@ -95,10 +94,8 @@ export const LegalCard = ({
                             variant="regular"
                             className={css.helperText}
                         >
-                            We recommend disclosing that this chat is AI-powered
-                            and linking to your privacy policy. Gorgias is not
-                            responsible for compliance with applicable privacy
-                            laws.
+                            Gorgias is not responsible for compliance with
+                            applicable privacy laws.
                         </Text>
                     </div>
 
@@ -107,7 +104,7 @@ export const LegalCard = ({
                         onFocus={focusPreviewLegalDisclaimerSettings}
                     >
                         <CheckBoxField
-                            label="Show legal disclaimer to customers at the start of any conversation"
+                            label="Show privacy policy at the start of a conversation"
                             value={legalDisclaimerEnabled}
                             onChange={handleLegalDisclaimerEnabled}
                         />

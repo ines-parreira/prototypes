@@ -25,7 +25,7 @@ jest.mock('@gorgias/axiom', () => ({
     }) => (
         <input
             type="checkbox"
-            aria-label="Collect customer emails"
+            aria-label="Collect shopper emails"
             checked={value}
             onChange={(e) => onChange(e.target.checked)}
         />
@@ -93,7 +93,7 @@ describe('ChatEmailCaptureCard', () => {
         renderComponent()
 
         expect(
-            screen.getByRole('heading', { name: 'Collect customer emails' }),
+            screen.getByRole('heading', { name: 'Collect shopper emails' }),
         ).toBeInTheDocument()
     })
 
@@ -118,7 +118,7 @@ describe('ChatEmailCaptureCard', () => {
         renderComponent()
 
         expect(
-            screen.getByText('Reduces incoming conversations by ~70%'),
+            screen.getByText('Reduces incoming conversations by about 70%'),
         ).toBeInTheDocument()
     })
 
@@ -127,7 +127,7 @@ describe('ChatEmailCaptureCard', () => {
             renderComponent({ emailCaptureEnabled: true })
 
             expect(
-                screen.getByLabelText('Collect customer emails'),
+                screen.getByLabelText('Collect shopper emails'),
             ).toBeChecked()
         })
 
@@ -135,7 +135,7 @@ describe('ChatEmailCaptureCard', () => {
             renderComponent({ emailCaptureEnabled: false })
 
             expect(
-                screen.getByLabelText('Collect customer emails'),
+                screen.getByLabelText('Collect shopper emails'),
             ).not.toBeChecked()
         })
 
@@ -147,7 +147,7 @@ describe('ChatEmailCaptureCard', () => {
                 onEmailCaptureEnabledChange,
             })
 
-            await user.click(screen.getByLabelText('Collect customer emails'))
+            await user.click(screen.getByLabelText('Collect shopper emails'))
 
             expect(onEmailCaptureEnabledChange).toHaveBeenCalledWith(true)
         })
@@ -160,7 +160,7 @@ describe('ChatEmailCaptureCard', () => {
                 onEmailCaptureEnabledChange,
             })
 
-            await user.click(screen.getByLabelText('Collect customer emails'))
+            await user.click(screen.getByLabelText('Collect shopper emails'))
 
             expect(onEmailCaptureEnabledChange).toHaveBeenCalledWith(false)
         })

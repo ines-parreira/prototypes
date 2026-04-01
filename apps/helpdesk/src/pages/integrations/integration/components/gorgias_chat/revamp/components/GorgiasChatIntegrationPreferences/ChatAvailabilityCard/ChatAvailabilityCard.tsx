@@ -47,19 +47,19 @@ export const ChatAvailabilityCard = ({
                                 GORGIAS_CHAT_LIVE_CHAT_AUTO_BASED_ON_AGENT_AVAILABILITY
                             }
                             label="Live when agents are available"
-                            caption="Customers can only send live chat messages when an agent is available in Gorgias."
+                            caption="Shoppers can only send live chat messages when an agent is available in Gorgias."
                         />
                         <Radio
                             value={
                                 GORGIAS_CHAT_LIVE_CHAT_ALWAYS_LIVE_DURING_BUSINESS_HOURS
                             }
                             label="Always live during business hours"
-                            caption="Customers can always send live chat messages during business hours."
+                            caption="Shoppers can always send live chat messages during business hours."
                         />
                         <Radio
                             value={GORGIAS_CHAT_LIVE_CHAT_OFFLINE}
                             label="Offline (capture messages only)"
-                            caption="Customers can only send messages using the offline capture."
+                            caption="Shoppers can only leave messages through the offline form."
                         />
                     </RadioGroup>
                 </div>

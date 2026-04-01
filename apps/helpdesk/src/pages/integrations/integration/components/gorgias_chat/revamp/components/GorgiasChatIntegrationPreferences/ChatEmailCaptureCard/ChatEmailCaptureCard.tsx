@@ -33,7 +33,7 @@ export const ChatEmailCaptureCard = ({
             <div className={css.cardContent}>
                 <div className={css.toggleHeader}>
                     <div className={css.cardHeader}>
-                        <Heading size="md">Collect customer emails</Heading>
+                        <Heading size="md">Collect shopper emails</Heading>
                         <Text size="md">
                             Grow your email list and send follow-up messages.
                         </Text>
@@ -61,7 +61,7 @@ export const ChatEmailCaptureCard = ({
                                 GORGIAS_CHAT_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED
                             }
                             label="Required"
-                            caption="Reduces incoming conversations by ~70%"
+                            caption="Reduces incoming conversations by about 70%"
                             isDisabled={!emailCaptureEnabled}
                         />
                     </RadioGroup>

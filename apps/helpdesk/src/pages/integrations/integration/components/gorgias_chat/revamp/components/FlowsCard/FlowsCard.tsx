@@ -49,7 +49,7 @@ export function FlowsCard({
                     <Heading size="md">Flows</Heading>
                     <Text size="md" color="content-neutral-secondary">
                         Show up to 6 flows on your chat to proactively resolve
-                        top customer requests.
+                        top shopper requests.
                     </Text>
                 </Box>
                 <FlowsSettings

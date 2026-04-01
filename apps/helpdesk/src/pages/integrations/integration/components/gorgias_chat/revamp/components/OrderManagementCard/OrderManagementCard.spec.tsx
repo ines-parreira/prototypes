@@ -34,7 +34,7 @@ describe('OrderManagementCard', () => {
 
         expect(
             screen.getByText(
-                /allow customers to track and manage their orders directly within your chat/i,
+                /allow shoppers to track and manage their orders directly within your chat/i,
             ),
         ).toBeInTheDocument()
     })

@@ -145,7 +145,7 @@ describe('ChatShopperExperienceCard', () => {
 
         expect(
             screen.getByText(
-                'Customize how customers experience chat after the conversation.',
+                'Customize how shoppers experience chat after the conversation.',
             ),
         ).toBeInTheDocument()
     })
@@ -161,7 +161,7 @@ describe('ChatShopperExperienceCard', () => {
 
         expect(
             screen.getByText(
-                'Select an email to send conversation transcripts, offline confirmations, and satisfaction surveys.',
+                'Used for conversation transcripts, offline confirmations, and satisfaction surveys.',
             ),
         ).toBeInTheDocument()
     })
@@ -181,7 +181,7 @@ describe('ChatShopperExperienceCard', () => {
         renderComponent()
 
         expect(
-            screen.getByLabelText('Send conversation transcripts to customers'),
+            screen.getByLabelText('Send conversation transcripts to shoppers'),
         ).toBeInTheDocument()
     })
 
@@ -197,7 +197,7 @@ describe('ChatShopperExperienceCard', () => {
 
             expect(
                 screen.getByLabelText(
-                    'Send conversation transcripts to customers',
+                    'Send conversation transcripts to shoppers',
                 ),
             ).toBeChecked()
         })
@@ -207,7 +207,7 @@ describe('ChatShopperExperienceCard', () => {
 
             expect(
                 screen.getByLabelText(
-                    'Send conversation transcripts to customers',
+                    'Send conversation transcripts to shoppers',
                 ),
             ).not.toBeChecked()
         })
@@ -222,7 +222,7 @@ describe('ChatShopperExperienceCard', () => {
 
             await user.click(
                 screen.getByLabelText(
-                    'Send conversation transcripts to customers',
+                    'Send conversation transcripts to shoppers',
                 ),
             )
 
@@ -239,7 +239,7 @@ describe('ChatShopperExperienceCard', () => {
 
             await user.click(
                 screen.getByLabelText(
-                    'Send conversation transcripts to customers',
+                    'Send conversation transcripts to shoppers',
                 ),
             )
 

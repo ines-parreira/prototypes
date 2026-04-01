@@ -56,7 +56,7 @@ describe('ChatAutomationCard', () => {
 
         expect(
             screen.getByText(
-                'Decide if customers begin chatting with your automated flows before reaching your team.',
+                'Let shoppers interact with automated flows before reaching your team.',
             ),
         ).toBeInTheDocument()
     })

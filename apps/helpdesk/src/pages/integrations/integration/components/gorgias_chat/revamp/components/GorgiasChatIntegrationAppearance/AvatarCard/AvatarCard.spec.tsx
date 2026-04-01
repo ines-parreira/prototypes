@@ -126,7 +126,7 @@ describe('AvatarCard', () => {
         renderComponent()
 
         expect(
-            screen.getByText('How your team appears to customers'),
+            screen.getByText('How your team appears to shoppers'),
         ).toBeInTheDocument()
     })
 
@@ -213,7 +213,7 @@ describe('AvatarCard', () => {
         it('should render all image type options', () => {
             renderComponent()
 
-            expect(screen.getByLabelText('Profile picture')).toBeInTheDocument()
+            expect(screen.getByLabelText('Agent photo')).toBeInTheDocument()
             expect(screen.getByLabelText('Initials')).toBeInTheDocument()
             expect(screen.getByLabelText('Logo')).toBeInTheDocument()
         })
@@ -253,7 +253,9 @@ describe('AvatarCard', () => {
         it('should render the avatar logo heading', () => {
             renderComponent()
 
-            expect(screen.getByText('Avatar logo')).toBeInTheDocument()
+            expect(
+                screen.getByText('Logo', { selector: 'span' }),
+            ).toBeInTheDocument()
         })
 
         it('should show logo preview when companyLogoUrl is set', () => {

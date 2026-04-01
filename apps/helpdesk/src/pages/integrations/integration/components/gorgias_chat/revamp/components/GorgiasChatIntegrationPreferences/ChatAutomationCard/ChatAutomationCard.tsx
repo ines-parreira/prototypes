@@ -20,8 +20,8 @@ export const ChatAutomationCard = ({
                             Start conversations with automation
                         </Heading>
                         <Text size="md">
-                            Decide if customers begin chatting with your
-                            automated flows before reaching your team.
+                            Let shoppers interact with automated flows before
+                            reaching your team.
                         </Text>
                     </div>
                     <ToggleField
