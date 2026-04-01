@@ -1,0 +1,1500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Copilot UI Patterns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;1,14..32,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; font-family: inherit; }
+
+:root {
+  --bg: #0f0f11; --surface: #17171a; --surface2: #1e1e22; --surface3: #252529;
+  --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+  --accent: #7c6ef7; --accent-dim: rgba(124,110,247,0.15); --accent-border: rgba(124,110,247,0.3);
+  --text: #e8e8ed; --text-2: #9898a8; --text-3: #505060;
+  --green: #3ecf8e; --green-dim: rgba(62,207,142,0.12);
+  --red: #f87272; --red-dim: rgba(248,114,114,0.12);
+  --yellow: #f5c542; --yellow-dim: rgba(245,197,66,0.12);
+  --send-bg: #e8e8ed; --send-fg: #0f0f11;
+  --r: 8px; --sidebar: 220px;
+}
+:root.light {
+  --bg: #ffffff; --surface: #ffffff; --surface2: #ffffff; --surface3: #f0f0f3;
+  --border: #e5e5e8; --border2: #d0d0d5;
+  --accent: #6355e8; --accent-dim: rgba(99,85,232,0.08); --accent-border: rgba(99,85,232,0.25);
+  --text: #111116; --text-2: #6b6b80; --text-3: #b0b0c0;
+  --green: #0d9e6a; --green-dim: rgba(13,158,106,0.1);
+  --red: #e0413c; --red-dim: rgba(224,65,60,0.1);
+  --yellow: #c9900a; --yellow-dim: rgba(201,144,10,0.1);
+  --send-bg: #111116; --send-fg: #ffffff;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  font-feature-settings: 'cv02','cv03','cv04','cv11','ss01';
+  font-optical-sizing: auto; -webkit-font-smoothing: antialiased;
+  background: var(--bg); color: var(--text);
+  height: 100vh; display: flex; overflow: hidden;
+  font-size: 13px; line-height: 1.5; letter-spacing: -0.01em;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  width: var(--sidebar); flex-shrink: 0; height: 100vh;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  padding: 20px 12px; gap: 24px; overflow-y: auto;
+}
+.brand { padding: 0 8px; }
+.brand-name { font-size: 13px; font-weight: 600; letter-spacing: -.01em; }
+.nav-section { display: flex; flex-direction: column; gap: 2px; }
+.nav-section-label { font-size: 11px; font-weight: 500; color: var(--text-3); padding: 0 8px; margin-bottom: 3px; }
+.nav-item {
+  display: flex; align-items: center; padding: 7px 8px; border-radius: 6px;
+  cursor: pointer; color: var(--text-2); font-size: 13px;
+  transition: background .1s, color .1s;
+  border: none; background: none; width: 100%; text-align: left;
+  font-family: 'Inter', sans-serif; letter-spacing: -0.01em;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: var(--accent-dim); color: var(--text); font-weight: 500; }
+.nav-sub { display: none; flex-direction: column; gap: 1px; padding-left: 16px; }
+.nav-sub.open { display: flex; }
+.nav-sub-item {
+  display: flex; align-items: center; gap: 7px;
+  padding: 5px 8px; border-radius: 6px;
+  cursor: pointer; color: var(--text-3); font-size: 12px;
+  transition: background .1s, color .1s;
+  border: none; background: none; width: 100%; text-align: left;
+  font-family: 'Inter', sans-serif; letter-spacing: -0.01em;
+}
+.nav-sub-item:hover { color: var(--text-2); background: var(--surface2); }
+.nav-sub-item.active { color: var(--text); font-weight: 500; }
+.nav-sub-item.active .sub-bar { opacity: 1; }
+.sub-bar { width: 2px; height: 12px; border-radius: 2px; background: var(--accent); flex-shrink: 0; opacity: 0; transition: opacity .1s; }
+
+/* ── TOPBAR ── */
+.main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.topbar {
+  height: 49px; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; padding: 0 28px; gap: 8px; flex-shrink: 0;
+}
+.topbar-section { font-size: 12px; color: var(--text-3); }
+.topbar-sep { color: var(--text-3); font-size: 12px; }
+.topbar-title { font-size: 13px; font-weight: 500; color: var(--text); }
+.theme-btn {
+  margin-left: auto; background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 6px; color: var(--text-2); width: 30px; height: 30px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: color .15s; flex-shrink: 0;
+}
+.theme-btn:hover { color: var(--text); }
+.content { flex: 1; display: flex; align-items: center; justify-content: center; overflow-y: auto; padding: 40px 48px; }
+.view { display: none; width: 100%; max-width: 560px; flex-direction: column; }
+.view.active { display: flex; }
+
+/* ── ASK INPUT ── */
+.ask-box {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface2); border: 1px solid var(--border2);
+  border-radius: 14px; padding: 14px 16px;
+  transition: border-color .15s, box-shadow .15s;
+}
+:root.light .ask-box { background: rgba(255,255,255,0.5); border-color: rgba(0,10,41,0.56); }
+.ask-box.focused { border-color: #e8e8ed; box-shadow: 0 0 0 3px rgba(232,232,237,0.12); }
+:root.light .ask-box.focused { border-color: #111116; box-shadow: 0 0 0 3px rgba(17,17,22,0.08); }
+.ask-input { flex: 1; background: none; border: none; outline: none; font-family: 'Inter', sans-serif; font-size: 14px; color: var(--text); letter-spacing: -0.01em; }
+.ask-input::placeholder { color: #6E7686; }
+:root.light .ask-input::placeholder { color: #8992A0; }
+.ask-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.ask-icon-btn { background: none; border: none; cursor: pointer; color: #FAFAFA; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 20px; transition: opacity .12s; }
+:root.light .ask-icon-btn { color: #8992A0; }
+.ask-icon-btn:hover { opacity: .7; }
+.ask-send-btn { width: 30px; height: 30px; border-radius: 8px; background: var(--send-bg); border: none; cursor: pointer; display: none; align-items: center; justify-content: center; color: var(--send-fg); transition: opacity .12s; }
+.ask-stop-btn { width: 30px; height: 30px; border-radius: 8px; background: var(--send-bg); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; color: var(--send-fg); transition: opacity .12s; }
+.ask-stop-btn:hover { opacity: .8; }
+.ask-send-btn:hover { opacity: .85; }
+.ask-send-btn.visible { display: flex; }
+
+/* ── PLAN CARD ── */
+.plan-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; width: 100%; }
+
+/* ── TODO LIST ── */
+.todo-list { display: flex; flex-direction: column; }
+.todo-item { display: flex; align-items: center; gap: 8px; padding: 8px 0; position: relative; }
+.todo-item:not(:last-child) .todo-track::after {
+  content: ''; position: absolute; left: 8px; top: 26px; bottom: -4px;
+  width: 1.5px; background: var(--border2); z-index: 0;
+}
+.todo-track { position: relative; flex-shrink: 0; width: 18px; display: flex; align-items: center; justify-content: center; }
+.todo-ico { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+.todo-ico.done { background: transparent; border: none; color: var(--text-3); }
+.todo-ico.working { border: 2px solid var(--text); background: transparent; color: var(--text); }
+:root.light .todo-ico.working { border-color: #111116; color: #111116; }
+.todo-ico.working svg { animation: spin 1s linear infinite; }
+.todo-ico.queued { border: 2px solid var(--border2); background: transparent; }
+.todo-ico.skipped { border: 2px solid var(--border2); background: transparent; color: var(--text-3); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.todo-body { flex: 1; }
+.todo-lbl { font-size: 14px; color: var(--text-2); }
+.todo-lbl.bold { color: var(--text); font-weight: 600; }
+.todo-lbl.muted { color: var(--text-3); }
+
+/* ── COMPREHENSIVE ── */
+.comp-header { padding-bottom: 14px; margin-bottom: 4px; border-bottom: 1px solid var(--border); }
+.comp-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.comp-sub { font-size: 12px; color: var(--text-2); margin-bottom: 12px; }
+.comp-progress-bar { height: 4px; border-radius: 3px; background: var(--surface3); overflow: hidden; margin-bottom: 6px; margin-top: 12px; }
+.comp-progress-fill { height: 100%; border-radius: 3px; background: var(--accent); transition: width 1s ease; }
+.comp-progress-count { font-size: 11px; color: var(--text-3); }
+.todo-lbl { font-size: 14px; color: var(--text-2); }
+.todo-lbl.bold { color: var(--text); font-weight: 600; }
+.todo-lbl.muted { color: var(--text-3); }
+.todo-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.todo-toggle .todo-lbl { flex: 1; }
+.toggle-caret { color: var(--text-3); flex-shrink: 0; margin-left: 12px; transition: transform .18s; }
+.todo-toggle.open .toggle-caret { transform: rotate(180deg); }
+.todo-desc-drop { display: none; font-size: 12px; color: var(--text-3); line-height: 1.5; margin-top: 5px; }
+.show-more-btn { background: none; border: none; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600; color: var(--text); padding: 4px 0; letter-spacing: -0.01em; }
+.show-more-btn:hover { opacity: .6; }
+
+/* ── THINKING ── */
+.reasoning-top { display: flex; align-items: center; justify-content: space-between; padding: 0 16px; height: 48px; cursor: pointer; }
+.reasoning-title { font-size: 14px; color: var(--text-2); }
+.reasoning-title.shimmer {
+  background: linear-gradient(90deg, var(--text-2) 0%, var(--text-2) 40%, var(--text) 50%, var(--text-2) 60%, var(--text-2) 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 2.4s ease-in-out infinite;
+}
+@keyframes shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -100% 0; }
+}
+.reasoning-stop { width: 28px; height: 28px; border-radius: 7px; background: var(--surface2); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-2); }
+.reasoning-stop:hover { color: var(--text); }
+.reasoning-divider { height: 1px; background: var(--border); }
+.reasoning-steps { padding: 8px 12px 12px; }
+.reasoning-steps .todo-item:not(:last-child) .todo-track::after { display: none; }
+
+/* ── PROGRESS TRACKER ── */
+.progress-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.progress-header { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.progress-title { font-size: 13px; font-weight: 500; flex: 1; }
+.badge { padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+.badge-running { background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+.progress-body { padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+.task-row { display: flex; align-items: center; gap: 10px; }
+.task-name { flex: 1; font-size: 12px; color: var(--text-2); }
+.task-name.done { color: var(--text-3); text-decoration: line-through; }
+.task-name.active { color: var(--text); font-weight: 500; }
+.task-bar { width: 80px; height: 3px; border-radius: 2px; background: var(--surface3); overflow: hidden; }
+.task-fill { height: 100%; border-radius: 2px; background: var(--accent); transition: width 1s ease; }
+.task-fill.done { background: var(--green); }
+.overall-bar { margin-top: 4px; height: 4px; border-radius: 3px; background: var(--surface3); overflow: hidden; }
+.overall-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), #a78bfa); transition: width 1.2s ease; }
+.progress-footer { padding: 10px 18px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-3); }
+
+/* ── SOURCE ── */
+.source-editor { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.editor-header { padding: 9px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; background: var(--surface2); }
+.file-name { font-size: 12px; color: var(--text-2); font-family: 'JetBrains Mono', monospace; }
+.editor-body { padding: 16px 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.8; }
+.ln { color: var(--text-3); margin-right: 16px; user-select: none; }
+.kw { color: #c792ea; } .fn { color: #82aaff; } .str { color: #c3e88d; }
+.hl-line { background: rgba(124,110,247,.08); display: block; margin: 0 -20px; padding: 0 20px; }
+
+/* ── DIFF ── */
+.diff-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.diff-header { padding: 9px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; background: var(--surface2); }
+.diff-fname { font-size: 12px; font-family: 'JetBrains Mono', monospace; color: var(--text-2); flex: 1; }
+.diff-stat { font-size: 11px; display: flex; gap: 8px; }
+.diff-add { color: var(--green); } .diff-rem { color: var(--red); }
+.diff-body { font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.75; }
+.diff-line { display: flex; padding: 1px 14px; }
+.diff-line.add { background: rgba(62,207,142,.07); }
+.diff-line.rem { background: rgba(248,114,114,.07); }
+.diff-gutter { width: 28px; color: var(--text-3); flex-shrink: 0; user-select: none; font-size: 11px; }
+.diff-sign { width: 16px; flex-shrink: 0; }
+.diff-line.add .diff-sign { color: var(--green); }
+.diff-line.rem .diff-sign { color: var(--red); }
+.diff-code { color: var(--text-2); }
+.diff-line.add .diff-code { color: var(--text); }
+
+/* ── CHART ── */
+.chart-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: visible; padding: 4px; }
+.chart-header { padding: 20px 20px 0; display: flex; align-items: flex-start; justify-content: space-between; }
+.chart-header-left { display: flex; flex-direction: column; gap: 6px; }
+.chart-title-row { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 500; color: var(--text); cursor: default; }
+.chart-title-row svg { color: var(--text-3); }
+.chart-big-number { font-size: 32px; font-weight: 600; color: var(--text); letter-spacing: -0.5px; line-height: 1.1; }
+.chart-trend { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--green); font-weight: 500; margin-left: 10px; vertical-align: middle; }
+.chart-header-right { display: flex; align-items: center; gap: 6px; }
+.chart-dd-wrap { position: relative; }
+.chart-dropdown {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 4px 10px; border-radius: 6px; border: 1px solid var(--border2);
+  background: var(--surface); font-size: 12px; font-weight: 500; color: var(--text);
+  cursor: pointer;
+}
+.chart-dropdown svg { color: var(--text-3); }
+.chart-dd-menu {
+  display: none; position: absolute; top: 100%; left: 0; margin-top: 4px;
+  background: var(--surface); border: 1px solid var(--border2); border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15); min-width: 120px; padding: 4px; z-index: 10;
+}
+.chart-dd-wrap.open .chart-dd-menu { display: block; }
+.chart-dd-item {
+  display: block; width: 100%; padding: 7px 12px; border-radius: 6px; border: none;
+  background: none; font-size: 12px; color: var(--text); text-align: left; cursor: pointer;
+}
+.chart-dd-item:hover { background: var(--surface2); }
+.chart-dd-item.active { color: var(--accent); font-weight: 500; }
+.chart-dots-wrap { position: relative; }
+.chart-dots {
+  height: 26px; width: 26px; border-radius: 6px; border: 1px solid var(--border2);
+  background: var(--surface); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-2); font-size: 14px; letter-spacing: 1px;
+}
+.chart-dots:hover { background: var(--surface2); }
+.chart-dots-wrap.open .rpt-menu { display: block; }
+.chart-body { padding: 20px 24px 12px; }
+.chart-y-axis { display: flex; flex-direction: column; justify-content: space-between; height: 221px; padding-right: 12px; }
+.chart-y-label { font-size: 11px; color: var(--text-3); text-align: right; min-width: 32px; }
+.chart-area { display: flex; flex-direction: column; flex: 1; position: relative; }
+.chart-grid { position: absolute; top: 0; left: 0; right: 0; height: 220px; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
+.chart-grid-line { height: 0; border-bottom: 1px dashed var(--border); }
+.bar-chart { display: flex; align-items: flex-end; gap: 16px; height: 220px; flex: 1; position: relative; z-index: 1; padding: 0 8px; border-bottom: 1px solid var(--border); }
+.bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+.bar-stack { width: 60%; max-width: 48px; display: flex; flex-direction: column; border-radius: 3px 3px 0 0; overflow: hidden; }
+.bar-segment { flex-shrink: 0; }
+.bar-labels { display: flex; gap: 16px; padding: 0 8px; margin-top: 8px; }
+.bar-labels span { flex: 1; text-align: center; font-size: 11px; color: var(--text-3); }
+.bar-label { display: none; }
+.chart-legend { display: flex; justify-content: center; gap: 24px; padding: 14px 20px 20px; }
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-2); }
+.legend-dot { width: 9px; height: 9px; border-radius: 50%; }
+.stat-val { color: var(--text-2); font-weight: 500; }
+
+/* ── APPROVAL ── */
+.approval-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.approval-header { padding: 16px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 12px; }
+.approval-icon { width: 32px; height: 32px; border-radius: 8px; background: var(--yellow-dim); border: 1px solid rgba(245,197,66,.3); display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.approval-meta { flex: 1; }
+.approval-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.approval-sub { font-size: 12px; color: var(--text-2); line-height: 1.5; }
+.approval-body { padding: 16px 18px; display: flex; flex-direction: column; gap: 8px; }
+.approval-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 6px; background: var(--surface2); }
+.approval-item.warn { background: rgba(245,197,66,.06); border: 1px solid rgba(245,197,66,.15); }
+.approval-item-icon { font-size: 13px; margin-top: 1px; }
+.approval-item-text { flex: 1; }
+.approval-item-title { font-size: 12px; font-weight: 500; margin-bottom: 2px; }
+.approval-item-desc { font-size: 11px; color: var(--text-2); line-height: 1.45; }
+.approval-footer { padding: 14px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.btn { padding: 8px 18px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; border: none; font-family: 'Inter', sans-serif; transition: opacity .12s; }
+.btn-primary { background: var(--accent); color: white; }
+.btn-primary:hover { opacity: .88; }
+.btn-ghost { background: var(--surface2); color: var(--text-2); border: 1px solid var(--border); }
+.btn-ghost:hover { color: var(--text); }
+.approve-note { flex: 1; font-size: 11px; color: var(--text-3); }
+
+/* ── PROCESS INDICATOR ── */
+.pi-trigger {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; background: none; border: none; border-radius: 8px;
+  cursor: pointer; font-size: 13px; color: var(--text-2);
+  font-family: 'Inter', sans-serif; width: 100%; transition: background .15s;
+  letter-spacing: -0.01em;
+}
+.pi-trigger:hover { background: var(--surface2); }
+.pi-chevron { margin-left: auto; transition: transform .2s; flex-shrink: 0; }
+.pi-wrap.open .pi-chevron { transform: rotate(180deg); }
+.pi-steps { margin-left: 19px; border-left: 1.5px solid var(--border2); padding: 4px 0 4px 16px; display: none; }
+.pi-wrap.open .pi-steps { display: block; }
+.pi-step { display: flex; align-items: flex-start; gap: 8px; padding: 5px 0; font-size: 12px; color: var(--text-3); }
+.pi-step-content { display: flex; flex-direction: column; gap: 3px; }
+.pi-step-pill {
+  display: inline-flex; padding: 1px 8px; background: var(--surface3); border-radius: 20px;
+  font-size: 10px; font-weight: 500; color: var(--text-3); width: fit-content; line-height: 14px;
+}
+.pi-check { color: var(--green); flex-shrink: 0; margin-top: 1px; }
+.pi-spin { flex-shrink: 0; margin-top: 1px; animation: spin 1s linear infinite; }
+
+/* ── INSIGHT CARDS ── */
+.insight-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.ins-card {
+  flex: 1 1 0; min-width: 120px; padding: 14px 18px;
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+}
+.ins-metric { font-size: 22px; font-weight: 700; line-height: 1.2; }
+.ins-label { font-size: 12px; color: var(--text-2); margin-top: 3px; }
+.ins-trend { font-size: 11px; font-weight: 500; margin-top: 5px; }
+.ins-trend--pos { color: var(--green); }
+.ins-trend--neut { color: var(--text-2); }
+
+/* ── MENTION ── */
+.mention-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 1px 8px; background: var(--surface2); border-radius: 6px;
+  font-weight: 500; color: var(--text); white-space: nowrap;
+  transition: background .15s; cursor: pointer; font-size: inherit; line-height: inherit;
+}
+.mention-chip:hover { background: var(--surface3); }
+.mention-detail { font-size: 11px; font-weight: 400; color: var(--text-3); }
+
+/* ── REPORT ATTACHMENT ── */
+.rpt-card {
+  display: flex; flex-direction: column; gap: 12px;
+  padding: 14px 16px; border: 1px solid var(--border2); border-radius: 12px;
+  background: var(--surface); max-width: 340px;
+}
+.rpt-top { display: flex; align-items: center; justify-content: space-between; }
+.rpt-badge {
+  font-size: 11px; font-weight: 500; color: var(--text-2);
+  padding: 2px 8px; background: var(--surface3); border-radius: 6px;
+}
+.rpt-actions { display: flex; align-items: center; gap: 6px; position: relative; }
+.rpt-btn {
+  padding: 4px 12px; border-radius: 6px; border: 1px solid var(--border2);
+  background: var(--surface); font-size: 12px; font-weight: 500; color: var(--text);
+  cursor: pointer; transition: background .15s;
+}
+.rpt-btn:hover { background: var(--surface2); }
+.rpt-more {
+  width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border2);
+  background: var(--surface); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--text-2); font-size: 14px; letter-spacing: 1px; transition: background .15s;
+}
+.rpt-more:hover { background: var(--surface2); }
+.rpt-menu {
+  display: none; position: absolute; top: 100%; right: 0; margin-top: 4px;
+  background: var(--surface); border: 1px solid var(--border2); border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,.15); min-width: 140px; padding: 4px; z-index: 10;
+}
+.rpt-actions.open .rpt-menu { display: block; }
+.rpt-menu-item {
+  display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 6px;
+  font-size: 13px; font-weight: 400; color: var(--text); cursor: pointer; border: none;
+  background: none; width: 100%; text-align: left;
+}
+.rpt-menu-item:hover { background: var(--surface2); }
+.rpt-menu-item svg { color: var(--text-2); flex-shrink: 0; }
+.rpt-title { font-size: 14px; color: var(--text); font-weight: 500; line-height: 1.3; }
+.rpt-desc { font-size: 13px; color: var(--text-2); margin-top: -8px; }
+
+/* ── SMART SUGGESTIONS ── */
+.sg-chip {
+  padding: 8px 14px; border-radius: 18px; border: 1px solid var(--border2);
+  background: none; font-size: 13px; color: var(--text); cursor: pointer;
+  transition: background .15s;
+}
+.sg-chip:hover { background: var(--surface2); }
+
+/* ── QUICK FOLLOW-UP ── */
+.ss-card {
+  background: none; border: 1px solid var(--border); border-radius: 12px;
+  width: 100%; max-width: 380px; overflow: hidden;
+}
+.ss-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 18px; font-size: 14px; font-weight: 500; color: var(--text);
+}
+.ss-close {
+  width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;
+  border: none; background: none; color: var(--text-2); cursor: pointer; font-size: 16px;
+  border-radius: 4px;
+}
+.ss-close:hover { background: var(--surface2); }
+.ss-divider { height: 1px; background: var(--border); }
+.ss-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; font-size: 14px; color: var(--text); cursor: pointer;
+  transition: background .15s; border-top: 1px solid var(--border);
+}
+.ss-row:first-child { border-top: none; }
+.ss-row:hover { background: var(--surface2); }
+.ss-row-icon {
+  width: 28px; height: 28px; border-radius: 6px; background: var(--surface3);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  color: var(--text-2);
+}
+.ss-row-icon.selected { background: var(--surface3); color: var(--text-2); }
+.ss-check {
+  width: 22px; height: 22px; border-radius: 6px; border: 1.5px solid var(--border2);
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: all .15s;
+}
+.ss-check.checked { background: var(--accent); border-color: var(--accent); }
+.ss-check svg { display: none; }
+.ss-check.checked svg { display: block; color: #fff; }
+.ss-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 18px; border-top: 1px solid var(--border);
+}
+.ss-footer-count { font-size: 12px; color: var(--accent); font-weight: 500; }
+.ss-footer-actions { display: flex; align-items: center; gap: 8px; }
+.ss-btn {
+  padding: 6px 14px; border-radius: 6px; font-size: 12px; font-weight: 500;
+  cursor: pointer; border: 1px solid var(--border2); background: var(--surface); color: var(--text);
+  transition: background .15s;
+}
+.ss-btn:hover { background: var(--surface2); }
+.ss-btn--send {
+  width: 30px; height: 30px; border-radius: 6px; background: var(--text); border: 1px solid var(--text);
+  display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
+}
+.ss-btn--send svg { color: var(--bg); }
+.ss-muted { color: var(--text-2); }
+
+/* ── INLINE DATA ROW ── */
+.idr-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.idr-row:last-child { border-bottom: none; }
+.idr-rank { color: var(--text-3); font-size: 11px; width: 18px; text-align: right; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.idr-label { flex: 1; color: var(--text); font-weight: 600; }
+.idr-value { font-weight: 600; color: var(--text); font-variant-numeric: tabular-nums; }
+.idr-share { color: var(--text-3); font-size: 11px; width: 32px; text-align: right; }
+
+/* Simple values table */
+.sv-header { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-3); padding: 0 0 10px; }
+.sv-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-top: 1px solid var(--border); font-size: 13px; }
+.sv-row:first-child { border-top: none; }
+.sv-label { color: var(--text); font-weight: 600; }
+.sv-value { color: var(--text-2); font-variant-numeric: tabular-nums; }
+
+/* ── RESPONSE PROSE ── */
+.resp-prose { font-size: 14px; line-height: 1.65; color: var(--text); }
+.resp-prose p { margin-bottom: 12px; }
+.resp-prose p:last-child { margin-bottom: 0; }
+.resp-prose strong { font-weight: 600; }
+.resp-secondary { color: var(--text-2); }
+
+/* ── USER BUBBLE ── */
+.user-bub { display: flex; justify-content: flex-end; margin-bottom: 20px; }
+.user-bub-inner { padding: 10px 16px; background: var(--surface2); border-radius: 18px 18px 4px 18px; font-size: 14px; max-width: 80%; }
+
+::-webkit-scrollbar { width: 4px; } ::-webkit-scrollbar-track { background: transparent; } ::-webkit-scrollbar-thumb { background: var(--surface3); border-radius: 4px; }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="main-nav">
+  <div class="brand"><span class="brand-name">Copilot UI</span></div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Experience types</div>
+    <button class="nav-item" onclick="show(this,'exp-immersive','Experience types','Immersive')">Immersive</button>
+    <button class="nav-item" onclick="show(this,'exp-assistive','Experience types','Assistive')">Assistive</button>
+    <button class="nav-item" onclick="show(this,'exp-embedded','Experience types','Embedded')">Embedded</button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Input</div>
+    <button class="nav-item" onclick="toggleSub('ask-sub', this, 'ask-anything', 'Input', 'Ask anything — Default')">Ask anything</button>
+    <div class="nav-sub" id="ask-sub">
+      <button class="nav-sub-item" onclick="show(this,'ask-anything','Input','Ask anything — Default')"><span class="sub-bar"></span>Default</button>
+      <button class="nav-sub-item" onclick="show(this,'ask-inprogress','Input','Ask anything — In progress')"><span class="sub-bar"></span>In progress</button>
+    </div>
+    <button class="nav-item" onclick="show(this,'smart-suggestions','Input','Smart suggestions')">Smart suggestions</button>
+    <button class="nav-item" onclick="toggleSub('ss-sub', this, 'ss-simple', 'Input', 'Quick follow-up — Simple')">Quick follow-up</button>
+    <div class="nav-sub" id="ss-sub">
+      <button class="nav-sub-item" onclick="show(this,'ss-simple','Input','Quick follow-up — Simple')"><span class="sub-bar"></span>Simple</button>
+      <button class="nav-sub-item" onclick="show(this,'ss-yesno','Input','Quick follow-up — Yes / No')"><span class="sub-bar"></span>Yes / No</button>
+      <button class="nav-sub-item" onclick="show(this,'ss-multiple','Input','Quick follow-up — Multiple choice')"><span class="sub-bar"></span>Multiple choice</button>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Progress</div>
+    <button class="nav-item" onclick="toggleSub('thinking-sub', this, 'thinking-progress', 'Progress', 'Thinking — In progress')">Thinking</button>
+    <div class="nav-sub" id="thinking-sub">
+      <button class="nav-sub-item" onclick="show(this,'thinking-progress','Progress','Thinking — In progress')"><span class="sub-bar"></span>In progress</button>
+      <button class="nav-sub-item" onclick="show(this,'thinking-comprehensive','Progress','Thinking — Comprehensive')"><span class="sub-bar"></span>Comprehensive</button>
+      <button class="nav-sub-item" onclick="show(this,'thinking-complete','Progress','Thinking — Completed')"><span class="sub-bar"></span>Completed</button>
+    </div>
+    <button class="nav-item" onclick="toggleSub('plan-sub', this, 'plan-simple', 'Progress', 'Execute — Simple')">Execute</button>
+    <div class="nav-sub" id="plan-sub">
+      <button class="nav-sub-item" onclick="show(this,'plan-simple','Progress','Execute — Simple')"><span class="sub-bar"></span>Simple</button>
+      <button class="nav-sub-item" onclick="show(this,'plan-comprehensive','Progress','Execute — Comprehensive')"><span class="sub-bar"></span>Comprehensive</button>
+      <button class="nav-sub-item" onclick="show(this,'plan-complete','Progress','Execute — All complete')"><span class="sub-bar"></span>All complete</button>
+    </div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Response</div>
+    <button class="nav-item" onclick="toggleSub('idr-sub', this, 'resp-datarow-simple', 'Response', 'Audit trail — Simple')">Audit trail</button>
+    <div class="nav-sub" id="idr-sub">
+      <button class="nav-sub-item" onclick="show(this,'resp-datarow-simple','Response','Audit trail — Simple')"><span class="sub-bar"></span>Simple</button>
+      <button class="nav-sub-item" onclick="show(this,'resp-datarow-ranked','Response','Audit trail — Comprehensive')"><span class="sub-bar"></span>Comprehensive</button>
+    </div>
+    <button class="nav-item" onclick="show(this,'resp-mention','Response','Mention')">Mention</button>
+    <button class="nav-item" onclick="show(this,'resp-composed','Response','Full response')">Full response</button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Artifacts</div>
+    <button class="nav-item" onclick="toggleSub('skill-sub', this, 'skill-preview', 'Artifacts', 'Skill — Preview')">Skill</button>
+    <div class="nav-sub" id="skill-sub">
+      <button class="nav-sub-item" onclick="show(this,'skill-preview','Artifacts','Skill — Preview')"><span class="sub-bar"></span>Preview</button>
+      <button class="nav-sub-item" onclick="show(this,'skill-edit','Artifacts','Skill — Edit mode')"><span class="sub-bar"></span>Edit mode</button>
+      <button class="nav-sub-item" onclick="show(this,'skill-actions','Artifacts','Skill — Approve / Reject / Edit')"><span class="sub-bar"></span>Approve / Reject / Edit</button>
+    </div>
+    <button class="nav-item" onclick="show(this,'resp-attachment','Artifacts','Report')">Report</button>
+    <button class="nav-item" onclick="show(this,'chart','Artifacts','Chart')">Chart</button>
+    <button class="nav-item" onclick="show(this,'resp-insight','Artifacts','Insight cards')">Insight cards</button>
+    <button class="nav-item" onclick="show(this,'source','Artifacts','Source')">Source</button>
+    <button class="nav-item" onclick="show(this,'diff','Artifacts','Diff viewer')">Diff viewer</button>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-label">Confirmation</div>
+    <button class="nav-item" onclick="show(this,'approval','Confirmation','Plan approval')">Plan approval</button>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <span class="topbar-section" id="tb-section">Input</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title" id="tb-title">Ask anything</span>
+    <button class="theme-btn" onclick="toggleTheme()">
+      <svg id="icon-dark" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg id="icon-light" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+    </button>
+  </div>
+
+  <div class="content">
+
+    <!-- EXPERIENCE TYPES: IMMERSIVE -->
+    <div class="view" id="view-exp-immersive">
+      <div style="display:flex;flex-direction:column;gap:16px;width:100%;max-width:400px">
+        <div style="font-size:14px;font-weight:500;color:var(--text)">Immersive</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Full-screen experience where the copilot takes over the main content area. Best for complex, multi-step workflows like guidance creation, skill building, or deep analysis tasks.</div>
+        <div style="padding:40px;border:1px dashed var(--border2);border-radius:12px;text-align:center;color:var(--text-3);font-size:12px">Preview placeholder</div>
+      </div>
+    </div>
+
+    <!-- EXPERIENCE TYPES: ASSISTIVE -->
+    <div class="view" id="view-exp-assistive">
+      <div style="display:flex;flex-direction:column;gap:16px;width:100%;max-width:400px">
+        <div style="font-size:14px;font-weight:500;color:var(--text)">Assistive</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Side panel that runs alongside the main workspace. The copilot provides suggestions, answers, and actions without taking over the screen. Best for real-time support during ticket handling.</div>
+        <div style="padding:40px;border:1px dashed var(--border2);border-radius:12px;text-align:center;color:var(--text-3);font-size:12px">Preview placeholder</div>
+      </div>
+    </div>
+
+    <!-- EXPERIENCE TYPES: EMBEDDED -->
+    <div class="view" id="view-exp-embedded">
+      <div style="display:flex;flex-direction:column;gap:16px;width:100%;max-width:400px">
+        <div style="font-size:14px;font-weight:500;color:var(--text)">Embedded</div>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">Inline components embedded directly within existing UI surfaces. Copilot outputs appear in context — inside cards, tables, or settings pages — without a separate panel or overlay.</div>
+        <div style="padding:40px;border:1px dashed var(--border2);border-radius:12px;text-align:center;color:var(--text-3);font-size:12px">Preview placeholder</div>
+      </div>
+    </div>
+
+    <!-- SMART SUGGESTIONS -->
+    <div class="view" id="view-smart-suggestions">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;width:100%">
+        <button class="sg-chip">How can I reduce handovers?</button>
+        <button class="sg-chip">Show me top ticket topics</button>
+        <button class="sg-chip">Improve my billing guidance</button>
+        <button class="sg-chip">What skills should I create?</button>
+      </div>
+    </div>
+
+    <!-- QUICK FOLLOW-UP: SIMPLE -->
+    <div class="view" id="view-ss-simple">
+      <div class="ss-card">
+        <div class="ss-header">What would you like to change?<button class="ss-close">✕</button></div>
+        <div class="ss-row" onclick="this.style.background='var(--surface2)'">Add a new step</div>
+        <div class="ss-row" onclick="this.style.background='var(--surface2)'">Change variables</div>
+        <div class="ss-row" onclick="this.style.background='var(--surface2)'">Configure action conditions</div>
+        <div class="ss-row ss-muted" onclick="this.style.background='var(--surface2)'">Something else</div>
+      </div>
+    </div>
+
+    <!-- SMART SUGGESTIONS: YES / NO -->
+    <div class="view" id="view-ss-yesno">
+      <div class="ss-card">
+        <div class="ss-header">Does this look good?<button class="ss-close">✕</button></div>
+        <div class="ss-row" onclick="this.style.background='var(--surface2)'">
+          <div class="ss-row-icon selected"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Yes, I'm ready to approve skill
+        </div>
+        <div class="ss-row" onclick="this.style.background='var(--surface2)'">
+          <div class="ss-row-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div>
+          No, keep editing
+        </div>
+        <div class="ss-row" onclick="this.style.background='var(--surface2)'">
+          <div class="ss-row-icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 11.5h2l6.5-6.5-2-2L2 9.5V11.5z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 3L11 5.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg></div>
+          Something else
+        </div>
+      </div>
+    </div>
+
+    <!-- SMART SUGGESTIONS: MULTIPLE CHOICE -->
+    <div class="view" id="view-ss-multiple">
+      <div class="ss-card">
+        <div class="ss-header">What would you like to refine?<button class="ss-close">✕</button></div>
+        <div class="ss-row" onclick="toggleCheck(this)">
+          <div class="ss-check checked"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Option 1
+        </div>
+        <div class="ss-row" onclick="toggleCheck(this)">
+          <div class="ss-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Option 2
+        </div>
+        <div class="ss-row" onclick="toggleCheck(this)">
+          <div class="ss-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          Option 3
+        </div>
+        <div class="ss-row" onclick="toggleCheck(this)">
+          <div class="ss-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2.5 6L5 8.5L9.5 3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="ss-muted">Something else</span>
+        </div>
+        <div class="ss-footer">
+          <span class="ss-footer-count">1 selected</span>
+          <div class="ss-footer-actions">
+            <button class="ss-btn">Skip</button>
+            <button class="ss-btn--send"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ASK ANYTHING -->
+    <div class="view active" id="view-ask-anything">
+      <div class="ask-box" id="ask-box">
+        <input class="ask-input" id="ask-input" placeholder="Default state…"
+          onfocus="askFocus()" onblur="askBlur()" oninput="askInput()" onkeydown="if(event.key==='Enter')sendAsk()">
+        <div class="ask-actions">
+          <button class="ask-icon-btn">+</button>
+          <button class="ask-icon-btn" id="ask-audio">
+            <svg width="20" height="20" viewBox="0 0 16 16" fill="none"><rect x="1" y="6" width="2" height="4" rx="1" fill="currentColor"/><rect x="4" y="4" width="2" height="8" rx="1" fill="currentColor"/><rect x="7" y="2" width="2" height="12" rx="1" fill="currentColor"/><rect x="10" y="4" width="2" height="8" rx="1" fill="currentColor"/><rect x="13" y="6" width="2" height="4" rx="1" fill="currentColor"/></svg>
+          </button>
+          <button class="ask-send-btn" id="ask-send" onclick="sendAsk()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- REASONING -->
+    <div class="view" id="view-reasoning">
+    </div>
+
+    <!-- ASK ANYTHING: IN PROGRESS -->
+    <div class="view" id="view-ask-inprogress">
+      <div class="ask-box">
+        <input class="ask-input" placeholder="Copilot is working…" disabled style="opacity:.5">
+        <div class="ask-actions">
+          <button class="ask-stop-btn" title="Stop">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><rect x="1" y="1" width="14" height="14" rx="4" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="5" width="6" height="6" rx="1.5" fill="currentColor"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- THINKING: IN PROGRESS -->
+    <div class="view" id="view-thinking-progress">
+      <div class="plan-card" style="padding:0;overflow:hidden">
+        <div class="reasoning-top">
+          <span class="reasoning-title">Thinking…</span>
+        </div>
+        <div class="reasoning-divider"></div>
+        <div class="reasoning-steps" id="thinking-steps"></div>
+      </div>
+    </div>
+
+    <!-- THINKING: COMPLETED -->
+    <div class="view" id="view-thinking-complete">
+      <div class="plan-card" style="padding:0;overflow:hidden">
+        <div class="reasoning-top" onclick="toggleThinkingComplete()">
+          <span class="reasoning-title">Thought for a moment</span>
+          <svg id="thinking-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" style="color:var(--text-3);transition:transform .2s;transform:rotate(-90deg);flex-shrink:0"><path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div id="thinking-complete-body" style="display:none">
+          <div class="reasoning-divider"></div>
+          <div class="reasoning-steps">
+            <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Analyzed the request</div></div></div>
+            <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Checked existing setup</div></div></div>
+            <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Decided on scope</div></div></div>
+            <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Considered edge cases</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAN: SIMPLE -->
+    <div class="view" id="view-plan-simple">
+      <div class="plan-card">
+        <div class="todo-list">
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Analyzing tickets</div></div></div>
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico working"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1.5 A4.5 4.5 0 0 1 10.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl bold">Reviewing your skills</div></div></div>
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico queued"></div></div><div class="todo-body"><div class="todo-lbl">Improving 'order cancellation' skill</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAN: COMPACT -->
+    <div class="view" id="view-plan-compact">
+      <div class="plan-card">
+        <div class="todo-list">
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Analyzing tickets</div></div></div>
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico working"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1.5 A4.5 4.5 0 0 1 10.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl bold">Reviewing your skills</div></div></div>
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico queued"></div></div><div class="todo-body"><div class="todo-lbl">Improving 'order cancellation' skill</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAN: COMPREHENSIVE -->
+    <div class="view" id="view-plan-comprehensive">
+      <div class="plan-card">
+        <div class="comp-header">
+          <div class="comp-title">Skill improvement plan</div>
+          <div class="comp-progress-bar"><div class="comp-progress-fill" id="comp-fill" style="width:14%"></div></div>
+          <div class="comp-progress-count" id="comp-count">1 of 7 complete</div>
+        </div>
+        <div class="todo-list">
+          <div class="todo-item">
+            <div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+            <div class="todo-body"><button class="todo-toggle" onclick="toggleDesc(this)"><span class="todo-lbl muted">Analyzing tickets</span><svg class="toggle-caret" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="todo-desc-drop">Scanned 142 support tickets from the last 30 days and identified the top 5 failure categories.</div></div>
+          </div>
+          <div class="todo-item">
+            <div class="todo-track"><div class="todo-ico working"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1.5 A4.5 4.5 0 0 1 10.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div></div>
+            <div class="todo-body"><button class="todo-toggle" onclick="toggleDesc(this)"><span class="todo-lbl bold">Reviewing your skills</span><svg class="toggle-caret" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="todo-desc-drop">Evaluating coverage gaps across 8 intent categories. Currently at 62% coverage.</div></div>
+          </div>
+          <div class="todo-item">
+            <div class="todo-track"><div class="todo-ico queued"></div></div>
+            <div class="todo-body"><button class="todo-toggle" onclick="toggleDesc(this)"><span class="todo-lbl">Improving 'order cancellation' skill</span><svg class="toggle-caret" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="todo-desc-drop">Will generate new training examples and update the model with improved intent handling.</div></div>
+          </div>
+          <div id="comp-hidden" style="display:none">
+            <div class="todo-item"><div class="todo-track"><div class="todo-ico queued"></div></div><div class="todo-body"><button class="todo-toggle" onclick="toggleDesc(this)"><span class="todo-lbl">Validating with test cases</span><svg class="toggle-caret" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="todo-desc-drop">Run regression tests to confirm the new skill handles edge cases correctly.</div></div></div>
+            <div class="todo-item"><div class="todo-track"><div class="todo-ico queued"></div></div><div class="todo-body"><button class="todo-toggle" onclick="toggleDesc(this)"><span class="todo-lbl">Review with human evaluators</span><svg class="toggle-caret" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="todo-desc-drop">Send a sample of updated responses to the QA team for manual review.</div></div></div>
+            <div class="todo-item"><div class="todo-track"><div class="todo-ico queued"></div></div><div class="todo-body"><button class="todo-toggle" onclick="toggleDesc(this)"><span class="todo-lbl">Deploy to production</span><svg class="toggle-caret" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="todo-desc-drop">Push the updated skill model to the live environment and monitor for regressions.</div></div></div>
+            <div class="todo-item"><div class="todo-track"><div class="todo-ico queued"></div></div><div class="todo-body"><button class="todo-toggle" onclick="toggleDesc(this)"><span class="todo-lbl">Monitor performance metrics</span><svg class="toggle-caret" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><div class="todo-desc-drop">Track resolution rate, CSAT, and escalation rate over 7 days post-deployment.</div></div></div>
+          </div>
+          <div class="todo-item">
+            <div class="todo-track" style="visibility:hidden"><div class="todo-ico queued"></div></div>
+            <div class="todo-body"><button class="show-more-btn" id="show-more-btn" onclick="toggleMoreSteps()"><span id="show-more-label">4 more</span></button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAN: MIXED -->
+    <div class="view" id="view-plan-mixed">
+      <div class="plan-card">
+        <div class="todo-list">
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Analyzing tickets</div></div></div>
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico working"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1.5 A4.5 4.5 0 0 1 10.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl bold">Reviewing your skills</div></div></div>
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico queued"></div></div><div class="todo-body"><div class="todo-lbl">Improving 'order cancellation' skill</div></div></div>
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico skipped"><svg width="8" height="8" viewBox="0 0 10 10" fill="none"><line x1="2" y1="2" x2="8" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><line x1="8" y1="2" x2="2" y2="8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Deploy to staging</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAN: ALL COMPLETE -->
+    <div class="view" id="view-plan-complete">
+      <div class="plan-card">
+        <div class="todo-list">
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Analyzing tickets</div></div></div>
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Reviewing your skills</div></div></div>
+          <div class="todo-item"><div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">Improving 'order cancellation' skill</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- THINKING: COMPREHENSIVE -->
+    <div class="view" id="view-thinking-comprehensive">
+      <div class="plan-card" style="padding:0;overflow:hidden">
+        <div class="reasoning-top">
+          <span class="reasoning-title shimmer">Thinking…</span>
+        </div>
+        <div class="reasoning-divider"></div>
+        <div class="reasoning-steps" id="tcomp-steps"></div>
+      </div>
+    </div>
+
+    <!-- PROGRESS TRACKER -->
+    <div class="view" id="view-progress-tracker">
+      <div class="progress-card">
+        <div class="progress-header"><div class="progress-title">Refactor authentication module</div><span class="badge badge-running">Running</span></div>
+        <div class="progress-body">
+          <div class="task-row"><span style="font-size:14px;width:20px;text-align:center">✓</span><span class="task-name done">Read project structure</span><div class="task-bar"><div class="task-fill done" style="width:100%"></div></div></div>
+          <div class="task-row"><span style="font-size:14px;width:20px;text-align:center">✓</span><span class="task-name done">Analyze auth.ts</span><div class="task-bar"><div class="task-fill done" style="width:100%"></div></div></div>
+          <div class="task-row"><span style="font-size:14px;width:20px;text-align:center;color:var(--accent)">◎</span><span class="task-name active">Rewrite JWT logic</span><div class="task-bar"><div class="task-fill" id="prog-bar" style="width:0%"></div></div></div>
+          <div class="task-row"><span style="font-size:14px;width:20px;text-align:center;color:var(--text-3)">○</span><span class="task-name">Update middleware</span><div class="task-bar"><div class="task-fill" style="width:0%"></div></div></div>
+          <div class="task-row"><span style="font-size:14px;width:20px;text-align:center;color:var(--text-3)">○</span><span class="task-name">Regenerate tests</span><div class="task-bar"><div class="task-fill" style="width:0%"></div></div></div>
+          <div class="overall-bar"><div class="overall-fill" id="overall-bar" style="width:38%"></div></div>
+        </div>
+        <div class="progress-footer" id="prog-footer">Initializing…</div>
+      </div>
+    </div>
+
+    <!-- GUIDANCE -->
+    <div class="view" id="view-art-guidance">
+      <div class="rpt-card">
+        <div class="rpt-top">
+          <span class="rpt-badge">Guidance</span>
+          <div class="rpt-actions">
+            <button class="rpt-btn">View</button>
+            <button class="rpt-more" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">···</button>
+              <div class="rpt-menu">
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 6.5L7 9l2.5-2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 11.5h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Download</button>
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 8.5l3-3M8.5 5.5H6M8.5 5.5V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/></svg>Share</button>
+              </div>
+          </div>
+        </div>
+        <div class="rpt-title">Billing & invoicing guidance</div>
+        <div class="rpt-desc">Updated based on handover analysis</div>
+      </div>
+    </div>
+
+    <!-- SKILL -->
+    <!-- SKILL: PREVIEW -->
+    <div class="view" id="view-skill-preview">
+      <div class="rpt-card">
+        <div class="rpt-top">
+          <span class="rpt-badge">Skill</span>
+          <div class="rpt-actions">
+            <button class="rpt-btn">View</button>
+            <button class="rpt-more" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">···</button>
+              <div class="rpt-menu">
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 6.5L7 9l2.5-2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 11.5h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Download</button>
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 8.5l3-3M8.5 5.5H6M8.5 5.5V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/></svg>Share</button>
+              </div>
+          </div>
+        </div>
+        <div class="rpt-title">Subscription cancellation skill</div>
+        <div class="rpt-desc">New skill based on top handover topics</div>
+      </div>
+    </div>
+
+    <!-- SKILL: EDIT MODE -->
+    <div class="view" id="view-skill-edit">
+      <div style="display:flex;flex-direction:column;gap:16px;width:100%;max-width:400px">
+        <div class="rpt-card">
+          <div class="rpt-top">
+            <span class="rpt-badge">Skill · Editing</span>
+            <div class="rpt-actions">
+              <button class="rpt-btn">Save</button>
+            </div>
+          </div>
+          <div class="rpt-title">Subscription cancellation skill</div>
+        </div>
+        <div style="border:1px solid var(--border);border-radius:10px;padding:14px 16px;font-size:13px;color:var(--text-2);line-height:1.6">
+          <div style="font-size:12px;font-weight:500;color:var(--text-3);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Instructions</div>
+          <div contenteditable="true" style="color:var(--text);outline:none;min-height:80px">When a customer wants to cancel their subscription, first check if they have any active discounts or retention offers available. If so, present the offer before processing the cancellation.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SKILL: APPROVE / REJECT / EDIT -->
+    <div class="view" id="view-skill-actions">
+      <div style="display:flex;flex-direction:column;gap:16px;width:100%;max-width:400px">
+        <div class="rpt-card">
+          <div class="rpt-top">
+            <span class="rpt-badge">Skill</span>
+          </div>
+          <div class="rpt-title">Subscription cancellation skill</div>
+          <div class="rpt-desc">New skill based on top handover topics</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="ss-btn" style="padding:8px 18px;font-size:13px;background:var(--accent);color:#fff;border-color:var(--accent)">Approve</button>
+          <button class="ss-btn" style="padding:8px 18px;font-size:13px;color:var(--red);border-color:var(--red);background:var(--red-dim)">Reject</button>
+          <button class="ss-btn" style="padding:8px 18px;font-size:13px">Edit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOURCE -->
+    <div class="view" id="view-source">
+      <div class="source-editor">
+        <div class="editor-header"><span>📄</span><span class="file-name">auth.service.ts</span><span style="margin-left:auto;font-size:11px;color:var(--text-3)">TypeScript</span></div>
+        <div class="editor-body">
+          <div><span class="ln">1</span><span class="kw">import</span> jwt <span class="kw">from</span> <span class="str">'jsonwebtoken'</span>;</div>
+          <div><span class="ln">2</span><span class="kw">import</span> { User } <span class="kw">from</span> <span class="str">'./models/user'</span>;</div>
+          <div><span class="ln">3</span>&nbsp;</div>
+          <div><span class="ln">4</span><span class="kw">const</span> SECRET = process.env.<span class="fn">JWT_SECRET</span>!;</div>
+          <div><span class="ln">5</span>&nbsp;</div>
+          <span class="hl-line"><div><span class="ln">6</span><span class="kw">export function</span> <span class="fn">signToken</span>(user: User): <span class="kw">string</span> {</div></span>
+          <span class="hl-line"><div><span class="ln">7</span>  <span class="kw">return</span> jwt.<span class="fn">sign</span>({ id: user.id, role: user.role }, SECRET, {</div></span>
+          <span class="hl-line"><div><span class="ln">8</span>    expiresIn: <span class="str">'15m'</span>,</div></span>
+          <span class="hl-line"><div><span class="ln">9</span>  });</div></span>
+          <span class="hl-line"><div><span class="ln">10</span>}</div></span>
+          <div><span class="ln">11</span>&nbsp;</div>
+          <div><span class="ln">12</span><span class="kw">export function</span> <span class="fn">verifyToken</span>(token: <span class="kw">string</span>) {</div>
+          <div><span class="ln">13</span>  <span class="kw">return</span> jwt.<span class="fn">verify</span>(token, SECRET);</div>
+          <div><span class="ln">14</span>}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIFF -->
+    <div class="view" id="view-diff">
+      <div class="diff-wrap">
+        <div class="diff-header"><span class="diff-fname">auth.service.ts</span><div class="diff-stat"><span class="diff-add">+8</span><span class="diff-rem">−3</span></div></div>
+        <div class="diff-body">
+          <div class="diff-line"><span class="diff-gutter">6</span><span class="diff-sign">&nbsp;</span><span class="diff-code"><span class="kw">export function</span> <span class="fn">signToken</span>(user: User): <span class="kw">string</span> {</span></div>
+          <div class="diff-line rem"><span class="diff-gutter">7</span><span class="diff-sign">−</span><span class="diff-code">  return jwt.sign({ id: user.id }, SECRET, { expiresIn: <span class="str">'7d'</span> });</span></div>
+          <div class="diff-line rem"><span class="diff-gutter">8</span><span class="diff-sign">−</span><span class="diff-code">}</span></div>
+          <div class="diff-line add"><span class="diff-gutter">7</span><span class="diff-sign">+</span><span class="diff-code">  return jwt.sign({ id: user.id, role: user.role }, SECRET, {</span></div>
+          <div class="diff-line add"><span class="diff-gutter">8</span><span class="diff-sign">+</span><span class="diff-code">    expiresIn: <span class="str">'15m'</span>,</span></div>
+          <div class="diff-line add"><span class="diff-gutter">9</span><span class="diff-sign">+</span><span class="diff-code">    algorithm: <span class="str">'HS256'</span>,</span></div>
+          <div class="diff-line add"><span class="diff-gutter">10</span><span class="diff-sign">+</span><span class="diff-code">  });</span></div>
+          <div class="diff-line add"><span class="diff-gutter">11</span><span class="diff-sign">+</span><span class="diff-code">}</span></div>
+          <div class="diff-line"><span class="diff-gutter">&nbsp;</span><span class="diff-sign">&nbsp;</span><span class="diff-code">&nbsp;</span></div>
+          <div class="diff-line rem"><span class="diff-gutter">10</span><span class="diff-sign">−</span><span class="diff-code"><span class="kw">export function</span> <span class="fn">verifyToken</span>(token: <span class="kw">string</span>) {</span></div>
+          <div class="diff-line add"><span class="diff-gutter">13</span><span class="diff-sign">+</span><span class="diff-code"><span class="kw">export function</span> <span class="fn">verifyToken</span>(token: <span class="kw">string</span>): jwt.JwtPayload {</span></div>
+          <div class="diff-line add"><span class="diff-gutter">14</span><span class="diff-sign">+</span><span class="diff-code">  const decoded = jwt.<span class="fn">verify</span>(token, SECRET);</span></div>
+          <div class="diff-line add"><span class="diff-gutter">15</span><span class="diff-sign">+</span><span class="diff-code">  if (typeof decoded === <span class="str">'string'</span>) throw new Error(<span class="str">'Invalid token'</span>);</span></div>
+          <div class="diff-line add"><span class="diff-gutter">16</span><span class="diff-sign">+</span><span class="diff-code">  return decoded;</span></div>
+          <div class="diff-line"><span class="diff-gutter">17</span><span class="diff-sign">&nbsp;</span><span class="diff-code">}</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHART -->
+    <div class="view" id="view-chart">
+      <div class="chart-card">
+        <div class="chart-header">
+          <div class="chart-header-left">
+            <div class="chart-title-row">Automated interactions <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div><span class="chart-big-number">3,302</span><span class="chart-trend"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 8L6 4l4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg> 2% vs last month</span></div>
+          </div>
+          <div class="chart-header-right">
+            <div class="chart-dd-wrap">
+              <button class="chart-dropdown" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">
+                Channel <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="chart-dd-menu">
+                <button class="chart-dd-item active" onclick="selectChartFilter(this,'Channel')">Channel</button>
+                <button class="chart-dd-item" onclick="selectChartFilter(this,'Feature')">Feature</button>
+                <button class="chart-dd-item" onclick="selectChartFilter(this,'Skill')">Skill</button>
+              </div>
+            </div>
+            <div class="chart-dots-wrap">
+              <button class="chart-dots" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">⋮</button>
+              <div class="rpt-menu">
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 6.5L7 9l2.5-2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 11.5h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Download</button>
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 8.5l3-3M8.5 5.5H6M8.5 5.5V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/></svg>Share</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-body">
+          <div style="display:flex">
+            <div class="chart-y-axis">
+              <span class="chart-y-label">2.5K</span>
+              <span class="chart-y-label">2K</span>
+              <span class="chart-y-label">1.5K</span>
+              <span class="chart-y-label">1K</span>
+              <span class="chart-y-label">500</span>
+              <span class="chart-y-label">0</span>
+            </div>
+            <div class="chart-area">
+              <div class="chart-grid">
+                <div class="chart-grid-line"></div>
+                <div class="chart-grid-line"></div>
+                <div class="chart-grid-line"></div>
+                <div class="chart-grid-line"></div>
+                <div class="chart-grid-line"></div>
+              </div>
+              <div class="bar-chart" id="bar-chart">
+                <div class="bar-col"><div class="bar-stack"><div class="bar-segment" style="background:#f4a27a;height:55px"></div><div class="bar-segment" style="background:var(--accent);height:74px"></div></div><div class="bar-label">Jun 1</div></div>
+                <div class="bar-col"><div class="bar-stack"><div class="bar-segment" style="background:#f4a27a;height:55px"></div><div class="bar-segment" style="background:var(--accent);height:28px"></div></div><div class="bar-label">Jun 2</div></div>
+                <div class="bar-col"><div class="bar-stack"><div class="bar-segment" style="background:#f4a27a;height:86px"></div><div class="bar-segment" style="background:var(--accent);height:30px"></div></div><div class="bar-label">Jun 3</div></div>
+                <div class="bar-col"><div class="bar-stack"><div class="bar-segment" style="background:#f4a27a;height:86px"></div><div class="bar-segment" style="background:var(--accent);height:30px"></div></div><div class="bar-label">Jun 4</div></div>
+                <div class="bar-col"><div class="bar-stack"><div class="bar-segment" style="background:#f4a27a;height:35px"></div><div class="bar-segment" style="background:var(--accent);height:69px"></div></div><div class="bar-label">Jun 5</div></div>
+                <div class="bar-col"><div class="bar-stack"><div class="bar-segment" style="background:#f4a27a;height:33px"></div><div class="bar-segment" style="background:var(--accent);height:69px"></div></div><div class="bar-label">Jun 6</div></div>
+                <div class="bar-col"><div class="bar-stack"><div class="bar-segment" style="background:#f4a27a;height:56px"></div><div class="bar-segment" style="background:var(--accent);height:72px"></div></div><div class="bar-label">Jun 7</div></div>
+              </div>
+              <div class="bar-labels">
+                <span>Jun 1</span><span>Jun 2</span><span>Jun 3</span><span>Jun 4</span><span>Jun 5</span><span>Jun 6</span><span>Jun 7</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item"><div class="legend-dot" style="background:var(--accent)"></div>Chat</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#f4a27a"></div>Email</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- APPROVAL -->
+    <div class="view" id="view-approval">
+      <div class="approval-card">
+        <div class="approval-header">
+          <div class="approval-icon">⚠️</div>
+          <div class="approval-meta">
+            <div class="approval-title">Approve changes before proceeding</div>
+            <div class="approval-sub">The copilot is about to make the following changes. Review and confirm to continue.</div>
+          </div>
+        </div>
+        <div class="approval-body">
+          <div class="approval-item"><span class="approval-item-icon">✏️</span><div class="approval-item-text"><div class="approval-item-title">Modify 3 files</div><div class="approval-item-desc">auth.service.ts · user.middleware.ts · routes/auth.ts</div></div></div>
+          <div class="approval-item"><span class="approval-item-icon">➕</span><div class="approval-item-text"><div class="approval-item-title">Create 2 files</div><div class="approval-item-desc">token.refresh.ts · auth.service.test.ts</div></div></div>
+          <div class="approval-item warn"><span class="approval-item-icon">⚡</span><div class="approval-item-text"><div class="approval-item-title">Install 1 package</div><div class="approval-item-desc">Runs npm install express-rate-limit — modifies package.json and package-lock.json.</div></div></div>
+        </div>
+        <div class="approval-footer">
+          <span class="approve-note" id="approve-note">This action cannot be undone automatically.</span>
+          <button class="btn btn-ghost" onclick="declinePlan()">Decline</button>
+          <button class="btn btn-primary" id="approve-btn" onclick="approvePlan()">Approve & run</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROCESS INDICATOR: COMPLETE -->
+    <div class="view" id="view-resp-process-done">
+      <div class="plan-card" style="padding:0;overflow:hidden">
+        <div class="pi-wrap" onclick="this.classList.toggle('open')">
+          <button class="pi-trigger">
+            <svg class="pi-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Analyzed handover patterns</span>
+            <svg class="pi-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="pi-steps">
+            <div class="pi-step"><svg class="pi-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pi-step-content">Loaded guidance knowledge<span class="pi-step-pill">3 sources</span></div></div>
+            <div class="pi-step"><svg class="pi-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pi-step-content">Listed current guidances<span class="pi-step-pill">12 active</span></div></div>
+            <div class="pi-step"><svg class="pi-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pi-step-content">Queried handover data<span class="pi-step-pill">last 90 days</span></div></div>
+            <div class="pi-step"><svg class="pi-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pi-step-content">Analyzed top handover topics<span class="pi-step-pill">15 clusters</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROCESS INDICATOR: RUNNING -->
+    <div class="view" id="view-resp-process-running">
+      <div class="plan-card" style="padding:0;overflow:hidden">
+        <div class="pi-wrap" onclick="this.classList.toggle('open')">
+          <button class="pi-trigger">
+            <svg class="pi-spin" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="var(--border2)" stroke-width="1.5"/><path d="M12.5 7A5.5 5.5 0 0 0 7 1.5" stroke="var(--text-2)" stroke-width="1.5" stroke-linecap="round"/></svg>
+            <span>Analyzing data...</span>
+            <svg class="pi-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="pi-steps">
+            <div class="pi-step"><svg class="pi-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pi-step-content">Loaded guidance knowledge<span class="pi-step-pill">3 sources</span></div></div>
+            <div class="pi-step"><svg class="pi-spin" width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="var(--border2)" stroke-width="1.5"/><path d="M12.5 7A5.5 5.5 0 0 0 7 1.5" stroke="var(--text-2)" stroke-width="1.5" stroke-linecap="round"/></svg><div class="pi-step-content">Querying handover data...</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INSIGHT CARDS -->
+    <div class="view" id="view-resp-insight">
+      <div style="display:flex;flex-direction:column;gap:16px;width:100%">
+        <div class="insight-row">
+          <div class="ins-card"><div class="ins-metric">42.4%</div><div class="ins-label">Handover rate</div><div class="ins-trend ins-trend--pos">↓ from 50% in Jan</div></div>
+          <div class="ins-card"><div class="ins-metric">10,460</div><div class="ins-label">Total handovers</div><div class="ins-trend ins-trend--neut">~3,487/mo</div></div>
+          <div class="ins-card"><div class="ins-metric">3</div><div class="ins-label">Top clusters</div><div class="ins-trend ins-trend--neut">86% of escalations</div></div>
+        </div>
+        <div class="insight-row">
+          <div class="ins-card"><div class="ins-metric">89%</div><div class="ins-label">CSAT score</div></div>
+          <div class="ins-card"><div class="ins-metric">2m 14s</div><div class="ins-label">Avg. first reply</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MENTION -->
+    <div class="view" id="view-resp-mention">
+      <div style="display:flex;flex-direction:column;gap:24px;width:100%">
+        <div class="resp-prose">The top handover topic is <span class="mention-chip">Billing & invoicing <span class="mention-detail">247</span></span> followed by <span class="mention-chip">Subscription cancellation <span class="mention-detail">152</span></span> and <span class="mention-chip">Coupons & refunds <span class="mention-detail">51</span></span>.</div>
+        <div style="height:1px;background:var(--border)"></div>
+        <div class="resp-prose">Your agents direct customers to <span class="mention-chip">Settings → Billing & Usage</span> for self-serve actions like invoice downloads and payment updates.</div>
+      </div>
+    </div>
+
+    <!-- REPORT ATTACHMENT -->
+    <div class="view" id="view-resp-attachment">
+      <div style="display:flex;flex-direction:column;gap:16px;width:100%">
+        <div class="rpt-card">
+          <div class="rpt-top">
+            <span class="rpt-badge">CSV</span>
+            <div class="rpt-actions">
+              <button class="rpt-btn">View</button>
+              <button class="rpt-more" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">···</button>
+              <div class="rpt-menu">
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 6.5L7 9l2.5-2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 11.5h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Download</button>
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 8.5l3-3M8.5 5.5H6M8.5 5.5V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/></svg>Share</button>
+              </div>
+            </div>
+          </div>
+          <div class="rpt-title">Handover tickets</div>
+          <div class="rpt-desc">Last 90 days</div>
+        </div>
+        <div class="rpt-card">
+          <div class="rpt-top">
+            <span class="rpt-badge">Report</span>
+            <div class="rpt-actions">
+              <button class="rpt-btn">View</button>
+              <button class="rpt-more" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">···</button>
+              <div class="rpt-menu">
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 6.5L7 9l2.5-2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 11.5h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Download</button>
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 8.5l3-3M8.5 5.5H6M8.5 5.5V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/></svg>Share</button>
+              </div>
+            </div>
+          </div>
+          <div class="rpt-title">Guidance improvement report</div>
+          <div class="rpt-desc">Based on ticket handovers</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INLINE DATA ROW -->
+    <!-- INLINE DATA ROW: SIMPLE -->
+    <div class="view" id="view-resp-datarow-simple">
+      <div style="display:flex;flex-direction:column;gap:24px;width:100%">
+        <div class="plan-card">
+          <div class="sv-row"><span class="sv-label">Billing & Invoicing</span><span class="sv-value">~100–120</span></div>
+          <div class="sv-row"><span class="sv-label">Subscription Cancellation</span><span class="sv-value">~45–60</span></div>
+          <div class="sv-row"><span class="sv-label">Total automatable (90d)</span><span class="sv-value">~165–200</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INLINE DATA ROW: RANKED WITH SHARE -->
+    <div class="view" id="view-resp-datarow-ranked">
+      <div style="display:flex;flex-direction:column;gap:24px;width:100%">
+        <div class="plan-card">
+          <div class="idr-row"><span class="idr-label">Billing, invoicing, pricing & plans</span><span class="idr-value">247</span><span class="idr-share">49%</span></div>
+          <div class="idr-row"><span class="idr-label">Subscription cancellation/pausing</span><span class="idr-value">152</span><span class="idr-share">30%</span></div>
+          <div class="idr-row"><span class="idr-label">Coupons, refunds & cancellations</span><span class="idr-value">51</span><span class="idr-share">10%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FULL RESPONSE COMPOSED -->
+    <div class="view" id="view-resp-composed">
+      <div style="display:flex;flex-direction:column;width:100%">
+
+        <div class="user-bub"><div class="user-bub-inner">Improve my guidances based on ticket handovers</div></div>
+
+        <div class="pi-wrap" onclick="this.classList.toggle('open')" style="margin-bottom:12px">
+          <button class="pi-trigger">
+            <svg class="pi-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Analyzed handover patterns</span>
+            <svg class="pi-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="pi-steps">
+            <div class="pi-step"><svg class="pi-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pi-step-content">Loaded guidance knowledge<span class="pi-step-pill">3 sources</span></div></div>
+            <div class="pi-step"><svg class="pi-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pi-step-content">Queried handover data<span class="pi-step-pill">last 90 days</span></div></div>
+            <div class="pi-step"><svg class="pi-check" width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 7L6 10L11 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="pi-step-content">Analyzed top handover topics<span class="pi-step-pill">15 clusters</span></div></div>
+          </div>
+        </div>
+
+        <div class="resp-prose" style="margin-bottom:14px">I analyzed your AI Agent's handover patterns over the last 90 days. Your handover rate is <strong>42.4%</strong> (10,460 of 24,662 executions) — trending down from ~50% in January to ~38% in mid-March.</div>
+
+        <div class="insight-row" style="margin-bottom:16px">
+          <div class="ins-card"><div class="ins-metric">42.4%</div><div class="ins-label">Handover rate</div><div class="ins-trend ins-trend--pos">↓ from 50% in Jan</div></div>
+          <div class="ins-card"><div class="ins-metric">10,460</div><div class="ins-label">Total handovers</div><div class="ins-trend ins-trend--neut">~3,487/mo</div></div>
+          <div class="ins-card"><div class="ins-metric">3</div><div class="ins-label">Top clusters</div><div class="ins-trend ins-trend--neut">86% of escalations</div></div>
+        </div>
+
+        <div class="resp-prose">
+          <p>The critical finding: all three topics trigger <strong>immediate handover with zero qualification</strong>. Simple questions like "Where do I download my invoice?" get the same treatment as billing disputes.</p>
+          <p>I'd suggest three new guidances:</p>
+          <p><strong>1.</strong> <span class="mention-chip">Billing & invoicing <span class="mention-detail">247</span></span> — customers ask about overage confusion, plan changes, and payment methods. A guidance routing informational questions to self-serve links could automate ~40-50%.</p>
+          <p><strong>2.</strong> <span class="mention-chip">Subscription cancellation <span class="mention-detail">152</span></span> — agents follow a retention-first pattern. A guidance handling self-serve downgrades and trial clarifications could automate ~30-40%.</p>
+          <p><strong>3.</strong> <span class="mention-chip">Coupons & refunds <span class="mention-detail">51</span></span> — mostly product how-to questions. Directing to docs while escalating billing refunds could automate ~40%.</p>
+          <p class="resp-secondary">Together, these could save roughly 57-67 tickets per month.</p>
+        </div>
+
+        <div style="margin:16px 0;display:flex;flex-direction:column;gap:12px">
+          <div class="rpt-card">
+            <div class="rpt-top">
+              <span class="rpt-badge">CSV</span>
+              <div class="rpt-actions">
+                <button class="rpt-btn">View</button>
+                <button class="rpt-more" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">···</button>
+              <div class="rpt-menu">
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 6.5L7 9l2.5-2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 11.5h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Download</button>
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 8.5l3-3M8.5 5.5H6M8.5 5.5V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/></svg>Share</button>
+              </div>
+              </div>
+            </div>
+            <div class="rpt-title">Handover tickets</div>
+            <div class="rpt-desc">Last 90 days</div>
+          </div>
+          <div class="rpt-card">
+            <div class="rpt-top">
+              <span class="rpt-badge">Report</span>
+              <div class="rpt-actions">
+                <button class="rpt-btn">View</button>
+                <button class="rpt-more" onclick="event.stopPropagation();this.parentElement.classList.toggle('open')">···</button>
+              <div class="rpt-menu">
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 2v7M4.5 6.5L7 9l2.5-2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 11.5h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Download</button>
+                <button class="rpt-menu-item"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M5.5 8.5l3-3M8.5 5.5H6M8.5 5.5V8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><rect x="2" y="2" width="10" height="10" rx="2" stroke="currentColor" stroke-width="1.3"/></svg>Share</button>
+              </div>
+              </div>
+            </div>
+            <div class="rpt-title">Guidance improvement report</div>
+            <div class="rpt-desc">Based on ticket handovers</div>
+          </div>
+        </div>
+
+        <div style="font-size:13px;color:var(--text-2)">Want me to draft any of these three guidances?</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener('click', e => {
+  if (!e.target.closest('.rpt-actions')) {
+    document.querySelectorAll('.rpt-actions.open').forEach(m => m.classList.remove('open'));
+  }
+  if (!e.target.closest('.chart-dots-wrap')) {
+    document.querySelectorAll('.chart-dots-wrap.open').forEach(m => m.classList.remove('open'));
+  }
+});
+
+function toggleCheck(row) {
+  const check = row.querySelector('.ss-check');
+  check.classList.toggle('checked');
+  const card = row.closest('.ss-card');
+  const count = card.querySelectorAll('.ss-check.checked').length;
+  const countEl = card.querySelector('.ss-footer-count');
+  if (countEl) countEl.textContent = count + ' selected';
+}
+
+function toggleTheme() {
+  const light = document.documentElement.classList.toggle('light');
+  document.getElementById('icon-dark').style.display = light ? 'none' : 'block';
+  document.getElementById('icon-light').style.display = light ? 'block' : 'none';
+}
+
+function show(el, id, section, title) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item, .nav-sub-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  el.classList.add('active');
+  document.getElementById('tb-section').textContent = section;
+  document.getElementById('tb-title').textContent = title;
+  if (id === 'progress-tracker') startProgress();
+  if (id === 'chart') renderChart();
+  if (id === 'thinking-progress') startThinkingProgress();
+  if (id === 'thinking-comprehensive') startTComprehensive();
+
+}
+
+function toggleSub(subId, el, defaultView, section, title) {
+  const sub = document.getElementById(subId);
+  const isOpen = sub.classList.contains('open');
+  sub.classList.toggle('open', !isOpen);
+  if (!isOpen) {
+    const first = sub.querySelector('.nav-sub-item');
+    show(first, defaultView, section, title);
+  }
+}
+
+function toggleThinkingComplete() {
+  const body = document.getElementById('thinking-complete-body');
+  const chevron = document.getElementById('thinking-chevron');
+  const open = body.style.display === 'block';
+  body.style.display = open ? 'none' : 'block';
+  chevron.style.transform = open ? 'rotate(-90deg)' : 'rotate(0deg)';
+}
+
+function toggleDesc(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.style.display = btn.classList.contains('open') ? 'block' : 'none';
+}
+
+function toggleMoreSteps() {
+  const hidden = document.getElementById('comp-hidden');
+  const label = document.getElementById('show-more-label');
+  const open = hidden.style.display === 'block';
+  hidden.style.display = open ? 'none' : 'block';
+  label.textContent = open ? '4 more' : 'Show less';
+}
+
+function askFocus() { document.getElementById('ask-box').classList.add('focused'); document.getElementById('ask-input').placeholder = 'Focus state…'; }
+function askBlur() { document.getElementById('ask-box').classList.remove('focused'); if (!document.getElementById('ask-input').value) document.getElementById('ask-input').placeholder = 'Default state…'; }
+function askInput() {
+  const v = document.getElementById('ask-input').value;
+  document.getElementById('ask-send').classList.toggle('visible', v.length > 0);
+  document.getElementById('ask-audio').style.display = v.length > 0 ? 'none' : 'flex';
+}
+function sendAsk() {
+  const inp = document.getElementById('ask-input'); if (!inp.value.trim()) return;
+  inp.value = ''; inp.placeholder = 'Thinking…';
+  document.getElementById('ask-send').classList.remove('visible');
+  document.getElementById('ask-audio').style.display = 'flex';
+  setTimeout(() => { inp.placeholder = 'Default state…'; }, 1800);
+}
+
+function startProgress() {
+  const b = document.getElementById('prog-bar'), o = document.getElementById('overall-bar'), f = document.getElementById('prog-footer');
+  b.style.width = '0%'; o.style.width = '38%'; f.textContent = 'Initializing…';
+  setTimeout(() => { b.style.width = '35%'; o.style.width = '50%'; f.textContent = 'Writing JWT refresh logic…'; }, 300);
+  setTimeout(() => { b.style.width = '70%'; o.style.width = '62%'; f.textContent = 'Generating token rotation handler…'; }, 1600);
+  setTimeout(() => { b.style.width = '100%'; o.style.width = '70%'; f.textContent = '3 of 5 tasks complete'; }, 3000);
+}
+
+let tCompRunId = 0;
+function startTComprehensive() {
+  const c = document.getElementById('tcomp-steps');
+  const moreRow = document.getElementById('tcomp-show-more-row');
+  if (!c) return;
+  const runId = ++tCompRunId;
+  c.innerHTML = '';
+  if (moreRow) moreRow.style.display = 'none';
+
+  const steps = [
+    { label: 'Gather guidance', desc: 'Load all available guidance in knowledge base', pill: '12 guidance' },
+    { label: 'Analyze handover tickets', desc: 'Analyze handover tickets', pill: 'Last 90 days' },
+    { label: 'Analyze top handover topics', desc: 'Analyze top handover topics', pill: '15 clusters' },
+  ];
+
+  const doneIco = `<div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+  const workIco = `<div class="todo-ico working"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1.5 A4.5 4.5 0 0 1 10.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>`;
+
+  function addStep(i) {
+    if (runId !== tCompRunId) return;
+    if (i >= steps.length) {
+      if (moreRow) moreRow.style.display = 'flex';
+      return;
+    }
+    if (i > 0 && c.children[i - 1]) {
+      const track = c.children[i - 1].querySelector('.todo-track');
+      if (track) track.innerHTML = doneIco;
+      const lbl = c.children[i - 1].querySelector('.todo-lbl');
+      if (lbl) lbl.className = 'todo-lbl muted';
+      const pillEl = c.children[i - 1].querySelector('.pi-step-pill');
+      if (pillEl) pillEl.style.display = 'inline-flex';
+    }
+    const pill = steps[i].pill ? `<span class="pi-step-pill" style="display:none;margin-top:4px">${steps[i].pill}</span>` : '';
+    const html = `<div class="todo-item" style="opacity:0;transition:opacity .3s">
+      <div class="todo-track">${workIco}</div>
+      <div class="todo-body">
+        <button class="todo-toggle" onclick="toggleDesc(this)">
+          <span class="todo-lbl bold">${steps[i].label}</span>
+          <svg class="toggle-caret" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 4.5l3 3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="todo-desc-drop">${steps[i].desc}</div>
+        ${pill}
+      </div>
+    </div>`;
+    c.insertAdjacentHTML('beforeend', html);
+    const el = c.children[i];
+    requestAnimationFrame(() => requestAnimationFrame(() => { if (el) el.style.opacity = '1'; }));
+    setTimeout(() => addStep(i + 1), 1800);
+  }
+
+  addStep(0);
+}
+
+const thinkingSteps = ['Analyzing the request','Checking existing setup','Deciding on scope','Considering edge cases'];
+
+function makeStep(label, state) {
+  const ico = state === 'working'
+    ? `<div class="todo-ico working"><svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M6 1.5 A4.5 4.5 0 0 1 10.5 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>`
+    : `<div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+  return `<div class="todo-item" style="opacity:0;transition:opacity .3s"><div class="todo-track">${ico}</div><div class="todo-body"><div class="todo-lbl ${state === 'working' ? 'bold' : 'muted'}">${label}</div></div></div>`;
+}
+
+let thinkingRunId = 0;
+function startThinkingProgress() {
+  const c = document.getElementById('thinking-steps');
+  if (!c) return;
+  const runId = ++thinkingRunId;
+  c.innerHTML = '';
+  function addStep(i) {
+    if (runId !== thinkingRunId) return;
+    if (i >= thinkingSteps.length) return;
+    if (i > 0 && c.children[i - 1]) {
+      c.children[i - 1].innerHTML = `<div class="todo-track"><div class="todo-ico done"><svg width="18" height="18" viewBox="0 0 18 18" fill="none"><circle cx="9" cy="9" r="8" stroke="currentColor" stroke-width="1.5"/><polyline points="5.5,9 7.5,11.5 12.5,6.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div><div class="todo-body"><div class="todo-lbl muted">${thinkingSteps[i-1]}</div></div>`;
+    }
+    c.insertAdjacentHTML('beforeend', makeStep(thinkingSteps[i], 'working'));
+    const el = c.children[i];
+    requestAnimationFrame(() => requestAnimationFrame(() => { if (el) el.style.opacity = '1'; }));
+    if (i < thinkingSteps.length - 1) setTimeout(() => addStep(i + 1), 1800);
+  }
+  addStep(0);
+}
+
+function startComprehensive() {
+  const fill = document.getElementById('comp-fill'), count = document.getElementById('comp-count');
+  if (!fill) return;
+  fill.style.width = '0%'; count.textContent = '0 of 7 complete';
+  setTimeout(() => { fill.style.width = '14%'; count.textContent = '1 of 7 complete'; }, 200);
+}
+
+const chartData = [
+  { label:'Jun 1', chat:840, email:620 },
+  { label:'Jun 2', chat:320, email:620 },
+  { label:'Jun 3', chat:340, email:980 },
+  { label:'Jun 4', chat:340, email:980 },
+  { label:'Jun 5', chat:780, email:400 },
+  { label:'Jun 6', chat:780, email:380 },
+  { label:'Jun 7', chat:820, email:640 },
+];
+const maxVal = 2500;
+function renderChart() {
+  const ct = document.getElementById('bar-chart'); if (!ct) return;
+  ct.innerHTML = chartData.map(d => {
+    const chatH = (d.chat / maxVal * 100).toFixed(1);
+    const emailH = (d.email / maxVal * 100).toFixed(1);
+    return `<div class="bar-col">
+      <div class="bar-stack">
+        <div class="bar-segment" style="background:var(--accent);height:0%" data-h="${chatH}"></div>
+        <div class="bar-segment" style="background:#f4a27a;height:0%" data-h="${emailH}"></div>
+      </div>
+      <div class="bar-label">${d.label}</div>
+    </div>`;
+  }).join('');
+  setTimeout(() => { ct.querySelectorAll('.bar-segment').forEach(b => { b.style.height = b.dataset.h + '%'; }); }, 80);
+}
+
+function selectChartFilter(btn, label) {
+  btn.closest('.chart-dd-menu').querySelectorAll('.chart-dd-item').forEach(i => i.classList.remove('active'));
+  btn.classList.add('active');
+  const wrap = btn.closest('.chart-dd-wrap');
+  wrap.querySelector('.chart-dropdown').childNodes[0].textContent = label + ' ';
+  wrap.classList.remove('open');
+}
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.chart-dd-wrap')) {
+    document.querySelectorAll('.chart-dd-wrap.open').forEach(d => d.classList.remove('open'));
+  }
+});
+
+function approvePlan() {
+  const btn = document.getElementById('approve-btn');
+  btn.textContent = 'Running…'; btn.disabled = true; btn.style.opacity = '.6';
+  document.getElementById('approve-note').textContent = 'Executing plan…';
+  setTimeout(() => { btn.textContent = '✓ Approved'; btn.style.background = 'var(--green)'; btn.style.opacity = '1'; document.getElementById('approve-note').textContent = 'Changes are being applied.'; }, 1600);
+}
+function declinePlan() {
+  const n = document.getElementById('approve-note');
+  n.textContent = 'Declined. No changes were made.'; n.style.color = 'var(--red)';
+}
+</script>
+</body>
+</html>
