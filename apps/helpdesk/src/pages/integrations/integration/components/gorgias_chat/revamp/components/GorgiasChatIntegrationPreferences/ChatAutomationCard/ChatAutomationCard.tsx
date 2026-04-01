@@ -19,7 +19,7 @@ export const ChatAutomationCard = ({
                         <Heading size="md">
                             Start conversations with automation
                         </Heading>
-                        <Text size="md">
+                        <Text size="md" className={css.cardDescription}>
                             Let shoppers interact with automated flows before
                             reaching your team.
                         </Text>

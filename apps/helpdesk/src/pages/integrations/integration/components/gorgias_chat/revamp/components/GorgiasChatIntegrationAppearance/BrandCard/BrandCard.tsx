@@ -28,7 +28,7 @@ export const BrandCard = ({
             <div className={css.cardContent}>
                 <div className={css.cardHeader}>
                     <Heading size="md">Brand</Heading>
-                    <Text size="md">
+                    <Text size="md" className={css.cardDescription}>
                         Customize your chat to match your store&apos;s look and
                         feel.
                     </Text>

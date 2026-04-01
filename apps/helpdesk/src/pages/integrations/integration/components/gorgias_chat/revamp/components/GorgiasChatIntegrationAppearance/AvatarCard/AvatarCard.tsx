@@ -37,7 +37,7 @@ export const AvatarCard = ({
                     <Heading size="md">
                         How your team appears to shoppers
                     </Heading>
-                    <Text size="md">
+                    <Text size="md" className={css.cardDescription}>
                         Choose how your team&apos;s name and profile appear in
                         conversations.
                     </Text>

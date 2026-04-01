@@ -29,7 +29,7 @@ export const ChatAvailabilityCard = ({
             <div className={css.cardContent}>
                 <div className={css.cardHeader}>
                     <Heading size="md">Chat availability</Heading>
-                    <Text size="md">
+                    <Text size="md" className={css.cardDescription}>
                         Control when shoppers can start a live chat and what
                         happens outside business hours.
                     </Text>

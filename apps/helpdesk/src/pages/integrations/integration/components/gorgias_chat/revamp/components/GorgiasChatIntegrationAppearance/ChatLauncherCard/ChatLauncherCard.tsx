@@ -44,7 +44,7 @@ export const ChatLauncherCard = ({
             <div className={css.cardContent}>
                 <div className={css.cardHeader}>
                     <Heading size="md">Chat launcher</Heading>
-                    <Text size="md">
+                    <Text size="md" className={css.cardDescription}>
                         Customize how the chat launcher appears on your website.
                     </Text>
                 </div>

@@ -76,7 +76,7 @@ export const ChatShopperExperienceCard = ({
             <div className={css.cardContent}>
                 <div className={css.cardHeader}>
                     <Heading size="md">Shopper experience</Heading>
-                    <Text size="md">
+                    <Text size="md" className={css.cardDescription}>
                         Customize how shoppers experience chat after the
                         conversation.
                     </Text>

@@ -58,7 +58,11 @@ export const LegalCard = ({
             <div className={css.cardContent}>
                 <div className={css.cardHeader}>
                     <Heading size="md">Privacy policy</Heading>
-                    <Text size="md" variant="regular">
+                    <Text
+                        size="md"
+                        variant="regular"
+                        className={css.cardDescription}
+                    >
                         Add your privacy policy that shoppers will see in the
                         chat.
                     </Text>

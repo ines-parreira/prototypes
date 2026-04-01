@@ -28,7 +28,7 @@ export const ChatVisibilityCard = ({
             <div className={css.cardContent}>
                 <div className={css.cardHeader}>
                     <Heading size="md">Where chat appears</Heading>
-                    <Text size="md">
+                    <Text size="md" className={css.cardDescription}>
                         Control when and where your chat is visible to shoppers.
                     </Text>
                 </div>

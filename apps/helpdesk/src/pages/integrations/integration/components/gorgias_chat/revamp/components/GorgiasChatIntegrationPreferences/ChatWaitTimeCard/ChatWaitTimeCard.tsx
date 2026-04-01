@@ -37,7 +37,7 @@ export const ChatWaitTimeCard = ({
                         <Heading size="md">
                             Share wait time with shoppers
                         </Heading>
-                        <Text size="md">
+                        <Text size="md" className={css.cardDescription}>
                             Let shoppers know when to expect a reply while
                             waiting for your team.
                         </Text>

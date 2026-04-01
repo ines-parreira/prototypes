@@ -34,7 +34,7 @@ export const ChatEmailCaptureCard = ({
                 <div className={css.toggleHeader}>
                     <div className={css.cardHeader}>
                         <Heading size="md">Collect shopper emails</Heading>
-                        <Text size="md">
+                        <Text size="md" className={css.cardDescription}>
                             Grow your email list and send follow-up messages.
                         </Text>
                     </div>
