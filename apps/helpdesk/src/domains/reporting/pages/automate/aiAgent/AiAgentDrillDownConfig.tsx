@@ -1,7 +1,4 @@
-import {
-    defaultEnrichmentFields,
-    useEnrichedDrillDownData,
-} from 'domains/reporting/hooks/useDrillDownData'
+import { useEnrichedDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { formatTicketDrillDownRowData } from 'domains/reporting/pages/common/drill-down/DrillDownFormatters'
@@ -14,11 +11,20 @@ import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDown
 
 export type AiAgentDrillDownMetrics = AiAgentDrillDownMetricName
 
+const aiAgentDrillDownEnrichmentFields: EnrichmentFields[] = [
+    EnrichmentFields.TicketName,
+    EnrichmentFields.Status,
+    EnrichmentFields.Channel,
+    EnrichmentFields.AssigneeId,
+    EnrichmentFields.CreatedDatetime,
+    EnrichmentFields.CustomFields,
+]
+
 const useAiAgentTicketDrillDownHook = (metricData: DrillDownMetric) =>
     useEnrichedDrillDownData(
         getDrillDownQuery(metricData),
         metricData,
-        defaultEnrichmentFields,
+        aiAgentDrillDownEnrichmentFields,
         formatTicketDrillDownRowData,
         EnrichmentFields.TicketId,
     )

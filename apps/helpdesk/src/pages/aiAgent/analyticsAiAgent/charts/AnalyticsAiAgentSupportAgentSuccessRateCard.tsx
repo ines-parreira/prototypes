@@ -4,7 +4,6 @@ import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReporting
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { useAiAgentSupportAgentSuccessRateTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentSuccessRateTrend'
-import { useAiAgentTrendCardDrillDown } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTrendCardDrillDown'
 
 export const AnalyticsAiAgentSupportAgentSuccessRateCard = ({
     chartId,
@@ -17,15 +16,9 @@ export const AnalyticsAiAgentSupportAgentSuccessRateCard = ({
         dashboard,
         useTrend: useAiAgentSupportAgentSuccessRateTrend,
         isAiAgentTrendCard: true,
+        drillDownMetricName:
+            AiAgentDrillDownMetricName.SupportAgentSuccessRateCard,
     })
 
-    const drillDown = useAiAgentTrendCardDrillDown(
-        {
-            metricName: AiAgentDrillDownMetricName.SupportAgentSuccessRateCard,
-            title: 'Success rate',
-        },
-        trendCardProps.trend.data.value,
-    )
-
-    return <TrendCard {...trendCardProps} drillDown={drillDown} />
+    return <TrendCard {...trendCardProps} />
 }

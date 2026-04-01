@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { useAiAgentTrendCardDrillDown } from 'domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
 import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
@@ -7,6 +8,7 @@ import type {
     ChartConfig,
     DashboardSchema,
 } from 'domains/reporting/pages/dashboards/types'
+import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
 export const useReportingTrendCardProps = ({
@@ -15,12 +17,14 @@ export const useReportingTrendCardProps = ({
     dashboard,
     useTrend,
     isAiAgentTrendCard,
+    drillDownMetricName,
 }: {
     chartId?: string
     dashboard?: DashboardSchema
     chartConfig: ChartConfig
     useTrend: MetricTrendHook
     isAiAgentTrendCard: boolean
+    drillDownMetricName?: DrillDownMetric['metricName']
 }) => {
     const { cleanStatsFilters, userTimezone } = useStatsFilters()
 
@@ -33,6 +37,11 @@ export const useReportingTrendCardProps = ({
     const filters = isAiAgentTrendCard ? aiAgentFilters : cleanStatsFilters
 
     const trendData = useTrend(filters, userTimezone)
+
+    const drillDown = useAiAgentTrendCardDrillDown(
+        { metricName: drillDownMetricName, title: chartConfig.label },
+        trendData.data?.value,
+    )
 
     const trend = useMemo(
         () => ({
@@ -66,5 +75,6 @@ export const useReportingTrendCardProps = ({
                 chartName={chartConfig.label}
             />
         ) : undefined,
+        drillDown,
     }
 }

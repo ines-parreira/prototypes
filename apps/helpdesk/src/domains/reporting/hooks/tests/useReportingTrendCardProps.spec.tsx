@@ -1,11 +1,13 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 
+import { useAiAgentTrendCardDrillDown } from 'domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrend } from 'domains/reporting/hooks/useMetricTrend'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import type { StatsFiltersWithLogicalOperator } from 'domains/reporting/models/stat/types'
 import { ReportingGranularity } from 'domains/reporting/models/types'
+import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import { LogicalOperatorEnum } from 'domains/reporting/pages/common/components/Filter/constants'
 import type {
     ChartConfig,
@@ -15,6 +17,11 @@ import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 import { mockStore } from 'utils/testing'
+
+jest.mock('domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown')
+const useAiAgentTrendCardDrillDownMock = assumeMock(
+    useAiAgentTrendCardDrillDown,
+)
 
 jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 const useStatsFiltersMock = assumeMock(useStatsFilters)
@@ -71,6 +78,11 @@ describe('useReportingTrendCardProps', () => {
         stats: initialState,
     }
 
+    const mockDrillDownReturn = {
+        openDrillDownModal: jest.fn(),
+        tooltipText: 'Click to view tickets',
+    }
+
     beforeEach(() => {
         jest.clearAllMocks()
         useStatsFiltersMock.mockReturnValue({
@@ -79,6 +91,7 @@ describe('useReportingTrendCardProps', () => {
             granularity: ReportingGranularity.Day,
         })
         formatPreviousPeriodMock.mockReturnValue('Jan 1 - Jan 7')
+        useAiAgentTrendCardDrillDownMock.mockReturnValue(undefined)
     })
 
     it('should return trend data with correct structure', () => {
@@ -416,5 +429,107 @@ describe('useReportingTrendCardProps', () => {
             { period: mockCleanStatsFilters.period },
             'UTC',
         )
+    })
+
+    it('should return drillDown when hook returns a value', () => {
+        mockUseTrend.mockReturnValue(mockTrendData)
+        useAiAgentTrendCardDrillDownMock.mockReturnValue(mockDrillDownReturn)
+
+        const { result } = renderHook(
+            () =>
+                useReportingTrendCardProps({
+                    isAiAgentTrendCard: true,
+                    chartConfig: mockChartConfig,
+                    useTrend: mockUseTrend,
+                    drillDownMetricName:
+                        AiAgentDrillDownMetricName.AllAgentsCsatCard,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(result.current.drillDown).toBe(mockDrillDownReturn)
+    })
+
+    it('should return drillDown as undefined when hook returns undefined', () => {
+        mockUseTrend.mockReturnValue(mockTrendData)
+        useAiAgentTrendCardDrillDownMock.mockReturnValue(undefined)
+
+        const { result } = renderHook(
+            () =>
+                useReportingTrendCardProps({
+                    isAiAgentTrendCard: true,
+                    chartConfig: mockChartConfig,
+                    useTrend: mockUseTrend,
+                    drillDownMetricName:
+                        AiAgentDrillDownMetricName.AllAgentsCsatCard,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(result.current.drillDown).toBeUndefined()
+    })
+
+    it('should return drillDown as undefined when drillDownMetricName is not provided', () => {
+        mockUseTrend.mockReturnValue(mockTrendData)
+        useAiAgentTrendCardDrillDownMock.mockReturnValue(undefined)
+
+        const { result } = renderHook(
+            () =>
+                useReportingTrendCardProps({
+                    isAiAgentTrendCard: true,
+                    chartConfig: mockChartConfig,
+                    useTrend: mockUseTrend,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(result.current.drillDown).toBeUndefined()
+    })
+
+    it('should return drillDown as undefined when trend value is zero', () => {
+        mockUseTrend.mockReturnValue({
+            data: { value: 0, prevValue: 0 },
+            isFetching: false,
+            isError: false,
+        })
+        useAiAgentTrendCardDrillDownMock.mockReturnValue(undefined)
+
+        const { result } = renderHook(
+            () =>
+                useReportingTrendCardProps({
+                    isAiAgentTrendCard: true,
+                    chartConfig: mockChartConfig,
+                    useTrend: mockUseTrend,
+                    drillDownMetricName:
+                        AiAgentDrillDownMetricName.AllAgentsCsatCard,
+                }),
+            {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore(defaultState)}>
+                        {children}
+                    </Provider>
+                ),
+            },
+        )
+
+        expect(result.current.drillDown).toBeUndefined()
     })
 })

@@ -3,7 +3,6 @@ import type { MetricTrendFormat } from '@repo/reporting'
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 
-import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type {
@@ -47,17 +46,6 @@ import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOvervie
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
-
-jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: {
-        AiAgentAnalyticsDashboardsDrillDown:
-            'ai-agent-analytics-dashboards-drilldown',
-    },
-    useFlag: jest.fn().mockReturnValue(true),
-}))
-
-jest.mock('domains/reporting/hooks/drill-down/useDrillDownModalTrigger')
-const mockUseDrillDownModalTrigger = assumeMock(useDrillDownModalTrigger)
 
 jest.mock('domains/reporting/hooks/useReportingTrendCardProps')
 const mockUseReportingTrendCardProps = assumeMock(useReportingTrendCardProps)
@@ -108,6 +96,7 @@ const createTrendCardProps = ({
         caption: description,
     },
     actionMenu: undefined,
+    drillDown: undefined,
 })
 
 const createChartConfig = ({
@@ -315,11 +304,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSupportAgentCsatCard',
             Component: AnalyticsAiAgentSupportAgentCsatCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName: AiAgentDrillDownMetricName.SupportAgentCsatCard,
-                title: 'CSAT',
-            },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.SupportAgentCsatCard,
             config: {
                 label: 'Average CSAT',
                 description:
@@ -332,11 +318,7 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentAllAgentsCsatCard',
             Component: AnalyticsAiAgentAllAgentsCsatCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
-                title: 'CSAT',
-            },
+            drillDownMetricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
             config: {
                 label: 'Average CSAT',
                 description:
@@ -349,12 +331,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSuccessRateSalesCard',
             Component: AnalyticsAiAgentSuccessRateSalesCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName:
-                    AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard,
-                title: 'Success rate',
-            },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantSuccessRateCard,
             config: {
                 label: 'Success rate',
                 description:
@@ -369,11 +347,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentAllAgentsSuccessRateCard',
             Component: AnalyticsAiAgentAllAgentsSuccessRateCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName: AiAgentDrillDownMetricName.AllAgentsSuccessRateCard,
-                title: 'Success rate',
-            },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.AllAgentsSuccessRateCard,
             config: {
                 label: 'Success rate',
                 description:
@@ -388,12 +363,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSupportAgentSuccessRateCard',
             Component: AnalyticsAiAgentSupportAgentSuccessRateCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName:
-                    AiAgentDrillDownMetricName.SupportAgentSuccessRateCard,
-                title: 'Success rate',
-            },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.SupportAgentSuccessRateCard,
             config: {
                 label: 'Success rate',
                 description:
@@ -446,12 +417,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentClosedTicketsCard',
             Component: AnalyticsAiAgentClosedTicketsCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName:
-                    AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
-                title: 'Closed tickets',
-            },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.AllAgentsClosedTicketsCard,
             config: {
                 label: 'Closed tickets',
                 description:
@@ -476,11 +443,7 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentAllAgentsFRTCard',
             Component: AnalyticsAiAgentAllAgentsFRTCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName: AiAgentDrillDownMetricName.AllAgentsFRTCard,
-                title: 'First response time',
-            },
+            drillDownMetricName: AiAgentDrillDownMetricName.AllAgentsFRTCard,
             config: {
                 label: 'Decrease in first response time',
                 description:
@@ -493,11 +456,7 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentDecreaseinFRTCard',
             Component: AnalyticsAiAgentDecreaseinFRTCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName: AiAgentDrillDownMetricName.SupportAgentFRTCard,
-                title: 'First response time',
-            },
+            drillDownMetricName: AiAgentDrillDownMetricName.SupportAgentFRTCard,
             config: {
                 label: 'Decrease in first response time',
                 description:
@@ -522,12 +481,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSupportHandoverInteractionsCard',
             Component: AnalyticsAiAgentSupportHandoverInteractionsCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName:
-                    AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard,
-                title: 'Handover interactions',
-            },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.SupportAgentHandoverInteractionsCard,
             config: {
                 label: 'Handover interactions',
                 description:
@@ -540,12 +495,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentAllAgentsHandoverInteractionsCard',
             Component: AnalyticsAiAgentAllAgentsHandoverInteractionsCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName:
-                    AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard,
-                title: 'Handover interactions',
-            },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.AllAgentsHandoverInteractionsCard,
             config: {
                 label: 'Handover interactions',
                 description:
@@ -558,12 +509,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSalesHandoverInteractionsCard',
             Component: AnalyticsAiAgentSalesHandoverInteractionsCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName:
-                    AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard,
-                title: 'Handover interactions',
-            },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.ShoppingAssistantHandoverInteractionsCard,
             config: {
                 label: 'Handover interactions',
                 description:
@@ -588,12 +535,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentDecreaseInResolutionTimeCard',
             Component: AnalyticsAiAgentDecreaseInResolutionTimeCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName:
-                    AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard,
-                title: 'Resolution time',
-            },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.AllAgentsResolutionTimeCard,
             config: {
                 label: 'Decrease in resolution time',
                 description:
@@ -606,12 +549,8 @@ describe('Analytics Dynamic Trend Cards', () => {
         {
             name: 'AnalyticsAiAgentSupportDecreaseInResolutionTimeCard',
             Component: AnalyticsAiAgentSupportDecreaseInResolutionTimeCard,
-            hasDrillDown: true,
-            drillDownParams: {
-                metricName:
-                    AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard,
-                title: 'Resolution time',
-            },
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard,
             config: {
                 label: 'Decrease in resolution time',
                 description:
@@ -649,19 +588,13 @@ describe('Analytics Dynamic Trend Cards', () => {
         },
     ]
 
-    const mockDrillDownReturn = {
-        openDrillDownModal: jest.fn(),
-        tooltipText: 'Success rate',
-    }
-
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseDrillDownModalTrigger.mockReturnValue(mockDrillDownReturn)
     })
 
     describe.each(testCases)(
         '$name',
-        ({ Component, config, hasDrillDown, drillDownParams }) => {
+        ({ Component, config, drillDownMetricName }) => {
             const chartConfig = createChartConfig({
                 Component,
                 label: config.label,
@@ -696,56 +629,15 @@ describe('Analytics Dynamic Trend Cards', () => {
                     dashboard: mockDashboard,
                     useTrend: expect.any(Function),
                     isAiAgentTrendCard: true,
+                    ...(drillDownMetricName ? { drillDownMetricName } : {}),
                 })
             })
 
             it('should pass useReportingTrendCardProps result to TrendCard', () => {
                 render(<Component chartConfig={chartConfig} />)
 
-                const expectedProps = hasDrillDown
-                    ? { ...trendCardProps, drillDown: mockDrillDownReturn }
-                    : trendCardProps
-                expect(mockTrendCard).toHaveBeenCalledWith(expectedProps, {})
-
-                if (drillDownParams) {
-                    expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith(
-                        drillDownParams,
-                    )
-                }
+                expect(mockTrendCard).toHaveBeenCalledWith(trendCardProps, {})
             })
         },
     )
-
-    describe('AnalyticsAiAgentSuccessRateSalesCard drillDown guard', () => {
-        it('should not enable drillDown when trend data is undefined', () => {
-            mockUseReportingTrendCardProps.mockReturnValue({
-                isLoading: false,
-                metricFormat: 'decimal-to-percent' as const,
-                interpretAs: 'more-is-better' as const,
-                trendBadgeTooltipData: { period: 'Test Period' },
-                withBorder: true,
-                withFixedWidth: false,
-                hint: { title: 'Success rate', caption: '' },
-                actionMenu: undefined,
-                trend: undefined,
-            } as any)
-
-            render(
-                <AnalyticsAiAgentSuccessRateSalesCard
-                    chartConfig={createChartConfig({
-                        Component: AnalyticsAiAgentSuccessRateSalesCard,
-                        label: 'Success rate',
-                        description:
-                            'The percentage of interactions handled by the AI Agent that are fully resolved without any human escalation.',
-                        metricFormat: 'decimal-to-percent',
-                    })}
-                />,
-            )
-
-            expect(mockTrendCard).toHaveBeenCalledWith(
-                expect.objectContaining({ drillDown: undefined }),
-                {},
-            )
-        })
-    })
 })

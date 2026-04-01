@@ -4,7 +4,6 @@ import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReporting
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { useAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
-import { useAiAgentTrendCardDrillDown } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTrendCardDrillDown'
 
 export const AnalyticsAiAgentAllAgentsCsatCard = ({
     chartId,
@@ -17,15 +16,8 @@ export const AnalyticsAiAgentAllAgentsCsatCard = ({
         dashboard,
         useTrend: useAiAgentSupportAgentCsatTrend, // AIAgentCSATCube has no AiAgentRole dimension, same hook covers All Agents scope
         isAiAgentTrendCard: true,
+        drillDownMetricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
     })
 
-    const drillDown = useAiAgentTrendCardDrillDown(
-        {
-            metricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
-            title: 'CSAT',
-        },
-        trendCardProps.trend.data.value,
-    )
-
-    return <TrendCard {...trendCardProps} drillDown={drillDown} />
+    return <TrendCard {...trendCardProps} />
 }

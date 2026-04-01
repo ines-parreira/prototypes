@@ -1,4 +1,4 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlagWithLoading } from '@repo/feature-flags'
 import { screen, waitFor } from '@testing-library/react'
 
 import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
@@ -17,9 +17,9 @@ jest.mock('@repo/feature-flags', () => ({
         AiAgentAnalyticsDashboardsDrillDown:
             'ai-agent-analytics-dashboards-drilldown',
     },
-    useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
-const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 jest.mock('domains/reporting/hooks/drill-down/useDrillDownModalTrigger')
 const mockUseDrillDownModalTrigger = jest.mocked(useDrillDownModalTrigger)
@@ -61,7 +61,10 @@ describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
             tooltipText: 'Click to view tickets',
         })
 
-        mockUseFlag.mockReturnValue(true)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
     })
 
     it('should render loading state initially', () => {
@@ -212,7 +215,10 @@ describe('AnalyticsAiAgentResolvedInteractionsCard', () => {
     })
 
     it('should not pass drillDown to TrendCard when feature flag is disabled', async () => {
-        mockUseFlag.mockReturnValue(false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
 
         renderWithQueryClientProvider(
             <AnalyticsAiAgentResolvedInteractionsCard />,

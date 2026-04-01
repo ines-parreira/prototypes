@@ -1,18 +1,18 @@
-import { useFlag } from '@repo/feature-flags'
+import { useFlagWithLoading } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 
+import { useAiAgentTrendCardDrillDown } from 'domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown'
 import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
-import { useAiAgentTrendCardDrillDown } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTrendCardDrillDown'
 
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         AiAgentAnalyticsDashboardsDrillDown:
             'ai-agent-analytics-dashboards-drilldown',
     },
-    useFlag: jest.fn(),
+    useFlagWithLoading: jest.fn(),
 }))
-const mockUseFlag = jest.mocked(useFlag)
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
 
 jest.mock('domains/reporting/hooks/drill-down/useDrillDownModalTrigger')
 const mockUseDrillDownModalTrigger = jest.mocked(useDrillDownModalTrigger)
@@ -30,7 +30,7 @@ const mockParams = {
 beforeEach(() => {
     jest.resetAllMocks()
     mockUseDrillDownModalTrigger.mockReturnValue(mockDrillDown)
-    mockUseFlag.mockReturnValue(true)
+    mockUseFlagWithLoading.mockReturnValue({ value: true, isLoading: false })
 })
 
 describe('useAiAgentTrendCardDrillDown', () => {
@@ -43,10 +43,37 @@ describe('useAiAgentTrendCardDrillDown', () => {
     })
 
     it('should return undefined when feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
 
         const { result } = renderHook(() =>
             useAiAgentTrendCardDrillDown(mockParams, 653),
+        )
+
+        expect(result.current).toBeUndefined()
+    })
+
+    it('should return undefined when feature flag is loading', () => {
+        mockUseFlagWithLoading.mockReturnValue({ value: true, isLoading: true })
+
+        const { result } = renderHook(() =>
+            useAiAgentTrendCardDrillDown(mockParams, 653),
+        )
+
+        expect(result.current).toBeUndefined()
+    })
+
+    it('should return undefined when metricName is undefined', () => {
+        const { result } = renderHook(() =>
+            useAiAgentTrendCardDrillDown(
+                {
+                    ...mockParams,
+                    metricName: undefined,
+                },
+                653,
+            ),
         )
 
         expect(result.current).toBeUndefined()
@@ -79,6 +106,9 @@ describe('useAiAgentTrendCardDrillDown', () => {
     it('should call useDrillDownModalTrigger with the provided params', () => {
         renderHook(() => useAiAgentTrendCardDrillDown(mockParams, 653))
 
-        expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith(mockParams)
+        expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith({
+            ...mockParams,
+            metricName: mockParams.metricName,
+        })
     })
 })

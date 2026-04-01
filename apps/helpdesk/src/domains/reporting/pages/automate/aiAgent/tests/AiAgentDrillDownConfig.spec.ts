@@ -1,9 +1,6 @@
 import { renderHook } from '@repo/testing'
 
-import {
-    defaultEnrichmentFields,
-    useEnrichedDrillDownData,
-} from 'domains/reporting/hooks/useDrillDownData'
+import { useEnrichedDrillDownData } from 'domains/reporting/hooks/useDrillDownData'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { AiAgentDrillDownConfig } from 'domains/reporting/pages/automate/aiAgent/AiAgentDrillDownConfig'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
@@ -15,7 +12,6 @@ import { Domain } from 'domains/reporting/pages/common/drill-down/types'
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 
 jest.mock('domains/reporting/hooks/useDrillDownData', () => ({
-    defaultEnrichmentFields: ['ticket_id'],
     useEnrichedDrillDownData: jest.fn(),
 }))
 
@@ -112,7 +108,14 @@ describe('AiAgentDrillDownConfig', () => {
         expect(useEnrichedDrillDownData).toHaveBeenCalledWith(
             mockQueryFactory,
             metricData,
-            defaultEnrichmentFields,
+            [
+                EnrichmentFields.TicketName,
+                EnrichmentFields.Status,
+                EnrichmentFields.Channel,
+                EnrichmentFields.AssigneeId,
+                EnrichmentFields.CreatedDatetime,
+                EnrichmentFields.CustomFields,
+            ],
             formatTicketDrillDownRowData,
             EnrichmentFields.TicketId,
         )

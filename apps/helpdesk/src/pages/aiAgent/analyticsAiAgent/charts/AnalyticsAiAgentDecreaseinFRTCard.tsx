@@ -4,7 +4,6 @@ import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReporting
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { useAiAgentSupportAgentFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentFRTTrend'
-import { useAiAgentTrendCardDrillDown } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTrendCardDrillDown'
 
 export const AnalyticsAiAgentDecreaseinFRTCard = ({
     chartId,
@@ -17,15 +16,8 @@ export const AnalyticsAiAgentDecreaseinFRTCard = ({
         dashboard,
         useTrend: useAiAgentSupportAgentFRTTrend,
         isAiAgentTrendCard: true,
+        drillDownMetricName: AiAgentDrillDownMetricName.SupportAgentFRTCard,
     })
 
-    const drillDown = useAiAgentTrendCardDrillDown(
-        {
-            metricName: AiAgentDrillDownMetricName.SupportAgentFRTCard,
-            title: 'First response time',
-        },
-        trendCardProps.trend.data.value,
-    )
-
-    return <TrendCard {...trendCardProps} drillDown={drillDown} />
+    return <TrendCard {...trendCardProps} />
 }
