@@ -34,181 +34,44 @@ body {
   letter-spacing: -0.01em;
 }
 
-.container {
-  max-width: 720px;
-  margin: 0 auto;
-  padding: 80px 24px 120px;
-}
-
-header {
-  margin-bottom: 64px;
-}
-
-header h1 {
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  margin-bottom: 8px;
-}
-
-header p {
-  color: var(--text-2);
-  font-size: 16px;
-  max-width: 480px;
-}
-
-.prototypes {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.proto-card {
-  display: block;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--r);
-  padding: 28px 28px 24px;
-  text-decoration: none;
-  color: inherit;
-  transition: border-color 0.2s, box-shadow 0.2s;
-}
-
-.proto-card:hover {
-  border-color: var(--accent-border);
-  box-shadow: 0 2px 12px rgba(99,85,232,0.06);
-}
-
-.proto-meta {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 14px;
-}
-
-.proto-tag {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 3px 10px;
-  border-radius: 20px;
-  background: var(--accent-dim);
-  color: var(--accent);
-  border: 1px solid var(--accent-border);
-}
-
-.proto-date {
-  font-size: 12px;
-  color: var(--text-3);
-}
-
-.proto-card h2 {
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  margin-bottom: 6px;
-}
-
-.proto-card p {
-  color: var(--text-2);
-  font-size: 14px;
-  line-height: 1.55;
-  margin-bottom: 16px;
-}
-
-.proto-patterns {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.pattern-chip {
-  font-size: 12px;
-  color: var(--text-3);
-  background: var(--bg);
-  border: 1px solid var(--border);
-  padding: 3px 10px;
-  border-radius: 6px;
-}
-
-.proto-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--accent);
-  margin-top: 18px;
-}
-
-.proto-link svg {
-  transition: transform 0.15s;
-}
-
-.proto-card:hover .proto-link svg {
-  transform: translateX(3px);
-}
-
-footer {
-  margin-top: 80px;
-  padding-top: 24px;
-  border-top: 1px solid var(--border);
-  font-size: 13px;
-  color: var(--text-3);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-footer a {
-  color: var(--text-2);
-  text-decoration: none;
-}
-
-footer a:hover {
-  color: var(--text);
-}
-
-@media (max-width: 520px) {
-  .container { padding: 48px 18px 80px; }
-  header h1 { font-size: 24px; }
-  .proto-card { padding: 20px; }
-}
+.container { max-width: 720px; margin: 0 auto; padding: 80px 24px 120px; }
+header { margin-bottom: 64px; }
+header h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 8px; }
+.prototypes { display: flex; flex-direction: column; gap: 16px; }
+.proto-card { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 28px 28px 24px; text-decoration: none; color: inherit; transition: border-color 0.2s, box-shadow 0.2s; }
+.proto-card:hover { border-color: var(--accent-border); box-shadow: 0 2px 12px rgba(99,85,232,0.06); }
+.proto-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.proto-tag { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 20px; background: var(--accent-dim); color: var(--accent); border: 1px solid var(--accent-border); }
+.proto-date { font-size: 12px; color: var(--text-3); }
+.proto-card h2 { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+.proto-card p { color: var(--text-2); font-size: 14px; line-height: 1.55; }
+.proto-link { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--accent); margin-top: 18px; }
+.proto-link svg { transition: transform 0.15s; }
+.proto-card:hover .proto-link svg { transform: translateX(3px); }
+footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-3); display: flex; align-items: center; justify-content: space-between; }
+footer a { color: var(--text-2); text-decoration: none; }
+footer a:hover { color: var(--text); }
+@media (max-width: 520px) { .container { padding: 48px 18px 80px; } header h1 { font-size: 24px; } .proto-card { padding: 20px; } }
 </style>
 </head>
 <body>
 <div class="container">
-
-  <header>
-    <h1>Prototypes</h1>
-  </header>
-
+  <header><h1>Prototypes</h1></header>
   <div class="prototypes">
-
     <a class="proto-card" href="copilot-ui-patterns/index.html">
       <div class="proto-meta">
         <span class="proto-tag">Interactive</span>
         <span class="proto-date">2025</span>
       </div>
       <h2>Copilot UI Patterns</h2>
-      <p>UI patterns for AI copilot interfaces
-      </div>
-      <div class="proto-link">
-        View prototype
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </div>
+      <p>UI patterns for AI copilot interfaces</p>
+      <div class="proto-link">View prototype <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></div>
     </a>
-
-    <!-- Add more prototypes here by copying the card structure above -->
-
   </div>
-
   <footer>
     <span>Inês Parreira</span>
     <a href="https://github.com/ines-parreira/prototypes">GitHub</a>
   </footer>
-
 </div>
 </body>
 </html>
