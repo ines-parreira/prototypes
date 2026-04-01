@@ -20,7 +20,7 @@ export function SidebarFooter({ children }: SidebarFooterProps) {
                 mr="xs"
                 flexDirection={isCollapsed ? 'column-reverse' : 'row'}
                 alignItems="center"
-                gap="md"
+                gap="xs"
             >
                 {children}
             </Box>

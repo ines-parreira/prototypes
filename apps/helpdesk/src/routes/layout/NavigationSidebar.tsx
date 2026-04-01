@@ -113,9 +113,7 @@ export function NavigationSidebar() {
             </Box>
 
             <SidebarContent>
-                {isCollapsed && currentProduct.id !== Product.Inbox && (
-                    <Separator />
-                )}
+                {isCollapsed && <Separator />}
                 {!!CurrentContent && <CurrentContent />}
             </SidebarContent>
 

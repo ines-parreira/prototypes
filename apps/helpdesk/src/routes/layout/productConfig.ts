@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
 
-import type { IconName, MenuItemColor } from '@gorgias/axiom'
+import type { ColorValue, IconName } from '@gorgias/axiom'
 
 import { ANALYTICS_DEFAULT_PATH } from 'routes/layout/products/analytics'
 import { CUSTOMERS_DEFAULT_PATH } from 'routes/layout/products/customers'
@@ -44,7 +44,7 @@ export type ProductConfig = {
     urlPatterns: string[]
     icon: IconName
     defaultPath: string
-    color?: MenuItemColor
+    color?: ColorValue
 }
 
 export const productConfig: Record<Product, ProductConfig> = {

@@ -3,6 +3,7 @@ import { useSidebar } from '@repo/navigation'
 
 import type { IconName } from '@gorgias/axiom'
 import {
+    Box,
     Button,
     DropdownIcon,
     Heading,
@@ -38,7 +39,7 @@ export function SidebarProductHeader({
             <Icon
                 name={selectedItem.icon}
                 color={selectedItem.color}
-                size={isCollapsed ? 'lg' : 'md'}
+                size="md"
                 withBackground
             />
         ) : null
@@ -67,7 +68,9 @@ export function SidebarProductHeader({
                         leadingSlot={icon}
                         trailingSlot={<DropdownIcon isOpen={isOpen} />}
                     >
-                        <Heading size="md">{selectedItem.name}</Heading>
+                        <Box pl="xxxxs">
+                            <Heading size="md">{selectedItem.name}</Heading>
+                        </Box>
                     </Button>
                 )
             }
