@@ -126,11 +126,11 @@ describe('RecentChats', () => {
             expect(screen.getByText('John Doe')).toBeInTheDocument()
         })
 
-        it('should render "Live chats" header even when there are no tickets', () => {
+        it('should render nothing when there are no tickets', () => {
             useAppSelectorMock.mockReturnValue(fromJS({ tickets: [] }))
-            render(<RecentChats />, { wrapper })
+            const { container } = render(<RecentChats />, { wrapper })
 
-            expect(screen.getByText('Live chats')).toBeInTheDocument()
+            expect(container).toBeEmptyDOMElement()
         })
 
         it('should log a segment event when a ticket item is clicked', async () => {

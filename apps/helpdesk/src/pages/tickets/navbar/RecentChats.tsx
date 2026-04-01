@@ -140,9 +140,9 @@ export const RecentChats = () => {
 
     const tickets = chats.get('tickets') as List<Map<any, any>>
 
-    // if (!tickets || tickets.isEmpty()) {
-    //     return null
-    // }
+    if (!tickets || tickets.isEmpty()) {
+        return null
+    }
 
     if (hasWayfindingMS1Flag) {
         const chatItems = tickets
