@@ -1,25 +1,14 @@
 # Prototypes
 
-Interactive explorations and UI pattern studies by Inês Parreira.
-
 **[View live →](https://ines-parreira.github.io/prototypes/)**
 
 ---
 
 ## Copilot UI Patterns
 
-A collection of UI patterns for AI copilot interfaces that flex with user intent, collaborate, anticipate, and adapt.
+UI patterns for AI copilot interface.
 
 **[View prototype →](https://ines-parreira.github.io/prototypes/copilot-ui-patterns/)**
-
-Patterns included:
-
-- **Input** — Ask anything (default & in-progress states), smart suggestions
-- **Progress** — Reasoning, thinking (simple, comprehensive, completed), execution steps
-- **Artifacts** — Source viewer, diff viewer, charts
-- **Confirmation** — Plan approval with action items
-
-Features dark and light theme support.
 
 ---
 
