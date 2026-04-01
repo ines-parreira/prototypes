@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 import { UserRole } from '@repo/utils'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -203,11 +203,21 @@ function mockTrashLikeView() {
 
 async function openMenu(user: ReturnType<typeof render>['user']) {
     await user.click(screen.getByRole('button', { name: /more actions/i }))
+    const menu = (await screen.findAllByRole('menu')).at(-1)!
+    await within(menu).findByRole('menuitem', { name: /mark as unread/i })
+
+    return menu
+}
+
+async function openAddTagSubMenu(user: ReturnType<typeof render>['user']) {
+    const menu = await openMenu(user)
+    await user.click(within(menu).getByRole('menuitem', { name: /add tag/i }))
+
     await waitFor(() => {
-        expect(
-            screen.getByRole('menuitem', { name: /mark as unread/i }),
-        ).toBeInTheDocument()
+        expect(screen.getAllByRole('menu').length).toBeGreaterThan(1)
     })
+
+    return screen.getAllByRole('menu').at(-1)!
 }
 
 describe('MoreActionsMenu', () => {
@@ -295,21 +305,25 @@ describe('MoreActionsMenu', () => {
             mockTrashLikeView()
 
             const { user } = render(<MoreActionsMenu {...defaultProps} />)
-            await openMenu(user)
+            const menu = await openMenu(user)
 
             await waitFor(() => {
                 expect(
-                    screen.getByRole('menuitem', { name: /export tickets/i }),
+                    within(menu).getByRole('menuitem', {
+                        name: /export tickets/i,
+                    }),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByRole('menuitem', { name: /undelete/i }),
+                    within(menu).getByRole('menuitem', { name: /undelete/i }),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByRole('menuitem', { name: /delete forever/i }),
+                    within(menu).getByRole('menuitem', {
+                        name: /delete forever/i,
+                    }),
                 ).toBeInTheDocument()
             })
             expect(
-                screen.queryByRole('menuitem', { name: /^delete$/i }),
+                within(menu).queryByRole('menuitem', { name: /^delete$/i }),
             ).not.toBeInTheDocument()
         })
 
@@ -493,19 +507,18 @@ describe('MoreActionsMenu', () => {
             const { user } = render(
                 <MoreActionsMenu {...defaultProps} onAddTag={onAddTag} />,
             )
-            await openMenu(user)
-            await user.click(screen.getByRole('menuitem', { name: /add tag/i }))
+            const addTagMenu = await openAddTagSubMenu(user)
             await user.click(
-                screen.getByRole('menuitem', {
+                within(addTagMenu).getByRole('menuitem', {
                     name: /create tag:\s*new tag/i,
                 }),
             )
 
             await waitFor(() => {
                 expect(createTicketTag).toHaveBeenCalledWith('new tag')
+                expect(onAddTag).toHaveBeenCalledWith(createdTag)
+                expect(setSearch).toHaveBeenCalledWith('')
             })
-            expect(onAddTag).toHaveBeenCalledWith(createdTag)
-            expect(setSearch).toHaveBeenCalledWith('')
         })
 
         it('does not show a create tag action when the search exactly matches an existing tag', async () => {

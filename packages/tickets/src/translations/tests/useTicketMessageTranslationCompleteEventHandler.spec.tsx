@@ -49,18 +49,19 @@ const createWrapper = (ticketId = '123') => {
 const wrapper = createWrapper()
 
 describe('useTicketMessageTranslationCompleteEventHandler', () => {
-    beforeAll(() => {
-        // Spy on the zustand store's setter
-        vi.spyOn(
-            useTicketMessageTranslationDisplay.getState(),
-            'setTicketMessageTranslationDisplay',
-        ).mockImplementation(mockSetTicketMessageTranslationDisplay)
-    })
-
     beforeEach(() => {
         vi.clearAllMocks()
         queryClient.clear()
         mockSetTicketMessageTranslationDisplay.mockClear()
+        useTicketMessageTranslationDisplay.setState({
+            ticketMessagesTranslationDisplayMap: {},
+            allMessageDisplayState: DisplayedContent.Translated,
+        })
+
+        vi.spyOn(
+            useTicketMessageTranslationDisplay.getState(),
+            'setTicketMessageTranslationDisplay',
+        ).mockImplementation(mockSetTicketMessageTranslationDisplay)
 
         // Default mock implementation - returns ticket with message ID 456
         mockUseTicket.mockReturnValue({

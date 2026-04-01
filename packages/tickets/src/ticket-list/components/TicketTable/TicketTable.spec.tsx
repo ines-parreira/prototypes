@@ -1,5 +1,5 @@
 import { UserRole } from '@repo/utils'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -234,27 +234,59 @@ async function openBulkMoreActionsMenu(
     user: ReturnType<typeof render>['user'],
 ) {
     await user.click(screen.getByRole('button', { name: 'More actions' }))
+    const menu = (await screen.findAllByRole('menu')).at(-1)!
+    await within(menu).findByRole('menuitem', { name: /mark as read/i })
 
-    await waitFor(() => {
-        expect(
-            screen.getByRole('menuitem', { name: /mark as read/i }),
-        ).toBeInTheDocument()
-    })
+    return menu
 }
 
 async function waitForTicketTableToBeReady() {
     await waitFor(() => {
-        expect(testAppQueryClient.isFetching()).toBe(0)
-        expect(screen.getAllByRole('checkbox').length).toBeGreaterThan(1)
+        expect(screen.getByRole('table')).toBeInTheDocument()
+        expect(getRowSelectionCheckbox()).toBeEnabled()
     })
 }
 
-async function waitForBulkControlsToBeReady() {
+async function waitForBulkToolbarToBeReady() {
     await waitFor(() => {
-        expect(screen.getByLabelText('Status selection')).toBeEnabled()
-        expect(screen.getByLabelText('Assign agent')).toBeEnabled()
-        expect(screen.getByLabelText('Assign team')).toBeEnabled()
-        expect(screen.getByLabelText('Add tag')).toBeEnabled()
+        expect(
+            screen.getByRole('button', { name: 'More actions' }),
+        ).toBeEnabled()
+    })
+}
+
+function getRowSelectionCheckbox() {
+    return screen.getAllByRole('checkbox').at(1)!
+}
+
+async function selectFirstRow(user: ReturnType<typeof render>['user']) {
+    await waitForTicketTableToBeReady()
+    await user.click(getRowSelectionCheckbox())
+    await waitForBulkToolbarToBeReady()
+}
+
+async function getEnabledBulkControl(label: string) {
+    return waitFor(() => {
+        const control = screen.getByLabelText(label)
+        expect(control).toBeEnabled()
+        return control
+    })
+}
+
+async function openStatusSelection(user: ReturnType<typeof render>['user']) {
+    const statusSelection = await getEnabledBulkControl('Status selection')
+    await user.click(statusSelection)
+    return screen.findByRole('listbox')
+}
+
+async function waitForSelectionToClear() {
+    await waitFor(() => {
+        expect(
+            screen.queryByLabelText('Status selection'),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: 'More actions' }),
+        ).not.toBeInTheDocument()
     })
 }
 
@@ -356,13 +388,11 @@ describe('TicketTable', () => {
 
     it('enables the bulk action controls and shows the selected count when a row is selected', async () => {
         const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
+        await selectFirstRow(user)
 
-        const rowCheckbox = screen.getAllByRole('checkbox')[1]
-        await user.click(rowCheckbox)
-        await waitForBulkControlsToBeReady()
-
-        expect(screen.getAllByText('1 items selected')).not.toHaveLength(0)
+        expect(screen.getAllByText('1 items selected').length).toBeGreaterThan(
+            0,
+        )
         expect(
             screen.getByRole('button', { name: 'More actions' }),
         ).toBeEnabled()
@@ -428,64 +458,67 @@ describe('TicketTable', () => {
     it('passes the trash-like view context to the bulk menu when the view filters are trash-like', async () => {
         mockState.viewFilters = 'isNotEmpty(ticket.trashed_datetime)'
         const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await openBulkMoreActionsMenu(user)
+        await selectFirstRow(user)
+        const menu = await openBulkMoreActionsMenu(user)
 
         expect(
-            screen.getByRole('menuitem', { name: /undelete/i }),
+            within(menu).getByRole('menuitem', { name: /undelete/i }),
         ).toBeInTheDocument()
         expect(
-            screen.getByRole('menuitem', { name: /delete forever/i }),
+            within(menu).getByRole('menuitem', { name: /delete forever/i }),
         ).toBeInTheDocument()
         expect(
-            screen.queryByRole('menuitem', { name: /^delete$/i }),
+            within(menu).queryByRole('menuitem', { name: /^delete$/i }),
         ).not.toBeInTheDocument()
     })
 
     it('wires mark as read through the bulk more actions menu', async () => {
         const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await openBulkMoreActionsMenu(user)
+        await selectFirstRow(user)
+        const menu = await openBulkMoreActionsMenu(user)
         await user.click(
-            screen.getByRole('menuitem', { name: /mark as read/i }),
+            within(menu).getByRole('menuitem', { name: /mark as read/i }),
         )
 
-        expect(mockState.handleMarkAsReadSpy).toHaveBeenCalledTimes(1)
+        await waitFor(() => {
+            expect(mockState.handleMarkAsReadSpy).toHaveBeenCalledTimes(1)
+        })
+
+        await waitForSelectionToClear()
     })
 
     it('passes the trash-view cache removal option when undeleting from the bulk more actions menu', async () => {
         mockState.viewFilters = 'isNotEmpty(ticket.trashed_datetime)'
         const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
+        await selectFirstRow(user)
+        const menu = await openBulkMoreActionsMenu(user)
+        await user.click(
+            within(menu).getByRole('menuitem', { name: /undelete/i }),
+        )
 
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await openBulkMoreActionsMenu(user)
-        await user.click(screen.getByRole('menuitem', { name: /undelete/i }))
-
-        expect(mockState.handleUndeleteSpy).toHaveBeenCalledWith({
-            removeFromCurrentViewCache: true,
+        await waitFor(() => {
+            expect(mockState.handleUndeleteSpy).toHaveBeenCalledWith({
+                removeFromCurrentViewCache: true,
+            })
         })
     })
 
     it('sets the selected tickets to open and clears the selection on success', async () => {
         const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
+        await selectFirstRow(user)
 
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await user.click(screen.getByLabelText('Status selection'))
-        await user.click(screen.getByRole('option', { name: 'Open' }))
-
-        expect(mockState.handleSetStatusSpy).toHaveBeenCalledWith(
-            TicketStatus.Open,
+        const statusListbox = await openStatusSelection(user)
+        await user.click(
+            within(statusListbox).getByRole('option', { name: 'Open' }),
         )
 
         await waitFor(() => {
-            expect(screen.queryAllByText('1 items selected')).toHaveLength(0)
+            expect(mockState.handleSetStatusSpy).toHaveBeenCalledWith(
+                TicketStatus.Open,
+            )
         })
+
+        await waitForSelectionToClear()
 
         expect(
             screen.queryByLabelText('Status selection'),
@@ -500,24 +533,26 @@ describe('TicketTable', () => {
 
     it('sets the selected tickets to closed', async () => {
         const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
+        await selectFirstRow(user)
 
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await user.click(screen.getByLabelText('Status selection'))
-        await user.click(screen.getByRole('option', { name: 'Close' }))
-
-        expect(mockState.handleSetStatusSpy).toHaveBeenCalledWith(
-            TicketStatus.Closed,
+        const statusListbox = await openStatusSelection(user)
+        await user.click(
+            within(statusListbox).getByRole('option', { name: 'Close' }),
         )
+
+        await waitFor(() => {
+            expect(mockState.handleSetStatusSpy).toHaveBeenCalledWith(
+                TicketStatus.Closed,
+            )
+        })
+
+        await waitForSelectionToClear()
     })
 
     it('assigns the selected tickets to an agent and clears the selection on success', async () => {
         const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await waitForBulkControlsToBeReady()
-        await user.click(screen.getByLabelText('Assign agent'))
+        await selectFirstRow(user)
+        await user.click(await getEnabledBulkControl('Assign agent'))
         const agentOptions = await screen.findAllByText('Agent Smith')
         await user.click(agentOptions[agentOptions.length - 1])
 
@@ -528,20 +563,15 @@ describe('TicketTable', () => {
             }),
         )
 
-        await waitFor(() => {
-            expect(screen.queryAllByText('1 items selected')).toHaveLength(0)
-        })
+        await waitForSelectionToClear()
 
         expect(screen.queryByLabelText('Assign agent')).not.toBeInTheDocument()
     })
 
     it('assigns the selected tickets to a team and clears the selection on success', async () => {
         const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await waitForBulkControlsToBeReady()
-        await user.click(screen.getByLabelText('Assign team'))
+        await selectFirstRow(user)
+        await user.click(await getEnabledBulkControl('Assign team'))
         const supportOptions = await screen.findAllByText('Support')
         await user.click(supportOptions[supportOptions.length - 1])
 
@@ -552,20 +582,15 @@ describe('TicketTable', () => {
             }),
         )
 
-        await waitFor(() => {
-            expect(screen.queryAllByText('1 items selected')).toHaveLength(0)
-        })
+        await waitForSelectionToClear()
 
         expect(screen.queryByLabelText('Assign team')).not.toBeInTheDocument()
     })
 
     it('adds a tag to the selected tickets and clears the selection on success', async () => {
         const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await waitForBulkControlsToBeReady()
-        await user.click(screen.getByLabelText('Add tag'))
+        await selectFirstRow(user)
+        await user.click(await getEnabledBulkControl('Add tag'))
         const vipOptions = await screen.findAllByText('VIP')
         await user.click(vipOptions[vipOptions.length - 1])
 
@@ -576,20 +601,15 @@ describe('TicketTable', () => {
             }),
         )
 
-        await waitFor(() => {
-            expect(screen.queryAllByText('1 items selected')).toHaveLength(0)
-        })
+        await waitForSelectionToClear()
 
         expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
     })
 
     it('clears the selected team assignment when requested', async () => {
         const { user } = renderTicketTable()
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await waitForBulkControlsToBeReady()
-        await user.click(screen.getByLabelText('Assign team'))
+        await selectFirstRow(user)
+        await user.click(await getEnabledBulkControl('Assign team'))
         const noTeamOptions = await screen.findAllByText('No team')
         await user.click(noTeamOptions[noTeamOptions.length - 1])
 
@@ -598,10 +618,7 @@ describe('TicketTable', () => {
 
     it('disables team assignment while the bulk action is loading', async () => {
         const { user, rerender } = renderTicketTable()
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await waitForBulkControlsToBeReady()
+        await selectFirstRow(user)
 
         mockState.isBulkActionLoading = true
         rerender(<TicketTable viewId={123} />)
@@ -619,12 +636,7 @@ describe('TicketTable', () => {
 
     it('clears the selection when the displayed tickets change', async () => {
         const { user, rerender } = renderTicketTable()
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await waitFor(() => {
-            expect(screen.getAllByText('1 items selected')).not.toHaveLength(0)
-        })
+        await selectFirstRow(user)
 
         mockState.tickets = [
             { id: 3, subject: 'Replacement ticket' },
@@ -632,9 +644,7 @@ describe('TicketTable', () => {
         ]
         rerender(<TicketTable viewId={123} />)
 
-        await waitFor(() => {
-            expect(screen.queryAllByText('1 items selected')).toHaveLength(0)
-        })
+        await waitForSelectionToClear()
 
         expect(
             screen.queryByLabelText('Status selection'),
@@ -649,19 +659,12 @@ describe('TicketTable', () => {
 
     it('clears the selection when the sort order changes', async () => {
         const { user, rerender } = renderTicketTable()
-        await waitForTicketTableToBeReady()
-
-        await user.click(screen.getAllByRole('checkbox')[1])
-        await waitFor(() => {
-            expect(screen.getAllByText('1 items selected')).not.toHaveLength(0)
-        })
+        await selectFirstRow(user)
 
         mockState.sortOrder = 'updated_datetime:desc'
         rerender(<TicketTable viewId={123} />)
 
-        await waitFor(() => {
-            expect(screen.queryAllByText('1 items selected')).toHaveLength(0)
-        })
+        await waitForSelectionToClear()
 
         expect(
             screen.queryByLabelText('Status selection'),

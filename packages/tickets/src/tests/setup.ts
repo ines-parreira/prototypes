@@ -1,4 +1,5 @@
-import { afterEach } from 'vitest'
+import { cleanup } from '@testing-library/react'
+import { afterEach, vi } from 'vitest'
 
 import { testAppQueryClient } from './render.utils'
 
@@ -19,7 +20,20 @@ global.ResizeObserver = class ResizeObserver {
     unobserve() {}
 } as any
 
+if (typeof document.elementFromPoint !== 'function') {
+    document.elementFromPoint = () => document.body ?? document.documentElement
+}
+
+if (typeof document.elementsFromPoint !== 'function') {
+    document.elementsFromPoint = () => [
+        document.body ?? document.documentElement,
+    ]
+}
+
 afterEach(async () => {
+    cleanup()
     await testAppQueryClient.cancelQueries()
     testAppQueryClient.clear()
+    vi.restoreAllMocks()
+    vi.useRealTimers()
 })

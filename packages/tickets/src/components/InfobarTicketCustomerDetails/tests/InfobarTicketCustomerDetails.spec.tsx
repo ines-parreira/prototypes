@@ -216,10 +216,16 @@ describe('InfobarTicketCustomerDetails', () => {
         })
 
         await user.click(viewCustomerButton)
-
-        await waitFor(() => {
-            expect(screen.getByText('Jane Doe')).toBeInTheDocument()
+        await screen.findByRole('button', {
+            name: 'Back to previous screen',
         })
+
+        expect(
+            screen.getByRole('button', { name: 'Switch customer' }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('heading', { name: 'Jane Doe' }),
+        ).toBeInTheDocument()
     })
 
     it('should open SearchAndPreviewCustomersPanel when clicking merge button', async () => {

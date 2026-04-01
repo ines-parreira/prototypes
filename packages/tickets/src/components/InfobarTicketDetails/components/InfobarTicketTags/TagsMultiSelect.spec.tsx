@@ -106,23 +106,16 @@ const getTagsTriggerButton = () => {
 }
 
 const openTagsMenu = async (user: ReturnType<typeof render>['user']) => {
-    if (getTagsTriggerButton().getAttribute('aria-expanded') !== 'true') {
-        await user.click(getTagsTriggerButton())
-    }
+    await user.click(getTagsTriggerButton())
 
-    await waitFor(() => {
-        expect(getTagsTriggerButton()).toHaveAttribute('aria-expanded', 'true')
-    })
+    const listbox = await screen.findByRole('listbox')
+    const searchbox = await screen.findByRole('searchbox')
+
+    return { listbox, searchbox }
 }
 
 const closeTagsMenu = async (user: ReturnType<typeof render>['user']) => {
-    if (getTagsTriggerButton().getAttribute('aria-expanded') !== 'false') {
-        await user.click(getTagsTriggerButton())
-    }
-
-    await waitFor(() => {
-        expect(getTagsTriggerButton()).toHaveAttribute('aria-expanded', 'false')
-    })
+    await user.click(getTagsTriggerButton())
 
     await waitFor(() => {
         expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
@@ -316,10 +309,8 @@ describe('TagsMultiSelect', () => {
         await closeTagsMenu(user)
         await waitForQueriesSettled()
 
-        await openTagsMenu(user)
-        expect(
-            await screen.findByRole('searchbox', {}, { timeout: 3000 }),
-        ).toHaveValue('')
+        const { searchbox: reopenedSearchbox } = await openTagsMenu(user)
+        expect(reopenedSearchbox).toHaveValue('')
 
         await waitForQueriesSettled()
     })
