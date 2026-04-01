@@ -35,15 +35,21 @@ type AiAgentReasoningProps = {
 const EVOLI_STATIC_MESSAGE =
     "Message powered by AI Agent's new brain (beta). Reasoning will be available soon."
 
+const IMPERSONATION_REASONING_NOTICE =
+    'Reasoning is visible because you are impersonating this account.'
+
 export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const ticket = useAppSelector(getTicketState)
     const isEvoliTicket = useIsEvoliTicket()
+    const isImpersonated = useMemo(() => isSessionImpersonated(), [])
     const isMessageAfterEvoliCutoff =
         new Date(message.created_datetime).getTime() >
         REASONING_CUTOFF_DATE.getTime()
 
     const [state, setState] = useState<AiAgentReasoningState>(
-        isEvoliTicket && !isMessageAfterEvoliCutoff ? 'static' : 'collapsed',
+        isEvoliTicket && !isMessageAfterEvoliCutoff && !isImpersonated
+            ? 'static'
+            : 'collapsed',
     )
     const [isRetriable] = useState(true)
     const [isQueryEnabled, setIsQueryEnabled] = useState(false)
@@ -52,8 +58,6 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const currentUser = useAppSelector((state) => state.currentUser)
     const canAccessAIFeedback = useCanAccessAIFeedback()
     const { search } = useLocation()
-
-    const isImpersonated = useMemo(() => isSessionImpersonated(), [])
 
     const searchParams = useMemo(() => new URLSearchParams(search), [search])
     const shouldDisplayExecutionId =
@@ -91,7 +95,7 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const isReasoningQueryEnabled =
         isQueryEnabled &&
         !!messageId &&
-        (!isEvoliTicket || isMessageAfterEvoliCutoff)
+        (!isEvoliTicket || isMessageAfterEvoliCutoff || isImpersonated)
 
     const {
         reasoningContent,
@@ -236,7 +240,9 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                                 color="content-accent-default"
                             />
                         )}
-                        {isEvoliTicket && !isMessageAfterEvoliCutoff
+                        {isEvoliTicket &&
+                        !isMessageAfterEvoliCutoff &&
+                        !isImpersonated
                             ? EVOLI_STATIC_MESSAGE
                             : staticMessage}
                     </span>
@@ -334,6 +340,16 @@ export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
                     >
                         {renderTitle()}
                     </div>
+                )}
+                {isImpersonated && isEvoliTicket && (
+                    <span className={css.impersonationNotice}>
+                        <Icon
+                            name="info"
+                            size="sm"
+                            color="content-accent-default"
+                        />
+                        {IMPERSONATION_REASONING_NOTICE}
+                    </span>
                 )}
                 {renderBody()}
                 {renderFooter()}

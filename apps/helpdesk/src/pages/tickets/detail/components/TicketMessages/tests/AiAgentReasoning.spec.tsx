@@ -1,6 +1,5 @@
 import type React from 'react'
 
-import { isSessionImpersonated } from '@repo/activity-tracker/utils'
 import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
@@ -1607,8 +1606,14 @@ describe('AiAgentReasoning', () => {
     })
 
     describe('Impersonation handling', () => {
+        afterEach(() => {
+            jest.spyOn(
+                require('@repo/activity-tracker/utils'),
+                'isSessionImpersonated',
+            ).mockReturnValue(false)
+        })
+
         it('should show execution ID when impersonated', () => {
-            const originalIsSessionImpersonated = isSessionImpersonated
             jest.spyOn(
                 require('@repo/activity-tracker/utils'),
                 'isSessionImpersonated',
@@ -1652,15 +1657,9 @@ describe('AiAgentReasoning', () => {
             expect(
                 screen.getByText('Execution ID: exec-123'),
             ).toBeInTheDocument()
-
-            jest.spyOn(
-                require('@repo/activity-tracker/utils'),
-                'isSessionImpersonated',
-            ).mockReturnValue(originalIsSessionImpersonated)
         })
 
         it('should show execution ID in error state when impersonated but NOT show feedback component', () => {
-            const originalIsSessionImpersonated = isSessionImpersonated
             jest.spyOn(
                 require('@repo/activity-tracker/utils'),
                 'isSessionImpersonated',
@@ -1722,11 +1721,6 @@ describe('AiAgentReasoning', () => {
             expect(
                 screen.queryByTestId('ai-agent-reasoning-feedback'),
             ).not.toBeInTheDocument()
-
-            jest.spyOn(
-                require('@repo/activity-tracker/utils'),
-                'isSessionImpersonated',
-            ).mockReturnValue(originalIsSessionImpersonated)
         })
     })
 
@@ -2175,6 +2169,128 @@ describe('AiAgentReasoning', () => {
                 }),
                 expect.objectContaining({
                     enabled: false,
+                }),
+            )
+        })
+
+        it('should not show impersonation notice when not impersonating', () => {
+            useAppSelectorMock.mockImplementation((selector: any) => {
+                if (
+                    selector.name === 'getTicketState' ||
+                    selector.toString().includes('getTicketState')
+                ) {
+                    return createMockEvoliTicket()
+                }
+                if (
+                    selector.name === 'getCurrentAccountState' ||
+                    selector.toString().includes('getCurrentAccountState')
+                ) {
+                    return fromJS(account)
+                }
+                if (selector.toString().includes('state.currentUser'))
+                    return fromJS(user)
+                return undefined
+            })
+
+            renderComponent()
+
+            expect(
+                screen.queryByText(
+                    'Reasoning is visible because you are impersonating this account.',
+                ),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('Evoli ticket with impersonation', () => {
+        const createMockEvoliTicket = () =>
+            fromJS({
+                id: 123,
+                tags: [{ name: 'ai_evolution' }],
+            })
+
+        const setupEvoliImpersonation = () => {
+            jest.spyOn(
+                require('@repo/activity-tracker/utils'),
+                'isSessionImpersonated',
+            ).mockReturnValue(true)
+
+            useAppSelectorMock.mockImplementation((selector: any) => {
+                if (
+                    selector.name === 'getTicketState' ||
+                    selector.toString().includes('getTicketState')
+                ) {
+                    return createMockEvoliTicket()
+                }
+                if (
+                    selector.name === 'getCurrentAccountState' ||
+                    selector.toString().includes('getCurrentAccountState')
+                ) {
+                    return fromJS(account)
+                }
+                if (selector.toString().includes('state.currentUser'))
+                    return fromJS(user)
+                return undefined
+            })
+        }
+
+        afterEach(() => {
+            jest.spyOn(
+                require('@repo/activity-tracker/utils'),
+                'isSessionImpersonated',
+            ).mockReturnValue(false)
+        })
+
+        it('should NOT display the static Evoli message when impersonating', () => {
+            setupEvoliImpersonation()
+            renderComponent()
+
+            expect(
+                screen.queryByText(
+                    "Message powered by AI Agent's new brain (beta). Reasoning will be available soon.",
+                ),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should show the reasoning toggle for Evoli tickets when impersonating', () => {
+            setupEvoliImpersonation()
+            renderComponent()
+
+            expect(screen.getByText('Show reasoning')).toBeInTheDocument()
+        })
+
+        it('should show impersonation notice for Evoli tickets when impersonating', () => {
+            setupEvoliImpersonation()
+            renderComponent()
+
+            expect(
+                screen.getByText(
+                    'Reasoning is visible because you are impersonating this account.',
+                ),
+            ).toBeInTheDocument()
+        })
+
+        it('should enable reasoning fetch for Evoli tickets when impersonating', () => {
+            setupEvoliImpersonation()
+            renderComponent()
+
+            expect(mockUseGetMessageAiReasoning).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    objectId: '123',
+                }),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+
+            expandComponent()
+
+            expect(mockUseGetMessageAiReasoning).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    objectId: '123',
+                }),
+                expect.objectContaining({
+                    enabled: true,
                 }),
             )
         })
