@@ -9,7 +9,7 @@ import { getCurrentUserHandler } from '../../tests/getCurrentUser.mock'
 import { render } from '../../tests/render.utils'
 import { server } from '../../tests/server'
 import { useTicketThreadLegacyBridge } from '../../utils/LegacyBridge/useTicketThreadLegacyBridge'
-import { InstagramMediaMessageWrapper } from './InstagramMediaMessageWrapper'
+import { InstagramMediaMessage } from './InstagramMediaMessage'
 
 vi.mock('../../utils/LegacyBridge/useTicketThreadLegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
@@ -69,11 +69,11 @@ function makeItem(
     }
 }
 
-describe('InstagramMediaMessageWrapper', () => {
+describe('InstagramMediaMessage', () => {
     describe('mention type', () => {
         it('shows story mention text and link for instagram-mention-media with media_type STORY', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         source: {
                             type: 'instagram-mention-media',
@@ -96,7 +96,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('shows post mention text and link for instagram-mention-media with non-story media_type', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         source: {
                             type: 'instagram-mention-media',
@@ -119,7 +119,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('shows comment mention text without a link for instagram-mention-comment', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         source: {
                             type: 'instagram-mention-comment',
@@ -139,7 +139,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('shows mention text without a link when permalink is absent', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         source: {
                             type: 'instagram-mention-media',
@@ -159,7 +159,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('shows "view on Instagram" link for non-mention instagram-media with permalink', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         source: {
                             type: 'instagram-media',
@@ -181,7 +181,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('does not show mention text for outbound agent replies', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         from_agent: true,
                         source: {
@@ -199,7 +199,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('shows nothing when non-mention source has no permalink', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         source: { type: 'instagram-media' } as any,
                     })}
@@ -218,7 +218,7 @@ describe('InstagramMediaMessageWrapper', () => {
     describe('image attachments', () => {
         it('renders an image with the attachment name as alt text', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         attachments: [
                             {
@@ -236,7 +236,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('falls back to "Instagram media" alt text when attachment has no name', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         attachments: [
                             {
@@ -253,7 +253,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('renders multiple images when there are multiple image attachments', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         attachments: [
                             {
@@ -277,7 +277,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('does not render an image for attachments without a url', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         attachments: [
                             {
@@ -297,7 +297,7 @@ describe('InstagramMediaMessageWrapper', () => {
     describe('video attachments', () => {
         it('renders a video element with the attachment name as label', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         attachments: [
                             {
@@ -315,7 +315,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('falls back to "Instagram video" label when attachment has no name', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         attachments: [
                             {
@@ -332,7 +332,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('renders multiple video elements for multiple video attachments', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         attachments: [
                             {
@@ -356,7 +356,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('does not render a video for attachments without a url', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         attachments: [
                             {
@@ -376,7 +376,7 @@ describe('InstagramMediaMessageWrapper', () => {
     describe('mixed attachments', () => {
         it('renders both images and videos when both types are present', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         attachments: [
                             {
@@ -400,7 +400,7 @@ describe('InstagramMediaMessageWrapper', () => {
 
         it('does not render media image elements for video attachments', () => {
             render(
-                <InstagramMediaMessageWrapper
+                <InstagramMediaMessage
                     item={makeItem({
                         attachments: [
                             {

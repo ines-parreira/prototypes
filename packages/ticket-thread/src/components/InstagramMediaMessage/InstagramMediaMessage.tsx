@@ -1,10 +1,9 @@
-import type { ReactNode } from 'react'
-
 import { replaceAttachmentURL } from '@repo/utils'
 
 import type { TicketThreadSocialMediaInstagramMediaItem } from '../../hooks/messages/types'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
+import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 import type { InstagramMentionType } from './ViewOnInstagramLink'
 import { ViewOnInstagramLink } from './ViewOnInstagramLink'
 
@@ -12,7 +11,6 @@ import css from './InstagramMediaMessage.less'
 
 type InstagramMediaMessageProps = {
     item: TicketThreadSocialMediaInstagramMediaItem
-    actions?: ReactNode
 }
 
 function getInstagramMentionType(
@@ -26,10 +24,7 @@ function getInstagramMentionType(
     return null
 }
 
-export function InstagramMediaMessage({
-    item,
-    actions,
-}: InstagramMediaMessageProps) {
+export function InstagramMediaMessage({ item }: InstagramMediaMessageProps) {
     const source = item.data.source
     const channelFrom = source.from?.name ?? null
     const channelTo = source.to?.[0]?.name ?? null
@@ -52,7 +47,6 @@ export function InstagramMediaMessage({
             channelName="Instagram media"
             channelFrom={channelFrom}
             channelTo={channelTo}
-            actions={actions}
         >
             {(mentionType || permalink) && (
                 <ViewOnInstagramLink
@@ -78,6 +72,7 @@ export function InstagramMediaMessage({
                 />
             ))}
             <MessageBody item={item} />
+            <TicketMessageActions message={item.data} />
         </SocialMessageBubble>
     )
 }

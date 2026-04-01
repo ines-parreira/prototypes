@@ -10,6 +10,7 @@ import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { CopyButton } from '../CopyButton/CopyButton'
 import { IntentsFeedback } from '../IntentsFeedback/IntentsFeedback'
+import { BubbleActions } from '../MessageBubble/components/BubbleActions'
 
 const PRIVATE_REPLY_WINDOW_DAYS = 7
 
@@ -21,7 +22,6 @@ type PrivateReplyMeta = {
 
 type InstagramCommentMessageActionsProps = {
     message: TicketMessage
-    copyText: string
     isHidden: boolean
     onPrivateReply: () => void
     onHideComment: () => void
@@ -29,11 +29,11 @@ type InstagramCommentMessageActionsProps = {
 
 export function InstagramCommentMessageActions({
     message,
-    copyText,
     isHidden,
     onPrivateReply,
     onHideComment,
 }: InstagramCommentMessageActionsProps) {
+    const copyText = message.stripped_text || message.body_text || ''
     const sevenDaysAgo = new Date()
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - PRIVATE_REPLY_WINDOW_DAYS)
     const isMessageTooOld = new Date(message.created_datetime) < sevenDaysAgo
@@ -56,66 +56,75 @@ export function InstagramCommentMessageActions({
     }
 
     return (
-        <ButtonGroup selectedKey="" onSelectionChange={handleSelectionChange}>
-            {!message.from_agent && (
+        <BubbleActions placement={message.from_agent ? 'left' : 'right'}>
+            <ButtonGroup
+                selectedKey=""
+                onSelectionChange={handleSelectionChange}
+            >
+                {!message.from_agent && (
+                    <Tooltip
+                        trigger={
+                            <ButtonGroupItem
+                                id="intents"
+                                icon={<IntentsFeedback message={message} />}
+                            />
+                        }
+                    >
+                        <TooltipContent title="Message intent" />
+                    </Tooltip>
+                )}
                 <Tooltip
                     trigger={
                         <ButtonGroupItem
-                            id="intents"
-                            icon={<IntentsFeedback message={message} />}
+                            id="private-reply"
+                            isDisabled={isPrivateReplyDisabled}
+                            icon={
+                                <Icon
+                                    name={'arrow-undo-down-left' as IconName}
+                                    size="sm"
+                                    alt="Private reply"
+                                />
+                            }
                         />
                     }
                 >
-                    <TooltipContent title="Message intent" />
+                    <TooltipContent title={privateReplyTooltip} />
                 </Tooltip>
-            )}
-            <Tooltip
-                trigger={
-                    <ButtonGroupItem
-                        id="private-reply"
-                        isDisabled={isPrivateReplyDisabled}
-                        icon={
-                            <Icon
-                                name={'arrow-undo-down-left' as IconName}
-                                size="sm"
-                                alt="Private reply"
-                            />
-                        }
+                <Tooltip
+                    trigger={
+                        <ButtonGroupItem
+                            id="hide-comment"
+                            icon={
+                                <Icon
+                                    name={
+                                        (isHidden ? 'show' : 'hide') as IconName
+                                    }
+                                    size="sm"
+                                    alt={
+                                        isHidden
+                                            ? 'Unhide comment'
+                                            : 'Hide comment'
+                                    }
+                                />
+                            }
+                        />
+                    }
+                >
+                    <TooltipContent
+                        title={isHidden ? 'Unhide comment' : 'Hide comment'}
                     />
-                }
-            >
-                <TooltipContent title={privateReplyTooltip} />
-            </Tooltip>
-            <Tooltip
-                trigger={
-                    <ButtonGroupItem
-                        id="hide-comment"
-                        icon={
-                            <Icon
-                                name={(isHidden ? 'show' : 'hide') as IconName}
-                                size="sm"
-                                alt={
-                                    isHidden ? 'Unhide comment' : 'Hide comment'
-                                }
-                            />
-                        }
-                    />
-                }
-            >
-                <TooltipContent
-                    title={isHidden ? 'Unhide comment' : 'Hide comment'}
-                />
-            </Tooltip>
-            <Tooltip
-                trigger={
-                    <ButtonGroupItem
-                        id="copy"
-                        icon={<CopyButton text={copyText} />}
-                    />
-                }
-            >
-                <TooltipContent title="Copy message" />
-            </Tooltip>
-        </ButtonGroup>
+                </Tooltip>
+                <Tooltip
+                    trigger={
+                        <ButtonGroupItem
+                            id="copy"
+                            icon={<CopyButton text={copyText} />}
+                        />
+                    }
+                >
+                    <TooltipContent title="Copy message" />
+                </Tooltip>
+            </ButtonGroup>
+        </BubbleActions>
     )
 }

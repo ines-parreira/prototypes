@@ -44,10 +44,10 @@ export function InstagramCommentMessage({
                 channelFrom={channelFrom}
                 channelTo={channelTo}
                 className={css.hidden}
-                actions={actions}
             >
                 <HiddenCommentBanner onUnhide={onUnhide} />
                 <MessageBody item={item} />
+                {actions}
             </SocialMessageBubble>
         )
     }
@@ -59,10 +59,10 @@ export function InstagramCommentMessage({
             channelName="Instagram comment"
             channelFrom={channelFrom}
             channelTo={channelTo}
-            actions={actions}
         >
             {isAdComment && <Text size="sm">Ad</Text>}
             <MessageBody item={item} />
+            {actions}
         </SocialMessageBubble>
     )
 }

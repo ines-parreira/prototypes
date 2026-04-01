@@ -2,14 +2,13 @@ import type { TicketThreadSocialMediaInstagramDirectMessageItem } from '../../ho
 import { getSocialChannelIcon } from '../../utils/getSocialChannelIcon'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
-import { TicketMessageActions } from '../WhatsAppMessage/TicketMessageActions'
+import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 
 type InstagramDirectMessageProps = {
     item: TicketThreadSocialMediaInstagramDirectMessageItem
 }
 
 export function InstagramDirectMessage({ item }: InstagramDirectMessageProps) {
-    const copyText = item.data.stripped_text || item.data.body_text || ''
     const channelFrom = item.data.source.from?.name ?? null
     const channelTo = item.data.source.to?.[0]?.name ?? null
 
@@ -20,11 +19,9 @@ export function InstagramDirectMessage({ item }: InstagramDirectMessageProps) {
             channelName="Instagram Direct Message"
             channelFrom={channelFrom}
             channelTo={channelTo}
-            actions={
-                <TicketMessageActions message={item.data} copyText={copyText} />
-            }
         >
             <MessageBody item={item} />
+            <TicketMessageActions message={item.data} />
         </SocialMessageBubble>
     )
 }

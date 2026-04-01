@@ -9,13 +9,13 @@ import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
 import { InstagramCommentMessageWrapper } from '../InstagramCommentMessage/InstagramCommentMessageWrapper'
 import { InstagramDirectMessage } from '../InstagramDirectMessage/InstagramDirectMessage'
-import { InstagramMediaMessageWrapper } from '../InstagramMediaMessage/InstagramMediaMessageWrapper'
+import { InstagramMediaMessage } from '../InstagramMediaMessage/InstagramMediaMessage'
 import { InstagramStoryMentionMessage } from '../InstagramStoryMessage/InstagramStoryMentionMessage'
 import { InstagramStoryReplyMessage } from '../InstagramStoryMessage/InstagramStoryReplyMessage'
 import { TicketInternalNote } from '../TicketInternalNote/TicketInternalNote'
 import { TicketMessage } from '../TicketMessage/TicketMessage'
 import { UnimplementedMessage } from '../UnimplementedMessage/UnimplementedMessage'
-import { WhatsAppMessageWrapper } from '../WhatsAppMessage/WhatsAppMessageWrapper'
+import { WhatsAppMessage } from '../WhatsAppMessage/WhatsAppMessage'
 import { AiAgentTicketThreadDraftMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadDraftMessage'
 import { AiAgentTicketThreadInternalNote } from './AiAgentTicketThreadMessages/AiAgentTicketThreadInternalNote'
 import { AiAgentTicketThreadMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadMessage'
@@ -74,7 +74,7 @@ export function TicketThreadMessageItem({
             case TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage:
                 return <InstagramDirectMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramMedia:
-                return <InstagramMediaMessageWrapper item={item} />
+                return <InstagramMediaMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention:
                 return <InstagramStoryMentionMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply:
@@ -84,7 +84,7 @@ export function TicketThreadMessageItem({
             case TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage:
                 return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage:
-                return <WhatsAppMessageWrapper item={item} />
+                return <WhatsAppMessage item={item} />
             case TicketThreadItemTag.Messages.GroupedMessages:
                 return <Box padding="md">{JSON.stringify(item.data)}</Box>
             default:

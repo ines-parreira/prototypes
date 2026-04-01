@@ -1,14 +1,7 @@
-import {
-    ButtonGroup,
-    ButtonGroupItem,
-    Tooltip,
-    TooltipContent,
-} from '@gorgias/axiom'
-
 import { isSocialMediaHiddenComment } from '../../hooks/messages/predicates'
 import type { TicketThreadSocialMediaInstagramCommentItem } from '../../hooks/messages/types'
 import { useTicketThreadLegacyBridge } from '../../utils/LegacyBridge/useTicketThreadLegacyBridge'
-import { CopyButton } from '../CopyButton/CopyButton'
+import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 import { InstagramCommentMessage } from './InstagramCommentMessage'
 import { InstagramCommentMessageActions } from './InstagramCommentMessageActions'
 
@@ -21,9 +14,7 @@ export function InstagramCommentMessageWrapper({
 }: InstagramCommentMessageWrapperProps) {
     const { onInstagramCommentPrivateReply, onInstagramCommentHideComment } =
         useTicketThreadLegacyBridge()
-    const fromAgent = item.data.from_agent ?? false
     const isHidden = isSocialMediaHiddenComment(item.data)
-    const copyText = item.data.stripped_text || item.data.body_text || ''
     const commentBody = item.data.body_text || ''
 
     const handleHideComment = () => {
@@ -50,33 +41,21 @@ export function InstagramCommentMessageWrapper({
         })
     }
 
-    const actions = fromAgent ? (
-        <ButtonGroup selectedKey="" onSelectionChange={() => {}}>
-            <Tooltip
-                trigger={
-                    <ButtonGroupItem
-                        id="copy"
-                        icon={<CopyButton text={copyText} />}
-                    />
-                }
-            >
-                <TooltipContent title="Copy message" />
-            </Tooltip>
-        </ButtonGroup>
-    ) : (
-        <InstagramCommentMessageActions
-            message={item.data}
-            copyText={copyText}
-            isHidden={isHidden}
-            onPrivateReply={handlePrivateReply}
-            onHideComment={handleHideComment}
-        />
-    )
-
     return (
         <InstagramCommentMessage
             item={item}
-            actions={actions}
+            actions={
+                item.data.from_agent ? (
+                    <TicketMessageActions message={item.data} />
+                ) : (
+                    <InstagramCommentMessageActions
+                        message={item.data}
+                        isHidden={isHidden}
+                        onPrivateReply={handlePrivateReply}
+                        onHideComment={handleHideComment}
+                    />
+                )
+            }
             onUnhide={isHidden ? handleHideComment : undefined}
         />
     )

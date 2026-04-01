@@ -49,7 +49,6 @@ export type SocialMessageBubbleProps = {
     channelTo?: string | null
     children: ReactNode
     className?: string
-    actions?: ReactNode
 }
 
 export function SocialMessageBubble({
@@ -61,18 +60,13 @@ export function SocialMessageBubble({
     channelTo,
     children,
     className,
-    actions,
 }: SocialMessageBubbleProps) {
     const resolvedChannelIcon = channelIcon ?? getSocialChannelIcon(item._tag)
     const resolvedChannelName = channelName ?? item.data.channel
     const variant = item.data.from_agent ? 'from-agent' : 'regular'
 
     return (
-        <MessageBubble
-            variant={variant}
-            className={className}
-            actions={actions}
-        >
+        <MessageBubble variant={variant} className={className}>
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
                     <MessageAvatar sender={item.data.sender} />
