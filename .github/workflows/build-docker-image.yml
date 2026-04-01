@@ -49,12 +49,11 @@ jobs:
   build-docker-image:
     name: Build docker image
     needs: build-docker-assets
-    uses: gorgias/reusable-actions/.github/workflows/image-build.yml@main
+    uses: gorgias/reusable-actions/.github/workflows/image-build-multiarch.yml@main
     with:
       image-names: us-east1-docker.pkg.dev/gorgias-helpdesk-staging/container-images/web-app
       docker-file-path: deployment/docker/Dockerfile
       build-args: RELEASE=${{ github.sha }}
-      additional-platforms: 'linux/arm64'
       artifact: docker-build
       artifact-download-path: apps/helpdesk/build
     secrets: inherit
