@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import { useState as mockUseState } from 'react'
 
+import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import { SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
@@ -203,6 +204,12 @@ jest.mock('@repo/tickets/feature-flags', () => ({
 }))
 const useHelpdeskV2MS1FlagMock = assumeMock(useHelpdeskV2MS1Flag)
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useHelpdeskV2MS2Flag: jest.fn(),
+}))
+const useHelpdeskV2MS2FlagMock = assumeMock(useHelpdeskV2MS2Flag)
+
 jest.mock('utils', () => ({
     ...jest.requireActual('utils'),
     isCurrentlyOnCustomerPage: jest.fn(() => false),
@@ -261,6 +268,7 @@ const customerId = 7
 describe('<Infobar/>', () => {
     beforeEach(() => {
         useHelpdeskV2MS1FlagMock.mockReturnValue(false)
+        useHelpdeskV2MS2FlagMock.mockReturnValue(false)
         useSearchRankScenarioMock.mockImplementation(() => mockSearchRank)
         dateNowSpy = jest
             .spyOn(Date, 'now')
@@ -1020,6 +1028,49 @@ describe('<Infobar/>', () => {
             await waitFor(() => {
                 expect(queryByText('ToggleMerge')).not.toBeInTheDocument()
             })
+        })
+    })
+
+    describe('V2 MS2 flag - legacy infobar content', () => {
+        it('should render legacy infobar content when MS2 flag is off', () => {
+            useHelpdeskV2MS2FlagMock.mockReturnValue(false)
+            isCurrentlyOnCustomerPageMock.mockReturnValue(false)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+            )
+
+            expect(screen.getByText('InfobarCustomerInfo')).toBeInTheDocument()
+        })
+
+        it('should not render legacy infobar content when MS2 flag is on and not on customer page', () => {
+            useHelpdeskV2MS2FlagMock.mockReturnValue(true)
+            isCurrentlyOnCustomerPageMock.mockReturnValue(false)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByText('InfobarCustomerInfo'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render legacy infobar content when MS2 flag is on and on customer page', () => {
+            useHelpdeskV2MS2FlagMock.mockReturnValue(true)
+            isCurrentlyOnCustomerPageMock.mockReturnValue(true)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+            )
+
+            expect(screen.getByText('InfobarCustomerInfo')).toBeInTheDocument()
         })
     })
 

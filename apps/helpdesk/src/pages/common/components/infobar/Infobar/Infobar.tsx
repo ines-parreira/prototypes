@@ -386,7 +386,8 @@ export const Infobar = ({
                         )}
                     </div>
                 )}
-                {!hasUIVisionMilestone2 && (
+                {(!hasUIVisionMilestone2 ||
+                    isCurrentlyOnCustomerPage(defaultCustomerId)) && (
                     <div className={css.content}>
                         {mode === 'loading' ? (
                             <Loader />
