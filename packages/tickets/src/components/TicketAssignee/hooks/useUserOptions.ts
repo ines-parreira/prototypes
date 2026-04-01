@@ -129,7 +129,11 @@ export function useUserOptions({ currentAssignee }: UseUserOptionsParams) {
     }, [userSections])
 
     const selectedOption = useMemo(() => {
-        if (!currentAssignee) {
+        if (currentAssignee === undefined) {
+            return undefined
+        }
+
+        if (currentAssignee === null) {
             return NO_USER_OPTION
         }
         return userOptions.find((option) => option.id === currentAssignee.id)

@@ -25,7 +25,7 @@ export type UserSelectTriggerProps = {
 }
 
 export type UserSelectBaseProps = {
-    value: TicketUser | null
+    value?: TicketUser | null
     onChange: (user: User | null) => void | Promise<void>
     isDisabled?: boolean
     isOpen: boolean

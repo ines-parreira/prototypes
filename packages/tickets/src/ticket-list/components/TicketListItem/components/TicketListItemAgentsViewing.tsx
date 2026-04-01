@@ -39,12 +39,20 @@ export function TicketListItemAgentsViewing({ agents }: Props) {
             >
                 <TooltipContent>
                     {agents.length === 1 ? (
-                        `${agents[0].name ?? agents[0].email} is viewing`
+                        <Text variant="bold" size="sm">
+                            {agents[0].name ?? agents[0].email} is viewing
+                        </Text>
                     ) : (
                         <Box flexDirection="column" gap="xxxs">
-                            <Text size="sm">Multiple agents are viewing</Text>
+                            <Text variant="bold" size="sm">
+                                Multiple agents are viewing
+                            </Text>
                             {agents.map((agent) => (
-                                <Text key={agent.id} size="sm">
+                                <Text
+                                    key={agent.id}
+                                    variant="regular"
+                                    size="sm"
+                                >
                                     {agent.name ?? agent.email}
                                 </Text>
                             ))}

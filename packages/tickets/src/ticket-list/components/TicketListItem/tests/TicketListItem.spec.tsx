@@ -70,4 +70,28 @@ describe('TicketListItem', () => {
 
         expect(screen.getByRole('status')).toHaveTextContent('/')
     })
+
+    it('shows the translate icon when translated subject or excerpt is available', () => {
+        render(
+            <TicketListItem
+                {...defaultProps}
+                showTranslatedContent
+                translation={{ subject: 'Sujet traduit' } as never}
+            />,
+        )
+
+        expect(screen.getByLabelText('translate')).toBeInTheDocument()
+    })
+
+    it('does not show the translate icon when translated content is enabled without translated fields', () => {
+        render(
+            <TicketListItem
+                {...defaultProps}
+                showTranslatedContent
+                translation={{ subject: '   ', excerpt: '' } as never}
+            />,
+        )
+
+        expect(screen.queryByLabelText('translate')).not.toBeInTheDocument()
+    })
 })

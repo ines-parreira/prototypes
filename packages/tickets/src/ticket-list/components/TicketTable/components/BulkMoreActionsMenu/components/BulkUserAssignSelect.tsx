@@ -1,4 +1,10 @@
-import { Icon, StatusButton, Text } from '@gorgias/axiom'
+import {
+    Icon,
+    ListHeader,
+    ListHeaderItem,
+    StatusButton,
+    Text,
+} from '@gorgias/axiom'
 import type { User } from '@gorgias/helpdesk-queries'
 
 import { SELECT_WIDTH } from '../../../../../../components/TicketAssignee/components/constant'
@@ -21,7 +27,7 @@ export function BulkUserAssignSelect({
 }: BulkUserAssignSelectProps) {
     return (
         <UserSelectBase
-            value={null}
+            value={undefined}
             onChange={onChange}
             isDisabled={isDisabled}
             isOpen={isOpen}
@@ -29,6 +35,17 @@ export function BulkUserAssignSelect({
             aria-label="Assign agent"
             minWidth={SELECT_WIDTH}
             maxWidth={SELECT_WIDTH}
+            header={({ onClear, search }) =>
+                !search && (
+                    <ListHeader>
+                        <ListHeaderItem
+                            label="Unassigned"
+                            leadingSlot={<Icon name="user" size="sm" />}
+                            onClick={onClear}
+                        />
+                    </ListHeader>
+                )
+            }
             renderTrigger={({ ref, isOpen: open }) => (
                 <StatusButton
                     ref={ref}

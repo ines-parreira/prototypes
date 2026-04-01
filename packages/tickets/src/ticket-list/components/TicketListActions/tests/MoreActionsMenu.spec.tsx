@@ -102,7 +102,11 @@ const server = setupServer()
 const mockUseTeamOptions = vi.mocked(useTeamOptions)
 const mockUseListTagsSearch = vi.mocked(useListTagsSearch)
 const mockUseCreateTicketTag = vi.mocked(useCreateTicketTag)
-const supportTeam = mockTeam({ id: 1, name: 'Support' })
+const supportTeam = mockTeam({
+    id: 1,
+    name: 'Support',
+    decoration: { emoji: ':wave:' },
+})
 const salesTeam = mockTeam({ id: 2, name: 'Sales' })
 const vipTag = mockTag({ id: 99, name: 'VIP', decoration: null })
 const supportTeamId = 1
@@ -635,6 +639,22 @@ describe('MoreActionsMenu', () => {
             await user.click(screen.getByRole('menuitem', { name: /support/i }))
 
             expect(onAssignTeam).toHaveBeenCalledWith(supportTeam)
+        })
+
+        it('shows team emoji in the assign team submenu when available', async () => {
+            const { user } = render(<MoreActionsMenu {...defaultProps} />)
+            await openMenu(user)
+            await user.click(
+                screen.getByRole('menuitem', { name: /assign to team/i }),
+            )
+
+            const supportOption = screen.getByRole('menuitem', {
+                name: /support/i,
+            })
+
+            expect(
+                supportOption.querySelector('.emoji-mart-emoji'),
+            ).toBeInTheDocument()
         })
 
         it('calls onChangePriority with the correct value when a priority item is activated', async () => {

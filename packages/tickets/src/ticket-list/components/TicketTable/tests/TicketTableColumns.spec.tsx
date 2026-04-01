@@ -291,9 +291,9 @@ describe('createTicketTableColumns', () => {
                 mockTicketCompact({ tags: [] }),
             )
 
-            expect(container.querySelector('tbody')?.textContent?.trim()).toBe(
-                '',
-            )
+            expect(
+                container.querySelectorAll('[data-name="tag"]'),
+            ).toHaveLength(0)
         })
 
         it('renders tag names', () => {

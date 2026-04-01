@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { Emoji } from 'emoji-mart'
+
 import {
     Button,
+    Icon,
     Intent,
     Menu,
     MenuItem,
@@ -167,6 +170,20 @@ export function MoreActionsMenu({
                         key={option.id}
                         id={`assign-team-${option.id}`}
                         label={renderOverflowLabel(option.label)}
+                        leadingSlot={
+                            option.id !== NO_TEAM_OPTION.id &&
+                            teamsMap.get(option.id)?.decoration?.emoji ? (
+                                <Emoji
+                                    emoji={
+                                        teamsMap.get(option.id)?.decoration
+                                            ?.emoji ?? ''
+                                    }
+                                    size={16}
+                                />
+                            ) : (
+                                <Icon name="user" size="sm" />
+                            )
+                        }
                         onAction={() => handleAssignTeam(option.id)}
                     />
                 ))}

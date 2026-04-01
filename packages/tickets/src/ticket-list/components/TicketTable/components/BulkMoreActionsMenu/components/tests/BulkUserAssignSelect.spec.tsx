@@ -79,6 +79,32 @@ const renderBulkUserAssignSelect = ({
     )
 
 describe('BulkUserAssignSelect', () => {
+    it('shows Unassigned as an available option without selecting it by default', async () => {
+        renderBulkUserAssignSelect({ isOpen: true })
+
+        await waitUntilLoaded()
+
+        const unassignedOption = screen.getByRole('button', {
+            name: /unassigned/i,
+        })
+
+        expect(unassignedOption).toBeInTheDocument()
+    })
+
+    it('calls onChange with null when selecting Unassigned', async () => {
+        const onChange = vi.fn()
+        const { user } = renderBulkUserAssignSelect({
+            onChange,
+            isOpen: true,
+        })
+
+        await waitUntilLoaded()
+
+        await user.click(screen.getByRole('button', { name: /unassigned/i }))
+
+        expect(onChange).toHaveBeenCalledWith(null)
+    })
+
     it('calls onChange with the selected user', async () => {
         const onChange = vi.fn()
         const { user } = renderBulkUserAssignSelect({

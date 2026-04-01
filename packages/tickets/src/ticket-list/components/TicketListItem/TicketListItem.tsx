@@ -55,6 +55,9 @@ export const TicketListItem = memo(function TicketListItem({
             showTranslatedContent,
             translation,
         })
+    const hasTranslatedContent =
+        !!showTranslatedContent &&
+        (!!translation?.subject?.trim() || !!translation?.excerpt?.trim())
 
     const shiftKeyRef = useRef(false)
 
@@ -100,8 +103,20 @@ export const TicketListItem = memo(function TicketListItem({
                 }
                 subtitle={
                     ticket.is_unread ? (
-                        <Box flexDirection="row" alignItems="center" gap="xxs">
-                            <Dot color="red" />
+                        <Box flexDirection="row" alignItems="center">
+                            <Box mr="xxs">
+                                <Dot color="red" />
+                            </Box>
+                            {hasTranslatedContent && (
+                                <Box mr="xxxs">
+                                    <Icon
+                                        aria-label="translate"
+                                        name="translate"
+                                        size="sm"
+                                        color="content-neutral-secondary"
+                                    />
+                                </Box>
+                            )}
                             <Text
                                 overflow="ellipsis"
                                 variant="bold"
@@ -112,14 +127,26 @@ export const TicketListItem = memo(function TicketListItem({
                             </Text>
                         </Box>
                     ) : (
-                        <Text
-                            overflow="ellipsis"
-                            variant="bold"
-                            size="sm"
-                            color="content-neutral-secondary"
-                        >
-                            {displaySubject}
-                        </Text>
+                        <Box flexDirection="row" alignItems="center">
+                            {hasTranslatedContent && (
+                                <Box mr="xxxs">
+                                    <Icon
+                                        aria-label="translate"
+                                        name="translate"
+                                        size="sm"
+                                        color="content-neutral-secondary"
+                                    />
+                                </Box>
+                            )}
+                            <Text
+                                overflow="ellipsis"
+                                variant="bold"
+                                size="sm"
+                                color="content-neutral-secondary"
+                            >
+                                {displaySubject}
+                            </Text>
+                        </Box>
                     )
                 }
             >

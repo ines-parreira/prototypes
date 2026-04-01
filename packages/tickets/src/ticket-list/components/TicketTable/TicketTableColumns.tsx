@@ -1,6 +1,11 @@
 import type { UserDateTimePreferences } from '@repo/preferences'
 
-import { createColumnHelper, DataTableBaseCell, Tag } from '@gorgias/axiom'
+import {
+    createColumnHelper,
+    DataTableBaseCell,
+    DataTableOverflowListCell,
+    Tag,
+} from '@gorgias/axiom'
 import type { DataTableColumnDef } from '@gorgias/axiom'
 import type {
     Language,
@@ -14,7 +19,6 @@ import { DateTimeCell } from './components/DateTimeCell'
 import { PriorityCell } from './components/PriorityCell'
 import { SingleLineTextCell } from './components/SingleLineTextCell'
 import { SubjectOnlyCell } from './components/SubjectOnlyCell'
-import { TagsCell } from './components/TagsCell'
 import { TicketCell } from './components/TicketCell'
 
 const STATUS_TAG_COLOR = {
@@ -150,7 +154,17 @@ export function createTicketTableColumns({
             enableSorting: false,
             size: 280,
             minSize: 240,
-            cell: (cell) => <TagsCell ticket={cell.row.original} />,
+            cell: (cell) => (
+                <DataTableOverflowListCell<
+                    TicketCompact,
+                    TicketCompact['tags'][number]
+                >
+                    {...cell}
+                    items={cell.row.original.tags}
+                >
+                    {(tag) => <Tag>{tag.name}</Tag>}
+                </DataTableOverflowListCell>
+            ),
         }),
         columnHelper.accessor((ticket) => ticket.priority ?? 'normal', {
             id: 'priority',
