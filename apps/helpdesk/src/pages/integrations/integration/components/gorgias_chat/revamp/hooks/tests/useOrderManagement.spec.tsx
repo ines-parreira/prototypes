@@ -274,7 +274,7 @@ describe('useOrderManagement', () => {
             expect.objectContaining({
                 orderManagement: { enabled: true },
             }),
-            'Order Management enabled',
+            'Order management enabled',
         )
     })
 
@@ -294,7 +294,7 @@ describe('useOrderManagement', () => {
             expect.objectContaining({
                 orderManagement: { enabled: false },
             }),
-            'Order Management disabled',
+            'Order management disabled',
         )
     })
 

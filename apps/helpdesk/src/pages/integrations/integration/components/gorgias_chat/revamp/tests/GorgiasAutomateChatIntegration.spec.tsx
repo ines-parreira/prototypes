@@ -103,7 +103,7 @@ jest.mock('../components/OrderManagementCard/OrderManagementCard', () => ({
         <div data-testid="order-management-card">
             <button
                 onClick={() => onChange(!isEnabled)}
-                aria-label={`Order Management: ${isEnabled ? 'on' : 'off'}`}
+                aria-label={`Order management: ${isEnabled ? 'on' : 'off'}`}
             >
                 Toggle
             </button>
@@ -316,7 +316,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
             await user.click(
                 screen.getByRole('button', {
-                    name: 'Order Management: off',
+                    name: 'Order management: off',
                 }),
             )
 
@@ -346,7 +346,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
             await user.click(
                 screen.getByRole('button', {
-                    name: 'Order Management: off',
+                    name: 'Order management: off',
                 }),
             )
 
@@ -376,7 +376,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
             await user.click(
                 screen.getByRole('button', {
-                    name: 'Order Management: off',
+                    name: 'Order management: off',
                 }),
             )
             await user.click(screen.getByRole('button', { name: 'Save' }))
@@ -416,7 +416,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
             await user.click(
                 screen.getByRole('button', {
-                    name: 'Order Management: off',
+                    name: 'Order management: off',
                 }),
             )
             await user.click(
@@ -444,17 +444,17 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
             render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
 
             expect(
-                screen.getByRole('button', { name: 'Order Management: off' }),
+                screen.getByRole('button', { name: 'Order management: off' }),
             ).toBeInTheDocument()
 
             await user.click(
                 screen.getByRole('button', {
-                    name: 'Order Management: off',
+                    name: 'Order management: off',
                 }),
             )
 
             expect(
-                screen.getByRole('button', { name: 'Order Management: on' }),
+                screen.getByRole('button', { name: 'Order management: on' }),
             ).toBeInTheDocument()
         })
 
@@ -512,7 +512,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
             await user.click(
                 screen.getByRole('button', {
-                    name: 'Order Management: off',
+                    name: 'Order management: off',
                 }),
             )
             await user.click(screen.getByRole('button', { name: 'Save' }))
@@ -532,7 +532,7 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
 
             await user.click(
                 screen.getByRole('button', {
-                    name: 'Order Management: off',
+                    name: 'Order management: off',
                 }),
             )
             await user.click(screen.getByRole('button', { name: 'Save' }))

@@ -61,7 +61,7 @@ export function useOrderManagement({ integration }: UseOrderManagementParams) {
                 ...applicationAutomationSettings,
                 orderManagement: { enabled: value },
             },
-            `Order Management ${value ? 'enabled' : 'disabled'}`,
+            `Order management ${value ? 'enabled' : 'disabled'}`,
         )
     }
 

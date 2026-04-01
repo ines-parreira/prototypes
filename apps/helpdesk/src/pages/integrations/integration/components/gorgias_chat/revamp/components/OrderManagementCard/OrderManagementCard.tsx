@@ -41,7 +41,7 @@ export function OrderManagementCard({
         <Card elevation={Elevation.Mid} p="md" className={css.card} gap="md">
             <Box flexDirection="column" gap="xs">
                 <Box justifyContent="space-between" alignItems="center">
-                    <Heading size="md">Order Management</Heading>
+                    <Heading size="md">Order management</Heading>
                     <Box alignItems="center" gap="xs">
                         {showStoreRequired && (
                             <Tag color="blue" size="md">
@@ -70,7 +70,7 @@ export function OrderManagementCard({
                     size="md"
                     onClick={() => history.push(orderManagementUrl)}
                 >
-                    Edit Order Management
+                    Edit order management
                 </Button>
             </div>
         </Card>
