@@ -44,6 +44,7 @@ const defaultProps: AgentAvatarProps = {
 // Mock return value constants
 const MOCK_PHONE_STATUS_NONE = {
     agentPhoneUnavailabilityStatus: undefined,
+    isOnActiveCall: false,
     data: undefined,
     isLoading: false,
     isError: false,
@@ -53,11 +54,13 @@ const MOCK_PHONE_STATUS_NONE = {
 const MOCK_PHONE_STATUS_ON_CALL = {
     ...MOCK_PHONE_STATUS_NONE,
     agentPhoneUnavailabilityStatus: ON_A_CALL_STATUS,
+    isOnActiveCall: true,
 } as const
 
 const MOCK_PHONE_STATUS_WRAP_UP = {
     ...MOCK_PHONE_STATUS_NONE,
     agentPhoneUnavailabilityStatus: CALL_WRAP_UP_STATUS,
+    isOnActiveCall: false,
 } as const
 
 const MOCK_AVAILABILITY_NONE = {

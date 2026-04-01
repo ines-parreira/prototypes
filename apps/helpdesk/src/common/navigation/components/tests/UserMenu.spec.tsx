@@ -87,6 +87,7 @@ jest.mock('@repo/agent-status', () => ({
     })),
     useAgentPhoneStatus: jest.fn(() => ({
         agentPhoneUnavailabilityStatus: undefined,
+        isOnActiveCall: false,
         isLoading: false,
     })),
     useCustomAgentUnavailableStatusesFlag: jest.fn(),
@@ -138,6 +139,7 @@ describe('UserMenu', () => {
         )
         useAgentPhoneStatusMock.mockReturnValue({
             agentPhoneUnavailabilityStatus: undefined,
+            isOnActiveCall: false,
             isLoading: false,
         })
     })
@@ -467,6 +469,7 @@ describe('UserMenu', () => {
                 id: 'on-a-call',
                 name: 'On a call',
             },
+            isOnActiveCall: true,
             isLoading: false,
         })
 
@@ -482,7 +485,7 @@ describe('UserMenu', () => {
         ).toBeInTheDocument()
     })
 
-    it('should hide chevron icon when status button is disabled due to phone status', () => {
+    it('should enable status button during wrap-up so agents can go off-queue', () => {
         useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
         useUserAvailabilityStatusMock.mockReturnValue({
             status: undefined,
@@ -493,22 +496,43 @@ describe('UserMenu', () => {
                 id: 'call-wrap-up',
                 name: 'Call wrap-up',
             },
+            isOnActiveCall: false,
             isLoading: false,
         })
 
-        render(<UserMenu onClose={onClose} />, {
-            wrapper,
+        render(<UserMenu onClose={onClose} />, { wrapper })
+
+        const statusButton = screen.getByRole('button', {
+            name: /change status.*current status: none/i,
         })
+        expect(statusButton).not.toBeDisabled()
+        expect(
+            screen.getByText(ignoreHTML('Status:Call wrap-up')),
+        ).toBeInTheDocument()
+    })
+
+    it('should hide chevron icon when status button is disabled during an active call', () => {
+        useCustomAgentUnavailableStatusesFlagMock.mockReturnValue(true)
+        useUserAvailabilityStatusMock.mockReturnValue({
+            status: undefined,
+            isLoading: false,
+        })
+        useAgentPhoneStatusMock.mockReturnValue({
+            agentPhoneUnavailabilityStatus: {
+                id: 'on-a-call',
+                name: 'On a call',
+            },
+            isOnActiveCall: true,
+            isLoading: false,
+        })
+
+        render(<UserMenu onClose={onClose} />, { wrapper })
 
         const statusButton = screen.getByRole('button', {
             name: /change status.*current status: none/i,
         })
         expect(statusButton).toBeDisabled()
-        expect(
-            screen.getByText(ignoreHTML('Status:Call wrap-up')),
-        ).toBeInTheDocument()
 
-        // Verify chevron icon is not rendered within the status button
         const buttonContent = statusButton.querySelector('.material-icons')
         expect(buttonContent?.textContent).not.toBe('chevron_right')
     })

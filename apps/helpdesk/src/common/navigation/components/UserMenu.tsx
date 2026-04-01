@@ -65,9 +65,10 @@ export default function UserMenu({ onClose }: Props) {
         userId: currentUserId,
     })
 
-    const { agentPhoneUnavailabilityStatus } = useAgentPhoneStatus({
-        userId: currentUserId,
-    })
+    const { agentPhoneUnavailabilityStatus, isOnActiveCall } =
+        useAgentPhoneStatus({
+            userId: currentUserId,
+        })
 
     const statusText = useMemo(() => {
         if (agentPhoneUnavailabilityStatus) {
@@ -77,8 +78,8 @@ export default function UserMenu({ onClose }: Props) {
     }, [agentPhoneUnavailabilityStatus, status])
 
     const canChangeStatus = useMemo(() => {
-        return isAgentUnavailabilityEnabled && !agentPhoneUnavailabilityStatus
-    }, [isAgentUnavailabilityEnabled, agentPhoneUnavailabilityStatus])
+        return isAgentUnavailabilityEnabled && !isOnActiveCall
+    }, [isAgentUnavailabilityEnabled, isOnActiveCall])
 
     const selectedTheme = THEME_CONFIGS.find(({ name }) => name === theme.name)!
 

@@ -279,4 +279,84 @@ describe('useAgentPhoneStatus', () => {
             ).toBeUndefined()
         })
     })
+
+    describe('isOnActiveCall', () => {
+        beforeEach(async () => {
+            const actual = await vi.importActual<typeof helpdeskQueries>(
+                '@gorgias/helpdesk-queries',
+            )
+            vi.mocked(helpdeskQueries.useGetUserPhoneStatus).mockImplementation(
+                actual.useGetUserPhoneStatus,
+            )
+        })
+
+        it('is true when phone_status is "on-call"', async () => {
+            server.use(
+                mockGetUserPhoneStatusHandler(async () =>
+                    HttpResponse.json(
+                        mockUserPhoneStatus({
+                            user_id: MOCK_USER_ID,
+                            phone_status: 'on-call',
+                        }),
+                    ),
+                ).handler,
+            )
+
+            const { result } = renderHook(() =>
+                useAgentPhoneStatus({ userId: MOCK_USER_ID }),
+            )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(result.current.isOnActiveCall).toBe(true)
+        })
+
+        it('is false when phone_status is "wrapping-up"', async () => {
+            server.use(
+                mockGetUserPhoneStatusHandler(async () =>
+                    HttpResponse.json(
+                        mockUserPhoneStatus({
+                            user_id: MOCK_USER_ID,
+                            phone_status: 'wrapping-up',
+                        }),
+                    ),
+                ).handler,
+            )
+
+            const { result } = renderHook(() =>
+                useAgentPhoneStatus({ userId: MOCK_USER_ID }),
+            )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(result.current.isOnActiveCall).toBe(false)
+        })
+
+        it('is false when phone_status is "off-call"', async () => {
+            server.use(
+                mockGetUserPhoneStatusHandler(async () =>
+                    HttpResponse.json(
+                        mockUserPhoneStatus({
+                            user_id: MOCK_USER_ID,
+                            phone_status: 'off-call',
+                        }),
+                    ),
+                ).handler,
+            )
+
+            const { result } = renderHook(() =>
+                useAgentPhoneStatus({ userId: MOCK_USER_ID }),
+            )
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(result.current.isOnActiveCall).toBe(false)
+        })
+    })
 })

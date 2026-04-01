@@ -63,6 +63,7 @@ export function useAgentPhoneStatus({
     return {
         data,
         agentPhoneUnavailabilityStatus,
+        isOnActiveCall: data?.phone_status === 'on-call',
         isLoading,
         isError,
         error,
