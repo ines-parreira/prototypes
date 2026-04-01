@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import cs from 'classnames'
 
 import { Icon } from '@gorgias/axiom'
@@ -17,6 +18,10 @@ const KnowledgeSourceIcon = ({
     withLabel = false,
     badgeIconClassname,
 }: KnowledgeSourceIconProps) => {
+    const isKnowledgeIntentManagementSystemEnabled = useFlag(
+        FeatureFlagKey.KnowledgeIntentManagementSystem,
+    )
+
     if (!KNOWLEDGE_SOURCE_TYPE[type]) {
         return null
     }
@@ -25,7 +30,11 @@ const KnowledgeSourceIcon = ({
         <>
             <span className={cs(css.badge, badgeIconClassname)}>
                 <Icon
-                    name={KNOWLEDGE_SOURCE_TYPE[type].icon}
+                    name={
+                        isKnowledgeIntentManagementSystemEnabled
+                            ? KNOWLEDGE_SOURCE_TYPE[type].newIcon
+                            : KNOWLEDGE_SOURCE_TYPE[type].icon
+                    }
                     size={KNOWLEDGE_SOURCE_TYPE[type].size ?? 'xs'}
                 />
             </span>

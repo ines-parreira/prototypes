@@ -59,17 +59,40 @@ export const SIMPLIFIED_RESOURCE_LABELS: Record<string, string> = {
 
 export const KNOWLEDGE_SOURCE_TYPE: Record<
     string,
-    { icon: IconName; label: string; size?: IconSize }
+    { icon: IconName; newIcon: IconName; label: string; size?: IconSize }
 > = {
-    action: { icon: 'webhook', label: 'Action' },
-    guidance: { icon: 'nav-map', label: 'Guidance' },
-    article: { icon: 'file-document', label: 'Help Center article' },
-    website: { icon: 'nav-globe', label: 'Store website' },
-    macro: { icon: 'zap', label: 'Macro' },
-    link: { icon: 'link-horizontal', label: 'URL' },
-    external_snippet: { icon: 'paperclip-attachment', label: 'Document' },
-    order: { icon: 'app-shopify', label: 'Order', size: 'sm' },
-    product: { icon: 'app-shopify', label: 'Product', size: 'sm' },
+    action: { icon: 'webhook', newIcon: 'webhook', label: 'Action' },
+    skill: { icon: 'article', newIcon: 'article', label: 'Skill' },
+    guidance: { icon: 'nav-map', newIcon: 'nav-map', label: 'Guidance' },
+    article: {
+        icon: 'file-document',
+        newIcon: 'bookmark',
+        label: 'Help Center article',
+    },
+    website: {
+        icon: 'nav-globe',
+        newIcon: 'nav-globe',
+        label: 'Store website',
+    },
+    macro: { icon: 'zap', newIcon: 'zap', label: 'Macro' },
+    link: { icon: 'link-horizontal', newIcon: 'link-horizontal', label: 'URL' },
+    external_snippet: {
+        icon: 'paperclip-attachment',
+        newIcon: 'paperclip-attachment',
+        label: 'Document',
+    },
+    order: {
+        icon: 'app-shopify',
+        newIcon: 'app-shopify',
+        label: 'Order',
+        size: 'sm',
+    },
+    product: {
+        icon: 'app-shopify',
+        newIcon: 'app-shopify',
+        label: 'Product',
+        size: 'sm',
+    },
 }
 
 export type KnowledgeSourceType = keyof typeof KNOWLEDGE_SOURCE_TYPE
