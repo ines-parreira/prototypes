@@ -61,6 +61,7 @@ import AssigneeUserSelect from './widget/AssigneeUserSelect'
 import { CustomDropdownInput } from './widget/CustomDropdownInput'
 import CustomFieldIdInput from './widget/CustomFieldIdInput'
 import CustomFieldSelect from './widget/CustomFieldSelect'
+import DistributeToTeamsWidget from './widget/DistributeToTeamsWidget'
 import IntegrationSelect from './widget/IntegrationSelect'
 import { IntentsSentimentsSelect } from './widget/IntentsSentimentsSelect'
 import MacroSelect from './widget/MacroSelect'
@@ -785,6 +786,14 @@ const Widget = ({
                     className={className}
                     onChange={handleChange}
                     allowUnassign={!operatorName}
+                />
+            )
+        case 'teams-select':
+            return (
+                <DistributeToTeamsWidget
+                    value={widget.value}
+                    className={className}
+                    onChange={handleChange}
                 />
             )
         case 'integration-select':

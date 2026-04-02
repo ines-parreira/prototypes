@@ -105,6 +105,13 @@ const SET_PRIORITY_ACTION_DEFAULT = {
     priority: 'normal',
 }
 
+const DISTRIBUTE_TO_TEAMS_DEFAULT = {
+    teams: JSON.stringify([
+        { team_id: '', percentage: 50 },
+        { team_id: '', percentage: 50 },
+    ]),
+}
+
 export const ACTION_DEFAULT_STATE = {
     applyMacro: APPLY_MACRO_ACTION_DEFAULT,
     sendEmail: SEND_EMAIL_ACTION_DEFAULT,
@@ -122,6 +129,7 @@ export const ACTION_DEFAULT_STATE = {
     setCustomFieldValue: SET_CUSTOM_FIELD_VALUE_ACTION_DEFAULT,
     setCustomerCustomFieldValue: SET_CUSTOMER_CUSTOM_FIELD_VALUE_ACTION_DEFAULT,
     setPriority: SET_PRIORITY_ACTION_DEFAULT,
+    distributeToTeams: DISTRIBUTE_TO_TEAMS_DEFAULT,
 }
 
 export const DEFAULT_STATEMENT = {

@@ -129,6 +129,7 @@ export enum FeatureFlagKey {
     DefaultEmailAddress = 'default-email-address',
     DesktopNotifications = 'linear.project_desktop-notifications.enabled',
     DisableAutoRenewalCancellationForEnterpriseGMV = 'linear.project_quick-win-fix-gmv-enterprise-self-downgradecancellation.disable_cancellations',
+    DistributeToTeamsRuleAction = 'distribute_to_teams_rule_action',
     DontTriggerLoginsOnInactiveTabs = 'dont-trigger-logins-on-inactive-tabs',
     EnableConsolidatedCancellationModal = 'linear.CRMGROW-1944.enable-consolidated-cancellation-modal',
     EnableConsolidatedCancellationModalPhone = 'linear.CRMGROW-2747.enable-consolidated-cancellation-modal-phone',

@@ -94,6 +94,40 @@ export function validateAssignTeam(values: { assignee_team?: string | null }) {
     }
 }
 
+export function validateDistributeToTeams(values: {
+    teams?: string | Array<{ team_id?: string | number; percentage?: number }>
+}) {
+    let teams: Array<{ team_id?: string | number; percentage?: number }>
+    if (typeof values.teams === 'string') {
+        try {
+            teams = JSON.parse(values.teams)
+        } catch {
+            return 'Invalid teams configuration'
+        }
+    } else {
+        teams = values.teams || []
+    }
+    if (!teams || teams.length < 2) {
+        return 'At least two teams must be configured'
+    }
+    for (const entry of teams) {
+        if (!entry.team_id && entry.team_id !== 0) {
+            return 'All teams must be selected'
+        }
+        if (!entry.percentage || entry.percentage <= 0) {
+            return 'All percentages must be greater than 0'
+        }
+    }
+    const teamIds = teams.map((t) => t.team_id)
+    if (new Set(teamIds).size !== teamIds.length) {
+        return 'Duplicate team in distribution'
+    }
+    const total = teams.reduce((sum, t) => sum + (t.percentage || 0), 0)
+    if (total !== 100) {
+        return `Percentages must sum to 100 (currently ${total})`
+    }
+}
+
 export function validateSendEmail(values: Email) {
     const MAX_NUMBER_RECIPIENTS = 15
 
@@ -139,6 +173,7 @@ type ValidateFn =
     | typeof validateApplyMacro
     | typeof validateAssignAgent
     | typeof validateAssignTeam
+    | typeof validateDistributeToTeams
 
 export type Properties = {
     hide: boolean
@@ -362,6 +397,11 @@ export const actionsConfig: { [key in ActionType | 'notify']: ActionConfig } = {
         compact: true,
         name: 'Assign team',
         validate: validateAssignTeam,
+    },
+    distributeToTeams: {
+        compact: false,
+        name: 'Distribute to teams',
+        validate: validateDistributeToTeams,
     },
     trashTicket: {
         compact: true,

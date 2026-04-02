@@ -9,6 +9,7 @@ import {
     validateAssignAgent,
     validateAssignTeam,
     validateBody,
+    validateDistributeToTeams,
     validateEmailList,
     validateSendEmail,
     validateSetCustomerCustomFieldValue,
@@ -227,6 +228,66 @@ describe('isValidActionKey', () => {
             expect(isValidActionKey(action)).toBeTruthy()
         })
         expect(isValidActionKey('notify')).toBeTruthy()
+    })
+})
+
+describe('validateDistributeToTeams', () => {
+    it('should validate distribute to teams', () => {
+        const valid = [
+            {
+                teams: JSON.stringify([
+                    { team_id: 1, percentage: 60 },
+                    { team_id: 2, percentage: 40 },
+                ]),
+            },
+            {
+                teams: JSON.stringify([
+                    { team_id: 1, percentage: 25 },
+                    { team_id: 2, percentage: 25 },
+                    { team_id: 3, percentage: 50 },
+                ]),
+            },
+        ]
+        valid.forEach((input) => {
+            expect(validateDistributeToTeams(input)).toBeFalsy()
+        })
+    })
+
+    it('should return errors and not validate distribute to teams', () => {
+        const invalid = [
+            { teams: '[]' },
+            {
+                teams: JSON.stringify([{ team_id: 1, percentage: 100 }]),
+            },
+            {
+                teams: JSON.stringify([
+                    { team_id: '', percentage: 50 },
+                    { team_id: 1, percentage: 50 },
+                ]),
+            },
+            {
+                teams: JSON.stringify([
+                    { team_id: 1, percentage: 0 },
+                    { team_id: 2, percentage: 100 },
+                ]),
+            },
+            {
+                teams: JSON.stringify([
+                    { team_id: 1, percentage: 50 },
+                    { team_id: 1, percentage: 50 },
+                ]),
+            },
+            {
+                teams: JSON.stringify([
+                    { team_id: 1, percentage: 60 },
+                    { team_id: 2, percentage: 60 },
+                ]),
+            },
+            { teams: 'not json' },
+        ]
+        invalid.forEach((input) => {
+            expect(validateDistributeToTeams(input)).toBeTruthy()
+        })
     })
 })
 

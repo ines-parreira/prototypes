@@ -170,6 +170,7 @@ export const ACTION_TYPES = [
     'setSubject',
     'setTags',
     'setTeamAssignee',
+    'distributeToTeams',
     'trashTicket',
     'setPriority',
 ] as const
