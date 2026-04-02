@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing/vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { DomainEvent } from '@gorgias/events'
 
-import { renderHook } from '../../tests/render.utils'
 import { useUpdateUserAvailabilityInCache } from '../useUpdateUserAvailabilityInCache'
 import { useUserAvailabilityRealtimeHandler } from '../useUserAvailabilityRealtimeHandler'
 

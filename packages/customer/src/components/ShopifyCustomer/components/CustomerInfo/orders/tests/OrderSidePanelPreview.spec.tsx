@@ -1,3 +1,4 @@
+import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -8,10 +9,6 @@ import {
     mockListWidgetsHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import {
-    render,
-    testAppQueryClient,
-} from '../../../../../../tests/render.utils'
 import { OrderSidePanelPreview } from '../sidePanel/OrderSidePanelPreview'
 
 vi.mock('@repo/feature-flags', () => ({
@@ -38,7 +35,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

@@ -1,13 +1,10 @@
+import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import { mockExecuteActionHandler } from '@gorgias/helpdesk-mocks'
 
-import {
-    render,
-    testAppQueryClient,
-} from '../../../../../../tests/render.utils'
 import { OrderTags } from '../OrderTags'
 
 const server = setupServer()
@@ -18,7 +15,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

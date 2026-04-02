@@ -1,42 +1,18 @@
 import type { ReactElement } from 'react'
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import type {
-    RenderHookOptions as RenderHookOptionsPrimitive,
-    RenderOptions,
-} from '@testing-library/react'
-import {
-    renderHook as renderHookPrimitive,
-    render as rtlRender,
-} from '@testing-library/react'
+import { createTestQueryClient } from '@repo/testing/vitest'
+import { QueryClientProvider } from '@tanstack/react-query'
+import type { RenderOptions } from '@testing-library/react'
+import { render as rtlRender } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import type { Mock } from 'vitest'
 import { vi } from 'vitest'
 
-export const testAppQueryClient = new QueryClient({
-    defaultOptions: {
-        queries: {
-            retry: false,
-        },
-        mutations: {
-            retry: false,
-        },
-    },
-})
-
-/**
- * Creates a QueryClient for testing with optional spies
- */
-export function createTestQueryClient(options?: {
+export function createTestQueryClientWithSpies(options?: {
     withInvalidateQueriesSpy?: boolean
     withCancelQueriesSpy?: boolean
 }) {
-    const queryClient = new QueryClient({
-        defaultOptions: {
-            queries: { retry: false },
-            mutations: { retry: false },
-        },
-    })
+    const queryClient = createTestQueryClient()
 
     const spies = {} as {
         invalidateQueries?: ReturnType<typeof vi.spyOn>
@@ -59,20 +35,9 @@ export function createTestQueryClient(options?: {
     return { queryClient, spies }
 }
 
-/**
- * Gets the mutation configuration passed to a mocked hook
- */
 export function getMutationConfig<T = any>(mockedHook: Mock): T | undefined {
     return mockedHook.mock.calls[0]?.[0]
 }
-
-export const RenderHookWrapperComponent = ({
-    children,
-    queryClient = testAppQueryClient,
-}: {
-    children: React.ReactNode
-    queryClient?: QueryClient
-}) => <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 
 export function render(
     ui: ReactElement,
@@ -80,16 +45,13 @@ export function render(
 ) {
     return {
         user: userEvent.setup(),
-        ...rtlRender(ui, { wrapper: RenderHookWrapperComponent, ...options }),
+        ...rtlRender(ui, {
+            wrapper: ({ children }) => (
+                <QueryClientProvider client={createTestQueryClient()}>
+                    {children}
+                </QueryClientProvider>
+            ),
+            ...options,
+        }),
     }
-}
-
-export const renderHook = <TProps, TResult>(
-    hook: (props: TProps) => TResult,
-    options?: RenderHookOptionsPrimitive<TProps>,
-) => {
-    return renderHookPrimitive(hook, {
-        ...options,
-        wrapper: RenderHookWrapperComponent,
-    })
 }

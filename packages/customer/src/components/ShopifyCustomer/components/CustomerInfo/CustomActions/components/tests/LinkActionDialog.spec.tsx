@@ -1,6 +1,6 @@
+import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 
-import { render } from '../../../../../../../tests/render.utils'
 import { LinkActionDialog } from '../LinkActionDialog'
 
 describe('LinkActionDialog', () => {

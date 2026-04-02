@@ -1,6 +1,6 @@
+import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 
-import { render } from '../../../../../../tests/render.utils'
 import { SHIPPING_FIELD_DEFINITIONS } from '../../fieldDefinitions/orderShippingFields'
 import type { OrderDetailsData } from '../../types'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'

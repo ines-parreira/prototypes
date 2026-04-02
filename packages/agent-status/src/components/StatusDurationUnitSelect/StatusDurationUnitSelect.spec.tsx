@@ -1,9 +1,9 @@
+import { render } from '@repo/testing/vitest'
 import { act, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { DurationUnit } from '@gorgias/helpdesk-queries'
 
-import { render } from '../../tests/render.utils'
 import { StatusDurationUnitSelect } from './StatusDurationUnitSelect'
 
 describe('StatusDurationUnitSelect', () => {

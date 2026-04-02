@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -7,7 +8,6 @@ import {
     mockGetEcommerceDataByExternalIdHandler,
 } from '@gorgias/ecommerce-storage-mocks'
 
-import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
 import type { PurchaseSummaryData } from '../../types'
 import { useGetPurchaseSummary } from '../useGetPurchaseSummary'
 
@@ -19,7 +19,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

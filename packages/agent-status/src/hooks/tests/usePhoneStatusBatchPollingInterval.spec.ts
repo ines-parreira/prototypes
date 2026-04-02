@@ -1,7 +1,7 @@
 import type * as featureFlagsModule from '@repo/feature-flags'
 import { FeatureFlagKey } from '@repo/feature-flags'
+import { renderHook } from '@repo/testing/vitest'
 
-import { renderHook } from '../../tests/render.utils'
 import { usePhoneStatusBatchPollingInterval } from '../usePhoneStatusBatchPollingInterval'
 
 vi.mock('@repo/feature-flags', async () => {

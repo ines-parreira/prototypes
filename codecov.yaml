@@ -34,6 +34,7 @@ ignore:
   - src/tests/mockedReactFlow.ts
   - packages/*/src/tests/render.utils.tsx
   - /**/index.ts
+  - packages/testing/src/vitest/**/*
 
 coverage:
   status:

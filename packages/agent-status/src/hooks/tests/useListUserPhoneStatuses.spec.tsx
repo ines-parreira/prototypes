@@ -1,3 +1,4 @@
+import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -19,8 +20,9 @@ import {
 import type { UserPhoneStatus } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useListUserPhoneStatuses } from '../useListUserPhoneStatuses'
+
+const queryClient = createTestQueryClient()
 
 const server = setupServer()
 
@@ -29,7 +31,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
+    queryClient.clear()
 })
 
 afterEach(() => {
@@ -67,8 +69,9 @@ describe('useListUserPhoneStatuses', () => {
 
             server.use(mockListUserPhoneStatus.handler)
 
-            const { result } = renderHook(() =>
-                useListUserPhoneStatuses({ userIds }),
+            const { result } = renderHook(
+                () => useListUserPhoneStatuses({ userIds }),
+                { queryClient },
             )
 
             expect(result.current.isLoading).toBe(true)
@@ -88,7 +91,9 @@ describe('useListUserPhoneStatuses', () => {
 
             server.use(mockListUserPhoneStatus.handler)
 
-            renderHook(() => useListUserPhoneStatuses({ userIds: [] }))
+            renderHook(() => useListUserPhoneStatuses({ userIds: [] }), {
+                queryClient,
+            })
 
             expect(resolver).not.toHaveBeenCalled()
         })
@@ -100,11 +105,13 @@ describe('useListUserPhoneStatuses', () => {
 
             server.use(mockListUserPhoneStatus.handler)
 
-            renderHook(() =>
-                useListUserPhoneStatuses({
-                    userIds: [1, 2, 3],
-                    enabled: false,
-                }),
+            renderHook(
+                () =>
+                    useListUserPhoneStatuses({
+                        userIds: [1, 2, 3],
+                        enabled: false,
+                    }),
+                { queryClient },
             )
 
             expect(resolver).not.toHaveBeenCalled()
@@ -148,15 +155,17 @@ describe('useListUserPhoneStatuses', () => {
 
             server.use(mockListUserPhoneStatus.handler)
 
-            renderHook(() =>
-                useListUserPhoneStatuses({
-                    userIds: Object.keys(users).map(Number),
-                }),
+            renderHook(
+                () =>
+                    useListUserPhoneStatuses({
+                        userIds: Object.keys(users).map(Number),
+                    }),
+                { queryClient },
             )
 
             await waitFor(() => {
                 users.forEach((user) => {
-                    const cache = testAppQueryClient.getQueryData(
+                    const cache = queryClient.getQueryData(
                         queryKeys.voiceUserStatus.getUserPhoneStatus(
                             user.user_id,
                         ),

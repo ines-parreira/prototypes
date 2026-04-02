@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from '@repo/forms'
+import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 
-import { render } from '../../../../../../../tests/render.utils'
 import type { Parameter } from '../../utils/customActionTypes'
 import { ParameterList } from '../ParameterList'
 

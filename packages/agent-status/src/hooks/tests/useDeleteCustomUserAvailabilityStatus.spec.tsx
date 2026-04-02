@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing/vitest'
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -7,9 +8,8 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import {
-    createTestQueryClient,
+    createTestQueryClientWithSpies,
     getMutationConfig,
-    renderHook,
 } from '../../tests/render.utils'
 import { useDeleteCustomUserAvailabilityStatus as useDeleteStatusHook } from '../useDeleteCustomUserAvailabilityStatus'
 
@@ -43,7 +43,7 @@ describe('useDeleteCustomUserAvailabilityStatus', () => {
     })
 
     it('should optimistically remove status from cache and return previous state', async () => {
-        const { queryClient, spies } = createTestQueryClient({
+        const { queryClient, spies } = createTestQueryClientWithSpies({
             withCancelQueriesSpy: true,
         })
 
@@ -81,7 +81,7 @@ describe('useDeleteCustomUserAvailabilityStatus', () => {
     })
 
     it('should rollback cache on error with provided statuses in error handler', () => {
-        const { queryClient } = createTestQueryClient()
+        const { queryClient } = createTestQueryClientWithSpies()
         const mockStatuses = {
             data: { data: [{ id: 'status-1', name: 'Lunch' }] },
         }
@@ -110,7 +110,7 @@ describe('useDeleteCustomUserAvailabilityStatus', () => {
     })
 
     it('should invalidate queries on settled', () => {
-        const { queryClient, spies } = createTestQueryClient({
+        const { queryClient, spies } = createTestQueryClientWithSpies({
             withInvalidateQueriesSpy: true,
         })
 

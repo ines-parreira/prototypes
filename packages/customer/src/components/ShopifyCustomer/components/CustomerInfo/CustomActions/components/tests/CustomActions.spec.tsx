@@ -1,3 +1,4 @@
+import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -8,10 +9,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { Widget } from '@gorgias/helpdesk-types'
 
-import {
-    render,
-    testAppQueryClient,
-} from '../../../../../../../tests/render.utils'
 import { CustomActions } from '../CustomActions'
 import { TemplateResolverProvider } from '../TemplateResolverContext'
 
@@ -23,7 +20,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

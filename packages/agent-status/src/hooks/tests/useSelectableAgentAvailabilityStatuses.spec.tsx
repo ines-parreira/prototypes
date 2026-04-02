@@ -1,15 +1,8 @@
+import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import {
-    afterAll,
-    afterEach,
-    beforeAll,
-    beforeEach,
-    describe,
-    expect,
-    it,
-} from 'vitest'
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest'
 
 import {
     mockCustomUserAvailabilityStatus,
@@ -21,17 +14,12 @@ import {
     PREDEFINED_SELECTABLE_STATUSES,
     UNAVAILABLE_STATUS,
 } from '../../constants'
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useSelectableAgentAvailabilityStatuses } from '../useSelectableAgentAvailabilityStatuses'
 
 const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
-})
-
-beforeEach(() => {
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

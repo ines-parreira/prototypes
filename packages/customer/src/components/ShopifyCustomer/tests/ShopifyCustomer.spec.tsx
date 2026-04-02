@@ -1,3 +1,4 @@
+import { render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -14,7 +15,6 @@ import {
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import { ShopifyCustomer } from '../'
-import { render, testAppQueryClient } from '../../../tests/render.utils'
 import type { OrderSidePanelRenderProps } from '../components/CustomerInfo'
 import { OrderSidePanelPreview } from '../components/CustomerInfo/orders/sidePanel/OrderSidePanelPreview'
 
@@ -49,7 +49,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

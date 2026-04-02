@@ -1,3 +1,4 @@
+import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -6,7 +7,6 @@ import type { CustomUserAvailabilityStatus } from '@gorgias/helpdesk-queries'
 
 import { AVAILABLE_STATUS, UNAVAILABLE_STATUS } from '../../constants'
 import * as hooks from '../../hooks'
-import { render } from '../../tests/render.utils'
 import type { AgentStatusWithSystem } from '../../types'
 import { AgentAvailabilityStatusSelect } from './AgentAvailabilityStatusSelect'
 

@@ -1,7 +1,7 @@
 import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
+import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 
-import { render } from '../../../../../../tests/render.utils'
 import type { OrderEcommerceData } from '../../../../types'
 import { OrdersList } from '../OrdersList'
 

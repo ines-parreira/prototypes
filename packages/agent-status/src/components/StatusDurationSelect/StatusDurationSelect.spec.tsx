@@ -1,8 +1,8 @@
+import { render } from '@repo/testing/vitest'
 import { act, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { DURATION_OPTIONS } from '../../constants'
-import { render } from '../../tests/render.utils'
 import { StatusDurationSelect } from './StatusDurationSelect'
 
 function getDurationSelect() {

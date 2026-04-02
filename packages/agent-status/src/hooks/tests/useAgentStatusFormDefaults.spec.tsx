@@ -1,7 +1,7 @@
+import { renderHook } from '@repo/testing/vitest'
 import { describe, expect, it } from 'vitest'
 
 import { DURATION_OPTIONS } from '../../constants'
-import { renderHook } from '../../tests/render.utils'
 import type { AgentStatusWithSystem } from '../../types'
 import { useAgentStatusFormDefaults } from '../useAgentStatusFormDefaults'
 

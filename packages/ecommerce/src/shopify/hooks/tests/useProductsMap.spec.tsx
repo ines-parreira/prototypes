@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -8,7 +9,6 @@ import {
     mockPaginatedDataEcommerceData,
 } from '@gorgias/ecommerce-storage-mocks'
 
-import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
 import { useProductsMap } from '../useProductsMap'
 
 const server = setupServer()
@@ -16,7 +16,6 @@ const server = setupServer()
 beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 afterAll(() => server.close())
 

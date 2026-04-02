@@ -1,3 +1,4 @@
+import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -5,7 +6,6 @@ import * as helpdeskQueries from '@gorgias/helpdesk-queries'
 
 import { CALL_WRAP_UP_STATUS, ON_A_CALL_STATUS } from '../../constants'
 import * as hooks from '../../hooks'
-import { render } from '../../tests/render.utils'
 import type { UserInfoHeaderProps } from './UserInfoHeader'
 import { UserInfoHeaderContainer } from './UserInfoHeaderContainer'
 

@@ -1,7 +1,7 @@
+import { render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 
-import { render } from '../../../../../../tests/render.utils'
 import type { FieldRenderContext, ShopifyFieldPreferences } from '../../types'
 import { EditShopifyFieldsSidePanel } from '../EditShopifyFieldsSidePanel'
 

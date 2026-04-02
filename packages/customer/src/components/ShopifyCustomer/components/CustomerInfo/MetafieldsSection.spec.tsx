@@ -1,8 +1,8 @@
+import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
 import { MetafieldsSection } from './MetafieldsSection'
 
 const DEFINITIONS_URL =
@@ -22,7 +22,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

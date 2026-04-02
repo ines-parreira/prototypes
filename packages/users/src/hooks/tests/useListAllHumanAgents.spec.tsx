@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -8,17 +9,12 @@ import {
     mockUser,
 } from '@gorgias/helpdesk-mocks'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useListAllHumanAgents } from '../useListAllHumanAgents'
 
 const server = setupServer()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
-})
-
-beforeEach(() => {
-    testAppQueryClient.clear()
 })
 
 afterEach(() => {

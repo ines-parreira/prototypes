@@ -1,8 +1,8 @@
+import { renderHook } from '@repo/testing/vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import * as helpdeskQueries from '@gorgias/helpdesk-queries'
 
-import { renderHook } from '../../tests/render.utils'
 import { useAgentStatuses } from '../useAgentStatuses'
 
 // Mock the helpdesk queries module

@@ -1,14 +1,14 @@
+import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
 import { vi } from 'vitest'
 
 import { queryKeys } from '@gorgias/ecommerce-storage-queries'
 
-import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
 import { useCustomerUpdatedInvalidation } from '../useCustomerUpdatedInvalidation'
 
-afterEach(() => {
-    testAppQueryClient.clear()
-})
+const queryClient = createTestQueryClient()
+
+afterEach(() => {})
 
 function dispatchCustomerUpdated(customerId: number) {
     window.dispatchEvent(
@@ -20,9 +20,9 @@ function dispatchCustomerUpdated(customerId: number) {
 
 describe('useCustomerUpdatedInvalidation', () => {
     it('invalidates ecommerce data queries when matching customer-updated event is dispatched', async () => {
-        const invalidateSpy = vi.spyOn(testAppQueryClient, 'invalidateQueries')
+        const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries')
 
-        renderHook(() => useCustomerUpdatedInvalidation(42))
+        renderHook(() => useCustomerUpdatedInvalidation(42), { queryClient })
 
         act(() => {
             dispatchCustomerUpdated(42)
@@ -36,9 +36,9 @@ describe('useCustomerUpdatedInvalidation', () => {
     })
 
     it('does not invalidate queries when event customerId does not match', () => {
-        const invalidateSpy = vi.spyOn(testAppQueryClient, 'invalidateQueries')
+        const invalidateSpy = vi.spyOn(queryClient, 'invalidateQueries')
 
-        renderHook(() => useCustomerUpdatedInvalidation(42))
+        renderHook(() => useCustomerUpdatedInvalidation(42), { queryClient })
 
         act(() => {
             dispatchCustomerUpdated(999)

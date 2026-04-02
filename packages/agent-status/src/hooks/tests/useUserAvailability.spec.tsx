@@ -1,3 +1,4 @@
+import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -18,8 +19,9 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useUserAvailability } from '../useUserAvailability'
+
+const queryClient = createTestQueryClient()
 
 const server = setupServer()
 
@@ -28,7 +30,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
+    queryClient.clear()
 })
 
 afterEach(() => {
@@ -54,7 +56,10 @@ describe('useUserAvailability', () => {
             )
             server.use(mockGetUserAvailability.handler)
 
-            const { result } = renderHook(() => useUserAvailability({ userId }))
+            const { result } = renderHook(
+                () => useUserAvailability({ userId }),
+                { queryClient },
+            )
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -75,7 +80,10 @@ describe('useUserAvailability', () => {
             )
             server.use(mockGetUserAvailability.handler)
 
-            const { result } = renderHook(() => useUserAvailability({ userId }))
+            const { result } = renderHook(
+                () => useUserAvailability({ userId }),
+                { queryClient },
+            )
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -97,7 +105,10 @@ describe('useUserAvailability', () => {
             )
             server.use(mockGetUserAvailability.handler)
 
-            const { result } = renderHook(() => useUserAvailability({ userId }))
+            const { result } = renderHook(
+                () => useUserAvailability({ userId }),
+                { queryClient },
+            )
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -122,7 +133,10 @@ describe('useUserAvailability', () => {
             )
             server.use(mockGetUserAvailability.handler)
 
-            const { result } = renderHook(() => useUserAvailability({ userId }))
+            const { result } = renderHook(
+                () => useUserAvailability({ userId }),
+                { queryClient },
+            )
 
             await waitFor(() => {
                 expect(result.current.isLoading).toBe(false)
@@ -138,7 +152,10 @@ describe('useUserAvailability', () => {
 
     describe('loading state', () => {
         it('should return isLoading: true when data is loading', () => {
-            const { result } = renderHook(() => useUserAvailability({ userId }))
+            const { result } = renderHook(
+                () => useUserAvailability({ userId }),
+                { queryClient },
+            )
 
             expect(result.current.isLoading).toBe(true)
             expect(result.current.isFetching).toBe(true)
@@ -160,7 +177,10 @@ describe('useUserAvailability', () => {
             )
             server.use(mockGetUserAvailability.handler)
 
-            const { result } = renderHook(() => useUserAvailability({ userId }))
+            const { result } = renderHook(
+                () => useUserAvailability({ userId }),
+                { queryClient },
+            )
 
             await waitFor(() => {
                 expect(result.current.isError).toBe(true)
@@ -174,8 +194,9 @@ describe('useUserAvailability', () => {
 
     describe('query configuration', () => {
         it('should disable query when userId is 0', () => {
-            const { result } = renderHook(() =>
-                useUserAvailability({ userId: 0 }),
+            const { result } = renderHook(
+                () => useUserAvailability({ userId: 0 }),
+                { queryClient },
             )
 
             expect(result.current.availability).toBeUndefined()
@@ -184,8 +205,9 @@ describe('useUserAvailability', () => {
 
     describe('cacheOnly mode', () => {
         it('should disable query when cacheOnly is true', () => {
-            const { result } = renderHook(() =>
-                useUserAvailability({ userId, cacheOnly: true }),
+            const { result } = renderHook(
+                () => useUserAvailability({ userId, cacheOnly: true }),
+                { queryClient },
             )
 
             expect(result.current.availability).toBeUndefined()
@@ -203,12 +225,13 @@ describe('useUserAvailability', () => {
             server.use(mockGetUserAvailability.handler)
 
             // First render without cacheOnly to populate the cache
-            const { unmount } = renderHook(() =>
-                useUserAvailability({ userId }),
+            const { unmount } = renderHook(
+                () => useUserAvailability({ userId }),
+                { queryClient },
             )
 
             await waitFor(() => {
-                const data = testAppQueryClient.getQueryData(
+                const data = queryClient.getQueryData(
                     queryKeys.userAvailability.getUserAvailability(userId),
                 )
                 expect(data).toBeDefined()
@@ -217,8 +240,9 @@ describe('useUserAvailability', () => {
             unmount()
 
             // Second render with cacheOnly should use cached data
-            const { result } = renderHook(() =>
-                useUserAvailability({ userId, cacheOnly: true }),
+            const { result } = renderHook(
+                () => useUserAvailability({ userId, cacheOnly: true }),
+                { queryClient },
             )
 
             expect(result.current.availability?.user_status).toBe('available')
@@ -241,8 +265,9 @@ describe('useUserAvailability', () => {
             server.use(mockGetUserAvailability.handler)
 
             // Start with cacheOnly mode (no initial data)
-            const { result } = renderHook(() =>
-                useUserAvailability({ userId, cacheOnly: true }),
+            const { result } = renderHook(
+                () => useUserAvailability({ userId, cacheOnly: true }),
+                { queryClient },
             )
 
             expect(result.current.availability).toBeUndefined()
@@ -253,7 +278,7 @@ describe('useUserAvailability', () => {
                 user_status: 'unavailable',
             })
 
-            testAppQueryClient.setQueryData(
+            queryClient.setQueryData(
                 queryKeys.userAvailability.getUserAvailability(userId),
                 { data: updatedAvailability },
             )

@@ -1,32 +1,32 @@
 import React from 'react'
 
 import { QueryClientProvider } from '@tanstack/react-query'
-import type { QueryClient } from '@tanstack/react-query'
-import type { RenderHookOptions } from '@testing-library/react'
-import { renderHook as renderHookPrimitive } from '@testing-library/react'
+import type { RenderOptions } from '@testing-library/react'
+import { render as renderPrimitive } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import { createTestQueryClient } from './createTestQueryClient'
 
-type SharedRenderHookOptions<TProps> = RenderHookOptions<TProps> & {
+type SharedRenderOptions = RenderOptions & {
     initialEntries?: string[]
     path?: string
-    queryClient?: QueryClient
 }
 
-export const renderHook = <TProps, TResult>(
-    hook: (props: TProps) => TResult,
-    options?: SharedRenderHookOptions<TProps>,
+export const render = (
+    ui: React.ReactElement,
+    options?: SharedRenderOptions,
 ) => {
     const ExtraWrapper = options?.wrapper
-    const queryClient = options?.queryClient ?? createTestQueryClient()
     const initialEntries = options?.initialEntries ?? ['/']
     const path = options?.path ?? '/'
 
-    return renderHookPrimitive(hook, {
+    const user = userEvent.setup()
+
+    const result = renderPrimitive(ui, {
         ...options,
         wrapper: ({ children }) => (
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={createTestQueryClient()}>
                 <MemoryRouter initialEntries={initialEntries}>
                     <Route path={path}>
                         {ExtraWrapper ? (
@@ -39,4 +39,9 @@ export const renderHook = <TProps, TResult>(
             </QueryClientProvider>
         ),
     })
+
+    return {
+        user,
+        ...result,
+    }
 }

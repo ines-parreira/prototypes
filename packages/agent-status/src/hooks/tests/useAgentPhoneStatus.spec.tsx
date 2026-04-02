@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing/vitest'
 import { DurationInMs } from '@repo/utils'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -10,7 +11,6 @@ import {
 import * as helpdeskQueries from '@gorgias/helpdesk-queries'
 
 import { CALL_WRAP_UP_STATUS, ON_A_CALL_STATUS } from '../../constants'
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useAgentPhoneStatus } from '../useAgentPhoneStatus'
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
@@ -30,7 +30,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
     vi.clearAllMocks()
 })
 

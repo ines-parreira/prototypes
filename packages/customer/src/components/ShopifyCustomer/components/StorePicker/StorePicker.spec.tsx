@@ -1,8 +1,8 @@
+import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 
 import type { Integration } from '@gorgias/helpdesk-types'
 
-import { render } from '../../../../tests/render.utils'
 import { StorePicker } from './StorePicker'
 
 const mockIntegrations: Integration[] = [

@@ -1,3 +1,4 @@
+import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
 import { act, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -9,8 +10,9 @@ import {
 } from '@gorgias/ecommerce-storage-queries'
 import { mockExecuteActionHandler } from '@gorgias/helpdesk-mocks'
 
-import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
 import { useUpdateShopifyCustomerTags } from '../useUpdateShopifyCustomerTags'
+
+const queryClient = createTestQueryClient()
 
 const server = setupServer()
 
@@ -20,7 +22,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {
@@ -41,7 +42,9 @@ describe('useUpdateShopifyCustomerTags', () => {
 
         const waitForRequest = executeActionMock.waitForRequest(server)
 
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags())
+        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
+            queryClient,
+        })
 
         act(() => {
             result.current.mutate(mockParams)
@@ -62,7 +65,9 @@ describe('useUpdateShopifyCustomerTags', () => {
 
         const waitForRequest = executeActionMock.waitForRequest(server)
 
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags())
+        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
+            queryClient,
+        })
 
         act(() => {
             result.current.mutate(mockParams)
@@ -83,7 +88,9 @@ describe('useUpdateShopifyCustomerTags', () => {
 
         const waitForRequest = executeActionMock.waitForRequest(server)
 
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags())
+        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
+            queryClient,
+        })
 
         act(() => {
             result.current.mutate({
@@ -104,7 +111,9 @@ describe('useUpdateShopifyCustomerTags', () => {
 
         const waitForRequest = executeActionMock.waitForRequest(server)
 
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags())
+        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
+            queryClient,
+        })
 
         act(() => {
             result.current.mutate(mockParams)
@@ -135,16 +144,18 @@ describe('useUpdateShopifyCustomerTags', () => {
             },
         }
 
-        testAppQueryClient.setQueryData(queryKey, initialData)
+        queryClient.setQueryData(queryKey, initialData)
 
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags())
+        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
+            queryClient,
+        })
 
         act(() => {
             result.current.mutate(mockParams)
         })
 
         await waitFor(() => {
-            const cachedData = testAppQueryClient.getQueryData(queryKey) as {
+            const cachedData = queryClient.getQueryData(queryKey) as {
                 data: { data: { tags: string } }
             }
             expect(cachedData.data.data.tags).toBe('VIP, Wholesale')
@@ -172,9 +183,11 @@ describe('useUpdateShopifyCustomerTags', () => {
             },
         }
 
-        testAppQueryClient.setQueryData(queryKey, initialData)
+        queryClient.setQueryData(queryKey, initialData)
 
-        const { result } = renderHook(() => useUpdateShopifyCustomerTags())
+        const { result } = renderHook(() => useUpdateShopifyCustomerTags(), {
+            queryClient,
+        })
 
         act(() => {
             result.current.mutate(mockParams)
@@ -184,7 +197,7 @@ describe('useUpdateShopifyCustomerTags', () => {
             expect(result.current.isError).toBe(true)
         })
 
-        const cachedData = testAppQueryClient.getQueryData(queryKey) as {
+        const cachedData = queryClient.getQueryData(queryKey) as {
             data: { data: { tags: string } }
         }
         expect(cachedData.data.data.tags).toBe('OldTag')

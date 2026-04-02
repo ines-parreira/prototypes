@@ -1,9 +1,9 @@
+import { render } from '@repo/testing/vitest'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import * as useDeleteStatusModule from '../../../hooks/useDeleteCustomUserAvailabilityStatus'
-import { render } from '../../../tests/render.utils'
 import * as useLegacyBridgeModule from '../../../utils/LegacyBridge'
 import { DeleteStatusConfirmationModal } from '../DeleteStatusConfirmationModal'
 

@@ -1,3 +1,4 @@
+import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -18,8 +19,9 @@ import {
 import type { GetUserAvailabilityResult } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useListUserAvailabilities } from '../useListUserAvailabilities'
+
+const queryClient = createTestQueryClient()
 
 const server = setupServer()
 
@@ -28,7 +30,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
+    queryClient.clear()
 })
 
 afterEach(() => {
@@ -66,8 +68,9 @@ describe('useListUserAvailabilities', () => {
 
             server.use(mockListUserAvailabilities.handler)
 
-            const { result } = renderHook(() =>
-                useListUserAvailabilities({ userIds }),
+            const { result } = renderHook(
+                () => useListUserAvailabilities({ userIds }),
+                { queryClient },
             )
 
             expect(result.current.isLoading).toBe(true)
@@ -81,19 +84,22 @@ describe('useListUserAvailabilities', () => {
         })
 
         it('does not fetch when userIds is empty', () => {
-            const { result } = renderHook(() =>
-                useListUserAvailabilities({ userIds: [] }),
+            const { result } = renderHook(
+                () => useListUserAvailabilities({ userIds: [] }),
+                { queryClient },
             )
 
             expect(result.current.data).toBeUndefined()
         })
 
         it('does not fetch when enabled is false', () => {
-            const { result } = renderHook(() =>
-                useListUserAvailabilities({
-                    userIds: [1, 2, 3],
-                    enabled: false,
-                }),
+            const { result } = renderHook(
+                () =>
+                    useListUserAvailabilities({
+                        userIds: [1, 2, 3],
+                        enabled: false,
+                    }),
+                { queryClient },
             )
 
             expect(result.current.data).toBeUndefined()
@@ -126,12 +132,14 @@ describe('useListUserAvailabilities', () => {
 
             server.use(mockListUserAvailabilities.handler)
 
-            renderHook(() => useListUserAvailabilities({ userIds }))
+            renderHook(() => useListUserAvailabilities({ userIds }), {
+                queryClient,
+            })
 
             await waitFor(() => {
                 userIds.forEach((userId, index) => {
                     const cachedData =
-                        testAppQueryClient.getQueryData<GetUserAvailabilityResult>(
+                        queryClient.getQueryData<GetUserAvailabilityResult>(
                             queryKeys.userAvailability.getUserAvailability(
                                 userId,
                             ),
@@ -176,16 +184,19 @@ describe('useListUserAvailabilities', () => {
 
             server.use(mockListUserAvailabilities.handler)
 
-            renderHook(() => useListUserAvailabilities({ userIds: [1, 2, 3] }))
+            renderHook(
+                () => useListUserAvailabilities({ userIds: [1, 2, 3] }),
+                { queryClient },
+            )
 
             await waitFor(() => {
-                const cache1 = testAppQueryClient.getQueryData(
+                const cache1 = queryClient.getQueryData(
                     queryKeys.userAvailability.getUserAvailability(1),
                 ) as GetUserAvailabilityResult
-                const cache2 = testAppQueryClient.getQueryData(
+                const cache2 = queryClient.getQueryData(
                     queryKeys.userAvailability.getUserAvailability(2),
                 ) as GetUserAvailabilityResult
-                const cache3 = testAppQueryClient.getQueryData(
+                const cache3 = queryClient.getQueryData(
                     queryKeys.userAvailability.getUserAvailability(3),
                 ) as GetUserAvailabilityResult
 
@@ -215,8 +226,9 @@ describe('useListUserAvailabilities', () => {
 
             server.use(mockListUserAvailabilities.handler)
 
-            const { result } = renderHook(() =>
-                useListUserAvailabilities({ userIds }),
+            const { result } = renderHook(
+                () => useListUserAvailabilities({ userIds }),
+                { queryClient },
             )
 
             await waitFor(() => {

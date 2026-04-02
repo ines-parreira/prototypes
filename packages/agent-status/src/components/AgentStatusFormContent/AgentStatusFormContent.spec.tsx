@@ -1,4 +1,5 @@
 import { Form } from '@repo/forms'
+import { render } from '@repo/testing/vitest'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
@@ -7,7 +8,6 @@ import { Modal, ModalSize } from '@gorgias/axiom'
 
 import { DURATION_OPTIONS } from '../../constants'
 import type { AgentStatusFormValues } from '../../hooks/useAgentStatusFormDefaults'
-import { render } from '../../tests/render.utils'
 import { AgentStatusFormContent } from './AgentStatusFormContent'
 
 function renderFormContent(props: {

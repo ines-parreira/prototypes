@@ -1,3 +1,4 @@
+import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { queryKeys } from '@gorgias/helpdesk-queries'
@@ -6,18 +7,19 @@ import type {
     UserAvailabilityDetail,
 } from '@gorgias/helpdesk-types'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useUpdateUserAvailabilityInCache } from '../useUpdateUserAvailabilityInCache'
+
+const queryClient = createTestQueryClient()
 
 describe('useUpdateUserAvailabilityInCache', () => {
     beforeEach(() => {
-        testAppQueryClient.clear()
+        queryClient.clear()
     })
 
     it('should update user availability in cache', () => {
         const MOCK_USER_ID = 123
 
-        testAppQueryClient.setQueryData(
+        queryClient.setQueryData(
             queryKeys.userAvailability.getUserAvailability(MOCK_USER_ID),
             {
                 data: {
@@ -28,7 +30,10 @@ describe('useUpdateUserAvailabilityInCache', () => {
             },
         )
 
-        const { result } = renderHook(() => useUpdateUserAvailabilityInCache())
+        const { result } = renderHook(
+            () => useUpdateUserAvailabilityInCache(),
+            { queryClient },
+        )
 
         const updateData: UserAvailabilityDetail = {
             user_id: MOCK_USER_ID,
@@ -37,10 +42,9 @@ describe('useUpdateUserAvailabilityInCache', () => {
 
         result.current(updateData)
 
-        const updatedData =
-            testAppQueryClient.getQueryData<GetUserAvailabilityResult>(
-                queryKeys.userAvailability.getUserAvailability(MOCK_USER_ID),
-            )
+        const updatedData = queryClient.getQueryData<GetUserAvailabilityResult>(
+            queryKeys.userAvailability.getUserAvailability(MOCK_USER_ID),
+        )
 
         expect(updatedData).toEqual({
             data: {
@@ -53,7 +57,7 @@ describe('useUpdateUserAvailabilityInCache', () => {
     it('should preserve top-level fields while updating status data', () => {
         const userId = 456
 
-        testAppQueryClient.setQueryData(
+        queryClient.setQueryData(
             queryKeys.userAvailability.getUserAvailability(userId),
             {
                 data: {
@@ -65,7 +69,10 @@ describe('useUpdateUserAvailabilityInCache', () => {
             },
         )
 
-        const { result } = renderHook(() => useUpdateUserAvailabilityInCache())
+        const { result } = renderHook(
+            () => useUpdateUserAvailabilityInCache(),
+            { queryClient },
+        )
 
         const updateData: UserAvailabilityDetail = {
             user_id: userId,
@@ -75,10 +82,9 @@ describe('useUpdateUserAvailabilityInCache', () => {
 
         result.current(updateData)
 
-        const updatedData =
-            testAppQueryClient.getQueryData<GetUserAvailabilityResult>(
-                queryKeys.userAvailability.getUserAvailability(userId),
-            )
+        const updatedData = queryClient.getQueryData<GetUserAvailabilityResult>(
+            queryKeys.userAvailability.getUserAvailability(userId),
+        )
 
         expect(updatedData).toEqual({
             data: {
@@ -93,7 +99,7 @@ describe('useUpdateUserAvailabilityInCache', () => {
     it('should return both previous and new data', () => {
         const userId = 789
 
-        testAppQueryClient.setQueryData(
+        queryClient.setQueryData(
             queryKeys.userAvailability.getUserAvailability(userId),
             {
                 data: {
@@ -103,7 +109,10 @@ describe('useUpdateUserAvailabilityInCache', () => {
             },
         )
 
-        const { result } = renderHook(() => useUpdateUserAvailabilityInCache())
+        const { result } = renderHook(
+            () => useUpdateUserAvailabilityInCache(),
+            { queryClient },
+        )
 
         const updateData: UserAvailabilityDetail = {
             user_id: userId,
@@ -129,7 +138,10 @@ describe('useUpdateUserAvailabilityInCache', () => {
     it('should handle undefined previous data', () => {
         const userId = 999
 
-        const { result } = renderHook(() => useUpdateUserAvailabilityInCache())
+        const { result } = renderHook(
+            () => useUpdateUserAvailabilityInCache(),
+            { queryClient },
+        )
 
         const updateData: UserAvailabilityDetail = {
             user_id: userId,
@@ -146,10 +158,9 @@ describe('useUpdateUserAvailabilityInCache', () => {
             },
         })
 
-        const updatedData =
-            testAppQueryClient.getQueryData<GetUserAvailabilityResult>(
-                queryKeys.userAvailability.getUserAvailability(userId),
-            )
+        const updatedData = queryClient.getQueryData<GetUserAvailabilityResult>(
+            queryKeys.userAvailability.getUserAvailability(userId),
+        )
 
         expect(updatedData).toEqual({
             data: {

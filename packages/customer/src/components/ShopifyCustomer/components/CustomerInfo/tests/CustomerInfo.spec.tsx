@@ -1,3 +1,4 @@
+import { createTestQueryClient, render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
@@ -19,11 +20,12 @@ import type { Integration } from '@gorgias/helpdesk-types'
 
 import { CustomerInfo } from '../'
 import type { OrderSidePanelRenderProps } from '../'
-import { render, testAppQueryClient } from '../../../../../tests/render.utils'
 import { useListShopifyOrders } from '../../../hooks/useListShopifyOrders'
 import { ShopifyCustomerContext } from '../../../ShopifyCustomerContext'
 import type { OrderEcommerceData } from '../../../types'
 import { OrderSidePanelPreview } from '../orders/sidePanel/OrderSidePanelPreview'
+
+const queryClient = createTestQueryClient()
 
 const mockRenderOrderSidePanel = (props: OrderSidePanelRenderProps) => (
     <OrderSidePanelPreview {...props} />
@@ -189,8 +191,6 @@ const mockListWidgets = mockListWidgetsHandler()
 const mockGetTicket = mockGetTicketHandler()
 
 beforeEach(() => {
-    testAppQueryClient.clear()
-
     mockUseTicketInfobarNavigation.mockReturnValue({
         shopifyIntegrationId: undefined,
         activeTab: undefined,
@@ -241,7 +241,7 @@ describe('CustomerInfo', () => {
 
         await waitFor(
             () => {
-                expect(testAppQueryClient.isFetching()).toBe(0)
+                expect(queryClient.isFetching()).toBe(0)
             },
             { timeout: 5000 },
         )

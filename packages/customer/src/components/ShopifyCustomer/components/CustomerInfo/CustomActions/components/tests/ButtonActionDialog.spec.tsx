@@ -1,6 +1,6 @@
+import { render } from '@repo/testing/vitest'
 import { screen, waitFor } from '@testing-library/react'
 
-import { render } from '../../../../../../../tests/render.utils'
 import { INITIAL_ACTION } from '../../utils/customActionConstants'
 import type { ButtonConfig } from '../../utils/customActionTypes'
 import { ButtonActionDialog } from '../ButtonActionDialog'

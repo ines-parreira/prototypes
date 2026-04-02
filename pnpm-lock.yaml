@@ -1715,6 +1715,9 @@ importers:
       '@repo/forms':
         specifier: workspace:*
         version: link:../forms
+      '@repo/testing':
+        specifier: workspace:*
+        version: link:../testing
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -2083,6 +2086,9 @@ importers:
       '@repo/routing':
         specifier: workspace:*
         version: link:../routing
+      '@repo/testing':
+        specifier: workspace:*
+        version: link:../testing
       '@repo/tickets':
         specifier: workspace:*
         version: link:../tickets
@@ -2200,6 +2206,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
+      '@repo/testing':
+        specifier: workspace:*
+        version: link:../testing
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -2732,6 +2741,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
+      '@repo/testing':
+        specifier: workspace:*
+        version: link:../testing
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -2965,6 +2977,9 @@ importers:
       '@repo/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@repo/testing':
+        specifier: workspace:*
+        version: link:../testing
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
@@ -3022,6 +3037,9 @@ importers:
       '@swc/jest':
         specifier: catalog:test
         version: 0.2.38(@swc/core@1.12.1(@swc/helpers@0.5.19))
+      '@tanstack/react-query':
+        specifier: 4.36.1
+        version: 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@testing-library/dom':
         specifier: catalog:test
         version: 10.4.0
@@ -3043,6 +3061,9 @@ importers:
       '@types/react-dom':
         specifier: catalog:react
         version: 18.2.22
+      '@types/react-router-dom':
+        specifier: catalog:react-router
+        version: 5.3.3
       '@vitest/coverage-v8':
         specifier: catalog:test
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
@@ -3061,6 +3082,9 @@ importers:
       react-dom:
         specifier: catalog:react
         version: 18.2.0(react@18.2.0)
+      react-router-dom:
+        specifier: catalog:react-router
+        version: 5.2.0(react@18.2.0)
       swc_mut_cjs_exports:
         specifier: catalog:test
         version: 10.7.0(@swc/core@1.12.1(@swc/helpers@0.5.19))(@swc/jest@0.2.38(@swc/core@1.12.1(@swc/helpers@0.5.19)))
@@ -3414,6 +3438,9 @@ importers:
       '@repo/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@repo/testing':
+        specifier: workspace:*
+        version: link:../testing
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils

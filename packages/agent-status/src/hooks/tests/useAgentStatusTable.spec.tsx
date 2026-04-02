@@ -1,6 +1,6 @@
+import { renderHook } from '@repo/testing/vitest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { renderHook } from '../../tests/render.utils'
 import type { AgentStatusWithSystem } from '../../types'
 import { useAgentStatusTable } from '../useAgentStatusTable'
 

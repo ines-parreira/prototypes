@@ -1,3 +1,4 @@
+import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -21,8 +22,9 @@ import {
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
 import { AVAILABLE_STATUS, UNAVAILABLE_STATUS } from '../../constants'
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useUserAvailabilityStatus } from '../useUserAvailabilityStatus'
+
+const queryClient = createTestQueryClient()
 
 const server = setupServer()
 
@@ -31,7 +33,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
+    queryClient.clear()
 })
 
 afterEach(() => {
@@ -82,8 +84,9 @@ describe('useUserAvailabilityStatus', () => {
                 mockListCustomStatuses.handler,
             )
 
-            const { result } = renderHook(() =>
-                useUserAvailabilityStatus({ userId }),
+            const { result } = renderHook(
+                () => useUserAvailabilityStatus({ userId }),
+                { queryClient },
             )
 
             await waitFor(() => {
@@ -123,8 +126,9 @@ describe('useUserAvailabilityStatus', () => {
                 mockListCustomStatuses.handler,
             )
 
-            const { result } = renderHook(() =>
-                useUserAvailabilityStatus({ userId }),
+            const { result } = renderHook(
+                () => useUserAvailabilityStatus({ userId }),
+                { queryClient },
             )
 
             await waitFor(() => {
@@ -165,8 +169,9 @@ describe('useUserAvailabilityStatus', () => {
                 mockListCustomStatuses.handler,
             )
 
-            const { result } = renderHook(() =>
-                useUserAvailabilityStatus({ userId }),
+            const { result } = renderHook(
+                () => useUserAvailabilityStatus({ userId }),
+                { queryClient },
             )
 
             await waitFor(() => {
@@ -211,8 +216,9 @@ describe('useUserAvailabilityStatus', () => {
                 mockListCustomStatuses.handler,
             )
 
-            const { result } = renderHook(() =>
-                useUserAvailabilityStatus({ userId }),
+            const { result } = renderHook(
+                () => useUserAvailabilityStatus({ userId }),
+                { queryClient },
             )
 
             await waitFor(() => {
@@ -226,8 +232,9 @@ describe('useUserAvailabilityStatus', () => {
 
     describe('cacheOnly mode', () => {
         it('should disable query when cacheOnly is true', () => {
-            const { result } = renderHook(() =>
-                useUserAvailabilityStatus({ userId, cacheOnly: true }),
+            const { result } = renderHook(
+                () => useUserAvailabilityStatus({ userId, cacheOnly: true }),
+                { queryClient },
             )
 
             expect(result.current.availability).toBeUndefined()
@@ -264,12 +271,13 @@ describe('useUserAvailabilityStatus', () => {
             )
 
             // First render without cacheOnly to populate the cache
-            const { unmount } = renderHook(() =>
-                useUserAvailabilityStatus({ userId }),
+            const { unmount } = renderHook(
+                () => useUserAvailabilityStatus({ userId }),
+                { queryClient },
             )
 
             await waitFor(() => {
-                const data = testAppQueryClient.getQueryData(
+                const data = queryClient.getQueryData(
                     queryKeys.userAvailability.getUserAvailability(userId),
                 )
                 expect(data).toBeDefined()
@@ -278,8 +286,9 @@ describe('useUserAvailabilityStatus', () => {
             unmount()
 
             // Second render with cacheOnly should use cached data
-            const { result } = renderHook(() =>
-                useUserAvailabilityStatus({ userId, cacheOnly: true }),
+            const { result } = renderHook(
+                () => useUserAvailabilityStatus({ userId, cacheOnly: true }),
+                { queryClient },
             )
 
             expect(result.current.availability?.user_status).toBe('available')
@@ -317,8 +326,9 @@ describe('useUserAvailabilityStatus', () => {
             server.use(mockGetUserAvailability.handler)
 
             // Start with cacheOnly mode (no initial data)
-            const { result } = renderHook(() =>
-                useUserAvailabilityStatus({ userId, cacheOnly: true }),
+            const { result } = renderHook(
+                () => useUserAvailabilityStatus({ userId, cacheOnly: true }),
+                { queryClient },
             )
 
             // Initially, availability should be undefined (no cache)
@@ -330,7 +340,7 @@ describe('useUserAvailabilityStatus', () => {
                 user_status: 'unavailable',
             })
 
-            testAppQueryClient.setQueryData(
+            queryClient.setQueryData(
                 queryKeys.userAvailability.getUserAvailability(userId),
                 { data: updatedAvailability },
             )

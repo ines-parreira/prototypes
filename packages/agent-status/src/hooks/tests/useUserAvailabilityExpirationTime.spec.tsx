@@ -1,8 +1,8 @@
 import * as userHooks from '@repo/preferences'
+import { renderHook } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { renderHook } from '../../tests/render.utils'
 import * as utils from '../../utils/formatExpirationTime'
 import { useUserAvailabilityExpirationTime } from '../useUserAvailabilityExpirationTime'
 

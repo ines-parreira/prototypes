@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing/vitest'
 import { QueryClientProvider, useQueryClient } from '@tanstack/react-query'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -11,9 +12,8 @@ import type {
 } from '@gorgias/helpdesk-queries'
 
 import {
-    createTestQueryClient,
+    createTestQueryClientWithSpies,
     getMutationConfig,
-    renderHook,
 } from '../../tests/render.utils'
 import { useUpdateAgentStatus } from '../useUpdateAgentStatus'
 
@@ -46,7 +46,7 @@ describe('useUpdateAgentStatus', () => {
     })
 
     it('should invalidate queries on success', () => {
-        const { queryClient, spies } = createTestQueryClient({
+        const { queryClient, spies } = createTestQueryClientWithSpies({
             withInvalidateQueriesSpy: true,
         })
 

@@ -1,7 +1,7 @@
+import { render } from '@repo/testing/vitest'
 import { act, screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { render } from '../../tests/render.utils'
 import { StatusDurationValueField } from './StatusDurationValueField'
 
 describe('StatusDurationValueField', () => {

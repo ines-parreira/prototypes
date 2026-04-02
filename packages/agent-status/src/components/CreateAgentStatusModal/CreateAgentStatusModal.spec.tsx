@@ -1,8 +1,8 @@
+import { render } from '@repo/testing/vitest'
 import { act, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { render } from '../../tests/render.utils'
 import { CreateAgentStatusModal } from './CreateAgentStatusModal'
 
 describe('CreateAgentStatusModal', () => {

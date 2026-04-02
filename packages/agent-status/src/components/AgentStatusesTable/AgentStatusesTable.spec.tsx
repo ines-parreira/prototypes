@@ -1,10 +1,10 @@
+import { render } from '@repo/testing/vitest'
 import { act, screen, within } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { CustomUserAvailabilityStatus } from '@gorgias/helpdesk-queries'
 
 import { SYSTEM_STATUSES } from '../../constants'
-import { render } from '../../tests/render.utils'
 import type { AgentStatusWithSystem } from '../../types'
 import { AgentStatusesTable } from './AgentStatusesTable'
 

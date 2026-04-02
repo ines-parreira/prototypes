@@ -1,3 +1,4 @@
+import { render } from '@repo/testing/vitest'
 import { screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -7,7 +8,6 @@ import {
     mockUpdateWidgetHandler,
 } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../../../tests/render.utils'
 import { CustomActionsSection } from '../CustomActionsSection'
 
 const server = setupServer()
@@ -18,7 +18,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

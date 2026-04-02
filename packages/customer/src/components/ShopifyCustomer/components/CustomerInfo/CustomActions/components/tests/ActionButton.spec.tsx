@@ -1,12 +1,9 @@
+import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 
 import { mockExecuteActionHandler } from '@gorgias/helpdesk-mocks'
 
-import {
-    render,
-    testAppQueryClient,
-} from '../../../../../../../tests/render.utils'
 import type { ButtonAction, ButtonConfig } from '../../utils/customActionTypes'
 import { ActionButton } from '../ActionButton'
 import { TemplateResolverProvider } from '../TemplateResolverContext'
@@ -19,7 +16,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

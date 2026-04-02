@@ -1,9 +1,9 @@
+import { renderHook } from '@repo/testing/vitest'
 import { act } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 
 import { mockExecuteActionHandler } from '@gorgias/helpdesk-mocks'
 
-import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
 import { useExecuteCustomAction } from '../useExecuteCustomAction'
 
 const server = setupServer()
@@ -14,7 +14,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

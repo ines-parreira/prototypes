@@ -1,6 +1,6 @@
+import { renderHook } from '@repo/testing/vitest'
 import { describe, expect, it } from 'vitest'
 
-import { renderHook } from '../../tests/render.utils'
 import { useAvailabilityStatusColor } from '../useAvailabilityStatusColor'
 
 describe('useAvailabilityStatusColor', () => {

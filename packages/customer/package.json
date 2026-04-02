@@ -65,6 +65,7 @@
         "@repo/navigation": "workspace:*",
         "@repo/preferences": "workspace:*",
         "@repo/routing": "workspace:*",
+        "@repo/testing": "workspace:*",
         "@repo/tickets": "workspace:*",
         "@repo/types": "workspace:*",
         "@repo/utils": "workspace:*",

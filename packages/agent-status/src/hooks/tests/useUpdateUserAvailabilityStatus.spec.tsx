@@ -1,3 +1,4 @@
+import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -18,13 +19,14 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import * as helpdeskQueries from '@gorgias/helpdesk-queries'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useUpdateUserAvailabilityStatus } from '../useUpdateUserAvailabilityStatus'
+
+const queryClient = createTestQueryClient()
 
 const renderUseUpdateUserAvailabilityStatus = (
     callback = useUpdateUserAvailabilityStatus,
 ) => {
-    return renderHook(callback)
+    return renderHook(callback, { queryClient })
 }
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
@@ -44,7 +46,7 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
+    queryClient.clear()
     vi.clearAllMocks()
 })
 
@@ -156,7 +158,7 @@ describe('useUpdateUserAvailabilityStatus', () => {
             helpdeskQueries.queryKeys.userAvailability.getUserAvailability(
                 userId,
             )
-        testAppQueryClient.setQueryData(queryKey, { data: initialAvailability })
+        queryClient.setQueryData(queryKey, { data: initialAvailability })
 
         const mockUpdateUserAvailability = mockUpdateUserAvailabilityHandler(
             async () =>
@@ -182,7 +184,7 @@ describe('useUpdateUserAvailabilityStatus', () => {
 
         expect(result.current.error).toBeTruthy()
 
-        const cacheData = testAppQueryClient.getQueryData(queryKey) as {
+        const cacheData = queryClient.getQueryData(queryKey) as {
             data: typeof initialAvailability
         }
         expect(cacheData?.data).toEqual(initialAvailability)

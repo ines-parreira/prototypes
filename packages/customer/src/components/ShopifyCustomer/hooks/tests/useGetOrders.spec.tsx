@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing/vitest'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -9,7 +10,6 @@ import {
 } from '@gorgias/ecommerce-storage-mocks'
 import { ObjectType } from '@gorgias/ecommerce-storage-queries'
 
-import { renderHook, testAppQueryClient } from '../../../../tests/render.utils'
 import type { OrderData } from '../../types'
 import { useListShopifyOrders } from '../useListShopifyOrders'
 
@@ -21,7 +21,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

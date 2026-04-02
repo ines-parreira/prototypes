@@ -1,3 +1,4 @@
+import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -7,7 +8,6 @@ import { AgentAvatar } from '.'
 import type { AgentAvatarProps } from '.'
 import { CALL_WRAP_UP_STATUS, ON_A_CALL_STATUS } from '../../constants'
 import * as hooks from '../../hooks'
-import { render } from '../../tests/render.utils'
 
 vi.mock('@gorgias/axiom', async () => {
     const actual = await vi.importActual('@gorgias/axiom')

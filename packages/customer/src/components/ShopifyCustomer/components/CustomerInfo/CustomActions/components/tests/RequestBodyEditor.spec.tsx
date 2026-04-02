@@ -1,7 +1,7 @@
 import { FormProvider, useForm } from '@repo/forms'
+import { render } from '@repo/testing/vitest'
 import { fireEvent, screen } from '@testing-library/react'
 
-import { render } from '../../../../../../../tests/render.utils'
 import { INITIAL_BODY } from '../../utils/customActionConstants'
 import type { ButtonAction } from '../../utils/customActionTypes'
 import { RequestBodyEditor } from '../RequestBodyEditor'

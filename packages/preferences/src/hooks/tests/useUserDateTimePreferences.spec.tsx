@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -7,7 +8,6 @@ import { mockGetCurrentUserHandler, mockUser } from '@gorgias/helpdesk-mocks'
 import * as helpdeskQueries from '@gorgias/helpdesk-queries'
 import type { User } from '@gorgias/helpdesk-types'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useUserDateTimePreferences } from '../useUserDateTimePreferences'
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
@@ -27,7 +27,6 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
     vi.clearAllMocks()
 })
 

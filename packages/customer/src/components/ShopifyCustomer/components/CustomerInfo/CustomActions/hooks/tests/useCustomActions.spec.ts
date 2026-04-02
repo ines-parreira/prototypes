@@ -1,3 +1,4 @@
+import { renderHook } from '@repo/testing/vitest'
 import { act, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -9,10 +10,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import type { Widget } from '@gorgias/helpdesk-types'
 
-import {
-    renderHook,
-    testAppQueryClient,
-} from '../../../../../../../tests/render.utils'
 import { useCustomActions } from '../useCustomActions'
 
 const server = setupServer()
@@ -23,7 +20,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {

@@ -1,21 +1,23 @@
+import { createTestQueryClient, renderHook } from '@repo/testing/vitest'
 import { beforeEach, describe, expect, it } from 'vitest'
 
 import { mockUserPhoneStatus } from '@gorgias/helpdesk-mocks'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { UserPhoneStatus } from '@gorgias/helpdesk-types'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
 import { useUpdateUserPhoneStatusInCache } from '../useUpdateUserPhoneStatusInCache'
+
+const queryClient = createTestQueryClient()
 
 describe('useUpdateUserPhoneStatusInCache', () => {
     beforeEach(() => {
-        testAppQueryClient.clear()
+        queryClient.clear()
     })
 
     it('should update user phone status in cache', () => {
         const MOCK_USER_ID = 123
 
-        testAppQueryClient.setQueryData(
+        queryClient.setQueryData(
             queryKeys.voiceUserStatus.getUserPhoneStatus(MOCK_USER_ID),
             mockUserPhoneStatus({
                 user_id: MOCK_USER_ID,
@@ -24,7 +26,9 @@ describe('useUpdateUserPhoneStatusInCache', () => {
             }),
         )
 
-        const { result } = renderHook(() => useUpdateUserPhoneStatusInCache())
+        const { result } = renderHook(() => useUpdateUserPhoneStatusInCache(), {
+            queryClient: queryClient,
+        })
 
         const updateData: UserPhoneStatus = {
             user_id: MOCK_USER_ID,
@@ -34,7 +38,7 @@ describe('useUpdateUserPhoneStatusInCache', () => {
 
         result.current(updateData)
 
-        const updatedData = testAppQueryClient.getQueryData(
+        const updatedData = queryClient.getQueryData(
             queryKeys.voiceUserStatus.getUserPhoneStatus(MOCK_USER_ID),
         )
 
@@ -50,7 +54,9 @@ describe('useUpdateUserPhoneStatusInCache', () => {
     it('should handle undefined previous data', () => {
         const userId = 999
 
-        const { result } = renderHook(() => useUpdateUserPhoneStatusInCache())
+        const { result } = renderHook(() => useUpdateUserPhoneStatusInCache(), {
+            queryClient: queryClient,
+        })
 
         const updateData: UserPhoneStatus = {
             user_id: userId,
@@ -67,7 +73,7 @@ describe('useUpdateUserPhoneStatusInCache', () => {
             call_activities: [],
         })
 
-        const updatedData = testAppQueryClient.getQueryData<{
+        const updatedData = queryClient.getQueryData<{
             data: UserPhoneStatus
         }>(queryKeys.voiceUserStatus.getUserPhoneStatus(userId))
 

@@ -1,6 +1,6 @@
+import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 
-import { render } from '../../../../../../../tests/render.utils'
 import type { ButtonAction } from '../../utils/customActionTypes'
 import {
     ActionEditorDialog,

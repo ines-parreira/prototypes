@@ -1,3 +1,4 @@
+import { render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -6,10 +7,6 @@ import { setupServer } from 'msw/node'
 import { mockListWidgetsHandler } from '@gorgias/helpdesk-mocks'
 import type { Widget } from '@gorgias/helpdesk-types'
 
-import {
-    render,
-    testAppQueryClient,
-} from '../../../../../../tests/render.utils'
 import {
     NotificationStatus,
     ShopifyCustomerContext,
@@ -43,7 +40,6 @@ beforeAll(() => {
 
 afterEach(() => {
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {
