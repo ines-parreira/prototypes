@@ -54,7 +54,8 @@
     .icon-btn:hover { background: #ebecef; }
 
     /* Nav items */
-    .nav-group { display: flex; flex-direction: column; gap: 2px; }
+    .nav-group { display: flex; flex-direction: column; gap: 8px; }
+    .recents-group { gap: 4px; }
     .nav-item {
       display: flex; align-items: center; gap: 8px;
       height: 24px; padding: 0 8px;
@@ -71,8 +72,7 @@
       height: 24px; padding: 0 8px;
       display: flex; align-items: center;
       font-size: 10px; font-weight: 600;
-      color: #6e7686; letter-spacing: 0.5px;
-      text-transform: uppercase;
+      color: #6e7686;
     }
     .recents-group { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
 
@@ -124,12 +124,13 @@
     .chat-area { display: flex; flex-direction: column; align-items: center; gap: 16px; }
 
     .chat-input-box {
-      width: 600px; border: 1px solid #ebecef;
+      width: 600px; border: 1px solid rgba(0,0,0,0.08);
       border-radius: 8px; overflow: hidden; background: white;
+      box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
     }
     .chat-input-inner {
       display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 12px; box-shadow: 0 2px 20px 0 rgba(0,0,0,0.04);
+      padding: 10px 12px;
     }
     .chat-placeholder { font-size: 14px; color: #5c6370; }
     .chat-actions { display: flex; gap: 4px; }
@@ -141,9 +142,9 @@
     .chat-icon-btn:hover { background: #f5f5f7; }
     .chat-separator { height: 1px; background: rgba(0,0,0,0.06); }
 
-    .chat-suggestion-btns { display: flex; gap: 6px; justify-content: center; }
+    .chat-suggestion-btns { display: flex; gap: 8px; justify-content: center; }
     .suggestion-btn {
-      display: flex; align-items: center; gap: 6px;
+      display: flex; align-items: center; gap: 5px;
       padding: 5px 12px; border: 1px solid rgba(0,0,0,0.12);
       border-radius: 6px; background: white;
       font-size: 12px; font-weight: 500; color: #1e242e; cursor: pointer;
@@ -180,6 +181,7 @@
     .panel-card {
       background: white; border: 1px solid rgba(0,0,0,0.08);
       border-radius: 12px; overflow: hidden;
+      box-shadow: 0 2px 20px 0 rgba(0,0,0,0.04);
     }
     .panel-header {
       display: flex; align-items: center; justify-content: space-between;
@@ -221,10 +223,111 @@
       cursor: pointer; white-space: nowrap; flex-shrink: 0; margin-top: 2px;
     }
     .review-btn:hover { background: #f9f9fb; }
+
+    /* ── Spike page ──────────────────────────────────────────────── */
+    #spike-page { display: none; height: 100vh; }
+    #spike-page.visible { display: flex; }
+
+    .spike-icon-sidebar {
+      width: 48px; flex-shrink: 0; background: white;
+      border-right: 1px solid #ebecef;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: space-between;
+      padding: 8px 0;
+    }
+    .spike-icon-sidebar .top-icons { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .spike-icon-sidebar .bottom-icons { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+    .spike-nav-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #5c6370;
+    }
+    .spike-nav-icon:hover { background: #f5f5f7; }
+    .spike-nav-icon.active { background: #f1ecff; }
+
+    .spike-left-panel {
+      width: 440px; flex-shrink: 0;
+      background: #fafafa; display: flex; flex-direction: column;
+      padding: 8px;
+    }
+    .spike-left-inner {
+      flex: 1; background: white;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 16px; display: flex; flex-direction: column;
+      overflow: hidden;
+    }
+    .spike-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 20px 20px 16px; flex-shrink: 0;
+    }
+    .spike-back-btn {
+      width: 28px; height: 28px; border-radius: 6px;
+      border: none; background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: #5c6370; flex-shrink: 0;
+    }
+    .spike-back-btn:hover { background: #f5f5f7; }
+    .spike-title { font-size: 16px; font-weight: 600; color: #1e242e; }
+
+    .spike-convo-area {
+      flex: 1; display: flex; flex-direction: column;
+      justify-content: flex-end; padding: 24px 20px 16px;
+    }
+    .spike-ai-message {
+      background: #f5f5f7; border-radius: 12px 12px 12px 2px;
+      padding: 12px 14px; font-size: 13px; line-height: 1.6;
+      color: #1e242e; margin-bottom: 0;
+    }
+    .spike-ai-message strong { font-weight: 600; }
+
+    .spike-suggestions {
+      display: flex; gap: 8px; padding: 12px 20px; flex-shrink: 0; flex-wrap: wrap;
+    }
+    .spike-suggestion-btn {
+      padding: 6px 12px; border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 6px; background: white;
+      font-size: 12px; font-weight: 500; color: #1e242e;
+      cursor: pointer; font-family: inherit;
+    }
+    .spike-suggestion-btn:hover { background: #f9f9fb; }
+
+    .spike-input-area {
+      padding: 0 8px 8px; flex-shrink: 0;
+    }
+    .spike-input-box {
+      display: flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(0,0,0,0.08); border-radius: 8px;
+      padding: 10px 12px; background: white;
+      box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+    }
+    .spike-input-placeholder { flex: 1; font-size: 14px; color: #5c6370; }
+    .spike-input-actions { display: flex; gap: 4px; }
+
+    .spike-right-panel {
+      flex: 1; background: #fafafa; padding: 8px 8px 8px 0;
+    }
+    .spike-right-inner {
+      height: 100%; background: white;
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 16px;
+    }
+
+    /* Activity hover "View" button */
+    .activity-item { display: flex; align-items: flex-start; gap: 12px; padding: 4px 0; }
+    .activity-item .hover-btn {
+      opacity: 0; flex-shrink: 0; margin-top: 2px;
+      padding: 5px 12px; border: 1px solid rgba(0,0,0,0.12);
+      border-radius: 6px; background: white;
+      font-size: 12px; font-weight: 500; color: #1e242e;
+      cursor: pointer; transition: opacity 0.15s;
+    }
+    .activity-item:hover .hover-btn { opacity: 1; }
+    .activity-item:hover .hover-btn:hover { background: #f9f9fb; }
+    .activity-panel-content { padding: 16px 32px; display: flex; flex-direction: column; gap: 16px; }
   </style>
 </head>
 <body>
-<div class="app">
+<div class="app" id="daily-digest-page">
 
   <!-- ── Sidebar ──────────────────────────────────────────────────── -->
   <nav class="sidebar">
@@ -234,13 +337,7 @@
       <div class="product-header">
         <div class="product-logo">
           <div class="product-icon">
-            <!-- Gorgias-like grid icon -->
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-              <rect x="3" y="3" width="6" height="6" rx="1.5" fill="#6e7686"/>
-              <rect x="11" y="3" width="6" height="6" rx="1.5" fill="#6e7686"/>
-              <rect x="3" y="11" width="6" height="6" rx="1.5" fill="#6e7686"/>
-              <rect x="11" y="11" width="6" height="6" rx="1.5" fill="#6e7686"/>
-            </svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.8426 14.4231V9.67768C16.8426 9.22065 16.8422 8.992 16.7867 8.77933C16.7374 8.59086 16.6566 8.41251 16.5472 8.25134C16.4237 8.06947 16.2521 7.91865 15.9081 7.61769L11.8025 4.02527C11.1639 3.46649 10.8446 3.18724 10.4852 3.08097C10.1686 2.98733 9.8311 2.98733 9.51446 3.08097C9.15538 3.18716 8.83654 3.46614 8.1989 4.02408L4.09192 7.61769C3.74796 7.91865 3.57638 8.06947 3.45292 8.25134C3.34351 8.41251 3.26205 8.59086 3.2128 8.77933C3.15723 8.992 3.15723 9.22064 3.15723 9.67768V14.4231C3.15723 15.2201 3.15723 15.6185 3.28744 15.9329C3.46107 16.352 3.79387 16.6855 4.21303 16.8591C4.52741 16.9893 4.92595 16.9893 5.72302 16.9893C6.5201 16.9893 6.91907 16.9893 7.23345 16.8591C7.65261 16.6855 7.98533 16.3521 8.15895 15.933C8.28917 15.6186 8.28926 15.22 8.28926 14.423V13.5676C8.28926 12.6229 9.05515 11.857 9.99993 11.857C10.9447 11.857 11.7106 12.6229 11.7106 13.5676V14.423C11.7106 15.22 11.7106 15.6186 11.8408 15.933C12.0144 16.3521 12.3473 16.6855 12.7664 16.8591C13.0808 16.9893 13.4793 16.9893 14.2764 16.9893C15.0735 16.9893 15.4725 16.9893 15.7868 16.8591C16.206 16.6855 16.5387 16.352 16.7123 15.9329C16.8425 15.6185 16.8426 15.2201 16.8426 14.4231Z" stroke="#5C6370" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <span class="product-name">Home</span>
         </div>
@@ -262,12 +359,7 @@
       <!-- Primary nav -->
       <div class="nav-group">
         <div class="nav-item active">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <rect x="2.5" y="2.5" width="4.5" height="4.5" rx="1" fill="#683fcf"/>
-            <rect x="9" y="2.5" width="4.5" height="4.5" rx="1" fill="#683fcf"/>
-            <rect x="2.5" y="9" width="4.5" height="4.5" rx="1" fill="#683fcf"/>
-            <rect x="9" y="9" width="4.5" height="4.5" rx="1" fill="#683fcf"/>
-          </svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.33317 7.33325H5.33317M6.6665 9.99992H5.33317M10.6665 4.66659H5.33317M13.3332 4.53325V11.4666C13.3332 12.5867 13.3332 13.1467 13.1152 13.5746C12.9234 13.9509 12.6175 14.2569 12.2412 14.4486C11.8133 14.6666 11.2533 14.6666 10.1332 14.6666H5.8665C4.7464 14.6666 4.18635 14.6666 3.75852 14.4486C3.3822 14.2569 3.07624 13.9509 2.88449 13.5746C2.6665 13.1467 2.6665 12.5867 2.6665 11.4666V4.53325C2.6665 3.41315 2.6665 2.85309 2.88449 2.42527C3.07624 2.04895 3.3822 1.74299 3.75852 1.55124C4.18635 1.33325 4.7464 1.33325 5.8665 1.33325H10.1332C11.2533 1.33325 11.8133 1.33325 12.2412 1.55124C12.6175 1.74299 12.9234 2.04895 13.1152 2.42527C13.3332 2.85309 13.3332 3.41315 13.3332 4.53325Z" stroke="#683FCF" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="nav-label">Daily digest</span>
         </div>
         <div class="nav-item secondary">
@@ -306,7 +398,7 @@
       <!-- Page header -->
       <div class="page-header">
         <h1 class="greeting">Good morning, Jane!</h1>
-        <div class="date-tag">
+        <div class="date-tag" style="background: white; border: 1px solid #e8e8ec;">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <rect x="1.5" y="2.5" width="11" height="10" rx="1.5" stroke="#6e7686" stroke-width="1.2"/>
             <path d="M4.5 1.5V3.5M9.5 1.5V3.5" stroke="#6e7686" stroke-width="1.2" stroke-linecap="round"/>
@@ -339,21 +431,15 @@
                 </button>
               </div>
             </div>
-            <div class="chat-separator"></div>
           </div>
           <div class="chat-suggestion-btns">
             <button class="suggestion-btn">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M7 1L8.796 5.09834L13.25 5.72949L10.125 8.77951L10.892 13.2L7 11L3.108 13.2L3.875 8.77951L0.75 5.72949L5.204 5.09834L7 1Z" stroke="#5c6370" stroke-width="1.2" stroke-linejoin="round"/>
-              </svg>
-              Fix priority issues
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 4.01001H7.55691M11.99 4.01001L11.9898 8.44334M11.99 4.01001L4.01001 11.99" stroke="#1E242E" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Why did subscription spike?
             </button>
             <button class="suggestion-btn">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <rect x="1.5" y="1.5" width="11" height="11" rx="3" stroke="#5c6370" stroke-width="1.2"/>
-                <path d="M4.5 7H9.5M7 4.5V9.5" stroke="#5c6370" stroke-width="1.2" stroke-linecap="round"/>
-              </svg>
-              Weekly summary
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 4.01001H7.55691M11.99 4.01001L11.9898 8.44334M11.99 4.01001L4.01001 11.99" stroke="#1E242E" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Compare performance to last week
             </button>
           </div>
         </div>
@@ -368,7 +454,7 @@
             <div class="metric-label">Health score</div>
             <div>
               <div class="metric-value-row">
-                <span class="sentiment">😊</span>
+                <svg width="40" height="36" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="mask0_234_34848" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="0" width="33" height="33"><circle cx="19.4844" cy="16.9036" r="16" fill="#D9D9D9"/></mask><g mask="url(#mask0_234_34848)"><g filter="url(#filter0_f_234_34848)"><ellipse cx="15.7636" cy="18.0136" rx="11.7636" ry="10.6496" fill="#EF4C00"/><ellipse cx="24.3686" cy="10.6232" rx="10.7441" ry="6.62315" fill="#32C898"/><ellipse cx="18.7558" cy="24.4901" rx="10.7441" ry="6.62315" fill="#FFCB31"/><ellipse cx="24.843" cy="17.4464" rx="9.07986" ry="5.59723" fill="#32C898"/></g></g><circle cx="19.0633" cy="17.3243" r="11.3685" fill="url(#paint0_radial_234_34848)" fill-opacity="0.72"/><circle cx="19.0633" cy="17.3243" r="11.6614" stroke="white" stroke-opacity="0.8" stroke-width="0.585859"/><g filter="url(#filter1_d_234_34848)"><circle cx="25.3788" cy="16.0612" r="3.07547" stroke="white" stroke-width="1.42803" shape-rendering="crispEdges"/></g><defs><filter id="filter0_f_234_34848" x="0" y="0" width="39.1128" height="35.1133" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur_234_34848"/></filter><filter id="filter1_d_234_34848" x="20.1613" y="12.2717" width="10.4352" height="10.4349" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="1.42803"/><feGaussianBlur stdDeviation="0.714015"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_234_34848"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_234_34848" result="shape"/></filter><radialGradient id="paint0_radial_234_34848" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(19.0633 17.3243) rotate(90) scale(12)"><stop offset="0.8" stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white"/></radialGradient></defs></svg>
                 <span class="metric-value">Positive</span>
               </div>
               <div class="metric-sub">Everything running normally</div>
@@ -434,8 +520,7 @@
               <!-- Item 1 -->
               <div class="panel-item">
                 <div class="item-body">
-                  <span class="tag-orange">Skill gap</span>
-                  <div class="item-title">Skill a delivery requests misrouted as full subscription pauses</div>
+                  <div class="item-title">"Skip a delivery" requests misrouted as full subscription pauses</div>
                   <div class="item-desc">Customers asking to skip their next delivery had their entire subscription paused indefinitely</div>
                   <div class="delta delta-down">
                     <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
@@ -444,7 +529,7 @@
                     Adherence dropped to 18%
                   </div>
                 </div>
-                <button class="review-btn">Review</button>
+                <button class="review-btn monitor-btn">Monitor</button>
               </div>
 
               <div class="divider"></div>
@@ -452,7 +537,6 @@
               <!-- Item 2 -->
               <div class="panel-item">
                 <div class="item-body">
-                  <span class="tag-orange">Tone</span>
                   <div class="item-title">Calibrate tone of voice</div>
                   <div class="item-desc">TOV scorer flagged in two refund responses</div>
                 </div>
@@ -476,28 +560,34 @@
                 </svg>
               </button>
             </div>
-            <div class="panel-content">
+            <div class="activity-panel-content">
 
               <!-- Activity 1 -->
-              <div>
-                <div class="item-title">"Shipping status" skill improved</div>
-                <div class="item-desc" style="margin-top:4px;">Adherence rate increased from 71% to 83% after last update</div>
-                <div class="item-ts" style="margin-top:4px;">Deployed 5h ago</div>
+              <div class="activity-item">
+                <div class="item-body">
+                  <div class="item-title">"Shipping status" skill improved</div>
+                  <div class="item-desc">Adherence rate increased from 71% to 83% after last update</div>
+                  <div class="item-ts" style="margin-top:2px;">Deployed 5h ago</div>
+                </div>
+                <button class="hover-btn">View</button>
               </div>
 
               <div class="divider"></div>
 
               <!-- Activity 2 -->
-              <div>
-                <div class="item-title">"Shipping status" skill created</div>
-                <div class="item-desc" style="margin-top:4px;">New skill trained on 120 conversations about order tracking</div>
-                <div class="item-ts" style="margin-top:4px;">Deployed 10h ago</div>
-                <div class="delta delta-up" style="margin-top:4px;">
-                  <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                    <path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  +12% success rate
+              <div class="activity-item">
+                <div class="item-body">
+                  <div class="item-title">"Shipping status" skill created</div>
+                  <div class="item-desc">New skill trained on 120 conversations about order tracking</div>
+                  <div class="item-ts" style="margin-top:2px;">Deployed 10h ago</div>
+                  <div class="delta delta-up" style="margin-top:4px;">
+                    <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                      <path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    +12% success rate
+                  </div>
                 </div>
+                <button class="hover-btn">View</button>
               </div>
 
             </div>
@@ -509,5 +599,93 @@
   </main>
 
 </div>
+
+<!-- ── Spike page ──────────────────────────────────────────────────── -->
+<div id="spike-page">
+
+  <!-- Icon sidebar -->
+  <nav class="spike-icon-sidebar">
+    <div class="top-icons">
+      <div class="spike-nav-icon" title="Home">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.8426 14.4231V9.67768C16.8426 9.22065 16.8422 8.992 16.7867 8.77933C16.7374 8.59086 16.6566 8.41251 16.5472 8.25134C16.4237 8.06947 16.2521 7.91865 15.9081 7.61769L11.8025 4.02527C11.1639 3.46649 10.8446 3.18724 10.4852 3.08097C10.1686 2.98733 9.8311 2.98733 9.51446 3.08097C9.15538 3.18716 8.83654 3.46614 8.1989 4.02408L4.09192 7.61769C3.74796 7.91865 3.57638 8.06947 3.45292 8.25134C3.34351 8.41251 3.26205 8.59086 3.2128 8.77933C3.15723 8.992 3.15723 9.22064 3.15723 9.67768V14.4231C3.15723 15.2201 3.15723 15.6185 3.28744 15.9329C3.46107 16.352 3.79387 16.6855 4.21303 16.8591C4.52741 16.9893 4.92595 16.9893 5.72302 16.9893C6.5201 16.9893 6.91907 16.9893 7.23345 16.8591C7.65261 16.6855 7.98533 16.3521 8.15895 15.933C8.28917 15.6186 8.28926 15.22 8.28926 14.423V13.5676C8.28926 12.6229 9.05515 11.857 9.99993 11.857C10.9447 11.857 11.7106 12.6229 11.7106 13.5676V14.423C11.7106 15.22 11.7106 15.6186 11.8408 15.933C12.0144 16.3521 12.3473 16.6855 12.7664 16.8591C13.0808 16.9893 13.4793 16.9893 14.2764 16.9893C15.0735 16.9893 15.4725 16.9893 15.7868 16.8591C16.206 16.6855 16.5387 16.352 16.7123 15.9329C16.8425 15.6185 16.8426 15.2201 16.8426 14.4231Z" stroke="#5C6370" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="spike-nav-icon active" title="Daily digest">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M9.33317 7.33325H5.33317M6.6665 9.99992H5.33317M10.6665 4.66659H5.33317M13.3332 4.53325V11.4666C13.3332 12.5867 13.3332 13.1467 13.1152 13.5746C12.9234 13.9509 12.6175 14.2569 12.2412 14.4486C11.8133 14.6666 11.2533 14.6666 10.1332 14.6666H5.8665C4.7464 14.6666 4.18635 14.6666 3.75852 14.4486C3.3822 14.2569 3.07624 13.9509 2.88449 13.5746C2.6665 13.1467 2.6665 12.5867 2.6665 11.4666V4.53325C2.6665 3.41315 2.6665 2.85309 2.88449 2.42527C3.07624 2.04895 3.3822 1.74299 3.75852 1.55124C4.18635 1.33325 4.7464 1.33325 5.8665 1.33325H10.1332C11.2533 1.33325 11.8133 1.33325 12.2412 1.55124C12.6175 1.74299 12.9234 2.04895 13.1152 2.42527C13.3332 2.85309 13.3332 3.41315 13.3332 4.53325Z" stroke="#683FCF" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="spike-nav-icon" title="Search">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#5c6370" stroke-width="1.3"/><path d="M11 11L14 14" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+    <div class="bottom-icons">
+      <div style="position:relative; display:inline-block;">
+        <div class="avatar" style="width:28px;height:28px;font-size:11px;">J</div>
+        <div class="online-dot" style="width:7px;height:7px;"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Left conversation panel -->
+  <div class="spike-left-panel">
+    <div class="spike-left-inner">
+
+      <!-- Header -->
+      <div class="spike-header">
+        <button class="spike-back-btn" id="spike-back-btn" title="Back">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="#5c6370" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <span class="spike-title">Spike in subscription</span>
+      </div>
+
+      <!-- Conversation area -->
+      <div class="spike-convo-area">
+        <p style="font-size:13px; line-height:1.6; color:#1e242e;">
+          Customers asking to skip their next delivery had their entire <strong>subscription paused indefinitely</strong>. I've found the cause of reactivation spike. Take a look at the problem breakdown on the right.
+        </p>
+      </div>
+
+      <!-- Suggestion buttons -->
+      <div class="spike-suggestions">
+        <button class="spike-suggestion-btn">Show me affected tickets</button>
+        <button class="spike-suggestion-btn">What did you do about it?</button>
+      </div>
+
+      <!-- Chat input -->
+      <div class="spike-input-area">
+        <div class="spike-input-box">
+          <span class="spike-input-placeholder">Ask anything...</span>
+          <div class="spike-input-actions">
+            <button class="chat-icon-btn" title="Add">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3V13M3 8H13" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/></svg>
+            </button>
+            <button class="chat-icon-btn" title="Voice">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="5.5" y="1.5" width="5" height="8" rx="2.5" stroke="#5c6370" stroke-width="1.3"/><path d="M3 8.5C3 11.2614 5.23858 13.5 8 13.5C10.7614 13.5 13 11.2614 13 8.5" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/><line x1="8" y1="13.5" x2="8" y2="15" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Right panel (chart area) -->
+  <div class="spike-right-panel">
+    <div class="spike-right-inner"></div>
+  </div>
+
+</div>
+
+<script>
+  function showSpike() {
+    document.getElementById('daily-digest-page').style.display = 'none';
+    const spike = document.getElementById('spike-page');
+    spike.style.display = 'flex';
+  }
+  function showDigest() {
+    document.getElementById('spike-page').style.display = 'none';
+    document.getElementById('daily-digest-page').style.display = 'flex';
+  }
+  document.querySelectorAll('.monitor-btn').forEach(btn => btn.addEventListener('click', showSpike));
+  document.getElementById('spike-back-btn').addEventListener('click', showDigest);
+</script>
 </body>
 </html>
