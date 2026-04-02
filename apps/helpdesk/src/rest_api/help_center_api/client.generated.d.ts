@@ -67,10 +67,6 @@ declare namespace Components {
              */
             subject: string
         }
-        export interface AccessTokenDto {
-            access_token: string
-            token_type: string
-        }
         export interface AccountInfoDto {
             account_id: number
             shop_name: string | null
@@ -5810,11 +5806,13 @@ declare namespace Paths {
     namespace GetKnowledgeHubArticles {
         namespace Parameters {
             export type AccountId = number
+            export type ExcludeArticlesWithIntent = boolean
             export type FaqHelpCenterId = number
             export type GuidanceHelpCenterId = number
             export type SnippetHelpCenterId = number
         }
         export interface QueryParameters {
+            exclude_articles_with_intent?: Parameters.ExcludeArticlesWithIntent
             faq_help_center_id?: Parameters.FaqHelpCenterId
             snippet_help_center_id?: Parameters.SnippetHelpCenterId
             guidance_help_center_id?: Parameters.GuidanceHelpCenterId

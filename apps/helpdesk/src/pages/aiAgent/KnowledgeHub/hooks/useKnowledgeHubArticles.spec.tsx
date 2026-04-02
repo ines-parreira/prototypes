@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -8,9 +9,17 @@ import type { RootState } from 'state/types'
 
 import { useKnowledgeHubArticles } from './useKnowledgeHubArticles'
 
+jest.mock('@repo/feature-flags', () => ({
+    useFlag: jest.fn(),
+    FeatureFlagKey: {
+        KnowledgeIntentManagementSystem: 'knowledge-intent-management-system',
+    },
+}))
 jest.mock('models/helpCenter/queries')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/aiAgent/KnowledgeHub/utils/transformKnowledgeHubArticles')
+
+const mockUseFlag = useFlag as jest.Mock
 
 const mockUseGetKnowledgeHubArticles = jest.requireMock(
     'models/helpCenter/queries',
@@ -31,6 +40,7 @@ describe('useKnowledgeHubArticles', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseFlag.mockReturnValue(false)
 
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             storeConfiguration: {
@@ -157,6 +167,42 @@ describe('useKnowledgeHubArticles', () => {
                 enabled: false,
             }),
         )
+    })
+
+    describe('exclude_articles_with_intent param', () => {
+        it('passes false when KnowledgeIntentManagementSystem flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+
+            renderHook(() => useKnowledgeHubArticles(), {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore}>{children}</Provider>
+                ),
+            })
+
+            expect(mockUseGetKnowledgeHubArticles).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    exclude_articles_with_intent: false,
+                }),
+                expect.any(Object),
+            )
+        })
+
+        it('passes true when KnowledgeIntentManagementSystem flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+
+            renderHook(() => useKnowledgeHubArticles(), {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore}>{children}</Provider>
+                ),
+            })
+
+            expect(mockUseGetKnowledgeHubArticles).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    exclude_articles_with_intent: true,
+                }),
+                expect.any(Object),
+            )
+        })
     })
 
     it('returns undefined help center IDs when store configuration is null', () => {

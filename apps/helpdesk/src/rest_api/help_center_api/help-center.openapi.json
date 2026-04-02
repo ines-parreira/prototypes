@@ -1710,6 +1710,13 @@
                 "description": "Retrieves articles from guidance, FAQ, and/or snippet help centers. At least one help center ID must be provided. Agent authentication is restricted to their own account.",
                 "parameters": [
                     {
+                        "name": "exclude_articles_with_intent",
+                        "required": false,
+                        "in": "query",
+                        "description": "When true, excludes articles that are linked to intents",
+                        "schema": { "type": "boolean" }
+                    },
+                    {
                         "name": "faq_help_center_id",
                         "required": false,
                         "in": "query",

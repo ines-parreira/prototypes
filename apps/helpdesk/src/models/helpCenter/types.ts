@@ -306,4 +306,5 @@ export type KnowledgeHubArticlesQueryParams = {
     guidance_help_center_id?: number | null
     snippet_help_center_id?: number | null
     faq_help_center_id?: number | null
+    exclude_articles_with_intent?: boolean
 }
