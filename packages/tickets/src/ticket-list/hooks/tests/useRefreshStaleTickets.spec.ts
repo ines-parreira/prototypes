@@ -92,6 +92,29 @@ function seedViewListCache(
     )
 }
 
+function seedMultiPageViewListCache(
+    queryClient: QueryClient,
+    pages: Ticket[][],
+    nextItems: Array<string | null>,
+) {
+    queryClient.setQueryData<InfiniteData<{ data: Ticket[]; meta: object }>>(
+        queryKeys.views.listViewItems(viewId, undefined),
+        {
+            pages: pages.map((tickets, index) => ({
+                data: tickets,
+                meta: {
+                    next_items: nextItems[index],
+                    prev_items: null,
+                    current_cursor: index === 0 ? null : `cursor-${index}`,
+                },
+            })),
+            pageParams: pages.map((_, index) =>
+                index === 0 ? undefined : `cursor-${index}`,
+            ),
+        },
+    )
+}
+
 function seedTicketCache(queryClient: QueryClient, ticket: Ticket) {
     queryClient.setQueryData(queryKeys.tickets.getTicket(ticket.id), {
         data: ticket,
@@ -342,19 +365,83 @@ describe('useRefreshStaleTickets', () => {
     })
 
     describe('structural changes', () => {
-        it('should not invalidate the list when a new ticket enters the view', async () => {
+        it('should refetch only the first page when a new ticket enters the first cached page', async () => {
             const queryClient = createQueryClient()
-            seedViewListCache(queryClient, [mockTicket1])
+            const ticket3 = mockTicket({
+                id: 3,
+                updated_datetime: OLD_DATETIME,
+            })
+            seedMultiPageViewListCache(
+                queryClient,
+                [[mockTicket1, mockTicket2], [ticket3]],
+                ['/api/views/123/items/?cursor=stable-cursor', null],
+            )
 
             server.use(
                 mockListViewItemsUpdatesHandler(async () =>
                     HttpResponse.json({
                         data: [
+                            makeUpdateItem(mockTicket1),
                             {
                                 id: 99,
                                 updated_datetime: NEW_DATETIME,
                                 customer: {},
                             },
+                            makeUpdateItem(mockTicket2),
+                            makeUpdateItem(ticket3),
+                        ],
+                        meta: {},
+                    }),
+                ).handler,
+            )
+
+            let capturedRefetchPage:
+                | ((
+                      page: { data: Array<{ id?: number }> },
+                      index: number,
+                  ) => boolean)
+                | undefined
+
+            vi.spyOn(queryClient, 'invalidateQueries').mockImplementation(
+                async (filters: any) => {
+                    capturedRefetchPage = filters?.refetchPage
+                },
+            )
+
+            renderHook(queryClient)
+
+            await waitFor(() => {
+                expect(capturedRefetchPage).toBeDefined()
+            })
+
+            expect(capturedRefetchPage?.({ data: [{ id: 1 }] }, 0)).toBe(true)
+            expect(capturedRefetchPage?.({ data: [{ id: 3 }] }, 1)).toBe(false)
+        })
+
+        it('should invalidate the full list when a new ticket enters after the first cached page', async () => {
+            const queryClient = createQueryClient()
+            const ticket3 = mockTicket({
+                id: 3,
+                updated_datetime: OLD_DATETIME,
+            })
+            seedMultiPageViewListCache(
+                queryClient,
+                [[mockTicket1, mockTicket2], [ticket3]],
+                ['/api/views/123/items/?cursor=stable-cursor', null],
+            )
+
+            server.use(
+                mockListViewItemsUpdatesHandler(async () =>
+                    HttpResponse.json({
+                        data: [
+                            makeUpdateItem(mockTicket1),
+                            makeUpdateItem(mockTicket2),
+                            {
+                                id: 99,
+                                updated_datetime: NEW_DATETIME,
+                                customer: {},
+                            },
+                            makeUpdateItem(ticket3),
                         ],
                         meta: {},
                     }),
@@ -365,13 +452,11 @@ describe('useRefreshStaleTickets', () => {
 
             renderHook(queryClient)
 
-            await act(async () => {})
-
-            expect(invalidateSpy).not.toHaveBeenCalledWith(
-                expect.objectContaining({
+            await waitFor(() => {
+                expect(invalidateSpy).toHaveBeenCalledWith({
                     queryKey: queryKeys.views.listViewItems(viewId, undefined),
-                }),
-            )
+                })
+            })
         })
 
         it('should remove a cached ticket that has left the view', async () => {

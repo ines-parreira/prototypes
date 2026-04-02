@@ -24,6 +24,7 @@ type Props = {
 type DiffResult = {
     removedIds: Set<number>
     staleIds: Set<number>
+    insertedIds: Set<number>
 }
 
 function invalidateTicketCaches(
@@ -96,6 +97,7 @@ function diffUpdatesAgainstCache(
     const updateIds = new Set<number>()
     const removedIds = new Set<number>()
     const staleIds = new Set<number>()
+    const insertedIds = new Set<number>()
 
     for (const update of updates) {
         if (update.id === undefined) continue
@@ -103,6 +105,11 @@ function diffUpdatesAgainstCache(
         updateIds.add(update.id)
 
         const cachedTime = cachedUpdatedAt.get(update.id)
+        if (!cachedUpdatedAt.has(update.id)) {
+            insertedIds.add(update.id)
+            continue
+        }
+
         if (
             cachedTime != null &&
             update.updated_datetime != null &&
@@ -124,7 +131,22 @@ function diffUpdatesAgainstCache(
     return {
         removedIds,
         staleIds,
+        insertedIds,
     }
+}
+
+function hasInsertedTicketInFirstPage(
+    updates: ListViewItemsUpdates200DataItem[],
+    cachedUpdatedAt: Map<number, string | null>,
+    firstPageSize: number,
+) {
+    return updates
+        .slice(0, firstPageSize)
+        .some(
+            (update) =>
+                typeof update.id === 'number' &&
+                !cachedUpdatedAt.has(update.id),
+        )
 }
 
 export function useRefreshStaleTickets({
@@ -167,12 +189,33 @@ export function useRefreshStaleTickets({
         const cachedUpdatedAt = buildCachedTimestamps(cached)
         const cachedUpToCursor = getCachedUpToCursor(cached)
         const canApplyRemovals = cachedUpToCursor === upToCursor
-        const { removedIds, staleIds } = diffUpdatesAgainstCache(
+        const { removedIds, staleIds, insertedIds } = diffUpdatesAgainstCache(
             updates,
             cachedUpdatedAt,
         )
+        const shouldRefetchFirstPageOnly =
+            insertedIds.size > 0 &&
+            hasInsertedTicketInFirstPage(
+                updates,
+                cachedUpdatedAt,
+                cached.pages[0]?.data.length ?? 0,
+            )
 
-        if (canApplyRemovals && removedIds.size > 0) {
+        if (canApplyRemovals && insertedIds.size > 0) {
+            if (shouldRefetchFirstPageOnly) {
+                void queryClient.invalidateQueries({
+                    queryKey: queryKeys.views.listViewItems(viewId, params),
+                    refetchPage: (
+                        _page: { data: Array<{ id?: number }> },
+                        index: number,
+                    ) => index === 0,
+                })
+            } else {
+                void queryClient.invalidateQueries({
+                    queryKey: queryKeys.views.listViewItems(viewId, params),
+                })
+            }
+        } else if (canApplyRemovals && removedIds.size > 0) {
             removeTicketsFromListCache(
                 queryClient,
                 queryKeys.views.listViewItems(viewId, params),
