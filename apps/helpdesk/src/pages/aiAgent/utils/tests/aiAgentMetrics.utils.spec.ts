@@ -30,11 +30,13 @@ import {
     getLineChartDataHooks,
     getLineChartGraphConfig,
     useAutomationMetricPerAiAgentRole,
+    useAutomationMetricPerAiIntentCustomField,
     useAutomationMetricPerAutomationFeatureType,
     useAutomationMetricPerChannel,
     useAutomationMetricPerEngagementType,
     useAutomationMetricPerStoreIntegrationId,
     useAutomationTimeSeriesPerAiAgentRole,
+    useAutomationTimeSeriesPerAiIntentCustomField,
     useAutomationTimeSeriesPerAutomationFeatureType,
     useAutomationTimeSeriesPerChannel,
     useAutomationTimeSeriesPerEngagementType,
@@ -852,6 +854,120 @@ describe('useAutomationMetricPerAiAgentRole', () => {
     })
 })
 
+describe('useAutomationMetricPerAiIntentCustomField', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('should replace "::" with "/" in dimension values', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: 'returns::damaged', value: 10 },
+                    { dimension: 'shipping::delay', value: 20 },
+                    { dimension: 'simple', value: 30 },
+                ],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerAiIntentCustomField(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { name: 'returns/damaged', value: 10 },
+            { name: 'shipping/delay', value: 20 },
+            { name: 'simple', value: 30 },
+        ])
+    })
+
+    it('should replace all occurrences of "::" with "/" in dimension values', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [{ dimension: 'a::b::c', value: 10 }],
+            },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerAiIntentCustomField(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([{ name: 'a/b/c', value: 10 }])
+    })
+
+    it('should return empty array when allValues is undefined', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: { allValues: undefined },
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerAiIntentCustomField(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.data).toEqual([])
+    })
+
+    it('should return isLoading derived from isFetching', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            isFetching: true,
+            data: null,
+        })
+
+        const { result } = renderHook(() =>
+            useAutomationMetricPerAiIntentCustomField(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should call query and useStatsMetricPerDimension with aiIntentCustomField dimension', () => {
+        const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+        mockQuery.mockReturnValue(mockBuiltQuery)
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: null,
+        })
+
+        renderHook(() =>
+            useAutomationMetricPerAiIntentCustomField(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+            ),
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith({
+            filters: defaultFilters,
+            timezone: defaultTimezone,
+            dimensions: ['aiIntentCustomField'],
+        })
+        expect(useStatsMetricPerDimensionMock).toHaveBeenCalledWith(
+            mockBuiltQuery,
+            'aiIntentCustomField',
+        )
+    })
+})
+
 describe('getBarChartDataHooks', () => {
     const mockTrendHook = jest.fn()
     const mockTrendResult = {
@@ -1049,6 +1165,54 @@ describe('getBarChartDataHooks', () => {
         expect(result.current.data).toEqual([
             { name: 'Shopping Assistant', value: 10 },
             { name: 'Support Agent', value: 20 },
+        ])
+        expect(result.current.isLoading).toBe(false)
+    })
+
+    it('should return aiIntentCustomField dimension config with HorizontalBar chart type and expand controls', () => {
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['aiIntentCustomField'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+        )
+
+        expect(dimensions).toHaveLength(1)
+        expect(dimensions[0]).toMatchObject({
+            id: 'aiIntentCustomField',
+            name: 'Intent',
+            configurableGraphType: ConfigurableGraphType.HorizontalBar,
+            initialItemsCount: 5,
+            showExpandButton: true,
+            period,
+        })
+    })
+
+    it('should return aiIntentCustomField useChartData that calls useStatsMetricPerDimension with aiIntentCustomField dimension and returns formatted data', () => {
+        useStatsMetricPerDimensionMock.mockReturnValue({
+            ...defaultDimensionResult,
+            data: {
+                allValues: [
+                    { dimension: 'returns::damaged', value: 15 },
+                    { dimension: 'shipping', value: 25 },
+                ],
+            },
+        } as any)
+
+        const { dimensions } = getBarChartDataHooks(
+            mockQuery,
+            ['aiIntentCustomField'],
+            defaultFilters,
+            defaultTimezone,
+            period,
+        )
+
+        const { result } = renderHook(() => dimensions[0].useChartData())
+
+        expect(result.current.data).toEqual([
+            { name: 'returns/damaged', value: 15 },
+            { name: 'shipping', value: 25 },
         ])
         expect(result.current.isLoading).toBe(false)
     })
@@ -1998,6 +2162,133 @@ describe('useAutomationTimeSeriesPerAiAgentRole', () => {
     })
 })
 
+describe('useAutomationTimeSeriesPerAiIntentCustomField', () => {
+    const defaultGranularity = ReportingGranularity.Day
+
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
+    it('should replace "::" with "/" in dimension keys', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                'returns::damaged': [[{ dateTime: '2025-01-01', value: 10 }]],
+                shipping: [[{ dateTime: '2025-01-01', value: 20 }]],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerAiIntentCustomField(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            {
+                label: 'returns/damaged',
+                values: [{ date: 'Jan 1', value: 10 }],
+            },
+            {
+                label: 'shipping',
+                values: [{ date: 'Jan 1', value: 20 }],
+            },
+        ])
+    })
+
+    it('should replace all occurrences of "::" with "/" in dimension keys', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: {
+                'a::b::c': [[{ dateTime: '2025-01-01', value: 10 }]],
+            },
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerAiIntentCustomField(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            {
+                label: 'a/b/c',
+                values: [{ date: 'Jan 1', value: 10 }],
+            },
+        ])
+    })
+
+    it('should return empty array when data is undefined', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerAiIntentCustomField(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.data).toEqual([])
+    })
+
+    it('should return isLoading derived from isFetching', () => {
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: true,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useAutomationTimeSeriesPerAiIntentCustomField(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(result.current.isLoading).toBe(true)
+    })
+
+    it('should call query with filters, timezone, aiIntentCustomField dimension, and granularity', () => {
+        const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+        mockQuery.mockReturnValue(mockBuiltQuery)
+        useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+            data: undefined,
+            isFetching: false,
+        } as any)
+
+        renderHook(() =>
+            useAutomationTimeSeriesPerAiIntentCustomField(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            ),
+        )
+
+        expect(mockQuery).toHaveBeenCalledWith({
+            filters: defaultFilters,
+            timezone: defaultTimezone,
+            dimensions: ['aiIntentCustomField'],
+            granularity: defaultGranularity,
+        })
+        expect(useStatsTimeSeriesPerDimensionMock).toHaveBeenCalledWith(
+            mockBuiltQuery,
+        )
+    })
+})
+
 describe('getLineChartDataHooks', () => {
     const mockTrendHook = jest.fn()
     const mockTrendQuery = jest.fn()
@@ -2145,6 +2436,24 @@ describe('getLineChartDataHooks', () => {
         expect(dimensions[0]).toMatchObject({
             id: 'aiAgentRole',
             name: 'Role',
+            configurableGraphType: ConfigurableGraphType.MultipleTimeSeries,
+        })
+    })
+
+    it('should return aiIntentCustomField dimension config with MultipleTimeSeries chart type', () => {
+        const { dimensions } = getLineChartDataHooks(
+            mockTrendQuery,
+            mockTimeSeriesQuery,
+            ['aiIntentCustomField'],
+            defaultFilters,
+            defaultTimezone,
+            defaultGranularity,
+        )
+
+        expect(dimensions).toHaveLength(1)
+        expect(dimensions[0]).toMatchObject({
+            id: 'aiIntentCustomField',
+            name: 'Intent',
             configurableGraphType: ConfigurableGraphType.MultipleTimeSeries,
         })
     })
@@ -2513,6 +2822,69 @@ describe('getLineChartDataHooks', () => {
                 mockTrendQuery,
                 mockTimeSeriesQuery,
                 ['aiAgentRole'],
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            )
+
+            const { result } = renderHook(() => dimensions[0].useChartData())
+
+            expect(result.current.isLoading).toBe(true)
+        })
+
+        it('aiIntentCustomField useChartData calls useStatsTimeSeriesPerDimension with aiIntentCustomField dimension and returns formatted data', () => {
+            const mockBuiltQuery = { scope: 'test', measures: [], filters: [] }
+            mockTimeSeriesQuery.mockReturnValue(mockBuiltQuery)
+            useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+                data: {
+                    'returns::damaged': [
+                        [{ dateTime: '2025-01-01', value: 10 }],
+                    ],
+                    shipping: [[{ dateTime: '2025-01-01', value: 20 }]],
+                },
+                isFetching: false,
+            } as any)
+
+            const { dimensions } = getLineChartDataHooks(
+                mockTrendQuery,
+                mockTimeSeriesQuery,
+                ['aiIntentCustomField'],
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+            )
+
+            const { result } = renderHook(() => dimensions[0].useChartData())
+
+            expect(mockTimeSeriesQuery).toHaveBeenCalledWith({
+                filters: defaultFilters,
+                timezone: defaultTimezone,
+                dimensions: ['aiIntentCustomField'],
+                granularity: defaultGranularity,
+            })
+            expect(result.current.data).toEqual([
+                {
+                    label: 'returns/damaged',
+                    values: [{ date: 'Jan 1', value: 10 }],
+                },
+                {
+                    label: 'shipping',
+                    values: [{ date: 'Jan 1', value: 20 }],
+                },
+            ])
+            expect(result.current.isLoading).toBe(false)
+        })
+
+        it('aiIntentCustomField useChartData returns isLoading true when fetching', () => {
+            useStatsTimeSeriesPerDimensionMock.mockReturnValue({
+                data: undefined,
+                isFetching: true,
+            } as any)
+
+            const { dimensions } = getLineChartDataHooks(
+                mockTrendQuery,
+                mockTimeSeriesQuery,
+                ['aiIntentCustomField'],
                 defaultFilters,
                 defaultTimezone,
                 defaultGranularity,

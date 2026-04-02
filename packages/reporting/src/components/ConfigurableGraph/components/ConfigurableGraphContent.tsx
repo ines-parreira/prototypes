@@ -1,6 +1,7 @@
 import { BarChart, DonutChart } from '../../ChartCard'
 import type { ChartType } from '../../ChartCard'
 import { HorizontalBarChart } from '../../HorizontalBarChart'
+import { NoDataPlaceholder } from '../../NoDataPlaceholder/NoDataPlaceholder'
 import { MultipleTimeSeriesChart } from '../../TimeSeriesChart/MultipleTimeSeriesChart'
 import { TimeSeriesChart } from '../../TimeSeriesChart/TimeSeriesChart'
 import type { ConfigurableGraphGroupingConfig } from '../types'
@@ -32,9 +33,13 @@ function DonutOrBarWithToggleRenderer({
     activeGraphType: ChartType
 }) {
     const { data, isLoading } = groupingConfig.useChartData()
-    const filteredData = data?.filter(
-        (item) => item.value !== 0 && item.value !== null,
-    )
+    const filteredData = data
+        ?.filter((item) => item.value !== 0 && item.value !== null)
+        .sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
+
+    if (!isLoading && filteredData?.length === 0) {
+        return <NoDataPlaceholder />
+    }
 
     if (activeGraphType === 'donut') {
         return (
@@ -67,6 +72,10 @@ function TimeSeriesRenderer({
 }) {
     const { data, isLoading } = groupingConfig.useChartData()
 
+    if (!isLoading && data?.length === 0) {
+        return <NoDataPlaceholder />
+    }
+
     return (
         <TimeSeriesChart
             data={data ?? []}
@@ -85,6 +94,10 @@ function MultipleTimeSeriesRenderer({
 }) {
     const { data, isLoading } = groupingConfig.useChartData()
 
+    if (!isLoading && data?.length === 0) {
+        return <NoDataPlaceholder />
+    }
+
     return (
         <MultipleTimeSeriesChart
             data={data ?? []}
@@ -102,15 +115,22 @@ function HorizontalBarRenderer({
     groupingConfig: HorizontalBarGroupingConfig
 }) {
     const { data, isLoading } = groupingConfig.useChartData()
+    const filteredData = data
+        ?.filter((item) => item.value !== 0 && item.value !== null)
+        .sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
+
+    if (!isLoading && filteredData?.length === 0) {
+        return <NoDataPlaceholder />
+    }
 
     return (
         <HorizontalBarChart
-            data={data ?? []}
+            data={filteredData ?? []}
             isLoading={isLoading}
             valueFormatter={groupingConfig.valueFormatter}
             initialItemsCount={groupingConfig.initialItemsCount}
             showExpandButton={groupingConfig.showExpandButton}
-            maxExpandedHeight={groupingConfig.maxExpandedHeight}
+            maxExpandedHeight={groupingConfig.maxExpandedHeight ?? 280}
         />
     )
 }

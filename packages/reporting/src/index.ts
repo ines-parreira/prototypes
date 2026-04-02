@@ -32,6 +32,7 @@ export {
 export { MultipleTimeSeriesChart } from './components/TimeSeriesChart/MultipleTimeSeriesChart'
 export { TrendChart } from './components/TrendChart/TrendChart'
 export { TrendCard } from './components/TrendCard/TrendCard'
+export { NoDataPlaceholder } from './components/NoDataPlaceholder/NoDataPlaceholder'
 export {
     formatMetricTrend,
     formatMetricValue,

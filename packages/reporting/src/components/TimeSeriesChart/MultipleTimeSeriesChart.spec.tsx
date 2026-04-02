@@ -86,6 +86,66 @@ describe('MultipleTimeSeriesChart', () => {
             expect(screen.queryByText('Series A')).not.toBeInTheDocument()
             expect(screen.queryByText('Series B')).not.toBeInTheDocument()
         })
+
+        it('should show overflow message when series exceed maxSeries', () => {
+            const manySeriesData: MultipleTimeSeriesDataItem[] = [
+                {
+                    label: 'Series A',
+                    values: [{ date: 'Jan 1', value: 500 }],
+                },
+                {
+                    label: 'Series B',
+                    values: [{ date: 'Jan 1', value: 400 }],
+                },
+                {
+                    label: 'Series C',
+                    values: [{ date: 'Jan 1', value: 300 }],
+                },
+            ]
+
+            render(
+                <MultipleTimeSeriesChart data={manySeriesData} maxSeries={2} />,
+            )
+
+            expect(
+                screen.getByText('Showing the top 2 out of 3'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show overflow message when all series fit within maxSeries', () => {
+            render(<MultipleTimeSeriesChart data={mockData} maxSeries={5} />)
+
+            expect(
+                screen.queryByText(/Showing the top/),
+            ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('maxSeries', () => {
+        it('should only render top series by total value when maxSeries is set', () => {
+            const manySeriesData: MultipleTimeSeriesDataItem[] = [
+                {
+                    label: 'High Value',
+                    values: [{ date: 'Jan 1', value: 1000 }],
+                },
+                {
+                    label: 'Low Value',
+                    values: [{ date: 'Jan 1', value: 10 }],
+                },
+                {
+                    label: 'Mid Value',
+                    values: [{ date: 'Jan 1', value: 500 }],
+                },
+            ]
+
+            render(
+                <MultipleTimeSeriesChart data={manySeriesData} maxSeries={2} />,
+            )
+
+            expect(screen.getByText('High Value')).toBeInTheDocument()
+            expect(screen.getByText('Mid Value')).toBeInTheDocument()
+            expect(screen.queryByText('Low Value')).not.toBeInTheDocument()
+        })
     })
 
     describe('Edge cases', () => {
@@ -111,12 +171,12 @@ describe('MultipleTimeSeriesChart', () => {
 })
 
 describe('MultipleTimeSeriesLegend', () => {
-    it('should render series names', () => {
-        const seriesWithColors = [
-            { name: 'Series A', value: 0, color: '#800080' },
-            { name: 'Series B', value: 0, color: '#FFA500' },
-        ]
+    const seriesWithColors = [
+        { name: 'Series A', value: 0, color: '#800080' },
+        { name: 'Series B', value: 0, color: '#FFA500' },
+    ]
 
+    it('should render series names', () => {
         render(<MultipleTimeSeriesLegend seriesWithColors={seriesWithColors} />)
 
         expect(screen.getByText('Series A')).toBeInTheDocument()

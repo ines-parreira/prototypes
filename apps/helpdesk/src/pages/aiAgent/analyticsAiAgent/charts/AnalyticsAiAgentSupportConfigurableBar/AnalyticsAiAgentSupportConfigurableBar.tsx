@@ -32,7 +32,15 @@ export const SUPPORT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory: dynamicSupportAgentAutomatedInteractionsQueryFactoryV2,
-        dimensions: ['channel', 'storeIntegrationId'],
+        dimensions: ['channel', 'storeIntegrationId', 'aiIntentCustomField'],
+    },
+    {
+        measure: 'averageDecreaseInFirstResponseTime',
+        name: 'Decrease in first response time',
+        metricFormat: 'duration' as const,
+        interpretAs: 'more-is-better' as const,
+        queryFactory: dynamicSupportAgentDecreaseInFRTQueryFactoryV2,
+        dimensions: ['channel', 'storeIntegrationId', 'aiIntentCustomField'],
     },
     {
         measure: 'averageTimeSavedByAgent',
@@ -48,19 +56,11 @@ export const SUPPORT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         metricFormat: 'currency-precision-1' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory: dynamicSupportAgentAutomatedInteractionsQueryFactoryV2,
-        dimensions: ['channel', 'storeIntegrationId'],
+        dimensions: ['channel', 'storeIntegrationId', 'aiIntentCustomField'],
         valueTransform: (v, extra) =>
             v !== null && extra?.costSavedPerInteraction != null
                 ? v * extra.costSavedPerInteraction
                 : null,
-    },
-    {
-        measure: 'averageDecreaseInFirstResponseTime',
-        name: 'Decrease in first response time',
-        metricFormat: 'duration' as const,
-        interpretAs: 'more-is-better' as const,
-        queryFactory: dynamicSupportAgentDecreaseInFRTQueryFactoryV2,
-        dimensions: ['channel', 'storeIntegrationId'],
     },
 ]
 

@@ -2,9 +2,16 @@ import { render, screen } from '@testing-library/react'
 
 import { ConfigurableGraphContent } from '../components/ConfigurableGraphContent'
 
+const { mockBarChart } = vi.hoisted(() => ({
+    mockBarChart: vi.fn(),
+}))
+
 vi.mock('../../ChartCard', () => ({
     DonutChart: () => <div>DonutChart</div>,
-    BarChart: () => <div>BarChart</div>,
+    BarChart: (props: any) => {
+        mockBarChart(props)
+        return <div>BarChart</div>
+    },
 }))
 
 vi.mock('../../HorizontalBarChart', () => ({
@@ -39,8 +46,39 @@ describe('ConfigurableGraphContent', () => {
 
             expect(screen.getByText('DonutChart')).toBeInTheDocument()
         })
+
+        it('renders NoDataPlaceholder when data is empty', () => {
+            const groupingConfig = {
+                id: 'by_feature',
+                name: 'Feature',
+                configurableGraphType: 'donut' as const,
+                useChartData: () => ({ data: [], isLoading: false }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.getByText('No data found')).toBeInTheDocument()
+        })
+
+        it('does not render NoDataPlaceholder while loading', () => {
+            const groupingConfig = {
+                id: 'by_feature',
+                name: 'Feature',
+                configurableGraphType: 'donut' as const,
+                useChartData: () => ({ data: [], isLoading: true }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.queryByText('No data found')).not.toBeInTheDocument()
+        })
     })
+
     describe('line chart type', () => {
+        beforeEach(() => {
+            mockBarChart.mockClear()
+        })
+
         it('renders BarChart when type is "bar"', () => {
             const groupingConfig = {
                 id: 'by_feature',
@@ -52,6 +90,60 @@ describe('ConfigurableGraphContent', () => {
             render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
 
             expect(screen.getByText('BarChart')).toBeInTheDocument()
+        })
+
+        it('renders NoDataPlaceholder when data is empty', () => {
+            const groupingConfig = {
+                id: 'by_feature',
+                name: 'Feature',
+                configurableGraphType: 'bar' as const,
+                useChartData: () => ({ data: [], isLoading: false }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.getByText('No data found')).toBeInTheDocument()
+        })
+
+        it('does not render NoDataPlaceholder while loading', () => {
+            const groupingConfig = {
+                id: 'by_feature',
+                name: 'Feature',
+                configurableGraphType: 'bar' as const,
+                useChartData: () => ({ data: [], isLoading: true }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.queryByText('No data found')).not.toBeInTheDocument()
+        })
+
+        it('passes data sorted by value descending to BarChart', () => {
+            const groupingConfig = {
+                id: 'by_feature',
+                name: 'Feature',
+                configurableGraphType: 'bar' as const,
+                useChartData: () => ({
+                    data: [
+                        { name: 'Low', value: 1 },
+                        { name: 'High', value: 100 },
+                        { name: 'Mid', value: 50 },
+                    ],
+                    isLoading: false,
+                }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(mockBarChart).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    data: [
+                        { name: 'High', value: 100 },
+                        { name: 'Mid', value: 50 },
+                        { name: 'Low', value: 1 },
+                    ],
+                }),
+            )
         })
     })
 
@@ -70,6 +162,32 @@ describe('ConfigurableGraphContent', () => {
             render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
 
             expect(screen.getByText('TimeSeriesChart')).toBeInTheDocument()
+        })
+
+        it('renders NoDataPlaceholder when data is empty', () => {
+            const groupingConfig = {
+                id: 'over_time',
+                name: 'Over time',
+                configurableGraphType: 'timeSeries' as const,
+                useChartData: () => ({ data: [], isLoading: false }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.getByText('No data found')).toBeInTheDocument()
+        })
+
+        it('does not render NoDataPlaceholder while loading', () => {
+            const groupingConfig = {
+                id: 'over_time',
+                name: 'Over time',
+                configurableGraphType: 'timeSeries' as const,
+                useChartData: () => ({ data: [], isLoading: true }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.queryByText('No data found')).not.toBeInTheDocument()
         })
     })
 
@@ -91,6 +209,32 @@ describe('ConfigurableGraphContent', () => {
                 screen.getByText('MultipleTimeSeriesChart'),
             ).toBeInTheDocument()
         })
+
+        it('renders NoDataPlaceholder when data is empty', () => {
+            const groupingConfig = {
+                id: 'over_time_multiple',
+                name: 'Over time',
+                configurableGraphType: 'multipleTimeSeries' as const,
+                useChartData: () => ({ data: [], isLoading: false }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.getByText('No data found')).toBeInTheDocument()
+        })
+
+        it('does not render NoDataPlaceholder while loading', () => {
+            const groupingConfig = {
+                id: 'over_time_multiple',
+                name: 'Over time',
+                configurableGraphType: 'multipleTimeSeries' as const,
+                useChartData: () => ({ data: [], isLoading: true }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.queryByText('No data found')).not.toBeInTheDocument()
+        })
     })
 
     describe('horizontal-bar chart type', () => {
@@ -105,6 +249,32 @@ describe('ConfigurableGraphContent', () => {
             render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
 
             expect(screen.getByText('HorizontalBarChart')).toBeInTheDocument()
+        })
+
+        it('renders NoDataPlaceholder when data is empty', () => {
+            const groupingConfig = {
+                id: 'by_agent',
+                name: 'By agent',
+                configurableGraphType: 'horizontal-bar' as const,
+                useChartData: () => ({ data: [], isLoading: false }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.getByText('No data found')).toBeInTheDocument()
+        })
+
+        it('does not render NoDataPlaceholder while loading', () => {
+            const groupingConfig = {
+                id: 'by_agent',
+                name: 'By agent',
+                configurableGraphType: 'horizontal-bar' as const,
+                useChartData: () => ({ data: [], isLoading: true }),
+            }
+
+            render(<ConfigurableGraphContent groupingConfig={groupingConfig} />)
+
+            expect(screen.queryByText('No data found')).not.toBeInTheDocument()
         })
     })
 })

@@ -28,6 +28,7 @@ type TimeSeriesChartProps = {
     dateFormatter?: (date: string) => string
     chartHeight?: number
     withLegend?: boolean
+    maxSeries?: number
 }
 
 const DEFAULT_CHART_HEIGHT = 280
@@ -35,6 +36,24 @@ const GRID_COLOR = 'var(--border-neutral-secondary)'
 const TICK_COLOR = 'var(--content-neutral-tertiary)'
 
 type FlatDataPoint = Record<string, string | number | null>
+
+const getTopSeries = (
+    data: MultipleTimeSeriesDataItem[],
+    maxSeries?: number,
+): MultipleTimeSeriesDataItem[] => {
+    const sorted = [...data].sort((a, b) => {
+        const sumA = a.values.reduce(
+            (acc, point) => acc + (point.value ?? 0),
+            0,
+        )
+        const sumB = b.values.reduce(
+            (acc, point) => acc + (point.value ?? 0),
+            0,
+        )
+        return sumB - sumA
+    })
+    return maxSeries !== undefined ? sorted.slice(0, maxSeries) : sorted
+}
 
 const transformToFlatData = (
     data: MultipleTimeSeriesDataItem[],
@@ -108,7 +127,7 @@ export const MultipleTimeSeriesLegend = ({
                         className={css.legendDot}
                         style={{ backgroundColor: series.color }}
                     />
-                    {series.name}
+                    <Text size="sm">{series.name}</Text>
                 </div>
             ))}
         </div>
@@ -125,6 +144,7 @@ export const MultipleTimeSeriesChart = ({
     dateFormatter,
     chartHeight = DEFAULT_CHART_HEIGHT,
     withLegend = true,
+    maxSeries = 5,
 }: TimeSeriesChartProps) => {
     if (isLoading) {
         return (
@@ -139,10 +159,14 @@ export const MultipleTimeSeriesChart = ({
         )
     }
 
-    const flatData = transformToFlatData(data)
+    const totalCount = data.length
+    const visibleData = getTopSeries(data, maxSeries)
+    const flatData = transformToFlatData(visibleData)
     const seriesWithColors = assignColorsToData(
-        data.map((series) => ({ name: series.label, value: 0 })),
+        visibleData.map((series) => ({ name: series.label, value: 0 })),
     )
+    const showTopSeriesNotice =
+        totalCount !== undefined && totalCount > seriesWithColors.length
 
     return (
         <Box
@@ -153,6 +177,17 @@ export const MultipleTimeSeriesChart = ({
             className={css.chartContainer}
         >
             <div className={css.chartWrapper}>
+                {showTopSeriesNotice && (
+                    <Box justifyContent={'end'} marginTop={'-24px'}>
+                        <Text
+                            size="sm"
+                            className={css.legendTotal}
+                            variant="italic"
+                        >
+                            {`Showing the top ${seriesWithColors.length} out of ${totalCount}`}
+                        </Text>
+                    </Box>
+                )}
                 <ResponsiveContainer width="100%" height={chartHeight}>
                     <LineChart
                         data={flatData}

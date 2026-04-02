@@ -39,7 +39,12 @@ export const ALL_AGENTS_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         metricFormat: 'decimal' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory: dynamicAllAgentsAutomatedInteractionsQueryFactoryV2,
-        dimensions: ['channel', 'storeIntegrationId', 'aiAgentRole'],
+        dimensions: [
+            'channel',
+            'storeIntegrationId',
+            'aiAgentRole',
+            'aiIntentCustomField',
+        ],
     },
     {
         measure: 'totalSalesAmount',

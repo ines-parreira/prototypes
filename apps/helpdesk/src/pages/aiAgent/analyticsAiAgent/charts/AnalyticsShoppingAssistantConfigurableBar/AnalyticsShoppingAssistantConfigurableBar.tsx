@@ -34,7 +34,12 @@ export const SHOPPING_ASSISTANT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         interpretAs: 'more-is-better' as const,
         queryFactory:
             dynamicShoppingAssistantAutomatedInteractionsQueryFactoryV2,
-        dimensions: ['channel', 'storeIntegrationId', 'engagementType'],
+        dimensions: [
+            'channel',
+            'storeIntegrationId',
+            'engagementType',
+            'aiIntentCustomField',
+        ],
     },
     {
         measure: 'totalSalesAmount',
@@ -45,19 +50,19 @@ export const SHOPPING_ASSISTANT_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         dimensions: ['channel', 'storeIntegrationId', 'engagementType'],
     },
     {
-        measure: 'ordersInfluencedCount',
-        name: 'Orders influenced',
-        metricFormat: 'decimal' as const,
-        interpretAs: 'more-is-better' as const,
-        queryFactory: dynamicOrdersInfluencedCountQueryFactoryV2,
-        dimensions: ['channel', 'storeIntegrationId', 'engagementType'],
-    },
-    {
         measure: 'revenuePerInteraction',
         name: 'Revenue per interaction',
         metricFormat: 'currency-precision-1' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory: dynamicRevenuePerInteractionQueryFactoryV2,
+        dimensions: ['channel', 'storeIntegrationId', 'engagementType'],
+    },
+    {
+        measure: 'ordersInfluencedCount',
+        name: 'Orders influenced',
+        metricFormat: 'decimal' as const,
+        interpretAs: 'more-is-better' as const,
+        queryFactory: dynamicOrdersInfluencedCountQueryFactoryV2,
         dimensions: ['channel', 'storeIntegrationId', 'engagementType'],
     },
 ]

@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 
-import { Box, Card, Heading, Text } from '@gorgias/axiom'
+import { Card } from '@gorgias/axiom'
 
+import { NoDataPlaceholder } from '../NoDataPlaceholder/NoDataPlaceholder'
 import { ChartHeader } from './components/ChartHeader'
 import type { MetricTrendFormat, TrendDirection } from './types'
 
@@ -63,24 +64,7 @@ export const ChartCard = ({
                 isLoading={isLoading}
                 alwaysShowChartControls={alwaysShowChartControls}
             />
-            {noData ? (
-                <Box
-                    height="274px"
-                    display="flex"
-                    flexDirection="column"
-                    alignItems="center"
-                    justifyContent="center"
-                    marginBottom="xxl"
-                    gap="xs"
-                >
-                    <Heading size="sm">No data found</Heading>
-                    <Text size="md" color="content-neutral-secondary">
-                        Try to adjust your report filters.
-                    </Text>
-                </Box>
-            ) : (
-                children
-            )}
+            {noData ? <NoDataPlaceholder /> : children}
         </Card>
     )
 }

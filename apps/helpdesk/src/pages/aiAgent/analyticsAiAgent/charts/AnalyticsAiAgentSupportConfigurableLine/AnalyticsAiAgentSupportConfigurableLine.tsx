@@ -38,7 +38,12 @@ export const SUPPORT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
             dynamicSupportAgentAutomatedInteractionsQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicSupportAgentAutomatedInteractionsTimeseriesQueryFactoryV2,
-        dimensions: ['overall', 'channel', 'storeIntegrationId'],
+        dimensions: [
+            'overall',
+            'channel',
+            'storeIntegrationId',
+            'aiIntentCustomField',
+        ],
     },
     {
         measure: 'averageDecreaseInFirstResponseTime',
@@ -48,7 +53,12 @@ export const SUPPORT_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         trendQueryFactory: dynamicSupportAgentDecreaseInFRTQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicSupportAgentDecreaseInFRTTimeseriesQueryFactoryV2,
-        dimensions: ['overall', 'channel', 'storeIntegrationId'],
+        dimensions: [
+            'overall',
+            'channel',
+            'storeIntegrationId',
+            'aiIntentCustomField',
+        ],
     },
 ]
 

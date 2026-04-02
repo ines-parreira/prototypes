@@ -53,6 +53,7 @@ type AutomationDimension =
     | 'storeIntegrationId'
     | 'engagementType'
     | 'aiAgentRole'
+    | 'aiIntentCustomField'
 type LineAutomationDimension = 'overall' | AutomationDimension
 
 export type BarChartMetricConfig = {
@@ -139,6 +140,8 @@ const formatDimensionName = (dimension: string) => {
             return 'Engagement type'
         case 'aiAgentRole':
             return 'Role'
+        case 'aiIntentCustomField':
+            return 'Intent'
         default:
             return dimension
     }
@@ -214,6 +217,17 @@ const formatBarChartData = (
                         name: MAP_AI_AGENT_ROLE_NAME[
                             metricValue.dimension.toString()
                         ],
+                        value: metricValue.value,
+                    })) ?? [],
+                isLoading: !!data?.isFetching,
+            }
+        case 'aiIntentCustomField':
+            return {
+                data:
+                    data?.data?.allValues?.map((metricValue) => ({
+                        name: metricValue.dimension
+                            .toString()
+                            .replaceAll('::', '/'),
                         value: metricValue.value,
                     })) ?? [],
                 isLoading: !!data?.isFetching,
@@ -349,6 +363,23 @@ export const useAutomationMetricPerAiAgentRole = (
     return formatBarChartData(data, 'aiAgentRole')
 }
 
+export const useAutomationMetricPerAiIntentCustomField = (
+    query: MetricQueryFactory,
+    filters: StatsFilters,
+    timezone: string,
+) => {
+    const data = useStatsMetricPerDimension(
+        query({
+            filters,
+            timezone,
+            dimensions: ['aiIntentCustomField'],
+        }),
+        'aiIntentCustomField',
+    )
+
+    return formatBarChartData(data, 'aiIntentCustomField')
+}
+
 export const getBarChartDataHooks = (
     query: MetricQueryFactory,
     dimensions: AutomationDimension[],
@@ -429,6 +460,22 @@ export const getBarChartDataHooks = (
                         configurableGraphType: ConfigurableGraphType.Bar,
                         useChartData: () =>
                             useAutomationMetricPerAiAgentRole(
+                                query,
+                                filters,
+                                timezone,
+                            ),
+                        period,
+                    }
+                case 'aiIntentCustomField':
+                    return {
+                        id: dimensionId,
+                        name: formatDimensionName(dimensionId),
+                        configurableGraphType:
+                            ConfigurableGraphType.HorizontalBar,
+                        initialItemsCount: 5,
+                        showExpandButton: true,
+                        useChartData: () =>
+                            useAutomationMetricPerAiIntentCustomField(
                                 query,
                                 filters,
                                 timezone,
@@ -566,6 +613,13 @@ const formatMultiTimeSeriesData = (
                       values: formatTimeSeriesValues(values[0]),
                   }))
                 : []
+        case 'aiIntentCustomField':
+            return data
+                ? Object.entries(data).map(([metricName, values]) => ({
+                      label: metricName.replaceAll('::', '/'),
+                      values: formatTimeSeriesValues(values[0]),
+                  }))
+                : []
         default:
             return data
                 ? Object.entries(data).map(([metricName, values]) => ({
@@ -682,6 +736,27 @@ export const useAutomationTimeSeriesPerAiAgentRole = (
     }
 }
 
+export const useAutomationTimeSeriesPerAiIntentCustomField = (
+    query: MetricQueryFactory,
+    filters: StatsFilters,
+    timezone: string,
+    granularity: ReportingGranularity,
+) => {
+    const data = useStatsTimeSeriesPerDimension(
+        query({
+            filters,
+            timezone,
+            dimensions: ['aiIntentCustomField'],
+            granularity,
+        }),
+    )
+
+    return {
+        data: formatMultiTimeSeriesData(data.data, 'aiIntentCustomField'),
+        isLoading: data.isFetching,
+    }
+}
+
 export const getLineChartDataHooks = (
     trendQuery: MetricQueryFactory,
     timeSeriesQuery: MetricQueryFactory,
@@ -772,6 +847,20 @@ export const getLineChartDataHooks = (
                             ConfigurableGraphType.MultipleTimeSeries,
                         useChartData: () =>
                             useAutomationTimeSeriesPerAiAgentRole(
+                                timeSeriesQuery,
+                                filters,
+                                timezone,
+                                granularity,
+                            ),
+                    }
+                case 'aiIntentCustomField':
+                    return {
+                        id: dimensionId,
+                        name: formatDimensionName(dimensionId),
+                        configurableGraphType:
+                            ConfigurableGraphType.MultipleTimeSeries,
+                        useChartData: () =>
+                            useAutomationTimeSeriesPerAiIntentCustomField(
                                 timeSeriesQuery,
                                 filters,
                                 timezone,
