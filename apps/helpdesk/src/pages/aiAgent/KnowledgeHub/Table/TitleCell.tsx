@@ -1,3 +1,5 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import type { Row } from '@gorgias/axiom'
 import { Box, Icon, Tag, Text } from '@gorgias/axiom'
 
@@ -78,6 +80,10 @@ export const TitleCell = ({
     const isArticleDraft = isDraft(articleVersionInfo)
     const hasArticleDraftEdits = hasDraftEdits(articleVersionInfo)
 
+    const isKnowledgeIntentManagementSystemEnabled = useFlag(
+        FeatureFlagKey.KnowledgeIntentManagementSystem,
+    )
+
     const getIcon = () => {
         if (!isGrouped) {
             if (
@@ -89,7 +95,10 @@ export const TitleCell = ({
             }
         }
 
-        return typeConfig[type].icon
+        return isKnowledgeIntentManagementSystemEnabled &&
+            typeConfig[type].newIcon
+            ? typeConfig[type].newIcon
+            : typeConfig[type].icon
     }
     return (
         <div
@@ -130,7 +139,15 @@ export const TitleCell = ({
                     )}
                 {!isGrouped && source && (
                     <div className={css.source}>
-                        <Icon name={typeConfig[type].icon} size="sm" />
+                        <Icon
+                            name={
+                                isKnowledgeIntentManagementSystemEnabled &&
+                                typeConfig[type].newIcon
+                                    ? typeConfig[type].newIcon
+                                    : typeConfig[type].icon
+                            }
+                            size="sm"
+                        />
                         <TruncatedTextWithTooltip tooltipContent={source}>
                             <span>{source}</span>
                         </TruncatedTextWithTooltip>

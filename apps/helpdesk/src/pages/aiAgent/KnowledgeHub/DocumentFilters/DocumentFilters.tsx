@@ -1,5 +1,7 @@
 import { Fragment } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import {
     Button,
     ButtonGroup,
@@ -23,6 +25,9 @@ export const DocumentFilters = ({
     selectedFilter,
     onFilterChange,
 }: DocumentFiltersProps) => {
+    const isKnowledgeIntentManagementSystemEnabled = useFlag(
+        FeatureFlagKey.KnowledgeIntentManagementSystem,
+    )
     const knowledgeTypeOrder = [
         KnowledgeType.Guidance,
         KnowledgeType.FAQ,
@@ -36,7 +41,11 @@ export const DocumentFilters = ({
         ...knowledgeTypeOrder.map((type) => ({
             type,
             label: typeConfig[type].label,
-            icon: typeConfig[type].icon,
+            icon:
+                isKnowledgeIntentManagementSystemEnabled &&
+                typeConfig[type].newIcon
+                    ? typeConfig[type].newIcon
+                    : typeConfig[type].icon,
         })),
     ]
 

@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useCopyToClipboard, useId } from '@repo/hooks'
 import _uniqueId from 'lodash/uniqueId'
 
+import type { IconName } from '@gorgias/axiom'
 import {
     Button,
     Icon,
@@ -21,32 +23,52 @@ import { selectText } from 'pages/common/components/CopyText/utils'
 
 import css from './KnowledgeEditorSidePanelCommonFields.less'
 
-const KNOWLEDGE_TYPE_ICON = {
-    'help-center-article': 'file-document',
-    guidance: 'nav-map',
-    'document-snippet': 'paperclip-attachment',
-    'url-snippet': 'link-horizontal',
-    'store-snippet': 'nav-globe',
-} as const
+type KnowledgeTypeKey =
+    | 'help-center-article'
+    | 'guidance'
+    | 'document-snippet'
+    | 'url-snippet'
+    | 'store-snippet'
 
-const KNOWLEDGE_TYPE_LABEL = {
+const KNOWLEDGE_TYPE_ICON: Record<
+    KnowledgeTypeKey,
+    { icon: IconName; newIcon?: IconName }
+> = {
+    'help-center-article': { icon: 'file-document', newIcon: 'bookmark' },
+    guidance: { icon: 'nav-map' },
+    'document-snippet': { icon: 'paperclip-attachment' },
+    'url-snippet': { icon: 'link-horizontal' },
+    'store-snippet': { icon: 'nav-globe' },
+}
+
+const KNOWLEDGE_TYPE_LABEL: Record<KnowledgeTypeKey, string> = {
     'help-center-article': 'Help Center article',
     guidance: 'Guidance',
     'document-snippet': 'Document',
     'url-snippet': 'URL',
     'store-snippet': 'Store website',
-} as const
+}
 
 export const KnowledgeEditorSidePanelFieldKnowledgeType = ({
     type,
 }: {
     type: keyof typeof KNOWLEDGE_TYPE_ICON
-}) => (
-    <span className={css.knowledgeType}>
-        <Icon name={KNOWLEDGE_TYPE_ICON[type]} />{' '}
-        <span>{KNOWLEDGE_TYPE_LABEL[type]}</span>
-    </span>
-)
+}) => {
+    const isKnowledgeIntentManagementSystemEnabled = useFlag(
+        FeatureFlagKey.KnowledgeIntentManagementSystem,
+    )
+    const config = KNOWLEDGE_TYPE_ICON[type]
+    const iconName =
+        isKnowledgeIntentManagementSystemEnabled && config.newIcon
+            ? config.newIcon
+            : config.icon
+
+    return (
+        <span className={css.knowledgeType}>
+            <Icon name={iconName} /> <span>{KNOWLEDGE_TYPE_LABEL[type]}</span>
+        </span>
+    )
+}
 
 export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
     checked,

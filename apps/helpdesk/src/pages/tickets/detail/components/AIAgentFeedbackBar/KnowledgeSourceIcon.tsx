@@ -31,7 +31,8 @@ const KnowledgeSourceIcon = ({
             <span className={cs(css.badge, badgeIconClassname)}>
                 <Icon
                     name={
-                        isKnowledgeIntentManagementSystemEnabled
+                        isKnowledgeIntentManagementSystemEnabled &&
+                        KNOWLEDGE_SOURCE_TYPE[type].newIcon
                             ? KNOWLEDGE_SOURCE_TYPE[type].newIcon
                             : KNOWLEDGE_SOURCE_TYPE[type].icon
                     }

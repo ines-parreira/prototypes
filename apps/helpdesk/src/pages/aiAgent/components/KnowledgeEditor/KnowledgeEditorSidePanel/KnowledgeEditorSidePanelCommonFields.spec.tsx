@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import * as hooks from '@repo/hooks'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 
@@ -21,7 +22,20 @@ jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
 }))
 
+jest.mock('@repo/feature-flags', () => ({
+    useFlag: jest.fn(),
+    FeatureFlagKey: {
+        KnowledgeIntentManagementSystem: 'knowledge-intent-management-system',
+    },
+}))
+
+const mockUseFlag = useFlag as jest.Mock
+
 describe('KnowledgeEditorSidePanelFieldKnowledgeType', () => {
+    beforeEach(() => {
+        mockUseFlag.mockReturnValue(false)
+    })
+
     it('renders type', () => {
         render(
             <KnowledgeEditorSidePanelFieldKnowledgeType type="help-center-article" />,
@@ -45,6 +59,46 @@ describe('KnowledgeEditorSidePanelFieldKnowledgeType', () => {
             <KnowledgeEditorSidePanelFieldKnowledgeType type="store-snippet" />,
         )
         expect(screen.getByText('Store website')).toBeInTheDocument()
+    })
+
+    describe('feature flag KnowledgeIntentManagementSystem', () => {
+        it('renders old icon for help-center-article when flag is disabled', () => {
+            mockUseFlag.mockReturnValue(false)
+            render(
+                <KnowledgeEditorSidePanelFieldKnowledgeType type="help-center-article" />,
+            )
+            expect(
+                screen.getByRole('img', { name: 'file-document' }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders new icon for help-center-article when flag is enabled', () => {
+            mockUseFlag.mockReturnValue(true)
+            render(
+                <KnowledgeEditorSidePanelFieldKnowledgeType type="help-center-article" />,
+            )
+            expect(
+                screen.getByRole('img', { name: 'bookmark' }),
+            ).toBeInTheDocument()
+        })
+
+        it('renders same icon for guidance regardless of flag', () => {
+            mockUseFlag.mockReturnValue(false)
+            const { rerender } = render(
+                <KnowledgeEditorSidePanelFieldKnowledgeType type="guidance" />,
+            )
+            expect(
+                screen.getByRole('img', { name: 'nav-map' }),
+            ).toBeInTheDocument()
+
+            mockUseFlag.mockReturnValue(true)
+            rerender(
+                <KnowledgeEditorSidePanelFieldKnowledgeType type="guidance" />,
+            )
+            expect(
+                screen.getByRole('img', { name: 'nav-map' }),
+            ).toBeInTheDocument()
+        })
     })
 })
 
