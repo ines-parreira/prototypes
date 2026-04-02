@@ -175,10 +175,26 @@ const GROUPING_CHANNELS = [
 ] as const
 type GroupingChannels = (typeof GROUPING_CHANNELS)[number]
 
+function isAiAgentThreadMessage(item: TicketThreadSingleMessageItem): boolean {
+    switch (item._tag) {
+        case TicketThreadItemTag.Messages.AiAgentMessage:
+        case TicketThreadItemTag.Messages.AiAgentInternalNote:
+        case TicketThreadItemTag.Messages.AiAgentDraftMessage:
+        case TicketThreadItemTag.Messages.AiAgentTrialMessage:
+            return true
+        default:
+            return false
+    }
+}
+
 function shouldGroupConsecutiveMessages(
     msg1: TicketThreadSingleMessageItem,
     msg2: TicketThreadSingleMessageItem,
 ): boolean {
+    if (isAiAgentThreadMessage(msg1) || isAiAgentThreadMessage(msg2)) {
+        return false
+    }
+
     const msg1Data = msg1.data
     const msg2Data = msg2.data
 

@@ -38,6 +38,10 @@ const EVOLI_STATIC_MESSAGE =
 const IMPERSONATION_REASONING_NOTICE =
     'Reasoning is visible because you are impersonating this account.'
 
+/**
+ * The Helpdesk V2 version of this component is located in AiAgentReasoningHelpdeskV2.tsx
+ * Please update the Helpdesk V2 version if you make any changes to this component.
+ */
 export const AiAgentReasoning = ({ message }: AiAgentReasoningProps) => {
     const ticket = useAppSelector(getTicketState)
     const isEvoliTicket = useIsEvoliTicket()

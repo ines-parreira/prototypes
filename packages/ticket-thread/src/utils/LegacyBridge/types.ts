@@ -1,3 +1,7 @@
+import type { ReactNode } from 'react'
+
+import type { TicketThreadAiAgentMessageItem } from '../../hooks/messages/types'
+
 export type LegacyBridgeInfluencedOrder = {
     id: number
     integrationId: number
@@ -63,6 +67,10 @@ export type LegacyBridgeState = {
     newMessage: LegacyBridgeNewMessageState
 }
 
+export type TicketThreadAiAgentReasoningParams = {
+    message: TicketThreadAiAgentMessageItem['data']
+}
+
 export type LegacyBridgeContextType = {
     currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData
     currentTicketRuleSuggestionData: CurrentTicketRuleSuggestionData
@@ -74,4 +82,7 @@ export type LegacyBridgeContextType = {
     ) => void
     legacyActions: LegacyBridgeActions
     legacyState: LegacyBridgeState
+    renderAiAgentReasoning?: (
+        params: TicketThreadAiAgentReasoningParams,
+    ) => ReactNode
 }

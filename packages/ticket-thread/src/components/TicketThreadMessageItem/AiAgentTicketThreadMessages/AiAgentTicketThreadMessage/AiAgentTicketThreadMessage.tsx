@@ -1,6 +1,7 @@
 import { AIThinking, Box } from '@gorgias/axiom'
 
 import type { TicketThreadAiAgentMessageItem } from '../../../../hooks/messages/types'
+import { useTicketThreadLegacyBridge } from '../../../../utils/LegacyBridge'
 import { MessageAttachments } from '../../../MessageBubble/components/MessageAttachments'
 import { MessageBody } from '../../../MessageBubble/components/MessageBody'
 import { MessageHeaderContainer } from '../../../MessageBubble/components/MessageHeader/Layout'
@@ -17,6 +18,8 @@ type AiAgentTicketThreadMessageProps = {
 export function AiAgentTicketThreadMessage({
     item,
 }: AiAgentTicketThreadMessageProps) {
+    const { renderAiAgentReasoning } = useTicketThreadLegacyBridge()
+
     return (
         <MessageBubble variant="ai-agent">
             <MessageHeaderContainer>
@@ -37,6 +40,7 @@ export function AiAgentTicketThreadMessage({
             </MessageHeaderContainer>
             <MessageBody item={item} />
             <MessageAttachments item={item} />
+            {renderAiAgentReasoning?.({ message: item.data })}
         </MessageBubble>
     )
 }

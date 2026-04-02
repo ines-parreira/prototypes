@@ -6,6 +6,7 @@ import type {
     InstagramCommentPrivateReplyData,
     LegacyBridgeActions,
     LegacyBridgeState,
+    TicketThreadAiAgentReasoningParams,
 } from './types'
 
 type TicketThreadLegacyBridgeProviderProps = {
@@ -20,6 +21,9 @@ type TicketThreadLegacyBridgeProviderProps = {
     ) => void
     legacyActions?: LegacyBridgeActions
     legacyState?: LegacyBridgeState
+    renderAiAgentReasoning?: (
+        params: TicketThreadAiAgentReasoningParams,
+    ) => React.ReactNode
 }
 
 const defaultLegacyActions: LegacyBridgeActions = {
@@ -32,6 +36,7 @@ const defaultLegacyState: LegacyBridgeState = {
         isSubmittingMessage: false,
     },
 }
+
 /**
  * This component is used to provide a bridge between the legacy application code in the apps/helpdesk
  * and the new application code in the packages/ticket-thread.
@@ -45,6 +50,7 @@ export const TicketThreadLegacyBridgeProvider = ({
     onInstagramCommentHideComment,
     legacyActions = defaultLegacyActions,
     legacyState = defaultLegacyState,
+    renderAiAgentReasoning,
 }: TicketThreadLegacyBridgeProviderProps) => {
     return (
         <LegacyBridgeContext.Provider
@@ -55,6 +61,7 @@ export const TicketThreadLegacyBridgeProvider = ({
                 onInstagramCommentHideComment,
                 legacyActions,
                 legacyState,
+                renderAiAgentReasoning,
             }}
         >
             {children}

@@ -1,6 +1,10 @@
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
 import { TicketThreadItemTag } from '../../types'
+import {
+    AI_AGENT_DRAFT_MESSAGE_TAG,
+    AI_AGENT_TRIAL_MESSAGE_TAG,
+} from '../constants'
 import { groupConsecutiveMessages, toTaggedMessage } from '../transforms'
 import type { TicketThreadMessageData } from '../types'
 
@@ -65,6 +69,110 @@ describe('groupConsecutiveMessages', () => {
             _tag: TicketThreadItemTag.Messages.Message,
         })
     })
+
+    it('does not merge consecutive ai agent messages', () => {
+        const aiAgentSender = {
+            ...createMessage({}).sender,
+            id: 789726418,
+            email: 'bot@658d6f54fbff9b7c6f2d0321',
+            name: 'Bobby Artemis',
+        }
+        const first = toTaggedMessage(
+            createMessage({
+                id: 1,
+                from_agent: true,
+                sender: aiAgentSender,
+            }),
+        )
+        const second = toTaggedMessage(
+            createMessage({
+                id: 2,
+                from_agent: true,
+                created_datetime: '2024-03-21T11:03:00Z',
+                sender: aiAgentSender,
+            }),
+        )
+
+        const merged = groupConsecutiveMessages([first, second])
+
+        expect(merged).toHaveLength(2)
+        expect(merged[0]).toMatchObject({
+            _tag: TicketThreadItemTag.Messages.AiAgentMessage,
+        })
+        expect(merged[1]).toMatchObject({
+            _tag: TicketThreadItemTag.Messages.AiAgentMessage,
+        })
+    })
+
+    it.each([
+        {
+            label: 'internal notes',
+            firstOverrides: {
+                public: false,
+            },
+            secondOverrides: {
+                public: false,
+            },
+            expectedTag: TicketThreadItemTag.Messages.AiAgentInternalNote,
+        },
+        {
+            label: 'draft messages',
+            firstOverrides: {
+                body_html: `<div ${AI_AGENT_DRAFT_MESSAGE_TAG}></div>`,
+            },
+            secondOverrides: {
+                body_html: `<div ${AI_AGENT_DRAFT_MESSAGE_TAG}></div>`,
+            },
+            expectedTag: TicketThreadItemTag.Messages.AiAgentDraftMessage,
+        },
+        {
+            label: 'trial messages',
+            firstOverrides: {
+                body_html: `<div ${AI_AGENT_TRIAL_MESSAGE_TAG}></div>`,
+            },
+            secondOverrides: {
+                body_html: `<div ${AI_AGENT_TRIAL_MESSAGE_TAG}></div>`,
+            },
+            expectedTag: TicketThreadItemTag.Messages.AiAgentTrialMessage,
+        },
+    ])(
+        'does not merge consecutive ai agent $label',
+        ({ firstOverrides, secondOverrides, expectedTag }) => {
+            const aiAgentSender = {
+                ...createMessage({}).sender,
+                id: 789726418,
+                email: 'bot@658d6f54fbff9b7c6f2d0321',
+                name: 'Bobby Artemis',
+            }
+            const first = toTaggedMessage(
+                createMessage({
+                    id: 1,
+                    from_agent: true,
+                    sender: aiAgentSender,
+                    ...firstOverrides,
+                }),
+            )
+            const second = toTaggedMessage(
+                createMessage({
+                    id: 2,
+                    from_agent: true,
+                    created_datetime: '2024-03-21T11:03:00Z',
+                    sender: aiAgentSender,
+                    ...secondOverrides,
+                }),
+            )
+
+            const merged = groupConsecutiveMessages([first, second])
+
+            expect(merged).toHaveLength(2)
+            expect(merged[0]).toMatchObject({
+                _tag: expectedTag,
+            })
+            expect(merged[1]).toMatchObject({
+                _tag: expectedTag,
+            })
+        },
+    )
 
     it('merges a consecutive three-message chain based on adjacent windows', () => {
         const first = toTaggedMessage(

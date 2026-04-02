@@ -4,6 +4,7 @@ import { useCanAccessAIFeedback } from '@repo/ai-agent'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
+import { useHelpdeskV2MS3Flag } from '@repo/tickets/feature-flags'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
@@ -46,6 +47,9 @@ jest.mock('hooks/useAppDispatch')
 jest.mock('hooks/useAppSelector')
 jest.mock('common/navigation/hooks/useNavBar/useNavBar')
 jest.mock('@repo/feature-flags')
+jest.mock('@repo/tickets/feature-flags', () => ({
+    useHelpdeskV2MS3Flag: jest.fn(),
+}))
 jest.mock('split-ticket-view-toggle')
 jest.mock(
     'pages/tickets/detail/components/AIAgentFeedbackBar/hooks/useKnowledgeSourceSideBar/useKnowledgeSourceSideBar',
@@ -233,6 +237,7 @@ const useAppDispatchMock = assumeMock(useAppDispatch)
 const useAppSelectorMock = assumeMock(useAppSelector)
 const useNavBarMock = assumeMock(useNavBar)
 const useFlagMock = assumeMock(useFlag)
+const useHelpdeskV2MS3FlagMock = assumeMock(useHelpdeskV2MS3Flag)
 const useSplitTicketViewMock = assumeMock(useSplitTicketView)
 const useKnowledgeSourceSideBarMock = assumeMock(useKnowledgeSourceSideBar)
 const mockUseGetMessageAiReasoning = assumeMock(useGetMessageAiReasoning)
@@ -370,6 +375,7 @@ describe('AiAgentReasoning', () => {
         } as any)
 
         useFlagMock.mockReturnValue(true)
+        useHelpdeskV2MS3FlagMock.mockReturnValue(false)
 
         useSplitTicketViewMock.mockReturnValue({
             isEnabled: true,

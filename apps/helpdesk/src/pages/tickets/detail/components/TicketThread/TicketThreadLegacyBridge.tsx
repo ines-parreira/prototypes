@@ -11,6 +11,7 @@ import * as NewMessageActions from 'state/newMessage/actions'
 import * as TicketActions from 'state/ticket/actions'
 
 import { InstagramCommentPrivateReplyModal } from './InstagramCommentPrivateReplyModal'
+import { TicketThreadAiAgentReasoning } from './TicketThreadAiAgentReasoning'
 import { useInstagramCommentActions } from './useInstagramCommentActions'
 
 type TicketThreadLegacyBridgeProps = {
@@ -75,6 +76,9 @@ export const TicketThreadLegacyBridge = ({
             onInstagramCommentHideComment={handleHideComment}
             legacyActions={legacyActions}
             legacyState={legacyState}
+            renderAiAgentReasoning={(params) => (
+                <TicketThreadAiAgentReasoning {...params} />
+            )}
         >
             {children}
             {privateReplyData && (

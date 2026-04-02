@@ -29,6 +29,7 @@ import {
     SAMPLE_RATE,
 } from '../AIAgentFeedbackBar/constants'
 import { isTrialMessageFromAIAgent } from '../AIAgentFeedbackBar/utils'
+import { getShouldTicketHaveReasoning } from './aiAgentReasoningDisplay'
 import Container from './Container'
 import Message from './Message'
 
@@ -87,15 +88,14 @@ export default function TicketMessages({
         ticketMeta,
     )
 
-    const shouldTicketHaveReasoning = useMemo(() => {
-        if (!earliestExecution) return null
-        if (!earliestExecution.reasoningTimestamp) return false
-        const messageDate = new Date(message.created_datetime)
-        return (
-            messageDate.getTime() >
-            new Date(earliestExecution.reasoningTimestamp).getTime()
-        )
-    }, [earliestExecution, message.created_datetime])
+    const shouldTicketHaveReasoning = useMemo(
+        () =>
+            getShouldTicketHaveReasoning({
+                earliestExecution,
+                messageCreatedDatetime: message.created_datetime,
+            }),
+        [earliestExecution, message.created_datetime],
+    )
 
     const shouldDisplayAuditLogEvents = useAppSelector(
         getShouldDisplayAuditLogEvents,

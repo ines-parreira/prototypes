@@ -11,4 +11,5 @@ export type {
     LegacyBridgeShopifyIntegration,
     LegacyBridgeShopifyOrder,
     LegacyBridgeState,
+    TicketThreadAiAgentReasoningParams,
 } from './types'

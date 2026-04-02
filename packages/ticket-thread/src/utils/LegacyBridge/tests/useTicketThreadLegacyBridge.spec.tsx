@@ -8,6 +8,7 @@ import { TicketThreadLegacyBridgeProvider } from '../TicketThreadLegacyBridgePro
 import type {
     CurrentTicketShoppingAssistantData,
     LegacyBridgeActions,
+    LegacyBridgeContextType,
 } from '../types'
 import { useTicketThreadLegacyBridge } from '../useTicketThreadLegacyBridge'
 
@@ -59,6 +60,9 @@ const legacyState = {
     },
 }
 
+const renderAiAgentReasoning: LegacyBridgeContextType['renderAiAgentReasoning'] =
+    vi.fn(() => <span>reasoning slot</span>)
+
 describe('useTicketThreadLegacyBridge', () => {
     it('throws when used outside of TicketThreadLegacyBridgeProvider', () => {
         const originalError = console.error
@@ -81,6 +85,7 @@ describe('useTicketThreadLegacyBridge', () => {
             },
             legacyActions,
             legacyState,
+            renderAiAgentReasoning,
         })
 
         expect(result.current.currentTicketShoppingAssistantData).toEqual(
@@ -92,6 +97,9 @@ describe('useTicketThreadLegacyBridge', () => {
         ).toBe(false)
         expect(result.current.legacyActions).toBe(legacyActions)
         expect(result.current.legacyState).toBe(legacyState)
+        expect(result.current.renderAiAgentReasoning).toBe(
+            renderAiAgentReasoning,
+        )
     })
 })
 
@@ -107,6 +115,7 @@ describe('TicketThreadLegacyBridgeProvider', () => {
                 }}
                 legacyActions={legacyActions}
                 legacyState={legacyState}
+                renderAiAgentReasoning={renderAiAgentReasoning}
             >
                 <span>legacy child</span>
             </TicketThreadLegacyBridgeProvider>,

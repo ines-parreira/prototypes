@@ -18,6 +18,7 @@ import type {
     CurrentTicketRuleSuggestionData,
     CurrentTicketShoppingAssistantData,
     LegacyBridgeActions,
+    LegacyBridgeContextType,
     LegacyBridgeState,
 } from '../utils/LegacyBridge/types'
 
@@ -42,6 +43,7 @@ type LegacyBridgeOptions = {
     currentTicketRuleSuggestionData?: CurrentTicketRuleSuggestionData
     legacyActions?: LegacyBridgeActions
     legacyState?: LegacyBridgeState
+    renderAiAgentReasoning?: LegacyBridgeContextType['renderAiAgentReasoning']
 }
 
 type RenderOptions = RenderOptionsPrimitive &
@@ -98,6 +100,7 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
         legacyActions:
             mergedOptions.legacyActions ?? defaultOptions.legacyActions,
         legacyState: mergedOptions.legacyState ?? defaultOptions.legacyState,
+        renderAiAgentReasoning: mergedOptions.renderAiAgentReasoning,
     }
 
     const result = renderPrimitive(element, {
@@ -144,6 +147,7 @@ export const renderHook = <TProps, TResult>(
         legacyActions:
             mergedOptions.legacyActions ?? defaultOptions.legacyActions,
         legacyState: mergedOptions.legacyState ?? defaultOptions.legacyState,
+        renderAiAgentReasoning: mergedOptions.renderAiAgentReasoning,
     }
 
     return renderHookPrimitive(hook, {
