@@ -13,7 +13,7 @@ export const GorgiasChatIntegrationInstall = (props: Props) => {
 
     const {
         shouldShowRevampWhenAiAgentEnabled,
-        shouldShowScreensRevampWhenAiAgentEnabled,
+        shouldShowChatSettingsScreensRevamp,
         isLoading,
     } = useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
@@ -21,7 +21,7 @@ export const GorgiasChatIntegrationInstall = (props: Props) => {
         return <ChatSettingsInstallationSkeleton />
     }
 
-    if (shouldShowScreensRevampWhenAiAgentEnabled) {
+    if (shouldShowChatSettingsScreensRevamp) {
         return <GorgiasChatIntegrationInstallRevamp {...props} />
     }
     if (shouldShowRevampWhenAiAgentEnabled) {

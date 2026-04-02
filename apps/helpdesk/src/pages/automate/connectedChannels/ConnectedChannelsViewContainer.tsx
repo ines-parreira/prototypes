@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom'
+import { useParams, useRouteMatch } from 'react-router-dom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
@@ -11,6 +11,9 @@ import { ConnectedChannelsViewContainerRevamp } from './revamp/ConnectedChannels
 
 export const ConnectedChannelsViewContainer = () => {
     const { shopName } = useParams<{ shopName: string }>()
+    const isOrderManagementPath = useRouteMatch(
+        '/app/settings/order-management',
+    )
 
     const storeIntegrations = useStoreIntegrations()
     const storeIntegration = storeIntegrations.find(
@@ -23,10 +26,16 @@ export const ConnectedChannelsViewContainer = () => {
     )
     const chatId = chatIntegration?.id
 
-    const { shouldShowScreensRevampWhenAiAgentEnabled } =
-        useShouldShowChatSettingsRevamp(storeIntegration, chatId)
+    const {
+        shouldShowFlowsScreensRevamp,
+        shouldShowOrderManagementScreensRevamp,
+    } = useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
-    if (shouldShowScreensRevampWhenAiAgentEnabled) {
+    const shouldShowRevamp = isOrderManagementPath
+        ? shouldShowOrderManagementScreensRevamp
+        : shouldShowFlowsScreensRevamp
+
+    if (shouldShowRevamp) {
         return <ConnectedChannelsViewContainerRevamp />
     }
 

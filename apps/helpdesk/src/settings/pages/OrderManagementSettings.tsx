@@ -42,7 +42,7 @@ export function OrderManagementSettings() {
     )
     const chatId = chatIntegration?.id
 
-    const { shouldShowScreensRevampWhenAiAgentEnabled } =
+    const { shouldShowOrderManagementScreensRevamp } =
         useShouldShowChatSettingsRevamp(selected, chatId)
 
     const selectedPath = selected
@@ -51,7 +51,7 @@ export function OrderManagementSettings() {
 
     return (
         <div className={css.container}>
-            {shouldShowScreensRevampWhenAiAgentEnabled ? (
+            {shouldShowOrderManagementScreensRevamp ? (
                 !isOnRevampFlowPage && <OrderManagementSettingsHeader />
             ) : (
                 <OrderManagementSettingsLegacyHeader />

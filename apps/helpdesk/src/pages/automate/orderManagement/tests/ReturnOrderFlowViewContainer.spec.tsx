@@ -49,18 +49,30 @@ describe('ReturnOrderFlowViewContainer', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampEnabled: false,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
+            shouldShowChatSettingsScreensRevamp: false,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
         })
     })
 
-    it('should render the revamp view when shouldShowScreensRevampWhenAiAgentEnabled is true', () => {
+    it('should render the revamp view when shouldShowOrderManagementScreensRevamp is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: true,
             isChatSettingsScreensRevampEnabled: true,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: true,
             shouldShowScreensRevampWhenAiAgentEnabled: true,
+            shouldShowChatSettingsScreensRevamp: false,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: true,
             isLoading: false,
         })
 
@@ -74,7 +86,7 @@ describe('ReturnOrderFlowViewContainer', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render the legacy view when shouldShowScreensRevampWhenAiAgentEnabled is false', () => {
+    it('should render the legacy view when shouldShowOrderManagementScreensRevamp is false', () => {
         render(<ReturnOrderFlowViewContainer />)
 
         expect(

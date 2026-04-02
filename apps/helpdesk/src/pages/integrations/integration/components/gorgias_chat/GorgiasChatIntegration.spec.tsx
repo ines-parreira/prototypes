@@ -140,7 +140,7 @@ beforeEach(() => {
         updateHeaderPictureUrl: jest.fn(),
     })
     mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-        shouldShowScreensRevampWhenAiAgentEnabled: false,
+        shouldShowChatSettingsScreensRevamp: false,
     })
     mockUseStoreIntegration.mockReturnValue({ storeIntegration: undefined })
     mockUseIsQuickRepliesEnabled.mockReturnValue(false)
@@ -305,7 +305,7 @@ describe('<GorgiasChatIntegration />', () => {
     describe('preview panel', () => {
         beforeEach(() => {
             mockUseShouldShowChatSettingsRevamp.mockReturnValue({
-                shouldShowScreensRevampWhenAiAgentEnabled: true,
+                shouldShowChatSettingsScreensRevamp: true,
             })
         })
 

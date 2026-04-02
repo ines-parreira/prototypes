@@ -23,10 +23,10 @@ export const CancelOrderFlowViewContainer = () => {
     )
     const chatId = chatIntegration?.id
 
-    const { shouldShowScreensRevampWhenAiAgentEnabled } =
+    const { shouldShowOrderManagementScreensRevamp } =
         useShouldShowChatSettingsRevamp(storeIntegration, chatId)
 
-    if (shouldShowScreensRevampWhenAiAgentEnabled) {
+    if (shouldShowOrderManagementScreensRevamp) {
         return <CancelOrderFlowViewContainerRevamp />
     }
 

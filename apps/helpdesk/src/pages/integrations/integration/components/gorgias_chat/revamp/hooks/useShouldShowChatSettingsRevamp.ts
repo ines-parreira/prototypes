@@ -18,6 +18,23 @@ export const useShouldShowChatSettingsRevamp = (
         isLoading: isScreensRevampFlagLoading,
     } = useFlagWithLoading(FeatureFlagKey.ChatSettingsScreensRevamp)
 
+    const {
+        value: isChatSettingsScreensRevampChatSettingsEnabled,
+        isLoading: isChatSettingsScreensRevampChatSettingsLoading,
+    } = useFlagWithLoading(FeatureFlagKey.ChatSettingsScreensRevampChatSettings)
+
+    const {
+        value: isChatSettingsScreensRevampFlowsEnabled,
+        isLoading: isChatSettingsScreensRevampFlowsLoading,
+    } = useFlagWithLoading(FeatureFlagKey.ChatSettingsScreensRevampFlows)
+
+    const {
+        value: isChatSettingsScreensRevampOrderManagementEnabled,
+        isLoading: isChatSettingsScreensRevampOrderManagementLoading,
+    } = useFlagWithLoading(
+        FeatureFlagKey.ChatSettingsScreensRevampOrderManagement,
+    )
+
     const { isAiAgentEnabled, isLoading: isAiAgentLoading } =
         useIsAiAgentEnabled(storeIntegration, chatId)
 
@@ -25,20 +42,42 @@ export const useShouldShowChatSettingsRevamp = (
     const shouldShowRevampWhenAiAgentEnabled =
         isChatSettingsRevampEnabled && isAiAgentEnabled
 
-    // Both flags required — used for features that belong to the full screens revamp
+    // Both base flags required — used for features that belong to the full screens revamp
     const shouldShowScreensRevampWhenAiAgentEnabled =
         isChatSettingsRevampEnabled &&
         isChatSettingsScreensRevampEnabled &&
         isAiAgentEnabled
 
+    // Section-specific flags — each adds an independent rollout gate on top of the base flags
+    const shouldShowChatSettingsScreensRevamp =
+        shouldShowScreensRevampWhenAiAgentEnabled &&
+        isChatSettingsScreensRevampChatSettingsEnabled
+
+    const shouldShowFlowsScreensRevamp =
+        shouldShowScreensRevampWhenAiAgentEnabled &&
+        isChatSettingsScreensRevampFlowsEnabled
+
+    const shouldShowOrderManagementScreensRevamp =
+        shouldShowScreensRevampWhenAiAgentEnabled &&
+        isChatSettingsScreensRevampOrderManagementEnabled
+
     return {
         isChatSettingsRevampEnabled,
         isChatSettingsScreensRevampEnabled,
+        isChatSettingsScreensRevampChatSettingsEnabled,
+        isChatSettingsScreensRevampFlowsEnabled,
+        isChatSettingsScreensRevampOrderManagementEnabled,
         shouldShowRevampWhenAiAgentEnabled,
         shouldShowScreensRevampWhenAiAgentEnabled,
+        shouldShowChatSettingsScreensRevamp,
+        shouldShowFlowsScreensRevamp,
+        shouldShowOrderManagementScreensRevamp,
         isLoading:
             isRevampFlagLoading ||
             isScreensRevampFlagLoading ||
+            isChatSettingsScreensRevampChatSettingsLoading ||
+            isChatSettingsScreensRevampFlowsLoading ||
+            isChatSettingsScreensRevampOrderManagementLoading ||
             isAiAgentLoading,
     }
 }

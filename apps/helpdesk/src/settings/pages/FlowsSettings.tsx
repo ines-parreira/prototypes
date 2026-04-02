@@ -31,8 +31,10 @@ export function FlowsSettings() {
     )
     const chatId = chatIntegration?.id
 
-    const { shouldShowScreensRevampWhenAiAgentEnabled } =
-        useShouldShowChatSettingsRevamp(selected, chatId)
+    const { shouldShowFlowsScreensRevamp } = useShouldShowChatSettingsRevamp(
+        selected,
+        chatId,
+    )
 
     const selectedPath = selected
         ? `${BASE_PATH}/${selected.type}/${selectedName}`
@@ -40,7 +42,7 @@ export function FlowsSettings() {
 
     return (
         <div className={css.container}>
-            {shouldShowScreensRevampWhenAiAgentEnabled ? (
+            {shouldShowFlowsScreensRevamp ? (
                 <FlowsSettingsHeader />
             ) : (
                 <FlowsSettingsLegacyHeader />

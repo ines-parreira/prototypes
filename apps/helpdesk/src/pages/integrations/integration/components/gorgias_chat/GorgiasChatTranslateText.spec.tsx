@@ -60,8 +60,14 @@ describe('<GorgiasChatTranslateText />', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampEnabled: false,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
+            shouldShowChatSettingsScreensRevamp: false,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
         })
     })
@@ -70,8 +76,14 @@ describe('<GorgiasChatTranslateText />', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampEnabled: false,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
+            shouldShowChatSettingsScreensRevamp: false,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
         })
 
@@ -115,8 +127,14 @@ describe('<GorgiasChatTranslateText />', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: true,
             isChatSettingsScreensRevampEnabled: false,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: true,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
+            shouldShowChatSettingsScreensRevamp: false,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
         })
 

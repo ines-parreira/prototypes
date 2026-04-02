@@ -84,9 +84,15 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
+            shouldShowChatSettingsScreensRevamp: false,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: false,
             isLoading: true,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampEnabled: false,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -104,8 +110,14 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampEnabled: false,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
+            shouldShowChatSettingsScreensRevamp: false,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
         })
 
@@ -125,13 +137,19 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render the legacy component when shouldShowScreensRevampWhenAiAgentEnabled is false', () => {
+    it('should render the legacy component when shouldShowChatSettingsScreensRevamp is false', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: false,
             shouldShowScreensRevampWhenAiAgentEnabled: false,
+            shouldShowChatSettingsScreensRevamp: false,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampEnabled: false,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -142,13 +160,19 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render the revamp component when shouldShowScreensRevampWhenAiAgentEnabled is true', () => {
+    it('should render the revamp component when shouldShowChatSettingsScreensRevamp is true', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: true,
             shouldShowScreensRevampWhenAiAgentEnabled: true,
+            shouldShowChatSettingsScreensRevamp: true,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampEnabled: false,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -165,9 +189,15 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: true,
             shouldShowScreensRevampWhenAiAgentEnabled: true,
+            shouldShowChatSettingsScreensRevamp: true,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampEnabled: false,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)
@@ -185,9 +215,15 @@ describe('<GorgiasChatIntegrationPreferences />', () => {
         mockUseShouldShowChatSettingsRevamp.mockReturnValue({
             shouldShowRevampWhenAiAgentEnabled: true,
             shouldShowScreensRevampWhenAiAgentEnabled: true,
+            shouldShowChatSettingsScreensRevamp: true,
+            shouldShowFlowsScreensRevamp: false,
+            shouldShowOrderManagementScreensRevamp: false,
             isLoading: false,
             isChatSettingsRevampEnabled: false,
             isChatSettingsScreensRevampEnabled: false,
+            isChatSettingsScreensRevampChatSettingsEnabled: false,
+            isChatSettingsScreensRevampFlowsEnabled: false,
+            isChatSettingsScreensRevampOrderManagementEnabled: false,
         })
 
         render(<GorgiasChatIntegrationPreferences {...minProps} />)

@@ -85,7 +85,7 @@ export const GorgiasChatIntegration = ({
     const { hasAccess } = useAiAgentAccess()
     const { storeIntegration } = useStoreIntegration(integration)
 
-    const { shouldShowScreensRevampWhenAiAgentEnabled } =
+    const { shouldShowChatSettingsScreensRevamp } =
         useShouldShowChatSettingsRevamp(storeIntegration, integration.get('id'))
 
     const editLinkDefaultTab = useMemo(() => {
@@ -121,7 +121,7 @@ export const GorgiasChatIntegration = ({
     }, [hasAccess, chatApplicationIds, applicationsAutomationSettings])
 
     useEffect(() => {
-        if (shouldShowScreensRevampWhenAiAgentEnabled) {
+        if (shouldShowChatSettingsScreensRevamp) {
             if (
                 !extra ||
                 extra === Tab.Languages ||
@@ -140,7 +140,7 @@ export const GorgiasChatIntegration = ({
         integration,
         showPreviewPanel,
         hidePreviewPanel,
-        shouldShowScreensRevampWhenAiAgentEnabled,
+        shouldShowChatSettingsScreensRevamp,
         extra,
     ])
 
