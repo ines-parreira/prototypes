@@ -4,6 +4,7 @@ import type { TicketThreadAiAgentMessageItem } from '../../../../hooks/messages/
 import { useTicketThreadLegacyBridge } from '../../../../utils/LegacyBridge'
 import { MessageAttachments } from '../../../MessageBubble/components/MessageAttachments'
 import { MessageBody } from '../../../MessageBubble/components/MessageBody'
+import { MessageErrors } from '../../../MessageBubble/components/MessageErrors'
 import { MessageHeaderContainer } from '../../../MessageBubble/components/MessageHeader/Layout'
 import { MessageChannel } from '../../../MessageBubble/components/MessageHeader/MessageChannel'
 import { MessageDeliveryIcon } from '../../../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
@@ -40,6 +41,12 @@ export function AiAgentTicketThreadMessage({
             </MessageHeaderContainer>
             <MessageBody item={item} />
             <MessageAttachments item={item} />
+            {item.data.ticket_id && (
+                <MessageErrors
+                    message={item.data}
+                    ticketId={item.data.ticket_id}
+                />
+            )}
             {renderAiAgentReasoning?.({ message: item.data })}
         </MessageBubble>
     )

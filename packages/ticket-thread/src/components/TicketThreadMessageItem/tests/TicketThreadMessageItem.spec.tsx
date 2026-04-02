@@ -117,6 +117,13 @@ function renderItem(item: TicketThreadMessageItem) {
 }
 
 describe('TicketThreadMessageItem', () => {
+    const aiAgentMessageTags = [
+        TicketThreadItemTag.Messages.AiAgentMessage,
+        TicketThreadItemTag.Messages.AiAgentInternalNote,
+        TicketThreadItemTag.Messages.AiAgentDraftMessage,
+        TicketThreadItemTag.Messages.AiAgentTrialMessage,
+    ] as const
+
     const messageTags = [
         {
             tag: TicketThreadItemTag.Messages.SocialMediaFacebookComment,
@@ -245,6 +252,28 @@ describe('TicketThreadMessageItem', () => {
         ).not.toBeInTheDocument()
         expect(renderAiAgentReasoning).not.toHaveBeenCalled()
     })
+
+    it.each(aiAgentMessageTags)(
+        'renders the error banner for %s items',
+        (tag) => {
+            renderItem({
+                _tag: tag,
+                data: {
+                    ...messageData,
+                    failed_datetime: '2024-03-21T11:05:00Z',
+                    last_sending_error: null,
+                },
+                datetime: '2024-03-21T11:00:00Z',
+            } as TicketThreadMessageItem)
+
+            expect(
+                screen.getByText('This message was not sent.'),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Cancel Message' }),
+            ).toBeInTheDocument()
+        },
+    )
 
     it('aligns agent messages to the right', () => {
         const data = {
