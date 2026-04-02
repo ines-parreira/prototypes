@@ -4,7 +4,7 @@ import type {
     Section,
 } from '@gorgias/helpdesk-types'
 
-import type { ChartType } from 'domains/reporting/pages/dashboards/types'
+import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import type {
     AnalyticsChartType,
     DashboardLayoutConfig,
@@ -13,6 +13,8 @@ import type {
 } from 'pages/aiAgent/analyticsOverview/types/layoutConfig'
 
 type DashboardTab = AnalyticsManagedDashboardConfig['tabs'][number]
+
+type LayoutItem = LayoutSection['items'][number]
 
 function layoutConfigToTabSections(
     layoutConfig: DashboardLayoutConfig,
@@ -126,6 +128,42 @@ export function backendConfigToLayoutConfig(
     }
 }
 
+function mergeItemsPreservingSavedOrder(
+    savedItems: LayoutItem[],
+    defaultItems: LayoutItem[],
+): LayoutItem[] {
+    const defaultItemMap = new Map(
+        defaultItems.map((item) => [item.chartId, item]),
+    )
+    const savedItemIds = new Set(savedItems.map((item) => item.chartId))
+
+    const mergedSavedItems = savedItems
+        .filter((item) => defaultItemMap.has(item.chartId))
+        .map((savedItem) => ({
+            ...savedItem,
+            requiresFeatureFlag: defaultItemMap.get(savedItem.chartId)
+                ?.requiresFeatureFlag,
+        }))
+
+    const newDefaultItems = defaultItems.filter(
+        (item) => !savedItemIds.has(item.chartId),
+    )
+
+    return [...mergedSavedItems, ...newDefaultItems]
+}
+
+function mergeItemsPreservingDefaultOrder(
+    savedItems: LayoutItem[],
+    defaultItems: LayoutItem[],
+): LayoutItem[] {
+    const savedItemMap = new Map(savedItems.map((item) => [item.chartId, item]))
+
+    return defaultItems.map((defaultItem) => ({
+        ...(savedItemMap.get(defaultItem.chartId) ?? defaultItem),
+        requiresFeatureFlag: defaultItem.requiresFeatureFlag,
+    }))
+}
+
 export function mergeWithDefaults(
     savedConfig: DashboardLayoutConfig,
     defaultConfig: DashboardLayoutConfig,
@@ -139,23 +177,16 @@ export function mergeWithDefaults(
         const defaultSection = defaultSectionMap.get(savedSection.id)
         if (!defaultSection) return savedSection
 
-        const savedItemMap = new Map(
-            savedSection.items.map((item) => [item.chartId, item]),
-        )
+        // for card sections, we want to allow persistent re-ordering of items
+        const mergeItems =
+            savedSection.type === ChartType.Card
+                ? mergeItemsPreservingSavedOrder
+                : mergeItemsPreservingDefaultOrder
 
         return {
             ...savedSection,
             tableTitle: defaultSection.tableTitle,
-            items: defaultSection.items
-                .map((defaultItem) => {
-                    const savedItem = savedItemMap.get(defaultItem.chartId)
-                    if (!savedItem) return defaultItem
-                    return {
-                        ...savedItem,
-                        requiresFeatureFlag: defaultItem.requiresFeatureFlag,
-                    }
-                })
-                .filter(Boolean),
+            items: mergeItems(savedSection.items, defaultSection.items),
         }
     })
 
