@@ -1,7 +1,18 @@
+import type { ReactNode } from 'react'
+
 import classnames from 'classnames'
 import { useHistory } from 'react-router-dom'
 
-import { Box, Button, Text } from '@gorgias/axiom'
+import {
+    Box,
+    Button,
+    Color,
+    Icon,
+    IconName,
+    Text,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import { useReorderDnD } from 'pages/common/hooks/useReorderDnD'
 
@@ -12,6 +23,7 @@ type FlowItemProps = {
     label: string
     channelType: string
     editUrl: string
+    languagesMismatchWarning?: ReactNode
     onMove: (dragIndex: number, hoverIndex: number) => void
     onDrop: () => void
     onCancel: () => void
@@ -23,6 +35,7 @@ export const FlowItem = ({
     label,
     channelType,
     editUrl,
+    languagesMismatchWarning,
     onMove,
     onDrop,
     onCancel,
@@ -50,7 +63,26 @@ export const FlowItem = ({
                 >
                     drag_indicator
                 </i>
-                <Text size="md">{label}</Text>
+                <Box gap="xxs">
+                    <Text size="md">{label}</Text>
+                    {languagesMismatchWarning && (
+                        <Tooltip
+                            delay={0}
+                            trigger={
+                                <Icon
+                                    size="md"
+                                    color={Color.Orange}
+                                    name={IconName.TriangleWarning}
+                                    aria-label="Languages mismatch warning"
+                                />
+                            }
+                        >
+                            <TooltipContent>
+                                {languagesMismatchWarning}
+                            </TooltipContent>
+                        </Tooltip>
+                    )}
+                </Box>
             </Box>
             <Box alignItems="center" gap="lg">
                 <Button

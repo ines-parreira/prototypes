@@ -341,6 +341,71 @@ describe('FlowsSettings', () => {
     })
 
     describe('language mismatch warnings', () => {
+        it('should show warning icon for enabled flows with type warning', () => {
+            mockUseLanguagesMismatchWarnings.mockReturnValue({
+                getLanguagesMismatchWarning: jest
+                    .fn()
+                    .mockImplementation((workflowId) => {
+                        if (workflowId === 'workflow-1') {
+                            return {
+                                type: 'warning',
+                                message: <span>Language mismatch</span>,
+                            }
+                        }
+                        return null
+                    }),
+            })
+
+            renderComponent({
+                automationSettingsWorkflows: [
+                    { workflow_id: 'workflow-1', enabled: true },
+                ],
+            })
+
+            expect(
+                screen.getByRole('img', { name: /triangle-warning/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not show warning icon for enabled flows with type error', () => {
+            mockUseLanguagesMismatchWarnings.mockReturnValue({
+                getLanguagesMismatchWarning: jest
+                    .fn()
+                    .mockImplementation((workflowId) => {
+                        if (workflowId === 'workflow-1') {
+                            return { type: 'error', message: 'Language error' }
+                        }
+                        return null
+                    }),
+            })
+
+            renderComponent({
+                automationSettingsWorkflows: [
+                    { workflow_id: 'workflow-1', enabled: true },
+                ],
+            })
+
+            expect(
+                screen.queryByRole('img', { name: /triangle-warning/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not show warning icon when there is no language mismatch', () => {
+            mockUseLanguagesMismatchWarnings.mockReturnValue({
+                getLanguagesMismatchWarning: jest.fn().mockReturnValue(null),
+            })
+
+            renderComponent({
+                automationSettingsWorkflows: [
+                    { workflow_id: 'workflow-1', enabled: true },
+                ],
+            })
+
+            expect(
+                screen.queryByRole('img', { name: /triangle-warning/i }),
+            ).not.toBeInTheDocument()
+        })
+
         it('should filter out flows with language mismatch errors from dropdown', async () => {
             const user = userEvent.setup()
             mockUseLanguagesMismatchWarnings.mockReturnValue({

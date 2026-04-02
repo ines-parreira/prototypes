@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
 import { keyBy } from 'lodash'
@@ -134,6 +135,13 @@ export const FlowsSettings = ({
         onReorder?.(reorderedWorkflows)
     }
 
+    const getLanguagesMismatchWarningMessage = (
+        workflowId: string,
+    ): ReactNode | undefined => {
+        const result = getLanguagesMismatchWarning(workflowId)
+        return result?.type === 'warning' ? result.message : undefined
+    }
+
     return (
         <Box flexDirection="column" gap="md" width="100%">
             <FlowsList
@@ -141,6 +149,7 @@ export const FlowsSettings = ({
                 channelType={channelType}
                 configurationsMap={configurationsMap}
                 getEditFlowLink={getEditFlowLink}
+                getLanguagesMismatchWarning={getLanguagesMismatchWarningMessage}
                 onReorder={handleReorderFlows}
                 onRemove={handleRemoveFlow}
             />

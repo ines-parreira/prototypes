@@ -54,6 +54,9 @@ const defaultProps = {
     configurationsMap: mockConfigurationsMap,
     getEditFlowLink: (workflowId: string) =>
         `/app/automation/shopify/test-shop/flows/edit/${workflowId}`,
+    getLanguagesMismatchWarning: (
+        __workflowId: string,
+    ): JSX.Element | undefined => undefined,
     onReorder: jest.fn(),
     onRemove: jest.fn(),
 }
@@ -182,6 +185,55 @@ describe('FlowsList', () => {
         await user.click(editButtons[0])
 
         expect(mockHistoryPush).toHaveBeenCalledWith('/custom/path/workflow-1')
+    })
+
+    describe('getLanguagesMismatchWarning', () => {
+        it('should not render warning icon when getLanguagesMismatchWarning is not provided', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByRole('img', { name: /triangle-warning/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should not render warning icon when getLanguagesMismatchWarning returns undefined', () => {
+            renderComponent({
+                getLanguagesMismatchWarning: jest
+                    .fn()
+                    .mockReturnValue(undefined),
+            })
+
+            expect(
+                screen.queryByRole('img', { name: /triangle-warning/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render warning icon for flows where getLanguagesMismatchWarning returns a value', () => {
+            renderComponent({
+                items: [{ workflow_id: 'workflow-1', enabled: true }],
+                getLanguagesMismatchWarning: (workflowId: string) =>
+                    workflowId === 'workflow-1' ? (
+                        <span>Language warning</span>
+                    ) : undefined,
+            })
+
+            expect(
+                screen.getByRole('img', { name: /triangle-warning/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should only render warning icons for flows that have a mismatch', () => {
+            renderComponent({
+                getLanguagesMismatchWarning: (workflowId: string) =>
+                    workflowId === 'workflow-1' ? (
+                        <span>Language warning</span>
+                    ) : undefined,
+            })
+
+            expect(
+                screen.getAllByRole('img', { name: /triangle-warning/i }),
+            ).toHaveLength(1)
+        })
     })
 
     describe('drag and drop reordering', () => {

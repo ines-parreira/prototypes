@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react'
+import type { ReactNode } from 'react'
 
 import { isEqual } from 'lodash'
 
@@ -14,6 +15,7 @@ type FlowsListProps = {
     channelType: string
     configurationsMap: Record<string, WorkflowConfiguration>
     getEditFlowLink: (workflowId: string) => string
+    getLanguagesMismatchWarning?: (workflowId: string) => ReactNode | undefined
     onReorder: (reorderedWorkflows: Workflow[]) => void
     onRemove: (workflowId: string) => void
 }
@@ -23,6 +25,7 @@ export function FlowsList({
     channelType,
     configurationsMap,
     getEditFlowLink,
+    getLanguagesMismatchWarning,
     onReorder,
     onRemove,
 }: FlowsListProps) {
@@ -75,6 +78,9 @@ export function FlowsList({
                     label={configurationsMap[workflow.workflow_id]?.name ?? ''}
                     channelType={channelType}
                     editUrl={getEditFlowLink(workflow.workflow_id)}
+                    languagesMismatchWarning={getLanguagesMismatchWarning?.(
+                        workflow.workflow_id,
+                    )}
                     onMove={handleFlowItemMove}
                     onDrop={handleFlowItemDrop}
                     onCancel={handleCancel}

@@ -1,4 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import type { ReactNode } from 'react'
+
+import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -32,7 +34,11 @@ const defaultProps = {
     onDelete: jest.fn(),
 }
 
-const renderComponent = (props: Partial<typeof defaultProps> = {}) => {
+const renderComponent = (
+    props: Partial<typeof defaultProps> & {
+        languagesMismatchWarning?: ReactNode
+    } = {},
+) => {
     return render(
         <MemoryRouter>
             <FlowItem {...defaultProps} {...props} />
@@ -126,5 +132,45 @@ describe('FlowItem', () => {
         expect(mockHistoryPush).toHaveBeenCalledWith(
             '/app/settings/flows/bigcommerce/my-store/edit/workflow-2',
         )
+    })
+
+    describe('languagesMismatchWarning', () => {
+        it('should not render warning icon when languagesMismatchWarning is not provided', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByRole('img', { name: /triangle-warning/i }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render warning icon when languagesMismatchWarning is provided', () => {
+            renderComponent({
+                languagesMismatchWarning: <span>Language warning</span>,
+            })
+
+            expect(
+                screen.getByRole('img', { name: /triangle-warning/i }),
+            ).toBeInTheDocument()
+        })
+
+        it('should show tooltip content when hovering over warning icon', async () => {
+            const user = userEvent.setup()
+            renderComponent({
+                languagesMismatchWarning: (
+                    <span>Flow language does not match channel</span>
+                ),
+            })
+
+            const warningIcon = screen.getByRole('img', {
+                name: /triangle-warning/i,
+            })
+            await user.hover(warningIcon)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Flow language does not match channel'),
+                ).toBeInTheDocument()
+            })
+        })
     })
 })
