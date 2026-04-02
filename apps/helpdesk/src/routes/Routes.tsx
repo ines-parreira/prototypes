@@ -74,6 +74,7 @@ import { AiAgentAccountConfigurationProvider } from 'pages/aiAgent/providers/AiA
 import { AiAgentErrorBoundary } from 'pages/aiAgent/providers/AiAgentErrorBoundary'
 import AiAgentStoreConfigurationProvider from 'pages/aiAgent/providers/AiAgentStoreConfigurationProvider'
 import { AiAgentSkills } from 'pages/aiAgent/skills/components/AiAgentSkills/AiAgentSkills'
+import { SkillEditorPage } from 'pages/aiAgent/skills/components/SkillEditor/SkillEditorPage'
 import App from 'pages/App'
 import ActionsPlatformAppsView from 'pages/automate/actionsPlatform/ActionsPlatformAppsView'
 import ActionsPlatformCreateAppFormView from 'pages/automate/actionsPlatform/ActionsPlatformCreateAppFormView'
@@ -671,11 +672,21 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             section="ai-agent-skills"
                             team={SentryTeam.CONVAI_KNOWLEDGE}
                         >
-                            <Route
-                                path={`${path}/skills`}
-                                exact
-                                component={AiAgentSkills}
-                            />
+                            <Switch>
+                                <Route
+                                    path={`${path}/skills/new`}
+                                    component={SkillEditorPage}
+                                />
+                                <Route
+                                    path={`${path}/skills/:skillId`}
+                                    component={SkillEditorPage}
+                                />
+                                <Route
+                                    path={`${path}/skills`}
+                                    exact
+                                    component={AiAgentSkills}
+                                />
+                            </Switch>
                         </AiAgentErrorBoundary>
                     )}
                     <AiAgentErrorBoundary

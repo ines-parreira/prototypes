@@ -11,7 +11,7 @@ import css from './RecommendedSkillsSection.less'
 
 type Props = {
     skillsTemplates: SkillTemplate[]
-    onCreateSkillsFromTemplate: () => void
+    onCreateSkillsFromTemplate: (templateId: string) => void
 }
 
 export const RecommendedSkillsSection: React.FC<Props> = ({
@@ -125,7 +125,9 @@ export const RecommendedSkillsSection: React.FC<Props> = ({
                     <SkillsTemplateCard
                         key={template.id}
                         skillTemplate={template}
-                        onCreateSkillsFromTemplate={onCreateSkillsFromTemplate}
+                        onCreateSkillsFromTemplate={() =>
+                            onCreateSkillsFromTemplate(template.id)
+                        }
                         className={css.templateCard}
                         hasStats
                         hasCTA

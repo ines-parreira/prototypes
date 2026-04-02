@@ -9,7 +9,7 @@ type Props = {
     skillsTemplates: SkillTemplate[]
     isOpen: boolean
     onOpenChange: (open: boolean) => void
-    onCreateSkillsFromTemplate: () => void
+    onCreateSkillsFromTemplate: (templateId: string) => void
 }
 
 export const SkillsTemplateModal: React.FC<Props> = ({
@@ -34,7 +34,9 @@ export const SkillsTemplateModal: React.FC<Props> = ({
                     <SkillsTemplateCard
                         key={template.id}
                         skillTemplate={template}
-                        onCreateSkillsFromTemplate={onCreateSkillsFromTemplate}
+                        onCreateSkillsFromTemplate={() =>
+                            onCreateSkillsFromTemplate(template.id)
+                        }
                         className={css.templateCard}
                     />
                 ))}

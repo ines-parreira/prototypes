@@ -5,6 +5,8 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import { ThemeProvider } from 'core/theme'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
 import { useSkillsTemplates } from 'pages/aiAgent/skills/hooks/useSkillsTemplates'
 import { IntentStatus } from 'pages/aiAgent/skills/types'
@@ -12,8 +14,23 @@ import type { Intent } from 'pages/aiAgent/skills/types'
 
 import { AiAgentSkills } from './AiAgentSkills'
 
+const mockPush = jest.fn()
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({ push: mockPush }),
+}))
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('pages/aiAgent/skills/hooks/useHasLinkedSkills')
 jest.mock('pages/aiAgent/skills/hooks/useSkillsTemplates')
+
+const mockUseAiAgentNavigation = useAiAgentNavigation as jest.MockedFunction<
+    typeof useAiAgentNavigation
+>
+const mockUseAiAgentStoreConfigurationContext =
+    useAiAgentStoreConfigurationContext as jest.MockedFunction<
+        typeof useAiAgentStoreConfigurationContext
+    >
 jest.mock('../SkillsTable/SkillsTable', () => ({
     SkillsTable: () => (
         <div role="region" aria-label="Skills Table">
@@ -51,7 +68,18 @@ jest.mock(
 jest.mock(
     'pages/aiAgent/skills/components/SkillsTemplateModal/SkillsTemplateModal',
     () => ({
-        SkillsTemplateModal: () => null,
+        SkillsTemplateModal: ({
+            onCreateSkillsFromTemplate,
+        }: {
+            onCreateSkillsFromTemplate: (templateId: string) => void
+        }) => (
+            <button
+                onClick={() => onCreateSkillsFromTemplate('order-status')}
+                aria-label="Use template"
+            >
+                Use template
+            </button>
+        ),
     }),
 )
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
@@ -96,6 +124,20 @@ describe('AiAgentSkills', () => {
                     },
                 },
             },
+        })
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: { storeName: 'test-shop' },
+        } as ReturnType<typeof useAiAgentStoreConfigurationContext>)
+        mockUseAiAgentNavigation.mockReturnValue({
+            navigationItems: [],
+            routes: {
+                skills: '/app/ai-agent/shopify/test-shop/skills',
+                newSkill: '/app/ai-agent/shopify/test-shop/skills/new',
+                newSkillFromTemplate: (templateId: string) =>
+                    `/app/ai-agent/shopify/test-shop/skills/new?template=${templateId}`,
+                skillDetail: (skillId: number) =>
+                    `/app/ai-agent/shopify/test-shop/skills/${skillId}`,
+            } as ReturnType<typeof useAiAgentNavigation>['routes'],
         })
         mockUseSkillsTemplates.mockReturnValue({
             allSkillsTemplates: [mockSkillTemplate],
@@ -175,6 +217,21 @@ describe('AiAgentSkills', () => {
         renderComponent()
 
         expect(screen.queryByText(/Recommended Skills/)).not.toBeInTheDocument()
+    })
+
+    describe('Navigation', () => {
+        it('should navigate to new skill with template when creating from template', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /use template/i }),
+            )
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/test-shop/skills/new?template=order-status',
+            )
+        })
     })
 
     describe('Intents Table', () => {

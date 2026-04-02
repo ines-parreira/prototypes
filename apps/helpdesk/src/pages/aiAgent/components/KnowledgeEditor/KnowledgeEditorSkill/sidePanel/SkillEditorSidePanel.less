@@ -1,0 +1,47 @@
+:local {
+    .sidePanel {
+        min-width: 0;
+        height: 100%;
+    }
+
+    .contentArea {
+        width: 300px;
+        flex-shrink: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .contentDivider {
+        border-left: 1px solid var(--border-neutral-default);
+        height: 100%;
+    }
+
+    .iconBar {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-md);
+        padding: var(--spacing-xs);
+        padding-top: var(--spacing-md);
+        width: 48px;
+        flex-shrink: 0;
+        border-left: 1px solid var(--border-neutral-default);
+    }
+
+    .iconButton {
+        border-radius: var(--spacing-xs);
+    }
+
+    .iconButtonActive {
+        border-radius: var(--spacing-xs);
+        border: 0.5px solid var(--border-neutral-tertiary);
+        background: var(--surface-neutral-secondary);
+    }
+
+    .performanceTab {
+        padding: var(--spacing-lg);
+        border-left: 1px solid var(--border-neutral-default);
+    }
+}

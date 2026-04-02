@@ -1,4 +1,6 @@
-import { useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+
+import { useHistory } from 'react-router-dom'
 
 import type { Row } from '@gorgias/axiom'
 import {
@@ -19,6 +21,7 @@ import {
     useTable,
 } from '@gorgias/axiom'
 
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
@@ -32,9 +35,11 @@ import type { StatsDisplayMode } from './columns'
 import css from './SkillsTable.less'
 
 export const SkillsTable = () => {
+    const history = useHistory()
     const { storeConfiguration } = useAiAgentStoreConfigurationContext()
     const helpCenterId = storeConfiguration?.guidanceHelpCenterId || 0
     const shopName = storeConfiguration?.storeName || ''
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const storeIntegration = useStoreIntegrationByShopName(shopName)
     const shopIntegrationId = storeIntegration?.id
@@ -82,9 +87,20 @@ export const SkillsTable = () => {
         ],
     )
 
+    const handleRowClick = useCallback(
+        (row: Row<TransformedArticle>) => {
+            history.push(routes.skillDetail(row.original.id))
+        },
+        [history, routes],
+    )
+
     const renderRows = (rows: Row<TransformedArticle>[]) => {
         return rows.map((row) => (
-            <TableRow key={row.id}>
+            <TableRow
+                key={row.id}
+                onClick={() => handleRowClick(row)}
+                className={css.clickableRow}
+            >
                 {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                         {flexRender(

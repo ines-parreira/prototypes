@@ -1,8 +1,12 @@
 import { useState } from 'react'
 
+import { useHistory } from 'react-router-dom'
+
 import { Box, Skeleton } from '@gorgias/axiom'
 
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { RecommendedSkillsSection } from 'pages/aiAgent/skills/components/RecommendedSkillsSection/RecommendedSkillsSection'
 import { SkillsTemplateModal } from 'pages/aiAgent/skills/components/SkillsTemplateModal/SkillsTemplateModal'
 import { useHasLinkedSkills } from 'pages/aiAgent/skills/hooks/useHasLinkedSkills'
@@ -25,12 +29,21 @@ export const AiAgentSkills = () => {
     const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
     const { allSkillsTemplates, availableSkillsTemplates } =
         useSkillsTemplates()
-    const noop = () => {}
+    const history = useHistory()
+    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
+    const shopName = storeConfiguration?.storeName || ''
+    const { routes } = useAiAgentNavigation({ shopName })
 
-    const handleCreateSkillsFromTemplate = () => {
-        // Logic on creating a Skill from template will be applied in the future iteration
-        // oxlint-disable-next-line no-console
-        console.log('Create skill from template')
+    const handleCreateSkillsFromTemplate = (templateId?: string) => {
+        if (templateId) {
+            history.push(routes.newSkillFromTemplate(templateId))
+        } else {
+            history.push(routes.newSkill)
+        }
+    }
+
+    const handleCreateSkillFromScratch = () => {
+        history.push(routes.newSkill)
     }
 
     const handleOpenTemplateModal = () => {
@@ -45,7 +58,7 @@ export const AiAgentSkills = () => {
         <Box flexDirection="column" width="100%">
             <SkillsHeader
                 onViewIntents={handleViewIntents}
-                onCreateSkillFromScratch={noop}
+                onCreateSkillFromScratch={handleCreateSkillFromScratch}
                 onCreateSkillFromTemplate={handleOpenTemplateModal}
             />
 
@@ -62,7 +75,9 @@ export const AiAgentSkills = () => {
                 {isLoading ? (
                     <SkillsLoading />
                 ) : !hasLinkedSkills ? (
-                    <SkillsEmptyState onCreateSkill={noop} />
+                    <SkillsEmptyState
+                        onCreateSkill={handleCreateSkillFromScratch}
+                    />
                 ) : (
                     <SkillsTable />
                 )}

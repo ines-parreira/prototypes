@@ -206,7 +206,7 @@ describe('RecommendedSkillsSection', () => {
         expect(screen.getAllByText('Handover').length).toBeGreaterThan(0)
     })
 
-    it('calls onCreateSkillsFromTemplate when the CTA button is clicked', async () => {
+    it('calls onCreateSkillsFromTemplate with the template id when the CTA button is clicked', async () => {
         const user = userEvent.setup()
         const onCreateSkillsFromTemplate = jest.fn()
         renderComponent(mockTemplates, onCreateSkillsFromTemplate)
@@ -216,6 +216,9 @@ describe('RecommendedSkillsSection', () => {
         )
 
         expect(onCreateSkillsFromTemplate).toHaveBeenCalledTimes(1)
+        expect(onCreateSkillsFromTemplate).toHaveBeenCalledWith(
+            expect.any(String),
+        )
     })
 
     it('renders a "Set up skill" button for each template', () => {

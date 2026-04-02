@@ -14,6 +14,20 @@ import { useTotalAiAgentTickets } from '../../hooks/useTotalAiAgentTickets'
 import type { TransformedArticle } from '../../types'
 import { SkillsTable } from './SkillsTable'
 
+const mockPush = jest.fn()
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({ push: mockPush }),
+}))
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: () => ({
+        routes: {
+            skills: '/app/ai-agent/shopify/test-store/skills',
+            skillDetail: (id: number) =>
+                `/app/ai-agent/shopify/test-store/skills/${id}`,
+        },
+    }),
+}))
 jest.mock('../../hooks/useSkillsArticles')
 jest.mock('../../hooks/useTotalAiAgentTickets')
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
@@ -462,6 +476,20 @@ describe('SkillsTable', () => {
                 name: /next.*page/i,
             })
             expect(nextButton).toBeInTheDocument()
+        })
+    })
+
+    describe('Row click navigation', () => {
+        it('should navigate to skill detail when a row is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const rows = screen.getAllByRole('row')
+            await user.click(rows[1])
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/test-store/skills/1',
+            )
         })
     })
 

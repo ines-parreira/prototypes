@@ -136,6 +136,10 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
                 ? `${basePath}/opportunities/${opportunityId}`
                 : `${basePath}/opportunities`,
         skills: `${basePath}/skills`,
+        skillDetail: (skillId: number) => `${basePath}/skills/${skillId}`,
+        newSkill: `${basePath}/skills/new`,
+        newSkillFromTemplate: (templateId: string) =>
+            `${basePath}/skills/new?template=${templateId}`,
         products: `${basePath}/products`,
         productsDetail: (productId: number) =>
             `${basePath}/products/${productId}`,

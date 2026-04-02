@@ -144,14 +144,14 @@ describe('SkillsTemplateModal', () => {
         expect(screen.getByText('Order Cancellations')).toBeInTheDocument()
     })
 
-    it('calls onCreateSkillsFromTemplate when a card is clicked', async () => {
+    it('calls onCreateSkillsFromTemplate with template id when a card is clicked', async () => {
         const user = userEvent.setup()
         const onCreateSkillsFromTemplate = jest.fn()
         renderComponent({ onCreateSkillsFromTemplate })
 
         await user.click(screen.getByText('Order Status'))
 
-        expect(onCreateSkillsFromTemplate).toHaveBeenCalledTimes(1)
+        expect(onCreateSkillsFromTemplate).toHaveBeenCalledWith('order-status')
     })
 
     it('calls onOpenChange with false when Escape is pressed', async () => {
