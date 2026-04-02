@@ -22,7 +22,9 @@ vi.mock('../../ticket-list', () => ({
 
 describe('ViewPanel', () => {
     it('renders', () => {
-        render(<ViewPanel viewId={42} />)
+        render(<ViewPanel viewId={42} topContent={<div>FiltersBridge</div>} />)
         expect(screen.getByText('ViewHeader')).toBeInTheDocument()
+        expect(screen.getByText('FiltersBridge')).toBeInTheDocument()
+        expect(screen.getByText('TicketTable')).toBeInTheDocument()
     })
 })

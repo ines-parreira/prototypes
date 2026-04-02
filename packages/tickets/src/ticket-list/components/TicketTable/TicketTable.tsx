@@ -18,18 +18,15 @@ import {
 import { useBulkActionMenuState } from '../../hooks/useBulkActionMenuState'
 import { useIsTrashLikeView } from '../../hooks/useIsTrashLikeView'
 import { useMarkTicketAsRead } from '../../hooks/useMarkTicketAsRead'
-import { useSortOrder } from '../../hooks/useSortOrder'
 import { useTicketListActions } from '../../hooks/useTicketListActions'
-import { useTicketsList } from '../../hooks/useTicketsList'
 import { useTicketTableBulkActionShortcuts } from '../../hooks/useTicketTableBulkActionShortcuts'
 import { useTicketTableColumnVisibility } from '../../hooks/useTicketTableColumnVisibility'
+import type { DirtyViewInput } from '../../hooks/useTicketTableData'
+import { useTicketTableData } from '../../hooks/useTicketTableData'
 import { useViewVisibleTickets } from '../../hooks/useViewVisibleTickets'
 import { getPlaceholderKind } from '../../utils/getPlaceholderKind'
 import { TicketListEmptyPlaceholder } from '../TicketListEmptyPlaceholder'
-import {
-    parseSortOrder,
-    SORT_FIELDS,
-} from '../TicketListHeader/SortOrderDropdown'
+import { parseSortOrder } from '../TicketListHeader/SortOrderDropdown'
 import { TicketTableBulkActions } from './components/TicketTableBulkActions'
 import { createTicketTableColumns } from './TicketTableColumns'
 
@@ -40,6 +37,8 @@ type Props = {
     currentUserId?: number
     onFixFilters?: () => void
     onApplyMacro?: (ticketIds: number[]) => void
+    onNavigateToTicket?: () => void
+    dirtyView?: DirtyViewInput
 }
 
 export function TicketTable({
@@ -47,153 +46,76 @@ export function TicketTable({
     currentUserId,
     onFixFilters,
     onApplyMacro,
+    onNavigateToTicket,
+    dirtyView,
 }: Props) {
     const history = useHistory()
-    const [sortOrder, setSortOrder] = useSortOrder(viewId)
-
-    const { data: viewResponse } = useGetView(viewId)
-    const view = viewResponse?.data
-    const isInboxView = viewResponse ? getIsInboxView(view) : undefined
-
-    const [pageSize, setPageSize] = useState(20)
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
     const hasSelection = useMemo(
         () => Object.values(rowSelection).some(Boolean),
         [rowSelection],
     )
 
-    const ticketsListParams = useMemo(
-        () => ({ order_by: sortOrder, limit: pageSize }),
-        [sortOrder, pageSize],
-    )
+    const { data: viewResponse } = useGetView(viewId)
+    const view = viewResponse?.data
+    const isInboxView = viewResponse ? getIsInboxView(view) : undefined
 
     const {
-        tickets,
-        fetchNextPage,
-        hasNextPage,
+        items,
         isLoading,
-        isFetchingNextPage,
+        hasNextPage,
+        hasPreviousPage,
+        currentPageIndex,
+        onPageChange,
+        onPageSizeChange,
+        onSortChange,
+        onRefresh,
+        pageSize,
+        sortOrder,
         error,
-        refetch,
-    } = useTicketsList(viewId, {
-        params: ticketsListParams,
+    } = useTicketTableData({
+        viewId,
+        dirtyView,
+        enablePersistedUpdates: !view?.deactivated_datetime,
         pauseUpdates: hasSelection,
-        enableStaleUpdates: !view?.deactivated_datetime,
     })
+
     const placeholderKind = getPlaceholderKind({
         view,
         hasError: !!error,
-        isEmpty: tickets.length === 0,
+        isEmpty: items.length === 0,
+    })
+    const { viewVisibleTickets } = useViewVisibleTickets()
+    const displayedTicketIds = useMemo(
+        () => items.map((ticket) => ticket.id),
+        [items],
+    )
+    const displayedTicketIdsKey = displayedTicketIds.join(',')
+    const previousDisplayedTicketIdsKey = usePrevious(displayedTicketIdsKey)
+    const previousSortOrder = usePrevious(sortOrder)
+    const clearSelection = useCallback(() => {
+        setRowSelection({})
+    }, [])
+
+    useEffect(() => {
+        viewVisibleTickets(items)
+    }, [items, viewVisibleTickets])
+
+    const { translationMap } = useTicketsTranslatedProperties({
+        ticket_ids: displayedTicketIds,
     })
     const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
     const dateTimePreferences = useUserDateTimePreferences()
 
     const { markAsRead } = useMarkTicketAsRead()
 
-    const [currentPageIndex, setCurrentPageIndex] = useState(0)
-    const clearSelection = useCallback(() => {
-        setRowSelection({})
-    }, [])
-
-    const previousSortOrder = usePrevious(sortOrder)
-    useEffect(() => {
-        if (!previousSortOrder || previousSortOrder === sortOrder) return
-        setCurrentPageIndex(0)
-        clearSelection()
-    }, [clearSelection, sortOrder, previousSortOrder])
-
-    const prevTicketsLength = usePrevious(tickets.length)
-    useEffect(() => {
-        if (
-            prevTicketsLength !== undefined &&
-            tickets.length > prevTicketsLength &&
-            tickets.length > (currentPageIndex + 1) * pageSize
-        ) {
-            setCurrentPageIndex((i) => i + 1)
-        }
-    }, [tickets.length, prevTicketsLength, currentPageIndex, pageSize])
-
-    const displayedTickets = useMemo(
-        () =>
-            tickets.slice(
-                currentPageIndex * pageSize,
-                (currentPageIndex + 1) * pageSize,
-            ),
-        [tickets, currentPageIndex, pageSize],
-    )
-    const { viewVisibleTickets } = useViewVisibleTickets()
-
-    useEffect(() => {
-        viewVisibleTickets(displayedTickets)
-    }, [displayedTickets, viewVisibleTickets])
-
-    const { translationMap } = useTicketsTranslatedProperties({
-        ticket_ids: displayedTickets.map((ticket) => ticket.id),
-    })
-    const displayedTicketIds = useMemo(
-        () => displayedTickets.map((ticket) => ticket.id),
-        [displayedTickets],
-    )
-    const displayedTicketIdsKey = displayedTicketIds.join(',')
-    const previousDisplayedTicketIdsKey = usePrevious(displayedTicketIdsKey)
-
-    const handlePageChange = useCallback(
-        (direction: 'next' | 'previous') => {
-            if (direction === 'previous') {
-                setCurrentPageIndex((i) => Math.max(0, i - 1))
-                return
-            }
-            const nextPageStart = (currentPageIndex + 1) * pageSize
-            if (nextPageStart < tickets.length) {
-                setCurrentPageIndex((i) => i + 1)
-            } else if (hasNextPage && !isFetchingNextPage) {
-                fetchNextPage()
-            }
-        },
-        [
-            currentPageIndex,
-            pageSize,
-            tickets.length,
-            hasNextPage,
-            isFetchingNextPage,
-            fetchNextPage,
-        ],
-    )
-
-    const handleSortingChange = useCallback(
-        (
-            updaterOrValue:
-                | SortingState
-                | ((old: SortingState) => SortingState),
-        ) => {
-            const { field: currentField, direction: currentDirection } =
-                parseSortOrder(sortOrder)
-            const currentSortingState: SortingState = currentField
-                ? [{ id: currentField.id, desc: currentDirection === 'desc' }]
-                : []
-
-            const next =
-                typeof updaterOrValue === 'function'
-                    ? updaterOrValue(currentSortingState)
-                    : updaterOrValue
-
-            const [first] = next
-            if (!first) return
-
-            const field = SORT_FIELDS.find((f) => f.id === first.id)
-            if (!field) return
-
-            setSortOrder(first.desc ? field.desc : field.asc)
-        },
-        [sortOrder, setSortOrder],
-    )
-
     const handleRowClick = useCallback(
         (ticket: TicketCompact) => {
             if (ticket.is_unread) markAsRead(ticket.id)
+            onNavigateToTicket?.()
             history.push(`/app/views/${viewId}/${ticket.id}`)
         },
-        [markAsRead, history, viewId],
+        [markAsRead, onNavigateToTicket, history, viewId],
     )
 
     const { field: currentSortField, direction: currentSortDirection } =
@@ -223,14 +145,16 @@ export function TicketTable({
         ],
     )
 
-    const selectedTicketIds = useMemo(() => {
-        return new Set(
-            Object.entries(rowSelection)
-                .filter(([, selected]) => !!selected)
-                .map(([rowId]) => displayedTickets[Number(rowId)]?.id)
-                .filter((id): id is number => id !== undefined),
-        )
-    }, [displayedTickets, rowSelection])
+    const selectedTicketIds = useMemo(
+        () =>
+            new Set(
+                Object.entries(rowSelection)
+                    .filter(([, selected]) => !!selected)
+                    .map(([rowId]) => items[Number(rowId)]?.id)
+                    .filter((id): id is number => id !== undefined),
+            ),
+        [items, rowSelection],
+    )
 
     const {
         isLoading: isBulkActionLoading,
@@ -269,6 +193,17 @@ export function TicketTable({
         }
     }, [clearSelection, displayedTicketIdsKey, previousDisplayedTicketIdsKey])
 
+    useEffect(() => {
+        if (
+            previousSortOrder !== undefined &&
+            previousSortOrder !== sortOrder
+        ) {
+            clearSelection()
+            setIsAssignUserOpen(false)
+            setIsAddTagOpen(false)
+        }
+    }, [clearSelection, previousSortOrder, sortOrder])
+
     useTicketTableBulkActionShortcuts({
         hasSelection,
         isBulkActionLoading,
@@ -300,7 +235,7 @@ export function TicketTable({
                 isLoading={false}
                 emptyStateVariant={placeholderKind}
                 isInboxView={isInboxView}
-                onRefresh={refetch}
+                onRefresh={onRefresh}
             />
         )
     }
@@ -320,14 +255,14 @@ export function TicketTable({
     return (
         <div className={css.container}>
             <DataTable
-                key={viewId}
+                key={`${viewId}-${sortOrder}`}
                 persistence={{
                     enable: true,
                     localStorage: { id: `ticket-table-${viewId}` },
                 }}
-                data={displayedTickets}
+                data={items}
                 columns={columns}
-                isLoading={isLoading || isFetchingNextPage}
+                isLoading={isLoading}
                 onRowClick={handleRowClick}
                 overflow="scroll"
                 selection={{
@@ -340,59 +275,55 @@ export function TicketTable({
                     enable: true,
                     manual: true,
                     value: sortingInitial,
-                    onChange: handleSortingChange,
-                    persist: false,
+                    onChange: onSortChange as (
+                        updaterOrValue:
+                            | SortingState
+                            | ((old: SortingState) => SortingState),
+                    ) => void,
                 }}
                 pagination={{
                     enable: true,
                     manual: true,
                     value: { pageIndex: currentPageIndex, pageSize },
-                    hasNextPage:
-                        (currentPageIndex + 1) * pageSize < tickets.length ||
-                        !!hasNextPage,
-                    hasPreviousPage: currentPageIndex > 0,
-                    onPageChange: handlePageChange,
-                    onPageSizeChange: (size) => {
-                        setPageSize(size)
-                        setCurrentPageIndex(0)
-                    },
-                    persist: true,
+                    hasNextPage,
+                    hasPreviousPage,
+                    onPageChange,
+                    onPageSizeChange,
                 }}
                 columnEditing={{
                     enable: true,
                     defaultVisibleColumns,
                     onVisibleColumnsChange: onColumnVisibilityChange,
-                    persist: true,
                 }}
                 renderEmptyState={() => (
                     <TicketListEmptyPlaceholder
-                        isLoading={false}
+                        isLoading={isLoading}
                         emptyStateVariant={
-                            placeholderKind ?? EmptyViewsState.Empty
+                            placeholderKind || EmptyViewsState.Empty
                         }
                         isInboxView={isInboxView}
                         onFixFilters={onFixFilters}
-                        onRefresh={refetch}
+                        onRefresh={onRefresh}
                     />
                 )}
             >
                 <TicketTableBulkActions
                     viewId={viewId}
                     selectedCount={selectedTicketIds.size}
-                    isDisabled={isBulkActionLoading}
                     isAssignUserOpen={isAssignUserOpen}
-                    onAssignUserOpenChange={setIsAssignUserOpen}
                     isAddTagOpen={isAddTagOpen}
-                    onAddTagOpenChange={setIsAddTagOpen}
+                    isDisabled={isBulkActionLoading}
                     onSetStatus={handleSetStatus}
                     onAssignUser={handleAssignUser}
                     onAssignTeam={handleAssignTeam}
                     onAddTag={handleAddTag}
-                    onMarkAsUnread={handleMarkAsUnread}
-                    onMarkAsRead={handleMarkAsRead}
+                    onAssignUserOpenChange={setIsAssignUserOpen}
+                    onAddTagOpenChange={setIsAddTagOpen}
                     onChangePriority={handleChangePriority}
-                    onApplyMacro={handleApplyMacro}
                     onExportTickets={handleExportTickets}
+                    onMarkAsRead={handleMarkAsRead}
+                    onMarkAsUnread={handleMarkAsUnread}
+                    onApplyMacro={handleApplyMacro}
                     onMoveToTrash={handleMoveToTrash}
                     onUndelete={handleUndeleteFromTrashView}
                     onDeleteForever={handleDeleteForever}

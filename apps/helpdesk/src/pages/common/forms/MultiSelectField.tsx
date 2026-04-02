@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import type { ComponentType, CSSProperties } from 'react'
 
+import type { DropdownMenuProps } from './MultiSelectOptionsField/dropdownMenuTypes'
 import MultiSelectOptionsField from './MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from './MultiSelectOptionsField/types'
 
@@ -14,7 +15,8 @@ type Props = {
     className?: string
     caseInsensitive?: boolean
     onChange: (options: any[]) => void
-    dropdownMenu?: ComponentType<unknown>
+    dropdownMenu?: ComponentType<DropdownMenuProps>
+    dropdownMenuContainer?: HTMLElement
     isCompact?: boolean
     showSymbolOnSpaces?: boolean
     dropdownClassName?: string
@@ -67,6 +69,7 @@ export default class MultiSelectField extends Component<Props> {
                 className={this.props.className}
                 caseInsensitive={this.props.caseInsensitive}
                 dropdownMenu={this.props.dropdownMenu}
+                dropdownMenuContainer={this.props.dropdownMenuContainer}
                 matchInput
                 isCompact={this.props.isCompact}
                 dropdownClassName={this.props.dropdownClassName}

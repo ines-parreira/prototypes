@@ -256,7 +256,9 @@ describe('TicketsListPanel', () => {
 
         expect(dispatchMock).toHaveBeenCalledWith(setViewEditMode())
         expect(setSplitTicketViewMock).toHaveBeenCalledWith(false)
-        expect(historyPushMock).toHaveBeenCalledWith('/app/tickets/123456')
+        expect(historyPushMock).toHaveBeenCalledWith('/app/tickets/123456', {
+            openViewFilters: true,
+        })
     })
 
     it('should wire TicketList onFixFilters to edit mode, split view disable and navigation handlers', () => {
@@ -273,7 +275,9 @@ describe('TicketsListPanel', () => {
 
         expect(dispatchMock).toHaveBeenCalledWith(setViewEditMode())
         expect(setSplitTicketViewMock).toHaveBeenCalledWith(false)
-        expect(historyPushMock).toHaveBeenCalledWith('/app/tickets/123456')
+        expect(historyPushMock).toHaveBeenCalledWith('/app/tickets/123456', {
+            openViewFilters: true,
+        })
     })
 
     it('should disable split ticket view when TicketList is collapsed', () => {

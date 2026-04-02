@@ -19,6 +19,7 @@ type Props = {
     objectPath: string
     onCustomFieldChange: (customFieldId: number) => void
     onQAScoreDimensionFieldChange: (qaScoreDimension: string) => void
+    menuContainer?: HTMLElement
 }
 
 export default function Left({
@@ -26,6 +27,7 @@ export default function Left({
     view,
     onCustomFieldChange,
     onQAScoreDimensionFieldChange,
+    menuContainer,
 }: Props) {
     // just remove the first object name. Ex: ticket.customer.id ==> customer.id
     const suffixPath = useMemo(
@@ -71,6 +73,7 @@ export default function Left({
                 <QAScoreSelect
                     value={qaScoreDimension}
                     onChange={onQAScoreDimensionFieldChange}
+                    menuContainer={menuContainer}
                 />
             )}
             {isCustomFieldObject && (

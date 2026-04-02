@@ -69,6 +69,7 @@ type OwnProps = {
     objectPath: string
     empty: boolean
     storeMappings: StoreMapping[]
+    menuContainer?: HTMLElement
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -202,6 +203,7 @@ export class RightContainer extends Component<Props, State> {
             index,
             empty,
             objectPath,
+            menuContainer,
         } = this.props
 
         if (empty) {
@@ -415,6 +417,7 @@ export class RightContainer extends Component<Props, State> {
                         }
                         mapSearchResults={this._mapTagSearchResultsToOptions}
                         dropdownMenu={TagDropdownMenu}
+                        dropdownMenuContainer={menuContainer}
                     />
                 )
             }
@@ -594,6 +597,7 @@ export class RightContainer extends Component<Props, State> {
                             updateFieldFilter(index, value)
                         }
                         toggleDropdown={this._toggleDropdown}
+                        menuContainer={menuContainer}
                         menu={
                             fieldName === ViewField.Tags
                                 ? TagDropdownMenu

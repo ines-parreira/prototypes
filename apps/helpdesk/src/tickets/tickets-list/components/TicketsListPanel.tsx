@@ -49,7 +49,9 @@ export default function TicketsListPanel({ registerOnToggleUnread }: Props) {
     const handleFixFilters = useCallback(() => {
         dispatch(setViewEditMode())
         setSplitTicketView(false)
-        history.push(`/app/tickets/${viewId}`)
+        history.push(`/app/tickets/${viewId}`, {
+            openViewFilters: true,
+        })
     }, [dispatch, history, setSplitTicketView, viewId])
 
     const ticketId = urlTicketId ? parseInt(urlTicketId, 10) : undefined

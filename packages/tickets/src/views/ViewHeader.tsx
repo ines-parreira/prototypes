@@ -16,9 +16,10 @@ import { useCreateTicketDraft } from './useCreateTicketDraft'
 type ViewHeaderProps = {
     viewId: number
     onExpand?: () => void
+    onEditView?: () => void
 }
 
-export function ViewHeader({ viewId, onExpand }: ViewHeaderProps) {
+export function ViewHeader({ viewId, onExpand, onEditView }: ViewHeaderProps) {
     const { data: viewResponse } = useGetView(viewId)
     const viewName = viewResponse?.data?.name
     const { hasDraft, onCreateTicket, onResumeDraft, onDiscardDraft } =
@@ -79,7 +80,22 @@ export function ViewHeader({ viewId, onExpand }: ViewHeaderProps) {
                 </Tooltip>
                 <Heading size="xl">{viewName}</Heading>
             </Box>
-            {createTicketButton}
+            <Box flexDirection="row" alignItems="center" gap="xs">
+                <Tooltip
+                    trigger={
+                        <Button
+                            variant="tertiary"
+                            size="sm"
+                            icon="slider-filter"
+                            aria-label="Edit view"
+                            onClick={onEditView}
+                        />
+                    }
+                >
+                    <TooltipContent title="Edit view" />
+                </Tooltip>
+                {createTicketButton}
+            </Box>
         </Box>
     )
 }

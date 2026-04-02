@@ -5,6 +5,7 @@ import { useEffectOnce } from '@repo/hooks'
 import type { Map } from 'immutable'
 import _debounce from 'lodash/debounce'
 
+import type { DropdownMenuProps } from 'pages/common/forms/MultiSelectOptionsField/dropdownMenuTypes'
 import MultiSelectOptionsField from 'pages/common/forms/MultiSelectOptionsField/MultiSelectOptionsField'
 import type { Option } from 'pages/common/forms/MultiSelectOptionsField/types'
 import type { CancellableRequestInjectedProps } from 'pages/common/utils/withCancellableRequest'
@@ -19,7 +20,8 @@ type Props = {
     onChange: (options: Option[]) => void
     field: Map<any, any>
     mapSearchResults: (searchResults: FieldSearchResult[]) => Option[]
-    dropdownMenu?: ComponentType<any>
+    dropdownMenu?: ComponentType<DropdownMenuProps>
+    dropdownMenuContainer?: HTMLElement
 } & CancellableRequestInjectedProps<
     'fieldEnumSearchCancellable',
     'cancelFieldEnumSearchCancellable',
@@ -29,6 +31,7 @@ type Props = {
 export function FilterMultiSelectField(props: Props) {
     const {
         dropdownMenu,
+        dropdownMenuContainer,
         field,
         fieldEnumSearchCancellable,
         mapSearchResults,
@@ -85,6 +88,7 @@ export function FilterMultiSelectField(props: Props) {
             onInputChange={handleInputChange}
             onChange={handleChange}
             dropdownMenu={dropdownMenu}
+            dropdownMenuContainer={dropdownMenuContainer}
         />
     )
 }

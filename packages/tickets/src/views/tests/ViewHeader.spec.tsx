@@ -78,6 +78,15 @@ describe('ViewHeader', () => {
         expect(onExpand).toHaveBeenCalledTimes(1)
     })
 
+    it('calls onEditView when the "Edit view" button is clicked', async () => {
+        const onEditView = vi.fn()
+        const { user } = render(
+            <ViewHeader viewId={viewId} onEditView={onEditView} />,
+        )
+        await user.click(screen.getByRole('button', { name: /edit view/i }))
+        expect(onEditView).toHaveBeenCalledTimes(1)
+    })
+
     describe('when no draft exists', () => {
         it('renders a plain "Create ticket" button', () => {
             render(<ViewHeader viewId={viewId} />)

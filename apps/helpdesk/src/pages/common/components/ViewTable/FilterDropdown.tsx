@@ -17,12 +17,14 @@ type Props = {
     updateFieldFilter: (field: string) => void
     toggleDropdown: () => void
     menu?: ComponentType<any>
+    menuContainer?: HTMLElement
 }
 
 export default function FilterDropdown({
     field,
     viewConfig,
     menu: Menu = DropdownMenu,
+    menuContainer,
     updateFieldFilter,
     toggleDropdown,
 }: Props) {
@@ -83,7 +85,7 @@ export default function FilterDropdown({
     return (
         <Dropdown isOpen toggle={toggleDropdown}>
             <DropdownToggle tag="span" />
-            <Menu style={style}>
+            <Menu style={style} container={menuContainer}>
                 <FilterDropdownSearch
                     field={field}
                     onSearchStart={handleSearchStart}

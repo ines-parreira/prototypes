@@ -48,6 +48,7 @@ type OwnProps = {
     teams: List<Map<any, any>> | Seq.Indexed<Map<any, any>>
     updateFieldFilter: typeof updateFieldFilter
     parentNode: LogicalExpression
+    menuContainer?: HTMLElement
 }
 
 type Props = OwnProps & ConnectedProps<typeof connector>
@@ -64,6 +65,7 @@ export const CallExpression = ({
     parentNode,
     schemas,
     updateFieldFilter,
+    menuContainer,
 }: Props) => {
     const getOperators = useCallback(
         (objectPath: string): Record<string, OperatorType> => {
@@ -180,6 +182,7 @@ export const CallExpression = ({
                 view={view}
                 onCustomFieldChange={onCustomFieldChange}
                 onQAScoreDimensionFieldChange={onQAScoreDimensionFieldChange}
+                menuContainer={menuContainer}
             />
             <Operator
                 operators={operators}
@@ -199,6 +202,7 @@ export const CallExpression = ({
                 field={field}
                 empty={Object.keys(UNARY_OPERATORS).includes(operator.name)}
                 storeMappings={storeMappings}
+                menuContainer={menuContainer}
             />
             {!field && <Badge type={'error'}>System condition</Badge>}
             <RemoveCallExpression onClick={removeCondition} index={index} />

@@ -6,9 +6,14 @@ import SelectField from 'pages/common/forms/SelectField/SelectField'
 type QAScoreSelectProps = {
     onChange: (qaScoreDimension: string) => void
     value: string | null
+    menuContainer?: HTMLElement
 }
 
-export default function QAScoreSelect({ onChange, value }: QAScoreSelectProps) {
+export default function QAScoreSelect({
+    onChange,
+    value,
+    menuContainer,
+}: QAScoreSelectProps) {
     useEffect(() => {
         if (!value) {
             onChange(QA_SCORE_DIMENSIONS[0].value)
@@ -20,6 +25,8 @@ export default function QAScoreSelect({ onChange, value }: QAScoreSelectProps) {
             value={value}
             onChange={(val) => onChange(val as string)}
             options={QA_SCORE_DIMENSIONS}
+            container={menuContainer}
+            positionFixed={!!menuContainer}
         />
     )
 }

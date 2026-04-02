@@ -53,6 +53,7 @@ export function useTicketsList(
 ) {
     const query = useInfiniteQuery({
         queryKey: getTicketsListQueryKey(viewId, params),
+        enabled,
         queryFn: async ({ pageParam, signal }) => {
             const response = await listViewItems(
                 viewId,
@@ -69,7 +70,6 @@ export function useTicketsList(
             return getNextCursorFromMeta(lastPage.meta)
         },
         staleTime: STALE_TIME_MS,
-        enabled,
         refetchOnWindowFocus: true,
     })
 

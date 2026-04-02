@@ -501,7 +501,9 @@ describe('<TicketListView />', () => {
         expect(dispatch).toHaveBeenCalledWith(setViewEditMode())
         expect(setIsEnabled).toHaveBeenCalledWith(false)
         expect(setShouldRedirectToSplitView).toHaveBeenCalledWith(false)
-        expect(historyPush).toHaveBeenCalledWith('/app/tickets/123')
+        expect(historyPush).toHaveBeenCalledWith('/app/tickets/123', {
+            openViewFilters: true,
+        })
     })
 
     it('should display bulk actions', () => {

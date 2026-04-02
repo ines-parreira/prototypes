@@ -7,6 +7,7 @@ import _isEqual from 'lodash/isEqual'
 import { TAGS_LIMIT } from 'models/integration/constants'
 
 import Dropdown from './Dropdown'
+import type { DropdownMenuProps } from './dropdownMenuTypes'
 import OptionTag from './Tag'
 import type { Option } from './types'
 
@@ -32,7 +33,8 @@ type Props = {
     onBlur?: () => void
     onFocus?: () => void
     loading?: boolean
-    dropdownMenu?: ComponentType<unknown>
+    dropdownMenu?: ComponentType<DropdownMenuProps>
+    dropdownMenuContainer?: HTMLElement
     isCompact?: boolean
     showAllOptions?: boolean
     dropdownClassName?: string
@@ -53,6 +55,7 @@ export default function MultiSelectOptionsField(props: Props) {
         singular = 'item',
         selectedOptions = [],
         dropdownMenu,
+        dropdownMenuContainer,
         loading,
         caseInsensitive,
         showSymbolOnSpaces,
@@ -276,6 +279,7 @@ export default function MultiSelectOptionsField(props: Props) {
                     onSelect={handleSelect}
                     onDelete={handleDelete}
                     menu={dropdownMenu}
+                    menuContainer={dropdownMenuContainer}
                     isCompact={isCompact}
                     dropdownClassName={dropdownClassName}
                 />

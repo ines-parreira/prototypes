@@ -20,7 +20,11 @@ import { getActiveView } from 'state/views/selectors'
 
 import CallExpression from './CallExpression'
 
-export default function ViewFilters() {
+type ViewFiltersProps = {
+    menuContainer?: HTMLElement
+}
+
+export default function ViewFilters({ menuContainer }: ViewFiltersProps) {
     const dispatch = useAppDispatch()
     const agents = useAppSelector(getHumanAndAutomationBotAgents)
     const schemas = useAppSelector(getSchemas)
@@ -70,6 +74,7 @@ export default function ViewFilters() {
                         updateFieldFilter={(index, value) =>
                             dispatch(updateFieldFilter(index, value))
                         }
+                        menuContainer={menuContainer}
                     />
                 )
             case 'LogicalExpression':

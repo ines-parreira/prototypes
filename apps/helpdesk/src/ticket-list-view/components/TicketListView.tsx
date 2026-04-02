@@ -201,7 +201,9 @@ export default function TicketListView({
         dispatch(setViewEditMode())
         setSplitTicketView(false)
         setShouldRedirectToSplitView(false)
-        history.push(`/app/tickets/${viewId}`)
+        history.push(`/app/tickets/${viewId}`, {
+            openViewFilters: true,
+        })
     }, [
         dispatch,
         history,

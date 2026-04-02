@@ -7,6 +7,7 @@ import _max from 'lodash/max'
 import _min from 'lodash/min'
 import { DropdownMenu, DropdownToggle, UncontrolledDropdown } from 'reactstrap'
 
+import type { DropdownMenuProps } from './dropdownMenuTypes'
 import Input from './Input'
 import Menu from './Menu'
 import type { Option } from './types'
@@ -26,7 +27,8 @@ type Props = {
     onBlur: () => void
     onSelect: (option: Option) => void
     onDelete: () => void
-    menu?: ComponentType<{ className?: string }>
+    menu?: ComponentType<DropdownMenuProps>
+    menuContainer?: HTMLElement
     isCompact?: boolean
     dropdownClassName?: string
 }
@@ -44,6 +46,7 @@ export default function Dropdown(props: Props) {
         onBlur,
         onSelect,
         onDelete,
+        menuContainer,
         placeholder,
         isCompact,
         id,
@@ -115,6 +118,7 @@ export default function Dropdown(props: Props) {
                 </DropdownToggle>
                 <CustomDropdownMenu
                     className={classnames(css.options, props.dropdownClassName)}
+                    container={menuContainer}
                 >
                     <Menu
                         isLoading={isLoading}
