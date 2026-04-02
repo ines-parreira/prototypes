@@ -11,13 +11,19 @@ import {
 } from './constants'
 import { checkIfTrackerIsEnabled } from './utils'
 
+const previewNamespace = /^(pr-\d+)\.preview\.gorgias\./.exec(
+    location.hostname,
+)?.[1]
+
 export const ingestionEndpoint = isDevelopment()
     ? 'http://localhost:8076/private/track'
-    : `https://${
-          window.GORGIAS_CLUSTER
-      }.events-ingestion-helpdesk.services.gorgias.${location.hostname
-          .split('.')
-          .pop()!}/private/track`
+    : previewNamespace
+      ? `https://${previewNamespace}-events-ingestion.preview.gorgias.xyz/private/track`
+      : `https://${
+            window.GORGIAS_CLUSTER
+        }.events-ingestion-helpdesk.services.gorgias.${location.hostname
+            .split('.')
+            .pop()!}/private/track`
 
 export const reportSentryError = (error: unknown, event: unknown) => {
     // remove cast when types are corrected in the library

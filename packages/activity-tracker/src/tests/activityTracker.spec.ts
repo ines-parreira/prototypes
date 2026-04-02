@@ -13,6 +13,52 @@ vi.mock('../utils', () => {
     }
 })
 
+describe('ingestionEndpoint', () => {
+    const originalLocation = window.location
+
+    beforeEach(() => {
+        vi.resetModules()
+        // isDevelopment() returns true when neither window.STAGING nor window.PRODUCTION
+        // is set (jsdom default). Set PRODUCTION so the URL routing logic runs.
+        ;(window as Window & { PRODUCTION?: boolean }).PRODUCTION = true
+    })
+
+    afterEach(() => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        delete (window as any).PRODUCTION
+        Object.defineProperty(window, 'location', {
+            value: originalLocation,
+            configurable: true,
+        })
+    })
+
+    it('should use the preview URL when the hostname is a preview namespace', async () => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                ...originalLocation,
+                hostname: 'pr-84.preview.gorgias.xyz',
+            },
+            configurable: true,
+        })
+        const { ingestionEndpoint } = await import('../activityTracker')
+        expect(ingestionEndpoint).toBe(
+            'https://pr-84-events-ingestion.preview.gorgias.xyz/private/track',
+        )
+    })
+
+    it('should use the GORGIAS_CLUSTER URL when not on a preview hostname', async () => {
+        Object.defineProperty(window, 'location', {
+            value: { ...originalLocation, hostname: 'my-shop.gorgias.com' },
+            configurable: true,
+        })
+        window.GORGIAS_CLUSTER = 'us-east1-86cc'
+        const { ingestionEndpoint } = await import('../activityTracker')
+        expect(ingestionEndpoint).toBe(
+            'https://us-east1-86cc.events-ingestion-helpdesk.services.gorgias.com/private/track',
+        )
+    })
+})
+
 describe('activityTracker', () => {
     let activityTracker: ActivityTrackerModule
 
