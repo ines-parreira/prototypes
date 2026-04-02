@@ -6,18 +6,18 @@ exports[`<InputField /> should display a caption 1`] = `
     class="wrapper"
   >
     <input
-      aria-describedby="input-text-5-caption"
+      aria-describedby="input-text-42-caption"
       class="input"
       data-resizable="false"
-      id="input-text-5"
-      name="input-text-5"
+      id="input-text-42"
+      name="input-text-42"
       type="text"
       value=""
     />
   </div>
   <div
     class="caption"
-    id="input-text-5-caption"
+    id="input-text-42-caption"
   >
     Caption
   </div>
@@ -28,7 +28,7 @@ exports[`<InputField /> should display a label 1`] = `
 <div>
   <label
     class="ui-label-label-a11c label"
-    for="input-text-3"
+    for="input-text-42"
   >
     Label
   </label>
@@ -38,8 +38,8 @@ exports[`<InputField /> should display a label 1`] = `
     <input
       class="input"
       data-resizable="false"
-      id="input-text-3"
-      name="input-text-3"
+      id="input-text-42"
+      name="input-text-42"
       type="text"
       value=""
     />
@@ -57,8 +57,8 @@ exports[`<InputField /> should render an input field 1`] = `
     <input
       class="input"
       data-resizable="false"
-      id="input-text-1"
-      name="input-text-1"
+      id="input-text-42"
+      name="input-text-42"
       type="text"
       value=""
     />

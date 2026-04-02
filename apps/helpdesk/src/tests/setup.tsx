@@ -329,6 +329,10 @@ jest.mock('core/theme/useTheme.ts', () =>
     })),
 )
 
+jest.mock('core/theme/useActualTheme.ts', () =>
+    jest.fn(() => [THEME_NAME.Light, jest.fn()]),
+)
+
 jest.mock('@repo/feature-flags', () => {
     const React = jest.requireActual('react') as typeof import('react')
     const actual = jest.requireActual(

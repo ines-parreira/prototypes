@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock, userEvent } from '@repo/testing'
 import { render, within } from '@testing-library/react'
@@ -34,6 +35,9 @@ jest.mock(
 )
 const useSetThemeMock = assumeMock(useSetTheme)
 const useThemeMock = assumeMock(useTheme)
+const useHelpdeskV2WayfindingMS1FlagMock = assumeMock(
+    useHelpdeskV2WayfindingMS1Flag,
+)
 
 describe('ThemeMenu', () => {
     let setTheme: jest.Mock
@@ -46,6 +50,7 @@ describe('ThemeMenu', () => {
             resolvedName: THEME_NAME.Classic,
             tokens: themeTokenMap[THEME_NAME.Classic],
         })
+        useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
     })
 
     it.each(THEME_CONFIGS.map(({ label, name }) => [name, label]))(
@@ -68,6 +73,26 @@ describe('ThemeMenu', () => {
         expect(setTheme).toHaveBeenCalledWith(THEME_NAME.Dark)
         expect(logEvent).toHaveBeenCalledWith(SegmentEvent.ThemeUpdate, {
             theme: THEME_NAME.Dark,
+        })
+    })
+
+    describe('when the wayfinding MS1 flag is enabled', () => {
+        beforeEach(() => {
+            useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(true)
+        })
+
+        it('should not render the classic theme option', () => {
+            const { queryByText } = render(<ThemeMenu />)
+            expect(queryByText('Classic')).not.toBeInTheDocument()
+        })
+
+        it.each(
+            THEME_CONFIGS.filter(({ name }) => name !== THEME_NAME.Classic).map(
+                ({ label, name }) => [name, label],
+            ),
+        )('should still render the %s theme', (_, label) => {
+            const { getByText } = render(<ThemeMenu />)
+            expect(getByText(label)).toBeInTheDocument()
         })
     })
 })

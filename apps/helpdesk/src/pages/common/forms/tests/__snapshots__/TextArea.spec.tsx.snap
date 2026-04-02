@@ -6,8 +6,8 @@ exports[`TextArea should render the textarea 1`] = `
 >
   <textarea
     class="textarea"
-    id="textarea-1"
-    name="textarea-1"
+    id="textarea-42"
+    name="textarea-42"
   />
 </div>
 `;
@@ -19,8 +19,8 @@ exports[`TextArea should render the textarea disabled 1`] = `
   <textarea
     class="textarea"
     disabled=""
-    id="textarea-2"
-    name="textarea-2"
+    id="textarea-42"
+    name="textarea-42"
   />
 </div>
 `;
@@ -31,8 +31,8 @@ exports[`TextArea should render the textarea required 1`] = `
 >
   <textarea
     class="textarea"
-    id="textarea-3"
-    name="textarea-3"
+    id="textarea-42"
+    name="textarea-42"
     required=""
   />
 </div>
@@ -43,14 +43,14 @@ exports[`TextArea should render the textarea with caption 1`] = `
   class="class-for-wrapper"
 >
   <textarea
-    aria-describedby="textarea-5-caption"
+    aria-describedby="textarea-42-caption"
     class="textarea"
-    id="textarea-5"
-    name="textarea-5"
+    id="textarea-42"
+    name="textarea-42"
   />
   <div
     class="caption"
-    id="textarea-5-caption"
+    id="textarea-42-caption"
   >
     More details...
   </div>
@@ -63,12 +63,12 @@ exports[`TextArea should render the textarea with error 1`] = `
 >
   <textarea
     class="textarea error"
-    id="textarea-6"
-    name="textarea-6"
+    id="textarea-42"
+    name="textarea-42"
   />
   <div
     class="caption error"
-    id="textarea-6-caption"
+    id="textarea-42-caption"
   >
     This textarea is invalid
   </div>
@@ -81,14 +81,14 @@ exports[`TextArea should render the textarea with label 1`] = `
 >
   <label
     class="ui-label-label-a11c label"
-    for="textarea-4"
+    for="textarea-42"
   >
     Label of textarea
   </label>
   <textarea
     class="textarea"
-    id="textarea-4"
-    name="textarea-4"
+    id="textarea-42"
+    name="textarea-42"
   />
 </div>
 `;

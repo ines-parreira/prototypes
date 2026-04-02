@@ -3,13 +3,21 @@ import { renderHook } from '@repo/testing'
 import { THEME_NAME, themeTokenMap } from '@gorgias/design-tokens'
 import type { ThemeName } from '@gorgias/design-tokens'
 
+import useActualTheme from '../useActualTheme'
 import useThemeContext from '../useThemeContext'
+
+const useActualThemeMock = useActualTheme as jest.Mock
+const realUseActualTheme = jest.requireActual<{
+    default: typeof useActualTheme
+}>('core/theme/useActualTheme.ts').default
 
 describe('useThemeContext', () => {
     let matchMediaMock: jest.SpyInstance
     let localStorageMock: { [key: string]: string }
 
     beforeEach(() => {
+        useActualThemeMock.mockImplementation(realUseActualTheme)
+
         localStorageMock = {}
 
         Object.defineProperty(window, 'localStorage', {

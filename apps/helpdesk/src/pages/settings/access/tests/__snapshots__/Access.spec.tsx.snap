@@ -40,14 +40,14 @@ exports[`<Access/> should render properly 1`] = `
               <label
                 aria-checked="false"
                 class="ui-label-label-a11c label"
-                for="toggle-button-1"
+                for="toggle-button-42"
                 role="switch"
               >
                 <input
                   class="input"
                   disabled=""
-                  id="toggle-button-1"
-                  name="toggle-button-1"
+                  id="toggle-button-42"
+                  name="toggle-button-42"
                   type="checkbox"
                 />
                 <div
@@ -72,14 +72,14 @@ exports[`<Access/> should render properly 1`] = `
             <label
               aria-checked="false"
               class="ui-label-label-a11c label"
-              for="toggle-button-2"
+              for="toggle-button-42"
               role="switch"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-2"
-                name="toggle-button-2"
+                id="toggle-button-42"
+                name="toggle-button-42"
                 type="checkbox"
               />
               <div
@@ -131,14 +131,14 @@ exports[`<Access/> should render properly 1`] = `
               <label
                 aria-checked="false"
                 class="ui-label-label-a11c label"
-                for="toggle-button-4"
+                for="toggle-button-42"
                 role="switch"
               >
                 <input
                   class="input"
                   disabled=""
-                  id="toggle-button-4"
-                  name="toggle-button-4"
+                  id="toggle-button-42"
+                  name="toggle-button-42"
                   type="checkbox"
                 />
                 <div
@@ -276,14 +276,14 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
               <label
                 aria-checked="false"
                 class="ui-label-label-a11c label"
-                for="toggle-button-6"
+                for="toggle-button-42"
                 role="switch"
               >
                 <input
                   class="input"
                   disabled=""
-                  id="toggle-button-6"
-                  name="toggle-button-6"
+                  id="toggle-button-42"
+                  name="toggle-button-42"
                   type="checkbox"
                 />
                 <div
@@ -308,14 +308,14 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
             <label
               aria-checked="false"
               class="ui-label-label-a11c label"
-              for="toggle-button-7"
+              for="toggle-button-42"
               role="switch"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-7"
-                name="toggle-button-7"
+                id="toggle-button-42"
+                name="toggle-button-42"
                 type="checkbox"
               />
               <div
@@ -367,15 +367,15 @@ exports[`<Access/> should render with the previously saved settings 1`] = `
               <label
                 aria-checked="true"
                 class="ui-label-label-a11c label"
-                for="toggle-button-9"
+                for="toggle-button-42"
                 role="switch"
               >
                 <input
                   checked=""
                   class="input"
                   disabled=""
-                  id="toggle-button-9"
-                  name="toggle-button-9"
+                  id="toggle-button-42"
+                  name="toggle-button-42"
                   type="checkbox"
                 />
                 <div
@@ -515,14 +515,14 @@ exports[`<Access/> should show an error and block submit when using a generic do
               <label
                 aria-checked="false"
                 class="ui-label-label-a11c label"
-                for="toggle-button-21"
+                for="toggle-button-42"
                 role="switch"
               >
                 <input
                   class="input"
                   disabled=""
-                  id="toggle-button-21"
-                  name="toggle-button-21"
+                  id="toggle-button-42"
+                  name="toggle-button-42"
                   type="checkbox"
                 />
                 <div
@@ -547,14 +547,14 @@ exports[`<Access/> should show an error and block submit when using a generic do
             <label
               aria-checked="false"
               class="ui-label-label-a11c label"
-              for="toggle-button-22"
+              for="toggle-button-42"
               role="switch"
             >
               <input
                 class="input"
                 disabled=""
-                id="toggle-button-22"
-                name="toggle-button-22"
+                id="toggle-button-42"
+                name="toggle-button-42"
                 type="checkbox"
               />
               <div
@@ -606,15 +606,15 @@ exports[`<Access/> should show an error and block submit when using a generic do
               <label
                 aria-checked="true"
                 class="ui-label-label-a11c label"
-                for="toggle-button-24"
+                for="toggle-button-42"
                 role="switch"
               >
                 <input
                   checked=""
                   class="input"
                   disabled=""
-                  id="toggle-button-24"
-                  name="toggle-button-24"
+                  id="toggle-button-42"
+                  name="toggle-button-42"
                   type="checkbox"
                 />
                 <div

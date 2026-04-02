@@ -1,7 +1,10 @@
 import React, { useCallback } from 'react'
 
+import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import cn from 'classnames'
+
+import { THEME_NAME } from '@gorgias/design-tokens'
 
 import { THEME_CONFIGS, useSetTheme, useTheme } from 'core/theme'
 import type { HelpdeskThemeName } from 'core/theme'
@@ -11,6 +14,7 @@ import css from './UserMenu.less'
 export default function ThemeMenu() {
     const setTheme = useSetTheme()
     const theme = useTheme()
+    const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
 
     const updateTheme = useCallback(
         (name: HelpdeskThemeName) => {
@@ -24,7 +28,10 @@ export default function ThemeMenu() {
 
     return (
         <>
-            {THEME_CONFIGS.map(({ label, name }) => (
+            {THEME_CONFIGS.filter(
+                ({ name }) =>
+                    !(hasWayfindingMS1Flag && name === THEME_NAME.Classic),
+            ).map(({ label, name }) => (
                 <button
                     key={name}
                     className={cn(
