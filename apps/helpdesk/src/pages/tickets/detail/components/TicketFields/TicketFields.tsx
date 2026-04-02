@@ -6,17 +6,15 @@ import classNames from 'classnames'
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { getWrappedElementCount } from 'common/utils'
-import { OBJECT_TYPES } from 'custom-fields/constants'
+import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'
 import { isFieldRequired } from 'custom-fields/helpers/isFieldRequired'
 import { isFieldVisible } from 'custom-fields/helpers/isFieldVisible'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import { useCustomFieldsConditionsEvaluationResults } from 'custom-fields/hooks/useCustomFieldsConditionsEvaluationResults'
-import { isCustomFieldAIManagedType } from 'custom-fields/types'
-import type { CustomField } from 'custom-fields/types'
+import type { CustomField, CustomFieldAIManagedType } from 'custom-fields/types'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import ButtonIconLabel from 'pages/common/components/button/ButtonIconLabel'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { setHasAttemptedToCloseTicket } from 'state/ticket/actions'
 import {
     getHasAttemptedToCloseTicket,
@@ -33,7 +31,6 @@ const MAX_HEIGHT = 500
 
 function TicketFields() {
     const dispatch = useAppDispatch()
-    const { isStandaloneAiAgent } = useStandaloneAiAccess()
     const ticketState = useAppSelector(getTicket)
     const ticketFieldState = useAppSelector(getTicketFieldState)
     const [showAllFields, setShowAllFields] = useState(false)
@@ -57,14 +54,18 @@ function TicketFields() {
         ticketState,
     )
 
+    // Hide AI managed fields
+    // TODO(CSR): Remove this once AI managed fields are migrated to conditional
     const filteredTicketFieldDefinitions = useMemo(
         () =>
-            ticketFieldDefinitions.filter(({ managed_type }) =>
-                isStandaloneAiAgent
-                    ? isCustomFieldAIManagedType(managed_type ?? null)
-                    : !isCustomFieldAIManagedType(managed_type ?? null),
+            ticketFieldDefinitions.filter(
+                (definition) =>
+                    !definition.managed_type ||
+                    !Object.values(AI_MANAGED_TYPES).includes(
+                        definition.managed_type as CustomFieldAIManagedType,
+                    ),
             ),
-        [isStandaloneAiAgent, ticketFieldDefinitions],
+        [ticketFieldDefinitions],
     )
     const ticketFieldsToRender = useMemo(
         () =>

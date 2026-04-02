@@ -13,10 +13,8 @@ import {
     setTextAction,
     shopifyAction,
 } from 'fixtures/macro'
-import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import type { RootState, StoreDispatch } from 'state/types'
 
 import { MacrosQuickReply } from '../MacrosQuickReply'
@@ -29,13 +27,9 @@ jest.mock('lodash/debounce', () => {
 jest.mock('pages/tickets/common/macros/Preview/Preview', () => ({
     Preview: () => <>Preview</>,
 }))
-jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
-    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
-}))
 
 const logEventMock = logEvent as jest.Mock
 const applyMacro = jest.fn()
-const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 describe('<MacrosQuickReply />', () => {
@@ -60,14 +54,6 @@ describe('<MacrosQuickReply />', () => {
 
     const store = mockStore(state)
 
-    beforeEach(() => {
-        mockUseStandaloneAiAccess.mockReturnValue(
-            createMockStandaloneAiAccess(),
-        )
-        logEventMock.mockClear()
-        applyMacro.mockClear()
-    })
-
     it('should render the macros quick reply area', () => {
         const { getByText, getAllByRole } = render(
             <Provider store={store}>
@@ -84,22 +70,6 @@ describe('<MacrosQuickReply />', () => {
         expect(getByText('macro-0')).toBeInTheDocument()
         expect(getByText('macro-1')).toBeInTheDocument()
         expect(getByText('macro-2')).toBeInTheDocument()
-    })
-
-    it('should not render the macros quick reply area for standalone ai agents', () => {
-        mockUseStandaloneAiAccess.mockReturnValue(
-            createMockStandaloneAiAccess({
-                isStandaloneAiAgent: true,
-            }),
-        )
-
-        const { container } = render(
-            <Provider store={store}>
-                <MacrosQuickReply {...minProps} />
-            </Provider>,
-        )
-
-        expect(container).toBeEmptyDOMElement()
     })
 
     it('should show the tooltip when hovering on the icon', async () => {

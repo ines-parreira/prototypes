@@ -5,18 +5,11 @@ type Actions = {
     canWrite: boolean
 }
 
-type TicketViewActions = {
-    canRead: boolean
-    canCreateInternalNote: boolean
-    canWrite: boolean
-}
-
 export type StandaloneAiContextType = {
     isStandaloneAiAgent: boolean
     accessFeaturesMapped: {
         statistics: Actions
         userManagement: Actions
-        ticketsView: TicketViewActions
     }
 }
 

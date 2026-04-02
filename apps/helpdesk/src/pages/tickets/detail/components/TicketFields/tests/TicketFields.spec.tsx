@@ -21,13 +21,10 @@ import {
 import { useCustomFieldConditions } from 'custom-fields/hooks/queries/useCustomFieldConditions'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import {
-    aiManagedTicketInputFieldDefinition,
     ticketDropdownFieldDefinition,
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import TicketFields from '../TicketFields'
@@ -44,15 +41,11 @@ jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions', () => ({
         isLoading: false,
     })),
 }))
-jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
-    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
-}))
 jest.mock('@repo/feature-flags')
 
 const mockedUseCustomFieldConditions = assumeMock(useCustomFieldConditions)
 const mockedUseCustomFieldDefinitions = assumeMock(useCustomFieldDefinitions)
 const mockedUseFlag = assumeMock(useFlag)
-const mockedUseStandaloneAiAccess = assumeMock(useStandaloneAiAccess)
 
 const mockedServer = new MockAdapter(client)
 const queryClient = mockQueryClient()
@@ -114,9 +107,6 @@ describe('<TicketFields />', () => {
         mockedServer.reset()
         queryClient.clear()
         mockedUseFlag.mockReturnValue(true)
-        mockedUseStandaloneAiAccess.mockReturnValue(
-            createMockStandaloneAiAccess(),
-        )
     })
 
     it('should not render if there is no custom field definition', () => {
@@ -262,42 +252,6 @@ describe('<TicketFields />', () => {
             expect(
                 screen.queryByText(RegExp(conditionalTicketField.label)),
             ).toBeDefined()
-        })
-    })
-
-    it('should only render AI-managed fields for standalone ai agents', async () => {
-        mockedUseStandaloneAiAccess.mockReturnValue(
-            createMockStandaloneAiAccess({
-                isStandaloneAiAgent: true,
-            }),
-        )
-        mockedUseCustomFieldDefinitions.mockReturnValue({
-            data: {
-                data: [
-                    ticketInputFieldDefinition,
-                    aiManagedTicketInputFieldDefinition,
-                ],
-            },
-            isLoading: false,
-        } as any)
-
-        render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={store}>
-                    <TicketFields />
-                </Provider>
-            </QueryClientProvider>,
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByText(
-                    RegExp(aiManagedTicketInputFieldDefinition.label),
-                ),
-            ).toBeDefined()
-            expect(
-                screen.queryByText(RegExp(ticketInputFieldDefinition.label)),
-            ).not.toBeInTheDocument()
         })
     })
 })

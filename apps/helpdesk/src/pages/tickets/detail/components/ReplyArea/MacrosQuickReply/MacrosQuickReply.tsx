@@ -15,7 +15,6 @@ import type { CurrentUserState } from 'state/currentUser/types'
 import { DEPRECATED_getTicket } from 'state/ticket/selectors'
 import type { TicketState } from 'state/ticket/types'
 
-import { useStandaloneAiContext } from '../../../../../../providers/standalone-ai/StandaloneAiContext'
 import { MacroButton } from './MacroButton'
 
 import css from './MacrosQuickReply.less'
@@ -29,7 +28,6 @@ export const MacrosQuickReply = ({ macros, applyMacro }: Props) => {
     const ticket = useAppSelector<TicketState>(DEPRECATED_getTicket)
     const account = useAppSelector<CurrentAccountState>(getCurrentAccountState)
     const user = useAppSelector<CurrentUserState>(getCurrentUser)
-    const { isStandaloneAiAgent } = useStandaloneAiContext()
 
     const baseSegmentPayload = useMemo(
         () => ({
@@ -50,10 +48,6 @@ export const MacrosQuickReply = ({ macros, applyMacro }: Props) => {
         },
         [baseSegmentPayload],
     )
-
-    if (isStandaloneAiAgent) {
-        return null
-    }
 
     return (
         <div className={css.wrapper}>

@@ -21,7 +21,6 @@ import {
     getDefaultSelectedMacroId,
 } from 'pages/tickets/common/macros/utils'
 import PrefillMacroAlert from 'pages/tickets/detail/components/ReplyArea/PrefillMacroAlert'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getPreferences } from 'state/currentUser/selectors'
 import { getNewMessageType, isCacheAdded } from 'state/newMessage/selectors'
 import type { TopRankMacroState } from 'state/newMessage/ticketReplyCache'
@@ -55,7 +54,6 @@ type Props = {
     macros: Macro[]
     nextCursor?: string
     query: string
-    isStandaloneAiAgent?: boolean
     onChangeFilters: (filters: MacrosProperties) => void
     onChangeMacrosActive: (isActive?: boolean) => void
     onChangeQuery: (query: string) => void
@@ -447,9 +445,6 @@ export class TicketReplyArea extends Component<Props, State> {
     }
 
     showMacros = () => {
-        if (this.props.isStandaloneAiAgent) {
-            return
-        }
         this.props.onChangeMacrosActive(true)
     }
 
@@ -483,7 +478,6 @@ export class TicketReplyArea extends Component<Props, State> {
         const {
             currentTicket,
             filters,
-            isStandaloneAiAgent = false,
             isMacrosActive,
             macros,
             newMessageType,
@@ -495,7 +489,6 @@ export class TicketReplyArea extends Component<Props, State> {
         } = this.props
 
         const currentMacro = getCurrentMacro(macros, selectedMacroId)
-        const canUseMacros = !isStandaloneAiAgent
 
         const requireCustomerSelection =
             !currentTicket.get('id') &&
@@ -508,20 +501,18 @@ export class TicketReplyArea extends Component<Props, State> {
                     [css.macrosVisible]: isMacrosActive,
                 })}
             >
-                {canUseMacros && (
-                    <TicketMacrosSearch
-                        setFocus={(input) => (this.macroInput = input)}
-                        filters={filters}
-                        macrosVisible={isMacrosActive}
-                        showMacros={this.showMacros}
-                        handleSearchKeyDown={this.handleSearchKeyDown}
-                        requireCustomerSelection={requireCustomerSelection}
-                        query={query}
-                        onChangeFilters={onChangeFilters}
-                        onChangeQuery={onChangeQuery}
-                        onClearMacro={this.hideMacrosAndFocusEditor}
-                    />
-                )}
+                <TicketMacrosSearch
+                    setFocus={(input) => (this.macroInput = input)}
+                    filters={filters}
+                    macrosVisible={isMacrosActive}
+                    showMacros={this.showMacros}
+                    handleSearchKeyDown={this.handleSearchKeyDown}
+                    requireCustomerSelection={requireCustomerSelection}
+                    query={query}
+                    onChangeFilters={onChangeFilters}
+                    onChangeQuery={onChangeQuery}
+                    onClearMacro={this.hideMacrosAndFocusEditor}
+                />
                 <div className={css.content}>
                     {requireCustomerSelection ? (
                         <div
@@ -543,7 +534,7 @@ export class TicketReplyArea extends Component<Props, State> {
                                 first in the infobar
                             </span>
                         </div>
-                    ) : canUseMacros && isMacrosActive ? (
+                    ) : isMacrosActive ? (
                         <TicketMacros
                             macros={macros}
                             isLoading={isMacrosLoading}
@@ -612,17 +603,4 @@ const connector = connect(
     },
 )
 
-const ConnectedTicketReplyArea = connector(TicketReplyArea)
-
-export default function TicketReplyAreaWithStandaloneAiContext(
-    props: React.ComponentProps<typeof ConnectedTicketReplyArea>,
-) {
-    const { isStandaloneAiAgent } = useStandaloneAiAccess()
-
-    return (
-        <ConnectedTicketReplyArea
-            {...props}
-            isStandaloneAiAgent={isStandaloneAiAgent}
-        />
-    )
-}
+export default connector(TicketReplyArea)

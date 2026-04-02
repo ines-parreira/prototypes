@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { uniq } from 'lodash'
@@ -11,7 +11,6 @@ import type { Integration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
 import { isSource, isTicketMessageSourceType } from 'models/ticket/predicates'
 import type { Source, SourceAddress, Ticket } from 'models/ticket/types'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import type { Application } from 'services/applications'
 import { getApplications } from 'services/applications'
 import type { Channel, ChannelIdentifier, ChannelLike } from 'services/channels'
@@ -96,7 +95,6 @@ export default function useOutboundChannels(): {
     selectedChannel: Maybe<Channel | TicketMessageSourceType>
 } {
     const dispatch = useAppDispatch()
-    const { isStandaloneAiAgent } = useStandaloneAiAccess()
 
     const ticket = useAppSelector(getTicket)
     const integrations = useAppSelector(getIntegrations)
@@ -106,10 +104,7 @@ export default function useOutboundChannels(): {
     const legacyChannels = getLegacyReplySourcesForTicket(ticket, integrations)
 
     const source = useAppSelector(getNewMessageSource).toJS()
-    const actualSelectedChannel = getSelectedChannel(source)
-    const selectedChannel = isStandaloneAiAgent
-        ? TicketMessageSourceType.InternalNote
-        : actualSelectedChannel
+    const selectedChannel = getSelectedChannel(source)
 
     const selectChannel = useCallback(
         (channel: Maybe<Channel | TicketMessageSourceType>) => {
@@ -126,18 +121,7 @@ export default function useOutboundChannels(): {
         [dispatch],
     )
 
-    useEffect(() => {
-        if (
-            isStandaloneAiAgent &&
-            actualSelectedChannel !== TicketMessageSourceType.InternalNote
-        ) {
-            dispatch(prepare(TicketMessageSourceType.InternalNote))
-        }
-    }, [actualSelectedChannel, dispatch, isStandaloneAiAgent])
-
-    const channels = isStandaloneAiAgent
-        ? [TicketMessageSourceType.InternalNote]
-        : [...legacyChannels, ...newChannels]
+    const channels = [...legacyChannels, ...newChannels]
 
     return {
         channels,

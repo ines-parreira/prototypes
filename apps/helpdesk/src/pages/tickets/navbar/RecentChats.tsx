@@ -138,9 +138,7 @@ export const RecentChats = () => {
         }
     }, [forceUpdate, location, previousPathname])
 
-    const tickets = ((chats.get('tickets') as
-        | List<Map<any, any>>
-        | undefined) ?? fromJS([])) as List<Map<any, any>>
+    const tickets = chats.get('tickets') as List<Map<any, any>>
 
     if (!tickets || tickets.isEmpty()) {
         return null

@@ -17,13 +17,11 @@ import { useGetTicket } from '@gorgias/helpdesk-queries'
 import { TicketStatus } from 'business/types/ticket'
 import { useTicketIsAfterFeedbackCollectionPeriod } from 'common/utils/useIsTicketAfterFeedbackCollectionPeriod'
 import { UserRole } from 'config/types/user'
-import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import type { Infobar } from 'pages/common/components/infobar/Infobar/Infobar'
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { getIntegrationsByType } from 'state/integrations/selectors'
 import { getAIAgentMessages, getIntegrationsData } from 'state/ticket/selectors'
@@ -226,11 +224,6 @@ const useAiAgentAccessMock = assumeMock(useAiAgentAccess)
 jest.mock('pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent')
 const useHasAIAgentMock = assumeMock(useHasAIAgent)
 
-jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
-    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
-}))
-const useStandaloneAiAccessMock = assumeMock(useStandaloneAiAccess)
-
 jest.mock('common/utils/useIsTicketAfterFeedbackCollectionPeriod')
 const useTicketIsAfterFeedbackCollectionPeriodMock = assumeMock(
     useTicketIsAfterFeedbackCollectionPeriod,
@@ -343,9 +336,6 @@ describe('<TicketInfobarContainer />', () => {
             hasAccess: true,
             isLoading: false,
         })
-        useStandaloneAiAccessMock.mockReturnValue(
-            createMockStandaloneAiAccess(),
-        )
         useHasAIAgentMock.mockReturnValue(true)
         mockedGetAIAgentMessages.mockReturnValue([
             {
@@ -475,29 +465,6 @@ describe('<TicketInfobarContainer />', () => {
             expect(
                 screen.queryByText(AI_FEEDBACK_TAB.LABEL),
             ).toBeInTheDocument()
-        })
-
-        it('shows AI Feedback before Customer for standalone ai agents', () => {
-            useStandaloneAiAccessMock.mockReturnValue(
-                createMockStandaloneAiAccess({
-                    isStandaloneAiAgent: true,
-                }),
-            )
-
-            renderWithRouter(
-                <Provider store={store}>
-                    <TicketInfobarContainer {...minProps} />
-                </Provider>,
-                { path: '/foo/:ticketId?', route: '/foo/new' },
-            )
-
-            const aiFeedbackTab = screen.getByText(AI_FEEDBACK_TAB.LABEL)
-            const customerTab = screen.getByText(CUSTOMER_DETAILS_TAB.LABEL)
-
-            expect(
-                aiFeedbackTab.compareDocumentPosition(customerTab) &
-                    Node.DOCUMENT_POSITION_FOLLOWING,
-            ).toBeTruthy()
         })
 
         it('does not show on edit-widgets route', () => {

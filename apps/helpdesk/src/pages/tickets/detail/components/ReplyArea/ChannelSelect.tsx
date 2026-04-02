@@ -12,61 +12,32 @@ import { TicketMessageSourceType } from 'business/types/ticket'
 import useOutboundChannels from 'hooks/useOutboundChannels'
 import { isTicketMessageSourceType } from 'models/ticket/predicates'
 import SourceIcon from 'pages/common/components/SourceIcon'
-import type { Channel } from 'services/channels'
 import { humanizeChannel } from 'state/ticket/utils'
 
 import ConvertToForwardPopover from './ConvertToForwardPopover'
 
 import css from './ChannelSelect.less'
 
-type Props = {
-    channelsOverride?: Array<Channel | TicketMessageSourceType>
-    selectedChannelOverride?: Maybe<Channel | TicketMessageSourceType>
-}
-
-export default function ChannelSelect({
-    channelsOverride,
-    selectedChannelOverride,
-}: Props) {
+export default function ChannelSelect() {
     const { channels, selectedChannel, selectChannel } = useOutboundChannels()
     const dropdownToggleRef = useRef<HTMLElement | null>(null)
-    const availableChannels = channelsOverride ?? channels
-    const currentSelectedChannel = selectedChannelOverride ?? selectedChannel
-    const hasEmailForwardChannel = availableChannels.includes(
-        TicketMessageSourceType.EmailForward,
-    )
-    const hasInternalNoteChannel = availableChannels.includes(
-        TicketMessageSourceType.InternalNote,
-    )
 
     const keymapActions = useMemo(
         () => ({
-            ...(hasEmailForwardChannel
-                ? {
-                      FORWARD_REPLY: {
-                          action: (e: Event) => {
-                              e.preventDefault()
-                              selectChannel(
-                                  TicketMessageSourceType.EmailForward,
-                              )
-                          },
-                      },
-                  }
-                : {}),
-            ...(hasInternalNoteChannel
-                ? {
-                      INTERNAL_NOTE_REPLY: {
-                          action: (e: Event) => {
-                              e.preventDefault()
-                              selectChannel(
-                                  TicketMessageSourceType.InternalNote,
-                              )
-                          },
-                      },
-                  }
-                : {}),
+            FORWARD_REPLY: {
+                action: (e: Event) => {
+                    e.preventDefault()
+                    selectChannel(TicketMessageSourceType.EmailForward)
+                },
+            },
+            INTERNAL_NOTE_REPLY: {
+                action: (e: Event) => {
+                    e.preventDefault()
+                    selectChannel(TicketMessageSourceType.InternalNote)
+                },
+            },
         }),
-        [hasEmailForwardChannel, hasInternalNoteChannel, selectChannel],
+        [selectChannel],
     )
 
     useShortcuts('TicketDetailContainer', keymapActions)
@@ -81,21 +52,18 @@ export default function ChannelSelect({
                     className={css.dropdownToggle}
                     innerRef={dropdownToggleRef}
                 >
-                    {isTicketMessageSourceType(currentSelectedChannel) ? (
-                        <SourceIcon
-                            type={currentSelectedChannel}
-                            className="md-2"
-                        />
+                    {isTicketMessageSourceType(selectedChannel) ? (
+                        <SourceIcon type={selectedChannel} className="md-2" />
                     ) : (
                         <SourceIcon
-                            type={currentSelectedChannel?.slug}
+                            type={selectedChannel?.slug}
                             className={css.newChannelIcon}
                         />
                     )}
                 </DropdownToggle>
                 <ConvertToForwardPopover target={dropdownToggleRef} />
                 <DropdownMenu>
-                    {availableChannels.map((channel) => {
+                    {channels.map((channel) => {
                         if (isTicketMessageSourceType(channel)) {
                             return (
                                 <DropdownItem

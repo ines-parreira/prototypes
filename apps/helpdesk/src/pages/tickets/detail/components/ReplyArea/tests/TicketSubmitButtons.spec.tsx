@@ -15,18 +15,15 @@ import thunk from 'redux-thunk'
 
 import { TicketStatus } from 'business/types/ticket'
 import { ACTION_TEMPLATES } from 'config'
-import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { MacroActionName } from 'models/macroAction/types'
 import type ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 
 import TicketSubmitButtons from '../TicketSubmitButtons'
 
 jest.mock('lodash/sample', () => (array: unknown[]) => array[0])
 jest.mock('pages/common/components/button/ConfirmButton')
 jest.mock('providers/OutboundTranslationProvider')
-jest.mock('providers/standalone-ai/StandaloneAiContext')
 jest.mock('@repo/logging')
 
 jest.mock('@repo/feature-flags', () => ({
@@ -69,7 +66,6 @@ jest.mock(
 const mockStore = configureMockStore([thunk])
 const mockUseOutboundTranslationContext =
     useOutboundTranslationContext as jest.Mock
-const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
 const mockContext = {
     ticketIdToDraftIdMap: new Map(),
@@ -141,9 +137,6 @@ describe('<TicketSubmitButtons />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
         mockUseOutboundTranslationContext.mockReturnValue(mockContext)
-        mockUseStandaloneAiAccess.mockReturnValue(
-            createMockStandaloneAiAccess(),
-        )
         mockUseFlag.mockReturnValue(false)
         mockValidateTicketFields.mockReturnValue({
             hasErrors: false,
@@ -326,21 +319,6 @@ describe('<TicketSubmitButtons />', () => {
 
         expect(buttons[0]).toBeDisabled()
         expect(buttons[1]).toBeDisabled()
-    })
-
-    it('should only render Send button for standalone ai agent', () => {
-        mockUseStandaloneAiAccess.mockReturnValue(
-            createMockStandaloneAiAccess({
-                isStandaloneAiAgent: true,
-            }),
-        )
-
-        const { getByRole, queryByRole } = renderComponent(mockStore(state))
-
-        expect(getByRole('button', { name: /Send/ })).toBeInTheDocument()
-        expect(
-            queryByRole('button', { name: /Send & Close/ }),
-        ).not.toBeInTheDocument()
     })
 
     describe('handleSendAndCloseTicket', () => {

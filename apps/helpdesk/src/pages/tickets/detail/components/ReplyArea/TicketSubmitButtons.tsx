@@ -26,7 +26,6 @@ import { MacroActionName } from 'models/macroAction/types'
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { submitSetting } from 'state/currentUser/actions'
 import {
     isHidingTips as getIsHidingTips,
@@ -84,7 +83,6 @@ export function TicketSubmitButtons({ submit }: Props) {
     const dispatch = useAppDispatch()
 
     const { isTranslationPending } = useOutboundTranslationContext()
-    const { isStandaloneAiAgent } = useStandaloneAiAccess()
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const appliedMacro = useAppSelector(getAppliedMacro)
     const hasContent = useAppSelector(getHasContent)
@@ -220,32 +218,31 @@ export function TicketSubmitButtons({ submit }: Props) {
                         )}
                     </Tooltip>
                 )}
-                {!isStandaloneAiAgent &&
-                    (!showConfirm ? (
-                        <Button
-                            id="submit-and-close-button"
-                            type="button"
-                            intent="secondary"
-                            isDisabled={isButtonDisabled}
-                            onClick={handleSendAndCloseTicket}
-                            isLoading={isLoading}
-                        >
-                            {`${text} & Close`}
-                        </Button>
-                    ) : (
-                        <ConfirmButton
-                            id="submit-and-close-button"
-                            type="button"
-                            confirmationContent={titleConfirmation}
-                            intent="secondary"
-                            isDisabled={isButtonDisabled}
-                            onConfirm={handleSendAndCloseTicket}
-                            isLoading={isLoading}
-                        >
-                            {`${text} & Close`}
-                        </ConfirmButton>
-                    ))}
-                {!isStandaloneAiAgent && canSend && (
+                {!showConfirm ? (
+                    <Button
+                        id="submit-and-close-button"
+                        type="button"
+                        intent="secondary"
+                        isDisabled={isButtonDisabled}
+                        onClick={handleSendAndCloseTicket}
+                        isLoading={isLoading}
+                    >
+                        {`${text} & Close`}
+                    </Button>
+                ) : (
+                    <ConfirmButton
+                        id="submit-and-close-button"
+                        type="button"
+                        confirmationContent={titleConfirmation}
+                        intent="secondary"
+                        isDisabled={isButtonDisabled}
+                        onConfirm={handleSendAndCloseTicket}
+                        isLoading={isLoading}
+                    >
+                        {`${text} & Close`}
+                    </ConfirmButton>
+                )}
+                {canSend && (
                     <Tooltip
                         placement="top"
                         target="submit-and-close-button"

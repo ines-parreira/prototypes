@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { userEvent } from '@repo/testing'
 import { useShortcuts } from '@repo/utils'
-import { act, render, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
+import { render } from '@testing-library/react'
 import _noop from 'lodash/noop'
 import type { Moment } from 'moment'
 
@@ -55,12 +55,17 @@ describe('Snooze', () => {
         useAppSelectorMock.mockReturnValue('Europe/Amsterdam')
     })
 
-    it('should render the snooze button', () => {
-        render(<Snooze onUpdate={_noop} />)
+    it('should show a tooltip when hovering the button', async () => {
+        const { findByText, getByText, queryByText } = render(
+            <Snooze onUpdate={_noop} />,
+        )
 
-        expect(
-            screen.getByRole('button', { name: 'Snooze' }),
-        ).toBeInTheDocument()
+        const tip = queryByText('Snooze ticket')
+        expect(tip).not.toBeInTheDocument()
+
+        const button = getByText('snooze')
+        userEvent.hover(button)
+        expect(await findByText('Snooze ticket')).toBeInTheDocument()
     })
 
     it('should bind keyboard shortcuts', () => {
@@ -76,50 +81,36 @@ describe('Snooze', () => {
         })
     })
 
-    it('should show the snooze picker when not currently snoozed', async () => {
-        const user = userEvent.setup({ skipHover: true })
-        render(<Snooze onUpdate={_noop} />)
+    it('should show the snooze picker when not currently snoozed', () => {
+        const { getByText } = render(<Snooze onUpdate={_noop} />)
 
-        const button = screen.getByRole('button', { name: 'Snooze' })
+        const el = getByText('snooze')
+        expect(el).toBeInTheDocument()
+        expect(getByText('TicketSnoozePicker closed')).toBeInTheDocument()
 
-        expect(button).toBeInTheDocument()
-        expect(
-            screen.getByText('TicketSnoozePicker closed'),
-        ).toBeInTheDocument()
-
-        await act(async () => {
-            await user.click(button)
-        })
+        userEvent.click(el)
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.SnoozeButtonClicked,
             { isSnoozed: false },
         )
-        expect(screen.getByText('TicketSnoozePicker open')).toBeInTheDocument()
+        expect(getByText('TicketSnoozePicker open')).toBeInTheDocument()
     })
 
-    it('should update the snooze time', async () => {
-        const user = userEvent.setup({ skipHover: true })
+    it('should update the snooze time', () => {
         const onUpdate = jest.fn()
-        render(<Snooze until="2024-01-01T00:00:00" onUpdate={onUpdate} />)
+        const { getByText } = render(
+            <Snooze until="2024-01-01T00:00:00" onUpdate={onUpdate} />,
+        )
 
-        const button = screen.getByRole('button', { name: 'Snooze' })
-
-        await act(async () => {
-            await user.click(button)
-        })
+        const snoozeEl = getByText('snooze')
+        userEvent.click(snoozeEl)
         expect(logEvent).toHaveBeenCalledWith(
             SegmentEvent.SnoozeButtonClicked,
             { isSnoozed: true },
         )
 
-        expect(screen.getByText('Change snooze time')).toBeInTheDocument()
-
-        await act(async () => {
-            await user.click(
-                screen.getByRole('button', { name: /update snooze time/i }),
-            )
-        })
-
+        expect(getByText('Change snooze time')).toBeInTheDocument()
+        userEvent.click(getByText('update snooze time'))
         expect(onUpdate).toHaveBeenCalled()
         expect(
             // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -127,45 +118,18 @@ describe('Snooze', () => {
         ).toEqual('2024-01-01')
     })
 
-    it('should clear the snooze time', async () => {
-        const user = userEvent.setup({ skipHover: true })
+    it('should clear the snooze time', () => {
         const onUpdate = jest.fn()
-        render(<Snooze until="2024-01-01T00:00:00" onUpdate={onUpdate} />)
+        const { getByText } = render(
+            <Snooze until="2024-01-01T00:00:00" onUpdate={onUpdate} />,
+        )
 
-        const button = screen.getByRole('button', { name: 'Snooze' })
+        const snoozeEl = getByText('snooze')
+        userEvent.click(snoozeEl)
 
-        await act(async () => {
-            await user.click(button)
-        })
-
-        const clearEl = screen.getByText('Clear snooze')
+        const clearEl = getByText('Clear snooze')
         expect(clearEl).toBeInTheDocument()
-
-        await act(async () => {
-            await user.click(clearEl)
-        })
-
+        userEvent.click(clearEl)
         expect(onUpdate).toHaveBeenCalledWith(null)
-    })
-
-    it('should show the standalone tooltip message when disabled', async () => {
-        const user = userEvent.setup()
-        render(<Snooze disabled onUpdate={_noop} />)
-
-        const button = screen.getByRole('button', { name: 'Snooze' })
-
-        expect(button).toBeDisabled()
-
-        await act(async () => {
-            await user.hover(button)
-        })
-
-        expect(
-            await screen.findByText('Not available in standalone mode'),
-        ).toBeInTheDocument()
-        expect(logEvent).not.toHaveBeenCalled()
-        expect(
-            screen.getByText('TicketSnoozePicker closed'),
-        ).toBeInTheDocument()
     })
 })

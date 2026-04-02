@@ -8,7 +8,6 @@ import type { Tag, TicketTag } from '@gorgias/helpdesk-queries'
 
 import type { Item } from 'components/Dropdown'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { TagDropdownMenu } from 'tags'
 
 import css from './TagDropdown.less'
@@ -30,7 +29,6 @@ const TagDropdown = ({
 }: Props) => {
     const targetRef = useRef<HTMLButtonElement>(null)
     const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-    const { isStandaloneAiAgent } = useStandaloneAiAccess()
 
     const onToggle = (value: boolean) => {
         setIsDropdownOpen(value)
@@ -42,10 +40,8 @@ const TagDropdown = ({
     )
 
     const filterBy = useCallback(
-        (tag: Tag) =>
-            !existingTagNames.includes(tag.name) &&
-            (!isStandaloneAiAgent || tag.name.startsWith('ai_')),
-        [existingTagNames, isStandaloneAiAgent],
+        (tag: Tag) => !existingTagNames.includes(tag.name),
+        [existingTagNames],
     )
 
     useConditionalShortcuts(shouldBindKeys, 'TicketDetailContainer', {

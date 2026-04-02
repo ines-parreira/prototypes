@@ -9,7 +9,6 @@ import { applications as mockApplications } from 'fixtures/applications'
 import { channels as mockChannels } from 'fixtures/channels'
 import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import type { ChannelIdentifier } from 'services/channels'
 import { makeExecuteKeyboardAction } from 'utils/testing'
 
@@ -58,12 +57,6 @@ afterEach(() => {
     appQueryClient.clear()
 })
 
-jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
-    useStandaloneAiContext: jest.fn(() => ({
-        isStandaloneAiAgent: false,
-    })),
-}))
-
 jest.mock('state/newMessage/actions', () => ({
     prepare: jest.fn().mockImplementation((channel: ChannelIdentifier) => ({
         type: 'MOCKED_PREPARE_NEW_MESSAGE',
@@ -72,22 +65,6 @@ jest.mock('state/newMessage/actions', () => ({
 }))
 
 describe('<ChannelSelect />', () => {
-    const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
-
-    beforeEach(() => {
-        mockUseStandaloneAiAccess.mockReturnValue({
-            accessFeaturesMapped: {
-                statistics: { canRead: false, canWrite: false },
-                ticketsView: {
-                    canRead: false,
-                    canCreateInternalNote: false,
-                    canWrite: false,
-                },
-            },
-            isStandaloneAiAgent: false,
-        })
-    })
-
     it('should render a list of (new and legacy) channels', () => {
         const store = configureMockStore()({
             integrations: fromJS({
@@ -132,13 +109,6 @@ describe('<ChannelSelect />', () => {
 
     it('should trigger channel change on keyboard shorcuts usage', () => {
         const store = configureMockStore()({
-            ticket: fromJS({
-                id: 1,
-                reply_options: {
-                    email: true,
-                    'internal-note': true,
-                },
-            }),
             integrations: fromJS({
                 integrations: [{ type: 'email' }],
             }),

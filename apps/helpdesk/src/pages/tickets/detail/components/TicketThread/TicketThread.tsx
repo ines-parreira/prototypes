@@ -17,7 +17,6 @@ import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFil
 import WhatsAppEditorProvider from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider'
 import TypingActivity from 'pages/tickets/detail/components/TypingActivity'
 import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getTicket, getTicketState } from 'state/ticket/selectors'
 import { editorFocused } from 'state/ui/editor/actions'
 
@@ -26,12 +25,9 @@ type TicketThreadProps = {
 }
 
 const { key, parse } = TicketSearchParamsKeys.showTicketEvents
-
 export function TicketThread({ submit }: TicketThreadProps) {
     const dispatch = useAppDispatch()
     const ticketState = useAppSelector(getTicketState)
-    const { accessFeaturesMapped, isStandaloneAiAgent } =
-        useStandaloneAiAccess()
     const { ticketId } = useParams<{ ticketId: string }>()
     const [searchParams] = useSearchParams()
 
@@ -56,8 +52,7 @@ export function TicketThread({ submit }: TicketThreadProps) {
         showTicketEvents,
         pendingMessages,
     })
-    const internalNotesOnly =
-        isStandaloneAiAgent && accessFeaturesMapped.ticketsView.canRead
+
     const shopperName = useMemo(
         () => ticket.customer?.name ?? 'Customer',
         [ticket.customer?.name],
@@ -85,7 +80,6 @@ export function TicketThread({ submit }: TicketThreadProps) {
                 <TypingActivity isTyping={isShopperTyping} name={shopperName} />
                 <WhatsAppEditorProvider>
                     <Editor
-                        internalNotesOnly={internalNotesOnly}
                         initialMacroFilters={initialMacroFilters}
                         submit={submit}
                         ticket={ticket}

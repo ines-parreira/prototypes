@@ -4,12 +4,10 @@ import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Editor from 'pages/common/editor/Editor'
 import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFilters'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getTicket, getTicketState } from 'state/ticket/selectors'
 import { editorFocused } from 'state/ui/editor/actions'
 
@@ -51,9 +49,6 @@ jest.mock('pages/common/editor/Editor', () =>
     ),
 )
 jest.mock('pages/common/editor/hooks/useInitialMacroFilters', () => jest.fn())
-jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
-    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
-}))
 jest.mock('state/ui/editor/actions', () => ({ editorFocused: jest.fn() }))
 jest.mock('pages/tickets/detail/components/TypingActivity', () =>
     jest.fn(({ isTyping, name }: { isTyping: boolean; name: string }) => (
@@ -71,7 +66,6 @@ jest.mock(
 const mockUseAppDispatch = useAppDispatch as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
 const mockUseInitialMacroFilters = useInitialMacroFilters as jest.Mock
-const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 const mockEditor = Editor as jest.Mock
 const mockEditorFocused = editorFocused as unknown as jest.Mock
 const mockUseSearchParams = jest.requireMock('@repo/routing')
@@ -103,9 +97,6 @@ describe('<TicketThread />', () => {
 
         mockUseAppDispatch.mockReturnValue(dispatch)
         mockUseInitialMacroFilters.mockReturnValue(initialMacroFilters)
-        mockUseStandaloneAiAccess.mockReturnValue(
-            createMockStandaloneAiAccess(),
-        )
         mockEditorFocused.mockImplementation((focused: boolean) => ({
             focused,
         }))
@@ -143,7 +134,6 @@ describe('<TicketThread />', () => {
         expect(mockEditor).toHaveBeenCalledWith(
             {
                 initialMacroFilters,
-                internalNotesOnly: false,
                 onBlur: expect.any(Function),
                 onFocus: expect.any(Function),
                 submit,

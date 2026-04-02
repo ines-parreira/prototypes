@@ -24,11 +24,9 @@ import { UserSettingType } from '@gorgias/helpdesk-queries'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import { UserRole } from 'config/types/user'
-import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { ticket } from 'fixtures/ticket'
 import { user } from 'fixtures/users'
 import useAppDispatch from 'hooks/useAppDispatch'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import * as notificationsActions from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import * as ticketActions from 'state/ticket/actions'
@@ -131,7 +129,6 @@ const mockMoment = moment
 jest.mock('../Snooze', () => ({ onUpdate }: ComponentProps<typeof Snooze>) => (
     <div onClick={() => onUpdate(mockMoment())}>Snooze</div>
 ))
-jest.mock('../TicketDetails/TicketSnooze', () => () => <div>TicketSnooze</div>)
 
 // Get the mocked shortcutManager from the module
 const { shortcutManager: shortcutManagerMock } = jest.requireMock('@repo/utils')
@@ -147,9 +144,6 @@ jest.spyOn(Date, 'now').mockImplementation(() => DATE_TO_USE.getTime())
 const mockStore = configureMockStore([thunk])
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
-jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
-    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
-}))
 jest.mock('split-ticket-view-toggle/hooks/useSplitTicketView', () =>
     jest.fn().mockReturnValue([true]),
 )
@@ -168,7 +162,6 @@ const mockUseIsTicketNavigationAvailable =
     useIsTicketNavigationAvailable as jest.Mock
 
 const useParamsMock = useParams as jest.Mock
-const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
@@ -284,9 +277,6 @@ describe('<TicketHeader />', () => {
         useFlagMock.mockReturnValue(false)
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
-        mockUseStandaloneAiAccess.mockReturnValue(
-            createMockStandaloneAiAccess(),
-        )
         mockUseIsTicketNavigationAvailable.mockReturnValue(false)
         useParamsMock.mockReturnValue({})
         mockUseFlagForFeature(FeatureFlagKey.AITicketSummary, false)
@@ -343,9 +333,8 @@ describe('<TicketHeader />', () => {
 
         const actions = container.querySelector('[class*="actions"]')!
 
-        expect(actions.children).toHaveLength(3)
-        expect(screen.getByText('Snooze')).toBeInTheDocument()
-        expect(screen.queryByText('more_vert')).not.toBeInTheDocument()
+        expect(actions.children).toHaveLength(1)
+        expect(screen.queryByText('Snooze')).not.toBeInTheDocument()
     })
 
     it('should render existing ticket', () => {
@@ -367,7 +356,7 @@ describe('<TicketHeader />', () => {
 
         expect(screen.getByText('keyboard_arrow_left')).toBeInTheDocument()
         expect(screen.getByText('keyboard_arrow_right')).toBeInTheDocument()
-        expect(screen.getByText('TicketSnooze')).toBeInTheDocument()
+        expect(screen.getByText('Snooze')).toBeInTheDocument()
         expect(screen.getByText('more_vert')).toBeInTheDocument()
     })
 
@@ -566,12 +555,12 @@ describe('<TicketHeader />', () => {
         const { getByText } = render(
             <QueryClientProvider client={appQueryClient}>
                 <Provider store={mockStore(defaultStore)}>
-                    <TicketHeader {...minProps} />
+                    <TicketHeader {...minProps} ticket={fromJS(ticket)} />
                 </Provider>
             </QueryClientProvider>,
         )
 
-        fireEvent.click(getByText(/^Snooze$/))
+        fireEvent.click(getByText(/Snooze/))
 
         // The Snooze component is mocked, and clicking it calls onUpdate with a mocked moment
         // This should trigger snoozeTicket action
@@ -1459,10 +1448,17 @@ describe('<TicketHeader />', () => {
 
     describe('Snooze operations', () => {
         it('should handle unsnoozed ticket', () => {
+            const unsnoozeTicket = fromJS({ ...ticket, snooze_datetime: null })
+
             render(
                 <QueryClientProvider client={appQueryClient}>
-                    <Provider store={mockStore(defaultStore)}>
-                        <TicketHeader {...minProps} />
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: unsnoozeTicket,
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={unsnoozeTicket} />
                     </Provider>
                 </QueryClientProvider>,
             )
@@ -1543,42 +1539,6 @@ describe('<TicketHeader />', () => {
             )('CLOSE_TICKET')
 
             expect(minProps.setStatus).toHaveBeenCalledWith('closed')
-        })
-
-        it('should not close ticket with CLOSE_TICKET shortcut when standalone ai agent cannot write', async () => {
-            mockUseStandaloneAiAccess.mockReturnValue(
-                createMockStandaloneAiAccess({
-                    isStandaloneAiAgent: true,
-                    ticketsView: {
-                        canWrite: false,
-                    },
-                }),
-            )
-
-            render(
-                <QueryClientProvider client={appQueryClient}>
-                    <Provider
-                        store={mockStore({
-                            ...defaultStore,
-                            ticket: fromJS(ticket),
-                        })}
-                    >
-                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
-                    </Provider>
-                </QueryClientProvider>,
-            )
-
-            await waitFor(() => {
-                expect(shortcutManagerMock.bind).toHaveBeenCalled()
-            })
-
-            makeExecuteKeyboardAction(
-                shortcutManagerMock,
-                shortcutEventMock,
-                'TicketDetailContainer',
-            )('CLOSE_TICKET')
-
-            expect(minProps.setStatus).not.toHaveBeenCalled()
         })
 
         it('should open ticket with OPEN_TICKET shortcut', async () => {
@@ -1884,9 +1844,15 @@ describe('<TicketHeader />', () => {
 
             render(
                 <QueryClientProvider client={appQueryClient}>
-                    <Provider store={mockStore(defaultStore)}>
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: fromJS(ticket),
+                        })}
+                    >
                         <TicketHeader
                             {...minProps}
+                            ticket={fromJS(ticket)}
                             onGoToNextTicket={onGoToNextTicketMock}
                         />
                     </Provider>
@@ -1914,8 +1880,13 @@ describe('<TicketHeader />', () => {
 
             render(
                 <QueryClientProvider client={appQueryClient}>
-                    <Provider store={mockStore(defaultStore)}>
-                        <TicketHeader {...minProps} />
+                    <Provider
+                        store={mockStore({
+                            ...defaultStore,
+                            ticket: fromJS(ticket),
+                        })}
+                    >
+                        <TicketHeader {...minProps} ticket={fromJS(ticket)} />
                     </Provider>
                 </QueryClientProvider>,
             )
@@ -2172,7 +2143,8 @@ describe('<TicketHeader />', () => {
                 </QueryClientProvider>,
             )
 
-            expect(screen.getByText('Snooze')).toBeInTheDocument()
+            // Should not show ticket-specific actions
+            expect(screen.queryByText('Snooze')).not.toBeInTheDocument()
             expect(screen.queryByText('more_vert')).not.toBeInTheDocument()
         })
 

@@ -24,9 +24,7 @@ import {
     ticketInputFieldDefinition,
 } from 'fixtures/customField'
 import { customFieldCondition } from 'fixtures/customFieldCondition'
-import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import TicketFields from 'pages/tickets/detail/components/TicketFields/TicketFields'
-import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { initialState as newMessageState } from 'state/newMessage/reducers'
 import { initialState as ticketState } from 'state/ticket/reducers'
 import type { StoreDispatch } from 'state/types'
@@ -42,13 +40,9 @@ type MockedRootState = {
 
 jest.mock('@gorgias/helpdesk-client')
 jest.mock('@repo/feature-flags')
-jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
-    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
-}))
 
 const mockedListCustomFields = assumeMock(listCustomFields)
 const mockedListCustomFieldConditions = assumeMock(listCustomFieldConditions)
-const mockUseStandaloneAiAccess = assumeMock(useStandaloneAiAccess)
 
 const middlewares = [thunk]
 const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
@@ -79,9 +73,6 @@ describe('triggerTicketFieldsRefreshAndInvalidation()', () => {
             ticket: ticketState,
             newMessage: newMessageState,
         })
-        mockUseStandaloneAiAccess.mockReturnValue(
-            createMockStandaloneAiAccess(),
-        )
         mockedListCustomFields.mockResolvedValue({
             data: { data: [visibleTicketField] },
         } as any)

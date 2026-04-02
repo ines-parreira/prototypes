@@ -1,50 +1,44 @@
-import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
+import {
+    LegacyButton as Button,
+    LegacyTooltip as Tooltip,
+} from '@gorgias/axiom'
 
 import { TicketStatus as TicketStatusEnum } from 'business/types/ticket'
+import IconButton from 'pages/common/components/button/IconButton'
 
 type Props = {
     setQuickStatus: (status: string) => void
     currentStatus: string
-    disabled?: boolean
 }
 
-const TicketStatus = ({
-    currentStatus,
-    disabled = false,
-    setQuickStatus,
-}: Props) => {
+const TicketStatus = ({ setQuickStatus, currentStatus }: Props) => {
     const isClosed = currentStatus === TicketStatusEnum.Closed
 
-    const button = isClosed ? (
-        <Button
-            size="sm"
-            icon="check"
-            aria-label="Reopen"
-            onClick={() => setQuickStatus(currentStatus)}
-            isDisabled={disabled}
-        />
-    ) : (
-        <Button
-            size="sm"
-            variant="secondary"
-            leadingSlot="check"
-            onClick={() => setQuickStatus(currentStatus)}
-            isDisabled={disabled}
-        >
-            Close
-        </Button>
-    )
-
-    const tooltipLabel = disabled
-        ? 'Not available in standalone mode'
-        : isClosed
-          ? 'Reopen (press O)'
-          : 'Close (press C)'
-
     return (
-        <Tooltip delay={0} placement="bottom" trigger={button}>
-            <TooltipContent title={tooltipLabel} />
-        </Tooltip>
+        <>
+            <span id="change-status-button">
+                {isClosed ? (
+                    <IconButton
+                        size="small"
+                        onClick={() => setQuickStatus(currentStatus)}
+                    >
+                        check
+                    </IconButton>
+                ) : (
+                    <Button
+                        size="small"
+                        intent="secondary"
+                        onClick={() => setQuickStatus(currentStatus)}
+                        leadingIcon="check"
+                    >
+                        Close
+                    </Button>
+                )}
+            </span>
+            <Tooltip placement="bottom" target="change-status-button">
+                {isClosed ? 'Reopen (press O)' : 'Close (press C)'}
+            </Tooltip>
+        </>
     )
 }
 
