@@ -16,8 +16,10 @@ import { TicketMessageSourceType } from 'business/types/ticket'
 import { PhoneUseCase } from 'business/twilio'
 import { applications as mockApplications } from 'fixtures/applications'
 import { channels as mockChannels } from 'fixtures/channels'
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { applicationsQueryKeys as mockApplicationsQueryKeys } from 'models/application/queries'
 import { channelsQueryKeys as mockChannelsQueryKeys } from 'models/channel/queries'
+import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import type { Integration } from 'models/integration/types'
 import type { SourceAddress } from 'models/ticket/types'
 import type { Application } from 'services/applications'
@@ -57,6 +59,10 @@ jest.mock('services/applications', () => ({
     getApplicationsByChannel: jest.fn(),
 }))
 
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
+}))
+
 jest.mock('state/newMessage/actions', () => ({
     prepare: jest.fn().mockImplementation((channel: ChannelIdentifier) => ({
         type: 'MOCKED_PREPARE_NEW_MESSAGE',
@@ -72,10 +78,17 @@ const mockedGetApplications = getApplications as jest.Mock<Application[]>
 const mockedGetApplicationsByChannel = getApplicationsByChannel as jest.Mock<
     Application[]
 >
+const mockedUseStandaloneAiAccess = jest.mocked(useStandaloneAiAccess)
 mockedGetApplications.mockReturnValue(mockApplications)
 mockedGetApplicationsByChannel.mockReturnValue(mockApplications)
 
 describe('useOutboundChannels', () => {
+    beforeEach(() => {
+        mockedUseStandaloneAiAccess.mockReturnValue(
+            createMockStandaloneAiAccess(),
+        )
+    })
+
     const renderHookWithStore = (store: Store) =>
         renderHook(() => useOutboundChannels(), {
             wrapper: ({ children }) => (

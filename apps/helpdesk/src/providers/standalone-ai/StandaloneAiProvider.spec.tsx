@@ -24,6 +24,11 @@ const mockUseGetCurrentUser = jest.mocked(useGetCurrentUser)
 const FEATURE_ACCESS_LIST = {
     statistics: { canRead: false, canWrite: false },
     userManagement: { canRead: false, canWrite: false },
+    ticketsView: {
+        canRead: false,
+        canCreateInternalNote: false,
+        canWrite: false,
+    },
 }
 
 const wrapper = ({ children }: PropsWithChildren) => (
@@ -89,6 +94,51 @@ describe('StandaloneAiProvider', () => {
         expect(result.current.accessFeaturesMapped).toEqual({
             statistics: { canRead: true, canWrite: true },
             userManagement: { canRead: true, canWrite: true },
+            ticketsView: {
+                canRead: true,
+                canCreateInternalNote: true,
+                canWrite: false,
+            },
+        })
+    })
+
+    it('should return agent access when the feature flag is enabled for agents', () => {
+        givenFeatureFlag(true)
+        givenUserRole(UserRole.Agent)
+
+        const { result } = renderHook(() => useStandaloneAiContext(), {
+            wrapper,
+        })
+
+        expect(result.current.isStandaloneAiAgent).toBe(true)
+        expect(result.current.accessFeaturesMapped).toEqual({
+            statistics: { canRead: true, canWrite: true },
+            userManagement: { canRead: false, canWrite: false },
+            ticketsView: {
+                canRead: true,
+                canCreateInternalNote: true,
+                canWrite: false,
+            },
+        })
+    })
+
+    it('should return observer access when the feature flag is enabled for observer agents', () => {
+        givenFeatureFlag(true)
+        givenUserRole(UserRole.ObserverAgent)
+
+        const { result } = renderHook(() => useStandaloneAiContext(), {
+            wrapper,
+        })
+
+        expect(result.current.isStandaloneAiAgent).toBe(true)
+        expect(result.current.accessFeaturesMapped).toEqual({
+            statistics: { canRead: true, canWrite: false },
+            userManagement: { canRead: false, canWrite: false },
+            ticketsView: {
+                canRead: true,
+                canCreateInternalNote: true,
+                canWrite: false,
+            },
         })
     })
 
