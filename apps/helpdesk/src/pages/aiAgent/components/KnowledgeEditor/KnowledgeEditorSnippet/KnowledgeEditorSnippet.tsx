@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { Card } from '@gorgias/axiom'
+
 import { EditorWithPlayground } from 'common/knowledge-editor/components'
 import type { PlaygroundState } from 'common/knowledge-editor/types'
 import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
@@ -9,6 +11,8 @@ import type { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 import { KnowledgeEditorLoadingShell } from '../KnowledgeEditorLoadingShell'
 import type { KnowledgeEditorSharedPanelState } from '../sharedPanel.types'
 import { KnowledgeEditorSnippetLoader } from './KnowledgeEditorSnippetLoader'
+
+import css from './KnowledgeEditorSnippet.less'
 
 type Props = {
     shopName: string
@@ -109,23 +113,27 @@ export const KnowledgeEditorSnippet = ({
 
     return (
         <EditorWithPlayground playground={playground}>
-            <KnowledgeEditorSnippetLoader
-                snippetId={snippetId}
-                snippetType={snippetType}
-                helpCenterId={snippetHelpCenter?.id ?? 0}
-                shopIntegrationId={snippetHelpCenter?.shop_integration_id ?? 0}
-                locale={snippetHelpCenter?.default_locale ?? 'en-US'}
-                onClose={onClose}
-                onClickPrevious={onClickPrevious}
-                onClickNext={onClickNext}
-                onUpdated={onUpdated}
-                isFullscreen={isFullscreen}
-                isPlaygroundOpen={isPlaygroundOpen}
-                onToggleFullscreen={onToggleFullscreen}
-                onTest={onTest}
-                handleVisibilityUpdate={handleVisibilityUpdate}
-                shouldHideFullscreenButton={shouldHideFullscreenButton}
-            />
+            <Card elevation="mid" className={css.editor} padding={0}>
+                <KnowledgeEditorSnippetLoader
+                    snippetId={snippetId}
+                    snippetType={snippetType}
+                    helpCenterId={snippetHelpCenter?.id ?? 0}
+                    shopIntegrationId={
+                        snippetHelpCenter?.shop_integration_id ?? 0
+                    }
+                    locale={snippetHelpCenter?.default_locale ?? 'en-US'}
+                    onClose={onClose}
+                    onClickPrevious={onClickPrevious}
+                    onClickNext={onClickNext}
+                    onUpdated={onUpdated}
+                    isFullscreen={isFullscreen}
+                    isPlaygroundOpen={isPlaygroundOpen}
+                    onToggleFullscreen={onToggleFullscreen}
+                    onTest={onTest}
+                    handleVisibilityUpdate={handleVisibilityUpdate}
+                    shouldHideFullscreenButton={shouldHideFullscreenButton}
+                />
+            </Card>
         </EditorWithPlayground>
     )
 }
