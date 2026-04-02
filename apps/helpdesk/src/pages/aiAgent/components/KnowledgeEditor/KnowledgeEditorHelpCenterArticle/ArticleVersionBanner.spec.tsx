@@ -194,7 +194,7 @@ describe('ArticleVersionBanner', () => {
 
             expect(
                 screen.getByText(
-                    /Edit, test, and publish your draft to update the published version/i,
+                    /Edit, test, and publish when you're ready to replace your current live version./i,
                 ),
             ).toBeInTheDocument()
         })

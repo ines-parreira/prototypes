@@ -183,8 +183,8 @@ export function VersionBanner({
                     description={
                         <>
                             <div>
-                                Edit, test, and publish your draft to update the
-                                published version.
+                                Edit, test, and publish when you&apos;re ready
+                                to replace your current live version.
                             </div>
                             {onToggleDiff && (
                                 <Box
