@@ -212,6 +212,8 @@ export type MeasureName =
     | 'handoverInteractionsCount'
     | 'automatedInteractionsCount'
     | 'coverageRate'
+    | 'closedTicketsCount'
+    | 'zeroTouchTicketsCount'
     | 'conversionRate'
     | 'buyThroughRate'
     | 'averageTimeSavedByAgent'

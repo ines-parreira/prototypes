@@ -1,26 +1,30 @@
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import useMetricTrend, {
-    fetchMetricTrend,
-} from 'domains/reporting/hooks/useMetricTrend'
-import { closedTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/closedTickets'
-import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
+import useStatsMetricTrend, {
+    fetchStatsMetricTrend,
+} from 'domains/reporting/hooks/useStatsMetricTrend'
+import { closedTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentTicketsClosed'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
-import { FilterKey } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import {
     fetchAiAgentClosedTicketsTrend,
     useAiAgentClosedTicketsTrend,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentClosedTicketsTrend'
 
-jest.mock('domains/reporting/hooks/useMetricTrend')
-jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
+jest.mock('domains/reporting/hooks/useStatsMetricTrend', () => ({
+    __esModule: true,
+    default: jest.fn(),
+    fetchStatsMetricTrend: jest.fn(),
+}))
+const mockUseStatsMetricTrend = assumeMock(useStatsMetricTrend)
+const mockFetchStatsMetricTrend = assumeMock(fetchStatsMetricTrend)
 
-const useMetricTrendMock = assumeMock(useMetricTrend)
-const fetchMetricTrendMock = assumeMock(fetchMetricTrend)
-const useAIAgentUserIdMock = assumeMock(useAIAgentUserId)
+jest.mock('domains/reporting/models/scopes/aiAgentTicketsClosed')
+const mockClosedTicketsCountQueryV2Factory = assumeMock(
+    closedTicketsCountQueryV2Factory,
+)
+
+const timezone = 'UTC'
 
 const statsFilters: StatsFilters = {
     period: {
@@ -28,166 +32,83 @@ const statsFilters: StatsFilters = {
         end_datetime: '2024-01-31T23:59:59.999',
     },
 }
-const timezone = 'UTC'
-const aiAgentUserId = 42
 
 describe('useAiAgentClosedTicketsTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
     })
 
-    describe('useAiAgentClosedTicketsTrend', () => {
-        it('should pass query factories with agent filter when aiAgentUserId is defined', () => {
-            useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
-            renderHook(() =>
-                useAiAgentClosedTicketsTrend(statsFilters, timezone),
-            )
+    it('should call closedTicketsCountQueryV2Factory with filters for both periods', () => {
+        renderHook(() => useAiAgentClosedTicketsTrend(statsFilters, timezone))
 
-            const filteredFilters = {
-                ...statsFilters,
-                [FilterKey.Agents]: withDefaultLogicalOperator([aiAgentUserId]),
-            }
-
-            expect(useMetricTrendMock).toHaveBeenCalledWith(
-                {
-                    ...closedTicketsQueryFactory(filteredFilters, timezone),
-                    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CLOSED_TICKETS,
-                },
-                {
-                    ...closedTicketsQueryFactory(
-                        {
-                            ...filteredFilters,
-                            period: getPreviousPeriod(filteredFilters.period),
-                        },
-                        timezone,
-                    ),
-                    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CLOSED_TICKETS,
-                },
-            )
+        expect(mockClosedTicketsCountQueryV2Factory).toHaveBeenCalledWith({
+            filters: statsFilters,
+            timezone,
         })
-
-        it('should pass empty agents filter when aiAgentUserId is undefined', () => {
-            useAIAgentUserIdMock.mockReturnValue(undefined)
-            renderHook(() =>
-                useAiAgentClosedTicketsTrend(statsFilters, timezone),
-            )
-
-            const filteredFilters = {
+        expect(mockClosedTicketsCountQueryV2Factory).toHaveBeenCalledWith({
+            filters: {
                 ...statsFilters,
-                [FilterKey.Agents]: withDefaultLogicalOperator([]),
-            }
-
-            expect(useMetricTrendMock).toHaveBeenCalledWith(
-                {
-                    ...closedTicketsQueryFactory(filteredFilters, timezone),
-                    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CLOSED_TICKETS,
-                },
-                {
-                    ...closedTicketsQueryFactory(
-                        {
-                            ...filteredFilters,
-                            period: getPreviousPeriod(filteredFilters.period),
-                        },
-                        timezone,
-                    ),
-                    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CLOSED_TICKETS,
-                },
-            )
-        })
-
-        it('should return the result from useMetricTrend', () => {
-            useAIAgentUserIdMock.mockReturnValue(aiAgentUserId)
-            const mockTrendResult = {
-                data: { value: 150, prevValue: 120 },
-                isFetching: false,
-                isError: false,
-            }
-            useMetricTrendMock.mockReturnValue(mockTrendResult)
-
-            const { result } = renderHook(() =>
-                useAiAgentClosedTicketsTrend(statsFilters, timezone),
-            )
-
-            expect(result.current).toBe(mockTrendResult)
+                period: getPreviousPeriod(statsFilters.period),
+            },
+            timezone,
         })
     })
 
-    describe('fetchAiAgentClosedTicketsTrend', () => {
-        it('should pass query factories with agent filter when aiAgentUserId is defined', async () => {
-            await fetchAiAgentClosedTicketsTrend(
-                statsFilters,
-                timezone,
-                aiAgentUserId,
-            )
+    it('should return data from useStatsMetricTrend', () => {
+        const mockTrendResult = {
+            data: { value: 150, prevValue: 120 },
+            isFetching: false,
+            isError: false,
+        }
+        mockUseStatsMetricTrend.mockReturnValue(mockTrendResult)
 
-            const filteredFilters = {
+        const { result } = renderHook(() =>
+            useAiAgentClosedTicketsTrend(statsFilters, timezone),
+        )
+
+        expect(result.current).toBe(mockTrendResult)
+    })
+})
+
+describe('fetchAiAgentClosedTicketsTrend', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('should call closedTicketsCountQueryV2Factory with filters for both periods', async () => {
+        mockFetchStatsMetricTrend.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+        })
+
+        await fetchAiAgentClosedTicketsTrend(statsFilters, timezone)
+
+        expect(mockClosedTicketsCountQueryV2Factory).toHaveBeenCalledWith({
+            filters: statsFilters,
+            timezone,
+        })
+        expect(mockClosedTicketsCountQueryV2Factory).toHaveBeenCalledWith({
+            filters: {
                 ...statsFilters,
-                [FilterKey.Agents]: withDefaultLogicalOperator([aiAgentUserId]),
-            }
-
-            expect(fetchMetricTrendMock).toHaveBeenCalledWith(
-                {
-                    ...closedTicketsQueryFactory(filteredFilters, timezone),
-                    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CLOSED_TICKETS,
-                },
-                {
-                    ...closedTicketsQueryFactory(
-                        {
-                            ...filteredFilters,
-                            period: getPreviousPeriod(filteredFilters.period),
-                        },
-                        timezone,
-                    ),
-                    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CLOSED_TICKETS,
-                },
-            )
+                period: getPreviousPeriod(statsFilters.period),
+            },
+            timezone,
         })
+    })
 
-        it('should pass empty agents filter when aiAgentUserId is undefined', async () => {
-            await fetchAiAgentClosedTicketsTrend(
-                statsFilters,
-                timezone,
-                undefined,
-            )
+    it('should return data from fetchStatsMetricTrend', async () => {
+        const mockTrendResult = {
+            data: { value: 150, prevValue: 120 },
+            isFetching: false,
+            isError: false,
+        }
+        mockFetchStatsMetricTrend.mockResolvedValue(mockTrendResult)
 
-            const filteredFilters = {
-                ...statsFilters,
-                [FilterKey.Agents]: withDefaultLogicalOperator([]),
-            }
+        const result = await fetchAiAgentClosedTicketsTrend(
+            statsFilters,
+            timezone,
+        )
 
-            expect(fetchMetricTrendMock).toHaveBeenCalledWith(
-                {
-                    ...closedTicketsQueryFactory(filteredFilters, timezone),
-                    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CLOSED_TICKETS,
-                },
-                {
-                    ...closedTicketsQueryFactory(
-                        {
-                            ...filteredFilters,
-                            period: getPreviousPeriod(filteredFilters.period),
-                        },
-                        timezone,
-                    ),
-                    metricName: METRIC_NAMES.AI_AGENT_ALL_AGENTS_CLOSED_TICKETS,
-                },
-            )
-        })
-
-        it('should return the result from fetchMetricTrend', async () => {
-            const mockTrendResult = {
-                data: { value: 150, prevValue: 120 },
-                isFetching: false,
-                isError: false,
-            }
-            fetchMetricTrendMock.mockResolvedValue(mockTrendResult)
-
-            const result = await fetchAiAgentClosedTicketsTrend(
-                statsFilters,
-                timezone,
-                aiAgentUserId,
-            )
-
-            expect(result).toBe(mockTrendResult)
-        })
+        expect(result).toBe(mockTrendResult)
     })
 })

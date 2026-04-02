@@ -1,154 +1,116 @@
-import { renderHook } from '@testing-library/react'
+import { assumeMock, renderHook } from '@repo/testing'
 
-import { useAIAgentUserId } from 'domains/reporting/hooks/automate/useAIAgentUserId'
-import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import useMetricTrend, {
-    fetchMetricTrend,
-} from 'domains/reporting/hooks/useMetricTrend'
-import { zeroTouchTicketsQueryFactory } from 'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets'
+import useStatsMetricTrend, {
+    fetchStatsMetricTrend,
+} from 'domains/reporting/hooks/useStatsMetricTrend'
+import { zeroTouchTicketsCountQueryV2Factory } from 'domains/reporting/models/scopes/aiAgentTicketsClosed'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import {
     fetchAiAgentZeroTouchTicketsTrend,
     useAiAgentZeroTouchTicketsTrend,
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentZeroTouchTicketsTrend'
-import { applyAiAgentFilter } from 'pages/aiAgent/analyticsAiAgent/utils/applyAiAgentFilter'
 
-jest.mock('domains/reporting/hooks/useMetricTrend', () => ({
+jest.mock('domains/reporting/hooks/useStatsMetricTrend', () => ({
     __esModule: true,
     default: jest.fn(),
-    fetchMetricTrend: jest.fn(),
+    fetchStatsMetricTrend: jest.fn(),
 }))
-jest.mock(
-    'domains/reporting/models/queryFactories/support-performance/zeroTouchTickets',
-)
-jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
-jest.mock('pages/aiAgent/analyticsAiAgent/utils/applyAiAgentFilter')
+const mockUseStatsMetricTrend = assumeMock(useStatsMetricTrend)
+const mockFetchStatsMetricTrend = assumeMock(fetchStatsMetricTrend)
 
-const mockFilters: StatsFilters = {
+jest.mock('domains/reporting/models/scopes/aiAgentTicketsClosed')
+const mockZeroTouchTicketsCountQueryV2Factory = assumeMock(
+    zeroTouchTicketsCountQueryV2Factory,
+)
+
+const timezone = 'UTC'
+
+const statsFilters: StatsFilters = {
     period: {
-        start_datetime: '2024-01-01T00:00:00Z',
-        end_datetime: '2024-01-31T23:59:59Z',
+        start_datetime: '2024-01-01T00:00:00.000',
+        end_datetime: '2024-01-31T23:59:59.999',
     },
 }
-const mockTimezone = 'America/New_York'
-const mockAiAgentUserId = 42
-const mockFilteredFilters = {
-    ...mockFilters,
-    agents: { operator: 'one-of', values: [mockAiAgentUserId] },
-} as StatsFilters
-const mockQueryResult = { measures: ['TicketMessages.ticketCount'] }
 
 describe('useAiAgentZeroTouchTicketsTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(useAIAgentUserId as jest.Mock).mockReturnValue(mockAiAgentUserId)
-        ;(applyAiAgentFilter as jest.Mock).mockReturnValue(mockFilteredFilters)
-        ;(zeroTouchTicketsQueryFactory as jest.Mock).mockReturnValue(
-            mockQueryResult,
-        )
     })
 
-    it('should call applyAiAgentFilter with the result of useAIAgentUserId', () => {
+    it('should call zeroTouchTicketsCountQueryV2Factory with filters for both periods', () => {
         renderHook(() =>
-            useAiAgentZeroTouchTicketsTrend(mockFilters, mockTimezone),
+            useAiAgentZeroTouchTicketsTrend(statsFilters, timezone),
         )
 
-        expect(applyAiAgentFilter).toHaveBeenCalledWith(
-            mockFilters,
-            mockAiAgentUserId,
-        )
+        expect(mockZeroTouchTicketsCountQueryV2Factory).toHaveBeenCalledWith({
+            filters: statsFilters,
+            timezone,
+        })
+        expect(mockZeroTouchTicketsCountQueryV2Factory).toHaveBeenCalledWith({
+            filters: {
+                ...statsFilters,
+                period: getPreviousPeriod(statsFilters.period),
+            },
+            timezone,
+        })
     })
 
-    it('should call zeroTouchTicketsQueryFactory with filtered filters for both periods', () => {
-        renderHook(() =>
-            useAiAgentZeroTouchTicketsTrend(mockFilters, mockTimezone),
-        )
-
-        expect(zeroTouchTicketsQueryFactory).toHaveBeenCalledWith(
-            mockFilteredFilters,
-            mockTimezone,
-        )
-        expect(zeroTouchTicketsQueryFactory).toHaveBeenCalledWith(
-            {
-                ...mockFilteredFilters,
-                period: getPreviousPeriod(mockFilteredFilters.period),
-            },
-            mockTimezone,
-        )
-    })
-
-    it('should call useMetricTrend with AI_AGENT_ZERO_TOUCH_TICKETS metricName for both queries', () => {
-        renderHook(() =>
-            useAiAgentZeroTouchTicketsTrend(mockFilters, mockTimezone),
-        )
-
-        expect(useMetricTrend).toHaveBeenCalledWith(
-            {
-                ...mockQueryResult,
-                metricName: METRIC_NAMES.AI_AGENT_ZERO_TOUCH_TICKETS,
-            },
-            {
-                ...mockQueryResult,
-                metricName: METRIC_NAMES.AI_AGENT_ZERO_TOUCH_TICKETS,
-            },
-        )
-    })
-
-    it('should return the value from useMetricTrend', () => {
-        const mockReturnValue = {
-            data: { value: 120, prevValue: 100 },
+    it('should return data from useStatsMetricTrend', () => {
+        const mockTrendResult = {
+            data: { value: 80, prevValue: 60 },
             isFetching: false,
             isError: false,
         }
-        ;(useMetricTrend as jest.Mock).mockReturnValue(mockReturnValue)
+        mockUseStatsMetricTrend.mockReturnValue(mockTrendResult)
 
         const { result } = renderHook(() =>
-            useAiAgentZeroTouchTicketsTrend(mockFilters, mockTimezone),
+            useAiAgentZeroTouchTicketsTrend(statsFilters, timezone),
         )
 
-        expect(result.current).toBe(mockReturnValue)
+        expect(result.current).toBe(mockTrendResult)
     })
 })
 
 describe('fetchAiAgentZeroTouchTicketsTrend', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        ;(applyAiAgentFilter as jest.Mock).mockReturnValue(mockFilteredFilters)
-        ;(zeroTouchTicketsQueryFactory as jest.Mock).mockReturnValue(
-            mockQueryResult,
-        )
     })
 
-    it('should call applyAiAgentFilter with the passed aiAgentUserId', async () => {
-        ;(fetchMetricTrend as jest.Mock).mockResolvedValue({})
+    it('should call zeroTouchTicketsCountQueryV2Factory with filters for both periods', async () => {
+        mockFetchStatsMetricTrend.mockResolvedValue({
+            isFetching: false,
+            isError: false,
+        })
 
-        await fetchAiAgentZeroTouchTicketsTrend(
-            mockFilters,
-            mockTimezone,
-            mockAiAgentUserId,
-        )
+        await fetchAiAgentZeroTouchTicketsTrend(statsFilters, timezone)
 
-        expect(applyAiAgentFilter).toHaveBeenCalledWith(
-            mockFilters,
-            mockAiAgentUserId,
-        )
+        expect(mockZeroTouchTicketsCountQueryV2Factory).toHaveBeenCalledWith({
+            filters: statsFilters,
+            timezone,
+        })
+        expect(mockZeroTouchTicketsCountQueryV2Factory).toHaveBeenCalledWith({
+            filters: {
+                ...statsFilters,
+                period: getPreviousPeriod(statsFilters.period),
+            },
+            timezone,
+        })
     })
 
-    it('should return the resolved value from fetchMetricTrend', async () => {
-        const mockReturnValue = {
-            data: { value: 120, prevValue: 100 },
+    it('should return data from fetchStatsMetricTrend', async () => {
+        const mockTrendResult = {
+            data: { value: 80, prevValue: 60 },
             isFetching: false,
             isError: false,
         }
-        ;(fetchMetricTrend as jest.Mock).mockResolvedValue(mockReturnValue)
+        mockFetchStatsMetricTrend.mockResolvedValue(mockTrendResult)
 
         const result = await fetchAiAgentZeroTouchTicketsTrend(
-            mockFilters,
-            mockTimezone,
-            mockAiAgentUserId,
+            statsFilters,
+            timezone,
         )
 
-        expect(result).toBe(mockReturnValue)
+        expect(result).toBe(mockTrendResult)
     })
 })
