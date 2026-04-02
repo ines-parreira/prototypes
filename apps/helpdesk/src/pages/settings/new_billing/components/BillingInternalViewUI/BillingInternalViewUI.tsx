@@ -71,6 +71,14 @@ export function BillingInternalViewUI({
                         ? 'Unvet account'
                         : 'Vet account'}
                 </Button>
+                {/* TODO: Re-enable when apply flow is complete https://linear.app/gorgias/project/internal-billing-ui-subscription-management-ac3ed860d0ee/overview */}
+                {/* <Button
+                    onClick={() => {
+                        history.push(BILLING_INTERNAL_MANAGE_PLAN_PATH)
+                    }}
+                >
+                    Manage plans
+                </Button> */}
             </div>
             <UpcomingInvoiceCard
                 subscriptionStatus={billingState.subscription.status}

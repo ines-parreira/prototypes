@@ -3,6 +3,7 @@ import { ProductType, TaxIdType, VATCountries } from './types'
 
 export const BILLING_BASE_PATH = '/app/settings/billing'
 export const BILLING_INTERNAL_PATH = `${BILLING_BASE_PATH}/internal`
+export const BILLING_INTERNAL_MANAGE_PLAN_PATH = `${BILLING_INTERNAL_PATH}/manage-plan`
 export const BILLING_PROCESS_PATH = `${BILLING_BASE_PATH}/process`
 export const BILLING_PAYMENT_PATH = `${BILLING_BASE_PATH}/payment`
 export const BILLING_PAYMENT_CARD_PATH = `${BILLING_PAYMENT_PATH}/card`

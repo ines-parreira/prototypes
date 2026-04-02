@@ -4,6 +4,7 @@ import type { SelectedPlans } from '@repo/billing'
 import {
     BILLING_BASE_PATH,
     BILLING_INFORMATION_PATH,
+    BILLING_INTERNAL_MANAGE_PLAN_PATH,
     BILLING_INTERNAL_PATH,
     BILLING_PAYMENT_CARD_PATH,
     BILLING_PAYMENT_FREQUENCY_PATH,
@@ -36,6 +37,7 @@ import useGetConvertStatus, {
     UsageStatus,
 } from 'pages/convert/common/hooks/useGetConvertStatus'
 import { isExceedingPlanLimit } from 'pages/convert/common/utils/isExceedingPlanLimit'
+import { InternalManagePlanView } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalManagePlanView'
 import { PaymentMethodSetupView } from 'pages/settings/new_billing/views/PaymentMethodSetupView/PaymentMethodSetupView'
 import {
     getCurrentConvertPlan,
@@ -351,7 +353,15 @@ const BillingStartView = () => {
                 <SecondaryNavbar>
                     {/* Only show the 'Gorgias Internal' tab when user is impersonated */}
                     {window.USER_IMPERSONATED ? (
-                        <NavLink to={BILLING_INTERNAL_PATH}>
+                        <NavLink
+                            to={BILLING_INTERNAL_PATH}
+                            isActive={(match, location) =>
+                                !!match &&
+                                location.pathname.startsWith(
+                                    BILLING_INTERNAL_PATH,
+                                )
+                            }
+                        >
                             Gorgias Internal
                         </NavLink>
                     ) : null}
@@ -403,6 +413,13 @@ const BillingStartView = () => {
                         <Route exact path={BILLING_INTERNAL_PATH}>
                             {window.USER_IMPERSONATED ? (
                                 <BillingInternalView />
+                            ) : (
+                                <div>You cannot access this page</div>
+                            )}
+                        </Route>
+                        <Route exact path={BILLING_INTERNAL_MANAGE_PLAN_PATH}>
+                            {window.USER_IMPERSONATED ? (
+                                <InternalManagePlanView />
                             ) : (
                                 <div>You cannot access this page</div>
                             )}

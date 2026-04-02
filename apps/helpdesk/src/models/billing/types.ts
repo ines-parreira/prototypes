@@ -267,6 +267,14 @@ export type CurrentPlans = {
     sms: SMSOrVoicePlan | null
     convert: ConvertPlan | null
 }
+
+export const PRODUCT_TO_PLAN_KEY: Record<ProductType, keyof CurrentPlans> = {
+    [ProductType.Helpdesk]: 'helpdesk',
+    [ProductType.Automation]: 'automate',
+    [ProductType.Voice]: 'voice',
+    [ProductType.SMS]: 'sms',
+    [ProductType.Convert]: 'convert',
+}
 export type BillingState = {
     upcoming_invoice: UpcomingInvoiceSummary | null
     subscription: SubscriptionSummary
