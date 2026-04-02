@@ -16,6 +16,8 @@ import { MetricCard } from '../MetricCard/MetricCard'
 import { MetricCardHeader } from '../MetricCardHeader/MetricCardHeader'
 import type { TrendBadgeProps } from '../TrendBadge/TrendBadge'
 import { TrendBadge } from '../TrendBadge/TrendBadge'
+import type { TrendCardTimeSeriesProps } from '../TrendCardTimeSeries/TrendCardTimeSeries'
+import { TrendCardTimeSeries } from '../TrendCardTimeSeries/TrendCardTimeSeries'
 
 import css from './TrendCard.less'
 
@@ -31,6 +33,7 @@ export type TrendCardProps = {
     withFixedWidth?: boolean
     trendBadgeTooltipData?: TrendBadgeProps['tooltipData']
     drillDown?: { tooltipText: string; openDrillDownModal: () => void }
+    timeSeriesView?: TrendCardTimeSeriesProps
 }
 
 export const TrendCard = memo<TrendCardProps>(
@@ -46,6 +49,7 @@ export const TrendCard = memo<TrendCardProps>(
         withFixedWidth,
         trendBadgeTooltipData,
         drillDown,
+        timeSeriesView,
     }) => {
         const { data } = trend
         const [isHovered, setIsHovered] = useState(false)
@@ -123,6 +127,9 @@ export const TrendCard = memo<TrendCardProps>(
                             )}
                         </div>
                     </div>
+                    {timeSeriesView && (
+                        <TrendCardTimeSeries {...timeSeriesView} />
+                    )}
                 </MetricCard>
             </div>
         )

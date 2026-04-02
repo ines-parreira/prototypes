@@ -1,5 +1,8 @@
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
+import { formatMetricValue } from '@repo/reporting'
+
 import { useAiAgentTrendCardDrillDown } from 'domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown'
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import type { MetricTrendHook } from 'domains/reporting/hooks/useMetricTrend'
@@ -11,6 +14,9 @@ import type {
 import type { DrillDownMetric } from 'domains/reporting/state/ui/stats/drillDownSlice'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
 
+import { useOverallTimeSeries } from '../../../pages/aiAgent/utils/aiAgentMetrics.utils'
+import type { MetricQueryFactory } from '../models/scopes/scope'
+
 export const useReportingTrendCardProps = ({
     chartConfig,
     chartId,
@@ -18,6 +24,7 @@ export const useReportingTrendCardProps = ({
     useTrend,
     isAiAgentTrendCard,
     drillDownMetricName,
+    timeSeriesView,
 }: {
     chartId?: string
     dashboard?: DashboardSchema
@@ -25,8 +32,9 @@ export const useReportingTrendCardProps = ({
     useTrend: MetricTrendHook
     isAiAgentTrendCard: boolean
     drillDownMetricName?: DrillDownMetric['metricName']
+    timeSeriesView?: { comingSoon?: boolean; queryFactory?: MetricQueryFactory }
 }) => {
-    const { cleanStatsFilters, userTimezone } = useStatsFilters()
+    const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
     const aiAgentFilters = useMemo(() => {
         return {
@@ -43,6 +51,13 @@ export const useReportingTrendCardProps = ({
         trendData.data?.value,
     )
 
+    const { value: isTimeSeriesFFEnabled, isLoading: isFFLoading } =
+        useFlagWithLoading(
+            FeatureFlagKey.AiAgentAnalyticsDashboardsTrendCardsWithTimeseries,
+        )
+    const isTimeSeriesEnabled =
+        isAiAgentTrendCard && isTimeSeriesFFEnabled && !isFFLoading
+
     const trend = useMemo(
         () => ({
             isFetching: trendData.isFetching,
@@ -55,6 +70,35 @@ export const useReportingTrendCardProps = ({
         }),
         [trendData, chartConfig.label],
     )
+
+    const timeSeriesViewProps = useMemo(() => {
+        if (!timeSeriesView || !isTimeSeriesEnabled) {
+            return undefined
+        }
+
+        const { queryFactory } = timeSeriesView
+        return {
+            comingSoon: timeSeriesView.comingSoon ?? false,
+            useChartData: queryFactory
+                ? () =>
+                      useOverallTimeSeries(
+                          queryFactory,
+                          filters,
+                          userTimezone,
+                          granularity,
+                      )
+                : undefined,
+            valueFormatter: (value: number) =>
+                formatMetricValue(value, chartConfig.metricFormat),
+        }
+    }, [
+        timeSeriesView,
+        isTimeSeriesEnabled,
+        filters,
+        userTimezone,
+        granularity,
+        chartConfig.metricFormat,
+    ])
 
     return {
         trend,
@@ -76,5 +120,6 @@ export const useReportingTrendCardProps = ({
             />
         ) : undefined,
         drillDown,
+        timeSeriesView: timeSeriesViewProps,
     }
 }

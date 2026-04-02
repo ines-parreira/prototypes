@@ -1,0 +1,40 @@
+:local {
+    .divider {
+        border: none;
+        border-top: 1px solid var(--border-neutral-default);
+        margin: var(--spacing-xs) 0 var(--spacing-xxxs);
+    }
+
+    .comingSoon {
+        color: var(--content-neutral-secondary);
+    }
+
+    .chartWrapper {
+        margin: var(--spacing-xxs) var(--spacing-xxxs) var(--spacing-xxs)
+            calc(-1 * var(--spacing-xxxs));
+        width: calc(100% + 2 * var(--spacing-xxxs));
+
+        :global {
+            .recharts-wrapper {
+                outline: none !important;
+
+                &:focus {
+                    outline: none !important;
+                }
+            }
+
+            .recharts-surface {
+                outline: none !important;
+
+                &:focus {
+                    outline: none !important;
+                }
+            }
+        }
+    }
+
+    .loadingWrapper {
+        padding: var(--spacing-xs) 0;
+        line-height: 22px;
+    }
+}

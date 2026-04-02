@@ -4,6 +4,8 @@ import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automa
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
+import { dynamicOverallAutomatedInteractionsQueryFactoryV2 } from '../../../../domains/reporting/models/scopes/overallAutomatedInteractions'
+
 export const AnalyticsOverviewAutomatedInteractionsCard = ({
     chartId,
     dashboard,
@@ -17,6 +19,9 @@ export const AnalyticsOverviewAutomatedInteractionsCard = ({
         chartId,
         isAiAgentTrendCard: true,
         dashboard,
+        timeSeriesView: {
+            queryFactory: dynamicOverallAutomatedInteractionsQueryFactoryV2,
+        },
     })
 
     return <TrendCard {...trendCardProps} />

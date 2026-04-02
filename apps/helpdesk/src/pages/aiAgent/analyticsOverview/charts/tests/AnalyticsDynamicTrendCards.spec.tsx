@@ -103,6 +103,7 @@ const createTrendCardProps = ({
     },
     actionMenu: undefined,
     drillDown: undefined,
+    timeSeriesView: undefined,
 })
 
 const createChartConfig = ({
@@ -138,6 +139,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 4800,
                 prevValue: 4600,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsOverviewTimeSavedCard',
@@ -150,6 +152,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 19800,
                 prevValue: 19400,
             },
+            timeSeriesView: { comingSoon: true },
         },
         {
             name: 'AnalyticsAiAgentAverageOrderValueCard',
@@ -578,6 +581,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 12.5,
                 prevValue: 10,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsOverviewCostSavedCard',
@@ -678,7 +682,7 @@ describe('Analytics Dynamic Trend Cards', () => {
 
     describe.each(testCases)(
         '$name',
-        ({ Component, config, drillDownMetricName }) => {
+        ({ Component, config, drillDownMetricName, timeSeriesView }) => {
             const chartConfig = createChartConfig({
                 Component,
                 label: config.label,
@@ -714,6 +718,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                     useTrend: expect.any(Function),
                     isAiAgentTrendCard: true,
                     ...(drillDownMetricName ? { drillDownMetricName } : {}),
+                    ...(timeSeriesView ? { timeSeriesView } : {}),
                 })
             })
 

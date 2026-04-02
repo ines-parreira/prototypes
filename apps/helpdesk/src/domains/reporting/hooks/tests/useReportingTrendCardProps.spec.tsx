@@ -1,3 +1,5 @@
+import { useFlagWithLoading } from '@repo/feature-flags'
+import { formatMetricValue } from '@repo/reporting'
 import { assumeMock, renderHook } from '@repo/testing'
 import { Provider } from 'react-redux'
 
@@ -16,7 +18,27 @@ import type {
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
 import { initialState } from 'domains/reporting/state/stats/statsSlice'
 import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
+import { useOverallTimeSeries } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { mockStore } from 'utils/testing'
+
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        AiAgentAnalyticsDashboardsTrendCardsWithTimeseries:
+            'ai-agent-analytics-dashboards-trend-cards-with-timeseries',
+    },
+    useFlagWithLoading: jest.fn(),
+}))
+const mockUseFlagWithLoading = jest.mocked(useFlagWithLoading)
+
+jest.mock('@repo/reporting', () => ({
+    formatMetricValue: jest.fn(),
+}))
+const mockFormatMetricValue = jest.mocked(formatMetricValue)
+
+jest.mock('pages/aiAgent/utils/aiAgentMetrics.utils', () => ({
+    useOverallTimeSeries: jest.fn(),
+}))
+const mockUseOverallTimeSeries = jest.mocked(useOverallTimeSeries)
 
 jest.mock('domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown')
 const useAiAgentTrendCardDrillDownMock = assumeMock(
@@ -83,6 +105,8 @@ describe('useReportingTrendCardProps', () => {
         tooltipText: 'Click to view tickets',
     }
 
+    const mockQueryFactory = jest.fn()
+
     beforeEach(() => {
         jest.clearAllMocks()
         useStatsFiltersMock.mockReturnValue({
@@ -92,6 +116,12 @@ describe('useReportingTrendCardProps', () => {
         })
         formatPreviousPeriodMock.mockReturnValue('Jan 1 - Jan 7')
         useAiAgentTrendCardDrillDownMock.mockReturnValue(undefined)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: false,
+            isLoading: false,
+        })
+        mockFormatMetricValue.mockReturnValue('42%')
+        mockUseOverallTimeSeries.mockReturnValue({ data: [], isLoading: false })
     })
 
     it('should return trend data with correct structure', () => {
@@ -502,6 +532,127 @@ describe('useReportingTrendCardProps', () => {
         )
 
         expect(result.current.drillDown).toBeUndefined()
+    })
+
+    describe('timeSeriesView properties', () => {
+        beforeEach(() => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+            mockUseTrend.mockReturnValue(mockTrendData)
+        })
+
+        const renderWithTimeSeries = (
+            timeSeriesView: Parameters<
+                typeof useReportingTrendCardProps
+            >[0]['timeSeriesView'],
+            isAiAgentTrendCard: boolean = true,
+        ) =>
+            renderHook(
+                () =>
+                    useReportingTrendCardProps({
+                        isAiAgentTrendCard,
+                        chartConfig: mockChartConfig,
+                        useTrend: mockUseTrend,
+                        timeSeriesView,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore(defaultState)}>
+                            {children}
+                        </Provider>
+                    ),
+                },
+            )
+
+        it('should return timeSeriesView as undefined when not provided', () => {
+            mockUseTrend.mockReturnValue(mockTrendData)
+
+            const { result } = renderWithTimeSeries(undefined)
+
+            expect(result.current.timeSeriesView).toBeUndefined()
+        })
+
+        it('should return timeSeriesView when feature flag is on', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+            mockUseTrend.mockReturnValue(mockTrendData)
+
+            const { result } = renderWithTimeSeries({ comingSoon: true })
+
+            expect(result.current.timeSeriesView).toBeDefined()
+        })
+
+        it('should return timeSeriesView as undefined when feature flag is off', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
+            mockUseTrend.mockReturnValue(mockTrendData)
+
+            const { result } = renderWithTimeSeries({ comingSoon: true })
+
+            expect(result.current.timeSeriesView).toBeUndefined()
+        })
+
+        it('should return timeSeriesView as undefined when isAiAgentTrendCard is false', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: false,
+            })
+            mockUseTrend.mockReturnValue(mockTrendData)
+
+            const { result } = renderWithTimeSeries({ comingSoon: true }, false)
+
+            expect(result.current.timeSeriesView).toBeUndefined()
+        })
+
+        it('should default comingSoon to false when not provided', () => {
+            const { result } = renderWithTimeSeries({})
+
+            expect(result.current.timeSeriesView?.comingSoon).toBe(false)
+        })
+
+        it('should pass through comingSoon as true when provided', () => {
+            const { result } = renderWithTimeSeries({ comingSoon: true })
+
+            expect(result.current.timeSeriesView?.comingSoon).toBe(true)
+        })
+
+        it('should return useChartData as undefined when queryFactory is not provided', () => {
+            const { result } = renderWithTimeSeries({})
+
+            expect(result.current.timeSeriesView?.useChartData).toBeUndefined()
+        })
+
+        it('should call useOverallTimeSeries with correct args when useChartData is invoked', () => {
+            const { result } = renderWithTimeSeries({
+                queryFactory: mockQueryFactory,
+            })
+
+            expect(result.current.timeSeriesView?.useChartData).toBeInstanceOf(
+                Function,
+            )
+            result.current.timeSeriesView?.useChartData?.()
+
+            expect(mockUseOverallTimeSeries).toHaveBeenCalledWith(
+                mockQueryFactory,
+                { period: mockCleanStatsFilters.period },
+                'UTC',
+                ReportingGranularity.Day,
+            )
+        })
+
+        it('should call formatMetricValue with the value and metricFormat when valueFormatter is invoked', () => {
+            const { result } = renderWithTimeSeries({})
+
+            result.current.timeSeriesView?.valueFormatter(42)
+
+            expect(mockFormatMetricValue).toHaveBeenCalledWith(42, 'percent')
+        })
     })
 
     it('should return drillDown as undefined when trend value is zero', () => {

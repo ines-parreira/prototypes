@@ -17,6 +17,9 @@ export const AnalyticsOverviewTimeSavedCard = ({
         chartId,
         isAiAgentTrendCard: true,
         dashboard,
+        timeSeriesView: {
+            comingSoon: true,
+        },
     })
 
     return <TrendCard {...trendCardProps} />
