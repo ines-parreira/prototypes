@@ -1,6 +1,16 @@
+import type * as TicketsModule from '@repo/tickets'
+import {
+    DisplayedContent,
+    FetchingState,
+    useTicketMessageDisplayState,
+    useTicketMessageTranslations,
+} from '@repo/tickets'
 import { screen } from '@testing-library/react'
+import { HttpResponse } from 'msw'
 
 import {
+    mockGetTicketHandler,
+    mockTicket,
     mockTicketMessage,
     mockTicketMessageTranslation,
 } from '@gorgias/helpdesk-mocks'
@@ -9,10 +19,25 @@ import { useExpandedMessages } from '../../../../contexts/ExpandedMessages'
 import type { TicketThreadRegularMessageItem } from '../../../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../../../hooks/types'
 import { render } from '../../../../tests/render.utils'
+import { server } from '../../../../tests/server'
 import type { DisplayedTicketThreadRegularMessageItem } from '../../../TicketMessage/hooks/useDisplayedTicketMessage'
+import type * as MessageAttachmentsModule from '../MessageAttachments'
 import { MessageFooter } from '../MessageFooter'
 
 type MessageFooterData = DisplayedTicketThreadRegularMessageItem['data']
+
+vi.mock('@repo/tickets', async () => {
+    const actual = await vi.importActual<typeof TicketsModule>('@repo/tickets')
+
+    return {
+        ...actual,
+        useCurrentUserLanguagePreferences: vi.fn(() => ({
+            shouldShowTranslatedContent: () => true,
+        })),
+        useTicketMessageTranslations: vi.fn(),
+        useTicketMessageDisplayState: vi.fn(),
+    }
+})
 
 vi.mock('react-player', () => ({
     default: ({ url }: { url: string }) => <div>{`react-player:${url}`}</div>,
@@ -22,13 +47,20 @@ vi.mock('../../../../contexts/ExpandedMessages', () => ({
     useExpandedMessages: vi.fn(),
 }))
 
-vi.mock('../MessageAttachments', () => ({
-    MessageAttachments: ({
-        item,
-    }: {
-        item: TicketThreadRegularMessageItem
-    }) => <div>{`attachments:${item.data.id}`}</div>,
-}))
+vi.mock('../MessageAttachments', async () => {
+    const actual = await vi.importActual<typeof MessageAttachmentsModule>(
+        '../MessageAttachments',
+    )
+
+    return {
+        ...actual,
+        MessageAttachments: ({
+            item,
+        }: {
+            item: TicketThreadRegularMessageItem
+        }) => <div>{`attachments:${item.data.id}`}</div>,
+    }
+})
 
 vi.mock('../TranslationsDropdown', () => ({
     TranslationsDropdown: ({
@@ -41,6 +73,8 @@ vi.mock('../TranslationsDropdown', () => ({
 }))
 
 const mockUseExpandedMessages = vi.mocked(useExpandedMessages)
+const mockUseTicketMessageTranslations = vi.mocked(useTicketMessageTranslations)
+const mockUseTicketMessageDisplayState = vi.mocked(useTicketMessageDisplayState)
 
 const toggleMessage = vi.fn()
 
@@ -55,6 +89,7 @@ function makeItem(overrides: Partial<MessageFooterData> = {}) {
             body_text: 'Hello world',
             stripped_html: null,
             stripped_text: 'Hello world',
+            attachments: [],
             ...overrides,
         }) as MessageFooterData,
         datetime: '2024-03-21T11:00:00Z',
@@ -63,16 +98,47 @@ function makeItem(overrides: Partial<MessageFooterData> = {}) {
 
 beforeEach(() => {
     toggleMessage.mockReset()
+    server.use(
+        mockGetTicketHandler(async ({ params }) =>
+            HttpResponse.json(
+                mockTicket({
+                    id: Number(params?.id ?? 1),
+                    language: 'fr',
+                }),
+            ),
+        ).handler,
+    )
     mockUseExpandedMessages.mockReturnValue({
         expandedMessageIds: [],
         toggleMessage,
         isMessageExpanded: vi.fn(() => false),
     })
+    mockUseTicketMessageTranslations.mockReturnValue({
+        ticketMessagesTranslationMap: {},
+        getMessageTranslation: vi.fn(() => mockTicketMessageTranslation()),
+    } as ReturnType<typeof useTicketMessageTranslations>)
+    mockUseTicketMessageDisplayState.mockReturnValue({
+        display: DisplayedContent.Original,
+        fetchingState: FetchingState.Completed,
+    } as ReturnType<typeof useTicketMessageDisplayState>)
 })
 
 describe('MessageFooter', () => {
     it('renders attachments and translations dropdown for messages with id', () => {
-        render(<MessageFooter item={makeItem()} />)
+        render(
+            <MessageFooter
+                item={makeItem({
+                    attachments: [
+                        {
+                            url: 'https://example.com/file.pdf',
+                            name: 'file.pdf',
+                            content_type: 'application/pdf',
+                            public: true,
+                        },
+                    ],
+                })}
+            />,
+        )
 
         expect(screen.getByText('attachments:456')).toBeInTheDocument()
         expect(screen.getByText('translations:456:123')).toBeInTheDocument()
@@ -98,9 +164,28 @@ describe('MessageFooter', () => {
     it('hides strip toggle when content is not stripped', () => {
         render(<MessageFooter item={makeItem()} />)
 
-        expect(screen.getByText('attachments:456')).toBeInTheDocument()
         expect(screen.getByText('translations:456:123')).toBeInTheDocument()
         expect(screen.queryByRole('button')).not.toBeInTheDocument()
+    })
+
+    it('returns null when no footer section is available', () => {
+        mockUseTicketMessageTranslations.mockReturnValue({
+            ticketMessagesTranslationMap: {},
+            getMessageTranslation: vi.fn(),
+        } as ReturnType<typeof useTicketMessageTranslations>)
+        mockUseTicketMessageDisplayState.mockReturnValue({
+            fetchingState: FetchingState.Idle,
+        } as ReturnType<typeof useTicketMessageDisplayState>)
+
+        const { container } = render(
+            <MessageFooter
+                item={makeItem({
+                    attachments: [],
+                })}
+            />,
+        )
+
+        expect(container).toBeEmptyDOMElement()
     })
 
     it('does not render strip toggle when only translated stripped content differs', () => {

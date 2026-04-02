@@ -38,7 +38,7 @@ export function ProductAttachment({ attachment }: ProductAttachmentProps) {
             aria-label={attachment.name ?? 'Product attachment'}
         >
             <Box flexDirection="column" gap="xs">
-                <Box className={cn(attachmentCss.cardSurface)}>
+                <Box className={cn(attachmentCss.cardSurface, css.cardSurface)}>
                     <Image
                         src={proxifyURL(attachment.url, '120x120')}
                         alt={attachment.name ?? 'Product attachment'}

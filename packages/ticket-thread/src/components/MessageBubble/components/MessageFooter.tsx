@@ -10,7 +10,9 @@ import type {
 import { MessageAttachments } from './MessageAttachments'
 import { MessageVideos } from './MessageVideos'
 import { TranslationsDropdown } from './TranslationsDropdown'
+import { useMessageTranslations } from './useMessageTranslations'
 import { getMessageContent } from './utils/getMessageContent'
+import { getMessageVideoUrls } from './utils/getMessageVideoUrls'
 
 import css from './MessageFooter.less'
 
@@ -23,8 +25,25 @@ export function MessageFooter({
     item,
     showTranslations = true,
 }: MessageFooterProps) {
+    const { toggleMessage, isMessageExpanded } = useExpandedMessages()
     const { isStripped, messageId } = getMessageContent(item)
-    const { toggleMessage } = useExpandedMessages()
+    const isExpanded = isMessageExpanded(messageId)
+    const translationsState = useMessageTranslations({
+        messageId,
+        ticketId: item.data.ticket_id,
+        showTranslations,
+    })
+    const videoUrls = getMessageVideoUrls(item, isExpanded)
+    const hasAttachments = Boolean(item.data.attachments?.length)
+
+    if (
+        !isStripped &&
+        !translationsState.shouldRender &&
+        !videoUrls?.length &&
+        !hasAttachments
+    ) {
+        return null
+    }
 
     return (
         <Box flexDirection="column" gap="xs">
@@ -32,7 +51,9 @@ export function MessageFooter({
                 <Box>
                     <Tag
                         color={TagColor.Grey}
-                        onClick={() => toggleMessage(messageId)}
+                        onClick={() => {
+                            toggleMessage(messageId)
+                        }}
                         size="sm"
                         className={css.tag}
                     >
@@ -44,12 +65,12 @@ export function MessageFooter({
                 </Box>
             )}
             <MessageVideos item={item} />
-            {showTranslations && isNumber(messageId) && (
+            {translationsState.shouldRender && isNumber(messageId) ? (
                 <TranslationsDropdown
                     messageId={messageId}
                     ticketId={item.data.ticket_id}
                 />
-            )}
+            ) : null}
             <MessageAttachments item={item} />
         </Box>
     )

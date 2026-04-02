@@ -14,6 +14,7 @@ import { InstagramStoryMentionMessage } from '../InstagramStoryMessage/Instagram
 import { InstagramStoryReplyMessage } from '../InstagramStoryMessage/InstagramStoryReplyMessage'
 import { TicketInternalNote } from '../TicketInternalNote/TicketInternalNote'
 import { TicketMessage } from '../TicketMessage/TicketMessage'
+import { TicketThreadGroupedMessages } from '../TicketThreadGroupedMessages/TicketThreadGroupedMessages'
 import { UnimplementedMessage } from '../UnimplementedMessage/UnimplementedMessage'
 import { WhatsAppMessage } from '../WhatsAppMessage/WhatsAppMessage'
 import { AiAgentTicketThreadDraftMessage } from './AiAgentTicketThreadMessages/AiAgentTicketThreadDraftMessage'
@@ -86,7 +87,7 @@ export function TicketThreadMessageItem({
             case TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage:
                 return <WhatsAppMessage item={item} />
             case TicketThreadItemTag.Messages.GroupedMessages:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
+                return <TicketThreadGroupedMessages item={item} />
             default:
                 return assertNever(item)
         }

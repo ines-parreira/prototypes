@@ -932,12 +932,26 @@ describe('TicketThreadMessageItem', () => {
     })
 
     it('renders merged messages item', () => {
-        const mergedData = [createMessageItem()]
-        const item = createGroupedMessagesItem(mergedData)
+        const item = createGroupedMessagesItem([
+            createMessageItem({
+                id: 1,
+                stripped_text: HELLO_MESSAGE_TEXT,
+                body_text: HELLO_MESSAGE_TEXT,
+                sender: aliceSender,
+            }),
+            createMessageItem({
+                id: 2,
+                stripped_text: 'follow up',
+                body_text: 'follow up',
+                sender: aliceSender,
+            }),
+        ])
 
         renderItem(item)
 
-        expect(screen.getByText(JSON.stringify(mergedData))).toBeInTheDocument()
+        expect(screen.getByText('Alice')).toBeInTheDocument()
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
+        expect(screen.getByText('follow up')).toBeInTheDocument()
     })
 
     it('renders WhatsApp message with sender name', () => {

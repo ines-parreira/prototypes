@@ -15,9 +15,10 @@
             background-color: transparent;
             border-radius: inherit;
             pointer-events: none;
+            transition: background-color 0.2s ease-in-out;
         }
 
-        &:hover::after {
+        &[data-hover-state='true']:hover::after {
             background-color: var(--hover-default);
         }
 
@@ -30,7 +31,7 @@
             border: 1px solid var(--border-neutral-default);
             background-color: var(--surface-container-blue);
 
-            &:hover {
+            &[data-hover-state='true']:hover {
                 background-color: var(--surface-container-blue);
                 background-image: linear-gradient(
                     var(--hover-default),

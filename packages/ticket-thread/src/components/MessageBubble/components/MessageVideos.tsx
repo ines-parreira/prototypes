@@ -1,4 +1,3 @@
-import { extractGorgiasVideoDivFromHtmlContent } from '@repo/utils'
 import ReactPlayer from 'react-player'
 
 import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
@@ -6,7 +5,7 @@ import type {
     TicketThreadInternalNoteItem,
     TicketThreadRegularMessageItem,
 } from '../../../hooks/messages/types'
-import { getMessageContent } from './utils/getMessageContent'
+import { getMessageVideoUrls } from './utils/getMessageVideoUrls'
 
 import css from './MessageVideos.less'
 
@@ -17,12 +16,7 @@ type MessageVideosProps = {
 export function MessageVideos({ item }: MessageVideosProps) {
     const { isMessageExpanded } = useExpandedMessages()
     const isExpanded = isMessageExpanded(item.data.id)
-    const { isHtml, sanitizedHtml } = getMessageContent(item, isExpanded)
-
-    const videoUrls =
-        sanitizedHtml && isHtml
-            ? extractGorgiasVideoDivFromHtmlContent(sanitizedHtml).videoUrls
-            : null
+    const videoUrls = getMessageVideoUrls(item, isExpanded)
 
     if (!videoUrls?.length) {
         return null

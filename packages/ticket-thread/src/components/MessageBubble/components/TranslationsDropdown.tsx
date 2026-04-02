@@ -3,10 +3,7 @@ import { useState } from 'react'
 import {
     DisplayedContent,
     FetchingState,
-    useCurrentUserLanguagePreferences,
     useRegenerateTicketMessageTranslations,
-    useTicketMessageDisplayState,
-    useTicketMessageTranslations,
 } from '@repo/tickets'
 
 import {
@@ -19,10 +16,9 @@ import {
     MenuItem,
     MenuSection,
 } from '@gorgias/axiom'
-import { useGetTicket } from '@gorgias/helpdesk-queries'
 
-import { useExpandedMessages } from '../../../contexts/ExpandedMessages'
 import { TranslationLimit } from './TranslationLimit'
+import { useMessageTranslations } from './useMessageTranslations'
 
 const IntlDisplayNames = new Intl.DisplayNames(['en'], { type: 'language' })
 
@@ -35,32 +31,22 @@ export function TranslationsDropdown({
     messageId,
     ticketId,
 }: TranslationsDropdownProps) {
-    const { data: ticketData } = useGetTicket(ticketId)
-    const ticketLanguage = ticketData?.data?.language
-    const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
-    const { getMessageTranslation } = useTicketMessageTranslations({
-        ticket_id: ticketId,
-    })
     const { regenerateTicketMessageTranslations } =
         useRegenerateTicketMessageTranslations()
     const {
+        shouldRender,
+        ticketLanguage,
         display,
         fetchingState,
         hasRegeneratedOnce,
         setTicketMessageTranslationDisplay,
-    } = useTicketMessageDisplayState(messageId)
-    const { isMessageExpanded } = useExpandedMessages()
-
-    const hasTranslation = !!getMessageTranslation(messageId)
-    const isActive = fetchingState !== FetchingState.Idle || hasTranslation
-
+    } = useMessageTranslations({
+        messageId,
+        ticketId,
+    })
     const [isTranslationsMenuOpen, setIsTranslationMenuOpen] = useState(false)
 
-    if (
-        !shouldShowTranslatedContent(ticketLanguage) ||
-        !isActive ||
-        isMessageExpanded(messageId)
-    ) {
+    if (!shouldRender) {
         return null
     }
 
