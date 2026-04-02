@@ -160,8 +160,8 @@ describe('useListUserPhoneStatuses', () => {
                         queryKeys.voiceUserStatus.getUserPhoneStatus(
                             user.user_id,
                         ),
-                    ) as UserPhoneStatus
-                    expect(cache?.phone_status).toBe(user.phone_status)
+                    ) as { data: UserPhoneStatus }
+                    expect(cache?.data?.phone_status).toBe(user.phone_status)
                 })
             })
         })

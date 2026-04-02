@@ -9,17 +9,19 @@ import thunk from 'redux-thunk'
 
 import {
     mockCustomUserAvailabilityStatus,
-    mockGetUserAvailabilityHandler,
     mockGetUserPhoneStatusHandler,
     mockListCustomUserAvailabilityStatusesHandler,
     mockListUserAvailabilitiesHandler,
+    mockListUserPhoneStatusHandler,
     mockUserAvailabilityDetail,
     mockUserPhoneStatus,
 } from '@gorgias/helpdesk-mocks'
 import type { UserAvailability } from '@gorgias/helpdesk-queries'
 import { queryKeys } from '@gorgias/helpdesk-queries'
 
+import * as useAvailabilityCellAvailabilityDataModule from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellAvailabilityData'
 import { useAvailabilityCellData } from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellData'
+import * as useAvailabilityCellPhoneStatusDataModule from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellPhoneStatusData'
 import { user } from 'fixtures/users'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
@@ -84,108 +86,95 @@ describe('useAvailabilityCellData', () => {
                     }),
                 ),
         )
-        server.use(defaultPhoneStatusHandler.handler)
+
+        const defaultListPhoneStatusesHandler = mockListUserPhoneStatusHandler(
+            async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    data: userIds.map((id) =>
+                        mockUserPhoneStatus({
+                            user_id: id,
+                            phone_status: 'off-call',
+                        }),
+                    ),
+                }),
+        )
+
+        server.use(
+            defaultPhoneStatusHandler.handler,
+            defaultListPhoneStatusesHandler.handler,
+        )
     })
 
     afterEach(() => {
         server.resetHandlers()
         queryClient.clear()
+        jest.restoreAllMocks()
     })
 
     afterAll(() => {
         server.close()
     })
 
-    describe('Loading states', () => {
-        it('should return isLoading: true when batch query is loading', () => {
-            const mockListAvailabilities = mockListUserAvailabilitiesHandler()
-            const mockListStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(
-                    async ({ data }) =>
-                        HttpResponse.json({
-                            ...data,
-                            data: [customStatus],
-                        }),
-                )
+    describe('Data resolution', () => {
+        it('should show availability status when data loads', async () => {
+            const mockAvailability = mockUserAvailabilityDetail({
+                user_id: userId,
+                user_status: 'available',
+            }) as UserAvailability
 
-            server.use(mockListAvailabilities.handler, mockListStatuses.handler)
+            jest.spyOn(
+                useAvailabilityCellAvailabilityDataModule,
+                'useAvailabilityCellAvailabilityData',
+            ).mockReturnValue({
+                availability: undefined,
+                status: undefined,
+                isLoading: true,
+                isError: false,
+            })
 
-            const { result } = renderHookWithProviders()
+            jest.spyOn(
+                useAvailabilityCellPhoneStatusDataModule,
+                'useAvailabilityCellPhoneStatusData',
+            ).mockReturnValue({
+                agentPhoneUnavailabilityStatus: undefined,
+                isLoading: true,
+                isError: false,
+            })
+
+            const { result, rerender } = renderHookWithProviders()
 
             expect(result.current.isLoading).toBe(true)
             expect(result.current.status).toBeUndefined()
-            expect(result.current.isPhoneError).toBe(false)
-        })
+            expect(result.current.errorMessage).toBeNull()
 
-        it('should return isLoading: false when batch query completes and data is in cache', async () => {
-            const mockListAvailabilities = mockListUserAvailabilitiesHandler(
-                async ({ data }) =>
-                    HttpResponse.json({
-                        ...data,
-                        data: [
-                            mockUserAvailabilityDetail({
-                                user_id: userId,
-                                user_status: 'available',
-                                updated_datetime: '2026-02-09T12:00:00.000Z',
-                            }) as UserAvailability,
-                        ],
-                    }),
-            )
-
-            const mockListStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(
-                    async ({ data }) =>
-                        HttpResponse.json({
-                            ...data,
-                            data: [customStatus],
-                        }),
-                )
-
-            server.use(mockListAvailabilities.handler, mockListStatuses.handler)
-
-            // First, populate the cache with batch query
-            queryClient.setQueryData(
-                queryKeys.userAvailability.listUserAvailabilities({
-                    user_id: userIds,
-                }),
-                {
-                    data: {
-                        data: [
-                            mockUserAvailabilityDetail({
-                                user_id: userId,
-                                user_status: 'available',
-                            }),
-                        ],
-                    },
-                },
-            )
-
-            // Also set individual cache
-            queryClient.setQueryData(
-                queryKeys.userAvailability.getUserAvailability(userId),
-                {
-                    data: mockUserAvailabilityDetail({
-                        user_id: userId,
-                        user_status: 'available',
-                    }) as UserAvailability,
-                },
-            )
-
-            const { result } = renderHookWithProviders()
-
-            await waitFor(() => {
-                expect(result.current.isLoading).toBe(false)
+            jest.spyOn(
+                useAvailabilityCellAvailabilityDataModule,
+                'useAvailabilityCellAvailabilityData',
+            ).mockReturnValue({
+                availability: mockAvailability,
+                status: { id: 'available', name: 'Available' } as any,
+                isLoading: false,
+                isError: false,
             })
 
-            expect(result.current.status).toBeDefined()
-            expect(result.current.status?.id).toBe('available')
-            expect(result.current.isError).toBe(false)
-            expect(result.current.isPhoneError).toBe(false)
-        })
-    })
+            jest.spyOn(
+                useAvailabilityCellPhoneStatusDataModule,
+                'useAvailabilityCellPhoneStatusData',
+            ).mockReturnValue({
+                agentPhoneUnavailabilityStatus: undefined,
+                isLoading: false,
+                isError: false,
+            })
 
-    describe('Error states', () => {
-        it('should return isError: false when batch query fails but cached data exists', async () => {
+            rerender()
+
+            expect(result.current.isLoading).toBe(false)
+            expect(result.current.status?.id).toBe('available')
+            expect(result.current.errorMessage).toBeNull()
+        })
+
+        it('should show cached availability status even when batch query fails', async () => {
             const mockListAvailabilities = mockListUserAvailabilitiesHandler(
                 async () =>
                     HttpResponse.json(
@@ -205,7 +194,6 @@ describe('useAvailabilityCellData', () => {
 
             server.use(mockListAvailabilities.handler, mockListStatuses.handler)
 
-            // Set cached data first
             queryClient.setQueryData(
                 queryKeys.userAvailability.getUserAvailability(userId),
                 {
@@ -222,306 +210,115 @@ describe('useAvailabilityCellData', () => {
                 expect(result.current.status).toBeDefined()
             })
 
-            expect(result.current.isError).toBe(false)
             expect(result.current.status?.id).toBe('available')
-            expect(result.current.isPhoneError).toBe(false)
+            expect(result.current.errorMessage).toBeNull()
         })
+    })
 
-        it('should set isPhoneError when phone status query fails', async () => {
-            const mockListAvailabilities = mockListUserAvailabilitiesHandler(
-                async ({ data }) =>
-                    HttpResponse.json({
-                        ...data,
-                        data: [
-                            mockUserAvailabilityDetail({
-                                user_id: userId,
-                                user_status: 'available',
-                            }) as UserAvailability,
-                        ],
-                    }),
-            )
+    describe('Error states', () => {
+        it('should show graceful degradation when phone status fails but availability succeeds', () => {
+            // Mock availability hook as successful
+            const mockAvailability = mockUserAvailabilityDetail({
+                user_id: userId,
+                user_status: 'available',
+            }) as UserAvailability
 
-            const mockListStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(
-                    async ({ data }) =>
-                        HttpResponse.json({
-                            ...data,
-                            data: [customStatus],
-                        }),
-                )
+            jest.spyOn(
+                useAvailabilityCellAvailabilityDataModule,
+                'useAvailabilityCellAvailabilityData',
+            ).mockReturnValue({
+                availability: mockAvailability,
+                status: { id: 'available', name: 'Available' } as any,
+                isLoading: false,
+                isError: false,
+            })
 
-            const mockGetUserPhoneStatus = mockGetUserPhoneStatusHandler(
-                async () =>
-                    HttpResponse.json(
-                        {
-                            error: { msg: 'Failed to fetch phone status' },
-                        } as any,
-                        { status: 500 },
-                    ),
-            )
-
-            server.use(
-                mockListAvailabilities.handler,
-                mockListStatuses.handler,
-                mockGetUserPhoneStatus.handler,
-            )
-
-            // Set availability in cache
-            queryClient.setQueryData(
-                queryKeys.userAvailability.getUserAvailability(userId),
-                {
-                    data: mockUserAvailabilityDetail({
-                        user_id: userId,
-                        user_status: 'available',
-                    }) as UserAvailability,
-                },
-            )
+            // Mock phone status hook as failed
+            jest.spyOn(
+                useAvailabilityCellPhoneStatusDataModule,
+                'useAvailabilityCellPhoneStatusData',
+            ).mockReturnValue({
+                agentPhoneUnavailabilityStatus: undefined,
+                isLoading: false,
+                isError: true,
+            })
 
             const { result } = renderHookWithProviders()
 
-            await waitFor(() => {
-                expect(result.current.isPhoneError).toBe(true)
-            })
-
-            // Availability should still be loaded and not show error
+            // Graceful degradation: show availability status with error message
             expect(result.current.status).toBeDefined()
-            expect(result.current.isError).toBe(false)
+            expect(result.current.status?.id).toBe('available')
             expect(
                 result.current.agentPhoneUnavailabilityStatus,
             ).toBeUndefined()
-        })
-    })
-
-    describe('Phone status precedence', () => {
-        it('should return phone status when agent is on phone', async () => {
-            const mockListAvailabilities = mockListUserAvailabilitiesHandler(
-                async ({ data }) =>
-                    HttpResponse.json({
-                        ...data,
-                        data: [
-                            mockUserAvailabilityDetail({
-                                user_id: userId,
-                                user_status: 'available',
-                            }) as UserAvailability,
-                        ],
-                    }),
+            expect(result.current.errorMessage).toBe(
+                'Failed to load phone status',
             )
+            expect(result.current.isLoading).toBe(false)
+        })
 
-            const mockListStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(
-                    async ({ data }) =>
-                        HttpResponse.json({
-                            ...data,
-                            data: [customStatus],
-                        }),
-                )
-
-            const mockPhoneStatus = mockUserPhoneStatus({
-                user_id: userId,
-                phone_status: 'on-call',
+        it('should return error message when availability fails but phone status succeeds', () => {
+            // Mock availability hook as failed
+            jest.spyOn(
+                useAvailabilityCellAvailabilityDataModule,
+                'useAvailabilityCellAvailabilityData',
+            ).mockReturnValue({
+                availability: undefined,
+                status: undefined,
+                isLoading: false,
+                isError: true,
             })
 
-            const mockGetUserPhoneStatus = mockGetUserPhoneStatusHandler(
-                async () => HttpResponse.json(mockPhoneStatus),
-            )
-
-            server.use(
-                mockListAvailabilities.handler,
-                mockListStatuses.handler,
-                mockGetUserPhoneStatus.handler,
-            )
-
-            // Set availability in cache
-            queryClient.setQueryData(
-                queryKeys.userAvailability.getUserAvailability(userId),
-                {
-                    data: mockUserAvailabilityDetail({
-                        user_id: userId,
-                        user_status: 'available',
-                    }) as UserAvailability,
-                },
-            )
+            // Mock phone status hook as successful
+            jest.spyOn(
+                useAvailabilityCellPhoneStatusDataModule,
+                'useAvailabilityCellPhoneStatusData',
+            ).mockReturnValue({
+                agentPhoneUnavailabilityStatus: undefined,
+                isLoading: false,
+                isError: false,
+            })
 
             const { result } = renderHookWithProviders()
 
-            await waitFor(() => {
-                expect(result.current.isLoading).toBe(false)
-            })
-
-            // Wait for phone status to load
-            await waitFor(() => {
-                expect(
-                    result.current.agentPhoneUnavailabilityStatus,
-                ).toBeDefined()
-            })
-
-            // Phone status should be present when agent is on call
-            expect(result.current.agentPhoneUnavailabilityStatus?.name).toBe(
-                'On a call',
+            expect(result.current.status).toBeUndefined()
+            expect(result.current.errorMessage).toBe(
+                'Failed to load availability status',
             )
-            expect(result.current.isPhoneError).toBe(false)
+            expect(result.current.isLoading).toBe(false)
         })
 
-        it('should return undefined phone status when agent is off call', async () => {
-            const mockListAvailabilities = mockListUserAvailabilitiesHandler(
-                async ({ data }) =>
-                    HttpResponse.json({
-                        ...data,
-                        data: [
-                            mockUserAvailabilityDetail({
-                                user_id: userId,
-                                user_status: 'available',
-                            }) as UserAvailability,
-                        ],
-                    }),
-            )
-
-            const mockListStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(
-                    async ({ data }) =>
-                        HttpResponse.json({
-                            ...data,
-                            data: [customStatus],
-                        }),
-                )
-
-            const mockPhoneStatus = mockUserPhoneStatus({
-                user_id: userId,
-                phone_status: 'off-call',
+        it('should return combined error message when both availability and phone status fail', () => {
+            // Mock both hooks as failed
+            jest.spyOn(
+                useAvailabilityCellAvailabilityDataModule,
+                'useAvailabilityCellAvailabilityData',
+            ).mockReturnValue({
+                availability: undefined,
+                status: undefined,
+                isLoading: false,
+                isError: true,
             })
 
-            const mockGetUserPhoneStatus = mockGetUserPhoneStatusHandler(
-                async () => HttpResponse.json(mockPhoneStatus),
-            )
-
-            server.use(
-                mockListAvailabilities.handler,
-                mockListStatuses.handler,
-                mockGetUserPhoneStatus.handler,
-            )
-
-            // Set availability in cache
-            queryClient.setQueryData(
-                queryKeys.userAvailability.getUserAvailability(userId),
-                {
-                    data: mockUserAvailabilityDetail({
-                        user_id: userId,
-                        user_status: 'available',
-                    }) as UserAvailability,
-                },
-            )
+            jest.spyOn(
+                useAvailabilityCellPhoneStatusDataModule,
+                'useAvailabilityCellPhoneStatusData',
+            ).mockReturnValue({
+                agentPhoneUnavailabilityStatus: undefined,
+                isLoading: false,
+                isError: true,
+            })
 
             const { result } = renderHookWithProviders()
 
-            await waitFor(() => {
-                expect(result.current.isLoading).toBe(false)
-            })
-
-            // Phone status should be undefined when off call
+            expect(result.current.status).toBeUndefined()
             expect(
                 result.current.agentPhoneUnavailabilityStatus,
             ).toBeUndefined()
-            expect(result.current.isPhoneError).toBe(false)
-        })
-    })
-
-    describe('Custom status resolution', () => {
-        it('should resolve custom status from custom status list', async () => {
-            const mockListAvailabilities = mockListUserAvailabilitiesHandler(
-                async ({ data }) =>
-                    HttpResponse.json({
-                        ...data,
-                        data: [
-                            mockUserAvailabilityDetail({
-                                user_id: userId,
-                                user_status: 'custom',
-                                custom_user_availability_status_id:
-                                    customStatus.id,
-                                updated_datetime: '2026-02-09T12:00:00.000Z',
-                            }) as UserAvailability,
-                        ],
-                    }),
+            expect(result.current.errorMessage).toBe(
+                'Failed to load availability and phone status',
             )
-
-            const mockListStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(
-                    async ({ data }) =>
-                        HttpResponse.json({
-                            ...data,
-                            data: [customStatus],
-                        }),
-                )
-
-            server.use(mockListAvailabilities.handler, mockListStatuses.handler)
-
-            // Set cached data
-            queryClient.setQueryData(
-                queryKeys.userAvailability.getUserAvailability(userId),
-                {
-                    data: mockUserAvailabilityDetail({
-                        user_id: userId,
-                        user_status: 'custom',
-                        custom_user_availability_status_id: customStatus.id,
-                    }) as UserAvailability,
-                },
-            )
-
-            const { result } = renderHookWithProviders()
-
-            await waitFor(() => {
-                expect(result.current.status).toBeDefined()
-            })
-
-            expect(result.current.status?.id).toBe(customStatus.id)
-            expect(result.current.status?.name).toBe('Lunch Break')
-            expect(result.current.isError).toBe(false)
-            expect(result.current.isPhoneError).toBe(false)
-        })
-    })
-
-    describe('Cache-only behavior', () => {
-        it('should not make network request when reading from cache', async () => {
-            const getUserAvailabilitySpy = jest.fn()
-            const mockGetUserAvailability = mockGetUserAvailabilityHandler(
-                async ({ data }) => {
-                    getUserAvailabilitySpy()
-                    return HttpResponse.json(data)
-                },
-            )
-
-            const mockListStatuses =
-                mockListCustomUserAvailabilityStatusesHandler(
-                    async ({ data }) =>
-                        HttpResponse.json({
-                            ...data,
-                            data: [customStatus],
-                        }),
-                )
-
-            server.use(
-                mockGetUserAvailability.handler,
-                mockListStatuses.handler,
-            )
-
-            // Pre-populate cache
-            queryClient.setQueryData(
-                queryKeys.userAvailability.getUserAvailability(userId),
-                {
-                    data: mockUserAvailabilityDetail({
-                        user_id: userId,
-                        user_status: 'available',
-                    }) as UserAvailability,
-                },
-            )
-
-            const { result } = renderHookWithProviders()
-
-            await waitFor(() => {
-                expect(getUserAvailabilitySpy).not.toHaveBeenCalled()
-            })
-
-            expect(result.current.isError).toBe(false)
-            expect(result.current.isPhoneError).toBe(false)
+            expect(result.current.isLoading).toBe(false)
         })
     })
 })

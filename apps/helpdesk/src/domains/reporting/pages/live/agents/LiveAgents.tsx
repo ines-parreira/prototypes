@@ -38,6 +38,8 @@ import withFeaturePaywall from 'pages/common/utils/withFeaturePaywall'
 import { AccountFeature } from 'state/currentAccount/types'
 import { getUserIdsFromLiveAgentsPerformance } from 'state/entities/stats/selectors'
 
+import { usePerformancePageAgentPhoneStatuses } from './hooks/usePerformancePageAgentPhoneStatuses'
+
 export type OnlineChoice = 'status_online' | 'time_online'
 const LIVE_AGENTS_STAT_NAME = 'live-agents-stat'
 
@@ -95,6 +97,10 @@ function LiveAgents() {
     const userIds = useAppSelector(getUserIdsFromLiveAgentsPerformance)
 
     usePerformancePageAgentAvailabilities({
+        enabled: isAgentAvailabilityEnabled,
+    })
+
+    usePerformancePageAgentPhoneStatuses({
         enabled: isAgentAvailabilityEnabled,
     })
 

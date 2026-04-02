@@ -7,7 +7,14 @@ import {
 } from '@repo/agent-status'
 import { isAdmin } from '@repo/utils'
 
-import { Box, Icon, LegacyBadge, Skeleton, Text } from '@gorgias/axiom'
+import {
+    Box,
+    Icon,
+    LegacyBadge,
+    Skeleton,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
 import { useAvailabilityCellData } from 'domains/reporting/pages/common/components/charts/TableStat/cells/hooks/useAvailabilityCellData'
 import useAppSelector from 'hooks/useAppSelector'
@@ -23,12 +30,11 @@ export function AgentAvailabilityCell({ userId }: Props) {
     const currentUser = useAppSelector((state) => state.currentUser)
 
     const {
-        status,
+        status: agentAvailabilityStatus,
         agentPhoneUnavailabilityStatus,
         isLoading,
-        isError,
-        // isPhoneError is tracked separately but we don't show phone errors in UI
-        // If phone status fails, we simply won't have agentPhoneUnavailabilityStatus
+        errorMessage,
+        hasNoData,
     } = useAvailabilityCellData({ userId })
 
     const canEditStatus = isAdmin(currentUser.toJS())
@@ -44,17 +50,8 @@ export function AgentAvailabilityCell({ userId }: Props) {
         [userId, updateStatusAsync, notify],
     )
 
-    if (isLoading) {
+    if (isLoading && hasNoData) {
         return <Skeleton width={80} height={24} />
-    }
-
-    if (isError) {
-        return (
-            <Box gap="xs">
-                <Icon name="triangle-warning" color="red" />
-                <Text color="content-error-default">Failed to load status</Text>
-            </Box>
-        )
     }
 
     // Phone status takes precedence
@@ -67,10 +64,28 @@ export function AgentAvailabilityCell({ userId }: Props) {
     }
 
     return (
-        <AgentAvailabilityStatusSelect
-            activeAvailabilityStatus={status}
-            onSelect={handleSelectStatus}
-            isDisabled={!canEditStatus}
-        />
+        <Box gap="xs" alignItems="center">
+            {!hasNoData && (
+                <AgentAvailabilityStatusSelect
+                    activeAvailabilityStatus={agentAvailabilityStatus}
+                    onSelect={handleSelectStatus}
+                    isDisabled={!canEditStatus}
+                />
+            )}
+            {errorMessage && (
+                <Tooltip
+                    trigger={
+                        <Icon
+                            name="triangle-warning"
+                            color="orange"
+                            size="sm"
+                            aria-label="triangle-warning"
+                        />
+                    }
+                >
+                    <TooltipContent>{errorMessage}</TooltipContent>
+                </Tooltip>
+            )}
+        </Box>
     )
 }

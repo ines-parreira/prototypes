@@ -1,3 +1,5 @@
+import type React from 'react'
+
 import { AVAILABLE_STATUS } from '@repo/agent-status'
 import { assumeMock } from '@repo/testing'
 import { UserRole } from '@repo/utils'
@@ -19,6 +21,28 @@ import { user } from 'fixtures/users'
 import * as useNotifyModule from 'hooks/useNotify'
 import type { useNotify } from 'hooks/useNotify'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
+
+jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
+    Tooltip: ({
+        trigger,
+        children,
+    }: {
+        trigger: React.ReactNode
+        children: React.ReactNode
+    }) => (
+        <>
+            {trigger}
+            {children}
+        </>
+    ),
+    TooltipContent: ({ children }: { children: React.ReactNode }) => (
+        <>{children}</>
+    ),
+    TooltipTrigger: ({ children }: { children: React.ReactNode }) => (
+        <>{children}</>
+    ),
+}))
 
 const mockStore = configureMockStore([thunk])
 
@@ -79,8 +103,9 @@ describe('AgentAvailabilityCell', () => {
             status: { ...AVAILABLE_STATUS, is_system: true },
             agentPhoneUnavailabilityStatus: undefined,
             isLoading: false,
-            isError: false,
-            isPhoneError: false,
+            hasNoData: false,
+            isLoadingAny: false,
+            errorMessage: null,
         })
 
         mockUpdateAvailability = mockUpdateUserAvailabilityHandler()
@@ -123,8 +148,9 @@ describe('AgentAvailabilityCell', () => {
                 status: undefined,
                 agentPhoneUnavailabilityStatus: undefined,
                 isLoading: true,
-                isError: false,
-                isPhoneError: false,
+                hasNoData: true,
+                isLoadingAny: true,
+                errorMessage: null,
             })
 
             renderComponent()
@@ -133,20 +159,23 @@ describe('AgentAvailabilityCell', () => {
         })
 
         it('should show error state when there is an error', () => {
+            const errorMsg = 'Failed to load availability status'
             useAvailabilityCellDataMock.mockReturnValue({
                 availability: undefined,
                 status: undefined,
                 agentPhoneUnavailabilityStatus: undefined,
                 isLoading: false,
-                isError: true,
-                isPhoneError: false,
+                hasNoData: true,
+                isLoadingAny: false,
+                errorMessage: errorMsg,
             })
 
             renderComponent()
 
-            expect(
-                screen.getByText('Failed to load status'),
-            ).toBeInTheDocument()
+            const warningIcon = screen.getByLabelText('triangle-warning')
+            expect(warningIcon).toBeInTheDocument()
+
+            expect(screen.getByText(errorMsg)).toBeInTheDocument()
         })
 
         it('should show phone status badge when agent is on phone', () => {
@@ -167,8 +196,9 @@ describe('AgentAvailabilityCell', () => {
                     updated_datetime: '2024-01-01T00:00:00Z',
                 },
                 isLoading: false,
-                isError: false,
-                isPhoneError: false,
+                hasNoData: false,
+                isLoadingAny: false,
+                errorMessage: null,
             })
 
             renderComponent()

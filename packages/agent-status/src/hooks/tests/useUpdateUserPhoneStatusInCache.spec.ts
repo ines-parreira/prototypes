@@ -39,9 +39,11 @@ describe('useUpdateUserPhoneStatusInCache', () => {
         )
 
         expect(updatedData).toEqual({
-            user_id: MOCK_USER_ID,
-            phone_status: 'on-call',
-            call_activities: [],
+            data: {
+                user_id: MOCK_USER_ID,
+                phone_status: 'on-call',
+                call_activities: [],
+            },
         })
     })
 
@@ -70,9 +72,11 @@ describe('useUpdateUserPhoneStatusInCache', () => {
         }>(queryKeys.voiceUserStatus.getUserPhoneStatus(userId))
 
         expect(updatedData).toEqual({
-            user_id: userId,
-            phone_status: 'wrapping-up',
-            call_activities: [],
+            data: {
+                user_id: userId,
+                phone_status: 'wrapping-up',
+                call_activities: [],
+            },
         })
     })
 })

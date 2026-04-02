@@ -22,7 +22,10 @@ export const useUpdateUserPhoneStatusInCache = () => {
 
             client.setQueryData(
                 queryKeys.voiceUserStatus.getUserPhoneStatus(data.user_id),
-                newData,
+                // since on the other end we have select (data) => data.data,
+                // we need to wrap the data in a data object
+                // to match the expected shape
+                { data: newData },
             )
 
             return {

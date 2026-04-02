@@ -15,6 +15,7 @@ import useStatResource from 'domains/reporting/hooks/useStatResource'
 import { withDefaultLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import type DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
 import { usePerformancePageAgentAvailabilities } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentAvailabilities'
+import { usePerformancePageAgentPhoneStatuses } from 'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentPhoneStatuses'
 import LiveAgents from 'domains/reporting/pages/live/agents/LiveAgents'
 import { initialState as uiFiltersInitialState } from 'domains/reporting/state/ui/stats/filtersSlice'
 import { account } from 'fixtures/account'
@@ -66,6 +67,12 @@ jest.mock('@repo/agent-status', () => ({
         isError: false,
         error: null,
     })),
+    useListUserPhoneStatuses: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+        isError: false,
+        error: null,
+    })),
     LiveAgentsRealtimeListener: ({ userIds }: { userIds: number[] }) => (
         <div data-testid="live-agents-realtime-listener">
             LiveAgentsRealtimeListener: {userIds.join(',')}
@@ -76,6 +83,12 @@ jest.mock(
     'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentAvailabilities',
     () => ({
         usePerformancePageAgentAvailabilities: jest.fn(),
+    }),
+)
+jest.mock(
+    'domains/reporting/pages/live/agents/hooks/usePerformancePageAgentPhoneStatuses',
+    () => ({
+        usePerformancePageAgentPhoneStatuses: jest.fn(),
     }),
 )
 jest.spyOn(Date, 'now').mockImplementation(() => 1487076708000)
@@ -91,6 +104,9 @@ const useStatResourceMock = useStatResource as jest.MockedFunction<
 const useFlagMock = assumeMock(useFlag)
 const usePerformancePageAgentAvailabilitiesMock = assumeMock(
     usePerformancePageAgentAvailabilities,
+)
+const usePerformancePageAgentPhoneStatusesMock = assumeMock(
+    usePerformancePageAgentPhoneStatuses,
 )
 
 describe('LiveAgents', () => {
@@ -133,6 +149,12 @@ describe('LiveAgents', () => {
             isError: false,
             error: null,
         } as any)
+        usePerformancePageAgentPhoneStatusesMock.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isError: false,
+            error: null,
+        } as ReturnType<typeof usePerformancePageAgentPhoneStatuses>)
     })
 
     it('should render the filters and stats when stats filters are defined', () => {
@@ -332,5 +354,39 @@ describe('LiveAgents', () => {
 
         const listener = screen.getByTestId('live-agents-realtime-listener')
         expect(listener).toHaveTextContent('LiveAgentsRealtimeListener: 1')
+    })
+
+    it('should call usePerformancePageAgentPhoneStatuses with enabled=true when feature flag is enabled', () => {
+        useFlagMock.mockReturnValue(true)
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        expect(usePerformancePageAgentPhoneStatusesMock).toHaveBeenCalledWith({
+            enabled: true,
+        })
+    })
+
+    it('should call usePerformancePageAgentPhoneStatuses with enabled=false when feature flag is disabled', () => {
+        useFlagMock.mockReturnValue(false)
+        useStatResourceMock.mockImplementation(() => {
+            return [userPerformanceOverview, false, _noop]
+        })
+
+        renderWithRouter(
+            <Provider store={mockStore(defaultState)}>
+                <LiveAgents />
+            </Provider>,
+        )
+
+        expect(usePerformancePageAgentPhoneStatusesMock).toHaveBeenCalledWith({
+            enabled: false,
+        })
     })
 })
