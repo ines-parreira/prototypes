@@ -16,8 +16,10 @@ import { getMoneySymbol } from '@repo/utils'
 
 import { Box, OverlayContent } from '@gorgias/axiom'
 
+import type { OrderRefund, OrderReturn } from '../../../../types'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { OrderActions } from '../OrderActions'
+import { isRefundedStatus } from '../orderStatusUtils'
 import { BillingAddressSection } from '../sections/BillingAddressSection'
 import { OrderDetailsSection } from '../sections/OrderDetailsSection'
 import { OrderLineItemsSection } from '../sections/OrderLineItemsSection'
@@ -42,8 +44,15 @@ export type OrderData = {
     currency?: string
     total_price?: string
     subtotal_price?: string
+    total_line_items_price?: string
     total_tax?: string
+    total_discounts?: string
     total_shipping_price?: string
+    total_shipping_price_set?: {
+        shop_money?: { amount: string; currency_code: string }
+        presentment_money?: { amount: string; currency_code: string }
+    } | null
+    current_total_price?: string
     tags?: string
     note?: string
     created_at?: string
@@ -68,6 +77,8 @@ export type OrderData = {
     discount_codes?: Array<{ code: string; amount: string; type: string }>
     shipping_lines?: Array<{ code?: string; [key: string]: unknown }> | null
     metafields?: FullShopifyMetafield[]
+    refunds?: OrderRefund[]
+    returns?: OrderReturn[]
 }
 
 type Props<T extends OrderData = OrderData> = {
@@ -133,9 +144,7 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
 
     const { preferences } = useOrderFieldPreferences()
 
-    const isRefunded = ['refunded', 'partially_refunded', 'voided'].includes(
-        order.financial_status,
-    )
+    const isRefunded = isRefundedStatus(order.financial_status)
     const isCancelled = !!order.cancelled_at
     const lineItemsVisible =
         preferences.sections.lineItems?.sectionVisible !== false
@@ -186,10 +195,19 @@ export function OrderSidePanelContent<T extends OrderData = OrderData>({
                         lineItems={order.line_items ?? []}
                         productsMap={productsMap}
                         moneySymbol={moneySymbol}
-                        subtotalPrice={order.subtotal_price}
-                        totalShippingPrice={order.total_shipping_price}
+                        subtotalPrice={
+                            order.total_line_items_price ?? order.subtotal_price
+                        }
+                        totalShippingPrice={
+                            order.total_shipping_price_set?.shop_money
+                                ?.amount ?? order.total_shipping_price
+                        }
+                        totalDiscounts={order.total_discounts}
                         totalTax={order.total_tax}
                         totalPrice={order.total_price}
+                        currentTotalPrice={order.current_total_price}
+                        refunds={order.refunds}
+                        returns={order.returns}
                     />
                 )}
 

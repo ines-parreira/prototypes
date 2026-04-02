@@ -78,6 +78,9 @@ export type OrderDetailsData = {
     } | null
     shipping_lines?: Array<{ code?: string; [key: string]: unknown }> | null
     total_shipping_price?: string
+    total_shipping_price_set?: {
+        presentment_money?: { amount: string; currency_code: string }
+    } | null
     currency?: string
 }
 

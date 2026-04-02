@@ -69,6 +69,7 @@ describe('OrderCard', () => {
             ...mockOrder,
             line_items: [
                 {
+                    id: 1,
                     title: 'Single Product',
                     variant_id: 1,
                     variant_title: 'Single Product Variant',

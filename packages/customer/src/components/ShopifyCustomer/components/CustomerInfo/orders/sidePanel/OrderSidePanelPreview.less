@@ -73,4 +73,34 @@
         word-break: break-word;
         overflow-wrap: break-word;
     }
+
+    .strikethroughPrice {
+        text-decoration: line-through;
+        color: var(--content-neutral-secondary);
+    }
+
+    .priceAmount {
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .refundNote {
+        color: var(--content-neutral-secondary);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 180px;
+    }
+
+    .groupDivider {
+        border-top: 1px dashed var(--border-neutral-default);
+        margin-top: var(--spacing-xs);
+        padding-top: var(--spacing-sm);
+    }
+
+    .paymentDivider {
+        border-top: 1px solid var(--border-neutral-default);
+        margin-top: var(--spacing-xs);
+        padding-top: var(--spacing-xs);
+    }
 }

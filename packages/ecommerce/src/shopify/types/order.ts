@@ -1,10 +1,17 @@
 import type { FinancialStatus, FulfillmentStatus } from './status'
 
+export type MoneySet = {
+    shop_money?: { amount: string; currency_code: string }
+    presentment_money?: { amount: string; currency_code: string }
+}
+
 export type OrderLineItem = {
-    id?: number
+    id: number
     title: string
     quantity: number
     price: string
+    price_set?: MoneySet
+    current_quantity?: number
     sku?: string | null
     product_id?: number | null
     variant_id?: number | null
@@ -45,8 +52,19 @@ export type FinancialStatusValue =
     | 'partially_refunded'
     | 'refunded'
     | 'voided'
+    | 'expired'
 
-export type FulfillmentStatusValue = 'fulfilled' | 'partial' | 'restocked'
+export type FulfillmentStatusValue =
+    | 'fulfilled'
+    | 'partial'
+    | 'restocked'
+    | 'in_progress'
+    | 'on_hold'
+    | 'open'
+    | 'partially_fulfilled'
+    | 'pending_fulfillment'
+    | 'scheduled'
+    | 'unfulfilled'
 
 export type OrderCardLineItem = {
     title: string

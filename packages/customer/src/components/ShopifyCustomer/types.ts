@@ -82,14 +82,26 @@ export type ShopperEcommerceData = {
     }
 }
 
+export type MoneySet = {
+    shop_money?: { amount: string; currency_code: string }
+    presentment_money?: { amount: string; currency_code: string }
+}
+
 export type OrderLineItem = {
     id: number
     title: string
     quantity: number
     price: string
+    price_set?: MoneySet
+    current_quantity?: number
     product_id: number | null
     variant_id: number | null
     product_exists?: boolean
+    discount_allocations?: Array<{
+        amount: string
+        amount_set?: MoneySet
+        discount_application_index: number
+    }>
 }
 
 export type FinancialStatus =
@@ -100,8 +112,19 @@ export type FinancialStatus =
     | 'partially_refunded'
     | 'refunded'
     | 'voided'
+    | 'expired'
 
-export type FulfillmentStatus = 'fulfilled' | 'partial' | 'restocked'
+export type FulfillmentStatus =
+    | 'fulfilled'
+    | 'partial'
+    | 'restocked'
+    | 'in_progress'
+    | 'on_hold'
+    | 'open'
+    | 'partially_fulfilled'
+    | 'pending_fulfillment'
+    | 'scheduled'
+    | 'unfulfilled'
 
 export type OrderFulfillment = {
     tracking_url?: string | null
@@ -120,6 +143,43 @@ export type OrderShippingAddress = {
     zip?: string | null
 }
 
+export type OrderRefundLineItem = {
+    id: number
+    quantity: number
+    line_item_id: number
+    location_id?: number
+    restock_type: 'legacy_restock' | 'no_restock' | 'cancel' | 'return'
+    subtotal: number
+    total_tax: number
+}
+
+export type OrderRefund = {
+    id: number
+    order_id: number
+    created_at: string
+    note: string | null
+    processed_at: string
+    refund_line_items: OrderRefundLineItem[]
+    transactions: Array<{
+        id: number
+        amount: string
+        kind: string
+        status: string
+    }>
+}
+
+export type OrderReturnLineItem = {
+    line_item_id: number
+    quantity: number
+}
+
+export type OrderReturn = {
+    id: number
+    status?: string
+    closed_at?: string | null
+    return_line_items: OrderReturnLineItem[]
+}
+
 export type OrderData = {
     id: number | string
     order_number: number | string
@@ -127,10 +187,27 @@ export type OrderData = {
     created_at: string
     updated_at: string
     currency: string
+    presentment_currency?: string
     total_price: string
+    total_price_set?: MoneySet
     subtotal_price?: string
+    subtotal_price_set?: MoneySet
+    total_line_items_price?: string
     total_tax?: string
+    total_tax_set?: MoneySet
+    total_discounts?: string
+    total_discounts_set?: MoneySet
     total_shipping_price?: string
+    total_shipping_price_set?: MoneySet | null
+    current_total_price?: string
+    current_total_price_set?: MoneySet
+    current_subtotal_price?: string
+    current_subtotal_price_set?: MoneySet
+    current_total_tax?: string
+    current_total_tax_set?: MoneySet
+    current_total_discounts?: string
+    current_total_discounts_set?: MoneySet
+    current_shipping_price_set?: MoneySet
     financial_status: FinancialStatus
     fulfillment_status: FulfillmentStatus | null
     line_items: OrderLineItem[]
@@ -146,6 +223,8 @@ export type OrderData = {
     discount_codes?: Array<{ code: string; amount: string; type: string }>
     shipping_lines?: Array<{ code?: string; [key: string]: unknown }> | null
     metafields?: FullShopifyMetafield[]
+    refunds?: OrderRefund[]
+    returns?: OrderReturn[]
 }
 
 export type EmailMarketingConsent = {

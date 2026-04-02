@@ -8,6 +8,7 @@ export type {
     OrderCardProduct,
     OrderData,
     OrderImage,
+    MoneySet,
     OrderLineItem,
     OrderProduct,
     ShopifyProductData,

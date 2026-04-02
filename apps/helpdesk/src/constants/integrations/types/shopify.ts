@@ -189,6 +189,7 @@ export type Properties = {
 }
 
 export type LineItem = {
+    id: number
     variant_id: Maybe<number>
     product_id: Maybe<number>
     title: string
