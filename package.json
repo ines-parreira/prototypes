@@ -8,6 +8,7 @@
     "private": true,
     "scripts": {
         "ai:rulesync": "rulesync install --frozen && rulesync generate",
+        "ai:rulesync:update": "rulesync install --update && rulesync generate",
         "build": "pnpm --filter @repo/helpdesk build",
         "dev:proxy": "pnpm --filter @repo/helpdesk dev:proxy",
         "dev:local": "pnpm --filter @repo/helpdesk dev:local",

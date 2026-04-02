@@ -3,18 +3,18 @@
   "sources": {
     "git@github.com:gorgias/frontend": {
       "requestedRef": "main",
-      "resolvedRef": "914e10760ef11648539672eeeeb26ad7b85cfc9d",
-      "resolvedAt": "2026-03-13T11:44:43.696Z",
+      "resolvedRef": "d2880df9c70caadd882eb875a5a61fc0cea7b06b",
+      "resolvedAt": "2026-04-02T07:01:27.437Z",
       "skills": {
         "axiom": {
-          "integrity": "sha256-fd2385d3a5df39faff43ada0be8fbcc2b5c4da126199e36305a4489998d30348"
+          "integrity": "sha256-2c0845c0ac2629d48fb539765892603e4591c74f0e88fda5fbab28c2d687c611"
         }
       }
     },
     "git@github.com:gorgias/rest-api-sdk": {
       "requestedRef": "main",
-      "resolvedRef": "09a3af2f46635c47f665debcbec6be75f1f74ad0",
-      "resolvedAt": "2026-03-13T11:44:50.034Z",
+      "resolvedRef": "5092af027f0798af7172a0295d1b935370f4f156",
+      "resolvedAt": "2026-04-02T07:01:33.915Z",
       "skills": {
         "rest-api-sdk": {
           "integrity": "sha256-2479e831b8297ce4c877bd10c128f1c0f7b2ccbd008b07be49cb934611c6f6c2"
