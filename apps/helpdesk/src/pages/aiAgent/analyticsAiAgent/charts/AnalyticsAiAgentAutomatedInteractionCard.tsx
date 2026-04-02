@@ -1,55 +1,24 @@
 import { TrendCard } from '@repo/reporting'
 
-import { useAiAgentTrendCardDrillDown } from 'domains/reporting/hooks/drill-down/useAiAgentTrendCardDrillDown'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
+import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
-import { ChartsActionMenu } from 'domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { formatPreviousPeriod } from 'pages/aiAgent/analyticsOverview/utils/formatPreviousPeriod'
-
-import { useAiAgentAutomatedInteractionsMetric } from '../hooks/useAiAgentAutomatedInteractionsMetric'
+import { useAiAgentAutomatedInteractionsMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAutomatedInteractionsMetric'
 
 export const AnalyticsAiAgentAutomatedInteractionsCard = ({
     chartId,
     dashboard,
+    chartConfig,
 }: DashboardChartProps) => {
-    const { cleanStatsFilters } = useStatsFilters()
-    const trend = useAiAgentAutomatedInteractionsMetric()
+    const trendCardProps = useReportingTrendCardProps({
+        useTrend: useAiAgentAutomatedInteractionsMetric,
+        chartConfig: chartConfig!,
+        chartId,
+        isAiAgentTrendCard: true,
+        dashboard,
+        drillDownMetricName:
+            AiAgentDrillDownMetricName.AutomatedInteractionsCard,
+    })
 
-    const trendTooltipData = formatPreviousPeriod(cleanStatsFilters?.period)
-
-    const drillDown = useAiAgentTrendCardDrillDown(
-        {
-            metricName: AiAgentDrillDownMetricName.AutomatedInteractionsCard,
-            title: 'Automated interactions',
-        },
-        trend.data?.value,
-    )
-
-    return (
-        <TrendCard
-            trend={trend}
-            metricFormat="decimal"
-            interpretAs="more-is-better"
-            isLoading={trend.isFetching}
-            withBorder
-            withFixedWidth={false}
-            hint={{
-                title: 'Automated interactions',
-                caption:
-                    'The number of fully automated interactions solved without any human agent intervention.',
-            }}
-            trendBadgeTooltipData={{ period: trendTooltipData }}
-            drillDown={drillDown}
-            actionMenu={
-                chartId ? (
-                    <ChartsActionMenu
-                        chartId={chartId}
-                        dashboard={dashboard}
-                        chartName={trend.data?.label}
-                    />
-                ) : undefined
-            }
-        />
-    )
+    return <TrendCard {...trendCardProps} />
 }

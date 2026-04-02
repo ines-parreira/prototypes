@@ -14,6 +14,7 @@ import { AnalyticsAiAgentAllAgentsCsatCard } from 'pages/aiAgent/analyticsAiAgen
 import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
 import { AnalyticsAiAgentAllAgentsSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsSuccessRateCard'
+import { AnalyticsAiAgentAutomatedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomatedInteractionCard'
 import { AnalyticsAiAgentAutomationRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAutomationRateCard'
 import { AnalyticsAiAgentAverageDiscountAmountCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageDiscountAmountCard'
 import { AnalyticsAiAgentAverageOrderValueCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAverageOrderValueCard'
@@ -31,18 +32,23 @@ import { AnalyticsAiAgentDiscountUsageCard } from 'pages/aiAgent/analyticsAiAgen
 import { AnalyticsAiAgentMedianPurchaseTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentMedianPurchaseTimeCard'
 import { AnalyticsAiAgentOrdersInfluencedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentOrdersInfluencedCard'
 import { AnalyticsAiAgentProductRecommendationsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentProductRecommendationsCard'
+import { AnalyticsAiAgentResolvedInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentResolvedInteractionsCard'
+import { AnalyticsAiAgentRevenuePerInteractionCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentRevenuePerInteractionCard'
 import { AnalyticsAiAgentSalesHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSalesHandoverInteractionsCard'
 import { AnalyticsAiAgentSuccessRateSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSuccessRateSalesCard'
 import { AnalyticsAiAgentSupportAgentCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentCsatCard'
 import { AnalyticsAiAgentSupportAgentSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportAgentSuccessRateCard'
 import { AnalyticsAiAgentSupportDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
+import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportInteractionsCard'
+import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { AnalyticsAiAgentTotalSalesCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTotalSalesCard'
 import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentZeroTouchTicketsCard'
 import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts//AnalyticsOverviewAutomationRateCard'
 import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
 import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAverageCsatCard'
+import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
 import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewTimeSavedCard'
@@ -571,6 +577,84 @@ describe('Analytics Dynamic Trend Cards', () => {
                 interpretAs: 'more-is-better',
                 value: 12.5,
                 prevValue: 10,
+            },
+        },
+        {
+            name: 'AnalyticsOverviewCostSavedCard',
+            Component: AnalyticsOverviewCostSavedCard,
+            config: {
+                label: 'Cost saved',
+                description:
+                    'The estimated amount saved by automating interactions that would have otherwise been handled by agents, based on Helpdesk ticket cost plus the benchmark agent cost of $3.10 per ticket.',
+                metricFormat: 'currency-precision-1' as const,
+                value: 1234.5,
+                prevValue: 1000,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentAutomatedInteractionsCard',
+            Component: AnalyticsAiAgentAutomatedInteractionsCard,
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.AutomatedInteractionsCard,
+            config: {
+                label: 'Automated interactions',
+                description:
+                    'The number of fully automated interactions solved without any human agent intervention.',
+                metricFormat: 'decimal' as const,
+                value: 4800,
+                prevValue: 4600,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentTimeSavedCard',
+            Component: AnalyticsAiAgentTimeSavedCard,
+            config: {
+                label: 'Time saved by agents',
+                description:
+                    'The time agent would have spent resolving customer inquiries without AI Agent.',
+                metricFormat: 'duration' as const,
+                value: 19800,
+                prevValue: 19400,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentResolvedInteractionsCard',
+            Component: AnalyticsAiAgentResolvedInteractionsCard,
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.ResolvedInteractionsCard,
+            config: {
+                label: 'Automated interactions',
+                description:
+                    'The number of interactions handled by Shopping Assistant in which the customer left without asking to talk to a human agent.',
+                metricFormat: 'decimal' as const,
+                value: 2400,
+                prevValue: 2200,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentRevenuePerInteractionCard',
+            Component: AnalyticsAiAgentRevenuePerInteractionCard,
+            config: {
+                label: 'Total sale per interaction',
+                description:
+                    'The average total sale generated from each Shopping Assistant interaction.',
+                metricFormat: 'currency-precision-1' as const,
+                value: 42.5,
+                prevValue: 38.0,
+            },
+        },
+        {
+            name: 'AnalyticsAiAgentSupportInteractionsCard',
+            Component: AnalyticsAiAgentSupportInteractionsCard,
+            drillDownMetricName:
+                AiAgentDrillDownMetricName.SupportInteractionsCard,
+            config: {
+                label: 'Support tickets',
+                description:
+                    'The number of fully automated interactions by AI Agent Support skills without human agent intervention.',
+                metricFormat: 'decimal' as const,
+                value: 1800,
+                prevValue: 1600,
             },
         },
         {
