@@ -6,9 +6,22 @@ import {
     mockGetTicketHandler,
     mockTicket,
     mockTicketMessage,
+    mockTicketMessageSource,
+    mockTicketMessageSourceAddress,
+    mockTicketMessageUserOrCustomer,
 } from '@gorgias/helpdesk-mocks'
 
-import type { TicketThreadMessageItem } from '../../../hooks/messages/types'
+import {
+    AI_AGENT_BOT_EMAILS,
+    AI_AGENT_DRAFT_MESSAGE_TAG,
+    AI_AGENT_TRIAL_MESSAGE_TAG,
+} from '../../../hooks/messages/constants'
+import type {
+    TicketThreadGroupedMessagesItem,
+    TicketThreadMessageItem,
+    TicketThreadRegularMessageItem,
+    TicketThreadSingleMessageItem,
+} from '../../../hooks/messages/types'
 import { useTicketThreadDateTimeFormat } from '../../../hooks/shared/useTicketThreadDateTimeFormat'
 import { TicketThreadItemTag } from '../../../hooks/types'
 import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
@@ -42,12 +55,167 @@ vi.mock('../../../hooks/shared/useTicketThreadDateTimeFormat', () => ({
     useTicketThreadDateTimeFormat: vi.fn(),
 }))
 
+type SingleMessageTag = TicketThreadSingleMessageItem['_tag']
+type ItemForTag<TTag extends SingleMessageTag> = Extract<
+    TicketThreadSingleMessageItem,
+    { _tag: TTag }
+>
+type RegularMessageData = TicketThreadRegularMessageItem['data']
+
+const HELLO_MESSAGE_TEXT = 'hello'
+const MESSAGE_DATETIME = '2024-03-21T11:00:00Z'
+
 const mockUseTicketThreadDateTimeFormat = vi.mocked(
     useTicketThreadDateTimeFormat,
 )
-
 const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
 const renderAiAgentReasoning = vi.fn(() => <div>AiAgentReasoningSlot</div>)
+
+const aliceSender: RegularMessageData['sender'] = {
+    ...mockTicketMessageUserOrCustomer({
+        id: 1,
+        name: 'Alice',
+        email: 'alice@example.com',
+        meta: null,
+    }),
+    id: 1,
+    name: 'Alice',
+    email: 'alice@example.com',
+    meta: null,
+}
+
+const aiAgentSender: ItemForTag<
+    typeof TicketThreadItemTag.Messages.AiAgentMessage
+>['data']['sender'] = {
+    ...mockTicketMessageUserOrCustomer({
+        id: 2,
+        name: 'AI Agent',
+        email: AI_AGENT_BOT_EMAILS[0],
+        meta: null,
+    }),
+    id: 2,
+    name: 'AI Agent',
+    email: AI_AGENT_BOT_EMAILS[0],
+    meta: null,
+}
+
+const facebookCommentSource: ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaFacebookComment
+>['data']['source'] = {
+    ...mockTicketMessageSource({
+        type: 'facebook-comment',
+    }),
+    type: 'facebook-comment',
+}
+
+const facebookPostSource: ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaFacebookPost
+>['data']['source'] = {
+    ...mockTicketMessageSource({
+        type: 'facebook-post',
+    }),
+    type: 'facebook-post',
+}
+
+const facebookMessageSource: ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaFacebookMessage
+>['data']['source'] = {
+    ...mockTicketMessageSource({
+        type: 'facebook-message',
+    }),
+    type: 'facebook-message',
+}
+
+const instagramCommentSource: ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaInstagramComment
+>['data']['source'] = {
+    ...mockTicketMessageSource({
+        type: 'instagram-comment',
+    }),
+    type: 'instagram-comment',
+}
+
+const instagramDirectMessageSource: ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage
+>['data']['source'] = {
+    ...mockTicketMessageSource({
+        type: 'instagram-direct-message',
+    }),
+    type: 'instagram-direct-message',
+    from: {
+        ...mockTicketMessageSourceAddress({
+            name: 'Alice',
+            address: null,
+        }),
+        name: 'Alice',
+        address: null,
+    },
+    to: [
+        {
+            ...mockTicketMessageSourceAddress({
+                name: 'Gorgias',
+                address: null,
+            }),
+            name: 'Gorgias',
+            address: null,
+        },
+    ],
+}
+
+const instagramMediaSource: ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaInstagramMedia
+>['data']['source'] = {
+    ...mockTicketMessageSource({
+        type: 'instagram-media',
+    }),
+    type: 'instagram-media',
+    from: {
+        ...mockTicketMessageSourceAddress({
+            name: 'Alice',
+            address: null,
+        }),
+        name: 'Alice',
+        address: null,
+    },
+    to: [
+        {
+            ...mockTicketMessageSourceAddress({
+                name: 'Gorgias',
+                address: null,
+            }),
+            name: 'Gorgias',
+            address: null,
+        },
+    ],
+    extra: null,
+}
+
+const twitterTweetSource: ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaTwitterTweet
+>['data']['source'] = {
+    ...mockTicketMessageSource({
+        type: 'twitter-tweet',
+    }),
+    type: 'twitter-tweet',
+}
+
+const twitterDirectMessageSource: ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage
+>['data']['source'] = {
+    ...mockTicketMessageSource({
+        type: 'twitter-direct-message',
+    }),
+    type: 'twitter-direct-message',
+}
+
+const whatsappSource: ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage
+>['data']['source'] = {
+    ...mockTicketMessageSource({
+        type: 'whatsapp-message',
+    }),
+    type: 'whatsapp-message',
+}
 
 function createLegacyBridgeValue(
     overrides: Partial<LegacyBridgeContextType> = {},
@@ -73,6 +241,452 @@ function createLegacyBridgeValue(
         renderAiAgentReasoning: undefined,
         ...overrides,
     }
+}
+
+function createMessageData(
+    overrides: Partial<RegularMessageData> = {},
+): RegularMessageData {
+    return {
+        ...mockTicketMessage({
+            id: 1,
+            body_html: null,
+            stripped_html: null,
+            stripped_text: HELLO_MESSAGE_TEXT,
+            body_text: HELLO_MESSAGE_TEXT,
+            ...overrides,
+        }),
+        id: overrides.id ?? 1,
+        body_html: overrides.body_html ?? null,
+        stripped_html: overrides.stripped_html ?? null,
+        stripped_text: overrides.stripped_text ?? HELLO_MESSAGE_TEXT,
+        body_text: overrides.body_text ?? HELLO_MESSAGE_TEXT,
+        channel: overrides.channel ?? 'email',
+        from_agent: overrides.from_agent ?? false,
+        via: overrides.via ?? 'email',
+    }
+}
+
+function createGroupedMessagesItem(
+    data: TicketThreadGroupedMessagesItem['data'],
+): TicketThreadGroupedMessagesItem {
+    return {
+        _tag: TicketThreadItemTag.Messages.GroupedMessages,
+        data,
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createMessageItem(
+    overrides: Partial<RegularMessageData> = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.Message> {
+    return {
+        _tag: TicketThreadItemTag.Messages.Message,
+        data: createMessageData(overrides),
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createInternalNoteItem(
+    overrides: Partial<
+        ItemForTag<typeof TicketThreadItemTag.Messages.InternalNote>['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.InternalNote> {
+    return {
+        _tag: TicketThreadItemTag.Messages.InternalNote,
+        data: {
+            ...createMessageData({
+                public: false,
+            }),
+            ...overrides,
+            public: false,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createAiAgentMessageItem(
+    overrides: Partial<
+        ItemForTag<typeof TicketThreadItemTag.Messages.AiAgentMessage>['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.AiAgentMessage> {
+    const sender = overrides.sender ?? aiAgentSender
+
+    return {
+        _tag: TicketThreadItemTag.Messages.AiAgentMessage,
+        data: {
+            ...createMessageData({
+                sender,
+            }),
+            ...overrides,
+            sender,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createAiAgentInternalNoteItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.AiAgentInternalNote
+        >['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.AiAgentInternalNote> {
+    const sender = overrides.sender ?? aiAgentSender
+
+    return {
+        _tag: TicketThreadItemTag.Messages.AiAgentInternalNote,
+        data: {
+            ...createMessageData({
+                sender,
+                public: false,
+            }),
+            ...overrides,
+            sender,
+            public: false,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createAiAgentDraftMessageItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.AiAgentDraftMessage
+        >['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.AiAgentDraftMessage> {
+    const sender = overrides.sender ?? aiAgentSender
+    const bodyHtml =
+        overrides.body_html ?? `<div ${AI_AGENT_DRAFT_MESSAGE_TAG}></div>`
+
+    return {
+        _tag: TicketThreadItemTag.Messages.AiAgentDraftMessage,
+        data: {
+            ...createMessageData({
+                sender,
+                body_html: bodyHtml,
+            }),
+            ...overrides,
+            sender,
+            body_html: bodyHtml,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createAiAgentTrialMessageItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.AiAgentTrialMessage
+        >['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.AiAgentTrialMessage> {
+    const sender = overrides.sender ?? aiAgentSender
+    const bodyHtml =
+        overrides.body_html ?? `<div ${AI_AGENT_TRIAL_MESSAGE_TAG}></div>`
+
+    return {
+        _tag: TicketThreadItemTag.Messages.AiAgentTrialMessage,
+        data: {
+            ...createMessageData({
+                sender,
+                body_html: bodyHtml,
+            }),
+            ...overrides,
+            sender,
+            body_html: bodyHtml,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createFacebookCommentItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaFacebookComment
+        >['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.SocialMediaFacebookComment> {
+    const source = overrides.source ?? facebookCommentSource
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaFacebookComment,
+        data: {
+            ...createMessageData({
+                source,
+            }),
+            ...overrides,
+            source,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createFacebookPostItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaFacebookPost
+        >['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.SocialMediaFacebookPost> {
+    const source = overrides.source ?? facebookPostSource
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaFacebookPost,
+        data: {
+            ...createMessageData({
+                source,
+            }),
+            ...overrides,
+            source,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createFacebookMessageItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaFacebookMessage
+        >['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.SocialMediaFacebookMessage> {
+    const source = overrides.source ?? facebookMessageSource
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaFacebookMessage,
+        data: {
+            ...createMessageData({
+                source,
+            }),
+            ...overrides,
+            source,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createInstagramCommentItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaInstagramComment
+        >['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.SocialMediaInstagramComment> {
+    const source = overrides.source ?? instagramCommentSource
+    const sender = overrides.sender ?? aliceSender
+    const fromAgent = overrides.from_agent ?? false
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaInstagramComment,
+        data: {
+            ...createMessageData({
+                source,
+                sender,
+                from_agent: fromAgent,
+            }),
+            ...overrides,
+            source,
+            sender,
+            from_agent: fromAgent,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createInstagramDirectMessageItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage
+        >['data']
+    > = {},
+): ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage
+> {
+    const source = overrides.source ?? instagramDirectMessageSource
+    const sender = overrides.sender ?? aliceSender
+    const fromAgent = overrides.from_agent ?? false
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage,
+        data: {
+            ...createMessageData({
+                source,
+                sender,
+                from_agent: fromAgent,
+            }),
+            ...overrides,
+            source,
+            sender,
+            from_agent: fromAgent,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createInstagramMediaItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaInstagramMedia
+        >['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.SocialMediaInstagramMedia> {
+    const source = overrides.source ?? instagramMediaSource
+    const sender = overrides.sender ?? aliceSender
+    const fromAgent = overrides.from_agent ?? false
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
+        data: {
+            ...createMessageData({
+                source,
+                sender,
+                from_agent: fromAgent,
+            }),
+            ...overrides,
+            source,
+            sender,
+            from_agent: fromAgent,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createInstagramStoryMentionItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention
+        >['data']
+    > = {},
+): ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention
+> {
+    const source = overrides.source ?? instagramDirectMessageSource
+    const sender = overrides.sender ?? aliceSender
+    const fromAgent = overrides.from_agent ?? false
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention,
+        data: {
+            ...createMessageData({
+                source,
+                sender,
+                from_agent: fromAgent,
+            }),
+            ...overrides,
+            source,
+            sender,
+            from_agent: fromAgent,
+            meta: { is_story_mention: true },
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createInstagramStoryReplyItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply
+        >['data']
+    > = {},
+): ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply
+> {
+    const source = overrides.source ?? instagramDirectMessageSource
+    const sender = overrides.sender ?? aliceSender
+    const fromAgent = overrides.from_agent ?? false
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply,
+        data: {
+            ...createMessageData({
+                source,
+                sender,
+                from_agent: fromAgent,
+            }),
+            ...overrides,
+            source,
+            sender,
+            from_agent: fromAgent,
+            meta: { is_story_reply: true },
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createTwitterTweetItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaTwitterTweet
+        >['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.SocialMediaTwitterTweet> {
+    const source = overrides.source ?? twitterTweetSource
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaTwitterTweet,
+        data: {
+            ...createMessageData({
+                source,
+            }),
+            ...overrides,
+            source,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createTwitterDirectMessageItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage
+        >['data']
+    > = {},
+): ItemForTag<
+    typeof TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage
+> {
+    const source = overrides.source ?? twitterDirectMessageSource
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage,
+        data: {
+            ...createMessageData({
+                source,
+            }),
+            ...overrides,
+            source,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function createWhatsAppMessageItem(
+    overrides: Partial<
+        ItemForTag<
+            typeof TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage
+        >['data']
+    > = {},
+): ItemForTag<typeof TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage> {
+    const source = overrides.source ?? whatsappSource
+    const fromAgent = overrides.from_agent ?? false
+
+    return {
+        _tag: TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage,
+        data: {
+            ...createMessageData({
+                source,
+                from_agent: fromAgent,
+            }),
+            ...overrides,
+            source,
+            from_agent: fromAgent,
+        },
+        datetime: MESSAGE_DATETIME,
+    }
+}
+
+function renderItem(item: TicketThreadMessageItem) {
+    return render(<TicketThreadMessageItemComponent item={item} />)
 }
 
 beforeEach(() => {
@@ -104,69 +718,77 @@ beforeEach(() => {
     mockUseTicketThreadLegacyBridge.mockReturnValue(createLegacyBridgeValue())
 })
 
-const messageData = mockTicketMessage({
-    id: 1,
-    body_html: null,
-    stripped_html: null,
-    stripped_text: 'hello',
-    body_text: 'hello',
-})
-
-function renderItem(item: TicketThreadMessageItem) {
-    return render(<TicketThreadMessageItemComponent item={item} />)
-}
-
 describe('TicketThreadMessageItem', () => {
-    const aiAgentMessageTags = [
-        TicketThreadItemTag.Messages.AiAgentMessage,
-        TicketThreadItemTag.Messages.AiAgentInternalNote,
-        TicketThreadItemTag.Messages.AiAgentDraftMessage,
-        TicketThreadItemTag.Messages.AiAgentTrialMessage,
-    ] as const
-
-    const messageTags = [
+    const messageItems = [
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaFacebookComment,
             label: 'Facebook comment',
+            item: createFacebookCommentItem(),
         },
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaFacebookPost,
             label: 'Facebook post',
+            item: createFacebookPostItem(),
         },
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaFacebookMessage,
             label: 'Facebook message',
+            item: createFacebookMessageItem(),
         },
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaInstagramDirectMessage,
             label: 'Instagram DM',
+            item: createInstagramDirectMessageItem(),
         },
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
             label: 'Instagram media',
+            item: createInstagramMediaItem(),
         },
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply,
             label: 'Instagram story reply',
+            item: createInstagramStoryReplyItem(),
         },
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaTwitterTweet,
             label: 'Twitter tweet',
+            item: createTwitterTweetItem(),
         },
         {
-            tag: TicketThreadItemTag.Messages.SocialMediaTwitterDirectMessage,
             label: 'Twitter DM',
+            item: createTwitterDirectMessageItem(),
         },
     ]
 
-    it.each(messageTags)('renders $label item', ({ tag }) => {
-        renderItem({
-            _tag: tag,
-            data: messageData,
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+    const aiAgentErrorBannerItems = [
+        {
+            label: TicketThreadItemTag.Messages.AiAgentMessage,
+            item: createAiAgentMessageItem({
+                failed_datetime: '2024-03-21T11:05:00Z',
+                last_sending_error: null,
+            }),
+        },
+        {
+            label: TicketThreadItemTag.Messages.AiAgentInternalNote,
+            item: createAiAgentInternalNoteItem({
+                failed_datetime: '2024-03-21T11:05:00Z',
+                last_sending_error: null,
+            }),
+        },
+        {
+            label: TicketThreadItemTag.Messages.AiAgentDraftMessage,
+            item: createAiAgentDraftMessageItem({
+                failed_datetime: '2024-03-21T11:05:00Z',
+                last_sending_error: null,
+            }),
+        },
+        {
+            label: TicketThreadItemTag.Messages.AiAgentTrialMessage,
+            item: createAiAgentTrialMessageItem({
+                failed_datetime: '2024-03-21T11:05:00Z',
+                last_sending_error: null,
+            }),
+        },
+    ]
 
-        expect(screen.getByText('hello')).toBeInTheDocument()
+    it.each(messageItems)('renders $label item', ({ item }) => {
+        renderItem(item)
+
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
     })
 
     it('renders AI agent message item', () => {
@@ -176,17 +798,15 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.AiAgentMessage,
-            data: messageData,
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        const item = createAiAgentMessageItem()
+
+        renderItem(item)
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
-        expect(screen.getByText('hello')).toBeInTheDocument()
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
         expect(screen.getByText('AiAgentReasoningSlot')).toBeInTheDocument()
         expect(renderAiAgentReasoning).toHaveBeenCalledWith({
-            message: messageData,
+            message: item.data,
         })
     })
 
@@ -197,14 +817,10 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.AiAgentInternalNote,
-            data: messageData,
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(createAiAgentInternalNoteItem())
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
-        expect(screen.getByText('hello')).toBeInTheDocument()
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
         expect(
             screen.queryByText('AiAgentReasoningSlot'),
         ).not.toBeInTheDocument()
@@ -218,14 +834,10 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.AiAgentDraftMessage,
-            data: messageData,
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(createAiAgentDraftMessageItem())
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
-        expect(screen.getByText('hello')).toBeInTheDocument()
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
         expect(
             screen.queryByText('AiAgentReasoningSlot'),
         ).not.toBeInTheDocument()
@@ -239,32 +851,20 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.AiAgentTrialMessage,
-            data: messageData,
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(createAiAgentTrialMessageItem())
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
-        expect(screen.getByText('hello')).toBeInTheDocument()
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
         expect(
             screen.queryByText('AiAgentReasoningSlot'),
         ).not.toBeInTheDocument()
         expect(renderAiAgentReasoning).not.toHaveBeenCalled()
     })
 
-    it.each(aiAgentMessageTags)(
-        'renders the error banner for %s items',
-        (tag) => {
-            renderItem({
-                _tag: tag,
-                data: {
-                    ...messageData,
-                    failed_datetime: '2024-03-21T11:05:00Z',
-                    last_sending_error: null,
-                },
-                datetime: '2024-03-21T11:00:00Z',
-            } as TicketThreadMessageItem)
+    it.each(aiAgentErrorBannerItems)(
+        'renders the error banner for $label items',
+        ({ item }) => {
+            renderItem(item)
 
             expect(
                 screen.getByText('This message was not sent.'),
@@ -276,22 +876,17 @@ describe('TicketThreadMessageItem', () => {
     )
 
     it('aligns agent messages to the right', () => {
-        const data = {
-            ...messageData,
+        const item = createMessageItem({
             channel: 'email',
             via: 'email',
             from_agent: true,
-        }
+        })
 
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.Message,
-            data,
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(item)
 
         expect(
             screen
-                .getByText(messageData.body_text!)
+                .getByText(item.data.body_text!)
                 .closest('[style*="justify-content"]'),
         ).toHaveStyle({
             justifyContent: 'flex-end',
@@ -299,22 +894,17 @@ describe('TicketThreadMessageItem', () => {
     })
 
     it('aligns customer messages to the left', () => {
-        const data = {
-            ...messageData,
+        const item = createMessageItem({
             channel: 'email',
             via: 'email',
             from_agent: false,
-        }
+        })
 
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.Message,
-            data,
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(item)
 
         expect(
             screen
-                .getByText(messageData.body_text!)
+                .getByText(item.data.body_text!)
                 .closest('[style*="justify-content"]'),
         ).toHaveStyle({
             justifyContent: 'flex-start',
@@ -322,72 +912,50 @@ describe('TicketThreadMessageItem', () => {
     })
 
     it('renders message item', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.Message,
-            data: { ...messageData, stripped_text: 'hello' },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(
+            createMessageItem({
+                stripped_text: HELLO_MESSAGE_TEXT,
+            }),
+        )
 
-        expect(screen.getByText('hello')).toBeInTheDocument()
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
     })
 
     it('renders internal note item', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.InternalNote,
-            data: { ...messageData, stripped_text: 'hello' },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(
+            createInternalNoteItem({
+                stripped_text: HELLO_MESSAGE_TEXT,
+            }),
+        )
 
-        expect(screen.getByText('hello')).toBeInTheDocument()
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
     })
 
     it('renders merged messages item', () => {
-        const mergedData = [
-            {
-                _tag: TicketThreadItemTag.Messages.Message,
-                data: messageData,
-                datetime: '2024-03-21T11:00:00Z',
-            },
-        ]
+        const mergedData = [createMessageItem()]
+        const item = createGroupedMessagesItem(mergedData)
 
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.GroupedMessages,
-            data: mergedData,
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(item)
 
         expect(screen.getByText(JSON.stringify(mergedData))).toBeInTheDocument()
     })
 
     it('renders WhatsApp message with sender name', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage,
-            data: {
-                ...messageData,
-                source: { type: 'whatsapp-message' },
-                sender: {
-                    name: 'Alice',
-                    email: 'alice@example.com',
-                    meta: null,
-                },
-                from_agent: false,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(
+            createWhatsAppMessageItem({
+                sender: aliceSender,
+            }),
+        )
 
         expect(screen.getByText('Alice')).toBeInTheDocument()
     })
 
     it('shows copy and intents buttons for inbound WhatsApp messages', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage,
-            data: {
-                ...messageData,
-                source: { type: 'whatsapp-message' },
+        renderItem(
+            createWhatsAppMessageItem({
                 from_agent: false,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+            }),
+        )
 
         expect(
             screen.getByRole('button', { name: 'Message intent' }),
@@ -398,41 +966,17 @@ describe('TicketThreadMessageItem', () => {
     })
 
     it('renders Instagram comment with sender name', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramComment,
-            data: {
-                ...messageData,
-                source: { type: 'instagram-comment' },
-                sender: {
-                    id: 1,
-                    name: 'Alice',
-                    email: 'alice@example.com',
-                    meta: null,
-                },
-                from_agent: false,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(createInstagramCommentItem())
 
         expect(screen.getByText('Alice')).toBeInTheDocument()
     })
 
     it('shows action buttons for inbound Instagram comments', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramComment,
-            data: {
-                ...messageData,
-                source: { type: 'instagram-comment' },
-                sender: {
-                    id: 1,
-                    name: 'Alice',
-                    email: 'alice@example.com',
-                    meta: null,
-                },
+        renderItem(
+            createInstagramCommentItem({
                 from_agent: false,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+            }),
+        )
 
         expect(
             screen.getByRole('radio', { name: 'Private reply' }),
@@ -446,34 +990,17 @@ describe('TicketThreadMessageItem', () => {
     })
 
     it('renders Instagram media with sender name', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
-            data: {
-                ...messageData,
-                source: { type: 'instagram-media' },
-                sender: {
-                    name: 'Alice',
-                    email: 'alice@example.com',
-                    meta: null,
-                },
-                from_agent: false,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(createInstagramMediaItem())
 
         expect(screen.getByText('Alice')).toBeInTheDocument()
     })
 
     it('shows copy and intents buttons for inbound Instagram media', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
-            data: {
-                ...messageData,
-                source: { type: 'instagram-media' },
+        renderItem(
+            createInstagramMediaItem({
                 from_agent: false,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+            }),
+        )
 
         expect(
             screen.getByRole('button', { name: 'Message intent' }),
@@ -484,15 +1011,11 @@ describe('TicketThreadMessageItem', () => {
     })
 
     it('shows only copy button for outbound Instagram media', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramMedia,
-            data: {
-                ...messageData,
-                source: { type: 'instagram-media' },
+        renderItem(
+            createInstagramMediaItem({
                 from_agent: true,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+            }),
+        )
 
         expect(
             screen.queryByRole('button', { name: 'Message intent' }),
@@ -503,21 +1026,11 @@ describe('TicketThreadMessageItem', () => {
     })
 
     it('shows only copy button for outbound Instagram comments', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramComment,
-            data: {
-                ...messageData,
-                source: { type: 'instagram-comment' },
-                sender: {
-                    id: 1,
-                    name: 'Alice',
-                    email: 'alice@example.com',
-                    meta: null,
-                },
+        renderItem(
+            createInstagramCommentItem({
                 from_agent: true,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+            }),
+        )
 
         expect(
             screen.queryByRole('radio', { name: 'Private reply' }),
@@ -528,70 +1041,29 @@ describe('TicketThreadMessageItem', () => {
     })
 
     it('renders Instagram DM with message body', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages
-                .SocialMediaInstagramDirectMessage,
-            data: {
-                ...messageData,
-                sender: {
-                    name: 'Alice',
-                    email: 'alice@example.com',
-                    meta: null,
-                },
-                from_agent: false,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(createInstagramDirectMessageItem())
 
-        expect(screen.getByText('hello')).toBeInTheDocument()
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
     })
 
     it('renders Instagram story mention', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryMention,
-            data: {
-                ...messageData,
-                sender: {
-                    name: 'Alice',
-                    email: 'alice@example.com',
-                    meta: null,
-                },
-                from_agent: false,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(createInstagramStoryMentionItem())
 
         expect(screen.getByText('Story mention')).toBeInTheDocument()
     })
 
     it('renders Instagram story reply', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaInstagramStoryReply,
-            data: {
-                ...messageData,
-                sender: {
-                    name: 'Alice',
-                    email: 'alice@example.com',
-                    meta: null,
-                },
-                from_agent: false,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+        renderItem(createInstagramStoryReplyItem())
 
         expect(screen.getByText('Story reply')).toBeInTheDocument()
     })
 
     it('shows only copy button for outbound WhatsApp messages', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Messages.SocialMediaWhatsAppMessage,
-            data: {
-                ...messageData,
-                source: { type: 'whatsapp-message' },
+        renderItem(
+            createWhatsAppMessageItem({
                 from_agent: true,
-            },
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadMessageItem)
+            }),
+        )
 
         expect(
             screen.queryByRole('button', { name: 'Message intent' }),
