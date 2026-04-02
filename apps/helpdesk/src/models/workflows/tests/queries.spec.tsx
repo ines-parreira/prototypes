@@ -1,7 +1,6 @@
 import 'tests/mockGorgiasAppsAuth'
 
 import { act, waitFor } from '@testing-library/react'
-import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import { getGorgiasWfApiClient } from 'rest_api/workflows_api/client'
@@ -25,15 +24,21 @@ import {
     useUpsertActionsApp,
 } from '../queries'
 
-const mockedServer = new MockAdapter(axios)
+let mockedServer: MockAdapter
+let workflowApiClient: Awaited<ReturnType<typeof getGorgiasWfApiClient>>
 
 describe('queries', () => {
     beforeAll(async () => {
-        await getGorgiasWfApiClient()
+        workflowApiClient = await getGorgiasWfApiClient()
+        mockedServer = new MockAdapter(workflowApiClient)
     })
 
     beforeEach(() => {
         mockedServer.reset()
+    })
+
+    afterAll(() => {
+        mockedServer.restore()
     })
 
     describe('useListActionsApps()', () => {
@@ -184,7 +189,7 @@ describe('queries', () => {
             mockedServer
                 .onPost(/auth/)
                 .reply(200, {})
-                .onGet(/\/configurations\/\w+\/executions\/\w+/)
+                .onGet(/\/configurations\/[^/]+\/executions\/[^/]+$/)
                 .reply(200, executionsResponse)
 
             const { result } = renderHookWithQueryClientProvider(() =>
@@ -213,7 +218,7 @@ describe('queries', () => {
             mockedServer
                 .onPost(/auth/)
                 .reply(200, {})
-                .onGet(/\/configurations\/\w+\/executions\/\w+/)
+                .onGet(/\/configurations\/[^/]+\/executions\/[^/]+\/logs$/)
                 .reply(200, executionLogsResponse)
 
             const { result } = renderHookWithQueryClientProvider(() =>
@@ -231,7 +236,7 @@ describe('queries', () => {
             mockedServer
                 .onPost(/auth/)
                 .reply(200, {})
-                .onGet(/\/configurations\/\w+\/executions\/\w+/)
+                .onGet(/\/configurations\/[^/]+\/executions\/[^/]+\/logs$/)
                 .reply(404)
 
             const { result } = renderHookWithQueryClientProvider(() =>
@@ -241,8 +246,8 @@ describe('queries', () => {
                 ),
             )
 
-            await waitFor(() => expect(result.current.isSuccess).toEqual(true))
-            expect(result.current.data).toEqual([])
+            await waitFor(() => expect(result.current.data).toEqual([]))
+            expect(result.current.isError).toEqual(false)
         })
     })
 

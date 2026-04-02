@@ -1,8 +1,17 @@
+import type { ComponentProps } from 'react'
+
 import { appQueryClient } from '@repo/api-resources'
 import { useFlag } from '@repo/feature-flags'
 import { userEvent } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, fireEvent, render, waitFor, within } from '@testing-library/react'
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Provider } from 'react-redux'
@@ -16,10 +25,16 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { UserRole } from 'config/types/user'
+import { LANGUAGE } from 'constants/languages'
 import { ThemeProvider } from 'core/theme'
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
+import { useStandaloneAiContext } from 'providers/standalone-ai/StandaloneAiContext'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
+import { YourProfileView } from '../components/YourProfileView'
+import * as useYourProfileFormModule from '../hooks/useYourProfileForm'
+import * as useYourProfileMutationsModule from '../hooks/useYourProfileMutations'
 import type { CurrentUser } from '../types'
 import YourProfileContainer from '../YourProfileContainer'
 
@@ -113,6 +128,11 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const mockUseFlag = useFlag as jest.Mock
 
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(),
+}))
+const mockUseStandaloneAiContext = jest.mocked(useStandaloneAiContext)
+
 jest.mock('state/notifications/actions')
 
 const mockNotify = notify as jest.MockedFunction<typeof notify>
@@ -138,12 +158,104 @@ const renderComponent = () => {
     )
 }
 
+const renderViewComponent = (
+    props: Partial<ComponentProps<typeof YourProfileView>> = {},
+) => {
+    return render(
+        <MemoryRouter>
+            <Provider store={mocksStore}>
+                <QueryClientProvider client={appQueryClient}>
+                    <ThemeProvider>
+                        <YourProfileView
+                            currentUser={mockGetCurrentUser.data}
+                            settingsPreferences={settingsPreferences as any}
+                            languagePreferences={languagePreferences as any}
+                            isGorgiasAgent={false}
+                            {...props}
+                        />
+                    </ThemeProvider>
+                </QueryClientProvider>
+            </Provider>
+        </MemoryRouter>,
+    )
+}
+
+type MockProfileFormState = ReturnType<
+    typeof useYourProfileFormModule.useYourProfileForm
+>
+type MockProfileFormValues = MockProfileFormState['formValues']
+type MockProfileBaseFormValues = Omit<MockProfileFormValues, 'preferences'>
+type MockProfilePreferences = MockProfileFormValues['preferences']
+
+const createBaseProfileFormValues = (): MockProfileBaseFormValues => ({
+    id: mockGetCurrentUser.data.id,
+    name: mockGetCurrentUser.data.name ?? '',
+    email: mockGetCurrentUser.data.email ?? '',
+    bio: mockGetCurrentUser.data.bio ?? '',
+    timezone: (mockGetCurrentUser.data.timezone ??
+        'UTC') as MockProfileFormValues['timezone'],
+    language: (mockGetCurrentUser.data.language ??
+        LANGUAGE.EN_US) as MockProfileFormValues['language'],
+    meta: {
+        profile_picture_url: null,
+    },
+    password_confirmation: '',
+})
+
+const createBaseProfilePreferences = (): MockProfilePreferences => ({
+    available: settingsPreferences.data.available,
+    date_format: settingsPreferences.data
+        .date_format as MockProfilePreferences['date_format'],
+    time_format: settingsPreferences.data
+        .time_format as MockProfilePreferences['time_format'],
+    prefill_best_macro: settingsPreferences.data.prefill_best_macro,
+    show_macros: settingsPreferences.data.show_macros,
+    show_macros_suggestions: settingsPreferences.data.show_macros_suggestions,
+    primary: 'en',
+    proficient: [],
+    enabled: false,
+    forward_calls: false,
+    forwarding_phone_number: '',
+    forward_when_offline: false,
+    hide_tips: false,
+    macros_default_to_search_popover: false,
+})
+
+const createMockProfileFormState = (
+    overrides: Partial<MockProfileFormState> = {},
+): MockProfileFormState => ({
+    isFormDirty: false,
+    setIsFormDirty: jest.fn(),
+    isLoading: false,
+    setIsLoading: jest.fn(),
+    formValues: {
+        ...createBaseProfileFormValues(),
+        preferences: createBaseProfilePreferences(),
+    },
+    setFormValues: jest.fn(),
+    defaultFormValues: {
+        ...createBaseProfileFormValues(),
+        preferences: createBaseProfilePreferences(),
+    },
+    handleInputChange: jest.fn(),
+    handlePreferenceChange: jest.fn(),
+    handlePrimaryLanguageChange: jest.fn(),
+    handleProficientLanguagesChange: jest.fn(),
+    handleProficientLanguagesInputChange: jest.fn(),
+    proficientLanguagesOptions: [],
+    ...overrides,
+})
+
 describe('Your profile page', () => {
     const realDateNow = Date.now.bind(global.Date)
     beforeEach(() => {
         jest.clearAllMocks()
 
         global.Date.now = jest.fn(() => 1587000000000)
+        mockUseFlag.mockReturnValue(false)
+        mockUseStandaloneAiContext.mockReturnValue(
+            createMockStandaloneAiAccess(),
+        )
         Object.defineProperty(window, 'matchMedia', {
             value: jest.fn(() => {
                 return {
@@ -156,6 +268,7 @@ describe('Your profile page', () => {
 
     afterEach(() => {
         global.Date.now = realDateNow
+        jest.restoreAllMocks()
     })
 
     describe('Personal informations section', () => {
@@ -335,6 +448,151 @@ describe('Your profile page', () => {
             })
         })
 
+        it('should default macro toggles to unchecked when preferences are missing', async () => {
+            const useYourProfileFormSpy = jest
+                .spyOn(useYourProfileFormModule, 'useYourProfileForm')
+                .mockReturnValue(
+                    createMockProfileFormState({
+                        formValues: {
+                            ...createBaseProfileFormValues(),
+                            preferences: undefined as any,
+                        },
+                        defaultFormValues: {
+                            ...createBaseProfileFormValues(),
+                            preferences: undefined as any,
+                        },
+                    }) as ReturnType<
+                        typeof useYourProfileFormModule.useYourProfileForm
+                    >,
+                )
+            const useYourProfileMutationsSpy = jest
+                .spyOn(useYourProfileMutationsModule, 'useYourProfileMutations')
+                .mockReturnValue({
+                    handleLanguagePreferenceSubmit: jest.fn(),
+                    handleSettingsPreferenceSubmit: jest.fn(),
+                    handleUserInfoSubmit: jest.fn(),
+                })
+
+            renderViewComponent({
+                settingsPreferences: undefined,
+                languagePreferences: undefined,
+            })
+
+            expect(
+                await screen.findByLabelText(/Macro prediction/),
+            ).not.toBeChecked()
+            expect(screen.getByLabelText(/Macro suggestions/)).not.toBeChecked()
+            expect(
+                screen.getByLabelText(/Display macro search view by default/),
+            ).not.toBeChecked()
+
+            useYourProfileFormSpy.mockRestore()
+            useYourProfileMutationsSpy.mockRestore()
+        })
+
+        it('should call handlePreferenceChange for each macro toggle', async () => {
+            const user = userEvent.setup()
+            const handlePreferenceChange = jest.fn()
+            jest.spyOn(
+                useYourProfileFormModule,
+                'useYourProfileForm',
+            ).mockReturnValue(
+                createMockProfileFormState({
+                    handlePreferenceChange,
+                }) as ReturnType<
+                    typeof useYourProfileFormModule.useYourProfileForm
+                >,
+            )
+            jest.spyOn(
+                useYourProfileMutationsModule,
+                'useYourProfileMutations',
+            ).mockReturnValue({
+                handleLanguagePreferenceSubmit: jest.fn(),
+                handleSettingsPreferenceSubmit: jest.fn(),
+                handleUserInfoSubmit: jest.fn(),
+            })
+
+            renderViewComponent()
+
+            await user.click(await screen.findByText('Macro prediction'))
+            await user.click(screen.getByText('Macro suggestions'))
+            await user.click(
+                screen.getByText('Display macro search view by default'),
+            )
+
+            expect(handlePreferenceChange).toHaveBeenCalledWith(
+                'prefill_best_macro',
+                true,
+            )
+            expect(handlePreferenceChange).toHaveBeenCalledWith(
+                'show_macros_suggestions',
+                false,
+            )
+            expect(handlePreferenceChange).toHaveBeenCalledWith(
+                'show_macros',
+                true,
+            )
+        })
+
+        it('should update macro display preferences', async () => {
+            const user = userEvent.setup()
+            const { handler } = mockGetCurrentUserHandler(async ({ data }) =>
+                HttpResponse.json({
+                    ...data,
+                    settings: [settingsPreferences],
+                } as CurrentUser['data']),
+            )
+            const localMockUpdateCurrentUserSettings =
+                mockUpdateCurrentUserSettingsHandler()
+
+            server.use(handler, localMockUpdateCurrentUserSettings.handler)
+
+            const waitForUpdateCurrentUserSettingsRequest =
+                localMockUpdateCurrentUserSettings.waitForRequest(server)
+
+            const { getByLabelText, getByRole, getByText } = renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            const macroPredictionToggle = getByLabelText(/Macro prediction/)
+            const macroSuggestionsToggle = getByLabelText(/Macro suggestions/)
+            const showMacrosToggle = getByLabelText(
+                /Display macro search view by default/,
+            )
+
+            expect(macroPredictionToggle).not.toBeChecked()
+            expect(macroSuggestionsToggle).toBeChecked()
+            expect(showMacrosToggle).not.toBeChecked()
+
+            await user.click(getByText('Macro prediction'))
+            await user.click(getByText('Macro suggestions'))
+            await user.click(getByText('Display macro search view by default'))
+
+            expect(macroPredictionToggle).toBeChecked()
+            expect(macroSuggestionsToggle).not.toBeChecked()
+            expect(showMacrosToggle).toBeChecked()
+
+            await user.click(getByRole('button', { name: 'Save Changes' }))
+
+            await waitForUpdateCurrentUserSettingsRequest(async (request) => {
+                const body = await request.json()
+
+                expect(body).toEqual({
+                    type: settingsPreferences.type,
+                    data: expect.objectContaining({
+                        available: settingsPreferences.data.available,
+                        date_format: settingsPreferences.data.date_format,
+                        time_format: settingsPreferences.data.time_format,
+                        prefill_best_macro: true,
+                        show_macros: true,
+                        show_macros_suggestions: false,
+                    }),
+                })
+            })
+        })
+
         it('should expand to show the phone number field when enabling call forwarding', async () => {
             const { getByLabelText, getByText } = renderComponent()
 
@@ -349,6 +607,37 @@ describe('Your profile page', () => {
             await waitFor(() => {
                 expect(getByLabelText(/forwarding_phone_number/)).toBeEnabled()
             })
+        })
+
+        it('should hide macro display and call forwarding preferences for standalone AI agents', async () => {
+            mockUseStandaloneAiContext.mockReturnValue(
+                createMockStandaloneAiAccess({
+                    isStandaloneAiAgent: true,
+                }),
+            )
+
+            const { getByText, queryByLabelText, queryByText } =
+                renderComponent()
+
+            await waitFor(() => {
+                expect(getByText('Your profile')).toBeInTheDocument()
+            })
+
+            expect(getByText('Account preferences')).toBeInTheDocument()
+            expect(queryByText('Macro display')).not.toBeInTheDocument()
+            expect(
+                queryByLabelText(/Display macro search view by default/),
+            ).not.toBeInTheDocument()
+            expect(queryByLabelText(/Macro prediction/)).not.toBeInTheDocument()
+            expect(
+                queryByLabelText(/Macro suggestions/),
+            ).not.toBeInTheDocument()
+            expect(
+                queryByText('Forward calls to an external number'),
+            ).not.toBeInTheDocument()
+            expect(
+                queryByText('Enable call forwarding'),
+            ).not.toBeInTheDocument()
         })
     })
 

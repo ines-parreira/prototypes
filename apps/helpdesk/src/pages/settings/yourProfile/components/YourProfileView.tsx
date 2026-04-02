@@ -37,6 +37,7 @@ import settingsCss from 'pages/settings/settings.less'
 import DateAndTimeFormatting from 'pages/settings/yourProfile/components/DateAndTimeFormatting'
 import ThemeList from 'pages/settings/yourProfile/components/ThemeList'
 
+import { useStandaloneAiContext } from '../../../../providers/standalone-ai/StandaloneAiContext'
 import { useScrollToHash } from '../hooks/useScrollToHash'
 import { useUpdateCurrentUserProfilePicture } from '../hooks/useUpdateCurrentUserProfile'
 import { useYourProfileForm } from '../hooks/useYourProfileForm'
@@ -97,6 +98,7 @@ export function YourProfileView({
     const queryClient = useQueryClient()
     const { mutateAsync: updateCurrentUserProfilePicture } =
         useUpdateCurrentUserProfilePicture()
+    const { isStandaloneAiAgent } = useStandaloneAiContext()
 
     const {
         isFormDirty,
@@ -571,173 +573,198 @@ export function YourProfileView({
                                 </>
                             )}
 
-                            <h3
-                                className={classnames(
-                                    settingsCss.headingSubsection,
-                                    css.headings,
-                                )}
-                            >
-                                Macro display
-                            </h3>
-                            <div className={settingsCss.subsection}>
-                                <FormGroup
-                                    className={classnames(
-                                        settingsCss.inputField,
-                                        'body-regular',
-                                    )}
-                                >
-                                    <Group
-                                        orientation="vertical"
-                                        className={settingsCss.inputField}
+                            {!isStandaloneAiAgent && (
+                                <>
+                                    <h3
+                                        className={classnames(
+                                            settingsCss.headingSubsection,
+                                            css.headings,
+                                        )}
                                     >
-                                        <ToggleField
-                                            name="prefill_best_macro"
-                                            label={
-                                                <>
-                                                    <i
-                                                        className={classnames(
-                                                            'material-icons',
-                                                            settingsCss.AIIcon,
-                                                        )}
-                                                    >
-                                                        auto_awesome
-                                                    </i>
-                                                    Macro prediction
-                                                </>
-                                            }
-                                            value={
-                                                formValues.preferences
-                                                    ?.prefill_best_macro ??
-                                                false
-                                            }
-                                            onChange={(value: boolean) => {
-                                                handlePreferenceChange(
-                                                    'prefill_best_macro',
-                                                    value,
-                                                )
-                                            }}
-                                        />
-                                        <FormText
-                                            color="muted"
-                                            className={
-                                                settingsCss.macroDescription
-                                            }
+                                        Macro display
+                                    </h3>
+                                    <div className={settingsCss.subsection}>
+                                        <FormGroup
+                                            className={classnames(
+                                                settingsCss.inputField,
+                                                'body-regular',
+                                            )}
                                         >
-                                            Automatically select macros based on
-                                            previous macro usage.{' '}
-                                            <a
-                                                href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                            <Group
+                                                orientation="vertical"
+                                                className={
+                                                    settingsCss.inputField
+                                                }
                                             >
-                                                Learn more
-                                            </a>
-                                        </FormText>
-                                    </Group>
-                                    <Group
-                                        orientation="vertical"
-                                        className={settingsCss.inputField}
-                                    >
-                                        <ToggleField
-                                            name="show_macros_suggestions"
-                                            label={
-                                                <>
-                                                    <i
-                                                        className={classnames(
-                                                            'material-icons',
-                                                            settingsCss.AIIcon,
-                                                        )}
+                                                <ToggleField
+                                                    name="prefill_best_macro"
+                                                    label={
+                                                        <>
+                                                            <i
+                                                                className={classnames(
+                                                                    'material-icons',
+                                                                    settingsCss.AIIcon,
+                                                                )}
+                                                            >
+                                                                auto_awesome
+                                                            </i>
+                                                            Macro prediction
+                                                        </>
+                                                    }
+                                                    value={
+                                                        formValues.preferences
+                                                            ?.prefill_best_macro ??
+                                                        false
+                                                    }
+                                                    onChange={(
+                                                        value: boolean,
+                                                    ) => {
+                                                        handlePreferenceChange(
+                                                            'prefill_best_macro',
+                                                            value,
+                                                        )
+                                                    }}
+                                                />
+                                                <FormText
+                                                    color="muted"
+                                                    className={
+                                                        settingsCss.macroDescription
+                                                    }
+                                                >
+                                                    Automatically select macros
+                                                    based on previous macro
+                                                    usage.{' '}
+                                                    <a
+                                                        href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
                                                     >
-                                                        auto_awesome
-                                                    </i>
-                                                    Macro suggestions
-                                                </>
-                                            }
-                                            value={
-                                                formValues.preferences
-                                                    ?.show_macros_suggestions ??
-                                                false
-                                            }
-                                            onChange={(value: boolean) => {
-                                                handlePreferenceChange(
-                                                    'show_macros_suggestions',
-                                                    value,
-                                                )
-                                            }}
-                                        />
+                                                        Learn more
+                                                    </a>
+                                                </FormText>
+                                            </Group>
+                                            <Group
+                                                orientation="vertical"
+                                                className={
+                                                    settingsCss.inputField
+                                                }
+                                            >
+                                                <ToggleField
+                                                    name="show_macros_suggestions"
+                                                    label={
+                                                        <>
+                                                            <i
+                                                                className={classnames(
+                                                                    'material-icons',
+                                                                    settingsCss.AIIcon,
+                                                                )}
+                                                            >
+                                                                auto_awesome
+                                                            </i>
+                                                            Macro suggestions
+                                                        </>
+                                                    }
+                                                    value={
+                                                        formValues.preferences
+                                                            ?.show_macros_suggestions ??
+                                                        false
+                                                    }
+                                                    onChange={(
+                                                        value: boolean,
+                                                    ) => {
+                                                        handlePreferenceChange(
+                                                            'show_macros_suggestions',
+                                                            value,
+                                                        )
+                                                    }}
+                                                />
 
-                                        <FormText
-                                            color="muted"
-                                            className={
-                                                settingsCss.macroDescription
-                                            }
-                                        >
-                                            Display suggested macros that can be
-                                            applied to tickets with one click.{' '}
-                                            <a
-                                                href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
+                                                <FormText
+                                                    color="muted"
+                                                    className={
+                                                        settingsCss.macroDescription
+                                                    }
+                                                >
+                                                    Display suggested macros
+                                                    that can be applied to
+                                                    tickets with one click.{' '}
+                                                    <a
+                                                        href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        Learn more
+                                                    </a>
+                                                </FormText>
+                                            </Group>
+                                            <Group
+                                                orientation="vertical"
+                                                className={
+                                                    settingsCss.inputField
+                                                }
                                             >
-                                                Learn more
-                                            </a>
-                                        </FormText>
-                                    </Group>
-                                    <Group
-                                        orientation="vertical"
-                                        className={settingsCss.inputField}
-                                    >
-                                        <ToggleField
-                                            name="show_macros"
-                                            label="Display macro search view by default"
-                                            value={
-                                                formValues.preferences
-                                                    ?.show_macros ?? false
-                                            }
-                                            onChange={(value: boolean) => {
-                                                handlePreferenceChange(
-                                                    'show_macros',
-                                                    value,
-                                                )
-                                            }}
-                                        ></ToggleField>
-                                        <FormText
-                                            color="muted"
-                                            className={
-                                                settingsCss.macroDescription
-                                            }
-                                        >
-                                            Always display the macro search view
-                                            when responding to incoming emails.{' '}
-                                            <a
-                                                href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                            >
-                                                Learn more
-                                            </a>
-                                        </FormText>
-                                    </Group>
-                                </FormGroup>
-                            </div>
-                            <ForwardingCallsPreferences
-                                forwardCalls={
-                                    formValues.preferences?.forward_calls
-                                }
-                                forwardingPhoneNumber={
-                                    formValues.preferences
-                                        ?.forwarding_phone_number
-                                }
-                                forwardWhenOffline={
-                                    formValues.preferences?.forward_when_offline
-                                }
-                                setPreference={(preferenceKey, value) => {
-                                    handlePreferenceChange(
-                                        preferenceKey as keyof typeof formValues.preferences,
-                                        value,
-                                    )
-                                }}
-                            />
+                                                <ToggleField
+                                                    name="show_macros"
+                                                    label="Display macro search view by default"
+                                                    value={
+                                                        formValues.preferences
+                                                            ?.show_macros ??
+                                                        false
+                                                    }
+                                                    onChange={(
+                                                        value: boolean,
+                                                    ) => {
+                                                        handlePreferenceChange(
+                                                            'show_macros',
+                                                            value,
+                                                        )
+                                                    }}
+                                                ></ToggleField>
+                                                <FormText
+                                                    color="muted"
+                                                    className={
+                                                        settingsCss.macroDescription
+                                                    }
+                                                >
+                                                    Always display the macro
+                                                    search view when responding
+                                                    to incoming emails.{' '}
+                                                    <a
+                                                        href="https://docs.gorgias.com/en-US/macros-81846#:~:text=will%20be%20easier.-,Additional%20features,-Still%20not%20fast"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        Learn more
+                                                    </a>
+                                                </FormText>
+                                            </Group>
+                                        </FormGroup>
+                                    </div>
+                                    <ForwardingCallsPreferences
+                                        forwardCalls={
+                                            formValues.preferences
+                                                ?.forward_calls
+                                        }
+                                        forwardingPhoneNumber={
+                                            formValues.preferences
+                                                ?.forwarding_phone_number
+                                        }
+                                        forwardWhenOffline={
+                                            formValues.preferences
+                                                ?.forward_when_offline
+                                        }
+                                        setPreference={(
+                                            preferenceKey,
+                                            value,
+                                        ) => {
+                                            handlePreferenceChange(
+                                                preferenceKey as keyof typeof formValues.preferences,
+                                                value,
+                                            )
+                                        }}
+                                    />
+                                </>
+                            )}
                         </div>
                     </div>
 
