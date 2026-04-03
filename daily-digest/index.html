@@ -54,7 +54,7 @@
     .icon-btn:hover { background: #ebecef; }
 
     /* Nav items */
-    .nav-group { display: flex; flex-direction: column; gap: 8px; }
+    .nav-group { display: flex; flex-direction: column; gap: 12px; }
     .recents-group { gap: 4px; }
     .nav-item {
       display: flex; align-items: center; gap: 8px;
@@ -318,11 +318,12 @@
       display: flex; align-items: center; gap: 8px;
       font-size: 16px; font-weight: 600; color: #1e242e;
     }
+    /* Quantity badge — matches Axiom Quantity component with border="on" */
     .attention-count {
       display: inline-flex; align-items: center; justify-content: center;
-      width: 20px; height: 20px; border-radius: 50%;
-      background: rgba(0,0,0,0.06);
-      font-size: 11px; font-weight: 600; color: #5c6370;
+      min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px;
+      background: white; border: 1px solid rgba(0,0,0,0.12);
+      font-size: 11px; font-weight: 600; color: #1e242e;
     }
     .attention-card {
       background: white; border: 1px solid rgba(0,0,0,0.08);
@@ -336,16 +337,19 @@
     .attn-tag {
       display: inline-flex; align-items: center;
       padding: 2px 8px; border-radius: 20px;
-      font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
-      align-self: flex-start; margin-bottom: 2px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
+      align-self: flex-start;
     }
-    .attn-tag.alert   { background: #fff1f0; color: #d90b28; border: 1px solid #ffd0cd; }
-    .attn-tag.review  { background: #fff7ed; color: #ea580c; border: 1px solid #fed7aa; }
-    .attn-tag.opp     { background: #f0fdf4; color: #147656; border: 1px solid #bbf7d0; }
+    /* Tag colors match Axiom: Red=Alert, Orange=Review, Accent=Opportunity */
+    .attn-tag.alert   { background: #fff1f0; color: #d90b28; border: 1px solid rgba(217,11,40,0.2); }
+    .attn-tag.review  { background: #fff7ed; color: #ea580c; border: 1px solid rgba(234,88,12,0.2); }
+    .attn-tag.opp     { background: #f1ecff; color: #683fcf; border: 1px solid rgba(104,63,207,0.2); }
     .attn-title { font-size: 15px; font-weight: 600; color: #1e242e; line-height: 1.4; }
     .attn-desc  { font-size: 13px; font-weight: 400; color: #5c6370; line-height: 1.5; }
-    .attn-metrics { display: flex; gap: 24px; margin-top: 4px; }
-    .attn-metric-label { font-size: 11px; font-weight: 500; color: #5c6370; margin-bottom: 2px; }
+    .attn-metrics { display: flex; gap: 24px; margin-top: 12px; }
+    /* Each metric pair stacks label above value with 4px gap */
+    .attn-metrics > div { display: flex; flex-direction: column; gap: 4px; }
+    .attn-metric-label { font-size: 10px; font-weight: 600; color: #6e7686; line-height: 14px; }
     .attn-metric-value { font-size: 14px; font-weight: 600; color: #1e242e; display: flex; align-items: center; gap: 4px; }
     .attn-metric-delta { font-size: 11px; font-weight: 500; }
     .attn-metric-delta.down { color: #d90b28; }
@@ -360,11 +364,14 @@
       display: flex; align-items: center; justify-content: space-between;
     }
     .recents-label { font-size: 10px; font-weight: 600; color: #6e7686; }
+    /* + button hidden, appears only on hover of the Recents row */
     .recents-add-btn {
       width: 16px; height: 16px; border: none; background: transparent;
       cursor: pointer; display: flex; align-items: center; justify-content: center;
       color: #6e7686; border-radius: 4px; padding: 0;
+      opacity: 0; transition: opacity 0.15s;
     }
+    .recents-header:hover .recents-add-btn { opacity: 1; }
     .recents-add-btn:hover { background: rgba(0,0,0,0.06); color: #1e242e; }
   </style>
 </head>
@@ -398,30 +405,32 @@
         </div>
       </div>
 
-      <!-- Primary nav -->
+      <!-- Primary nav — icons from Figma node 279-906 -->
       <div class="nav-group">
         <div class="nav-item active">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9.33317 7.33325H5.33317M6.6665 9.99992H5.33317M10.6665 4.66659H5.33317M13.3332 4.53325V11.4666C13.3332 12.5867 13.3332 13.1467 13.1152 13.5746C12.9234 13.9509 12.6175 14.2569 12.2412 14.4486C11.8133 14.6666 11.2533 14.6666 10.1332 14.6666H5.8665C4.7464 14.6666 4.18635 14.6666 3.75852 14.4486C3.3822 14.2569 3.07624 13.9509 2.88449 13.5746C2.6665 13.1467 2.6665 12.5867 2.6665 11.4666V4.53325C2.6665 3.41315 2.6665 2.85309 2.88449 2.42527C3.07624 2.04895 3.3822 1.74299 3.75852 1.55124C4.18635 1.33325 4.7464 1.33325 5.8665 1.33325H10.1332C11.2533 1.33325 11.8133 1.33325 12.2412 1.55124C12.6175 1.74299 12.9234 2.04895 13.1152 2.42527C13.3332 2.85309 13.3332 3.41315 13.3332 4.53325Z" stroke="#683FCF" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <img src="https://www.figma.com/api/mcp/asset/f45ff9c4-c5a6-419c-8899-2249ef2b784a" width="16" height="16" alt="">
           <span class="nav-label">Daily digest</span>
         </div>
         <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/843200ea-ff44-46b0-96fe-8b72fa86341c" width="16" height="16" alt="">
+          <img src="https://www.figma.com/api/mcp/asset/185ac1b3-7e15-4c95-bf60-cf866433fb39" width="16" height="16" alt="">
           <span class="nav-label">Insights</span>
         </div>
         <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/3012243a-a855-48da-9d5a-0721870b7b9a" width="16" height="16" alt="">
+          <img src="https://www.figma.com/api/mcp/asset/943ffed8-1096-4f89-b072-ef5b2549167d" width="16" height="16" alt="">
           <span class="nav-label">Inbox</span>
         </div>
         <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/24cffaea-7f8e-447c-adf6-9645ead862b4" width="16" height="16" alt="">
+          <img src="https://www.figma.com/api/mcp/asset/efa11ed3-6988-4d87-b8df-bd47f174a2d8" width="16" height="16" alt="">
           <span class="nav-label">Performance</span>
         </div>
         <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/7bea5824-53f7-47a3-9697-9b479d84bac7" width="16" height="16" alt="">
+          <!-- Customers: person/user icon -->
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="#5c6370" stroke-width="1.3"/><path d="M2.5 13.5C2.5 11.015 5.015 9 8 9C10.985 9 13.5 11.015 13.5 13.5" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/></svg>
           <span class="nav-label">Customers</span>
         </div>
         <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/69fafdbb-a0fa-441e-a5c1-f08457fa1945" width="16" height="16" alt="">
+          <!-- Activity: pulse/activity icon -->
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="1,8 4,8 5.5,3.5 7.5,12.5 9.5,6 11,8 15,8" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span class="nav-label">Activity</span>
         </div>
       </div>
