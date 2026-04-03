@@ -201,6 +201,12 @@ export const TicketInfobarContainer = ({
         isEditSessionRequested: isWidgetEditSessionRequested,
     })
 
+    useEffect(() => {
+        return () => {
+            onChangeTab(TicketInfobarTab.Customer)
+        }
+    }, [onChangeTab])
+
     const tabCheckId = useRef<number>()
 
     useEffect(() => {
