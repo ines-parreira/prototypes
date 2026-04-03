@@ -8,12 +8,14 @@ type MessageErrorsProps = {
     message: TicketMessage
     ticketId: number
     isPending?: boolean
+    failedMessageError?: string
 }
 
 export function MessageErrors({
     message,
     ticketId,
     isPending,
+    failedMessageError,
 }: MessageErrorsProps) {
     const loading = isMessagePending({
         actions: message.actions,
@@ -44,7 +46,8 @@ export function MessageErrors({
                         messageErrorState.isYotpoDuplicateCommentError ? (
                             <YotpoCommentGuideLink />
                         ) : (
-                            messageErrorState.errorMessage
+                            (failedMessageError ??
+                            messageErrorState.errorMessage)
                         )
                     }
                     isCancelable

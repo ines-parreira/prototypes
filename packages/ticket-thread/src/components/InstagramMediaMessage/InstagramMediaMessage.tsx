@@ -7,7 +7,7 @@ import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActio
 import type { InstagramMentionType } from './ViewOnInstagramLink'
 import { ViewOnInstagramLink } from './ViewOnInstagramLink'
 
-import css from './InstagramMediaMessage.less'
+import css from '../SocialMessageBubble/SocialMessageBubble.less'
 
 type InstagramMediaMessageProps = {
     item: TicketThreadSocialMediaInstagramMediaItem

@@ -1,6 +1,8 @@
 import { Box, Icon, Text } from '@gorgias/axiom'
 
-import css from './InstagramMediaMessage.less'
+import { ViewOnSocialLink } from '../SocialMessageBubble/ViewOnSocialLink'
+
+import css from '../SocialMessageBubble/SocialMessageBubble.less'
 
 export type InstagramMentionType = 'story' | 'post' | 'comment'
 
@@ -33,12 +35,6 @@ export function ViewOnInstagramLink({
     }
 
     return (
-        <Box alignItems="center" gap="xxs" className={css.viewOnLink}>
-            <Icon name="external-link" size="sm" />
-            <Text size="sm">view on </Text>
-            <a href={href} target="_blank" rel="noopener noreferrer">
-                <Text size="sm">Instagram</Text>
-            </a>
-        </Box>
+        <ViewOnSocialLink href={href!} label="view on" platform="Instagram" />
     )
 }

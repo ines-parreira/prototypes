@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 
+import cn from 'classnames'
+
 import { Box } from '@gorgias/axiom'
 
 import type {
@@ -27,6 +29,8 @@ import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/Mess
 import { MessageBubble } from '../MessageBubble/MessageBubble'
 import { GoToLinkFooter } from './GoToLinkFooter'
 
+import css from './SocialMessageBubble.less'
+
 export type SocialMessageBubbleProps = {
     item: Extract<
         TicketThreadSingleMessageItem,
@@ -48,6 +52,8 @@ export type SocialMessageBubbleProps = {
     channelFrom?: string | null
     channelTo?: string | null
     children: ReactNode
+    errors?: ReactNode
+    hasFailed?: boolean
     className?: string
 }
 
@@ -59,6 +65,8 @@ export function SocialMessageBubble({
     channelFrom,
     channelTo,
     children,
+    errors,
+    hasFailed,
     className,
 }: SocialMessageBubbleProps) {
     const resolvedChannelIcon = channelIcon ?? getSocialChannelIcon(item._tag)
@@ -67,28 +75,37 @@ export function SocialMessageBubble({
 
     return (
         <MessageBubble variant={variant} className={className}>
-            <MessageHeaderContainer>
-                <Box alignItems="center" gap="xs">
-                    <MessageAvatar sender={item.data.sender} />
-                    <MessageSender sender={item.data.sender} />
-                </Box>
-                <Box alignItems="center" gap="xs">
-                    <MessageChannel
-                        channel={item.data.channel}
-                        channelIcon={resolvedChannelIcon}
-                        channelName={resolvedChannelName}
-                        createdDatetime={item.data.created_datetime}
-                        from={channelFrom}
-                        to={channelTo}
-                    />
-                    <MessageDeliveryIcon item={item} />
-                    <MessageTimestamp
-                        createdDatetime={item.data.created_datetime}
-                    />
-                </Box>
-            </MessageHeaderContainer>
-            {children}
-            {goToLink && <GoToLinkFooter goToLink={goToLink} />}
+            <Box
+                flexDirection="column"
+                gap="xs"
+                className={cn({ [css.failed]: hasFailed })}
+                width="100%"
+                display="flex"
+            >
+                <MessageHeaderContainer>
+                    <Box alignItems="center" gap="xs">
+                        <MessageAvatar sender={item.data.sender} />
+                        <MessageSender sender={item.data.sender} />
+                    </Box>
+                    <Box alignItems="center" gap="xs">
+                        <MessageChannel
+                            channel={item.data.channel}
+                            channelIcon={resolvedChannelIcon}
+                            channelName={resolvedChannelName}
+                            createdDatetime={item.data.created_datetime}
+                            from={channelFrom}
+                            to={channelTo}
+                        />
+                        <MessageDeliveryIcon item={item} />
+                        <MessageTimestamp
+                            createdDatetime={item.data.created_datetime}
+                        />
+                    </Box>
+                </MessageHeaderContainer>
+                {children}
+                {goToLink && <GoToLinkFooter goToLink={goToLink} />}
+            </Box>
+            {errors}
         </MessageBubble>
     )
 }

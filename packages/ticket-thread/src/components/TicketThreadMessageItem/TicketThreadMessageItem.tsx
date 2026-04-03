@@ -8,6 +8,7 @@ import type { TicketThreadMessageItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
 import { FacebookCommentMessageWrapper } from '../FacebookCommentMessage/FacebookCommentMessageWrapper'
+import { FacebookPostMessage } from '../FacebookPostMessage/FacebookPostMessage'
 import { InstagramCommentMessageWrapper } from '../InstagramCommentMessage/InstagramCommentMessageWrapper'
 import { InstagramDirectMessage } from '../InstagramDirectMessage/InstagramDirectMessage'
 import { InstagramMediaMessage } from '../InstagramMediaMessage/InstagramMediaMessage'
@@ -68,7 +69,7 @@ export function TicketThreadMessageItem({
             case TicketThreadItemTag.Messages.SocialMediaFacebookComment:
                 return <FacebookCommentMessageWrapper item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookPost:
-                return <UnimplementedMessage item={item} />
+                return <FacebookPostMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookMessage:
                 return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaInstagramComment:

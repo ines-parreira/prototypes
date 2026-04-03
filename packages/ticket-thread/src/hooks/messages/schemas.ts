@@ -95,7 +95,17 @@ export type SocialMediaFacebookCommentSchema = z.infer<
 export const socialMediaFacebookPostSchema = z.object({
     source: z.object({
         type: z.enum(SOCIAL_MEDIA_FACEBOOK_POST_SOURCES),
+        from: z.object({ name: z.string().nullish() }).nullish(),
+        to: z.array(z.object({ name: z.string().nullish() })).nullish(),
+        extra: z
+            .object({
+                page_id: z.string().nullish(),
+                post_id: z.string().nullish(),
+                permalink: z.string().nullish(),
+            })
+            .nullish(),
     }),
+    meta: z.record(z.unknown()).nullish(),
 })
 export type SocialMediaFacebookPostSchema = z.infer<
     typeof socialMediaFacebookPostSchema

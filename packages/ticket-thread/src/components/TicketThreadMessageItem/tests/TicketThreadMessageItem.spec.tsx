@@ -115,6 +115,7 @@ const facebookPostSource: ItemForTag<
         type: 'facebook-post',
     }),
     type: 'facebook-post',
+    extra: null,
 }
 
 const facebookMessageSource: ItemForTag<
@@ -444,6 +445,7 @@ function createFacebookPostItem(
             }),
             ...overrides,
             source,
+            meta: overrides.meta ?? null,
         },
         datetime: MESSAGE_DATETIME,
     }
