@@ -46,9 +46,10 @@ jobs:
                 --password "$STATICRYPT_PASSWORD" \
                 --remember 1 \
                 --short \
+                --template-color-primary "#000000" \
+                --template-color-secondary "#F5F5F5" \
+                --template-button "Enter" \
                 -d "$tmpdir"
-              mv "$tmpdir/$(basename $file)" "$file"
-              rm -rf "$tmpdir"
           done
 
       - name: Verify encryption
