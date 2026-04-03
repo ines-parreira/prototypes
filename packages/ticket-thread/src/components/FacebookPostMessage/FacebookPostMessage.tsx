@@ -3,7 +3,6 @@ import { replaceAttachmentURL } from '@repo/utils'
 import type { TicketThreadSocialMediaFacebookPostItem } from '../../hooks/messages/types'
 import { buildGoToLink } from '../../utils/buildGoToLink'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
-import { MessageErrors } from '../MessageBubble/components/MessageErrors'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
 import { ViewOnSocialLink } from '../SocialMessageBubble/ViewOnSocialLink'
 import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
@@ -40,16 +39,7 @@ export function FacebookPostMessage({ item }: FacebookPostMessageProps) {
             channelName="Facebook post"
             channelFrom={channelFrom}
             channelTo={channelTo}
-            hasFailed={!!item.data.failed_datetime}
-            errors={
-                item.data.ticket_id ? (
-                    <MessageErrors
-                        message={item.data}
-                        ticketId={item.data.ticket_id}
-                        failedMessageError="We couldn't deliver your direct message"
-                    />
-                ) : undefined
-            }
+            failedMessageError="We couldn't deliver your post"
         >
             {goToLink && (
                 <ViewOnSocialLink

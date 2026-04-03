@@ -113,6 +113,8 @@ export type SocialMediaFacebookPostSchema = z.infer<
 export const socialMediaFacebookMessageSchema = z.object({
     source: z.object({
         type: z.enum(SOCIAL_MEDIA_FACEBOOK_MESSAGE_SOURCES),
+        from: z.object({ name: z.string().nullish() }).nullish(),
+        to: z.array(z.object({ name: z.string().nullish() })).nullish(),
     }),
 })
 export type SocialMediaFacebookMessageSchema = z.infer<

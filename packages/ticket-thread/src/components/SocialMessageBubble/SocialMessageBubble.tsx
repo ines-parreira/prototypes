@@ -20,6 +20,7 @@ import type {
 } from '../../hooks/messages/types'
 import type { GoToLink } from '../../utils/buildGoToLink'
 import { getSocialChannelIcon } from '../../utils/getSocialChannelIcon'
+import { MessageErrors } from '../MessageBubble/components/MessageErrors'
 import { MessageHeaderContainer } from '../MessageBubble/components/MessageHeader/Layout'
 import { MessageAvatar } from '../MessageBubble/components/MessageHeader/MessageAvatar'
 import { MessageChannel } from '../MessageBubble/components/MessageHeader/MessageChannel'
@@ -52,8 +53,7 @@ export type SocialMessageBubbleProps = {
     channelFrom?: string | null
     channelTo?: string | null
     children: ReactNode
-    errors?: ReactNode
-    hasFailed?: boolean
+    failedMessageError?: string
     className?: string
 }
 
@@ -65,13 +65,13 @@ export function SocialMessageBubble({
     channelFrom,
     channelTo,
     children,
-    errors,
-    hasFailed,
+    failedMessageError,
     className,
 }: SocialMessageBubbleProps) {
     const resolvedChannelIcon = channelIcon ?? getSocialChannelIcon(item._tag)
     const resolvedChannelName = channelName ?? item.data.channel
     const variant = item.data.from_agent ? 'from-agent' : 'regular'
+    const hasFailed = !!item.data.failed_datetime
 
     return (
         <MessageBubble variant={variant} className={className}>
@@ -105,7 +105,11 @@ export function SocialMessageBubble({
                 {children}
                 {goToLink && <GoToLinkFooter goToLink={goToLink} />}
             </Box>
-            {errors}
+            <MessageErrors
+                message={item.data}
+                ticketId={item.data.ticket_id}
+                failedMessageError={failedMessageError}
+            />
         </MessageBubble>
     )
 }

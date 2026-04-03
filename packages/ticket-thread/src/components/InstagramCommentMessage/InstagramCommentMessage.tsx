@@ -48,6 +48,7 @@ export function InstagramCommentMessage({
                 channelName="Instagram comment"
                 channelFrom={channelFrom}
                 channelTo={channelTo}
+                failedMessageError="We couldn't deliver your comment"
                 className={css.hidden}
             >
                 <HiddenCommentBanner onUnhide={onUnhide} />
@@ -64,6 +65,7 @@ export function InstagramCommentMessage({
             channelName="Instagram comment"
             channelFrom={channelFrom}
             channelTo={channelTo}
+            failedMessageError="We couldn't deliver your comment"
         >
             {isAdComment && <Text size="sm">Ad</Text>}
             <MessageBody item={item} />

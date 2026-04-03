@@ -19,6 +19,7 @@ export function InstagramDirectMessage({ item }: InstagramDirectMessageProps) {
             channelName="Instagram Direct Message"
             channelFrom={channelFrom}
             channelTo={channelTo}
+            failedMessageError="We couldn't deliver your direct message"
         >
             <MessageBody item={item} />
             <TicketMessageActions message={item.data} />
