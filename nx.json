@@ -55,5 +55,10 @@
             ],
             "cache": true
         }
+    },
+    "pluginsConfig": {
+        "@nx/js": {
+            "projectsAffectedByDependencyUpdates": "auto"
+        }
     }
 }
