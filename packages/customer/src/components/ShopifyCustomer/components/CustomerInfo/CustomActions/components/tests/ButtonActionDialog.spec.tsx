@@ -1,5 +1,5 @@
 import { render } from '@repo/testing/vitest'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 
 import { INITIAL_ACTION } from '../../utils/customActionConstants'
 import type { ButtonConfig } from '../../utils/customActionTypes'
@@ -277,22 +277,43 @@ describe('ButtonActionDialog', () => {
 
     it('submits with header parameters', async () => {
         const { user } = render(<ButtonActionDialog {...defaultProps} />)
+        const dialog = screen.getByRole('dialog', {
+            name: /configure http action/i,
+        })
 
-        await user.type(screen.getByLabelText(/button title/i), 'With Headers')
-        await user.type(screen.getByLabelText(/url/i), 'https://example.com')
+        await user.type(
+            within(dialog).getByLabelText(/button title/i),
+            'With Headers',
+        )
+        await user.type(
+            within(dialog).getByLabelText(/url/i),
+            'https://example.com',
+        )
 
-        const addButtons = screen.getAllByRole('button', {
+        const addButtons = within(dialog).getAllByRole('button', {
             name: /add parameter/i,
         })
         await user.click(addButtons[0])
 
-        const keyInputs = screen.getAllByRole('textbox', { name: /key/i })
-        await user.type(keyInputs[0], 'Authorization')
+        await waitFor(() => {
+            expect(
+                within(dialog).getAllByRole('textbox', { name: /key/i }),
+            ).toHaveLength(1)
+        })
 
-        const valueInputs = screen.getAllByRole('textbox', { name: /^value$/i })
-        await user.type(valueInputs[0], 'Bearer token123')
+        const keyInput = within(dialog).getByRole('textbox', { name: /key/i })
+        const valueInput = within(dialog).getByRole('textbox', {
+            name: /^value$/i,
+        })
 
-        await user.click(screen.getByRole('button', { name: /save/i }))
+        await user.type(keyInput, 'Authorization')
+        await user.type(valueInput, 'Bearer token123')
+
+        const saveButton = within(dialog).getByRole('button', { name: /save/i })
+        await waitFor(() => {
+            expect(saveButton).toBeEnabled()
+        })
+        await user.click(saveButton)
 
         await waitFor(() => {
             expect(defaultProps.onSubmit).toHaveBeenCalledWith(

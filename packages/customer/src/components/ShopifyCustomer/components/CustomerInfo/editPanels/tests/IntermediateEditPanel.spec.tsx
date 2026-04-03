@@ -1,6 +1,6 @@
 import { render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -113,6 +113,80 @@ describe('IntermediateEditPanel', () => {
         sections: [],
     }
 
+    async function openShopifyMetricsPanel(
+        user: ReturnType<typeof render>['user'],
+    ) {
+        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
+
+        return await screen.findByRole('dialog', {
+            name: /shopify metrics/i,
+        })
+    }
+
+    async function openOrderDetailsPanel(
+        user: ReturnType<typeof render>['user'],
+    ) {
+        await user.click(
+            screen.getByRole('button', { name: /edit order details/i }),
+        )
+
+        return await screen.findByRole('dialog', {
+            name: /order details/i,
+        })
+    }
+
+    async function confirmShopifyMetricsChanges(
+        user: ReturnType<typeof render>['user'],
+    ) {
+        const dialog = await openShopifyMetricsPanel(user)
+        const switches = within(dialog).getAllByRole('switch')
+        const confirmButton = within(dialog).getByRole('button', {
+            name: /confirm/i,
+        })
+
+        await user.click(switches[0])
+
+        await waitFor(() => {
+            expect(confirmButton).toBeEnabled()
+        })
+
+        await user.click(confirmButton)
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('dialog', {
+                    name: /shopify metrics/i,
+                }),
+            ).not.toBeInTheDocument()
+        })
+    }
+
+    async function confirmOrderDetailsChanges(
+        user: ReturnType<typeof render>['user'],
+    ) {
+        const dialog = await openOrderDetailsPanel(user)
+        const switches = within(dialog).getAllByRole('switch')
+        const confirmButton = within(dialog).getByRole('button', {
+            name: /confirm/i,
+        })
+
+        await user.click(switches[0])
+
+        await waitFor(() => {
+            expect(confirmButton).toBeEnabled()
+        })
+
+        await user.click(confirmButton)
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('dialog', {
+                    name: /order details/i,
+                }),
+            ).not.toBeInTheDocument()
+        })
+    }
+
     beforeEach(() => {
         vi.clearAllMocks()
         server.use(defaultListWidgetsMock.handler)
@@ -172,23 +246,14 @@ describe('IntermediateEditPanel', () => {
     it('opens EditShopifyFieldsSidePanel when "Edit metrics" is clicked', async () => {
         const { user } = render(<IntermediateEditPanel {...defaultProps} />)
 
-        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
-
-        await waitFor(() => {
-            expect(screen.getByText('Shopify metrics')).toBeInTheDocument()
-        })
+        expect(await openShopifyMetricsPanel(user)).toBeInTheDocument()
     })
 
     it('passes preferences to EditShopifyFieldsSidePanel', async () => {
         const { user } = render(<IntermediateEditPanel {...defaultProps} />)
 
-        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
-
-        await waitFor(() => {
-            expect(screen.getByText('Shopify metrics')).toBeInTheDocument()
-        })
-
-        const toggles = screen.getAllByRole('switch')
+        const dialog = await openShopifyMetricsPanel(user)
+        const toggles = within(dialog).getAllByRole('switch')
         expect(toggles.length).toBeGreaterThan(0)
     })
 
@@ -233,15 +298,7 @@ describe('IntermediateEditPanel', () => {
     it('opens EditOrderFieldsSidePanel when "Edit order details" is clicked', async () => {
         const { user } = render(<IntermediateEditPanel {...defaultProps} />)
 
-        await user.click(
-            screen.getByRole('button', { name: /edit order details/i }),
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('heading', { name: 'Order details' }),
-            ).toBeInTheDocument()
-        })
+        expect(await openOrderDetailsPanel(user)).toBeInTheDocument()
     })
 
     it('enables Save button after confirming order field changes', async () => {
@@ -249,26 +306,7 @@ describe('IntermediateEditPanel', () => {
 
         expect(screen.getByRole('button', { name: /save/i })).toBeDisabled()
 
-        await user.click(
-            screen.getByRole('button', { name: /edit order details/i }),
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('heading', { name: 'Order details' }),
-            ).toBeInTheDocument()
-        })
-
-        const switches = screen.getAllByRole('switch')
-        await user.click(switches[0])
-
-        await waitFor(() => {
-            expect(
-                screen.getAllByRole('button', { name: /confirm/i })[0],
-            ).toBeEnabled()
-        })
-
-        await user.click(screen.getAllByRole('button', { name: /confirm/i })[0])
+        await confirmOrderDetailsChanges(user)
 
         await waitFor(() => {
             expect(screen.getByRole('button', { name: /save/i })).toBeEnabled()
@@ -278,22 +316,7 @@ describe('IntermediateEditPanel', () => {
     it('calls onSavePreferences and onClose when saving with shopify changes', async () => {
         const { user } = render(<IntermediateEditPanel {...defaultProps} />)
 
-        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
-
-        await waitFor(() => {
-            expect(screen.getByText('Shopify metrics')).toBeInTheDocument()
-        })
-
-        const switches = screen.getAllByRole('switch')
-        await user.click(switches[0])
-
-        await waitFor(() => {
-            expect(
-                screen.getAllByRole('button', { name: /confirm/i })[0],
-            ).toBeEnabled()
-        })
-
-        await user.click(screen.getAllByRole('button', { name: /confirm/i })[0])
+        await confirmShopifyMetricsChanges(user)
 
         await waitFor(() => {
             expect(screen.getByRole('button', { name: /save/i })).toBeEnabled()
@@ -311,26 +334,7 @@ describe('IntermediateEditPanel', () => {
     it('calls onSaveOrderPreferences and onClose when saving with order changes', async () => {
         const { user } = render(<IntermediateEditPanel {...defaultProps} />)
 
-        await user.click(
-            screen.getByRole('button', { name: /edit order details/i }),
-        )
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('heading', { name: 'Order details' }),
-            ).toBeInTheDocument()
-        })
-
-        const switches = screen.getAllByRole('switch')
-        await user.click(switches[0])
-
-        await waitFor(() => {
-            expect(
-                screen.getAllByRole('button', { name: /confirm/i })[0],
-            ).toBeEnabled()
-        })
-
-        await user.click(screen.getAllByRole('button', { name: /confirm/i })[0])
+        await confirmOrderDetailsChanges(user)
 
         await waitFor(() => {
             expect(screen.getByRole('button', { name: /save/i })).toBeEnabled()
@@ -348,35 +352,8 @@ describe('IntermediateEditPanel', () => {
     it('calls both save callbacks when both shopify and order changes are pending', async () => {
         const { user } = render(<IntermediateEditPanel {...defaultProps} />)
 
-        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
-        await waitFor(() => {
-            expect(screen.getByText('Shopify metrics')).toBeInTheDocument()
-        })
-        const shopifySwitches = screen.getAllByRole('switch')
-        await user.click(shopifySwitches[0])
-        await waitFor(() => {
-            expect(
-                screen.getAllByRole('button', { name: /confirm/i })[0],
-            ).toBeEnabled()
-        })
-        await user.click(screen.getAllByRole('button', { name: /confirm/i })[0])
-
-        await user.click(
-            screen.getByRole('button', { name: /edit order details/i }),
-        )
-        await waitFor(() => {
-            expect(
-                screen.getByRole('heading', { name: 'Order details' }),
-            ).toBeInTheDocument()
-        })
-        const orderSwitches = screen.getAllByRole('switch')
-        await user.click(orderSwitches[0])
-        await waitFor(() => {
-            expect(
-                screen.getAllByRole('button', { name: /confirm/i })[0],
-            ).toBeEnabled()
-        })
-        await user.click(screen.getAllByRole('button', { name: /confirm/i })[0])
+        await confirmShopifyMetricsChanges(user)
+        await confirmOrderDetailsChanges(user)
 
         await waitFor(() => {
             expect(screen.getByRole('button', { name: /save/i })).toBeEnabled()
@@ -410,18 +387,7 @@ describe('IntermediateEditPanel', () => {
             </ShopifyCustomerContext.Provider>,
         )
 
-        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
-        await waitFor(() => {
-            expect(screen.getByText('Shopify metrics')).toBeInTheDocument()
-        })
-        const switches = screen.getAllByRole('switch')
-        await user.click(switches[0])
-        await waitFor(() => {
-            expect(
-                screen.getAllByRole('button', { name: /confirm/i })[0],
-            ).toBeEnabled()
-        })
-        await user.click(screen.getAllByRole('button', { name: /confirm/i })[0])
+        await confirmShopifyMetricsChanges(user)
 
         await waitFor(() => {
             expect(screen.getByRole('button', { name: /save/i })).toBeEnabled()
