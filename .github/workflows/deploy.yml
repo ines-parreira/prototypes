@@ -33,7 +33,7 @@ jobs:
       - name: Install StatiCrypt
         run: npm install -g staticrypt
 
-      - name: Encrypt all HTML files
+      - name: Encrypt HTML files
         env:
           STATICRYPT_PASSWORD: ${{ secrets.STATICRYPT_PASSWORD }}
         run: |
