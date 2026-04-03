@@ -34,6 +34,11 @@ beforeEach(() => {
             shopifyIntegrations: [],
         },
         currentTicketRuleSuggestionData: { shouldDisplayDemoSuggestion: false },
+        onInstagramCommentPrivateReply: vi.fn(),
+        onInstagramCommentHideComment: vi.fn(),
+        onFacebookCommentPrivateReply: vi.fn(),
+        onFacebookCommentHideComment: vi.fn(),
+        onFacebookCommentLike: vi.fn(),
         legacyActions: {
             deleteTicketPendingMessage: vi.fn(),
             retrySubmitTicketMessage: vi.fn(),

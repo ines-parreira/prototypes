@@ -116,6 +116,11 @@ describe('TicketThreadLegacyBridgeProvider', () => {
                 legacyActions={legacyActions}
                 legacyState={legacyState}
                 renderAiAgentReasoning={renderAiAgentReasoning}
+                onInstagramCommentPrivateReply={() => undefined}
+                onInstagramCommentHideComment={() => undefined}
+                onFacebookCommentPrivateReply={() => undefined}
+                onFacebookCommentHideComment={() => undefined}
+                onFacebookCommentLike={() => undefined}
             >
                 <span>legacy child</span>
             </TicketThreadLegacyBridgeProvider>,

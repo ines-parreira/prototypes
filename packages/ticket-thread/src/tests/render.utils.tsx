@@ -101,6 +101,11 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
             mergedOptions.legacyActions ?? defaultOptions.legacyActions,
         legacyState: mergedOptions.legacyState ?? defaultOptions.legacyState,
         renderAiAgentReasoning: mergedOptions.renderAiAgentReasoning,
+        onInstagramCommentPrivateReply: () => undefined,
+        onInstagramCommentHideComment: () => undefined,
+        onFacebookCommentPrivateReply: () => undefined,
+        onFacebookCommentHideComment: () => undefined,
+        onFacebookCommentLike: () => undefined,
     }
 
     const result = renderPrimitive(element, {
@@ -148,6 +153,11 @@ export const renderHook = <TProps, TResult>(
             mergedOptions.legacyActions ?? defaultOptions.legacyActions,
         legacyState: mergedOptions.legacyState ?? defaultOptions.legacyState,
         renderAiAgentReasoning: mergedOptions.renderAiAgentReasoning,
+        onInstagramCommentPrivateReply: () => undefined,
+        onInstagramCommentHideComment: () => undefined,
+        onFacebookCommentPrivateReply: () => undefined,
+        onFacebookCommentHideComment: () => undefined,
+        onFacebookCommentLike: () => undefined,
     }
 
     return renderHookPrimitive(hook, {

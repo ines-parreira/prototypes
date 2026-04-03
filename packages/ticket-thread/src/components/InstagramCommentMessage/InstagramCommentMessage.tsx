@@ -7,6 +7,7 @@ import type { TicketThreadSocialMediaInstagramCommentItem } from '../../hooks/me
 import { buildGoToLink } from '../../utils/buildGoToLink'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { HiddenCommentBanner } from '../SocialMessageBubble/HiddenCommentBanner'
+import { RepliedViaLabel } from '../SocialMessageBubble/RepliedViaLabel'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
 
 import css from './InstagramCommentMessage.less'
@@ -35,6 +36,10 @@ export function InstagramCommentMessage({
     const source = item.data.source as any
     const channelFrom = source?.from?.name ?? null
     const channelTo = source?.to?.[0]?.name ?? null
+    const meta = item.data.meta as any
+    const repliedBy = meta?.replied_by as
+        | { ticket_id: number; ticket_message_id: number }
+        | undefined
 
     if (isHidden) {
         return (
@@ -62,6 +67,12 @@ export function InstagramCommentMessage({
         >
             {isAdComment && <Text size="sm">Ad</Text>}
             <MessageBody item={item} />
+            {repliedBy && (
+                <RepliedViaLabel
+                    channel="Instagram Direct Message"
+                    ticketId={repliedBy.ticket_id}
+                />
+            )}
             {actions}
         </SocialMessageBubble>
     )

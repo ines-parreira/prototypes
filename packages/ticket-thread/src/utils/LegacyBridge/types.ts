@@ -52,6 +52,33 @@ export type InstagramCommentHideCommentData = {
     shouldHide: boolean
 }
 
+export type FacebookCommentPrivateReplyData = {
+    integrationId: number | null
+    messageId: string | null
+    ticketMessageId: number
+    ticketId: number
+    senderId: number
+    commentMessage: string
+    source: unknown
+    sender: unknown
+    meta: unknown
+    messageCreatedDatetime: string
+}
+
+export type FacebookCommentHideCommentData = {
+    integrationId: number | null
+    messageId: string | null
+    ticketId: number
+    shouldHide: boolean
+}
+
+export type FacebookCommentLikeData = {
+    integrationId: number | null
+    messageId: string | null
+    ticketId: number
+    shouldLike: boolean
+}
+
 // Temporary bridge for helpdesk Redux actions.
 // Remove these once equivalent actions live in @repo/tickets or @repo/ticket-thread.
 export type LegacyBridgeActions = {
@@ -74,12 +101,17 @@ export type TicketThreadAiAgentReasoningParams = {
 export type LegacyBridgeContextType = {
     currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData
     currentTicketRuleSuggestionData: CurrentTicketRuleSuggestionData
-    onInstagramCommentPrivateReply?: (
+    onInstagramCommentPrivateReply: (
         data: InstagramCommentPrivateReplyData,
     ) => void
-    onInstagramCommentHideComment?: (
+    onInstagramCommentHideComment: (
         data: InstagramCommentHideCommentData,
     ) => void
+    onFacebookCommentPrivateReply: (
+        data: FacebookCommentPrivateReplyData,
+    ) => void
+    onFacebookCommentHideComment: (data: FacebookCommentHideCommentData) => void
+    onFacebookCommentLike: (data: FacebookCommentLikeData) => void
     legacyActions: LegacyBridgeActions
     legacyState: LegacyBridgeState
     renderAiAgentReasoning?: (

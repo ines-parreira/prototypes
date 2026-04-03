@@ -13,14 +13,15 @@ export function HiddenCommentBanner({ onUnhide }: HiddenCommentBannerProps) {
             <Icon name={'hide' as IconName} size="sm" />
             <Text size="sm">Comment hidden</Text>
             {onUnhide && (
-                <span
+                <Text
+                    size="sm"
                     role="button"
                     aria-label="Unhide comment"
                     onClick={onUnhide}
                     className={css.unhideButton}
                 >
                     Unhide comment
-                </span>
+                </Text>
             )}
         </Box>
     )

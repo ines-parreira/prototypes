@@ -26,13 +26,13 @@ function getInstagramMentionType(
 
 export function InstagramMediaMessage({ item }: InstagramMediaMessageProps) {
     const source = item.data.source
-    const channelFrom = source.from?.name ?? null
-    const channelTo = source.to?.[0]?.name ?? null
-    const permalink = source.extra?.permalink ?? null
+    const channelFrom = source?.from?.name ?? null
+    const channelTo = source?.to?.[0]?.name ?? null
+    const permalink = source?.extra?.permalink ?? null
     const fromAgent = item.data.from_agent ?? false
     const mentionType = fromAgent
         ? null
-        : getInstagramMentionType(source.type, source.extra?.media_type)
+        : getInstagramMentionType(source?.type ?? '', source?.extra?.media_type)
     const imageAttachments = item.data.attachments?.filter(
         (a) => a.content_type?.startsWith('image/') && a.url,
     )

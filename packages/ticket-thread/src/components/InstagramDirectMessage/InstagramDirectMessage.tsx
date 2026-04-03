@@ -9,8 +9,8 @@ type InstagramDirectMessageProps = {
 }
 
 export function InstagramDirectMessage({ item }: InstagramDirectMessageProps) {
-    const channelFrom = item.data.source.from?.name ?? null
-    const channelTo = item.data.source.to?.[0]?.name ?? null
+    const channelFrom = item.data.source?.from?.name ?? null
+    const channelTo = item.data.source?.to?.[0]?.name ?? null
 
     return (
         <SocialMessageBubble

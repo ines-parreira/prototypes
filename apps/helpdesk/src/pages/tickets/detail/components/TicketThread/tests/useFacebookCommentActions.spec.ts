@@ -1,0 +1,245 @@
+import { appQueryClient } from '@repo/api-resources'
+import { act, renderHook } from '@testing-library/react'
+
+import { queryKeys } from '@gorgias/helpdesk-queries'
+
+import useAppDispatch from 'hooks/useAppDispatch'
+import * as infobarActions from 'state/infobar/actions'
+
+import { useFacebookCommentActions } from '../useFacebookCommentActions'
+
+jest.mock('hooks/useAppDispatch', () => jest.fn())
+jest.mock('state/infobar/actions', () => ({
+    executeAction: jest.fn(),
+}))
+
+beforeEach(() => {
+    jest.spyOn(appQueryClient, 'invalidateQueries').mockImplementation(
+        jest.fn(),
+    )
+    jest.spyOn(appQueryClient, 'setQueryData').mockImplementation(jest.fn())
+})
+
+afterEach(() => {
+    jest.restoreAllMocks()
+})
+
+const mockDispatch = jest.fn()
+const mockPrivateReplyData = {
+    integrationId: 1,
+    messageId: 'msg-1',
+    ticketMessageId: 123,
+    ticketId: 42,
+    senderId: 456,
+    commentMessage: 'Hello',
+    source: {},
+    sender: {},
+    meta: {},
+    messageCreatedDatetime: '2024-01-01T00:00:00Z',
+}
+
+beforeEach(() => {
+    jest.mocked(useAppDispatch).mockReturnValue(mockDispatch)
+    mockDispatch.mockClear()
+    jest.mocked(infobarActions.executeAction).mockClear()
+    jest.mocked(appQueryClient.invalidateQueries).mockClear()
+    jest.mocked(appQueryClient.setQueryData).mockClear()
+})
+
+describe('useFacebookCommentActions', () => {
+    it('handlePrivateReply sets privateReplyData', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handlePrivateReply(mockPrivateReplyData)
+        })
+
+        expect(result.current.privateReplyData).toEqual(mockPrivateReplyData)
+    })
+
+    it('handlePrivateReplyToggle clears privateReplyData', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handlePrivateReply(mockPrivateReplyData)
+        })
+        act(() => {
+            result.current.handlePrivateReplyToggle()
+        })
+
+        expect(result.current.privateReplyData).toBeNull()
+    })
+
+    it('handleHideComment does not dispatch when integrationId is null', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handleHideComment({
+                integrationId: null,
+                messageId: 'msg-1',
+                ticketId: 42,
+                shouldHide: true,
+            })
+        })
+
+        expect(mockDispatch).not.toHaveBeenCalled()
+    })
+
+    it('handleHideComment dispatches facebookHideComment when shouldHide is true', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handleHideComment({
+                integrationId: 1,
+                messageId: 'msg-1',
+                ticketId: 42,
+                shouldHide: true,
+            })
+        })
+
+        expect(infobarActions.executeAction).toHaveBeenCalledWith(
+            expect.objectContaining({
+                actionName: 'facebookHideComment',
+                integrationId: 1,
+                payload: { comment_id: 'msg-1' },
+            }),
+        )
+        expect(mockDispatch).toHaveBeenCalled()
+    })
+
+    it('handleHideComment dispatches facebookUnhideComment when shouldHide is false', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handleHideComment({
+                integrationId: 1,
+                messageId: 'msg-1',
+                ticketId: 42,
+                shouldHide: false,
+            })
+        })
+
+        expect(infobarActions.executeAction).toHaveBeenCalledWith(
+            expect.objectContaining({
+                actionName: 'facebookUnhideComment',
+            }),
+        )
+    })
+
+    it('handleHideComment callback invalidates the correct ticket messages query', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handleHideComment({
+                integrationId: 1,
+                messageId: 'msg-1',
+                ticketId: 42,
+                shouldHide: true,
+            })
+        })
+
+        const { callback } = jest.mocked(infobarActions.executeAction).mock
+            .calls[0][0] as { callback: () => void }
+        callback()
+
+        expect(appQueryClient.invalidateQueries).toHaveBeenCalledWith({
+            queryKey: queryKeys.ticketMessages.listMessages({
+                ticket_id: 42,
+            }),
+        })
+    })
+
+    it('handleHideComment passes undefined comment_id when messageId is null', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handleHideComment({
+                integrationId: 1,
+                messageId: null,
+                ticketId: 42,
+                shouldHide: true,
+            })
+        })
+
+        expect(infobarActions.executeAction).toHaveBeenCalledWith(
+            expect.objectContaining({
+                payload: { comment_id: undefined },
+            }),
+        )
+    })
+
+    it('handleLike does not dispatch when integrationId is null', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handleLike({
+                integrationId: null,
+                messageId: 'msg-1',
+                ticketId: 42,
+                shouldLike: true,
+            })
+        })
+
+        expect(mockDispatch).not.toHaveBeenCalled()
+        expect(appQueryClient.setQueryData).not.toHaveBeenCalled()
+    })
+
+    it('handleLike dispatches facebookLikeComment when shouldLike is true', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handleLike({
+                integrationId: 1,
+                messageId: 'msg-1',
+                ticketId: 42,
+                shouldLike: true,
+            })
+        })
+
+        expect(infobarActions.executeAction).toHaveBeenCalledWith(
+            expect.objectContaining({
+                actionName: 'facebookLikeComment',
+                integrationId: 1,
+                payload: { comment_id: 'msg-1' },
+            }),
+        )
+        expect(mockDispatch).toHaveBeenCalled()
+    })
+
+    it('handleLike dispatches facebookUnlikeComment when shouldLike is false', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handleLike({
+                integrationId: 1,
+                messageId: 'msg-1',
+                ticketId: 42,
+                shouldLike: false,
+            })
+        })
+
+        expect(infobarActions.executeAction).toHaveBeenCalledWith(
+            expect.objectContaining({
+                actionName: 'facebookUnlikeComment',
+            }),
+        )
+    })
+
+    it('handleLike calls setQueryData with the correct query key for optimistic update', () => {
+        const { result } = renderHook(() => useFacebookCommentActions())
+
+        act(() => {
+            result.current.handleLike({
+                integrationId: 1,
+                messageId: 'msg-1',
+                ticketId: 42,
+                shouldLike: true,
+            })
+        })
+
+        expect(appQueryClient.setQueryData).toHaveBeenCalledWith(
+            queryKeys.ticketMessages.listMessages({ ticket_id: 42 }),
+            expect.any(Function),
+        )
+    })
+})

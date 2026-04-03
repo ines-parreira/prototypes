@@ -1,4 +1,19 @@
 :local {
+    .viewOnLink {
+        color: var(--content-neutral-secondary);
+
+        a {
+            display: flex;
+            align-items: center;
+            color: var(--content-accent-default);
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
     .goToLink {
         color: var(--content-neutral-secondary);
 
@@ -9,6 +24,22 @@
             &:hover {
                 text-decoration: underline;
             }
+        }
+    }
+
+    .repliedViaLabel {
+        color: var(--content-neutral-secondary);
+    }
+
+    .repliedViaLabelLink {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxxs);
+        color: var(--content-accent-default);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
         }
     }
 
@@ -26,6 +57,6 @@
     }
 
     .deletedBanner {
-        color: var(--content-neutral-secondary);
+        color: var(--content-error-default);
     }
 }

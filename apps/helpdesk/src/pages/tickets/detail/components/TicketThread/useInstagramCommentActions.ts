@@ -27,7 +27,7 @@ export function useInstagramCommentActions() {
     const handleHideComment = ({
         integrationId,
         messageId,
-        ticketId: messageTicketId,
+        ticketId,
         shouldHide,
     }: InstagramCommentHideCommentData) => {
         if (!integrationId) return
@@ -41,7 +41,7 @@ export function useInstagramCommentActions() {
                 callback: () => {
                     void appQueryClient.invalidateQueries({
                         queryKey: queryKeys.ticketMessages.listMessages({
-                            ticket_id: messageTicketId,
+                            ticket_id: ticketId,
                         }),
                     })
                 },

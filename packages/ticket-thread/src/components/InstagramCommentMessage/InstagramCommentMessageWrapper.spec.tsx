@@ -36,6 +36,9 @@ beforeEach(() => {
         currentTicketRuleSuggestionData: { shouldDisplayDemoSuggestion: false },
         onInstagramCommentPrivateReply,
         onInstagramCommentHideComment,
+        onFacebookCommentPrivateReply: vi.fn(),
+        onFacebookCommentHideComment: vi.fn(),
+        onFacebookCommentLike: vi.fn(),
         legacyActions: {
             deleteTicketPendingMessage: vi.fn(),
             retrySubmitTicketMessage: vi.fn(),
@@ -192,6 +195,28 @@ describe('InstagramCommentMessageWrapper', () => {
             ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: 'Copy message' }),
+            ).toBeInTheDocument()
+        })
+    })
+
+    describe('replied via Instagram Direct Message', () => {
+        it('shows "replied via Instagram Direct Message" label when meta.replied_by is set', () => {
+            render(
+                <InstagramCommentMessageWrapper
+                    item={makeItem({
+                        from_agent: false,
+                        meta: {
+                            replied_by: {
+                                ticket_id: 100,
+                                ticket_message_id: 200,
+                            },
+                        } as never,
+                    })}
+                />,
+            )
+
+            expect(
+                screen.getByText('replied via Instagram Direct Message'),
             ).toBeInTheDocument()
         })
     })

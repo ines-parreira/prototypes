@@ -2,6 +2,9 @@ import { LegacyBridgeContext } from './context'
 import type {
     CurrentTicketRuleSuggestionData,
     CurrentTicketShoppingAssistantData,
+    FacebookCommentHideCommentData,
+    FacebookCommentLikeData,
+    FacebookCommentPrivateReplyData,
     InstagramCommentHideCommentData,
     InstagramCommentPrivateReplyData,
     LegacyBridgeActions,
@@ -13,12 +16,17 @@ type TicketThreadLegacyBridgeProviderProps = {
     children?: React.ReactNode
     currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData
     currentTicketRuleSuggestionData?: CurrentTicketRuleSuggestionData
-    onInstagramCommentPrivateReply?: (
+    onInstagramCommentPrivateReply: (
         data: InstagramCommentPrivateReplyData,
     ) => void
-    onInstagramCommentHideComment?: (
+    onInstagramCommentHideComment: (
         data: InstagramCommentHideCommentData,
     ) => void
+    onFacebookCommentPrivateReply: (
+        data: FacebookCommentPrivateReplyData,
+    ) => void
+    onFacebookCommentHideComment: (data: FacebookCommentHideCommentData) => void
+    onFacebookCommentLike: (data: FacebookCommentLikeData) => void
     legacyActions?: LegacyBridgeActions
     legacyState?: LegacyBridgeState
     renderAiAgentReasoning?: (
@@ -48,6 +56,9 @@ export const TicketThreadLegacyBridgeProvider = ({
     currentTicketRuleSuggestionData = { shouldDisplayDemoSuggestion: true },
     onInstagramCommentPrivateReply,
     onInstagramCommentHideComment,
+    onFacebookCommentPrivateReply,
+    onFacebookCommentHideComment,
+    onFacebookCommentLike,
     legacyActions = defaultLegacyActions,
     legacyState = defaultLegacyState,
     renderAiAgentReasoning,
@@ -59,6 +70,9 @@ export const TicketThreadLegacyBridgeProvider = ({
                 currentTicketRuleSuggestionData,
                 onInstagramCommentPrivateReply,
                 onInstagramCommentHideComment,
+                onFacebookCommentPrivateReply,
+                onFacebookCommentHideComment,
+                onFacebookCommentLike,
                 legacyActions,
                 legacyState,
                 renderAiAgentReasoning,

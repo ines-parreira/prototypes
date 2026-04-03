@@ -18,7 +18,7 @@ export function InstagramCommentMessageWrapper({
     const commentBody = item.data.body_text || ''
 
     const handleHideComment = () => {
-        onInstagramCommentHideComment?.({
+        onInstagramCommentHideComment({
             integrationId: item.data.integration_id,
             messageId: item.data.message_id,
             ticketId: item.data.ticket_id,
@@ -27,7 +27,7 @@ export function InstagramCommentMessageWrapper({
     }
 
     const handlePrivateReply = () => {
-        onInstagramCommentPrivateReply?.({
+        onInstagramCommentPrivateReply({
             integrationId: item.data.integration_id,
             messageId: item.data.message_id,
             ticketMessageId: item.data.id,

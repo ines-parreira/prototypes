@@ -10,8 +10,9 @@ import useRuleSuggestionForDemos from 'pages/tickets/detail/hooks/useRuleSuggest
 import * as NewMessageActions from 'state/newMessage/actions'
 import * as TicketActions from 'state/ticket/actions'
 
-import { InstagramCommentPrivateReplyModal } from './InstagramCommentPrivateReplyModal'
+import { CommentPrivateReplyModal } from './CommentPrivateReplyModal'
 import { TicketThreadAiAgentReasoning } from './TicketThreadAiAgentReasoning'
+import { useFacebookCommentActions } from './useFacebookCommentActions'
 import { useInstagramCommentActions } from './useInstagramCommentActions'
 
 type TicketThreadLegacyBridgeProps = {
@@ -58,11 +59,19 @@ export const TicketThreadLegacyBridge = ({
     )
 
     const {
-        privateReplyData,
-        handlePrivateReply,
-        handlePrivateReplyToggle,
-        handleHideComment,
+        privateReplyData: instagramPrivateReplyData,
+        handlePrivateReply: handleInstagramPrivateReply,
+        handlePrivateReplyToggle: handleInstagramPrivateReplyToggle,
+        handleHideComment: handleInstagramHideComment,
     } = useInstagramCommentActions()
+
+    const {
+        privateReplyData: facebookPrivateReplyData,
+        handlePrivateReply: handleFacebookPrivateReply,
+        handlePrivateReplyToggle: handleFacebookPrivateReplyToggle,
+        handleHideComment: handleFacebookHideComment,
+        handleLike: handleFacebookLike,
+    } = useFacebookCommentActions()
 
     return (
         <TicketThreadLegacyBridgeProvider
@@ -72,8 +81,11 @@ export const TicketThreadLegacyBridge = ({
                 shopifyIntegrations,
             }}
             currentTicketRuleSuggestionData={{ shouldDisplayDemoSuggestion }}
-            onInstagramCommentPrivateReply={handlePrivateReply}
-            onInstagramCommentHideComment={handleHideComment}
+            onInstagramCommentPrivateReply={handleInstagramPrivateReply}
+            onInstagramCommentHideComment={handleInstagramHideComment}
+            onFacebookCommentPrivateReply={handleFacebookPrivateReply}
+            onFacebookCommentHideComment={handleFacebookHideComment}
+            onFacebookCommentLike={handleFacebookLike}
             legacyActions={legacyActions}
             legacyState={legacyState}
             renderAiAgentReasoning={(params) => (
@@ -81,10 +93,18 @@ export const TicketThreadLegacyBridge = ({
             )}
         >
             {children}
-            {privateReplyData && (
-                <InstagramCommentPrivateReplyModal
-                    data={privateReplyData}
-                    onToggle={handlePrivateReplyToggle}
+            {instagramPrivateReplyData && (
+                <CommentPrivateReplyModal
+                    data={instagramPrivateReplyData}
+                    isFacebookComment={false}
+                    onToggle={handleInstagramPrivateReplyToggle}
+                />
+            )}
+            {facebookPrivateReplyData && (
+                <CommentPrivateReplyModal
+                    data={facebookPrivateReplyData}
+                    isFacebookComment={true}
+                    onToggle={handleFacebookPrivateReplyToggle}
                 />
             )}
         </TicketThreadLegacyBridgeProvider>

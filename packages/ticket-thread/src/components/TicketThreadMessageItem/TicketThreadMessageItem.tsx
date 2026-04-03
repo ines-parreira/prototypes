@@ -7,6 +7,7 @@ import { Box } from '@gorgias/axiom'
 import type { TicketThreadMessageItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
+import { FacebookCommentMessageWrapper } from '../FacebookCommentMessage/FacebookCommentMessageWrapper'
 import { InstagramCommentMessageWrapper } from '../InstagramCommentMessage/InstagramCommentMessageWrapper'
 import { InstagramDirectMessage } from '../InstagramDirectMessage/InstagramDirectMessage'
 import { InstagramMediaMessage } from '../InstagramMediaMessage/InstagramMediaMessage'
@@ -65,7 +66,7 @@ export function TicketThreadMessageItem({
             case TicketThreadItemTag.Messages.AiAgentTrialMessage:
                 return <AiAgentTicketThreadTrialMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookComment:
-                return <UnimplementedMessage item={item} />
+                return <FacebookCommentMessageWrapper item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookPost:
                 return <UnimplementedMessage item={item} />
             case TicketThreadItemTag.Messages.SocialMediaFacebookMessage:

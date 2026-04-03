@@ -1,0 +1,15 @@
+:local {
+    .hidden {
+        :global(.message-content) {
+            color: var(--content-neutral-default);
+            opacity: 0.5;
+        }
+    }
+
+    .deleted {
+        :global(.message-header),
+        :global(.message-content) {
+            opacity: 0.5;
+        }
+    }
+}
