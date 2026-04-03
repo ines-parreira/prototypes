@@ -33,9 +33,14 @@ import { NotificationStatus } from 'state/notifications/types'
 type Props = {
     helpCenterId: number
     existingUrls: string[]
+    isIntegrationMissing?: boolean
 }
 
-export const SyncUrlModal = ({ helpCenterId, existingUrls }: Props) => {
+export const SyncUrlModal = ({
+    helpCenterId,
+    existingUrls,
+    isIntegrationMissing = false,
+}: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const [url, setUrl] = useState('')
     const [originalUrl, setOriginalUrl] = useState<string | null>(null)
@@ -271,13 +276,22 @@ export const SyncUrlModal = ({ helpCenterId, existingUrls }: Props) => {
                     intent={isResync ? 'destructive' : 'regular'}
                     onClick={handleSync}
                     isDisabled={
-                        isLoading || !url || isSyncLessThan24h || !!error
+                        isLoading ||
+                        !url ||
+                        isSyncLessThan24h ||
+                        !!error ||
+                        isIntegrationMissing
                     }
                     leadingSlot="arrows-reload-alt-1"
                 >
                     Sync
                 </Button>
-                {isSyncLessThan24h && (
+                {isIntegrationMissing && (
+                    <Tooltip target={syncButtonId}>
+                        Website sync is unavailable. Please contact support.
+                    </Tooltip>
+                )}
+                {!isIntegrationMissing && isSyncLessThan24h && (
                     <Tooltip target={syncButtonId}>
                         {`This URL was synced less than 24h ago. You can sync again on ${nextSyncDate}.`}
                     </Tooltip>

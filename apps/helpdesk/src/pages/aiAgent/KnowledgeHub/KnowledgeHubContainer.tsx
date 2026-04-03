@@ -72,6 +72,7 @@ import { usePlaygroundPanel } from '../hooks/usePlaygroundPanel'
 import { SnippetEditorWrapper } from './EditorWrappers/SnippetEditorWrapper'
 import { DeleteDocumentModal } from './EmptyState/DeleteDocumentModal'
 import { UploadDocumentModal } from './EmptyState/UploadDocumentModal'
+import { useHelpCenterIntegrationCheck } from './hooks/useHelpCenterIntegrationCheck'
 import { useKnowledgeHubSnippetEditor } from './hooks/useKnowledgeHubSnippetEditor'
 import { useKnowledgeHubUrlParams } from './hooks/useKnowledgeHubUrlParams'
 
@@ -108,6 +109,9 @@ export const KnowledgeHubContainer = () => {
         existingUrls,
         fileIngestionLogs,
     } = useKnowledgeHub()
+
+    const { isSnippetIntegrationMissing } =
+        useHelpCenterIntegrationCheck(shopName)
 
     const { onKnowledgeSourcesViewed } = useKnowledgeTracking({ shopName })
 
@@ -552,6 +556,7 @@ export const KnowledgeHubContainer = () => {
     }, [selectedFolder, urlIngestionLogs])
 
     const isSyncButtonDisabled = useMemo(() => {
+        if (isSnippetIntegrationMissing) return true
         if (selectedFolder?.type === KnowledgeType.Domain) {
             return isSyncLessThan24h
         }
@@ -560,6 +565,7 @@ export const KnowledgeHubContainer = () => {
         }
         return isSyncLessThan24h
     }, [
+        isSnippetIntegrationMissing,
         selectedFolder,
         isSyncLessThan24h,
         isUrlFolderSyncing,
@@ -574,6 +580,9 @@ export const KnowledgeHubContainer = () => {
     }, [selectedFolder, isUrlFolderSyncing])
 
     const syncTooltipMessage = useMemo(() => {
+        if (isSnippetIntegrationMissing) {
+            return 'Website sync is unavailable. Please contact support.'
+        }
         if (
             selectedFolder?.type === KnowledgeType.Domain &&
             isSyncLessThan24h
@@ -593,6 +602,7 @@ export const KnowledgeHubContainer = () => {
         }
         return undefined
     }, [
+        isSnippetIntegrationMissing,
         selectedFolder,
         isSyncLessThan24h,
         nextSyncDate,
@@ -742,6 +752,7 @@ export const KnowledgeHubContainer = () => {
                     helpCenterId={faqHelpCenterId}
                     onFaqEditorOpen={handleFaqEditorOpen}
                     sectionsGap="xl"
+                    isSyncDisabled={isSnippetIntegrationMissing}
                 />
             </Modal>
             <AddGuidanceTemplateModal onTemplateSelect={handleTemplateSelect} />
@@ -749,10 +760,12 @@ export const KnowledgeHubContainer = () => {
             <SyncStoreWebsiteModal
                 hasWebsiteSync={hasWebsiteSync}
                 helpCenterId={snippetHelpCenterId || 0}
+                isIntegrationMissing={isSnippetIntegrationMissing}
             />
             <SyncUrlModal
                 helpCenterId={snippetHelpCenterId || 0}
                 existingUrls={existingUrls}
+                isIntegrationMissing={isSnippetIntegrationMissing}
             />
             <DeleteUrlModal
                 helpCenterId={snippetHelpCenterId || 0}

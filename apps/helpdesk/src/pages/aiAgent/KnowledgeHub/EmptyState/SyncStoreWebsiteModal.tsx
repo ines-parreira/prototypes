@@ -28,11 +28,13 @@ import { useGetLastWebsiteSync } from 'pages/aiAgent/KnowledgeHub/hooks/useGetLa
 type Props = {
     hasWebsiteSync?: boolean
     helpCenterId: number
+    isIntegrationMissing?: boolean
 }
 
 export const SyncStoreWebsiteModal = ({
     hasWebsiteSync = false,
     helpCenterId,
+    isIntegrationMissing = false,
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const id = useId()
@@ -120,11 +122,16 @@ export const SyncStoreWebsiteModal = ({
                         intent={hasWebsiteSync ? 'destructive' : 'regular'}
                         onClick={handleSync}
                         leadingSlot="arrows-reload-alt-1"
-                        isDisabled={isSyncLessThan24h}
+                        isDisabled={isSyncLessThan24h || isIntegrationMissing}
                     >
                         Sync
                     </Button>
-                    {isSyncLessThan24h && (
+                    {isIntegrationMissing && (
+                        <Tooltip target={syncButtonId}>
+                            Website sync is unavailable. Please contact support.
+                        </Tooltip>
+                    )}
+                    {!isIntegrationMissing && isSyncLessThan24h && (
                         <Tooltip target={syncButtonId}>
                             Your store website was synced less than 24h ago. You
                             can sync again on {nextSyncDate}.

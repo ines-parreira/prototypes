@@ -73,9 +73,9 @@ describe('SyncUrlModal', () => {
     let eventCallback: (event?: Event) => void
     let queryClient: QueryClient
 
-    const defaultProps = {
+    const defaultProps: React.ComponentProps<typeof SyncUrlModal> = {
         helpCenterId: 1,
-        existingUrls: [] as string[],
+        existingUrls: [],
     }
 
     beforeEach(() => {
@@ -493,6 +493,54 @@ describe('SyncUrlModal', () => {
             })
 
             expect(validateUrl).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('integration missing', () => {
+        it('disables sync button when isIntegrationMissing is true', async () => {
+            renderComponent({
+                ...defaultProps,
+                isIntegrationMissing: true,
+            })
+
+            const mockEvent = {
+                detail: { source: 'https://example.com/page' },
+            } as CustomEvent
+
+            act(() => {
+                eventCallback?.(mockEvent)
+            })
+
+            const syncButton = screen.getByRole('button', { name: /sync/i })
+            expect(syncButton).toBeDisabled()
+        })
+
+        it('shows tooltip explaining why sync is disabled when isIntegrationMissing is true', async () => {
+            const user = userEvent.setup()
+
+            renderComponent({
+                ...defaultProps,
+                isIntegrationMissing: true,
+            })
+
+            const mockEvent = {
+                detail: { source: 'https://example.com/page' },
+            } as CustomEvent
+
+            act(() => {
+                eventCallback?.(mockEvent)
+            })
+
+            const syncButton = screen.getByRole('button', { name: /sync/i })
+            await user.hover(syncButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'Website sync is unavailable. Please contact support.',
+                    ),
+                ).toBeInTheDocument()
+            })
         })
     })
 

@@ -1,4 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import classNames from 'classnames'
 
 import { Box, Button, Card, Heading, Icon, Text } from '@gorgias/axiom'
 import type { SizeValue } from '@gorgias/axiom'
@@ -27,12 +28,14 @@ export const EmptyStates = ({
     helpCenterId,
     onFaqEditorOpen,
     sectionsGap = 'xxl',
+    isSyncDisabled = false,
 }: {
     hasWebsiteSync?: boolean
     titleAlignment?: string
     helpCenterId?: number | null
     onFaqEditorOpen?: () => void
     sectionsGap?: SizeValue
+    isSyncDisabled?: boolean
 }) => {
     const isKnowledgeIntentManagementSystemEnabled = useFlag(
         FeatureFlagKey.KnowledgeIntentManagementSystem,
@@ -134,10 +137,14 @@ export const EmptyStates = ({
                     {!hasWebsiteSync && (
                         <Card
                             onClick={() => {
-                                openSyncStoreWebsiteModal()
+                                if (!isSyncDisabled) {
+                                    openSyncStoreWebsiteModal()
+                                }
                             }}
                             gap="xxxs"
-                            className={css.cardContainer}
+                            className={classNames(css.cardContainer, {
+                                [css.cardDisabled]: isSyncDisabled,
+                            })}
                         >
                             <div className={css.cardTitle}>
                                 <Text size={'md'} variant={'bold'}>
@@ -164,10 +171,14 @@ export const EmptyStates = ({
 
                     <Card
                         onClick={() => {
-                            openSyncUrlModal()
+                            if (!isSyncDisabled) {
+                                openSyncUrlModal()
+                            }
                         }}
                         gap="xxxs"
-                        className={css.cardContainer}
+                        className={classNames(css.cardContainer, {
+                            [css.cardDisabled]: isSyncDisabled,
+                        })}
                     >
                         <div className={css.cardTitle}>
                             <Text size={'md'} variant={'bold'}>

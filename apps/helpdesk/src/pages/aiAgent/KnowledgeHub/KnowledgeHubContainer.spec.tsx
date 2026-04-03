@@ -24,6 +24,7 @@ import {
 } from 'pages/aiAgent/KnowledgeHub/constants'
 import { dispatchDocumentEvent } from 'pages/aiAgent/KnowledgeHub/EmptyState/utils'
 import { useGetLastWebsiteSync } from 'pages/aiAgent/KnowledgeHub/hooks/useGetLastWebsiteSync'
+import { useHelpCenterIntegrationCheck } from 'pages/aiAgent/KnowledgeHub/hooks/useHelpCenterIntegrationCheck'
 import { useKnowledgeHubFaqEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor'
 import { useKnowledgeHubGuidanceEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor'
 import { useKnowledgeHubSnippetEditor } from 'pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSnippetEditor'
@@ -132,6 +133,16 @@ jest.mock('pages/aiAgent/KnowledgeHub/hooks/useGetLastWebsiteSync', () => ({
         nextSyncDate: null,
     })),
 }))
+jest.mock(
+    'pages/aiAgent/KnowledgeHub/hooks/useHelpCenterIntegrationCheck',
+    () => ({
+        useHelpCenterIntegrationCheck: jest.fn(() => ({
+            isSnippetIntegrationMissing: false,
+            isGuidanceIntegrationMissing: false,
+            isLoading: false,
+        })),
+    }),
+)
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubGuidanceEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubFaqEditor')
 jest.mock('pages/aiAgent/KnowledgeHub/hooks/useKnowledgeHubSnippetEditor')
@@ -356,6 +367,10 @@ const mockUseUrlSyncStatus = useUrlSyncStatus as jest.Mock
 const mockUseGetLastWebsiteSync = useGetLastWebsiteSync as jest.Mock
 const mockGetLast28DaysDateRange =
     getLast28DaysDateRange as jest.MockedFunction<typeof getLast28DaysDateRange>
+const mockUseHelpCenterIntegrationCheck =
+    useHelpCenterIntegrationCheck as jest.MockedFunction<
+        typeof useHelpCenterIntegrationCheck
+    >
 
 describe('KnowledgeHubContainer', () => {
     const mockShopifyIntegrations = [
@@ -3146,6 +3161,131 @@ describe('KnowledgeHubContainer', () => {
             expect(
                 screen.getByText('https://new-syncing-url.com'),
             ).toBeInTheDocument()
+        })
+    })
+
+    describe('integration check', () => {
+        it('disables sync button when snippet integration is missing', async () => {
+            mockUseHelpCenterIntegrationCheck.mockReturnValue({
+                isSnippetIntegrationMissing: true,
+                isGuidanceIntegrationMissing: false,
+                isLoading: false,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Domain Content',
+                            type: KnowledgeType.Domain,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://store.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Domain Content')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await userEvent.click(screen.getByText('Domain Content'))
+            })
+
+            await waitFor(() => {
+                const syncButton = screen.getByTestId('sync-button')
+                expect(syncButton).toBeDisabled()
+            })
+        })
+
+        it('shows integration error tooltip when snippet integration is missing', async () => {
+            mockUseHelpCenterIntegrationCheck.mockReturnValue({
+                isSnippetIntegrationMissing: true,
+                isGuidanceIntegrationMissing: false,
+                isLoading: false,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Domain Content',
+                            type: KnowledgeType.Domain,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://store.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Domain Content')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await userEvent.click(screen.getByText('Domain Content'))
+            })
+
+            await waitFor(() => {
+                const syncButton = screen.getByTestId('sync-button')
+                expect(syncButton).toHaveAttribute(
+                    'title',
+                    'Website sync is unavailable. Please contact support.',
+                )
+            })
+        })
+
+        it('does not disable sync button when integration is valid', async () => {
+            mockUseHelpCenterIntegrationCheck.mockReturnValue({
+                isSnippetIntegrationMissing: false,
+                isGuidanceIntegrationMissing: false,
+                isLoading: false,
+            })
+
+            mockUseGetKnowledgeHubArticles.mockReturnValue({
+                data: {
+                    articles: [
+                        {
+                            id: '1',
+                            title: 'Domain Content',
+                            type: KnowledgeType.Domain,
+                            lastUpdatedAt: '2024-01-15T10:00:00Z',
+                            visibilityStatus: 'public',
+                            source: 'https://store.com',
+                        },
+                    ],
+                },
+                isInitialLoading: false,
+                refetch: jest.fn(),
+            })
+
+            renderComponent()
+
+            await waitFor(() => {
+                expect(screen.getByText('Domain Content')).toBeInTheDocument()
+            })
+
+            await act(async () => {
+                await userEvent.click(screen.getByText('Domain Content'))
+            })
+
+            await waitFor(() => {
+                const syncButton = screen.getByTestId('sync-button')
+                expect(syncButton).not.toBeDisabled()
+            })
         })
     })
 })

@@ -339,6 +339,54 @@ describe('SyncStoreWebsiteModal', () => {
             })
         })
 
+        it('disables sync button when isIntegrationMissing is true', async () => {
+            render(
+                <SyncStoreWebsiteModal
+                    hasWebsiteSync={true}
+                    helpCenterId={1}
+                    isIntegrationMissing={true}
+                />,
+            )
+
+            await act(() => {
+                eventCallback?.()
+            })
+
+            const syncButton = screen.getByRole('button', {
+                name: /Sync/,
+            })
+            expect(syncButton).toBeDisabled()
+        })
+
+        it('shows tooltip explaining why sync is disabled when isIntegrationMissing is true', async () => {
+            const user = userEvent.setup()
+
+            render(
+                <SyncStoreWebsiteModal
+                    hasWebsiteSync={true}
+                    helpCenterId={1}
+                    isIntegrationMissing={true}
+                />,
+            )
+
+            await act(() => {
+                eventCallback?.()
+            })
+
+            const syncButton = screen.getByRole('button', {
+                name: /Sync/,
+            })
+            await user.hover(syncButton)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByText(
+                        'Website sync is unavailable. Please contact support.',
+                    ),
+                ).toBeInTheDocument()
+            })
+        })
+
         it('resets banner after successful sync', async () => {
             const { useSyncStoreDomain } = jest.requireMock(
                 '../../hooks/useSyncStoreDomain',
