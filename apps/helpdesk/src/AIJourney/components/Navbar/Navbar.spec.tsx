@@ -417,4 +417,50 @@ describe('<AiJourneyNavbar />', () => {
             expect(screen.queryByText('Segments')).not.toBeInTheDocument()
         })
     })
+
+    describe('Settings section', () => {
+        beforeEach(() => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyStoreSettingsEnabled) {
+                    return true
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+        })
+
+        it('should render settings section when feature flag is enabled', () => {
+            renderNavbar()
+
+            expect(screen.getByText('Settings')).toBeInTheDocument()
+        })
+
+        it('should not render settings section when feature flag is disabled', () => {
+            mockUseFlag.mockImplementation((key) => {
+                if (key === FeatureFlagKey.AiJourneyStoreSettingsEnabled) {
+                    return false
+                }
+                if (key === FeatureFlagKey.AiJourneyEnabled) {
+                    return true
+                }
+                return false
+            })
+
+            renderNavbar()
+
+            expect(screen.queryByText('Settings')).not.toBeInTheDocument()
+        })
+
+        it('should render Settings link pointing to the settings route', () => {
+            renderNavbar('/app/ai-journey/teststore1')
+
+            const settingsLink = screen.getByText('Settings').closest('a')
+            expect(settingsLink).toHaveAttribute(
+                'href',
+                '/app/ai-journey/teststore1/settings',
+            )
+        })
+    })
 })

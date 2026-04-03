@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { AiJourneyNavbar } from 'AIJourney/components'
@@ -8,6 +9,7 @@ import {
     Flows,
     Playground,
     Segments,
+    Settings,
 } from 'AIJourney/pages'
 import { Campaigns } from 'AIJourney/pages/Campaigns/Campaigns'
 import { JourneyProvider } from 'AIJourney/providers'
@@ -18,6 +20,9 @@ import { RedirectToShop } from './RedirectToShop'
 
 function AiJourneyBaseRoutes() {
     const { path } = useRouteMatch()
+    const isAiJourneyStoreSettingsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
+    )
 
     return (
         <Switch>
@@ -96,6 +101,13 @@ function AiJourneyBaseRoutes() {
                                     </DefaultStatsFilters>
                                 )}
                             />
+                            {isAiJourneyStoreSettingsEnabled && (
+                                <Route
+                                    path={`${path}/:shopName/settings`}
+                                    exact
+                                    render={() => <Settings />}
+                                />
+                            )}
                             <Route
                                 render={() => (
                                     <DefaultStatsFilters>

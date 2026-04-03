@@ -55,6 +55,10 @@ export const AiJourneyNavbar = () => {
         FeatureFlagKey.AiJourneySegmentsUiEnabled,
     )
 
+    const isAiJourneyStoreSettingsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
+    )
+
     const storeIntegrations = useAppSelector(getShopifyIntegrationsSortedByName)
 
     const { setLastSelectedStore, resolveStore } = useLastSelectedStore()
@@ -152,6 +156,15 @@ export const AiJourneyNavbar = () => {
             })
         }
 
+        if (isAiJourneyStoreSettingsEnabled) {
+            items.push({
+                icon: IconName.Settings,
+                to: `/app/ai-journey/${shopName}/settings`,
+                label: 'Settings',
+                exact: true,
+            })
+        }
+
         return items
     }, [
         shopName,
@@ -159,6 +172,7 @@ export const AiJourneyNavbar = () => {
         isAiJourneyPlaygroundEnabled,
         isAiJourneyAnalyticsEnabled,
         isAiJourneySegmentsEnabled,
+        isAiJourneyStoreSettingsEnabled,
     ])
 
     if (hasWayfindingMS1Flag) {
@@ -251,6 +265,15 @@ export const AiJourneyNavbar = () => {
                             to={`/app/ai-journey/${shopName}/segments`}
                         >
                             Segments
+                        </Navigation.SectionItem>
+                    )}
+                    {isAiJourneyStoreSettingsEnabled && (
+                        <Navigation.SectionItem
+                            as={NavLink}
+                            exact
+                            to={`/app/ai-journey/${shopName}/settings`}
+                        >
+                            Settings
                         </Navigation.SectionItem>
                     )}
                 </div>
