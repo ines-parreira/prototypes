@@ -16,10 +16,6 @@ export function DefaultViewsMenu() {
     const updateVisibility = useUpdateDefaultViewsVisibility()
 
     const handleSelect = (selected: SystemView[]) => {
-        if (!visibilitySettingId) {
-            return
-        }
-
         const selectedIds = new Set(selected.map((view) => view.id))
         const hiddenViewIds = defaultSystemViews
             .filter((view) => !selectedIds.has(view.id))

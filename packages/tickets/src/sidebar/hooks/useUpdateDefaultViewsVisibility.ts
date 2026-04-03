@@ -1,8 +1,15 @@
 import { useQueryClient } from '@tanstack/react-query'
 
 import { toast } from '@gorgias/axiom'
-import { queryKeys, useUpdateAccountSetting } from '@gorgias/helpdesk-queries'
-import type { ListAccountSettings200 } from '@gorgias/helpdesk-types'
+import {
+    queryKeys,
+    useCreateAccountSetting,
+    useUpdateAccountSetting,
+} from '@gorgias/helpdesk-queries'
+import type {
+    ListAccountSettings200,
+    UpdateAccountSettingBody,
+} from '@gorgias/helpdesk-types'
 
 import type { ViewsVisibilityData } from '../types/views'
 
@@ -51,5 +58,49 @@ export function useUpdateDefaultViewsVisibility() {
         },
     })
 
-    return updateVisibility
+    const { mutate: createVisibility } = useCreateAccountSetting({
+        mutation: {
+            onMutate: async (variables) => {
+                await queryClient.cancelQueries({ queryKey })
+                const previousData =
+                    queryClient.getQueryData<ListAccountSettings200>(queryKey)
+                queryClient.setQueryData(
+                    queryKey,
+                    (old: { data: ListAccountSettings200 } | undefined) => {
+                        if (!old) return old
+                        return {
+                            ...old,
+                            data: {
+                                ...old.data,
+                                data: [
+                                    ...old.data.data,
+                                    {
+                                        type: 'views-visibility',
+                                        data: variables.data
+                                            .data as ViewsVisibilityData,
+                                    },
+                                ],
+                            },
+                        }
+                    },
+                )
+                return { previousData }
+            },
+            onError: (_error, _variables, context) => {
+                queryClient.setQueryData(queryKey, context?.previousData)
+                toast.error('Failed to update views visibility')
+            },
+            onSettled: () => {
+                void queryClient.invalidateQueries({ queryKey })
+            },
+        },
+    })
+
+    return (params: { id?: number; data: UpdateAccountSettingBody }) => {
+        if (params.id !== undefined) {
+            updateVisibility({ id: params.id, data: params.data })
+        } else {
+            createVisibility({ data: params.data })
+        }
+    }
 }

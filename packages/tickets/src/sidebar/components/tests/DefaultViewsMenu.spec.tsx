@@ -149,7 +149,7 @@ describe('DefaultViewsMenu', () => {
         ).toBeDisabled()
     })
 
-    it('should not call updateVisibility when visibilitySettingId is not set', async () => {
+    it('should call updateVisibility with id undefined when visibilitySettingId is not set', async () => {
         mockUseDefaultViews.mockReturnValue({
             defaultSystemViews: systemViews,
             visibleSystemViews: systemViews,
@@ -172,7 +172,15 @@ describe('DefaultViewsMenu', () => {
             screen.getByRole('option', { name: /assigned to me/i }),
         )
 
-        expect(mockUpdateVisibility).not.toHaveBeenCalled()
+        await waitFor(() => {
+            expect(mockUpdateVisibility).toHaveBeenCalledWith({
+                id: undefined,
+                data: {
+                    type: 'views-visibility',
+                    data: { hidden_views: [1] },
+                },
+            })
+        })
     })
 
     it('should call updateVisibility with correct hidden views when a view is deselected', async () => {
