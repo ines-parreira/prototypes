@@ -64,7 +64,6 @@ type LegalCardProps = {
 type AvatarCardProps = {
     name: string
     avatar: GorgiasChatAvatarSettings
-    onNameChange: (value: string) => void
     onAvatarChange: (avatar: GorgiasChatAvatarSettings) => void
 }
 
@@ -422,20 +421,6 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             )
         })
 
-        it('should update name when onNameChange is called', () => {
-            renderComponent()
-
-            act(() => {
-                const { onNameChange } = mockAvatarCard.mock
-                    .calls[0][0] as AvatarCardProps
-                onNameChange('New Chat Name')
-            })
-
-            expect(mockAvatarCard).toHaveBeenLastCalledWith(
-                expect.objectContaining({ name: 'New Chat Name' }),
-            )
-        })
-
         it('should update avatar when onAvatarChange is called', () => {
             renderComponent()
 
@@ -577,9 +562,12 @@ describe('GorgiasChatIntegrationAppearanceRevamp', () => {
             const { getByRole } = renderComponent(integrationWithInvalidColor)
 
             act(() => {
-                const { onNameChange } = mockAvatarCard.mock
+                const { onAvatarChange, avatar } = mockAvatarCard.mock
                     .calls[0][0] as AvatarCardProps
-                onNameChange('New Chat Name')
+                onAvatarChange({
+                    ...avatar,
+                    nameType: GorgiasChatAvatarNameType.AGENT_FIRST_NAME,
+                })
             })
 
             await user.click(getByRole('button', { name: 'Save' }))

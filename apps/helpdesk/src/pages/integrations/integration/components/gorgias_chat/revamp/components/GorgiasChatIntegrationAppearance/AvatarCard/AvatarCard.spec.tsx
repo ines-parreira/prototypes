@@ -10,6 +10,17 @@ import {
 
 import { AvatarCard } from './AvatarCard'
 
+const mockUpdateAvatarSettings = jest.fn()
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useGorgiasChatCreationWizardContext: () => ({
+            updateAvatarSettings: mockUpdateAvatarSettings,
+        }),
+    }),
+)
+
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload',
     () => ({
@@ -110,7 +121,6 @@ describe('AvatarCard', () => {
     const defaultProps = {
         name: 'Test Chat',
         avatar: defaultAvatar,
-        onNameChange: jest.fn(),
         onAvatarChange: jest.fn(),
     }
 
@@ -139,7 +149,7 @@ describe('AvatarCard', () => {
                 screen.getByLabelText('First name and last initial'),
             ).toBeInTheDocument()
             expect(screen.getByLabelText('Full name')).toBeInTheDocument()
-            expect(screen.getByLabelText('Custom')).toBeInTheDocument()
+            expect(screen.getByLabelText('Chat title')).toBeInTheDocument()
         })
 
         it('should not show chat title input when nameType is not CHAT_TITLE', () => {
@@ -189,23 +199,18 @@ describe('AvatarCard', () => {
             })
         })
 
-        it('should call onNameChange when chat title input value changes', async () => {
+        it('should call updateAvatarSettings with new nameType when a name radio is selected', async () => {
             const user = userEvent.setup()
-            const onNameChange = jest.fn()
-            renderComponent({
+            renderComponent()
+
+            await user.click(screen.getByLabelText('Full name'))
+
+            expect(mockUpdateAvatarSettings).toHaveBeenCalledWith({
                 avatar: {
                     ...defaultAvatar,
-                    nameType: GorgiasChatAvatarNameType.CHAT_TITLE,
+                    nameType: GorgiasChatAvatarNameType.AGENT_FULLNAME,
                 },
-                onNameChange,
             })
-
-            await user.type(
-                screen.getByRole('textbox', { name: 'Chat title input' }),
-                'x',
-            )
-
-            expect(onNameChange).toHaveBeenCalledWith('Test Chatx')
         })
     })
 
@@ -245,6 +250,20 @@ describe('AvatarCard', () => {
             expect(onAvatarChange).toHaveBeenCalledWith({
                 ...defaultAvatar,
                 imageType: GorgiasChatAvatarImageType.AGENT_INITIALS,
+            })
+        })
+
+        it('should call updateAvatarSettings with new imageType when an image radio is selected', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(screen.getByLabelText('Initials'))
+
+            expect(mockUpdateAvatarSettings).toHaveBeenCalledWith({
+                avatar: {
+                    ...defaultAvatar,
+                    imageType: GorgiasChatAvatarImageType.AGENT_INITIALS,
+                },
             })
         })
     })
@@ -299,6 +318,38 @@ describe('AvatarCard', () => {
             expect(onAvatarChange).toHaveBeenCalledWith({
                 ...defaultAvatar,
                 companyLogoUrl: undefined,
+            })
+        })
+
+        it('should call updateAvatarSettings with new companyLogoUrl when logo is uploaded', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: 'Upload logo' }),
+            )
+
+            expect(mockUpdateAvatarSettings).toHaveBeenCalledWith({
+                avatar: {
+                    ...defaultAvatar,
+                    companyLogoUrl: 'https://example.com/new-logo.png',
+                },
+            })
+        })
+
+        it('should call updateAvatarSettings with undefined companyLogoUrl when logo is removed', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: 'Remove logo' }),
+            )
+
+            expect(mockUpdateAvatarSettings).toHaveBeenCalledWith({
+                avatar: {
+                    ...defaultAvatar,
+                    companyLogoUrl: undefined,
+                },
             })
         })
     })

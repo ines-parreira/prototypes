@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { act, renderHook } from '@testing-library/react'
 
 import {
+    GorgiasChatAvatarType,
     GorgiasChatLauncherType,
     GorgiasChatPositionAlignmentEnum,
 } from 'models/integration/types/gorgiasChat'
@@ -216,6 +217,71 @@ describe('useChatPreviewPanel', () => {
         expect(mockReloadPreview).toHaveBeenCalled()
     })
 
+    it('updateAvatarSettings does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateAvatarSettings({
+                avatarType: GorgiasChatAvatarType.TEAM_MEMBERS,
+            }),
+        ).not.toThrow()
+    })
+
+    it('updateAvatarSettings calls openChat, displayPage with conversation, and updateSettings on the ref when attached', () => {
+        const mockOpenChat = jest.fn()
+        const mockDisplayPage = jest.fn()
+        const mockUpdateSettings = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                openChat: mockOpenChat,
+                displayPage: mockDisplayPage,
+                updateSettings: mockUpdateSettings,
+            }
+        }
+
+        result.current.updateAvatarSettings({
+            avatarType: GorgiasChatAvatarType.TEAM_MEMBERS,
+        })
+
+        expect(mockOpenChat).toHaveBeenCalled()
+        expect(mockDisplayPage).toHaveBeenCalledWith('conversation')
+        expect(mockUpdateSettings).toHaveBeenCalledWith({
+            decoration: { avatarType: GorgiasChatAvatarType.TEAM_MEMBERS },
+        })
+    })
+
+    it('updateAvatarSettings passes all avatar settings fields to updateSettings', () => {
+        const mockOpenChat = jest.fn()
+        const mockDisplayPage = jest.fn()
+        const mockUpdateSettings = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                openChat: mockOpenChat,
+                displayPage: mockDisplayPage,
+                updateSettings: mockUpdateSettings,
+            }
+        }
+
+        const avatarSettings = {
+            avatarTeamPictureUrl: 'https://example.com/team.png',
+            avatarType: GorgiasChatAvatarType.TEAM_PICTURE,
+            avatar: null,
+        }
+        result.current.updateAvatarSettings(avatarSettings)
+
+        expect(mockUpdateSettings).toHaveBeenCalledWith({
+            decoration: avatarSettings,
+        })
+    })
+
     it('updateWorkflowEntryPoints does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -273,6 +339,7 @@ describe('useGorgiasChatCreationWizardContext', () => {
             updateLegalDisclaimerEnabled: jest.fn(),
             updateWorkflowEntryPoints: jest.fn(),
             reloadPreview: jest.fn(),
+            updateAvatarSettings: jest.fn(),
         }
 
         const wrapper = ({ children }: { children: ReactNode }) => (

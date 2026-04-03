@@ -13,6 +13,8 @@ import { toHex } from 'color2k'
 import type { LANGUAGE } from 'constants/languages'
 import type { GorgiasChatPosition } from 'models/integration/types'
 import type {
+    GorgiasChatAvatarSettings,
+    GorgiasChatAvatarType,
     GorgiasChatLauncherSettings,
     GorgiasChatWorkflowEntrypoint,
 } from 'models/integration/types/gorgiasChat'
@@ -171,6 +173,24 @@ export const useChatPreviewPanel = (
         chatPreviewPanelRef.current?.reloadPreview()
     }, [])
 
+    const updateAvatarSettings = useCallback(
+        (avatarSettings: {
+            avatarTeamPictureUrl?: string
+            avatarType?: GorgiasChatAvatarType
+            avatar?: GorgiasChatAvatarSettings | null
+        }) => {
+            openChat()
+            displayPage('conversation')
+
+            chatPreviewPanelRef.current?.updateSettings({
+                decoration: {
+                    ...avatarSettings,
+                },
+            })
+        },
+        [openChat, displayPage],
+    )
+
     return {
         chatPreviewPortal,
         showPreviewPanel,
@@ -187,5 +207,6 @@ export const useChatPreviewPanel = (
         updateLegalDisclaimerEnabled,
         updateWorkflowEntryPoints,
         reloadPreview,
+        updateAvatarSettings,
     }
 }

@@ -85,7 +85,6 @@ export const GorgiasChatIntegrationAppearanceRevamp = ({
                         <AvatarCard
                             name={values.name}
                             avatar={values.avatar}
-                            onNameChange={(value) => setValue('name', value)}
                             onAvatarChange={(avatar) =>
                                 setValue('avatar', avatar)
                             }

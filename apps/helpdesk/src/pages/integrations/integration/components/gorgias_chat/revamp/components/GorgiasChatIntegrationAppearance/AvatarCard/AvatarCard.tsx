@@ -14,22 +14,58 @@ import {
     GorgiasChatAvatarNameType,
 } from 'models/integration/types'
 import { LogoUpload } from 'pages/integrations/integration/components/gorgias_chat/legacy/components/LogoUpload'
+import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import css from '../GorgiasChatIntegrationAppearance.less'
 
 type Props = {
     name: string
     avatar: GorgiasChatAvatarSettings
-    onNameChange: (value: string) => void
     onAvatarChange: (avatar: GorgiasChatAvatarSettings) => void
 }
 
-export const AvatarCard = ({
-    name,
-    avatar,
-    onNameChange,
-    onAvatarChange,
-}: Props) => {
+export const AvatarCard = ({ name, avatar, onAvatarChange }: Props) => {
+    const { updateAvatarSettings } = useGorgiasChatCreationWizardContext()
+
+    const handleNameTypeChange = (value: string) => {
+        onAvatarChange({
+            ...avatar,
+            nameType: value as GorgiasChatAvatarNameType,
+        })
+        updateAvatarSettings({
+            avatar: {
+                ...avatar,
+                nameType: value as GorgiasChatAvatarNameType,
+            },
+        })
+    }
+
+    const handleCompanyLogoUrlChange = (url: string | undefined) => {
+        onAvatarChange({
+            ...avatar,
+            companyLogoUrl: url,
+        })
+        updateAvatarSettings({
+            avatar: {
+                ...avatar,
+                companyLogoUrl: url,
+            },
+        })
+    }
+
+    const handleImageTypeChange = (value: string) => {
+        onAvatarChange({
+            ...avatar,
+            imageType: value as GorgiasChatAvatarImageType,
+        })
+        updateAvatarSettings({
+            avatar: {
+                ...avatar,
+                imageType: value as GorgiasChatAvatarImageType,
+            },
+        })
+    }
+
     return (
         <Card className={css.card} elevation={Elevation.Mid}>
             <div className={css.cardContent}>
@@ -50,13 +86,7 @@ export const AvatarCard = ({
                         <div className={css.radioGroupWrapper}>
                             <RadioGroup
                                 value={avatar.nameType}
-                                onChange={(value) =>
-                                    onAvatarChange({
-                                        ...avatar,
-                                        nameType:
-                                            value as GorgiasChatAvatarNameType,
-                                    })
-                                }
+                                onChange={handleNameTypeChange}
                                 flexDirection="column"
                                 gap="xs"
                             >
@@ -80,17 +110,14 @@ export const AvatarCard = ({
                                 />
                                 <Radio
                                     value={GorgiasChatAvatarNameType.CHAT_TITLE}
-                                    label="Custom"
+                                    label="Chat title"
                                 />
                             </RadioGroup>
                         </div>
                         {avatar.nameType ===
                             GorgiasChatAvatarNameType.CHAT_TITLE && (
                             <div className={css.customNameInput}>
-                                <TextField
-                                    value={name}
-                                    onChange={onNameChange}
-                                />
+                                <TextField isDisabled value={name} />
                             </div>
                         )}
                     </div>
@@ -102,13 +129,7 @@ export const AvatarCard = ({
                         <div className={css.radioGroupWrapper}>
                             <RadioGroup
                                 value={avatar.imageType}
-                                onChange={(value) =>
-                                    onAvatarChange({
-                                        ...avatar,
-                                        imageType:
-                                            value as GorgiasChatAvatarImageType,
-                                    })
-                                }
+                                onChange={handleImageTypeChange}
                                 flexDirection="column"
                                 gap="xs"
                             >
@@ -145,12 +166,7 @@ export const AvatarCard = ({
                         </Text>
                         <LogoUpload
                             url={avatar.companyLogoUrl}
-                            onChange={(url) =>
-                                onAvatarChange({
-                                    ...avatar,
-                                    companyLogoUrl: url,
-                                })
-                            }
+                            onChange={handleCompanyLogoUrlChange}
                         />
                     </div>
                 </div>

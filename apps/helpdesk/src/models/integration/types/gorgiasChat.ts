@@ -138,6 +138,9 @@ export type GorgiasChatPreviewApplicationSettings = {
         headerPictureUrl?: string
         position?: GorgiasChatPosition
         launcher?: GorgiasChatLauncherSettings
+        avatarTeamPictureUrl?: string
+        avatarType?: GorgiasChatAvatarType
+        avatar?: GorgiasChatAvatarSettings | null
     }
     preferences?: {
         privacyPolicyDisclaimerEnabled?: boolean
@@ -189,6 +192,11 @@ export type GorgiasChatAvatarSettings = {
     imageType: GorgiasChatAvatarImageType
     nameType: GorgiasChatAvatarNameType
     companyLogoUrl?: string
+}
+
+export enum GorgiasChatAvatarType {
+    TEAM_MEMBERS = 'team-members',
+    TEAM_PICTURE = 'team-picture',
 }
 
 export enum GorgiasChatBackgroundColorStyle {
