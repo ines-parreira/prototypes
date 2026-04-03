@@ -3,6 +3,8 @@ import type { ReactNode } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 
+import { Toaster } from '@gorgias/axiom'
+
 import '@repo/routing/urlTracking'
 
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
@@ -125,6 +127,7 @@ export default function App({ children }: Props) {
                 <SessionChangeDetection />
                 <NotificationsToasts />
                 <AlertNotifications />
+                <Toaster />
                 {!isOnboarding && (
                     <>
                         <AlertBanners />
