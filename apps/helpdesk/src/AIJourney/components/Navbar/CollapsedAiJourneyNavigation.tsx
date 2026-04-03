@@ -1,8 +1,7 @@
-import { SidebarCollapsedItem } from '@repo/navigation'
+import { SidebarCollapsedGroup, SidebarCollapsedItem } from '@repo/navigation'
 import { history } from '@repo/routing'
 
 import type { IconName } from '@gorgias/axiom'
-import { ButtonGroup } from '@gorgias/axiom'
 
 export type NavigationItem = {
     icon: IconName
@@ -26,11 +25,7 @@ export const CollapsedAiJourneyNavigation = ({ navigationItems }: Props) => {
     }
 
     return (
-        <ButtonGroup
-            orientation="vertical"
-            withoutBorder
-            onSelectionChange={handleSelectionChange}
-        >
+        <SidebarCollapsedGroup onSelectionChange={handleSelectionChange}>
             {navigationItems.map((item) => (
                 <SidebarCollapsedItem
                     key={item.to}
@@ -39,6 +34,6 @@ export const CollapsedAiJourneyNavigation = ({ navigationItems }: Props) => {
                     label={item.label}
                 />
             ))}
-        </ButtonGroup>
+        </SidebarCollapsedGroup>
     )
 }

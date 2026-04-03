@@ -85,6 +85,7 @@ export function NavigationSidebar() {
                     gap="xxxs"
                     flexDirection={isCollapsed ? 'column-reverse' : 'row'}
                 >
+                    <NavigationSidebarNotificationsButton />
                     <NavigationSidebarSpotlightButton />
 
                     <Tooltip
@@ -162,7 +163,6 @@ export function NavigationSidebar() {
                             <TooltipContent title="Open chat" />
                         </Tooltip>
                     )}
-                    <NavigationSidebarNotificationsButton />
                 </Box>
             </SidebarFooter>
         </SidebarRoot>
