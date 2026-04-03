@@ -77,12 +77,8 @@ export function useDefaultViews() {
             | ViewsVisibilityData
             | undefined
 
-        if (!visibilityData) {
-            return []
-        }
-
         return defaultSystemViews.filter((view) => {
-            return !!view.id && !visibilityData.hidden_views.includes(view.id)
+            return !!view.id && !visibilityData?.hidden_views.includes(view.id)
         })
     }, [defaultSystemViews, viewsVisibilityResponse])
 

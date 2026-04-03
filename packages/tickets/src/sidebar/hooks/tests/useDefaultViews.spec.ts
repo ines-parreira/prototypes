@@ -147,7 +147,7 @@ describe('useDefaultViews', () => {
         expect(result.current.visibleSystemViews).toHaveLength(7)
     })
 
-    it('should return empty visibleSystemViews when visibility data is not available', () => {
+    it('should return all views as visible when visibility data is not available', () => {
         mockUseListAccountSettings.mockReturnValue({
             data: undefined,
             isLoading: false,
@@ -156,7 +156,7 @@ describe('useDefaultViews', () => {
 
         const { result } = renderHook(() => useDefaultViews())
 
-        expect(result.current.visibleSystemViews).toEqual([])
+        expect(result.current.visibleSystemViews).toHaveLength(7)
     })
 
     it('should filter out hidden views from visibleSystemViews', () => {
