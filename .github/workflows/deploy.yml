@@ -44,6 +44,7 @@ jobs:
               staticrypt "$file" \
                 --password "$STATICRYPT_PASSWORD" \
                 --remember 1 \
+                --short \
                 -o "$file"
           done
 
