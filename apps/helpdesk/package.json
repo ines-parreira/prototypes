@@ -121,6 +121,7 @@
         "@repo/tickets": "workspace:*",
         "@repo/users": "workspace:*",
         "@repo/utils": "workspace:*",
+        "@repo/views": "workspace:*",
         "@repo/voice": "workspace:*",
         "@sentry/react": "catalog:sentry",
         "@sentry/tracing": "catalog:sentry",

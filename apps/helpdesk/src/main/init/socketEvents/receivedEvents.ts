@@ -2,6 +2,7 @@ import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
 import { appQueryClient } from '@repo/api-resources'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
+import { setViewsCount } from '@repo/views'
 import * as Sentry from '@sentry/react'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -220,6 +221,9 @@ const receivedEvents: ReceivedEvent[] = [
                 level: 'log',
             })
             reduxStore.dispatch(viewCreated((json as ViewCreatedEvent).view))
+            void appQueryClient.invalidateQueries({
+                queryKey: queryKeys.views.listAllViews(),
+            })
         },
     },
     {
@@ -242,17 +246,20 @@ const receivedEvents: ReceivedEvent[] = [
                 )
                 reduxStore.dispatch(viewDeleted(view.id))
             }
+            void appQueryClient.invalidateQueries({
+                queryKey: queryKeys.views.listAllViews(),
+            })
         },
     },
     {
         name: 'view-deleted',
         onReceive: function (json) {
-            reduxStore.dispatch(
-                viewsActions.deleteViewSuccess(
-                    (json as ViewDeletedEvent).view.id,
-                ) as any,
-            )
-            reduxStore.dispatch(viewDeleted((json as ViewDeletedEvent).view.id))
+            const { view } = json as ViewDeletedEvent
+            reduxStore.dispatch(viewsActions.deleteViewSuccess(view.id) as any)
+            reduxStore.dispatch(viewDeleted(view.id))
+            void appQueryClient.invalidateQueries({
+                queryKey: queryKeys.views.listAllViews(),
+            })
         },
     },
     {
@@ -284,14 +291,10 @@ const receivedEvents: ReceivedEvent[] = [
     {
         name: 'views-count-updated',
         onReceive: function (json) {
-            reduxStore.dispatch(
-                viewsCountFetched((json as ViewCountUpdatedEvent).counts),
-            )
-            reduxStore.dispatch(
-                viewsActions.handleViewsCount(
-                    (json as ViewCountUpdatedEvent).counts,
-                ) as any,
-            )
+            const { counts } = json as ViewCountUpdatedEvent
+            setViewsCount(counts)
+            reduxStore.dispatch(viewsCountFetched(counts))
+            reduxStore.dispatch(viewsActions.handleViewsCount(counts) as any)
         },
     },
     {
