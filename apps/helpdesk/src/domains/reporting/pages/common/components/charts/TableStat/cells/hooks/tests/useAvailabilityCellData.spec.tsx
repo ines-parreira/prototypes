@@ -138,6 +138,7 @@ describe('useAvailabilityCellData', () => {
                 'useAvailabilityCellPhoneStatusData',
             ).mockReturnValue({
                 agentPhoneUnavailabilityStatus: undefined,
+                isOnActiveCall: false,
                 isLoading: true,
                 isError: false,
             })
@@ -163,6 +164,7 @@ describe('useAvailabilityCellData', () => {
                 'useAvailabilityCellPhoneStatusData',
             ).mockReturnValue({
                 agentPhoneUnavailabilityStatus: undefined,
+                isOnActiveCall: false,
                 isLoading: false,
                 isError: false,
             })
@@ -239,6 +241,7 @@ describe('useAvailabilityCellData', () => {
                 'useAvailabilityCellPhoneStatusData',
             ).mockReturnValue({
                 agentPhoneUnavailabilityStatus: undefined,
+                isOnActiveCall: false,
                 isLoading: false,
                 isError: true,
             })
@@ -275,6 +278,7 @@ describe('useAvailabilityCellData', () => {
                 'useAvailabilityCellPhoneStatusData',
             ).mockReturnValue({
                 agentPhoneUnavailabilityStatus: undefined,
+                isOnActiveCall: false,
                 isLoading: false,
                 isError: false,
             })
@@ -305,6 +309,7 @@ describe('useAvailabilityCellData', () => {
                 'useAvailabilityCellPhoneStatusData',
             ).mockReturnValue({
                 agentPhoneUnavailabilityStatus: undefined,
+                isOnActiveCall: false,
                 isLoading: false,
                 isError: true,
             })

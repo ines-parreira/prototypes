@@ -124,6 +124,31 @@ describe('useAvailabilityCellPhoneStatusData', () => {
             expect(result.current.agentPhoneUnavailabilityStatus?.name).toBe(
                 'On a call',
             )
+            expect(result.current.isOnActiveCall).toBe(true)
+            expect(result.current.isError).toBe(false)
+        })
+
+        it('should return wrap-up status with isOnActiveCall false during wrap-up', async () => {
+            queryClient.setQueryData(
+                queryKeys.voiceUserStatus.getUserPhoneStatus(userId),
+                {
+                    data: mockUserPhoneStatus({
+                        user_id: userId,
+                        phone_status: 'wrapping-up',
+                    }),
+                },
+            )
+
+            const { result } = renderHookWithProviders()
+
+            await waitFor(() => {
+                expect(result.current.isLoading).toBe(false)
+            })
+
+            expect(result.current.agentPhoneUnavailabilityStatus?.name).toBe(
+                'Call wrap-up',
+            )
+            expect(result.current.isOnActiveCall).toBe(false)
             expect(result.current.isError).toBe(false)
         })
 
@@ -147,6 +172,7 @@ describe('useAvailabilityCellPhoneStatusData', () => {
             expect(
                 result.current.agentPhoneUnavailabilityStatus,
             ).toBeUndefined()
+            expect(result.current.isOnActiveCall).toBe(false)
             expect(result.current.isError).toBe(false)
         })
     })

@@ -15,6 +15,7 @@ type UseAvailabilityCellDataReturn = {
     availability: UserAvailability | undefined
     status: AgentStatusWithSystem | undefined
     agentPhoneUnavailabilityStatus: AgentStatusWithSystem | undefined
+    isOnActiveCall: boolean
     isLoading: boolean
     hasNoData: boolean
     isLoadingAny: boolean
@@ -48,6 +49,7 @@ export function useAvailabilityCellData({
 
     const {
         agentPhoneUnavailabilityStatus,
+        isOnActiveCall,
         isLoading: isLoadingPhoneStatus,
         isError: isErrorPhoneStatus,
     } = useAvailabilityCellPhoneStatusData({ userId })
@@ -77,6 +79,7 @@ export function useAvailabilityCellData({
         availability,
         status,
         agentPhoneUnavailabilityStatus,
+        isOnActiveCall,
         isLoading: isLoadingAvailability || isLoadingPhoneStatus,
         hasNoData,
         isLoadingAny,

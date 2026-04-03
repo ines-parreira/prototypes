@@ -5,7 +5,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockCustomUserAvailabilityStatus } from '@gorgias/helpdesk-mocks'
 import type { CustomUserAvailabilityStatus } from '@gorgias/helpdesk-queries'
 
-import { AVAILABLE_STATUS, UNAVAILABLE_STATUS } from '../../constants'
+import {
+    AVAILABLE_STATUS,
+    CALL_WRAP_UP_STATUS,
+    UNAVAILABLE_STATUS,
+} from '../../constants'
 import * as hooks from '../../hooks'
 import type { AgentStatusWithSystem } from '../../types'
 import { AgentAvailabilityStatusSelect } from './AgentAvailabilityStatusSelect'
@@ -302,6 +306,43 @@ describe('AgentAvailabilityStatusSelect', () => {
                     name: /Lunch break/i,
                 })
                 expect(lunchBreakOption).toBeInTheDocument()
+            })
+        })
+    })
+
+    describe('Call wrap-up status', () => {
+        it('should include wrap-up status in dropdown when agent is in wrap-up', async () => {
+            const { user } = render(
+                <AgentAvailabilityStatusSelect
+                    {...defaultProps}
+                    activeAvailabilityStatus={CALL_WRAP_UP_STATUS}
+                />,
+            )
+
+            const trigger = screen.getByRole('button', {
+                name: /Call wrap-up/i,
+            })
+            await user.click(trigger)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: /Call wrap-up/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should not include wrap-up status in dropdown when agent is not in wrap-up', async () => {
+            const { user } = render(
+                <AgentAvailabilityStatusSelect {...defaultProps} />,
+            )
+
+            const trigger = screen.getByRole('button', { name: /Available/i })
+            await user.click(trigger)
+
+            await waitFor(() => {
+                expect(
+                    screen.queryByRole('option', { name: /Call wrap-up/i }),
+                ).not.toBeInTheDocument()
             })
         })
     })

@@ -8,6 +8,7 @@ import {
     SelectTrigger,
 } from '@gorgias/axiom'
 
+import { CALL_WRAP_UP_STATUS } from '../../constants'
 import { useSelectableAgentAvailabilityStatuses } from '../../hooks'
 import type { AgentAvailabilityStatusSelectProps } from './types'
 
@@ -26,10 +27,20 @@ export function AgentAvailabilityStatusSelect({
         [activeAvailabilityStatus?.id],
     )
 
+    // only include call wrap-up status if the agent is on wrap-up,
+    // this prevents changing into wrap-up status if the agent is not on wrap-up
+    const statusesToDisplay = useMemo(
+        () =>
+            activeAvailabilityStatus?.id === CALL_WRAP_UP_STATUS.id
+                ? [CALL_WRAP_UP_STATUS, ...allStatuses]
+                : allStatuses,
+        [activeAvailabilityStatus, allStatuses],
+    )
+
     return (
         <div className={css.container}>
             <Select
-                items={allStatuses}
+                items={statusesToDisplay}
                 selectedItem={activeAvailabilityStatus}
                 onSelect={onSelect}
                 trigger={({ ref, selectedText, isPlaceholder }) => {

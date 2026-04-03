@@ -32,6 +32,7 @@ export function AgentAvailabilityCell({ userId }: Props) {
     const {
         status: agentAvailabilityStatus,
         agentPhoneUnavailabilityStatus,
+        isOnActiveCall,
         isLoading,
         errorMessage,
         hasNoData,
@@ -54,8 +55,7 @@ export function AgentAvailabilityCell({ userId }: Props) {
         return <Skeleton width={80} height={24} />
     }
 
-    // Phone status takes precedence
-    if (agentPhoneUnavailabilityStatus) {
+    if (isOnActiveCall && agentPhoneUnavailabilityStatus) {
         return (
             <LegacyBadge type="warning">
                 {agentPhoneUnavailabilityStatus.name}
@@ -67,7 +67,10 @@ export function AgentAvailabilityCell({ userId }: Props) {
         <Box gap="xs" alignItems="center">
             {!hasNoData && (
                 <AgentAvailabilityStatusSelect
-                    activeAvailabilityStatus={agentAvailabilityStatus}
+                    activeAvailabilityStatus={
+                        agentPhoneUnavailabilityStatus ||
+                        agentAvailabilityStatus
+                    }
                     onSelect={handleSelectStatus}
                     isDisabled={!canEditStatus}
                 />

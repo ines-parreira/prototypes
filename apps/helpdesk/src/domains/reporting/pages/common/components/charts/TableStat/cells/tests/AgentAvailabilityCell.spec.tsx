@@ -102,6 +102,7 @@ describe('AgentAvailabilityCell', () => {
             },
             status: { ...AVAILABLE_STATUS, is_system: true },
             agentPhoneUnavailabilityStatus: undefined,
+            isOnActiveCall: false,
             isLoading: false,
             hasNoData: false,
             isLoadingAny: false,
@@ -147,6 +148,7 @@ describe('AgentAvailabilityCell', () => {
                 availability: undefined,
                 status: undefined,
                 agentPhoneUnavailabilityStatus: undefined,
+                isOnActiveCall: false,
                 isLoading: true,
                 hasNoData: true,
                 isLoadingAny: true,
@@ -164,6 +166,7 @@ describe('AgentAvailabilityCell', () => {
                 availability: undefined,
                 status: undefined,
                 agentPhoneUnavailabilityStatus: undefined,
+                isOnActiveCall: false,
                 isLoading: false,
                 hasNoData: true,
                 isLoadingAny: false,
@@ -178,7 +181,7 @@ describe('AgentAvailabilityCell', () => {
             expect(screen.getByText(errorMsg)).toBeInTheDocument()
         })
 
-        it('should show phone status badge when agent is on phone', () => {
+        it('should show phone status badge when agent is on an active call', () => {
             useAvailabilityCellDataMock.mockReturnValue({
                 availability: {
                     user_id: userId,
@@ -187,7 +190,7 @@ describe('AgentAvailabilityCell', () => {
                 },
                 status: AVAILABLE_STATUS,
                 agentPhoneUnavailabilityStatus: {
-                    id: 'on-phone',
+                    id: 'on-a-call',
                     name: 'On a call',
                     is_system: true,
                     duration_unit: 'minutes',
@@ -195,6 +198,7 @@ describe('AgentAvailabilityCell', () => {
                     created_datetime: '2024-01-01T00:00:00Z',
                     updated_datetime: '2024-01-01T00:00:00Z',
                 },
+                isOnActiveCall: true,
                 isLoading: false,
                 hasNoData: false,
                 isLoadingAny: false,
@@ -205,6 +209,37 @@ describe('AgentAvailabilityCell', () => {
 
             expect(screen.getByText('On a call')).toBeInTheDocument()
             expect(screen.queryByText('Available')).not.toBeInTheDocument()
+        })
+
+        it('should show status picker during wrap-up so admins can change agent status', () => {
+            useAvailabilityCellDataMock.mockReturnValue({
+                availability: {
+                    user_id: userId,
+                    user_status: 'available',
+                    updated_datetime: '2024-01-01T00:00:00Z',
+                },
+                status: AVAILABLE_STATUS,
+                agentPhoneUnavailabilityStatus: {
+                    id: 'call-wrap-up',
+                    name: 'Call wrap-up',
+                    is_system: true,
+                    duration_unit: 'minutes',
+                    duration_value: 0,
+                    created_datetime: '2024-01-01T00:00:00Z',
+                    updated_datetime: '2024-01-01T00:00:00Z',
+                },
+                isOnActiveCall: false,
+                isLoading: false,
+                hasNoData: false,
+                isLoadingAny: false,
+                errorMessage: null,
+            })
+
+            renderComponent()
+
+            expect(
+                screen.getByRole('button', { name: /Call wrap-up/i }),
+            ).toBeInTheDocument()
         })
     })
 

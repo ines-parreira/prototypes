@@ -11,6 +11,7 @@ type UseAvailabilityCellPhoneStatusDataParams = {
 
 type UseAvailabilityCellPhoneStatusDataReturn = {
     agentPhoneUnavailabilityStatus: AgentStatusWithSystem | undefined
+    isOnActiveCall: boolean
     isLoading: boolean
     isError: boolean
 }
@@ -26,10 +27,11 @@ export function useAvailabilityCellPhoneStatusData({
         enabled: false,
     })
 
-    const { agentPhoneUnavailabilityStatus } = useAgentPhoneStatus({
-        userId,
-        cacheOnly: true,
-    })
+    const { agentPhoneUnavailabilityStatus, isOnActiveCall } =
+        useAgentPhoneStatus({
+            userId,
+            cacheOnly: true,
+        })
 
     const isLoading = useMemo(
         () => batchPhoneQuery.isLoading && !agentPhoneUnavailabilityStatus,
@@ -42,6 +44,7 @@ export function useAvailabilityCellPhoneStatusData({
 
     return {
         agentPhoneUnavailabilityStatus,
+        isOnActiveCall,
         isLoading,
         isError,
     }
