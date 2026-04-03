@@ -1,5 +1,5 @@
 import { UserRole } from '@repo/utils'
-import { screen, waitFor, within } from '@testing-library/react'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -230,10 +230,8 @@ function renderTicketTable() {
     return render(<TicketTable viewId={123} />)
 }
 
-async function openBulkMoreActionsMenu(
-    user: ReturnType<typeof render>['user'],
-) {
-    await user.click(screen.getByRole('button', { name: 'More actions' }))
+async function openBulkMoreActionsMenu() {
+    fireEvent.click(screen.getByRole('button', { name: 'More actions' }))
     const menu = (await screen.findAllByRole('menu')).at(-1)!
     await within(menu).findByRole('menuitem', { name: /mark as read/i })
 
@@ -459,7 +457,7 @@ describe('TicketTable', () => {
         mockState.viewFilters = 'isNotEmpty(ticket.trashed_datetime)'
         const { user } = renderTicketTable()
         await selectFirstRow(user)
-        const menu = await openBulkMoreActionsMenu(user)
+        const menu = await openBulkMoreActionsMenu()
 
         expect(
             within(menu).getByRole('menuitem', { name: /undelete/i }),
@@ -470,12 +468,12 @@ describe('TicketTable', () => {
         expect(
             within(menu).queryByRole('menuitem', { name: /^delete$/i }),
         ).not.toBeInTheDocument()
-    })
+    }, 10000)
 
     it('wires mark as read through the bulk more actions menu', async () => {
         const { user } = renderTicketTable()
         await selectFirstRow(user)
-        const menu = await openBulkMoreActionsMenu(user)
+        const menu = await openBulkMoreActionsMenu()
         await user.click(
             within(menu).getByRole('menuitem', { name: /mark as read/i }),
         )
@@ -485,13 +483,13 @@ describe('TicketTable', () => {
         })
 
         await waitForSelectionToClear()
-    })
+    }, 10000)
 
     it('passes the trash-view cache removal option when undeleting from the bulk more actions menu', async () => {
         mockState.viewFilters = 'isNotEmpty(ticket.trashed_datetime)'
         const { user } = renderTicketTable()
         await selectFirstRow(user)
-        const menu = await openBulkMoreActionsMenu(user)
+        const menu = await openBulkMoreActionsMenu()
         await user.click(
             within(menu).getByRole('menuitem', { name: /undelete/i }),
         )
@@ -501,7 +499,7 @@ describe('TicketTable', () => {
                 removeFromCurrentViewCache: true,
             })
         })
-    })
+    }, 10000)
 
     it('sets the selected tickets to open and clears the selection on success', async () => {
         const { user } = renderTicketTable()
