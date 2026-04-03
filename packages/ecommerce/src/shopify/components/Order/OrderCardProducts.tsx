@@ -83,14 +83,11 @@ export function OrderCardProducts({
                     </Box>
                 )}
                 <Box>
-                    <Text
-                        size="sm"
-                        variant="regular"
-                    >{`${lineItems.length} ${pluralize('item', lineItems.length)}`}</Text>
+                    <Text variant="regular">{`${lineItems.length} ${pluralize('item', lineItems.length)}`}</Text>
                 </Box>
 
                 <Box>
-                    <Text size="sm" variant="regular">
+                    <Text variant="regular">
                         {moneySymbol}
                         {totalPrice}
                     </Text>

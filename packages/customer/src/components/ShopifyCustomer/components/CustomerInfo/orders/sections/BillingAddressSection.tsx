@@ -51,7 +51,6 @@ export function BillingAddressSection({ billingAddress }: Props) {
                         as="button"
                         icon="copy"
                         intent="regular"
-                        size="sm"
                         variant="tertiary"
                         onClick={handleCopyToClipboard}
                         aria-label="Copy billing address to clipboard"

@@ -99,7 +99,6 @@ export function CustomActionsSection({
                 <Menu
                     trigger={
                         <Button
-                            size="sm"
                             variant="secondary"
                             leadingSlot="add-plus"
                             isDisabled={isLoading}
@@ -132,7 +131,7 @@ export function CustomActionsSection({
                                 <EditableActionRow
                                     key={`button-${index}-${button.label}-${button.action.url}`}
                                     label={
-                                        <Button variant="secondary" size="sm">
+                                        <Button variant="secondary">
                                             {button.label}
                                         </Button>
                                     }
@@ -155,7 +154,6 @@ export function CustomActionsSection({
                                         <Link
                                             target="_blank"
                                             trailingSlot="external-link"
-                                            size="sm"
                                         >
                                             {link.label}
                                         </Link>

@@ -59,7 +59,6 @@ export function CustomActions({
                                 href={resolve(link.url)}
                                 target="_blank"
                                 trailingSlot="external-link"
-                                size="sm"
                             >
                                 {resolve(link.label)}
                             </Link>

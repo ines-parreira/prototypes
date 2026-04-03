@@ -55,7 +55,6 @@ export function OrderSidePanelHeader({
                     as="button"
                     icon="close"
                     intent="regular"
-                    size="sm"
                     variant="tertiary"
                     onClick={onClose}
                     aria-label="Close preview"

@@ -24,7 +24,6 @@ function CheckoutUrlField({ url }: { url: string }) {
                 as="button"
                 icon="copy"
                 intent="regular"
-                size="sm"
                 variant="tertiary"
                 onClick={() => copyToClipboard(url)}
                 aria-label="Copy checkout URL"

@@ -93,10 +93,8 @@ export function RefundPricingSection({
                 justifyContent="space-between"
                 className={css.totalRow}
             >
-                <Text size="sm" variant="bold">
-                    Net payment
-                </Text>
-                <Text size="sm" variant="bold">
+                <Text variant="bold">Net payment</Text>
+                <Text variant="bold">
                     {netPayment < 0 ? '-' : ''}
                     {moneySymbol}
                     {Math.abs(netPayment).toFixed(2)}

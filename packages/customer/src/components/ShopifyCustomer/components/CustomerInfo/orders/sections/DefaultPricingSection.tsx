@@ -60,10 +60,8 @@ export function DefaultPricingSection({
                     justifyContent="space-between"
                     className={css.totalRow}
                 >
-                    <Text size="sm" variant="bold">
-                        Total
-                    </Text>
-                    <Text size="sm" variant="bold">
+                    <Text variant="bold">Total</Text>
+                    <Text variant="bold">
                         {moneySymbol}
                         {totalPrice}
                     </Text>

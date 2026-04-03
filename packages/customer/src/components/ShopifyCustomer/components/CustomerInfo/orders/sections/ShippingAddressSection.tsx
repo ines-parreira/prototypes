@@ -91,7 +91,6 @@ export function ShippingAddressSection({
                         as="button"
                         icon="copy"
                         intent="regular"
-                        size="sm"
                         variant="tertiary"
                         onClick={handleCopyToClipboard}
                         aria-label="Copy to clipboard"
@@ -100,7 +99,6 @@ export function ShippingAddressSection({
                         as="button"
                         icon="edit"
                         intent="regular"
-                        size="sm"
                         variant="tertiary"
                         onClick={handleEditClick}
                         aria-label="Edit shipping address"

@@ -55,7 +55,6 @@ export function FieldWithCopyButton({
                     as="button"
                     icon="copy"
                     intent="regular"
-                    size="sm"
                     variant="tertiary"
                     onClick={handleCopy}
                     aria-label="Copy to clipboard"

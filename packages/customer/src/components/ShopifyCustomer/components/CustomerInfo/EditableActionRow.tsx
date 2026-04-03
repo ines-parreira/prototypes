@@ -28,14 +28,12 @@ export function EditableActionRow({
             {label}
             <div className={css.actionControls}>
                 <Button
-                    size="sm"
                     variant="tertiary"
                     icon="edit"
                     aria-label={editAriaLabel}
                     onClick={onEdit}
                 />
                 <Button
-                    size="sm"
                     variant="tertiary"
                     icon="trash-empty"
                     intent="destructive"

@@ -98,7 +98,6 @@ export function ActionButton({
         <>
             <Button
                 variant="secondary"
-                size="sm"
                 onClick={handleAction}
                 isDisabled={isLoading}
             >

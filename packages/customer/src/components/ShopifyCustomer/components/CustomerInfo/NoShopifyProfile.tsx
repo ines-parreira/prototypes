@@ -7,14 +7,12 @@ type Props = {
 export function NoShopifyProfile({ onSyncProfile }: Props) {
     return (
         <Box flexDirection="column" gap="sm">
-            <Text size="sm">
+            <Text>
                 No matching profile found. Do you want to sync this customer to
                 Shopify?
             </Text>
             <Box>
-                <Button size="sm" onClick={onSyncProfile}>
-                    Sync profile
-                </Button>
+                <Button onClick={onSyncProfile}>Sync profile</Button>
             </Box>
         </Box>
     )

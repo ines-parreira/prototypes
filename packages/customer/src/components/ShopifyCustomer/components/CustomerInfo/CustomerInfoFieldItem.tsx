@@ -28,7 +28,7 @@ export function CustomerInfoFieldItem({ field, context, className }: Props) {
     return (
         <OverflowListItem className={className}>
             <FieldRow label={field.label} className={css.fieldRow}>
-                <Text size="sm" overflow="ellipsis" className={css.fieldValue}>
+                <Text overflow="ellipsis" className={css.fieldValue}>
                     {displayValue}
                 </Text>
             </FieldRow>

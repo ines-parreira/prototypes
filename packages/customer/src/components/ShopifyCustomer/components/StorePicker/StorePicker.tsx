@@ -98,7 +98,6 @@ export function StorePicker({
                 onSyncProfile && (
                     <ListFooter>
                         <Button
-                            size="sm"
                             variant="tertiary"
                             leadingSlot="add-plus"
                             onClick={handleSyncClick}

@@ -33,7 +33,6 @@ export function CustomerMetricsSection({
                     Customer metrics
                 </Text>
                 <Button
-                    size="sm"
                     variant="secondary"
                     leadingSlot="edit"
                     onClick={onEditMetricsClick}

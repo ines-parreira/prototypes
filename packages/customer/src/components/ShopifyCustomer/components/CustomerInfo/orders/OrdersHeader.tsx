@@ -29,7 +29,6 @@ export function OrdersHeader({
             </Heading>
             {onCreateOrder && (
                 <Button
-                    size="sm"
                     variant="secondary"
                     leadingSlot="add-plus"
                     onClick={onCreateOrder}

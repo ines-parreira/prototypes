@@ -27,17 +27,13 @@ export function OrderCardHeader({
                     gap="xxxs"
                 >
                     <Box minWidth={0}>
-                        <Text size="sm" variant="bold" overflow="ellipsis">
+                        <Text variant="bold" overflow="ellipsis">
                             {orderName}
                         </Text>
                     </Box>
 
                     <Box flexShrink="0" className={css.noWrap}>
-                        <Text
-                            size="sm"
-                            variant="regular"
-                            className={css.dateText}
-                        >
+                        <Text variant="regular" className={css.dateText}>
                             {displayedDate}
                         </Text>
                     </Box>

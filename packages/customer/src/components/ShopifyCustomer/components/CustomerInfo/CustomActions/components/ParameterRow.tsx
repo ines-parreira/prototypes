@@ -56,7 +56,6 @@ export function ParameterRow({ name, onRemove }: Props) {
                             handleChange({ type: item.id as ParameterType })
                         }
                         aria-label="Type"
-                        size="sm"
                     >
                         {(item: SelectItem) => (
                             <ListItem id={item.id} label={item.name} />
@@ -68,7 +67,6 @@ export function ParameterRow({ name, onRemove }: Props) {
                         value={param.label ?? ''}
                         onChange={(val) => handleChange({ label: val })}
                         placeholder="Display name"
-                        size="sm"
                         aria-label="Label"
                     />
                 </Box>
@@ -76,7 +74,6 @@ export function ParameterRow({ name, onRemove }: Props) {
                     <TextField
                         value={param.key}
                         onChange={(val) => handleChange({ key: val })}
-                        size="sm"
                         aria-label="Key"
                     />
                 </Box>
@@ -87,7 +84,6 @@ export function ParameterRow({ name, onRemove }: Props) {
                         <TextField
                             value={param.value}
                             onChange={(val) => handleChange({ value: val })}
-                            size="sm"
                             aria-label="Value"
                         />
                     </Box>
@@ -111,7 +107,6 @@ export function ParameterRow({ name, onRemove }: Props) {
                     />
                 </div>
                 <Button
-                    size="sm"
                     variant="tertiary"
                     intent="destructive"
                     onClick={onRemove}

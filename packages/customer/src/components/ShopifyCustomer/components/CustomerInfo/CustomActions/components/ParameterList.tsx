@@ -30,9 +30,7 @@ export function ParameterList({ name, label: listLabel }: Props) {
 
     return (
         <Box flexDirection="column" gap="xs">
-            <Text size="sm" variant="bold">
-                {listLabel}
-            </Text>
+            <Text variant="bold">{listLabel}</Text>
             {fields.length > 0 && (
                 <Box flexDirection="row" gap="xs" alignItems="flex-end">
                     <div className={css.typeColumn}>
@@ -77,7 +75,6 @@ export function ParameterList({ name, label: listLabel }: Props) {
             ))}
             <Box>
                 <Button
-                    size="sm"
                     variant="tertiary"
                     leadingSlot="add-plus"
                     onClick={handleAdd}

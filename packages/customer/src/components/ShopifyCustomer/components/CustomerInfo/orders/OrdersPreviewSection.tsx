@@ -39,7 +39,6 @@ export function OrdersPreviewSection({
                         Orders
                     </Text>
                     <Button
-                        size="sm"
                         variant="secondary"
                         leadingSlot="edit"
                         onClick={onEditOrderClick}
