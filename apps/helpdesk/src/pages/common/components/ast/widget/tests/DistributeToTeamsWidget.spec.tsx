@@ -15,15 +15,23 @@ jest.mock('@gorgias/axiom', () => ({
         value,
         onChange,
         placeholder,
+        onSearchChange,
     }: {
         children: (option: { id: number; label: string }) => React.ReactNode
         items: Array<{ id: number; label: string }>
         value?: { id: number; label: string }
         onChange: (option: { id: number; label: string }) => void
         placeholder?: string
+        onSearchChange?: (value: string) => void
     }) => (
         <div data-testid="select-field">
             <span>{value?.label || placeholder}</span>
+            {onSearchChange && (
+                <input
+                    data-testid="search-input"
+                    onChange={(e) => onSearchChange(e.target.value)}
+                />
+            )}
             <ul>
                 {items.map((item) => (
                     <li
@@ -165,6 +173,27 @@ describe('<DistributeToTeamsWidget />', () => {
         expect(defaultProps.onChange).toHaveBeenCalledWith(
             JSON.stringify([{ team_id: 2, percentage: 50 }]),
         )
+    })
+
+    it('should filter teams by search text', () => {
+        renderWidget({
+            value: JSON.stringify([
+                { team_id: '', percentage: 50 },
+                { team_id: 2, percentage: 50 },
+            ]),
+        })
+
+        const searchInputs = screen.getAllByTestId('search-input')
+        fireEvent.change(searchInputs[0], { target: { value: 'Team A' } })
+
+        const selectFields = screen.getAllByTestId('select-field')
+        const firstRowOptions =
+            selectFields[0].querySelectorAll('[role="option"]')
+        const optionTexts = Array.from(firstRowOptions).map(
+            (o) => o.textContent,
+        )
+        expect(optionTexts).toContain('Team A')
+        expect(optionTexts).not.toContain('Team C')
     })
 
     it('should filter out already-selected teams from other row dropdowns', () => {

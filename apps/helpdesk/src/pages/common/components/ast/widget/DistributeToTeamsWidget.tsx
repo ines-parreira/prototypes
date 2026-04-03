@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 
 import type { List as ImmutableList } from 'immutable'
 import { connect } from 'react-redux'
@@ -32,6 +32,109 @@ type StateProps = {
 
 type Props = OwnProps & StateProps
 
+type TeamRowProps = {
+    entry: TeamEntry
+    index: number
+    allTeamOptions: TeamOption[]
+    selectedTeamIds: (string | number)[]
+    showRemove: boolean
+    onTeamChange: (index: number, option: TeamOption) => void
+    onPercentageChange: (index: number, pct: number) => void
+    onRemove: (index: number) => void
+}
+
+const renderOption = (option: TeamOption) => (
+    <ListItem id={option.id} label={option.label} />
+)
+
+const TeamRow = React.memo(function TeamRow({
+    entry,
+    index,
+    allTeamOptions,
+    selectedTeamIds,
+    showRemove,
+    onTeamChange,
+    onPercentageChange,
+    onRemove,
+}: TeamRowProps) {
+    const [search, setSearch] = useState('')
+
+    const items = useMemo(
+        () =>
+            allTeamOptions
+                .filter((opt) => !selectedTeamIds.includes(opt.id))
+                .filter(
+                    (opt) =>
+                        !search ||
+                        opt.label.toLowerCase().includes(search.toLowerCase()),
+                ),
+        [allTeamOptions, selectedTeamIds, search],
+    )
+
+    const selectedOption = useMemo(
+        () =>
+            entry.team_id
+                ? allTeamOptions.find((opt) => opt.id === entry.team_id)
+                : undefined,
+        [allTeamOptions, entry.team_id],
+    )
+
+    const handleTeamChange = useCallback(
+        (option: TeamOption) => {
+            onTeamChange(index, option)
+            setSearch('')
+        },
+        [onTeamChange, index],
+    )
+
+    const handlePercentageChange = useCallback(
+        (e: React.ChangeEvent<HTMLInputElement>) =>
+            onPercentageChange(index, parseInt(e.target.value, 10) || 0),
+        [onPercentageChange, index],
+    )
+
+    const handleRemove = useCallback(() => onRemove(index), [onRemove, index])
+
+    return (
+        <div className={css.teamRow}>
+            <div className={css.teamSelect}>
+                <SelectField<TeamOption>
+                    placeholder="Select team"
+                    items={items}
+                    value={selectedOption}
+                    onChange={handleTeamChange}
+                    isSearchable
+                    searchValue={search}
+                    onSearchChange={setSearch}
+                    maxHeight={200}
+                >
+                    {renderOption}
+                </SelectField>
+            </div>
+            <div className={css.percentageGroup}>
+                <input
+                    type="number"
+                    value={entry.percentage || ''}
+                    onChange={handlePercentageChange}
+                    className={css.percentageInput}
+                    min={1}
+                    max={100}
+                />
+                <span>%</span>
+            </div>
+            {showRemove && (
+                <button
+                    type="button"
+                    onClick={handleRemove}
+                    className={css.removeButton}
+                >
+                    &times;
+                </button>
+            )}
+        </div>
+    )
+})
+
 function parseTeams(value: string | TeamEntry[]): TeamEntry[] {
     if (Array.isArray(value)) return value
     if (typeof value === 'string' && value) {
@@ -47,6 +150,8 @@ function parseTeams(value: string | TeamEntry[]): TeamEntry[] {
 
 function DistributeToTeamsWidget({ teams, value, onChange, className }: Props) {
     const entries = useMemo(() => parseTeams(value), [value])
+    const entriesRef = useRef(entries)
+    entriesRef.current = entries
 
     const emitChange = useCallback(
         (updated: TeamEntry[]) => {
@@ -57,33 +162,33 @@ function DistributeToTeamsWidget({ teams, value, onChange, className }: Props) {
 
     const handleTeamChange = useCallback(
         (index: number, option: TeamOption) => {
-            const updated = [...entries]
+            const updated = [...entriesRef.current]
             updated[index] = { ...updated[index], team_id: option.id }
             emitChange(updated)
         },
-        [entries, emitChange],
+        [emitChange],
     )
 
     const handlePercentageChange = useCallback(
         (index: number, pct: number) => {
-            const updated = [...entries]
+            const updated = [...entriesRef.current]
             updated[index] = { ...updated[index], percentage: pct }
             emitChange(updated)
         },
-        [entries, emitChange],
+        [emitChange],
     )
 
     const handleRemove = useCallback(
         (index: number) => {
-            const updated = entries.filter((_, i) => i !== index)
+            const updated = entriesRef.current.filter((_, i) => i !== index)
             emitChange(updated)
         },
-        [entries, emitChange],
+        [emitChange],
     )
 
     const handleAdd = useCallback(() => {
-        emitChange([...entries, { team_id: '', percentage: 0 }])
-    }, [entries, emitChange])
+        emitChange([...entriesRef.current, { team_id: '', percentage: 0 }])
+    }, [emitChange])
 
     const allTeamOptions: TeamOption[] = useMemo(
         () =>
@@ -96,25 +201,15 @@ function DistributeToTeamsWidget({ teams, value, onChange, className }: Props) {
         [teams],
     )
 
-    const getSelectedOption = useCallback(
-        (teamId: string | number): TeamOption | undefined => {
-            if (!teamId) return undefined
-            return allTeamOptions.find((opt) => opt.id === teamId)
-        },
-        [allTeamOptions],
-    )
-
-    const getOptionsForRow = useCallback(
-        (index: number): TeamOption[] => {
-            const selectedIds = entries
-                .filter((_, i) => i !== index)
-                .map((e) => e.team_id)
-                .filter(Boolean)
-            return allTeamOptions.filter(
-                (opt: TeamOption) => !selectedIds.includes(opt.id),
-            )
-        },
-        [entries, allTeamOptions],
+    const selectedTeamIdsByRow = useMemo(
+        () =>
+            entries.map((_, index) =>
+                entries
+                    .filter((_, i) => i !== index)
+                    .map((e) => e.team_id)
+                    .filter(Boolean),
+            ),
+        [entries],
     )
 
     const total = entries.reduce((sum, e) => sum + (e.percentage || 0), 0)
@@ -123,47 +218,17 @@ function DistributeToTeamsWidget({ teams, value, onChange, className }: Props) {
     return (
         <div className={`${css.container} ${className || ''}`}>
             {entries.map((entry, index) => (
-                <div key={index} className={css.teamRow}>
-                    <div className={css.teamSelect}>
-                        <SelectField<TeamOption>
-                            placeholder="Select team"
-                            items={getOptionsForRow(index)}
-                            value={getSelectedOption(entry.team_id)}
-                            onChange={(option: TeamOption) =>
-                                handleTeamChange(index, option)
-                            }
-                        >
-                            {(option: TeamOption) => (
-                                <ListItem id={option.id} label={option.label} />
-                            )}
-                        </SelectField>
-                    </div>
-                    <div className={css.percentageGroup}>
-                        <input
-                            type="number"
-                            value={entry.percentage || ''}
-                            onChange={(e) =>
-                                handlePercentageChange(
-                                    index,
-                                    parseInt(e.target.value, 10) || 0,
-                                )
-                            }
-                            className={css.percentageInput}
-                            min={1}
-                            max={100}
-                        />
-                        <span>%</span>
-                    </div>
-                    {entries.length > 1 && (
-                        <button
-                            type="button"
-                            onClick={() => handleRemove(index)}
-                            className={css.removeButton}
-                        >
-                            &times;
-                        </button>
-                    )}
-                </div>
+                <TeamRow
+                    key={entry.team_id || `empty-${index}`}
+                    entry={entry}
+                    index={index}
+                    allTeamOptions={allTeamOptions}
+                    selectedTeamIds={selectedTeamIdsByRow[index]}
+                    showRemove={entries.length > 1}
+                    onTeamChange={handleTeamChange}
+                    onPercentageChange={handlePercentageChange}
+                    onRemove={handleRemove}
+                />
             ))}
             <div className={css.footer}>
                 <button
