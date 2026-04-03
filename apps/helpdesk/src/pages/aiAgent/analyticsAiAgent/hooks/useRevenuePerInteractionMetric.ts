@@ -2,7 +2,6 @@ import type { MetricTrend } from '@repo/reporting'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
@@ -27,7 +26,6 @@ import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useG
 
 export const useRevenuePerInteractionMetric = (): MetricTrend => {
     const { statsFilters, userTimezone } = useAutomateFilters()
-    const { cleanStatsFilters } = useStatsFilters()
 
     const stage = useGetNewStatsFeatureFlagMigration(
         METRIC_NAMES.AI_AGENT_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION,
@@ -50,13 +48,13 @@ export const useRevenuePerInteractionMetric = (): MetricTrend => {
 
     const v2Trend = useStatsMetricTrend(
         revenuePerInteractionQueryV2Factory({
-            filters: cleanStatsFilters,
+            filters: statsFilters,
             timezone: userTimezone,
         }),
         revenuePerInteractionQueryV2Factory({
             filters: {
-                ...cleanStatsFilters,
-                period: getPreviousPeriod(cleanStatsFilters.period),
+                ...statsFilters,
+                period: getPreviousPeriod(statsFilters.period),
             },
             timezone: userTimezone,
         }),

@@ -2,7 +2,6 @@ import { assumeMock, renderHook } from '@repo/testing'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
@@ -30,7 +29,6 @@ import {
 } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
 
 jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
-jest.mock('domains/reporting/hooks/support-performance/useStatsFilters')
 jest.mock('domains/reporting/hooks/useStatsMetricTrend')
 jest.mock(
     'domains/reporting/pages/automate/aiSalesAgent/metrics/useGenericTrend',
@@ -45,7 +43,6 @@ jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
 
 const mockUseAutomateFilters = assumeMock(useAutomateFilters)
-const mockUseStatsFilters = assumeMock(useStatsFilters)
 const mockUseStatsMetricTrend = assumeMock(useStatsMetricTrend)
 const mockFetchStatsMetricTrend = assumeMock(fetchStatsMetricTrend)
 const mockUseGenericTrend = assumeMock(useGenericTrend)
@@ -71,12 +68,6 @@ const statsFilters: StatsFilters = {
         end_datetime: '2024-01-31T23:59:59.000',
     },
 }
-const v2StatsFilters: StatsFilters = {
-    period: {
-        start_datetime: '2024-02-01T00:00:00.000',
-        end_datetime: '2024-02-29T23:59:59.000',
-    },
-}
 const timezone = 'UTC'
 
 const trendData = {
@@ -91,11 +82,6 @@ describe('useRevenuePerInteractionMetric', () => {
 
         mockUseAutomateFilters.mockReturnValue({
             statsFilters,
-            userTimezone: timezone,
-            granularity: ReportingGranularity.Day,
-        })
-        mockUseStatsFilters.mockReturnValue({
-            cleanStatsFilters: v2StatsFilters,
             userTimezone: timezone,
             granularity: ReportingGranularity.Day,
         })
@@ -209,13 +195,13 @@ describe('useRevenuePerInteractionMetric', () => {
 
             expect(mockUseStatsMetricTrend).toHaveBeenCalledWith(
                 revenuePerInteractionQueryV2Factory({
-                    filters: v2StatsFilters,
+                    filters: statsFilters,
                     timezone,
                 }),
                 revenuePerInteractionQueryV2Factory({
                     filters: {
-                        ...v2StatsFilters,
-                        period: getPreviousPeriod(v2StatsFilters.period),
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
                     },
                     timezone,
                 }),
@@ -308,13 +294,13 @@ describe('useRevenuePerInteractionMetric', () => {
 
             expect(mockUseStatsMetricTrend).toHaveBeenCalledWith(
                 revenuePerInteractionQueryV2Factory({
-                    filters: v2StatsFilters,
+                    filters: statsFilters,
                     timezone,
                 }),
                 revenuePerInteractionQueryV2Factory({
                     filters: {
-                        ...v2StatsFilters,
-                        period: getPreviousPeriod(v2StatsFilters.period),
+                        ...statsFilters,
+                        period: getPreviousPeriod(statsFilters.period),
                     },
                     timezone,
                 }),
