@@ -824,14 +824,25 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        renderItem(createAiAgentInternalNoteItem())
+        const item = createAiAgentInternalNoteItem()
+
+        renderItem(item)
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
         expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
+        expect(screen.getByText('AiAgentReasoningSlot')).toBeInTheDocument()
+        expect(renderAiAgentReasoning).toHaveBeenCalledWith({
+            message: item.data,
+        })
+    })
+
+    it('does not render the reasoning slot for AI agent internal note when renderAiAgentReasoning is undefined', () => {
+        renderItem(createAiAgentInternalNoteItem())
+
+        expect(screen.getByText('AI Agent')).toBeInTheDocument()
         expect(
             screen.queryByText('AiAgentReasoningSlot'),
         ).not.toBeInTheDocument()
-        expect(renderAiAgentReasoning).not.toHaveBeenCalled()
     })
 
     it('renders AI agent draft message item', () => {

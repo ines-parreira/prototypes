@@ -1,6 +1,7 @@
 import { AIThinking, Box } from '@gorgias/axiom'
 
 import type { TicketThreadAiAgentInternalNoteItem } from '../../../hooks/messages/types'
+import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { MessageBody } from '../../MessageBubble/components/MessageBody'
 import { MessageErrors } from '../../MessageBubble/components/MessageErrors'
 import { MessageHeaderContainer } from '../../MessageBubble/components/MessageHeader/Layout'
@@ -17,6 +18,7 @@ type AiAgentTicketThreadInternalNoteProps = {
 export function AiAgentTicketThreadInternalNote({
     item,
 }: AiAgentTicketThreadInternalNoteProps) {
+    const { renderAiAgentReasoning } = useTicketThreadLegacyBridge()
     return (
         <MessageBubble variant="internal-note">
             <MessageHeaderContainer>
@@ -42,6 +44,7 @@ export function AiAgentTicketThreadInternalNote({
                     ticketId={item.data.ticket_id}
                 />
             )}
+            {renderAiAgentReasoning?.({ message: item.data })}
         </MessageBubble>
     )
 }
