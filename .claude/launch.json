@@ -1,0 +1,29 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "helpdesk-proxy",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:proxy"],
+      "port": 8080
+    },
+    {
+      "name": "helpdesk-local",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["dev:local"],
+      "port": 8080
+    },
+    {
+      "name": "storybook",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@repo/helpdesk", "storybook:dev"],
+      "port": 6006
+    },
+    {
+      "name": "prototype",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4321", "--directory", "."],
+      "port": 4321
+    }
+  ]
+}
