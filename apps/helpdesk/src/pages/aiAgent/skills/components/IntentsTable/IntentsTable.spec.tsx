@@ -10,6 +10,7 @@ import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiA
 
 import type { TransformedIntent } from '../../hooks/useIntentsTable'
 import { useIntentsTable } from '../../hooks/useIntentsTable'
+import { useSkillsArticles } from '../../hooks/useSkillsArticles'
 import type { TransformedArticle } from '../../types'
 import { IntentStatus } from '../../types'
 import { MetricCell } from '../SharedTableComponents/MetricCells'
@@ -18,7 +19,29 @@ import { LinkToSkillModal } from './LinkToSkillModal'
 
 const mockUpdateIntentStatus = jest.fn().mockResolvedValue(undefined)
 const mockUpdateGuidanceArticle = jest.fn().mockResolvedValue(undefined)
+const mockPush = jest.fn()
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: () => ({ push: mockPush }),
+}))
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: () => ({
+        routes: {
+            skills: '/app/ai-agent/shopify/test-shop/skills',
+            skillDetail: (id: number) =>
+                `/app/ai-agent/shopify/test-shop/skills/${id}`,
+            newSkill: '/app/ai-agent/shopify/test-shop/skills/new',
+        },
+    }),
+}))
+jest.mock(
+    'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName',
+    () => ({
+        useStoreIntegrationByShopName: () => ({ id: 456 }),
+    }),
+)
+jest.mock('../../hooks/useSkillsArticles')
 jest.mock('pages/aiAgent/skills/hooks/useIntentsTable', () => ({
     ...jest.requireActual('pages/aiAgent/skills/hooks/useIntentsTable'),
     useIntentsTable: jest.fn(),
@@ -60,6 +83,7 @@ jest.mock('./LinkToSkillModal', () => ({
 const mockUseIntentsTable = useIntentsTable as jest.Mock
 const mockUseAiAgentStoreConfigurationContext =
     useAiAgentStoreConfigurationContext as jest.Mock
+const mockUseSkillsArticles = useSkillsArticles as jest.Mock
 
 const mockStore = configureMockStore([thunk])
 
@@ -171,6 +195,15 @@ describe('IntentsTable', () => {
         jest.clearAllMocks()
         mockUpdateIntentStatus.mockResolvedValue(undefined)
         mockUpdateGuidanceArticle.mockResolvedValue(undefined)
+        mockPush.mockClear()
+
+        mockUseSkillsArticles.mockReturnValue({
+            articles: [],
+            isLoading: false,
+            isError: false,
+            isMetricsLoading: false,
+            metricsDateRange: undefined,
+        })
 
         store = mockStore({})
 
@@ -1057,6 +1090,202 @@ describe('IntentsTable', () => {
             expect(
                 screen.queryByText('Disable intent?'),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('handleOpenSkill — clicking a linked article', () => {
+        it('should navigate to the skill editor for the linked article', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const expandButton = screen.getAllByRole('button', {
+                name: /expand/i,
+            })[1]
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Shipping delays')).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByText('Shipping delays'))
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/test-shop/skills/1',
+            )
+        })
+    })
+
+    describe('handleCreateNewSkill — selecting "New skill" from dropdown', () => {
+        it('should navigate to skill editor with intent name and description as route state', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const expandButton = screen.getAllByRole('button', {
+                name: /expand/i,
+            })[0]
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Status')).toBeInTheDocument()
+            })
+
+            const linkButtons = screen.getAllByRole('button', {
+                name: /link to skill/i,
+            })
+            await user.click(linkButtons[0])
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: /new skill/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(screen.getByRole('option', { name: /new skill/i }))
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-agent/shopify/test-shop/skills/new',
+                {
+                    title: 'Questions about order status or tracking information',
+                    intents: ['order::status'],
+                },
+            )
+        })
+    })
+
+    describe('handleLinkToSkillConfirm — redirect after successful link', () => {
+        const mockLinkToSkillModal = LinkToSkillModal as jest.Mock
+
+        const articleWithLocale: TransformedArticle = {
+            id: 42,
+            title: 'Order Status Guidance',
+            intents: [
+                { name: 'order::cancel', formattedName: 'Order / Cancel' },
+            ],
+            status: 'enabled',
+            publishedVersion: {
+                locale: 'en-US',
+                article_translation_version_id: 1,
+            },
+        }
+
+        const getOnConfirm = () => {
+            const { calls } = mockLinkToSkillModal.mock
+            return calls[calls.length - 1][0].onConfirm as (
+                intentId: string,
+                article: TransformedArticle,
+            ) => void
+        }
+
+        it('should redirect to the skill editor after a successful link', async () => {
+            renderComponent()
+            const onConfirm = getOnConfirm()
+
+            onConfirm('order::status', articleWithLocale)
+
+            await waitFor(() => {
+                expect(mockPush).toHaveBeenCalledWith(
+                    '/app/ai-agent/shopify/test-shop/skills/42',
+                )
+            })
+        })
+
+        it('should not redirect when the link fails', async () => {
+            mockUpdateGuidanceArticle.mockRejectedValue(new Error('API error'))
+            renderComponent()
+            const onConfirm = getOnConfirm()
+
+            onConfirm('order::status', articleWithLocale)
+
+            await waitFor(() => {
+                expect(JSON.stringify(store.getActions())).toContain(
+                    'An error occurred while linking the intent',
+                )
+            })
+
+            expect(mockPush).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('"Existing skill" disabled state', () => {
+        it('should disable "Existing skill" option when there are no existing skills', async () => {
+            const user = userEvent.setup()
+            mockUseSkillsArticles.mockReturnValue({
+                articles: [],
+                isLoading: false,
+                isError: false,
+                isMetricsLoading: false,
+                metricsDateRange: undefined,
+            })
+
+            renderComponent()
+
+            const expandButton = screen.getAllByRole('button', {
+                name: /expand/i,
+            })[0]
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Status')).toBeInTheDocument()
+            })
+
+            const linkButtons = screen.getAllByRole('button', {
+                name: /link to skill/i,
+            })
+            await user.click(linkButtons[0])
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: /existing skill/i }),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.getByRole('option', { name: /existing skill/i }),
+            ).toHaveAttribute('aria-disabled', 'true')
+        })
+
+        it('should enable "Existing skill" option when there are existing skills', async () => {
+            const user = userEvent.setup()
+            mockUseSkillsArticles.mockReturnValue({
+                articles: [
+                    {
+                        id: 1,
+                        title: 'Some Skill',
+                        intents: [],
+                        status: 'enabled',
+                    },
+                ],
+                isLoading: false,
+                isError: false,
+                isMetricsLoading: false,
+                metricsDateRange: undefined,
+            })
+
+            renderComponent()
+
+            const expandButton = screen.getAllByRole('button', {
+                name: /expand/i,
+            })[0]
+            await user.click(expandButton)
+
+            await waitFor(() => {
+                expect(screen.getByText('Status')).toBeInTheDocument()
+            })
+
+            const linkButtons = screen.getAllByRole('button', {
+                name: /link to skill/i,
+            })
+            await user.click(linkButtons[0])
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: /existing skill/i }),
+                ).toBeInTheDocument()
+            })
+
+            expect(
+                screen.getByRole('option', { name: /existing skill/i }),
+            ).not.toHaveAttribute('aria-disabled', 'true')
         })
     })
 })

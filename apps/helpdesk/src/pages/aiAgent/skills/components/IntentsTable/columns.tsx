@@ -3,6 +3,9 @@ import {
     Box,
     Button,
     Icon,
+    ListItem,
+    ListSection,
+    Select,
     Skeleton,
     Text,
     ToggleField,
@@ -46,7 +49,10 @@ interface GetColumnsParams {
     statsDisplayMode: StatsDisplayMode
     isMetricsLoading?: boolean
     onToggleEnabled: (intentId: string, enabled: boolean) => void
-    onLinkToSkill: (intentId: string) => void
+    onLinkToExistingSkill: (intentId: string) => void
+    onCreateNewSkill: (intentName: string, intentTitle?: string) => void
+    onOpenSkill: (skillId: number) => void
+    hasExistingSkills: boolean
     expandedRows: Set<string>
     onToggleExpanded: (rowId: string) => void
     outcomeCustomFieldId?: number
@@ -59,7 +65,10 @@ export const getColumns = ({
     statsDisplayMode,
     isMetricsLoading = false,
     onToggleEnabled,
-    onLinkToSkill,
+    onLinkToExistingSkill,
+    onCreateNewSkill,
+    onOpenSkill,
+    hasExistingSkills,
     expandedRows,
     onToggleExpanded,
     outcomeCustomFieldId,
@@ -261,26 +270,82 @@ export const getColumns = ({
                     intent.articles && intent.articles.length > 0
 
                 if (!hasArticles) {
+                    const linkOptions = [
+                        {
+                            id: 'link-options',
+                            items: [
+                                {
+                                    id: 'existing-skill',
+                                    label: 'Existing skill',
+                                },
+                                { id: 'new-skill', label: 'New skill' },
+                            ],
+                        },
+                    ]
+
                     return (
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            trailingSlot="arrow-chevron-down"
-                            onClick={() => onLinkToSkill(intent.id)}
+                        <Select
+                            items={linkOptions}
+                            onSelect={(item: { id: string; label: string }) => {
+                                if (item.id === 'existing-skill') {
+                                    onLinkToExistingSkill(intent.id)
+                                } else {
+                                    onCreateNewSkill(
+                                        intent.name,
+                                        intent.description,
+                                    )
+                                }
+                            }}
+                            aria-label="Link to skill"
+                            trigger={({ ref, isOpen }) => (
+                                <Button
+                                    ref={ref}
+                                    variant="secondary"
+                                    size="sm"
+                                    trailingSlot={
+                                        isOpen
+                                            ? 'arrow-chevron-up'
+                                            : 'arrow-chevron-down'
+                                    }
+                                >
+                                    Link to skill
+                                </Button>
+                            )}
                         >
-                            Link to skill
-                        </Button>
+                            {(section: {
+                                id: string
+                                items: { id: string; label: string }[]
+                            }) => (
+                                <ListSection
+                                    id={section.id}
+                                    items={section.items}
+                                >
+                                    {(item: { id: string; label: string }) => (
+                                        <ListItem
+                                            id={item.id}
+                                            textValue={item.label}
+                                            label={item.label}
+                                            isDisabled={
+                                                item.id === 'existing-skill' &&
+                                                !hasExistingSkills
+                                            }
+                                        />
+                                    )}
+                                </ListSection>
+                            )}
+                        </Select>
                     )
                 }
 
-                const articleTitle = intent.articles?.[0]?.title || ''
+                const article = intent.articles?.[0]
+                const articleTitle = article?.title || ''
 
                 return (
                     <div
                         role="none"
                         tabIndex={0}
                         className={css.linkedSkillRow}
-                        onClick={() => onLinkToSkill(intent.id)}
+                        onClick={() => onOpenSkill(article!.id)}
                     >
                         <TruncatedTextWithTooltip tooltipContent={articleTitle}>
                             <Text size="md" color="content-accent-default">

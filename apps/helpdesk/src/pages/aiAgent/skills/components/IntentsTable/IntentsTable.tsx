@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
+import { useHistory } from 'react-router-dom'
 import { POSITIONS } from 'reapop'
 
 import type { Row } from '@gorgias/axiom'
@@ -28,16 +29,19 @@ import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGet
 import useAppDispatch from 'hooks/useAppDispatch'
 import { helpCenterKeys } from 'models/helpCenter/queries'
 import type { LocaleCode } from 'models/helpCenter/types'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useGuidanceArticleMutation } from 'pages/aiAgent/hooks/useGuidanceArticleMutation'
 import { useGetCustomTicketsFieldsDefinitionData } from 'pages/aiAgent/insights/IntentTableWidget/hooks/useGetCustomTicketsFieldsDefinitionData'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { useUpdateIntentStatus } from 'pages/aiAgent/skills/hooks/useUpdateIntentStatus'
 import type { UpdateGuidanceArticle } from 'pages/aiAgent/types'
+import { useStoreIntegrationByShopName } from 'pages/settings/helpCenter/hooks/useStoreIntegrationByShopName'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 
 import type { TransformedIntent } from '../../hooks/useIntentsTable'
 import { useIntentsTable } from '../../hooks/useIntentsTable'
+import { useSkillsArticles } from '../../hooks/useSkillsArticles'
 import { IntentStatus } from '../../types'
 import type { TransformedArticle } from '../../types'
 import { getColumns } from './columns'
@@ -69,6 +73,14 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
         useGetCustomTicketsFieldsDefinitionData()
 
     const integrationIds = useGetTicketChannelsStoreIntegrations(shopName)
+    const storeIntegration = useStoreIntegrationByShopName(shopName)
+    const { articles } = useSkillsArticles(
+        helpCenterId,
+        storeIntegration?.id || 0,
+    )
+    const hasExistingSkills = articles.length > 0
+    const history = useHistory()
+    const { routes } = useAiAgentNavigation({ shopName })
 
     const dispatch = useAppDispatch()
     const queryClient = useQueryClient()
@@ -183,9 +195,26 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
             )
     }, [pendingDisableIntent, updateIntentStatus, notifySuccess, notifyError])
 
-    const handleLinkToSkill = useCallback((intentId: string) => {
+    const handleLinkToExistingSkill = useCallback((intentId: string) => {
         setPendingLinkIntentId(intentId)
     }, [])
+
+    const handleOpenSkill = useCallback(
+        (skillId: number) => {
+            history.push(routes.skillDetail(skillId))
+        },
+        [history, routes],
+    )
+
+    const handleCreateNewSkill = useCallback(
+        (intentName: string, intentTitle?: string) => {
+            history.push(routes.newSkill, {
+                title: intentTitle,
+                intents: [intentName],
+            })
+        },
+        [history, routes.newSkill],
+    )
 
     const handleDisableClose = useCallback(
         () => setPendingDisableIntent(null),
@@ -218,6 +247,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                     })
                     setPendingLinkIntentId(null)
                     notifySuccess('Intent successfully linked to skill')
+                    history.push(routes.skillDetail(article.id))
                 })
                 .catch(() =>
                     notifyError('An error occurred while linking the intent'),
@@ -229,6 +259,8 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
             helpCenterId,
             notifySuccess,
             notifyError,
+            history,
+            routes,
         ],
     )
 
@@ -238,7 +270,10 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                 statsDisplayMode,
                 isMetricsLoading,
                 onToggleEnabled: handleToggleEnabled,
-                onLinkToSkill: handleLinkToSkill,
+                onLinkToExistingSkill: handleLinkToExistingSkill,
+                onCreateNewSkill: handleCreateNewSkill,
+                onOpenSkill: handleOpenSkill,
+                hasExistingSkills,
                 expandedRows,
                 onToggleExpanded: handleToggleExpanded,
                 outcomeCustomFieldId,
@@ -250,7 +285,10 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
             statsDisplayMode,
             isMetricsLoading,
             handleToggleEnabled,
-            handleLinkToSkill,
+            handleLinkToExistingSkill,
+            handleCreateNewSkill,
+            handleOpenSkill,
+            hasExistingSkills,
             expandedRows,
             handleToggleExpanded,
             outcomeCustomFieldId,
