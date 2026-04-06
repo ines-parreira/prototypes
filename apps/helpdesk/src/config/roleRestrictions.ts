@@ -36,12 +36,6 @@ export const roleRestrictionConfigs: Record<
     [PageSection.HistoricalImports]: {
         pageHeader: SectionPageHeader.HistoricalImports,
     },
-    [PageSection.ImportZendesk]: {
-        pageHeader: SectionPageHeader.ImportZendesk,
-    },
-    [PageSection.ImportEmail]: {
-        pageHeader: SectionPageHeader.ImportEmail,
-    },
     [PageSection.ImportPhoneNumber]: {
         pageHeader: SectionPageHeader.ImportPhoneNumber,
     },

@@ -29,7 +29,5 @@ export const STANDALONE_AI_HIDDEN_SIDEBAR_ITEMS = new Set([
     'teams',
     'agent-statuses',
     'http-integration',
-    'import-email',
-    'import-zendesk',
     'historical-imports',
 ])

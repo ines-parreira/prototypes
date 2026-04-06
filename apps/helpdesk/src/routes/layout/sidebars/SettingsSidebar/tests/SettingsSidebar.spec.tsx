@@ -1,5 +1,4 @@
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
@@ -23,12 +22,6 @@ jest.mock('@repo/agent-status', () => ({
     useCustomAgentUnavailableStatusesFlag: jest.fn(),
 }))
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-    useHelpdeskV2WayfindingMS1Flag: jest.fn().mockReturnValue(false),
-}))
-
 jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),
     logEvent: jest.fn(),
@@ -46,8 +39,6 @@ jest.mock('common/navigation', () => ({
 const mockUseCustomAgentUnavailableStatusesFlag = assumeMock(
     useCustomAgentUnavailableStatusesFlag,
 )
-
-const mockUseFlag = assumeMock(useFlag)
 const mockUseStandaloneAiContext = assumeMock(useStandaloneAiContext)
 
 const mockCurrentUser = mockGetCurrentUserHandler(async ({ data }) =>
@@ -141,6 +132,7 @@ describe('SettingsSidebar', () => {
         expect(screen.getByText('HTTP integration')).toBeInTheDocument()
         expect(screen.getByText('REST API')).toBeInTheDocument()
         expect(screen.getByText('Audit logs')).toBeInTheDocument()
+        expect(screen.getByText('Imports')).toBeInTheDocument()
         expect(screen.getByText('Password & 2FA')).toBeInTheDocument()
         expect(screen.getByText('Notifications')).toBeInTheDocument()
     })
@@ -164,27 +156,11 @@ describe('SettingsSidebar', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('should render Imports when historical imports flag is enabled', async () => {
-        mockUseFlag.mockImplementation((key) => {
-            if (key === FeatureFlagKey.HistoricalImports) {
-                return true
-            }
-            return false
-        })
-
+    it('should render Imports in the account section', async () => {
         renderSettingsSidebar()
         expect(await screen.findByText('Imports')).toBeInTheDocument()
         expect(screen.queryByText('Email Import')).not.toBeInTheDocument()
         expect(screen.queryByText('Zendesk import')).not.toBeInTheDocument()
-    })
-
-    it('should render Email Import and Zendesk import when historical imports flag is disabled', async () => {
-        mockUseFlag.mockReturnValue(false)
-
-        renderSettingsSidebar()
-        expect(await screen.findByText('Email Import')).toBeInTheDocument()
-        expect(screen.getByText('Zendesk import')).toBeInTheDocument()
-        expect(screen.queryByText('Imports')).not.toBeInTheDocument()
     })
 
     it('should hide restricted items for standalone AI accounts', async () => {
@@ -219,8 +195,7 @@ describe('SettingsSidebar', () => {
         expect(screen.queryByText('Contact form')).not.toBeInTheDocument()
         expect(screen.queryByText('Teams')).not.toBeInTheDocument()
         expect(screen.queryByText('HTTP integration')).not.toBeInTheDocument()
-        expect(screen.queryByText('Email Import')).not.toBeInTheDocument()
-        expect(screen.queryByText('Zendesk import')).not.toBeInTheDocument()
+        expect(screen.queryByText('Imports')).not.toBeInTheDocument()
     })
 
     describe('collapsed state', () => {

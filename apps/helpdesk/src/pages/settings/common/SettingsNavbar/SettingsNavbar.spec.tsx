@@ -8,13 +8,6 @@ jest.mock('@repo/agent-status', () => ({
     useCustomAgentUnavailableStatusesFlag: jest.fn(),
 }))
 
-jest.mock('@repo/feature-flags', () => ({
-    FeatureFlagKey: {
-        HistoricalImports: 'historical-imports',
-    },
-    useFlag: jest.fn(),
-}))
-
 jest.mock('@repo/hooks', () => ({
     useLocalStorage: jest.fn(() => [[], jest.fn()]),
 }))
@@ -116,7 +109,6 @@ jest.mock('./AutomateUpgradeBadge', () => ({
     AutomateUpgradeBadge: () => <span data-testid="automate-badge">Badge</span>,
 }))
 
-const mockUseFlag = jest.mocked(require('@repo/feature-flags').useFlag)
 const mockUseCustomAgentUnavailableStatusesFlag = jest.mocked(
     require('@repo/agent-status').useCustomAgentUnavailableStatusesFlag,
 )
@@ -137,7 +129,6 @@ const mockUseStandaloneAiContext = jest.mocked(
 
 describe('SettingsNavbar', () => {
     beforeEach(() => {
-        mockUseFlag.mockReturnValue(false)
         mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(false)
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: false,
@@ -383,46 +374,19 @@ describe('SettingsNavbar', () => {
             expect(screen.getByText('REST API')).toBeInTheDocument()
         })
 
-        describe('Imports feature flag', () => {
-            it('should render Imports when feature flag is enabled', () => {
-                mockUseFlag.mockImplementation((flag: string) => {
-                    if (flag === 'historical-imports') return true
-                    return false
-                })
+        it('should render Imports', () => {
+            renderComponent()
 
-                renderComponent()
-
-                expect(
-                    screen.getByTestId('item-historical-imports'),
-                ).toBeInTheDocument()
-                expect(screen.getByText('Imports')).toBeInTheDocument()
-                expect(
-                    screen.queryByTestId('item-import-email'),
-                ).not.toBeInTheDocument()
-                expect(
-                    screen.queryByTestId('item-import-zendesk'),
-                ).not.toBeInTheDocument()
-            })
-
-            it('should render Email Import and Zendesk import when feature flag is disabled', () => {
-                mockUseFlag.mockReturnValue(false)
-
-                renderComponent()
-
-                expect(
-                    screen.getByTestId('item-import-email'),
-                ).toBeInTheDocument()
-                expect(screen.getByText('Email Import')).toBeInTheDocument()
-
-                expect(
-                    screen.getByTestId('item-import-zendesk'),
-                ).toBeInTheDocument()
-                expect(screen.getByText('Zendesk import')).toBeInTheDocument()
-
-                expect(
-                    screen.queryByTestId('item-historical-imports'),
-                ).not.toBeInTheDocument()
-            })
+            expect(
+                screen.getByTestId('item-historical-imports'),
+            ).toBeInTheDocument()
+            expect(screen.getByText('Imports')).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('item-import-email'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByTestId('item-import-zendesk'),
+            ).not.toBeInTheDocument()
         })
     })
 
@@ -497,11 +461,8 @@ describe('SettingsNavbar', () => {
         })
     })
 
-    describe('Feature flag combinations', () => {
-        it('should handle both feature flags enabled', () => {
-            mockUseFlag.mockImplementation(() => {
-                return true
-            })
+    describe('Navigation combinations', () => {
+        it('should render agent unavailability alongside Imports when enabled', () => {
             mockUseCustomAgentUnavailableStatusesFlag.mockReturnValue(true)
 
             renderComponent()
@@ -520,21 +481,21 @@ describe('SettingsNavbar', () => {
             ).not.toBeInTheDocument()
         })
 
-        it('should handle both feature flags disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-
+        it('should keep Imports visible when agent unavailability is disabled', () => {
             renderComponent()
 
             expect(
                 screen.queryByTestId('item-agent-statuses'),
             ).not.toBeInTheDocument()
             expect(
-                screen.queryByTestId('item-historical-imports'),
-            ).not.toBeInTheDocument()
-            expect(screen.getByTestId('item-import-email')).toBeInTheDocument()
-            expect(
-                screen.getByTestId('item-import-zendesk'),
+                screen.getByTestId('item-historical-imports'),
             ).toBeInTheDocument()
+            expect(
+                screen.queryByTestId('item-import-email'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByTestId('item-import-zendesk'),
+            ).not.toBeInTheDocument()
         })
     })
 })

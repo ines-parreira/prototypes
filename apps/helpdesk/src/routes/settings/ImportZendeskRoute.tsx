@@ -1,34 +1,31 @@
-import { Route, Switch, useRouteMatch } from 'react-router-dom'
-
-import { PageSection } from 'config/pages'
-import { ADMIN_ROLE } from 'config/user'
-import ImportZendesk from 'pages/settings/importZendesk/ImportZendesk'
-import ImportZendeskCreate from 'pages/settings/importZendesk/zendesk/ImportZendeskCreate'
-import ImportZendeskDetail from 'pages/settings/importZendesk/zendesk/ImportZendeskDetail'
-
-import { renderAppSettings } from './helpers/settingsRenderer'
+import {
+    Redirect,
+    Route,
+    Switch,
+    useLocation,
+    useRouteMatch,
+} from 'react-router-dom'
 
 export function ImportZendeskRoute() {
     const { path } = useRouteMatch()
+    const location = useLocation()
+    const searchParams = new URLSearchParams(location.search)
+
+    if (!searchParams.has('activeTab')) {
+        searchParams.set('activeTab', 'import-zendesk')
+    }
 
     return (
         <Switch>
             <Route path={`${path}/`} exact>
-                {renderAppSettings(ImportZendesk, {
-                    roleParams: [ADMIN_ROLE, PageSection.ImportZendesk],
-                })}
-            </Route>
-
-            <Route path={`${path}/zendesk`} exact>
-                {renderAppSettings(ImportZendeskCreate, {
-                    roleParams: [ADMIN_ROLE, PageSection.ImportZendesk],
-                })}
-            </Route>
-
-            <Route path={`${path}/zendesk/:integrationId/:extra?`} exact>
-                {renderAppSettings(ImportZendeskDetail, {
-                    roleParams: [ADMIN_ROLE, PageSection.ImportZendesk],
-                })}
+                {/* Legacy import entrypoints still resolve to this route. Keep this
+                    shim until all upstream redirects target historical-imports. */}
+                <Redirect
+                    to={{
+                        pathname: '/app/settings/historical-imports',
+                        search: `?${searchParams.toString()}`,
+                    }}
+                />
             </Route>
         </Switch>
     )

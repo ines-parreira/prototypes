@@ -81,18 +81,6 @@ describe('roleRestrictionConfigs', () => {
             })
         })
 
-        it('should have correct configuration for ImportZendesk', () => {
-            expect(roleRestrictionConfigs[PageSection.ImportZendesk]).toEqual({
-                pageHeader: SectionPageHeader.ImportZendesk,
-            })
-        })
-
-        it('should have correct configuration for ImportEmail', () => {
-            expect(roleRestrictionConfigs[PageSection.ImportEmail]).toEqual({
-                pageHeader: SectionPageHeader.ImportEmail,
-            })
-        })
-
         it('should have correct configuration for ImportPhoneNumber', () => {
             expect(
                 roleRestrictionConfigs[PageSection.ImportPhoneNumber],
@@ -294,12 +282,6 @@ describe('roleRestrictionConfigs', () => {
                 roleRestrictionConfigs[PageSection.HistoricalImports],
             ).toBeDefined()
             expect(
-                roleRestrictionConfigs[PageSection.ImportZendesk],
-            ).toBeDefined()
-            expect(
-                roleRestrictionConfigs[PageSection.ImportEmail],
-            ).toBeDefined()
-            expect(
                 roleRestrictionConfigs[PageSection.ImportPhoneNumber],
             ).toBeDefined()
         })
@@ -309,12 +291,6 @@ describe('roleRestrictionConfigs', () => {
                 roleRestrictionConfigs[PageSection.HistoricalImports]
                     .pageHeader,
             ).toBe(SectionPageHeader.HistoricalImports)
-            expect(
-                roleRestrictionConfigs[PageSection.ImportZendesk].pageHeader,
-            ).toBe(SectionPageHeader.ImportZendesk)
-            expect(
-                roleRestrictionConfigs[PageSection.ImportEmail].pageHeader,
-            ).toBe(SectionPageHeader.ImportEmail)
             expect(
                 roleRestrictionConfigs[PageSection.ImportPhoneNumber]
                     .pageHeader,

@@ -2,83 +2,85 @@ import React from 'react'
 
 import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
-import { Route, useRouteMatch } from 'react-router-dom'
+import { Route, useLocation, useRouteMatch } from 'react-router-dom'
 
-import { PageSection } from 'config/pages'
-import { ADMIN_ROLE } from 'config/user'
-import ImportZendesk from 'pages/settings/importZendesk/ImportZendesk'
-import ImportZendeskCreate from 'pages/settings/importZendesk/zendesk/ImportZendeskCreate'
-import ImportZendeskDetail from 'pages/settings/importZendesk/zendesk/ImportZendeskDetail'
-
-import { renderAppSettings } from '../helpers/settingsRenderer'
+import { ImportEmailsRoute } from '../ImportEmailsRoute'
 import { ImportZendeskRoute } from '../ImportZendeskRoute'
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     Route: jest.fn(() => <div>route</div>),
     Switch: jest.fn(({ children }) => <div>{children}</div>),
+    useLocation: jest.fn(),
     useRouteMatch: jest.fn(),
 }))
 
-const ComponentToRender = () => <div>OK</div>
-jest.mock('../helpers/settingsRenderer', () => ({
-    renderAppSettings: jest.fn(() => ComponentToRender),
-}))
-
 const mockedRoute = Route as jest.Mock
-const mockedRenderAppSettings = assumeMock(renderAppSettings)
+const mockedUseLocation = assumeMock(useLocation)
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
 
-const basePath = 'import-zendesk'
-
-describe('Import Zendesk', () => {
+describe('ImportEmailsRoute', () => {
     beforeEach(() => {
-        mockedUseRouteMatch.mockReturnValue({
-            path: basePath,
-        } as ReturnType<typeof useRouteMatch>)
+        jest.clearAllMocks()
     })
 
-    it.each([
-        [
-            {
-                callOrder: 0,
-                path: basePath + '/',
-                component: ImportZendesk,
-            },
-        ],
-        [
-            {
-                callOrder: 1,
-                path: basePath + '/zendesk',
-                component: ImportZendeskCreate,
-            },
-        ],
-        [
-            {
-                callOrder: 2,
-                path: basePath + '/zendesk/:integrationId/:extra?',
-                component: ImportZendeskDetail,
-            },
-        ],
-    ])(
-        'should call renderer and Route with correct props',
-        ({ callOrder, path, component }) => {
-            render(<ImportZendeskRoute />)
+    it('redirects the legacy import-email route to historical-imports while preserving search params', () => {
+        mockedUseRouteMatch.mockReturnValue({
+            path: 'import-email',
+        } as ReturnType<typeof useRouteMatch>)
+        mockedUseLocation.mockReturnValue({
+            search: '?selectedEmail=test@example.com',
+        } as ReturnType<typeof useLocation>)
 
-            expect(mockedRenderAppSettings.mock.calls[callOrder]).toEqual([
-                component,
-                {
-                    roleParams: [ADMIN_ROLE, PageSection.ImportZendesk],
-                },
-            ])
-            expect(mockedRoute.mock.calls[callOrder]).toEqual([
-                {
-                    path,
-                    exact: true,
-                    children: ComponentToRender,
-                },
-                {},
-            ])
-        },
-    )
+        render(<ImportEmailsRoute />)
+
+        expect(mockedRoute.mock.calls[0]).toEqual([
+            {
+                path: 'import-email/',
+                exact: true,
+                children: expect.objectContaining({
+                    props: {
+                        to: {
+                            pathname: '/app/settings/historical-imports',
+                            search: '?selectedEmail=test@example.com',
+                        },
+                    },
+                }),
+            },
+            {},
+        ])
+    })
+})
+
+describe('ImportZendeskRoute', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it('redirects the legacy import-zendesk route to historical-imports with the Zendesk tab selected', () => {
+        mockedUseRouteMatch.mockReturnValue({
+            path: 'import-zendesk',
+        } as ReturnType<typeof useRouteMatch>)
+        mockedUseLocation.mockReturnValue({
+            search: '',
+        } as ReturnType<typeof useLocation>)
+
+        render(<ImportZendeskRoute />)
+
+        expect(mockedRoute.mock.calls[0]).toEqual([
+            {
+                path: 'import-zendesk/',
+                exact: true,
+                children: expect.objectContaining({
+                    props: {
+                        to: {
+                            pathname: '/app/settings/historical-imports',
+                            search: '?activeTab=import-zendesk',
+                        },
+                    },
+                }),
+            },
+            {},
+        ])
+    })
 })

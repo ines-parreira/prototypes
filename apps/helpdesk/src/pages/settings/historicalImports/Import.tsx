@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { Key } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { TabItem, TabList, TabPanel, Tabs } from '@gorgias/axiom'
@@ -22,7 +21,6 @@ const ImportEmails = () => {
     const queryParams = new URLSearchParams(location.search)
     const selectedEmail = queryParams.get('selectedEmail')
     const activeTabParam = queryParams.get('activeTab')
-    const historicalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
     const [isCreateImportModalOpen, setIsCreateImportModalOpen] =
         useState(!!selectedEmail)
     const [isZendeskImportModalOpen, setIsZendeskImportModalOpen] =
@@ -72,12 +70,7 @@ const ImportEmails = () => {
                 >
                     <TabList>
                         <TabItem id={EMAIL_IMPORT} label="Email Import" />
-                        {historicalImportsEnabled && (
-                            <TabItem
-                                id={ZENDESK_IMPORT}
-                                label="Zendesk Import"
-                            />
-                        )}
+                        <TabItem id={ZENDESK_IMPORT} label="Zendesk Import" />
                     </TabList>
 
                     <TabPanel id={EMAIL_IMPORT}>
@@ -86,13 +79,11 @@ const ImportEmails = () => {
                             {...tableProps}
                         />
                     </TabPanel>
-                    {historicalImportsEnabled && (
-                        <TabPanel id={ZENDESK_IMPORT}>
-                            <ZendeskImportTable
-                                onOpenCreateImportModal={openImportModal}
-                            />
-                        </TabPanel>
-                    )}
+                    <TabPanel id={ZENDESK_IMPORT}>
+                        <ZendeskImportTable
+                            onOpenCreateImportModal={openImportModal}
+                        />
+                    </TabPanel>
                 </Tabs>
             </>
 

@@ -68,7 +68,7 @@ export const ImportZendeskCreate = (
                 title={
                     <Breadcrumb>
                         <BreadcrumbItem>
-                            <Link to="/app/settings/import-zendesk">
+                            <Link to="/app/settings/historical-imports?activeTab=import-zendesk">
                                 Import data
                             </Link>
                         </BreadcrumbItem>

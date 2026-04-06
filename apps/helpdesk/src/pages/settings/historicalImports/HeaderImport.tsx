@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
 
 import { Box, Button } from '@gorgias/axiom'
@@ -18,15 +17,9 @@ export const HeaderImport = ({
     onOpenCreateImportModal,
     showCta,
 }: HeaderImportEmailProps) => {
-    const historicalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
-
     return (
         <>
-            <PageHeader
-                title={
-                    historicalImportsEnabled ? 'Import data' : 'Email import'
-                }
-            >
+            <PageHeader title="Import data">
                 {showCta && (
                     <Button onClick={onOpenCreateImportModal}>Import</Button>
                 )}
@@ -34,31 +27,19 @@ export const HeaderImport = ({
             <div className={importCss.pageContainer}>
                 <div className={classnames('body-regular', css.contentWrapper)}>
                     <div className={classnames(css.mb32)}>
-                        {historicalImportsEnabled ? (
-                            <p>Import external customer data to Gorgias.</p>
-                        ) : (
-                            <p>Import historical email data to Gorgias.</p>
-                        )}
-                        {historicalImportsEnabled ? (
-                            <Box gap="sm">
-                                <IconLink
-                                    icon="menu_book"
-                                    href="https://link.gorgias.com/2wb"
-                                    content="Zendesk Migration"
-                                />
-                                <IconLink
-                                    icon="menu_book"
-                                    href="https://link.gorgias.com/vkf"
-                                    content="Email integrations FAQs"
-                                />
-                            </Box>
-                        ) : (
+                        <p>Import external customer data to Gorgias.</p>
+                        <Box gap="sm">
+                            <IconLink
+                                icon="menu_book"
+                                href="https://link.gorgias.com/2wb"
+                                content="Zendesk Migration"
+                            />
                             <IconLink
                                 icon="menu_book"
                                 href="https://link.gorgias.com/vkf"
-                                content="Email Import Guide"
+                                content="Email integrations FAQs"
                             />
-                        )}
+                        </Box>
                     </div>
                 </div>
             </div>

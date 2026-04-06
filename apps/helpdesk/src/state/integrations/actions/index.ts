@@ -494,7 +494,9 @@ export function createImportIntegration(integration: Map<any, any>) {
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    history.push('/app/settings/import-zendesk/')
+                    history.push(
+                        '/app/settings/historical-imports?activeTab=import-zendesk',
+                    )
 
                     void dispatch(
                         notify({

@@ -14,6 +14,8 @@ import UserAuditList from 'pages/settings/audit/UserAuditList'
 import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
 import BusinessHoursPage from 'pages/settings/businessHours/BusinessHoursPage'
 import { HelpCenterApiClientProvider } from 'pages/settings/helpCenter/hooks/useHelpCenterApi'
+import ImportZendeskCreate from 'pages/settings/importZendesk/zendesk/ImportZendeskCreate'
+import ImportZendeskDetail from 'pages/settings/importZendesk/zendesk/ImportZendeskDetail'
 import SatisfactionSurveyView from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
 import SidebarSettings from 'pages/settings/sidebar/SidebarSettings'
 import ManageTags from 'pages/settings/tags/ManageTags'
@@ -175,11 +177,30 @@ export function SettingRoutes() {
                         <Route path={`${path}/help-center`}>
                             <HelpCenter />
                         </Route>
-                        <Route path={`${path}/import-zendesk`}>
-                            <ImportZendeskRoute />
-                        </Route>
                         <Route path={`${path}/import-email`}>
                             <ImportEmailsRoute />
+                        </Route>
+                        <Route path={`${path}/import-zendesk`} exact>
+                            <ImportZendeskRoute />
+                        </Route>
+                        <Route path={`${path}/import-zendesk/zendesk`} exact>
+                            {renderAppSettings(ImportZendeskCreate, {
+                                roleParams: [
+                                    ADMIN_ROLE,
+                                    PageSection.HistoricalImports,
+                                ],
+                            })}
+                        </Route>
+                        <Route
+                            path={`${path}/import-zendesk/zendesk/:integrationId/:extra?`}
+                            exact
+                        >
+                            {renderAppSettings(ImportZendeskDetail, {
+                                roleParams: [
+                                    ADMIN_ROLE,
+                                    PageSection.HistoricalImports,
+                                ],
+                            })}
                         </Route>
                         <Route path={`${path}/historical-imports`}>
                             <HistoricalImportsRoute />

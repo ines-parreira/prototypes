@@ -8,12 +8,6 @@ import ImportEmail from './Import'
 // Polyfill for getAnimations which is not available in JSDOM
 Element.prototype.getAnimations = jest.fn().mockReturnValue([])
 
-// Mock feature flags
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
-
 // Mock all child components
 jest.mock('./HeaderImport', () => ({
     HeaderImport: function MockHeaderImport({
@@ -98,8 +92,6 @@ const mockUseTableImport = jest.mocked(
     require('./Imports/Email/useTableImport').useTableImport,
 )
 
-const mockUseFlag = jest.mocked(require('@repo/feature-flags').useFlag)
-
 describe('ImportEmail', () => {
     const defaultTableProps = {
         importList: [],
@@ -111,14 +103,13 @@ describe('ImportEmail', () => {
         mockUseTableImport.mockReturnValue({
             tableProps: defaultTableProps,
         })
-        mockUseFlag.mockReturnValue(true)
     })
 
     afterEach(() => {
         jest.clearAllMocks()
     })
 
-    const renderComponent = (initialPath = '/import-email') => {
+    const renderComponent = (initialPath = '/historical-imports') => {
         const history = createMemoryHistory({
             initialEntries: [initialPath],
         })
@@ -152,7 +143,9 @@ describe('ImportEmail', () => {
 
     describe('URL parameter parsing', () => {
         it('should extract selectedEmail from URL query parameters', () => {
-            renderComponent('/import-email?selectedEmail=test@example.com')
+            renderComponent(
+                '/historical-imports?selectedEmail=test@example.com',
+            )
 
             expect(screen.getByTestId('selected-email')).toHaveTextContent(
                 'test@example.com',
@@ -160,7 +153,7 @@ describe('ImportEmail', () => {
         })
 
         it('should handle null selectedEmail when no query parameter is present', () => {
-            renderComponent('/import-email')
+            renderComponent('/historical-imports')
 
             expect(
                 screen.queryByTestId('create-import-modal'),
@@ -168,7 +161,7 @@ describe('ImportEmail', () => {
         })
 
         it('should handle empty selectedEmail parameter', () => {
-            renderComponent('/import-email?selectedEmail=')
+            renderComponent('/historical-imports?selectedEmail=')
 
             expect(
                 screen.queryByTestId('create-import-modal'),
@@ -176,7 +169,9 @@ describe('ImportEmail', () => {
         })
 
         it('should handle URL encoded email addresses', () => {
-            renderComponent('/import-email?selectedEmail=test%40example.com')
+            renderComponent(
+                '/historical-imports?selectedEmail=test%40example.com',
+            )
 
             expect(screen.getByTestId('selected-email')).toHaveTextContent(
                 'test@example.com',
@@ -185,7 +180,7 @@ describe('ImportEmail', () => {
 
         it('should handle multiple query parameters', () => {
             renderComponent(
-                '/import-email?selectedEmail=test@example.com&other=value',
+                '/historical-imports?selectedEmail=test@example.com&other=value',
             )
 
             expect(screen.getByTestId('selected-email')).toHaveTextContent(
@@ -195,12 +190,8 @@ describe('ImportEmail', () => {
     })
 
     describe('Active tab query parameter', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
-        })
-
         it('should default to Email Import tab when no activeTab query param is present', async () => {
-            const { history } = renderComponent('/import-email')
+            const { history } = renderComponent('/historical-imports')
 
             expect(screen.getByTestId('table-import-email')).toBeInTheDocument()
 
@@ -213,7 +204,7 @@ describe('ImportEmail', () => {
 
         it('should open Email Import tab when activeTab=import-email', async () => {
             const { history } = renderComponent(
-                '/import-email?activeTab=import-email',
+                '/historical-imports?activeTab=import-email',
             )
 
             expect(screen.getByTestId('table-import-email')).toBeInTheDocument()
@@ -222,7 +213,7 @@ describe('ImportEmail', () => {
 
         it('should open Zendesk Import tab when activeTab=import-zendesk', async () => {
             const { history } = renderComponent(
-                '/import-email?activeTab=import-zendesk',
+                '/historical-imports?activeTab=import-zendesk',
             )
 
             expect(
@@ -235,7 +226,7 @@ describe('ImportEmail', () => {
 
         it('should update URL when switching tabs', async () => {
             const user = userEvent.setup()
-            const { history } = renderComponent('/import-email')
+            const { history } = renderComponent('/historical-imports')
 
             await waitFor(() => {
                 expect(history.location.search).toContain(
@@ -257,7 +248,7 @@ describe('ImportEmail', () => {
         it('should update URL when switching from Zendesk to Email tab', async () => {
             const user = userEvent.setup()
             const { history } = renderComponent(
-                '/import-email?activeTab=import-zendesk',
+                '/historical-imports?activeTab=import-zendesk',
             )
 
             expect(history.location.search).toContain(
@@ -276,7 +267,7 @@ describe('ImportEmail', () => {
         it('should preserve other query params when updating activeTab', async () => {
             const user = userEvent.setup()
             const { history } = renderComponent(
-                '/import-email?selectedEmail=test@example.com&other=value',
+                '/historical-imports?selectedEmail=test@example.com&other=value',
             )
 
             await waitFor(() => {
@@ -310,7 +301,7 @@ describe('ImportEmail', () => {
 
         it('should handle invalid activeTab values by defaulting to Email Import', async () => {
             const { history } = renderComponent(
-                '/import-email?activeTab=invalid',
+                '/historical-imports?activeTab=invalid',
             )
 
             expect(screen.getByTestId('table-import-email')).toBeInTheDocument()
@@ -325,7 +316,9 @@ describe('ImportEmail', () => {
 
     describe('Modal auto-opening behavior', () => {
         it('should auto-open modal when selectedEmail is present', () => {
-            renderComponent('/import-email?selectedEmail=test@example.com')
+            renderComponent(
+                '/historical-imports?selectedEmail=test@example.com',
+            )
 
             expect(
                 screen.getByTestId('create-import-modal'),
@@ -334,7 +327,7 @@ describe('ImportEmail', () => {
         })
 
         it('should not auto-open modal when selectedEmail is null', () => {
-            renderComponent('/import-email')
+            renderComponent('/historical-imports')
 
             expect(
                 screen.queryByTestId('create-import-modal'),
@@ -342,7 +335,7 @@ describe('ImportEmail', () => {
         })
 
         it('should not auto-open modal when selectedEmail is empty string', () => {
-            renderComponent('/import-email?selectedEmail=')
+            renderComponent('/historical-imports?selectedEmail=')
 
             expect(
                 screen.queryByTestId('create-import-modal'),
@@ -350,7 +343,7 @@ describe('ImportEmail', () => {
         })
 
         it('should auto-open modal for any non-empty selectedEmail value', () => {
-            renderComponent('/import-email?selectedEmail=any-value')
+            renderComponent('/historical-imports?selectedEmail=any-value')
 
             expect(
                 screen.getByTestId('create-import-modal'),
@@ -362,7 +355,7 @@ describe('ImportEmail', () => {
     describe('Modal interactions', () => {
         it('should open modal when header button is clicked', async () => {
             const user = userEvent.setup()
-            renderComponent('/import-email')
+            renderComponent('/historical-imports')
 
             // Initially closed
             expect(
@@ -381,7 +374,7 @@ describe('ImportEmail', () => {
 
         it('should open modal when table button is clicked', async () => {
             const user = userEvent.setup()
-            renderComponent('/import-email')
+            renderComponent('/historical-imports')
 
             // Initially closed
             expect(
@@ -400,7 +393,9 @@ describe('ImportEmail', () => {
 
         it('should close modal when close button is clicked', async () => {
             const user = userEvent.setup()
-            renderComponent('/import-email?selectedEmail=test@example.com')
+            renderComponent(
+                '/historical-imports?selectedEmail=test@example.com',
+            )
 
             // Initially open due to selectedEmail
             expect(
@@ -419,7 +414,9 @@ describe('ImportEmail', () => {
 
         it('should be able to open modal after closing it', async () => {
             const user = userEvent.setup()
-            renderComponent('/import-email?selectedEmail=test@example.com')
+            renderComponent(
+                '/historical-imports?selectedEmail=test@example.com',
+            )
 
             // Initially open
             expect(
@@ -444,7 +441,7 @@ describe('ImportEmail', () => {
 
     describe('Props passing', () => {
         it('should pass selectedEmail to CreateImportModal', () => {
-            renderComponent('/import-email?selectedEmail=test@gmail.com')
+            renderComponent('/historical-imports?selectedEmail=test@gmail.com')
 
             expect(screen.getByTestId('selected-email')).toHaveTextContent(
                 'test@gmail.com',
@@ -499,7 +496,7 @@ describe('ImportEmail', () => {
 
     describe('Edge cases and error handling', () => {
         it('should handle malformed URL parameters gracefully', () => {
-            renderComponent('/import-email?selectedEmail=%')
+            renderComponent('/historical-imports?selectedEmail=%')
 
             // Should not crash and should render the component
             expect(
@@ -510,7 +507,7 @@ describe('ImportEmail', () => {
         it('should handle special characters in selectedEmail', () => {
             const specialEmail = 'test+tag@example-domain.co.uk'
             renderComponent(
-                `/import-email?selectedEmail=${encodeURIComponent(specialEmail)}`,
+                `/historical-imports?selectedEmail=${encodeURIComponent(specialEmail)}`,
             )
 
             expect(screen.getByTestId('selected-email')).toHaveTextContent(
@@ -537,7 +534,7 @@ describe('ImportEmail', () => {
 
         it('should work with different URL paths', () => {
             renderComponent(
-                '/app/settings/import-email?selectedEmail=test@example.com',
+                '/app/settings/historical-imports?selectedEmail=test@example.com',
             )
 
             expect(screen.getByTestId('selected-email')).toHaveTextContent(
@@ -576,69 +573,20 @@ describe('ImportEmail', () => {
         })
     })
 
-    describe('Feature flag behavior', () => {
-        it('should show Zendesk Import tab when feature flag is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
-
-            renderComponent()
-
-            expect(
-                screen.getByRole('tab', { name: 'Zendesk Import' }),
-            ).toBeInTheDocument()
-        })
-
-        it('should hide Zendesk Import tab when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            renderComponent()
-
-            expect(
-                screen.queryByRole('tab', { name: 'Zendesk Import' }),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should render Zendesk Import tab when feature flag is enabled', () => {
-            mockUseFlag.mockReturnValue(true)
-
-            renderComponent()
-
-            expect(
-                screen.getByRole('tab', { name: 'Zendesk Import' }),
-            ).toBeInTheDocument()
-        })
-
-        it('should not render Zendesk Import tab or table when feature flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            const { container } = renderComponent()
-
-            expect(
-                screen.queryByRole('tab', { name: 'Zendesk Import' }),
-            ).not.toBeInTheDocument()
-
-            const zendeskTable = container.querySelector(
-                '[data-testid="zendesk-import-table"]',
-            )
-            expect(zendeskTable).not.toBeInTheDocument()
-        })
-
-        it('should always show Email Import tab regardless of feature flag', () => {
-            mockUseFlag.mockReturnValue(false)
-
+    describe('Tabs', () => {
+        it('should render both import tabs', () => {
             renderComponent()
 
             expect(
                 screen.getByRole('tab', { name: 'Email Import' }),
             ).toBeInTheDocument()
-            expect(screen.getByTestId('table-import-email')).toBeInTheDocument()
+            expect(
+                screen.getByRole('tab', { name: 'Zendesk Import' }),
+            ).toBeInTheDocument()
         })
     })
 
     describe('Zendesk Import modal interactions', () => {
-        beforeEach(() => {
-            mockUseFlag.mockReturnValue(true)
-        })
-
         it('should open Zendesk modal when clicking header button on Zendesk Import tab', async () => {
             const user = userEvent.setup()
             renderComponent()

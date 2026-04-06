@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { filterUserByRole, UserRole } from '@repo/utils'
 
@@ -34,7 +33,6 @@ export type SettingsNavbarSection = {
 
 export function useSettingsNavigation() {
     const isAgentUnavailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
-    const isHistoricalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
     const { isStandaloneAiAgent } = useStandaloneAiContext()
     const { data: currentUser } = useGetCurrentUser({
         query: {
@@ -105,29 +103,12 @@ export function useSettingsNavigation() {
             },
         )
 
-        if (isHistoricalImportsEnabled) {
-            accountItems.push({
-                id: 'historical-imports',
-                to: 'historical-imports',
-                text: 'Imports',
-                requiredRole: UserRole.Admin,
-            })
-        } else {
-            accountItems.push(
-                {
-                    id: 'import-email',
-                    to: 'import-email',
-                    text: 'Email Import',
-                    requiredRole: UserRole.Admin,
-                },
-                {
-                    id: 'import-zendesk',
-                    to: 'import-zendesk',
-                    text: 'Zendesk import',
-                    requiredRole: UserRole.Admin,
-                },
-            )
-        }
+        accountItems.push({
+            id: 'historical-imports',
+            to: 'historical-imports',
+            text: 'Imports',
+            requiredRole: UserRole.Admin,
+        })
 
         accountItems.push(
             {
@@ -244,7 +225,7 @@ export function useSettingsNavigation() {
                 items: accountItems,
             },
         ]
-    }, [isAgentUnavailabilityEnabled, isHistoricalImportsEnabled, currentUser])
+    }, [isAgentUnavailabilityEnabled, currentUser])
 
     const sections = useMemo(() => {
         const roleFiltered = sectionsWithoutRoleFilters

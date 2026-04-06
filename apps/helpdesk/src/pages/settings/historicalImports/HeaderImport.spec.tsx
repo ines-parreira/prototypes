@@ -19,7 +19,7 @@ describe('HeaderImport', () => {
                 />,
             )
             expect(
-                screen.getByRole('heading', { name: /email import/i }),
+                screen.getByRole('heading', { name: /import data/i }),
             ).toBeInTheDocument()
         })
     })
@@ -74,8 +74,20 @@ describe('HeaderImport', () => {
                 />,
             )
             expect(
-                screen.getByText(/import historical email data to gorgias\./i),
+                screen.getByText(/import external customer data to gorgias\./i),
             ).toBeInTheDocument()
+        })
+
+        it('renders the Zendesk Migration link with correct href', () => {
+            render(
+                <HeaderImport
+                    onOpenCreateImportModal={mockOnOpenCreateImportModal}
+                    showCta={false}
+                />,
+            )
+            const link = screen.getByText(/zendesk migration/i)
+            expect(link).toBeInTheDocument()
+            expect(link).toHaveAttribute('href', 'https://link.gorgias.com/2wb')
         })
 
         it('renders the Email integrations FAQs link with correct href', () => {
@@ -85,7 +97,7 @@ describe('HeaderImport', () => {
                     showCta={false}
                 />,
             )
-            const link = screen.getByText(/email import guide/i)
+            const link = screen.getByText(/email integrations faqs/i)
             expect(link).toBeInTheDocument()
             expect(link).toHaveAttribute('href', 'https://link.gorgias.com/vkf')
         })

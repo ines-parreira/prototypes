@@ -160,7 +160,7 @@ const EmailIntegrationUpdate = ({ integration, loading }: Props) => {
                                 <Button
                                     onClick={() => {
                                         history.push(
-                                            `/app/settings/import-email?selectedEmail=${integrationJSObj?.meta?.address}`,
+                                            `/app/settings/historical-imports?selectedEmail=${integrationJSObj?.meta?.address}`,
                                         )
                                     }}
                                     fillStyle="ghost"

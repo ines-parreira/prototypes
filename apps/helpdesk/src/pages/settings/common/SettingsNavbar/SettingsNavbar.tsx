@@ -1,7 +1,6 @@
 import { useMemo } from 'react'
 
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useLocalStorage } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { UserRole } from '@repo/utils'
@@ -67,8 +66,6 @@ const SettingsNavbar = () => {
         useIsArticleRecommendationsEnabledWhileSunset()
 
     const isAgentUnavailabilityEnabled = useCustomAgentUnavailableStatusesFlag()
-
-    const isHistoricalImportsEnabled = useFlag(FeatureFlagKey.HistoricalImports)
     const { isStandaloneAiAgent } = useStandaloneAiContext()
 
     return (
@@ -345,27 +342,13 @@ const SettingsNavbar = () => {
                             text="REST API"
                             requiredRole={UserRole.Admin}
                         />
-                        {!isStandaloneAiAgent &&
-                            (isHistoricalImportsEnabled ? (
-                                <Item
-                                    to="historical-imports"
-                                    text="Imports"
-                                    requiredRole={UserRole.Admin}
-                                />
-                            ) : (
-                                <>
-                                    <Item
-                                        to="import-email"
-                                        text="Email Import"
-                                        requiredRole={UserRole.Admin}
-                                    />
-                                    <Item
-                                        to="import-zendesk"
-                                        text="Zendesk import"
-                                        requiredRole={UserRole.Admin}
-                                    />
-                                </>
-                            ))}
+                        {!isStandaloneAiAgent && (
+                            <Item
+                                to="historical-imports"
+                                text="Imports"
+                                requiredRole={UserRole.Admin}
+                            />
+                        )}
                     </Navigation.SectionContent>
                 </Section>
 
