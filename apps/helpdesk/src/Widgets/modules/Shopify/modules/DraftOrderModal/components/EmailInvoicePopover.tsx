@@ -9,18 +9,11 @@ import type {
 import React, { Component } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
-import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import {
-    Button,
-    Form,
-    FormGroup,
-    Input,
-    Label,
-    Popover,
-    PopoverBody,
-} from 'reactstrap'
+import { Form, FormGroup, Input, Label, Popover, PopoverBody } from 'reactstrap'
+
+import { Button } from '@gorgias/axiom'
 
 import type { DraftOrderInvoice } from 'constants/integrations/types/shopify'
 import { focusElement } from 'utils/html'
@@ -33,7 +26,7 @@ type Props = {
     actionName: ShopifyActionType
     children: ReactNode
     placement: ComponentProps<typeof Popover>['placement']
-    color: string
+    variant: ComponentProps<typeof Button>['variant']
     customerEmail: string
     disabled: boolean
     onSubmit: (record: Map<any, any>) => void
@@ -146,7 +139,7 @@ export default class EmailInvoicePopover extends Component<Props, State> {
     }
 
     render() {
-        const { id, children, placement, color, disabled, container } =
+        const { id, children, placement, variant, disabled, container } =
             this.props
         const { isOpen, to, customMessage } = this.state
 
@@ -154,15 +147,12 @@ export default class EmailInvoicePopover extends Component<Props, State> {
             <div>
                 <Button
                     id={id}
-                    type="button"
-                    color={color}
-                    className={css.focusable}
-                    disabled={disabled}
-                    tabIndex={0}
-                    innerRef={this._saveButtonRef}
+                    variant={variant}
+                    isDisabled={disabled}
+                    ref={this._saveButtonRef}
                     onClick={this._toggle}
                 >
-                    <strong>{children}</strong>
+                    {children}
                 </Button>
                 <Popover
                     placement={placement}
@@ -211,19 +201,13 @@ export default class EmailInvoicePopover extends Component<Props, State> {
                         </PopoverBody>
                         <hr className="m-0" />
                         <PopoverBody className="d-flex">
-                            <Button
-                                type="button"
-                                tabIndex={0}
-                                className={css.focusable}
-                                onClick={this._onCancel}
-                            >
+                            <Button variant="tertiary" onClick={this._onCancel}>
                                 Cancel
                             </Button>
                             <Button
-                                color="primary"
+                                variant="primary"
                                 type="submit"
-                                tabIndex={0}
-                                className={classnames('ml-auto', css.focusable)}
+                                className="ml-auto"
                             >
                                 Create Draft Order
                             </Button>

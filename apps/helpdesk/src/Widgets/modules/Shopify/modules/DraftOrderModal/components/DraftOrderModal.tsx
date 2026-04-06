@@ -7,9 +7,8 @@ import { fromJS } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Button } from 'reactstrap'
 
-import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import { Button, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import type { Product, Variant } from 'constants/integrations/types/shopify'
 import type {
@@ -334,7 +333,7 @@ export function DraftOrderModalContainer({
                             <EmailInvoicePopover
                                 id="email-invoice"
                                 actionName={data.actionName!}
-                                color="link"
+                                variant="tertiary"
                                 customerEmail={payload.getIn([
                                     'customer',
                                     'email',
@@ -354,7 +353,7 @@ export function DraftOrderModalContainer({
                             <EmailInvoicePopover
                                 id="email-invoice"
                                 actionName={data.actionName!}
-                                color="primary"
+                                variant="primary"
                                 customerEmail={payload.getIn([
                                     'customer',
                                     'email',
@@ -375,11 +374,7 @@ export function DraftOrderModalContainer({
             )}
             <ModalFooter className={css.footer}>
                 <div className={css.buttonGroup}>
-                    <Button
-                        tabIndex={0}
-                        className={css.focusable}
-                        onClick={handleCancel('footer')}
-                    >
+                    <Button variant="tertiary" onClick={handleCancel('footer')}>
                         Cancel
                     </Button>
                     {loading && (
@@ -391,23 +386,19 @@ export function DraftOrderModalContainer({
                 </div>
                 <div className={css.buttonGroup}>
                     <Button
-                        color="primary"
-                        disabled={loading || isEmpty}
-                        tabIndex={0}
-                        className={css.focusable}
+                        variant="primary"
+                        isDisabled={loading || isEmpty}
                         onClick={handlePaymentSubmit()}
                     >
                         Create order as paid
                     </Button>
                     <Button
-                        color="primary"
-                        disabled={
+                        variant="primary"
+                        isDisabled={
                             loading ||
                             isEmpty ||
                             Number(totalDraftOrderPrice) === 0
                         }
-                        tabIndex={0}
-                        className={css.focusable}
                         onClick={handlePaymentSubmit(true)}
                     >
                         Create order as pending

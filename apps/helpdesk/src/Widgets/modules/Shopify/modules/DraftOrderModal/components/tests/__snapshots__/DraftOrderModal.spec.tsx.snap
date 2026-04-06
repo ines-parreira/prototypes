@@ -411,29 +411,92 @@ exports[`<DraftOrderModal/> should render with a populated order table when data
       class="buttonGroup"
     >
       <button
-        class="focusable btn btn-secondary"
+        aria-disabled="false"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-tertiary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
+        id="react-aria-:r6:"
         tabindex="0"
         type="button"
       >
-        Cancel
+        <div
+          class="ui-button-surface-a432"
+        >
+          <span
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
+            >
+              <strong>
+                Cancel
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
     <div
       class="buttonGroup"
     >
       <button
-        class="focusable btn btn-primary"
+        aria-disabled="false"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
+        id="react-aria-:r8:"
         tabindex="0"
         type="button"
       >
-        Create order as paid
+        <div
+          class="ui-button-surface-a432"
+        >
+          <span
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
+            >
+              <strong>
+                Create order as paid
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
       <button
-        class="focusable btn btn-primary"
+        aria-disabled="false"
+        class="ui-button-wrapper-a432 ui-button-md-a432 ui-button-primary-a432"
+        data-name="button"
+        data-rac=""
+        data-react-aria-pressable="true"
+        id="react-aria-:ra:"
         tabindex="0"
         type="button"
       >
-        Create order as pending
+        <div
+          class="ui-button-surface-a432"
+        >
+          <span
+            class="ui-button-content-a432"
+          >
+            <span
+              class="typography-bold-md ui-text-text-d239"
+              data-name="text"
+              style="text-align: left; text-wrap: nowrap;"
+            >
+              <strong>
+                Create order as pending
+              </strong>
+            </span>
+          </span>
+        </div>
       </button>
     </div>
   </div>

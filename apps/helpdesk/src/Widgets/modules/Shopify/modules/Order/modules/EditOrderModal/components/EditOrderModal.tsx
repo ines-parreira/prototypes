@@ -2,15 +2,13 @@ import { useCallback, useContext, useMemo, useRef } from 'react'
 
 import { usePrevious, useUpdateEffect } from '@repo/hooks'
 import { shortcutManager } from '@repo/utils'
-import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Button } from 'reactstrap'
 
-import { LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
+import { Button, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
 
 import type { ShopifyIntegration } from 'models/integration/types'
 import { IntegrationType } from 'models/integration/types'
@@ -292,11 +290,7 @@ export function EditOrderModalContainer({
             )}
             <ModalFooter className={css.footer}>
                 <div className={css.buttonGroup}>
-                    <Button
-                        tabIndex={0}
-                        className={css.focusable}
-                        onClick={handleCancel('footer')}
-                    >
+                    <Button variant="tertiary" onClick={handleCancel('footer')}>
                         Cancel
                     </Button>
                     {loading && (
@@ -307,15 +301,13 @@ export function EditOrderModalContainer({
                     )}
                 </div>
                 <Button
-                    color="primary"
-                    disabled={
+                    variant="primary"
+                    isDisabled={
                         loading ||
                         isEmpty ||
                         (calculatedEditOrder &&
                             !calculatedEditOrder.get('has_changes'))
                     }
-                    tabIndex={0}
-                    className={classnames(css.focusable, 'ml-auto')}
                     onClick={handlePaymentSubmit}
                 >
                     Edit order

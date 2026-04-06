@@ -34,7 +34,7 @@ describe('<EmailInvoicePopover/>', () => {
                 <EmailInvoicePopover
                     id="email-invoice"
                     actionName={ShopifyActionType.DuplicateOrder}
-                    color="primary"
+                    variant="primary"
                     customerEmail={customerEmail}
                     disabled={false}
                     onSubmit={onSubmit}
@@ -68,7 +68,7 @@ describe('<EmailInvoicePopover/>', () => {
                     <EmailInvoicePopover
                         id="email-invoice"
                         actionName={actionName}
-                        color="primary"
+                        variant="primary"
                         customerEmail={customerEmail}
                         disabled={false}
                         onSubmit={onSubmit}
@@ -118,7 +118,7 @@ describe('<EmailInvoicePopover/>', () => {
                 <EmailInvoicePopover
                     id="email-invoice"
                     actionName={actionName}
-                    color="primary"
+                    variant="primary"
                     customerEmail={customerEmail}
                     disabled={false}
                     onSubmit={onSubmit}
