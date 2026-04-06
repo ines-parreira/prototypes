@@ -38,7 +38,7 @@ export const ALL_AGENTS_LINE_CHART_METRICS: LineChartMetricConfig[] = [
         trendQueryFactory: dynamicAllAgentsAutomationRateQueryFactoryV2,
         timeSeriesQueryFactory:
             dynamicAllAgentsAutomationRateTimeseriesQueryFactoryV2,
-        dimensions: ['overall', 'channel', 'storeIntegrationId', 'aiAgentRole'],
+        dimensions: ['overall', 'channel', 'storeIntegrationId'],
     },
     {
         measure: 'automatedInteractionsCount',

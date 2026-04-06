@@ -12,8 +12,9 @@ import {
 import type { SizeValue } from '@gorgias/axiom'
 import { Box, Skeleton } from '@gorgias/axiom'
 
-import type { ChartDataItem } from '../ChartCard/types'
+import type { ChartDataItem } from '../ChartCard'
 import { assignColorsToData } from '../ChartCard/utils/colorUtils'
+import { ChartLegend } from '../ChartLegend/ChartLegend'
 import { BarChartTooltip } from './BarChartTooltip'
 
 import css from './BarChart.less'
@@ -29,6 +30,9 @@ type BarChartProps = {
         start_datetime: string
         end_datetime: string
     }
+    withLegend?: boolean
+    maxBarSize?: number
+    chartHeight?: number
 }
 
 const CHART_HEIGHT = 300
@@ -63,6 +67,9 @@ export const BarChart = ({
     valueFormatter,
     yAxisFormatter,
     period,
+    withLegend = false,
+    maxBarSize,
+    chartHeight = CHART_HEIGHT,
 }: BarChartProps) => {
     const dataWithColors = assignColorsToData(data)
 
@@ -79,16 +86,16 @@ export const BarChart = ({
                     justifyContent="stretch"
                     alignItems="flex-end"
                     flexWrap="nowrap"
-                    height={CHART_HEIGHT}
+                    height={chartHeight}
                     gap="xs"
                     pl="xs"
                     pr="xs"
                     className={css.chartSkeleton}
                 >
-                    <Skeleton height={CHART_HEIGHT / 4} />
-                    <Skeleton height={CHART_HEIGHT / 2} />
-                    <Skeleton height={CHART_HEIGHT / 1.5} />
-                    <Skeleton height={CHART_HEIGHT / 3} />
+                    <Skeleton height={chartHeight / 4} width={maxBarSize} />
+                    <Skeleton height={chartHeight / 2} width={maxBarSize} />
+                    <Skeleton height={chartHeight / 1.5} width={maxBarSize} />
+                    <Skeleton height={chartHeight / 3} width={maxBarSize} />
                 </Box>
             </Box>
         )
@@ -99,10 +106,10 @@ export const BarChart = ({
             flexDirection="column"
             width={containerWidth}
             height={containerHeight}
-            gap="lg"
+            gap="xs"
             className={css.chartContainer}
         >
-            <ResponsiveContainer width="100%" height={CHART_HEIGHT}>
+            <ResponsiveContainer width="100%" height={chartHeight}>
                 <RechartsBarChart data={dataWithColors}>
                     <CartesianGrid
                         strokeDasharray="3 3"
@@ -129,13 +136,18 @@ export const BarChart = ({
                         )}
                         cursor={{ fill: 'rgba(160, 132, 225, 0.1)' }}
                     />
-                    <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                    <Bar
+                        dataKey="value"
+                        radius={[4, 4, 0, 0]}
+                        maxBarSize={maxBarSize}
+                    >
                         {dataWithColors.map((entry, index) => (
                             <Cell key={`cell-${index}`} fill={entry.color} />
                         ))}
                     </Bar>
                 </RechartsBarChart>
             </ResponsiveContainer>
+            {withLegend && <ChartLegend seriesWithColors={dataWithColors} />}
         </Box>
     )
 }

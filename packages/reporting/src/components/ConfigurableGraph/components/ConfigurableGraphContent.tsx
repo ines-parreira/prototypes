@@ -56,11 +56,13 @@ function DonutOrBarWithToggleRenderer({
     return (
         <BarChart
             data={filteredData}
-            containerHeight={280}
+            chartHeight={280}
             isLoading={isLoading}
             valueFormatter={groupingConfig.valueFormatter}
             yAxisFormatter={groupingConfig.valueFormatter}
             period={groupingConfig.period}
+            maxBarSize={80}
+            withLegend={true}
         />
     )
 }

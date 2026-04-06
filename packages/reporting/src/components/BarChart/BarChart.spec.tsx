@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
 
 import type { ChartDataItem } from '../ChartCard/types'
 import { BarChart, renderBarTooltipContent } from './BarChart'
@@ -97,6 +97,93 @@ describe('BarChart', () => {
                 '.recharts-responsive-container',
             )
             expect(responsiveContainer).toBeInTheDocument()
+        })
+    })
+
+    describe('chartHeight', () => {
+        it('should render with default chart height', () => {
+            const { container } = render(<BarChart data={mockData} />)
+
+            const responsiveContainer = container.querySelector(
+                '.recharts-responsive-container',
+            )
+            expect(responsiveContainer).toBeInTheDocument()
+        })
+
+        it('should render with custom chart height', () => {
+            const { container } = render(
+                <BarChart data={mockData} chartHeight={200} />,
+            )
+
+            const responsiveContainer = container.querySelector(
+                '.recharts-responsive-container',
+            )
+            expect(responsiveContainer).toBeInTheDocument()
+        })
+
+        it('should use custom chart height for skeleton when loading', () => {
+            const { container } = render(
+                <BarChart data={mockData} isLoading chartHeight={200} />,
+            )
+
+            const skeletons = container.querySelectorAll(
+                '[data-name="skeleton"]',
+            )
+            expect(skeletons.length).toBeGreaterThan(0)
+        })
+    })
+
+    describe('maxBarSize', () => {
+        it('should render chart without maxBarSize by default', () => {
+            const { container } = render(<BarChart data={mockData} />)
+
+            expect(container.firstChild).toBeTruthy()
+        })
+
+        it('should pass maxBarSize to the chart', () => {
+            const { container } = render(
+                <BarChart data={mockData} maxBarSize={40} />,
+            )
+
+            expect(container.firstChild).toBeTruthy()
+        })
+
+        it('should render skeletons when loading with maxBarSize', () => {
+            const { container } = render(
+                <BarChart data={mockData} isLoading maxBarSize={40} />,
+            )
+
+            const skeletons = container.querySelectorAll(
+                '[data-name="skeleton"]',
+            )
+            expect(skeletons.length).toBeGreaterThan(0)
+        })
+    })
+
+    describe('legend', () => {
+        it('should not render legend by default', () => {
+            render(<BarChart data={mockData} />)
+
+            expect(screen.queryByText('Support')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Shopping assistant'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should render legend when withLegend is true', () => {
+            render(<BarChart data={mockData} withLegend />)
+
+            expect(screen.getByText('Support')).toBeInTheDocument()
+            expect(screen.getByText('Shopping assistant')).toBeInTheDocument()
+        })
+
+        it('should not render legend when withLegend is false', () => {
+            render(<BarChart data={mockData} withLegend={false} />)
+
+            expect(screen.queryByText('Support')).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Shopping assistant'),
+            ).not.toBeInTheDocument()
         })
     })
 

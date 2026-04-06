@@ -31,7 +31,7 @@ export const ALL_AGENTS_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         metricFormat: 'decimal-to-percent' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory: dynamicAllAgentsAutomationRateQueryFactoryV2,
-        dimensions: ['channel', 'storeIntegrationId', 'aiAgentRole'],
+        dimensions: ['channel', 'storeIntegrationId'],
     },
     {
         measure: 'automatedInteractionsCount',
@@ -60,7 +60,7 @@ export const ALL_AGENTS_BAR_CHART_METRICS: BarChartMetricConfig[] = [
         metricFormat: 'duration' as const,
         interpretAs: 'more-is-better' as const,
         queryFactory: dynamicAllAgentsTimeSavedQueryFactoryV2,
-        dimensions: ['channel', 'storeIntegrationId', 'aiAgentRole'],
+        dimensions: ['channel', 'storeIntegrationId'],
     },
 ]
 

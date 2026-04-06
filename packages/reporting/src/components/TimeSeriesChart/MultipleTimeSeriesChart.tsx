@@ -13,7 +13,7 @@ import { Box, Text } from '@gorgias/axiom'
 
 import type { MultipleTimeSeriesDataItem } from '../ChartCard'
 import { assignColorsToData } from '../ChartCard/utils/colorUtils'
-import type { ChartDataItemWithColor } from '../ChartCard/utils/colorUtils'
+import { ChartLegend } from '../ChartLegend/ChartLegend'
 import { TimeSeriesChartSkeleton } from './TimeSeriesChartSkeleton'
 
 import css from './TimeSeriesChart.less'
@@ -113,26 +113,6 @@ export const renderMultipleTimeSeriesTooltipContent =
             </Box>
         )
     }
-
-export const MultipleTimeSeriesLegend = ({
-    seriesWithColors,
-}: {
-    seriesWithColors: ChartDataItemWithColor[]
-}) => {
-    return (
-        <div className={css.legend}>
-            {seriesWithColors.map((series) => (
-                <div key={series.name} className={css.legendItem}>
-                    <div
-                        className={css.legendDot}
-                        style={{ backgroundColor: series.color }}
-                    />
-                    <Text size="sm">{series.name}</Text>
-                </div>
-            ))}
-        </div>
-    )
-}
 
 export const MultipleTimeSeriesChart = ({
     containerHeight,
@@ -238,9 +218,7 @@ export const MultipleTimeSeriesChart = ({
                     </LineChart>
                 </ResponsiveContainer>
             </div>
-            {withLegend && (
-                <MultipleTimeSeriesLegend seriesWithColors={seriesWithColors} />
-            )}
+            {withLegend && <ChartLegend seriesWithColors={seriesWithColors} />}
         </Box>
     )
 }

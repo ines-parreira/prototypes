@@ -4,7 +4,6 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import type { MultipleTimeSeriesDataItem } from '../ChartCard/types'
 import {
     MultipleTimeSeriesChart,
-    MultipleTimeSeriesLegend,
     renderMultipleTimeSeriesTooltipContent,
 } from './MultipleTimeSeriesChart'
 
@@ -167,20 +166,6 @@ describe('MultipleTimeSeriesChart', () => {
 
             expect(container.firstChild).toBeTruthy()
         })
-    })
-})
-
-describe('MultipleTimeSeriesLegend', () => {
-    const seriesWithColors = [
-        { name: 'Series A', value: 0, color: '#800080' },
-        { name: 'Series B', value: 0, color: '#FFA500' },
-    ]
-
-    it('should render series names', () => {
-        render(<MultipleTimeSeriesLegend seriesWithColors={seriesWithColors} />)
-
-        expect(screen.getByText('Series A')).toBeInTheDocument()
-        expect(screen.getByText('Series B')).toBeInTheDocument()
     })
 })
 
