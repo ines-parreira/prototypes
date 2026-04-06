@@ -1,6 +1,7 @@
 import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
+import { dynamicRevenuePerInteractionTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentActivity'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { useRevenuePerInteractionMetric } from 'pages/aiAgent/analyticsAiAgent/hooks/useRevenuePerInteractionMetric'
 
@@ -15,6 +16,9 @@ export const AnalyticsAiAgentRevenuePerInteractionCard = ({
         chartId,
         isAiAgentTrendCard: true,
         dashboard,
+        timeSeriesView: {
+            queryFactory: dynamicRevenuePerInteractionTimeseriesQueryFactoryV2,
+        },
     })
 
     return <TrendCard {...trendCardProps} />

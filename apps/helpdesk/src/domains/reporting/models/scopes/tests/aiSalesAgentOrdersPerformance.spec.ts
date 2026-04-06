@@ -13,6 +13,8 @@ import {
     averageOrderValueQueryV2Factory,
     dynamicOrdersInfluencedCount,
     dynamicOrdersInfluencedCountQueryFactoryV2,
+    dynamicOrdersInfluencedCountTimeseries,
+    dynamicOrdersInfluencedCountTimeSeriesQueryFactoryV2,
     dynamicTotalSalesAmount,
     dynamicTotalSalesAmountQueryFactoryV2,
     dynamicTotalSalesAmountTimeseries,
@@ -645,6 +647,149 @@ describe('dynamicOrdersInfluencedCountQueryFactoryV2', () => {
         expect(dynamicOrdersInfluencedCountQueryFactoryV2(ctx)).toEqual(
             dynamicOrdersInfluencedCount.build(ctx),
         )
+    })
+})
+
+describe('dynamicOrdersInfluencedCountTimeseries', () => {
+    const filters: ApiStatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const context = { filters, timezone: 'utc' }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('creates query with time_dimensions using granularity from context', () => {
+        expect(
+            dynamicOrdersInfluencedCountTimeseries.build({
+                ...context,
+                granularity: 'day' as AggregationWindow,
+                dimensions: [],
+            }),
+        ).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-orders-influenced-count-timeseries',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['ordersInfluencedCount'],
+            time_dimensions: [
+                { dimension: 'eventDatetime', granularity: 'day' },
+            ],
+            dimensions: [],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    it('creates query with the provided dimensions', () => {
+        expect(
+            dynamicOrdersInfluencedCountTimeseries.build({
+                ...context,
+                granularity: 'week' as AggregationWindow,
+                dimensions: ['channel'],
+            }),
+        ).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-orders-influenced-count-timeseries',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['ordersInfluencedCount'],
+            time_dimensions: [
+                { dimension: 'eventDatetime', granularity: 'week' },
+            ],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+})
+
+describe('dynamicOrdersInfluencedCountTimeSeriesQueryFactoryV2', () => {
+    const filters: ApiStatsFilters = {
+        period: {
+            start_datetime: '2025-09-03T00:00:00.000',
+            end_datetime: '2025-09-03T23:59:59.000',
+        },
+    }
+
+    const context = { filters, timezone: 'utc' }
+
+    const periodFilters = [
+        {
+            member: 'periodStart',
+            operator: 'afterDate',
+            values: ['2025-09-03T00:00:00.000'],
+        },
+        {
+            member: 'periodEnd',
+            operator: 'beforeDate',
+            values: ['2025-09-03T23:59:59.000'],
+        },
+    ]
+
+    it('returns the same result as calling build directly', () => {
+        const ctx = {
+            ...context,
+            granularity: 'day' as AggregationWindow,
+        }
+
+        expect(
+            dynamicOrdersInfluencedCountTimeSeriesQueryFactoryV2(ctx),
+        ).toEqual(dynamicOrdersInfluencedCountTimeseries.build(ctx))
+    })
+
+    it('returns query with time_dimensions when granularity is provided', () => {
+        const result = dynamicOrdersInfluencedCountTimeSeriesQueryFactoryV2({
+            ...context,
+            granularity: 'month' as AggregationWindow,
+            dimensions: [],
+        })
+
+        expect(result).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-orders-influenced-count-timeseries',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['ordersInfluencedCount'],
+            time_dimensions: [
+                { dimension: 'eventDatetime', granularity: 'month' },
+            ],
+            dimensions: [],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
+    })
+
+    it('returns query with the provided dimensions', () => {
+        const result = dynamicOrdersInfluencedCountTimeSeriesQueryFactoryV2({
+            ...context,
+            granularity: 'day' as AggregationWindow,
+            dimensions: ['channel'],
+        })
+
+        expect(result).toEqual({
+            metricName:
+                'ai-agent-dynamic-shopping-assistant-orders-influenced-count-timeseries',
+            scope: 'ai-sales-agent-orders-performance',
+            measures: ['ordersInfluencedCount'],
+            time_dimensions: [
+                { dimension: 'eventDatetime', granularity: 'day' },
+            ],
+            dimensions: ['channel'],
+            timezone: 'utc',
+            filters: periodFilters,
+        })
     })
 })
 

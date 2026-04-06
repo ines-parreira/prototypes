@@ -91,6 +91,25 @@ export const dynamicAllAgentsTimeSaved = aiAgentTimeSavedScope
 export const dynamicAllAgentsTimeSavedQueryFactoryV2 = (ctx: Context) =>
     dynamicAllAgentsTimeSaved.build(ctx)
 
+export const dynamicAllAgentsTimeSavedTimeseries = aiAgentTimeSavedScope
+    .defineMetricName(
+        METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT_TIMESERIES,
+    )
+    .defineQuery(({ ctx }) => ({
+        measures: ['averageTimeSavedByAgent'],
+        time_dimensions: [
+            {
+                dimension: 'eventDatetime',
+                granularity: ctx.granularity,
+            },
+        ],
+        dimensions: ctx.dimensions,
+    }))
+
+export const dynamicAllAgentsTimeSavedTimeSeriesQueryFactoryV2 = (
+    ctx: Context,
+) => dynamicAllAgentsTimeSavedTimeseries.build(ctx)
+
 export const dynamicSupportAgentTimeSaved = aiAgentTimeSavedScope
     .defineMetricName(METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_TIME_SAVED)
     .defineQuery(({ ctx, config }) => ({

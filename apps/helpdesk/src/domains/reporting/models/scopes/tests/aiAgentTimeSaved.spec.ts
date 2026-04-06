@@ -4,6 +4,8 @@ import {
     aiAgentTimeSavedScope,
     dynamicAllAgentsTimeSaved,
     dynamicAllAgentsTimeSavedQueryFactoryV2,
+    dynamicAllAgentsTimeSavedTimeseries,
+    dynamicAllAgentsTimeSavedTimeSeriesQueryFactoryV2,
     dynamicSupportAgentTimeSaved,
     dynamicSupportAgentTimeSavedQueryFactoryV2,
     overallTimeSavedByAgentPerChannel,
@@ -11,6 +13,7 @@ import {
 } from 'domains/reporting/models/scopes/aiAgentTimeSaved'
 import { createScopeFilters } from 'domains/reporting/models/scopes/utils'
 import type {
+    AggregationWindow,
     ApiStatsFilters,
     StatsFilters,
 } from 'domains/reporting/models/stat/types'
@@ -357,6 +360,105 @@ describe('dynamicAiAgentTimeSaved', () => {
             expect(dynamicAllAgentsTimeSavedQueryFactoryV2(ctx)).toEqual(
                 dynamicAllAgentsTimeSaved.build(ctx),
             )
+        })
+    })
+
+    describe('dynamicAllAgentsTimeSavedTimeseries', () => {
+        it('creates query with time_dimensions using granularity from context', () => {
+            expect(
+                dynamicAllAgentsTimeSavedTimeseries.build({
+                    ...context,
+                    granularity: 'day' as AggregationWindow,
+                    dimensions: [],
+                }),
+            ).toEqual({
+                metricName:
+                    'ai-agent-dynamic-all-agents-time-saved-by-agent-timeseries',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'day' },
+                ],
+                dimensions: [],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
+        })
+
+        it('creates query with the provided dimensions', () => {
+            expect(
+                dynamicAllAgentsTimeSavedTimeseries.build({
+                    ...context,
+                    granularity: 'week' as AggregationWindow,
+                    dimensions: ['channel'],
+                }),
+            ).toEqual({
+                metricName:
+                    'ai-agent-dynamic-all-agents-time-saved-by-agent-timeseries',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'week' },
+                ],
+                dimensions: ['channel'],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
+        })
+    })
+
+    describe('dynamicAllAgentsTimeSavedTimeSeriesQueryFactoryV2', () => {
+        it('returns the same result as calling build directly', () => {
+            const ctx = {
+                ...context,
+                granularity: 'day' as AggregationWindow,
+            }
+
+            expect(
+                dynamicAllAgentsTimeSavedTimeSeriesQueryFactoryV2(ctx),
+            ).toEqual(dynamicAllAgentsTimeSavedTimeseries.build(ctx))
+        })
+
+        it('returns query with time_dimensions when granularity is provided', () => {
+            const result = dynamicAllAgentsTimeSavedTimeSeriesQueryFactoryV2({
+                ...context,
+                granularity: 'month' as AggregationWindow,
+                dimensions: [],
+            })
+
+            expect(result).toEqual({
+                metricName:
+                    'ai-agent-dynamic-all-agents-time-saved-by-agent-timeseries',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'month' },
+                ],
+                dimensions: [],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
+        })
+
+        it('returns query with the provided dimensions', () => {
+            const result = dynamicAllAgentsTimeSavedTimeSeriesQueryFactoryV2({
+                ...context,
+                granularity: 'day' as AggregationWindow,
+                dimensions: ['aiAgentRole'],
+            })
+
+            expect(result).toEqual({
+                metricName:
+                    'ai-agent-dynamic-all-agents-time-saved-by-agent-timeseries',
+                scope: 'ai-agent-time-saved',
+                measures: ['averageTimeSavedByAgent'],
+                time_dimensions: [
+                    { dimension: 'eventDatetime', granularity: 'day' },
+                ],
+                dimensions: ['aiAgentRole'],
+                timezone: 'utc',
+                filters: periodFilters,
+            })
         })
     })
 })

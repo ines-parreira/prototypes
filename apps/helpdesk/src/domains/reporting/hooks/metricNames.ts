@@ -17,6 +17,8 @@ export const METRIC_NAMES = {
         'ai-agent-dynamic-all-agents-automated-interactions-timeseries',
     AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT:
         'ai-agent-dynamic-all-agents-time-saved-by-agent',
+    AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT_TIMESERIES:
+        'ai-agent-dynamic-all-agents-time-saved-by-agent-timeseries',
     AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS:
         'ai-agent-dynamic-support-agent-automated-interactions',
     AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS_TIMESERIES:
@@ -35,6 +37,8 @@ export const METRIC_NAMES = {
         'ai-agent-dynamic-shopping-assistant-total-sales-amount-timeseries',
     AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_COUNT:
         'ai-agent-dynamic-shopping-assistant-orders-influenced-count',
+    AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_COUNT_TIMESERIES:
+        'ai-agent-dynamic-shopping-assistant-orders-influenced-count-timeseries',
     AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION:
         'ai-agent-dynamic-shopping-assistant-revenue-per-interaction',
     AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_REVENUE_PER_INTERACTION_TIMESERIES:
@@ -84,6 +88,8 @@ export const METRIC_NAMES = {
         'ai-agent-automated-interactions-per-intent',
     AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT:
         'ai-agent-dynamic-average-time-saved-by-agent',
+    AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT_TIMESERIES:
+        'ai-agent-dynamic-average-time-saved-by-agent-timeseries',
     AI_AGENT_SALES_AUTOMATED_INTERACTIONS_PER_CHANNEL:
         'ai-agent-sales-automated-interactions-per-channel',
     AI_AGENT_SALES_HANDOVER_INTERACTIONS_PER_CHANNEL:
@@ -1091,6 +1097,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.OverallTimeSavedByAgent]: [
         METRIC_NAMES.OVERALL_TIME_SAVED_BY_AGENT_PER_ORDER_MANAGEMENT_TYPE,
         METRIC_NAMES.AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_AVERAGE_TIME_SAVED_BY_AGENT_TIMESERIES,
     ],
     [MetricScope.AiAgentCoverageRate]: [
         METRIC_NAMES.AI_AGENT_ALL_AGENTS_COVERAGE_RATE,
@@ -1131,6 +1138,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_TOTAL_SALES_AMOUNT,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_TOTAL_SALES_AMOUNT_TIMESERIES,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_COUNT,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_COUNT_TIMESERIES,
         METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_TOTAL_SALES_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_ORDERS_INFLUENCED_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SALES_PERFORMANCE_TOTAL_SALES_PER_ENGAGEMENT_TYPE,
@@ -1159,6 +1167,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL,
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_INTENT,
         METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_ALL_AGENTS_TIME_SAVED_BY_AGENT_TIMESERIES,
         METRIC_NAMES.AI_AGENT_DYNAMIC_TIME_SAVED_BY_AGENT,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_TIME_SAVED,
     ],

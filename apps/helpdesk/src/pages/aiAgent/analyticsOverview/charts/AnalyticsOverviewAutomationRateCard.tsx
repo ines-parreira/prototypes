@@ -1,7 +1,7 @@
 import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
-import { dynamicOverallAutomationRateQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
+import { dynamicOverallAutomationRateTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomationRate'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { useAutomationRateMetric } from 'pages/aiAgent/analyticsOverview/hooks/useAutomationRateMetric'
 
@@ -17,7 +17,7 @@ export const AnalyticsOverviewAutomationRateCard = ({
         isAiAgentTrendCard: true,
         dashboard,
         timeSeriesView: {
-            queryFactory: dynamicOverallAutomationRateQueryFactoryV2,
+            queryFactory: dynamicOverallAutomationRateTimeseriesQueryFactoryV2,
         },
     })
 

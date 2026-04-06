@@ -2,9 +2,8 @@ import { TrendCard } from '@repo/reporting'
 
 import { useFilteredAutomatedInteractions } from 'domains/reporting/hooks/automate/automationTrends'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
+import { dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-
-import { dynamicOverallAutomatedInteractionsQueryFactoryV2 } from '../../../../domains/reporting/models/scopes/overallAutomatedInteractions'
 
 export const AnalyticsOverviewAutomatedInteractionsCard = ({
     chartId,
@@ -20,7 +19,8 @@ export const AnalyticsOverviewAutomatedInteractionsCard = ({
         isAiAgentTrendCard: true,
         dashboard,
         timeSeriesView: {
-            queryFactory: dynamicOverallAutomatedInteractionsQueryFactoryV2,
+            queryFactory:
+                dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2,
         },
     })
 

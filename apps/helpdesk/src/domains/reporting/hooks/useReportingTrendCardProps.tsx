@@ -32,7 +32,11 @@ export const useReportingTrendCardProps = ({
     useTrend: MetricTrendHook
     isAiAgentTrendCard: boolean
     drillDownMetricName?: DrillDownMetric['metricName']
-    timeSeriesView?: { comingSoon?: boolean; queryFactory?: MetricQueryFactory }
+    timeSeriesView?: {
+        comingSoon?: boolean
+        queryFactory?: MetricQueryFactory
+        valueFormatter?: (value: number) => string
+    }
 }) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
 
@@ -72,11 +76,17 @@ export const useReportingTrendCardProps = ({
     )
 
     const timeSeriesViewProps = useMemo(() => {
-        if (!timeSeriesView || !isTimeSeriesEnabled) {
+        if (!isTimeSeriesEnabled) {
             return undefined
         }
 
-        const { queryFactory } = timeSeriesView
+        if (!timeSeriesView) {
+            return {
+                comingSoon: true,
+            }
+        }
+
+        const { queryFactory, valueFormatter } = timeSeriesView
         return {
             comingSoon: timeSeriesView.comingSoon ?? false,
             useChartData: queryFactory
@@ -88,8 +98,10 @@ export const useReportingTrendCardProps = ({
                           granularity,
                       )
                 : undefined,
-            valueFormatter: (value: number) =>
-                formatMetricValue(value, chartConfig.metricFormat),
+            valueFormatter: valueFormatter
+                ? valueFormatter
+                : (value: number) =>
+                      formatMetricValue(value, chartConfig.metricFormat),
         }
     }, [
         timeSeriesView,

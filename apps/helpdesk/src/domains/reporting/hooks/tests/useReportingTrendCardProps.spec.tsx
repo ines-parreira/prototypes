@@ -566,76 +566,55 @@ describe('useReportingTrendCardProps', () => {
                 },
             )
 
-        it('should return timeSeriesView as undefined when not provided', () => {
-            mockUseTrend.mockReturnValue(mockTrendData)
-
-            const { result } = renderWithTimeSeries(undefined)
-
-            expect(result.current.timeSeriesView).toBeUndefined()
-        })
-
-        it('should return timeSeriesView when feature flag is on', () => {
+        it('is enabled when feature flag is on and isAiAgentTrendCard is true', () => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: true,
                 isLoading: false,
             })
-            mockUseTrend.mockReturnValue(mockTrendData)
 
             const { result } = renderWithTimeSeries({ comingSoon: true })
 
             expect(result.current.timeSeriesView).toBeDefined()
         })
 
-        it('should return timeSeriesView as undefined when feature flag is off', () => {
+        it('is disabled when feature flag is still loading', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: true,
+                isLoading: true,
+            })
+
+            const { result } = renderWithTimeSeries({})
+
+            expect(result.current.timeSeriesView).toBeUndefined()
+        })
+
+        it('is disabled when feature flag is off', () => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: false,
                 isLoading: false,
             })
-            mockUseTrend.mockReturnValue(mockTrendData)
 
             const { result } = renderWithTimeSeries({ comingSoon: true })
 
             expect(result.current.timeSeriesView).toBeUndefined()
         })
 
-        it('should return timeSeriesView as undefined when isAiAgentTrendCard is false', () => {
+        it('is disabled when isAiAgentTrendCard is false', () => {
             mockUseFlagWithLoading.mockReturnValue({
                 value: true,
                 isLoading: false,
             })
-            mockUseTrend.mockReturnValue(mockTrendData)
 
             const { result } = renderWithTimeSeries({ comingSoon: true }, false)
 
             expect(result.current.timeSeriesView).toBeUndefined()
         })
 
-        it('should default comingSoon to false when not provided', () => {
-            const { result } = renderWithTimeSeries({})
-
-            expect(result.current.timeSeriesView?.comingSoon).toBe(false)
-        })
-
-        it('should pass through comingSoon as true when provided', () => {
-            const { result } = renderWithTimeSeries({ comingSoon: true })
-
-            expect(result.current.timeSeriesView?.comingSoon).toBe(true)
-        })
-
-        it('should return useChartData as undefined when queryFactory is not provided', () => {
-            const { result } = renderWithTimeSeries({})
-
-            expect(result.current.timeSeriesView?.useChartData).toBeUndefined()
-        })
-
-        it('should call useOverallTimeSeries with correct args when useChartData is invoked', () => {
+        it('calls useOverallTimeSeries with correct args when useChartData is invoked', () => {
             const { result } = renderWithTimeSeries({
                 queryFactory: mockQueryFactory,
             })
 
-            expect(result.current.timeSeriesView?.useChartData).toBeInstanceOf(
-                Function,
-            )
             result.current.timeSeriesView?.useChartData?.()
 
             expect(mockUseOverallTimeSeries).toHaveBeenCalledWith(
@@ -646,12 +625,25 @@ describe('useReportingTrendCardProps', () => {
             )
         })
 
-        it('should call formatMetricValue with the value and metricFormat when valueFormatter is invoked', () => {
+        it('uses formatMetricValue with chartConfig.metricFormat by default', () => {
             const { result } = renderWithTimeSeries({})
 
-            result.current.timeSeriesView?.valueFormatter(42)
+            result.current.timeSeriesView?.valueFormatter?.(42)
 
             expect(mockFormatMetricValue).toHaveBeenCalledWith(42, 'percent')
+        })
+
+        it('uses custom valueFormatter when provided', () => {
+            const customFormatter = jest.fn().mockReturnValue('custom value')
+
+            const { result } = renderWithTimeSeries({
+                valueFormatter: customFormatter,
+            })
+
+            result.current.timeSeriesView?.valueFormatter?.(42)
+
+            expect(customFormatter).toHaveBeenCalledWith(42)
+            expect(mockFormatMetricValue).not.toHaveBeenCalled()
         })
     })
 

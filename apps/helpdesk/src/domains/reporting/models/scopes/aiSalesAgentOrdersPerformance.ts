@@ -110,6 +110,26 @@ export const dynamicOrdersInfluencedCount = aiSalesAgentOrdersPerformanceScope
 export const dynamicOrdersInfluencedCountQueryFactoryV2 = (ctx: Context) =>
     dynamicOrdersInfluencedCount.build(ctx)
 
+export const dynamicOrdersInfluencedCountTimeseries =
+    aiSalesAgentOrdersPerformanceScope
+        .defineMetricName(
+            METRIC_NAMES.AI_AGENT_DYNAMIC_SHOPPING_ASSISTANT_ORDERS_INFLUENCED_COUNT_TIMESERIES,
+        )
+        .defineQuery(({ ctx }) => ({
+            measures: ['ordersInfluencedCount'],
+            time_dimensions: [
+                {
+                    dimension: 'eventDatetime',
+                    granularity: ctx.granularity,
+                },
+            ],
+            dimensions: ctx.dimensions,
+        }))
+
+export const dynamicOrdersInfluencedCountTimeSeriesQueryFactoryV2 = (
+    ctx: Context,
+) => dynamicOrdersInfluencedCountTimeseries.build(ctx)
+
 export const aiAgentSalesTotalSalesPerChannel =
     aiSalesAgentOrdersPerformanceScope
         .defineMetricName(

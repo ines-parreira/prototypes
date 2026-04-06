@@ -201,7 +201,7 @@ export const dynamicAiShoppingAgentAutomatedInteractionsTimeseries =
         }))
 
 export const dynamicAiShoppingAgentAutomatedInteractionsTimeseriesQueryFactoryV2 =
-    (ctx: AiAgentAutomatedInteractionsContext) =>
+    (ctx: Context) =>
         dynamicAiShoppingAgentAutomatedInteractionsTimeseries.build(ctx)
 
 export const dynamicAllAgentsAutomatedInteractions =

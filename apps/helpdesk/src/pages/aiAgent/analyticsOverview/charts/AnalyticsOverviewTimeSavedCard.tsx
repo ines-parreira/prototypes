@@ -2,6 +2,7 @@ import { TrendCard } from '@repo/reporting'
 
 import { useTimeSavedByAgentsTrend } from 'domains/reporting/hooks/automate/useTimeSavedByAgentsTrend'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
+import { dynamicAverageTimeSavedByAgentTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/overallTimeSavedByAgent'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
 export const AnalyticsOverviewTimeSavedCard = ({
@@ -18,7 +19,8 @@ export const AnalyticsOverviewTimeSavedCard = ({
         isAiAgentTrendCard: true,
         dashboard,
         timeSeriesView: {
-            comingSoon: true,
+            queryFactory:
+                dynamicAverageTimeSavedByAgentTimeseriesQueryFactoryV2,
         },
     })
 

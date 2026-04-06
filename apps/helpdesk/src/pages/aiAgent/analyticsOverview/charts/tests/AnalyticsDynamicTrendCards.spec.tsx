@@ -57,7 +57,15 @@ import { AnalyticsOverviewTimeSavedCard } from 'pages/aiAgent/analyticsOverview/
 jest.mock('domains/reporting/hooks/useReportingTrendCardProps')
 const mockUseReportingTrendCardProps = assumeMock(useReportingTrendCardProps)
 
+jest.mock(
+    'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate',
+    () => ({
+        useMoneySavedPerInteractionWithAutomate: jest.fn().mockReturnValue(3.1),
+    }),
+)
+
 jest.mock('@repo/reporting', () => ({
+    ...jest.requireActual('@repo/reporting'),
     TrendCard: jest.fn(() => null),
 }))
 const mockTrendCard = assumeMock(TrendCard)
@@ -153,7 +161,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 19800,
                 prevValue: 19400,
             },
-            timeSeriesView: { comingSoon: true },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsAiAgentAverageOrderValueCard',
@@ -226,6 +234,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 7800,
                 prevValue: 7500,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsAiAgentMedianPurchaseTimeCard',
@@ -250,6 +259,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 1029,
                 prevValue: 1000,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsAiAgentBuyThroughRateCard',
@@ -423,6 +433,10 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 1234.5,
                 prevValue: 1000,
             },
+            timeSeriesView: {
+                queryFactory: expect.any(Function),
+                valueFormatter: expect.any(Function),
+            },
         },
         {
             name: 'AnalyticsAiAgentZeroTouchTicketsCard',
@@ -487,6 +501,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 3600,
                 prevValue: 4200,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsOverviewDecreaseInFRTCard',
@@ -607,6 +622,10 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 1234.5,
                 prevValue: 1000,
             },
+            timeSeriesView: {
+                queryFactory: expect.any(Function),
+                valueFormatter: expect.any(Function),
+            },
         },
         {
             name: 'AnalyticsAiAgentAutomatedInteractionsCard',
@@ -621,6 +640,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 4800,
                 prevValue: 4600,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsAiAgentTimeSavedCard',
@@ -633,6 +653,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 19800,
                 prevValue: 19400,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsAiAgentResolvedInteractionsCard',
@@ -647,6 +668,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 2400,
                 prevValue: 2200,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsAiAgentRevenuePerInteractionCard',
@@ -659,6 +681,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 42.5,
                 prevValue: 38.0,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsAiAgentSupportInteractionsCard',
@@ -686,6 +709,7 @@ describe('Analytics Dynamic Trend Cards', () => {
                 value: 12.5,
                 prevValue: 10,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
     ]
 
@@ -740,6 +764,26 @@ describe('Analytics Dynamic Trend Cards', () => {
 
                 expect(mockTrendCard).toHaveBeenCalledWith(trendCardProps, {})
             })
+
+            if (timeSeriesView?.valueFormatter) {
+                it('should produce a string when valueFormatter is called with a value', () => {
+                    render(
+                        <Component
+                            chartConfig={chartConfig}
+                            chartId="test-chart-id"
+                            dashboard={mockDashboard}
+                        />,
+                    )
+
+                    const capturedValueFormatter =
+                        mockUseReportingTrendCardProps.mock.calls[0][0]
+                            .timeSeriesView?.valueFormatter
+
+                    expect(capturedValueFormatter?.(100)).toEqual(
+                        expect.any(String),
+                    )
+                })
+            }
         },
     )
 })

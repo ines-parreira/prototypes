@@ -1,6 +1,7 @@
 import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
+import { dynamicTotalSalesAmountTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/aiSalesAgentOrdersPerformance'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 import { useAiAgentTotalSalesTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentTotalSalesTrend'
 
@@ -15,6 +16,9 @@ export const AnalyticsAiAgentTotalSalesCard = ({
         dashboard,
         useTrend: useAiAgentTotalSalesTrend,
         isAiAgentTrendCard: true,
+        timeSeriesView: {
+            queryFactory: dynamicTotalSalesAmountTimeseriesQueryFactoryV2,
+        },
     })
 
     return <TrendCard {...trendCardProps} />
