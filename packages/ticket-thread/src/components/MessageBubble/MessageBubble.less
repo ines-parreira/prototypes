@@ -77,4 +77,30 @@
     .messageRow:focus-within .bubbleActions {
         visibility: visible;
     }
+
+    // For grouped messages, suppress row-level hover and show per individual message
+    .messageRow:hover [data-grouped-message] .bubbleActions,
+    .messageRow:focus-within [data-grouped-message] .bubbleActions {
+        visibility: hidden;
+    }
+
+    .messageRow [data-grouped-message]:hover .bubbleActions,
+    .messageRow [data-grouped-message]:focus-within .bubbleActions,
+    .messageRow [data-grouped-message] .bubbleActions:hover {
+        visibility: visible;
+    }
+
+    // Header actions: suppress row-level hover, show only on header or first message hover
+    .messageRow:hover [data-grouped-header] .bubbleActions,
+    .messageRow:focus-within [data-grouped-header] .bubbleActions {
+        visibility: hidden;
+    }
+
+    .messageRow [data-grouped-header]:hover .bubbleActions,
+    .messageRow [data-grouped-header] .bubbleActions:hover,
+    .messageRow:has([data-grouped-message]:first-child:hover)
+        [data-grouped-header]
+        .bubbleActions {
+        visibility: visible;
+    }
 }

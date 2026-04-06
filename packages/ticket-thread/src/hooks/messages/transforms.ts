@@ -170,6 +170,7 @@ export function toTaggedMessage(
 
 const GROUPING_CHANNELS = [
     'facebook-messenger',
+    'instagram-direct-message',
     'chat',
     'whatsapp-message',
 ] as const

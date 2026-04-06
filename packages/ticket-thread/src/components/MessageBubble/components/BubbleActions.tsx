@@ -18,6 +18,7 @@ export function BubbleActions({ children, placement }: BubbleActionsProps) {
                     ? css.bubbleActionsLeft
                     : css.bubbleActionsRight,
             )}
+            data-placement={placement}
         >
             {children}
         </div>
