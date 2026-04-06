@@ -58,7 +58,7 @@
     .recents-group { gap: 4px; }
     .nav-item {
       display: flex; align-items: center; gap: 8px;
-      height: 24px; padding: 0 8px;
+      height: 32px; padding: 0 8px;
       border-radius: 8px; cursor: pointer;
       width: 224px; transition: background 0.1s;
     }
@@ -74,7 +74,7 @@
       font-size: 10px; font-weight: 600;
       color: #6e7686;
     }
-    .recents-group { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
+    .recents-group { display: flex; flex-direction: column; gap: 0; margin-top: 2px; }
 
     /* Bottom avatar */
     .bottom-nav { padding-top: 16px; }
@@ -363,7 +363,7 @@
       height: 24px; padding: 0 8px;
       display: flex; align-items: center; justify-content: space-between;
     }
-    .recents-label { font-size: 10px; font-weight: 600; color: #6e7686; }
+    .recents-label { font-size: 10px; font-weight: 400; color: #6e7686; }
     /* + button hidden, appears only on hover of the Recents row */
     .recents-add-btn {
       width: 16px; height: 16px; border: none; background: transparent;
@@ -410,28 +410,6 @@
         <div class="nav-item active">
           <img src="https://www.figma.com/api/mcp/asset/f45ff9c4-c5a6-419c-8899-2249ef2b784a" width="16" height="16" alt="">
           <span class="nav-label">Daily digest</span>
-        </div>
-        <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/185ac1b3-7e15-4c95-bf60-cf866433fb39" width="16" height="16" alt="">
-          <span class="nav-label">Insights</span>
-        </div>
-        <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/943ffed8-1096-4f89-b072-ef5b2549167d" width="16" height="16" alt="">
-          <span class="nav-label">Inbox</span>
-        </div>
-        <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/efa11ed3-6988-4d87-b8df-bd47f174a2d8" width="16" height="16" alt="">
-          <span class="nav-label">Performance</span>
-        </div>
-        <div class="nav-item secondary">
-          <!-- Customers: person/user icon -->
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="#5c6370" stroke-width="1.3"/><path d="M2.5 13.5C2.5 11.015 5.015 9 8 9C10.985 9 13.5 11.015 13.5 13.5" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/></svg>
-          <span class="nav-label">Customers</span>
-        </div>
-        <div class="nav-item secondary">
-          <!-- Activity: pulse/activity icon -->
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="1,8 4,8 5.5,3.5 7.5,12.5 9.5,6 11,8 15,8" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="nav-label">Activity</span>
         </div>
       </div>
 
