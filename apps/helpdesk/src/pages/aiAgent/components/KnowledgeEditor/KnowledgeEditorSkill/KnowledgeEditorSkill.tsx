@@ -10,6 +10,7 @@ import { KnowledgeEditorSkillProvider, useSkillEditorStore } from './context'
 import type { SkillContextConfig, SkillRouteState } from './context'
 import { useKnowledgeEditorSkillData } from './hooks/useKnowledgeEditorSkillData'
 import { KnowledgeEditorSkillContent } from './KnowledgeEditorSkillContent'
+import { KnowledgeEditorSkillLoadingShell } from './KnowledgeEditorSkillLoadingShell'
 
 import css from './KnowledgeEditorSkill.less'
 
@@ -145,7 +146,7 @@ export const KnowledgeEditorSkill = ({
     const isLoading = !!skillId && skillId !== 'new' && isArticleLoading
 
     if (isHelpCenterLoading || !memoizedConfig || isLoading) {
-        return null
+        return <KnowledgeEditorSkillLoadingShell />
     }
 
     return (

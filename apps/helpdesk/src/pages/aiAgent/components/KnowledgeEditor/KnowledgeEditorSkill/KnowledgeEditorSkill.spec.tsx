@@ -158,7 +158,7 @@ describe('KnowledgeEditorSkill', () => {
         })
     })
 
-    it('renders null while help center is loading', () => {
+    it('renders loading shell while help center is loading', () => {
         useAiAgentHelpCenterState.mockReturnValue({
             helpCenter: null,
             isLoading: true,
@@ -170,10 +170,15 @@ describe('KnowledgeEditorSkill', () => {
             </Wrapper>,
         )
 
-        expect(container.querySelector('[class*="editor"]')).toBeNull()
+        expect(
+            screen.queryByRole('button', { name: /back to skills/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            container.querySelector('.react-loading-skeleton'),
+        ).not.toBeNull()
     })
 
-    it('renders null while article is loading', () => {
+    it('renders loading shell while article is loading', () => {
         mockUseGuidanceArticle.mockReturnValue({
             guidanceArticle: undefined,
             isGuidanceArticleLoading: true,
@@ -187,7 +192,12 @@ describe('KnowledgeEditorSkill', () => {
             </Wrapper>,
         )
 
-        expect(container.querySelector('[class*="editor"]')).toBeNull()
+        expect(
+            screen.queryByRole('button', { name: /back to skills/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            container.querySelector('.react-loading-skeleton'),
+        ).not.toBeNull()
     })
 
     it('renders the editor content when data is loaded in read mode', () => {
