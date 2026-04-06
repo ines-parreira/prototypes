@@ -205,11 +205,10 @@ export const AiAgentReasoningHelpdeskV2 = ({
 
         if (isError) {
             return (
-                <Box display="flex" alignItems="center" gap="xxs">
+                <Box display="flex" alignItems="center" py="xs">
                     <Text color="content-error-primary" size="sm">
                         Couldn&apos;t load reasoning. Please try again.
                     </Text>
-                    <DropdownIcon isOpen={isExpanded} />
                 </Box>
             )
         }
