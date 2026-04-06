@@ -20,6 +20,7 @@ import {
     AnalyticsAiAgentSupportConfigurableLine,
     SUPPORT_LINE_CHART_METRICS,
 } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportConfigurableLine/AnalyticsAiAgentSupportConfigurableLine'
+import { AnalyticsAiAgentSupportCostSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportCostSavedCard'
 import { AnalyticsAiAgentSupportDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportDecreaseInResolutionTimeCard'
 import { AnalyticsAiAgentSupportHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportHandoverInteractionsCard'
 import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentSupportInteractionsCard'
@@ -29,17 +30,14 @@ import { SupportAgentIntentPerformanceBreakdownTableWrapper } from 'pages/aiAgen
 import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
 import { fetchAiAgentSupportAgentFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentFRTTrend'
 import { fetchAiAgentSupportAgentSuccessRateTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentSuccessRateTrend'
+import { fetchAiAgentSupportCostSaved } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportCostSaved'
 import { fetchSupportAgentsPerformanceByChannelAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByChannelMetrics'
 import { fetchSupportAgentsPerformanceByIntentAsConfigurableTable } from 'pages/aiAgent/analyticsAiAgent/hooks/useSupportAgentsPerformanceByIntentMetrics'
-import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import {
     fetchConfigurableBarChartDownloadData,
     fetchConfigurableLineChartDownloadData,
 } from 'pages/aiAgent/utils/aiAgentMetrics.utils'
 import { STATS_ROUTES } from 'routes/constants'
-
-// Mock fetch functions - these will be replaced with real data fetchers later
-const fetchCostSavedTrend = async () => ({ value: 2800, trend: 0.02 }) as any
 
 export enum AnalyticsAiAgentSupportAgentChart {
     TimeSavedCard = 'time_saved_card',
@@ -79,12 +77,12 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                 interpretAs: 'more-is-better',
             },
             [AnalyticsAiAgentSupportAgentChart.CostSavedCard]: {
-                chartComponent: AnalyticsOverviewCostSavedCard,
+                chartComponent: AnalyticsAiAgentSupportCostSavedCard,
                 label: 'Cost saved',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchCostSavedTrend,
+                        fetch: fetchAiAgentSupportCostSaved,
                         metricFormat: 'currency-precision-1',
                     },
                 ],

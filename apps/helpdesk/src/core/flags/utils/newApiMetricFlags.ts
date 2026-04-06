@@ -50,6 +50,7 @@ export const P3_SCOPES: MetricScope[] = [
 
 export const P5_AI_AGENT_REVAMP_SCOPES: MetricScope[] = [
     MetricScope.OverallAutomationRate,
+    MetricScope.OverallAutomatedInteractions,
     MetricScope.AiAgentCoverageRate,
     MetricScope.AiSalesAgentConversionRate,
     MetricScope.AiSalesAgentBuyThroughRate,

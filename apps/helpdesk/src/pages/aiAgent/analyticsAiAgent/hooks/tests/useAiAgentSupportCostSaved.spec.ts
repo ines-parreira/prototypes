@@ -4,23 +4,33 @@ import {
     fetchFilteredAutomatedInteractions,
     useFilteredAutomatedInteractions,
 } from 'domains/reporting/hooks/automate/automationTrends'
-import {
-    fetchAutomationCostSavedTrend,
-    formatCostSavedData,
-    useAutomationCostSavedTrend,
-} from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import { formatCostSavedData } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { dynamicOverallAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
+import { dynamicSupportAgentAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
+import { ReportingGranularity } from 'domains/reporting/models/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
 import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useGetNewStatsFeatureFlagMigration'
+import {
+    fetchAiAgentSupportCostSaved,
+    useAiAgentSupportCostSaved,
+} from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportCostSaved'
+import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
 jest.mock('domains/reporting/hooks/automate/automationTrends')
+jest.mock('domains/reporting/hooks/automate/useAutomateFilters')
+jest.mock(
+    'domains/reporting/hooks/automate/useAutomationCostSavedTrend',
+    () => ({
+        formatCostSavedData: jest.fn(),
+    }),
+)
 jest.mock('domains/reporting/hooks/useStatsMetricTrend')
 jest.mock('domains/reporting/utils/getNewStatsFeatureFlagMigration')
 jest.mock('domains/reporting/utils/useGetNewStatsFeatureFlagMigration')
@@ -32,9 +42,8 @@ const mockUseFilteredAutomatedInteractions = assumeMock(
 const mockFetchFilteredAutomatedInteractions = assumeMock(
     fetchFilteredAutomatedInteractions,
 )
-const mockUseMoneySavedPerInteractionWithAutomate = assumeMock(
-    useMoneySavedPerInteractionWithAutomate,
-)
+const mockUseAutomateFilters = assumeMock(useAutomateFilters)
+const mockFormatCostSavedData = assumeMock(formatCostSavedData)
 const mockUseStatsMetricTrend = assumeMock(useStatsMetricTrend)
 const mockFetchStatsMetricTrend = assumeMock(fetchStatsMetricTrend)
 const mockGetNewStatsFeatureFlagMigration = assumeMock(
@@ -43,66 +52,83 @@ const mockGetNewStatsFeatureFlagMigration = assumeMock(
 const mockUseGetNewStatsFeatureFlagMigration = assumeMock(
     useGetNewStatsFeatureFlagMigration,
 )
+const mockUseMoneySavedPerInteractionWithAutomate = assumeMock(
+    useMoneySavedPerInteractionWithAutomate,
+)
 
 const statsFilters: StatsFilters = {
     period: {
-        start_datetime: '2021-05-29T00:00:00.000',
-        end_datetime: '2021-06-04T23:59:59.000',
+        start_datetime: '2024-01-01T00:00:00.000',
+        end_datetime: '2024-01-31T23:59:59.000',
     },
 }
-const userTimezone = 'UTC'
-const moneySavedPerInteractionWithAutomate = 123
+const timezone = 'UTC'
 
 const mockV1Trend = {
-    data: { value: 2, prevValue: 4 },
+    data: { value: 100, prevValue: 80 },
     isFetching: false,
     isError: false,
 }
 
 const mockV2Trend = {
-    data: { value: 3, prevValue: 5 },
+    data: { value: 120, prevValue: 95 },
     isFetching: false,
     isError: false,
 }
 
-describe('useAutomationCostSavedTrend', () => {
+describe('useAiAgentSupportCostSaved', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
+        mockUseAutomateFilters.mockReturnValue({
+            statsFilters,
+            userTimezone: timezone,
+            granularity: ReportingGranularity.Day,
+        })
         mockUseMoneySavedPerInteractionWithAutomate.mockReturnValue(
-            moneySavedPerInteractionWithAutomate,
+            AGENT_COST_PER_TICKET,
         )
         mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('off')
         mockUseFilteredAutomatedInteractions.mockReturnValue(mockV1Trend)
         mockUseStatsMetricTrend.mockReturnValue(mockV2Trend)
+        mockFormatCostSavedData.mockReturnValue({
+            value: 100 * AGENT_COST_PER_TICKET,
+            prevValue: 80 * AGENT_COST_PER_TICKET,
+        })
     })
 
-    const renderCostSavedTrendHook = () =>
-        renderHook(() =>
-            useAutomationCostSavedTrend(statsFilters, userTimezone),
-        )
+    const renderCostSavedHook = () =>
+        renderHook(() => useAiAgentSupportCostSaved())
 
     it('should call useGetNewStatsFeatureFlagMigration with the correct metric name', () => {
-        renderCostSavedTrendHook()
+        renderCostSavedHook()
 
         expect(mockUseGetNewStatsFeatureFlagMigration).toHaveBeenCalledWith(
-            METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS,
+            METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS,
         )
+    })
+
+    it('should call useMoneySavedPerInteractionWithAutomate with AGENT_COST_PER_TICKET', () => {
+        renderCostSavedHook()
+
+        expect(
+            mockUseMoneySavedPerInteractionWithAutomate,
+        ).toHaveBeenCalledWith(AGENT_COST_PER_TICKET)
     })
 
     describe('when feature flag is off', () => {
         it('should call useFilteredAutomatedInteractions with enabled=true', () => {
-            renderCostSavedTrendHook()
+            renderCostSavedHook()
 
             expect(mockUseFilteredAutomatedInteractions).toHaveBeenCalledWith(
                 statsFilters,
-                userTimezone,
+                timezone,
                 true,
             )
         })
 
         it('should call useStatsMetricTrend with enabled=false', () => {
-            renderCostSavedTrendHook()
+            renderCostSavedHook()
 
             expect(mockUseStatsMetricTrend).toHaveBeenCalledWith(
                 expect.any(Object),
@@ -111,76 +137,68 @@ describe('useAutomationCostSavedTrend', () => {
             )
         })
 
-        it('should calculate and format trend from v1', () => {
-            const { result } = renderCostSavedTrendHook()
+        it('should return formatted cost saved data from v1 trend', () => {
+            const { result } = renderCostSavedHook()
 
-            expect(result.current).toEqual({
-                data: formatCostSavedData(
-                    mockV1Trend,
-                    moneySavedPerInteractionWithAutomate,
-                ),
-                isFetching: false,
-                isError: false,
+            expect(mockFormatCostSavedData).toHaveBeenCalledWith(
+                mockV1Trend,
+                AGENT_COST_PER_TICKET,
+            )
+            expect(result.current.data).toEqual({
+                value: 100 * AGENT_COST_PER_TICKET,
+                prevValue: 80 * AGENT_COST_PER_TICKET,
             })
-        })
-
-        it('should return 0s on empty data', () => {
-            mockUseFilteredAutomatedInteractions.mockReturnValue({
-                data: { value: null, prevValue: null },
-                isFetching: false,
-                isError: false,
-            })
-
-            const { result } = renderCostSavedTrendHook()
-
-            expect(result.current.data).toEqual({ value: 0, prevValue: 0 })
         })
     })
 
     describe('when feature flag is live', () => {
         beforeEach(() => {
             mockUseGetNewStatsFeatureFlagMigration.mockReturnValue('live')
+            mockFormatCostSavedData.mockReturnValue({
+                value: 120 * AGENT_COST_PER_TICKET,
+                prevValue: 95 * AGENT_COST_PER_TICKET,
+            })
         })
 
         it('should call useFilteredAutomatedInteractions with enabled=false', () => {
-            renderCostSavedTrendHook()
+            renderCostSavedHook()
 
             expect(mockUseFilteredAutomatedInteractions).toHaveBeenCalledWith(
                 statsFilters,
-                userTimezone,
+                timezone,
                 false,
             )
         })
 
         it('should call useStatsMetricTrend with current and previous period queries', () => {
-            renderCostSavedTrendHook()
+            renderCostSavedHook()
 
             expect(mockUseStatsMetricTrend).toHaveBeenCalledWith(
-                dynamicOverallAutomatedInteractionsQueryFactoryV2({
+                dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
                     filters: statsFilters,
-                    timezone: userTimezone,
+                    timezone,
                 }),
-                dynamicOverallAutomatedInteractionsQueryFactoryV2({
+                dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
                     filters: {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone: userTimezone,
+                    timezone,
                 }),
                 true,
             )
         })
 
-        it('should calculate and format trend from v2', () => {
-            const { result } = renderCostSavedTrendHook()
+        it('should return formatted cost saved data from v2 trend', () => {
+            const { result } = renderCostSavedHook()
 
-            expect(result.current).toEqual({
-                data: formatCostSavedData(
-                    mockV2Trend,
-                    moneySavedPerInteractionWithAutomate,
-                ),
-                isFetching: false,
-                isError: false,
+            expect(mockFormatCostSavedData).toHaveBeenCalledWith(
+                mockV2Trend,
+                AGENT_COST_PER_TICKET,
+            )
+            expect(result.current.data).toEqual({
+                value: 120 * AGENT_COST_PER_TICKET,
+                prevValue: 95 * AGENT_COST_PER_TICKET,
             })
         })
     })
@@ -191,7 +209,7 @@ describe('useAutomationCostSavedTrend', () => {
         })
 
         it('should call useStatsMetricTrend with enabled=true', () => {
-            renderCostSavedTrendHook()
+            renderCostSavedHook()
 
             expect(mockUseStatsMetricTrend).toHaveBeenCalledWith(
                 expect.any(Object),
@@ -201,11 +219,11 @@ describe('useAutomationCostSavedTrend', () => {
         })
 
         it('should call useFilteredAutomatedInteractions with enabled=false', () => {
-            renderCostSavedTrendHook()
+            renderCostSavedHook()
 
             expect(mockUseFilteredAutomatedInteractions).toHaveBeenCalledWith(
                 statsFilters,
-                userTimezone,
+                timezone,
                 false,
             )
         })
@@ -217,7 +235,7 @@ describe('useAutomationCostSavedTrend', () => {
             isFetching: true,
         })
 
-        const { result } = renderCostSavedTrendHook()
+        const { result } = renderCostSavedHook()
 
         expect(result.current.isFetching).toBe(true)
     })
@@ -228,65 +246,69 @@ describe('useAutomationCostSavedTrend', () => {
             isError: true,
         })
 
-        const { result } = renderCostSavedTrendHook()
+        const { result } = renderCostSavedHook()
 
         expect(result.current.isError).toBe(true)
     })
 })
 
-describe('fetchAutomationCostSavedTrend', () => {
+describe('fetchAiAgentSupportCostSaved', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
         mockGetNewStatsFeatureFlagMigration.mockResolvedValue('off')
         mockFetchFilteredAutomatedInteractions.mockResolvedValue(mockV1Trend)
         mockFetchStatsMetricTrend.mockResolvedValue(mockV2Trend)
+        mockFormatCostSavedData.mockReturnValue({
+            value: 100 * AGENT_COST_PER_TICKET,
+            prevValue: 80 * AGENT_COST_PER_TICKET,
+        })
     })
 
     it('should call getNewStatsFeatureFlagMigration with the correct metric name', async () => {
-        await fetchAutomationCostSavedTrend(
+        await fetchAiAgentSupportCostSaved(
             statsFilters,
-            userTimezone,
+            timezone,
             undefined,
-            moneySavedPerInteractionWithAutomate,
+            AGENT_COST_PER_TICKET,
         )
 
         expect(mockGetNewStatsFeatureFlagMigration).toHaveBeenCalledWith(
-            METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS,
+            METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS,
         )
     })
 
     describe('when feature flag is off', () => {
         it('should call fetchFilteredAutomatedInteractions and not fetchStatsMetricTrend', async () => {
-            await fetchAutomationCostSavedTrend(
+            await fetchAiAgentSupportCostSaved(
                 statsFilters,
-                userTimezone,
+                timezone,
                 undefined,
-                moneySavedPerInteractionWithAutomate,
+                AGENT_COST_PER_TICKET,
             )
 
             expect(mockFetchFilteredAutomatedInteractions).toHaveBeenCalledWith(
                 statsFilters,
-                userTimezone,
+                timezone,
             )
             expect(mockFetchStatsMetricTrend).not.toHaveBeenCalled()
         })
 
-        it('should calculate and format trend', async () => {
-            const result = await fetchAutomationCostSavedTrend(
+        it('should return formatted cost saved data from v1 trend', async () => {
+            const result = await fetchAiAgentSupportCostSaved(
                 statsFilters,
-                userTimezone,
+                timezone,
                 undefined,
-                moneySavedPerInteractionWithAutomate,
+                AGENT_COST_PER_TICKET,
             )
 
-            expect(result).toEqual({
-                data: formatCostSavedData(
-                    mockV1Trend,
-                    moneySavedPerInteractionWithAutomate,
-                ),
-                isFetching: false,
-                isError: false,
+            expect(mockFormatCostSavedData).toHaveBeenCalledWith(
+                mockV1Trend,
+                AGENT_COST_PER_TICKET,
+            )
+            expect(result.data).toEqual({
+                value: 100 * AGENT_COST_PER_TICKET,
+                prevValue: 80 * AGENT_COST_PER_TICKET,
             })
         })
     })
@@ -294,14 +316,18 @@ describe('fetchAutomationCostSavedTrend', () => {
     describe('when feature flag is live', () => {
         beforeEach(() => {
             mockGetNewStatsFeatureFlagMigration.mockResolvedValue('live')
+            mockFormatCostSavedData.mockReturnValue({
+                value: 120 * AGENT_COST_PER_TICKET,
+                prevValue: 95 * AGENT_COST_PER_TICKET,
+            })
         })
 
         it('should call fetchStatsMetricTrend and not fetchFilteredAutomatedInteractions', async () => {
-            await fetchAutomationCostSavedTrend(
+            await fetchAiAgentSupportCostSaved(
                 statsFilters,
-                userTimezone,
+                timezone,
                 undefined,
-                moneySavedPerInteractionWithAutomate,
+                AGENT_COST_PER_TICKET,
             )
 
             expect(mockFetchStatsMetricTrend).toHaveBeenCalled()
@@ -311,43 +337,43 @@ describe('fetchAutomationCostSavedTrend', () => {
         })
 
         it('should call fetchStatsMetricTrend with current and previous period queries', async () => {
-            await fetchAutomationCostSavedTrend(
+            await fetchAiAgentSupportCostSaved(
                 statsFilters,
-                userTimezone,
+                timezone,
                 undefined,
-                moneySavedPerInteractionWithAutomate,
+                AGENT_COST_PER_TICKET,
             )
 
             expect(mockFetchStatsMetricTrend).toHaveBeenCalledWith(
-                dynamicOverallAutomatedInteractionsQueryFactoryV2({
+                dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
                     filters: statsFilters,
-                    timezone: userTimezone,
+                    timezone,
                 }),
-                dynamicOverallAutomatedInteractionsQueryFactoryV2({
+                dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
                     filters: {
                         ...statsFilters,
                         period: getPreviousPeriod(statsFilters.period),
                     },
-                    timezone: userTimezone,
+                    timezone,
                 }),
             )
         })
 
-        it('should calculate and format trend from v2', async () => {
-            const result = await fetchAutomationCostSavedTrend(
+        it('should return formatted cost saved data from v2 trend', async () => {
+            const result = await fetchAiAgentSupportCostSaved(
                 statsFilters,
-                userTimezone,
+                timezone,
                 undefined,
-                moneySavedPerInteractionWithAutomate,
+                AGENT_COST_PER_TICKET,
             )
 
-            expect(result).toEqual({
-                data: formatCostSavedData(
-                    mockV2Trend,
-                    moneySavedPerInteractionWithAutomate,
-                ),
-                isFetching: false,
-                isError: false,
+            expect(mockFormatCostSavedData).toHaveBeenCalledWith(
+                mockV2Trend,
+                AGENT_COST_PER_TICKET,
+            )
+            expect(result.data).toEqual({
+                value: 120 * AGENT_COST_PER_TICKET,
+                prevValue: 95 * AGENT_COST_PER_TICKET,
             })
         })
     })
@@ -358,11 +384,11 @@ describe('fetchAutomationCostSavedTrend', () => {
         })
 
         it('should call fetchStatsMetricTrend and not fetchFilteredAutomatedInteractions', async () => {
-            await fetchAutomationCostSavedTrend(
+            await fetchAiAgentSupportCostSaved(
                 statsFilters,
-                userTimezone,
+                timezone,
                 undefined,
-                moneySavedPerInteractionWithAutomate,
+                AGENT_COST_PER_TICKET,
             )
 
             expect(mockFetchStatsMetricTrend).toHaveBeenCalled()

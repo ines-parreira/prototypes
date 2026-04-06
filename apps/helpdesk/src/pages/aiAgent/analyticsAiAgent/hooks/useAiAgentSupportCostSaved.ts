@@ -1,16 +1,17 @@
+import type { MetricTrend } from '@repo/reporting'
+
 import {
     fetchFilteredAutomatedInteractions,
     useFilteredAutomatedInteractions,
 } from 'domains/reporting/hooks/automate/automationTrends'
+import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
+import { formatCostSavedData } from 'domains/reporting/hooks/automate/useAutomationCostSavedTrend'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
-import type {
-    MetricTrend,
-    MetricTrendFetch,
-} from 'domains/reporting/hooks/useMetricTrend'
+import type { MetricTrendFetch } from 'domains/reporting/hooks/useMetricTrend'
 import useStatsMetricTrend, {
     fetchStatsMetricTrend,
 } from 'domains/reporting/hooks/useStatsMetricTrend'
-import { dynamicOverallAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
+import { dynamicSupportAgentAutomatedInteractionsQueryFactoryV2 } from 'domains/reporting/models/scopes/aiAgentAutomatedInteractions'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { getNewStatsFeatureFlagMigration } from 'domains/reporting/utils/getNewStatsFeatureFlagMigration'
 import { getPreviousPeriod } from 'domains/reporting/utils/reporting'
@@ -18,30 +19,14 @@ import { useGetNewStatsFeatureFlagMigration } from 'domains/reporting/utils/useG
 import { AGENT_COST_PER_TICKET } from 'pages/automate/automate-metrics/constants'
 import { useMoneySavedPerInteractionWithAutomate } from 'pages/automate/common/hooks/useMoneySavedPerInteractionWithAutomate'
 
-export const formatCostSavedData = (
-    automatedInteractionTrend: MetricTrend,
-    costSavedPerInteraction: number,
-) => {
-    return {
-        value:
-            (automatedInteractionTrend.data?.value ?? 0) *
-            costSavedPerInteraction,
-        prevValue:
-            (automatedInteractionTrend.data?.prevValue ?? 0) *
-            costSavedPerInteraction,
-    }
-}
-
-export const useAutomationCostSavedTrend = (
-    statsFilters: StatsFilters,
-    userTimezone: string,
-) => {
+export const useAiAgentSupportCostSaved = (): MetricTrend => {
+    const { statsFilters, userTimezone } = useAutomateFilters()
     const costSavedPerInteraction = useMoneySavedPerInteractionWithAutomate(
         AGENT_COST_PER_TICKET,
     )
 
     const stage = useGetNewStatsFeatureFlagMigration(
-        METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS,
     )
     const isV2 = stage === 'live' || stage === 'complete'
 
@@ -51,11 +36,11 @@ export const useAutomationCostSavedTrend = (
         !isV2,
     )
     const v2Trend = useStatsMetricTrend(
-        dynamicOverallAutomatedInteractionsQueryFactoryV2({
+        dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
             filters: statsFilters,
             timezone: userTimezone,
         }),
-        dynamicOverallAutomatedInteractionsQueryFactoryV2({
+        dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
             filters: {
                 ...statsFilters,
                 period: getPreviousPeriod(statsFilters.period),
@@ -64,7 +49,6 @@ export const useAutomationCostSavedTrend = (
         }),
         isV2,
     )
-
     const trend = isV2 ? v2Trend : v1Trend
 
     return {
@@ -73,24 +57,24 @@ export const useAutomationCostSavedTrend = (
     }
 }
 
-export const fetchAutomationCostSavedTrend: MetricTrendFetch = async (
+export const fetchAiAgentSupportCostSaved: MetricTrendFetch = async (
     statsFilters: StatsFilters,
     userTimezone: string,
     _aiAgentUserId: number | undefined,
     costSavedPerInteraction: number,
 ) => {
     const stage = await getNewStatsFeatureFlagMigration(
-        METRIC_NAMES.AI_AGENT_DYNAMIC_OVERALL_AUTOMATED_INTERACTIONS,
+        METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_AUTOMATED_INTERACTIONS,
     )
     const isV2 = stage === 'live' || stage === 'complete'
 
     const automatedInteractionTrend = isV2
         ? await fetchStatsMetricTrend(
-              dynamicOverallAutomatedInteractionsQueryFactoryV2({
+              dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
                   filters: statsFilters,
                   timezone: userTimezone,
               }),
-              dynamicOverallAutomatedInteractionsQueryFactoryV2({
+              dynamicSupportAgentAutomatedInteractionsQueryFactoryV2({
                   filters: {
                       ...statsFilters,
                       period: getPreviousPeriod(statsFilters.period),
