@@ -1,7 +1,9 @@
 import { renderHook } from '@testing-library/react'
 
-import { useGetArticleTranslationVersion } from 'models/helpCenter/queries'
-import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
+import {
+    useGetArticleTranslationVersion,
+    useGetHelpCenter,
+} from 'models/helpCenter/queries'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 
@@ -13,24 +15,27 @@ jest.mock('models/helpCenter/queries', () => ({
         data: undefined,
         isLoading: false,
     })),
+    useGetHelpCenter: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
 }))
-jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter')
 jest.mock('pages/aiAgent/hooks/useGuidanceArticle')
 jest.mock('pages/aiAgent/hooks/useGuidanceArticles')
 
-const useAiAgentHelpCenterStateMock = jest.mocked(useAiAgentHelpCenterState)
 const useGuidanceArticleMock = jest.mocked(useGuidanceArticle)
 const useGuidanceArticlesMock = jest.mocked(useGuidanceArticles)
 const useGetArticleTranslationVersionMock = jest.mocked(
     useGetArticleTranslationVersion,
 )
+const useGetHelpCenterMock = jest.mocked(useGetHelpCenter)
 
 const mockHelpCenter = {
     id: 10,
     name: 'Guidance Help Center',
     default_locale: 'en-US',
     supported_locales: ['en-US'],
-} as ReturnType<typeof useAiAgentHelpCenterState>['helpCenter']
+}
 
 const mockRawArticles = [
     {
@@ -72,11 +77,17 @@ const mockGuidanceArticle = {
     publishedVersionId: 200,
 }
 
+const defaultParams = {
+    guidanceArticleId: 1,
+    guidanceMode: 'edit' as const,
+    guidanceHelpCenterId: 10,
+}
+
 function setupDefaultMocks() {
-    useAiAgentHelpCenterStateMock.mockReturnValue({
-        helpCenter: mockHelpCenter,
+    useGetHelpCenterMock.mockReturnValue({
+        data: mockHelpCenter,
         isLoading: false,
-    })
+    } as any)
     useGuidanceArticlesMock.mockReturnValue({
         guidanceArticles: mockRawArticles as any,
         isGuidanceArticleListLoading: false,
@@ -98,29 +109,19 @@ describe('useKnowledgeEditorGuidanceData', () => {
     })
 
     describe('help center fetching', () => {
-        it('calls useAiAgentHelpCenterState with the correct shopName and helpCenterType', () => {
-            renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
-            )
+        it('calls useGetHelpCenter with the correct help center id', () => {
+            renderHook(() => useKnowledgeEditorGuidanceData(defaultParams))
 
-            expect(useAiAgentHelpCenterStateMock).toHaveBeenCalledWith({
-                shopName: 'my-shop',
-                helpCenterType: 'guidance',
-                enabled: true,
-            })
+            expect(useGetHelpCenterMock).toHaveBeenCalledWith(
+                10,
+                {},
+                { enabled: true },
+            )
         })
 
         it('returns the help center and loading state', () => {
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.guidanceHelpCenter).toBe(mockHelpCenter)
@@ -128,17 +129,13 @@ describe('useKnowledgeEditorGuidanceData', () => {
         })
 
         it('returns loading state when help center is loading', () => {
-            useAiAgentHelpCenterStateMock.mockReturnValue({
-                helpCenter: undefined,
+            useGetHelpCenterMock.mockReturnValue({
+                data: undefined,
                 isLoading: true,
-            })
+            } as any)
 
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.guidanceHelpCenter).toBeUndefined()
@@ -146,33 +143,53 @@ describe('useKnowledgeEditorGuidanceData', () => {
         })
 
         it('returns undefined help center when not found', () => {
-            useAiAgentHelpCenterStateMock.mockReturnValue({
-                helpCenter: undefined,
+            useGetHelpCenterMock.mockReturnValue({
+                data: undefined,
                 isLoading: false,
-            })
+            } as any)
 
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'unknown-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.guidanceHelpCenter).toBeUndefined()
             expect(result.current.isGuidanceHelpCenterLoading).toBe(false)
         })
+
+        it('disables useGetHelpCenter when editor is closed', () => {
+            renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    ...defaultParams,
+                    isOpen: false,
+                }),
+            )
+
+            expect(useGetHelpCenterMock).toHaveBeenCalledWith(
+                10,
+                {},
+                { enabled: false },
+            )
+        })
+
+        it('disables useGetHelpCenter when guidanceHelpCenterId is 0', () => {
+            renderHook(() =>
+                useKnowledgeEditorGuidanceData({
+                    ...defaultParams,
+                    guidanceHelpCenterId: 0,
+                }),
+            )
+
+            expect(useGetHelpCenterMock).toHaveBeenCalledWith(
+                0,
+                {},
+                { enabled: false },
+            )
+        })
     })
 
     describe('guidance articles fetching', () => {
         it('calls useGuidanceArticles with the help center id when available', () => {
-            renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
-            )
+            renderHook(() => useKnowledgeEditorGuidanceData(defaultParams))
 
             expect(useGuidanceArticlesMock).toHaveBeenCalledWith(
                 10,
@@ -182,18 +199,12 @@ describe('useKnowledgeEditorGuidanceData', () => {
         })
 
         it('disables guidance articles fetching when help center is not available', () => {
-            useAiAgentHelpCenterStateMock.mockReturnValue({
-                helpCenter: undefined,
+            useGetHelpCenterMock.mockReturnValue({
+                data: undefined,
                 isLoading: false,
-            })
+            } as any)
 
-            renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
-            )
+            renderHook(() => useKnowledgeEditorGuidanceData(defaultParams))
 
             expect(useGuidanceArticlesMock).toHaveBeenCalledWith(
                 0,
@@ -204,11 +215,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
 
         it('maps raw articles to FilteredKnowledgeHubArticle format', () => {
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.guidanceArticles).toEqual([
@@ -245,11 +252,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
             })
 
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.guidanceArticles[0].visibility).toBe(
@@ -265,11 +268,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
             })
 
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.guidanceArticles).toEqual([])
@@ -291,11 +290,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
             })
 
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.guidanceArticles[0].visibility).toBe('PUBLIC')
@@ -306,9 +301,8 @@ describe('useKnowledgeEditorGuidanceData', () => {
         it('calls useGuidanceArticle with correct parameters in edit mode', () => {
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
+                    ...defaultParams,
                     guidanceArticleId: 42,
-                    guidanceMode: 'edit',
                 }),
             )
 
@@ -324,7 +318,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
         it('calls useGuidanceArticle with correct parameters in read mode', () => {
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
+                    ...defaultParams,
                     guidanceArticleId: 42,
                     guidanceMode: 'read',
                 }),
@@ -342,7 +336,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
         it('disables article fetching in create mode', () => {
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
+                    ...defaultParams,
                     guidanceArticleId: 42,
                     guidanceMode: 'create',
                 }),
@@ -358,8 +352,8 @@ describe('useKnowledgeEditorGuidanceData', () => {
         it('disables article fetching when no guidanceArticleId is provided', () => {
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceMode: 'edit',
+                    ...defaultParams,
+                    guidanceArticleId: undefined,
                 }),
             )
 
@@ -372,16 +366,15 @@ describe('useKnowledgeEditorGuidanceData', () => {
         })
 
         it('disables article fetching when help center is not available', () => {
-            useAiAgentHelpCenterStateMock.mockReturnValue({
-                helpCenter: undefined,
+            useGetHelpCenterMock.mockReturnValue({
+                data: undefined,
                 isLoading: false,
-            })
+            } as any)
 
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
+                    ...defaultParams,
                     guidanceArticleId: 42,
-                    guidanceMode: 'edit',
                 }),
             )
 
@@ -396,11 +389,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
 
         it('returns the guidance article and loading state', () => {
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.guidanceArticle).toBe(mockGuidanceArticle)
@@ -417,11 +406,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
             } as any)
 
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.guidanceArticle).toBeUndefined()
@@ -441,11 +426,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
             } as any)
 
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.isError).toBe(true)
@@ -454,11 +435,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
 
         it('returns no error state on successful fetch', () => {
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.isError).toBe(false)
@@ -468,21 +445,15 @@ describe('useKnowledgeEditorGuidanceData', () => {
 
     describe('locale handling', () => {
         it('uses the help center default_locale for article fetching', () => {
-            useAiAgentHelpCenterStateMock.mockReturnValue({
-                helpCenter: {
+            useGetHelpCenterMock.mockReturnValue({
+                data: {
                     ...mockHelpCenter,
                     default_locale: 'fr-FR',
-                } as any,
+                },
                 isLoading: false,
-            })
+            } as any)
 
-            renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
-            )
+            renderHook(() => useKnowledgeEditorGuidanceData(defaultParams))
 
             expect(useGuidanceArticleMock).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -491,19 +462,13 @@ describe('useKnowledgeEditorGuidanceData', () => {
             )
         })
 
-        it('falls back to en-US when help center has no default_locale', () => {
-            useAiAgentHelpCenterStateMock.mockReturnValue({
-                helpCenter: undefined,
+        it('falls back to en-US when help center is not loaded', () => {
+            useGetHelpCenterMock.mockReturnValue({
+                data: undefined,
                 isLoading: false,
-            })
+            } as any)
 
-            renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
-            )
+            renderHook(() => useKnowledgeEditorGuidanceData(defaultParams))
 
             expect(useGuidanceArticleMock).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -517,7 +482,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
         it('enables article fetch when all conditions are met (articleId + helpCenter + non-create mode)', () => {
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
+                    ...defaultParams,
                     guidanceArticleId: 42,
                     guidanceMode: 'read',
                 }),
@@ -533,9 +498,8 @@ describe('useKnowledgeEditorGuidanceData', () => {
         it('disables article fetch when guidanceArticleId is 0', () => {
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
+                    ...defaultParams,
                     guidanceArticleId: 0,
-                    guidanceMode: 'edit',
                 }),
             )
 
@@ -549,7 +513,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
         it('enables article fetch in diff mode', () => {
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
+                    ...defaultParams,
                     guidanceArticleId: 42,
                     guidanceMode: 'diff',
                 }),
@@ -562,17 +526,16 @@ describe('useKnowledgeEditorGuidanceData', () => {
             )
         })
 
-        it('disables both articles list and article fetch when help center id is not available', () => {
-            useAiAgentHelpCenterStateMock.mockReturnValue({
-                helpCenter: undefined,
+        it('disables both articles list and article fetch when help center data is not available', () => {
+            useGetHelpCenterMock.mockReturnValue({
+                data: undefined,
                 isLoading: false,
-            })
+            } as any)
 
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
+                    ...defaultParams,
                     guidanceArticleId: 42,
-                    guidanceMode: 'edit',
                 }),
             )
 
@@ -592,18 +555,17 @@ describe('useKnowledgeEditorGuidanceData', () => {
         it('disables all queries when editor is closed', () => {
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
+                    ...defaultParams,
                     guidanceArticleId: 42,
-                    guidanceMode: 'edit',
                     isOpen: false,
                 }),
             )
 
-            expect(useAiAgentHelpCenterStateMock).toHaveBeenCalledWith({
-                shopName: 'my-shop',
-                helpCenterType: 'guidance',
-                enabled: false,
-            })
+            expect(useGetHelpCenterMock).toHaveBeenCalledWith(
+                10,
+                {},
+                { enabled: false },
+            )
             expect(useGuidanceArticlesMock).toHaveBeenCalledWith(
                 10,
                 { enabled: false },
@@ -620,11 +582,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
     describe('return value structure', () => {
         it('returns all expected fields', () => {
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current).toEqual({
@@ -646,9 +604,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
         it('calls useGetArticleTranslationVersion with correct params when initialVersionId is provided', () => {
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
+                    ...defaultParams,
                     initialVersionId: 42,
                 }),
             )
@@ -669,13 +625,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
         })
 
         it('disables version fetch when initialVersionId is not provided', () => {
-            renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
-            )
+            renderHook(() => useKnowledgeEditorGuidanceData(defaultParams))
 
             expect(useGetArticleTranslationVersionMock).toHaveBeenCalledWith(
                 expect.objectContaining({
@@ -688,16 +638,14 @@ describe('useKnowledgeEditorGuidanceData', () => {
         })
 
         it('disables version fetch when help center is not available', () => {
-            useAiAgentHelpCenterStateMock.mockReturnValue({
-                helpCenter: undefined,
+            useGetHelpCenterMock.mockReturnValue({
+                data: undefined,
                 isLoading: false,
-            })
+            } as any)
 
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
+                    ...defaultParams,
                     initialVersionId: 42,
                 }),
             )
@@ -723,9 +671,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
 
             renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
+                    ...defaultParams,
                     initialVersionId: 42,
                 }),
             )
@@ -756,9 +702,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
 
             const { result } = renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
+                    ...defaultParams,
                     initialVersionId: 42,
                 }),
             )
@@ -783,9 +727,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
 
             const { result } = renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
+                    ...defaultParams,
                     initialVersionId: 200,
                 }),
             )
@@ -809,9 +751,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
 
             const { result } = renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
+                    ...defaultParams,
                     initialVersionId: 100,
                 }),
             )
@@ -827,9 +767,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
 
             const { result } = renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
+                    ...defaultParams,
                     initialVersionId: 42,
                 }),
             )
@@ -846,9 +784,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
 
             const { result } = renderHook(() =>
                 useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
+                    ...defaultParams,
                     initialVersionId: 42,
                 }),
             )
@@ -863,11 +799,7 @@ describe('useKnowledgeEditorGuidanceData', () => {
             } as any)
 
             const { result } = renderHook(() =>
-                useKnowledgeEditorGuidanceData({
-                    shopName: 'my-shop',
-                    guidanceArticleId: 1,
-                    guidanceMode: 'edit',
-                }),
+                useKnowledgeEditorGuidanceData(defaultParams),
             )
 
             expect(result.current.isInitialVersionLoading).toBe(false)

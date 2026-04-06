@@ -11,12 +11,16 @@ jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
         snippetType,
         isOpen,
         onClose,
+        snippetHelpCenterId,
     }: any) => (
         <div>
             <span data-testid="editor-variant">{variant}</span>
             <span data-testid="snippet-id">{snippetId}</span>
             <span data-testid="snippet-type">{snippetType}</span>
             <span data-testid="is-open">{String(isOpen)}</span>
+            <span data-testid="snippet-help-center-id">
+                {snippetHelpCenterId ?? 'none'}
+            </span>
             <button onClick={onClose} type="button">
                 Close
             </button>
@@ -32,6 +36,7 @@ describe('SnippetEditorWrapper', () => {
         snippetType: SnippetType.URL,
         onClose: jest.fn(),
         onUpdate: jest.fn(),
+        snippetHelpCenterId: 0,
     }
 
     afterEach(() => {
@@ -85,6 +90,16 @@ describe('SnippetEditorWrapper', () => {
         await user.click(screen.getByRole('button', { name: 'Close' }))
 
         expect(defaultProps.onClose).toHaveBeenCalledTimes(1)
+    })
+
+    it('passes snippetHelpCenterId to KnowledgeEditor', () => {
+        render(
+            <SnippetEditorWrapper {...defaultProps} snippetHelpCenterId={99} />,
+        )
+
+        expect(screen.getByTestId('snippet-help-center-id')).toHaveTextContent(
+            '99',
+        )
     })
 
     it('keeps last known snippet data when closing and ids reset', () => {

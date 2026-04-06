@@ -13,6 +13,7 @@ type SnippetEditorWrapperProps = {
     onClickPrevious?: () => void
     onClickNext?: () => void
     handleVisibilityUpdate?: (visibility: string) => void
+    snippetHelpCenterId: number
 }
 
 export const SnippetEditorWrapper = ({
@@ -25,6 +26,7 @@ export const SnippetEditorWrapper = ({
     onClickPrevious,
     onClickNext,
     handleVisibilityUpdate,
+    snippetHelpCenterId,
 }: SnippetEditorWrapperProps) => {
     // Cache the last valid snippet so KnowledgeEditor keeps rendering
     // with real data during the close animation (when props are cleared).
@@ -61,6 +63,7 @@ export const SnippetEditorWrapper = ({
             onClickNext={onClickNext}
             isOpen={isOpen}
             handleVisibilityUpdate={handleVisibilityUpdate}
+            snippetHelpCenterId={snippetHelpCenterId}
         />
     )
 }

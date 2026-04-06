@@ -790,6 +790,7 @@ export const KnowledgeHubContainer = () => {
                 {...knowledgeEditorProps}
                 onClose={handleCloseGuidanceEditor}
                 onDelete={handleDeleteGuidanceEditor}
+                guidanceHelpCenterId={guidanceHelpCenterId || 0}
             />
             <FaqEditorWrapper
                 faqHelpCenterId={faqHelpCenterId || 0}
@@ -812,6 +813,7 @@ export const KnowledgeHubContainer = () => {
                 currentArticleId={snippetEditor.currentArticleId}
                 snippetType={snippetEditor.currentSnippetType}
                 handleVisibilityUpdate={snippetEditor.handleVisibilityUpdate}
+                snippetHelpCenterId={snippetHelpCenterId || 0}
             />
             <DrillDownModal isLegacy={false} />
         </div>

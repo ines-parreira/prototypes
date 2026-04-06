@@ -6,6 +6,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import { StepName } from 'models/aiAgentPostStoreInstallationSteps/types'
 import type { GuidanceMode } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
+import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import type { GuidanceTemplate } from 'pages/aiAgent/types'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -25,6 +26,7 @@ export const usePostOnboardingKnowledgeEditor = ({
 }: UsePostOnboardingKnowledgeEditorProps) => {
     const dispatch = useAppDispatch()
     const { routes } = useAiAgentNavigation({ shopName })
+    const { storeConfiguration } = useAiAgentStoreConfigurationContext()
 
     // -------------------------
     // State
@@ -159,6 +161,7 @@ export const usePostOnboardingKnowledgeEditor = ({
         onUpdate: handleUpdate,
         onDelete: handleDelete,
         onCopy: handleCopy,
+        guidanceHelpCenterId: storeConfiguration?.guidanceHelpCenterId || 0,
     }
 
     return {

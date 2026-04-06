@@ -208,6 +208,14 @@ jest.mock('models/helpCenter/queries', () => ({
         isError: false,
         refetch: jest.fn(),
     })),
+    useGetHelpCenter: jest.fn(() => ({
+        data: {
+            id: 1,
+            name: 'FAQ Help Center',
+            default_locale: 'en-US',
+        },
+        isLoading: false,
+    })),
 }))
 
 jest.mock('models/api/types', () => ({
@@ -333,6 +341,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     guidanceArticleId={1}
                     onClose={jest.fn()}
                     onClickPrevious={jest.fn()}
@@ -381,6 +390,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     guidanceArticleId={1}
                     onClose={jest.fn()}
                     onClickPrevious={jest.fn()}
@@ -413,6 +423,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     guidanceArticleId={1}
                     onClose={jest.fn()}
                     onClickPrevious={jest.fn()}
@@ -438,6 +449,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     guidanceArticleId={2}
                     onClose={jest.fn()}
                     onClickPrevious={jest.fn()}
@@ -472,6 +484,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     onClose={jest.fn()}
                     onClickPrevious={jest.fn()}
                     onClickNext={jest.fn()}
@@ -506,6 +519,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     onClose={jest.fn()}
                     onClickPrevious={jest.fn()}
                     onClickNext={jest.fn()}
@@ -540,6 +554,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     onClose={jest.fn()}
                     onDelete={jest.fn()}
                     guidanceMode="create"
@@ -566,6 +581,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     onClose={jest.fn()}
                     onCreate={jest.fn()}
                     guidanceMode="create"
@@ -605,6 +621,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     guidanceArticleId={1}
                     onClose={jest.fn()}
                     onUpdate={onUpdate}
@@ -646,6 +663,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     guidanceArticleId={1}
                     onClose={jest.fn()}
                     onDelete={jest.fn()}
@@ -682,6 +700,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     onClose={jest.fn()}
                     guidanceMode="create"
                     isOpen={true}
@@ -716,6 +735,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     guidanceArticleId={1}
                     onClose={jest.fn()}
                     guidanceMode="edit"
@@ -743,6 +763,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     onClose={onClose}
                     guidanceMode="create"
                     isOpen={true}
@@ -766,6 +787,7 @@ describe('KnowledgeEditorGuidance', () => {
                 <KnowledgeEditorGuidance
                     shopName="Test Shop"
                     shopType="Test Shop Type"
+                    guidanceHelpCenterId={1}
                     guidanceArticleId={1}
                     onClose={jest.fn()}
                     onClickPrevious={jest.fn()}
@@ -802,6 +824,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -856,6 +879,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={42}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -900,6 +924,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={42}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -940,6 +965,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={42}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -976,6 +1002,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={42}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -1016,6 +1043,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={42}
                         onClose={jest.fn()}
                         guidanceMode="edit"
@@ -1060,6 +1088,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={42}
                         onClose={jest.fn()}
                         guidanceMode="edit"
@@ -1090,6 +1119,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -1123,6 +1153,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -1167,6 +1198,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -1214,6 +1246,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={onClose}
                         onClickPrevious={jest.fn()}
@@ -1248,6 +1281,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={onClose}
                         onClickPrevious={jest.fn()}
@@ -1273,6 +1307,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={onClose}
                         onClickPrevious={jest.fn()}
@@ -1314,6 +1349,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         onClickPrevious={jest.fn()}
@@ -1336,6 +1372,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         onClickPrevious={jest.fn()}
@@ -1372,6 +1409,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         onClickPrevious={jest.fn()}
@@ -1410,6 +1448,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -1427,6 +1466,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -1451,6 +1491,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         guidanceMode="edit"
@@ -1481,6 +1522,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         guidanceMode="edit"
@@ -1508,6 +1550,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         onClose={jest.fn()}
                         guidanceMode="create"
                         isOpen={true}
@@ -1527,6 +1570,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={42}
                         onClose={jest.fn()}
                         guidanceMode="edit"
@@ -1556,6 +1600,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         onClose={jest.fn()}
                         guidanceMode="create"
                         isOpen={true}
@@ -1582,6 +1627,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         onClose={jest.fn()}
                         guidanceMode="edit"
                         isOpen={true}
@@ -1609,6 +1655,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         onClickPrevious={onClickPrevious}
@@ -1639,6 +1686,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         guidanceMode="read"
@@ -1661,6 +1709,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         onClickPrevious={jest.fn()}
@@ -1700,6 +1749,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={onClose}
                         guidanceMode="edit"
@@ -1757,6 +1807,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={onClose}
                         guidanceMode="edit"
@@ -1832,6 +1883,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={onClose}
                         guidanceMode="edit"
@@ -1879,6 +1931,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={onClose}
                         guidanceMode="edit"
@@ -1916,6 +1969,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         onClose={jest.fn()}
                         guidanceMode="edit"
                         isOpen={true}
@@ -1947,6 +2001,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         onClose={jest.fn()}
                         guidanceMode="create"
                         isOpen={true}
@@ -1979,6 +2034,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={onClose}
                         guidanceMode="edit"
@@ -2007,6 +2063,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         onClickPrevious={jest.fn()}
@@ -2039,6 +2096,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         onClickPrevious={jest.fn()}
@@ -2074,6 +2132,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         onClickPrevious={jest.fn()}
@@ -2108,6 +2167,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         onClickPrevious={jest.fn()}
@@ -2150,6 +2210,7 @@ describe('KnowledgeEditorGuidance', () => {
                     <KnowledgeEditorGuidance
                         shopName="Test Shop"
                         shopType="Test Shop Type"
+                        guidanceHelpCenterId={1}
                         guidanceArticleId={1}
                         onClose={jest.fn()}
                         onClickPrevious={jest.fn()}

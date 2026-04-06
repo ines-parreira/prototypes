@@ -16,6 +16,7 @@ type GuidanceEditorWrapperProps = {
     onClickPrevious?: () => void
     onClickNext?: () => void
     handleVisibilityUpdate?: (visibility: string) => void
+    guidanceHelpCenterId: number
 }
 
 export const GuidanceEditorWrapper = ({
@@ -32,6 +33,7 @@ export const GuidanceEditorWrapper = ({
     onClickPrevious,
     onClickNext,
     handleVisibilityUpdate,
+    guidanceHelpCenterId,
 }: GuidanceEditorWrapperProps) => {
     return (
         <KnowledgeEditor
@@ -49,6 +51,7 @@ export const GuidanceEditorWrapper = ({
             onClickPrevious={onClickPrevious}
             onClickNext={onClickNext}
             handleVisibilityUpdate={handleVisibilityUpdate}
+            guidanceHelpCenterId={guidanceHelpCenterId}
         />
     )
 }

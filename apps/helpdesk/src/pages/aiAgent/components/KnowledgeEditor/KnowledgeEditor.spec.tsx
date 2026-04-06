@@ -73,6 +73,7 @@ describe('KnowledgeEditor', () => {
                 onClickPrevious={jest.fn()}
                 onClickNext={jest.fn()}
                 guidanceMode="read"
+                guidanceHelpCenterId={1}
                 isOpen
             />,
         )
@@ -87,6 +88,7 @@ describe('KnowledgeEditor', () => {
                 shopName="Test Shop"
                 snippetId={1}
                 snippetType={SnippetType.URL}
+                snippetHelpCenterId={1}
                 onClose={jest.fn()}
                 isOpen
             />,
@@ -123,6 +125,7 @@ describe('KnowledgeEditor', () => {
                 shopName="Test Shop"
                 snippetId={1}
                 snippetType={SnippetType.URL}
+                snippetHelpCenterId={1}
                 onClose={jest.fn()}
                 isOpen={false}
             />,
@@ -142,6 +145,7 @@ describe('KnowledgeEditor', () => {
                 shopName="Test Shop"
                 snippetId={1}
                 snippetType={SnippetType.URL}
+                snippetHelpCenterId={1}
                 onClose={jest.fn()}
                 isOpen
             />,
@@ -153,6 +157,7 @@ describe('KnowledgeEditor', () => {
                 shopName="Test Shop"
                 snippetId={1}
                 snippetType={SnippetType.URL}
+                snippetHelpCenterId={1}
                 onClose={jest.fn()}
                 isOpen={false}
             />,
@@ -176,6 +181,7 @@ describe('KnowledgeEditor', () => {
                 shopName="Test Shop"
                 snippetId={1}
                 snippetType={SnippetType.URL}
+                snippetHelpCenterId={1}
                 onClose={jest.fn()}
                 isOpen
             />,
@@ -205,6 +211,7 @@ describe('KnowledgeEditor', () => {
                 shopName="Test Shop"
                 snippetId={1}
                 snippetType={SnippetType.URL}
+                snippetHelpCenterId={1}
                 onClose={onClose}
                 isOpen
             />,
@@ -243,6 +250,7 @@ describe('KnowledgeEditor', () => {
                 shopName="Test Shop"
                 snippetId={1}
                 snippetType={SnippetType.URL}
+                snippetHelpCenterId={1}
                 onClose={jest.fn()}
                 isOpen
             />,
@@ -274,6 +282,7 @@ describe('KnowledgeEditor', () => {
                 onClickPrevious={jest.fn()}
                 onClickNext={jest.fn()}
                 guidanceMode="read"
+                guidanceHelpCenterId={1}
                 isOpen
             />,
         )

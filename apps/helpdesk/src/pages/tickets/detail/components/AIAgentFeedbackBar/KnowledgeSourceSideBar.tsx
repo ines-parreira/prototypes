@@ -93,6 +93,9 @@ const KnowledgeSourceSideBar = ({
                 guidanceMode: 'read',
                 isOpen: isEditorOpen,
                 initialVersionId: selectedResource.resourceVersionId,
+                guidanceHelpCenterId: Number(
+                    selectedResource.helpCenterId || 0,
+                ),
                 onDelete: () => closeModal(),
                 onUpdate: () => {
                     onKnowledgeResourceSaved(
@@ -140,6 +143,9 @@ const KnowledgeSourceSideBar = ({
                 onClose: closeModal,
                 guidanceMode: 'create',
                 isOpen: isEditorOpen,
+                guidanceHelpCenterId: Number(
+                    selectedResource.helpCenterId || helpCenter?.id || 0,
+                ),
                 showMissingKnowledgeCheckbox: true,
                 onCreate: (guidance, shouldAddToMissingKnowledge = true) => {
                     const resourceSetId =

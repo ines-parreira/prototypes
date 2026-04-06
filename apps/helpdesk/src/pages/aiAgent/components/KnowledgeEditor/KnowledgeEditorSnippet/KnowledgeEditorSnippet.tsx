@@ -4,7 +4,7 @@ import { Card } from '@gorgias/axiom'
 
 import { EditorWithPlayground } from 'common/knowledge-editor/components'
 import type { PlaygroundState } from 'common/knowledge-editor/types'
-import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
+import { useGetHelpCenter } from 'models/helpCenter/queries'
 import { usePlaygroundPanelInKnowledgeEditor } from 'pages/aiAgent/hooks/usePlaygroundPanelInKnowledgeEditor'
 import type { SnippetType } from 'pages/aiAgent/KnowledgeHub/types'
 
@@ -25,10 +25,10 @@ type Props = {
     isOpen: boolean
     handleVisibilityUpdate?: (visibility: string) => void
     onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
+    snippetHelpCenterId: number
 }
 
 export const KnowledgeEditorSnippet = ({
-    shopName,
     snippetId,
     snippetType,
     onClose,
@@ -38,6 +38,7 @@ export const KnowledgeEditorSnippet = ({
     isOpen,
     handleVisibilityUpdate,
     onSharedPanelStateChange,
+    snippetHelpCenterId,
 }: Props) => {
     const [isFullscreen, setIsFullscreen] = useState(false)
 
@@ -53,14 +54,14 @@ export const KnowledgeEditorSnippet = ({
         shouldHideFullscreenButton,
     } = usePlaygroundPanelInKnowledgeEditor(isFullscreen)
 
-    const {
-        helpCenter: snippetHelpCenter,
-        isLoading: isSnippetHelpCenterLoading,
-    } = useAiAgentHelpCenterState({
-        shopName,
-        helpCenterType: 'snippet',
-        enabled: isOpen,
-    })
+    const { data: snippetHelpCenter, isLoading: isSnippetHelpCenterLoading } =
+        useGetHelpCenter(
+            snippetHelpCenterId,
+            {},
+            {
+                enabled: isOpen && !!snippetHelpCenterId,
+            },
+        )
 
     const onRequestClose = useCallback(() => {
         onClose()

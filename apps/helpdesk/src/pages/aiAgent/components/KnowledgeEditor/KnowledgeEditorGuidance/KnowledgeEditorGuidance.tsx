@@ -48,6 +48,7 @@ type Props = {
     onSharedPanelStateChange?: (state: KnowledgeEditorSharedPanelState) => void
     showMissingKnowledgeCheckbox?: boolean
     initialVersionId?: number
+    guidanceHelpCenterId: number
 }
 
 const KnowledgeEditorGuidanceInner = ({
@@ -137,6 +138,7 @@ export const KnowledgeEditorGuidance = ({
     onSharedPanelStateChange,
     showMissingKnowledgeCheckbox,
     initialVersionId,
+    guidanceHelpCenterId,
 }: Props) => {
     const {
         guidanceHelpCenter,
@@ -149,11 +151,11 @@ export const KnowledgeEditorGuidance = ({
         initialVersionData: rawInitialVersionData,
         isInitialVersionLoading,
     } = useKnowledgeEditorGuidanceData({
-        shopName,
         guidanceArticleId,
         guidanceMode,
         isOpen,
         initialVersionId,
+        guidanceHelpCenterId,
     })
 
     const computedInitialVersionData = useMemo<

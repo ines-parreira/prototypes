@@ -4,8 +4,12 @@ import userEvent from '@testing-library/user-event'
 import { SnippetType } from '../../../KnowledgeHub/types'
 import { KnowledgeEditorSnippet } from './KnowledgeEditorSnippet'
 
-jest.mock('pages/aiAgent/hooks/useAiAgentHelpCenter', () => ({
-    useAiAgentHelpCenterState: jest.fn(),
+jest.mock('models/helpCenter/queries', () => ({
+    ...jest.requireActual('models/helpCenter/queries'),
+    useGetHelpCenter: jest.fn(() => ({
+        data: undefined,
+        isLoading: false,
+    })),
 }))
 
 jest.mock('./KnowledgeEditorSnippetLoader', () => ({
@@ -72,9 +76,7 @@ jest.mock('@gorgias/axiom', () => ({
         ) : null,
 }))
 
-const { useAiAgentHelpCenterState } = jest.requireMock(
-    'pages/aiAgent/hooks/useAiAgentHelpCenter',
-)
+const { useGetHelpCenter } = jest.requireMock('models/helpCenter/queries')
 
 describe('KnowledgeEditorSnippet', () => {
     const mockHelpCenter = {
@@ -86,6 +88,7 @@ describe('KnowledgeEditorSnippet', () => {
     const baseProps = {
         shopName: 'test-shop',
         snippetId: 123,
+        snippetHelpCenterId: 1,
         onClose: jest.fn(),
         onClickPrevious: jest.fn(),
         onClickNext: jest.fn(),
@@ -95,8 +98,8 @@ describe('KnowledgeEditorSnippet', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
-        useAiAgentHelpCenterState.mockReturnValue({
-            helpCenter: mockHelpCenter,
+        useGetHelpCenter.mockReturnValue({
+            data: mockHelpCenter,
             isLoading: false,
         })
     })
@@ -178,8 +181,8 @@ describe('KnowledgeEditorSnippet', () => {
 
     describe('Help Center Context', () => {
         it('returns null when help center is not available', () => {
-            useAiAgentHelpCenterState.mockReturnValue({
-                helpCenter: undefined,
+            useGetHelpCenter.mockReturnValue({
+                data: undefined,
                 isLoading: false,
             })
 
@@ -193,7 +196,7 @@ describe('KnowledgeEditorSnippet', () => {
             expect(container.firstChild).toBeNull()
         })
 
-        it('uses help center ID and locale from context', () => {
+        it('calls useGetHelpCenter with the correct help center id', () => {
             render(
                 <KnowledgeEditorSnippet
                     {...baseProps}
@@ -201,11 +204,11 @@ describe('KnowledgeEditorSnippet', () => {
                 />,
             )
 
-            expect(useAiAgentHelpCenterState).toHaveBeenCalledWith({
-                shopName: 'test-shop',
-                helpCenterType: 'snippet',
-                enabled: true,
-            })
+            expect(useGetHelpCenter).toHaveBeenCalledWith(
+                1,
+                {},
+                { enabled: true },
+            )
         })
 
         it('disables help center query when editor is closed', () => {
@@ -217,16 +220,16 @@ describe('KnowledgeEditorSnippet', () => {
                 />,
             )
 
-            expect(useAiAgentHelpCenterState).toHaveBeenCalledWith({
-                shopName: 'test-shop',
-                helpCenterType: 'snippet',
-                enabled: false,
-            })
+            expect(useGetHelpCenter).toHaveBeenCalledWith(
+                1,
+                {},
+                { enabled: false },
+            )
         })
 
         it('renders loading shell while help center is loading', () => {
-            useAiAgentHelpCenterState.mockReturnValue({
-                helpCenter: undefined,
+            useGetHelpCenter.mockReturnValue({
+                data: undefined,
                 isLoading: true,
             })
 
@@ -593,8 +596,8 @@ describe('KnowledgeEditorSnippet', () => {
 
         it('does not sync shared panel state when help center is missing', () => {
             const onSharedPanelStateChange = jest.fn()
-            useAiAgentHelpCenterState.mockReturnValue({
-                helpCenter: undefined,
+            useGetHelpCenter.mockReturnValue({
+                data: undefined,
                 isLoading: false,
             })
 

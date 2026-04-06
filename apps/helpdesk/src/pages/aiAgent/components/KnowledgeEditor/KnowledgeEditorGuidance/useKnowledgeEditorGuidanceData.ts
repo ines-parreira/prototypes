@@ -1,8 +1,10 @@
 import { useMemo } from 'react'
 
-import { useGetArticleTranslationVersion } from 'models/helpCenter/queries'
+import {
+    useGetArticleTranslationVersion,
+    useGetHelpCenter,
+} from 'models/helpCenter/queries'
 import { VisibilityStatusEnum } from 'models/helpCenter/types'
-import { useAiAgentHelpCenterState } from 'pages/aiAgent/hooks/useAiAgentHelpCenter'
 import { useGuidanceArticle } from 'pages/aiAgent/hooks/useGuidanceArticle'
 import { useGuidanceArticles } from 'pages/aiAgent/hooks/useGuidanceArticles'
 import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/types'
@@ -10,28 +12,28 @@ import type { FilteredKnowledgeHubArticle } from 'pages/aiAgent/KnowledgeHub/typ
 import type { GuidanceModeType } from './context'
 
 type UseKnowledgeEditorGuidanceDataParams = {
-    shopName: string
     guidanceArticleId?: number
     guidanceMode: GuidanceModeType
     isOpen?: boolean
     initialVersionId?: number
+    guidanceHelpCenterId: number
 }
 
 export const useKnowledgeEditorGuidanceData = ({
-    shopName,
     guidanceArticleId,
     guidanceMode,
     isOpen = true,
     initialVersionId,
+    guidanceHelpCenterId,
 }: UseKnowledgeEditorGuidanceDataParams) => {
-    const {
-        helpCenter: guidanceHelpCenter,
-        isLoading: isGuidanceHelpCenterLoading,
-    } = useAiAgentHelpCenterState({
-        shopName: shopName,
-        helpCenterType: 'guidance',
-        enabled: isOpen,
-    })
+    const { data: guidanceHelpCenter, isLoading: isGuidanceHelpCenterLoading } =
+        useGetHelpCenter(
+            guidanceHelpCenterId,
+            {},
+            {
+                enabled: isOpen && !!guidanceHelpCenterId,
+            },
+        )
 
     const { guidanceArticles: rawGuidanceArticles } = useGuidanceArticles(
         guidanceHelpCenter?.id ?? 0,

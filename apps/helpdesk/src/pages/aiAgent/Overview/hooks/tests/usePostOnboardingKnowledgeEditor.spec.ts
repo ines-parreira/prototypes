@@ -7,6 +7,7 @@ import { usePostOnboardingKnowledgeEditor } from '../usePostOnboardingKnowledgeE
 
 jest.mock('hooks/useAppDispatch')
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation')
+jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext')
 jest.mock('@repo/logging', () => ({
     logEvent: jest.fn(),
     SegmentEvent: {
@@ -17,11 +18,15 @@ jest.mock('@repo/logging', () => ({
 const mockDispatch = jest.fn()
 const mockUseAppDispatch = jest.fn()
 const mockUseAiAgentNavigation = jest.fn()
+const mockUseAiAgentStoreConfigurationContext = jest.fn()
 
 jest.requireMock('hooks/useAppDispatch').default = mockUseAppDispatch
 jest.requireMock(
     'pages/aiAgent/hooks/useAiAgentNavigation',
 ).useAiAgentNavigation = mockUseAiAgentNavigation
+jest.requireMock(
+    'pages/aiAgent/providers/AiAgentStoreConfigurationContext',
+).useAiAgentStoreConfigurationContext = mockUseAiAgentStoreConfigurationContext
 
 const mockShopName = 'test-shop'
 const mockShopType = 'shopify'
@@ -35,6 +40,12 @@ describe('usePostOnboardingKnowledgeEditor', () => {
         localStorage.clear()
         mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockUseAiAgentNavigation.mockReturnValue({ routes: mockRoutes })
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: {
+                guidanceHelpCenterId: 42,
+            },
+            isLoading: false,
+        })
     })
 
     it('should initialize with default state', () => {
@@ -203,6 +214,35 @@ describe('usePostOnboardingKnowledgeEditor', () => {
         })
 
         expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
+    })
+
+    it('should include guidanceHelpCenterId from store configuration', () => {
+        const { result } = renderHook(() =>
+            usePostOnboardingKnowledgeEditor({
+                shopName: mockShopName,
+                shopType: mockShopType,
+            }),
+        )
+
+        expect(result.current.knowledgeEditorProps.guidanceHelpCenterId).toBe(
+            42,
+        )
+    })
+
+    it('should default guidanceHelpCenterId to 0 when store configuration is not available', () => {
+        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
+            storeConfiguration: null,
+            isLoading: true,
+        })
+
+        const { result } = renderHook(() =>
+            usePostOnboardingKnowledgeEditor({
+                shopName: mockShopName,
+                shopType: mockShopType,
+            }),
+        )
+
+        expect(result.current.knowledgeEditorProps.guidanceHelpCenterId).toBe(0)
     })
 
     it('should return knowledgeEditorProps with correct values', () => {

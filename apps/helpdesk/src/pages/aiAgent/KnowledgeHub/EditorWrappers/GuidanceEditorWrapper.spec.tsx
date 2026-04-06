@@ -13,6 +13,7 @@ jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
         onCreate,
         onUpdate,
         onDelete,
+        guidanceHelpCenterId,
     }: any) => (
         <div data-testid="knowledge-editor">
             <span data-testid="shop-name">{shopName}</span>
@@ -22,6 +23,9 @@ jest.mock('pages/aiAgent/components/KnowledgeEditor/KnowledgeEditor', () => ({
             </span>
             <span data-testid="guidance-mode">{guidanceMode}</span>
             <span data-testid="is-open">{String(isOpen)}</span>
+            <span data-testid="guidance-help-center-id">
+                {guidanceHelpCenterId ?? 'none'}
+            </span>
             <button onClick={onClose}>Close</button>
             {onCreate && <button onClick={onCreate}>Create</button>}
             {onUpdate && <button onClick={onUpdate}>Update</button>}
@@ -37,6 +41,7 @@ describe('GuidanceEditorWrapper', () => {
         guidanceMode: 'create' as const,
         isOpen: true,
         onClose: jest.fn(),
+        guidanceHelpCenterId: 0,
     }
 
     afterEach(() => {
@@ -248,6 +253,21 @@ describe('GuidanceEditorWrapper', () => {
 
             expect(screen.getByTestId('knowledge-editor')).toBeInTheDocument()
             expect(screen.getByTestId('is-open')).toHaveTextContent('false')
+        })
+    })
+
+    describe('guidanceHelpCenterId', () => {
+        it('passes guidanceHelpCenterId to KnowledgeEditor', () => {
+            render(
+                <GuidanceEditorWrapper
+                    {...defaultProps}
+                    guidanceHelpCenterId={42}
+                />,
+            )
+
+            expect(
+                screen.getByTestId('guidance-help-center-id'),
+            ).toHaveTextContent('42')
         })
     })
 
