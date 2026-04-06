@@ -305,6 +305,7 @@ export const useLinkedIntentsModal = (isOpen: boolean, onClose: () => void) => {
         onRetryLoadIntents,
         handleSave,
         handleModalOpenChange,
-        guidanceEditRoute: routes.guidanceArticleEdit,
+        guidanceEditRoute: (articleId: number) =>
+            routes.knowledgeArticle('guidance', articleId),
     }
 }

@@ -36,13 +36,6 @@ import CreateActionViewContainer from 'pages/aiAgent/actions/CreateActionViewCon
 import EditActionViewContainer from 'pages/aiAgent/actions/EditActionViewContainer'
 import AiAgentConfigurationContainer from 'pages/aiAgent/AiAgentConfigurationContainer'
 import { AiAgentCustomerEngagement } from 'pages/aiAgent/AiAgentCustomerEngagement'
-import { AiAgentGuidanceAiSuggestionNewContainer } from 'pages/aiAgent/AiAgentGuidanceAiSuggestionNewContainer'
-import { AiAgentGuidanceContainer } from 'pages/aiAgent/AiAgentGuidanceContainer'
-import { AiAgentGuidanceDetailContainer } from 'pages/aiAgent/AiAgentGuidanceDetailContainer'
-import { AiAgentGuidanceLibraryContainer } from 'pages/aiAgent/AiAgentGuidanceLibraryContainer'
-import { AiAgentGuidanceNewContainer } from 'pages/aiAgent/AiAgentGuidanceNewContainer'
-import { AiAgentGuidanceTemplateNewContainer } from 'pages/aiAgent/AiAgentGuidanceTemplateNewContainer'
-import { AiAgentGuidanceTemplatesContainer } from 'pages/aiAgent/AiAgentGuidanceTemplatesContainer'
 import AiAgentMainViewContainer from 'pages/aiAgent/AiAgentMainViewContainer'
 import AiAgentOnboardingWizard from 'pages/aiAgent/AiAgentOnboardingWizard/AiAgentOnboardingWizard'
 import { AiAgentPreviewModeSettingsContainer } from 'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer'
@@ -346,10 +339,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         shopName: string
     }>()
 
-    const isAiAgentAIGeneratedGuidancesEnabled = useFlag(
-        FeatureFlagKey.AiAgentAIGeneratedGuidances,
-    )
-
     const isAiAgentOnboardingWizardEnabled = useFlag(
         FeatureFlagKey.AiAgentOnboardingWizard,
     )
@@ -389,8 +378,9 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
         ) {
             newLocation.pathname = newLocation.pathname.replace(
                 '/guidance',
-                '/knowledge/guidance',
+                '/knowledge/sources',
             )
+            newLocation.search = '?filter=guidance'
         }
 
         if (location.pathname.includes('/preview-mode')) {
@@ -474,53 +464,14 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                         />
                     </Switch>
 
-                    {/* TODO: Remove this in favour of `/knowledge/guidance`, after fully migrate to new AI Agent standalone menu */}
-                    <AiAgentErrorBoundary section="ai-agent-guidance">
-                        <Route
-                            path={`${path}/guidance`}
-                            exact
-                            component={AiAgentGuidanceContainer}
-                        />
-                        <Switch>
-                            <Route
-                                path={`${path}/guidance/new`}
-                                component={AiAgentGuidanceNewContainer}
+                    {location.pathname.includes('/guidance') &&
+                        !location.pathname.match(
+                            /\/knowledge\/guidance\/\d+$/,
+                        ) && (
+                            <Redirect
+                                to={`${routes.knowledgeSources}?filter=guidance`}
                             />
-                            {isAiAgentAIGeneratedGuidancesEnabled && (
-                                <Route
-                                    path={`${path}/guidance/library`}
-                                    exact
-                                    component={AiAgentGuidanceLibraryContainer}
-                                />
-                            )}
-                            <Route
-                                path={`${path}/guidance/templates`}
-                                exact
-                                component={AiAgentGuidanceTemplatesContainer}
-                            />
-                            <Route
-                                path={`${path}/guidance/templates/:templateId`}
-                                component={AiAgentGuidanceTemplateNewContainer}
-                            />
-                            {isAiAgentAIGeneratedGuidancesEnabled && (
-                                <Route
-                                    path={`${path}/guidance/library/:aiGuidanceId`}
-                                    component={
-                                        AiAgentGuidanceAiSuggestionNewContainer
-                                    }
-                                />
-                            )}
-                            <Route
-                                path={`${path}/guidance/templates`}
-                                component={AiAgentGuidanceTemplatesContainer}
-                            />
-
-                            <Route
-                                path={`${path}/guidance/:articleId`}
-                                component={AiAgentGuidanceDetailContainer}
-                            />
-                        </Switch>
-                    </AiAgentErrorBoundary>
+                        )}
                     {isGorgiasUser && (
                         <AiAgentErrorBoundary
                             section="ai-agent-preview-mode"
@@ -734,47 +685,6 @@ function AiAgentRoutes({ match: { path }, location }: RouteComponentProps) {
                             )}
                         />
                     )}
-                    <AiAgentErrorBoundary section="ai-agent-guidance">
-                        <Route
-                            path={`${path}/knowledge/guidance`}
-                            exact
-                            component={AiAgentGuidanceContainer}
-                        />
-                        <Switch>
-                            <Route
-                                path={`${path}/knowledge/guidance/new`}
-                                component={AiAgentGuidanceNewContainer}
-                            />
-                            {isAiAgentAIGeneratedGuidancesEnabled && (
-                                <Route
-                                    path={`${path}/knowledge/guidance/library`}
-                                    exact
-                                    component={AiAgentGuidanceLibraryContainer}
-                                />
-                            )}
-                            <Route
-                                path={`${path}/knowledge/guidance/templates`}
-                                exact
-                                component={AiAgentGuidanceTemplatesContainer}
-                            />
-                            <Route
-                                path={`${path}/knowledge/guidance/templates/:templateId`}
-                                component={AiAgentGuidanceTemplateNewContainer}
-                            />
-                            {isAiAgentAIGeneratedGuidancesEnabled && (
-                                <Route
-                                    path={`${path}/knowledge/guidance/library/:aiGuidanceId`}
-                                    component={
-                                        AiAgentGuidanceAiSuggestionNewContainer
-                                    }
-                                />
-                            )}
-                            <Route
-                                path={`${path}/knowledge/guidance/templates`}
-                                component={AiAgentGuidanceTemplatesContainer}
-                            />
-                        </Switch>
-                    </AiAgentErrorBoundary>
 
                     {/* Enforce redirection outside of `/sales` when Shopping Assistant feature flag is set to enforce deactivation */}
                     {isShoppingAssitantDeactivationEnforced &&

@@ -339,8 +339,8 @@ describe('useAiAgentOnboardingWizard', () => {
 
         await waitFor(() => {
             expect(history.replace).toHaveBeenCalledWith({
-                pathname: '/app/ai-agent/shopify/test-shop/knowledge/guidance',
-                search: 'with_wizard_completed=guidance',
+                pathname: '/app/ai-agent/shopify/test-shop/knowledge/sources',
+                search: 'filter=guidance&with_wizard_completed=guidance',
             })
         })
     })

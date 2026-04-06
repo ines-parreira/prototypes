@@ -791,13 +791,13 @@ describe('useActionDrivenNavbarSections', () => {
             Object.defineProperty(window, 'location', {
                 value: {
                     pathname:
-                        '/app/ai-agent/shopify/teststore1/train/knowledge/guidance',
+                        '/app/ai-agent/shopify/teststore1/train/knowledge/sources',
                 },
                 writable: true,
             })
             mockUseLocation.mockReturnValue({
                 pathname:
-                    '/app/ai-agent/shopify/teststore1/train/knowledge/guidance',
+                    '/app/ai-agent/shopify/teststore1/train/knowledge/sources',
                 search: '',
                 hash: '',
                 state: null,
@@ -811,7 +811,7 @@ describe('useActionDrivenNavbarSections', () => {
             })
 
             expect(mockPush).toHaveBeenCalledWith(
-                '/app/ai-agent/shopify/teststore2/train/knowledge/guidance',
+                '/app/ai-agent/shopify/teststore2/train/knowledge/sources',
             )
         })
     })

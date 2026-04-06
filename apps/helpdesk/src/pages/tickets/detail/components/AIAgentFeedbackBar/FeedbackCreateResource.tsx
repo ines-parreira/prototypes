@@ -27,7 +27,7 @@ const FeedbackCreateResource: React.FC<Props> = ({
 }) => {
     const aiAgentNavigation = useAiAgentNavigation({ shopName })
     const actionLink = aiAgentNavigation.routes.newAction()
-    const guidanceLink = aiAgentNavigation.routes.guidanceTemplates
+    const guidanceLink = aiAgentNavigation.routes.guidance
     const helpCenterArticlesLink = `/app/settings/help-center/${helpCenterId}/articles`
 
     return (

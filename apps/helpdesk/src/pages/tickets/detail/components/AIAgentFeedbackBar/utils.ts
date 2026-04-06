@@ -44,7 +44,7 @@ export const getGuidanceUrl = (
     shopName: string,
 ) => {
     const aiAgentRoutes = getAiAgentNavigationRoutes(shopName)
-    return aiAgentRoutes.guidanceArticleEdit(guidance.id)
+    return aiAgentRoutes.knowledgeArticle('guidance', guidance.id)
 }
 
 export const getHelpCenterArticleUrl = (

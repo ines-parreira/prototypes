@@ -261,12 +261,6 @@ jest.mock(
     }),
 )
 
-jest.mock('../../components/GuidanceForm/GuidanceForm', () => ({
-    GuidanceForm: () => {
-        return <div>GuidanceForm Mock</div>
-    },
-}))
-
 jest.mock('../../hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: jest.fn(() => ({
         routes: {

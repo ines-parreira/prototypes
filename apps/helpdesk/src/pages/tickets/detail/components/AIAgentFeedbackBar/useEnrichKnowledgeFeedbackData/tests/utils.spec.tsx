@@ -36,7 +36,6 @@ jest.mock('@repo/feature-flags', () => ({
 
 jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     getAiAgentNavigationRoutes: jest.fn(() => ({
-        guidanceArticleEdit: (id: number) => `/guidance/edit/${id}`,
         articleEdit: (id: number) => `/article/edit/${id}`,
         urlArticlesDetail: (ingestionId: number, articleId: number) =>
             `/articles/detail/${ingestionId}/${articleId}`,
@@ -1138,7 +1137,7 @@ describe('utils', () => {
             expect(result).toEqual({
                 title: 'Guidance 1',
                 content: 'Guidance Content',
-                url: '/guidance/edit/2',
+                url: '/knowledge/guidance/2',
                 helpCenterId: 200,
             })
         })
@@ -1689,7 +1688,7 @@ describe('utils', () => {
             expect(result).toEqual({
                 title: '',
                 content: 'Guidance Content',
-                url: '/guidance/edit/2',
+                url: '/knowledge/guidance/2',
                 helpCenterId: 200,
             })
         })
@@ -1803,7 +1802,7 @@ describe('utils', () => {
             expect(result).toEqual({
                 title: 'Guidance 1',
                 content: '',
-                url: '/guidance/edit/2',
+                url: '/knowledge/guidance/2',
                 helpCenterId: 200,
             })
         })

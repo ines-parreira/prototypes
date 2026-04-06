@@ -411,7 +411,10 @@ export const getResourceMetadata = (
                 ? {
                       title: guidance.title ?? '',
                       content: guidance.content ?? '',
-                      url: aiAgentRoutes?.guidanceArticleEdit(idAsNumber),
+                      url: aiAgentRoutes?.knowledgeArticle(
+                          'guidance',
+                          idAsNumber,
+                      ),
                       helpCenterId: guidance.helpCenterId,
                   }
                 : getEmptyMetadata()

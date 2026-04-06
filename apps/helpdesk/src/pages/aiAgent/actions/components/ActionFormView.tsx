@@ -246,7 +246,8 @@ const ActionFormView = ({
                                             className={css.reference}
                                         >
                                             <a
-                                                href={routes.guidanceArticleEdit(
+                                                href={routes.knowledgeArticle(
+                                                    'guidance',
                                                     parseInt(
                                                         reference.sourceId,
                                                     ),

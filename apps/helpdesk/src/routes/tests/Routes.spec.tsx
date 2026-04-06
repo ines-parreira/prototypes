@@ -126,6 +126,48 @@ jest.mock(
 jest.mock('pages/aiAgent/AiAgentMainViewContainer', () => () => (
     <div>AiAgentMainViewContainer</div>
 ))
+jest.mock('pages/aiAgent/Overview/AiAgentOverview', () => ({
+    AiAgentOverview: () => <div>AiAgentOverview</div>,
+}))
+jest.mock('pages/aiAgent/AiAgentConfigurationContainer', () => () => (
+    <div>AiAgentConfigurationContainer</div>
+))
+jest.mock(
+    'pages/aiAgent/AiAgentPreviewModeSettings/AiAgentPreviewModeSettingsContainer',
+    () => ({
+        AiAgentPreviewModeSettingsContainer: () => (
+            <div>AiAgentPreviewModeSettingsContainer</div>
+        ),
+    }),
+)
+jest.mock('pages/aiAgent/PlaygroundV2/AiAgentPlaygroundPage', () => ({
+    AiAgentPlaygroundPage: () => <div>AiAgentPlaygroundPage</div>,
+}))
+jest.mock('pages/aiAgent/AiAgentToneOfVoice', () => ({
+    AiAgentToneOfVoice: () => <div>AiAgentToneOfVoice</div>,
+}))
+jest.mock('pages/aiAgent/opportunities/AiAgentOpportunities', () => ({
+    AiAgentOpportunities: () => <div>AiAgentOpportunities</div>,
+}))
+jest.mock('pages/aiAgent/insights/OptimizeContainer/OptimizeContainer', () => ({
+    OptimizeContainer: () => <div>OptimizeContainer</div>,
+}))
+jest.mock(
+    'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainProductsContainer',
+    () => () => <div>AiAgentScrapedDomainProductsContainer</div>,
+)
+jest.mock(
+    'pages/aiAgent/AiAgentScrapedDomainContent/AiAgentScrapedDomainQuestionsContainer',
+    () => () => <div>AiAgentScrapedDomainQuestionsContainer</div>,
+)
+jest.mock(
+    'pages/aiAgent/components/Knowledge/AiAgentUrlSourcesArticleContainer',
+    () => () => <div>AiAgentUrlSourcesArticleContainer</div>,
+)
+jest.mock(
+    'pages/aiAgent/components/Knowledge/AiAgentExternalDocumentsArticleContainer',
+    () => () => <div>AiAgentExternalDocumentsArticleContainer</div>,
+)
 
 jest.mock('pages/aiAgent/KnowledgeHub/KnowledgeHubContainer', () => ({
     KnowledgeHubContainer: () => <div>KnowledgeHubContainer</div>,
@@ -683,7 +725,7 @@ describe('<Routes/>', () => {
             },
             {
                 from: '/app/automation/shopify/test-shop/guidance',
-                to: '/app/ai-agent/shopify/test-shop/knowledge/guidance',
+                to: '/app/ai-agent/shopify/test-shop/knowledge/sources',
             },
             {
                 from: '/app/automation/shopify/test-shop/preview-mode',
@@ -809,7 +851,7 @@ describe('<Routes/>', () => {
             },
             {
                 from: '/app/automation/shopify/test-shop/ai-agent/guidance',
-                to: '/app/ai-agent/shopify/test-shop/knowledge/guidance',
+                to: '/app/ai-agent/shopify/test-shop/knowledge/sources',
             },
             {
                 from: '/app/automation/shopify/test-shop/ai-agent/actions',
@@ -1132,6 +1174,331 @@ describe('<Routes/>', () => {
             )
 
             expect(screen.queryByText('AiAgentSkills')).not.toBeInTheDocument()
+        })
+
+        it('should redirect non-shopify shopType to /app/ai-agent', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() =>
+                mockHistory.push(
+                    '/app/ai-agent/bigcommerce/test-shop/overview',
+                ),
+            )
+
+            expect(mockHistory.location.pathname).toBe('/app/ai-agent')
+        })
+
+        it.each([
+            {
+                from: '/app/ai-agent/shopify/test-shop/guidance',
+                to: '/app/ai-agent/shopify/test-shop/knowledge/sources',
+                description: 'should redirect /guidance to /knowledge/sources',
+            },
+            {
+                from: '/app/ai-agent/shopify/test-shop/knowledge/guidance',
+                to: '/app/ai-agent/shopify/test-shop/knowledge/sources',
+                description:
+                    'should redirect /knowledge/guidance to /knowledge/sources',
+            },
+            {
+                from: '/app/ai-agent/shopify/test-shop/knowledge/guidance/list',
+                to: '/app/ai-agent/shopify/test-shop/knowledge/sources',
+                description:
+                    'should redirect /knowledge/guidance/list to /knowledge/sources',
+            },
+        ])('$description', ({ from, to }) => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() => mockHistory.push(from))
+
+            expect(mockHistory.location.pathname).toBe(to)
+            expect(mockHistory.location.search).toBe('?filter=guidance')
+        })
+
+        it('should NOT redirect /knowledge/guidance/:id (individual article)', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/knowledge/guidance/123',
+                            ]}
+                        >
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.getByText('KnowledgeHubContainer'),
+            ).toBeInTheDocument()
+        })
+
+        it('should redirect /knowledge to /knowledge/sources', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() =>
+                mockHistory.push('/app/ai-agent/shopify/test-shop/knowledge'),
+            )
+
+            expect(mockHistory.location.pathname).toBe(
+                '/app/ai-agent/shopify/test-shop/knowledge/sources',
+            )
+        })
+
+        it('should redirect /pages-content to /questions-content', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() =>
+                mockHistory.push(
+                    '/app/ai-agent/shopify/test-shop/knowledge/sources/pages-content',
+                ),
+            )
+
+            expect(mockHistory.location.pathname).toBe(
+                '/app/ai-agent/shopify/test-shop/knowledge/sources/questions-content',
+            )
+        })
+
+        it('should redirect /settings/channels to /deploy/email', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() =>
+                mockHistory.push(
+                    '/app/ai-agent/shopify/test-shop/settings/channels',
+                ),
+            )
+
+            expect(mockHistory.location.pathname).toBe(
+                '/app/ai-agent/shopify/test-shop/deploy/email',
+            )
+        })
+
+        it('should redirect /products-content to /products', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <Router history={mockHistory}>
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </Router>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            act(() =>
+                mockHistory.push(
+                    '/app/ai-agent/shopify/test-shop/knowledge/sources/products-content',
+                ),
+            )
+
+            expect(mockHistory.location.pathname).toBe(
+                '/app/ai-agent/shopify/test-shop/products',
+            )
+        })
+
+        it('should render preview-mode settings for Gorgias users', () => {
+            window.USER_IMPERSONATED = true
+
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/settings/preview',
+                            ]}
+                        >
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.getByText('AiAgentPreviewModeSettingsContainer'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render overview page', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/overview',
+                            ]}
+                        >
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(screen.getByText('AiAgentOverview')).toBeInTheDocument()
+        })
+
+        it('should render tone-of-voice page', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/tone-of-voice',
+                            ]}
+                        >
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(screen.getByText('AiAgentToneOfVoice')).toBeInTheDocument()
+        })
+
+        it('should render opportunities page', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/opportunities',
+                            ]}
+                        >
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(screen.getByText('AiAgentOpportunities')).toBeInTheDocument()
+        })
+
+        it('should render playground page', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/test',
+                            ]}
+                        >
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.getByText('AiAgentPlaygroundPage'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render configuration page', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/settings',
+                            ]}
+                        >
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.getByText('AiAgentConfigurationContainer'),
+            ).toBeInTheDocument()
+        })
+
+        it('should render deploy section page', () => {
+            render(
+                <QueryClientProvider client={mockQueryClient()}>
+                    <Provider store={mockStore(defaultState)}>
+                        <MemoryRouter
+                            initialEntries={[
+                                '/app/ai-agent/shopify/test-shop/deploy/email',
+                            ]}
+                        >
+                            <SplitTicketViewProvider>
+                                <Routes />
+                            </SplitTicketViewProvider>
+                        </MemoryRouter>
+                    </Provider>
+                </QueryClientProvider>,
+            )
+
+            expect(
+                screen.getByText('AiAgentConfigurationContainer'),
+            ).toBeInTheDocument()
         })
     })
 

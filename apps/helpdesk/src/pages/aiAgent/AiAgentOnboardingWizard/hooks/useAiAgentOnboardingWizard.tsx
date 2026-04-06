@@ -237,10 +237,10 @@ export const useAiAgentOnboardingWizard = ({
                     redirectTo: 'guidance',
                 })
                 history.replace({
-                    pathname: routes.guidance,
-                    search: getPostCompletionSearchParams(
+                    pathname: routes.knowledgeSources,
+                    search: `filter=guidance&${getPostCompletionSearchParams(
                         WIZARD_POST_COMPLETION_STATE.guidance,
-                    ),
+                    )}`,
                 })
                 break
             default:

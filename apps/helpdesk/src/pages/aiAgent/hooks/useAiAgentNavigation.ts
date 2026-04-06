@@ -11,7 +11,6 @@ import {
     DEPLOY,
     EMAIL,
     GENERAL,
-    GUIDANCE,
     INTENTS,
     KNOWLEDGE,
     OPPORTUNITIES,
@@ -51,8 +50,6 @@ export const aiAgentRoutes = {
 export const getAiAgentNavigationRoutes = (shopName: string) => {
     const basePath = getAiAgentBasePath(shopName)
     const automationBasePath = '/app/automation'
-
-    const guidancePath = 'knowledge/guidance'
 
     return {
         // Automation routes
@@ -100,16 +97,7 @@ export const getAiAgentNavigationRoutes = (shopName: string) => {
         fileArticlesDetail: (fileIngestionId: number, articleId: number) =>
             `${basePath}/knowledge/sources/file-articles/${fileIngestionId}/articles/${articleId}`,
 
-        guidance: `${basePath}/${guidancePath}`,
-        newGuidanceArticle: `${basePath}/${guidancePath}/new`,
-        guidanceArticleEdit: (articleId: number) =>
-            `${basePath}/${guidancePath}/${articleId}`,
-        guidanceTemplates: `${basePath}/${guidancePath}/templates`,
-        guidanceLibrary: `${basePath}/${guidancePath}/library`,
-        newGuidanceTemplateArticle: (templateId: string) =>
-            `${basePath}/${guidancePath}/templates/${templateId}`,
-        newGuidanceAiSuggestionArticle: (aiGuidanceId: string) =>
-            `${basePath}/${guidancePath}/library/${aiGuidanceId}`,
+        guidance: `${basePath}/knowledge/sources?filter=guidance`,
         configuration: (section?: 'knowledge' | 'email') =>
             `${basePath}/settings${section ? `?section=${section}` : ''}`,
         settingsChannels: `${basePath}/settings/channels`,
@@ -263,10 +251,6 @@ const useNavigationItems = (
                                     ? SOURCES
                                     : GENERAL,
                                 exact: !isAiAgentScrapeStoreDomainEnabled,
-                            },
-                            {
-                                route: routes.guidance,
-                                title: GUIDANCE,
                             },
                         ],
                     },

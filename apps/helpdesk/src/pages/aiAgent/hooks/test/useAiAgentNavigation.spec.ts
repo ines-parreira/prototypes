@@ -49,10 +49,6 @@ describe('useAiAgentNavigation', () => {
                     title: 'General',
                     exact: true,
                 },
-                {
-                    route: '/app/ai-agent/shopify/test/knowledge/guidance',
-                    title: 'Guidance',
-                },
             ],
         })
     })
@@ -81,10 +77,6 @@ describe('useAiAgentNavigation', () => {
                     title: 'Sources',
                     exact: false,
                 },
-                {
-                    route: '/app/ai-agent/shopify/test/knowledge/guidance',
-                    title: 'Guidance',
-                },
             ],
         })
     })
@@ -97,12 +89,12 @@ describe('useAiAgentNavigation', () => {
         expect(result.current.routes.overview).toBe('/app/ai-agent/overview')
     })
 
-    it('should return /knowledge/guidance path', () => {
+    it('should return /knowledge/sources?filter=guidance path', () => {
         const { result } = renderHook(() =>
             useAiAgentNavigation({ shopName: 'test' }),
         )
         expect(result.current.routes.guidance).toEqual(
-            '/app/ai-agent/shopify/test/knowledge/guidance',
+            '/app/ai-agent/shopify/test/knowledge/sources?filter=guidance',
         )
     })
 
