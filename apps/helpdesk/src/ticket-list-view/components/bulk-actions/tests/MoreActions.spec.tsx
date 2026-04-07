@@ -76,7 +76,7 @@ describe('<MoreActions />', () => {
         isLoading: false,
         launchJob: jest.fn(),
         onComplete: jest.fn(),
-        selectionCount: null,
+        selectionCount: undefined,
         ticketIds: [],
     }
 

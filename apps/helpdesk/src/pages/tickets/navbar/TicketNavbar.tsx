@@ -158,8 +158,6 @@ export function TicketNavbarContainer({
         getBottomSystemTicketNavbarElements,
     )
 
-    const viewsCount = useAppSelector((state) => state.entities.viewsCount)
-
     useSplitTicketViewSwitcher()
 
     useEffect(() => {
@@ -479,7 +477,7 @@ export function TicketNavbarContainer({
                 <TicketNavbarCreateMenu />
                 <Box flexDirection="column" gap="xs">
                     <RecentChats />
-                    <DefaultViews viewCount={viewsCount} />
+                    <DefaultViews />
                 </Box>
                 <NavigationSectionGroup
                     storageKey="inbox-navigation"
@@ -595,7 +593,6 @@ export function TicketNavbarContainer({
                         <TicketNavbarViewLink
                             key={`view-${element.data.id}`}
                             view={element.data as View}
-                            viewCount={viewsCount[element.data.id]}
                             icon={
                                 systemViewIcons[
                                     (element.data as View)
@@ -682,7 +679,6 @@ export function TicketNavbarContainer({
                         <TicketNavbarViewLink
                             key={`view-${element.data.id}`}
                             view={element.data as View}
-                            viewCount={viewsCount[element.data.id]}
                             icon={
                                 systemViewIcons[
                                     (element.data as View)

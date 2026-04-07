@@ -389,7 +389,7 @@ export class RecentViewsStorage {
     get(): Maybe<{
         [key: string]: { inserted_datetime: string; updated_datetime: string }
     }> {
-        if (!this.storage) {
+        if (!this.storage?.getItem) {
             return
         }
 

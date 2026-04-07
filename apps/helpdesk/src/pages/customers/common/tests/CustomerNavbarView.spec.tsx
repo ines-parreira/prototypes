@@ -1,3 +1,4 @@
+import { setViewsCount } from '@repo/views'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -10,27 +11,24 @@ const mockStore = configureStore([])
 
 describe('CustomersNavbarView', () => {
     let store: ReturnType<typeof mockStore>
-    const viewType = ViewType.CustomerList // Use CustomerList
-    const settingType = 'customerViewPreferences' // Update setting type
+    const viewType = ViewType.CustomerList
+    const settingType = 'customerViewPreferences'
 
     const mockViews = fromJS([
-        { id: 'view-1', name: 'View One', slug: 'view-one' },
-        { id: 'view-2', name: 'View Two', slug: 'view-two' },
+        { id: 1, name: 'View One', slug: 'view-one' },
+        { id: 2, name: 'View Two', slug: 'view-two' },
     ])
-
-    const mockGetViewCount = (viewId: string) => {
-        if (viewId === 'view-1') return 5
-        if (viewId === 'view-2') return 10
-        return 0
-    }
 
     beforeEach(() => {
         store = mockStore({})
 
-        // Mock the selectors used by connect
+        setViewsCount({
+            1: 5,
+            2: 10,
+        })
+
         jest.mock('state/views/selectors', () => ({
             makeGetViewsByType: () => () => mockViews,
-            makeGetViewCount: () => mockGetViewCount,
         }))
     })
 

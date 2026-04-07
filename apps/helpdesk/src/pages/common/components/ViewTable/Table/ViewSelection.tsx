@@ -1,11 +1,9 @@
+import { useViewCount } from '@repo/views'
+
 import { getConfigByType } from 'config/views'
 import useAppSelector from 'hooks/useAppSelector'
 import css from 'pages/common/components/ViewTable/Table.less'
-import {
-    getActiveView,
-    isDirty as getIsDirty,
-    makeGetViewCount,
-} from 'state/views/selectors'
+import { getActiveView, isDirty as getIsDirty } from 'state/views/selectors'
 
 type Props = {
     colSize: number
@@ -21,8 +19,7 @@ const ViewSelection = ({
     viewSelected,
 }: Props) => {
     const activeView = useAppSelector(getActiveView)
-    const getViewCount = useAppSelector(makeGetViewCount)
-    const currentViewCount = getViewCount(activeView.get('id'))
+    const currentViewCount = useViewCount(activeView.get('id'))
     const isViewDirty = useAppSelector(getIsDirty)
     const viewConfig = getConfigByType(activeView.get('type'))
 

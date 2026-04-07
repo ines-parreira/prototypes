@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+import { useViewCount } from '@repo/views'
+import type { Map } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
@@ -11,7 +13,7 @@ import type { ViewType } from 'models/view/types'
 import ViewCount from 'pages/common/components/ViewCount/ViewCount'
 import ViewName from 'pages/common/components/ViewName/ViewName'
 import type { RootState } from 'state/types'
-import { makeGetViewCount, makeGetViewsByType } from 'state/views/selectors'
+import { makeGetViewsByType } from 'state/views/selectors'
 import { getPluralObjectName } from 'utils'
 
 import css from './CustomersNavbarView.less'
@@ -19,7 +21,6 @@ import css from './CustomersNavbarView.less'
 const connector = connect((state: RootState, props: OwnProps) => {
     const getViewsByType = makeGetViewsByType()
     return {
-        getViewCount: makeGetViewCount(state),
         views: getViewsByType(state, props.viewType),
     }
 })
@@ -32,8 +33,37 @@ type OwnProps = {
 
 type CustomersNavbarViewV2Props = OwnProps & ConnectedProps<typeof connector>
 
+function CustomerViewNavItem({
+    view,
+    viewType,
+}: {
+    view: Map<string, any>
+    viewType: ViewType
+}) {
+    const viewId = view.get('id')
+    const viewCount = useViewCount(viewId)
+
+    return (
+        <Navigation.SectionItem
+            as={Link}
+            to={`/app/${getPluralObjectName(viewType)}/${viewId}/${view.get('slug')}`}
+            key={viewId}
+            className={css.navigationSectionItem}
+            isSelected={true}
+            displayType="indent"
+        >
+            <ViewName viewName={view.get('name')} />
+            <ViewCount
+                viewCount={viewCount}
+                viewId={viewId}
+                isDeactivated={false}
+                objectName={getPluralObjectName(viewType)}
+            />
+        </Navigation.SectionItem>
+    )
+}
+
 export const CustomersNavbarView = connector(function CustomersNavbarViewV2({
-    getViewCount,
     views,
     viewType,
 }: CustomersNavbarViewV2Props) {
@@ -53,24 +83,11 @@ export const CustomersNavbarView = connector(function CustomersNavbarViewV2({
                 </Navigation.SectionTrigger>
                 <Navigation.SectionContent>
                     {arrayViews.map((view) => (
-                        <Navigation.SectionItem
-                            as={Link}
-                            to={`/app/${getPluralObjectName(viewType)}/${view.get('id')}/${view.get('slug')}`}
+                        <CustomerViewNavItem
                             key={view.get('id')}
-                            className={css.navigationSectionItem}
-                            isSelected={true}
-                            displayType="indent"
-                        >
-                            <ViewName viewName={view.get('name')} />
-                            <ViewCount
-                                viewCount={
-                                    getViewCount(view.get('id')) ?? undefined
-                                }
-                                viewId={view.get('id')}
-                                isDeactivated={false}
-                                objectName={getPluralObjectName(viewType)}
-                            />
-                        </Navigation.SectionItem>
+                            view={view}
+                            viewType={viewType}
+                        />
                     ))}
                 </Navigation.SectionContent>
             </Navigation.Section>

@@ -2,6 +2,7 @@ import type { ComponentProps, ReactElement, ReactNode } from 'react'
 import { Fragment } from 'react'
 
 import { assumeMock } from '@repo/testing'
+import { clearViewsCount, setViewsCount } from '@repo/views'
 import { act, fireEvent } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -102,6 +103,7 @@ describe('<TicketListView />', () => {
     const historyPush = jest.fn()
 
     beforeEach(() => {
+        clearViewsCount()
         historyPush.mockReset()
         useAppDispatchMock.mockReturnValue(dispatch)
         useHistoryMock.mockReturnValue({ push: historyPush } as any)
@@ -517,18 +519,10 @@ describe('<TicketListView />', () => {
     })
 
     it('should hide bulk actions for view with count 0', () => {
+        setViewsCount({ [view.id]: 0 })
+
         const { queryByText } = renderWithQueryClientAndRouter(
-            <Provider
-                store={mockStore({
-                    views: fromJS({
-                        active: view,
-                        items: [view],
-                        counts: {
-                            [view.id]: 0,
-                        },
-                    }),
-                })}
-            >
+            <Provider store={store}>
                 <TicketListView viewId={123} />
             </Provider>,
         )
@@ -574,6 +568,7 @@ describe('<TicketListView />', () => {
         })
 
         it('should display ticket count when available', () => {
+            setViewsCount({ [view.id]: 7 })
             useSelectionMock.mockReturnValue({
                 hasSelectedAll: true,
                 onSelect: jest.fn(),
@@ -583,17 +578,7 @@ describe('<TicketListView />', () => {
             })
 
             const { getByText } = renderWithQueryClientAndRouter(
-                <Provider
-                    store={mockStore({
-                        views: fromJS({
-                            active: view,
-                            items: [view],
-                            counts: {
-                                123: 7,
-                            },
-                        }),
-                    })}
-                >
+                <Provider store={store}>
                     <TicketListView viewId={123} />
                 </Provider>,
             )

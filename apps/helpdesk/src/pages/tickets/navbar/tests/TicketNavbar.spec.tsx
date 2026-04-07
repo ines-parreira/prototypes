@@ -425,7 +425,6 @@ describe('<TicketNavbar/>', () => {
             }),
             views: fromJS({
                 systemTopElements: [],
-                viewsCount: {},
             }),
         }
 

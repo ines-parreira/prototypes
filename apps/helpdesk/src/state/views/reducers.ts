@@ -25,7 +25,6 @@ import {
 
 export const initialState: ViewsState = fromJS({
     items: [],
-    counts: {},
     active: {},
     recent: {},
     loading: false,
@@ -456,27 +455,17 @@ export default function reducer(
 
         case constants.UPDATE_COUNTS: {
             const viewIds = Object.keys(action.counts || {})
-            return (
-                state
-                    // update view counts
-                    .mergeDeep({
-                        counts: action.counts,
-                    })
-                    // update datetime when we receive count for a recent view
-                    .update('recent', (views: Map<any, any>) => {
-                        return views.map(
-                            (view: Map<any, any>, viewId: string) => {
-                                if (viewIds.includes(viewId)) {
-                                    return view.set(
-                                        'updated_datetime',
-                                        moment.utc().toISOString(),
-                                    )
-                                }
-                                return view
-                            },
+            return state.update('recent', (views: Map<any, any>) => {
+                return views.map((view: Map<any, any>, viewId: string) => {
+                    if (viewIds.includes(viewId)) {
+                        return view.set(
+                            'updated_datetime',
+                            moment.utc().toISOString(),
                         )
-                    })
-            )
+                    }
+                    return view
+                })
+            })
         }
 
         default:

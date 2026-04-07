@@ -1,7 +1,7 @@
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 
-import { setViewsCount, viewsCountStore } from '../../hooks/useViewsCount'
+import { clearViewsCount, setViewsCount } from '../../hooks/useViewsCount'
 import { ViewCountBadge } from '../ViewCountBadge'
 
 vi.mock('@repo/browser-storage', () => ({
@@ -15,7 +15,7 @@ vi.mock('@repo/browser-storage', () => ({
 }))
 
 beforeEach(() => {
-    viewsCountStore.setState({ counts: {} })
+    clearViewsCount()
 })
 
 describe('ViewCountBadge', () => {

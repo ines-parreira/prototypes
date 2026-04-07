@@ -1,6 +1,12 @@
 import { act, renderHook } from '@testing-library/react'
 
-import { setViewsCount, useViewCount, viewsCountStore } from '../useViewsCount'
+import {
+    clearViewsCount,
+    getViewCount,
+    setViewsCount,
+    useViewCount,
+    viewsCountStore,
+} from '../useViewsCount'
 
 vi.mock('@repo/browser-storage', () => ({
     localForageManager: {
@@ -13,7 +19,7 @@ vi.mock('@repo/browser-storage', () => ({
 }))
 
 beforeEach(() => {
-    viewsCountStore.setState({ counts: {} })
+    clearViewsCount()
 })
 
 describe('setViewsCount', () => {
@@ -65,12 +71,40 @@ describe('useViewCount', () => {
         expect(result.current).toBe(30)
     })
 
-    it('returns undefined for a zero count', () => {
+    it('returns zero for a zero count', () => {
         setViewsCount({ 7: 0 })
 
         const { result } = renderHook(() => useViewCount(7))
 
-        expect(result.current).toBeUndefined()
+        expect(result.current).toBe(0)
+    })
+})
+
+describe('getViewCount', () => {
+    it('returns undefined when no count exists', () => {
+        expect(getViewCount(999)).toBeUndefined()
+    })
+
+    it('returns the count for a given view', () => {
+        setViewsCount({ 5: 50 })
+
+        expect(getViewCount(5)).toBe(50)
+    })
+
+    it('returns zero for a zero count', () => {
+        setViewsCount({ 7: 0 })
+
+        expect(getViewCount(7)).toBe(0)
+    })
+})
+
+describe('clearViewsCount', () => {
+    it('clears all counts', () => {
+        setViewsCount({ 1: 10, 2: 20 })
+
+        clearViewsCount()
+
+        expect(viewsCountStore.getState().counts).toEqual({})
     })
 })
 

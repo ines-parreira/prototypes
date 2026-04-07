@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 
 import { history } from '@repo/routing'
 import { shortcutManager } from '@repo/utils'
+import { useViewCount } from '@repo/views'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import _debounce from 'lodash/debounce'
@@ -26,13 +27,71 @@ import type { RootState } from 'state/types'
 import {
     getActiveView,
     makeGetView,
-    makeGetViewCount,
     makeGetViewsByType,
 } from 'state/views/selectors'
 import { getPluralObjectName } from 'utils'
 
 const popupEnterMessage = 'Create, re-order & hide views'
 const popupLeaveMessage = 'Leave edit mode'
+
+function ViewNavbarItem({
+    view,
+    isCurrentView,
+    objectName,
+    viewUrl,
+    onLinkClick,
+}: {
+    view: Map<string, any>
+    isCurrentView: boolean
+    objectName: string
+    viewUrl: string
+    onLinkClick: () => void
+}) {
+    const viewId = view.get('id')
+    const viewCount = useViewCount(viewId)
+
+    const key = `${view.get('slug') as string}-${viewId as number}`
+    const classes = classnames(navbarCss.link, {
+        active: isCurrentView,
+    })
+
+    let count = ''
+    if (viewCount !== undefined) {
+        const isMoreThanMaxCount = viewCount >= MAX_TICKET_COUNT_PER_VIEW
+        count = `(${
+            isMoreThanMaxCount ? `${MAX_TICKET_COUNT_PER_VIEW - 1}+` : viewCount
+        })`
+    }
+
+    return (
+        <div
+            key={key}
+            className={classnames(
+                navbarCss['link-wrapper'],
+                navbarCss.isNested,
+            )}
+        >
+            <Link
+                to={viewUrl}
+                className={classes}
+                title={`${view.get('name') as string} ${count}`}
+                onClick={onLinkClick}
+            >
+                <span className={navbarCss['item-name']}>
+                    <ViewName viewName={view.get('name')} />
+                </span>
+                <span className={navbarCss['item-count']}>
+                    <ViewCount
+                        viewCount={viewCount}
+                        viewId={viewId}
+                        isDeactivated={false}
+                        objectName={objectName}
+                    />
+                </span>
+            </Link>
+        </div>
+    )
+}
 
 type OwnProps = {
     viewType: ViewType
@@ -206,88 +265,22 @@ class ViewNavbarView extends Component<Props, State> {
                         ) : (
                             displayedViews
                                 .toArray()
-                                .map((view: Map<any, any>) => {
-                                    const isCurrentView =
-                                        activeView.get('id') === view.get('id')
-
-                                    const key = `${view.get('slug') as string}-${
-                                        view.get('id') as number
-                                    }`
-                                    const classes = classnames(navbarCss.link, {
-                                        active: isCurrentView,
-                                    })
-
-                                    const viewCount = this.props.getViewCount(
-                                        view.get('id'),
-                                    )
-                                    let count = ''
-                                    let isMoreThanMaxCount = false
-
-                                    if (viewCount !== null) {
-                                        isMoreThanMaxCount =
-                                            viewCount >=
-                                            MAX_TICKET_COUNT_PER_VIEW
-                                        count = `(${
-                                            isMoreThanMaxCount
-                                                ? `${
-                                                      MAX_TICKET_COUNT_PER_VIEW -
-                                                      1
-                                                  }+`
-                                                : viewCount
-                                        })`
-                                    }
-
-                                    return (
-                                        <div
-                                            key={key}
-                                            className={classnames(
-                                                navbarCss['link-wrapper'],
-                                                navbarCss.isNested,
-                                            )}
-                                        >
-                                            <Link
-                                                to={this._getViewUrl(
-                                                    objectName,
-                                                    view,
-                                                )}
-                                                className={classes}
-                                                title={`${
-                                                    view.get('name') as string
-                                                } ${count}`}
-                                                onClick={() => {
-                                                    closePanels()
-                                                }}
-                                            >
-                                                <span
-                                                    className={
-                                                        navbarCss['item-name']
-                                                    }
-                                                >
-                                                    <ViewName
-                                                        viewName={view.get(
-                                                            'name',
-                                                        )}
-                                                    />
-                                                </span>
-                                                <span
-                                                    className={
-                                                        navbarCss['item-count']
-                                                    }
-                                                >
-                                                    <ViewCount
-                                                        viewCount={
-                                                            viewCount ??
-                                                            undefined
-                                                        }
-                                                        viewId={view.get('id')}
-                                                        isDeactivated={false}
-                                                        objectName={objectName}
-                                                    />
-                                                </span>
-                                            </Link>
-                                        </div>
-                                    )
-                                })
+                                .map((view: Map<any, any>) => (
+                                    <ViewNavbarItem
+                                        key={`${view.get('slug') as string}-${view.get('id') as number}`}
+                                        view={view}
+                                        isCurrentView={
+                                            activeView.get('id') ===
+                                            view.get('id')
+                                        }
+                                        objectName={objectName}
+                                        viewUrl={this._getViewUrl(
+                                            objectName,
+                                            view,
+                                        )}
+                                        onLinkClick={closePanels}
+                                    />
+                                ))
                         )}
                     </div>
                 </div>
@@ -302,7 +295,6 @@ const connector = connect(
         const getViewsByType = makeGetViewsByType()
         return {
             getView: makeGetView(state),
-            getViewCount: makeGetViewCount(state),
             activeView: getActiveView(state),
             views: getViewsByType(state, props.viewType),
             settings: getSettingsByType(state, props.settingType),

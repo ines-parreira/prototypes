@@ -108,7 +108,6 @@ const storyConfig: Meta = {
                 Category: 'category',
             },
         ],
-        viewsCount: [],
         viewId: 1,
     },
 }

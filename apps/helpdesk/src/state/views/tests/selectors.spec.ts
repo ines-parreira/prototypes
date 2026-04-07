@@ -1,3 +1,4 @@
+import { setViewsCount } from '@repo/views'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
@@ -107,33 +108,27 @@ describe('selectors', () => {
     describe('getExpiredViewsCounts()', () => {
         it('should return an empty array because counts are not expired', () => {
             const now = moment.utc().toISOString()
-            const counts = {
-                1: 50,
-                2: 100,
-            }
+            setViewsCount({ 1: 50, 2: 100 })
             const recent = {
                 1: { updated_datetime: now },
                 2: { updated_datetime: now },
             }
 
             const state = {
-                views: initialState.merge(fromJS({ recent, counts })),
+                views: initialState.merge(fromJS({ recent })),
             } as RootState
             expect(selectors.getExpiredViewsCounts()(state)).toEqual([])
         })
 
         it('should return some view ids because some counts are expired', () => {
             const now = moment.utc().toISOString()
-            const counts = {
-                1: 50,
-                3: 200,
-            }
+            setViewsCount({ 1: 50, 3: 200 })
             const recent = {
                 1: {
                     // View count is expired.
                     updated_datetime: moment
                         .utc()
-                        .subtract(getExpirationTimeForCount(counts[1]) + 1, 's')
+                        .subtract(getExpirationTimeForCount(50) + 1, 's')
                         .toISOString(),
                 },
                 2: {
@@ -144,7 +139,7 @@ describe('selectors', () => {
             }
 
             const state = {
-                views: initialState.merge(fromJS({ recent, counts })),
+                views: initialState.merge(fromJS({ recent })),
             } as RootState
             expect(selectors.getExpiredViewsCounts()(state)).toEqual([1, 2])
         })
@@ -881,49 +876,6 @@ describe('selectors', () => {
 
         it('should return null when no view matches the id', () => {
             expect(selectors.getViewPlainJS(state, '22')).toEqual(null)
-        })
-    })
-
-    describe('getViewCount()', () => {
-        const views = {
-            '2': {
-                id: 2,
-                type: ViewType.TicketList,
-                visibility: ViewVisibility.Public,
-            },
-            '88': {
-                id: 88,
-                type: ViewType.TicketList,
-                visibility: ViewVisibility.Public,
-            },
-            '1234': {
-                id: 123,
-                type: ViewType.CustomerList,
-                visibility: ViewVisibility.Private,
-            },
-        }
-        const counts = {
-            2: 10,
-            88: 0,
-        }
-
-        const state = {
-            views: fromJS({
-                items: views,
-                counts,
-            }),
-        } as RootState
-
-        it('should return the count matching the view', () => {
-            expect(selectors.getViewCount('88')(state)).toEqual(counts['88'])
-        })
-
-        it('should return null when no count matches the view', () => {
-            expect(selectors.getViewCount('1234')(state)).toEqual(null)
-        })
-
-        it('should return null when viewId is null', () => {
-            expect(selectors.getViewCount(null)(state)).toEqual(null)
         })
     })
 })

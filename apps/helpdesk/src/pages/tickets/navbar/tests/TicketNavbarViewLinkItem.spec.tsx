@@ -1,4 +1,5 @@
 import { assumeMock } from '@repo/testing'
+import { setViewsCount } from '@repo/views'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -28,18 +29,15 @@ const defaultView: Pick<
 
 const renderComponent = ({
     view = defaultView,
-    viewCount,
     label = 'Assigned to me',
 }: {
     view?: Pick<View, 'id' | 'name' | 'slug' | 'decoration'>
-    viewCount?: number
     label?: string
 } = {}) =>
     renderWithRouter(
         <TicketNavbarViewLinkItem
             icon="user-arrow"
             view={view}
-            viewCount={viewCount}
             label={label}
         />,
         {
@@ -92,13 +90,15 @@ describe('TicketNavbarViewLinkItem', () => {
     })
 
     it('should render the view count when provided', () => {
-        renderComponent({ viewCount: 7 })
+        setViewsCount({ [defaultView.id]: 7 })
+        renderComponent()
 
         expect(screen.getByText('7')).toBeInTheDocument()
     })
 
     it('should not render view count when viewCount is 0', () => {
-        renderComponent({ viewCount: 0 })
+        setViewsCount({ [defaultView.id]: 0 })
+        renderComponent()
 
         expect(screen.queryByText('0')).not.toBeInTheDocument()
     })
@@ -138,7 +138,8 @@ describe('TicketNavbarViewLinkItem', () => {
             deactivated_datetime: '2023-01-01T00:00:00Z',
         }
 
-        renderComponent({ view: deactivatedView, viewCount: 10 })
+        setViewsCount({ [deactivatedView.id]: 10 })
+        renderComponent({ view: deactivatedView })
 
         expect(screen.queryByText('10')).not.toBeInTheDocument()
     })

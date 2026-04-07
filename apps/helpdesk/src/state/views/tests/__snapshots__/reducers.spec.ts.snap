@@ -45,7 +45,6 @@ Immutable.Map {
 exports[`reducers views UPDATE_PAGE_SELECTION should update the selected ids of the view 1`] = `
 Immutable.Map {
   "items": Immutable.List [],
-  "counts": Immutable.Map {},
   "active": Immutable.Map {},
   "recent": Immutable.Map {},
   "loading": false,
@@ -211,7 +210,6 @@ Immutable.Map {
       "category": null,
     },
   ],
-  "counts": Immutable.Map {},
   "active": Immutable.Map {},
   "recent": Immutable.Map {},
   "loading": false,
@@ -230,7 +228,6 @@ Immutable.Map {
 exports[`reducers views should delete a view  1`] = `
 Immutable.Map {
   "items": Immutable.List [],
-  "counts": Immutable.Map {},
   "active": Immutable.Map {},
   "recent": Immutable.Map {},
   "loading": false,
@@ -390,7 +387,6 @@ Immutable.Map {
       "category": null,
     },
   ],
-  "counts": Immutable.Map {},
   "active": Immutable.Map {},
   "recent": Immutable.Map {},
   "loading": false,
@@ -550,7 +546,6 @@ Immutable.Map {
       "category": null,
     },
   ],
-  "counts": Immutable.Map {},
   "active": Immutable.Map {
     "search": null,
     "order_by": "updated",
@@ -860,7 +855,6 @@ Immutable.Map {
       "category": null,
     },
   ],
-  "counts": Immutable.Map {},
   "active": Immutable.Map {
     "search": null,
     "order_by": "updated",
@@ -1160,7 +1154,6 @@ Immutable.Map {
       "category": null,
     },
   ],
-  "counts": Immutable.Map {},
   "active": Immutable.Map {},
   "recent": Immutable.Map {},
   "loading": false,

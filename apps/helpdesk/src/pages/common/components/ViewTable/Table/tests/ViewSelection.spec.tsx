@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { setViewsCount } from '@repo/views'
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -13,11 +14,12 @@ const mockStore = configureMockStore()
 const state = {
     views: fromJS({
         active: view,
-        counts: {
-            [view.id]: 888,
-        },
     }),
 }
+
+beforeEach(() => {
+    setViewsCount({ [view.id]: 888 })
+})
 
 describe('<ViewSelection />', () => {
     const minProps = {
@@ -57,9 +59,6 @@ describe('<ViewSelection />', () => {
                     store={mockStore({
                         views: fromJS({
                             active: { ...view, dirty: true },
-                            counts: {
-                                [view.id]: 888,
-                            },
                         }),
                     })}
                 >

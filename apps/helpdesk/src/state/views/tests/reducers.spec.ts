@@ -1,4 +1,3 @@
-import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
@@ -508,11 +507,6 @@ describe('reducers', () => {
                 counts,
             })
 
-            // should update view counts
-            expect((state.get('counts') as Map<any, any>).toJS()).toEqual(
-                counts,
-            )
-
             const now = moment.utc().add(10, 's')
             const recentViews = selectors
                 .getRecentViews({ views: state } as RootState)
@@ -534,6 +528,36 @@ describe('reducers', () => {
                     ),
                 ).toBe(true)
             }
+        })
+
+        it('should not update recent views without matching counts', () => {
+            let state = initialState.mergeDeep(
+                fromJS({
+                    recent: {
+                        1: { inserted_datetime: '2020-01-01T00:00:00Z' },
+                        2: { inserted_datetime: '2020-01-01T00:00:00Z' },
+                    },
+                }),
+            )
+            const counts = { 1: 12 }
+
+            state = reducers(state, {
+                type: types.UPDATE_COUNTS,
+                counts,
+            })
+
+            const recentViews = selectors
+                .getRecentViews({ views: state } as RootState)
+                .toJS() as Record<
+                string,
+                {
+                    inserted_datetime: string
+                    updated_datetime?: string
+                }
+            >
+
+            expect(recentViews['1'].updated_datetime).toBeDefined()
+            expect(recentViews['2'].updated_datetime).toBeUndefined()
         })
 
         it('should update updated datetime of recent views', () => {

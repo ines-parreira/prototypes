@@ -59,9 +59,6 @@ const minProps = {
     views: {
         [view.id]: view,
     },
-    viewsCount: {
-        7: 0,
-    },
 } as unknown as ComponentProps<typeof TicketNavbarSectionContainer>
 
 describe('<TicketNavbarSection/>', () => {

@@ -160,7 +160,7 @@ export default function MoreActions({
         action?: Action,
     ) => void
     onComplete: () => void
-    selectionCount: number | null
+    selectionCount: number | undefined
     ticketIds: number[]
 }) {
     const dropdownButtonRef = useRef(null)

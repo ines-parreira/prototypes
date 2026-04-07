@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { shortcutManager } from '@repo/utils'
+import { useViewCount } from '@repo/views'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -21,7 +22,6 @@ import {
     useUpdateMacro,
 } from 'hooks/macros'
 import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
 import type { JobParams } from 'models/job/types'
 import { JobType } from 'models/job/types'
 import type { Filters } from 'models/macro/types'
@@ -34,7 +34,6 @@ import ModalFooter from 'pages/common/components/modal/ModalFooter'
 import ModalHeader from 'pages/common/components/modal/ModalHeader'
 import { createJob as createTicketJob } from 'state/tickets/actions'
 import { createJob as createViewJob } from 'state/views/actions'
-import { makeGetViewCount } from 'state/views/selectors'
 
 import { MacroEdit } from './MacroEdit'
 import MacroModalList from './MacroModalList'
@@ -132,10 +131,7 @@ const MacroModal = ({
         }
     }, [currentMacro, handleAddNewMacro, isCreatingMacro])
 
-    const getViewCount = useAppSelector(makeGetViewCount)
-    const currentViewCount = activeView.isEmpty()
-        ? 0
-        : getViewCount(activeView.get('id'))
+    const currentViewCount = useViewCount(activeView.get('id')) ?? 0
 
     useEffectOnce(() => {
         shortcutManager.bind('MacroModal')

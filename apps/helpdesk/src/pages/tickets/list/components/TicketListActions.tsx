@@ -3,6 +3,7 @@ import { useMemo, useRef, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { useShortcuts } from '@repo/utils'
+import { useViewCount } from '@repo/views'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -46,7 +47,6 @@ import {
     getActiveView,
     areFiltersValid as getAreFiltersValid,
     isActiveViewTrashView as getIsActiveViewTrashView,
-    getViewCount,
 } from 'state/views/selectors'
 import { TagDropdownMenu } from 'tags'
 import PriorityDropdownMenu from 'ticket-list-view/components/bulk-actions/PriorityDropdownMenu'
@@ -82,7 +82,7 @@ export const TicketListActions = ({
     const allViewItemsSelected = useAppSelector(areAllActiveViewItemsSelected)
     const areFiltersValid = useAppSelector(getAreFiltersValid)
     const activeView = useAppSelector(getActiveView)
-    const viewCount = useAppSelector(getViewCount(activeView.get('id')))
+    const viewCount = useViewCount(activeView.get('id'))
 
     const tickets = useAppSelector(getTickets)
 

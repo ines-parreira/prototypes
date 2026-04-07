@@ -15,6 +15,7 @@ import {
     useTicketsTranslatedProperties,
 } from '@repo/tickets'
 import { useHelpdeskV2MS1Flag } from '@repo/tickets/feature-flags'
+import { useViewCount } from '@repo/views'
 import cn from 'classnames'
 import { fromJS } from 'immutable'
 import { useHistory } from 'react-router-dom'
@@ -37,7 +38,7 @@ import {
     useSplitTicketView,
 } from 'split-ticket-view-toggle'
 import { setViewActive, setViewEditMode } from 'state/views/actions'
-import { getViewCount, getViewPlainJS } from 'state/views/selectors'
+import { getViewPlainJS } from 'state/views/selectors'
 import type { OnToggleUnreadFn } from 'tickets/dtp'
 
 import { TICKET_HEIGHT } from '../constants'
@@ -90,7 +91,7 @@ export default function TicketListView({
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const dispatch = useAppDispatch()
     const view = useAppSelector((state) => getViewPlainJS(state, `${viewId}`))
-    const viewCount = useAppSelector(getViewCount(viewId))
+    const viewCount = useViewCount(viewId)
     const editViewRef = useRef(null)
     const areViewFiltersInvalid = !!view?.deactivated_datetime
     const isViewNull = view === null

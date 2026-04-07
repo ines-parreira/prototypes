@@ -106,7 +106,7 @@ describe('TicketNavbarViewLink', () => {
 
         const { container } = render(
             <MemoryRouter initialEntries={['/app']}>
-                <TicketNavbarViewLink view={view} viewCount={5} />
+                <TicketNavbarViewLink view={view} />
             </MemoryRouter>,
         )
 

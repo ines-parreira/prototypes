@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import { shortcutManager } from '@repo/utils'
+import { useViewCount } from '@repo/views'
 import type { List, Map } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import type { ConnectedProps } from 'react-redux'
@@ -21,16 +22,14 @@ import type { WithAppNodeProps } from 'appNode'
 import { withAppNode } from 'appNode'
 import { bulkDeleteCustomer } from 'state/customers/actions'
 import type { RootState } from 'state/types'
-import {
-    areAllActiveViewItemsSelected,
-    makeGetViewCount,
-} from 'state/views/selectors'
+import { areAllActiveViewItemsSelected } from 'state/views/selectors'
 
 import css from './CustomerListActions.less'
 
 type Props = {
     selectedItemsIds: List<any>
     view: Map<any, any>
+    viewCount: number | undefined
 } & ConnectedProps<typeof connector> &
     WithAppNodeProps
 
@@ -105,18 +104,13 @@ class CustomerListActions extends Component<Props, State> {
     }
 
     _renderBulkActions = () => {
-        const {
-            allViewItemsSelected,
-            appNode,
-            getViewCount,
-            view,
-            selectedItemsIds,
-        } = this.props
+        const { allViewItemsSelected, appNode, viewCount, selectedItemsIds } =
+            this.props
 
         const areItemsSelected = this._hasChecked()
 
         const selectedCount = allViewItemsSelected
-            ? getViewCount(view.get('id'))
+            ? viewCount
             : selectedItemsIds.size
 
         return (
@@ -180,11 +174,22 @@ class CustomerListActions extends Component<Props, State> {
 const connector = connect(
     (state: RootState) => ({
         allViewItemsSelected: areAllActiveViewItemsSelected(state),
-        getViewCount: makeGetViewCount(state),
     }),
     {
         bulkDeleteCustomer,
     },
 )
 
-export default connector(withAppNode(CustomerListActions))
+const ConnectedCustomerListActions = connector(withAppNode(CustomerListActions))
+
+function CustomerListActionsWithViewCount(
+    props: Omit<
+        React.ComponentProps<typeof ConnectedCustomerListActions>,
+        'viewCount'
+    >,
+) {
+    const viewCount = useViewCount(props.view.get('id'))
+    return <ConnectedCustomerListActions {...props} viewCount={viewCount} />
+}
+
+export default CustomerListActionsWithViewCount

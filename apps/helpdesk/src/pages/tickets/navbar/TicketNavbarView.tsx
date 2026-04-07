@@ -20,15 +20,9 @@ type Props = {
     className?: string
     isNested?: boolean
     view: View
-    viewCount: number | undefined
 }
 
-export const TicketNavbarView = ({
-    className,
-    isNested,
-    view,
-    viewCount,
-}: Props) => {
+export const TicketNavbarView = ({ className, isNested, view }: Props) => {
     const wrapperRef = useRef<HTMLDivElement>(null)
     const currentUser = useAppSelector((state) => state.currentUser)
     const sections = useAppSelector((state) => state.entities.sections)
@@ -95,7 +89,6 @@ export const TicketNavbarView = ({
                 ref={wrapperRef}
                 view={view}
                 isNested={isNested}
-                viewCount={viewCount}
                 className={classnames({
                     [navbarCss.isDragged]: isDragging,
                 })}

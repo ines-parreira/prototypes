@@ -9,11 +9,7 @@ import { Box, Button, Text } from '@gorgias/axiom'
 
 import { TicketNavbarViewLinkItem } from './TicketNavbarViewLinkItem'
 
-type Props = {
-    viewCount: Record<number, number>
-}
-
-export function DefaultViews({ viewCount }: Props) {
+export function DefaultViews() {
     const { isAdmin } = useCurrentUserRole()
     const { displayedViews, showToggle, isExpanded, toggleExpanded } =
         useExpandableDefaultViews()
@@ -41,7 +37,6 @@ export function DefaultViews({ viewCount }: Props) {
                             <TicketNavbarViewLinkItem
                                 key={`view-${view.id}`}
                                 view={view}
-                                viewCount={viewCount[view.id]}
                                 icon={SYSTEM_VIEW_DEFINITIONS[view.name].icon}
                                 label={SYSTEM_VIEW_DEFINITIONS[view.name].label}
                             />

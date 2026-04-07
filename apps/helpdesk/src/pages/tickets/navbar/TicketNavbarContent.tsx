@@ -72,7 +72,6 @@ export function TicketNavbarContentContainer({
     sections,
     views,
     viewUpdated,
-    viewsCount,
 }: OwnProps & ConnectedProps<typeof connector>) {
     const handleDrop = useCallback(
         (
@@ -175,7 +174,6 @@ export function TicketNavbarContentContainer({
                         key={`view-${element.data.id}`}
                         isNested={true}
                         view={element.data}
-                        viewCount={viewsCount[element.data.id]}
                     />
                 ) : (
                     <TicketNavbarSection
@@ -183,7 +181,6 @@ export function TicketNavbarContentContainer({
                         onSectionDeleteClick={onSectionDeleteClick}
                         onSectionRenameClick={onSectionRenameClick}
                         sectionElement={element}
-                        viewsCount={viewsCount}
                     />
                 ),
             )}
@@ -196,7 +193,6 @@ const connector = connect(
         return {
             sections: state.entities.sections,
             views: state.entities.views,
-            viewsCount: state.entities.viewsCount,
         }
     },
     {

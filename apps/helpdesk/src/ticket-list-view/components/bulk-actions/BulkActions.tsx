@@ -23,7 +23,7 @@ export default function BulkActions({
     hasSelectedAll: boolean
     onComplete: (action?: Action) => void
     selectedTickets: Record<number, boolean>
-    selectionCount: number | null
+    selectionCount: number | undefined
 }) {
     const ticketIds = useMemo(
         () =>

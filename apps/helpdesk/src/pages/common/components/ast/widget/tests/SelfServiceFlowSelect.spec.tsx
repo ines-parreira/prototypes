@@ -75,7 +75,6 @@ describe('<SelfServiceFlowSelect />', () => {
             stats: {},
             tags: {},
             views: {},
-            viewsCount: {},
             helpCenter: helpCenterInitialState,
             helpCenterArticles: {},
             selfServiceConfigurations: {},

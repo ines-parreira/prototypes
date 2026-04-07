@@ -7,6 +7,7 @@ import {
     useHelpdeskV2WayfindingMS1Flag,
 } from '@repo/feature-flags'
 import { addCanduLinkForValidViewOrSection } from '@repo/tickets/utils/views'
+import { useViewCount } from '@repo/views'
 import classnames from 'classnames'
 import { Link, useLocation } from 'react-router-dom'
 
@@ -29,12 +30,11 @@ type Props = {
     className?: string
     icon?: string
     view: View
-    viewCount?: number
     isNested?: boolean
 }
 
 const TicketNavbarViewLink = (
-    { className, icon, view, viewCount, isNested }: Props,
+    { className, icon, view, isNested }: Props,
     forwardedRef: ForwardedRef<HTMLDivElement>,
 ) => {
     const shouldRedirectDeprecatedTicketRoutes = useFlag<boolean>(
@@ -42,6 +42,7 @@ const TicketNavbarViewLink = (
         false,
     )
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
+    const viewCount = useViewCount(view.id)
 
     const { isEnabled: splitTicketViewEnabled } = useSplitTicketView()
     const { pathname: path } = useLocation()
@@ -77,7 +78,6 @@ const TicketNavbarViewLink = (
                 canduId={canduId}
                 view={view}
                 onClick={() => dispatch(activeViewIdSet(view.id))}
-                viewCount={viewCount}
             />
         )
     }

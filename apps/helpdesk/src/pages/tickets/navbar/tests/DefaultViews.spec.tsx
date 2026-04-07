@@ -26,17 +26,8 @@ jest.mock('@repo/users', () => ({
 const mockUseCurrentUserRole = assumeMock(useCurrentUserRole)
 
 jest.mock('../TicketNavbarViewLinkItem', () => ({
-    TicketNavbarViewLinkItem: ({
-        label,
-        viewCount,
-    }: {
-        label?: string
-        viewCount?: number
-    }) => (
-        <div>
-            {label}
-            {viewCount ? <span>{viewCount}</span> : null}
-        </div>
+    TicketNavbarViewLinkItem: ({ label }: { label?: string }) => (
+        <div>{label}</div>
     ),
 }))
 
@@ -70,8 +61,8 @@ const allView = {
     category: 'system' as const,
 }
 
-const renderComponent = (viewCount: Record<number, number> = {}) =>
-    renderWithRouter(<DefaultViews viewCount={viewCount} />, {
+const renderComponent = () =>
+    renderWithRouter(<DefaultViews />, {
         route: '/app/tickets/1/inbox',
         path: '/app/tickets/:viewId?/:slug?',
     })
@@ -125,19 +116,6 @@ describe('DefaultViews', () => {
         expect(
             screen.getByText(SYSTEM_VIEW_DEFINITIONS['Unassigned'].label),
         ).toBeInTheDocument()
-    })
-
-    it('should pass the correct viewCount to each view item', () => {
-        mockUseExpandableDefaultViews.mockReturnValue({
-            displayedViews: [inboxView],
-            showToggle: false,
-            isExpanded: false,
-            toggleExpanded,
-        } as ExpandableDefaultViewsContext)
-
-        renderComponent({ 1: 5 })
-
-        expect(screen.getByText('5')).toBeInTheDocument()
     })
 
     it('should not render the toggle button when showToggle is false', () => {

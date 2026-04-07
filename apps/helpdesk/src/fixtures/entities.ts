@@ -11,7 +11,6 @@ export const entitiesInitialState: RootState['entities'] = {
     stats: {},
     tags: {},
     views: {},
-    viewsCount: {},
     helpCenter: helpCenterInitialState,
     contactForm: contactFormInitialState,
     selfServiceConfigurations: {},

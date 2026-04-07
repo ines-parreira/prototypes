@@ -76,7 +76,6 @@ import {
     viewDeleted,
     viewUpdated,
 } from 'state/entities/views/actions'
-import { viewsCountFetched } from 'state/entities/viewsCount/actions'
 import * as infobarActions from 'state/infobar/actions'
 import * as integrationsActions from 'state/integrations/actions'
 import { getEmailMigrations } from 'state/integrations/selectors'
@@ -293,7 +292,6 @@ const receivedEvents: ReceivedEvent[] = [
         onReceive: function (json) {
             const { counts } = json as ViewCountUpdatedEvent
             setViewsCount(counts)
-            reduxStore.dispatch(viewsCountFetched(counts))
             reduxStore.dispatch(viewsActions.handleViewsCount(counts) as any)
         },
     },

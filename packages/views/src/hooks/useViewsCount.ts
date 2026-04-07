@@ -11,12 +11,20 @@ export type ViewsCountState = {
 export function useViewCount(viewId: number): number | undefined {
     return useStore(
         viewsCountStore,
-        useShallow((state) => state.counts[viewId] || undefined),
+        useShallow((state) => state.counts[viewId] ?? undefined),
     )
 }
 
 export function setViewsCount(counts: Record<number, number>) {
     viewsCountStore.getState().setCounts(counts)
+}
+
+export function getViewCount(viewId: number): number | undefined {
+    return viewsCountStore.getState().counts[viewId] ?? undefined
+}
+
+export function clearViewsCount() {
+    viewsCountStore.setState({ counts: {} })
 }
 
 const viewsCountTable = localForageManager.getTable('views-count')

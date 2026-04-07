@@ -1,6 +1,7 @@
 import { forwardRef, useMemo } from 'react'
 
 import { NavigationSectionItem } from '@repo/navigation'
+import { useViewCount } from '@repo/views'
 import { matchPath, useLocation } from 'react-router-dom'
 
 import type { IconName } from '@gorgias/axiom'
@@ -17,15 +18,15 @@ type Props = {
         decoration?: Maybe<ViewDecoration>
         deactivated_datetime?: Maybe<string>
     }
-    viewCount?: number
     onClick?: () => void
 }
 
 export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
     function TicketNavbarViewLinkItem(
-        { canduId, icon, view, viewCount, label, onClick }: Props,
+        { canduId, icon, view, label, onClick }: Props,
         ref,
     ) {
+        const viewCount = useViewCount(view.id)
         const { isEnabled: splitTicketViewEnabled } = useSplitTicketView()
         const { pathname } = useLocation()
         const match = matchPath<{ viewId: string }>(pathname, {

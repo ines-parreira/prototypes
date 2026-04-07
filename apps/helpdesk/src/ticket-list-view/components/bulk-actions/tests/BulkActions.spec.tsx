@@ -75,7 +75,7 @@ describe('<BulkActions />', () => {
         hasSelectedAll: true,
         onComplete: jest.fn(),
         selectedTickets: {},
-        selectionCount: null,
+        selectionCount: undefined,
     }
 
     const renderWithStore = (

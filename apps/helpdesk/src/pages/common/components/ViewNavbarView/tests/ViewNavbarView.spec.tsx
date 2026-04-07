@@ -1,3 +1,4 @@
+import { setViewsCount } from '@repo/views'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -40,15 +41,14 @@ describe('<ViewNavbarView />', () => {
     })
 
     it('should render view count', () => {
+        setViewsCount({ [customerView.id]: 888 })
+
         const { getByText } = renderWithRouter(
             <Provider
                 store={mockStore({
                     views: fromJS({
                         active: customerView,
                         items: [customerView],
-                        counts: {
-                            [customerView.id]: 888,
-                        },
                     }),
                 })}
             >

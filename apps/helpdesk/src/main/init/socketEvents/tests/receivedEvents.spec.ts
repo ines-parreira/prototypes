@@ -55,7 +55,6 @@ import {
     viewDeleted,
     viewUpdated,
 } from 'state/entities/views/actions'
-import { viewsCountFetched } from 'state/entities/viewsCount/actions'
 import * as integrationActions from 'state/integrations/actions'
 import * as notificationActions from 'state/notifications/actions'
 import * as ticketActions from 'state/ticket/actions'
@@ -84,7 +83,6 @@ jest.mock('services/browserNotification', () => ({ newMessage: jest.fn() }))
 jest.spyOn(browserNotification, 'newMessage')
 jest.mock('state/chats/actions')
 jest.mock('state/views/actions')
-jest.mock('state/entities/viewsCount/actions')
 jest.mock('state/ticket/actions')
 jest.mock('state/currentUser/actions')
 jest.mock('@repo/activity-tracker')
@@ -824,10 +822,6 @@ describe('receivedEvents', () => {
                 handler.onReceive({ counts: { '1': 10, '2': 20 } } as any)
             }
 
-            expect(viewsCountFetched).toHaveBeenNthCalledWith(1, {
-                '1': 10,
-                '2': 20,
-            })
             expect(handleViewsCount).toHaveBeenNthCalledWith(1, {
                 '1': 10,
                 '2': 20,

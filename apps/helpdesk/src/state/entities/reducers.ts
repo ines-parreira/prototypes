@@ -33,8 +33,6 @@ import tags from './tags/reducer'
 import type { TagsState } from './tags/types'
 import views from './views/reducer'
 import type { ViewsState } from './views/types'
-import viewsCount from './viewsCount/reducer'
-import type { ViewsCountState } from './viewsCount/types'
 
 const entitiesReducers = combineReducers<{
     macros: MacrosState
@@ -42,7 +40,6 @@ const entitiesReducers = combineReducers<{
     stats: StatsState
     tags: TagsState
     views: ViewsState
-    viewsCount: ViewsCountState
     helpCenter: HelpCenterState
     contactForm: ContactFormState
     selfServiceConfigurations: SelfServiceConfigurationsState
@@ -61,7 +58,6 @@ const entitiesReducers = combineReducers<{
     stats,
     tags,
     views,
-    viewsCount,
     helpCenter,
     contactForm,
     selfServiceConfigurations,

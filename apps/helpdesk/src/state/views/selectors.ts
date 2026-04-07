@@ -1,4 +1,5 @@
 import { tryLocalStorage } from '@repo/browser-storage'
+import { getViewCount } from '@repo/views'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import moment from 'moment'
@@ -391,18 +392,6 @@ export const makeGetView =
     (state: RootState) => (id: string, configName?: Maybe<EntityType>) =>
         getView(id, configName)(state)
 
-export const getViewCount = (viewId: string | number | null) =>
-    createSelector(getViewsState, (state) => {
-        const counts = state.get('counts', fromJS({})) as Map<any, any>
-        return viewId
-            ? (counts.get(viewId.toString(), null) as number | null)
-            : null
-    })
-
-export const makeGetViewCount =
-    (state: RootState) => (viewId: string | number) =>
-        getViewCount(viewId)(state)
-
 export const getRecentViews = createSelector(
     getViewsState,
     (state) => (state.get('recent') || fromJS({})) as Map<any, any>,
@@ -433,31 +422,24 @@ export const getViewIdsOrderedByCollapsedSections = () =>
  * Get id of views which have their counts expired
  */
 export const getExpiredViewsCounts = () =>
-    createSelector(
-        getRecentViews,
-        makeGetViewCount,
-        (recentViews, getViewCount) => {
-            return (
-                recentViews.entrySeq().toArray() as [
-                    string,
-                    Map<string, unknown>,
-                ][]
-            )
-                .filter(([viewId, recentView]) => {
-                    const count = getViewCount(viewId)
-                    const countUpdatedAt = recentView.get('updated_datetime')
-                    if (countUpdatedAt) {
-                        const expireAt = moment(countUpdatedAt as string).add(
-                            viewsConfig.getExpirationTimeForCount(count),
-                            's',
-                        )
-                        return expireAt.isBefore(moment.utc())
-                    }
-                    return true
-                })
-                .map(([viewId]) => parseInt(viewId))
-        },
-    )
+    createSelector(getRecentViews, (recentViews) => {
+        return (
+            recentViews.entrySeq().toArray() as [string, Map<string, unknown>][]
+        )
+            .filter(([viewId, recentView]) => {
+                const count = getViewCount(parseInt(viewId))
+                const countUpdatedAt = recentView.get('updated_datetime')
+                if (countUpdatedAt) {
+                    const expireAt = moment(countUpdatedAt as string).add(
+                        viewsConfig.getExpirationTimeForCount(count),
+                        's',
+                    )
+                    return expireAt.isBefore(moment.utc())
+                }
+                return true
+            })
+            .map(([viewId]) => parseInt(viewId))
+    })
 
 export const shouldFetchActiveViewTickets = createSelector(
     getViewsState,
