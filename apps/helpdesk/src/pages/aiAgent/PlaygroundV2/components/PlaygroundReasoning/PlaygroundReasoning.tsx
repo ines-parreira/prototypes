@@ -13,8 +13,6 @@ import type { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/comp
 import type { useGetResourcesReasoningMetadata } from 'pages/tickets/detail/components/AIAgentFeedbackBar/useEnrichKnowledgeFeedbackData/useGetResourcesReasoningMetadata'
 import { AiAgentReasoningContent } from 'pages/tickets/detail/components/TicketMessages/AiReasoningContent'
 
-import { useCoreContext } from '../../contexts/CoreContext'
-
 import css from './PlaygroundReasoning.less'
 
 type ReasoningStatus = 'loading' | 'error' | 'collapsed' | 'expanded' | 'static'
@@ -37,15 +35,6 @@ interface ReasoningTitleProps {
 }
 
 const ReasoningTitle = ({ status, onRetry, onToggle }: ReasoningTitleProps) => {
-    const { useV3 } = useCoreContext()
-    if (useV3) {
-        return (
-            <span className={classNames(css.text)} aria-live="polite">
-                Reasoning not yet available for V3
-            </span>
-        )
-    }
-
     if (status === 'loading') {
         return (
             <span

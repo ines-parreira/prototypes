@@ -92,36 +92,6 @@ describe('PlaygroundReasoning', () => {
         mockUseCoreContext.mockReturnValue({ useV3: false })
     })
 
-    describe('V3 mode', () => {
-        it('should render "Reasoning not yet available for V3" when useV3 is true', () => {
-            mockUseCoreContext.mockReturnValue({ useV3: true })
-            renderComponent({ status: 'collapsed' })
-
-            expect(
-                screen.getByText('Reasoning not yet available for V3'),
-            ).toBeInTheDocument()
-        })
-
-        it('should not render toggle button when useV3 is true', () => {
-            mockUseCoreContext.mockReturnValue({ useV3: true })
-            renderComponent({ status: 'collapsed' })
-
-            expect(
-                screen.queryByRole('button', { name: 'Show reasoning' }),
-            ).not.toBeInTheDocument()
-        })
-
-        it('should not render "Reasoning not yet available for V3" when useV3 is false', () => {
-            mockUseCoreContext.mockReturnValue({ useV3: false })
-            renderComponent({ status: 'collapsed' })
-
-            expect(
-                screen.queryByText('Reasoning not yet available for V3'),
-            ).not.toBeInTheDocument()
-            expect(screen.getByText('Show reasoning')).toBeInTheDocument()
-        })
-    })
-
     describe('Status Behavior', () => {
         describe('Loading state', () => {
             it('should render loading text with shimmer animation', () => {
