@@ -115,7 +115,6 @@ jest.mock('models/integration/constants', () => ({
 
 const defaultProps = {
     title: 'Cancel Order',
-    flowPath: 'cancel-order',
 }
 
 beforeEach(() => {
@@ -261,7 +260,7 @@ describe('OrderManagementFlowHeader', () => {
             expect(secondaryNav).toHaveTextContent('Channels')
         })
 
-        it('should build nav links from shopType, shopName and flowPath', () => {
+        it('should build nav links pointing to the store base path', () => {
             render(<OrderManagementFlowHeader {...defaultProps} />)
 
             const links = screen
@@ -270,11 +269,11 @@ describe('OrderManagementFlowHeader', () => {
 
             expect(links[0]).toHaveAttribute(
                 'href',
-                '/app/settings/order-management/shopify/my-store/cancel-order',
+                '/app/settings/order-management/shopify/my-store',
             )
             expect(links[1]).toHaveAttribute(
                 'href',
-                '/app/settings/order-management/shopify/my-store/cancel-order/channels',
+                '/app/settings/order-management/shopify/my-store/channels',
             )
         })
     })

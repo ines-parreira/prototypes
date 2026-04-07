@@ -33,14 +33,12 @@ const HELP_URL =
 
 type Props = {
     title: string
-    flowPath: string
     onSave?: () => void
     isSaveDisabled?: boolean
 }
 
 export const OrderManagementFlowHeader = ({
     title,
-    flowPath,
     onSave,
     isSaveDisabled = true,
 }: Props) => {
@@ -53,7 +51,7 @@ export const OrderManagementFlowHeader = ({
         IntegrationType.Shopify,
     ])
 
-    const currentFlowPath = `${BASE_PATH}/${shopType}/${shopName}/${flowPath}`
+    const storePath = `${BASE_PATH}/${shopType}/${shopName}`
 
     const breadcrumbItems = useMemo(
         () => [
@@ -140,10 +138,10 @@ export const OrderManagementFlowHeader = ({
                 </PageHeader>
             </div>
             <SecondaryNavbar>
-                <NavLink exact to={currentFlowPath}>
+                <NavLink exact to={storePath}>
                     Configuration
                 </NavLink>
-                <NavLink exact to={`${currentFlowPath}/channels`}>
+                <NavLink exact to={`${storePath}/channels`}>
                     Channels
                 </NavLink>
             </SecondaryNavbar>
