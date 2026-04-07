@@ -1,12 +1,8 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import type { ReactNode } from 'react'
 
-import { Box, Button, Text } from '@gorgias/axiom'
+import { Box, Button, Text, toast } from '@gorgias/axiom'
 
-import {
-    NotificationStatus,
-    ShopifyCustomerContext,
-} from '../../../../ShopifyCustomerContext'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import type { Address } from '../addressUtils'
 import { getAddressParts } from '../addressUtils'
@@ -44,7 +40,6 @@ export function ShippingAddressSection({
     integrationId,
     renderEditShippingAddressModal,
 }: Props) {
-    const { dispatchNotification } = useContext(ShopifyCustomerContext)
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [shippingAddressOverride, setShippingAddressOverride] = useState<
         ShippingAddress | undefined
@@ -61,10 +56,7 @@ export function ShippingAddressSection({
 
     function handleCopyToClipboard() {
         navigator.clipboard.writeText(addressParts.join('\n'))
-        dispatchNotification({
-            status: NotificationStatus.Success,
-            message: 'Address copied to clipboard',
-        })
+        toast.success('Address copied to clipboard')
     }
 
     function handleEditClick() {

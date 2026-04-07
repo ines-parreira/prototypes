@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useMemo } from 'react'
 import type { ReactNode } from 'react'
 
-import { MenuItem, MenuSection, SubMenu, Text } from '@gorgias/axiom'
+import { MenuItem, MenuSection, SubMenu, Text, toast } from '@gorgias/axiom'
 import type { TicketTag } from '@gorgias/helpdesk-queries'
 
 import { useCreateTicketTag } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useCreateTicketTag'
 import { useListTagsSearch } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
-import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 
 type Props = {
     isEnabled: boolean
@@ -20,7 +18,6 @@ export function AddTagSubMenu({
     renderOverflowLabel,
     onAddTag,
 }: Props) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const { createTicketTag, isCreating } = useCreateTicketTag()
     const {
         data: tagList,
@@ -71,15 +68,11 @@ export function AddTagSubMenu({
             await onAddTag(createdTag)
             setSearch('')
         } catch {
-            dispatchNotification({
-                status: NotificationStatus.Error,
-                message: 'Failed to create new tag',
-            })
+            toast.error('Failed to create new tag')
         }
     }, [
         canCreateTag,
         createTicketTag,
-        dispatchNotification,
         hasExactMatch,
         onAddTag,
         search,

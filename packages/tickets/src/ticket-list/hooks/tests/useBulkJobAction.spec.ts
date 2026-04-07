@@ -1,4 +1,5 @@
 import type { InfiniteData } from '@tanstack/react-query'
+import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -8,7 +9,6 @@ import type { Ticket } from '@gorgias/helpdesk-queries'
 import { JobType } from '@gorgias/helpdesk-types'
 
 import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 import { useBulkJobAction } from '../useBulkJobAction'
 
 const mockCreateJob = mockCreateJobHandler()
@@ -56,17 +56,14 @@ function getViewCache() {
 }
 
 function setup(props: { ticketIds?: number[]; hasSelectedAll?: boolean } = {}) {
-    const dispatchNotification = vi.fn()
-    const { result } = renderHook(
-        () =>
-            useBulkJobAction({
-                viewId: VIEW_ID,
-                ticketIds: props.ticketIds ?? TICKET_IDS,
-                hasSelectedAll: props.hasSelectedAll ?? false,
-            }),
-        { dispatchNotification },
+    const { result } = renderHook(() =>
+        useBulkJobAction({
+            viewId: VIEW_ID,
+            ticketIds: props.ticketIds ?? TICKET_IDS,
+            hasSelectedAll: props.hasSelectedAll ?? false,
+        }),
     )
-    return { result, dispatchNotification }
+    return { result }
 }
 
 describe('useBulkJobAction', () => {
@@ -140,7 +137,7 @@ describe('useBulkJobAction', () => {
         })
 
         it('dispatches a success notification after the job completes', async () => {
-            const { result, dispatchNotification } = setup()
+            const { result } = setup()
 
             await result.current.createJob(
                 JobType.UpdateTicket,
@@ -148,20 +145,22 @@ describe('useBulkJobAction', () => {
                 'Done!',
             )
 
-            expect(dispatchNotification).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message: 'Done!',
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Done!')
+                expect(toast).toHaveAttribute('data-intent', 'success')
             })
         })
 
         it('uses default success message when none is provided', async () => {
-            const { result, dispatchNotification } = setup()
+            const { result } = setup()
 
             await result.current.createJob(JobType.UpdateTicket)
 
-            expect(dispatchNotification).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message: 'Action applied successfully',
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Action applied successfully')
+                expect(toast).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -172,16 +171,19 @@ describe('useBulkJobAction', () => {
                 ).handler,
             )
 
-            const { result, dispatchNotification } = setup({
+            const { result } = setup({
                 ticketIds: [1],
                 hasSelectedAll: false,
             })
 
             await result.current.createJob(JobType.UpdateTicket)
 
-            expect(dispatchNotification).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                message: 'Failed to apply action. Please try again.',
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent(
+                    'Failed to apply action. Please try again.',
+                )
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
@@ -226,7 +228,7 @@ describe('useBulkJobAction', () => {
         })
 
         it('dispatches success notification', async () => {
-            const { result, dispatchNotification } = setup()
+            const { result } = setup()
 
             await result.current.createJobRemovingTickets(
                 JobType.DeleteTicket,
@@ -234,34 +236,42 @@ describe('useBulkJobAction', () => {
                 'Tickets deleted',
             )
 
-            expect(dispatchNotification).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message: 'Tickets deleted',
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Tickets deleted')
+                expect(toast).toHaveAttribute('data-intent', 'success')
             })
         })
 
         it('dispatches error notification on failure', async () => {
-            seedViewCache([mockTicket({ id: 1 }), mockTicket({ id: 2 })])
             server.use(
                 mockCreateJobHandler(async () =>
                     HttpResponse.json(null, { status: 500 }),
                 ).handler,
             )
 
-            const { result, dispatchNotification } = setup({
+            const { result } = setup({
                 ticketIds: [1, 2],
                 hasSelectedAll: false,
             })
 
-            await result.current.createJobRemovingTickets(JobType.DeleteTicket)
+            seedViewCache([mockTicket({ id: 1 }), mockTicket({ id: 2 })])
 
-            expect(dispatchNotification).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                message: 'Failed to apply action. Please try again.',
-            })
+            await act(() =>
+                result.current.createJobRemovingTickets(JobType.DeleteTicket),
+            )
+
             expect(
                 getViewCache()?.pages[0].data.map((ticket) => ticket.id),
             ).toEqual([1, 2])
+
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent(
+                    'Failed to apply action. Please try again.',
+                )
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
+            })
         })
 
         it('posts with view_id when hasSelectedAll is true', async () => {

@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type {
     MergeTicketsBody,
     MergeTicketsParams,
@@ -12,12 +13,9 @@ import {
 } from '@gorgias/helpdesk-queries'
 
 import { useTicketViewNavigation } from '../../../../hooks/useTicketViewNavigation'
-import { useTicketsLegacyBridge } from '../../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../../utils/LegacyBridge/context'
 import { removeTicketFromViewListCache } from '../../../../utils/optimisticUpdates/viewListCache'
 
 export function useMergeTickets(ticketId: number) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const { navigateToTicket } = useTicketViewNavigation()
     const queryClient = useQueryClient()
     const sourceTicketQueryKey = queryKeys.tickets.getTicket(Number(ticketId))
@@ -33,25 +31,18 @@ export function useMergeTickets(ticketId: number) {
                         Number(params.target_id),
                     ),
                 })
-                dispatchNotification({
-                    status: NotificationStatus.Success,
-                    message: 'Tickets merged successfully',
-                })
+                toast.success('Tickets merged successfully')
                 navigateToTicket(Number(params.target_id))
                 removeTicketFromViewListCache(queryClient, ticketId)
                 await queryClient.removeQueries({
                     queryKey: sourceTicketQueryKey,
                 })
             } catch {
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Could not merge tickets',
-                })
+                toast.error('Could not merge tickets')
             }
         },
         [
             queryClient,
-            dispatchNotification,
             navigateToTicket,
             mutateAsyncMergeTickets,
             sourceTicketQueryKey,

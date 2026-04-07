@@ -6,6 +6,5 @@ export type { OrderData } from './components/ShopifyCustomer/components/Customer
 export { OrderSidePanelPreview } from './components/ShopifyCustomer/components/CustomerInfo/orders/sidePanel/OrderSidePanelPreview'
 export { ShopifyCustomer } from './components/ShopifyCustomer'
 export { ShopifyCustomerProvider } from './components/ShopifyCustomer/ShopifyCustomerProvider'
-export { NotificationStatus } from './components/ShopifyCustomer/ShopifyCustomerContext'
 export type { ShopifyCustomerContextType } from './components/ShopifyCustomer/ShopifyCustomerContext'
 export type { ShopperData } from './components/ShopifyCustomer/types'

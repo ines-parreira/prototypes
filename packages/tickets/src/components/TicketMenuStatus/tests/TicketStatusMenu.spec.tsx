@@ -18,7 +18,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 import { TicketStatusMenu } from '../TicketStatusMenu'
 import { TicketStatus } from '../utils'
 
@@ -188,12 +187,10 @@ describe('TicketStatus', () => {
         })
 
         it('should snooze ticket immediately when preset button is clicked', async () => {
-            const dispatchNotification = vi.fn()
             const legacyGoToNextTicket = vi.fn()
             const { user } = render(<TicketStatusMenu ticket={openTicket} />, {
                 initialEntries: ['/app/views/1/123'],
                 path: '/app/views/:viewId/:ticketId',
-                dispatchNotification,
                 ticketViewNavigation: {
                     shouldDisplay: true,
                     shouldUseLegacyFunctions: true,
@@ -218,12 +215,9 @@ describe('TicketStatus', () => {
             await act(() => user.click(nextWeekButton))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        status: NotificationStatus.Success,
-                        message: 'Ticket has been snoozed',
-                    }),
-                )
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Ticket has been snoozed')
+                expect(toast).toHaveAttribute('data-intent', 'success')
                 expect(legacyGoToNextTicket).toHaveBeenCalled()
             })
         })
@@ -283,14 +277,12 @@ describe('TicketStatus', () => {
                     }).handler,
                 )
 
-                const dispatchNotification = vi.fn()
                 const legacyGoToNextTicket = vi.fn()
                 const { user } = render(
                     <TicketStatusMenu ticket={openTicket} />,
                     {
                         initialEntries: ['/app/views/1/123'],
                         path: '/app/views/:viewId/:ticketId',
-                        dispatchNotification,
                         ticketViewNavigation: {
                             shouldDisplay: true,
                             shouldUseLegacyFunctions: true,
@@ -330,27 +322,23 @@ describe('TicketStatus', () => {
                     expect(screen.queryByRole('grid')).not.toBeInTheDocument()
                 })
 
-                expect(dispatchNotification).not.toHaveBeenCalled()
+                expect(
+                    screen.queryByRole('status', { hidden: true }),
+                ).not.toBeInTheDocument()
 
                 resolveUpdate!()
 
                 await waitFor(() => {
-                    expect(dispatchNotification).toHaveBeenCalledWith(
-                        expect.objectContaining({
-                            status: NotificationStatus.Success,
-                            message: 'Ticket has been snoozed',
-                        }),
-                    )
+                    expect(
+                        screen.getByText('Ticket has been snoozed'),
+                    ).toBeInTheDocument()
                     expect(legacyGoToNextTicket).toHaveBeenCalled()
                 })
             },
         )
 
         it('should display error notification when snooze fails', async () => {
-            const dispatchNotification = vi.fn()
-            const { user } = render(<TicketStatusMenu ticket={openTicket} />, {
-                dispatchNotification,
-            })
+            const { user } = render(<TicketStatusMenu ticket={openTicket} />)
 
             server.use(
                 mockUpdateTicketHandler(async () => {
@@ -368,12 +356,9 @@ describe('TicketStatus', () => {
             await act(() => user.click(nextWeekButton))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to snooze ticket',
-                    }),
-                )
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Failed to snooze ticket')
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
@@ -420,14 +405,12 @@ describe('TicketStatus', () => {
         })
 
         it('should snooze closed ticket when date is selected', async () => {
-            const dispatchNotification = vi.fn()
             const legacyGoToNextTicket = vi.fn()
             const { user } = render(
                 <TicketStatusMenu ticket={closedTicket} />,
                 {
                     initialEntries: ['/app/views/1/123'],
                     path: '/app/views/:viewId/:ticketId',
-                    dispatchNotification,
                     ticketViewNavigation: {
                         shouldDisplay: true,
                         shouldUseLegacyFunctions: true,
@@ -454,24 +437,15 @@ describe('TicketStatus', () => {
             await act(() => user.click(nextWeekButton))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        status: NotificationStatus.Success,
-                        message: 'Ticket has been snoozed',
-                    }),
-                )
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Ticket has been snoozed')
+                expect(toast).toHaveAttribute('data-intent', 'success')
                 expect(legacyGoToNextTicket).toHaveBeenCalled()
             })
         })
 
         it('should display error notification when reopen fails', async () => {
-            const dispatchNotification = vi.fn()
-            const { user } = render(
-                <TicketStatusMenu ticket={closedTicket} />,
-                {
-                    dispatchNotification,
-                },
-            )
+            const { user } = render(<TicketStatusMenu ticket={closedTicket} />)
 
             server.use(
                 mockUpdateTicketHandler(async () => {
@@ -486,12 +460,9 @@ describe('TicketStatus', () => {
             await act(() => user.click(reopenOption))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to open ticket',
-                    }),
-                )
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Failed to open ticket')
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })
@@ -598,14 +569,12 @@ describe('TicketStatus', () => {
         })
 
         it('should update snooze time when new date is selected', async () => {
-            const dispatchNotification = vi.fn()
             const legacyGoToNextTicket = vi.fn()
             const { user } = render(
                 <TicketStatusMenu ticket={snoozedTicket} />,
                 {
                     initialEntries: ['/app/views/1/123'],
                     path: '/app/views/:viewId/:ticketId',
-                    dispatchNotification,
                     ticketViewNavigation: {
                         shouldDisplay: true,
                         shouldUseLegacyFunctions: true,
@@ -632,12 +601,9 @@ describe('TicketStatus', () => {
             await act(() => user.click(nextWeekButton))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        status: NotificationStatus.Success,
-                        message: 'Ticket has been snoozed',
-                    }),
-                )
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Ticket has been snoozed')
+                expect(toast).toHaveAttribute('data-intent', 'success')
                 expect(legacyGoToNextTicket).toHaveBeenCalled()
             })
         })
@@ -787,17 +753,13 @@ describe('TicketStatus', () => {
         })
 
         it('should show error notification when close shortcut fails', async () => {
-            const dispatchNotification = vi.fn()
-
             server.use(
                 mockUpdateTicketHandler(async () => {
                     return HttpResponse.json(null, { status: 500 })
                 }).handler,
             )
 
-            render(<TicketStatusMenu ticket={openTicket} />, {
-                dispatchNotification,
-            })
+            render(<TicketStatusMenu ticket={openTicket} />)
 
             await waitForMenu()
 
@@ -806,27 +768,20 @@ describe('TicketStatus', () => {
             })
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to close ticket',
-                    }),
-                )
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Failed to close ticket')
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
 
         it('should show error notification when open shortcut fails', async () => {
-            const dispatchNotification = vi.fn()
-
             server.use(
                 mockUpdateTicketHandler(async () => {
                     return HttpResponse.json(null, { status: 500 })
                 }).handler,
             )
 
-            render(<TicketStatusMenu ticket={closedTicket} />, {
-                dispatchNotification,
-            })
+            render(<TicketStatusMenu ticket={closedTicket} />)
 
             await waitForMenu()
 
@@ -835,12 +790,9 @@ describe('TicketStatus', () => {
             })
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        status: NotificationStatus.Error,
-                        message: 'Failed to open ticket',
-                    }),
-                )
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Failed to open ticket')
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })

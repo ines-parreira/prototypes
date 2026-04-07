@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react'
 
-import { NotificationStatus } from '@repo/agent-status'
 import { useHistory } from 'react-router-dom'
 
 import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
@@ -13,6 +12,7 @@ import { useJourneyContext } from 'AIJourney/providers'
 import { getSetupStepPath } from 'AIJourney/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from './RowAdditionalOptions.less'
 

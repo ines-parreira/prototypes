@@ -1,4 +1,3 @@
-import { AgentStatusLegacyBridgeProvider } from '@repo/agent-status'
 import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
@@ -42,15 +41,9 @@ beforeEach(() => {
 afterEach(() => server.resetHandlers())
 afterAll(() => server.close())
 
-const mockDispatchNotification = jest.fn()
-
 const renderComponent = () =>
     renderWithStoreAndQueryClientAndRouter(
-        <AgentStatusLegacyBridgeProvider
-            dispatchNotification={mockDispatchNotification}
-        >
-            <AgentUnavailabilityStatuses />
-        </AgentStatusLegacyBridgeProvider>,
+        <AgentUnavailabilityStatuses />,
         {},
         {
             path: '/app/settings/agent-unavailability',

@@ -22,7 +22,6 @@ import { render, testAppQueryClient } from '../../../tests/render.utils'
 import type { CurrentUser } from '../../../translations/hooks/useCurrentUserLanguagePreferences'
 import { DisplayedContent } from '../../../translations/store/constants'
 import { useTicketMessageTranslationDisplay } from '../../../translations/store/useTicketMessageTranslationDisplay'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 import { TicketHeader } from '../TicketHeader'
 
 vi.mock('@repo/feature-flags', async () => ({
@@ -163,13 +162,10 @@ describe('TicketHeader', () => {
 
             it('should update the ticket subject when the user edits the breadcrumb', async () => {
                 const mockUpdateTicket = mockUpdateTicketHandler()
-                const dispatchNotification = vi.fn()
 
                 server.use(mockUpdateTicket.handler)
 
-                const { user } = render(<TicketHeader ticketId={1234} />, {
-                    dispatchNotification,
-                })
+                const { user } = render(<TicketHeader ticketId={1234} />)
 
                 await waitFor(() => {
                     expect(screen.getByText('Test ticket')).toBeInTheDocument()
@@ -192,20 +188,19 @@ describe('TicketHeader', () => {
                     })
                 })
 
-                expect(dispatchNotification).not.toHaveBeenCalled()
+                expect(
+                    screen.queryByRole('status', { hidden: true }),
+                ).not.toBeInTheDocument()
             })
 
-            it('should dispatch a notification when the ticket subject update fails', async () => {
+            it('should show an error toast when the ticket subject update fails', async () => {
                 const mockUpdateTicket = mockUpdateTicketHandler(async () => {
                     return HttpResponse.json(null, { status: 500 })
                 })
-                const dispatchNotification = vi.fn()
 
                 server.use(mockUpdateTicket.handler)
 
-                const { user } = render(<TicketHeader ticketId={1234} />, {
-                    dispatchNotification,
-                })
+                const { user } = render(<TicketHeader ticketId={1234} />)
 
                 await waitFor(() => {
                     expect(screen.getByText('Test ticket')).toBeInTheDocument()
@@ -219,12 +214,11 @@ describe('TicketHeader', () => {
                 await act(() => user.tab())
 
                 await waitFor(() => {
-                    expect(dispatchNotification).toHaveBeenCalledWith(
-                        expect.objectContaining({
-                            status: NotificationStatus.Error,
-                            message: 'Failed to update subject',
-                        }),
-                    )
+                    const toast = screen.getByRole('status', {
+                        hidden: true,
+                    })
+                    expect(toast).toHaveTextContent('Failed to update subject')
+                    expect(toast).toHaveAttribute('data-intent', 'destructive')
                 })
             })
 

@@ -10,7 +10,10 @@ import {
     render as renderPrimitive,
 } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
+import { createPortal } from 'react-dom'
 import { MemoryRouter, Route } from 'react-router-dom'
+
+import { Toaster } from '@gorgias/axiom'
 
 import { TicketsLegacyBridgeProvider } from '../utils/LegacyBridge'
 import type { LegacyBridgeContextType } from '../utils/LegacyBridge/context'
@@ -32,8 +35,6 @@ export const createTestQueryClient = () =>
 export const testAppQueryClient = createTestQueryClient()
 
 type LegacyBridgeOptions = {
-    dispatchNotification?: LegacyBridgeContextType['dispatchNotification']
-    dispatchDismissNotification?: LegacyBridgeContextType['dispatchDismissNotification']
     ticketViewNavigation?: LegacyBridgeContextType['ticketViewNavigation']
     dispatchAuditLogEvents?: LegacyBridgeContextType['dispatchAuditLogEvents']
     dispatchHideAuditLogEvents?: LegacyBridgeContextType['dispatchHideAuditLogEvents']
@@ -64,8 +65,6 @@ type RenderHookOptions<TProps> = RenderHookOptionsPrimitive<TProps> &
 const defaultOptions = {
     initialEntries: ['/'],
     path: '/',
-    dispatchNotification: vi.fn(),
-    dispatchDismissNotification: vi.fn(),
     dispatchAuditLogEvents: vi.fn(),
     dispatchHideAuditLogEvents: vi.fn(),
     toggleQuickReplies: vi.fn(),
@@ -122,6 +121,7 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
                     <MemoryRouter initialEntries={mergedOptions.initialEntries}>
                         <Route path={mergedOptions.path}>{children}</Route>
                     </MemoryRouter>
+                    {createPortal(<Toaster />, document.body)}
                 </QueryClientProvider>
             </TicketsLegacyBridgeProvider>
         ),
@@ -130,9 +130,6 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
     return {
         user,
         mocks: {
-            dispatchNotification: mergedOptions.dispatchNotification,
-            dispatchDismissNotification:
-                mergedOptions.dispatchDismissNotification,
             dispatchAuditLogEvents: mergedOptions.dispatchAuditLogEvents,
             dispatchHideAuditLogEvents:
                 mergedOptions.dispatchHideAuditLogEvents,
@@ -165,6 +162,7 @@ export const renderHook = <TProps, TResult>(
                     <MemoryRouter initialEntries={mergedOptions.initialEntries}>
                         <Route path={mergedOptions.path}>{children}</Route>
                     </MemoryRouter>
+                    {createPortal(<Toaster />, document.body)}
                 </QueryClientProvider>
             </TicketsLegacyBridgeProvider>
         ),

@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type {
     HttpResponse,
     Ticket,
@@ -10,12 +11,9 @@ import type {
 } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
-import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 import { patchTicketInViewListCache } from '../../../utils/optimisticUpdates/viewListCache'
 
 export function useUpdateTicketUser(ticketId: number) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const queryClient = useQueryClient()
     const queryKey = queryKeys.tickets.getTicket(ticketId)
 
@@ -62,19 +60,10 @@ export function useUpdateTicketUser(ticketId: number) {
                     queryKey,
                 })
             } catch {
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to update user assignment',
-                })
+                toast.error('Failed to update user assignment')
             }
         },
-        [
-            mutateAsyncUpdateTicket,
-            queryClient,
-            queryKey,
-            dispatchNotification,
-            ticketId,
-        ],
+        [mutateAsyncUpdateTicket, queryClient, queryKey, ticketId],
     )
 
     return {

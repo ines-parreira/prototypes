@@ -9,11 +9,10 @@ import {
     OverlayFooter,
     OverlayHeader,
     Text,
+    toast,
 } from '@gorgias/axiom'
 
 import { useDeleteCustomUserAvailabilityStatus } from '../../hooks/useDeleteCustomUserAvailabilityStatus'
-import { useAgentStatusLegacyBridge } from '../../utils/LegacyBridge'
-import { NotificationStatus } from '../../utils/LegacyBridge/context'
 
 type DeleteStatusConfirmationModalProps = {
     isOpen: boolean
@@ -28,25 +27,17 @@ export function DeleteStatusConfirmationModal({
     statusId,
     statusName,
 }: DeleteStatusConfirmationModalProps) {
-    const { dispatchNotification } = useAgentStatusLegacyBridge()
     const { mutateAsync, isLoading } = useDeleteCustomUserAvailabilityStatus()
 
     const handleDelete = useCallback(async () => {
         try {
             await mutateAsync({ pk: statusId })
-            dispatchNotification({
-                status: NotificationStatus.Success,
-                message: `Status "${statusName}" has been deleted`,
-                dismissAfter: 5000,
-            })
+            toast.success(`Status "${statusName}" has been deleted`)
             onOpenChange(false)
         } catch {
-            dispatchNotification({
-                status: NotificationStatus.Error,
-                message: 'Failed to delete status. Please try again.',
-            })
+            toast.error('Failed to delete status. Please try again.')
         }
-    }, [mutateAsync, statusId, statusName, dispatchNotification, onOpenChange])
+    }, [mutateAsync, statusId, statusName, onOpenChange])
 
     return (
         <Modal size={ModalSize.Sm} isOpen={isOpen} onOpenChange={onOpenChange}>

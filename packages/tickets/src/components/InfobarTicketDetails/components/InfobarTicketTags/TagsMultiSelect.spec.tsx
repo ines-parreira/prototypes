@@ -106,6 +106,7 @@ const getTagsTriggerButton = () => {
 }
 
 const openTagsMenu = async (user: ReturnType<typeof render>['user']) => {
+    await waitForQueriesSettled()
     await user.click(getTagsTriggerButton())
 
     const listbox = await screen.findByRole('listbox')
@@ -280,6 +281,47 @@ describe('TagsMultiSelect', () => {
                         }),
                     ]),
                 )
+            })
+
+            await waitForQueriesSettled()
+        })
+
+        it('should show error toast when tag creation fails', async () => {
+            const mockCreateTagFailing = mockCreateTagHandler(
+                async () => new HttpResponse(null, { status: 500 }) as any,
+            )
+
+            server.use(
+                mockListTagsSearchAware.handler,
+                mockCreateTagFailing.handler,
+            )
+
+            const { user } = render(
+                <TagsMultiSelect value={mockTicketTags} onChange={vi.fn()} />,
+            )
+
+            await waitForQueriesSettled()
+
+            await openTagsMenu(user)
+
+            await screen.findByRole('searchbox', {}, { timeout: 3000 })
+
+            await user.type(screen.getByRole('searchbox'), 'NewTag')
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('button', { name: /create tag/i }),
+                ).toBeInTheDocument()
+            })
+
+            await user.click(
+                screen.getByRole('button', { name: /create tag/i }),
+            )
+
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Failed to create new tag')
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
 
             await waitForQueriesSettled()

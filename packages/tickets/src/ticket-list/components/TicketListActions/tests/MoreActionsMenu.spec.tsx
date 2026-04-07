@@ -18,7 +18,6 @@ import { useCreateTicketTag } from '../../../../components/InfobarTicketDetails/
 import { useListTagsSearch } from '../../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
 import { useTeamOptions } from '../../../../components/TicketAssignee/hooks/useTeamOptions'
 import { render, testAppQueryClient } from '../../../../tests/render.utils'
-import { NotificationStatus } from '../../../../utils/LegacyBridge/context'
 import { MoreActionsMenu } from '../MoreActionsMenu'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => ({
@@ -575,9 +574,7 @@ describe('MoreActionsMenu', () => {
                 isCreating: false,
             })
 
-            const { user, mocks } = render(
-                <MoreActionsMenu {...defaultProps} />,
-            )
+            const { user } = render(<MoreActionsMenu {...defaultProps} />)
             await openMenu(user)
             await user.click(screen.getByRole('menuitem', { name: /add tag/i }))
             await user.click(
@@ -587,10 +584,9 @@ describe('MoreActionsMenu', () => {
             )
 
             await waitFor(() => {
-                expect(mocks.dispatchNotification).toHaveBeenCalledWith({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to create new tag',
-                })
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Failed to create new tag')
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
             expect(createTicketTag).toHaveBeenCalledWith('new tag')
             expect(defaultProps.onAddTag).not.toHaveBeenCalled()

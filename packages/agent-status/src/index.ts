@@ -52,12 +52,6 @@ export type { StatusDurationValueFieldProps } from './components/StatusDurationV
 export { useCreateAgentStatus } from './hooks/useCreateAgentStatus'
 export { useUpdateAgentStatus } from './hooks/useUpdateAgentStatus'
 
-export {
-    AgentStatusLegacyBridgeProvider,
-    useAgentStatusLegacyBridge,
-} from './utils/LegacyBridge'
-export { NotificationStatus } from './utils/LegacyBridge/context'
-
 export { useAgentPhoneStatus } from './hooks/useAgentPhoneStatus'
 export { useListUserPhoneStatuses } from './hooks/useListUserPhoneStatuses'
 export { usePhoneStatusBatchPollingInterval } from './hooks/usePhoneStatusBatchPollingInterval'

@@ -2,18 +2,16 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type { HttpResponse, Ticket } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
 import { useTicketViewNavigation } from '../../hooks/useTicketViewNavigation'
-import { useTicketsLegacyBridge } from '../../utils/LegacyBridge'
-import { NotificationStatus } from '../../utils/LegacyBridge/context'
 import { patchTicketInViewListCache } from '../../utils/optimisticUpdates/viewListCache'
 import { useTicketFieldsValidation } from '../InfobarTicketDetails/components/InfobarTicketFields/hooks/useTicketFieldsValidation'
 import { TicketStatus } from './utils'
 
 export function useCloseTicket(ticketId: number) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const { handleGoToNextViewTicket } = useTicketViewNavigation()
     const queryClient = useQueryClient()
     const queryKey = queryKeys.tickets.getTicket(Number(ticketId))
@@ -47,11 +45,9 @@ export function useCloseTicket(ticketId: number) {
         const { hasErrors } = validateTicketFields()
 
         if (hasErrors) {
-            dispatchNotification({
-                status: NotificationStatus.Error,
-                message:
-                    'This ticket cannot be closed. Please fill the required fields.',
-            })
+            toast.error(
+                'This ticket cannot be closed. Please fill the required fields.',
+            )
             return
         }
 
@@ -71,10 +67,7 @@ export function useCloseTicket(ticketId: number) {
 
             handleGoToNextViewTicket()
         } catch {
-            dispatchNotification({
-                status: NotificationStatus.Error,
-                message: 'Failed to close ticket',
-            })
+            toast.error('Failed to close ticket')
         }
     }, [
         validateTicketFields,
@@ -82,7 +75,6 @@ export function useCloseTicket(ticketId: number) {
         ticketId,
         queryClient,
         queryKey,
-        dispatchNotification,
         handleGoToNextViewTicket,
     ])
 

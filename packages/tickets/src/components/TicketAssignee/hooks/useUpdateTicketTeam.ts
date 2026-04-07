@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type {
     HttpResponse,
     Team,
@@ -10,11 +11,7 @@ import type {
 } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
-import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
-
 export function useUpdateTicketTeam(ticketId: number) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const queryClient = useQueryClient()
     const queryKey = queryKeys.tickets.getTicket(ticketId)
 
@@ -58,19 +55,10 @@ export function useUpdateTicketTeam(ticketId: number) {
                     queryKey,
                 })
             } catch {
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to update team assignment',
-                })
+                toast.error('Failed to update team assignment')
             }
         },
-        [
-            mutateAsyncUpdateTicket,
-            queryClient,
-            queryKey,
-            dispatchNotification,
-            ticketId,
-        ],
+        [mutateAsyncUpdateTicket, queryClient, queryKey, ticketId],
     )
 
     return {

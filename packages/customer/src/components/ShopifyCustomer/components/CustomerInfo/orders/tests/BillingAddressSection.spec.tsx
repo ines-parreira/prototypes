@@ -1,10 +1,6 @@
 import { render } from '@repo/testing/vitest'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 
-import {
-    NotificationStatus,
-    ShopifyCustomerContext,
-} from '../../../../ShopifyCustomerContext'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { BillingAddressSection } from '../sections/BillingAddressSection'
 
@@ -60,12 +56,9 @@ describe('BillingAddressSection', () => {
         const writeTextSpy = vi
             .spyOn(navigator.clipboard, 'writeText')
             .mockResolvedValue(undefined)
-        const dispatchNotification = vi.fn()
 
         const { user } = render(
-            <ShopifyCustomerContext.Provider value={{ dispatchNotification }}>
-                <BillingAddressSection billingAddress={mockFullAddress} />
-            </ShopifyCustomerContext.Provider>,
+            <BillingAddressSection billingAddress={mockFullAddress} />,
         )
 
         await user.click(
@@ -77,9 +70,10 @@ describe('BillingAddressSection', () => {
         expect(writeTextSpy).toHaveBeenCalledWith(
             'Jane Doe\n100 Main St,\nSuite 200,\nBoston, MA,\nUS 02101',
         )
-        expect(dispatchNotification).toHaveBeenCalledWith({
-            status: NotificationStatus.Success,
-            message: 'Address copied to clipboard',
+        await waitFor(() => {
+            const toast = screen.getByRole('status', { hidden: true })
+            expect(toast).toHaveTextContent('Address copied to clipboard')
+            expect(toast).toHaveAttribute('data-intent', 'success')
         })
     })
 

@@ -1,3 +1,5 @@
+import { screen, waitFor } from '@testing-library/react'
+
 import {
     queryKeys,
     useMergeCustomers as useMergeCustomersPrimitive,
@@ -8,7 +10,6 @@ import {
     createTestQueryClient,
     renderHook,
 } from '../../../../tests/render.utils'
-import { NotificationStatus } from '../../../../utils/LegacyBridge/context'
 import { useMergeCustomers } from '../useMergeCustomers'
 
 vi.mock('@gorgias/helpdesk-queries', async () => {
@@ -36,7 +37,6 @@ describe('useMergeCustomers', () => {
             isLoading: false,
         } as any)
 
-        const dispatchNotification = vi.fn()
         const queryClient = createTestQueryClient()
 
         const invalidateQueries = vi
@@ -45,7 +45,6 @@ describe('useMergeCustomers', () => {
         const removeQueries = vi.spyOn(queryClient, 'removeQueries')
 
         const { result } = renderHook(() => useMergeCustomers(123), {
-            dispatchNotification,
             queryClient,
         })
 
@@ -74,15 +73,14 @@ describe('useMergeCustomers', () => {
         expect(removeQueries).toHaveBeenCalledWith({
             queryKey: queryKeys.customers.getCustomer(2),
         })
-        expect(dispatchNotification).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message: 'Customers successfully merged.',
-                status: NotificationStatus.Success,
-            }),
-        )
+        await waitFor(() => {
+            const toast = screen.getByRole('status', { hidden: true })
+            expect(toast).toHaveTextContent('Customers successfully merged.')
+            expect(toast).toHaveAttribute('data-intent', 'success')
+        })
     })
 
-    it('should notify and rethrow when merge fails', async () => {
+    it('should show error toast and rethrow when merge fails', async () => {
         const error = new Error('merge failed')
         const mutateAsync = vi.fn().mockRejectedValue(error)
         mockedUseMergeCustomersPrimitive.mockReturnValue({
@@ -90,11 +88,9 @@ describe('useMergeCustomers', () => {
             isLoading: false,
         } as any)
 
-        const dispatchNotification = vi.fn()
         const queryClient = createTestQueryClient()
 
         const { result } = renderHook(() => useMergeCustomers(123), {
-            dispatchNotification,
             queryClient,
         })
 
@@ -108,11 +104,10 @@ describe('useMergeCustomers', () => {
             ),
         ).rejects.toThrow('merge failed')
 
-        expect(dispatchNotification).toHaveBeenCalledWith(
-            expect.objectContaining({
-                message: 'Could not merge customers',
-                status: NotificationStatus.Error,
-            }),
-        )
+        await waitFor(() => {
+            const toast = screen.getByRole('status', { hidden: true })
+            expect(toast).toHaveTextContent('Could not merge customers')
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
+        })
     })
 })

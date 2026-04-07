@@ -1,11 +1,7 @@
-import { useCallback, useContext, useMemo, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import { Box, Button, Separator } from '@gorgias/axiom'
+import { Box, Button, Separator, toast } from '@gorgias/axiom'
 
-import {
-    NotificationStatus,
-    ShopifyCustomerContext,
-} from '../../../ShopifyCustomerContext'
 import { CustomActionsSection } from '../CustomActionsSection'
 import { CustomerMetricsSection } from '../CustomerMetricsSection'
 import { OrdersPreviewSection } from '../orders/OrdersPreviewSection'
@@ -53,8 +49,6 @@ export function IntermediateEditPanel({
     integrationName,
     sections,
 }: IntermediateEditPanelProps) {
-    const { dispatchNotification } = useContext(ShopifyCustomerContext)
-
     const [isEditMetricsOpen, setIsEditMetricsOpen] = useState(false)
     const [isEditOrderOpen, setIsEditOrderOpen] = useState(false)
 
@@ -103,10 +97,7 @@ export function IntermediateEditPanel({
             await Promise.all(promises)
             onClose()
         } catch {
-            dispatchNotification({
-                status: NotificationStatus.Error,
-                message: 'Failed to save field preferences',
-            })
+            toast.error('Failed to save field preferences')
         } finally {
             setIsSaving(false)
         }
@@ -116,7 +107,6 @@ export function IntermediateEditPanel({
         onSavePreferences,
         onSaveOrderPreferences,
         onClose,
-        dispatchNotification,
     ])
 
     const hasPendingChanges = Boolean(pendingShopifyPrefs || pendingOrderPrefs)

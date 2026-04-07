@@ -2,15 +2,15 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type { HttpResponse, Ticket } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
 import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 import { patchTicketInViewListCache } from '../../../utils/optimisticUpdates/viewListCache'
 
 export function useMarkAsUnRead(ticketId: number) {
-    const { dispatchNotification, onToggleUnread } = useTicketsLegacyBridge()
+    const { onToggleUnread } = useTicketsLegacyBridge()
 
     const queryClient = useQueryClient()
     const queryKey = queryKeys.tickets.getTicket(Number(ticketId))
@@ -52,24 +52,12 @@ export function useMarkAsUnRead(ticketId: number) {
                     queryKey,
                 })
                 onToggleUnread?.(ticketId, data.is_unread)
-                dispatchNotification({
-                    status: NotificationStatus.Success,
-                    message: 'Ticket has been marked as unread',
-                })
+                toast.success('Ticket has been marked as unread')
             } catch {
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to mark as unread',
-                })
+                toast.error('Failed to mark as unread')
             }
         },
-        [
-            mutateAsyncUpdateTicket,
-            queryClient,
-            queryKey,
-            dispatchNotification,
-            onToggleUnread,
-        ],
+        [mutateAsyncUpdateTicket, queryClient, queryKey, onToggleUnread],
     )
 
     return {

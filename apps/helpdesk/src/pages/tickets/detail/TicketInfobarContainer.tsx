@@ -21,7 +21,6 @@ import { TicketStatus } from 'business/types/ticket'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
-import { useNotify } from 'hooks/useNotify'
 import { useSearchParam } from 'hooks/useSearchParam'
 import useSyncWidgetEditSession from 'hooks/useSyncWidgetEditSession'
 import Infobar from 'pages/common/components/infobar/Infobar/Infobar'
@@ -98,7 +97,7 @@ export const TicketInfobarContainer = ({
     const params = useParams<{ ticketId: string }>()
     const [preferredTab, setPreferredTab] = useSearchParam('activeTab')
     const dispatch = useAppDispatch()
-    const { notify: dispatchNotification } = useNotify()
+
     const accountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
     const canAccessAIFeedback = useCanAccessAIFeedback()
@@ -463,10 +462,7 @@ export const TicketInfobarContainer = ({
                 </div>
             ) : activeTab === TicketInfobarTab.Shopify ? (
                 <div className={css.shopifyContainer}>
-                    <ShopifyCustomerProvider
-                        dispatchNotification={dispatchNotification}
-                        onCreateOrder={createOrder.open}
-                    >
+                    <ShopifyCustomerProvider onCreateOrder={createOrder.open}>
                         <ShopifyCustomer
                             onSyncProfile={handleSyncProfile}
                             renderEditShippingAddressModal={

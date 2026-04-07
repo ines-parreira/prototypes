@@ -9,7 +9,6 @@ type Props = ShopifyCustomerContextType & {
 }
 
 export function ShopifyCustomerProvider({
-    dispatchNotification,
     onCreateOrder,
     onEditOrder,
     onDuplicateOrder,
@@ -19,7 +18,6 @@ export function ShopifyCustomerProvider({
 }: Props) {
     const value = useMemo(
         () => ({
-            dispatchNotification,
             onCreateOrder,
             onEditOrder,
             onDuplicateOrder,
@@ -27,7 +25,6 @@ export function ShopifyCustomerProvider({
             onCancelOrder,
         }),
         [
-            dispatchNotification,
             onCreateOrder,
             onEditOrder,
             onDuplicateOrder,

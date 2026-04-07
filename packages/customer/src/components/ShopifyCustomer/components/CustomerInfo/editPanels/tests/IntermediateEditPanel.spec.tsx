@@ -7,10 +7,6 @@ import { setupServer } from 'msw/node'
 import { mockListWidgetsHandler } from '@gorgias/helpdesk-mocks'
 import type { Widget } from '@gorgias/helpdesk-types'
 
-import {
-    NotificationStatus,
-    ShopifyCustomerContext,
-} from '../../../../ShopifyCustomerContext'
 import { FIELD_DEFINITIONS } from '../../fieldDefinitions/fields'
 import type {
     FieldConfig,
@@ -374,19 +370,12 @@ describe('IntermediateEditPanel', () => {
         const onSavePreferences = vi
             .fn()
             .mockRejectedValue(new Error('Network error'))
-        const mockDispatchNotification = vi.fn()
 
         const { user } = render(
-            <ShopifyCustomerContext.Provider
-                value={{
-                    dispatchNotification: mockDispatchNotification,
-                }}
-            >
-                <IntermediateEditPanel
-                    {...defaultProps}
-                    onSavePreferences={onSavePreferences}
-                />
-            </ShopifyCustomerContext.Provider>,
+            <IntermediateEditPanel
+                {...defaultProps}
+                onSavePreferences={onSavePreferences}
+            />,
         )
 
         await confirmShopifyMetricsChanges(user)
@@ -398,10 +387,9 @@ describe('IntermediateEditPanel', () => {
         await user.click(screen.getByRole('button', { name: /save/i }))
 
         await waitFor(() => {
-            expect(mockDispatchNotification).toHaveBeenCalledWith({
-                status: NotificationStatus.Error,
-                message: 'Failed to save field preferences',
-            })
+            const toast = screen.getByRole('status', { hidden: true })
+            expect(toast).toHaveTextContent('Failed to save field preferences')
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
 
         expect(defaultProps.onClose).not.toHaveBeenCalled()

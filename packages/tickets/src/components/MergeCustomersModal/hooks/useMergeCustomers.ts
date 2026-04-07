@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type {
     MergeCustomersBody,
     MergeCustomersParams,
@@ -11,11 +12,7 @@ import {
     useMergeCustomers as useMergeCustomersPrimitive,
 } from '@gorgias/helpdesk-queries'
 
-import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
-
 export function useMergeCustomers(ticketId?: number) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const queryClient = useQueryClient()
 
     const { mutateAsync: mutateAsyncMergeCustomers, isLoading } =
@@ -38,24 +35,13 @@ export function useMergeCustomers(ticketId?: number) {
                     })
                 }
 
-                dispatchNotification({
-                    status: NotificationStatus.Success,
-                    message: 'Customers successfully merged.',
-                })
+                toast.success('Customers successfully merged.')
             } catch (error) {
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Could not merge customers',
-                })
+                toast.error('Could not merge customers')
                 throw error
             }
         },
-        [
-            mutateAsyncMergeCustomers,
-            queryClient,
-            dispatchNotification,
-            ticketId,
-        ],
+        [mutateAsyncMergeCustomers, queryClient, ticketId],
     )
 
     return { mergeCustomers, isLoading }

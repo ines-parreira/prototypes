@@ -1,11 +1,7 @@
 import { render } from '@repo/testing/vitest'
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { vi } from 'vitest'
 
-import {
-    NotificationStatus,
-    ShopifyCustomerContext,
-} from '../../../../ShopifyCustomerContext'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import type { ShippingAddress } from '../sections/ShippingAddressSection'
 import { ShippingAddressSection } from '../sections/ShippingAddressSection'
@@ -171,27 +167,23 @@ describe('ShippingAddressSection', () => {
             )
         })
 
-        it('dispatches a success notification when copy button is clicked', async () => {
-            const dispatchNotification = vi.fn()
+        it('shows a success toast when copy button is clicked', async () => {
             vi.spyOn(navigator.clipboard, 'writeText').mockResolvedValue(
                 undefined,
             )
 
             const { user } = render(
-                <ShopifyCustomerContext.Provider
-                    value={{ dispatchNotification }}
-                >
-                    <ShippingAddressSection shippingAddress={mockFullAddress} />
-                </ShopifyCustomerContext.Provider>,
+                <ShippingAddressSection shippingAddress={mockFullAddress} />,
             )
 
             await user.click(
                 screen.getByRole('button', { name: /copy to clipboard/i }),
             )
 
-            expect(dispatchNotification).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message: 'Address copied to clipboard',
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Address copied to clipboard')
+                expect(toast).toHaveAttribute('data-intent', 'success')
             })
         })
     })

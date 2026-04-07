@@ -10,7 +10,6 @@ import { useGetIntegration } from '@gorgias/helpdesk-queries'
 import type { Order } from 'constants/integrations/types/shopify'
 import { OBJECT_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
-import { useNotify } from 'hooks/useNotify'
 import { useGetCustomer } from 'models/customer/queries'
 import { extractOrders } from 'timeline/helpers/orders'
 import { TimelineItemKind } from 'timeline/types'
@@ -85,8 +84,6 @@ export function TimelineContent({
     const { products: productsMap } = useOrderProducts(customer, orders)
 
     const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
-
-    const { notify: dispatchNotification } = useNotify()
 
     const [selectedTicket, setSelectedTicket] = useState<EnrichedTicket | null>(
         null,
@@ -269,9 +266,7 @@ export function TimelineContent({
                     isFetchingNextPage={isFetchingNextPage}
                 />
             </div>
-            <ShopifyCustomerProvider
-                dispatchNotification={dispatchNotification}
-            >
+            <ShopifyCustomerProvider>
                 <TimelineSidePanelPreview
                     enrichedTicket={selectedTicket}
                     selectedOrder={selectedOrder}

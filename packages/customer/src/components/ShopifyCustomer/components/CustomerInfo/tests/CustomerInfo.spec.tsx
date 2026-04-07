@@ -1056,7 +1056,6 @@ describe('CustomerInfo', () => {
         const { user } = render(
             <ShopifyCustomerContext.Provider
                 value={{
-                    dispatchNotification: vi.fn(),
                     onCreateOrder,
                 }}
             >

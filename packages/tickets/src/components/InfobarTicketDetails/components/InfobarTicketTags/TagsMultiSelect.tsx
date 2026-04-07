@@ -16,11 +16,10 @@ import {
     OverflowTooltip,
     Tag,
     Text,
+    toast,
 } from '@gorgias/axiom'
 import type { TicketTag } from '@gorgias/helpdesk-queries'
 
-import { useTicketsLegacyBridge } from '../../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../../utils/LegacyBridge/context'
 import { useCreateTicketTag } from './hooks/useCreateTicketTag'
 import { useListTagsSearch } from './hooks/useListTagsSearch'
 import { sortByAlphabeticalTagNameOrder } from './hooks/useUpdateTicketTags'
@@ -45,7 +44,6 @@ export function TagsMultiSelect({
     'aria-label': ariaLabel = 'Tags selection',
 }: TagsMultiSelectProps) {
     const [isTagMenuOpen, setIsTagMenuOpen] = useState(false)
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const { createTicketTag, isCreating } = useCreateTicketTag()
     const {
         data: tagList,
@@ -86,19 +84,9 @@ export function TagsMultiSelect({
             )
             setSearch('')
         } catch {
-            dispatchNotification({
-                status: NotificationStatus.Error,
-                message: 'Failed to create new tag',
-            })
+            toast.error('Failed to create new tag')
         }
-    }, [
-        createTicketTag,
-        search,
-        dispatchNotification,
-        onChange,
-        value,
-        setSearch,
-    ])
+    }, [createTicketTag, search, onChange, value, setSearch])
 
     const handleSelectChange = useCallback(
         (selectedOptions: TicketTagOption[]) => {

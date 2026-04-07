@@ -17,6 +17,7 @@
         "test:ci:cover": "TZ=UTC LC_ALL=\"en_US.UTF-8\" NODE_DISABLE_COMPILE_CACHE=1 NODE_OPTIONS=\"--max-old-space-size=4096\" jest --coverage --ci --maxWorkers=2 --testTimeout=10000 --silent --forceExit"
     },
     "peerDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
         "@tanstack/react-query": "catalog:rest-api-sdk",
         "@testing-library/dom": "catalog:test",
         "@testing-library/react": "catalog:test",
@@ -26,6 +27,7 @@
         "react-router-dom": "catalog:react-router"
     },
     "devDependencies": {
+        "@gorgias/axiom": "catalog:axiom",
         "@repo/config": "workspace:*",
         "@swc/core": "catalog:test",
         "@swc/jest": "catalog:test",

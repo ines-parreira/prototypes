@@ -2,6 +2,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type { UpdateCustomerBody } from '@gorgias/helpdesk-queries'
 import {
     queryKeys,
@@ -9,8 +10,6 @@ import {
 } from '@gorgias/helpdesk-queries'
 import type { Customer } from '@gorgias/helpdesk-types'
 
-import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 import { similarCustomerQueryKeys } from '../../InfobarTicketCustomerDetails/hooks/useGetSimilarCustomer'
 
 type UpdateCustomerBodyWithNote = UpdateCustomerBody & {
@@ -18,7 +17,6 @@ type UpdateCustomerBodyWithNote = UpdateCustomerBody & {
 }
 
 export function useUpdateCustomer(customerId: number, ticketId?: string) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const queryClient = useQueryClient()
     const ticketQueryKey = ticketId
         ? queryKeys.tickets.getTicket(Number(ticketId))
@@ -77,10 +75,7 @@ export function useUpdateCustomer(customerId: number, ticketId?: string) {
                     queryKey: customerQueryKey,
                 })
             } catch {
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to update customer',
-                })
+                toast.error('Failed to update customer')
             }
         },
         [
@@ -89,7 +84,6 @@ export function useUpdateCustomer(customerId: number, ticketId?: string) {
             ticketQueryKey,
             customerQueryKey,
             customerId,
-            dispatchNotification,
         ],
     )
 

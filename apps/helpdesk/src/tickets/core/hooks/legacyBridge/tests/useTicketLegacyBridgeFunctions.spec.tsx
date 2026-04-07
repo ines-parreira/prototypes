@@ -12,9 +12,7 @@ import useGoToNextTicket from 'pages/tickets/detail/components/TicketNavigation/
 import useGoToPreviousTicket from 'pages/tickets/detail/components/TicketNavigation/hooks/useGoToPreviousTicket'
 import useIsTicketNavigationAvailable from 'pages/tickets/detail/components/TicketNavigation/hooks/useIsTicketNavigationAvailable'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import { NotificationStatus } from 'state/notifications/types'
 
-import { useLegacyDispatchDismissNotification } from '../useLegacyDispatchDismissNotification'
 import { useTicketLegacyBridgeFunctions } from '../useTicketLegacyBridgeFunctions'
 
 type RouteMatchResult<T extends Record<string, string>> = Match<T> | null
@@ -88,22 +86,6 @@ describe('useTicketLegacyBridgeFunctions', () => {
             setPrevNextTicketIds: jest.fn(),
             shouldRedirectToSplitView: false,
             setShouldRedirectToSplitView: jest.fn(),
-        })
-    })
-
-    describe('dispatchNotification', () => {
-        it('should dispatch notification action', () => {
-            const { result } = renderHook(
-                () => useTicketLegacyBridgeFunctions(),
-                { wrapper },
-            )
-
-            result.current.dispatchNotification({
-                status: NotificationStatus.Success,
-                message: 'Test notification',
-            })
-
-            expect(mockDispatch).toHaveBeenCalledWith(expect.any(Function))
         })
     })
 
@@ -427,29 +409,6 @@ describe('useTicketLegacyBridgeFunctions', () => {
 
             result.current.ticketViewNavigation.legacyGoToPrevTicket()
             expect(mockGoToPreviousTicket).toHaveBeenCalled()
-        })
-    })
-})
-
-describe('useLegacyDispatchDismissNotification', () => {
-    const mockDispatch = jest.fn()
-
-    beforeEach(() => {
-        jest.clearAllMocks()
-        useAppDispatchMock.mockReturnValue(mockDispatch)
-    })
-
-    it('should dispatch dismiss notification action with id', () => {
-        const { result } = renderHook(
-            () => useLegacyDispatchDismissNotification(),
-            { wrapper },
-        )
-
-        result.current('notification-123')
-
-        expect(mockDispatch).toHaveBeenCalledWith({
-            type: 'reapop/dismissNotification',
-            payload: 'notification-123',
         })
     })
 })

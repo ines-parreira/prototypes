@@ -5,7 +5,6 @@ import {
     useTicketsLegacyBridge,
 } from '../LegacyBridge'
 import type { LegacyBridgeContextType } from '../LegacyBridge/context'
-import { NotificationStatus } from '../LegacyBridge/context'
 
 const mockTicketViewNavigation: LegacyBridgeContextType['ticketViewNavigation'] =
     {
@@ -42,79 +41,32 @@ const mockHumanizeChannel: LegacyBridgeContextType['humanizeChannel'] = vi.fn(
     (channelIdentifier) => String(channelIdentifier),
 )
 
+const defaultProviderProps = {
+    dispatchAuditLogEvents: vi.fn(),
+    dispatchHideAuditLogEvents: vi.fn(),
+    toggleQuickReplies: vi.fn(),
+    ticketViewNavigation: mockTicketViewNavigation,
+    handleTicketDraft: {
+        hasDraft: false,
+        onResumeDraft: vi.fn(),
+        onDiscardDraft: vi.fn(),
+    },
+    makeOutboundCall: vi.fn(),
+    voiceDevice: mockVoiceDevice,
+    dtpToggle: mockDtpToggle,
+    dtpEnabled: mockDtpEnabled,
+    humanizeChannel: mockHumanizeChannel,
+}
+
 describe('TicketsLegacyBridgeProvider', () => {
     it('should render children', () => {
         render(
-            <TicketsLegacyBridgeProvider
-                dispatchNotification={vi.fn()}
-                dispatchDismissNotification={vi.fn()}
-                dispatchAuditLogEvents={vi.fn()}
-                dispatchHideAuditLogEvents={vi.fn()}
-                toggleQuickReplies={vi.fn()}
-                ticketViewNavigation={mockTicketViewNavigation}
-                handleTicketDraft={{
-                    hasDraft: false,
-                    onResumeDraft: vi.fn(),
-                    onDiscardDraft: vi.fn(),
-                }}
-                makeOutboundCall={vi.fn()}
-                voiceDevice={mockVoiceDevice}
-                dtpToggle={mockDtpToggle}
-                dtpEnabled={mockDtpEnabled}
-                humanizeChannel={mockHumanizeChannel}
-            >
+            <TicketsLegacyBridgeProvider {...defaultProviderProps}>
                 <div>Test Child</div>
             </TicketsLegacyBridgeProvider>,
         )
 
         expect(screen.getByText('Test Child')).toBeInTheDocument()
-    })
-
-    it('should provide context value to children', () => {
-        const mockFn = vi.fn()
-        const TestComponent = () => {
-            const { dispatchNotification } = useTicketsLegacyBridge()
-            return (
-                <button
-                    onClick={() =>
-                        dispatchNotification({
-                            status: NotificationStatus.Success,
-                            message: 'Test message',
-                        })
-                    }
-                >
-                    Trigger Function
-                </button>
-            )
-        }
-
-        render(
-            <TicketsLegacyBridgeProvider
-                dispatchNotification={mockFn}
-                dispatchDismissNotification={mockFn}
-                dispatchAuditLogEvents={mockFn}
-                dispatchHideAuditLogEvents={mockFn}
-                toggleQuickReplies={mockFn}
-                ticketViewNavigation={mockTicketViewNavigation}
-                handleTicketDraft={{
-                    hasDraft: false,
-                    onResumeDraft: vi.fn(),
-                    onDiscardDraft: vi.fn(),
-                }}
-                makeOutboundCall={vi.fn()}
-                voiceDevice={mockVoiceDevice}
-                dtpToggle={mockDtpToggle}
-                dtpEnabled={mockDtpEnabled}
-                humanizeChannel={mockHumanizeChannel}
-            >
-                <TestComponent />
-            </TicketsLegacyBridgeProvider>,
-        )
-
-        const button = screen.getByRole('button', { name: /trigger function/i })
-        button.click()
-
-        expect(mockFn).toHaveBeenCalledOnce()
     })
 })
 
@@ -131,31 +83,13 @@ describe('useTicketsLegacyBridge', () => {
     })
 
     it('should return context value when used within provider', () => {
-        const mockFn = vi.fn()
         const TestComponent = () => {
             const context = useTicketsLegacyBridge()
             return <div>{context ? 'Context Available' : 'No Context'}</div>
         }
 
         render(
-            <TicketsLegacyBridgeProvider
-                dispatchNotification={mockFn}
-                dispatchDismissNotification={mockFn}
-                dispatchAuditLogEvents={mockFn}
-                dispatchHideAuditLogEvents={mockFn}
-                toggleQuickReplies={mockFn}
-                ticketViewNavigation={mockTicketViewNavigation}
-                handleTicketDraft={{
-                    hasDraft: false,
-                    onResumeDraft: vi.fn(),
-                    onDiscardDraft: vi.fn(),
-                }}
-                makeOutboundCall={vi.fn()}
-                voiceDevice={mockVoiceDevice}
-                dtpToggle={mockDtpToggle}
-                dtpEnabled={mockDtpEnabled}
-                humanizeChannel={mockHumanizeChannel}
-            >
+            <TicketsLegacyBridgeProvider {...defaultProviderProps}>
                 <TestComponent />
             </TicketsLegacyBridgeProvider>,
         )

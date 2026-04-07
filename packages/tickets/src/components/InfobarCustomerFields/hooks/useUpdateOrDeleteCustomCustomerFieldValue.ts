@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type { UpdateCustomerCustomFieldValueBody } from '@gorgias/helpdesk-queries'
 import {
     queryKeys,
@@ -10,13 +11,10 @@ import {
     useUpdateCustomerCustomFieldValue,
 } from '@gorgias/helpdesk-queries'
 
-import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 import { isCustomFieldValueEmpty } from '../utils'
 import { useCustomerCustomFieldValues } from './useCustomerCustomFieldValues'
 
 export function useUpdateOrDeleteCustomCustomerFieldValue(customerId: number) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const queryClient = useQueryClient()
     const queryKey =
         queryKeys.customers.listCustomerCustomFieldsValues(customerId)
@@ -79,10 +77,7 @@ export function useUpdateOrDeleteCustomCustomerFieldValue(customerId: number) {
                 }
                 await queryClient.invalidateQueries({ queryKey })
             } catch {
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to update customer field',
-                })
+                toast.error('Failed to update customer field')
             }
         },
         [
@@ -90,7 +85,6 @@ export function useUpdateOrDeleteCustomCustomerFieldValue(customerId: number) {
             mutateAsyncDelete,
             queryClient,
             queryKey,
-            dispatchNotification,
             customerId,
             customerCustomFieldsValue,
         ],

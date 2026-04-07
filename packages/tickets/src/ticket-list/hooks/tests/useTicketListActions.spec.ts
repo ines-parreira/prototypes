@@ -1,4 +1,5 @@
 import type { InfiniteData } from '@tanstack/react-query'
+import { screen, waitFor } from '@testing-library/react'
 import { setupServer } from 'msw/node'
 
 import {
@@ -13,7 +14,6 @@ import type { Ticket } from '@gorgias/helpdesk-queries'
 import { JobType } from '@gorgias/helpdesk-types'
 
 import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
 import { useTicketListActions } from '../useTicketListActions'
 
 const mockCreateJob = mockCreateJobHandler()
@@ -72,20 +72,17 @@ function setup(
     } = {},
 ) {
     const onActionComplete = overrides.onActionComplete ?? vi.fn()
-    const dispatchNotification = vi.fn()
-    const { result } = renderHook(
-        () =>
-            useTicketListActions({
-                viewId: VIEW_ID,
-                selectedTicketIds: new Set(overrides.ticketIds ?? TICKET_IDS),
-                visibleTicketIds: overrides.visibleTicketIds ?? TICKET_IDS,
-                hasSelectedAll: overrides.hasSelectedAll ?? false,
-                onActionComplete,
-                onApplyMacro: overrides.onApplyMacro,
-            }),
-        { dispatchNotification },
+    const { result } = renderHook(() =>
+        useTicketListActions({
+            viewId: VIEW_ID,
+            selectedTicketIds: new Set(overrides.ticketIds ?? TICKET_IDS),
+            visibleTicketIds: overrides.visibleTicketIds ?? TICKET_IDS,
+            hasSelectedAll: overrides.hasSelectedAll ?? false,
+            onActionComplete,
+            onApplyMacro: overrides.onApplyMacro,
+        }),
     )
-    return { result, onActionComplete, dispatchNotification }
+    return { result, onActionComplete }
 }
 
 describe('useTicketListActions', () => {
@@ -327,17 +324,19 @@ describe('useTicketListActions', () => {
         })
 
         it('uses the view-scoped success message when hasSelectedAll is true', async () => {
-            const { result, dispatchNotification } = setup({
+            const { result } = setup({
                 hasSelectedAll: true,
                 visibleTicketIds: [1, 2, 3, 4],
             })
 
             await result.current.handleAssignUser(SUPPORT_USER)
 
-            expect(dispatchNotification).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message:
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent(
                     'All tickets in this view assigned to Jane Doe. Updates may take a few seconds to apply.',
+                )
+                expect(toast).toHaveAttribute('data-intent', 'success')
             })
         })
 
@@ -371,14 +370,16 @@ describe('useTicketListActions', () => {
         })
 
         it('uses the eventual-consistency success message', async () => {
-            const { result, dispatchNotification } = setup()
+            const { result } = setup()
 
             await result.current.handleAddTag(VIP_TAG)
 
-            expect(dispatchNotification).toHaveBeenCalledWith({
-                status: NotificationStatus.Success,
-                message:
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent(
                     '2 tickets tagged with VIP. Updates may take a few seconds to apply.',
+                )
+                expect(toast).toHaveAttribute('data-intent', 'success')
             })
         })
     })

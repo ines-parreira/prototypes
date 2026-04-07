@@ -1,16 +1,14 @@
 import { useCallback } from 'react'
 
+import { toast } from '@gorgias/axiom'
 import type { UpdateTicketCustomFieldBody } from '@gorgias/helpdesk-queries'
 
-import { useTicketsLegacyBridge } from '../../../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../../../utils/LegacyBridge/context'
 import { isCustomFieldValueEmpty } from '../../../../InfobarCustomerFields/utils'
 import { useDeleteTicketFieldValue } from './useDeleteTicketFieldValue'
 import { useTicketCustomFieldsValues } from './useTicketCustomFieldsValues'
 import { useUpdateTicketFieldValue } from './useUpdateTicketFieldValue'
 
 export function useUpdateOrDeleteTicketFieldValue(ticketId: number) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const { data: { data: ticketCustomFieldsValue = [] } = {} } =
         useTicketCustomFieldsValues(Number(ticketId))
 
@@ -57,16 +55,12 @@ export function useUpdateOrDeleteTicketFieldValue(ticketId: number) {
                     })
                 }
             } catch {
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to update ticket field',
-                })
+                toast.error('Failed to update ticket field')
             }
         },
         [
             mutateAsyncUpdate,
             mutateAsyncDelete,
-            dispatchNotification,
             ticketId,
             ticketCustomFieldsValue,
         ],

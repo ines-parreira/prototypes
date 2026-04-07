@@ -309,14 +309,12 @@ describe('TicketActions', () => {
 
         it('should mark ticket as spam and show notification with undo button', async () => {
             const mockUpdateTicket = mockUpdateTicketHandler()
-            const dispatchNotification = vi.fn()
 
             server.use(mockUpdateTicket.handler)
 
             const { user } = render(<TicketActions {...defaultProps} />, {
                 initialEntries: ['/app/views/1/123'],
                 path: '/app/views/:viewId/:ticketId',
-                dispatchNotification,
                 ticketViewNavigation: {
                     shouldDisplay: true,
                     shouldUseLegacyFunctions: false,
@@ -335,24 +333,19 @@ describe('TicketActions', () => {
             await act(() => user.click(markAsSpamItem))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        id: 'spam-123',
-                        message: 'Ticket has been marked as spam',
-                        buttons: expect.arrayContaining([
-                            expect.objectContaining({
-                                name: 'Undo',
-                                primary: true,
-                            }),
-                        ]),
-                    }),
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent(
+                    'Ticket has been marked as spam',
                 )
+                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('button', { name: 'Undo' }),
+                ).toBeInTheDocument()
             })
         })
 
         it('should unmark ticket as spam without showing notification', async () => {
             const mockUpdateTicket = mockUpdateTicketHandler()
-            const dispatchNotification = vi.fn()
 
             server.use(mockUpdateTicket.handler)
 
@@ -361,7 +354,6 @@ describe('TicketActions', () => {
                 {
                     initialEntries: ['/app/ticket/123'],
                     path: '/app/ticket/:ticketId',
-                    dispatchNotification,
                 },
             )
 
@@ -371,7 +363,9 @@ describe('TicketActions', () => {
             await act(() => user.click(unmarkAsSpamItem))
 
             await waitFor(() => {
-                expect(dispatchNotification).not.toHaveBeenCalled()
+                expect(
+                    screen.queryByRole('status', { hidden: true }),
+                ).not.toBeInTheDocument()
             })
         })
 
@@ -379,14 +373,12 @@ describe('TicketActions', () => {
             const mockUpdateTicket = mockUpdateTicketHandler(async () => {
                 return HttpResponse.json(null, { status: 500 })
             })
-            const dispatchNotification = vi.fn()
 
             server.use(mockUpdateTicket.handler)
 
             const { user } = render(<TicketActions {...defaultProps} />, {
                 initialEntries: ['/app/ticket/123'],
                 path: '/app/ticket/:ticketId',
-                dispatchNotification,
             })
 
             await openMenu(user)
@@ -395,11 +387,9 @@ describe('TicketActions', () => {
             await act(() => user.click(markAsSpamItem))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        message: 'Failed to mark as spam',
-                    }),
-                )
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Failed to mark as spam')
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })
@@ -427,7 +417,6 @@ describe('TicketActions', () => {
 
         it('should mark ticket as unread and show success notification', async () => {
             const mockUpdateTicket = mockUpdateTicketHandler()
-            const dispatchNotification = vi.fn()
             const onToggleUnread = vi.fn()
 
             server.use(mockUpdateTicket.handler)
@@ -435,7 +424,6 @@ describe('TicketActions', () => {
             const { user } = render(<TicketActions {...defaultProps} />, {
                 initialEntries: ['/app/ticket/123'],
                 path: '/app/ticket/:ticketId',
-                dispatchNotification,
                 onToggleUnread,
             })
 
@@ -445,12 +433,11 @@ describe('TicketActions', () => {
             await act(() => user.click(markAsUnreadItem))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        status: 'success',
-                        message: 'Ticket has been marked as unread',
-                    }),
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent(
+                    'Ticket has been marked as unread',
                 )
+                expect(toast).toHaveAttribute('data-intent', 'success')
                 expect(onToggleUnread).toHaveBeenCalledWith(123, true)
             })
         })
@@ -459,14 +446,12 @@ describe('TicketActions', () => {
             const mockUpdateTicket = mockUpdateTicketHandler(async () => {
                 return HttpResponse.json(null, { status: 500 })
             })
-            const dispatchNotification = vi.fn()
 
             server.use(mockUpdateTicket.handler)
 
             const { user } = render(<TicketActions {...defaultProps} />, {
                 initialEntries: ['/app/ticket/123'],
                 path: '/app/ticket/:ticketId',
-                dispatchNotification,
             })
 
             await openMenu(user)
@@ -475,12 +460,9 @@ describe('TicketActions', () => {
             await act(() => user.click(markAsUnreadItem))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        status: 'error',
-                        message: 'Failed to mark as unread',
-                    }),
-                )
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Failed to mark as unread')
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
     })
@@ -488,14 +470,12 @@ describe('TicketActions', () => {
     describe('Trash ticket', () => {
         it('should move ticket to trash and show notification with undo button when confirmed', async () => {
             const mockUpdateTicket = mockUpdateTicketHandler()
-            const dispatchNotification = vi.fn()
 
             server.use(mockUpdateTicket.handler)
 
             const { user } = render(<TicketActions {...defaultProps} />, {
                 initialEntries: ['/app/views/1/123'],
                 path: '/app/views/:viewId/:ticketId',
-                dispatchNotification,
                 ticketViewNavigation: {
                     shouldDisplay: true,
                     shouldUseLegacyFunctions: false,
@@ -519,18 +499,14 @@ describe('TicketActions', () => {
             await act(() => user.click(deleteButton))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        id: 'trash-123',
-                        message: 'Ticket has been moved to trash',
-                        buttons: expect.arrayContaining([
-                            expect.objectContaining({
-                                name: 'Undo',
-                                primary: true,
-                            }),
-                        ]),
-                    }),
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent(
+                    'Ticket has been moved to trash',
                 )
+                expect(toast).toHaveAttribute('data-intent', 'success')
+                expect(
+                    screen.getByRole('button', { name: 'Undo' }),
+                ).toBeInTheDocument()
             })
         })
 
@@ -565,7 +541,6 @@ describe('TicketActions', () => {
 
         it('should restore ticket without showing notification when restore is clicked', async () => {
             const mockUpdateTicket = mockUpdateTicketHandler()
-            const dispatchNotification = vi.fn()
 
             server.use(mockUpdateTicket.handler)
 
@@ -579,7 +554,6 @@ describe('TicketActions', () => {
                 {
                     initialEntries: ['/app/ticket/123'],
                     path: '/app/ticket/:ticketId',
-                    dispatchNotification,
                 },
             )
 
@@ -589,7 +563,9 @@ describe('TicketActions', () => {
             await act(() => user.click(restoreMenuItem))
 
             await waitFor(() => {
-                expect(dispatchNotification).not.toHaveBeenCalled()
+                expect(
+                    screen.queryByRole('status', { hidden: true }),
+                ).not.toBeInTheDocument()
             })
         })
 
@@ -597,14 +573,12 @@ describe('TicketActions', () => {
             const mockUpdateTicket = mockUpdateTicketHandler(async () => {
                 return HttpResponse.json(null, { status: 500 })
             })
-            const dispatchNotification = vi.fn()
 
             server.use(mockUpdateTicket.handler)
 
             const { user } = render(<TicketActions {...defaultProps} />, {
                 initialEntries: ['/app/ticket/123'],
                 path: '/app/ticket/:ticketId',
-                dispatchNotification,
             })
 
             await openMenu(user)
@@ -618,12 +592,9 @@ describe('TicketActions', () => {
             await act(() => user.click(deleteButton))
 
             await waitFor(() => {
-                expect(dispatchNotification).toHaveBeenCalledWith(
-                    expect.objectContaining({
-                        status: 'error',
-                        message: 'Failed to move to trash',
-                    }),
-                )
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent('Failed to move to trash')
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
         })
 

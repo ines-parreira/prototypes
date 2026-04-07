@@ -8,13 +8,12 @@ import {
     Select,
     StatusButton,
     Text,
+    toast,
 } from '@gorgias/axiom'
 import type { TicketTag } from '@gorgias/helpdesk-queries'
 
 import { useCreateTicketTag } from '../../../../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useCreateTicketTag'
 import { useListTagsSearch } from '../../../../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
-import { useTicketsLegacyBridge } from '../../../../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../../../../utils/LegacyBridge/context'
 
 import css from '../../../../../../components/TicketAssignee/components/SelectStyles.less'
 
@@ -36,7 +35,6 @@ export function BulkAddTagSelect({
     isOpen,
     onOpenChange,
 }: BulkAddTagSelectProps) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const { createTicketTag, isCreating } = useCreateTicketTag()
     const { tags, search, setSearch, isLoading, shouldLoadMore, onLoad } =
         useListTagsSearch()
@@ -78,15 +76,11 @@ export function BulkAddTagSelect({
             await onChange(createdTag)
             setSearch('')
         } catch {
-            dispatchNotification({
-                status: NotificationStatus.Error,
-                message: 'Failed to create new tag',
-            })
+            toast.error('Failed to create new tag')
         }
     }, [
         canCreateTag,
         createTicketTag,
-        dispatchNotification,
         hasExactMatch,
         onChange,
         search,

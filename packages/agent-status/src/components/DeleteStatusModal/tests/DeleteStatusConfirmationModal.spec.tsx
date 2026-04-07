@@ -1,23 +1,17 @@
 import { render } from '@repo/testing/vitest'
-import { act, screen } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import * as useDeleteStatusModule from '../../../hooks/useDeleteCustomUserAvailabilityStatus'
-import * as useLegacyBridgeModule from '../../../utils/LegacyBridge'
 import { DeleteStatusConfirmationModal } from '../DeleteStatusConfirmationModal'
 
 vi.mock('../../../hooks/useDeleteCustomUserAvailabilityStatus', () => ({
     useDeleteCustomUserAvailabilityStatus: vi.fn(),
 }))
 
-vi.mock('../../../utils/LegacyBridge', () => ({
-    useAgentStatusLegacyBridge: vi.fn(),
-}))
-
 describe('DeleteStatusConfirmationModal', () => {
     const mockMutateAsync = vi.fn()
-    const mockDispatchNotification = vi.fn()
     const mockOnOpenChange = vi.fn()
 
     const defaultProps = {
@@ -34,11 +28,6 @@ describe('DeleteStatusConfirmationModal', () => {
         ).mockReturnValue({
             mutateAsync: mockMutateAsync,
             isLoading: false,
-        } as any)
-        vi.mocked(
-            useLegacyBridgeModule.useAgentStatusLegacyBridge,
-        ).mockReturnValue({
-            dispatchNotification: mockDispatchNotification,
         } as any)
     })
 
@@ -113,7 +102,7 @@ describe('DeleteStatusConfirmationModal', () => {
             expect(mockMutateAsync).toHaveBeenCalledWith({ pk: 'status-123' })
         })
 
-        it('should dispatch success notification and close modal after successful delete', async () => {
+        it('should show success toast and close modal after successful delete', async () => {
             const user = userEvent.setup()
             mockMutateAsync.mockResolvedValue(undefined)
 
@@ -125,15 +114,17 @@ describe('DeleteStatusConfirmationModal', () => {
 
             await act(() => user.click(deleteButton))
 
-            expect(mockDispatchNotification).toHaveBeenCalledWith({
-                status: 'success',
-                message: 'Status "Lunch Break" has been deleted',
-                dismissAfter: 5000,
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent(
+                    'Status "Lunch Break" has been deleted',
+                )
+                expect(toast).toHaveAttribute('data-intent', 'success')
             })
             expect(mockOnOpenChange).toHaveBeenCalled()
         })
 
-        it('should dispatch error notification and keep modal open if delete fails', async () => {
+        it('should show error toast and keep modal open if delete fails', async () => {
             const user = userEvent.setup()
             mockMutateAsync.mockRejectedValue(new Error('Delete failed'))
 
@@ -146,9 +137,12 @@ describe('DeleteStatusConfirmationModal', () => {
             await act(() => user.click(deleteButton))
 
             expect(mockMutateAsync).toHaveBeenCalled()
-            expect(mockDispatchNotification).toHaveBeenCalledWith({
-                status: 'error',
-                message: 'Failed to delete status. Please try again.',
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent(
+                    'Failed to delete status. Please try again.',
+                )
+                expect(toast).toHaveAttribute('data-intent', 'destructive')
             })
             expect(mockOnOpenChange).not.toHaveBeenCalled()
         })
@@ -180,10 +174,12 @@ describe('DeleteStatusConfirmationModal', () => {
 
             await act(() => user.click(deleteButton))
 
-            expect(mockDispatchNotification).toHaveBeenCalledWith({
-                status: 'success',
-                message: 'Status "Coffee Break" has been deleted',
-                dismissAfter: 5000,
+            await waitFor(() => {
+                const toast = screen.getByRole('status', { hidden: true })
+                expect(toast).toHaveTextContent(
+                    'Status "Coffee Break" has been deleted',
+                )
+                expect(toast).toHaveAttribute('data-intent', 'success')
             })
         })
     })

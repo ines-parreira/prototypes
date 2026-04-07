@@ -2,17 +2,15 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { toast } from '@gorgias/axiom'
 import type { HttpResponse, Ticket } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
 import { useTicketViewNavigation } from '../../hooks/useTicketViewNavigation'
-import { useTicketsLegacyBridge } from '../../utils/LegacyBridge'
-import { NotificationStatus } from '../../utils/LegacyBridge/context'
 import { patchTicketInViewListCache } from '../../utils/optimisticUpdates/viewListCache'
 import { TicketStatus } from './utils'
 
 export function useSnoozeTicket(ticketId: number) {
-    const { dispatchNotification } = useTicketsLegacyBridge()
     const { handleGoToNextViewTicket } = useTicketViewNavigation()
     const queryClient = useQueryClient()
     const queryKey = queryKeys.tickets.getTicket(Number(ticketId))
@@ -54,18 +52,11 @@ export function useSnoozeTicket(ticketId: number) {
                 })
 
                 if (data.snooze_datetime) {
-                    dispatchNotification({
-                        dismissAfter: 5000,
-                        status: NotificationStatus.Success,
-                        message: 'Ticket has been snoozed',
-                    })
+                    toast.success('Ticket has been snoozed')
                     handleGoToNextViewTicket()
                 }
             } catch {
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to snooze ticket',
-                })
+                toast.error('Failed to snooze ticket')
             }
         },
         [
@@ -73,7 +64,6 @@ export function useSnoozeTicket(ticketId: number) {
             mutateAsyncUpdateTicket,
             queryClient,
             queryKey,
-            dispatchNotification,
             handleGoToNextViewTicket,
         ],
     )

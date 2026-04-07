@@ -1,11 +1,7 @@
-import React, { useContext } from 'react'
+import React from 'react'
 
-import { Box, Button, Text } from '@gorgias/axiom'
+import { Box, Button, Text, toast } from '@gorgias/axiom'
 
-import {
-    NotificationStatus,
-    ShopifyCustomerContext,
-} from '../../../../ShopifyCustomerContext'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import type { Address } from '../addressUtils'
 import { getAddressParts } from '../addressUtils'
@@ -17,7 +13,6 @@ type Props = {
 }
 
 export function BillingAddressSection({ billingAddress }: Props) {
-    const { dispatchNotification } = useContext(ShopifyCustomerContext)
     const { preferences } = useOrderFieldPreferences()
 
     const sectionPrefs = preferences.sections.billingAddress
@@ -29,10 +24,7 @@ export function BillingAddressSection({ billingAddress }: Props) {
 
     function handleCopyToClipboard() {
         navigator.clipboard.writeText(addressParts.join('\n'))
-        dispatchNotification({
-            status: NotificationStatus.Success,
-            message: 'Address copied to clipboard',
-        })
+        toast.success('Address copied to clipboard')
     }
 
     return (

@@ -2,20 +2,17 @@ import { useCallback } from 'react'
 
 import { useQueryClient } from '@tanstack/react-query'
 
+import { Button, toast } from '@gorgias/axiom'
 import type { HttpResponse, Ticket } from '@gorgias/helpdesk-queries'
 import { queryKeys, useUpdateTicket } from '@gorgias/helpdesk-queries'
 
-import { useTicketViewNavigation } from '../../../hooks/useTicketViewNavigation'
-import { useTicketsLegacyBridge } from '../../../utils/LegacyBridge'
-import { NotificationStatus } from '../../../utils/LegacyBridge/context'
+import { useTicketViewNavigation } from '../../../../hooks/useTicketViewNavigation'
 import {
     patchTicketInViewListCache,
     removeTicketFromViewListCache,
-} from '../../../utils/optimisticUpdates/viewListCache'
+} from '../../../../utils/optimisticUpdates/viewListCache'
 
-export function useMarkAsSpam(ticketId: number) {
-    const { dispatchNotification, dispatchDismissNotification } =
-        useTicketsLegacyBridge()
+export function useTrashTicket(ticketId: number) {
     const { handleGoToNextViewTicket, navigateToTicket } =
         useTicketViewNavigation()
     const queryClient = useQueryClient()
@@ -30,12 +27,12 @@ export function useMarkAsSpam(ticketId: number) {
                     (old) => {
                         if (!old) return old
                         const previousTicket = old.data
-                        const nextSpam = data.data.spam ?? false
+                        const nextTrashed = data.data.trashed_datetime ?? null
                         return {
                             ...old,
                             data: {
                                 ...previousTicket,
-                                spam: nextSpam,
+                                trashed_datetime: nextTrashed,
                             },
                         }
                     },
@@ -44,67 +41,63 @@ export function useMarkAsSpam(ticketId: number) {
         },
     })
 
-    const markAsSpam = useCallback(
-        async (ticketId: number, data: { spam: boolean }) => {
+    const trashTicket = useCallback(
+        async (ticketId: number, data: { trashed_datetime: string | null }) => {
             try {
                 await mutateAsyncUpdateTicket({
                     id: ticketId,
                     data,
                 })
-                if (data.spam) {
+                if (data.trashed_datetime) {
                     removeTicketFromViewListCache(queryClient, ticketId)
                 } else {
                     patchTicketInViewListCache(queryClient, ticketId, {
-                        spam: false,
+                        trashed_datetime: null,
                     })
                 }
                 await queryClient.invalidateQueries({
                     queryKey,
                 })
 
-                // Unmarking a ticket as spam doesn't show a notification
-                if (!data.spam) {
+                // Un deleting a ticket doesn't show a notification
+                if (!data.trashed_datetime) {
                     return
                 }
 
-                const spamNotificationId = `spam-${ticketId}`
-                dispatchNotification({
-                    id: spamNotificationId,
-                    dismissAfter: 5000,
-                    status: NotificationStatus.Success,
-                    message: 'Ticket has been marked as spam',
-                    buttons: [
-                        {
-                            name: 'Undo',
-                            primary: true,
-                            onClick: () => {
-                                dispatchDismissNotification(spamNotificationId)
+                const trashNotificationId = `trash-${ticketId}`
+                toast.success('Ticket has been moved to trash', {
+                    id: trashNotificationId,
+                    inlineActions: ({ id }) => (
+                        <Button
+                            size="sm"
+                            variant="tertiary"
+                            onClick={() => {
+                                toast.dismiss(id)
                                 navigateToTicket(ticketId)
-                                markAsSpam(ticketId, { spam: false })
-                            },
-                        },
-                    ],
+                                trashTicket(ticketId, {
+                                    trashed_datetime: null,
+                                })
+                            }}
+                        >
+                            Undo
+                        </Button>
+                    ),
                 })
                 handleGoToNextViewTicket()
             } catch {
-                dispatchNotification({
-                    status: NotificationStatus.Error,
-                    message: 'Failed to mark as spam',
-                })
+                toast.error('Failed to move to trash')
             }
         },
         [
             mutateAsyncUpdateTicket,
             queryClient,
             queryKey,
-            dispatchNotification,
-            dispatchDismissNotification,
             handleGoToNextViewTicket,
             navigateToTicket,
         ],
     )
 
     return {
-        markAsSpam,
+        trashTicket,
     }
 }

@@ -1,4 +1,3 @@
-import { NotificationStatus } from '@repo/agent-status'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -10,6 +9,7 @@ import { useJourneyUpdateHandler } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 import { renderWithRouter } from 'utils/testing'
 
 import { RowAdditionalOptions } from './RowAdditionalOptions'
