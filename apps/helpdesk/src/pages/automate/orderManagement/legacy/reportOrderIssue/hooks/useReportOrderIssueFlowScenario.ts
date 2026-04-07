@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
+import { trimHTML } from '@repo/utils'
 import { useHistory } from 'react-router-dom'
 
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -7,7 +8,6 @@ import type { SelfServiceReportIssueCase } from 'models/selfServiceConfiguration
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import { convertFromHTML, convertToHTML } from 'utils/editor'
-import { trimHTML } from 'utils/html'
 
 import { SCENARIO_REASON_DEFAULT_ACTION } from '../constants'
 import useReportOrderIssueFlowScenarios from './useReportOrderIssueFlowScenarios'

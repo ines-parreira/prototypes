@@ -137,7 +137,8 @@ jest.mock('pages/tickets/detail/components/AIAgentFeedbackBar/utils', () => ({
     knowledgeResourceShouldBeLink: jest.fn(() => true),
 }))
 
-jest.mock('utils/html', () => ({
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
     sanitizeHtmlDefault: jest.fn((content: string) => content),
 }))
 

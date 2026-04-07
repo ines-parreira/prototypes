@@ -1,12 +1,12 @@
 import { useCallback, useContext, useMemo } from 'react'
 
+import { parseHtml } from '@repo/utils'
 import cn from 'classnames'
 import ReactPlayer from 'react-player'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
 
 import Ellipsis from 'pages/common/components/Ellipsis'
-import { parseHtml } from 'utils/html'
 
 import { MessageExpansionContext } from '../context/MessageExpansionContext'
 import { processContent } from '../helpers/processContent'

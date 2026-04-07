@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
@@ -18,7 +19,6 @@ import * as NewMessageActions from '../../../../../state/newMessage/actions'
 import * as TicketActions from '../../../../../state/ticket/actions'
 import type { RootState } from '../../../../../state/types'
 import { getActionTemplate, stripErrorMessage } from '../../../../../utils'
-import { sanitizeHtmlDefault } from '../../../../../utils/html'
 
 import css from './Error.less'
 

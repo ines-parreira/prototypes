@@ -8,6 +8,7 @@ import type {
 import React, { PureComponent } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { focusElement } from '@repo/utils'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -25,7 +26,6 @@ import { ulid } from 'ulidx'
 import { formatPrice } from 'business/shopify/number'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import { focusElement } from 'utils/html'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 

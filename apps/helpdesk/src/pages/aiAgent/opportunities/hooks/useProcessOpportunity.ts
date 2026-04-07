@@ -1,3 +1,4 @@
+import { normalizeHtml } from '@repo/utils'
 import { useQueryClient } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import _get from 'lodash/get'
@@ -22,8 +23,6 @@ import {
     ProcessOpportunityOneOfSevenResolutionsItemOneOfSevenAction,
     ProcessOpportunityOneOfVisibilityStatus,
 } from '@gorgias/knowledge-service-types'
-
-import { normalizeHtml } from 'utils/html'
 
 import type { Opportunity, ResourceFormFields } from '../types'
 import { ResourceType } from '../types'

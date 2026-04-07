@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
+import { linkifyHtml, linkifyString, sanitizeHtmlDefault } from '@repo/utils'
 
 import { extractGorgiasVideoDivFromHtmlContent, parseMedia } from 'utils'
-import { linkifyHtml, linkifyString, sanitizeHtmlDefault } from 'utils/html'
 
 import { processContent } from '../processContent'
 
@@ -11,7 +11,7 @@ jest.mock('utils', () => ({
     parseMedia: jest.fn(),
 }))
 
-jest.mock('utils/html', () => ({
+jest.mock('@repo/utils', () => ({
     linkifyHtml: jest.fn(),
     linkifyString: jest.fn(),
     sanitizeHtmlDefault: jest.fn(),

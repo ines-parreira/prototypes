@@ -1,3 +1,4 @@
+import { unescapeQuoteEntities } from '@repo/utils'
 import type { Map } from 'immutable'
 import _first from 'lodash/first'
 import _get from 'lodash/get'
@@ -6,7 +7,6 @@ import _set from 'lodash/set'
 
 import { INTEGRATION_TYPE_WITH_VARIABLES } from 'config/integrations'
 import type { notify as notifyAction } from 'state/notifications/actions'
-import { unescapeQuoteEntities } from 'utils/html'
 
 import renderObject from './renderObject'
 import replaceIntegrationVariables from './replaceIntegrationVariables'

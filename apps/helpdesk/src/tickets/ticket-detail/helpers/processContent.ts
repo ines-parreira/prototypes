@@ -1,5 +1,6 @@
+import { linkifyHtml, linkifyString, sanitizeHtmlDefault } from '@repo/utils'
+
 import { extractGorgiasVideoDivFromHtmlContent, parseMedia } from 'utils'
-import { linkifyHtml, linkifyString, sanitizeHtmlDefault } from 'utils/html'
 
 export function processContent(
     content: string,

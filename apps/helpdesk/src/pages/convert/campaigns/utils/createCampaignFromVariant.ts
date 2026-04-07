@@ -1,7 +1,6 @@
+import { removeLinksFromHtml } from '@repo/utils'
 import _omit from 'lodash/omit'
 import { ulid } from 'ulidx'
-
-import { removeLinksFromHtml } from 'utils/html'
 
 import type { Campaign, CampaignCreatePayload } from '../types/Campaign'
 import type { CampaignVariant } from '../types/CampaignVariant'

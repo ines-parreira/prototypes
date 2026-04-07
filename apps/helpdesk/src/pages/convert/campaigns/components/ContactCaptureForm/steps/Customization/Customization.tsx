@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import { fromJS } from 'immutable'
 import { Link } from 'react-router-dom'
 import { Label } from 'reactstrap'
@@ -17,7 +18,6 @@ import { transformTransitoryToAttachment } from 'pages/convert/campaigns/compone
 import { useIntegrationContext } from 'pages/convert/campaigns/containers/IntegrationProvider'
 import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import { useChatPreviewProps } from 'pages/convert/campaigns/hooks/useChatPreviewProps'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import css from './Customization.less'
 

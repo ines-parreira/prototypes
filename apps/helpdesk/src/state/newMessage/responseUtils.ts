@@ -1,3 +1,4 @@
+import { sanitizeHtmlForFacebookMessenger } from '@repo/utils'
 import { ContentState, convertFromRaw, SelectionState } from 'draft-js'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -13,7 +14,6 @@ import { renderTemplate } from 'pages/common/utils/template'
 import { isRichType } from 'tickets/common/utils'
 import { toJS } from 'utils'
 import { convertFromHTML, convertToHTML } from 'utils/editor'
-import { sanitizeHtmlForFacebookMessenger } from 'utils/html'
 
 import type { CurrentUser, StoreState } from '../types'
 import type { Signature } from './emailExtraUtils'

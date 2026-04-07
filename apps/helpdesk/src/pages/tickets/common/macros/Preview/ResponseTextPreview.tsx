@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { sanitizeHtmlForFacebookMessenger } from '@repo/utils'
 import cn from 'classnames'
 
 import type { MacroAction } from '@gorgias/helpdesk-types'
@@ -8,7 +9,6 @@ import { TicketMessageSourceType } from 'business/types/ticket'
 import TicketRichField from 'pages/common/forms/RichField/TicketRichField'
 import { RecipientsLabel } from 'pages/common/utils/labels'
 import { isRichType } from 'tickets/common/utils'
-import { sanitizeHtmlForFacebookMessenger } from 'utils/html'
 
 import css from './Preview.less'
 

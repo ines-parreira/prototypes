@@ -9,6 +9,7 @@ import type {
 import React, { Component } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { focusElement } from '@repo/utils'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Form, FormGroup, Input, Label, Popover, PopoverBody } from 'reactstrap'
@@ -16,7 +17,6 @@ import { Form, FormGroup, Input, Label, Popover, PopoverBody } from 'reactstrap'
 import { Button } from '@gorgias/axiom'
 
 import type { DraftOrderInvoice } from 'constants/integrations/types/shopify'
-import { focusElement } from 'utils/html'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './EmailInvoicePopover.less'

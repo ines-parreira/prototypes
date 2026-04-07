@@ -1,10 +1,10 @@
+import { sanitizeHtmlDefault } from '@repo/utils'
 import { fireEvent, render, screen } from '@testing-library/react'
 
 import { ActionTemplateExecution } from 'config'
 import { MacroActionName } from 'models/macroAction/types'
 import { ActionStatus } from 'models/ticket/types'
 import { getActionTemplate, stripErrorMessage } from 'utils'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import type { FailedData } from '../../types'
 import { MessageError } from '../MessageError'
@@ -14,7 +14,8 @@ jest.mock('utils', () => ({
     stripErrorMessage: jest.fn((msg) => msg),
 }))
 
-jest.mock('utils/html', () => ({
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
     sanitizeHtmlDefault: jest.fn((html) => html),
 }))
 

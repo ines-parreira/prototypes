@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { sanitizeHtmlMinimal } from '@repo/utils'
 import classNames from 'classnames'
 
 import type { Product } from 'constants/integrations/types/shopify'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
 import ControlledCollapsibleDetails from 'pages/tickets/detail/components/TicketVoiceCall/ControlledCollapsibleDetails'
-import { sanitizeHtmlMinimal } from 'utils/html'
 
 import { ProductImage } from './ProductImage'
 

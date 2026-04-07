@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 
+import { normalizeHtml } from '@repo/utils'
+
 import { Skeleton } from '@gorgias/axiom'
 import type { FeedbackMutation } from '@gorgias/knowledge-service-types'
 
@@ -14,7 +16,6 @@ import type {
     SidebarOpportunityItem,
 } from 'pages/aiAgent/opportunities/types'
 import UnsavedChangesPrompt from 'pages/common/components/UnsavedChangesPrompt'
-import { normalizeHtml } from 'utils/html'
 
 import { OpportunityType } from '../../enums'
 import { useOpportunityCTAs } from '../../hooks/useOpportunityCTAs'

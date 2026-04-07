@@ -1,3 +1,4 @@
+import { sanitizeHtmlDefault } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
@@ -25,7 +26,6 @@ import FailedMessageLabel from 'ticket-list-view/components/FailedMessageLabel'
 import { STATUSES } from 'tickets/common/config'
 import { fieldPath, getAST, getLanguageDisplayName, stripHTML } from 'utils'
 import { getMomentUtcISOString } from 'utils/date'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import { TicketChannel } from '../business/types/ticket'
 

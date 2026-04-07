@@ -3,7 +3,7 @@ import { userEvent } from '@testing-library/user-event'
 
 import { PlaygroundPredefinedMessages } from './PlaygroundPredefinedMessages'
 
-jest.mock('utils/html', () => ({
+jest.mock('@repo/utils', () => ({
     sanitizeHtmlDefault: jest.fn((html) => html),
 }))
 
@@ -322,7 +322,7 @@ describe('PlaygroundPredefinedMessages', () => {
 
     describe('content sanitization', () => {
         it('should sanitize HTML content in preview', async () => {
-            const { sanitizeHtmlDefault } = require('utils/html')
+            const { sanitizeHtmlDefault } = require('@repo/utils')
 
             render(
                 <PlaygroundPredefinedMessages

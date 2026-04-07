@@ -1,6 +1,12 @@
 import { useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import {
+    linkifyHtml,
+    linkifyString,
+    parseHtml,
+    sanitizeHtmlDefault,
+} from '@repo/utils'
 import classNames from 'classnames'
 import ReactPlayer from 'react-player'
 
@@ -9,12 +15,6 @@ import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 import type { TicketMessage } from 'models/ticket/types'
 import Ellipsis from 'pages/common/components/Ellipsis'
 import { extractGorgiasVideoDivFromHtmlContent, parseMedia } from 'utils'
-import {
-    linkifyHtml,
-    linkifyString,
-    parseHtml,
-    sanitizeHtmlDefault,
-} from 'utils/html'
 
 import css from './Content.less'
 

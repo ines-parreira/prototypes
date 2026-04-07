@@ -1,11 +1,12 @@
 import { useMemo } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
+
 import { EntityType } from 'hooks/useSearchRankScenario'
 import type { PickedCustomerWithHighlights } from 'models/search/types'
 import { customerHighlightsTransform } from 'pages/common/components/Spotlight/helpers'
 import css from 'pages/common/components/Spotlight/SpotlightCustomerRow.less'
 import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 type SpotlightCustomerRowProps = {
     item: PickedCustomerWithHighlights

@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import type React from 'react'
 import { useCallback, useMemo } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import classNames from 'classnames'
 import _keyBy from 'lodash/keyBy'
 
@@ -20,7 +21,6 @@ import type { ArticleRowActionTypes } from 'pages/settings/helpCenter/constants'
 import { MODALS } from 'pages/settings/helpCenter/constants'
 import { useSupportedLocales } from 'pages/settings/helpCenter/providers/SupportedLocales'
 import { changeViewLanguage } from 'state/ui/helpCenter/actions'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import { useCategoryRowActions } from '../../../hooks/useCategoryRowActions'
 import { TableActions } from '../../TableActions'

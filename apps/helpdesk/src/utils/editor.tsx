@@ -1,6 +1,6 @@
 import { cloneElement } from 'react'
 
-import { countWords, linkify, truncateWords } from '@repo/utils'
+import { countWords, linkify, parseHtml, truncateWords } from '@repo/utils'
 import type { IConvertFromHTMLConfig } from 'draft-convert'
 import {
     convertFromHTML as _convertFromHTML,
@@ -28,7 +28,6 @@ import { replaceAttachmentURLToExternalSource } from 'utils'
 
 import { DEFAULT_IMAGE_WIDTH, DEFAULT_VIDEO_WIDTH } from '../config/editor'
 import { availableVariables } from '../config/rules'
-import { parseHtml } from './html'
 import { ComposedElements } from './react'
 
 const QUOTE_CLASS_NAME = 'gorgias_quote'

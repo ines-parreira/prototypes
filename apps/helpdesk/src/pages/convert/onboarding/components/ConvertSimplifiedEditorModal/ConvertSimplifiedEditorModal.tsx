@@ -2,6 +2,7 @@ import type React from 'react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { sanitizeHtmlDefault } from '@repo/utils'
 import { produce } from 'immer'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -59,7 +60,6 @@ import { getIntegrationById } from 'state/integrations/selectors'
 import { setNewMessageForChatCampaign } from 'state/newMessage/actions'
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import { toJS } from 'utils'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import css from './ConvertSimplifiedEditorModal.less'
 

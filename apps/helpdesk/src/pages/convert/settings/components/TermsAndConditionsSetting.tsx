@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 import type { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
@@ -15,7 +16,6 @@ import RichField from 'pages/common/forms/RichField/RichField'
 import { ErrorMessage } from 'pages/convert/settings/components/styled'
 import type { DisclaimerSettings } from 'pages/convert/settings/types'
 import { convertFromHTML, convertToHTML } from 'utils/editor'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import css from './TermsAndConditionsSetting.less'
 

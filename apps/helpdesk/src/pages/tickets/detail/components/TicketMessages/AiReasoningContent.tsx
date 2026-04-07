@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import cn from 'classnames'
 import moment from 'moment'
 import ReactMarkdown from 'react-markdown'
@@ -8,7 +9,6 @@ import rehypeRaw from 'rehype-raw'
 import type { KnowledgeReasoningResource } from 'models/aiAgentFeedback/types'
 import { getAiAgentNavigationRoutes } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { coerceResourceType } from 'pages/aiAgent/utils/reasoningResources'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import KnowledgeSourceRenderer from '../AIAgentFeedbackBar/KnowledgeSourceRenderer'
 import { AiAgentKnowledgeResourceTypeEnum } from '../AIAgentFeedbackBar/types'

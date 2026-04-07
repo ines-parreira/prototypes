@@ -1,12 +1,12 @@
 import type { PropsWithChildren } from 'react'
 import React from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
 import css from 'domains/reporting/pages/common/components/PerformanceTip.less'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 type SuccessLevel = 'neutral' | 'light-error' | 'light-success' | 'success'
 

@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import { Popover, PopoverBody } from 'reactstrap'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import type { PlaygroundAction } from './types'
 

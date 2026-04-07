@@ -1,5 +1,6 @@
+import { sanitizeHtmlDefault } from '@repo/utils'
+
 import InputField from 'pages/common/forms/input/InputField'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import { WHATSAPP_VARIABLE_REGEX, whatsAppMessageTemplateToHtml } from './utils'
 import WhatsAppVariablePreview from './WhatsAppVariablePreview'

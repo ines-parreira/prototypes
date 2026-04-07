@@ -1,11 +1,11 @@
 import { useRef, useState } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 
 import { LegacyChip as Chip } from '@gorgias/axiom'
 
 import { Popover } from 'components/Popover'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import type { PlaygroundTemplateMessage } from '../../types'
 

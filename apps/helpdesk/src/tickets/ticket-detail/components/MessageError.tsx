@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 
 import {
@@ -9,7 +10,6 @@ import {
 } from '@gorgias/axiom'
 
 import { getActionTemplate, stripErrorMessage } from 'utils'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import type { FailedData } from '../types'
 

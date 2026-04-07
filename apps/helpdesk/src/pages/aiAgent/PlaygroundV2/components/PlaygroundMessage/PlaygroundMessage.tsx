@@ -1,7 +1,7 @@
 import { useRef } from 'react'
 import type { ReactNode } from 'react'
 
-import { sanitizeHtmlDefault } from '@repo/utils'
+import { linkifyHtml, sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 import { marked } from 'marked'
 
@@ -18,7 +18,6 @@ import { useSettingsContext } from 'pages/aiAgent/PlaygroundV2/contexts/Settings
 import { ProductCarousel } from 'pages/common/components/ProductCarousel'
 import { Avatar } from 'pages/tickets/detail/components/TicketMessages/Avatar'
 import { assertUnreachable } from 'utils'
-import { linkifyHtml } from 'utils/html'
 
 import TicketEvent from '../../../components/TicketEvent/TicketEvent'
 import type { PlaygroundChannels } from '../../types'

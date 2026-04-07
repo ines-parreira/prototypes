@@ -8,10 +8,10 @@ import type {
 import React, { Component } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { focusElement } from '@repo/utils'
 import { Button, Form, Popover, PopoverBody } from 'reactstrap'
 
 import CheckBox from 'pages/common/forms/CheckBox'
-import { focusElement } from 'utils/html'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 
 import css from './Popover.less'

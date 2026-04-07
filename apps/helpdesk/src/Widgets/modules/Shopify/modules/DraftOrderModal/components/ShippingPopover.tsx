@@ -9,6 +9,7 @@ import type {
 import React, { Component } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { focusElement } from '@repo/utils'
 import classnames from 'classnames'
 import type { Map } from 'immutable'
 import { fromJS, List } from 'immutable'
@@ -18,7 +19,6 @@ import { formatPrice } from 'business/shopify/number'
 import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/MoneyAmount'
 import RadioButton from 'pages/common/components/RadioButton'
 import RadioFieldSet from 'pages/common/forms/RadioFieldSet'
-import { focusElement } from 'utils/html'
 import AmountInput from 'Widgets/modules/Shopify/modules/AmountInput'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 

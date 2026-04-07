@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 import _escapeRegExp from 'lodash/escapeRegExp'
 
@@ -10,7 +11,6 @@ import css from 'domains/reporting/pages/common/components/Filter/components/Fil
 import { LABEL_MAX_WIDTH } from 'domains/reporting/pages/common/components/Filter/constants'
 import { highlightString } from 'domains/reporting/pages/utils'
 import { DropdownContext } from 'pages/common/components/dropdown/Dropdown'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 type Props = {
     label: string

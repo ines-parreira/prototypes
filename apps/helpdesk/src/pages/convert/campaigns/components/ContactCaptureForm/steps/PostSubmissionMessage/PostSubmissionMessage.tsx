@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 import { fromJS } from 'immutable'
 
@@ -20,7 +21,6 @@ import { useIntegrationContext } from 'pages/convert/campaigns/containers/Integr
 import { useCampaignDetailsContext } from 'pages/convert/campaigns/hooks/useCampaignDetailsContext'
 import { useChatPreviewProps } from 'pages/convert/campaigns/hooks/useChatPreviewProps'
 import { convertFromHTML, convertToHTML } from 'utils/editor'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import css from './PostSubmissionMessage.less'
 

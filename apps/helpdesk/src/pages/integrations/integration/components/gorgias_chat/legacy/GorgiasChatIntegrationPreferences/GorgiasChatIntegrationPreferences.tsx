@@ -4,6 +4,7 @@ import { Component } from 'react'
 import { FeatureFlagKey, withFeatureFlags } from '@repo/feature-flags'
 import type { FeatureFlagsMap } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { sanitizeHtmlDefault } from '@repo/utils'
 import classnames from 'classnames'
 import type { EditorState } from 'draft-js'
 import { produce } from 'immer'
@@ -65,7 +66,6 @@ import { getCurrentConvertPlan } from 'state/billing/selectors'
 import * as IntegrationsActions from 'state/integrations/actions'
 import { getStoreIntegrations } from 'state/integrations/selectors'
 import { convertToHTML } from 'utils/editor'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import {
     getPrimaryLanguageFromChatConfig,

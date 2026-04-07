@@ -12,9 +12,6 @@ jest.mock('@repo/utils', () => ({
     ...jest.requireActual('@repo/utils'),
     formatDatetime: (date: string, format: string) =>
         `formatted-${date}-${format}`,
-}))
-
-jest.mock('utils/html', () => ({
     sanitizeHtmlDefault: (html: string) => html,
     unescapeAmpAndDollarEntities: (html: string) => html,
 }))

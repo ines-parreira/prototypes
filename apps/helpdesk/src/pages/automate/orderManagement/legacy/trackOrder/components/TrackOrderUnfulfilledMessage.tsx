@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 
+import { trimHTML } from '@repo/utils'
 import classnames from 'classnames'
 import type { EditorState } from 'draft-js'
 import { fromJS } from 'immutable'
@@ -9,7 +10,6 @@ import type { ResponseMessageContent } from 'models/selfServiceConfiguration/typ
 import ToolbarProvider from 'pages/common/draftjs/plugins/toolbar/ToolbarProvider'
 import RichField from 'pages/common/forms/RichField/RichField'
 import { convertToHTML } from 'utils/editor'
-import { trimHTML } from 'utils/html'
 
 import { AUTOMATED_RESPONSE_MESSAGE_TEXT_MAX_LENGTH } from '../../constants'
 import {

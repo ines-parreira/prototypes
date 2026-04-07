@@ -1,6 +1,7 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
+import { sanitizeHtmlForFacebookMessenger } from '@repo/utils'
 import { createEvent, fireEvent, render } from '@testing-library/react'
 import { ContentState } from 'draft-js'
 //@ts-ignore
@@ -16,7 +17,6 @@ import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import { useOutboundTranslationContext } from 'providers/OutboundTranslationProvider'
 import * as channelsService from 'services/channels'
 import { convertToHTML, createDraftJSKeyGeneratorMock } from 'utils/editor'
-import { sanitizeHtmlForFacebookMessenger } from 'utils/html'
 
 import { TicketReplyEditorContainer } from '../TicketReplyEditor'
 

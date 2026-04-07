@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { history } from '@repo/routing'
+import { sanitizeHtmlDefault } from '@repo/utils'
 import cn from 'classnames'
 import type { EditorState } from 'draft-js'
 import { produce } from 'immer'
@@ -59,7 +60,6 @@ import {
 } from 'state/newMessage/actions'
 import { getNewMessageAttachments } from 'state/newMessage/selectors'
 import { convertToHTML } from 'utils/editor'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import { HeaderReturnButton } from '../../../common/components/HeaderReturnButton'
 import { CampaignFooter } from '../../components/CampaignFooter'

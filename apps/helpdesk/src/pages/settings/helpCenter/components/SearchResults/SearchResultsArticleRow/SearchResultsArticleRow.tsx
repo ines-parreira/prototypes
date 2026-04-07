@@ -2,6 +2,7 @@ import type { FC } from 'react'
 import type React from 'react'
 import { useCallback, useMemo } from 'react'
 
+import { sanitizeHtmlDefault } from '@repo/utils'
 import _keyBy from 'lodash/keyBy'
 
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -17,7 +18,6 @@ import BodyCell from 'pages/common/components/table/cells/BodyCell'
 import TableBodyRow from 'pages/common/components/table/TableBodyRow'
 import type { ArticleRowActionTypes } from 'pages/settings/helpCenter/constants'
 import { changeViewLanguage } from 'state/ui/helpCenter/actions'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 import { useArticleRowActions } from '../../../hooks/useArticleRowActions'
 import { useRatingScore } from '../../../hooks/useRatingScore'

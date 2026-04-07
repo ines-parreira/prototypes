@@ -1,4 +1,9 @@
-import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+import {
+    DateAndTimeFormatting,
+    formatDatetime,
+    sanitizeHtmlDefault,
+    unescapeAmpAndDollarEntities,
+} from '@repo/utils'
 
 import {
     LegacyIconButton as IconButton,
@@ -12,7 +17,6 @@ import { Drawer } from 'pages/common/components/Drawer'
 import { KnowledgeSourcePreviewContentRenderer } from 'pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePreviewContentRenderer'
 import type { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { getKnowledgeResourceTypeLabel } from 'pages/tickets/detail/components/AIAgentFeedbackBar/utils'
-import { sanitizeHtmlDefault, unescapeAmpAndDollarEntities } from 'utils/html'
 
 import css from './KnowledgeSourcePreview.less'
 

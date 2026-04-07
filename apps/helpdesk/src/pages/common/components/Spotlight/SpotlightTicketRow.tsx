@@ -1,6 +1,10 @@
 import React, { useMemo } from 'react'
 
-import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
+import {
+    DateAndTimeFormatting,
+    formatDatetime,
+    sanitizeHtmlDefault,
+} from '@repo/utils'
 import { fromJS } from 'immutable'
 import moment from 'moment'
 
@@ -13,7 +17,6 @@ import SpotlightRow from 'pages/common/components/Spotlight/SpotlightRow'
 import css from 'pages/common/components/Spotlight/SpotlightTicketRow.less'
 import TicketIcon from 'pages/common/components/TicketIcon'
 import { UserAssigneeLabel } from 'pages/common/utils/labels'
-import { sanitizeHtmlDefault } from 'utils/html'
 
 type SpotlightTicketRowProps = {
     item: PickedTicketWithHighlights

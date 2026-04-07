@@ -10,6 +10,7 @@ import {
     isProduction,
     isStaging,
     linkify,
+    sanitizeHtmlDefault,
 } from '@repo/utils'
 import crypto from 'crypto'
 import { EditorState, Modifier } from 'draft-js'
@@ -50,7 +51,6 @@ import { NotificationStatus } from './state/notifications/types'
 import type { RootState } from './state/types'
 import type { ViewsState } from './state/views/types'
 import type { NonEmptyArray, Schemas } from './types'
-import { sanitizeHtmlDefault } from './utils/html'
 
 export type Message = {
     id: number

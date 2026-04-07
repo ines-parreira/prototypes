@@ -1,17 +1,16 @@
 import { assumeMock } from '@repo/testing'
+import { parseHtml } from '@repo/utils'
 import { render, screen } from '@testing-library/react'
 import ReactPlayer from 'react-player'
 
 import type { TicketMessage } from '@gorgias/helpdesk-types'
-
-import { parseHtml } from 'utils/html'
 
 import { processContent } from '../../helpers/processContent'
 import { MessageContent } from '../MessageContent'
 
 jest.mock('react-player', () => jest.fn(() => <div>React Player</div>))
 
-jest.mock('utils/html', () => ({
+jest.mock('@repo/utils', () => ({
     parseHtml: jest.fn(),
 }))
 
