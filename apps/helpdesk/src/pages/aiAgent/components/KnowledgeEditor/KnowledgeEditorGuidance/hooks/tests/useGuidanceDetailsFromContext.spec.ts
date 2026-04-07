@@ -59,6 +59,7 @@ describe('useGuidanceDetailsFromContext', () => {
         return {
             state: contextValue.state,
             config: contextValue.config ?? {
+                shopName: 'test-shop',
                 guidanceHelpCenter: {
                     id: 1,
                     default_locale: 'en-US',
@@ -645,10 +646,57 @@ describe('useGuidanceDetailsFromContext', () => {
         })
     })
 
+    describe('guidanceId', () => {
+        it('should return the guidance id from state', () => {
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.guidanceId).toBe(123)
+        })
+
+        it('should return undefined when guidance is undefined', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                state: { ...defaultState, guidance: undefined },
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.guidanceId).toBeUndefined()
+        })
+    })
+
+    describe('shopName', () => {
+        it('should return shopName from config', () => {
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.shopName).toBe('test-shop')
+        })
+
+        it('should return updated shopName when config changes', () => {
+            mockUseGuidanceContext.mockReturnValue({
+                ...defaultContextValue,
+                config: {
+                    shopName: 'another-shop',
+                    guidanceHelpCenter: {
+                        id: 1,
+                        default_locale: 'en-US',
+                        shop_integration_id: 0,
+                    },
+                },
+            })
+
+            const { result } = renderHook(() => useGuidanceDetailsFromContext())
+
+            expect(result.current.shopName).toBe('another-shop')
+        })
+    })
+
     describe('return value shape', () => {
         it('should return all expected properties', () => {
             const { result } = renderHook(() => useGuidanceDetailsFromContext())
 
+            expect(result.current).toHaveProperty('guidanceId')
+            expect(result.current).toHaveProperty('shopName')
             expect(result.current).toHaveProperty('aiAgentStatus')
             expect(result.current).toHaveProperty('aiAgentStatus.value')
             expect(result.current).toHaveProperty('aiAgentStatus.onChange')

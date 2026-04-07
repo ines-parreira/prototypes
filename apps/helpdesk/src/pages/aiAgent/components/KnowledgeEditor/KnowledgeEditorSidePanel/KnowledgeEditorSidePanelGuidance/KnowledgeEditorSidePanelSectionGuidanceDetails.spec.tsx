@@ -1,8 +1,10 @@
 import { useFlag } from '@repo/feature-flags'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { useHistory } from 'react-router-dom'
 
 import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionGuidanceDetails } from './KnowledgeEditorSidePanelSectionGuidanceDetails'
@@ -21,7 +23,18 @@ jest.mock(
     }),
 )
 
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    useHistory: jest.fn(),
+}))
+
+jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
+    useAiAgentNavigation: jest.fn(),
+}))
+
 const mockUseFlag = useFlag as jest.Mock
+const mockUseHistory = useHistory as jest.Mock
+const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
 
 jest.mock('../KnowledgeEditorSidePanelCommonFields', () => ({
     KnowledgeEditorSidePanelFieldAIAgentStatus: ({
@@ -49,6 +62,8 @@ const mockUseGuidanceDetailsFromContext =
     useGuidanceDetailsFromContext as jest.Mock
 
 const baseDetailsData = {
+    guidanceId: 123,
+    shopName: 'test-shop',
     aiAgentStatus: {
         value: true,
         onChange: jest.fn().mockResolvedValue(undefined),
@@ -75,8 +90,17 @@ const renderComponent = () =>
     )
 
 describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
+    const mockPush = jest.fn()
+
     beforeEach(() => {
         mockUseGuidanceDetailsFromContext.mockReturnValue(baseDetailsData)
+        mockUseHistory.mockReturnValue({ push: mockPush })
+        mockUseAiAgentNavigation.mockReturnValue({
+            routes: {
+                skillDetail: (id: number) => `/ai-agent/skills/${id}`,
+                newSkill: '/ai-agent/skills/new',
+            },
+        })
     })
 
     afterEach(() => {
@@ -226,6 +250,59 @@ describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
             ).toBeInTheDocument()
 
             await user.click(screen.getByRole('button', { name: 'Cancel' }))
+
+            expect(
+                screen.queryByRole('heading', {
+                    name: 'Convert guidance into a skill?',
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('navigates to skill detail when guidance has an id and Convert to skill is confirmed', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Convert to skill' }),
+            )
+
+            expect(mockPush).toHaveBeenCalledWith('/ai-agent/skills/123')
+        })
+
+        it('navigates to new skill when guidance has no id and Convert to skill is confirmed', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            mockUseGuidanceDetailsFromContext.mockReturnValue({
+                ...baseDetailsData,
+                guidanceId: undefined,
+            })
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Convert to skill' }),
+            )
+
+            expect(mockPush).toHaveBeenCalledWith('/ai-agent/skills/new')
+        })
+
+        it('closes the modal after confirming conversion', async () => {
+            const user = userEvent.setup()
+            mockUseFlag.mockReturnValue(true)
+            renderComponent()
+
+            await user.click(
+                screen.getByRole('button', { name: /convert to skill/i }),
+            )
+            await user.click(
+                screen.getByRole('button', { name: 'Convert to skill' }),
+            )
 
             expect(
                 screen.queryByRole('heading', {

@@ -1,12 +1,14 @@
 import { useState } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useHistory } from 'react-router-dom'
 
 import { Tag } from '@gorgias/axiom'
 
 import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
 import { KnowledgeEditorSidePanelConvertToSkill } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelConvertToSkill'
 import { KnowledgeEditorSidePanelSectionConvertToSkillModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/modals/KnowledgeEditorSidePanelSectionConvertToSkillModal'
+import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import {
     KnowledgeEditorSidePanelFieldAIAgentStatus,
@@ -28,6 +30,8 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
     sectionId,
 }: Props) => {
     const {
+        guidanceId,
+        shopName,
         aiAgentStatus,
         createdDatetime,
         lastUpdatedDatetime,
@@ -47,6 +51,18 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
     const isKnowledgeIntentManagementSystemEnabled = useFlag(
         FeatureFlagKey.KnowledgeIntentManagementSystem,
     )
+
+    const history = useHistory()
+    const { routes } = useAiAgentNavigation({ shopName })
+
+    const handleConvertToSkill = () => {
+        if (guidanceId) {
+            history.push(routes.skillDetail(guidanceId))
+        } else {
+            history.push(routes.newSkill)
+        }
+        setIsConvertToSkillModalOpen(false)
+    }
 
     const handleAIAgentStatusChange = async () => {
         setIsTogglingAIAgentStatus(true)
@@ -141,6 +157,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
             <KnowledgeEditorSidePanelSectionConvertToSkillModal
                 isOpen={isConvertToSkillModalOpen}
                 onClose={() => setIsConvertToSkillModalOpen(false)}
+                onConvertToSkill={handleConvertToSkill}
             />
         </>
     )

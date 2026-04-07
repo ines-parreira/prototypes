@@ -11,17 +11,14 @@ import {
 type Props = {
     isOpen: boolean
     onClose: () => void
+    onConvertToSkill: () => void
 }
 
 export const KnowledgeEditorSidePanelSectionConvertToSkillModal = ({
     isOpen,
     onClose,
+    onConvertToSkill,
 }: Props) => {
-    const handleConvertToSkill = () => {
-        // Clicking on Convert to skill button will bring user to Skill editor page.
-        // This logic will be implemented in the next PR after the implementation of Skill editor page is done.
-    }
-
     return (
         <Modal
             isOpen={isOpen}
@@ -46,7 +43,7 @@ export const KnowledgeEditorSidePanelSectionConvertToSkillModal = ({
                     <Button variant="tertiary" onClick={onClose}>
                         Cancel
                     </Button>
-                    <Button variant="primary" onClick={handleConvertToSkill}>
+                    <Button variant="primary" onClick={onConvertToSkill}>
                         Convert to skill
                     </Button>
                 </Box>
