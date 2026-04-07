@@ -74,7 +74,6 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
     beforeEach(() => {
         mockUseFlag.mockImplementation(
             (key) =>
-                key === FeatureFlagKey.AiShoppingAssistantEnabled ||
                 key ===
                     FeatureFlagKey.AiShoppingAssistantTrackingBundleWarningBanner ||
                 false,
@@ -258,9 +257,7 @@ describe('useTrackingBundleInstallationWarningCheck', () => {
     })
 
     it('should return undefined with uninstalled chat integrations but tracking banner disabled', () => {
-        mockUseFlag.mockImplementation(
-            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-        )
+        mockUseFlag.mockReturnValue(false)
 
         mockUseListBundles.mockReturnValueOnce({
             data: [

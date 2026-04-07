@@ -15,7 +15,6 @@ export const buildRuleEngineData = (
     ticketView: {} as any,
     pageInteractions: {} as any,
     isActivationEnabled: false,
-    isAiShoppingAssistantEnabled: false,
     selfServiceChatChannels: [],
     ...data,
 })

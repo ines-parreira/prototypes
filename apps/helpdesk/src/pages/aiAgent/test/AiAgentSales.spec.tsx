@@ -1,7 +1,6 @@
 // must be kept as first import in the file
 import 'pages/aiAgent/test/mock-activation-hooks.utils'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
@@ -67,12 +66,6 @@ const defaultState = {
 const mockUseGetShoppingAssistantEnabled =
     useGetShoppingAssistantEnabled as jest.Mock
 
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn(),
-}))
-const mockUseFlag = jest.mocked(useFlag)
-
 const renderComponent = () =>
     renderWithRouter(
         <Provider store={mockStore(defaultState)}>
@@ -89,9 +82,6 @@ const renderComponent = () =>
 describe('<AiAgentSales />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseFlag.mockImplementation(
-            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-        )
     })
 
     it('should render without error', async () => {
@@ -141,21 +131,6 @@ describe('<AiAgentSales />', () => {
         mockUseGetShoppingAssistantEnabled.mockReturnValue({
             isEnabled: false,
             isLoading: true,
-        })
-
-        renderComponent()
-
-        await waitFor(() => {
-            expect(mockHistoryReplace).not.toHaveBeenCalled()
-        })
-    })
-
-    it('should not redirect when feature flag is disabled', async () => {
-        mockUseFlag.mockReturnValue(false)
-
-        mockUseGetShoppingAssistantEnabled.mockReturnValue({
-            isEnabled: false,
-            isLoading: false,
         })
 
         renderComponent()

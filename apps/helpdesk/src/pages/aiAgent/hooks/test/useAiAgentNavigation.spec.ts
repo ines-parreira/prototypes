@@ -122,16 +122,6 @@ describe('useAiAgentNavigation', () => {
         )
     })
 
-    it('should return /sales/analytics path when the AiShoppingAssistantEnabled feature-flag is enabled', () => {
-        const { result } = renderHook(() =>
-            useAiAgentNavigation({ shopName: 'test' }),
-        )
-
-        expect(result.current.routes.analytics).toEqual(
-            '/app/ai-agent/shopify/test/sales/analytics',
-        )
-    })
-
     it('should return /sales/product-recommendations paths', () => {
         const { result } = renderHook(() =>
             useAiAgentNavigation({ shopName: 'test' }),
@@ -230,66 +220,29 @@ describe('useAiAgentNavigation', () => {
     })
 
     describe('useNavigationItems', () => {
-        describe('when AiShoppingAssistantEnabled=false', () => {
-            beforeEach(() => {
-                mockUseFlag.mockImplementation(
-                    (key) =>
-                        key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                        false,
-                )
-            })
-
-            it('should return ai-agent route for ai-agent support set up', () => {
-                const { result } = renderHook(() =>
-                    useAiAgentNavigation({ shopName: 'my-shop' }),
-                )
-
-                expect(result.current.routes.onboardingWizardStep()).toEqual(
-                    '/app/ai-agent/shopify/my-shop/onboarding',
-                )
-            })
-        })
-
-        describe('when AiShoppingAssistantEnabled=true', () => {
-            beforeEach(() => {
-                mockUseFlag.mockImplementation(
-                    (key) =>
-                        key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                        false,
-                )
-            })
-
-            it('should return ai-agent route for ai-agent sales set up when no step', () => {
-                const { result } = renderHook(() =>
-                    useAiAgentNavigation({ shopName: 'my-shop' }),
-                )
-
-                expect(result.current.routes.onboardingWizardStep()).toEqual(
-                    '/app/ai-agent/shopify/my-shop/onboarding',
-                )
-            })
-
-            it('should return ai-agent route for ai-agent sales set up when step', () => {
-                const { result } = renderHook(() =>
-                    useAiAgentNavigation({ shopName: 'my-shop' }),
-                )
-
-                expect(
-                    result.current.routes.onboardingWizardStep(
-                        WizardStepEnum.TONE_OF_VOICE,
-                    ),
-                ).toEqual(
-                    '/app/ai-agent/shopify/my-shop/onboarding/tone of voice',
-                )
-            })
-        })
-
-        it('should return ai-agent route for customer engagement when ai shopping assistant is enabled', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
+        it('should return ai-agent route for ai-agent set up when no step', () => {
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'my-shop' }),
             )
 
+            expect(result.current.routes.onboardingWizardStep()).toEqual(
+                '/app/ai-agent/shopify/my-shop/onboarding',
+            )
+        })
+
+        it('should return ai-agent route for ai-agent set up when step', () => {
+            const { result } = renderHook(() =>
+                useAiAgentNavigation({ shopName: 'my-shop' }),
+            )
+
+            expect(
+                result.current.routes.onboardingWizardStep(
+                    WizardStepEnum.TONE_OF_VOICE,
+                ),
+            ).toEqual('/app/ai-agent/shopify/my-shop/onboarding/tone of voice')
+        })
+
+        it('should return ai-agent route for customer engagement', () => {
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
@@ -312,12 +265,7 @@ describe('useAiAgentNavigation', () => {
             )
         })
 
-        it('should return ai-agent route for strategy when ai shopping assistant is enabled', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
-
+        it('should return ai-agent route for strategy', () => {
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
@@ -341,11 +289,6 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should not return ai-agent route for analytics in sales items', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
-
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
@@ -368,40 +311,7 @@ describe('useAiAgentNavigation', () => {
             )
         })
 
-        it('should return ai-agent route for strategy when ai shopping assistant is enabled', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
-
-            const { result } = renderHook(() =>
-                useAiAgentNavigation({ shopName: 'my-shop' }),
-            )
-
-            const trainItem = result.current.navigationItems.find(
-                (item) => item.dataCanduId === 'ai-agent-navbar-train',
-            )
-            const salesItems = trainItem?.items?.find(
-                (item) => item.title === SALES,
-            )?.items
-
-            expect(salesItems).toEqual(
-                expect.arrayContaining([
-                    {
-                        route: '/app/ai-agent/shopify/my-shop/sales/strategy',
-                        title: STRATEGY,
-                        exact: true,
-                    },
-                ]),
-            )
-        })
-
-        it('should not return ai-agent route for product recommendations when ai shopping assistant is enabled but product recommendations is disabled', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
-
+        it('should not return ai-agent route for product recommendations when product recommendations is disabled', () => {
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
@@ -417,22 +327,9 @@ describe('useAiAgentNavigation', () => {
             expect(productRecommendationsItem).toBeUndefined()
         })
 
-        it('should not return ai-agent route for sales when ai shopping assistant is disabled', () => {
-            const { result } = renderHook(() =>
-                useAiAgentNavigation({ shopName: 'my-shop' }),
-            )
-
-            const salesItems = result.current.navigationItems.find(
-                (item) => item.title === SALES,
-            )?.items
-
-            expect(salesItems).toBeUndefined()
-        })
-
         it('should not include sales navigation item when ShoppingAssistantEnforceDeactivation is enabled', () => {
             mockUseFlag.mockImplementation(
                 (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled ||
                     key ===
                         FeatureFlagKey.ShoppingAssistantEnforceDeactivation ||
                     false,
@@ -453,11 +350,6 @@ describe('useAiAgentNavigation', () => {
         })
 
         it('should include sales navigation item when ShoppingAssistantEnforceDeactivation is disabled', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
-
             const { result } = renderHook(() =>
                 useAiAgentNavigation({ shopName: 'my-shop' }),
             )
@@ -475,9 +367,6 @@ describe('useAiAgentNavigation', () => {
 
         it('should include sales navigation item when ShoppingAssistantEnforceDeactivation is enabled but AiShoppingAssistantAbTesting is also enabled', () => {
             mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
-                    return true
-                }
                 if (
                     key === FeatureFlagKey.ShoppingAssistantEnforceDeactivation
                 ) {

@@ -37,10 +37,6 @@ export const CustomerEngagementSettings = ({
 
     const { handleSubmit } = useFormContext<CustomerEngagementData>()
 
-    const isAiShoppingAssistantEnabled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantEnabled,
-    )
-
     const isSpqSettingsEnabled = useFlag(FeatureFlagKey.EmbeddedSpqSettings)
 
     const storeIntegration = useStoreIntegrationByShopName(shopName)
@@ -88,7 +84,7 @@ export const CustomerEngagementSettings = ({
                     )}
 
                     <ConversationStartersSettings
-                        isEnabled={isAiShoppingAssistantEnabled}
+                        isEnabled
                         gmv={gmv}
                         isGmvLoading={isGmvLoading}
                         onAdvancedSettingsSave={handleSubmit(onSave)}
@@ -103,15 +99,13 @@ export const CustomerEngagementSettings = ({
                         />
                     )}
 
-                    {isAiShoppingAssistantEnabled && (
-                        <ConversationLauncherSettings
-                            gmv={gmv}
-                            isGmvLoading={isGmvLoading}
-                            primaryLanguage={primaryLanguage}
-                            translations={translations}
-                            onAdvancedSettingsSave={handleSubmit(onSave)}
-                        />
-                    )}
+                    <ConversationLauncherSettings
+                        gmv={gmv}
+                        isGmvLoading={isGmvLoading}
+                        primaryLanguage={primaryLanguage}
+                        translations={translations}
+                        onAdvancedSettingsSave={handleSubmit(onSave)}
+                    />
                 </Box>
             </Box>
         </>

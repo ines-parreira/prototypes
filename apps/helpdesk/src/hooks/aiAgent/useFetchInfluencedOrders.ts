@@ -1,4 +1,3 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { UseQueryResult } from '@tanstack/react-query'
 
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
@@ -49,14 +48,9 @@ export const useFetchInfluencedOrders = ({
     orderIds,
 }: InfluencedOrdersParams): UseQueryResult<InfluencedOrderData[]> => {
     const canUseSalesAgent = useCanUseAiSalesAgent()
-    const isShoppingAssistantEnbaled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantEnabled,
-    )
-    const isInfluencedByAiEnabled =
-        canUseSalesAgent && isShoppingAssistantEnbaled
 
     const isQueryEnabled =
-        isInfluencedByAiEnabled &&
+        canUseSalesAgent &&
         !!periodStart &&
         !!integrationIds.length &&
         !!orderIds.length

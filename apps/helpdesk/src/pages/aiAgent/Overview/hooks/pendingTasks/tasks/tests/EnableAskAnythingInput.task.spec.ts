@@ -29,7 +29,6 @@ describe('EnableAskAnythingInputTask', () => {
             buildRuleEngineData({
                 ...baseEngineData,
                 aiAgentStoreConfiguration,
-                isAiShoppingAssistantEnabled: true,
             }),
             buildRuleEngineRoutes(),
         )
@@ -52,7 +51,6 @@ describe('EnableAskAnythingInputTask', () => {
             buildRuleEngineData({
                 ...baseEngineData,
                 aiAgentStoreConfiguration,
-                isAiShoppingAssistantEnabled: true,
             }),
             buildRuleEngineRoutes(),
         )
@@ -73,31 +71,6 @@ describe('EnableAskAnythingInputTask', () => {
             buildRuleEngineData({
                 ...baseEngineData,
                 aiAgentStoreConfiguration,
-                isAiShoppingAssistantEnabled: true,
-            }),
-            buildRuleEngineRoutes(),
-        )
-
-        expect(task.display).toBe(false)
-    })
-
-    it('should not display the task when feature flag is not enabled', () => {
-        const aiAgentStoreConfiguration =
-            AiAgentStoreConfigurationFixture.start()
-                .withoutFloatingChatInputConfiguration([
-                    AiAgentScope.Sales,
-                    AiAgentScope.Support,
-                ])
-                .withConnectedChatIntegrations([1])
-                .withConnectedHelpCenter(1)
-                .withChatChannelEnabled()
-                .build()
-
-        const task = new EnableAskAnythingInputTask(
-            buildRuleEngineData({
-                ...baseEngineData,
-                aiAgentStoreConfiguration,
-                isAiShoppingAssistantEnabled: false,
             }),
             buildRuleEngineRoutes(),
         )
@@ -121,7 +94,6 @@ describe('EnableAskAnythingInputTask', () => {
             buildRuleEngineData({
                 ...baseEngineData,
                 aiAgentStoreConfiguration,
-                isAiShoppingAssistantEnabled: true,
             }),
             buildRuleEngineRoutes(),
         )

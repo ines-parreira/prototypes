@@ -109,7 +109,6 @@ const templateParameters = {
         include: [] satisfies (keyof Props)[],
     },
     flags: {
-        [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
         [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: true,
         [FeatureFlagKey.ShoppingAssistantTrialRevampMilestone]: 'milestone-1',
     },

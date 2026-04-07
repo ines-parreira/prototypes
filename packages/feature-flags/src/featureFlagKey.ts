@@ -67,8 +67,6 @@ export enum FeatureFlagKey {
     /** @deprecated Fully evaluated to `true` */
     AiSalesAgentBypassPlanCheck = 'ai-sales-agent-bypass-plan-check',
     AiStandaloneAgent = 'ai-standalone-acl',
-    /** @deprecated Fully evaluated to `true` */
-    AiShoppingAssistantEnabled = 'ai-shopping-assistant-enabled',
     AiShoppingAssistantTrackingBundleWarningBanner = 'tracking-bundle-warning-banner',
     /** @deprecated Fully evaluated to `true` */
     AiShoppingAssistantTrialExtension = 'ai-shopping-assistant-trial-extension',

@@ -485,10 +485,6 @@ const PaywallWrapperComponent = ({
     onNotifyAdminClick: () => void
     onOnboardingWizardClick: () => void
 }) => {
-    const isAiShoppingAssistantEnabled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantEnabled,
-    )
-
     const queryParams = new URLSearchParams(location.search)
 
     const isFromEmailOrNotification =
@@ -497,7 +493,6 @@ const PaywallWrapperComponent = ({
 
     const shouldStartTrial =
         !isTrialAccessLoading &&
-        isAiShoppingAssistantEnabled &&
         showUpgradePaywall &&
         displayTrialButton &&
         !canBookDemo &&
@@ -505,11 +500,7 @@ const PaywallWrapperComponent = ({
         isFromEmailOrNotification
 
     useEffect(() => {
-        if (
-            isAiShoppingAssistantEnabled &&
-            showUpgradePaywall &&
-            displayTrialButton
-        ) {
+        if (showUpgradePaywall && displayTrialButton) {
             logEvent(SegmentEvent.AiAgentShoppingAssistantTrialCtaDisplayed, {
                 ...eventData,
             })
@@ -518,12 +509,7 @@ const PaywallWrapperComponent = ({
                 trialType: TrialType.ShoppingAssistant,
             })
         }
-    }, [
-        displayTrialButton,
-        isAiShoppingAssistantEnabled,
-        showUpgradePaywall,
-        eventData,
-    ])
+    }, [displayTrialButton, showUpgradePaywall, eventData])
 
     useEffect(() => {
         if (shouldStartTrial) {
@@ -590,7 +576,7 @@ const PaywallWrapperComponent = ({
         [],
     )
 
-    if (isAiShoppingAssistantEnabled && showUpgradePaywall) {
+    if (showUpgradePaywall) {
         const actionsOrderedByPriority: (AIAgentCTAOptions | null)[] = []
 
         // If onboarding is possible, anyone can start it and that's the only option we allow

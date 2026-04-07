@@ -786,11 +786,6 @@ describe('CustomerEngagementSettings', () => {
         })
 
         it('should enable toggle when feature flag is enabled', async () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
-
             const result = renderComponent()
 
             const switchElement = getConversationStartersSwitch(
@@ -804,16 +799,6 @@ describe('CustomerEngagementSettings', () => {
             })
 
             expect(result.getByText('Save changes?')).toBeInTheDocument()
-        })
-
-        it('Should not render Floating Input settings when AiShoppingAssistantEnabled flag is disabled', () => {
-            mockUseFlag.mockReturnValue(false)
-
-            const result = renderComponent()
-
-            expect(
-                result.queryByText('Enable Floating Input'),
-            ).not.toBeInTheDocument()
         })
     })
 

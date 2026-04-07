@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -154,9 +154,7 @@ describe('AiAgentOnboarding', () => {
             data: [],
         })
 
-        mockUseFlag.mockImplementation(
-            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-        )
+        mockUseFlag.mockReturnValue(false)
 
         useAiAgentScopesForAutomationPlanMock.mockReturnValue([
             AiAgentScopes.SUPPORT,

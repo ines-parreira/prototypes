@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory, useParams } from 'react-router-dom'
 
 import { AiAgentLayout } from './components/AiAgentLayout/AiAgentLayout'
@@ -15,9 +14,6 @@ export const AiAgentSales = () => {
     const { shopName } = useParams<{
         shopName: string
     }>()
-    const isSalesPageEnabled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantEnabled,
-    )
     const history = useHistory()
     const analyticsRoute = getAiAgentNavigationRoutes(shopName).analytics
     const strategyRoute = getAiAgentNavigationRoutes(shopName).salesStrategy
@@ -25,13 +21,12 @@ export const AiAgentSales = () => {
         useGetShoppingAssistantEnabled({ shopName })
 
     useEffect(() => {
-        if (!isSalesPageEnabled || isLoading) {
+        if (isLoading) {
             return
         }
 
         history.replace(strategyRoute)
     }, [
-        isSalesPageEnabled,
         isLoading,
         isShoppingAssistantEnabled,
         history,

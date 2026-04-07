@@ -34,9 +34,6 @@ export function AutomateStatsNavbar() {
 
     const isAiAgentStatsPageEnabled = useFlag(FeatureFlagKey.AIAgentStatsPage)
 
-    const isAiSalesAgentAnalyticsEnabled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantEnabled,
-    )
     const canUseAiSalesAgent = useCanUseAiSalesAgent()
 
     const isAnalyticsDashboardsNewScreensEnabled = useFlag(
@@ -144,21 +141,19 @@ export function AutomateStatsNavbar() {
                             </ProtectedRoute>
                         )}
 
-                        {isAiSalesAgentAnalyticsEnabled && (
-                            <ProtectedRoute path={AI_SALES_AGENT_PATH}>
-                                <Navigation.SectionItem
-                                    as={NavLink}
-                                    to={AI_SALES_AGENT_PATH}
-                                    exact
-                                    displayType="indent"
-                                    data-candu-id="statistics-ai-sales-agent"
-                                    className={css.item}
-                                >
-                                    {LINK_AI_SALES_AGENT_TEXT}
-                                    {!canUseAiSalesAgent && <UpgradeIcon />}
-                                </Navigation.SectionItem>
-                            </ProtectedRoute>
-                        )}
+                        <ProtectedRoute path={AI_SALES_AGENT_PATH}>
+                            <Navigation.SectionItem
+                                as={NavLink}
+                                to={AI_SALES_AGENT_PATH}
+                                exact
+                                displayType="indent"
+                                data-candu-id="statistics-ai-sales-agent"
+                                className={css.item}
+                            >
+                                {LINK_AI_SALES_AGENT_TEXT}
+                                {!canUseAiSalesAgent && <UpgradeIcon />}
+                            </Navigation.SectionItem>
+                        </ProtectedRoute>
 
                         {!isStandaloneAiAgent && (
                             <ProtectedRoute path={PERFORMANCE_BY_FEATURE_PATH}>

@@ -330,115 +330,64 @@ describe('SalesPaywallMiddleware', () => {
         ).not.toBeInTheDocument()
     })
 
-    describe('isAiShoppingAssistantEnabled', () => {
-        it('should render upgrade paywall when it has automate not on generation 6 plan', () => {
-            setupUseAppSelectorMock({
-                hasAutomate: true,
-                currentAutomatePlan: { generation: 5 },
-            })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
-
-            mockUseTrialAccess.mockReturnValue(
-                createMockTrialAccess({
-                    isAdminUser: true,
-                }),
-            )
-            renderMiddleware()
-
-            expect(
-                screen.queryByTestId('mock-child-component'),
-            ).not.toBeInTheDocument()
-
-            const paywallView = screen.getByText(/Paywall View Mock/)
-            expect(paywallView).toBeInTheDocument()
-            expect(paywallView).toHaveTextContent(
-                `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.Upgrade}`,
-            )
-            // Check if candu div is NOT rendered inside paywall
-            expect(
-                paywallView.querySelector(
-                    '[data-candu-id="ai-agent-waitlist"]',
-                ),
-            ).not.toBeInTheDocument()
+    it('should render upgrade paywall when it has automate not on generation 6 plan', () => {
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 5 },
         })
 
-        it('should render the child component when it has automate on generation 6 plan', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
-            setupUseAppSelectorMock({
-                hasAutomate: true,
-                currentAutomatePlan: { generation: 6 },
-            })
+        mockUseTrialAccess.mockReturnValue(
+            createMockTrialAccess({
+                isAdminUser: true,
+            }),
+        )
+        renderMiddleware()
 
-            renderMiddleware()
-            expect(
-                screen.getByTestId('mock-child-component'),
-            ).toBeInTheDocument()
-            expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
-            expect(
-                screen.queryByText(/Paywall View Mock/),
-            ).not.toBeInTheDocument()
-        })
+        expect(
+            screen.queryByTestId('mock-child-component'),
+        ).not.toBeInTheDocument()
 
-        it('should render the child component when it has automate + alpha user', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                    key === FeatureFlagKey.AiSalesAgentBypassPlanCheck ||
-                    false,
-            )
-            setupUseAppSelectorMock({
-                hasAutomate: true,
-                currentAutomatePlan: { generation: 6 },
-            })
-
-            renderMiddleware()
-            expect(
-                screen.getByTestId('mock-child-component'),
-            ).toBeInTheDocument()
-            expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
-            expect(
-                screen.queryByText(/Paywall View Mock/),
-            ).not.toBeInTheDocument()
-        })
+        const paywallView = screen.getByText(/Paywall View Mock/)
+        expect(paywallView).toBeInTheDocument()
+        expect(paywallView).toHaveTextContent(
+            `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.Upgrade}`,
+        )
+        // Check if candu div is NOT rendered inside paywall
+        expect(
+            paywallView.querySelector('[data-candu-id="ai-agent-waitlist"]'),
+        ).not.toBeInTheDocument()
     })
 
-    describe('isAiShoppingAssistantEnabled false', () => {
-        it('should render waitlist paywall when it has automate not on generation 6 plan', () => {
-            setupUseAppSelectorMock({
-                hasAutomate: true,
-                currentAutomatePlan: { generation: 5 },
-            })
-
-            renderMiddleware()
-
-            expect(
-                screen.queryByTestId('mock-child-component'),
-            ).not.toBeInTheDocument()
-
-            const paywallView = screen.getByText(/Paywall View Mock/)
-            expect(paywallView).toBeInTheDocument()
-            expect(paywallView).toHaveTextContent(
-                `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.SalesWaitlist}`,
-            )
-            // Check if candu div is NOT rendered inside paywall
-            expect(
-                paywallView.querySelector(
-                    '[data-candu-id="ai-agent-waitlist"]',
-                ),
-            ).toBeInTheDocument()
+    it('should render the child component when it has automate on generation 6 plan', () => {
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 6 },
         })
+
+        renderMiddleware()
+        expect(screen.getByTestId('mock-child-component')).toBeInTheDocument()
+        expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
+        expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
+    })
+
+    it('should render the child component when it has automate + alpha user', () => {
+        mockUseFlag.mockImplementation(
+            (key) =>
+                key === FeatureFlagKey.AiSalesAgentBypassPlanCheck || false,
+        )
+        setupUseAppSelectorMock({
+            hasAutomate: true,
+            currentAutomatePlan: { generation: 6 },
+        })
+
+        renderMiddleware()
+        expect(screen.getByTestId('mock-child-component')).toBeInTheDocument()
+        expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
+        expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
     })
 
     it('should render the child component when it has automate on generation 5 plan + alpha/demo user', () => {
-        mockUseFlag.mockImplementation(
-            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-        )
+        mockUseFlag.mockImplementation(() => false)
         setupUseAppSelectorMock({
             hasAutomate: true,
             currentAutomatePlan: { generation: 5 },
@@ -500,9 +449,7 @@ describe('SalesPaywallMiddleware', () => {
             hasAutomate: true,
             currentAutomatePlan: { generation: 5 },
         })
-        mockUseFlag.mockImplementation(
-            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-        )
+        mockUseFlag.mockImplementation(() => false)
         // Mock earlyAccessPlan to have value for Upgrade Now button to appear
         mockAiAgentUpgradePlan.mockReturnValue({
             data: {
@@ -569,7 +516,6 @@ describe('SalesPaywallMiddleware', () => {
         })
         mockUseFlag.mockImplementation(
             (key) =>
-                key === FeatureFlagKey.AiShoppingAssistantEnabled ||
                 key === FeatureFlagKey.AiShoppingAssistantTrialMerchants ||
                 false,
         )
@@ -600,9 +546,7 @@ describe('SalesPaywallMiddleware', () => {
     })
 
     it('should render the child component when it has automate on generation 6 plan', () => {
-        mockUseFlag.mockImplementation(
-            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-        )
+        mockUseFlag.mockImplementation(() => false)
         setupUseAppSelectorMock({
             hasAutomate: true,
             currentAutomatePlan: { generation: 6 },
@@ -617,9 +561,7 @@ describe('SalesPaywallMiddleware', () => {
     it('should render the child component when it has automate + alpha/demo user', () => {
         mockUseFlag.mockImplementation(
             (key) =>
-                key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                key === FeatureFlagKey.AiSalesAgentBypassPlanCheck ||
-                false,
+                key === FeatureFlagKey.AiSalesAgentBypassPlanCheck || false,
         )
         setupUseAppSelectorMock({
             hasAutomate: true,
@@ -635,9 +577,7 @@ describe('SalesPaywallMiddleware', () => {
     it('should render the child component and bypass paywall when AB testing flag is enabled', () => {
         mockUseFlag.mockImplementation(
             (key) =>
-                key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                key === FeatureFlagKey.AiShoppingAssistantAbTesting ||
-                false,
+                key === FeatureFlagKey.AiShoppingAssistantAbTesting || false,
         )
         setupUseAppSelectorMock({
             hasAutomate: true,
@@ -648,24 +588,6 @@ describe('SalesPaywallMiddleware', () => {
         expect(screen.getByTestId('mock-child-component')).toBeInTheDocument()
         expect(screen.queryByText(/Layout Mock/)).not.toBeInTheDocument()
         expect(screen.queryByText(/Paywall View Mock/)).not.toBeInTheDocument()
-    })
-
-    it('should render waitlist paywall when it has automate + generation 5 plan and not part of alpha', () => {
-        setupUseAppSelectorMock({
-            hasAutomate: true,
-            currentAutomatePlan: { generation: 5 },
-        })
-
-        renderMiddleware()
-
-        const paywallView = screen.getByText(/Paywall View Mock/)
-        expect(paywallView).toBeInTheDocument()
-        expect(paywallView).toHaveTextContent(
-            `Paywall View Mock - Feature: ${AIAgentPaywallFeatures.SalesWaitlist}`,
-        )
-        expect(
-            paywallView.querySelector('[data-candu-id="ai-agent-waitlist"]'),
-        ).toBeInTheDocument()
     })
 
     describe('Shopping Assistant Trial Revamp', () => {
@@ -690,10 +612,7 @@ describe('SalesPaywallMiddleware', () => {
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
             })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -718,10 +637,7 @@ describe('SalesPaywallMiddleware', () => {
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
             })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -761,10 +677,7 @@ describe('SalesPaywallMiddleware', () => {
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
             })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -800,10 +713,7 @@ describe('SalesPaywallMiddleware', () => {
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
             })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -828,10 +738,7 @@ describe('SalesPaywallMiddleware', () => {
                     return { generation: 5 }
                 return undefined
             })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             mockUseSalesTrialRevampMilestone.mockReturnValue('milestone-0')
         })
@@ -917,10 +824,7 @@ describe('SalesPaywallMiddleware', () => {
                     return { generation: 5 }
                 return undefined
             })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
             mockUseTrialAccess.mockReturnValue({
                 canSeeTrialCTA: true,
                 canStartTrial: false,
@@ -1185,10 +1089,7 @@ describe('SalesPaywallMiddleware', () => {
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
             })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1214,10 +1115,7 @@ describe('SalesPaywallMiddleware', () => {
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
             })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1244,10 +1142,7 @@ describe('SalesPaywallMiddleware', () => {
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
             })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1281,10 +1176,7 @@ describe('SalesPaywallMiddleware', () => {
                 hasAutomate: true,
                 currentAutomatePlan: { generation: 5 },
             })
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1321,7 +1213,6 @@ describe('SalesPaywallMiddleware', () => {
             mockUseFlag.mockImplementation((key: FeatureFlagKey) => {
                 const flags = {
                     [FeatureFlagKey.AiAgentExpandingTrialExperienceForAll]: true,
-                    [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
                 }
 
                 if (key in flags) {
@@ -1365,10 +1256,7 @@ describe('SalesPaywallMiddleware', () => {
                 currentAutomatePlan: { generation: 5 },
             })
 
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1402,10 +1290,7 @@ describe('SalesPaywallMiddleware', () => {
                 currentAutomatePlan: { generation: 5 },
             })
 
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1436,10 +1321,7 @@ describe('SalesPaywallMiddleware', () => {
                 currentAutomatePlan: { generation: 5 },
             })
 
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1471,10 +1353,7 @@ describe('SalesPaywallMiddleware', () => {
                 currentAutomatePlan: { generation: 5 },
             })
 
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1488,6 +1367,10 @@ describe('SalesPaywallMiddleware', () => {
 
     describe('Additional Coverage Tests', () => {
         it('should handle undefined shopName parameter', () => {
+            setupUseAppSelectorMock({
+                hasAutomate: false,
+            })
+
             const WrappedComponent = SalesPaywallMiddleware(MockChildComponent)
             const path = '/shops/ai-agent/sales'
             const initialRoute = '/shops/ai-agent/sales'
@@ -1528,10 +1411,7 @@ describe('SalesPaywallMiddleware', () => {
                 currentAutomatePlan: { generation: 6 },
             })
 
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1634,10 +1514,7 @@ describe('SalesPaywallMiddleware', () => {
                 currentAutomatePlan: { generation: 5 },
             })
 
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
             // Mock earlyAccessPlan to have value for Upgrade Now button to appear
             mockAiAgentUpgradePlan.mockReturnValue({
                 data: {
@@ -1682,10 +1559,7 @@ describe('SalesPaywallMiddleware', () => {
                 currentAutomatePlan: { generation: 5 },
             })
 
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1714,10 +1588,7 @@ describe('SalesPaywallMiddleware', () => {
                 currentAutomatePlan: { generation: 5 },
             })
 
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1743,10 +1614,7 @@ describe('SalesPaywallMiddleware', () => {
                 currentAutomatePlan: { generation: 5 },
             })
 
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
 
             renderMiddleware()
 
@@ -1779,10 +1647,7 @@ describe('SalesPaywallMiddleware', () => {
                 currentAutomatePlan: { generation: 5 },
             })
 
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-            )
+            mockUseFlag.mockImplementation(() => false)
             // Mock earlyAccessPlan to have value for Upgrade Now button to appear
             mockAiAgentUpgradePlan.mockReturnValue({
                 data: {
@@ -1855,11 +1720,7 @@ describe('SalesPaywallMiddleware', () => {
                     hasAutomate: true,
                     currentAutomatePlan: { generation: 6 },
                 })
-                mockUseFlag.mockImplementation(
-                    (key) =>
-                        key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                        false,
-                )
+                mockUseFlag.mockImplementation(() => false)
                 mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
                 const { history } = renderMiddlewareWithCustomRoute(
@@ -1881,11 +1742,7 @@ describe('SalesPaywallMiddleware', () => {
                     hasAutomate: true,
                     currentAutomatePlan: { generation: 6 },
                 })
-                mockUseFlag.mockImplementation(
-                    (key) =>
-                        key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                        false,
-                )
+                mockUseFlag.mockImplementation(() => false)
                 mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
                 renderMiddleware()
@@ -1914,11 +1771,7 @@ describe('SalesPaywallMiddleware', () => {
                     hasAutomate: true,
                     currentAutomatePlan: { generation: 6 },
                 })
-                mockUseFlag.mockImplementation(
-                    (key) =>
-                        key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                        false,
-                )
+                mockUseFlag.mockImplementation(() => false)
                 mockUseTrialAccess.mockReturnValue(createMockTrialAccess())
 
                 renderMiddleware()
@@ -1936,11 +1789,7 @@ describe('SalesPaywallMiddleware', () => {
                         hasAutomate: true,
                         currentAutomatePlan: { generation: 6 },
                     })
-                    mockUseFlag.mockImplementation(
-                        (key) =>
-                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                            false,
-                    )
+                    mockUseFlag.mockImplementation(() => false)
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
                             hasCurrentStoreTrialStarted: true,
@@ -1963,11 +1812,7 @@ describe('SalesPaywallMiddleware', () => {
                         hasAutomate: true,
                         currentAutomatePlan: { generation: 5 },
                     })
-                    mockUseFlag.mockImplementation(
-                        (key) =>
-                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                            false,
-                    )
+                    mockUseFlag.mockImplementation(() => false)
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
                             hasCurrentStoreTrialStarted: true,
@@ -1990,11 +1835,7 @@ describe('SalesPaywallMiddleware', () => {
                         hasAutomate: true,
                         currentAutomatePlan: { generation: 5 },
                     })
-                    mockUseFlag.mockImplementation(
-                        (key) =>
-                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                            false,
-                    )
+                    mockUseFlag.mockImplementation(() => false)
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess(
                             createMockTrialAccess({
@@ -2040,11 +1881,7 @@ describe('SalesPaywallMiddleware', () => {
                         currentAutomatePlan: { generation: 5 },
                     })
 
-                    mockUseFlag.mockImplementation(
-                        (key) =>
-                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                            false,
-                    )
+                    mockUseFlag.mockImplementation(() => false)
 
                     renderMiddleware()
 
@@ -2090,11 +1927,7 @@ describe('SalesPaywallMiddleware', () => {
                         currentAutomatePlan: { generation: 5 },
                     })
 
-                    mockUseFlag.mockImplementation(
-                        (key) =>
-                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                            false,
-                    )
+                    mockUseFlag.mockImplementation(() => false)
 
                     renderMiddleware()
 
@@ -2110,11 +1943,7 @@ describe('SalesPaywallMiddleware', () => {
                         hasAutomate: true,
                         currentAutomatePlan: { generation: 6 },
                     })
-                    mockUseFlag.mockImplementation(
-                        (key) =>
-                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                            false,
-                    )
+                    mockUseFlag.mockImplementation(() => false)
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
                             hasAnyTrialActive: true,
@@ -2142,11 +1971,7 @@ describe('SalesPaywallMiddleware', () => {
                         hasAutomate: false, // No automate plan
                         currentAutomatePlan: { generation: 5 },
                     })
-                    mockUseFlag.mockImplementation(
-                        (key) =>
-                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                            false,
-                    )
+                    mockUseFlag.mockImplementation(() => false)
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
                             hasAnyTrialActive: true, // Has any trial active
@@ -2175,11 +2000,7 @@ describe('SalesPaywallMiddleware', () => {
                         hasAutomate: false, // No automate plan
                         currentAutomatePlan: { generation: 5 },
                     })
-                    mockUseFlag.mockImplementation(
-                        (key) =>
-                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                            false,
-                    )
+                    mockUseFlag.mockImplementation(() => false)
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
                             hasAnyTrialActive: false, // No active trials
@@ -2206,11 +2027,7 @@ describe('SalesPaywallMiddleware', () => {
                         hasAutomate: true,
                         currentAutomatePlan: { generation: 5 },
                     })
-                    mockUseFlag.mockImplementation(
-                        (key) =>
-                            key === FeatureFlagKey.AiShoppingAssistantEnabled ||
-                            false,
-                    )
+                    mockUseFlag.mockImplementation(() => false)
                     mockUseTrialAccess.mockReturnValue(
                         createMockTrialAccess({
                             isAdminUser: true,

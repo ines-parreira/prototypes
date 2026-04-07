@@ -879,14 +879,7 @@ describe('<Routes/>', () => {
             expect(mockHistory.location.pathname).toBe(to)
         })
 
-        it('should render sales page when flag ai-shopping-assistant-enabled is enabled', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
-                    return true
-                }
-                return false
-            })
-
+        it('should render sales page', () => {
             render(
                 <Provider store={mockStore(defaultState)}>
                     <MemoryRouter
@@ -905,13 +898,6 @@ describe('<Routes/>', () => {
         })
 
         it('should render customer engagement page under sales', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
-                    return true
-                }
-                return false
-            })
-
             render(
                 <Provider store={mockStore(defaultState)}>
                     <MemoryRouter
@@ -970,9 +956,6 @@ describe('<Routes/>', () => {
                 ) {
                     return false
                 }
-                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
-                    return true
-                }
                 return false
             })
 
@@ -1004,9 +987,6 @@ describe('<Routes/>', () => {
                     return true
                 }
                 if (key === FeatureFlagKey.AiShoppingAssistantAbTesting) {
-                    return true
-                }
-                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
                     return true
                 }
                 return false
@@ -1055,13 +1035,6 @@ describe('<Routes/>', () => {
         })
 
         it('should redirect to /app/stats/ai-sales-agent/overview when accessing /sales/analytics', () => {
-            mockUseFlag.mockImplementation((key) => {
-                if (key === FeatureFlagKey.AiShoppingAssistantEnabled) {
-                    return true
-                }
-                return false
-            })
-
             render(
                 <QueryClientProvider client={mockQueryClient()}>
                     <Provider store={mockStore(defaultState)}>

@@ -1,4 +1,3 @@
-import { useFlag } from '@repo/feature-flags'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { screen, waitFor } from '@testing-library/react'
@@ -61,9 +60,6 @@ const mockHistoryReplace = jest.fn()
 
 const queryClient = mockQueryClient()
 
-jest.mock('@repo/feature-flags')
-const useFlagsMock = assumeMock(useFlag)
-
 describe('<SalesOverview />', () => {
     const defaultState = {
         currentAccount: fromJS(account),
@@ -124,7 +120,6 @@ describe('<SalesOverview />', () => {
     }
 
     beforeEach(() => {
-        useFlagsMock.mockReturnValue(true)
         mockUseFirstStoreWithAiSalesData.mockReturnValue({
             isLoading: false,
             storeId: 1,
@@ -171,18 +166,10 @@ describe('<SalesOverview />', () => {
             })
         })
 
-        it('should render discount section when feature flag is enabled', async () => {
+        it('should render discount section', async () => {
             renderComponent({ path })
             await waitFor(() => {
                 expect(screen.getByText(/Discounts/i)).toBeInTheDocument()
-            })
-        })
-
-        it('should not render discount section when feature flag is disabled', async () => {
-            useFlagsMock.mockReturnValue(false)
-            renderComponent({ path })
-            await waitFor(() => {
-                expect(screen.queryByText(/Discounts/i)).not.toBeInTheDocument()
             })
         })
 

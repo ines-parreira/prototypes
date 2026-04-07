@@ -25,9 +25,6 @@ export const useReportRestrictions = () => {
         FeatureFlagKey.HelpCenterAnalytics,
     )
     const isAiAgentStatsPageEnabled = useFlag(FeatureFlagKey.AIAgentStatsPage)
-    const isStandaloneSalesOverviewEnabled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantEnabled,
-    )
     const isReportingVoiceOfCustomerEnabled = useFlag(
         FeatureFlagKey.ReportingVoiceOfCustomer,
     )
@@ -47,14 +44,13 @@ export const useReportRestrictions = () => {
                 isNewSatisfactionReportEnabled,
             [AutoQAReportConfig.id]: !isAutoQANavLinkAvailable,
             [AutomateAiAgentsReportConfig.id]: !isAiAgentStatsPageEnabled,
-            [AiSalesAgentReportConfig.id]: !isStandaloneSalesOverviewEnabled,
+            [AiSalesAgentReportConfig.id]: false,
         }),
         [
             isAiAgentStatsPageEnabled,
             isAutoQANavLinkAvailable,
             isHelpCenterAnalyticsEnabled,
             isNewSatisfactionReportEnabled,
-            isStandaloneSalesOverviewEnabled,
         ],
     )
 

@@ -47,7 +47,6 @@ describe('usePopulatePostGoLiveSteps', () => {
         selfServiceChatChannels: [],
         pageInteractions: null,
         isActivationEnabled: false,
-        isAiShoppingAssistantEnabled: false,
     } as unknown as RuleEngineData
 
     const mockRoutes = {

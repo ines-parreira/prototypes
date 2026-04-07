@@ -1,7 +1,5 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { gmvInfluencedQueryFactory } from 'domains/reporting/models/queryFactories/ai-sales-agent/metrics'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
@@ -31,7 +29,6 @@ export const useGmvInfluenced = ({
     showActivationModal: () => void
     integrationIds?: number[]
 }): KpiMetric => {
-    const hasAnalytics = useFlag(FeatureFlagKey.AiShoppingAssistantEnabled)
     const { currency } = useCurrency()
 
     const currentPeriodQuery = gmvInfluencedQueryFactory(
@@ -94,7 +91,7 @@ export const useGmvInfluenced = ({
     })
 
     return {
-        hidden: !hasAnalytics,
+        hidden: false,
         title: 'GMV Influenced',
         hint: {
             title: 'The total revenue generated from orders placed during or after a conversation with the AI Agent, without human intervention.',

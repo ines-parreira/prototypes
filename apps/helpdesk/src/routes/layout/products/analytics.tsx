@@ -115,9 +115,6 @@ export function useStatsNavbarConfig() {
     const { value: isAiAgentStatsPageEnabled } = useFlagWithLoading(
         FeatureFlagKey.AIAgentStatsPage,
     )
-    const { value: isAiSalesAgentAnalyticsEnabled } = useFlagWithLoading(
-        FeatureFlagKey.AiShoppingAssistantEnabled,
-    )
     const { value: isAnalyticsDashboardsNewScreensEnabled } =
         useFlagWithLoading(FeatureFlagKey.AiAgentAnalyticsDashboardsNewScreens)
     const { value: isHelpCenterAnalyticsEnabled } = useFlagWithLoading(
@@ -348,16 +345,12 @@ export function useStatsNavbarConfig() {
                                     },
                                 ]
                               : []),
-                          ...(isAiSalesAgentAnalyticsEnabled
-                              ? [
-                                    {
-                                        id: 'ai-sales-agent',
-                                        route: STATS_ROUTES.AI_SALES_AGENT_OVERVIEW,
-                                        label: LINK_AI_SALES_AGENT_TEXT,
-                                        requiresUpgrade: !canUseAiSalesAgent,
-                                    },
-                                ]
-                              : []),
+                          {
+                              id: 'ai-sales-agent',
+                              route: STATS_ROUTES.AI_SALES_AGENT_OVERVIEW,
+                              label: LINK_AI_SALES_AGENT_TEXT,
+                              requiresUpgrade: !canUseAiSalesAgent,
+                          },
                           {
                               id: 'performance-by-features',
                               route: ROUTE_AUTOMATE_PERFORMANCE_BY_FEATURES,
@@ -414,7 +407,6 @@ export function useStatsNavbarConfig() {
         hasVoiceFeature,
         hasAccess,
         isAiAgentStatsPageEnabled,
-        isAiSalesAgentAnalyticsEnabled,
         isAnalyticsDashboardsNewScreensEnabled,
         canUseAiSalesAgent,
         getDashboardsHandler,

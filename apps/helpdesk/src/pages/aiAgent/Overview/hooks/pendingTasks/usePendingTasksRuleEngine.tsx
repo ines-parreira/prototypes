@@ -197,10 +197,6 @@ export const usePendingTasksRuleEngine = ({
         FeatureFlagKey.StandaloneHandoverCapabilities,
         false,
     )
-    const isAiShoppingAssistantEnabled = !!useFlag(
-        FeatureFlagKey.AiShoppingAssistantEnabled,
-        false,
-    )
     const isTriggerOnSearchDisabled = useFlag(
         FeatureFlagKey.TriggerOnSearchKillSwitch,
     )
@@ -226,7 +222,6 @@ export const usePendingTasksRuleEngine = ({
                 ticketToReviewViewData: ticketToReviewViewData,
                 pageInteractions: pageInteractionsData,
                 isActivationEnabled,
-                isAiShoppingAssistantEnabled,
                 selfServiceChatChannels,
                 storeKnowledgeStatus: storeKnowledgeStatusData,
                 alreadyUsedEmailIntegrationsIds,
@@ -253,7 +248,6 @@ export const usePendingTasksRuleEngine = ({
         ticketToReviewViewData,
         pageInteractionsData,
         isActivationEnabled,
-        isAiShoppingAssistantEnabled,
         selfServiceChatChannels,
         storeKnowledgeStatusData,
         alreadyUsedEmailIntegrationsIds,

@@ -1,6 +1,5 @@
 import type { ReactNode } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createMemoryHistory } from 'history'
@@ -38,9 +37,6 @@ const useGmvInfluencedCtaButtonMock = assumeMock(useGmvInfluencedCtaButton)
 
 jest.mock('domains/reporting/models/queryFactories/ai-sales-agent/metrics')
 const gmvInfluencedQueryFactoryMock = assumeMock(gmvInfluencedQueryFactory)
-
-jest.mock('@repo/feature-flags')
-const mockUseFlag = jest.mocked(useFlag)
 
 jest.useFakeTimers()
 
@@ -83,10 +79,6 @@ const defaultState = {
 describe('useGmvInfluenced', () => {
     beforeEach(() => {
         jest.resetAllMocks()
-
-        mockUseFlag.mockImplementation(
-            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-        )
 
         gmvInfluencedQueryFactoryMock.mockReturnValue({
             measures: [AiSalesAgentOrdersMeasure.Gmv],
@@ -274,58 +266,6 @@ describe('useGmvInfluenced', () => {
             action: <button>Mock Action</button>,
             hideTrend: true,
         })
-    })
-
-    it(`should be hidden when feature flag ${FeatureFlagKey.AiShoppingAssistantEnabled} is disabled`, () => {
-        mockUseFlag.mockReturnValue(false)
-
-        useMetricPerDimensionMock
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: true,
-                isError: false,
-            })
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: false,
-                isError: false,
-            })
-
-        const { result } = renderHook(
-            () => useGmvInfluenced(useGmvInfluencedInput),
-            {
-                wrapper,
-            },
-        )
-
-        expect(result.current.hidden).toBe(true)
-    })
-
-    it(`should not be hidden when feature flag ${FeatureFlagKey.AiShoppingAssistantEnabled} is enabled`, () => {
-        mockUseFlag.mockImplementation(
-            (key) => key === FeatureFlagKey.AiShoppingAssistantEnabled || false,
-        )
-
-        useMetricPerDimensionMock
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: true,
-                isError: false,
-            })
-            .mockReturnValueOnce({
-                data: null,
-                isFetching: false,
-                isError: false,
-            })
-
-        const { result } = renderHook(
-            () => useGmvInfluenced(useGmvInfluencedInput),
-            {
-                wrapper,
-            },
-        )
-
-        expect(result.current.hidden).toBe(false)
     })
 
     it('should pass integrationIds to gmvInfluencedQueryFactory correctly', () => {

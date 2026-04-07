@@ -111,9 +111,7 @@ const renderComponent = (props = {}) => {
 
 describe('AiAgentExternalSourceArticlesView', () => {
     beforeEach(() => {
-        mockFeatureFlags({
-            AiShoppingAssistantEnabled: true,
-        })
+        mockFeatureFlags({})
         mockUseLocation.mockReturnValue({
             state: {
                 selectedResource: {

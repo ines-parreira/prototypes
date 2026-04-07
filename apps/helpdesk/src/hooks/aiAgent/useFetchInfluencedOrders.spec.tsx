@@ -1,4 +1,5 @@
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import type { FeatureFlagKey } from '@repo/feature-flags'
+import { useFlag } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
@@ -53,9 +54,7 @@ describe('useFetchInfluencedOrders', () => {
         ],
     }
 
-    let mockFeatureFlags = {
-        [FeatureFlagKey.AiShoppingAssistantEnabled]: true,
-    } as Record<FeatureFlagKey, boolean>
+    let mockFeatureFlags = {} as Record<FeatureFlagKey, boolean>
 
     beforeEach(() => {
         jest.resetAllMocks()
@@ -143,18 +142,6 @@ describe('useFetchInfluencedOrders', () => {
 
     it('should not query if sales agent is not enabled', () => {
         mockUseCanUseAiSalesAgent.mockReturnValue(false)
-
-        renderUseFetchInfluencedOrders({
-            accountId: 1,
-            integrationIds: [2],
-            orderIds: [3],
-        })
-
-        expect(mockPostReporting).not.toHaveBeenCalled()
-    })
-
-    it('should not query if shopping assistant is not enabled', () => {
-        mockFeatureFlags[FeatureFlagKey.AiShoppingAssistantEnabled] = false
 
         renderUseFetchInfluencedOrders({
             accountId: 1,

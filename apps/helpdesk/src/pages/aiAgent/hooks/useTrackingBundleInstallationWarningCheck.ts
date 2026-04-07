@@ -20,9 +20,6 @@ export const useTrackingBundleInstallationWarningCheck = ({
 }) => {
     const storeIntegrations = useShopifyIntegrations()
 
-    const hasShoppingAssistant = useFlag(
-        FeatureFlagKey.AiShoppingAssistantEnabled,
-    )
     const hasTrackingBundleWarningBanner = useFlag(
         FeatureFlagKey.AiShoppingAssistantTrackingBundleWarningBanner,
     )
@@ -32,7 +29,6 @@ export const useTrackingBundleInstallationWarningCheck = ({
 
     const enabled =
         hasTrackingBundleWarningBanner &&
-        hasShoppingAssistant &&
         (canUseAiSalesAgent || atLeastOneStoreHasActiveTrial)
 
     const { storeActivations, isFetchLoading: isStoreActivationsLoading } =

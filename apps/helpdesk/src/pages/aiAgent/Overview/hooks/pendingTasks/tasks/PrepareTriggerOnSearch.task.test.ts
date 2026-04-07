@@ -29,7 +29,6 @@ describe('PrepareTriggerOnSearchTask', () => {
             selfServiceChatChannels: [],
             pageInteractions: null,
             isActivationEnabled: false,
-            isAiShoppingAssistantEnabled: false,
             isTriggerOnSearchDisabled: false,
             ...overrides,
         } as RuleEngineData

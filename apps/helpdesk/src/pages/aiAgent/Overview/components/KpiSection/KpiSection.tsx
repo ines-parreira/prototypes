@@ -1,6 +1,5 @@
 import { useMemo } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import moment from 'moment'
 import { NavLink } from 'react-router-dom'
 
@@ -132,8 +131,6 @@ export const KpiSection = ({
 }: Props) => {
     const { isLoading, aiAgentType } = useAiAgentTypeForAccount()
     const aiAgentUserId = useAIAgentUserId()
-    const hasAnalytics = useFlag(FeatureFlagKey.AiShoppingAssistantEnabled)
-
     const analyticsLink = useMemo(() => {
         if (isLoading) {
             return ''
@@ -169,18 +166,16 @@ export const KpiSection = ({
             <div className={css.titleWrapper}>
                 <div className={css.title}>
                     <CardTitle>AI Agent performance</CardTitle>
-                    {hasAnalytics && (
-                        <NavLink to={analyticsLink} exact target="_blank">
-                            <Button
-                                intent="secondary"
-                                size="small"
-                                trailingIcon="open_in_new"
-                                isLoading={isLoading}
-                            >
-                                View Full Report
-                            </Button>
-                        </NavLink>
-                    )}
+                    <NavLink to={analyticsLink} exact target="_blank">
+                        <Button
+                            intent="secondary"
+                            size="small"
+                            trailingIcon="open_in_new"
+                            isLoading={isLoading}
+                        >
+                            View Full Report
+                        </Button>
+                    </NavLink>
                 </div>
                 <div className={css.subtitle}>
                     Data from last 28 days

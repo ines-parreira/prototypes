@@ -1,4 +1,3 @@
-import { FeatureFlagKey } from '@repo/feature-flags'
 import { renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
@@ -159,9 +158,7 @@ describe('useGetResourceData', () => {
         const getLDClientMock = require('@repo/feature-flags')
             .getLDClient as jest.Mock
         getLDClientMock.mockReturnValue({
-            allFlags: jest.fn().mockReturnValue({
-                [FeatureFlagKey.AiShoppingAssistantEnabled]: false,
-            }),
+            allFlags: jest.fn().mockReturnValue({}),
             variation: jest.fn((flag, defaultValue) => defaultValue),
             waitForInitialization: jest.fn(() => Promise.resolve()),
             on: jest.fn(),

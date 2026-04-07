@@ -30,7 +30,6 @@ describe('PrepareSuggestedProductQuestionsTask', () => {
             selfServiceChatChannels: [],
             pageInteractions: null,
             isActivationEnabled: false,
-            isAiShoppingAssistantEnabled: false,
             ...overrides,
         } as RuleEngineData
     }

@@ -164,10 +164,6 @@ const useNavigationItems = (
         FeatureFlagKey.AiAgentScrapeStoreDomain,
     )
 
-    const isAiShoppingAssistantEnabled = useFlag(
-        FeatureFlagKey.AiShoppingAssistantEnabled,
-    )
-
     const isShoppingAssistantDeactivationEnforced = useFlag(
         FeatureFlagKey.ShoppingAssistantEnforceDeactivation,
     )
@@ -270,25 +266,23 @@ const useNavigationItems = (
                     shouldRenderShoppingAssistantPages && {
                         route: routes.sales,
                         title: SALES,
-                        items: isAiShoppingAssistantEnabled
-                            ? ([
-                                  isAiShoppingAssistantEnabled && {
-                                      route: routes.salesStrategy,
-                                      title: STRATEGY,
-                                      exact: true,
-                                  },
-                                  isAiShoppingAssistantEnabled && {
-                                      route: routes.customerEngagement,
-                                      title: CUSTOMER_ENGAGEMENT,
-                                      exact: true,
-                                  },
-                                  isAiShoppingAssistantEnabled && {
-                                      route: routes.productRecommendations,
-                                      title: PRODUCT_RECOMMENDATIONS,
-                                      exact: true,
-                                  },
-                              ].filter((x) => !!x) as NavigationItem[])
-                            : undefined,
+                        items: [
+                            {
+                                route: routes.salesStrategy,
+                                title: STRATEGY,
+                                exact: true,
+                            },
+                            {
+                                route: routes.customerEngagement,
+                                title: CUSTOMER_ENGAGEMENT,
+                                exact: true,
+                            },
+                            {
+                                route: routes.productRecommendations,
+                                title: PRODUCT_RECOMMENDATIONS,
+                                exact: true,
+                            },
+                        ],
                     },
                 ].filter((x) => !!x) as NavigationItem[],
             },
@@ -347,7 +341,6 @@ const useNavigationItems = (
     }, [
         isAiAgentScrapeStoreDomainEnabled,
         isGorgiasUser,
-        isAiShoppingAssistantEnabled,
         isSmsChannelEnabled,
         shouldRenderShoppingAssistantPages,
         shouldRenderToneOfVoice,

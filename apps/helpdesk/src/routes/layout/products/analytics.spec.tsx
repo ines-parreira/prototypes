@@ -528,12 +528,7 @@ describe('useStatsNavbarConfig', () => {
             expect(aiAgentItem?.route).toBe(STATS_ROUTES.AUTOMATE_AI_AGENTS)
         })
 
-        it('should include ai-sales-agent item when AiShoppingAssistantEnabled flag is enabled', () => {
-            useFlagMock.mockImplementation((flag) => ({
-                value: flag === FeatureFlagKey.AiShoppingAssistantEnabled,
-                isLoading: false,
-            }))
-
+        it('should include ai-sales-agent item', () => {
             const stateWithAutomation: Partial<RootState> = {
                 billing: fromJS(billingState),
                 currentAccount: fromJS({
@@ -566,10 +561,6 @@ describe('useStatsNavbarConfig', () => {
 
         it('should not mark ai-sales-agent as requiresUpgrade when user can use it', () => {
             useCanUseAiSalesAgentMock.mockReturnValue(true)
-            useFlagMock.mockImplementation((flag) => ({
-                value: flag === FeatureFlagKey.AiShoppingAssistantEnabled,
-                isLoading: false,
-            }))
 
             const stateWithAutomation: Partial<RootState> = {
                 billing: fromJS(billingState),
