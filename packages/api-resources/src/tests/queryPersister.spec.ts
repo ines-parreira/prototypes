@@ -41,17 +41,20 @@ describe('shouldPersistQuery', () => {
         expect(shouldPersistQuery(createMockQuery())).toBe(true)
     })
 
-    it('returns true for view queries with different suffixes', () => {
+    it('returns true for non-item view queries', () => {
         expect(
             shouldPersistQuery(
                 createMockQuery({ queryKey: ['views', 'getView', 1] }),
             ),
         ).toBe(true)
+    })
+
+    it('returns false for listViewItems queries', () => {
         expect(
             shouldPersistQuery(
                 createMockQuery({ queryKey: ['views', 'listViewItems', 5] }),
             ),
-        ).toBe(true)
+        ).toBe(false)
     })
 
     it('returns false for non-view queries', () => {

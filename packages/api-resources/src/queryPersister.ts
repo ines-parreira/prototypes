@@ -48,13 +48,21 @@ export const asyncStoragePersister = createAsyncStoragePersister({
 })
 
 const WHITELISTED_QUERY_KEY_PREFIXES = ['views', 'account']
+const BLACKLISTED_QUERY_KEY_OPERATIONS = ['listViewItems']
 
 export function shouldPersistQuery(query: Query): boolean {
     if (query.state.status !== 'success') return false
     if (query.options.cacheTime === 0) return false
 
     const firstKey = query.queryKey[0]
-    return WHITELISTED_QUERY_KEY_PREFIXES.includes(firstKey as string)
+    if (!WHITELISTED_QUERY_KEY_PREFIXES.includes(firstKey as string))
+        return false
+
+    const secondKey = query.queryKey[1]
+    if (BLACKLISTED_QUERY_KEY_OPERATIONS.includes(secondKey as string))
+        return false
+
+    return true
 }
 
 export async function clearPersistedQueryCache(): Promise<void> {
