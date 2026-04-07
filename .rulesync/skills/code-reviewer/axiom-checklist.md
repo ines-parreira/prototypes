@@ -109,7 +109,7 @@ import { LegacyButton as Button } from '@gorgias/axiom'
 **Surface** (backgrounds):
 - `--surface-neutral-primary` - Primary background
 - `--surface-neutral-secondary` - Secondary background
-- `--surface-success-primary` - Success background
+- `--surface-success-default` - Success background
 - `--surface-error-primary` - Error background
 - `--surface-warning-primary` - Warning background
 

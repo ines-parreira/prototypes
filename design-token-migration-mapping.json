@@ -196,7 +196,7 @@
             ],
             "--main-primary-0": [
                 "--elevation-neutral-bg",
-                "--surface-success-primary"
+                "--surface-success-default"
             ],
             "--main-primary-4": [
                 "--content-additional-blue",
@@ -958,7 +958,7 @@
                 "--surface-neutral-tertiary",
                 "--surface-additional-blue",
                 "--surface-brand-secondary",
-                "--surface-success-primary",
+                "--surface-success-default",
                 "--surface-error-primary"
             ]
         },
@@ -1043,7 +1043,7 @@
             {
                 "invalidToken": "--elevation-status-success-subtle",
                 "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
-                "suggestedReplacement": "--surface-success-primary",
+                "suggestedReplacement": "--surface-success-default",
                 "usedInCommits": ["bcf919bfd1"],
                 "affectedFiles": "Success state badges"
             },
@@ -1071,7 +1071,7 @@
             {
                 "invalidToken": "--elevation-status-success-default",
                 "issue": "Token does not exist in axiom design system; status tokens don't exist with elevation prefix",
-                "suggestedReplacement": "--surface-success-primary or --static-success",
+                "suggestedReplacement": "--surface-success-default or --static-success",
                 "usedInCommits": ["bcf919bfd1"],
                 "affectedFiles": "Success backgrounds"
             },
@@ -1091,8 +1091,8 @@
             },
             {
                 "invalidToken": "--surface-success-secondary",
-                "issue": "Token does not exist in axiom design system; only surface-success-primary exists",
-                "suggestedReplacement": "--surface-success-primary or --surface-neutral-secondary",
+                "issue": "Token does not exist in axiom design system; only surface-success-default exists",
+                "suggestedReplacement": "--surface-success-default or --surface-neutral-secondary",
                 "usedInCommits": ["2fbb04ffac"],
                 "affectedFiles": "Secondary success surfaces"
             }
@@ -1243,7 +1243,7 @@
             },
             {
                 "legacyToken": "--feedback-success",
-                "newToken": "--surface-success-primary",
+                "newToken": "--surface-success-default",
                 "context": "Success state colors",
                 "files": ["Card.less"]
             }
@@ -1404,7 +1404,7 @@
                 "--surface-neutral-primary",
                 "--surface-neutral-secondary",
                 "--surface-neutral-tertiary",
-                "--surface-success-primary",
+                "--surface-success-default",
                 "--surface-warning-primary"
             ],
             "content": [

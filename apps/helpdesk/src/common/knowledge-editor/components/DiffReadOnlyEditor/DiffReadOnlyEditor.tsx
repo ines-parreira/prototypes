@@ -31,7 +31,7 @@ import css from './DiffReadOnlyEditor.less'
 // decorated tag components with border styling via CSS (see DiffReadOnlyEditor.less).
 const DIFF_STYLE_MAP: Record<string, React.CSSProperties> = {
     DIFF_ADDED: {
-        backgroundColor: 'var(--surface-success-primary)',
+        backgroundColor: 'var(--surface-success-default)',
         color: 'var(--content-success-primary)',
     },
     DIFF_REMOVED: {
