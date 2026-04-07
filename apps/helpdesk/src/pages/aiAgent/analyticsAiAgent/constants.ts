@@ -9,3 +9,5 @@ export enum AiAgentAnalyticsQueryParams {
     SupportAgent = 'support-agent',
     ShoppingAssistant = 'shopping-assistant',
 }
+
+export const MIN_DATE_FOR_AI_AGENT = '2024-08-01'

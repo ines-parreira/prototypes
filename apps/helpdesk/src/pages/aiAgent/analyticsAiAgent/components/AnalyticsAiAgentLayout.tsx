@@ -2,6 +2,7 @@ import { useCallback, useMemo, useRef } from 'react'
 
 import { useEffectOnce } from '@repo/hooks'
 import { getPreviousUrl } from '@repo/routing'
+import moment from 'moment/moment'
 
 import { Box } from '@gorgias/axiom'
 
@@ -28,6 +29,7 @@ import { ANALYTICS_AI_AGENT_SUPPORT_AGENT_LAYOUT } from '../config/aiAgentSuppor
 import {
     AiAgentAnalyticsContent,
     AiAgentAnalyticsQueryParams,
+    MIN_DATE_FOR_AI_AGENT,
 } from '../constants'
 import { useExportAiAgentAllAgentsToCSV } from '../hooks/useExportAiAgentAllAgentsToCSV'
 import { useExportAiAgentShoppingAssistantToCSV } from '../hooks/useExportAiAgentShoppingAssistantToCSV'
@@ -195,6 +197,10 @@ export const AnalyticsAiAgentLayout = () => {
                             [FilterKey.Period]: {
                                 initialSettings: {
                                     maxSpan: 365,
+                                    minDate: moment(
+                                        MIN_DATE_FOR_AI_AGENT,
+                                        'YYYY-MM-DD',
+                                    ).toDate(),
                                 },
                             },
                         }}
