@@ -14,6 +14,7 @@ const baseContext: OrderFieldRenderContext = {
     storeName: undefined,
     dateFormat: DateFormatType.en_US,
     timeFormat: TimeFormatType.TwentyFourHour,
+    timezone: undefined,
 }
 
 const allFields = [

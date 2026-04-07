@@ -124,13 +124,14 @@ export function useCustomerInfoData({
         orders,
     ])
 
-    const { dateFormat, timeFormat } = useUserDateTimePreferences()
+    const { dateFormat, timeFormat, timezone } = useUserDateTimePreferences()
 
     const context: FieldRenderContext = {
         purchaseSummary,
         shopper,
         dateFormat,
         timeFormat,
+        timezone,
         integrationId: selectedIntegration?.id,
         externalId: selectedExternalId,
         customerId,
@@ -163,5 +164,6 @@ export function useCustomerInfoData({
         smsMarketingConsent,
         dateFormat,
         timeFormat,
+        timezone,
     }
 }

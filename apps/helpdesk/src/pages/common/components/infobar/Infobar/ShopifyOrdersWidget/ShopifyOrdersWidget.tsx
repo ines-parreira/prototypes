@@ -6,6 +6,7 @@ import type {
     OrderCardProduct,
 } from '@repo/ecommerce/shopify/types'
 import { formatOrderDate } from '@repo/ecommerce/shopify/utils'
+import { useUserDateTimePreferences } from '@repo/preferences'
 
 import { Box, Button, Heading, Tag, Text } from '@gorgias/axiom'
 
@@ -44,6 +45,8 @@ export function ShopifyOrdersWidget({
     onShowAll,
     onClick,
 }: Props) {
+    const { dateFormat, timeFormat, timezone } = useUserDateTimePreferences()
+
     return (
         <Box padding="md" flexDirection="column" gap="xs">
             <Heading size="md">
@@ -62,7 +65,12 @@ export function ShopifyOrdersWidget({
 
             <OrderCard
                 order={toOrderCardOrder(lastOrder)}
-                displayedDate={formatOrderDate(lastOrder.created_at)}
+                displayedDate={formatOrderDate(
+                    lastOrder.created_at,
+                    dateFormat,
+                    timeFormat,
+                    timezone,
+                )}
                 productsMap={productsMap}
                 onClick={onClick}
             />

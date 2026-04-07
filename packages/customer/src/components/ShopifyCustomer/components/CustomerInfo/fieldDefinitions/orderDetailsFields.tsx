@@ -1,9 +1,5 @@
+import { formatOrderDate } from '@repo/ecommerce/shopify/utils'
 import { useCopyToClipboard } from '@repo/hooks'
-import {
-    DateAndTimeFormatting,
-    formatDatetime,
-    getDateAndTimeFormat,
-} from '@repo/utils'
 
 import { Box, Button, Text } from '@gorgias/axiom'
 
@@ -70,13 +66,11 @@ export const FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
         getValue: (ctx) => ctx.order.created_at,
         formatValue: (_, ctx) =>
             ctx.order.created_at
-                ? formatDatetime(
+                ? formatOrderDate(
                       ctx.order.created_at,
-                      getDateAndTimeFormat(
-                          ctx.dateFormat,
-                          ctx.timeFormat,
-                          DateAndTimeFormatting.RelativeDateAndTime,
-                      ),
+                      ctx.dateFormat,
+                      ctx.timeFormat,
+                      ctx.timezone,
                   )
                 : '-',
     },

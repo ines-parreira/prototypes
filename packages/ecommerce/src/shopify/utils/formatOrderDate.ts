@@ -1,5 +1,15 @@
+import type { DateFormatType, TimeFormatType } from '@repo/utils'
+import {
+    DateAndTimeFormatting,
+    formatDatetime,
+    getDateAndTimeFormat,
+} from '@repo/utils'
+
 export function formatOrderDate(
     createdDatetime: string,
+    dateFormat?: DateFormatType,
+    timeFormat?: TimeFormatType,
+    timezone?: string,
     now: Date = new Date(),
 ): string {
     const created = new Date(createdDatetime)
@@ -20,9 +30,20 @@ export function formatOrderDate(
         return `${diffDays} ${diffDays === 1 ? 'day' : 'days'} ago`
     }
 
-    const month = String(created.getMonth() + 1).padStart(2, '0')
-    const day = String(created.getDate()).padStart(2, '0')
-    const year = String(created.getFullYear()).slice(-2)
+    if (dateFormat && timeFormat) {
+        const formatType = timezone
+            ? DateAndTimeFormatting.CompactDate
+            : DateAndTimeFormatting.ShortDateWithYear
+        return formatDatetime(
+            createdDatetime,
+            getDateAndTimeFormat(dateFormat, timeFormat, formatType),
+            timezone,
+        )
+    }
 
-    return `${month}/${day}/${year}`
+    return created.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+    })
 }

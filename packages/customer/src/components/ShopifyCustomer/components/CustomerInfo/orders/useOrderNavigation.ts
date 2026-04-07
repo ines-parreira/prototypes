@@ -15,6 +15,7 @@ type Params = {
     ticketId?: string
     dateFormat: DateFormatType
     timeFormat: TimeFormatType
+    timezone: string | undefined
 }
 
 export function useOrderNavigation({
@@ -27,6 +28,7 @@ export function useOrderNavigation({
     ticketId,
     dateFormat,
     timeFormat,
+    timezone,
 }: Params) {
     const allOrders = useMemo(
         () => [...(orders ?? []), ...(draftOrders ?? [])],
@@ -94,6 +96,7 @@ export function useOrderNavigation({
         storeName: selectedIntegrationName,
         dateFormat,
         timeFormat,
+        timezone,
     }
 
     return {

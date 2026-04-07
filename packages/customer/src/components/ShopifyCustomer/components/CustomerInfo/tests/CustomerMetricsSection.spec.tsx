@@ -11,6 +11,7 @@ const mockContext: FieldRenderContext = {
     shopper: undefined,
     dateFormat: DateFormatType.en_US,
     timeFormat: TimeFormatType.TwentyFourHour,
+    timezone: undefined,
     integrationId: undefined,
     externalId: undefined,
     customerId: undefined,

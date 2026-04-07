@@ -87,6 +87,7 @@ export function CustomerInfo({
         ticketData,
         dateFormat,
         timeFormat,
+        timezone,
     } = useCustomerInfoData({
         associatedShopifyCustomerIds,
         externalIdMap,
@@ -130,6 +131,7 @@ export function CustomerInfo({
         ticketId,
         dateFormat,
         timeFormat,
+        timezone,
     })
 
     if (editingWidgetType === EditFieldsType.Shopify) {

@@ -22,7 +22,7 @@ export function OrderShipmentSection({
     ticketId,
     isDraftOrder,
 }: OrderShipmentSectionProps) {
-    const { dateFormat, timeFormat } = useUserDateTimePreferences()
+    const { dateFormat, timeFormat, timezone } = useUserDateTimePreferences()
     const { getVisibleFields, preferences } = useOrderFieldPreferences()
     const fields = getVisibleFields('shipping')
 
@@ -39,6 +39,7 @@ export function OrderShipmentSection({
         storeName,
         dateFormat,
         timeFormat,
+        timezone,
     }
 
     return (

@@ -27,7 +27,7 @@ export function OrderDetailsSection({
     ticketId,
     storeName,
 }: OrderDetailsSectionProps) {
-    const { dateFormat, timeFormat } = useUserDateTimePreferences()
+    const { dateFormat, timeFormat, timezone } = useUserDateTimePreferences()
 
     const { preferences, getVisibleFields } = useOrderFieldPreferences()
     const fields = getVisibleFields('orderDetails')
@@ -46,6 +46,7 @@ export function OrderDetailsSection({
         storeName,
         dateFormat,
         timeFormat,
+        timezone,
     }
 
     return (

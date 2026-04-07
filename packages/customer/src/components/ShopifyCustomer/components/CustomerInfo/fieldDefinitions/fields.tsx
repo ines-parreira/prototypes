@@ -32,6 +32,7 @@ export const FIELD_DEFINITIONS: Record<string, FieldConfig> = {
                 ctx.shopper?.data.created_at,
                 ctx.dateFormat,
                 ctx.timeFormat,
+                ctx.timezone,
             ),
     },
     orders: {

@@ -89,6 +89,7 @@ export type FieldRenderContext = {
     shopper: ShopperEcommerceData | undefined
     dateFormat: DateFormatType
     timeFormat: TimeFormatType
+    timezone: string | undefined
     integrationId: number | undefined
     externalId: string | undefined
     customerId: number | undefined
@@ -142,6 +143,7 @@ export type OrderFieldRenderContext = {
     storeName: string | undefined
     dateFormat: DateFormatType
     timeFormat: TimeFormatType
+    timezone: string | undefined
 }
 
 type BaseOrderFieldConfig = {

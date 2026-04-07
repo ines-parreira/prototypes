@@ -703,6 +703,9 @@ importers:
       '@repo/navigation':
         specifier: workspace:*
         version: link:../../packages/navigation
+      '@repo/preferences':
+        specifier: workspace:*
+        version: link:../../packages/preferences
       '@repo/reporting':
         specifier: workspace:*
         version: link:../../packages/reporting

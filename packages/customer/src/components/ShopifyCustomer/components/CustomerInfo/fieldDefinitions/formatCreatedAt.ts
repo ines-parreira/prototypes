@@ -9,6 +9,7 @@ export function formatCreatedAt(
     createdAt: string | undefined,
     dateFormat: DateFormatType,
     timeFormat: TimeFormatType,
+    timezone?: string,
 ): string {
     if (!createdAt) {
         return '-'
@@ -20,5 +21,6 @@ export function formatCreatedAt(
             timeFormat,
             DateAndTimeFormatting.CompactDate,
         ),
+        timezone,
     )
 }

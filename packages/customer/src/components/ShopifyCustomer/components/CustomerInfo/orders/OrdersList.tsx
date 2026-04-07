@@ -1,6 +1,7 @@
 import { OrderCard } from '@repo/ecommerce/shopify/components'
 import type { OrderCardProduct } from '@repo/ecommerce/shopify/types'
 import { formatOrderDate } from '@repo/ecommerce/shopify/utils'
+import { useUserDateTimePreferences } from '@repo/preferences'
 
 import { Box, Separator } from '@gorgias/axiom'
 
@@ -26,6 +27,8 @@ export function OrdersList({
     onSelectOrder,
     onCreateOrder,
 }: OrdersListProps) {
+    const { dateFormat, timeFormat, timezone } = useUserDateTimePreferences()
+
     if (isLoadingOrders || isLoadingDraftOrders) {
         return null
     }
@@ -51,6 +54,9 @@ export function OrdersList({
                                 order={order.data}
                                 displayedDate={formatOrderDate(
                                     order.data.created_at,
+                                    dateFormat,
+                                    timeFormat,
+                                    timezone,
                                 )}
                                 productsMap={productsMap}
                                 onClick={
@@ -79,6 +85,9 @@ export function OrdersList({
                                     order={draftOrder.data}
                                     displayedDate={formatOrderDate(
                                         draftOrder.data.created_at,
+                                        dateFormat,
+                                        timeFormat,
+                                        timezone,
                                     )}
                                     productsMap={productsMap}
                                     onClick={

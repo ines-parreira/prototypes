@@ -14,6 +14,7 @@ vi.mock('@repo/preferences', () => ({
     useUserDateTimePreferences: () => ({
         dateFormat: 'MM/DD/YYYY',
         timeFormat: '24h',
+        timezone: undefined,
     }),
 }))
 
