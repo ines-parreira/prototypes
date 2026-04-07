@@ -34,6 +34,7 @@ import CustomIntegrationsTabContent from 'pages/tickets/detail/CustomIntegration
 import IntegrationTabContent from 'pages/tickets/detail/IntegrationTabContent'
 import { CustomerContext } from 'providers/infobar/CustomerContext'
 import { IntegrationContext } from 'providers/infobar/IntegrationContext'
+import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getCurrentAccountId } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 import { executeAction } from 'state/infobar/actions'
@@ -100,6 +101,7 @@ export const TicketInfobarContainer = ({
 
     const accountId = useAppSelector(getCurrentAccountId)
     const currentUser = useAppSelector(getCurrentUser)
+    const { isStandaloneAiAgent } = useStandaloneAiAccess()
     const canAccessAIFeedback = useCanAccessAIFeedback()
     const ticket = useAppSelector(getTicket)
     const { hasAccess } = useAiAgentAccess()
@@ -400,13 +402,8 @@ export const TicketInfobarContainer = ({
     )
 
     const tabs = useMemo(() => {
-        return [
-            {
-                name: TicketInfobarTab.Customer,
-                icon: CUSTOMER_DETAILS_TAB.ICON,
-                label: CUSTOMER_DETAILS_TAB.LABEL,
-            },
-            ...(!isEditWidgetPage && hasAIAgent && canAccessAIFeedback
+        const aiFeedbackTabs =
+            !isEditWidgetPage && hasAIAgent && canAccessAIFeedback
                 ? [
                       {
                           name: TicketInfobarTab.AIFeedback,
@@ -414,14 +411,38 @@ export const TicketInfobarContainer = ({
                           label: AI_FEEDBACK_TAB.LABEL,
                       },
                   ]
-                : []),
+                : []
+
+        if (isStandaloneAiAgent) {
+            return [
+                ...aiFeedbackTabs,
+                {
+                    name: TicketInfobarTab.Customer,
+                    icon: CUSTOMER_DETAILS_TAB.ICON,
+                    label: CUSTOMER_DETAILS_TAB.LABEL,
+                },
+                {
+                    name: TicketInfobarTab.AutoQA,
+                    icon: AUTO_QA_TAB.ICON,
+                    label: AUTO_QA_TAB.LABEL,
+                },
+            ]
+        }
+
+        return [
+            {
+                name: TicketInfobarTab.Customer,
+                icon: CUSTOMER_DETAILS_TAB.ICON,
+                label: CUSTOMER_DETAILS_TAB.LABEL,
+            },
+            ...aiFeedbackTabs,
             {
                 name: TicketInfobarTab.AutoQA,
                 icon: AUTO_QA_TAB.ICON,
                 label: AUTO_QA_TAB.LABEL,
             },
         ]
-    }, [canAccessAIFeedback, hasAIAgent, isEditWidgetPage])
+    }, [canAccessAIFeedback, hasAIAgent, isEditWidgetPage, isStandaloneAiAgent])
 
     return (
         <div

@@ -5,10 +5,7 @@ import { useShortcuts } from '@repo/utils'
 import cn from 'classnames'
 import type { Moment } from 'moment'
 
-import {
-    LegacyButton as Button,
-    LegacyTooltip as Tooltip,
-} from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 
 import useAppSelector from 'hooks/useAppSelector'
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -23,9 +20,10 @@ import css from './Snooze.less'
 type Props = {
     until?: string
     onUpdate: (until: Moment | null) => void
+    disabled?: boolean
 }
 
-export default function Snooze({ until, onUpdate }: Props) {
+export default function Snooze({ disabled = false, until, onUpdate }: Props) {
     const [showDropdown, setShowDropdown] = useState(false)
     const [showPicker, setShowPicker] = useState(false)
     const timezone = useAppSelector(getTimezone)
@@ -59,8 +57,20 @@ export default function Snooze({ until, onUpdate }: Props) {
         setShowPicker(true)
     }, [])
 
-    const actions = useMemo(
-        () => ({
+    const actions = useMemo(() => {
+        if (disabled) {
+            return {
+                OPEN_SNOOZE_TICKET: {
+                    action: () => ({}),
+                },
+                CLOSE_SNOOZE_TICKET: {
+                    key: 'esc',
+                    action: () => ({}),
+                },
+            }
+        }
+
+        return {
             OPEN_SNOOZE_TICKET: {
                 action: () => {
                     setShowPicker(true)
@@ -72,29 +82,42 @@ export default function Snooze({ until, onUpdate }: Props) {
                     setShowPicker(false)
                 },
             },
-        }),
-        [],
-    )
+        }
+    }, [disabled])
 
     useShortcuts('TicketDetailContainer', actions)
 
+    const snoozeButton = (
+        <Button
+            ref={toggleRef}
+            aria-label="Snooze"
+            className={css.button}
+            icon={<i className={cn(css.icon, 'material-icons')}>snooze</i>}
+            isDisabled={disabled}
+            onClick={handleClick}
+            size="sm"
+            variant="tertiary"
+        />
+    )
+
     return (
         <>
-            <Button
-                ref={toggleRef}
-                className={css.button}
-                fillStyle="ghost"
-                id="snooze-button"
-                intent="secondary"
-                onClick={handleClick}
-                size="small"
-            >
-                <i className={cn(css.icon, 'material-icons')}>snooze</i>
-            </Button>
-            {!showPicker && (
-                <Tooltip placement="bottom-end" target="snooze-button">
-                    Snooze ticket
+            {!showPicker ? (
+                <Tooltip
+                    delay={0}
+                    placement="bottom right"
+                    trigger={snoozeButton}
+                >
+                    <TooltipContent
+                        title={
+                            disabled
+                                ? 'Not available in standalone mode'
+                                : 'Snooze ticket'
+                        }
+                    />
                 </Tooltip>
+            ) : (
+                snoozeButton
             )}
             <TicketSnoozePicker
                 datetime={until}

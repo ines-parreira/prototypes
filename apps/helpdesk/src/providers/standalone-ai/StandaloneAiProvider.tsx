@@ -16,20 +16,40 @@ const ACTIONS = {
 const FEATURE_ACCESS_LIST = {
     statistics: ACTIONS,
     userManagement: ACTIONS,
+    ticketsView: {
+        canRead: false,
+        canCreateInternalNote: false,
+        canWrite: false,
+    },
 }
 
 const STANDALONE_AI_ACCESS_BY_ROLE = {
     [UserRole.Admin]: {
         statistics: { canRead: true, canWrite: true },
         userManagement: { canRead: true, canWrite: true },
+        ticketsView: {
+            canRead: true,
+            canCreateInternalNote: true,
+            canWrite: false,
+        },
     },
     [UserRole.Agent]: {
         statistics: { canRead: true, canWrite: true },
         userManagement: { canRead: false, canWrite: false },
+        ticketsView: {
+            canRead: true,
+            canCreateInternalNote: true,
+            canWrite: false,
+        },
     },
     [UserRole.ObserverAgent]: {
         statistics: { canRead: true, canWrite: false },
         userManagement: { canRead: false, canWrite: false },
+        ticketsView: {
+            canRead: true,
+            canCreateInternalNote: true,
+            canWrite: false,
+        },
     },
 } as const
 

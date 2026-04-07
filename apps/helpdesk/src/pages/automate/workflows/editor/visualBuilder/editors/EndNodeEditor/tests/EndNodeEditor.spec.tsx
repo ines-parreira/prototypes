@@ -2,6 +2,7 @@ import React from 'react'
 
 import { act, screen } from '@testing-library/react'
 
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import {
     createSelfServiceStoreIntegrationContextForPreview,
     StoreIntegrationContext,
@@ -18,9 +19,16 @@ import type {
     EndNodeType,
     VisualBuilderGraph,
 } from 'pages/automate/workflows/models/visualBuilderGraph.types'
+import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { renderWithStore } from 'utils/testing'
 
 import EndNodeEditor from '..'
+
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
+}))
+
+const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
 describe('<EndNodeEditor />', () => {
     const mockNodeInEdition: EndNodeType = {
@@ -126,6 +134,9 @@ describe('<EndNodeEditor />', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseStandaloneAiAccess.mockReturnValue(
+            createMockStandaloneAiAccess(),
+        )
     })
 
     it('should render the end node editor with correct action options for channel trigger', () => {

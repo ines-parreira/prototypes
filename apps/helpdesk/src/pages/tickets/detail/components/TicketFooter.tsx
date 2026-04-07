@@ -7,6 +7,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import Editor from 'pages/common/editor/Editor'
 import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFilters'
 import WhatsAppEditorProvider from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider'
+import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getTicket } from 'state/ticket/selectors'
 import { editorFocused } from 'state/ui/editor/actions'
 
@@ -27,8 +28,13 @@ export default function TicketFooter({ context }: Props) {
     const dispatch = useAppDispatch()
     const ticket = useAppSelector(getTicket)
     const initialMacroFilters = useInitialMacroFilters()
+    const { accessFeaturesMapped, isStandaloneAiAgent } =
+        useStandaloneAiAccess()
 
     const isExistingTicket = useMemo(() => !!ticket.id, [ticket])
+
+    const internalNotesOnly =
+        isStandaloneAiAgent && accessFeaturesMapped.ticketsView.canRead
 
     const handleBlur = useCallback(() => {
         dispatch(editorFocused(false))
@@ -47,6 +53,7 @@ export default function TicketFooter({ context }: Props) {
             <TypingActivity isTyping={isShopperTyping} name={shopperName} />
             <WhatsAppEditorProvider>
                 <Editor
+                    internalNotesOnly={internalNotesOnly}
                     initialMacroFilters={initialMacroFilters}
                     submit={submit}
                     ticket={ticket}

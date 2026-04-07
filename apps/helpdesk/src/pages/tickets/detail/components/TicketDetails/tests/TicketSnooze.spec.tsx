@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -42,18 +42,51 @@ describe('<TicketSnooze/>', () => {
         })
 
         it('should render a badge with a tooltip', async () => {
-            const { getByText } = render(
+            render(
                 <Provider store={store}>
                     <TicketSnooze datetime="2017-12-22 17:00" timezone="utc" />
                 </Provider>,
             )
-            const el = getByText('Snoozed')
-            expect(el).toBeInTheDocument()
 
-            fireEvent.mouseOver(el)
-            await waitFor(() => getByText(/2017/))
+            const badge = screen.getByText('Snoozed')
+            const trigger = badge.closest(
+                '[data-name="tooltip-trigger"]',
+            ) as HTMLElement
 
-            expect(getByText(/Snoozed until 22\/12\/2017/)).toBeInTheDocument()
+            expect(badge).toBeInTheDocument()
+
+            act(() => {
+                trigger.focus()
+            })
+
+            expect(await screen.findByRole('tooltip')).toHaveTextContent(
+                'Snoozed until 22/12/2017',
+            )
+        })
+
+        it('should render the standalone tooltip message when disabled', async () => {
+            render(
+                <Provider store={store}>
+                    <TicketSnooze
+                        datetime="2017-12-22 17:00"
+                        timezone="utc"
+                        disabled
+                    />
+                </Provider>,
+            )
+
+            const badge = screen.getByText('Snoozed')
+            const trigger = badge.closest(
+                '[data-name="tooltip-trigger"]',
+            ) as HTMLElement
+
+            act(() => {
+                trigger.focus()
+            })
+
+            expect(
+                await screen.findByText('Not available in standalone mode'),
+            ).toBeInTheDocument()
         })
     })
 })

@@ -12,7 +12,9 @@ import { useAgentActivity } from '@gorgias/realtime'
 import { TicketMessageSourceType } from 'business/types/ticket'
 import { ACTION_TEMPLATES } from 'config'
 import { UserRole } from 'config/types/user'
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { MacroActionName } from 'models/macroAction/types'
+import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 
 import { TicketReply } from '../TicketReply'
 
@@ -40,8 +42,12 @@ jest.mock('providers/OutboundTranslationProvider', () => ({
         isTranslationPending: false,
     }),
 }))
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
+}))
 
 const mockStore = configureMockStore([thunk])
+const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
 describe('<TicketReply />', () => {
     const answerableSourceType = TicketMessageSourceType.Email
@@ -73,6 +79,9 @@ describe('<TicketReply />', () => {
             stopTyping: jest.fn(),
             getTicketActivity: jest.fn().mockReturnValue({ typing: [] }),
         })
+        mockUseStandaloneAiAccess.mockReturnValue(
+            createMockStandaloneAiAccess(),
+        )
     })
 
     it('should render the editor', () => {

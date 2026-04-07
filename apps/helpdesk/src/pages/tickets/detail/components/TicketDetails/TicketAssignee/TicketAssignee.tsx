@@ -13,6 +13,8 @@ import {
 } from 'reactstrap'
 import type { Direction } from 'reactstrap/lib/Dropdown'
 
+import { Tooltip, TooltipContent } from '@gorgias/axiom'
+
 import useAppSelector from 'hooks/useAppSelector'
 import PeopleSearchInput from 'pages/common/forms/PeopleSearchInput/PeopleSearchInput'
 import PeopleSearchResults from 'pages/common/forms/PeopleSearchInput/PeopleSearchResults'
@@ -75,7 +77,7 @@ const TicketAssignee = ({
     const [users, setUsers] = useState(allUsers)
 
     useEffect(() => {
-        if (!bindKeys) return
+        if (!bindKeys || disabled) return
         shortcutManager.bind('TicketDetailContainer', {
             OPEN_ASSIGNEE: {
                 action: (e) => {
@@ -150,6 +152,10 @@ const TicketAssignee = ({
     )
 
     const toggle = (e?: any, visible?: boolean) => {
+        if (disabled) {
+            return
+        }
+
         const opens = !_isUndefined(visible) ? visible : !isDropdownOpen
 
         setIsDropdownOpen(opens)
@@ -206,7 +212,7 @@ const TicketAssignee = ({
         [currentAssigneeUser, users],
     )
 
-    return (
+    const assigneeDropdown = (
         <Dropdown
             className={classnames(css.dropdown, className)}
             isOpen={isDropdownOpen}
@@ -337,6 +343,25 @@ const TicketAssignee = ({
                 </div>
             </DropdownMenu>
         </Dropdown>
+    )
+
+    return (
+        <>
+            {disabled ? (
+                <Tooltip
+                    placement="bottom"
+                    trigger={
+                        <div className={css.tooltipTrigger}>
+                            {assigneeDropdown}
+                        </div>
+                    }
+                >
+                    <TooltipContent title="Not available in standalone mode" />
+                </Tooltip>
+            ) : (
+                assigneeDropdown
+            )}
+        </>
     )
 }
 

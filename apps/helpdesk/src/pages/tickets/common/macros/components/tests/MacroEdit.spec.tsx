@@ -18,9 +18,11 @@ import {
     setTextAction,
     snoozeTicketAction,
 } from 'fixtures/macro'
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
 import { IntegrationType } from 'models/integration/types'
 import { MacroActionName } from 'models/macroAction/types'
 import type { Attachment } from 'models/ticket/types'
+import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 import { renderWithRouter } from 'utils/testing'
 
@@ -61,7 +63,11 @@ jest.mock('../actions/SetPriorityAction', () => () => (
 ))
 
 jest.mock('@repo/feature-flags')
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
+}))
 const mockUseFlag = useFlag as jest.MockedFunction<typeof useFlag>
+const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
 const mockStore = configureMockStore([thunk])
 
@@ -188,6 +194,9 @@ describe('MacroEdit component', () => {
 
     beforeEach(() => {
         mockUseFlag.mockReturnValue(false)
+        mockUseStandaloneAiAccess.mockReturnValue(
+            createMockStandaloneAiAccess(),
+        )
     })
 
     it('should render the macro edit form', () => {

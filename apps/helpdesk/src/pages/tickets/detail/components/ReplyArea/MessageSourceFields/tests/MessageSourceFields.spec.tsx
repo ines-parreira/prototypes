@@ -4,10 +4,18 @@ import { fireEvent, render } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
+import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import type { RootState } from 'state/types'
 import { mockStore } from 'utils/testing'
 
 import MessageSourceFields from '../MessageSourceFields'
+
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
+}))
+
+const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
 describe('<MessageSourceFields />', () => {
     const renderWithStore = (state: Partial<RootState>) =>
@@ -40,6 +48,12 @@ describe('<MessageSourceFields />', () => {
                 ],
             }),
         }
+
+        beforeEach(() => {
+            mockUseStandaloneAiAccess.mockReturnValue(
+                createMockStandaloneAiAccess(),
+            )
+        })
 
         it('renders the Internal Note label when new message is not public', () => {
             const { getByText } = renderWithStore({})
@@ -91,6 +105,12 @@ describe('<MessageSourceFields />', () => {
                 id: 123,
             }),
         }
+
+        beforeEach(() => {
+            mockUseStandaloneAiAccess.mockReturnValue(
+                createMockStandaloneAiAccess(),
+            )
+        })
 
         it('renders in the closed state with only the receiver visible', () => {
             const { getByText, queryByText, queryByPlaceholderText } =
@@ -182,6 +202,12 @@ describe('<MessageSourceFields />', () => {
                 ],
             }),
         }
+
+        beforeEach(() => {
+            mockUseStandaloneAiAccess.mockReturnValue(
+                createMockStandaloneAiAccess(),
+            )
+        })
 
         it('renders the new selector', () => {
             const { container, getByText } = renderWithStore(initialState)

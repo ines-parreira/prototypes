@@ -6,6 +6,8 @@ import { fireEvent, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 
+import { createMockStandaloneAiAccess } from 'fixtures/standaloneAiAccess'
+import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import { useTimelinePanel } from 'timeline/hooks/useTimelinePanel'
 import Timeline from 'timeline/Timeline'
@@ -25,6 +27,9 @@ jest.mock('../TicketBodyNonVirtualized', () => () => (
 jest.mock('../TicketHeaderWrapper/TicketHeaderWrapper', () => () => (
     <div>TicketHeaderWrapper</div>
 ))
+jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
+    useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
+}))
 jest.mock('../ReplyForm', () => () => <div>ReplyForm</div>)
 
 jest.mock('@repo/feature-flags')
@@ -32,6 +37,7 @@ const mockUseFlag = useFlag as jest.Mock
 
 const TimelineMock = assumeMock(Timeline)
 const useTimelinePanelMock = assumeMock(useTimelinePanel)
+const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 
 const mockedDispatch = jest.fn()
 jest.mock('hooks/useAppDispatch', () => () => mockedDispatch)
@@ -53,6 +59,9 @@ describe('<TicketView />', () => {
             closeTimeline: closeTimelineMock,
         } as unknown as ReturnType<typeof useTimelinePanel>)
         mockUseFlag.mockImplementation(() => false)
+        mockUseStandaloneAiAccess.mockReturnValue(
+            createMockStandaloneAiAccess(),
+        )
     })
 
     const mockTicketState = fromJS({
@@ -110,7 +119,12 @@ describe('<TicketView />', () => {
             </Provider>,
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container.querySelector('.page')).not.toHaveClass(
+            'transition',
+            'out',
+            'fade',
+            'right',
+        )
     })
 
     it('should have the hidden classes', () => {
@@ -126,7 +140,12 @@ describe('<TicketView />', () => {
             </Provider>,
         )
 
-        expect(container.firstChild).toMatchSnapshot()
+        expect(container.querySelector('.page')).toHaveClass(
+            'transition',
+            'out',
+            'fade',
+            'right',
+        )
     })
 
     it('should call `closeTimeline` when the timeline close button is clicked', () => {

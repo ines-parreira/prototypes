@@ -90,6 +90,14 @@ describe('RecentChats', () => {
             useHelpdeskV2WayfindingMS1FlagMock.mockReturnValue(false)
         })
 
+        it('should render nothing when chats tickets are missing', () => {
+            useAppSelectorMock.mockReturnValue(fromJS({}))
+
+            const { container } = render(<RecentChats />, { wrapper })
+
+            expect(container).toBeEmptyDOMElement()
+        })
+
         it('should log an event and dispatch some actions on click', () => {
             render(<RecentChats />, { wrapper })
             userEvent.click(screen.getByText('John Doe'))

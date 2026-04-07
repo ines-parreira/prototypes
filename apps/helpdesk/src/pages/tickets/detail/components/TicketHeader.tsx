@@ -28,6 +28,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import EditableTitle from 'pages/common/components/EditableTitle/EditableTitle'
 import MergeTicketsContainer from 'pages/common/components/MergeTickets/MergeTicketsContainer'
 import ConfirmationPopover from 'pages/common/components/popover/ConfirmationPopover'
+import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getTimezone } from 'state/currentUser/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
@@ -94,6 +95,8 @@ const TicketHeader = ({
     const [isMergeTicketModalOpen, setIsMergeTicketModalOpen] = useState(false)
     const appNode = useAppNode()
     const currentUser = useAppSelector((state) => state.currentUser)
+    const { accessFeaturesMapped, isStandaloneAiAgent } =
+        useStandaloneAiAccess()
     const timezone = useAppSelector(getTimezone)
     const shouldDisplayAuditLogEvents = useAppSelector(
         getShouldDisplayAuditLogEvents,
@@ -106,7 +109,6 @@ const TicketHeader = ({
         setAllTicketMessagesToTranslated,
         allMessageDisplayState,
     } = useTicketMessageTranslationDisplay()
-
     const { primary, shouldShowTranslatedContent } =
         useCurrentUserLanguagePreferences()
     const { translationMap, updateTicketTranslatedSubject, isInitialLoading } =
@@ -131,15 +133,23 @@ const TicketHeader = ({
     )
 
     const dispatch = useAppDispatch()
+    const canWriteToTicket =
+        !isStandaloneAiAgent || accessFeaturesMapped.ticketsView.canWrite
 
     const actions = {
         CLOSE_TICKET: {
             action: () => {
+                if (!canWriteToTicket) {
+                    return
+                }
                 setStatus(TicketStatusEnum.Closed)
             },
         },
         OPEN_TICKET: {
             action: () => {
+                if (!canWriteToTicket) {
+                    return
+                }
                 setStatus(TicketStatusEnum.Open)
             },
         },
@@ -399,6 +409,7 @@ const TicketHeader = ({
                             update={handleSubjectChange}
                             focus={!ticket.get('id')}
                             maxLength={998}
+                            disabled={!canWriteToTicket}
                         />
                     </TicketSubjectLoadingState>
                 </div>
@@ -461,15 +472,18 @@ const TicketHeader = ({
                         <TicketSnooze
                             datetime={snoozedUntil}
                             timezone={timezone}
+                            disabled={isStandaloneAiAgent}
                         />
                         <TicketPriorityDropdown
                             priority={ticket.get('priority') as TicketPriority}
                             onPriorityChange={handlePriorityChange}
+                            disabled={isStandaloneAiAgent}
                         />
                         {isUpdate && (
                             <Snooze
                                 until={snoozedUntil}
                                 onUpdate={handleSnoozeTicket}
+                                disabled={isStandaloneAiAgent}
                             />
                         )}
                         {!hasUIVisionMS1 && enableAITicketSummary && (
@@ -515,6 +529,7 @@ const TicketHeader = ({
                         <TicketStatus
                             currentStatus={ticket.get('status')}
                             setQuickStatus={toggleStatus}
+                            disabled={isStandaloneAiAgent}
                         />
                     )}
 
@@ -541,6 +556,7 @@ const TicketHeader = ({
                     setTeam={(team) => void dispatch(setTeam(team))}
                     transparent
                     bindKeys
+                    disabled={!canWriteToTicket}
                     dropdownContainer={appNode ?? undefined}
                 />
             </div>

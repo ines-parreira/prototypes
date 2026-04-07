@@ -2,10 +2,7 @@ import { useCallback, useRef, useState } from 'react'
 
 import _capitalize from 'lodash/capitalize'
 
-import {
-    LegacyButton as Button,
-    LegacyTooltip as Tooltip,
-} from '@gorgias/axiom'
+import { Button, Tooltip, TooltipContent } from '@gorgias/axiom'
 import { TicketPriority } from '@gorgias/helpdesk-types'
 
 import Dropdown from 'pages/common/components/dropdown/Dropdown'
@@ -18,9 +15,11 @@ import css from './TicketPriorityDropdown.less'
 const PRIORITY_OPTIONS: TicketPriority[] = Object.values(TicketPriority)
 
 const TicketPriorityDropdown = ({
+    disabled = false,
     priority,
     onPriorityChange,
 }: {
+    disabled?: boolean
     priority: TicketPriority
     onPriorityChange: (priority: TicketPriority) => void
 }) => {
@@ -38,19 +37,31 @@ const TicketPriorityDropdown = ({
         [onPriorityChange],
     )
 
+    const button = (
+        <Button
+            className={css.button}
+            size="sm"
+            variant="tertiary"
+            leadingSlot={<PriorityIcon priority={priority} />}
+            onClick={handleToggleDropdown}
+            ref={buttonRef}
+            isDisabled={disabled}
+        >
+            {priority}
+        </Button>
+    )
+
     return (
         <>
-            <Button
-                className={css.button}
-                size="small"
-                intent="secondary"
-                fillStyle="ghost"
-                leadingIcon={<PriorityIcon priority={priority} />}
-                onClick={handleToggleDropdown}
-                ref={buttonRef}
-            >
-                {priority}
-            </Button>
+            <Tooltip delay={0} placement="bottom" trigger={button}>
+                <TooltipContent
+                    title={
+                        disabled
+                            ? 'Not available in standalone mode'
+                            : 'Change priority'
+                    }
+                />
+            </Tooltip>
             <Dropdown
                 isOpen={isOpen}
                 offset={4}
@@ -78,7 +89,6 @@ const TicketPriorityDropdown = ({
                     ))}
                 </DropdownBody>
             </Dropdown>
-            <Tooltip target={buttonRef}>Change priority</Tooltip>
         </>
     )
 }

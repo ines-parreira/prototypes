@@ -216,6 +216,20 @@ describe('<TicketReplyArea/>', () => {
         expect(queryByText(/'TicketMacros mock'/i)).not.toBeInTheDocument()
     })
 
+    it('should not render macros when standalone AI agent is enabled', () => {
+        const { queryByText } = render(
+            <TicketReplyArea
+                {...minProps}
+                hasShownMacros
+                isMacrosActive
+                isStandaloneAiAgent
+            />,
+        )
+
+        expect(queryByText(/TicketMacros mock/i)).not.toBeInTheDocument()
+        expect(queryByText('hello')).toBeInTheDocument()
+    })
+
     it("should not focus editor when newMessageType becomes 'internal-note'", () => {
         const { rerender } = render(<TicketReplyArea {...minProps} />)
         rerender(
@@ -345,6 +359,30 @@ describe('<TicketReplyArea/>', () => {
 
             expect(shortcutEvent.preventDefault).toHaveBeenCalled()
             expect(onChangeMacrosActive).toHaveBeenCalledWith(true)
+        })
+
+        it('should not show macros for standalone AI agents when triggered', () => {
+            const onChangeMacrosActive = jest.fn()
+            render(
+                <TicketReplyArea
+                    {...minProps}
+                    isStandaloneAiAgent
+                    onChangeMacrosActive={onChangeMacrosActive}
+                />,
+            )
+
+            const shortcutEvent = {
+                preventDefault: jest.fn(),
+            } as unknown as jest.Mocked<Event>
+
+            makeExecuteKeyboardAction(
+                shortcutManagerMock,
+                shortcutEvent,
+                'TicketDetailContainer',
+            )('SEARCH_MACROS')
+
+            expect(shortcutEvent.preventDefault).toHaveBeenCalled()
+            expect(onChangeMacrosActive).not.toHaveBeenCalled()
         })
     })
 

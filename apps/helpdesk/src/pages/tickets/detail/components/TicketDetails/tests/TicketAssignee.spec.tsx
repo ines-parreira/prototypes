@@ -1,7 +1,8 @@
 import type { ComponentProps } from 'react'
 import React from 'react'
 
-import { render } from '@testing-library/react'
+import { shortcutManager } from '@repo/utils'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
@@ -9,6 +10,84 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import TicketAssignee from '../TicketAssignee/TicketAssignee'
+
+jest.mock('@repo/utils', () => ({
+    ...jest.requireActual('@repo/utils'),
+    shortcutManager: {
+        bind: jest.fn(),
+        unbind: jest.fn(),
+    },
+}))
+
+jest.mock('reactstrap', () => {
+    const actual = jest.requireActual('reactstrap')
+
+    return {
+        ...actual,
+        Dropdown: ({
+            children,
+            className,
+            isOpen,
+            toggle,
+        }: {
+            children: React.ReactNode
+            className?: string
+            isOpen?: boolean
+            toggle?: () => void
+        }) => (
+            <div className={className} data-open={isOpen}>
+                {children}
+                <button
+                    type="button"
+                    aria-label="Toggle assignee dropdown"
+                    onClick={toggle}
+                />
+            </div>
+        ),
+        DropdownToggle: ({
+            children,
+            className,
+            disabled,
+            type = 'button',
+        }: {
+            children: React.ReactNode
+            className?: string
+            disabled?: boolean
+            type?: 'button' | 'submit' | 'reset'
+        }) => (
+            <button type={type} className={className} disabled={disabled}>
+                {children}
+            </button>
+        ),
+        DropdownMenu: ({
+            children,
+            className,
+        }: {
+            children: React.ReactNode
+            className?: string
+        }) => <div className={className}>{children}</div>,
+        DropdownItem: ({
+            children,
+            className,
+            header,
+            onClick,
+            type = 'button',
+        }: {
+            children: React.ReactNode
+            className?: string
+            header?: boolean
+            onClick?: () => void
+            type?: 'button' | 'submit' | 'reset'
+        }) =>
+            header ? (
+                <div className={className}>{children}</div>
+            ) : (
+                <button type={type} className={className} onClick={onClick}>
+                    {children}
+                </button>
+            ),
+    }
+})
 
 const users: Map<any, any> = fromJS({
     all: [
@@ -38,6 +117,7 @@ const minProps: Omit<
 }
 
 const mockStore = configureMockStore([thunk])
+const shortcutManagerMock = jest.mocked(shortcutManager)
 
 describe('<TicketAssignee />', () => {
     const store = mockStore({
@@ -52,6 +132,10 @@ describe('<TicketAssignee />', () => {
     })
 
     describe('render()', () => {
+        beforeEach(() => {
+            jest.clearAllMocks()
+        })
+
         it('should not display any agent info because there is no assignee', () => {
             const { getByText } = render(
                 <Provider store={store}>
@@ -155,6 +239,64 @@ describe('<TicketAssignee />', () => {
 
             expect(queryByText(/Users/)).not.toBeInTheDocument()
             expect(getByText(/Teams/)).toBeInTheDocument()
+        })
+
+        it('should not bind keyboard shortcuts when disabled', () => {
+            render(
+                <Provider store={store}>
+                    <TicketAssignee {...minProps} bindKeys disabled />
+                </Provider>,
+            )
+
+            expect(shortcutManagerMock.bind).not.toHaveBeenCalled()
+        })
+
+        it('should open the search input when the dropdown toggles', () => {
+            render(
+                <Provider store={store}>
+                    <TicketAssignee {...minProps} />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByPlaceholderText('Search users or teams...'),
+            ).not.toBeInTheDocument()
+
+            act(() => {
+                fireEvent.click(
+                    screen.getByRole('button', {
+                        name: 'Toggle assignee dropdown',
+                    }),
+                )
+            })
+
+            expect(
+                screen.getByPlaceholderText('Search users or teams...'),
+            ).toBeInTheDocument()
+        })
+
+        it('should not open the search input when disabled and the dropdown toggles', () => {
+            render(
+                <Provider store={store}>
+                    <TicketAssignee {...minProps} disabled />
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByPlaceholderText('Search users or teams...'),
+            ).not.toBeInTheDocument()
+
+            act(() => {
+                fireEvent.click(
+                    screen.getByRole('button', {
+                        name: 'Toggle assignee dropdown',
+                    }),
+                )
+            })
+
+            expect(
+                screen.queryByPlaceholderText('Search users or teams...'),
+            ).not.toBeInTheDocument()
         })
     })
 })
