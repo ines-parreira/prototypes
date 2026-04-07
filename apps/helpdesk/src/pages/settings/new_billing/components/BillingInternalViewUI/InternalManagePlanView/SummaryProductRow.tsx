@@ -17,6 +17,7 @@ const STATUS_TAG: Record<
     { label: string; color: TagColor } | null
 > = {
     unchanged: null,
+    changed: { label: 'Changed', color: Color.Purple },
     upgraded: { label: 'Upgraded', color: Color.Purple },
     downgraded: { label: 'Downgraded', color: Color.Red },
     added: { label: 'Added', color: Color.Purple },

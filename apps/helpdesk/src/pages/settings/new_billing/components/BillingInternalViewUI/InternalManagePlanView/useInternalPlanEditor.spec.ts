@@ -5,6 +5,8 @@ import {
     proMonthlyHelpdeskPlan,
     voicePlan1,
     voicePlan2,
+    voicePlan3,
+    voicePlan4,
 } from 'fixtures/plans'
 import type {
     CurrentPlans,
@@ -153,6 +155,36 @@ describe('useInternalPlanEditor', () => {
         const voice = findPlan(result, ProductType.Voice)
         expect(voice?.status).toBe('unchanged')
         expect(voice?.plan).toBeNull()
+    })
+
+    it('resolves changed status when selecting a same-price different plan', () => {
+        const plansWithVoice: CurrentPlans = {
+            ...currentPlans,
+            voice: voicePlan3,
+        }
+        const catalogWithSamePrice: InternalProductCatalogPlans = {
+            ...catalogPlans,
+            [ProductType.Voice]: {
+                [voicePlan3.plan_id]: voicePlan3,
+                [voicePlan4.plan_id]: voicePlan4,
+            },
+        }
+        const { result } = renderUseInternalPlanEditor(
+            plansWithVoice,
+            catalogWithSamePrice,
+        )
+
+        act(() => {
+            result.current.handlePlanSelect(
+                ProductType.Voice,
+                voicePlan4.plan_id,
+            )
+        })
+
+        const voice = findPlan(result, ProductType.Voice)
+        expect(voice?.status).toBe('changed')
+        expect(voice?.plan).toEqual(voicePlan4)
+        expect(result.current.hasChanges).toBe(true)
     })
 
     it('hasChanges becomes true after any mutation', () => {

@@ -68,7 +68,8 @@ export function InternalSelectPlans({
                     const currentPlan =
                         currentPlans[PRODUCT_TO_PLAN_KEY[productType]]
                     const isProductActive =
-                        status !== 'removed' && action?.kind !== 'add'
+                        status !== 'removed' &&
+                        (currentPlan !== null || status === 'added')
                     return (
                         <Fragment key={productType}>
                             <ProductRow

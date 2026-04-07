@@ -60,14 +60,14 @@ export function InternalConfirmModal({
                         variant="secondary"
                         onClick={() => handleApply('without')}
                         isLoading={isSubmitting && activeAction === 'without'}
-                        isDisabled={isSubmitting && activeAction !== 'without'}
+                        isDisabled={isSubmitting}
                     >
                         Apply without invoice
                     </Button>
                     <Button
                         onClick={() => handleApply('with')}
                         isLoading={isSubmitting && activeAction === 'with'}
-                        isDisabled={isSubmitting && activeAction !== 'with'}
+                        isDisabled={isSubmitting}
                     >
                         Apply with invoice
                     </Button>

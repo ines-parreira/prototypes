@@ -67,6 +67,17 @@ describe('ProductRow', () => {
         expect(screen.queryByLabelText('Helpdesk plan')).not.toBeInTheDocument()
     })
 
+    it('renders Active badge for an added product with a selected plan', () => {
+        renderComponent({
+            plan: null,
+            isProductActive: true,
+            selectedPlanId: proMonthlyHelpdeskPlan.plan_id,
+        })
+
+        expect(screen.getByText('Active')).toBeInTheDocument()
+        expect(screen.queryByText('Inactive')).not.toBeInTheDocument()
+    })
+
     it('renders action button and fires onAction on click', async () => {
         const user = userEvent.setup()
         const onAction = jest.fn()

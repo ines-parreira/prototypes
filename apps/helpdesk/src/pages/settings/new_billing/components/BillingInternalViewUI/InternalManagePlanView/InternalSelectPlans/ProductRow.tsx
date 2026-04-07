@@ -89,7 +89,7 @@ export function ProductRow({
                         withBackground
                     />
                     <Text variant="bold">{productInfo.title}</Text>
-                    {isProductActive && getStatusBadge(plan)}
+                    {isProductActive && getStatusBadge(resolvedPlan)}
                 </Box>
                 {actionLabel && onAction && (
                     <Button variant="tertiary" size="sm" onClick={onAction}>

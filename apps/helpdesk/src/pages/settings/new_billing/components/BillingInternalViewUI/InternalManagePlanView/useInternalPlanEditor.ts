@@ -11,6 +11,7 @@ import { getPlanPrice } from 'models/billing/utils'
 
 export type ResolvedPlanStatus =
     | 'unchanged'
+    | 'changed'
     | 'upgraded'
     | 'downgraded'
     | 'added'
@@ -50,7 +51,7 @@ function resolveStatus(
     const priceDiff = getPlanPrice(targetPlan) - getPlanPrice(currentPlan)
     if (priceDiff > 0) return 'upgraded'
     if (priceDiff < 0) return 'downgraded'
-    return 'unchanged'
+    return 'changed'
 }
 
 function resolveDisplayPlan(
