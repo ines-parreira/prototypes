@@ -2,8 +2,8 @@ import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
 import {
-    mockListTagsHandler,
-    mockListTagsResponse,
+    mockGetTagHandler,
+    mockGetTagResponse,
     mockListTeamsHandler,
     mockListTeamsResponse,
     mockListUsersHandler,
@@ -34,19 +34,22 @@ function getUsersHandler(users: unknown[]) {
     )
 }
 
-function getTagsHandler(tags: unknown[]) {
-    return mockListTagsHandler(async () =>
-        HttpResponse.json(
-            mockListTagsResponse({
-                data: tags as any[],
-                meta: {
-                    prev_cursor: null,
-                    next_cursor: null,
-                    total_resources: tags.length,
-                },
+function getTagHandler(tagsById: Record<number, unknown>) {
+    return mockGetTagHandler(async ({ params }) => {
+        const tagId = Number(params?.id ?? 0)
+        const tag = tagsById[tagId]
+
+        if (!tag) {
+            return new HttpResponse(null, { status: 204 })
+        }
+
+        return HttpResponse.json(
+            mockGetTagResponse({
+                ...(tag as any),
+                id: tagId,
             }),
-        ),
-    )
+        )
+    })
 }
 
 function getTeamsHandler(teams: unknown[]) {
@@ -92,16 +95,16 @@ describe('TicketThread audit-log rendering', () => {
     beforeEach(() => {
         server.use(
             getCurrentUserHandler().handler,
-            getTagsHandler([
-                mockTag({
+            getTagHandler({
+                1: mockTag({
                     id: 1,
                     name: 'VIP',
                 }),
-                mockTag({
+                2: mockTag({
                     id: 2,
                     name: 'Refund',
                 }),
-            ]).handler,
+            }).handler,
             getUsersHandler([
                 mockUser({
                     id: 101,
@@ -137,20 +140,20 @@ describe('TicketThread audit-log rendering', () => {
         expect(screen.getByText('was removed')).toBeInTheDocument()
     })
 
-    it('renders no tag wording when tags cannot be resolved', async () => {
-        const mockListTags = getTagsHandler([])
-        const waitForTagsRequest = mockListTags.waitForRequest(server)
+    it('renders event wording when tags cannot be resolved', async () => {
+        const mockGetTag = getTagHandler({})
+        const waitForTagRequest = mockGetTag.waitForRequest(server)
 
-        server.use(mockListTags.handler)
+        server.use(mockGetTag.handler)
 
         renderAuditEvent('ticket-tags-added', {
             tags_added: [999],
         })
 
-        await waitForTagsRequest(() => undefined)
-        await waitFor(() => {
-            expect(screen.queryByText(/added/)).not.toBeInTheDocument()
-        })
+        await waitForTagRequest(() => undefined)
+
+        expect(screen.queryByText('VIP')).not.toBeInTheDocument()
+        expect(screen.getByText('was added')).toBeInTheDocument()
     })
 
     it('renders ticket-assigned with resolved agent target', async () => {
