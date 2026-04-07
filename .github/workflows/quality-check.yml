@@ -203,6 +203,7 @@ jobs:
   tests:
     name: Tests
     runs-on: gh-actions-large-runner-set
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
@@ -252,6 +253,7 @@ jobs:
   affected-tests:
     name: 'Packages tests'
     runs-on: gh-actions-large-runner-set
+    timeout-minutes: 15
     if: inputs.has-other-affected-packages == 'true'
     strategy:
       fail-fast: false

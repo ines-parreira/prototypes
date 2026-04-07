@@ -45,6 +45,7 @@ jobs:
   build:
     name: Build
     runs-on: gh-actions-default-runner-set
+    timeout-minutes: 15
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
