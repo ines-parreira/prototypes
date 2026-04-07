@@ -123,9 +123,6 @@ catalogs:
     '@types/lodash':
       specifier: 4.14.158
       version: 4.14.158
-    lodash:
-      specifier: 4.17.21
-      version: 4.17.21
   logging:
     '@types/segment-analytics':
       specifier: ^0.0.38
@@ -436,8 +433,10 @@ overrides:
   '@formatjs/ecma402-abstract': 1.11.4
   '@internationalized/date': 3.10.0
   jquery: 3.5.1
-  json-schema: 0.4.0
   jsonpath@1.1.1: 1.3.0
+  json-schema: 0.4.0
+  lodash: 4.18.1
+  lodash-es: 4.18.1
   minimatch@3.1.2: 3.1.4
   picomatch@2.3.1: 2.3.2
   picomatch@4.0.3: 4.0.4
@@ -939,8 +938,8 @@ importers:
         specifier: catalog:browser-storage
         version: 1.4.0
       lodash:
-        specifier: catalog:lodash
-        version: 4.17.21
+        specifier: 4.18.1
+        version: 4.18.1
       lottie-react:
         specifier: ^2.4.1
         version: 2.4.1(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -2401,8 +2400,8 @@ importers:
         specifier: ^10.0.4
         version: 10.1.1
       lodash:
-        specifier: catalog:lodash
-        version: 4.17.21
+        specifier: 4.18.1
+        version: 4.18.1
       msw:
         specifier: catalog:test
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
@@ -2486,8 +2485,8 @@ importers:
         specifier: catalog:test
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
       lodash:
-        specifier: catalog:lodash
-        version: 4.17.21
+        specifier: 4.18.1
+        version: 4.18.1
       oxlint:
         specifier: catalog:oxlint
         version: 1.51.0
@@ -2626,8 +2625,8 @@ importers:
         specifier: catalog:test
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
       lodash:
-        specifier: catalog:lodash
-        version: 4.17.21
+        specifier: 4.18.1
+        version: 4.18.1
       oxlint:
         specifier: catalog:oxlint
         version: 1.51.0
@@ -2938,8 +2937,8 @@ importers:
         specifier: catalog:test
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
       lodash:
-        specifier: catalog:lodash
-        version: 4.17.21
+        specifier: 4.18.1
+        version: 4.18.1
       oxlint:
         specifier: catalog:oxlint
         version: 1.51.0
@@ -3194,8 +3193,8 @@ importers:
         specifier: catalog:libphonenumber
         version: 1.12.25
       lodash:
-        specifier: catalog:lodash
-        version: 4.17.21
+        specifier: 4.18.1
+        version: 4.18.1
       msw:
         specifier: catalog:test
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
@@ -3360,8 +3359,8 @@ importers:
         specifier: catalog:styles
         version: 2.2.6
       lodash:
-        specifier: catalog:lodash
-        version: 4.17.21
+        specifier: 4.18.1
+        version: 4.18.1
       msw:
         specifier: catalog:test
         version: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
@@ -3595,8 +3594,8 @@ importers:
         specifier: catalog:test
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
       lodash:
-        specifier: catalog:lodash
-        version: 4.17.21
+        specifier: 4.18.1
+        version: 4.18.1
       oxlint:
         specifier: catalog:oxlint
         version: 1.51.0
@@ -12379,11 +12378,8 @@ packages:
     resolution: {integrity: sha512-gvVijfZvn7R+2qyPX8mAuKcFGDf6Nc61GdvGafQsHL0sBIxfKzA+usWn4GFC/bk+QdwPUD4kWFJLhElipq+0VA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
-  lodash-es@4.17.21:
-    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-
-  lodash-es@4.17.23:
-    resolution: {integrity: sha512-kVI48u3PZr38HdYz98UmfPnXl2DXrpdctLrFLCd3kOx1xUkOmpFPx7gCWWM5MPkL/fD8zb+Ph0QzjGFs4+hHWg==}
+  lodash-es@4.18.1:
+    resolution: {integrity: sha512-J8xewKD/Gk22OZbhpOVSwcs60zhd95ESDwezOFuA3/099925PdHJ7OFHNTGtajL3AlZkykD32HykiMo+BIBI8A==}
 
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
@@ -12403,8 +12399,8 @@ packages:
   lodash.truncate@4.4.2:
     resolution: {integrity: sha512-jttmRe7bRse52OsWIMDLaXxWqRAmtIUccAQ3garviCqJjafXOfNMO0yMfNpdD6zbGaTU0P5Nz7e7gAT6cKmJRw==}
 
-  lodash@4.17.21:
-    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+  lodash@4.18.1:
+    resolution: {integrity: sha512-dMInicTPVE8d1e5otfwmmjlxkZoUpiVLwyeTdUsi/Caj/gfzzblBcCE5sRHV/AsjuCmxWrte2TNGSYuCeCq+0Q==}
 
   log-symbols@4.1.0:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
@@ -17669,7 +17665,7 @@ snapshots:
       classnames: 2.5.1
       country-flag-icons: 1.6.8
       downshift: 9.0.9(react@18.2.0)
-      lodash-es: 4.17.23
+      lodash-es: 4.18.1
       react: 18.2.0
       react-aria: 3.44.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-aria-components: 1.13.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -17716,7 +17712,7 @@ snapshots:
       '@gorgias/convert-types': 0.4.23
       '@gorgias/sdk-mocks': 0.14.2(@types/node@22.13.13)(typescript@5.9.3)
       '@gorgias/sdk-spec-utils': 0.11.0
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@types/node'
@@ -17774,7 +17770,7 @@ snapshots:
       '@gorgias/ecommerce-storage-types': 0.2.6
       '@gorgias/sdk-mocks': 0.14.0(@types/node@22.13.13)(typescript@5.9.3)
       '@gorgias/sdk-spec-utils': 0.10.4
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@types/node'
@@ -17830,7 +17826,7 @@ snapshots:
       '@gorgias/help-center-types': 0.4.8
       '@gorgias/sdk-mocks': 0.14.0(@types/node@22.13.13)(typescript@5.9.3)
       '@gorgias/sdk-spec-utils': 0.10.4
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@types/node'
@@ -17885,7 +17881,7 @@ snapshots:
       '@gorgias/helpdesk-types': 0.9.107
       '@gorgias/sdk-mocks': 0.14.6(@types/node@22.13.13)(typescript@5.9.3)
       '@gorgias/sdk-spec-utils': 0.11.0
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@types/node'
@@ -17945,7 +17941,7 @@ snapshots:
       '@gorgias/knowledge-service-types': 0.4.31
       '@gorgias/sdk-mocks': 0.14.1(@types/node@22.13.13)(typescript@5.9.3)
       '@gorgias/sdk-spec-utils': 0.11.0
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
     transitivePeerDependencies:
       - '@types/node'
@@ -17985,7 +17981,7 @@ snapshots:
       '@gorgias/helpdesk-queries': 0.9.126(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       ably: 2.13.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
       path-to-regexp: 8.4.0
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
@@ -18029,7 +18025,7 @@ snapshots:
     dependencies:
       '@faker-js/faker': 9.8.0
       '@gorgias/sdk-spec-utils': 0.10.4
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
       randexp: 0.5.3
     transitivePeerDependencies:
@@ -18040,7 +18036,7 @@ snapshots:
     dependencies:
       '@faker-js/faker': 9.8.0
       '@gorgias/sdk-spec-utils': 0.11.0
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
       randexp: 0.5.3
     transitivePeerDependencies:
@@ -18051,7 +18047,7 @@ snapshots:
     dependencies:
       '@faker-js/faker': 9.8.0
       '@gorgias/sdk-spec-utils': 0.11.0
-      lodash-es: 4.17.23
+      lodash-es: 4.18.1
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
       randexp: 0.5.3
     transitivePeerDependencies:
@@ -18062,7 +18058,7 @@ snapshots:
     dependencies:
       '@faker-js/faker': 9.8.0
       '@gorgias/sdk-spec-utils': 0.11.0
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
       msw: 2.9.0(@types/node@22.13.13)(typescript@5.9.3)
       randexp: 0.5.3
     transitivePeerDependencies:
@@ -18075,7 +18071,7 @@ snapshots:
       js-yaml: 4.1.1
       json-pointer: 0.6.2
       jsonpath: 1.3.0
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
 
   '@gorgias/sdk-spec-utils@0.11.0':
     dependencies:
@@ -18083,7 +18079,7 @@ snapshots:
       js-yaml: 4.1.1
       json-pointer: 0.6.2
       jsonpath: 1.3.0
-      lodash-es: 4.17.21
+      lodash-es: 4.18.1
 
   '@gorgias/sdk-validators@0.9.6':
     dependencies:
@@ -21525,7 +21521,7 @@ snapshots:
       chalk: 3.0.0
       css.escape: 1.5.1
       dom-accessibility-api: 0.6.3
-      lodash: 4.17.21
+      lodash: 4.18.1
       redent: 3.0.0
 
   '@testing-library/jest-dom@6.9.1':
@@ -21579,7 +21575,7 @@ snapshots:
       '@babel/traverse': 7.29.0
       '@babel/types': 7.29.0
       javascript-natural-sort: 0.7.1
-      lodash: 4.17.21
+      lodash: 4.18.1
       prettier: 3.6.1
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.17
@@ -21593,7 +21589,7 @@ snapshots:
       '@babel/traverse': 7.29.0
       '@babel/types': 7.29.0
       javascript-natural-sort: 0.7.1
-      lodash: 4.17.21
+      lodash: 4.18.1
       prettier: 3.6.2
     optionalDependencies:
       '@vue/compiler-sfc': 3.5.17
@@ -22307,7 +22303,7 @@ snapshots:
 
   '@welldone-software/why-did-you-render@7.0.1(react@18.2.0)':
     dependencies:
-      lodash: 4.17.21
+      lodash: 4.18.1
       react: 18.2.0
 
   '@xyflow/react@12.8.3(@types/react@18.2.67)(immer@10.1.1)(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
@@ -25742,7 +25738,7 @@ snapshots:
       cli-width: 3.0.0
       external-editor: 3.1.0
       figures: 3.2.0
-      lodash: 4.17.21
+      lodash: 4.18.1
       mute-stream: 0.0.8
       ora: 5.4.1
       run-async: 2.4.1
@@ -26894,9 +26890,7 @@ snapshots:
     dependencies:
       p-locate: 6.0.0
 
-  lodash-es@4.17.21: {}
-
-  lodash-es@4.17.23: {}
+  lodash-es@4.18.1: {}
 
   lodash.camelcase@4.3.0: {}
 
@@ -26911,7 +26905,7 @@ snapshots:
 
   lodash.truncate@4.4.2: {}
 
-  lodash@4.17.21: {}
+  lodash@4.18.1: {}
 
   log-symbols@4.1.0:
     dependencies:
@@ -27936,7 +27930,7 @@ snapshots:
       '@apidevtools/json-schema-ref-parser': 11.9.3
       axios: 1.13.5(debug@4.4.3)
       indent-string: 4.0.0
-      lodash: 4.17.21
+      lodash: 4.18.1
       openapi-client-axios: 7.6.0(axios@1.13.5)(js-yaml@4.1.1)
       openapi-types: 12.1.3
       yargs: 17.7.2
@@ -29315,8 +29309,8 @@ snapshots:
 
   redux@3.7.2:
     dependencies:
-      lodash: 4.17.21
-      lodash-es: 4.17.21
+      lodash: 4.18.1
+      lodash-es: 4.18.1
       loose-envify: 1.4.0
       symbol-observable: 1.2.0
 
