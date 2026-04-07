@@ -227,6 +227,9 @@ export const useUpdateInternalSubscription = () => {
                 queryKey: billingKeys.all,
             })
             queryClient.invalidateQueries({
+                queryKey: getBillingStateQuery.queryKey,
+            })
+            queryClient.invalidateQueries({
                 queryKey: getSubscriptionQuery.queryKey,
             })
         },

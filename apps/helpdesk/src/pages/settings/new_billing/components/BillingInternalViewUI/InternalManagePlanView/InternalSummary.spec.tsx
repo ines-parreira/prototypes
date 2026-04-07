@@ -34,6 +34,7 @@ function renderComponent(
             billingState={billingState}
             resolvedPlans={resolvedPlans}
             hasChanges={hasChanges}
+            onPreviewChanges={jest.fn()}
         />,
     )
 }

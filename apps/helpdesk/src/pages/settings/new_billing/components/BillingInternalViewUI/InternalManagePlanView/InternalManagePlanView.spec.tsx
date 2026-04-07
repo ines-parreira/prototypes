@@ -9,6 +9,7 @@ import {
 import {
     useBillingState,
     useInternalProductCatalogPlans,
+    useUpdateInternalSubscription,
 } from 'models/billing/queries'
 import type { InternalProductCatalogPlans } from 'models/billing/types'
 import { ProductType } from 'models/billing/types'
@@ -18,6 +19,7 @@ import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAnd
 import { InternalManagePlanView } from './InternalManagePlanView'
 
 jest.mock('models/billing/queries')
+jest.mock('hooks/useAppDispatch', () => () => jest.fn())
 jest.mock('pages/common/components/Loader/Loader', () => ({
     __esModule: true,
     default: () => <div role="progressbar" aria-label="Loading" />,
@@ -27,6 +29,9 @@ const mockUseBillingState = assumeMock(useBillingState)
 const mockUseInternalProductCatalogPlans = assumeMock(
     useInternalProductCatalogPlans,
 )
+const mockUseUpdateInternalSubscription = assumeMock(
+    useUpdateInternalSubscription,
+)
 
 const catalogPlans: InternalProductCatalogPlans = {
     [ProductType.Helpdesk]: {
@@ -35,7 +40,15 @@ const catalogPlans: InternalProductCatalogPlans = {
     },
 }
 
+function mockMutationHook() {
+    mockUseUpdateInternalSubscription.mockReturnValue({
+        mutateAsync: jest.fn().mockResolvedValue({ products: {} }),
+        isLoading: false,
+    } as any)
+}
+
 function mockLoadingState() {
+    mockMutationHook()
     mockUseBillingState.mockReturnValue({
         data: undefined,
         isLoading: true,
@@ -49,6 +62,7 @@ function mockLoadingState() {
 }
 
 function mockDataReady() {
+    mockMutationHook()
     mockUseBillingState.mockReturnValue({
         data: payingWithCreditCard,
         isLoading: false,
@@ -62,6 +76,7 @@ function mockDataReady() {
 }
 
 function mockErrorState() {
+    mockMutationHook()
     mockUseBillingState.mockReturnValue({
         data: undefined,
         isLoading: false,
@@ -125,5 +140,34 @@ describe('InternalManagePlanView', () => {
         expect(
             screen.getByRole('button', { name: /preview changes/i }),
         ).toBeEnabled()
+    })
+
+    it('opens confirm modal when Preview changes is clicked after selecting a plan', async () => {
+        const user = userEvent.setup()
+        mockDataReady()
+        renderComponent()
+
+        const trigger = screen.getByRole('button', { name: /300/ })
+        await user.click(trigger)
+
+        const option = await screen.findByText(proMonthlyHelpdeskPlan.plan_id)
+        await user.click(option)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /preview changes/i }),
+            ).toBeEnabled()
+        })
+
+        await user.click(
+            screen.getByRole('button', { name: /preview changes/i }),
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('Confirm changes')).toBeInTheDocument()
+        })
+        expect(
+            screen.getByRole('button', { name: /apply with invoice/i }),
+        ).toBeInTheDocument()
     })
 })

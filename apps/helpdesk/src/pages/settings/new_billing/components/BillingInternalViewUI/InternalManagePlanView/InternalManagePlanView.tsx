@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { BILLING_INTERNAL_PATH } from '@repo/billing'
 import { useHistory } from 'react-router-dom'
 
@@ -8,12 +10,15 @@ import {
     useInternalProductCatalogPlans,
 } from 'models/billing/queries'
 import Loader from 'pages/common/components/Loader/Loader'
+import { InternalConfirmModal } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalConfirmModal'
 import { InternalSelectPlans } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalSelectPlans/InternalSelectPlans'
 import { InternalSummary } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/InternalSummary'
+import { useApplyInternalPlanChanges } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useApplyInternalPlanChanges'
 import { useInternalPlanEditor } from 'pages/settings/new_billing/components/BillingInternalViewUI/InternalManagePlanView/useInternalPlanEditor'
 
 export function InternalManagePlanView() {
     const history = useHistory()
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false)
     const {
         data: billingState,
         isLoading: isBillingLoading,
@@ -26,6 +31,11 @@ export function InternalManagePlanView() {
     } = useInternalProductCatalogPlans()
     const { targetPlans, resolvedPlans, hasChanges, handlePlanSelect } =
         useInternalPlanEditor(billingState?.current_plans, catalogData?.plans)
+
+    const { apply, isSubmitting } = useApplyInternalPlanChanges(
+        billingState,
+        resolvedPlans,
+    )
 
     if (isBillingLoading || isCatalogLoading) return <Loader />
 
@@ -59,8 +69,18 @@ export function InternalManagePlanView() {
                     billingState={billingState}
                     resolvedPlans={resolvedPlans}
                     hasChanges={hasChanges}
+                    onPreviewChanges={() => setIsConfirmOpen(true)}
                 />
             </Box>
+
+            <InternalConfirmModal
+                isOpen={isConfirmOpen}
+                onClose={() => setIsConfirmOpen(false)}
+                resolvedPlans={resolvedPlans}
+                billingState={billingState}
+                onApply={apply}
+                isSubmitting={isSubmitting}
+            />
         </Box>
     )
 }
