@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import {
     forwardRef,
+    useCallback,
     useImperativeHandle,
     useMemo,
     useRef,
@@ -86,14 +87,17 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             }
         }
 
-        const displayPage = (page: 'homepage' | 'conversation') => {
-            if (page !== selectedPage) {
-                withGorgiasChat((gorgiasChat) => {
-                    setSelectedPage(page)
-                    gorgiasChat.setPage(page)
-                })
-            }
-        }
+        const displayPage = useCallback(
+            (page: 'homepage' | 'conversation') => {
+                if (page !== selectedPage) {
+                    withGorgiasChat((gorgiasChat) => {
+                        setSelectedPage(page)
+                        gorgiasChat.setPage(page)
+                    })
+                }
+            },
+            [selectedPage],
+        )
 
         const closeChat = () => {
             withGorgiasChat((gorgiasChat) => gorgiasChat.close())
@@ -154,6 +158,13 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             setReloadKey(reloadKey + 1)
         }
 
+        const onLoaded = useCallback(
+            (gorgiasChat: any) => {
+                gorgiasChat?.setPage(selectedPage)
+            },
+            [selectedPage],
+        )
+
         useImperativeHandle(ref, () => ({
             displayPage,
             updatePosition,
@@ -199,6 +210,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                             ref={chatPreviewRef}
                             appId={appId}
                             language={locale}
+                            onLoaded={onLoaded}
                         />
                     )}
                 </Box>

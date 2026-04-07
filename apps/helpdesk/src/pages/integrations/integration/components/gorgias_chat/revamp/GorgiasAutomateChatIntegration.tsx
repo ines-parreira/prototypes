@@ -114,8 +114,6 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
 
     useEffect(() => {
         displayPage('homepage')
-
-        return reloadPreview
     }, [reloadPreview, displayPage])
 
     const isOrderManagementEnabled =
@@ -152,6 +150,7 @@ export const GorgiasAutomateChatIntegrationRevamp = ({
         setPendingOrderManagement(null)
         setPendingArticleRecommendation(null)
         setPendingFlows(null)
+        reloadPreview()
     }
 
     const handleFlowsCardFocus = useCallback(() => {

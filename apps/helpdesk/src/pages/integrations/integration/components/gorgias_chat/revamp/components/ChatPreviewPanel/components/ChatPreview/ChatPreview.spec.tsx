@@ -28,7 +28,7 @@ const renderComponent = (appId = 'test-app-id') => {
 
     const result = render(
         <QueryClientProvider client={queryClient}>
-            <ChatPreview ref={ref} appId={appId} />
+            <ChatPreview ref={ref} appId={appId} onLoaded={() => {}} />
         </QueryClientProvider>,
     )
 
@@ -241,7 +241,7 @@ describe('ChatPreview', () => {
             const queryClient = mockQueryClient()
             const { rerender } = render(
                 <QueryClientProvider client={queryClient}>
-                    <ChatPreview appId="app-1" />
+                    <ChatPreview appId="app-1" onLoaded={() => {}} />
                 </QueryClientProvider>,
             )
 
@@ -261,7 +261,7 @@ describe('ChatPreview', () => {
 
             rerender(
                 <QueryClientProvider client={queryClient}>
-                    <ChatPreview appId="app-2" />
+                    <ChatPreview appId="app-2" onLoaded={() => {}} />
                 </QueryClientProvider>,
             )
 

@@ -21,6 +21,7 @@ import css from './ChatPreview.less'
 type Props = {
     appId: string
     language?: LANGUAGE
+    onLoaded: (gorgiasChat: any) => void
 }
 
 export type ChatPreviewHandle = {
@@ -30,7 +31,7 @@ export type ChatPreviewHandle = {
 }
 
 export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
-    ({ appId, language }, ref) => {
+    ({ appId, language, onLoaded }, ref) => {
         const iframeRef = useRef<HTMLIFrameElement>(null)
         const [isLoaded, setIsWidgetLoaded] = useState(false)
         const [hasError, setHasError] = useState(false)
@@ -59,6 +60,7 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
             const handleMessage = (event: MessageEvent) => {
                 if (event.data?.type === 'helpdesk-chat-preview-loaded') {
                     setIsWidgetLoaded(true)
+                    onLoaded(iframeRef.current?.contentWindow?.GorgiasChat)
                 } else if (event.data?.type === 'helpdesk-chat-preview-error') {
                     setHasError(true)
                 }
@@ -66,7 +68,7 @@ export const ChatPreview = forwardRef<ChatPreviewHandle, Props>(
 
             window.addEventListener('message', handleMessage)
             return () => window.removeEventListener('message', handleMessage)
-        }, [])
+        }, [onLoaded])
 
         const iframeSourceDoc = useMemo(() => {
             if (!installationSnippet?.snippet) {

@@ -49,7 +49,9 @@ window.WebSocket.CLOSING = 2
 window.WebSocket.CLOSED = 3
 
 window.addEventListener('gorgias-widget-loaded', () => {
-    window.parent.postMessage({ type: 'helpdesk-chat-preview-loaded' }, '*')
+    window.GorgiasChat.init().then(() => {
+        window.parent.postMessage({ type: 'helpdesk-chat-preview-loaded' }, '*')
+    })
 })
 
 window.addEventListener('error', () => {

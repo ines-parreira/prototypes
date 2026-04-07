@@ -9,10 +9,10 @@ import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useAp
 import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
-import { GorgiasAutomateChatIntegrationRevamp } from '../GorgiasAutomateChatIntegration'
-import { useArticleRecommendation } from '../hooks/useArticleRecommendation'
-import { useFlows } from '../hooks/useFlows'
-import { useOrderManagement } from '../hooks/useOrderManagement'
+import { GorgiasAutomateChatIntegrationRevamp } from './GorgiasAutomateChatIntegration'
+import { useArticleRecommendation } from './hooks/useArticleRecommendation'
+import { useFlows } from './hooks/useFlows'
+import { useOrderManagement } from './hooks/useOrderManagement'
 
 jest.mock('pages/integrations/integration/hooks/useStoreIntegration')
 const mockUseStoreIntegration = jest.mocked(useStoreIntegration)
@@ -29,13 +29,13 @@ const mockUseGorgiasChatCreationWizardContext = jest.mocked(
     useGorgiasChatCreationWizardContext,
 )
 
-jest.mock('../hooks/useArticleRecommendation')
+jest.mock('./hooks/useArticleRecommendation')
 const mockUseArticleRecommendation = jest.mocked(useArticleRecommendation)
 
-jest.mock('../hooks/useOrderManagement')
+jest.mock('./hooks/useOrderManagement')
 const mockUseOrderManagement = jest.mocked(useOrderManagement)
 
-jest.mock('../hooks/useFlows')
+jest.mock('./hooks/useFlows')
 const mockUseFlows = jest.mocked(useFlows)
 
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
@@ -45,7 +45,7 @@ const mockUseApplicationsAutomationSettings = jest.mocked(
 
 const mockHandleChatApplicationAutomationSettingsUpdate = jest.fn()
 
-jest.mock('../GorgiasChatRevampLayout', () => ({
+jest.mock('./GorgiasChatRevampLayout', () => ({
     GorgiasChatRevampLayout: ({
         children,
         onSave,
@@ -71,7 +71,7 @@ jest.mock('../GorgiasChatRevampLayout', () => ({
 }))
 
 jest.mock(
-    '../components/ArticleRecommendationCard/ArticleRecommendationCard',
+    './components/ArticleRecommendationCard/ArticleRecommendationCard',
     () => ({
         ArticleRecommendationCard: ({
             isEnabled,
@@ -92,7 +92,7 @@ jest.mock(
     }),
 )
 
-jest.mock('../components/OrderManagementCard/OrderManagementCard', () => ({
+jest.mock('./components/OrderManagementCard/OrderManagementCard', () => ({
     OrderManagementCard: ({
         isEnabled,
         onChange,
@@ -112,14 +112,14 @@ jest.mock('../components/OrderManagementCard/OrderManagementCard', () => ({
 }))
 
 jest.mock(
-    '../components/ConnectedChannelsEmptyView/ConnectedChannelsEmptyView',
+    './components/ConnectedChannelsEmptyView/ConnectedChannelsEmptyView',
     () => ({
         ConnectedChannelsEmptyView: () => (
             <div data-testid="connected-channels-empty-view" />
         ),
     }),
 )
-jest.mock('../components/FlowsCard/FlowsCard', () => ({
+jest.mock('./components/FlowsCard/FlowsCard', () => ({
     FlowsCard: ({
         onAdd,
     }: {
@@ -141,7 +141,7 @@ jest.mock('../components/FlowsCard/FlowsCard', () => ({
 }))
 
 jest.mock(
-    '../components/GorgiasChatCreationWizard/components/SaveChangesPrompt',
+    './components/GorgiasChatCreationWizard/components/SaveChangesPrompt',
     () => ({
         __esModule: true,
         default: () => null,
@@ -522,6 +522,27 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
             ).not.toHaveBeenCalled()
         })
 
+        it('should call reloadPreview after saving', async () => {
+            const mockReloadPreview = jest.fn()
+            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
+                updateWorkflowEntryPoints: jest.fn(),
+                reloadPreview: mockReloadPreview,
+                displayPage: jest.fn(),
+            } as any)
+
+            const user = userEvent.setup()
+            render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
+
+            await user.click(
+                screen.getByRole('button', {
+                    name: 'Order management: off',
+                }),
+            )
+            await user.click(screen.getByRole('button', { name: 'Save' }))
+
+            expect(mockReloadPreview).toHaveBeenCalledTimes(1)
+        })
+
         it('should not call API when integration has no app_id', async () => {
             const user = userEvent.setup()
             render(
@@ -622,23 +643,6 @@ describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
             render(<GorgiasAutomateChatIntegrationRevamp {...defaultProps} />)
 
             expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
-        })
-
-        it('should call reloadPreview on unmount', () => {
-            const mockReloadPreview = jest.fn()
-            mockUseGorgiasChatCreationWizardContext.mockReturnValue({
-                updateWorkflowEntryPoints: jest.fn(),
-                reloadPreview: mockReloadPreview,
-                displayPage: jest.fn(),
-            } as any)
-
-            const { unmount } = render(
-                <GorgiasAutomateChatIntegrationRevamp {...defaultProps} />,
-            )
-
-            unmount()
-
-            expect(mockReloadPreview).toHaveBeenCalled()
         })
     })
 })

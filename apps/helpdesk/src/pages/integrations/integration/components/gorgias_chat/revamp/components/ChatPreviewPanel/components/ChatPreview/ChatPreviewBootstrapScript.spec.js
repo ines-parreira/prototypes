@@ -140,6 +140,9 @@ describe('ChatPreviewBootstrapScript', () => {
         let postMessageSpy
 
         beforeEach(() => {
+            window.GorgiasChat = {
+                init: jest.fn().mockResolvedValue(undefined),
+            }
             postMessageSpy = jest
                 .spyOn(window, 'postMessage')
                 .mockImplementation(() => {})
@@ -147,10 +150,12 @@ describe('ChatPreviewBootstrapScript', () => {
 
         afterEach(() => {
             postMessageSpy.mockRestore()
+            delete window.GorgiasChat
         })
 
-        it('posts helpdesk-chat-preview-loaded when gorgias-widget-loaded fires', () => {
+        it('posts helpdesk-chat-preview-loaded when gorgias-widget-loaded fires', async () => {
             window.dispatchEvent(new Event('gorgias-widget-loaded'))
+            await Promise.resolve()
 
             expect(postMessageSpy).toHaveBeenCalledWith(
                 { type: 'helpdesk-chat-preview-loaded' },
