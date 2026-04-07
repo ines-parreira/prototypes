@@ -92,12 +92,9 @@ export const StoreConfigForm = ({
     const isFollowUpAiAgentPreviewModeEnabled = useFlag(
         FeatureFlagKey.FollowUpAiAgentPreviewMode,
     )
-    const isAiAutofillSectionEnabled = useFlag(
-        FeatureFlagKey.AiAgentUsesStoreConfigurationCustomFields,
-    )
-    const standaloneFFEnabled = useFlag(
-        FeatureFlagKey.StandaloneHandoverCapabilities,
-    )
+    // This is deprecated but can't be removed as those settings can be used
+    // by the team implementing the AI Standalone.
+    const standaloneFFEnabled = false
     const newToneOfVoiceEnabled = useFlag(FeatureFlagKey.AiAgentToneOfVoice)
 
     const { tab = 'general' } = useParams<{ tab?: 'channels' }>()
@@ -814,30 +811,28 @@ export const StoreConfigForm = ({
                                                 setActiveDrawerContent('tags')
                                             }}
                                         />
-                                        {isAiAutofillSectionEnabled && (
-                                            <SettingsFeatureRow
-                                                title="Ticket Fields"
-                                                description="Ticket Fields selected will be
+
+                                        <SettingsFeatureRow
+                                            title="Ticket Fields"
+                                            description="Ticket Fields selected will be
                                                         filled out automatically by AI Agent,
                                                         helping categorize and prioritize
                                                         tickets with less manual work."
-                                                nbFeatures={
-                                                    availableCustomFields?.length ??
-                                                    0
-                                                }
-                                                badgeText={
-                                                    !availableCustomFields?.length
-                                                        ? 'No ticket fields'
-                                                        : `${availableCustomFields?.length} ticket fields`
-                                                }
-                                                onClick={() => {
-                                                    setIsDrawerOpen(true)
-                                                    setActiveDrawerContent(
-                                                        'customFieldIds',
-                                                    )
-                                                }}
-                                            />
-                                        )}
+                                            nbFeatures={
+                                                availableCustomFields.length
+                                            }
+                                            badgeText={
+                                                !availableCustomFields.length
+                                                    ? 'No ticket fields'
+                                                    : `${availableCustomFields.length} ticket fields`
+                                            }
+                                            onClick={() => {
+                                                setIsDrawerOpen(true)
+                                                setActiveDrawerContent(
+                                                    'customFieldIds',
+                                                )
+                                            }}
+                                        />
                                     </SettingsCardContent>
                                 </SettingsCard>
                             </section>

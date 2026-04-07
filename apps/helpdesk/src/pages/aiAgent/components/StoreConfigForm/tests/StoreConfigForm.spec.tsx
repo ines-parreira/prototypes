@@ -1906,13 +1906,6 @@ describe('<StoreConfigForm />', () => {
     })
 
     describe('AI Autofill section', () => {
-        it('should hide the Ticket Fields section if the FF is not activated', () => {
-            const { container } = renderComponent()
-            const section = within(container).queryByText('Ticket Fields')
-
-            expect(section).not.toBeInTheDocument()
-        })
-
         it('should show the Ticket Fields section if the FF is activated', () => {
             useFlagMock.mockImplementation(
                 (key) =>
