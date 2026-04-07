@@ -11,6 +11,7 @@ import { MessageDeliveryIcon } from '../../../MessageBubble/components/MessageHe
 import { MessageSender } from '../../../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../../MessageBubble/MessageBubble'
+import { TicketMessageActions } from '../../../TicketMessageActions/TicketMessageActions'
 
 type AiAgentTicketThreadMessageProps = {
     item: TicketThreadAiAgentMessageItem
@@ -41,6 +42,7 @@ export function AiAgentTicketThreadMessage({
             </MessageHeaderContainer>
             <MessageBody item={item} />
             <MessageAttachments item={item} />
+            <TicketMessageActions message={item.data} />
             {item.data.ticket_id && (
                 <MessageErrors
                     message={item.data}

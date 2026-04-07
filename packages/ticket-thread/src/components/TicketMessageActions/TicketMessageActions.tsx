@@ -20,16 +20,10 @@ export function TicketMessageActions({ message }: TicketMessageActionsProps) {
         <BubbleActions placement={message.from_agent ? 'left' : 'right'}>
             <ButtonGroup>
                 {!message.from_agent && (
-                    <Tooltip
-                        trigger={
-                            <ButtonGroupItem
-                                id="intents"
-                                icon={<IntentsFeedback message={message} />}
-                            />
-                        }
-                    >
-                        <TooltipContent title="Message intent" />
-                    </Tooltip>
+                    <ButtonGroupItem
+                        id="intents"
+                        icon={<IntentsFeedback message={message} />}
+                    />
                 )}
                 <Tooltip
                     trigger={

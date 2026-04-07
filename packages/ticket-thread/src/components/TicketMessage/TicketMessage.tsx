@@ -11,6 +11,7 @@ import { MessageDeliveryIcon } from '../MessageBubble/components/MessageHeader/M
 import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
+import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 import { useDisplayedTicketMessage } from './hooks/useDisplayedTicketMessage'
 
 type TicketMessageProps = {
@@ -41,6 +42,7 @@ export function TicketMessage({ item }: TicketMessageProps) {
             </MessageHeaderContainer>
             <MessageBody item={displayedItem} />
             <MessageFooter item={displayedItem} />
+            <TicketMessageActions message={item.data} />
             {item.data.ticket_id && (
                 <MessageErrors
                     message={displayedItem.data}

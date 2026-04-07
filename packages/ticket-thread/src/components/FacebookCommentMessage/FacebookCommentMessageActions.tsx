@@ -111,9 +111,8 @@ export function FacebookCommentMessageActions({
                 selectedKey=""
                 onSelectionChange={handleSelectionChange}
             >
-                <ActionItem
+                <ButtonGroupItem
                     id="intents"
-                    tooltip="Message intent"
                     icon={<IntentsFeedback message={message} />}
                 />
                 <ActionItem

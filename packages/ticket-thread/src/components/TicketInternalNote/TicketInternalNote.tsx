@@ -9,6 +9,7 @@ import { MessageChannel } from '../MessageBubble/components/MessageHeader/Messag
 import { MessageSender } from '../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
+import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 
 import css from './TicketInternalNote.less'
 
@@ -38,6 +39,7 @@ export function TicketInternalNote({ item }: TicketInternalNoteProps) {
             </MessageHeaderContainer>
             <MessageBody item={item} className={css.internalNoteContent} />
             <MessageFooter item={item} showTranslations={false} />
+            <TicketMessageActions message={item.data} />
         </MessageBubble>
     )
 }

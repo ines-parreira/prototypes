@@ -4,7 +4,7 @@ import { useTimeout } from '@repo/hooks'
 import { humanize } from '@repo/utils'
 import { createPortal } from 'react-dom'
 
-import { Icon } from '@gorgias/axiom'
+import { Icon, Tooltip, TooltipContent } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 import type { TicketMessageIntent } from '@gorgias/helpdesk-types'
@@ -113,6 +113,11 @@ export function IntentsFeedback({ message }: IntentsFeedbackProps) {
               ? activeIntentsNames[0]
               : `${numActive} intents detected`
 
+    const tooltipTitle =
+        activeIntentsNames.length === 0
+            ? 'Message intent'
+            : `Message intent: ${activeIntentsNames.join('/')}`
+
     return (
         <div
             ref={wrapperRef}
@@ -120,14 +125,20 @@ export function IntentsFeedback({ message }: IntentsFeedbackProps) {
             onMouseLeave={scheduleClose}
             onMouseEnter={cancelClose}
         >
-            <button
-                type="button"
-                className={css.trigger}
-                onClick={() => setIsOpen(!isOpen)}
-                aria-label="Message intent"
+            <Tooltip
+                trigger={
+                    <button
+                        type="button"
+                        className={css.trigger}
+                        onClick={() => setIsOpen(!isOpen)}
+                        aria-label="Message intent"
+                    >
+                        <Icon name={'folder-document' as IconName} size="sm" />
+                    </button>
+                }
             >
-                <Icon name={'folder-document' as IconName} size="sm" />
-            </button>
+                <TooltipContent title={tooltipTitle} />
+            </Tooltip>
             {isOpen &&
                 createPortal(
                     <div

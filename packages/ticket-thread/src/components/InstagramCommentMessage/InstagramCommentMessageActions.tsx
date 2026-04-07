@@ -62,16 +62,10 @@ export function InstagramCommentMessageActions({
                 onSelectionChange={handleSelectionChange}
             >
                 {!message.from_agent && (
-                    <Tooltip
-                        trigger={
-                            <ButtonGroupItem
-                                id="intents"
-                                icon={<IntentsFeedback message={message} />}
-                            />
-                        }
-                    >
-                        <TooltipContent title="Message intent" />
-                    </Tooltip>
+                    <ButtonGroupItem
+                        id="intents"
+                        icon={<IntentsFeedback message={message} />}
+                    />
                 )}
                 <Tooltip
                     trigger={
