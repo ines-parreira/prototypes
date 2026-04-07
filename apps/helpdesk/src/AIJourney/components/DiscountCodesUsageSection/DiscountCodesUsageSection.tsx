@@ -34,12 +34,14 @@ export const DiscountCodesUsageSection = ({
 
     const discountCodesGeneratedDrillDown = useDrillDownModalTrigger({
         metricName: AIJourneyMetric.DiscountCodesGenerated,
+        title: 'Discount codes generated',
         integrationId,
         journeyIds,
     })
 
     const discountCodesUsedDrillDown = useDrillDownModalTrigger({
         metricName: AIJourneyMetric.DiscountCodesUsed,
+        title: 'Discount codes used',
         integrationId,
         journeyIds,
     })

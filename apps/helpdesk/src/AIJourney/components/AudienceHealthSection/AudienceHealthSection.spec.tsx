@@ -217,6 +217,7 @@ describe('<AudienceHealthSection />', () => {
 
         expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith({
             metricName: AIJourneyMetric.TotalConversations,
+            title: 'Recipients',
             integrationId: defaultProps.integrationId,
             journeyIds: defaultProps.journeyIds,
         })
@@ -227,6 +228,7 @@ describe('<AudienceHealthSection />', () => {
 
         expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith({
             metricName: AIJourneyMetric.TotalOptOuts,
+            title: 'Total opted-out',
             integrationId: defaultProps.integrationId,
             journeyIds: defaultProps.journeyIds,
         })
@@ -237,6 +239,7 @@ describe('<AudienceHealthSection />', () => {
 
         expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith({
             metricName: AIJourneyMetric.TotalReplies,
+            title: 'Recipients who replied',
             integrationId: defaultProps.integrationId,
             journeyIds: defaultProps.journeyIds,
         })
@@ -247,6 +250,7 @@ describe('<AudienceHealthSection />', () => {
 
         expect(mockUseDrillDownModalTrigger).toHaveBeenCalledWith({
             metricName: AIJourneyMetric.OptOutAfterReply,
+            title: 'Opted-out after reply',
             integrationId: defaultProps.integrationId,
             journeyIds: defaultProps.journeyIds,
         })

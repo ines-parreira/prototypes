@@ -12,6 +12,7 @@ type SankeyNodeRendererProps = {
     maxNodeHeight?: number
     hoverableNodeNames?: string[]
     hoveredNodeHighlight?: { nodeIndex: number; color: string } | null
+    minHeightToShowLabel?: number
 }
 
 export const createNodeRenderer =
@@ -23,6 +24,7 @@ export const createNodeRenderer =
         maxNodeHeight = Infinity,
         hoverableNodeNames,
         hoveredNodeHighlight,
+        minHeightToShowLabel,
     }: SankeyNodeRendererProps) =>
     (props: NodeProps) => {
         const { x, y, width, height, index, payload } = props
@@ -43,7 +45,10 @@ export const createNodeRenderer =
 
         const nodeValue = (payload as { value?: number })?.value ?? 0
         const labelY = numY + numHeight / 2
-        const isHoverable = hoverableNodeNames?.includes(node.name) ?? false
+        const isHoverable =
+            minHeightToShowLabel !== undefined
+                ? displayHeight < minHeightToShowLabel
+                : (hoverableNodeNames?.includes(node.name) ?? false)
 
         const percentage =
             totalSourceValue > 0

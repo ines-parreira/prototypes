@@ -7,6 +7,10 @@ import { createLinkRenderer } from './SankeyLink'
 import { createNodeRenderer } from './SankeyNode'
 import type { SankeyChartData, SankeyLinkClickPayload } from './types'
 
+vi.mock('./SankeyChart.less', () => ({
+    default: { nodeContainer: 'nodeContainer' },
+}))
+
 describe('SankeyChart', () => {
     beforeAll(() => {
         global.ResizeObserver = class ResizeObserver {
@@ -473,5 +477,118 @@ describe('createNodeRenderer', () => {
 
         const textElements = container.querySelectorAll('text')
         expect(textElements).toHaveLength(0)
+    })
+
+    describe('label visibility — minHeightToShowLabel', () => {
+        it('should not apply hover-only class when node height meets the threshold', () => {
+            const renderer = createNodeRenderer({
+                nodes,
+                totalSourceValue: 200,
+                minHeightToShowLabel: 50,
+            })
+
+            const { container } = render(
+                <svg>
+                    {renderer({
+                        ...baseNodeProps,
+                        height: 100,
+                    } as Parameters<typeof renderer>[0])}
+                </svg>,
+            )
+
+            expect(container.querySelector('g')).not.toHaveAttribute('class')
+        })
+
+        it('should apply hover-only class when node height is below the threshold', () => {
+            const renderer = createNodeRenderer({
+                nodes,
+                totalSourceValue: 200,
+                minHeightToShowLabel: 50,
+            })
+
+            const { container } = render(
+                <svg>
+                    {renderer({
+                        ...baseNodeProps,
+                        height: 20,
+                    } as Parameters<typeof renderer>[0])}
+                </svg>,
+            )
+
+            expect(container.querySelector('g')).toHaveAttribute('class')
+        })
+
+        it('should not apply hover-only class when node height exactly equals the threshold', () => {
+            const renderer = createNodeRenderer({
+                nodes,
+                totalSourceValue: 200,
+                minHeightToShowLabel: 50,
+            })
+
+            const { container } = render(
+                <svg>
+                    {renderer({
+                        ...baseNodeProps,
+                        height: 50,
+                    } as Parameters<typeof renderer>[0])}
+                </svg>,
+            )
+
+            expect(container.querySelector('g')).not.toHaveAttribute('class')
+        })
+    })
+
+    describe('label visibility — hoverableNodeNames fallback', () => {
+        it('should apply hover-only class for nodes listed in hoverableNodeNames', () => {
+            const renderer = createNodeRenderer({
+                nodes,
+                totalSourceValue: 200,
+                hoverableNodeNames: ['Source A'],
+            })
+
+            const { container } = render(
+                <svg>
+                    {renderer(baseNodeProps as Parameters<typeof renderer>[0])}
+                </svg>,
+            )
+
+            expect(container.querySelector('g')).toHaveAttribute('class')
+        })
+
+        it('should not apply hover-only class for nodes not in hoverableNodeNames', () => {
+            const renderer = createNodeRenderer({
+                nodes,
+                totalSourceValue: 200,
+                hoverableNodeNames: ['Target B'],
+            })
+
+            const { container } = render(
+                <svg>
+                    {renderer(baseNodeProps as Parameters<typeof renderer>[0])}
+                </svg>,
+            )
+
+            expect(container.querySelector('g')).not.toHaveAttribute('class')
+        })
+
+        it('should use height condition over hoverableNodeNames when minHeightToShowLabel is provided', () => {
+            const renderer = createNodeRenderer({
+                nodes,
+                totalSourceValue: 200,
+                hoverableNodeNames: ['Source A'],
+                minHeightToShowLabel: 50,
+            })
+
+            const { container } = render(
+                <svg>
+                    {renderer({
+                        ...baseNodeProps,
+                        height: 100,
+                    } as Parameters<typeof renderer>[0])}
+                </svg>,
+            )
+
+            expect(container.querySelector('g')).not.toHaveAttribute('class')
+        })
     })
 })

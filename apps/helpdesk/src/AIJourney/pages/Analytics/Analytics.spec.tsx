@@ -645,7 +645,7 @@ describe('<Analytics />', () => {
 
         await act(async () => {
             await user.click(
-                screen.getByRole('button', { name: /edit key metrics/i }),
+                screen.getByRole('button', { name: /edit metrics/i }),
             )
         })
 
@@ -993,7 +993,7 @@ describe('<Analytics />', () => {
         )
         await act(async () => {
             await user.click(
-                screen.getByRole('button', { name: /edit key metrics/i }),
+                screen.getByRole('button', { name: /edit metrics/i }),
             )
         })
         await waitFor(() => {
@@ -1018,6 +1018,7 @@ describe('<Analytics />', () => {
             metricName: 'aiJourneyTotalOrders',
             integrationId: '286584',
             journeyIds: [],
+            title: 'Total Orders',
         })
     })
 

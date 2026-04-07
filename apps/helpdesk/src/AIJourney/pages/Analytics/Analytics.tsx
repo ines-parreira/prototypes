@@ -199,6 +199,7 @@ export const Analytics = () => {
 
     const ordersDrillDown = useDrillDownModalTrigger({
         metricName: AIJourneyMetric.TotalOrders,
+        title: 'Total Orders',
         integrationId,
         journeyIds: journeysIdsToFilter,
     })
@@ -424,7 +425,7 @@ export const Analytics = () => {
                         as="button"
                         onClick={() => setIsEditModalOpen(true)}
                     >
-                        Edit key metrics
+                        Edit metrics
                     </Button>
                     <ConfigureMetricsModal
                         isOpen={isEditModalOpen}

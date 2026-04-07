@@ -149,7 +149,7 @@ describe('<AiJourneySankeyChart />', () => {
 
                 expect(mockDispatch).toHaveBeenCalledWith(
                     setMetricData({
-                        title: `Converted – ${nodeName}`,
+                        title: `${nodeName} → Converted`,
                         metricName: AIJourneyMetric.SankeyConversions,
                         integrationId: defaultProps.integrationId,
                         journeyIds: defaultProps.journeyIds.map(String),

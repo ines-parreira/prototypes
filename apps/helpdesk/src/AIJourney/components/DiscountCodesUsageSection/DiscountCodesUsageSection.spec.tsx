@@ -171,6 +171,7 @@ describe('<DiscountCodesUsageSection />', () => {
             metricName: AIJourneyMetric.DiscountCodesGenerated,
             integrationId: defaultProps.integrationId,
             journeyIds: defaultProps.journeyIds,
+            title: 'Discount codes generated',
         })
     })
 
@@ -181,6 +182,7 @@ describe('<DiscountCodesUsageSection />', () => {
             metricName: AIJourneyMetric.DiscountCodesUsed,
             integrationId: defaultProps.integrationId,
             journeyIds: defaultProps.journeyIds,
+            title: 'Discount codes used',
         })
     })
 

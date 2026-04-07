@@ -37,7 +37,7 @@ export const AiJourneySankeyChart = ({
             SANKEY_NODE_TO_ENGAGEMENT_CATEGORY[source.name as SankeyNodeName]
         dispatch(
             setMetricData({
-                title: `Converted – ${source.name}`,
+                title: `${source.name} → Converted`,
                 metricName: AIJourneyMetric.SankeyConversions,
                 integrationId,
                 journeyIds:
@@ -58,6 +58,7 @@ export const AiJourneySankeyChart = ({
             minNodeHeight={6}
             hoverableNodeNames={SANKEY_HOVERABLE_NODES}
             onLinkClick={handleSankeyLinkClick}
+            minHeightToShowLabel={60}
         />
     )
 }

@@ -37,24 +37,28 @@ export const AudienceHealthSection = ({
 
     const totalConversationsDrillDown = useDrillDownModalTrigger({
         metricName: AIJourneyMetric.TotalConversations,
+        title: 'Recipients',
         integrationId,
         journeyIds,
     })
 
     const totalOptOutsDrillDown = useDrillDownModalTrigger({
         metricName: AIJourneyMetric.TotalOptOuts,
+        title: 'Total opted-out',
         integrationId,
         journeyIds,
     })
 
     const totalRepliesDrillDown = useDrillDownModalTrigger({
         metricName: AIJourneyMetric.TotalReplies,
+        title: 'Recipients who replied',
         integrationId,
         journeyIds,
     })
 
     const optOutAfterReplyDrillDown = useDrillDownModalTrigger({
         metricName: AIJourneyMetric.OptOutAfterReply,
+        title: 'Opted-out after reply',
         integrationId,
         journeyIds,
     })

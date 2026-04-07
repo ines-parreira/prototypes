@@ -40,6 +40,7 @@ export const SankeyChart = <NodeName extends string = string>({
     minNodeHeight,
     maxNodeHeight,
     hoverableNodeNames,
+    minHeightToShowLabel,
 }: SankeyChartProps<NodeName>) => {
     const [linkTooltip, setLinkTooltip] = useState<{
         value: number
@@ -93,6 +94,7 @@ export const SankeyChart = <NodeName extends string = string>({
                 maxNodeHeight,
                 hoverableNodeNames,
                 hoveredNodeHighlight,
+                minHeightToShowLabel,
             }),
         [
             data.nodes,
@@ -102,6 +104,7 @@ export const SankeyChart = <NodeName extends string = string>({
             maxNodeHeight,
             hoverableNodeNames,
             hoveredNodeHighlight,
+            minHeightToShowLabel,
         ],
     )
 

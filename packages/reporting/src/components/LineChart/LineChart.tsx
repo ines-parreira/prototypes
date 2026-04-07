@@ -38,6 +38,8 @@ import { TrendBadge } from '../TrendBadge/TrendBadge'
 import { toChartData } from './utils'
 
 const CHART_COLOR = 'var(--purple-500)'
+const GRID_COLOR = 'var(--border-neutral-secondary)'
+const TICK_COLOR = 'var(--content-neutral-tertiary)'
 
 type LineChartProps = {
     containerHeight?: SizeValue
@@ -206,15 +208,24 @@ export const LineChart = ({
                             </defs>
                         )}
                         <CartesianGrid
-                            strokeDasharray="1.5 3"
+                            strokeDasharray="0 6"
+                            strokeLinecap="round"
+                            stroke={GRID_COLOR}
                             vertical={false}
                         />
-                        <XAxis dataKey="name" interval="preserveStartEnd" />
+                        <XAxis
+                            dataKey="name"
+                            interval="preserveStartEnd"
+                            axisLine={false}
+                            tickLine={{ stroke: GRID_COLOR, strokeWidth: 0.75 }}
+                            tickMargin={8}
+                            tick={{ fill: TICK_COLOR, fontSize: 12 }}
+                        />
                         <YAxis
-                            width="auto"
                             tickFormatter={yAxisFormatter}
                             axisLine={false}
                             tickLine={false}
+                            tick={{ fill: TICK_COLOR, fontSize: 12 }}
                         />
                         <Tooltip
                             cursor={{

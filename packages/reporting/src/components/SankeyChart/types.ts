@@ -40,4 +40,5 @@ export type SankeyChartProps<NodeName extends string = string> = {
     minNodeHeight?: number
     maxNodeHeight?: number
     hoverableNodeNames?: NodeName[]
+    minHeightToShowLabel?: number
 }
