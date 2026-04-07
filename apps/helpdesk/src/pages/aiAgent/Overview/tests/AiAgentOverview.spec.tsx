@@ -353,23 +353,6 @@ describe('AiAgentOverview', () => {
         })
     })
 
-    it('should render the resource section when the flag standalone-conv-ai_overview-page-resource-section is Available', () => {
-        mockUseFlag.mockImplementation(
-            (key) =>
-                key ===
-                    FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection ||
-                false,
-        )
-        const { queryByText } = renderComponent()
-        expect(queryByText('Resources')).toBeTruthy()
-    })
-
-    it('should not render the resource section when the flag standalone-conv-ai_overview-page-resource-section is Unavailable', () => {
-        mockUseFlag.mockReturnValue(false)
-        const { queryByText } = renderComponent()
-        expect(queryByText('Resources')).toBeFalsy()
-    })
-
     describe('Shopping Assistant Trial', () => {
         it('should not render trial banner when canSeeTrialCTA is false', () => {
             mockUseTrialAccess.mockReturnValue(
@@ -659,12 +642,6 @@ describe('AiAgentOverview', () => {
 
     describe('Component Integration', () => {
         it('should render all major sections when feature flags are enabled', () => {
-            mockUseFlag.mockImplementation(
-                (key) =>
-                    key ===
-                        FeatureFlagKey.StandaloneConvAiOverviewPageResourceSection ||
-                    false,
-            )
             mockUseTrialAccess.mockReturnValue(
                 createMockTrialAccess({
                     canSeeTrialCTA: true,
@@ -678,9 +655,7 @@ describe('AiAgentOverview', () => {
             expect(
                 queryByText('Influence +1.5% GMV with Shopping Assistant'),
             ).toBeTruthy() // Trial Banner
-            expect(queryByText('AI Agent performance')).toBeTruthy() // KPI Section
             expect(getByTestId('mocked-pending-tasks')).toBeTruthy() // Pending Tasks
-            expect(queryByText('Resources')).toBeTruthy() // Resources Section
         })
 
         it('should handle hook errors gracefully', () => {

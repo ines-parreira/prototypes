@@ -209,7 +209,6 @@ export enum FeatureFlagKey {
     ShowAiReasoningInTicket = 'linear.project_surface-ai-reasoning-in-ticket-and-in-playground.show_ai_reasoning_in_ticket',
     ShowAiReasoningInPlayground = 'linear.project_playground.show_ai_reasoning_in_playground',
     ShowShopifyCustomerMetafields = 'linear.project_shopify-customer-ui-add-customer-metadata-widget_show_metafields',
-    StandaloneConvAiOverviewPageResourceSection = 'standalone-conv-ai_overview-page-resource-section',
     StandaloneHandoverCapabilities = 'linear.project_standalone-handover-capabilities',
     SurfaceOpportunities = 'linear.project_proactively-surface-opportunities.enable-new-opportunities',
     SwitchToShopifyThemeAppExtension = 'switch-to-shopify-theme-app-extension',
