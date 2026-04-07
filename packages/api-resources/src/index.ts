@@ -14,6 +14,13 @@ export { appQueryClient, queryCache } from './queryClient'
 export type { Meta } from './queryClient'
 export { QueryClientProvider } from './QueryClientProvider'
 export {
+    asyncStoragePersister,
+    clearPersistedQueryCache,
+    createLocalForageStorage,
+    PERSIST_MAX_AGE,
+    shouldPersistQuery,
+} from './queryPersister'
+export {
     doNotRetry40XErrorsHandler,
     reportingRetryDelayHandler,
     reportingRetryHandler,

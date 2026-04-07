@@ -1857,18 +1857,27 @@ importers:
       '@gorgias/axiom':
         specifier: catalog:axiom
         version: 0.234.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)(reactstrap@8.9.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0))
+      '@repo/browser-storage':
+        specifier: workspace:*
+        version: link:../browser-storage
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils
+      '@tanstack/query-async-storage-persister':
+        specifier: 4.36.1
+        version: 4.36.1
       '@tanstack/react-query':
         specifier: 4.36.1
         version: 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
       '@tanstack/react-query-devtools':
         specifier: catalog:rest-api-sdk
         version: 4.22.4(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      '@tanstack/react-query-persist-client':
+        specifier: 4.36.1
+        version: 4.36.1(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))
       '@testing-library/jest-dom':
         specifier: catalog:test
         version: 6.5.0
@@ -1911,6 +1920,9 @@ importers:
       react-dom:
         specifier: catalog:react
         version: 18.2.0(react@18.2.0)
+      tsx:
+        specifier: catalog:typescript
+        version: 4.20.3
       typescript:
         specifier: catalog:typescript
         version: 5.9.3
@@ -7918,8 +7930,14 @@ packages:
     resolution: {integrity: sha512-2AMpRiA6QivHOUiBpQAVxjiHAA68Ei23ZUMNaRJrN6omWiSFLoYrxGcT6BXtuzp0Jw4h6HZCmGGIM/gbwebO2A==}
     engines: {node: '>=12'}
 
+  '@tanstack/query-async-storage-persister@4.36.1':
+    resolution: {integrity: sha512-mk9A/2S3VZ3V6aKW0D3LwIHZqxw1hIL9I+wiB1cG2bftW78pWF9DCTXmON8KGku9bxfRGYEXzIxleh0Ujic0uA==}
+
   '@tanstack/query-core@4.36.1':
     resolution: {integrity: sha512-DJSilV5+ytBP1FbFcEJovv4rnnm/CokuVvrBEtW/Va9DvuJ3HksbXUJEpI0aV1KtuL4ZoO9AVE6PyNLzF7tLeA==}
+
+  '@tanstack/query-persist-client-core@4.36.1':
+    resolution: {integrity: sha512-eocgCeI7D7TRv1IUUBMfVwOI0wdSmMkBIbkKhqEdTrnUHUQEeOaYac8oeZk2cumAWJdycu6P/wB+WqGynTnzXg==}
 
   '@tanstack/react-query-devtools@4.22.4':
     resolution: {integrity: sha512-SKY9s/RVp5pkLVEIGcFTmgqM9VTU6byDtdNAAkeN9y0PyZyJhAlhrcW0utTgOmY3CRKmBTO9jpYEsW1FFCnxLA==}
@@ -7927,6 +7945,11 @@ packages:
       '@tanstack/react-query': 4.36.1
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
       react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+
+  '@tanstack/react-query-persist-client@4.36.1':
+    resolution: {integrity: sha512-32I5b9aAu4NCiXZ7Te/KEQLfHbYeTNriVPrKYcvEThnZ9tlW01vLcSoxpUIsMYRsembvJUUAkzYBAiZHLOd6pQ==}
+    peerDependencies:
+      '@tanstack/react-query': 4.36.1
 
   '@tanstack/react-query@4.36.1':
     resolution: {integrity: sha512-y7ySVHFyyQblPl3J3eQBWpXZkliroki3ARnBKsdJchlgt7yJLRDUcf4B8soufgiYt3pEQIkBWBx1N9/ZPIeUWw==}
@@ -21283,7 +21306,15 @@ snapshots:
     dependencies:
       remove-accents: 0.4.2
 
+  '@tanstack/query-async-storage-persister@4.36.1':
+    dependencies:
+      '@tanstack/query-persist-client-core': 4.36.1
+
   '@tanstack/query-core@4.36.1': {}
+
+  '@tanstack/query-persist-client-core@4.36.1':
+    dependencies:
+      '@tanstack/query-core': 4.36.1
 
   '@tanstack/react-query-devtools@4.22.4(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))(react-dom@18.2.0(react@18.2.0))(react@18.2.0)':
     dependencies:
@@ -21293,6 +21324,11 @@ snapshots:
       react-dom: 18.2.0(react@18.2.0)
       superjson: 1.12.2
       use-sync-external-store: 1.5.0(react@18.2.0)
+
+  '@tanstack/react-query-persist-client@4.36.1(@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0))':
+    dependencies:
+      '@tanstack/query-persist-client-core': 4.36.1
+      '@tanstack/react-query': 4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)
 
   '@tanstack/react-query@4.36.1(react-dom@18.2.0(react@18.2.0))(react-native@0.78.0(@babel/core@7.29.0)(@babel/preset-env@7.10.2(@babel/core@7.29.0))(@types/react@18.2.67)(react@18.2.0))(react@18.2.0)':
     dependencies:

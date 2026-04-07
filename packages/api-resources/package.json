@@ -8,6 +8,7 @@
         "./gorgiasAppsAuth": "./src/gorgiasAppsAuth.ts"
     },
     "scripts": {
+        "postinstall": "tsx scripts/generate-sdk-version-hash.ts",
         "format:check": "prettier --check .",
         "format:fix": "prettier --write .",
         "lint": "oxlint --quiet",
@@ -19,6 +20,7 @@
     },
     "peerDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@repo/browser-storage": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
         "@tanstack/react-query-devtools": "catalog:rest-api-sdk",
@@ -29,10 +31,13 @@
     },
     "devDependencies": {
         "@gorgias/axiom": "catalog:axiom",
+        "@repo/browser-storage": "workspace:*",
         "@repo/config": "workspace:*",
         "@repo/utils": "workspace:*",
+        "@tanstack/query-async-storage-persister": "4.36.1",
         "@tanstack/react-query": "catalog:rest-api-sdk",
         "@tanstack/react-query-devtools": "catalog:rest-api-sdk",
+        "@tanstack/react-query-persist-client": "4.36.1",
         "@testing-library/jest-dom": "catalog:test",
         "@testing-library/react": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
@@ -47,6 +52,7 @@
         "prettier": "catalog:prettier",
         "react": "catalog:react",
         "react-dom": "catalog:react",
+        "tsx": "catalog:typescript",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test"
     }
