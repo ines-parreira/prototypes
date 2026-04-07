@@ -21,6 +21,7 @@ type Props = {
     templatePath?: string
     watchDrop?: boolean
     tag?: keyof JSX.IntrinsicElements | null
+    filter?: string
 }
 
 function DragWrapper({
@@ -31,6 +32,7 @@ function DragWrapper({
     isEditing,
     watchDrop = false,
     tag = 'div',
+    filter,
 }: Props) {
     const dispatch = useAppDispatch()
 
@@ -43,6 +45,7 @@ function DragWrapper({
             options={{
                 sort,
                 draggable: '.draggable',
+                ...(filter ? { filter } : {}),
                 group,
                 animation: 150,
                 onStart() {

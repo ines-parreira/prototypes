@@ -3,12 +3,18 @@ import { useMemo } from 'react'
 import { fromJS } from 'immutable'
 import type { List, Map } from 'immutable'
 
+import DragWrapper from 'pages/common/components/dragging/WidgetsDragWrapper'
 import { EditionContext } from 'providers/infobar/EditionContext'
 import { NAMED_INTEGRATION_WIDGET_TYPES } from 'state/widgets/constants'
 import type { WidgetsState } from 'state/widgets/types'
 import { WidgetEnvironment } from 'state/widgets/types'
 import { itemsWithContext } from 'state/widgets/utils'
 
+import {
+    getWidgetId,
+    getWidgetType,
+    toWidgetArray,
+} from './customIntegrationsUtils'
 import CustomWidgetItem from './CustomWidgetItem'
 import WidgetEditionTools from './WidgetEditionTools'
 
@@ -18,6 +24,8 @@ type Props = {
     sources: Map<string, unknown>
     widgets: WidgetsState
 }
+
+const NAMED_WIDGET_PLACEHOLDER_FILTER = '.named-widget-placeholder'
 
 export default function CustomIntegrationsTabContent({
     sources,
@@ -42,43 +50,68 @@ export default function CustomIntegrationsTabContent({
     }, [widgets, isEditing])
 
     const customWidgets = useMemo(() => {
-        return (
-            contextFilteredItems
-                ?.filter(
-                    (w) =>
-                        !NAMED_INTEGRATION_WIDGET_TYPES.has(
-                            w?.get('type') as string,
-                        ),
-                )
-                .toArray() ?? []
+        return toWidgetArray(
+            contextFilteredItems?.filter(
+                (w) => !NAMED_INTEGRATION_WIDGET_TYPES.has(getWidgetType(w)),
+            ) as List<Map<string, unknown>> | undefined,
         )
     }, [contextFilteredItems])
 
-    if (customWidgets.length === 0) {
+    if (!isEditing && customWidgets.length === 0) {
         return null
     }
+
+    const isDragging =
+        isEditing &&
+        (widgets.getIn(['_internal', 'drag', 'isDragging'], false) as boolean)
+
+    const allItems = toWidgetArray(contextFilteredItems)
 
     return (
         <div className={css.integrationContainer}>
             <EditionContext.Provider value={{ isEditing }}>
-                <div className={css.integrationContent}>
-                    {customWidgets.map((widget, index) => {
-                        const widgetIndex =
-                            contextFilteredItems.findIndex(
-                                (w) => w?.get('id') === widget.get('id'),
-                            ) ?? -1
+                <DragWrapper
+                    sort
+                    group={{
+                        name: 'root',
+                        pull: false,
+                        put: true,
+                    }}
+                    isEditing={isEditing}
+                    watchDrop
+                    tag={null}
+                    filter={NAMED_WIDGET_PLACEHOLDER_FILTER}
+                >
+                    <div
+                        className={css.integrationContent}
+                        data-dragging={isDragging}
+                    >
+                        {allItems.map((widget, index) => {
+                            const isNamed = NAMED_INTEGRATION_WIDGET_TYPES.has(
+                                getWidgetType(widget),
+                            )
 
-                        return (
-                            <CustomWidgetItem
-                                key={widget.get('id') as number}
-                                widget={widget}
-                                sources={sources}
-                                widgetIndex={widgetIndex}
-                                fallbackIndex={index}
-                            />
-                        )
-                    })}
-                </div>
+                            if (isNamed) {
+                                return (
+                                    <div
+                                        key={getWidgetId(widget)}
+                                        className={`draggable named-widget-placeholder ${css.namedWidgetPlaceholder}`}
+                                    />
+                                )
+                            }
+
+                            return (
+                                <CustomWidgetItem
+                                    key={getWidgetId(widget) ?? `new-${index}`}
+                                    widget={widget}
+                                    sources={sources}
+                                    widgetIndex={index}
+                                    fallbackIndex={index}
+                                />
+                            )
+                        })}
+                    </div>
+                </DragWrapper>
                 {isEditing && (
                     <WidgetEditionTools
                         widgets={widgets}

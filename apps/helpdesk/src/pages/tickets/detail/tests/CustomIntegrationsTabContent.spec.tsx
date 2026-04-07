@@ -1,5 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
+import { Provider } from 'react-redux'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import {
     CUSTOM_WIDGET_TYPE,
@@ -9,6 +12,8 @@ import {
 import { WidgetEnvironment } from 'state/widgets/types'
 
 import CustomIntegrationsTabContent from '../CustomIntegrationsTabContent'
+
+const mockStore = configureMockStore([thunk])
 
 jest.mock('../WidgetEditionTools', () => ({
     __esModule: true,
@@ -57,6 +62,12 @@ function buildWidget(type: string, overrides: Record<string, unknown> = {}) {
     }
 }
 
+const store = mockStore({})
+
+function renderWithProviders(ui: React.ReactElement) {
+    return render(<Provider store={store}>{ui}</Provider>)
+}
+
 describe('CustomIntegrationsTabContent', () => {
     it('should return null when no custom widgets exist', () => {
         const widgets = buildWidgets({
@@ -64,7 +75,7 @@ describe('CustomIntegrationsTabContent', () => {
         })
         const sources = fromJS({ ticket: { customer: {} } })
 
-        const { container } = render(
+        const { container } = renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -86,7 +97,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -115,7 +126,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -141,7 +152,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -157,7 +168,7 @@ describe('CustomIntegrationsTabContent', () => {
         })
         const sources = fromJS({ ticket: { customer: {} } })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -182,7 +193,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -201,7 +212,7 @@ describe('CustomIntegrationsTabContent', () => {
         })
         const sources = fromJS({ ticket: { customer: {} } })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -218,7 +229,7 @@ describe('CustomIntegrationsTabContent', () => {
         })
         const sources = fromJS({ ticket: { customer: {} } })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -244,7 +255,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -268,7 +279,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -290,7 +301,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -310,7 +321,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -337,7 +348,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -361,7 +372,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}
@@ -388,7 +399,7 @@ describe('CustomIntegrationsTabContent', () => {
             },
         })
 
-        render(
+        renderWithProviders(
             <CustomIntegrationsTabContent
                 sources={sources}
                 widgets={widgets}

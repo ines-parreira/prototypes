@@ -25,9 +25,7 @@ export default function List({
 
     return (
         <div className={className} data-key={template.path}>
-            {source
-                .slice(0, 1)
-                .map((childSource, index) => children(childSource, index))}
+            {source.length > 0 && children(source[0], 0)}
         </div>
     )
 }

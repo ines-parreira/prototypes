@@ -299,6 +299,11 @@ export function TicketInfobarNavigation({
                             />
                         )}
                         <MenuItem
+                            label="Add new widget"
+                            leadingSlot="add-plus"
+                            onAction={handleCustomIntegrationsAction}
+                        />
+                        <MenuItem
                             label="Add new app"
                             leadingSlot="add-plus"
                             onAction={() => {
