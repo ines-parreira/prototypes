@@ -1,10 +1,12 @@
+export { setActiveViewId, clearActiveViewId } from './store/activeViewStore'
+export { useActiveView } from './hooks/useActiveView'
 export { ViewCountBadge } from './components/ViewCountBadge'
 export {
     useViewCount,
     setViewsCount,
     getViewCount,
     clearViewsCount,
-} from './hooks/useViewsCount'
+} from './store/viewsCountStore'
 export { useAllViews } from './hooks/useAllViews'
 export { useAllViewSections } from './hooks/useAllViewSections'
 export { usePrivateViews } from './hooks/usePrivateViews'

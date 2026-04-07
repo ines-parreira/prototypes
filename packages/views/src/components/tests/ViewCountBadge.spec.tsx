@@ -1,7 +1,7 @@
 import { render } from '@repo/testing/vitest'
 import { screen } from '@testing-library/react'
 
-import { clearViewsCount, setViewsCount } from '../../hooks/useViewsCount'
+import { clearViewsCount, setViewsCount } from '../../store/viewsCountStore'
 import { ViewCountBadge } from '../ViewCountBadge'
 
 vi.mock('@repo/browser-storage', () => ({

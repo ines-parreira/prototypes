@@ -1,6 +1,6 @@
 import { Quantity } from '@gorgias/axiom'
 
-import { useViewCount } from '../hooks/useViewsCount'
+import { useViewCount } from '../store/viewsCountStore'
 
 type Props = {
     viewId: number

@@ -23,6 +23,8 @@
         "@repo/browser-storage": "workspace:*",
         "@repo/utils": "workspace:*",
         "react": "catalog:react",
+        "react-router": "catalog:react-router",
+        "react-router-dom": "catalog:react-router",
         "zustand": "catalog:zustand"
     },
     "devDependencies": {
@@ -41,11 +43,15 @@
         "@testing-library/user-event": "catalog:test",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@types/react": "catalog:react",
+        "@types/react-router": "catalog:react-router",
+        "@types/react-router-dom": "catalog:react-router",
         "@vitest/coverage-v8": "catalog:test",
         "msw": "catalog:test",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react": "catalog:react",
+        "react-router": "catalog:react-router",
+        "react-router-dom": "catalog:react-router",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "zustand": "catalog:zustand"

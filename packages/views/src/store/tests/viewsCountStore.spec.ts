@@ -6,7 +6,7 @@ import {
     setViewsCount,
     useViewCount,
     viewsCountStore,
-} from '../useViewsCount'
+} from '../viewsCountStore'
 
 vi.mock('@repo/browser-storage', () => ({
     localForageManager: {
