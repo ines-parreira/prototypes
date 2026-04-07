@@ -55,6 +55,8 @@
 
     /* Nav items */
     .nav-group { display: flex; flex-direction: column; gap: 12px; }
+    /* Sub-group for items that sit flush together (0px gap) */
+    .nav-subgroup { display: flex; flex-direction: column; gap: 0; }
     .recents-group { gap: 4px; }
     .nav-item {
       display: flex; align-items: center; gap: 8px;
@@ -121,7 +123,21 @@
     }
 
     /* ── Chat input ───────────────────────────────────────────────── */
-    .chat-area { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .chat-area { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+
+    /* Listen daily digest pill */
+    .listen-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 12px; border-radius: 20px;
+      background: #1e242e; border: none; cursor: pointer;
+      font-family: inherit; font-size: 13px; font-weight: 500; color: white;
+      transition: background 0.15s;
+    }
+    .listen-pill:hover { background: #2e3644; }
+    .listen-pill-time {
+      font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.6);
+      margin-left: 2px;
+    }
 
     .chat-input-box {
       width: 600px; border: 1px solid rgba(0,0,0,0.08);
@@ -405,11 +421,17 @@
         </div>
       </div>
 
-      <!-- Primary nav — icons from Figma node 279-906 -->
+      <!-- Primary nav — Daily digest + New chat flush together -->
       <div class="nav-group">
-        <div class="nav-item active">
-          <img src="https://www.figma.com/api/mcp/asset/f45ff9c4-c5a6-419c-8899-2249ef2b784a" width="16" height="16" alt="">
-          <span class="nav-label">Daily digest</span>
+        <div class="nav-subgroup">
+          <div class="nav-item active">
+            <img src="https://www.figma.com/api/mcp/asset/f45ff9c4-c5a6-419c-8899-2249ef2b784a" width="16" height="16" alt="">
+            <span class="nav-label">Daily digest</span>
+          </div>
+          <div class="nav-item secondary">
+            <img src="data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.17123 12.9152C6.00377 13.3953 6.96973 13.67 7.99985 13.67C11.1313 13.67 13.6701 11.1315 13.6701 8.00008C13.6701 4.86862 11.1315 2.33008 8.00008 2.33008C4.86862 2.33008 2.33008 4.86862 2.33008 8.00008C2.33008 9.0302 2.60479 9.99616 3.08494 10.8287L3.0868 10.8319C3.133 10.912 3.1563 10.9524 3.16685 10.9906C3.1768 11.0266 3.17958 11.059 3.17703 11.0962C3.17429 11.1363 3.1608 11.1778 3.13313 11.2608L2.64877 12.7139L2.64816 12.7158C2.54597 13.0224 2.49487 13.1757 2.53129 13.2778C2.56305 13.3669 2.63354 13.4372 2.7226 13.4689C2.82451 13.5053 2.97712 13.4544 3.28235 13.3527L3.28615 13.3512L4.73923 12.8669C4.82196 12.8393 4.86402 12.8253 4.904 12.8226C4.94127 12.82 4.97342 12.8234 5.00942 12.8334C5.0477 12.8439 5.08811 12.8672 5.16863 12.9137L5.17123 12.9152Z' stroke='%235c6370' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" width="16" height="16" alt="">
+            <span class="nav-label">New chat</span>
+          </div>
         </div>
       </div>
 
@@ -461,6 +483,12 @@
 
         <!-- Chat input -->
         <div class="chat-area">
+          <!-- Listen daily digest pill -->
+          <button class="listen-pill">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.734 4.00903C12.281 4.51911 12.7177 5.13585 13.0171 5.82122C13.3165 6.50658 13.4723 7.24602 13.475 7.99394C13.4776 8.74185 13.3269 9.48236 13.0323 10.1698C12.7376 10.8572 12.3053 11.477 11.7619 11.9909M10.2405 5.61064C10.5687 5.91669 10.8307 6.28673 11.0103 6.69795C11.19 7.10917 11.2835 7.55283 11.2851 8.00158C11.2866 8.45033 11.1962 8.89464 11.0194 9.3071C10.8427 9.71956 10.5832 10.0914 10.2572 10.3998M5.52574 9.87824L6.4429 11.0132C6.92101 11.6049 7.16007 11.9007 7.36951 11.9329C7.55081 11.9608 7.73403 11.896 7.85753 11.7604C8.00019 11.6037 8.00019 11.2234 8.00019 10.4627V5.56344C8.00019 4.80274 8.00019 4.4224 7.85753 4.26571C7.73403 4.13007 7.55081 4.0653 7.36951 4.09318C7.16007 4.12538 6.92101 4.42121 6.4429 5.01287L5.52574 6.14786C5.42916 6.26738 5.38086 6.32715 5.32111 6.37015C5.26817 6.40825 5.20885 6.43658 5.14594 6.45381C5.07493 6.47326 4.9981 6.47326 4.84442 6.47326H4.06518C3.65117 6.47326 3.44417 6.47326 3.27688 6.52853C2.94767 6.63728 2.68941 6.89554 2.58066 7.22475C2.52539 7.39204 2.52539 7.59904 2.52539 8.01305C2.52539 8.42705 2.52539 8.63406 2.58066 8.80134C2.68941 9.13056 2.94767 9.38881 3.27688 9.49757C3.44417 9.55284 3.65117 9.55284 4.06518 9.55284H4.84442C4.9981 9.55284 5.07493 9.55284 5.14594 9.57228C5.20885 9.58951 5.26817 9.61785 5.32111 9.65595C5.38086 9.69895 5.42916 9.75871 5.52574 9.87824Z" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Listen daily digest
+            <span class="listen-pill-time">01:34</span>
+          </button>
           <div class="chat-input-box">
             <div class="chat-input-inner">
               <span class="chat-placeholder">Ask anything...</span>
