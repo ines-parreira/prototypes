@@ -45,7 +45,7 @@ export function FlowsCard({
     return (
         <Card elevation={Elevation.Mid} p="md" className={css.card}>
             <Box flexDirection="column" gap="md">
-                <Box flexDirection="column" gap="xs">
+                <Box flexDirection="column" gap="xxxs">
                     <Heading size="md">Flows</Heading>
                     <Text size="md" color="content-neutral-secondary">
                         Show up to 6 flows on your chat to proactively resolve

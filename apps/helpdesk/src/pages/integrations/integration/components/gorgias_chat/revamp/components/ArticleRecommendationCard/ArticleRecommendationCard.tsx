@@ -32,7 +32,7 @@ export function ArticleRecommendationCard({
 
     return (
         <Card elevation={Elevation.Mid} p="md" className={css.card}>
-            <Box flexDirection="column" gap="xs">
+            <Box flexDirection="column" gap="xxxs">
                 <Box justifyContent="space-between" alignItems="center">
                     <Heading size="md">Article recommendations</Heading>
                     <Box alignItems="center" gap="xs">

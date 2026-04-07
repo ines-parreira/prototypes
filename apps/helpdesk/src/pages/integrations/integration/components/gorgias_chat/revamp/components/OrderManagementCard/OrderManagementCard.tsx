@@ -39,7 +39,7 @@ export function OrderManagementCard({
 
     return (
         <Card elevation={Elevation.Mid} p="md" className={css.card} gap="md">
-            <Box flexDirection="column" gap="xs">
+            <Box flexDirection="column" gap="xxxs">
                 <Box justifyContent="space-between" alignItems="center">
                     <Heading size="md">Order management</Heading>
                     <Box alignItems="center" gap="xs">
