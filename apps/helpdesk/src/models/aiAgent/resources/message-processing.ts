@@ -1,5 +1,5 @@
 import gorgiasAppsAuthInterceptor from '@repo/api-resources/gorgiasAppsAuth'
-import { isProduction, isStaging } from '@repo/utils'
+import { isLocalDev, isProduction, isStaging } from '@repo/utils'
 import axios from 'axios'
 
 import { createMockHttpIntegrationPayload } from 'pages/aiAgent/PlaygroundV2/utils/playground-ticket.util'
@@ -15,13 +15,21 @@ import type {
  * Api Client for AI Agent
  */
 
-export function createBaseUrl(isProd = isProduction(), isStg = isStaging()) {
+export function createBaseUrl(
+    isProd = isProduction(),
+    isStg = isStaging(),
+    isLocal = isLocalDev(),
+) {
     if (isProd) {
         return 'https://aiagent.gorgias.help'
     }
 
     if (isStg) {
         return 'https://aiagent.gorgias.rehab'
+    }
+
+    if (isLocal) {
+        return 'https://aiagent.gorgias.localhost'
     }
 
     return 'http://localhost:9400'

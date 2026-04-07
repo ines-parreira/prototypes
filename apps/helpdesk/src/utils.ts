@@ -4,7 +4,13 @@ import type {
     TouchEvent as TouchEventReact,
 } from 'react'
 
-import { envVars, isProduction, isStaging, linkify } from '@repo/utils'
+import {
+    envVars,
+    isLocalDev,
+    isProduction,
+    isStaging,
+    linkify,
+} from '@repo/utils'
 import crypto from 'crypto'
 import { EditorState, Modifier } from 'draft-js'
 import escodegen from 'escodegen'
@@ -436,6 +442,18 @@ export const replaceAttachmentURL = (
             : url.replace(
                   '//uploads.gorgias.xyz',
                   `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`,
+              ) + formatParam
+    }
+
+    if (isLocalDev()) {
+        return isInternalSource
+            ? url.replace(
+                  `https://${accountDomain}.gorgias.localhost/${ATTACHMENT_PATH}`,
+                  'https://uploads.gorgi.us/development',
+              )
+            : url.replace(
+                  'https://uploads.gorgi.us/development',
+                  `https://${accountDomain}.gorgias.localhost/${ATTACHMENT_PATH}`,
               ) + formatParam
     }
 

@@ -1,5 +1,5 @@
 import gorgiasAppsAuthInterceptor from '@repo/api-resources/gorgiasAppsAuth'
-import { isProduction, isStaging } from '@repo/utils'
+import { isLocalDev, isProduction, isStaging } from '@repo/utils'
 import memoize from 'memoize-one'
 import type { Document } from 'openapi-client-axios'
 import OpenAPIClientAxios from 'openapi-client-axios'
@@ -18,6 +18,10 @@ function getGorgiasChatApiBaseUrl(): string {
             return window.GORGIAS_CHAT_CLUSTER_URL
         }
         return 'https://us-east1-b39a.gorgias-staging.chat'
+    }
+
+    if (isLocalDev()) {
+        return 'https://chat.gorgias.localhost'
     }
 
     return 'http://acme.gorgias.docker:9001'

@@ -28,8 +28,15 @@ export function isDevelopment(): boolean {
     return getEnvironment() === GorgiasUIEnv.Development
 }
 
+export function isLocalDev(): boolean {
+    return window.location?.hostname?.endsWith('.gorgias.localhost') ?? false
+}
+
 export function getHelpCenterAuthApiBaseUrl(): string {
     if (isDevelopment()) {
+        if (isLocalDev()) {
+            return ''
+        }
         return 'http://acme.gorgias.docker:4001'
     }
 

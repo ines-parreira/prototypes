@@ -1,5 +1,5 @@
 import gorgiasAppsAuthInterceptor from '@repo/api-resources/gorgiasAppsAuth'
-import { isProduction, isStaging } from '@repo/utils'
+import { isLocalDev, isProduction, isStaging } from '@repo/utils'
 import type { AxiosError } from 'axios'
 import axios from 'axios'
 
@@ -32,7 +32,9 @@ const domain = isProduction()
     ? `https://aiagent.gorgias.help`
     : isStaging()
       ? 'https://aiagent.gorgias.rehab'
-      : `http://localhost:9402`
+      : isLocalDev()
+        ? 'https://aiagent.gorgias.localhost'
+        : `http://localhost:9402`
 
 const baseURL = `${domain}/api`
 

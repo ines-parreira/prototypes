@@ -41,8 +41,16 @@ describe('message-processing', () => {
             )
         })
 
+        it('creates the local k8s url', () => {
+            expect(createBaseUrl(false, false, true)).toBe(
+                'https://aiagent.gorgias.localhost',
+            )
+        })
+
         it('creates the development url', () => {
-            expect(createBaseUrl(false, false)).toBe('http://localhost:9400')
+            expect(createBaseUrl(false, false, false)).toBe(
+                'http://localhost:9400',
+            )
         })
     })
 

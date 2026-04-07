@@ -1,5 +1,5 @@
 import gorgiasAppsAuthInterceptor from '@repo/api-resources/gorgiasAppsAuth'
-import { isProduction, isStaging } from '@repo/utils'
+import { isLocalDev, isProduction, isStaging } from '@repo/utils'
 import memoize from 'memoize-one'
 import type { Document } from 'openapi-client-axios'
 import OpenAPIClientAxios from 'openapi-client-axios'
@@ -18,6 +18,10 @@ function getGorgiasSSPBaseURL(): string {
             return window.GORGIAS_SELF_SERVICE_PORTAL_URL
         }
         return 'https://us-east1-b39a.gorgias-staging.chat/ssp'
+    }
+
+    if (isLocalDev()) {
+        return 'https://chat.gorgias.localhost/ssp'
     }
 
     return 'http://localhost:9003/ssp'

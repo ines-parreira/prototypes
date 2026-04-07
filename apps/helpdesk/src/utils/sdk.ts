@@ -1,5 +1,5 @@
 import { gorgiasAppsAuthInterceptor } from '@repo/api-resources'
-import { isProduction, isStaging } from '@repo/utils'
+import { isLocalDev, isProduction, isStaging } from '@repo/utils'
 
 import * as convert from '@gorgias/convert-client'
 import * as customerSegmentation from '@gorgias/customer-segmentation-client'
@@ -14,7 +14,9 @@ export function initSDKs() {
         ? `https://knowledge-service.gorgias.help`
         : isStaging()
           ? 'https://knowledge-service.gorgias.rehab'
-          : `http://localhost:9500`
+          : isLocalDev()
+            ? 'https://knowledge-service.gorgias.localhost'
+            : `http://localhost:9500`
 
     helpdesk.setDefaultConfig({
         headers: {

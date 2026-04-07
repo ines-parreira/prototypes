@@ -5,6 +5,7 @@ import URLSafeBase64 from 'urlsafe-base64'
 import {
     getEnvironment,
     GorgiasUIEnv,
+    isLocalDev,
     isProduction,
     isStaging,
 } from '../environment'
@@ -61,6 +62,18 @@ export const replaceAttachmentURL = (
             : url.replace(
                   '//uploads.gorgias.xyz',
                   `//${accountDomain}.gorgias.xyz/${ATTACHMENT_PATH}`,
+              ) + formatParam
+    }
+
+    if (isLocalDev()) {
+        return isInternalSource
+            ? url.replace(
+                  `https://${accountDomain}.gorgias.localhost/${ATTACHMENT_PATH}`,
+                  'https://uploads.gorgi.us/development',
+              )
+            : url.replace(
+                  'https://uploads.gorgi.us/development',
+                  `https://${accountDomain}.gorgias.localhost/${ATTACHMENT_PATH}`,
               ) + formatParam
     }
 

@@ -1,5 +1,5 @@
 import gorgiasAppsAuthInterceptor from '@repo/api-resources/gorgiasAppsAuth'
-import { isProduction, isStaging } from '@repo/utils'
+import { isLocalDev, isProduction, isStaging } from '@repo/utils'
 import memoize from 'memoize-one'
 import type { Document } from 'openapi-client-axios'
 import OpenAPIClientAxios from 'openapi-client-axios'
@@ -14,6 +14,10 @@ export function getGorgiasRevenueAddonApiBaseUrl(): string {
 
     if (isStaging()) {
         return 'https://staging.gorgias-convert.com'
+    }
+
+    if (isLocalDev()) {
+        return 'https://convert.gorgias.localhost'
     }
 
     return 'http://acme.gorgias.docker:8095'
