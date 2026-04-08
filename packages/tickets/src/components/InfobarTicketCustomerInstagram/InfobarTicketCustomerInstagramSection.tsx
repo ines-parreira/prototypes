@@ -86,9 +86,12 @@ export const InfobarTicketCustomerInstagramSection = ({
                 padding="md"
                 paddingBottom="sm"
             >
-                <Heading size="sm" className={css.heading}>
-                    Instagram
-                </Heading>
+                <Box alignItems="center" gap="xxs">
+                    <Icon name="channel-instagram" size="sm" />
+                    <Heading size="sm" className={css.heading}>
+                        Instagram
+                    </Heading>
+                </Box>
                 <FieldRow label="Handle">
                     <a
                         href={`https://www.instagram.com/${customerInstagramHandle}`}
@@ -97,7 +100,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                         onClick={handleIgHandleClick}
                         className={css.instagramHandle}
                     >
-                        <Text size="sm">@{customerInstagramHandle}</Text>
+                        <Text size="md">@{customerInstagramHandle}</Text>
                     </a>
                 </FieldRow>
             </Box>
@@ -112,9 +115,12 @@ export const InfobarTicketCustomerInstagramSection = ({
             padding="md"
             paddingBottom="sm"
         >
-            <Heading size="sm" className={css.heading}>
-                Instagram
-            </Heading>
+            <Box alignItems="center" gap="xxs">
+                <Icon name="channel-instagram" size="sm" />
+                <Heading size="sm" className={css.heading}>
+                    Instagram
+                </Heading>
+            </Box>
             <OverflowList
                 nonExpandedLineCount={2}
                 className={css.overflowList}
@@ -135,7 +141,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                                 customerInstagramProfile?.is_verified
                             }
                         >
-                            <Text size="sm">@{customerInstagramHandle}</Text>
+                            <Text size="md">@{customerInstagramHandle}</Text>
                             {customerInstagramProfile?.is_verified && (
                                 <Icon name="wavy-check" color="blue" />
                             )}
@@ -144,7 +150,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                 </OverflowListItem>
                 <OverflowListItem className={css.overflowListItem}>
                     <FieldRow label="Followers">
-                        <Text size="sm" className={css.fieldValue}>
+                        <Text size="md" className={css.fieldValue}>
                             {formatFollowerCount(
                                 customerInstagramProfile?.total_followers ?? 0,
                             )}
@@ -154,7 +160,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                 {customerInstagramProfile?.name && (
                     <OverflowListItem className={css.overflowListItem}>
                         <FieldRow label="Profile name">
-                            <Text size="sm" className={css.fieldValue}>
+                            <Text size="md" className={css.fieldValue}>
                                 {customerInstagramProfile.name}
                             </Text>
                         </FieldRow>
@@ -162,7 +168,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                 )}
                 <OverflowListItem className={css.overflowListItem}>
                     <FieldRow label="Following you">
-                        <Text size="sm" className={css.fieldValue}>
+                        <Text size="md" className={css.fieldValue}>
                             {customerInstagramProfile.customer_follows_business
                                 ? 'Yes'
                                 : 'No'}
@@ -171,7 +177,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                 </OverflowListItem>
                 <OverflowListItem className={css.overflowListItem}>
                     <FieldRow label="Followed by you">
-                        <Text size="sm" className={css.fieldValue}>
+                        <Text size="md" className={css.fieldValue}>
                             {customerInstagramProfile.business_follows_customer
                                 ? 'Yes'
                                 : 'No'}
@@ -180,7 +186,7 @@ export const InfobarTicketCustomerInstagramSection = ({
                 </OverflowListItem>
                 <OverflowListItem className={css.overflowListItem}>
                     <FieldRow label="Profile updated at">
-                        <Text size="sm" className={css.fieldValue}>
+                        <Text size="md" className={css.fieldValue}>
                             {getFormattedDate(
                                 customerInstagramProfile.updated_at,
                                 'en-GB',

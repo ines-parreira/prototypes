@@ -61,29 +61,41 @@ export function InfobarBaseCustomerFields({
                     />
                 </FieldRow>
             </OverflowListItem>
-            {location && (
+            {emailChannels.length > 0 ? (
+                emailChannels.map((channel, index) => (
+                    <EmailChannelField
+                        index={index}
+                        key={channel.id}
+                        customer={customer}
+                        channel={channel}
+                        onChannelChange={(value) =>
+                            handleChannelChange(channel.id, value)
+                        }
+                        onChannelBlur={(value) =>
+                            updateChannel(channel.id, value)
+                        }
+                        onChannelDelete={() => deleteChannel(channel.id)}
+                    />
+                ))
+            ) : (
                 <OverflowListItem className={css.overflowListItem}>
-                    <FieldRow label="Location" className={css.infoFieldRow}>
-                        <Text
-                            size="md"
-                            overflow="ellipsis"
-                            className={cn(css.fieldValue, css.infoFieldValue)}
-                        >
-                            {location}
-                        </Text>
-                    </FieldRow>
-                </OverflowListItem>
-            )}
-            {localTime && (
-                <OverflowListItem className={css.overflowListItem}>
-                    <FieldRow label="Local time" className={css.infoFieldRow}>
-                        <Text
-                            size="md"
-                            overflow="ellipsis"
-                            className={cn(css.fieldValue, css.infoFieldValue)}
-                        >
-                            {localTime}
-                        </Text>
+                    <FieldRow fieldId="custom-email-field" label="Email">
+                        <EditableField<string>
+                            id="custom-email-field"
+                            value={fields.email}
+                            onValueChange={(value) =>
+                                setFields((prevFields) => ({
+                                    ...prevFields,
+                                    email: value,
+                                }))
+                            }
+                            onBlur={(value) => createChannel('email', value)}
+                            placeholder="+ Add"
+                            validator={(value) =>
+                                validateChannelField('email', value)
+                            }
+                            ariaLabel="Email"
+                        />
                     </FieldRow>
                 </OverflowListItem>
             )}
@@ -125,41 +137,29 @@ export function InfobarBaseCustomerFields({
                     </FieldRow>
                 </OverflowListItem>
             )}
-            {emailChannels.length > 0 ? (
-                emailChannels.map((channel, index) => (
-                    <EmailChannelField
-                        index={index}
-                        key={channel.id}
-                        customer={customer}
-                        channel={channel}
-                        onChannelChange={(value) =>
-                            handleChannelChange(channel.id, value)
-                        }
-                        onChannelBlur={(value) =>
-                            updateChannel(channel.id, value)
-                        }
-                        onChannelDelete={() => deleteChannel(channel.id)}
-                    />
-                ))
-            ) : (
+            {location && (
                 <OverflowListItem className={css.overflowListItem}>
-                    <FieldRow fieldId="custom-email-field" label="Email">
-                        <EditableField<string>
-                            id="custom-email-field"
-                            value={fields.email}
-                            onValueChange={(value) =>
-                                setFields((prevFields) => ({
-                                    ...prevFields,
-                                    email: value,
-                                }))
-                            }
-                            onBlur={(value) => createChannel('email', value)}
-                            placeholder="+ Add"
-                            validator={(value) =>
-                                validateChannelField('email', value)
-                            }
-                            ariaLabel="Email"
-                        />
+                    <FieldRow label="Location" className={css.infoFieldRow}>
+                        <Text
+                            size="md"
+                            overflow="ellipsis"
+                            className={cn(css.fieldValue, css.infoFieldValue)}
+                        >
+                            {location}
+                        </Text>
+                    </FieldRow>
+                </OverflowListItem>
+            )}
+            {localTime && (
+                <OverflowListItem className={css.overflowListItem}>
+                    <FieldRow label="Local time" className={css.infoFieldRow}>
+                        <Text
+                            size="md"
+                            overflow="ellipsis"
+                            className={cn(css.fieldValue, css.infoFieldValue)}
+                        >
+                            {localTime}
+                        </Text>
                     </FieldRow>
                 </OverflowListItem>
             )}

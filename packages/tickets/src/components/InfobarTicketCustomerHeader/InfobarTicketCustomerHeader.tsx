@@ -3,6 +3,7 @@ import { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
 import {
+    Avatar,
     Box,
     Button,
     ButtonSize,
@@ -59,7 +60,12 @@ export function InfobarTicketCustomerHeader({
             alignItems="center"
             className={css.container}
         >
-            <Link to={`/app/customer/${customer.id}`}>
+            <Link
+                to={`/app/customer/${customer.id}`}
+                className={css.customerLink}
+                aria-label={customerDisplayName}
+            >
+                <Avatar name={customerDisplayName} size="md" />
                 <Heading size="sm">{customerDisplayName}</Heading>
             </Link>
             <Menu
