@@ -81,7 +81,10 @@ describe('PendingTasksSection', () => {
             />,
         )
 
-        expect(screen.getByRole('region').childNodes).toHaveLength(3)
+        const collapsible = rendered.container.querySelector(
+            '#overview-pending-tasks-collapsible',
+        )!
+        expect(collapsible.childNodes).toHaveLength(3)
         act(() => {
             fireEvent.click(rendered.container.querySelector('button')!)
         })
@@ -90,9 +93,7 @@ describe('PendingTasksSection', () => {
             'aria-expanded',
             'true',
         )
-        expect(screen.getByRole('region').childNodes).toHaveLength(
-            pendingTasks.length,
-        )
+        expect(collapsible.childNodes).toHaveLength(pendingTasks.length)
         expect(screen.getByText('Show less')).toBeInTheDocument()
     })
 })

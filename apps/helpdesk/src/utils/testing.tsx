@@ -9,15 +9,19 @@ import { createMemoryHistory } from 'history'
 import _findLast from 'lodash/findLast'
 import _last from 'lodash/last'
 import { HTML5Backend } from 'react-dnd-html5-backend'
+import { createPortal } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { Toaster } from '@gorgias/axiom'
+
 import type { RootState } from 'state/types'
 import { DndProvider } from 'utils/wrappers/DndProvider'
 
 const middlewares = [thunk]
+const toaster = createPortal(<Toaster />, document.body)
 
 /**
  * Mock a Redux store
@@ -37,7 +41,12 @@ export const renderWithStore = (
     state: Partial<RootState>,
 ) => {
     const store = configureMockStore(middlewares)(state)
-    const component = render(<Provider store={store}>{ui}</Provider>)
+    const component = render(
+        <>
+            <Provider store={store}>{ui}</Provider>
+            {toaster}
+        </>,
+    )
     return {
         ...component,
         rerenderComponent: (
@@ -45,9 +54,12 @@ export const renderWithStore = (
             newState: Partial<RootState>,
         ) =>
             component.rerender(
-                <Provider store={configureMockStore(middlewares)(newState)}>
-                    {newUi}
-                </Provider>,
+                <>
+                    <Provider store={configureMockStore(middlewares)(newState)}>
+                        {newUi}
+                    </Provider>
+                    {toaster}
+                </>,
             ),
         store,
     }
@@ -64,9 +76,12 @@ export const renderWithRouter = (
 ) => {
     const component = render(ui, {
         wrapper: ({ children }: any) => (
-            <Router history={history}>
-                <Route path={path}>{children}</Route>
-            </Router>
+            <>
+                <Router history={history}>
+                    <Route path={path}>{children}</Route>
+                </Router>
+                {toaster}
+            </>
         ),
         ...options,
     })
@@ -93,7 +108,10 @@ export const renderWithDnD = (
 ) => {
     return render(ui, {
         wrapper: ({ children }: any) => (
-            <DndProvider backend={backend}>{children}</DndProvider>
+            <>
+                <DndProvider backend={backend}>{children}</DndProvider>
+                {toaster}
+            </>
         ),
         ...options,
     })
@@ -114,11 +132,14 @@ export const renderWithRouterAndDnD = (
 ) => {
     return render(ui, {
         wrapper: ({ children }: any) => (
-            <DndProvider backend={backend}>
-                <Router history={history}>
-                    <Route path={path}>{children}</Route>
-                </Router>
-            </DndProvider>
+            <>
+                <DndProvider backend={backend}>
+                    <Router history={history}>
+                        <Route path={path}>{children}</Route>
+                    </Router>
+                </DndProvider>
+                {toaster}
+            </>
         ),
         ...options,
     })

@@ -33,11 +33,6 @@ jest.mock(
 jest.mock('domains/reporting/pages/common/drill-down/DrillDownModalTrigger.tsx')
 const DrillDownModalTriggerMock = assumeMock(DrillDownModalTrigger)
 
-const MOCK_SKELETON_TEST_ID = 'skeleton'
-jest.mock('@gorgias/axiom', () => ({
-    Skeleton: () => <div data-testid={MOCK_SKELETON_TEST_ID} />,
-}))
-
 const renderWithTable = (element: ReactElement, state: Partial<RootState>) =>
     renderWithStore(
         <table>
@@ -249,7 +244,7 @@ describe('<AgentsCellContent />', () => {
             defaultState,
         )
 
-        expect(screen.getByTestId(MOCK_SKELETON_TEST_ID)).toBeInTheDocument()
+        expect(screen.getByLabelText('Loading')).toBeInTheDocument()
     })
 
     it('should render DrillDown when metricData passed', () => {

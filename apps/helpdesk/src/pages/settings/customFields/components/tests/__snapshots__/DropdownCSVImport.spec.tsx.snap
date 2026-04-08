@@ -5,6 +5,13 @@ exports[`<DropdownCSVImport/> should not render when closed 1`] = `
   class=""
 >
   <div />
+  <section
+    aria-atomic="false"
+    aria-label="Notifications alt+T"
+    aria-live="polite"
+    aria-relevant="additions text"
+    tabindex="-1"
+  />
 </body>
 `;
 
@@ -13,6 +20,13 @@ exports[`<DropdownCSVImport/> should render when open 1`] = `
   class="modal-open"
 >
   <div />
+  <section
+    aria-atomic="false"
+    aria-label="Notifications alt+T"
+    aria-live="polite"
+    aria-relevant="additions text"
+    tabindex="-1"
+  />
   <div
     style="position: relative; z-index: 1050; display: block;"
     tabindex="-1"

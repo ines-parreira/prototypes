@@ -3,13 +3,18 @@ import type { ReactElement } from 'react'
 import { NavigationProvider } from '@repo/navigation'
 import { render } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
+import { createPortal } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Route, Router } from 'react-router-dom'
+
+import { Toaster } from '@gorgias/axiom'
 
 import type { RootState } from 'state/types'
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
 import type { RenderWithRouterParams } from 'utils/testing'
 import { mockStore } from 'utils/testing'
+
+const toaster = createPortal(<Toaster />, document.body)
 
 export const renderWithStoreAndQueryClientAndRouter = (
     element: ReactElement,
@@ -31,15 +36,20 @@ export const renderWithStoreAndQueryClientAndRouter = (
     return {
         ...render(element, {
             wrapper: ({ children }: any) => (
-                <Provider store={store}>
-                    <NavigationProvider>
-                        <MockQueryClientProvider>
-                            <Router history={history}>
-                                <Route path={routing.path}>{children}</Route>
-                            </Router>
-                        </MockQueryClientProvider>
-                    </NavigationProvider>
-                </Provider>
+                <>
+                    <Provider store={store}>
+                        <NavigationProvider>
+                            <MockQueryClientProvider>
+                                <Router history={history}>
+                                    <Route path={routing.path}>
+                                        {children}
+                                    </Route>
+                                </Router>
+                            </MockQueryClientProvider>
+                        </NavigationProvider>
+                    </Provider>
+                    {toaster}
+                </>
             ),
             ...routing.options,
         }),

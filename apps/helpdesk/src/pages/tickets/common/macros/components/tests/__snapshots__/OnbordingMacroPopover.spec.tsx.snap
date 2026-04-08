@@ -8,6 +8,13 @@ exports[`<OnbordingMacroPopover /> should display popover 1`] = `
       style="width: 800px;"
     />
   </div>
+  <section
+    aria-atomic="false"
+    aria-label="Notifications alt+T"
+    aria-live="polite"
+    aria-relevant="additions text"
+    tabindex="-1"
+  />
   <div>
     <div
       class="fade"

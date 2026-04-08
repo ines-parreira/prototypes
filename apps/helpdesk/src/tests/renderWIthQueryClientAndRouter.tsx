@@ -2,9 +2,14 @@ import type { ReactElement } from 'react'
 
 import { render } from '@testing-library/react'
 import { createMemoryHistory } from 'history'
+import { createPortal } from 'react-dom'
 import { Route, Router } from 'react-router-dom'
 
+import { Toaster } from '@gorgias/axiom'
+
 import { mockQueryClientProvider } from 'tests/reactQueryTestingUtils'
+
+const toaster = createPortal(<Toaster />, document.body)
 
 export const renderWithQueryClientAndRouter = (
     element: ReactElement,
@@ -16,11 +21,14 @@ export const renderWithQueryClientAndRouter = (
     return {
         ...render(element, {
             wrapper: ({ children }: any) => (
-                <MockQueryClientProvider>
-                    <Router history={history}>
-                        <Route path="/">{children}</Route>
-                    </Router>
-                </MockQueryClientProvider>
+                <>
+                    <MockQueryClientProvider>
+                        <Router history={history}>
+                            <Route path="/">{children}</Route>
+                        </Router>
+                    </MockQueryClientProvider>
+                    {toaster}
+                </>
             ),
         }),
         history,

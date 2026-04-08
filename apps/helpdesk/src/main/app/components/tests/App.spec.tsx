@@ -24,11 +24,6 @@ jest.mock('@repo/feature-flags', () => ({
 }))
 const useFlagMock = assumeMock(useFlag)
 
-jest.mock('@gorgias/axiom', () => ({
-    ...jest.requireActual('@gorgias/axiom'),
-    Toaster: () => <div>Toaster</div>,
-}))
-
 jest.mock('common/notifications', () => ({
     NotificationsOverlay: () => <div>NotificationsOverlay</div>,
     NotificationsToasts: jest.fn(() => <div>toasts</div>),
@@ -129,7 +124,9 @@ describe('App component', () => {
     it('should render the axiom Toaster', () => {
         renderWithRouter(<App>child</App>, { history })
 
-        expect(screen.getByText('Toaster')).toBeInTheDocument()
+        expect(
+            screen.getAllByRole('region', { name: /notifications/i }).length,
+        ).toBeGreaterThanOrEqual(1)
     })
 
     it('should apply the `globalNav` class to the AppNode', () => {

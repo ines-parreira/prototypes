@@ -30,6 +30,7 @@ import { useStoreConfiguration } from '../hooks/useStoreConfiguration'
 import { useAiAgentStoreConfigurationContext } from '../providers/AiAgentStoreConfigurationContext'
 
 jest.mock('@gorgias/axiom', () => ({
+    ...jest.requireActual('@gorgias/axiom'),
     LegacyLoadingSpinner: () => (
         <div data-testid="loading-spinner">Loading...</div>
     ),
