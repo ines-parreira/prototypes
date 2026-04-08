@@ -65,6 +65,8 @@ const defaultConfigurationContext = {
     gorgiasDomain: 'acme',
     accountId: 1,
     chatIntegrationId: 123,
+    smsIntegrationId: undefined,
+    emailIntegrationId: 456,
     shopName: 'test-store',
 }
 
@@ -253,7 +255,7 @@ describe('usePlaygroundMessages hook', () => {
             )
         })
 
-        it('should pass undefined channelIntegrationId for email channel without journey configuration', () => {
+        it('should use emailIntegrationId from configuration context when channel is email', () => {
             mockedUseCoreContext.mockReturnValue({
                 ...defaultCoreContext,
                 channel: 'email',
@@ -263,7 +265,8 @@ describe('usePlaygroundMessages hook', () => {
 
             expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    channelIntegrationId: undefined,
+                    channelIntegrationId:
+                        defaultConfigurationContext.emailIntegrationId,
                 }),
             )
         })
@@ -303,6 +306,25 @@ describe('usePlaygroundMessages hook', () => {
             expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
                 expect.objectContaining({
                     channelIntegrationId: 777,
+                }),
+            )
+        })
+
+        it('should pass undefined channelIntegrationId for email channel when emailIntegrationId is not configured', () => {
+            mockedUseCoreContext.mockReturnValue({
+                ...defaultCoreContext,
+                channel: 'email',
+            } as any)
+            mockUseConfigurationContextFn.mockReturnValue({
+                ...defaultConfigurationContext,
+                emailIntegrationId: undefined,
+            })
+
+            renderHook(() => usePlaygroundMessages())
+
+            expect(mockedUsePlaygroundApi).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    channelIntegrationId: undefined,
                 }),
             )
         })

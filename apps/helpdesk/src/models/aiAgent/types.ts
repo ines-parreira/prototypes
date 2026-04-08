@@ -494,6 +494,10 @@ export type SmsConfig = {
     integrationId: number
 }
 
+export type EmailConfig = {
+    integrationId: number
+}
+
 export type AiAgentPlaygroundOptions = {
     areActionsAllowedToExecute: boolean
     offlineEvalSettings?: {
@@ -515,6 +519,7 @@ export type AiAgentPlaygroundOptions = {
         knowledgeOverrideRules?: KnowledgeOverrideRule[]
         chatConfig?: ChatConfig
         smsConfig?: SmsConfig
+        emailConfig?: EmailConfig
     }
 }
 

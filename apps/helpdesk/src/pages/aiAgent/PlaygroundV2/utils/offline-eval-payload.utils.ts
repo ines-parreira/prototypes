@@ -1,6 +1,7 @@
 import type {
     AiAgentPlaygroundOptions,
     ChatConfig,
+    EmailConfig,
     KnowledgeOverrideRule,
     SmsConfig,
     StoreConfiguration,
@@ -44,6 +45,7 @@ export const buildOfflineEvalPayload = ({
     draftKnowledge,
     chatConfig,
     smsConfig,
+    emailConfig,
 }: {
     customer: PlaygroundCustomer
     storeData: StoreConfiguration
@@ -53,6 +55,7 @@ export const buildOfflineEvalPayload = ({
     draftKnowledge?: DraftKnowledge
     chatConfig?: ChatConfig
     smsConfig?: SmsConfig
+    emailConfig?: EmailConfig
 }): AiAgentPlaygroundOptions => {
     const customerId = customer.id ?? DEFAULT_PLAYGROUND_CUSTOMER.id
     const customerName = customer.name ?? DEFAULT_PLAYGROUND_CUSTOMER.name
@@ -83,6 +86,7 @@ export const buildOfflineEvalPayload = ({
             }),
             chatConfig: chatConfig,
             smsConfig: smsConfig,
+            emailConfig: emailConfig,
         },
     }
 }

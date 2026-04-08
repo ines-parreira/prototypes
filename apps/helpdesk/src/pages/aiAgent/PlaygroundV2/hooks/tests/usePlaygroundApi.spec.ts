@@ -552,6 +552,54 @@ describe('usePlaygroundApi', () => {
             )
         })
 
+        it('includes emailConfig in offline eval payload when channel is email and channelIntegrationId is set', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'email',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.objectContaining({
+                        emailConfig: {
+                            integrationId: defaultParams.channelIntegrationId,
+                        },
+                    }),
+                }),
+            )
+        })
+
+        it('omits emailConfig from offline eval payload when channel is not email', async () => {
+            const createTestSession = jest.fn().mockResolvedValue('v3-session')
+
+            const { result } = renderHook(() => usePlaygroundApi(defaultProps))
+
+            await result.current.submitMessage({
+                messages: [playgroundCustomerMessage],
+                customer: DEFAULT_PLAYGROUND_CUSTOMER,
+                channel: 'chat',
+                storeData: { storeName: 'Test Store' } as StoreConfiguration,
+                testSessionId: null,
+                createTestSession,
+            })
+
+            expect(createTestSession).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    offlineEvalSettings: expect.not.objectContaining({
+                        emailConfig: expect.anything(),
+                    }),
+                }),
+            )
+        })
+
         it('omits chatConfig from offline eval payload when channel is not chat', async () => {
             const createTestSession = jest.fn().mockResolvedValue('v3-session')
 

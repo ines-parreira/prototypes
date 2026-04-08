@@ -44,6 +44,7 @@ const getChannelIntegrationId = (
     ids: {
         chatIntegrationId?: number
         smsIntegrationId?: number
+        emailIntegrationId?: number
     },
 ) => {
     switch (channel) {
@@ -51,6 +52,8 @@ const getChannelIntegrationId = (
             return ids.chatIntegrationId
         case 'sms':
             return ids.smsIntegrationId
+        case 'email':
+            return ids.emailIntegrationId
         default:
             return
     }
@@ -69,6 +72,7 @@ export const usePlaygroundMessages = () => {
         httpIntegrationId,
         chatIntegrationId,
         smsIntegrationId,
+        emailIntegrationId,
         baseUrl,
     } = useConfigurationContext()
 
@@ -91,6 +95,7 @@ export const usePlaygroundMessages = () => {
         getChannelIntegrationId(channel, {
             chatIntegrationId,
             smsIntegrationId,
+            emailIntegrationId,
         })
 
     const { submitMessage, isSubmitting, abortCurrentRequest } =

@@ -133,6 +133,32 @@ describe('buildOfflineEvalPayload', () => {
         expect(result.offlineEvalSettings?.smsConfig).toEqual(smsConfig)
     })
 
+    it('includes emailConfig when provided', () => {
+        const emailConfig = { integrationId: 55 }
+        const result = buildOfflineEvalPayload({
+            customer: defaultCustomer,
+            storeData: defaultStoreData,
+            gorgiasDomain: 'acme',
+            channel: 'email',
+            areActionsAllowedToExecute: false,
+            emailConfig,
+        })
+
+        expect(result.offlineEvalSettings?.emailConfig).toEqual(emailConfig)
+    })
+
+    it('emailConfig is undefined when not provided', () => {
+        const result = buildOfflineEvalPayload({
+            customer: defaultCustomer,
+            storeData: defaultStoreData,
+            gorgiasDomain: 'acme',
+            channel: 'email',
+            areActionsAllowedToExecute: false,
+        })
+
+        expect(result.offlineEvalSettings?.emailConfig).toBeUndefined()
+    })
+
     it('smsConfig is undefined when not provided', () => {
         const result = buildOfflineEvalPayload({
             customer: defaultCustomer,

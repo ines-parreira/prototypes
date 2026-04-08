@@ -29,6 +29,9 @@ jest.mock('../../hooks/usePlaygroundResources', () => ({
         storeConfiguration: getStoreConfigurationFixture({
             storeName: 'test-store',
             monitoredChatIntegrations: [456],
+            monitoredEmailIntegrations: [
+                { id: 789, email: 'test@example.com' },
+            ],
         }),
         accountConfiguration: {
             httpIntegration: { id: 999 },
@@ -150,6 +153,7 @@ describe('ConfigurationContext', () => {
 
             expect(result.current.httpIntegrationId).toBe(789)
             expect(result.current.chatIntegrationId).toBe(456)
+            expect(result.current.emailIntegrationId).toBe(789)
         })
     })
 
@@ -244,6 +248,20 @@ describe('ConfigurationContext', () => {
             expect(result.current.chatIntegrationId).toBe(456)
         })
 
+        it('should use first email integration id from monitoredEmailIntegrations', () => {
+            const { result } = renderHook(() => useConfigurationContext(), {
+                wrapper: ({ children }) => (
+                    <Provider store={mockStore}>
+                        <ConfigurationProvider>
+                            {children}
+                        </ConfigurationProvider>
+                    </Provider>
+                ),
+            })
+
+            expect(result.current.emailIntegrationId).toBe(789)
+        })
+
         it('should prefer storeName from storeConfiguration over resolved shop name', () => {
             const { result } = renderHook(() => useConfigurationContext(), {
                 wrapper: ({ children }) => (
@@ -321,6 +339,7 @@ describe('ConfigurationContext', () => {
             expect(result.current.gorgiasDomain).toBe('')
             expect(result.current.accountId).toBe(0)
             expect(result.current.chatIntegrationId).toBeUndefined()
+            expect(result.current.emailIntegrationId).toBeUndefined()
         })
     })
 })

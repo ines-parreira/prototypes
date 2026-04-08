@@ -123,6 +123,10 @@ export const usePlaygroundApi = ({
                             channel === 'sms' && channelIntegrationId
                                 ? { integrationId: channelIntegrationId }
                                 : undefined,
+                        emailConfig:
+                            channel === 'email' && channelIntegrationId
+                                ? { integrationId: channelIntegrationId }
+                                : undefined,
                     })
                     consolidatedTestSessionId =
                         await createTestSession(offlineEvalPayload)
