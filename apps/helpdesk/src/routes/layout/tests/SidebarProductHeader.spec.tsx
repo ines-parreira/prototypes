@@ -3,12 +3,15 @@ import type { ReactNode } from 'react'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock } from '@repo/testing'
+import { useCurrentUserRole } from '@repo/users'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { Product, productConfig } from 'routes/layout/productConfig'
+import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { SidebarProductHeader } from '../SidebarProductHeader'
 
@@ -21,21 +24,30 @@ jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
 }))
 
+jest.mock('@repo/users', () => ({
+    ...jest.requireActual('@repo/users'),
+    useCurrentUserRole: jest.fn(),
+}))
+
 const mockUseFlag = assumeMock(useFlag)
 const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
+const mockUseCurrentUserRole = assumeMock(useCurrentUserRole)
 
 const mockToggleCollapse = jest.fn()
+const queryClient = mockQueryClient()
 
 const createWrapper =
     (isCollapsed = false) =>
     ({ children }: { children: ReactNode }) => (
         <MemoryRouter>
-            <MockSidebarProvider
-                isCollapsed={isCollapsed}
-                toggleCollapse={mockToggleCollapse}
-            >
-                {children}
-            </MockSidebarProvider>
+            <QueryClientProvider client={queryClient}>
+                <MockSidebarProvider
+                    isCollapsed={isCollapsed}
+                    toggleCollapse={mockToggleCollapse}
+                >
+                    {children}
+                </MockSidebarProvider>
+            </QueryClientProvider>
         </MemoryRouter>
     )
 
@@ -66,6 +78,10 @@ describe('SidebarProductHeader', () => {
         mockUseAiAgentAccess.mockReturnValue({
             hasAccess: true,
             isLoading: false,
+        })
+        mockUseCurrentUserRole.mockReturnValue({
+            isAdmin: true,
+            hasRole: jest.fn().mockReturnValue(true),
         })
     })
 
@@ -150,6 +166,34 @@ describe('SidebarProductHeader', () => {
             const menu = await openProductMenu(user)
 
             expect(within(menu).queryByText('Upgrade')).not.toBeInTheDocument()
+        })
+
+        it('should render Convert menu item for admin users', async () => {
+            const user = userEvent.setup()
+
+            renderComponent()
+
+            await openProductMenu(user)
+
+            expect(
+                screen.getByRole('menuitemradio', { name: /Convert/ }),
+            ).toBeInTheDocument()
+        })
+
+        it('should not render Convert menu item for non-admin users', async () => {
+            const user = userEvent.setup()
+            mockUseCurrentUserRole.mockReturnValue({
+                isAdmin: false,
+                hasRole: jest.fn().mockReturnValue(false),
+            })
+
+            renderComponent()
+
+            await openProductMenu(user)
+
+            expect(
+                screen.queryByRole('menuitemradio', { name: /Convert/ }),
+            ).not.toBeInTheDocument()
         })
     })
 

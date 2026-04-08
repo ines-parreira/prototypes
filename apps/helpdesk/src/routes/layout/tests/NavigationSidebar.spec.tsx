@@ -1,11 +1,12 @@
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { history } from '@repo/routing'
 import { assumeMock } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useIsChatReady } from 'hooks/useIsChatReady'
 import { Product, productConfig } from 'routes/layout/productConfig'
+import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import { useCurrentRouteProduct } from '../../hooks/useCurrentRouteProduct'
 import { usePreviousProductNavigation } from '../../hooks/usePreviousProductNavigation'
@@ -66,12 +67,6 @@ jest.mock('utils', () => ({
 const mockToggleChat = jest.requireMock('utils').toggleChat as jest.Mock
 const mockToggleCollapse = jest.fn()
 
-const wrapper = ({ children }: any) => (
-    <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
-        {children}
-    </MockSidebarProvider>
-)
-
 describe('NavigationSidebar', () => {
     beforeEach(() => {
         jest.clearAllMocks()
@@ -86,23 +81,39 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render SidebarProductHeader for non-sticky products', () => {
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
             expect(screen.getByText('Inbox')).toHaveTextContent('Inbox')
         })
 
         it('should render action buttons in header', () => {
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
             const buttons = screen.getAllByRole('button')
             expect(buttons.length).toBeGreaterThanOrEqual(2)
         })
 
         it('should render InboxSidebar content', () => {
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
             expect(screen.getByText('InboxSidebar')).toBeInTheDocument()
         })
 
         it('should render footer with UserItem and buttons - expanded state', () => {
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
             expect(screen.getByText('UserItem')).toBeInTheDocument()
             expect(screen.getByText('NotificationsButton')).toBeInTheDocument()
             const buttons = screen.getAllByRole('button')
@@ -110,16 +121,14 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render footer with UserItem and buttons - collapsed state', () => {
-            render(<NavigationSidebar />, {
-                wrapper: ({ children }) => (
-                    <MockSidebarProvider
-                        isCollapsed={true}
-                        toggleCollapse={mockToggleCollapse}
-                    >
-                        {children}
-                    </MockSidebarProvider>
-                ),
-            })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider
+                    isCollapsed={true}
+                    toggleCollapse={mockToggleCollapse}
+                >
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
             expect(screen.getByText('UserItem')).toBeInTheDocument()
             expect(screen.getByText('NotificationsButton')).toBeInTheDocument()
             const buttons = screen.getAllByRole('button')
@@ -127,7 +136,11 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render collapse toggle button', () => {
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
             const collapseButton = screen.getByRole('button', {
                 name: /collapse sidebar/i,
             })
@@ -136,7 +149,11 @@ describe('NavigationSidebar', () => {
 
         it('should call toggleCollapse when collapse button is clicked', async () => {
             const user = userEvent.setup()
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
 
             const collapseButton = screen.getByRole('button', {
                 name: /collapse sidebar/i,
@@ -148,7 +165,11 @@ describe('NavigationSidebar', () => {
 
         it('should call toggleChat when help button is clicked', async () => {
             const user = userEvent.setup()
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
 
             const toggleChatButton = screen.getByRole('button', {
                 name: /open chat/i,
@@ -160,7 +181,11 @@ describe('NavigationSidebar', () => {
 
         it('should render the chat button when chat is ready', () => {
             mockUseIsChatReady.mockReturnValue(true)
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
 
             expect(
                 screen.getByRole('button', { name: /open chat/i }),
@@ -169,7 +194,11 @@ describe('NavigationSidebar', () => {
 
         it('should not render the chat button when chat is not ready', () => {
             mockUseIsChatReady.mockReturnValue(false)
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
 
             expect(
                 screen.queryByRole('button', { name: /open chat/i }),
@@ -185,33 +214,43 @@ describe('NavigationSidebar', () => {
         })
 
         it('should render product name button for sticky products', () => {
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
             expect(screen.getByText('Settings')).toBeInTheDocument()
         })
 
         it('should render SettingsSidebar content', () => {
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
             expect(screen.getByText('SettingsSidebar')).toBeInTheDocument()
         })
 
         it('should render back button when sidebar is expanded', () => {
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
             expect(
                 screen.getByRole('button', { name: /go back/i }),
             ).toBeInTheDocument()
         })
 
         it('should not render back button when sidebar is collapsed', () => {
-            render(<NavigationSidebar />, {
-                wrapper: ({ children }) => (
-                    <MockSidebarProvider
-                        isCollapsed={true}
-                        toggleCollapse={mockToggleCollapse}
-                    >
-                        {children}
-                    </MockSidebarProvider>
-                ),
-            })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider
+                    isCollapsed={true}
+                    toggleCollapse={mockToggleCollapse}
+                >
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
             expect(
                 screen.queryByRole('button', { name: /go back/i }),
             ).not.toBeInTheDocument()
@@ -221,7 +260,11 @@ describe('NavigationSidebar', () => {
             const user = userEvent.setup()
             usePreviousProductNavigationMock.mockReturnValue('/app/tickets')
 
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
 
             await user.click(screen.getByRole('button', { name: /go back/i }))
 
@@ -232,7 +275,11 @@ describe('NavigationSidebar', () => {
             const user = userEvent.setup()
             usePreviousProductNavigationMock.mockReturnValue(null)
 
-            render(<NavigationSidebar />, { wrapper })
+            renderWithQueryClientProvider(
+                <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                    <NavigationSidebar />
+                </MockSidebarProvider>,
+            )
 
             await user.click(screen.getByRole('button', { name: /go back/i }))
 
@@ -275,7 +322,11 @@ describe('NavigationSidebar', () => {
                 useCurrentRouteProductMock.mockReturnValue(
                     productConfig[product],
                 )
-                render(<NavigationSidebar />, { wrapper })
+                renderWithQueryClientProvider(
+                    <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                        <NavigationSidebar />
+                    </MockSidebarProvider>,
+                )
                 expect(screen.getByText(expectedSidebar)).toBeInTheDocument()
             },
         )
@@ -283,7 +334,11 @@ describe('NavigationSidebar', () => {
 
     it('should not render sidebar content for Home product', () => {
         useCurrentRouteProductMock.mockReturnValue(productConfig[Product.Home])
-        const { container } = render(<NavigationSidebar />, { wrapper })
+        const { container } = renderWithQueryClientProvider(
+            <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
+                <NavigationSidebar />
+            </MockSidebarProvider>,
+        )
         expect(
             container.querySelector('[data-name="sidebar-content"]'),
         ).toBeEmptyDOMElement()

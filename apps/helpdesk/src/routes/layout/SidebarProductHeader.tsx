@@ -1,5 +1,6 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useSidebar } from '@repo/navigation'
+import { useCurrentUserRole } from '@repo/users'
 
 import type { IconName } from '@gorgias/axiom'
 import {
@@ -33,6 +34,7 @@ export function SidebarProductHeader({
     const { isCollapsed } = useSidebar()
     const isAiJourneyEnabled = useFlag(FeatureFlagKey.AiJourneyEnabled)
     const { hasAccess } = useAiAgentAccess()
+    const { isAdmin } = useCurrentUserRole()
 
     const icon =
         selectedItem.icon != null ? (
@@ -93,9 +95,11 @@ export function SidebarProductHeader({
                         item={productConfig[Product.Marketing]}
                     />
                 )}
-                <SidebarProductHeaderMenuItem
-                    item={productConfig[Product.Convert]}
-                />
+                {isAdmin && (
+                    <SidebarProductHeaderMenuItem
+                        item={productConfig[Product.Convert]}
+                    />
+                )}
                 <SidebarProductHeaderMenuItem
                     item={productConfig[Product.Analytics]}
                 />
