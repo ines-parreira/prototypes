@@ -1,8 +1,11 @@
+import type { ReactNode } from 'react'
+
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
 import { assumeMock } from '@repo/testing'
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
 
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
 import { Product, productConfig } from 'routes/layout/productConfig'
@@ -23,11 +26,38 @@ const mockUseAiAgentAccess = assumeMock(useAiAgentAccess)
 
 const mockToggleCollapse = jest.fn()
 
-const wrapper = ({ children }: any) => (
-    <MockSidebarProvider toggleCollapse={mockToggleCollapse}>
-        {children}
-    </MockSidebarProvider>
-)
+const createWrapper =
+    (isCollapsed = false) =>
+    ({ children }: { children: ReactNode }) => (
+        <MemoryRouter>
+            <MockSidebarProvider
+                isCollapsed={isCollapsed}
+                toggleCollapse={mockToggleCollapse}
+            >
+                {children}
+            </MockSidebarProvider>
+        </MemoryRouter>
+    )
+
+function renderComponent(isCollapsed = false) {
+    render(
+        <SidebarProductHeader selectedItem={productConfig[Product.Inbox]} />,
+        { wrapper: createWrapper(isCollapsed) },
+    )
+}
+
+async function openProductMenu(user: ReturnType<typeof userEvent.setup>) {
+    await act(() => user.click(screen.getByRole('button')))
+
+    const menus = await screen.findAllByRole('menu')
+    return menus.at(-1)!
+}
+
+function expectMenuItems(menu: HTMLElement, labels: string[]) {
+    labels.forEach((label) => {
+        expect(within(menu).getByText(label)).toBeInTheDocument()
+    })
+}
 
 describe('SidebarProductHeader', () => {
     beforeEach(() => {
@@ -41,52 +71,29 @@ describe('SidebarProductHeader', () => {
 
     describe('when sidebar is expanded', () => {
         it('should render trigger button with selected item name', () => {
-            render(
-                <SidebarProductHeader
-                    selectedItem={productConfig[Product.Inbox]}
-                />,
-                { wrapper },
-            )
+            renderComponent()
 
-            const triggerButton = screen.getByRole('button', { name: /Inbox/i })
-            expect(triggerButton).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /Inbox/i }),
+            ).toBeInTheDocument()
         })
 
         it('should render core menu items when clicked', async () => {
             const user = userEvent.setup()
 
-            render(
-                <SidebarProductHeader
-                    selectedItem={productConfig[Product.Inbox]}
-                />,
-                { wrapper },
-            )
+            renderComponent()
 
-            const triggerButton = screen.getByRole('button', { name: /Inbox/i })
+            const menu = await openProductMenu(user)
 
-            await act(() => user.click(triggerButton))
-
-            expect(
-                screen.getByRole('menuitemradio', { name: /Home/ }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('menuitemradio', { name: /Inbox/ }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('menuitemradio', { name: /AI Agent/ }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('menuitemradio', { name: /Analytics/ }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('menuitemradio', { name: /Workflows/ }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('menuitemradio', { name: /Customers/ }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('menuitemradio', { name: /Convert/ }),
-            ).toBeInTheDocument()
+            expectMenuItems(menu, [
+                'Home',
+                'Inbox',
+                'AI Agent',
+                'Analytics',
+                'Workflows',
+                'Customers',
+                'Convert',
+            ])
         })
 
         it('should not render Marketing menu item when AiJourneyEnabled flag is off', async () => {
@@ -95,18 +102,12 @@ describe('SidebarProductHeader', () => {
                 key === FeatureFlagKey.AiJourneyEnabled ? false : false,
             )
 
-            render(
-                <SidebarProductHeader
-                    selectedItem={productConfig[Product.Inbox]}
-                />,
-                { wrapper },
-            )
+            renderComponent()
 
-            const triggerButton = screen.getByRole('button', { name: /Inbox/i })
-            await act(() => user.click(triggerButton))
+            const menu = await openProductMenu(user)
 
             expect(
-                screen.queryByRole('menuitemradio', { name: /Marketing/ }),
+                within(menu).queryByText('Marketing'),
             ).not.toBeInTheDocument()
         })
 
@@ -116,19 +117,11 @@ describe('SidebarProductHeader', () => {
                 key === FeatureFlagKey.AiJourneyEnabled ? true : false,
             )
 
-            render(
-                <SidebarProductHeader
-                    selectedItem={productConfig[Product.Inbox]}
-                />,
-                { wrapper },
-            )
+            renderComponent()
 
-            const triggerButton = screen.getByRole('button', { name: /Inbox/i })
-            await act(() => user.click(triggerButton))
+            const menu = await openProductMenu(user)
 
-            expect(
-                screen.getByRole('menuitemradio', { name: /Marketing/ }),
-            ).toBeInTheDocument()
+            expect(within(menu).getByText('Marketing')).toBeInTheDocument()
         })
 
         it('should render AI Agent menu item with Upgrade badge when user has no access', async () => {
@@ -138,17 +131,11 @@ describe('SidebarProductHeader', () => {
                 isLoading: false,
             })
 
-            render(
-                <SidebarProductHeader
-                    selectedItem={productConfig[Product.Inbox]}
-                />,
-                { wrapper },
-            )
+            renderComponent()
 
-            const triggerButton = screen.getByRole('button', { name: /Inbox/i })
-            await act(() => user.click(triggerButton))
+            const menu = await openProductMenu(user)
 
-            expect(screen.getByText('Upgrade')).toBeInTheDocument()
+            expect(within(menu).getByText('Upgrade')).toBeInTheDocument()
         })
 
         it('should render AI Agent menu item without Upgrade badge when user has access', async () => {
@@ -158,37 +145,17 @@ describe('SidebarProductHeader', () => {
                 isLoading: false,
             })
 
-            render(
-                <SidebarProductHeader
-                    selectedItem={productConfig[Product.Inbox]}
-                />,
-                { wrapper },
-            )
+            renderComponent()
 
-            const triggerButton = screen.getByRole('button', { name: /Inbox/i })
-            await act(() => user.click(triggerButton))
+            const menu = await openProductMenu(user)
 
-            expect(screen.queryByText('Upgrade')).not.toBeInTheDocument()
+            expect(within(menu).queryByText('Upgrade')).not.toBeInTheDocument()
         })
     })
 
     describe('when sidebar is collapsed', () => {
         it('should render icon-only trigger button', () => {
-            render(
-                <SidebarProductHeader
-                    selectedItem={productConfig[Product.Inbox]}
-                />,
-                {
-                    wrapper: ({ children }) => (
-                        <MockSidebarProvider
-                            isCollapsed={true}
-                            toggleCollapse={mockToggleCollapse}
-                        >
-                            {children}
-                        </MockSidebarProvider>
-                    ),
-                },
-            )
+            renderComponent(true)
 
             const triggerButton = screen.getByRole('button')
             expect(triggerButton).toBeInTheDocument()
@@ -198,35 +165,11 @@ describe('SidebarProductHeader', () => {
         it('should render all menu items when clicked', async () => {
             const user = userEvent.setup()
 
-            render(
-                <SidebarProductHeader
-                    selectedItem={productConfig[Product.Inbox]}
-                />,
-                {
-                    wrapper: ({ children }) => (
-                        <MockSidebarProvider
-                            isCollapsed={true}
-                            toggleCollapse={mockToggleCollapse}
-                        >
-                            {children}
-                        </MockSidebarProvider>
-                    ),
-                },
-            )
+            renderComponent(true)
 
-            const triggerButton = screen.getByRole('button')
+            const menu = await openProductMenu(user)
 
-            await act(() => user.click(triggerButton))
-
-            expect(
-                screen.getByRole('menuitemradio', { name: /Home/ }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('menuitemradio', { name: /Inbox/ }),
-            ).toBeInTheDocument()
-            expect(
-                screen.getByRole('menuitemradio', { name: /Convert/ }),
-            ).toBeInTheDocument()
+            expectMenuItems(menu, ['Home', 'Inbox', 'Convert'])
         })
     })
 })

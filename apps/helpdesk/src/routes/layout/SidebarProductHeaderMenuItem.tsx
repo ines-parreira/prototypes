@@ -1,4 +1,4 @@
-import { history } from '@repo/routing'
+import { Link } from 'react-router-dom'
 
 import { Box, Icon, MenuItem, Tag } from '@gorgias/axiom'
 
@@ -17,6 +17,8 @@ export function SidebarProductHeaderMenuItem({
         <MenuItem
             id={item.id}
             selectionStyle="neutral"
+            as={Link}
+            to={item.defaultPath}
             label={
                 requiresUpgrade ? (
                     <Box alignItems="center" gap="xxs">
@@ -29,9 +31,6 @@ export function SidebarProductHeaderMenuItem({
                     item.name
                 )
             }
-            onAction={() => {
-                history.push(item.defaultPath)
-            }}
             caption={item.description}
             leadingSlot={
                 <Icon

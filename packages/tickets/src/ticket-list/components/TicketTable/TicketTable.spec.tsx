@@ -1,7 +1,7 @@
 import type { ComponentProps } from 'react'
 
 import { UserRole } from '@repo/utils'
-import { fireEvent, screen, waitFor, within } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -21,6 +21,7 @@ import { useListTagsSearch } from '../../../components/InfobarTicketDetails/comp
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { TicketStatus } from '../../../types/ticket'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
+import { useTicketTableBulkActionShortcuts } from '../../hooks/useTicketTableBulkActionShortcuts'
 import { TicketTable } from './TicketTable'
 
 const { createTicketTableColumnsMock, pushMock } = vi.hoisted(() => ({
@@ -67,7 +68,8 @@ const server = setupServer()
 const mockState = {
     sortOrder: 'last_message_datetime:desc',
     viewFilters: '',
-    tickets: [] as Array<{ id: number; subject: string }>,
+    tickets: [] as Array<{ id: number; subject: string; is_unread?: boolean }>,
+    error: null as Error | null,
     isBulkActionLoading: false,
     handleApplyMacroSpy: vi.fn(),
     handleAddTagSpy: vi.fn(),
@@ -82,6 +84,7 @@ const mockState = {
     handleAssignUserSpy: vi.fn(),
     handleAssignTeamSpy: vi.fn(),
     markAsRead: vi.fn(),
+    refetchSpy: vi.fn(),
     setSortOrder: vi.fn(),
 }
 
@@ -140,6 +143,10 @@ vi.mock('../../hooks/useSortOrder', () => ({
     useSortOrder: () => [mockState.sortOrder, mockState.setSortOrder],
 }))
 
+vi.mock('../../hooks/useTicketTableBulkActionShortcuts', () => ({
+    useTicketTableBulkActionShortcuts: vi.fn(),
+}))
+
 vi.mock('../../hooks/useTicketsList', () => ({
     useTicketsList: vi.fn(() => ({
         tickets: mockState.tickets,
@@ -147,8 +154,8 @@ vi.mock('../../hooks/useTicketsList', () => ({
         hasNextPage: false,
         isLoading: false,
         isFetchingNextPage: false,
-        error: null,
-        refetch: vi.fn(),
+        error: mockState.error,
+        refetch: mockState.refetchSpy,
     })),
 }))
 
@@ -238,7 +245,16 @@ vi.mock('./TicketTableColumns', () => ({
 function renderTicketTable(
     props?: Partial<ComponentProps<typeof TicketTable>>,
 ) {
-    return render(<TicketTable viewId={123} currentUserId={1} {...props} />)
+    return render(<TicketTable viewId={123} {...props} />)
+}
+
+function rerenderTicketTable(
+    rerender: ReturnType<typeof render>['rerender'],
+    props?: Partial<ComponentProps<typeof TicketTable>>,
+) {
+    rerender(
+        <TicketTable viewId={123} onNavigateToTicket={vi.fn()} {...props} />,
+    )
 }
 
 async function openBulkMoreActionsMenu() {
@@ -301,6 +317,26 @@ async function waitForSelectionToClear() {
 
 const mockUseListTagsSearch = vi.mocked(useListTagsSearch)
 const mockUseCreateTicketTag = vi.mocked(useCreateTicketTag)
+const mockUseTicketTableBulkActionShortcuts = vi.mocked(
+    useTicketTableBulkActionShortcuts,
+)
+
+function getLatestBulkShortcutConfig() {
+    const [config] = mockUseTicketTableBulkActionShortcuts.mock.lastCall ?? []
+
+    if (!config) {
+        throw new Error('Expected bulk shortcut config to be registered')
+    }
+
+    expect(config.handleOpenAssignUser).toBeDefined()
+    expect(config.handleOpenTags).toBeDefined()
+
+    return config as typeof config & {
+        handleOpenAssignUser: () => void
+        handleOpenTags: () => void
+    }
+}
+
 const agentUser = mockUser({
     id: 1,
     email: 'agent@test.com',
@@ -346,6 +382,7 @@ describe('TicketTable', () => {
             { id: 1, subject: 'First ticket' },
             { id: 2, subject: 'Second ticket' },
         ]
+        mockState.error = null
         mockState.isBulkActionLoading = false
         mockState.handleApplyMacroSpy.mockReset()
         mockState.handleAddTagSpy.mockReset()
@@ -361,7 +398,11 @@ describe('TicketTable', () => {
         mockState.handleAssignTeamSpy.mockReset()
         pushMock.mockReset()
         mockState.markAsRead.mockReset()
+        mockState.refetchSpy.mockReset()
         mockState.setSortOrder.mockReset()
+        mockUseTicketTableBulkActionShortcuts.mockImplementation(
+            () => undefined,
+        )
         vi.mocked(useTicketsListModule.useTicketsList).mockClear()
         mockUseListTagsSearch.mockReturnValue({
             tags: [vipTag, urgentTag],
@@ -394,6 +435,36 @@ describe('TicketTable', () => {
         expect(
             screen.queryByRole('button', { name: 'More actions' }),
         ).not.toBeInTheDocument()
+    })
+
+    it('marks unread tickets as read and navigates when a row is clicked', async () => {
+        mockState.tickets = [
+            { id: 1, subject: 'First ticket', is_unread: true },
+            { id: 2, subject: 'Second ticket', is_unread: false },
+        ]
+        const onNavigateToTicket = vi.fn()
+        const { user } = renderTicketTable({ onNavigateToTicket })
+        await waitForTicketTableToBeReady()
+
+        await user.click(screen.getByText('First ticket'))
+
+        expect(mockState.markAsRead).toHaveBeenCalledWith(1)
+        expect(onNavigateToTicket).toHaveBeenCalledTimes(1)
+        expect(pushMock).toHaveBeenCalledWith('/app/views/123/1')
+    })
+
+    it('does not mark already read tickets as read when a row is clicked', async () => {
+        mockState.tickets = [
+            { id: 1, subject: 'First ticket', is_unread: false },
+            { id: 2, subject: 'Second ticket', is_unread: false },
+        ]
+        const { user } = renderTicketTable()
+        await waitForTicketTableToBeReady()
+
+        await user.click(screen.getByText('First ticket'))
+
+        expect(mockState.markAsRead).not.toHaveBeenCalled()
+        expect(pushMock).toHaveBeenCalledWith('/app/views/123/1')
     })
 
     it('enables the bulk action controls and shows the selected count when a row is selected', async () => {
@@ -511,6 +582,30 @@ describe('TicketTable', () => {
                 removeFromCurrentViewCache: true,
             })
         })
+    }, 10000)
+
+    it('opens the assignee and tag menus from the bulk action shortcuts', async () => {
+        const { user } = renderTicketTable()
+        await selectFirstRow(user)
+
+        act(() => {
+            getLatestBulkShortcutConfig().handleOpenAssignUser()
+        })
+
+        expect(
+            await screen.findByRole('button', { name: /unassigned/i }),
+        ).toBeInTheDocument()
+
+        act(() => {
+            getLatestBulkShortcutConfig().handleOpenTags()
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: /unassigned/i }),
+            ).not.toBeInTheDocument()
+        })
+        expect((await screen.findAllByText('VIP')).length).toBeGreaterThan(0)
     }, 10000)
 
     it('sets the selected tickets to open and clears the selection on success', async () => {
@@ -631,7 +726,7 @@ describe('TicketTable', () => {
         await selectFirstRow(user)
 
         mockState.isBulkActionLoading = true
-        rerender(<TicketTable viewId={123} currentUserId={2} />)
+        rerenderTicketTable(rerender)
 
         await waitFor(() => {
             expect(screen.getByLabelText('Status selection')).toBeDisabled()
@@ -644,6 +739,62 @@ describe('TicketTable', () => {
         })
     })
 
+    it('renders the table empty state when the loaded view has no tickets', async () => {
+        mockState.tickets = []
+        server.use(
+            mockGetViewHandler(async () =>
+                HttpResponse.json(
+                    mockGetViewResponse({
+                        id: 123,
+                        deactivated_datetime: undefined,
+                        filters: mockState.viewFilters,
+                        slug: 'all',
+                    }),
+                ),
+            ).handler,
+        )
+
+        renderTicketTable()
+
+        await waitFor(() => {
+            expect(screen.getByText('No tickets')).toBeInTheDocument()
+            expect(
+                screen.getByText('There are no tickets matching these filters'),
+            ).toBeInTheDocument()
+        })
+    })
+
+    it('renders the error placeholder and refresh action when loading tickets fails', async () => {
+        mockState.error = new Error('Failed to load tickets')
+        const { user } = renderTicketTable()
+
+        await waitFor(() => {
+            expect(screen.getByText('Network error')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Refresh' }),
+            ).toBeInTheDocument()
+        })
+
+        await user.click(screen.getByRole('button', { name: 'Refresh' }))
+
+        expect(mockState.refetchSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders loading placeholders while the view is still loading', () => {
+        renderTicketTable()
+
+        expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
+        expect(screen.queryByRole('table')).not.toBeInTheDocument()
+    })
+
+    it('renders draft views with the table content', async () => {
+        renderTicketTable({ isDraftView: true })
+
+        await waitForTicketTableToBeReady()
+
+        expect(screen.getByRole('table')).toBeInTheDocument()
+    })
+
     it('clears the selection when the displayed tickets change', async () => {
         const { user, rerender } = renderTicketTable()
         await selectFirstRow(user)
@@ -652,7 +803,7 @@ describe('TicketTable', () => {
             { id: 3, subject: 'Replacement ticket' },
             { id: 4, subject: 'Another replacement ticket' },
         ]
-        rerender(<TicketTable viewId={123} currentUserId={2} />)
+        rerenderTicketTable(rerender)
 
         await waitForSelectionToClear()
 
@@ -672,7 +823,7 @@ describe('TicketTable', () => {
         await selectFirstRow(user)
 
         mockState.sortOrder = 'updated_datetime:desc'
-        rerender(<TicketTable viewId={123} currentUserId={2} />)
+        rerenderTicketTable(rerender)
 
         await waitForSelectionToClear()
 

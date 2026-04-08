@@ -276,12 +276,10 @@ function TicketTableComponent({
             <DataTable
                 key={`${viewId}-${sortOrder}`}
                 persistence={{
+                    id: isDraftView
+                        ? 'ticket-table-draft'
+                        : `ticket-table-${viewId}`,
                     enable: true,
-                    localStorage: {
-                        id: isDraftView
-                            ? 'ticket-table-draft'
-                            : `ticket-table-${viewId}`,
-                    },
                 }}
                 data={items}
                 columns={columns}

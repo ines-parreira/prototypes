@@ -1,7 +1,7 @@
 import { MockSidebarProvider } from '@repo/navigation/fixtures'
-import { history } from '@repo/routing'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router-dom'
 
 import { Button, Menu } from '@gorgias/axiom'
 
@@ -9,51 +9,43 @@ import { Product, productConfig } from 'routes/layout/productConfig'
 
 import { SidebarProductHeaderMenuItem } from '../SidebarProductHeaderMenuItem'
 
-jest.mock('@repo/routing', () => ({
-    history: {
-        push: jest.fn(),
-    },
-}))
+const renderComponent = (
+    item = productConfig[Product.Inbox],
+    requiresUpgrade = false,
+) =>
+    render(
+        <MemoryRouter>
+            <MockSidebarProvider>
+                <Menu trigger={<Button>Open Menu</Button>}>
+                    <SidebarProductHeaderMenuItem
+                        item={item}
+                        requiresUpgrade={requiresUpgrade}
+                    />
+                </Menu>
+            </MockSidebarProvider>
+        </MemoryRouter>,
+    )
 
 describe('SidebarProductHeaderMenuItem', () => {
-    beforeEach(() => {
-        jest.clearAllMocks()
-    })
-
-    it('should navigate to product path when clicked', async () => {
+    it('renders the menu item as a link to the product path', async () => {
         const user = userEvent.setup()
         const item = productConfig[Product.Inbox]
 
-        render(
-            <MockSidebarProvider>
-                <Menu trigger={<Button>Open Menu</Button>}>
-                    <SidebarProductHeaderMenuItem item={item} />
-                </Menu>
-            </MockSidebarProvider>,
-        )
+        renderComponent(item)
 
         const menuTrigger = screen.getByRole('button', { name: /Open Menu/i })
         await act(() => user.click(menuTrigger))
 
-        const menuItem = screen.getByText('Inbox')
-        await act(() => user.click(menuItem))
+        const menuItem = screen.getByText('Inbox').closest('a')
 
-        expect(history.push).toHaveBeenCalledWith(
-            productConfig[Product.Inbox].defaultPath,
-        )
+        expect(menuItem).toHaveAttribute('href', item.defaultPath)
     })
 
     it('should render item name with Upgrade badge when requiresUpgrade is true', async () => {
         const user = userEvent.setup()
         const item = productConfig[Product.AiAgent]
 
-        render(
-            <MockSidebarProvider>
-                <Menu trigger={<Button>Open Menu</Button>}>
-                    <SidebarProductHeaderMenuItem item={item} requiresUpgrade />
-                </Menu>
-            </MockSidebarProvider>,
-        )
+        renderComponent(item, true)
 
         const menuTrigger = screen.getByRole('button', {
             name: /Open Menu/i,
@@ -67,15 +59,8 @@ describe('SidebarProductHeaderMenuItem', () => {
 
     it('should render item description as caption', async () => {
         const user = userEvent.setup()
-        const item = productConfig[Product.Inbox]
 
-        render(
-            <MockSidebarProvider>
-                <Menu trigger={<Button>Open Menu</Button>}>
-                    <SidebarProductHeaderMenuItem item={item} />
-                </Menu>
-            </MockSidebarProvider>,
-        )
+        renderComponent()
 
         await act(() =>
             user.click(screen.getByRole('button', { name: /Open Menu/i })),
@@ -88,13 +73,7 @@ describe('SidebarProductHeaderMenuItem', () => {
         const user = userEvent.setup()
         const item = productConfig[Product.AiAgent]
 
-        render(
-            <MockSidebarProvider>
-                <Menu trigger={<Button>Open Menu</Button>}>
-                    <SidebarProductHeaderMenuItem item={item} />
-                </Menu>
-            </MockSidebarProvider>,
-        )
+        renderComponent(item)
 
         const menuTrigger = screen.getByRole('button', {
             name: /Open Menu/i,
