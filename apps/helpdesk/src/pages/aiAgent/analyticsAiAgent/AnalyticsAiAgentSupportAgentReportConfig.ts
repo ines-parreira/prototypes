@@ -94,7 +94,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
             },
             [AnalyticsAiAgentSupportAgentChart.SupportInteractionsCard]: {
                 chartComponent: AnalyticsAiAgentSupportInteractionsCard,
-                label: 'Support tickets',
+                label: 'Automated interactions',
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,

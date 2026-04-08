@@ -689,13 +689,14 @@ describe('Analytics Dynamic Trend Cards', () => {
             drillDownMetricName:
                 AiAgentDrillDownMetricName.SupportInteractionsCard,
             config: {
-                label: 'Support tickets',
+                label: 'Automated interactions',
                 description:
                     'The number of fully automated interactions by AI Agent Support skills without human agent intervention.',
                 metricFormat: 'decimal' as const,
                 value: 1800,
                 prevValue: 1600,
             },
+            timeSeriesView: { queryFactory: expect.any(Function) },
         },
         {
             name: 'AnalyticsAiAgentAutomationRateCard',
