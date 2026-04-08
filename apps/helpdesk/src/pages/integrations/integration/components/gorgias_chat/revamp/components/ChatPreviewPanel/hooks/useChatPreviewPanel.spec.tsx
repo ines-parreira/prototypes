@@ -282,6 +282,38 @@ describe('useChatPreviewPanel', () => {
         })
     })
 
+    it('updateQuickReplies does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updateQuickReplies({
+                enabled: true,
+                replies: ['reply 1', 'reply 2'],
+            }),
+        ).not.toThrow()
+    })
+
+    it('updateQuickReplies calls openChat and updateSettings on the ref when attached', () => {
+        const mockOpenChat = jest.fn()
+        const mockUpdateSettings = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                openChat: mockOpenChat,
+                updateSettings: mockUpdateSettings,
+            }
+        }
+
+        const quickReplies = { enabled: true, replies: ['reply 1', 'reply 2'] }
+        result.current.updateQuickReplies(quickReplies)
+
+        expect(mockOpenChat).toHaveBeenCalled()
+        expect(mockUpdateSettings).toHaveBeenCalledWith({ quickReplies })
+    })
+
     it('updateWorkflowEntryPoints does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -340,6 +372,7 @@ describe('useGorgiasChatCreationWizardContext', () => {
             updateWorkflowEntryPoints: jest.fn(),
             reloadPreview: jest.fn(),
             updateAvatarSettings: jest.fn(),
+            updateQuickReplies: jest.fn(),
         }
 
         const wrapper = ({ children }: { children: ReactNode }) => (

@@ -4,8 +4,10 @@ import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
 import { TicketChannel } from 'business/types/ticket'
+import useAppDispatch from 'hooks/useAppDispatch'
 import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
+import useIsQuickRepliesEnabled from 'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled'
 import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { useStoreIntegration } from 'pages/integrations/integration/hooks/useStoreIntegration'
 
@@ -42,6 +44,14 @@ jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
 const mockUseApplicationsAutomationSettings = jest.mocked(
     useApplicationsAutomationSettings,
 )
+
+jest.mock('hooks/useAppDispatch')
+const mockUseAppDispatch = jest.mocked(useAppDispatch)
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationQuickReplies/hooks/useIsQuickRepliesEnabled',
+)
+const mockUseIsQuickRepliesEnabled = jest.mocked(useIsQuickRepliesEnabled)
 
 const mockHandleChatApplicationAutomationSettingsUpdate = jest.fn()
 
@@ -198,6 +208,8 @@ const defaultProps = {
 describe('<GorgiasAutomateChatIntegrationRevamp />', () => {
     beforeEach(() => {
         jest.resetAllMocks()
+        mockUseAppDispatch.mockReturnValue(jest.fn())
+        mockUseIsQuickRepliesEnabled.mockReturnValue(false)
         mockUseGorgiasChatCreationWizardContext.mockReturnValue({
             updateWorkflowEntryPoints: jest.fn(),
             reloadPreview: jest.fn(),

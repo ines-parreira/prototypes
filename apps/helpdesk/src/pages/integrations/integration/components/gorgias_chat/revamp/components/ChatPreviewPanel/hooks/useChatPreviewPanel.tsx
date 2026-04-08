@@ -191,6 +191,14 @@ export const useChatPreviewPanel = (
         [openChat, displayPage],
     )
 
+    const updateQuickReplies = useCallback(
+        (quickReplies: { enabled: boolean; replies: string[] }) => {
+            openChat()
+            chatPreviewPanelRef.current?.updateSettings({ quickReplies })
+        },
+        [openChat],
+    )
+
     return {
         chatPreviewPortal,
         showPreviewPanel,
@@ -208,5 +216,6 @@ export const useChatPreviewPanel = (
         updateWorkflowEntryPoints,
         reloadPreview,
         updateAvatarSettings,
+        updateQuickReplies,
     }
 }

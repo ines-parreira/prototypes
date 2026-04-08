@@ -145,6 +145,10 @@ export type GorgiasChatPreviewApplicationSettings = {
     preferences?: {
         privacyPolicyDisclaimerEnabled?: boolean
     }
+    quickReplies?: {
+        enabled: boolean
+        replies: string[]
+    }
     language?: Language
 }
 

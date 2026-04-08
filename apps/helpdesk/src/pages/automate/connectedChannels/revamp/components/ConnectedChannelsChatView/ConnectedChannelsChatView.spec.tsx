@@ -184,6 +184,7 @@ describe('ConnectedChannelsChatView', () => {
             updateLegalDisclaimer: jest.fn(),
             updateLegalDisclaimerEnabled: jest.fn(),
             updateAvatarSettings: jest.fn(),
+            updateQuickReplies: jest.fn(),
         })
         mockedUseListWorkflowEntryPoints.mockReturnValue({
             data: undefined,
