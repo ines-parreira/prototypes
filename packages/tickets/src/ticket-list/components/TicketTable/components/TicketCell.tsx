@@ -1,4 +1,11 @@
-import { Box, DataTableBaseCell, OverflowTooltip, Text } from '@gorgias/axiom'
+import {
+    Box,
+    DataTableBaseCell,
+    Icon,
+    OverflowTooltip,
+    Tag,
+    Text,
+} from '@gorgias/axiom'
 import type {
     TicketCompact,
     TicketTranslationCompact,
@@ -45,15 +52,30 @@ export function TicketCell({
                         {displaySubject}
                     </Text>
                 </OverflowTooltip>
-                <OverflowTooltip placement="right">
-                    <Text
-                        size="sm"
-                        color="content-neutral-secondary"
-                        overflow="ellipsis"
-                    >
-                        {displayExcerpt}
-                    </Text>
-                </OverflowTooltip>
+                {ticket.last_sent_message_not_delivered ? (
+                    <Box alignSelf="flex-start">
+                        <Tag
+                            color="red"
+                            leadingSlot={
+                                <Icon name="triangle-warning" size="sm" />
+                            }
+                        >
+                            Last message not delivered
+                        </Tag>
+                    </Box>
+                ) : (
+                    displayExcerpt && (
+                        <OverflowTooltip placement="right">
+                            <Text
+                                size="sm"
+                                color="content-neutral-secondary"
+                                overflow="ellipsis"
+                            >
+                                {displayExcerpt}
+                            </Text>
+                        </OverflowTooltip>
+                    )
+                )}
             </Box>
             <Box flexShrink={0}>
                 <TicketListItemAgentsViewing agents={otherAgentsViewing} />

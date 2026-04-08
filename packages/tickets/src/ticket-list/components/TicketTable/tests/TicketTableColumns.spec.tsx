@@ -115,6 +115,7 @@ describe('createTicketTableColumns', () => {
                 id: 1,
                 subject: 'Help with order',
                 excerpt: 'I need help with my order',
+                last_sent_message_not_delivered: false,
             })
 
             renderColumn('ticket', ticket)
@@ -123,6 +124,24 @@ describe('createTicketTableColumns', () => {
             expect(
                 screen.getByText('I need help with my order'),
             ).toBeInTheDocument()
+        })
+
+        it('renders the failed message tag instead of the excerpt', () => {
+            const ticket = mockTicketCompact({
+                id: 1,
+                subject: 'Help with order',
+                excerpt: 'I need help with my order',
+                last_sent_message_not_delivered: true,
+            })
+
+            renderColumn('ticket', ticket)
+
+            expect(
+                screen.getByText('Last message not delivered'),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('I need help with my order'),
+            ).not.toBeInTheDocument()
         })
 
         it('renders translated subject when showTranslatedContent is true', () => {

@@ -23,7 +23,14 @@ import { TicketStatus } from '../../../types/ticket'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
 import { TicketTable } from './TicketTable'
 
-const { pushMock } = vi.hoisted(() => ({
+const { createTicketTableColumnsMock, pushMock } = vi.hoisted(() => ({
+    createTicketTableColumnsMock: vi.fn(() => [
+        {
+            id: 'ticket',
+            accessorKey: 'subject',
+            header: 'Ticket',
+        },
+    ]),
     pushMock: vi.fn(),
     getItemMock: vi.fn(),
     clearMock: vi.fn().mockResolvedValue(undefined),
@@ -158,6 +165,12 @@ vi.mock('../../hooks/useViewVisibleTickets', () => ({
     }),
 }))
 
+vi.mock('../../../hooks/useCurrentUserId', () => ({
+    useCurrentUserId: () => ({
+        currentUserId: 321,
+    }),
+}))
+
 vi.mock('../../hooks/useTicketListActions', () => ({
     useTicketListActions: ({
         onActionComplete,
@@ -219,13 +232,7 @@ vi.mock('../../hooks/useTicketListActions', () => ({
 }))
 
 vi.mock('./TicketTableColumns', () => ({
-    createTicketTableColumns: () => [
-        {
-            id: 'ticket',
-            accessorKey: 'subject',
-            header: 'Ticket',
-        },
-    ],
+    createTicketTableColumns: createTicketTableColumnsMock,
 }))
 
 function renderTicketTable(
@@ -316,6 +323,7 @@ afterAll(() => {
 
 describe('TicketTable', () => {
     beforeEach(() => {
+        createTicketTableColumnsMock.mockClear()
         testAppQueryClient.clear()
         server.use(
             mockGetCurrentUserHandler(async () => HttpResponse.json(agentUser))

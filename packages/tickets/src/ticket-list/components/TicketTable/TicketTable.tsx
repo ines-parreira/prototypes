@@ -13,6 +13,7 @@ import type {
     ViewField,
 } from '@gorgias/helpdesk-types'
 
+import { useCurrentUserId } from '../../../hooks/useCurrentUserId'
 import { useCurrentUserLanguagePreferences } from '../../../translations/hooks/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../../../translations/hooks/useTicketsTranslatedProperties'
 import {
@@ -38,7 +39,6 @@ import css from './TicketTable.module.less'
 
 type Props = {
     viewId: number
-    currentUserId?: number
     onFixFilters?: () => void
     onApplyMacro?: (ticketIds: number[]) => void
     onNavigateToTicket?: () => void
@@ -50,7 +50,6 @@ type Props = {
 
 function TicketTableComponent({
     viewId,
-    currentUserId,
     onFixFilters,
     onApplyMacro,
     onNavigateToTicket,
@@ -60,6 +59,7 @@ function TicketTableComponent({
     onDraftFieldsChange,
 }: Props) {
     const history = useHistory()
+    const { currentUserId } = useCurrentUserId()
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
     const hasSelection = useMemo(
         () => Object.values(rowSelection).some(Boolean),
