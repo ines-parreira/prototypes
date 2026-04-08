@@ -1,4 +1,5 @@
-import { JobType } from '../../models/job/types'
+import { JobType } from '@gorgias/helpdesk-types'
+
 import { buildJobMessage } from '../notificationUtils'
 
 describe('Notification utils', () => {
@@ -10,7 +11,9 @@ describe('Notification utils', () => {
                         assignee_user: { name: 'John Snow' },
                     },
                 }),
-            ).toMatchSnapshot()
+            ).toBe(
+                'All the tickets in this view will be assigned to John Snow.',
+            )
         })
 
         it('Should return the message for a status update', () => {
@@ -26,7 +29,7 @@ describe('Notification utils', () => {
                     },
                     12,
                 ),
-            ).toMatchSnapshot()
+            ).toBe('12 tickets will be marked as open in a few seconds.')
         })
 
         it('Should return the message for one tag update', () => {
@@ -42,7 +45,9 @@ describe('Notification utils', () => {
                     },
                     1,
                 ),
-            ).toMatchSnapshot()
+            ).toBe(
+                '1 ticket will be tagged with the "Awesome Tag" tag in a few seconds.',
+            )
         })
 
         it('Should return the message for multiple tags update', () => {
@@ -52,7 +57,7 @@ describe('Notification utils', () => {
                         tags: ['Tag one', 'Tag two'],
                     },
                 }),
-            ).toMatchSnapshot()
+            ).toBe('All the ticket in this view will be tagged with 2 tags.')
         })
 
         it('Should return the message for priority update', () => {
@@ -68,7 +73,9 @@ describe('Notification utils', () => {
                     },
                     30,
                 ),
-            ).toMatchSnapshot()
+            ).toBe(
+                '30 tickets will be marked as normal priority in a few seconds.',
+            )
         })
 
         it('Should return the message for when we trash an item', () => {
@@ -78,7 +85,7 @@ describe('Notification utils', () => {
                         trashed_datetime: '2018-01-01T14:00:00',
                     },
                 }),
-            ).toMatchSnapshot()
+            ).toBe('All the tickets in this view will be moved to the trash.')
         })
 
         it('Should return the message for when we untrash an item', () => {
@@ -88,7 +95,7 @@ describe('Notification utils', () => {
                         trashed_datetime: null,
                     },
                 }),
-            ).toMatchSnapshot()
+            ).toBe('All the tickets in this view will be un-trashed.')
         })
 
         it('Should return the message for unhandled update', () => {
@@ -104,7 +111,7 @@ describe('Notification utils', () => {
                     },
                     12,
                 ),
-            ).toMatchSnapshot()
+            ).toBe('12 tickets will be updated in a few seconds.')
         })
 
         it('Should return the message for multiple updates', () => {
@@ -115,7 +122,7 @@ describe('Notification utils', () => {
                         subject: 'new subject',
                     },
                 }),
-            ).toMatchSnapshot()
+            ).toBe('All the tickets in this view will be updated.')
         })
 
         it('Should return the message for an apply macro action that also close items', () => {
@@ -130,7 +137,9 @@ describe('Notification utils', () => {
                     },
                     15,
                 ),
-            ).toMatchSnapshot()
+            ).toBe(
+                '15 tickets will be updated with the macro and closed in a few seconds.',
+            )
         })
 
         it("Should return the message for an apply macro action that don't close the items", () => {
@@ -145,7 +154,9 @@ describe('Notification utils', () => {
                     },
                     15,
                 ),
-            ).toMatchSnapshot()
+            ).toBe(
+                '15 tickets will be updated with the macro in a few seconds.',
+            )
         })
 
         it('Should return the message for an unknown action', () => {
@@ -153,19 +164,21 @@ describe('Notification utils', () => {
                 buildJobMessage(JobType.UpdateTicket, true, 'tickets', {
                     random_key: {},
                 }),
-            ).toMatchSnapshot()
+            ).toBe('All the tickets in this view will be updated.')
         })
 
         it('Should return the message for an export tickets job', () => {
             expect(
                 buildJobMessage(JobType.ExportTicket, true, 'tickets', {}),
-            ).toMatchSnapshot()
+            ).toBe(
+                'All the tickets in this view will be exported. You will receive the download link via email once the export is done.',
+            )
         })
 
         it('Should return the message for an unknow job type', () => {
             expect(
                 buildJobMessage('FAKE_JOB_TYPE', false, 'customers', {}, 30),
-            ).toMatchSnapshot()
+            ).toBe('30 customers will be updated in a few seconds.')
         })
     })
 })

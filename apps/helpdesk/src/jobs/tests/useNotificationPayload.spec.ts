@@ -1,4 +1,5 @@
 import { assumeMock, renderHook } from '@repo/testing'
+import { buildJobMessage } from '@repo/utils'
 import { POSITIONS } from 'reapop'
 
 import { JobType } from '@gorgias/helpdesk-queries'
@@ -7,13 +8,12 @@ import {
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import { buildJobMessage } from 'utils/notificationUtils'
 
 import useNotificationPayload from '../useNotificationPayload'
 
 jest.mock('reapop')
 
-jest.mock('utils/notificationUtils')
+jest.mock('@repo/utils')
 const buildJobMessageMock = assumeMock(buildJobMessage)
 
 buildJobMessageMock.mockImplementation(

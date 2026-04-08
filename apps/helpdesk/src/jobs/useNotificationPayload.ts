@@ -1,5 +1,6 @@
 import { useCallback, useRef } from 'react'
 
+import { buildJobMessage } from '@repo/utils'
 import _uniqueId from 'lodash/uniqueId'
 import { POSITIONS } from 'reapop'
 
@@ -10,7 +11,6 @@ import {
     NotificationStatus,
     NotificationStyle,
 } from 'state/notifications/types'
-import { buildJobMessage } from 'utils/notificationUtils'
 
 import type { Update } from './types'
 

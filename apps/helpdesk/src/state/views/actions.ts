@@ -1,5 +1,6 @@
 import client from '@repo/api-resources'
 import { history } from '@repo/routing'
+import { buildJobMessage } from '@repo/utils'
 import type { AxiosError, CancelToken } from 'axios'
 import { isCancel } from 'axios'
 import type { List, Map } from 'immutable'
@@ -55,7 +56,6 @@ import {
     isCurrentlyOnView,
 } from 'utils'
 import { getMoment } from 'utils/date'
-import { buildJobMessage } from 'utils/notificationUtils'
 
 export const setViewActive =
     (view: ViewImmutable) =>

@@ -1,4 +1,5 @@
 import client from '@repo/api-resources'
+import { buildJobMessage } from '@repo/utils'
 import type { List } from 'immutable'
 import { notify as updateNotification } from 'reapop'
 import type { UpsertNotificationAction } from 'reapop/dist/reducers/notifications/actions'
@@ -7,7 +8,6 @@ import type { JobType } from '@gorgias/helpdesk-queries'
 
 import { JOBS_PATH } from 'models/job/resources'
 
-import { buildJobMessage } from '../../utils/notificationUtils'
 import { notify } from '../notifications/actions'
 import { NotificationStatus } from '../notifications/types'
 import type { StoreDispatch } from '../types'

@@ -1,4 +1,4 @@
-import { JobType } from '../models/job/types'
+import { JobType } from '@gorgias/helpdesk-types'
 
 export function buildJobMessage(
     jobType: string,
