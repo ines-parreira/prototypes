@@ -95,22 +95,22 @@ describe('useReturnOrdersDrillDownData', () => {
                     image_url: 'https://cdn.example.com/product-a.png',
                     name: 'Product A',
                 },
-                'Total issues reported': 9,
-                'Issues reported': {
+                'Issues reported': 9,
+                'Issues description': {
                     reasonOrderDamaged: 2,
                     reasonEditOrder: 4,
                     reasonOther: 3,
                 },
-                'Return Requests': 1,
+                'Return requests': 1,
             },
             {
                 Product: {
                     image_url: 'https://cdn.example.com/product-b.png',
                     name: 'Product B',
                 },
-                'Total issues reported': 4,
-                'Issues reported': { reasonOther: 1, reasonEditOrder: 3 },
-                'Return Requests': 0,
+                'Issues reported': 4,
+                'Issues description': { reasonOther: 1, reasonEditOrder: 3 },
+                'Return requests': 0,
             },
         ])
     })
@@ -193,9 +193,9 @@ describe('useReturnOrdersDrillDownData', () => {
                 image_url: 'https://cdn.example.com/product-c.png',
                 name: 'Product C',
             },
-            'Total issues reported': 0,
-            'Issues reported': {},
-            'Return Requests': 0,
+            'Issues reported': 0,
+            'Issues description': {},
+            'Return requests': 0,
         })
     })
 
@@ -213,9 +213,9 @@ describe('useReturnOrdersDrillDownData', () => {
 
         expect(result.current.rows[0]).toEqual({
             Product: { image_url: '', name: '' },
-            'Total issues reported': 0,
-            'Issues reported': {},
-            'Return Requests': 0,
+            'Issues reported': 0,
+            'Issues description': {},
+            'Return requests': 0,
         })
     })
 
@@ -270,5 +270,27 @@ describe('useReturnOrdersDrillDownData', () => {
 
         const callArgs = mockUseStatResource.mock.calls[0][0]
         expect(callArgs.statsFilters.period).toEqual(MOCK_STATS_FILTERS.period)
+    })
+
+    it('returns isPeriodLimited false when range is within 90 days', () => {
+        const { result } = renderHook(() => useReturnOrdersDrillDownData())
+
+        expect(result.current.isPeriodLimited).toBe(false)
+    })
+
+    it('returns isPeriodLimited true when range exceeds 90 days', () => {
+        mockUseAutomateFilters.mockReturnValue({
+            ...MOCK_AUTOMATE_FILTERS,
+            statsFilters: {
+                period: {
+                    start_datetime: '2023-01-01T00:00:00.000Z',
+                    end_datetime: '2024-01-01T00:00:00.000Z',
+                },
+            },
+        })
+
+        const { result } = renderHook(() => useReturnOrdersDrillDownData())
+
+        expect(result.current.isPeriodLimited).toBe(true)
     })
 })

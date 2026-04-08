@@ -24,24 +24,25 @@ type ReturnOrdersStatLine = [
 
 export type ReturnOrdersRow = {
     Product: ProductCellValue
-    'Total issues reported': number
-    'Issues reported': IssuesCellValue
-    'Return Requests': number
+    'Issues reported': number
+    'Issues description': IssuesCellValue
+    'Return requests': number
 }
 
 export type ReturnOrdersDrillDownData = {
     rows: ReturnOrdersRow[]
     count: number
     isLoading: boolean
+    isPeriodLimited: boolean
 }
 
 function mapLineToRow(line: ReturnOrdersStatLine): ReturnOrdersRow {
     const [product, totalIssuesReported, issuesReported, returnRequests] = line
     return {
         Product: product?.value ?? { image_url: '', name: '' },
-        'Total issues reported': totalIssuesReported?.value ?? 0,
-        'Issues reported': issuesReported?.value ?? {},
-        'Return Requests': returnRequests?.value ?? 0,
+        'Issues reported': totalIssuesReported?.value ?? 0,
+        'Issues description': issuesReported?.value ?? {},
+        'Return requests': returnRequests?.value ?? 0,
     }
 }
 
@@ -49,12 +50,18 @@ export const useReturnOrdersDrillDownData = (): ReturnOrdersDrillDownData => {
     const { statsFilters } = useAutomateFilters()
 
     // this API is limited to max 90 days of data, so only show the most recent 90 days
-    const limitedStatsFilters = useMemo(
-        () => ({
-            period: limitStatFiltersPeriod(statsFilters.period, MAX_DAYS),
-        }),
-        [statsFilters],
-    )
+    const { limitedStatsFilters, isPeriodLimited } = useMemo(() => {
+        const limitedPeriod = limitStatFiltersPeriod(
+            statsFilters.period,
+            MAX_DAYS,
+        )
+        return {
+            limitedStatsFilters: { period: limitedPeriod },
+            isPeriodLimited:
+                limitedPeriod.start_datetime !==
+                statsFilters.period.start_datetime,
+        }
+    }, [statsFilters])
 
     const [stat, isLoading] = useStatResource<
         TwoDimensionalChart<TextStatAxisValue, ReturnOrdersStatLine>
@@ -71,5 +78,5 @@ export const useReturnOrdersDrillDownData = (): ReturnOrdersDrillDownData => {
         return lines.map((line) => mapLineToRow(line))
     }, [stat])
 
-    return { rows, count: rows.length, isLoading }
+    return { rows, count: rows.length, isLoading, isPeriodLimited }
 }
