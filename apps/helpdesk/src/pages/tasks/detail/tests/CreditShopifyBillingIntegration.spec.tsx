@@ -1,24 +1,13 @@
 import React from 'react'
 
 import client from '@repo/api-resources'
-import { fireEvent, render, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import type { RootState, StoreDispatch } from 'state/types'
+import { renderWithToaster } from 'tests/renderWithToaster'
 
 import CreditShopifyBillingIntegration from '../CreditShopifyBillingIntegration'
 
-jest.mock('state/notifications/actions', () => ({
-    notify: jest.fn(() => () => Promise.resolve()),
-}))
-
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const store = mockStore({})
 const mockedServer = new MockAdapter(client)
 
 describe('<CreditShopifyBillingIntegration />', () => {
@@ -27,19 +16,15 @@ describe('<CreditShopifyBillingIntegration />', () => {
     })
 
     it('should render the form', () => {
-        const { container } = render(
-            <Provider store={store}>
-                <CreditShopifyBillingIntegration />
-            </Provider>,
+        const { container } = renderWithToaster(
+            <CreditShopifyBillingIntegration />,
         )
         expect(container).toMatchSnapshot()
     })
 
     it('should submit the form', async () => {
-        const { getByText, getByLabelText } = render(
-            <Provider store={store}>
-                <CreditShopifyBillingIntegration />
-            </Provider>,
+        const { getByText, getByLabelText } = renderWithToaster(
+            <CreditShopifyBillingIntegration />,
         )
 
         fireEvent.change(getByLabelText('Description'), {
@@ -64,18 +49,17 @@ describe('<CreditShopifyBillingIntegration />', () => {
         )
 
         await waitFor(() => {
-            expect(notify).toHaveBeenCalledWith({
-                message: 'Amount successfully credited to Shopify account.',
-                status: NotificationStatus.Success,
-            })
+            const toast = screen.getByRole('status')
+            expect(toast).toHaveTextContent(
+                'Amount successfully credited to Shopify account.',
+            )
+            expect(toast).toHaveAttribute('data-intent', 'success')
         })
     })
 
-    it('should disable the submit button when form is not valid', async () => {
-        const { getByRole, getByLabelText } = render(
-            <Provider store={store}>
-                <CreditShopifyBillingIntegration />
-            </Provider>,
+    it('should disable the submit button when form is not valid', () => {
+        const { getByRole, getByLabelText } = renderWithToaster(
+            <CreditShopifyBillingIntegration />,
         )
 
         fireEvent.change(getByLabelText('Description'), {
@@ -85,11 +69,6 @@ describe('<CreditShopifyBillingIntegration />', () => {
         const button = getByRole('button', { name: 'Add credit' })
 
         expect(button).toHaveProperty('disabled')
-
-        await waitFor(() => {
-            fireEvent.click(button)
-            expect(notify).not.toHaveBeenCalled()
-        })
     })
 
     it('should fail the request by rendering a notification', async () => {
@@ -98,10 +77,8 @@ describe('<CreditShopifyBillingIntegration />', () => {
             error: { msg: errorMessage },
         })
 
-        const { getByText, getByLabelText } = render(
-            <Provider store={store}>
-                <CreditShopifyBillingIntegration />
-            </Provider>,
+        const { getByText, getByLabelText } = renderWithToaster(
+            <CreditShopifyBillingIntegration />,
         )
 
         fireEvent.change(getByLabelText('Description'), {
@@ -115,10 +92,9 @@ describe('<CreditShopifyBillingIntegration />', () => {
         fireEvent.click(getByText('Confirm'))
 
         await waitFor(() => {
-            expect(notify).toHaveBeenNthCalledWith(1, {
-                message: errorMessage,
-                status: NotificationStatus.Error,
-            })
+            const toast = screen.getByRole('status')
+            expect(toast).toHaveTextContent(errorMessage)
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

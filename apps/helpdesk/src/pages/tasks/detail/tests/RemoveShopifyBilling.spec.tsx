@@ -1,27 +1,12 @@
 import client from '@repo/api-resources'
 import { userEvent } from '@repo/testing'
-import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
-import { Provider } from 'react-redux'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import { notify } from 'state/notifications/actions'
-import { NotificationStatus } from 'state/notifications/types'
-import type { RootState, StoreDispatch } from 'state/types'
+import { renderWithToaster } from 'tests/renderWithToaster'
 
 import RemoveShopifyBilling from '../RemoveShopifyBilling'
 
-jest.mock('hooks/useAppDispatch')
-const useAppDispatchMock = useAppDispatch as jest.Mock
-const dispatch = jest.fn()
-useAppDispatchMock.mockReturnValue(dispatch)
-
-jest.mock('state/notifications/actions')
-
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
-const store = mockStore({})
 const mockedServer = new MockAdapter(client)
 
 describe('<RemoveShopifyBilling />', () => {
@@ -31,10 +16,8 @@ describe('<RemoveShopifyBilling />', () => {
     })
 
     it('should submit the form', async () => {
-        const { getByText, getByRole } = render(
-            <Provider store={store}>
-                <RemoveShopifyBilling />
-            </Provider>,
+        const { getByText, getByRole } = renderWithToaster(
+            <RemoveShopifyBilling />,
         )
 
         const button = getByRole('button', { name: 'Remove Shopify Billing' })
@@ -51,19 +34,17 @@ describe('<RemoveShopifyBilling />', () => {
             )
         })
 
-        expect(dispatch).toHaveBeenCalledTimes(1)
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            status: NotificationStatus.Success,
-            message: 'Shopify billing removed succesfully.',
+        await waitFor(() => {
+            const toast = screen.getByRole('status')
+            expect(toast).toHaveTextContent(
+                'Shopify billing removed succesfully.',
+            )
+            expect(toast).toHaveAttribute('data-intent', 'success')
         })
     })
 
     it('should disable the submit button when the form is not valid', () => {
-        const { getByRole } = render(
-            <Provider store={store}>
-                <RemoveShopifyBilling />
-            </Provider>,
-        )
+        const { getByRole } = renderWithToaster(<RemoveShopifyBilling />)
 
         const button = getByRole('button', { name: 'Remove Shopify Billing' })
         expect(button).toHaveProperty('disabled')
@@ -72,11 +53,7 @@ describe('<RemoveShopifyBilling />', () => {
     it('should display error when backend returns an error', async () => {
         mockedServer.onPost('/api/integrations/shopify/tasks').reply(400)
 
-        render(
-            <Provider store={store}>
-                <RemoveShopifyBilling />
-            </Provider>,
-        )
+        renderWithToaster(<RemoveShopifyBilling />)
         const button = screen.getByRole('button', {
             name: 'Remove Shopify Billing',
         })
@@ -93,10 +70,9 @@ describe('<RemoveShopifyBilling />', () => {
             )
         })
 
-        expect(dispatch).toHaveBeenCalledTimes(1)
-        expect(notify).toHaveBeenNthCalledWith(1, {
-            status: NotificationStatus.Error,
-            message: undefined,
+        await waitFor(() => {
+            const toast = screen.getByRole('status')
+            expect(toast).toHaveAttribute('data-intent', 'destructive')
         })
     })
 })

@@ -5,16 +5,13 @@ import client from '@repo/api-resources'
 import type { AxiosError } from 'axios'
 import classnames from 'classnames'
 
-import useAppDispatch from 'hooks/useAppDispatch'
+import { toast } from '@gorgias/axiom'
+
 import ConfirmButton from 'pages/common/components/button/ConfirmButton'
 import PageHeader from 'pages/common/components/PageHeader'
 import cssSettings from 'pages/settings/settings.less'
-import { notify } from 'state/notifications/actions'
-import type { Notification } from 'state/notifications/types'
-import { NotificationStatus } from 'state/notifications/types'
 
 const RemoveShopifyBilling = () => {
-    const dispatch = useAppDispatch()
     const [isLoading, setIsLoading] = useState(false)
 
     const onSubmit = async (event: FormEvent) => {
@@ -29,22 +26,12 @@ const RemoveShopifyBilling = () => {
         try {
             await client.post('/api/integrations/shopify/tasks', data)
 
-            const notification: Notification = {
-                status: NotificationStatus.Success,
-                message: 'Shopify billing removed succesfully.',
-            }
-
-            void dispatch(notify(notification))
+            toast.success('Shopify billing removed succesfully.')
         } catch (error) {
             const { response } = error as AxiosError<{ error: { msg?: any } }>
 
             if (response) {
-                const notification: Notification = {
-                    status: NotificationStatus.Error,
-                    message: response.data?.error?.msg,
-                }
-
-                void dispatch(notify(notification))
+                toast.error(response.data?.error?.msg)
             }
         } finally {
             setIsLoading(false)

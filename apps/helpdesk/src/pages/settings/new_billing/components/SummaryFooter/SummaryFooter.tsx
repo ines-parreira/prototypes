@@ -11,16 +11,9 @@ import { reportError } from '@repo/logging'
 import classNames from 'classnames'
 import { Link, useHistory } from 'react-router-dom'
 
-import { Button } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
 import { ShopifyBillingStatus } from 'state/currentAccount/types'
-import { notify } from 'state/notifications/actions'
-import type { Notification } from 'state/notifications/types'
-import {
-    NotificationStatus,
-    NotificationStyle,
-} from 'state/notifications/types'
 
 import css from './SummaryFooter.less'
 
@@ -79,7 +72,6 @@ const SummaryFooter = ({
 }: SummaryFooterProps) => {
     const [isTermsChecked, setIsTermsChecked] = useState(false)
     const history = useHistory()
-    const dispatch = useAppDispatch()
 
     const handleSubmit = async () => {
         if (onOpenConfirmationModal) {
@@ -100,14 +92,9 @@ const SummaryFooter = ({
             ) {
                 await startSubscription?.()
             }
-            const notification: Notification = {
-                status: NotificationStatus.Success,
-                style: NotificationStyle.Alert,
-                showDismissButton: true,
-                dismissAfter: 5000,
-                message: 'Your subscription has successfully been updated.',
-            }
-            void dispatch(notify(notification))
+            toast.success('Your subscription has successfully been updated.', {
+                duration: 5000,
+            })
 
             if (selectedPlans && setSessionSelectedPlans) {
                 setSessionSelectedPlans(selectedPlans)
