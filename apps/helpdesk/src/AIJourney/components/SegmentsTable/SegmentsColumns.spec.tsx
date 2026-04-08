@@ -14,7 +14,7 @@ jest.mock('./SegmentMoreOptions/SegmentMoreOptions', () => ({
 }))
 
 const mockSegment: Segment = {
-    id: 1,
+    id: '1',
     name: 'Support small business',
     conditions: 'gt(shopper.lifetime_value, 1000)',
     count: 98762,
@@ -98,6 +98,12 @@ describe('segmentColumns', () => {
             renderCell(countColumn, 0, { count: 0 })
 
             expect(screen.getByText('±0')).toBeInTheDocument()
+        })
+
+        it('should render "—" when count is undefined', () => {
+            renderCell(countColumn, undefined, { count: undefined })
+
+            expect(screen.getByText('—')).toBeInTheDocument()
         })
     })
 

@@ -25,7 +25,7 @@ jest.mock('@gorgias/axiom', () => ({
 }))
 
 const mockSegment: Segment = {
-    id: 1,
+    id: '1',
     name: 'Support small business',
     conditions: 'gt(shopper.lifetime_value, 1000)',
     count: 100,

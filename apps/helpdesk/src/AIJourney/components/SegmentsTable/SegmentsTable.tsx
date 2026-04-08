@@ -1,7 +1,7 @@
 import {
     Box,
     HeaderRowGroup,
-    Size,
+    Pagination,
     TableBodyContent,
     TableHeader,
     TableRoot,
@@ -16,6 +16,12 @@ import { actionColumns, segmentColumns } from './SegmentsColumns'
 type Props = {
     data: Segment[]
     isLoading?: boolean
+    hasNextPage: boolean
+    hasPrevPage: boolean
+    pageSize: number
+    onNextPage: () => void
+    onPrevPage: () => void
+    onPageSizeChange: (size: number) => void
     onSegmentClick: (segment: Segment) => void
     onEditClick: (segment: Segment) => void
     onDuplicateClick: (segment: Segment) => void
@@ -25,6 +31,12 @@ type Props = {
 export const SegmentsTable = ({
     data,
     isLoading = false,
+    hasNextPage,
+    hasPrevPage,
+    pageSize,
+    onNextPage,
+    onPrevPage,
+    onPageSizeChange,
     onSegmentClick,
     onEditClick,
     onDuplicateClick,
@@ -38,10 +50,8 @@ export const SegmentsTable = ({
             enableMultiSort: true,
         },
         paginationConfig: {
-            enablePagination: true,
-            manualPagination: false,
-            pageSize: 10,
-            initialPageIndex: 0,
+            enablePagination: false,
+            manualPagination: true,
         },
         globalFilterConfig: {
             enableGlobalFilter: true,
@@ -59,12 +69,9 @@ export const SegmentsTable = ({
 
     return (
         <>
-            <Box paddingLeft={Size.Lg}>
+            <Box paddingLeft="lg">
                 <TableToolbar<Segment>
                     table={table}
-                    bottomRow={{
-                        left: ['totalCount'],
-                    }}
                     topRow={{ left: ['search'] }}
                 />
             </Box>
@@ -78,16 +85,33 @@ export const SegmentsTable = ({
                     columnCount={segmentColumns.length + actionColumns.length}
                     table={table}
                     renderEmptyStateComponent={() => (
-                        <Box alignItems="center" justifyContent="center">
-                            No segments found
-                        </Box>
+                        <span>No segments found</span>
                     )}
                 />
             </TableRoot>
-            <Box flexDirection="row-reverse" padding={Size.Md}>
+            <Box justifyContent="flex-end" paddingRight="md" paddingTop="xs">
                 <TableToolbar
                     table={table}
-                    bottomRow={{ right: ['pagination'] }}
+                    bottomRow={{
+                        right: [
+                            {
+                                key: 'pagination',
+                                content: (
+                                    <Pagination
+                                        hasNextPage={hasNextPage}
+                                        hasPreviousPage={hasPrevPage}
+                                        defaultItemsPerPage={pageSize}
+                                        onPageChange={(dir) =>
+                                            dir === 'next'
+                                                ? onNextPage()
+                                                : onPrevPage()
+                                        }
+                                        onItemsPerPageChange={onPageSizeChange}
+                                    />
+                                ),
+                            },
+                        ],
+                    }}
                 />
             </Box>
         </>

@@ -3,38 +3,36 @@ import { useRef, useState } from 'react'
 import { Box, Button, Heading, Size } from '@gorgias/axiom'
 
 import { SegmentsSidePanel, SegmentsTable } from 'AIJourney/components'
+import { useJourneyContext } from 'AIJourney/providers'
+import { useSegments } from 'AIJourney/queries'
+
+import css from './Segments.less'
 
 export type Segment = {
-    id: number
+    id: string
     name: string
     conditions: string
-    count: number
+    count?: number
     created_datetime: string
     updated_datetime: string
 }
 
-const MOCK_SEGMENTS: Segment[] = [
-    {
-        id: 1,
-        name: 'Support small business',
-        conditions: 'gt(shopper.lifetime_value, 1000)',
-        count: 0,
-        created_datetime: '2026-01-15T00:00:00',
-        updated_datetime: '2026-09-12T00:00:00',
-    },
-    {
-        id: 2,
-        name: 'Super brand like really super',
-        conditions: 'gt(shopper.lifetime_value, 1000)',
-        count: 98762,
-        created_datetime: '2026-01-15T00:00:00',
-        updated_datetime: '2026-01-20T00:00:00',
-    },
-]
-
 export const Segments = () => {
     const selectedSegmentRef = useRef<Segment | undefined>(undefined)
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
+    const [cursor, setCursor] = useState<string | undefined>(undefined)
+    const [pageSize, setPageSize] = useState(10)
+    const { currentIntegration } = useJourneyContext()
+    const { data: segmentsData, isLoading } = useSegments(
+        currentIntegration?.id,
+        {
+            limit: pageSize,
+            cursor,
+        },
+    )
+
+    const hasNextPage = !!segmentsData?.metadata.next_cursor
+    const hasPrevPage = !!segmentsData?.metadata.prev_cursor
 
     const openSidePanel = (segment: Segment) => {
         selectedSegmentRef.current = segment
@@ -50,7 +48,7 @@ export const Segments = () => {
     }
 
     return (
-        <Box width="100%" flexDirection="column">
+        <Box className={css.container}>
             <Box m={Size.Lg} flexDirection="column">
                 <Box alignItems="center" justifyContent="space-between">
                     <Heading size="xl">Segments</Heading>
@@ -67,7 +65,21 @@ export const Segments = () => {
                 </Box>
             </Box>
             <SegmentsTable
-                data={MOCK_SEGMENTS}
+                data={segmentsData?.data ?? []}
+                isLoading={isLoading}
+                hasNextPage={hasNextPage}
+                hasPrevPage={hasPrevPage}
+                pageSize={pageSize}
+                onNextPage={() =>
+                    setCursor(segmentsData?.metadata.next_cursor ?? undefined)
+                }
+                onPrevPage={() =>
+                    setCursor(segmentsData?.metadata.prev_cursor ?? undefined)
+                }
+                onPageSizeChange={(size) => {
+                    setCursor(undefined)
+                    setPageSize(size)
+                }}
                 onSegmentClick={openSidePanel}
                 onEditClick={openSidePanel}
                 onDuplicateClick={handleDuplicateClick}

@@ -1,4 +1,5 @@
 export { useJourneyData } from './useJourneyData/useJourneyData'
+export { useSegments } from './useSegments/useSegments'
 export { useCreateNewJourney } from './useCreateNewJourney/useCreateNewJourney'
 export { useJourneys } from './useJourneys/useJourneys'
 export { useUpdateJourney } from './useUpdateJourney/useUpdateJourney'

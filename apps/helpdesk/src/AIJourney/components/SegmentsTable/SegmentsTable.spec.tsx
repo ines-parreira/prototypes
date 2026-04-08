@@ -8,7 +8,7 @@ import { SegmentsTable } from './SegmentsTable'
 
 const mockSegments: Segment[] = [
     {
-        id: 1,
+        id: '1',
         name: 'Support small business',
         conditions: 'gt(shopper.lifetime_value, 1000)',
         count: 0,
@@ -16,7 +16,7 @@ const mockSegments: Segment[] = [
         updated_datetime: '2026-09-12T00:00:00',
     },
     {
-        id: 2,
+        id: '2',
         name: 'Super brand like really super',
         conditions: 'gt(shopper.lifetime_value, 1000)',
         count: 98762,
@@ -27,6 +27,12 @@ const mockSegments: Segment[] = [
 
 const defaultProps = {
     data: mockSegments,
+    hasNextPage: false,
+    hasPrevPage: false,
+    pageSize: 10,
+    onNextPage: jest.fn(),
+    onPrevPage: jest.fn(),
+    onPageSizeChange: jest.fn(),
     onSegmentClick: jest.fn(),
     onEditClick: jest.fn(),
     onDuplicateClick: jest.fn(),
@@ -91,6 +97,67 @@ describe('<SegmentsTable />', () => {
             expect(defaultProps.onSegmentClick).toHaveBeenCalledWith(
                 mockSegments[0],
             )
+        })
+    })
+
+    describe('pagination', () => {
+        it('should disable both pagination buttons when hasNextPage and hasPrevPage are false', () => {
+            renderComponent({ hasNextPage: false, hasPrevPage: false })
+
+            expect(
+                screen.getByRole('button', { name: /next page/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /previous page/i }),
+            ).toBeDisabled()
+        })
+
+        it('should enable the Next button and disable the Previous button when only hasNextPage is true', () => {
+            renderComponent({ hasNextPage: true, hasPrevPage: false })
+
+            expect(
+                screen.getByRole('button', { name: /next page/i }),
+            ).toBeEnabled()
+            expect(
+                screen.getByRole('button', { name: /previous page/i }),
+            ).toBeDisabled()
+        })
+
+        it('should enable the Previous button and disable the Next button when only hasPrevPage is true', () => {
+            renderComponent({ hasNextPage: false, hasPrevPage: true })
+
+            expect(
+                screen.getByRole('button', { name: /previous page/i }),
+            ).toBeEnabled()
+            expect(
+                screen.getByRole('button', { name: /next page/i }),
+            ).toBeDisabled()
+        })
+
+        it('should call onNextPage when the Next button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent({ hasNextPage: true, hasPrevPage: false })
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /next page/i }),
+                )
+            })
+
+            expect(defaultProps.onNextPage).toHaveBeenCalledTimes(1)
+        })
+
+        it('should call onPrevPage when the Previous button is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent({ hasNextPage: false, hasPrevPage: true })
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /previous page/i }),
+                )
+            })
+
+            expect(defaultProps.onPrevPage).toHaveBeenCalledTimes(1)
         })
     })
 })

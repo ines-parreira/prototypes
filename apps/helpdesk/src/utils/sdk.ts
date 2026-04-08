@@ -25,12 +25,6 @@ export function initSDKs() {
         },
     })
 
-    customerSegmentation.setDefaultConfig({
-        headers: {
-            'X-CSRF-Token': window.CSRF_TOKEN,
-        },
-    })
-
     convert.setDefaultConfig({
         baseURL: getGorgiasRevenueAddonApiBaseUrl(),
         headers: {
@@ -46,6 +40,7 @@ export function initSDKs() {
     })
 
     convert.useRequestInterceptor(gorgiasAppsAuthInterceptor)
+    customerSegmentation.useRequestInterceptor(gorgiasAppsAuthInterceptor)
     ecommerceStorage.useRequestInterceptor(gorgiasAppsAuthInterceptor)
     knowledgeService.useRequestInterceptor(gorgiasAppsAuthInterceptor)
 }

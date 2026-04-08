@@ -1,7 +1,11 @@
+import { forwardRef } from 'react'
 import type { ReactNode, Ref } from 'react'
 
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
+import { useJourneyContext } from 'AIJourney/providers'
+import { useSegments } from 'AIJourney/queries'
 
 import { Segments } from './Segments'
 
@@ -36,13 +40,55 @@ jest.mock('@gorgias/axiom', () => ({
             ))}
         </div>
     ),
-    SelectTrigger: ({ children }: { children: ReactNode }) => <>{children}</>,
+    SelectTrigger: forwardRef<HTMLDivElement, { children: ReactNode }>(
+        ({ children }, ref) => <div ref={ref}>{children}</div>,
+    ),
     ListItem: ({ label }: { label: string }) => <div>{label}</div>,
 }))
+
+jest.mock('AIJourney/queries', () => ({
+    useSegments: jest.fn(),
+}))
+
+jest.mock('AIJourney/providers', () => ({
+    useJourneyContext: jest.fn(),
+}))
+
+const mockSegments = [
+    {
+        id: '1',
+        name: 'Support small business',
+        conditions: 'gt(shopper.lifetime_value, 1000)',
+        count: 0,
+        created_datetime: '2026-01-15T00:00:00',
+        updated_datetime: '2026-09-12T00:00:00',
+    },
+    {
+        id: '2',
+        name: 'Super brand like really super',
+        conditions: 'gt(shopper.lifetime_value, 1000)',
+        count: 98762,
+        created_datetime: '2026-01-15T00:00:00',
+        updated_datetime: '2026-01-20T00:00:00',
+    },
+]
+
+const mockUseSegments = useSegments as jest.Mock
+const mockUseJourneyContext = useJourneyContext as jest.Mock
 
 describe('<Segments />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseJourneyContext.mockReturnValue({
+            currentIntegration: { id: 123 },
+        })
+        mockUseSegments.mockReturnValue({
+            data: {
+                data: mockSegments,
+                metadata: { next_cursor: null, prev_cursor: null },
+            },
+            isLoading: false,
+        })
     })
 
     describe('page layout', () => {
@@ -72,7 +118,7 @@ describe('<Segments />', () => {
             expect(screen.getByText('Last updated')).toBeInTheDocument()
         })
 
-        it('should render segment names from mock data', () => {
+        it('should render segment names from fetched data', () => {
             render(<Segments />)
 
             expect(
@@ -88,6 +134,148 @@ describe('<Segments />', () => {
 
             expect(screen.getByText('±0')).toBeInTheDocument()
             expect(screen.getByText('±98,762')).toBeInTheDocument()
+        })
+
+        it('should render empty state when data is empty', () => {
+            mockUseSegments.mockReturnValue({
+                data: {
+                    data: [],
+                    metadata: { next_cursor: null, prev_cursor: null },
+                },
+                isLoading: false,
+            })
+            render(<Segments />)
+
+            expect(screen.getByText('No segments found')).toBeInTheDocument()
+        })
+
+        it('should render empty state and disable pagination when segments data is undefined', () => {
+            mockUseSegments.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+            render(<Segments />)
+
+            expect(screen.getByText('No segments found')).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /next page/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /previous page/i }),
+            ).toBeDisabled()
+        })
+    })
+
+    describe('useSegments call', () => {
+        it('should call useSegments with the integration id and default page size', () => {
+            render(<Segments />)
+
+            expect(mockUseSegments).toHaveBeenCalledWith(
+                123,
+                expect.objectContaining({ limit: 10 }),
+            )
+        })
+
+        it('should call useSegments with undefined when currentIntegration is not set', () => {
+            mockUseJourneyContext.mockReturnValue({
+                currentIntegration: undefined,
+            })
+            mockUseSegments.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+            })
+            render(<Segments />)
+
+            expect(mockUseSegments).toHaveBeenCalledWith(
+                undefined,
+                expect.objectContaining({ limit: 10 }),
+            )
+        })
+    })
+
+    describe('pagination', () => {
+        it('should disable both pagination buttons when there is no next or previous page', () => {
+            render(<Segments />)
+
+            expect(
+                screen.getByRole('button', { name: /next page/i }),
+            ).toBeDisabled()
+            expect(
+                screen.getByRole('button', { name: /previous page/i }),
+            ).toBeDisabled()
+        })
+
+        it('should enable the Next button when there is a next page', () => {
+            mockUseSegments.mockReturnValue({
+                data: {
+                    data: mockSegments,
+                    metadata: {
+                        next_cursor: 'cursor_next',
+                        prev_cursor: null,
+                    },
+                },
+                isLoading: false,
+            })
+            render(<Segments />)
+
+            expect(
+                screen.getByRole('button', { name: /next page/i }),
+            ).toBeEnabled()
+            expect(
+                screen.getByRole('button', { name: /previous page/i }),
+            ).toBeDisabled()
+        })
+
+        it('should advance to the next page when Next is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseSegments.mockReturnValue({
+                data: {
+                    data: mockSegments,
+                    metadata: {
+                        next_cursor: 'cursor_next',
+                        prev_cursor: null,
+                    },
+                },
+                isLoading: false,
+            })
+            render(<Segments />)
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /next page/i }),
+                )
+            })
+
+            expect(mockUseSegments).toHaveBeenLastCalledWith(
+                123,
+                expect.objectContaining({ cursor: 'cursor_next' }),
+            )
+        })
+
+        it('should go back to the previous page when Previous is clicked', async () => {
+            const user = userEvent.setup()
+            mockUseSegments.mockReturnValue({
+                data: {
+                    data: mockSegments,
+                    metadata: {
+                        next_cursor: null,
+                        prev_cursor: 'cursor_prev',
+                    },
+                },
+                isLoading: false,
+            })
+            render(<Segments />)
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /previous page/i }),
+                )
+            })
+
+            expect(mockUseSegments).toHaveBeenLastCalledWith(
+                123,
+                expect.objectContaining({ cursor: 'cursor_prev' }),
+            )
         })
     })
 

@@ -38,7 +38,11 @@ export const segmentColumns: ColumnDef<Segment>[] = [
         enableSorting: true,
     },
     createSortableColumn<Segment>('count', 'Estimated size', (info) => (
-        <Text>±{info.row.original.count.toLocaleString()}</Text>
+        <Text>
+            {info.row.original.count != null
+                ? `±${info.row.original.count.toLocaleString()}`
+                : '—'}
+        </Text>
     )),
     createSortableColumn<Segment>(
         'updated_datetime',
