@@ -106,7 +106,7 @@ export const DrillDownModal = ({ isLegacy = true }: DrillDownModalProps) => {
             }}
         >
             {metricData !== null && (
-                <>
+                <div className={css.content}>
                     <Box
                         display="flex"
                         justifyContent="space-between"
@@ -138,7 +138,7 @@ export const DrillDownModal = ({ isLegacy = true }: DrillDownModalProps) => {
                             MetricsConfig[metricData.metricName].showMetric,
                         )}
                     />
-                </>
+                </div>
             )}
         </Modal>
     )
