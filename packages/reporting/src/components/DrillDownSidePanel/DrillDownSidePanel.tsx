@@ -3,6 +3,7 @@ import type { PropsWithChildren, ReactNode } from 'react'
 import {
     Box,
     Button,
+    Heading,
     Icon,
     OverlayContent,
     OverlayHeader,
@@ -33,7 +34,7 @@ export const DrillDownSidePanel = ({
 }: PropsWithChildren<Props>) => {
     const headerTitle: ReactNode = learnMoreHref ? (
         <Box flexDirection="row" alignItems="center" gap="sm">
-            <span>{title}</span>
+            <Heading size="md">{title}</Heading>
             <Button
                 as="a"
                 href={learnMoreHref}

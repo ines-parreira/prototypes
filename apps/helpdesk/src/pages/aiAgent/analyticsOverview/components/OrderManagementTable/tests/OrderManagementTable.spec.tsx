@@ -35,6 +35,15 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/OrderManagementTable/drillDowns/TopReportedIssuesDrillDown',
+    () => ({
+        TopReportedIssuesDrillDown: () => (
+            <div>Top Reported Issues Drill Down</div>
+        ),
+    }),
+)
+
 jest.mock('pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics')
 
 const mockUseOrderManagementMetrics = jest.requireMock(
@@ -143,6 +152,19 @@ describe('OrderManagementTable', () => {
         render(<>{renderDrilldown('loop_returns_started')}</>)
 
         expect(screen.getByText('Return Orders Drill Down')).toBeInTheDocument()
+    })
+
+    it('renders TopReportedIssuesDrillDown when renderDrilldown is called with automated_response_started', () => {
+        renderComponent()
+
+        const { renderDrilldown } = getLastCallProps().nameColumns[0] as {
+            renderDrilldown: (value: string) => ReactNode
+        }
+        render(<>{renderDrilldown('automated_response_started')}</>)
+
+        expect(
+            screen.getByText('Top Reported Issues Drill Down'),
+        ).toBeInTheDocument()
     })
 
     it('renders nothing when renderDrilldown is called with any other entity value', () => {
