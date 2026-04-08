@@ -2,17 +2,17 @@ import { useCallback, useState } from 'react'
 
 import { useHistory } from 'react-router-dom'
 
-import type { ColumnDef, ToolbarRow } from '@gorgias/axiom'
+import type { ColumnDef, TableV1ToolbarRow } from '@gorgias/axiom'
 import {
     Box,
     Button,
-    HeaderRowGroup,
     Size,
-    TableBodyContent,
     TableHeader,
-    TableRoot,
-    TableToolbar,
-    useTable,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
+    TableV1Toolbar,
+    useTableV1,
 } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
@@ -190,7 +190,7 @@ export default function CampaignsTable<TData, TValue>({
         [history, createNewJourney, shopName],
     )
 
-    const table = useTable({
+    const table = useTableV1({
         data,
         columns,
         sortingConfig: {
@@ -221,7 +221,7 @@ export default function CampaignsTable<TData, TValue>({
 
     const shouldRenderPaginationComponent =
         table.getFilteredRowModel().rows.length > 10
-    const tableToolbarBottonRowElements: ToolbarRow =
+    const tableToolbarBottonRowElements: TableV1ToolbarRow =
         shouldRenderPaginationComponent ? { right: ['pagination'] } : {}
 
     return (
@@ -232,7 +232,7 @@ export default function CampaignsTable<TData, TValue>({
                     paddingRight={Size.Lg}
                     display="block"
                 >
-                    <TableToolbar<TData>
+                    <TableV1Toolbar<TData>
                         table={table}
                         topRow={{ left: ['search'] }}
                         bottomRow={{
@@ -257,14 +257,14 @@ export default function CampaignsTable<TData, TValue>({
                     />
                 </Box>
 
-                <TableRoot withBorder={false}>
+                <TableV1Root withBorder={false}>
                     <TableHeader>
-                        <HeaderRowGroup
+                        <TableV1HeaderRowGroup
                             headerGroups={table.getHeaderGroups()}
                         />
                     </TableHeader>
 
-                    <TableBodyContent
+                    <TableV1BodyContent
                         isLoading={isLoading}
                         rows={table.getRowModel().rows}
                         columnCount={columns.length}
@@ -275,13 +275,13 @@ export default function CampaignsTable<TData, TValue>({
                             </Box>
                         )}
                     />
-                </TableRoot>
+                </TableV1Root>
                 <Box
                     paddingRight={Size.Lg}
                     display="flex"
                     justifyContent="flex-end"
                 >
-                    <TableToolbar
+                    <TableV1Toolbar
                         table={table}
                         bottomRow={tableToolbarBottonRowElements}
                     />

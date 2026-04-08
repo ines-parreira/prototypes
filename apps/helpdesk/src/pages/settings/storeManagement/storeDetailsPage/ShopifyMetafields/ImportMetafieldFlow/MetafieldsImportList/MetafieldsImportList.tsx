@@ -7,16 +7,16 @@ import {
     Box,
     Button,
     Filters,
-    HeaderRowGroup,
     Heading,
     ListItem,
     SelectFilter,
-    TableBodyContent,
     TableHeader,
-    TableRoot,
-    TableToolbar,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
+    TableV1Toolbar,
     Text,
-    useTable,
+    useTableV1,
 } from '@gorgias/axiom'
 
 import {
@@ -112,7 +112,7 @@ export default function MetafieldsImportList({
         return [checkboxColumn, ...staticColumns]
     }, [selectedMetafields, totalSelectedCount])
 
-    const table = useTable({
+    const table = useTableV1({
         data: filteredData,
         columns,
         sortingConfig: {
@@ -176,7 +176,7 @@ export default function MetafieldsImportList({
                     [styles.maxFieldsImported]: !!isAtMaxFields,
                 })}
             >
-                <TableToolbar
+                <TableV1Toolbar
                     table={table}
                     bottomRow={{
                         left: [
@@ -206,14 +206,14 @@ export default function MetafieldsImportList({
                         right: ['selectCount'],
                     }}
                 />
-                <TableRoot withBorder>
+                <TableV1Root withBorder>
                     <TableHeader>
-                        <HeaderRowGroup
+                        <TableV1HeaderRowGroup
                             headerGroups={table.getHeaderGroups()}
                         />
                     </TableHeader>
 
-                    <TableBodyContent
+                    <TableV1BodyContent
                         isLoading={isLoading}
                         rows={table.getRowModel().rows}
                         columnCount={columns.length}
@@ -222,9 +222,9 @@ export default function MetafieldsImportList({
                             <EmptyMetafieldsImportState />
                         )}
                     />
-                </TableRoot>
+                </TableV1Root>
                 <div className={styles.toolbarWrapper}>
-                    <TableToolbar
+                    <TableV1Toolbar
                         table={table}
                         bottomRow={{ right: ['pagination'] }}
                     />

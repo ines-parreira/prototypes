@@ -1,10 +1,10 @@
 import {
     Box,
-    HeaderRowGroup,
     IconName,
-    TableBodyContent,
     TableHeader,
-    TableRoot,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
     Text,
     TextField,
 } from '@gorgias/axiom'
@@ -50,11 +50,13 @@ export function MergeTicketsModalSearchTab({
                 onChange={setSearchQuery}
             />
 
-            <TableRoot withBorder>
+            <TableV1Root withBorder>
                 <TableHeader>
-                    <HeaderRowGroup headerGroups={table.getHeaderGroups()} />
+                    <TableV1HeaderRowGroup
+                        headerGroups={table.getHeaderGroups()}
+                    />
                 </TableHeader>
-                <TableBodyContent
+                <TableV1BodyContent
                     isLoading={isFetching}
                     skeletonRows={8}
                     table={table}
@@ -62,7 +64,7 @@ export function MergeTicketsModalSearchTab({
                     columnCount={columnCount}
                     onRowClick={onRowClick}
                 />
-            </TableRoot>
+            </TableV1Root>
         </Box>
     )
 }

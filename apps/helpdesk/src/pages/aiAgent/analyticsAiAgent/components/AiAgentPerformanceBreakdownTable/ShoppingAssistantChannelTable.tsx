@@ -5,18 +5,18 @@ import { formatMetricValue } from '@repo/reporting'
 import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
-    HeaderRowGroup,
     Heading,
     Icon,
     Skeleton,
-    TableBodyContent,
     TableHeader,
-    TableRoot,
-    TableToolbar,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
+    TableV1Toolbar,
     Text,
     Tooltip,
     TooltipContent,
-    useTable,
+    useTableV1,
 } from '@gorgias/axiom'
 
 import { useAutomateFilters } from 'domains/reporting/hooks/automate/useAutomateFilters'
@@ -590,7 +590,7 @@ export const ShoppingAssistantChannelTable = () => {
         [Object.values(loadingStates).find((value) => value === true)],
     )
 
-    const table = useTable({
+    const table = useTableV1({
         data: tableData,
         columns,
         sortingConfig: {
@@ -612,7 +612,7 @@ export const ShoppingAssistantChannelTable = () => {
                     tableName="shopping-assistant-channel-performance"
                 />
             </Box>
-            <TableToolbar
+            <TableV1Toolbar
                 table={table}
                 bottomRow={{
                     left: ['totalCount'],
@@ -620,7 +620,7 @@ export const ShoppingAssistantChannelTable = () => {
                 }}
             />
             <Box className={css.tableWrapper}>
-                <TableRoot withBorder className={css.table}>
+                <TableV1Root withBorder className={css.table}>
                     {showEmptyState ? (
                         <Box
                             width="100%"
@@ -639,18 +639,18 @@ export const ShoppingAssistantChannelTable = () => {
                     ) : (
                         <>
                             <TableHeader>
-                                <HeaderRowGroup
+                                <TableV1HeaderRowGroup
                                     headerGroups={table.getHeaderGroups()}
                                 />
                             </TableHeader>
-                            <TableBodyContent
+                            <TableV1BodyContent
                                 rows={table.getRowModel().rows}
                                 columnCount={table.getAllColumns().length}
                                 table={table}
                             />
                         </>
                     )}
-                </TableRoot>
+                </TableV1Root>
             </Box>
         </Box>
     )

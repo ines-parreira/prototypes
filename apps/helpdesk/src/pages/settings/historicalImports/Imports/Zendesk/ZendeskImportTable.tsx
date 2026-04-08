@@ -1,9 +1,9 @@
 import {
-    HeaderRowGroup,
-    TableBodyContent,
     TableHeader,
-    TableRoot,
-    useTable,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
+    useTableV1,
 } from '@gorgias/axiom'
 import { useListIntegrations } from '@gorgias/helpdesk-queries'
 
@@ -29,7 +29,7 @@ export const ZendeskImportTable = ({
         },
     )
 
-    const table = useTable({
+    const table = useTableV1({
         data: zendeskIntegrations ?? [],
         columns,
         sortingConfig: {
@@ -53,16 +53,16 @@ export const ZendeskImportTable = ({
     }
 
     return (
-        <TableRoot>
+        <TableV1Root>
             <TableHeader>
-                <HeaderRowGroup headerGroups={table.getHeaderGroups()} />
+                <TableV1HeaderRowGroup headerGroups={table.getHeaderGroups()} />
             </TableHeader>
-            <TableBodyContent
+            <TableV1BodyContent
                 isLoading={isLoading}
                 rows={table.getRowModel().rows}
                 columnCount={columns.length}
                 table={table}
             />
-        </TableRoot>
+        </TableV1Root>
     )
 }

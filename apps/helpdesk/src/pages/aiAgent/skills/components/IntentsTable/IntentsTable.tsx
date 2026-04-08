@@ -10,19 +10,19 @@ import {
     ButtonGroup,
     ButtonGroupItem,
     flexRender,
-    HeaderRowGroup,
     Heading,
     OverlayContent,
     OverlayHeader,
     SearchField,
     SidePanel,
-    TableBodyContent,
     TableV1Cell as TableCell,
     TableV1Header as TableHeader,
-    TableRoot,
     TableV1Row as TableRow,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
     Text,
-    useTable,
+    useTableV1,
 } from '@gorgias/axiom'
 
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
@@ -316,7 +316,7 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
         })
     }, [])
 
-    const table = useTable<TransformedIntent>({
+    const table = useTableV1<TransformedIntent>({
         data: flattenedIntents,
         columns,
         sortingConfig: {
@@ -399,20 +399,20 @@ export const IntentsTable = ({ isOpen, onOpenChange }: IntentsTableProps) => {
                                 : css.tableWithoutExpandedRows
                         }
                     >
-                        <TableRoot withBorder>
+                        <TableV1Root withBorder>
                             <TableHeader>
-                                <HeaderRowGroup
+                                <TableV1HeaderRowGroup
                                     headerGroups={table.getHeaderGroups()}
                                 />
                             </TableHeader>
-                            <TableBodyContent
+                            <TableV1BodyContent
                                 isLoading={isLoading}
                                 rows={table.getRowModel().rows}
                                 columnCount={table.getAllColumns().length}
                                 table={table}
                                 renderRows={renderRows}
                             />
-                        </TableRoot>
+                        </TableV1Root>
                     </div>
                 </Box>
             </OverlayContent>

@@ -1,7 +1,7 @@
 import { formatDatetime } from '@repo/utils'
 
 import type { ColumnDef } from '@gorgias/axiom'
-import { createSortableColumn, Text, TextVariant } from '@gorgias/axiom'
+import { createTableV1SortableColumn, Text, TextVariant } from '@gorgias/axiom'
 
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
 
@@ -37,14 +37,14 @@ export const segmentColumns: ColumnDef<Segment>[] = [
         },
         enableSorting: true,
     },
-    createSortableColumn<Segment>('count', 'Estimated size', (info) => (
+    createTableV1SortableColumn<Segment>('count', 'Estimated size', (info) => (
         <Text>
             {info.row.original.count != null
                 ? `±${info.row.original.count.toLocaleString()}`
                 : '—'}
         </Text>
     )),
-    createSortableColumn<Segment>(
+    createTableV1SortableColumn<Segment>(
         'updated_datetime',
         'Last updated',
         (info) => (

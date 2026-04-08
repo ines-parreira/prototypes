@@ -2,7 +2,7 @@ import { formatMetricValue } from '@repo/reporting'
 import classNames from 'classnames'
 
 import type { ColumnDef } from '@gorgias/axiom'
-import { Box, createSortableColumn } from '@gorgias/axiom'
+import { Box, createTableV1SortableColumn } from '@gorgias/axiom'
 import { JourneyCampaignStateEnum } from '@gorgias/convert-client'
 
 import { MetricCell } from 'AIJourney/components'
@@ -17,7 +17,7 @@ import type { CampaignsTableMeta } from './types'
 import badgeCss from './CampaignStateBadge/CampaignStateBadge.less'
 
 export const columns: ColumnDef<TableRow>[] = [
-    createSortableColumn<TableRow>('campaign.title', 'Title', (info) => {
+    createTableV1SortableColumn<TableRow>('campaign.title', 'Title', (info) => {
         const storeName = info.row.original.store_name
         const journeyType = info.row.original.type
         const journeyId = info.row.original.id
@@ -32,7 +32,7 @@ export const columns: ColumnDef<TableRow>[] = [
             </Box>
         )
     }),
-    createSortableColumn<TableRow>('stateLabel', 'Status', (info) => {
+    createTableV1SortableColumn<TableRow>('stateLabel', 'Status', (info) => {
         const state = info.row.original.campaign?.state
         const isDraft = state === JourneyCampaignStateEnum.Draft
         const hasAudiences =
@@ -51,7 +51,7 @@ export const columns: ColumnDef<TableRow>[] = [
 ]
 
 export const metricColumns: ColumnDef<TableRow, unknown>[] = [
-    createSortableColumn<TableRow>(
+    createTableV1SortableColumn<TableRow>(
         'metrics.recipients',
         'Recipients',
         (info) => {
@@ -65,28 +65,36 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
             )
         },
     ),
-    createSortableColumn<TableRow>('metrics.revenue', 'Revenue', (info) => {
-        const meta = info.table.options.meta as CampaignsTableMeta
-        const value = info.getValue()
-        return (
-            <MetricCell value={value}>
-                {typeof value === 'number'
-                    ? formatMetricValue(value, 'currency', meta.currency)
-                    : (value as string)}
-            </MetricCell>
-        )
-    }),
-    createSortableColumn<TableRow>('metrics.totalOrders', 'Orders', (info) => {
-        const value = info.getValue()
-        return (
-            <MetricCell value={value}>
-                {typeof value === 'number'
-                    ? formatMetricValue(value, 'integer')
-                    : (value as string)}
-            </MetricCell>
-        )
-    }),
-    createSortableColumn<TableRow>(
+    createTableV1SortableColumn<TableRow>(
+        'metrics.revenue',
+        'Revenue',
+        (info) => {
+            const meta = info.table.options.meta as CampaignsTableMeta
+            const value = info.getValue()
+            return (
+                <MetricCell value={value}>
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'currency', meta.currency)
+                        : (value as string)}
+                </MetricCell>
+            )
+        },
+    ),
+    createTableV1SortableColumn<TableRow>(
+        'metrics.totalOrders',
+        'Orders',
+        (info) => {
+            const value = info.getValue()
+            return (
+                <MetricCell value={value}>
+                    {typeof value === 'number'
+                        ? formatMetricValue(value, 'integer')
+                        : (value as string)}
+                </MetricCell>
+            )
+        },
+    ),
+    createTableV1SortableColumn<TableRow>(
         'metrics.revenuePerRecipient',
         'Revenue per Recipient',
         (info) => {
@@ -101,7 +109,7 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
             )
         },
     ),
-    createSortableColumn<TableRow>(
+    createTableV1SortableColumn<TableRow>(
         'metrics.averageOrderValue',
         'AOV',
         (info) => {
@@ -116,7 +124,7 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
             )
         },
     ),
-    createSortableColumn<TableRow>(
+    createTableV1SortableColumn<TableRow>(
         'metrics.messagesSent',
         'Messages Sent',
         (info) => {
@@ -130,7 +138,7 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
             )
         },
     ),
-    createSortableColumn<TableRow>('metrics.ctr', 'CTR', (info) => {
+    createTableV1SortableColumn<TableRow>('metrics.ctr', 'CTR', (info) => {
         const value = info.getValue()
         return (
             <MetricCell value={value}>
@@ -140,7 +148,7 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
             </MetricCell>
         )
     }),
-    createSortableColumn<TableRow>(
+    createTableV1SortableColumn<TableRow>(
         'metrics.replyRate',
         'Reply rate',
         (info) => {
@@ -154,7 +162,7 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
             )
         },
     ),
-    createSortableColumn<TableRow>(
+    createTableV1SortableColumn<TableRow>(
         'metrics.optOutRate',
         'Out out rate',
         (info) => {
@@ -168,7 +176,7 @@ export const metricColumns: ColumnDef<TableRow, unknown>[] = [
             )
         },
     ),
-    createSortableColumn<TableRow>(
+    createTableV1SortableColumn<TableRow>(
         'metrics.conversionRate',
         'Conversion rate',
         (info) => {

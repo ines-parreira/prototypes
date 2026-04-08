@@ -4,14 +4,14 @@ import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     Filters,
-    HeaderRowGroup,
     ListItem,
     SelectFilter,
-    TableBodyContent,
     TableHeader,
-    TableRoot,
-    TableToolbar,
-    useTable,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
+    TableV1Toolbar,
+    useTableV1,
 } from '@gorgias/axiom'
 
 import {
@@ -84,7 +84,7 @@ export default function MetafieldsTable<TData, TValue>({
         setIsCategoriesModalOpen(false)
     }
 
-    const table = useTable({
+    const table = useTableV1({
         data,
         columns,
         sortingConfig: {
@@ -118,7 +118,7 @@ export default function MetafieldsTable<TData, TValue>({
         <>
             <div className={styles.tableWrapper}>
                 <div className={styles.topToolbarWrapper}>
-                    <TableToolbar<TData>
+                    <TableV1Toolbar<TData>
                         table={table}
                         bottomRow={{
                             left: [
@@ -177,14 +177,14 @@ export default function MetafieldsTable<TData, TValue>({
                         }}
                     />
                 </div>
-                <TableRoot withBorder>
+                <TableV1Root withBorder>
                     <TableHeader>
-                        <HeaderRowGroup
+                        <TableV1HeaderRowGroup
                             headerGroups={table.getHeaderGroups()}
                         />
                     </TableHeader>
 
-                    <TableBodyContent
+                    <TableV1BodyContent
                         isLoading={isLoading}
                         rows={table.getRowModel().rows}
                         columnCount={columns.length}
@@ -203,9 +203,9 @@ export default function MetafieldsTable<TData, TValue>({
                             </Box>
                         )}
                     />
-                </TableRoot>
+                </TableV1Root>
                 <div className={styles.toolbarWrapper}>
-                    <TableToolbar
+                    <TableV1Toolbar
                         table={table}
                         bottomRow={{ right: ['pagination'] }}
                     />

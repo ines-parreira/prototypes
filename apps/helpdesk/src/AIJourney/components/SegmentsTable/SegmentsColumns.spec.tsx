@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import type { CellContext } from '@gorgias/axiom'
+import type { TableV1CellContext } from '@gorgias/axiom'
 
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
 
@@ -32,16 +32,16 @@ const mockMeta: SegmentsTableMeta = {
 function makeCellContext(
     value: unknown,
     segmentOverride?: Partial<Segment>,
-): CellContext<Segment, unknown> {
+): TableV1CellContext<Segment, unknown> {
     return {
         getValue: () => value,
         row: {
             original: { ...mockSegment, ...segmentOverride },
-        } as CellContext<Segment, unknown>['row'],
+        } as TableV1CellContext<Segment, unknown>['row'],
         table: {
             options: { meta: mockMeta },
-        } as unknown as CellContext<Segment, unknown>['table'],
-    } as CellContext<Segment, unknown>
+        } as unknown as TableV1CellContext<Segment, unknown>['table'],
+    } as TableV1CellContext<Segment, unknown>
 }
 
 const renderCell = (
@@ -50,7 +50,7 @@ const renderCell = (
     segmentOverride?: Partial<Segment>,
 ) => {
     const cellFn = column.cell as (
-        info: CellContext<Segment, unknown>,
+        info: TableV1CellContext<Segment, unknown>,
     ) => React.ReactNode
     return render(<>{cellFn(makeCellContext(value, segmentOverride))}</>)
 }

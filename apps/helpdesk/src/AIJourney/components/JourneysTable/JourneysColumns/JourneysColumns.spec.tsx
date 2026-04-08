@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { TableRoot, useTable } from '@gorgias/axiom'
+import { TableV1Root, useTableV1 } from '@gorgias/axiom'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
@@ -50,7 +50,7 @@ const TestTable = ({
     data: TableRow[]
     integrationId?: number
 }) => {
-    const table = useTable({
+    const table = useTableV1({
         data,
         columns: metricColumns,
         additionalOptions: {
@@ -62,7 +62,7 @@ const TestTable = ({
     })
 
     return (
-        <TableRoot>
+        <TableV1Root>
             <tbody>
                 {table.getRowModel().rows.map((row) => (
                     <tr key={row.id}>
@@ -79,7 +79,7 @@ const TestTable = ({
                     </tr>
                 ))}
             </tbody>
-        </TableRoot>
+        </TableV1Root>
     )
 }
 

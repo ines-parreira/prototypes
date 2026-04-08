@@ -1,8 +1,8 @@
 import {
-    HeaderRowGroup,
-    TableBodyContent,
     TableHeader,
-    TableRoot,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
 } from '@gorgias/axiom'
 
 import { useAgentStatusTable } from '../../hooks'
@@ -21,17 +21,17 @@ export function AgentStatusesTable({
     const { table } = useAgentStatusTable({ data, onEdit, onDelete })
 
     return (
-        <TableRoot width="full" aria-label="Agent availability statuses">
+        <TableV1Root width="full" aria-label="Agent availability statuses">
             <TableHeader>
-                <HeaderRowGroup headerGroups={table.getHeaderGroups()} />
+                <TableV1HeaderRowGroup headerGroups={table.getHeaderGroups()} />
             </TableHeader>
 
-            <TableBodyContent
+            <TableV1BodyContent
                 isLoading={isLoading}
                 rows={table.getRowModel().rows}
                 columnCount={table.getAllColumns().length}
                 table={table}
             />
-        </TableRoot>
+        </TableV1Root>
     )
 }

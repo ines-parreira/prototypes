@@ -5,8 +5,8 @@ import {
     getDateAndTimeFormat,
 } from '@repo/utils'
 
-import type { CellContext, ColumnDef } from '@gorgias/axiom'
-import { Text, Tooltip, TooltipContent, useTable } from '@gorgias/axiom'
+import type { ColumnDef, TableV1CellContext } from '@gorgias/axiom'
+import { Text, Tooltip, TooltipContent, useTableV1 } from '@gorgias/axiom'
 import type { TicketsSearchListDataItem } from '@gorgias/helpdesk-types'
 
 import { TicketMessageSourceIcon } from '../../../TicketMessageSourceIcon/TicketMessageSourceIcon'
@@ -21,7 +21,9 @@ const shorten = (text: string | undefined | null, maxLength: number) => {
     return text.length < maxLength ? text : text.substring(0, maxLength) + '...'
 }
 
-function SubjectCell(info: CellContext<TicketsSearchListDataItem, unknown>) {
+function SubjectCell(
+    info: TableV1CellContext<TicketsSearchListDataItem, unknown>,
+) {
     const { subject, excerpt } = info.getValue<{
         subject: string
         excerpt: string
@@ -47,7 +49,7 @@ function SubjectCell(info: CellContext<TicketsSearchListDataItem, unknown>) {
 const customerNameMaxLength = 20
 
 function CustomerNameCell(
-    info: CellContext<TicketsSearchListDataItem, unknown>,
+    info: TableV1CellContext<TicketsSearchListDataItem, unknown>,
 ) {
     const { name, id } =
         info.getValue<TicketsSearchListDataItem['customer']>() ?? {}
@@ -77,7 +79,9 @@ function CustomerNameCell(
     )
 }
 
-function ChannelCell(info: CellContext<TicketsSearchListDataItem, unknown>) {
+function ChannelCell(
+    info: TableV1CellContext<TicketsSearchListDataItem, unknown>,
+) {
     return (
         <TicketMessageSourceIcon
             source={info.getValue<TicketMessageSource>()}
@@ -131,7 +135,7 @@ export function useMergeTicketsTable({ tickets }: UseMergeTicketsTableParams) {
         },
     ]
 
-    const table = useTable({
+    const table = useTableV1({
         data: tickets,
         columns,
         selectionConfig: {

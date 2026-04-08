@@ -2,7 +2,7 @@ import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
     Button,
-    createSortableColumn,
+    createTableV1SortableColumn,
     Text,
     Tooltip,
     TooltipContent,
@@ -16,7 +16,7 @@ import VisibilityChip from '../VisibilityChip/VisibilityChip'
 import type { Field, MetafieldsTableMeta } from './types'
 
 export const columns: ColumnDef<Field>[] = [
-    createSortableColumn<Field>('name', 'Name', (info) => {
+    createTableV1SortableColumn<Field>('name', 'Name', (info) => {
         const isVisible = info.row.original.isVisible ?? false
 
         return (

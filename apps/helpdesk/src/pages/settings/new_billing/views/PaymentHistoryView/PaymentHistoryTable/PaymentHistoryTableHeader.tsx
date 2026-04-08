@@ -1,5 +1,8 @@
 import type { TableV1Instance } from '@gorgias/axiom'
-import { HeaderRowGroup, TableV1Header as TableHeader } from '@gorgias/axiom'
+import {
+    TableV1Header as TableHeader,
+    TableV1HeaderRowGroup,
+} from '@gorgias/axiom'
 
 import type { Invoice } from 'state/billing/types'
 
@@ -12,7 +15,7 @@ export const PaymentHistoryTableHeader = ({
 }: PaymentHistoryTableHeaderProps) => {
     return (
         <TableHeader>
-            <HeaderRowGroup headerGroups={table.getHeaderGroups()} />
+            <TableV1HeaderRowGroup headerGroups={table.getHeaderGroups()} />
         </TableHeader>
     )
 }

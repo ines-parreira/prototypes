@@ -8,17 +8,17 @@ import {
     ButtonGroup,
     ButtonGroupItem,
     flexRender,
-    HeaderRowGroup,
-    TableBodyContent,
     TableV1Cell as TableCell,
     TableV1Header as TableHeader,
-    TablePagination,
-    TableRoot,
     TableV1Row as TableRow,
-    TableToolbar,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Pagination,
+    TableV1Root,
+    TableV1Toolbar,
     Text,
     TextField,
-    useTable,
+    useTableV1,
 } from '@gorgias/axiom'
 
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
@@ -113,7 +113,7 @@ export const SkillsTable = () => {
         ))
     }
 
-    const table = useTable<TransformedArticle>({
+    const table = useTableV1<TransformedArticle>({
         data: filteredArticles,
         columns,
         paginationConfig: {
@@ -186,31 +186,31 @@ export const SkillsTable = () => {
             </Box>
 
             <div className={css.tableRoot}>
-                <TableRoot withBorder>
+                <TableV1Root withBorder>
                     <TableHeader>
-                        <HeaderRowGroup
+                        <TableV1HeaderRowGroup
                             headerGroups={table.getHeaderGroups()}
                         />
                     </TableHeader>
-                    <TableBodyContent
+                    <TableV1BodyContent
                         isLoading={isLoading}
                         rows={table.getRowModel().rows}
                         columnCount={table.getAllColumns().length}
                         table={table}
                         renderRows={renderRows}
                     />
-                </TableRoot>
+                </TableV1Root>
 
                 {table.getPageCount() > 1 && (
                     <div className={css.pagination}>
-                        <TableToolbar<TransformedArticle>
+                        <TableV1Toolbar<TransformedArticle>
                             table={table}
                             bottomRow={{
                                 right: [
                                     {
                                         key: 'pagination',
                                         content: (
-                                            <TablePagination
+                                            <TableV1Pagination
                                                 table={table}
                                                 pageSizeOptions={[20, 50, 100]}
                                             />

@@ -4,12 +4,12 @@ import { history } from '@repo/routing'
 import type { List, Map } from 'immutable'
 
 import {
-    createSortableColumn,
-    HeaderRowGroup,
-    TableBodyContent,
+    createTableV1SortableColumn,
     TableHeader,
-    TableRoot,
-    useTable,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
+    useTableV1,
 } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
 import { IntegrationType } from '@gorgias/helpdesk-types'
@@ -125,7 +125,7 @@ export const ChatIntegrationsTable = ({
 
     const columns: ColumnDef<ChatIntegrationFields>[] = useMemo(
         () => [
-            createSortableColumn('chat', 'Chat Name', (data) => {
+            createTableV1SortableColumn('chat', 'Chat Name', (data) => {
                 return <ChatCell chat={data.getValue<Map<any, any>>()} />
             }),
             {
@@ -183,7 +183,7 @@ export const ChatIntegrationsTable = ({
         [],
     )
 
-    const table = useTable({
+    const table = useTableV1({
         columns,
         data,
         sortingConfig: {
@@ -192,17 +192,17 @@ export const ChatIntegrationsTable = ({
     })
 
     return (
-        <TableRoot>
+        <TableV1Root>
             <TableHeader>
-                <HeaderRowGroup headerGroups={table.getHeaderGroups()} />
+                <TableV1HeaderRowGroup headerGroups={table.getHeaderGroups()} />
             </TableHeader>
 
-            <TableBodyContent
+            <TableV1BodyContent
                 rows={table.getRowModel().rows}
                 columnCount={columns.length}
                 table={table}
                 onRowClick={goToChat}
             />
-        </TableRoot>
+        </TableV1Root>
     )
 }

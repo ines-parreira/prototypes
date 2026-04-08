@@ -1,9 +1,9 @@
-import type { TableMeta } from '@gorgias/axiom'
+import type { TableV1Meta } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 
 import type { UpdatableJourneyCampaignState } from 'AIJourney/constants'
 
-export interface CampaignsTableMeta extends TableMeta<JourneyApiDTO> {
+export interface CampaignsTableMeta extends TableV1Meta<JourneyApiDTO> {
     onRemoveClick: (id: string) => void
     onSendClick: (id: string, hasIncludedAudiences: boolean) => void
     onCancelClick: (id: string) => void

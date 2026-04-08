@@ -1,14 +1,14 @@
-import type { ColumnDef, ToolbarRow } from '@gorgias/axiom'
+import type { ColumnDef, TableV1ToolbarRow } from '@gorgias/axiom'
 import {
     Box,
     Button,
-    HeaderRowGroup,
     Size,
-    TableBodyContent,
     TableHeader,
-    TableRoot,
-    TableToolbar,
-    useTable,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
+    TableV1Toolbar,
+    useTableV1,
 } from '@gorgias/axiom'
 
 import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
@@ -33,7 +33,7 @@ export const JourneysTable = <TData, TValue>({
 }: journeysTableProps<TData, TValue>) => {
     const { currency } = useCurrency()
 
-    const table = useTable({
+    const table = useTableV1({
         data,
         columns,
         sortingConfig: {
@@ -60,7 +60,7 @@ export const JourneysTable = <TData, TValue>({
 
     const shouldRenderPaginationComponent =
         table.getFilteredRowModel().rows.length > 10
-    const tableToolbarBottonRowElements: ToolbarRow =
+    const tableToolbarBottonRowElements: TableV1ToolbarRow =
         shouldRenderPaginationComponent ? { right: ['pagination'] } : {}
 
     return (
@@ -71,7 +71,7 @@ export const JourneysTable = <TData, TValue>({
                     paddingRight={Size.Lg}
                     display="block"
                 >
-                    <TableToolbar<TData>
+                    <TableV1Toolbar<TData>
                         table={table}
                         topRow={{ left: ['search'] }}
                         bottomRow={{
@@ -96,14 +96,14 @@ export const JourneysTable = <TData, TValue>({
                     />
                 </Box>
 
-                <TableRoot withBorder={false} className={styles.tableRoot}>
+                <TableV1Root withBorder={false} className={styles.tableRoot}>
                     <TableHeader>
-                        <HeaderRowGroup
+                        <TableV1HeaderRowGroup
                             headerGroups={table.getHeaderGroups()}
                         />
                     </TableHeader>
 
-                    <TableBodyContent
+                    <TableV1BodyContent
                         isLoading={isLoading}
                         rows={table.getRowModel().rows}
                         columnCount={columns.length}
@@ -114,13 +114,13 @@ export const JourneysTable = <TData, TValue>({
                             </Box>
                         )}
                     />
-                </TableRoot>
+                </TableV1Root>
                 <Box
                     paddingRight={Size.Lg}
                     display="flex"
                     justifyContent="flex-end"
                 >
-                    <TableToolbar
+                    <TableV1Toolbar
                         table={table}
                         bottomRow={tableToolbarBottonRowElements}
                     />

@@ -1,10 +1,10 @@
-import type { CellContext } from '@gorgias/axiom'
+import type { TableV1CellContext } from '@gorgias/axiom'
 
 import type { Field } from '../MetafieldsTable/types'
 import { getCheckboxContent } from './getCheckboxContent'
 
 describe('getCheckboxContent', () => {
-    const mockInfo = {} as CellContext<Field, unknown>
+    const mockInfo = {} as TableV1CellContext<Field, unknown>
 
     it('should return result of originalCell when it is a function', () => {
         const mockResult = <div>Test Content</div>

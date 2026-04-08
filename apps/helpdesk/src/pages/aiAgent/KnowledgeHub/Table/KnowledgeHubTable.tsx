@@ -5,15 +5,15 @@ import moment from 'moment-timezone'
 
 import {
     flexRender,
-    HeaderRowGroup,
-    TableBodyContent,
     TableV1Cell as TableCell,
     TableV1Header as TableHeader,
-    TablePagination,
-    TableRoot,
     TableV1Row as TableRow,
-    TableToolbar,
-    useTable,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Pagination,
+    TableV1Root,
+    TableV1Toolbar,
+    useTableV1,
 } from '@gorgias/axiom'
 import type { Row, SortingState } from '@gorgias/axiom'
 
@@ -422,7 +422,7 @@ export const KnowledgeHubTable = ({
     ])
 
     // Custom sorting - no TanStack sorting, we handle column clicks manually
-    const table = useTable<GroupedKnowledgeItem>({
+    const table = useTableV1<GroupedKnowledgeItem>({
         data: displayData,
         columns: columnsWithHighlight,
         paginationConfig: {
@@ -559,7 +559,7 @@ export const KnowledgeHubTable = ({
             })}
             data-metrics-enabled={isMetricsEnabled}
         >
-            <TableToolbar<GroupedKnowledgeItem>
+            <TableV1Toolbar<GroupedKnowledgeItem>
                 table={table}
                 topRow={{
                     left: [
@@ -670,16 +670,16 @@ export const KnowledgeHubTable = ({
                 }}
             />
 
-            <TableRoot withBorder={false}>
+            <TableV1Root withBorder={false}>
                 {!isSearchEmptyPage && (
                     <TableHeader>
-                        <HeaderRowGroup
+                        <TableV1HeaderRowGroup
                             headerGroups={table.getHeaderGroups()}
                         />
                     </TableHeader>
                 )}
 
-                <TableBodyContent
+                <TableV1BodyContent
                     isLoading={tableIsLoading}
                     rows={table.getRowModel().rows}
                     columnCount={table.getAllColumns().length}
@@ -693,7 +693,7 @@ export const KnowledgeHubTable = ({
                         )
                     }}
                 />
-            </TableRoot>
+            </TableV1Root>
             <div
                 className={classNames(
                     css.pagination,
@@ -701,14 +701,14 @@ export const KnowledgeHubTable = ({
                         css.hidden,
                 )}
             >
-                <TableToolbar<GroupedKnowledgeItem>
+                <TableV1Toolbar<GroupedKnowledgeItem>
                     table={table}
                     bottomRow={{
                         right: [
                             {
                                 key: 'pagination',
                                 content: (
-                                    <TablePagination
+                                    <TableV1Pagination
                                         table={table}
                                         pageSizeOptions={[50, 100]}
                                     />

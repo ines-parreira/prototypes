@@ -103,21 +103,23 @@ const MockTableBodyContent = jest.fn(({ rows, columnCount, onRowClick }) => (
 ))
 
 jest.mock('@gorgias/axiom', () => ({
-    createSortableColumn: jest.fn((accessorKey, header, cellRenderer) => ({
-        accessorKey,
-        header,
-        cell: cellRenderer,
-        enableSorting: true,
-    })),
-    HeaderRowGroup: (props: any) => MockHeaderRowGroup(props),
-    TableBodyContent: (props: any) => MockTableBodyContent(props),
+    createTableV1SortableColumn: jest.fn(
+        (accessorKey, header, cellRenderer) => ({
+            accessorKey,
+            header,
+            cell: cellRenderer,
+            enableSorting: true,
+        }),
+    ),
+    TableV1HeaderRowGroup: (props: any) => MockHeaderRowGroup(props),
+    TableV1BodyContent: (props: any) => MockTableBodyContent(props),
     TableHeader: ({ children }: any) => (
         <div data-testid="table-header">{children}</div>
     ),
-    TableRoot: ({ children }: any) => (
+    TableV1Root: ({ children }: any) => (
         <div data-testid="table-root">{children}</div>
     ),
-    useTable: jest.fn((config) => ({
+    useTableV1: jest.fn((config) => ({
         getHeaderGroups: () => [{ id: 'header-1' }, { id: 'header-2' }],
         getRowModel: () => ({
             rows: config.data.map((item: any, index: number) => ({

@@ -1,6 +1,6 @@
 {
-  "date": "2026-04-07T11:53:01.785Z",
-  "total": 5014,
+  "date": "2026-04-08T10:59:51.422Z",
+  "total": 5122,
   "deprecated": [
     {
       "nodeType": "VariableDeclaration",
@@ -681,7 +681,7 @@
       "nodeType": "VariableDeclaration",
       "nodeName": "IconButton",
       "comment": "*\n * @deprecated This component is being phased out. Please use `IconButton` from `@gorgias/axiom` instead.\n * @date 2024-03-05\n * @type ui-kit-migration\n ",
-      "count": 102,
+      "count": 101,
       "filePath": "apps/helpdesk/src/pages/common/components/button/IconButton.tsx",
       "usages": [
         {
@@ -783,7 +783,6 @@
             "apps/helpdesk/src/pages/tickets/detail/components/AuditLogEvent.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/Event.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/PrivateReplyEvent/PrivateReplyEvent.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketStatus.tsx",
             "apps/helpdesk/src/ticket-list-view/components/bulk-actions/AssignUser.tsx",
             "apps/helpdesk/src/ticket-list-view/components/bulk-actions/CloseTickets.tsx",
             "apps/helpdesk/src/ticket-list-view/components/bulk-actions/MoreActions.tsx",
@@ -5251,11 +5250,11 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1395,
+      "count": 1504,
       "usages": [
         {
           "name": "LegacyButton",
-          "count": 563,
+          "count": 560,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
             "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
@@ -5793,17 +5792,14 @@
             "apps/helpdesk/src/pages/tickets/detail/components/RuleSuggestion/AISuggestionContactReason.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/RuleSuggestion/InTicketSuggestion.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/RuleSuggestion/RuleSuggestion.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/Snooze.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketActions.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TagDropdown.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketStatus.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketTags.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketFeedback/TicketFeedback.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketFields/TicketFields.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/AiAgentReasoning.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Error.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/SimplifiedAIAgentBanner.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketPriorityDropdown.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketSummary.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall/TranscriptionData.tsx",
             "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
@@ -5824,7 +5820,7 @@
         },
         {
           "name": "LegacyTooltip",
-          "count": 289,
+          "count": 285,
           "files": [
             "apps/helpdesk/src/AIJourney/components/FieldPresentation/FieldPresentation.tsx",
             "apps/helpdesk/src/auto_qa/components/AutoQA.tsx",
@@ -6074,10 +6070,7 @@
             "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketReplyActions.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketReplyEditor.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketSubmitButtons.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/Snooze.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketSnooze.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketSpam.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketStatus.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketTags.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TicketTrash.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketFields/components/fields/DropdownField.tsx",
@@ -6093,7 +6086,6 @@
             "apps/helpdesk/src/pages/tickets/detail/components/TicketMessages/Source.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketNavigation/tests/TicketNavigationArrowPagination.spec.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketNavigation/TicketNavigationArrowPagination.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketPriorityDropdown.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketSummaryPopover.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/TicketVoiceCall/TicketVoiceCallSource.tsx",
             "apps/helpdesk/src/pages/tickets/navbar/PlaceCallNavbarButton.tsx",
@@ -6654,6 +6646,52 @@
           ]
         },
         {
+          "name": "TableV1Root",
+          "count": 17,
+          "files": [
+            "apps/helpdesk/src/AIJourney/components/CampaignsTable/CampaignsTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysColumns/JourneysColumns.spec.tsx",
+            "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/SegmentsTable/SegmentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ChannelPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/IntentPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentChannelPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/IntentsTable/IntentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/SkillsTable/SkillsTable.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/ChatIntegrationsTable/ChatIntegrationsTable.tsx",
+            "apps/helpdesk/src/pages/settings/historicalImports/Imports/Zendesk/ZendeskImportTable.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentHistoryView/PaymentHistoryTable/PaymentHistoryTable.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/MetafieldsImportList/MetafieldsImportList.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/MetafieldsTable/MetafieldsTable.tsx"
+          ]
+        },
+        {
+          "name": "useTableV1",
+          "count": 17,
+          "files": [
+            "apps/helpdesk/src/AIJourney/components/CampaignsTable/CampaignsTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysColumns/JourneysColumns.spec.tsx",
+            "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/SegmentsTable/SegmentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ChannelPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/IntentPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentChannelPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/IntentsTable/IntentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/SkillsTable/SkillsTable.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/ChatIntegrationsTable/ChatIntegrationsTable.tsx",
+            "apps/helpdesk/src/pages/settings/historicalImports/Imports/Zendesk/ZendeskImportTable.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentHistoryView/PaymentHistoryTable/PaymentHistoryTable.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/MetafieldsImportList/MetafieldsImportList.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/MetafieldsTable/MetafieldsTable.tsx"
+          ]
+        },
+        {
           "name": "LegacySelectField",
           "count": 16,
           "files": [
@@ -6673,6 +6711,96 @@
             "apps/helpdesk/src/pages/settings/yourProfile/components/YourProfileView.tsx",
             "apps/helpdesk/src/pages/tasks/detail/UpdatePaymentTerms.tsx",
             "apps/helpdesk/src/timeline/Sort.tsx"
+          ]
+        },
+        {
+          "name": "TableV1BodyContent",
+          "count": 16,
+          "files": [
+            "apps/helpdesk/src/AIJourney/components/CampaignsTable/CampaignsTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/SegmentsTable/SegmentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ChannelPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/IntentPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentChannelPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/IntentsTable/IntentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/SkillsTable/SkillsTable.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/ChatIntegrationsTable/ChatIntegrationsTable.tsx",
+            "apps/helpdesk/src/pages/settings/historicalImports/Imports/Zendesk/ZendeskImportTable.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentHistoryView/PaymentHistoryTable/PaymentHistoryTableBody.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/MetafieldsImportList/MetafieldsImportList.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/MetafieldsTable/MetafieldsTable.tsx"
+          ]
+        },
+        {
+          "name": "TableV1HeaderRowGroup",
+          "count": 16,
+          "files": [
+            "apps/helpdesk/src/AIJourney/components/CampaignsTable/CampaignsTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/SegmentsTable/SegmentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ChannelPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/IntentPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentChannelPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/IntentsTable/IntentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/SkillsTable/SkillsTable.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/ChatIntegrationsTable/ChatIntegrationsTable.tsx",
+            "apps/helpdesk/src/pages/settings/historicalImports/Imports/Zendesk/ZendeskImportTable.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentHistoryView/PaymentHistoryTable/PaymentHistoryTableHeader.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/MetafieldsImportList/MetafieldsImportList.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/MetafieldsTable/MetafieldsTable.tsx"
+          ]
+        },
+        {
+          "name": "TableV1Toolbar",
+          "count": 13,
+          "files": [
+            "apps/helpdesk/src/AIJourney/components/CampaignsTable/CampaignsTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/SegmentsTable/SegmentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ChannelPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/IntentPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantChannelTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/ShoppingAssistantTopProductsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentChannelPerformanceBreakdownTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/SkillsTable/SkillsTable.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentHistoryView/PaymentHistoryTable/PaymentHistoryTable.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/MetafieldsImportList/MetafieldsImportList.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/MetafieldsTable/MetafieldsTable.tsx"
+          ]
+        },
+        {
+          "name": "TableV1Instance",
+          "count": 8,
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/BulkActions/BulkActions.spec.tsx",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/BulkActions/BulkActions.tsx",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/ItemCount.tsx",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/tests/ItemCount.spec.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentHistoryView/PaymentHistoryTable/PaymentHistoryTableBody.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentHistoryView/PaymentHistoryTable/PaymentHistoryTableHeader.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/hooks/useMetafieldsFiltersHandler.ts",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/hooks/tests/useMetafieldsFiltersHandler.spec.ts"
+          ]
+        },
+        {
+          "name": "createTableV1SortableColumn",
+          "count": 7,
+          "files": [
+            "apps/helpdesk/src/AIJourney/components/CampaignsTable/Columns.tsx",
+            "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysColumns/JourneysColumns.tsx",
+            "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysTable.spec.tsx",
+            "apps/helpdesk/src/AIJourney/components/SegmentsTable/SegmentsColumns.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationList/ChatIntegrationsTable/ChatIntegrationsTable.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/MetafieldsImportList/Columns.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/MetafieldsTable/Columns.tsx"
           ]
         },
         {
@@ -6702,12 +6830,58 @@
           ]
         },
         {
+          "name": "TableV1CellContext",
+          "count": 4,
+          "files": [
+            "apps/helpdesk/src/AIJourney/components/SegmentsTable/SegmentsColumns.spec.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/utils/getCheckboxContent.spec.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/utils/getCheckboxContent.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/utils/shouldShowLimitTooltip.spec.tsx"
+          ]
+        },
+        {
+          "name": "TableV1Header",
+          "count": 4,
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/IntentsTable/IntentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/SkillsTable/SkillsTable.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/views/PaymentHistoryView/PaymentHistoryTable/PaymentHistoryTableHeader.tsx"
+          ]
+        },
+        {
           "name": "LegacyChip",
           "count": 3,
           "files": [
             "apps/helpdesk/src/pages/aiAgent/actions/components/UseCaseTemplateModal.tsx",
             "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundPredefinedMessages/PlaygroundPredefinedMessages.tsx",
             "apps/helpdesk/src/pages/convert/campaigns/containers/QuickFilters/QuickFilters.tsx"
+          ]
+        },
+        {
+          "name": "TableV1Cell",
+          "count": 3,
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/IntentsTable/IntentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/SkillsTable/SkillsTable.tsx"
+          ]
+        },
+        {
+          "name": "TableV1Row",
+          "count": 3,
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/IntentsTable/IntentsTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/SkillsTable/SkillsTable.tsx"
+          ]
+        },
+        {
+          "name": "createTableV1SelectableColumn",
+          "count": 2,
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/columns.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/ImportMetafieldFlow/MetafieldsImportList/Columns.tsx"
           ]
         },
         {
@@ -6748,6 +6922,30 @@
           "files": [
             "apps/helpdesk/src/pages/common/components/ItemWithTooltip/ItemWithTooltip.tsx",
             "apps/helpdesk/src/pages/settings/new_billing/components/NavigateToChangeBillingFrequency/NavigateToChangeBillingFrequency.tsx"
+          ]
+        },
+        {
+          "name": "TableV1Meta",
+          "count": 2,
+          "files": [
+            "apps/helpdesk/src/AIJourney/components/CampaignsTable/types.ts",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/ShopifyMetafields/MetafieldsTable/types.ts"
+          ]
+        },
+        {
+          "name": "TableV1Pagination",
+          "count": 2,
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/KnowledgeHubTable.tsx",
+            "apps/helpdesk/src/pages/aiAgent/skills/components/SkillsTable/SkillsTable.tsx"
+          ]
+        },
+        {
+          "name": "TableV1ToolbarRow",
+          "count": 2,
+          "files": [
+            "apps/helpdesk/src/AIJourney/components/CampaignsTable/CampaignsTable.tsx",
+            "apps/helpdesk/src/AIJourney/components/JourneysTable/JourneysTable.tsx"
           ]
         },
         {

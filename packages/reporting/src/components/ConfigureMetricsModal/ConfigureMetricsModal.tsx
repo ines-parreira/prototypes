@@ -6,7 +6,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 
 import {
     Button,
-    HeaderCell,
     Icon,
     OverlayContent,
     OverlayFooter,
@@ -16,8 +15,9 @@ import {
     TableV1Body as TableBody,
     TableV1Cell as TableCell,
     TableV1Header as TableHeader,
-    TableRoot,
     TableV1Row as TableRow,
+    TableV1HeaderCell,
+    TableV1Root,
     Text,
     ToggleField,
     Tooltip,
@@ -200,22 +200,24 @@ export const ConfigureMetricsModal = ({
             <OverlayContent>
                 <DndProvider backend={HTML5Backend}>
                     <div className={css.tableContainer}>
-                        <TableRoot withBorder>
+                        <TableV1Root withBorder>
                             <TableHeader>
                                 <TableRow>
-                                    <HeaderCell className={css.dragHeaderCell}>
+                                    <TableV1HeaderCell
+                                        className={css.dragHeaderCell}
+                                    >
                                         <Icon name="arrow-down-up" />
-                                    </HeaderCell>
-                                    <HeaderCell
+                                    </TableV1HeaderCell>
+                                    <TableV1HeaderCell
                                         className={css.metricHeaderCell}
                                     >
                                         Metric name
-                                    </HeaderCell>
-                                    <HeaderCell
+                                    </TableV1HeaderCell>
+                                    <TableV1HeaderCell
                                         className={css.toggleHeaderCell}
                                     >
                                         Show
-                                    </HeaderCell>
+                                    </TableV1HeaderCell>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -236,7 +238,7 @@ export const ConfigureMetricsModal = ({
                                     />
                                 ))}
                             </TableBody>
-                        </TableRoot>
+                        </TableV1Root>
                     </div>
                 </DndProvider>
             </OverlayContent>

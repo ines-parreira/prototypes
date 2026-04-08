@@ -4,7 +4,7 @@ import type { ColumnDef, SortingState } from '@gorgias/axiom'
 import {
     Box,
     CheckBoxField,
-    createSelectableColumn,
+    createTableV1SelectableColumn,
     Icon,
     Loader,
     Skeleton,
@@ -53,7 +53,7 @@ const getCheckboxContent = (
 const createSelectableColumnWithTooltip =
     (): ColumnDef<GroupedKnowledgeItem> => {
         const baseSelectableColumn =
-            createSelectableColumn<GroupedKnowledgeItem>()
+            createTableV1SelectableColumn<GroupedKnowledgeItem>()
         const originalCell = baseSelectableColumn.cell
         const originalHeader = baseSelectableColumn.header
 

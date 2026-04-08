@@ -3,10 +3,10 @@ import { useMemo } from 'react'
 import {
     Box,
     Button,
-    TableRoot,
-    TableToolbar,
+    TableV1Root,
+    TableV1Toolbar,
     Text,
-    useTable,
+    useTableV1,
 } from '@gorgias/axiom'
 
 import type { Invoice } from 'state/billing/types'
@@ -48,7 +48,7 @@ export const PaymentHistoryTable = ({
         [invoiceBeingPaid, confirmPayment, retryPayment],
     )
 
-    const table = useTable({
+    const table = useTableV1({
         data: invoices,
         columns,
         sortingConfig: {
@@ -68,16 +68,16 @@ export const PaymentHistoryTable = ({
 
     return (
         <>
-            <TableRoot className={css.invoicesTable}>
+            <TableV1Root className={css.invoicesTable}>
                 <PaymentHistoryTableHeader table={table} />
                 <PaymentHistoryTableBody
                     table={table}
                     isLoading={isLoading}
                     columnCount={columns.length}
                 />
-            </TableRoot>
+            </TableV1Root>
             {shouldShowPagination && (
-                <TableToolbar<Invoice>
+                <TableV1Toolbar<Invoice>
                     table={table}
                     bottomRow={{
                         right: [

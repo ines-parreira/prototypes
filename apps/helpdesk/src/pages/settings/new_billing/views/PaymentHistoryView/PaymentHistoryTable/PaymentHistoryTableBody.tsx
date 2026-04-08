@@ -1,5 +1,5 @@
 import type { TableV1Instance } from '@gorgias/axiom'
-import { TableBodyContent } from '@gorgias/axiom'
+import { TableV1BodyContent } from '@gorgias/axiom'
 
 import type { Invoice } from 'state/billing/types'
 
@@ -15,7 +15,7 @@ export const PaymentHistoryTableBody = ({
     columnCount,
 }: PaymentHistoryTableBodyProps) => {
     return (
-        <TableBodyContent
+        <TableV1BodyContent
             isLoading={isLoading}
             rows={table.getRowModel().rows}
             columnCount={columnCount}

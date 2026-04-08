@@ -6,7 +6,7 @@ import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
 
-import { Box, createSortableColumn } from '@gorgias/axiom'
+import { Box, createTableV1SortableColumn } from '@gorgias/axiom'
 import type { ColumnDef } from '@gorgias/axiom'
 import type { JourneyApiDTO } from '@gorgias/convert-client'
 import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
@@ -37,7 +37,7 @@ const mockColumns: ColumnDef<JourneyApiDTO, unknown>[] = [
         cell: (info) => <Box gap="xs">{String(info.getValue())}</Box>,
         enableSorting: true,
     },
-    createSortableColumn<JourneyApiDTO>('state', 'Status', (info) => (
+    createTableV1SortableColumn<JourneyApiDTO>('state', 'Status', (info) => (
         <Box gap="xs">{String(info.getValue())}</Box>
     )),
 ]
@@ -315,7 +315,7 @@ describe('JourneysTable', () => {
     describe('MetricCell loading states', () => {
         it('should render skeleton when metrics are loading', () => {
             const metricColumn: ColumnDef<JourneyApiDTO, unknown>[] = [
-                createSortableColumn<JourneyApiDTO>(
+                createTableV1SortableColumn<JourneyApiDTO>(
                     'metrics.recipients',
                     'Recipients',
                     (info) => {
@@ -345,7 +345,7 @@ describe('JourneysTable', () => {
 
         it('should render metric values when metrics are defined', () => {
             const metricColumn: ColumnDef<JourneyApiDTO, unknown>[] = [
-                createSortableColumn<JourneyApiDTO>(
+                createTableV1SortableColumn<JourneyApiDTO>(
                     'metrics.recipients',
                     'Recipients',
                     (info) => {

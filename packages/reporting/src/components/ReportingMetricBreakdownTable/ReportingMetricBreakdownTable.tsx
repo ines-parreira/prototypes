@@ -2,14 +2,14 @@ import type { ReactNode } from 'react'
 
 import {
     Box,
-    HeaderRowGroup,
     Heading,
-    TableBodyContent,
     TableHeader,
-    TableRoot,
-    TableToolbar,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
+    TableV1Toolbar,
     Text,
-    useTable,
+    useTableV1,
 } from '@gorgias/axiom'
 
 import { buildMetricColumnDefs, buildNameColDef } from './columnBuilders'
@@ -48,7 +48,7 @@ export function ReportingMetricBreakdownTable<TData>({
 
     const isAnyLoading = Object.values(loadingStates).some(Boolean)
 
-    const table = useTable({
+    const table = useTableV1({
         data,
         columns,
         sortingConfig: {
@@ -76,7 +76,7 @@ export function ReportingMetricBreakdownTable<TData>({
                 <Box display="flex" justifyContent="flex-end">
                     {DownloadButton}
                 </Box>
-                <TableToolbar
+                <TableV1Toolbar
                     table={table}
                     bottomRow={{
                         left: ['totalCount'],
@@ -84,7 +84,7 @@ export function ReportingMetricBreakdownTable<TData>({
                     }}
                 />
                 <Box className={css.tableWrapper}>
-                    <TableRoot withBorder>
+                    <TableV1Root withBorder>
                         {showEmptyState ? (
                             <Box
                                 width="100%"
@@ -106,11 +106,11 @@ export function ReportingMetricBreakdownTable<TData>({
                         ) : (
                             <>
                                 <TableHeader>
-                                    <HeaderRowGroup
+                                    <TableV1HeaderRowGroup
                                         headerGroups={table.getHeaderGroups()}
                                     />
                                 </TableHeader>
-                                <TableBodyContent
+                                <TableV1BodyContent
                                     isLoading={
                                         isAnyLoading && data.length === 0
                                     }
@@ -120,7 +120,7 @@ export function ReportingMetricBreakdownTable<TData>({
                                 />
                             </>
                         )}
-                    </TableRoot>
+                    </TableV1Root>
                 </Box>
             </Box>
         </Box>

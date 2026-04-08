@@ -4,12 +4,12 @@ import { useState } from 'react'
 import {
     Box,
     Button,
-    HeaderCell,
     Icon,
     TableBody,
     TableHeader,
-    TableRoot,
     TableRow,
+    TableV1HeaderCell,
+    TableV1Root,
     Text,
     ToggleField,
 } from '@gorgias/axiom'
@@ -76,19 +76,21 @@ export function EditableFieldSection({
                 </Box>
             </Box>
             {isExpanded && (
-                <TableRoot>
+                <TableV1Root>
                     <TableHeader>
                         <TableRow>
-                            <HeaderCell className={css.dragHeaderCell}>
+                            <TableV1HeaderCell className={css.dragHeaderCell}>
                                 <Icon name="arrow-down-up" />
-                            </HeaderCell>
-                            <HeaderCell className={css.metricHeaderCell}>
+                            </TableV1HeaderCell>
+                            <TableV1HeaderCell className={css.metricHeaderCell}>
                                 Metric
-                            </HeaderCell>
-                            <HeaderCell className={css.valueHeaderCell} />
-                            <HeaderCell className={css.toggleHeaderCell}>
+                            </TableV1HeaderCell>
+                            <TableV1HeaderCell
+                                className={css.valueHeaderCell}
+                            />
+                            <TableV1HeaderCell className={css.toggleHeaderCell}>
                                 Show
-                            </HeaderCell>
+                            </TableV1HeaderCell>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -103,7 +105,7 @@ export function EditableFieldSection({
                             />
                         ))}
                     </TableBody>
-                </TableRoot>
+                </TableV1Root>
             )}
         </div>
     )

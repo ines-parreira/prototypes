@@ -1,12 +1,12 @@
 import {
     Box,
-    HeaderRowGroup,
     Pagination,
-    TableBodyContent,
     TableHeader,
-    TableRoot,
-    TableToolbar,
-    useTable,
+    TableV1BodyContent,
+    TableV1HeaderRowGroup,
+    TableV1Root,
+    TableV1Toolbar,
+    useTableV1,
 } from '@gorgias/axiom'
 
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
@@ -42,7 +42,7 @@ export const SegmentsTable = ({
     onDuplicateClick,
     onDeleteClick,
 }: Props) => {
-    const table = useTable({
+    const table = useTableV1({
         data,
         columns: [...segmentColumns, ...actionColumns],
         sortingConfig: {
@@ -70,16 +70,18 @@ export const SegmentsTable = ({
     return (
         <>
             <Box paddingLeft="lg">
-                <TableToolbar<Segment>
+                <TableV1Toolbar<Segment>
                     table={table}
                     topRow={{ left: ['search'] }}
                 />
             </Box>
-            <TableRoot withBorder={false}>
+            <TableV1Root withBorder={false}>
                 <TableHeader>
-                    <HeaderRowGroup headerGroups={table.getHeaderGroups()} />
+                    <TableV1HeaderRowGroup
+                        headerGroups={table.getHeaderGroups()}
+                    />
                 </TableHeader>
-                <TableBodyContent
+                <TableV1BodyContent
                     isLoading={isLoading}
                     rows={table.getRowModel().rows}
                     columnCount={segmentColumns.length + actionColumns.length}
@@ -88,9 +90,9 @@ export const SegmentsTable = ({
                         <span>No segments found</span>
                     )}
                 />
-            </TableRoot>
+            </TableV1Root>
             <Box justifyContent="flex-end" paddingRight="md" paddingTop="xs">
-                <TableToolbar
+                <TableV1Toolbar
                     table={table}
                     bottomRow={{
                         right: [

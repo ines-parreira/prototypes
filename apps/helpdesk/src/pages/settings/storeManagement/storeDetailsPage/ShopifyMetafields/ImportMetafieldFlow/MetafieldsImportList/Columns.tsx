@@ -1,8 +1,8 @@
 import type { ColumnDef } from '@gorgias/axiom'
 import {
     Box,
-    createSelectableColumn,
-    createSortableColumn,
+    createTableV1SelectableColumn,
+    createTableV1SortableColumn,
     Icon,
     Text,
 } from '@gorgias/axiom'
@@ -19,33 +19,39 @@ import TypeNotSupportedTooltip from './TypeNotSupportedTooltip'
 
 import css from './Columns.less'
 
-const nameColumn = createSortableColumn<Field>('name', 'Name', (info) => {
-    return (
-        <Box gap="xxxs" minWidth="200px">
-            {isSupportedMetafieldType(info.row.original.type) ? (
-                <Text variant="bold">{info.getValue() as string}</Text>
-            ) : (
-                <Box gap="xxxs" alignItems="center">
-                    <span className={css.nameColumnText}>
-                        {' '}
-                        <Text variant="bold">{info.getValue() as string}</Text>
-                    </span>
+const nameColumn = createTableV1SortableColumn<Field>(
+    'name',
+    'Name',
+    (info) => {
+        return (
+            <Box gap="xxxs" minWidth="200px">
+                {isSupportedMetafieldType(info.row.original.type) ? (
+                    <Text variant="bold">{info.getValue() as string}</Text>
+                ) : (
+                    <Box gap="xxxs" alignItems="center">
+                        <span className={css.nameColumnText}>
+                            {' '}
+                            <Text variant="bold">
+                                {info.getValue() as string}
+                            </Text>
+                        </span>
 
-                    <TypeNotSupportedTooltip
-                        trigger={
-                            <span role="button" tabIndex={0}>
-                                <Icon
-                                    color={'var(--content-warning-primary)'}
-                                    name="triangle-warning"
-                                />
-                            </span>
-                        }
-                    />
-                </Box>
-            )}
-        </Box>
-    )
-})
+                        <TypeNotSupportedTooltip
+                            trigger={
+                                <span role="button" tabIndex={0}>
+                                    <Icon
+                                        color={'var(--content-warning-primary)'}
+                                        name="triangle-warning"
+                                    />
+                                </span>
+                            }
+                        />
+                    </Box>
+                )}
+            </Box>
+        )
+    },
+)
 
 const typeColumn: ColumnDef<Field> = {
     accessorKey: 'type',
@@ -60,7 +66,7 @@ const typeColumn: ColumnDef<Field> = {
     ),
 }
 
-const baseSelectableColumn = createSelectableColumn<Field>()
+const baseSelectableColumn = createTableV1SelectableColumn<Field>()
 
 export const getCheckboxColumn = (
     selectedMetafields: Field[],
