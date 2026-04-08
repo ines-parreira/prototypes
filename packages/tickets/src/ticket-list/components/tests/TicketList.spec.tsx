@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import type { QueryClient } from '@tanstack/react-query'
 import { act, cleanup, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
@@ -26,13 +27,18 @@ import type {
     TicketCompact,
 } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import {
+    createTestQueryClient,
+    render,
+    testAppQueryClient,
+} from '../../../tests/render.utils'
 import * as useCurrentUserLanguagePreferencesModule from '../../../translations/hooks/useCurrentUserLanguagePreferences'
 import * as useTicketsTranslatedPropertiesModule from '../../../translations/hooks/useTicketsTranslatedProperties'
 import * as useMarkTicketAsReadModule from '../../hooks/useMarkTicketAsRead'
 import * as useSortOrderModule from '../../hooks/useSortOrder'
 import * as useTicketSelectionModule from '../../hooks/useTicketSelection'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
+import { getTicketsListQueryKey } from '../../hooks/useTicketsList'
 import * as useViewVisibleTicketsModule from '../../hooks/useViewVisibleTickets'
 import { TicketList } from '../TicketList'
 
@@ -125,13 +131,17 @@ beforeEach(() => {
     )
 })
 
-function renderWithVirtuoso(component: React.ReactElement) {
+function renderWithVirtuoso(
+    component: React.ReactElement,
+    options?: { queryClient?: QueryClient },
+) {
     return render(
         <VirtuosoMockContext.Provider
             value={{ viewportHeight: 600, itemHeight: 100 }}
         >
             {component}
         </VirtuosoMockContext.Provider>,
+        options,
     )
 }
 
@@ -237,6 +247,40 @@ describe('TicketList', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: 'Refresh' }),
+        ).toBeInTheDocument()
+    })
+
+    it('should keep rendering loaded tickets when a refresh fails', async () => {
+        const queryClient = createTestQueryClient()
+        const queryKey = getTicketsListQueryKey(viewId, {
+            order_by: 'last_message_datetime:asc',
+        })
+
+        renderWithVirtuoso(
+            <TicketList viewId={viewId} onCollapse={vi.fn()} />,
+            {
+                queryClient,
+            },
+        )
+
+        await waitFor(() => {
+            expect(screen.getByText('First Ticket')).toBeInTheDocument()
+        })
+
+        server.use(
+            mockListViewItemsHandler(async () =>
+                HttpResponse.json(undefined, { status: 500 }),
+            ).handler,
+        )
+        await queryClient.refetchQueries({ queryKey })
+        await waitFor(() => {
+            expect(queryClient.getQueryState(queryKey)?.status).toBe('error')
+        })
+
+        expect(screen.getByText('Second Ticket')).toBeInTheDocument()
+        expect(screen.queryByText('Network error')).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('checkbox', { name: 'Select all' }),
         ).toBeInTheDocument()
     })
 

@@ -423,6 +423,18 @@ describe('TicketTable', () => {
         })
     })
 
+    it('keeps rendering loaded rows when a refresh fails', async () => {
+        mockState.error = new Error('Not found')
+
+        renderTicketTable()
+
+        await waitForTicketTableToBeReady()
+
+        expect(screen.getByRole('table')).toBeInTheDocument()
+        expect(getRowSelectionCheckbox()).toBeInTheDocument()
+        expect(screen.queryByText('Network error')).not.toBeInTheDocument()
+    })
+
     it('does not render the bulk action controls with no selection', () => {
         renderTicketTable()
 
@@ -765,11 +777,17 @@ describe('TicketTable', () => {
     })
 
     it('renders the error placeholder and refresh action when loading tickets fails', async () => {
+        mockState.tickets = []
         mockState.error = new Error('Failed to load tickets')
         const { user } = renderTicketTable()
 
         await waitFor(() => {
-            expect(screen.getByText('Network error')).toBeInTheDocument()
+            expect(
+                screen.getByRole('heading', { name: 'Network error' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText('Unable to load this view currently'),
+            ).toBeInTheDocument()
             expect(
                 screen.getByRole('button', { name: 'Refresh' }),
             ).toBeInTheDocument()

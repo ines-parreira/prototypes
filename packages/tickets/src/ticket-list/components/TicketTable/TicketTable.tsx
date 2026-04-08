@@ -4,7 +4,11 @@ import { usePrevious } from '@repo/hooks'
 import { useUserDateTimePreferences } from '@repo/preferences'
 import { useHistory } from 'react-router-dom'
 
-import { DataTable, DataTablePagination } from '@gorgias/axiom'
+import {
+    createLocalStoragePersistence,
+    DataTable,
+    DataTablePagination,
+} from '@gorgias/axiom'
 import type { RowSelectionState, SortingState } from '@gorgias/axiom'
 import { useGetView } from '@gorgias/helpdesk-queries'
 import type {
@@ -199,6 +203,14 @@ function TicketTableComponent({
     })
     const { canUseRestrictedBulkActions } = useBulkActionMenuState()
     const isTrashLikeView = useIsTrashLikeView(viewId, { isDraftView })
+    const persistenceId = useMemo(
+        () => (isDraftView ? 'ticket-table-draft' : `ticket-table-${viewId}`),
+        [isDraftView, viewId],
+    )
+    const localStoragePersistence = useMemo(
+        () => createLocalStoragePersistence(persistenceId),
+        [persistenceId],
+    )
     const [isAssignUserOpen, setIsAssignUserOpen] = useState(false)
     const [isAddTagOpen, setIsAddTagOpen] = useState(false)
     useEffect(() => {
@@ -248,7 +260,10 @@ function TicketTableComponent({
         await handleUndelete({ removeFromCurrentViewCache: true })
     }, [handleUndelete])
 
-    if (placeholderKind === EmptyViewsState.Error) {
+    const shouldShowErrorPlaceholder =
+        placeholderKind === EmptyViewsState.Error && items.length === 0
+
+    if (shouldShowErrorPlaceholder) {
         return (
             <TicketListEmptyPlaceholder
                 isLoading={false}
@@ -276,10 +291,8 @@ function TicketTableComponent({
             <DataTable
                 key={`${viewId}-${sortOrder}`}
                 persistence={{
-                    id: isDraftView
-                        ? 'ticket-table-draft'
-                        : `ticket-table-${viewId}`,
                     enable: true,
+                    localStorage: localStoragePersistence,
                 }}
                 data={items}
                 columns={columns}

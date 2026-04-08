@@ -308,7 +308,10 @@ export function TicketList({
         }
     }, [hasNextPage, isFetchingNextPage, fetchNextPage])
 
-    if (placeholderKind === EmptyViewsState.Error) {
+    const shouldShowErrorPlaceholder =
+        placeholderKind === EmptyViewsState.Error && tickets.length === 0
+
+    if (shouldShowErrorPlaceholder) {
         return (
             <TicketListEmptyPlaceholder
                 isLoading={false}
