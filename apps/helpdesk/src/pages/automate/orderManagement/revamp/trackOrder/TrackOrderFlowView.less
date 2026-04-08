@@ -1,0 +1,22 @@
+:local {
+    .textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: var(--spacing-sm);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: 4px;
+        font-size: 14px;
+        font-family: inherit;
+        color: var(--content-neutral-default);
+        background-color: var(--surface-neutral-primary);
+        resize: vertical;
+        outline: none;
+        box-sizing: border-box;
+
+        &:focus {
+            border-color: var(--border-accent-default);
+            box-shadow: 0 0 0 2px
+                var(--border-accent-default, rgba(0, 0, 0, 0.1));
+        }
+    }
+}
