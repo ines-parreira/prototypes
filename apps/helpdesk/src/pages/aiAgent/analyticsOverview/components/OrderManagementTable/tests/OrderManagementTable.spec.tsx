@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import type { MetricColumnConfig, MetricLoadingStates } from '@repo/reporting'
 import { render, screen } from '@testing-library/react'
 
@@ -23,6 +25,13 @@ jest.mock(
         DownloadOrderManagementButton: () => (
             <div>Download Order Management</div>
         ),
+    }),
+)
+
+jest.mock(
+    'pages/aiAgent/analyticsOverview/components/OrderManagementTable/drillDowns/ReturnOrdersDrillDown',
+    () => ({
+        ReturnOrdersDrillDown: () => <div>Return Orders Drill Down</div>,
     }),
 )
 
@@ -75,11 +84,12 @@ const getLastCallProps = () =>
         metricColumns: MetricColumnConfig[]
         loadingStates: MetricLoadingStates
         getRowKey: (row: OrderManagementEntityMetrics) => string
-        DownloadButton: React.ReactNode
+        DownloadButton: ReactNode
         nameColumns: {
             accessor: string
             label: string
             displayNames?: Record<string, string>
+            renderDrilldown?: (value: string) => ReactNode
         }[]
     }
 
@@ -120,7 +130,29 @@ describe('OrderManagementTable', () => {
             accessor: 'entity',
             label: 'Feature name',
             displayNames: ENTITY_DISPLAY_NAMES,
+            renderDrilldown: expect.any(Function),
         })
+    })
+
+    it('renders ReturnOrdersDrillDown when renderDrilldown is called with loop_returns_started', () => {
+        renderComponent()
+
+        const { renderDrilldown } = getLastCallProps().nameColumns[0] as {
+            renderDrilldown: (value: string) => ReactNode
+        }
+        render(<>{renderDrilldown('loop_returns_started')}</>)
+
+        expect(screen.getByText('Return Orders Drill Down')).toBeInTheDocument()
+    })
+
+    it('renders nothing when renderDrilldown is called with any other entity value', () => {
+        renderComponent()
+
+        const { renderDrilldown } = getLastCallProps().nameColumns[0] as {
+            renderDrilldown: (value: string) => ReactNode
+        }
+
+        expect(renderDrilldown('cancel_order')).toBeNull()
     })
 
     it('renders DownloadOrderManagementButton as the DownloadButton', () => {

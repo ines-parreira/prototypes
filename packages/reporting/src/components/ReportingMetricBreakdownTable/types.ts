@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react'
+
 import type { formatMetricValue } from '../../utils/helpers'
 
 export type MetricLoadingStates = Record<string, boolean>
@@ -21,4 +23,5 @@ export type NameColumnConfig = {
     displayNames?: Record<string, string>
     formatName?: (value: string) => string
     getHref?: (value: string) => string | undefined
+    renderDrilldown?: (value: string) => ReactNode
 }

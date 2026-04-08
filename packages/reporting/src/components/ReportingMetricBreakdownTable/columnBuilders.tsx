@@ -32,6 +32,7 @@ export function buildNameColDef<TData>(
                     alignItems="center"
                     gap="xxxs"
                     className={css.featureName}
+                    minWidth={config.renderDrilldown ? 200 : undefined}
                 >
                     <Text size="sm" variant="bold">
                         {config.label}
@@ -81,6 +82,7 @@ export function buildNameColDef<TData>(
                             <Icon name="external-link" size="xs" />
                         </Link>
                     )}
+                    {config.renderDrilldown?.(value)}
                 </Box>
             )
         },

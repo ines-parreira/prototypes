@@ -54,6 +54,10 @@ export {
 } from './components/ConfigureMetricsModal'
 export { DrillDownModalTrigger } from './components/DrillDownModal/DrillDownModalTrigger'
 export {
+    DrillDownSidePanel,
+    DrillDownSidePanelTrigger,
+} from './components/DrillDownSidePanel'
+export {
     ShowMoreList,
     type ShowMoreListProps,
 } from './components/ShowMoreList/ShowMoreList'

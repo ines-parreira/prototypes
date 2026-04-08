@@ -7,8 +7,16 @@ import {
 import { DownloadOrderManagementButton } from 'pages/aiAgent/analyticsOverview/components/OrderManagementTable/DownloadOrderManagementButton'
 import { useOrderManagementMetrics } from 'pages/aiAgent/analyticsOverview/hooks/useOrderManagementMetrics'
 
+import { ReturnOrdersDrillDown } from './drillDowns/ReturnOrdersDrillDown'
+
 export const OrderManagementTable = () => {
     const { data = [], loadingStates } = useOrderManagementMetrics()
+
+    const renderDrilldown = (value: string) => {
+        return value === 'loop_returns_started' ? (
+            <ReturnOrdersDrillDown />
+        ) : null
+    }
 
     return (
         <ReportingMetricBreakdownTable
@@ -22,6 +30,7 @@ export const OrderManagementTable = () => {
                     accessor: 'entity',
                     label: 'Feature name',
                     displayNames: ENTITY_DISPLAY_NAMES,
+                    renderDrilldown,
                 },
             ]}
         />

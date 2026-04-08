@@ -159,7 +159,7 @@ export const useOrderManagementMetrics = (): OrderManagementMetricsData => {
             entityData,
             filteredEntities,
             buildOrderManagementRow(entityData),
-            { skipEmptyCheck: isLoading },
+            { skipEmptyCheck: true },
         )
     }, [entityData, isLoading])
 
