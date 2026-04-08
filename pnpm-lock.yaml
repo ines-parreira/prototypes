@@ -1866,6 +1866,9 @@ importers:
       '@repo/config':
         specifier: workspace:*
         version: link:../../config
+      '@repo/testing':
+        specifier: workspace:*
+        version: link:../testing
       '@repo/utils':
         specifier: workspace:*
         version: link:../utils

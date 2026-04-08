@@ -6,3 +6,6 @@ window.location.reload = vi.fn()
 
 window.CSRF_TOKEN = 'abcd'
 window.GORGIAS_RELEASE = '1'
+
+Element.prototype.setPointerCapture = vi.fn()
+Element.prototype.releasePointerCapture = vi.fn()

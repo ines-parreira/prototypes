@@ -33,6 +33,7 @@
         "@gorgias/axiom": "catalog:axiom",
         "@repo/browser-storage": "workspace:*",
         "@repo/config": "workspace:*",
+        "@repo/testing": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/query-async-storage-persister": "4.36.1",
         "@tanstack/react-query": "catalog:rest-api-sdk",

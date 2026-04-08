@@ -1,17 +1,15 @@
-import { createElement } from 'react'
-
 import { isCallActive } from '@repo/utils'
 import type { AxiosResponse } from 'axios'
 import axios from 'axios'
 import rateLimit from 'axios-rate-limit'
 
-import { toast } from '@gorgias/axiom'
+import { Button, toast } from '@gorgias/axiom'
 
 const client = createClient()
 
 const newReleaseToastId = 'new-release-notification'
-const newReleaseMessage =
-    'An update is available for Gorgias. The app will reload automatically.'
+const newReleaseTitle = 'An update is available for Gorgias'
+const newReleaseCaption = 'The app will reload automatically.'
 const reloadDelay = 60000
 
 export default client
@@ -19,6 +17,7 @@ export default client
 export const timeoutTime = 10800000
 
 let reloadTimeout: ReturnType<typeof setTimeout> | null = null
+let autoReloadTimeout: ReturnType<typeof setTimeout> | null = null
 
 export function createClient() {
     return rateLimit(
@@ -37,21 +36,37 @@ export function createClient() {
 }
 
 const showNewReleaseToast = () => {
-    toast.warning(newReleaseMessage, {
+    toast.warning(newReleaseTitle, {
         id: newReleaseToastId,
+        caption: newReleaseCaption,
         duration: reloadDelay,
-        actions: ({ id }) =>
-            createElement(
-                'button',
-                {
-                    onClick: () => {
+        actions: ({ id }) => (
+            <>
+                <Button
+                    size="sm"
+                    onClick={() => {
                         toast.dismiss(id)
                         window.location.reload()
-                    },
-                    type: 'button',
-                },
-                'Reload',
-            ),
+                    }}
+                >
+                    Reload
+                </Button>
+                <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={() => {
+                        toast.dismiss(id)
+                        if (autoReloadTimeout) {
+                            clearTimeout(autoReloadTimeout)
+                            autoReloadTimeout = null
+                        }
+                        reloadTimeout = null
+                    }}
+                >
+                    Cancel
+                </Button>
+            </>
+        ),
     })
 }
 
@@ -73,7 +88,7 @@ export function handleNewRelease() {
             reloadTimeout = setTimeout(() => {
                 showNewReleaseToast()
 
-                setTimeout(() => {
+                autoReloadTimeout = setTimeout(() => {
                     if (!isCallActive()) {
                         toast.dismiss(newReleaseToastId)
                         window.location.reload()
