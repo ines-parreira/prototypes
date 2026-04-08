@@ -1,6 +1,9 @@
+import { Box } from '@gorgias/axiom'
+
 import { isSocialMediaHiddenComment } from '../../hooks/messages/predicates'
 import type { TicketThreadSocialMediaInstagramCommentItem } from '../../hooks/messages/types'
 import { useTicketThreadLegacyBridge } from '../../utils/LegacyBridge/useTicketThreadLegacyBridge'
+import { RespondedByDMBubble } from '../SocialMessageBubble/RespondedByDMBubble'
 import { TicketMessageActions } from '../TicketMessageActions/TicketMessageActions'
 import { InstagramCommentMessage } from './InstagramCommentMessage'
 import { InstagramCommentMessageActions } from './InstagramCommentMessageActions'
@@ -16,6 +19,10 @@ export function InstagramCommentMessageWrapper({
         useTicketThreadLegacyBridge()
     const isHidden = isSocialMediaHiddenComment(item.data)
     const commentBody = item.data.body_text || ''
+    const meta = item.data.meta as any
+    const repliedBy = meta?.replied_by as
+        | { ticket_id: number; ticket_message_id: number }
+        | undefined
 
     const handleHideComment = () => {
         onInstagramCommentHideComment({
@@ -42,21 +49,46 @@ export function InstagramCommentMessageWrapper({
     }
 
     return (
-        <InstagramCommentMessage
-            item={item}
-            actions={
-                item.data.from_agent ? (
-                    <TicketMessageActions message={item.data} />
-                ) : (
-                    <InstagramCommentMessageActions
-                        message={item.data}
-                        isHidden={isHidden}
-                        onPrivateReply={handlePrivateReply}
-                        onHideComment={handleHideComment}
+        <Box display="flex" flexDirection="column" width="100%" gap="xs">
+            <Box
+                display="flex"
+                justifyContent={
+                    item.data.from_agent ? 'flex-end' : 'flex-start'
+                }
+                width="100%"
+            >
+                <InstagramCommentMessage
+                    item={item}
+                    actions={
+                        item.data.from_agent ? (
+                            <TicketMessageActions message={item.data} />
+                        ) : (
+                            <InstagramCommentMessageActions
+                                message={item.data}
+                                isHidden={isHidden}
+                                onPrivateReply={handlePrivateReply}
+                                onHideComment={handleHideComment}
+                            />
+                        )
+                    }
+                    onUnhide={isHidden ? handleHideComment : undefined}
+                />
+            </Box>
+            {repliedBy && (
+                <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    width="100%"
+                    data-responded-by-dm
+                >
+                    <RespondedByDMBubble
+                        channel="Instagram Direct Message"
+                        channelIcon="channel-instagram-dm"
+                        ticketId={repliedBy.ticket_id}
+                        ticketMessageId={repliedBy.ticket_message_id}
                     />
-                )
-            }
-            onUnhide={isHidden ? handleHideComment : undefined}
-        />
+                </Box>
+            )}
+        </Box>
     )
 }

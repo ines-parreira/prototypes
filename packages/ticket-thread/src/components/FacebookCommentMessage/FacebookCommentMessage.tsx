@@ -11,7 +11,6 @@ import { buildGoToLink } from '../../utils/buildGoToLink'
 import { MessageBody } from '../MessageBubble/components/MessageBody'
 import { DeletedCommentBanner } from '../SocialMessageBubble/DeletedCommentBanner'
 import { HiddenCommentBanner } from '../SocialMessageBubble/HiddenCommentBanner'
-import { RepliedViaLabel } from '../SocialMessageBubble/RepliedViaLabel'
 import { SocialMessageBubble } from '../SocialMessageBubble/SocialMessageBubble'
 import { ViewOnSocialLink } from '../SocialMessageBubble/ViewOnSocialLink'
 import type { FacebookCommentMeta } from './types'
@@ -48,7 +47,6 @@ export function FacebookCommentMessage({
     const channelTo = item.data.source?.to?.[0]?.name ?? null
 
     const meta = item.data.meta as FacebookCommentMeta | null
-    const repliedBy = meta?.replied_by
     const isLiked = Boolean(
         meta?.facebook_reactions?.page_reaction?.reaction_type,
     )
@@ -110,12 +108,6 @@ export function FacebookCommentMessage({
                 />
             )}
             <MessageBody item={item} />
-            {repliedBy && (
-                <RepliedViaLabel
-                    channel="Messenger"
-                    ticketId={repliedBy.ticket_id}
-                />
-            )}
             {isLiked && (
                 <div>
                     <Tag color={TagColor.Blue} size="sm" onClose={onLike}>

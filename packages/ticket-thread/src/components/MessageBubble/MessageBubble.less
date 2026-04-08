@@ -78,6 +78,11 @@
         visibility: visible;
     }
 
+    .messageRow:has([data-responded-by-dm]:hover) .bubbleActions,
+    .messageRow:has([data-original-comment-context]:hover) .bubbleActions {
+        visibility: hidden;
+    }
+
     // For grouped messages, suppress row-level hover and show per individual message
     .messageRow:hover [data-grouped-message] .bubbleActions,
     .messageRow:focus-within [data-grouped-message] .bubbleActions {

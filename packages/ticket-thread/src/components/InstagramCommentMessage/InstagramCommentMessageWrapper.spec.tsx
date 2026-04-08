@@ -2,6 +2,8 @@ import { act, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 
 import { mockTicketMessage } from '@gorgias/helpdesk-mocks'
+import type * as HelpdeskQueriesModule from '@gorgias/helpdesk-queries'
+import { useGetTicketMessage } from '@gorgias/helpdesk-queries'
 
 import type { TicketThreadSocialMediaInstagramCommentItem } from '../../hooks/messages/types'
 import { TicketThreadItemTag } from '../../hooks/types'
@@ -16,6 +18,13 @@ vi.mock('../../utils/LegacyBridge/useTicketThreadLegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
 }))
 
+vi.mock('@gorgias/helpdesk-queries', async (importOriginal) => {
+    const actual = await importOriginal<typeof HelpdeskQueriesModule>()
+    return { ...actual, useGetTicketMessage: vi.fn() }
+})
+
+const mockUseGetTicketMessage = vi.mocked(useGetTicketMessage)
+
 const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
 
 const onInstagramCommentPrivateReply = vi.fn()
@@ -27,6 +36,9 @@ beforeEach(() => {
         getCurrentUserHandler().handler,
         http.get('/api/users/:id', () => HttpResponse.json({})),
     )
+    mockUseGetTicketMessage.mockReturnValue({ data: undefined } as ReturnType<
+        typeof useGetTicketMessage
+    >)
     const legacyBridgeValue: LegacyBridgeContextType = {
         currentTicketShoppingAssistantData: {
             influencedOrders: [],
@@ -199,8 +211,8 @@ describe('InstagramCommentMessageWrapper', () => {
         })
     })
 
-    describe('replied via Instagram Direct Message', () => {
-        it('shows "replied via Instagram Direct Message" label when meta.replied_by is set', () => {
+    describe('responded via Instagram Direct Message', () => {
+        it('shows "replied via Instagram Direct Message" in the agent bubble when meta.replied_by is set', () => {
             render(
                 <InstagramCommentMessageWrapper
                     item={makeItem({

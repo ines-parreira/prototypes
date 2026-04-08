@@ -1,6 +1,9 @@
+import { Box } from '@gorgias/axiom'
+
 import { isSocialMediaHiddenComment } from '../../hooks/messages/predicates'
 import type { TicketThreadSocialMediaFacebookCommentItem } from '../../hooks/messages/types'
 import { useTicketThreadLegacyBridge } from '../../utils/LegacyBridge/useTicketThreadLegacyBridge'
+import { RespondedByDMBubble } from '../SocialMessageBubble/RespondedByDMBubble'
 import { FacebookCommentMessage } from './FacebookCommentMessage'
 import { FacebookCommentMessageActions } from './FacebookCommentMessageActions'
 import type { FacebookCommentMeta } from './types'
@@ -19,6 +22,7 @@ export function FacebookCommentMessageWrapper({
     } = useTicketThreadLegacyBridge()
     const isHidden = isSocialMediaHiddenComment(item.data)
     const meta = item.data.meta as FacebookCommentMeta | null
+    const repliedBy = meta?.replied_by
     const isLiked = Boolean(
         meta?.facebook_reactions?.page_reaction?.reaction_type,
     )
@@ -57,19 +61,44 @@ export function FacebookCommentMessageWrapper({
     }
 
     return (
-        <FacebookCommentMessage
-            item={item}
-            onUnhide={isHidden ? handleHideComment : undefined}
-            onLike={handleLike}
-            actions={
-                <FacebookCommentMessageActions
-                    message={item.data}
-                    isHidden={isHidden}
+        <Box display="flex" flexDirection="column" width="100%" gap="xs">
+            <Box
+                display="flex"
+                justifyContent={
+                    item.data.from_agent ? 'flex-end' : 'flex-start'
+                }
+                width="100%"
+            >
+                <FacebookCommentMessage
+                    item={item}
+                    onUnhide={isHidden ? handleHideComment : undefined}
                     onLike={handleLike}
-                    onPrivateReply={handlePrivateReply}
-                    onHideComment={handleHideComment}
+                    actions={
+                        <FacebookCommentMessageActions
+                            message={item.data}
+                            isHidden={isHidden}
+                            onLike={handleLike}
+                            onPrivateReply={handlePrivateReply}
+                            onHideComment={handleHideComment}
+                        />
+                    }
                 />
-            }
-        />
+            </Box>
+            {repliedBy && (
+                <Box
+                    display="flex"
+                    justifyContent="flex-end"
+                    width="100%"
+                    data-responded-by-dm
+                >
+                    <RespondedByDMBubble
+                        channel="Messenger"
+                        channelIcon="channel-fb-messenger"
+                        ticketId={repliedBy.ticket_id}
+                        ticketMessageId={repliedBy.ticket_message_id}
+                    />
+                </Box>
+            )}
+        </Box>
     )
 }

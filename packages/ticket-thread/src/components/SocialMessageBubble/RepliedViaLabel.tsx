@@ -6,13 +6,20 @@ import css from './SocialMessageBubble.less'
 type RepliedViaLabelProps = {
     channel: string
     ticketId: number
+    label?: string
 }
 
-export function RepliedViaLabel({ channel, ticketId }: RepliedViaLabelProps) {
+export function RepliedViaLabel({
+    channel,
+    ticketId,
+    label = 'Original comment via',
+}: RepliedViaLabelProps) {
     return (
         <Box alignItems="center" gap="xxs" className={css.repliedViaLabel}>
             <Icon name={'arrow-undo-down-right' as IconName} size="sm" />
-            <Text size="sm">replied via {channel}</Text>
+            <Text size="sm">
+                {label} {channel}
+            </Text>
             <a
                 href={`${ticketId}`}
                 target="_blank"
