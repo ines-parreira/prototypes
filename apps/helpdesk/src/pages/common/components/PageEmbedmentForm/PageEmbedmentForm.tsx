@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 
+import { slugify } from '@repo/utils'
 import classNames from 'classnames'
 
 import { LegacyLabel as Label, LegacyTooltip as Tooltip } from '@gorgias/axiom'
@@ -16,7 +17,6 @@ import InputField from 'pages/common/forms/input/InputField'
 import SelectInputBox, {
     SelectInputBoxContext,
 } from 'pages/common/forms/input/SelectInputBox'
-import { slugify } from 'utils/slugifyForShopify'
 
 import { SHOPIFY_PAGE_EMBEDMENT_PATH_PREFIX } from './constants'
 import type { EmbeddablePage } from './types'

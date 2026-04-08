@@ -6,3 +6,4 @@ export {
     removeSuffix,
     truncateWords,
 } from './string'
+export { slugify } from './slugify'
