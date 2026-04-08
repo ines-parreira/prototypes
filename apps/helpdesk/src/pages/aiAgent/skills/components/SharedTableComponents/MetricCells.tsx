@@ -1,6 +1,6 @@
 import { DrillDownModalTrigger } from '@repo/reporting'
 
-import { Box, ProgressBar, Text } from '@gorgias/axiom'
+import { Box, Heading, ProgressBar, Text } from '@gorgias/axiom'
 
 import type {
     IntentMetric,
@@ -22,6 +22,8 @@ type BaseMetricCellProps = {
     title?: string
     isRow?: boolean
     isBold?: boolean
+    isSmall?: boolean
+    isHeading?: boolean
 }
 
 type KnowledgeMetricCellProps = BaseMetricCellProps & {
@@ -88,8 +90,7 @@ export const MetricCell = (props: MetricCellProps) => {
     return (
         <Box
             flexDirection={props?.isRow ? 'row' : 'column'}
-            gap="xxs"
-            width="100%"
+            gap={props.isSmall ? 'xxxxs' : 'xxs'}
             className={css.metricCell}
         >
             <DrillDownModalTrigger
@@ -97,9 +98,16 @@ export const MetricCell = (props: MetricCellProps) => {
                 tooltipText={tooltipText}
                 enabled={props.value > 0}
             >
-                <Text size="sm" variant={props.isBold ? 'bold' : 'regular'}>
-                    {props.displayValue}
-                </Text>
+                {props.isHeading ? (
+                    <Heading>{props.displayValue}</Heading>
+                ) : (
+                    <Text
+                        size={props.isSmall ? 'xs' : 'sm'}
+                        variant={props.isBold ? 'bold' : 'regular'}
+                    >
+                        {props.displayValue}
+                    </Text>
+                )}
             </DrillDownModalTrigger>
             {props.showProgressBar && (
                 <Box alignItems="center">

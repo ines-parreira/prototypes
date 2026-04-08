@@ -4,6 +4,7 @@ import { useShallow } from 'zustand/react/shallow'
 
 import { Box } from '@gorgias/axiom'
 
+import { DrillDownModal } from 'domains/reporting/pages/common/drill-down/DrillDownModal'
 import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions'
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { SkillToolbarControls } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarSkillControls'
@@ -90,6 +91,7 @@ export const KnowledgeEditorSkillContent = () => {
             </Box>
 
             <SkillEditorSidePanel />
+            <DrillDownModal isLegacy={false} />
         </Box>
     )
 }

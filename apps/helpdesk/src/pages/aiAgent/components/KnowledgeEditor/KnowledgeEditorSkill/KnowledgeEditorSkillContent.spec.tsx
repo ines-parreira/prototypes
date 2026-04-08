@@ -2,6 +2,9 @@ import { render, screen } from '@testing-library/react'
 
 import { KnowledgeEditorSkillContent } from './KnowledgeEditorSkillContent'
 
+jest.mock('domains/reporting/pages/common/drill-down/DrillDownModal', () => ({
+    DrillDownModal: () => null,
+}))
 jest.mock('./context')
 jest.mock(
     'pages/aiAgent/components/GuidanceEditor/useGetGuidancesAvailableActions',
