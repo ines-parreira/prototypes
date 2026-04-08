@@ -262,6 +262,12 @@ export function submitView(view: ViewImmutable) {
             .delete('allItemsSelected')
             .delete('filters_ast')
             .delete('search')
+        const createViewPayload = viewToSend
+            .delete('id')
+            .delete('created_datetime')
+            .delete('deactivated_datetime')
+            .delete('uri')
+            .toJS()
 
         dispatch({
             type: types.SUBMIT_VIEW_START,
@@ -279,10 +285,7 @@ export function submitView(view: ViewImmutable) {
                     .toJS(),
             )
         } else {
-            promise = client.post<View>(
-                '/api/views/',
-                viewToSend.delete('id').delete('created_datetime').toJS(),
-            )
+            promise = client.post<View>('/api/views/', createViewPayload)
         }
 
         return promise

@@ -1197,6 +1197,8 @@ describe('actions', () => {
                 filters_ast: 'foo filters',
                 search: 'foo search',
                 created_datetime: '2024-01-01T00:00:00Z',
+                deactivated_datetime: '2024-01-02T00:00:00Z',
+                uri: '/api/views/99/',
             }
             const viewToCreate = view.merge(propsToRemove)
             const mockServer = new MockAdapter(client)
