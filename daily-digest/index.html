@@ -356,10 +356,13 @@
       font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
       align-self: flex-start;
     }
-    /* Tag colors match Axiom: Red=Alert, Orange=Review, Accent=Opportunity */
-    .attn-tag.alert   { background: #fff1f0; color: #d90b28; border: 1px solid rgba(217,11,40,0.2); }
-    .attn-tag.review  { background: #fff7ed; color: #ea580c; border: 1px solid rgba(234,88,12,0.2); }
-    .attn-tag.opp     { background: #f1ecff; color: #683fcf; border: 1px solid rgba(104,63,207,0.2); }
+    /* Tag colors match Axiom */
+    .attn-tag.alert    { background: #ffecef; color: #d90b28; border: 1px solid rgba(217,11,40,0.15); }
+    .attn-tag.tracking { background: #fff5ee; color: #a94f13; border: 1px solid rgba(169,79,19,0.15); }
+    .attn-tag.neutral  { background: white; color: #1e242e; border: 0.5px solid rgba(103,113,131,0.5); }
+    .attn-tag.review   { background: #fff7ed; color: #ea580c; border: 1px solid rgba(234,88,12,0.2); }
+    .attn-tag.opp      { background: #f1ecff; color: #683fcf; border: 1px solid rgba(104,63,207,0.2); }
+    .attn-timestamp    { font-size: 10px; font-weight: 400; color: #6e7686; margin-top: 8px; }
     .attn-title { font-size: 15px; font-weight: 600; color: #1e242e; line-height: 1.4; }
     .attn-desc  { font-size: 13px; font-weight: 400; color: #5c6370; line-height: 1.5; }
     .attn-metrics { display: flex; gap: 24px; margin-top: 12px; }
@@ -421,17 +424,31 @@
         </div>
       </div>
 
-      <!-- Primary nav — Daily digest + New chat flush together -->
+      <!-- Primary nav — icons from Figma node 343-1508 -->
       <div class="nav-group">
-        <div class="nav-subgroup">
-          <div class="nav-item active">
-            <img src="https://www.figma.com/api/mcp/asset/f45ff9c4-c5a6-419c-8899-2249ef2b784a" width="16" height="16" alt="">
-            <span class="nav-label">Daily digest</span>
-          </div>
-          <div class="nav-item secondary">
-            <img src="data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.17123 12.9152C6.00377 13.3953 6.96973 13.67 7.99985 13.67C11.1313 13.67 13.6701 11.1315 13.6701 8.00008C13.6701 4.86862 11.1315 2.33008 8.00008 2.33008C4.86862 2.33008 2.33008 4.86862 2.33008 8.00008C2.33008 9.0302 2.60479 9.99616 3.08494 10.8287L3.0868 10.8319C3.133 10.912 3.1563 10.9524 3.16685 10.9906C3.1768 11.0266 3.17958 11.059 3.17703 11.0962C3.17429 11.1363 3.1608 11.1778 3.13313 11.2608L2.64877 12.7139L2.64816 12.7158C2.54597 13.0224 2.49487 13.1757 2.53129 13.2778C2.56305 13.3669 2.63354 13.4372 2.7226 13.4689C2.82451 13.5053 2.97712 13.4544 3.28235 13.3527L3.28615 13.3512L4.73923 12.8669C4.82196 12.8393 4.86402 12.8253 4.904 12.8226C4.94127 12.82 4.97342 12.8234 5.00942 12.8334C5.0477 12.8439 5.08811 12.8672 5.16863 12.9137L5.17123 12.9152Z' stroke='%235c6370' stroke-width='1.3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" width="16" height="16" alt="">
-            <span class="nav-label">New chat</span>
-          </div>
+        <div class="nav-item active">
+          <img src="https://www.figma.com/api/mcp/asset/f880ec46-cd49-4427-83b7-5b6d1960df7c" width="16" height="16" alt="">
+          <span class="nav-label">Daily digest</span>
+        </div>
+        <div class="nav-item secondary">
+          <img src="https://www.figma.com/api/mcp/asset/74e3af1e-67ae-45ff-8e1d-0089312f1643" width="16" height="16" alt="">
+          <span class="nav-label">Inbox</span>
+        </div>
+        <div class="nav-item secondary">
+          <img src="https://www.figma.com/api/mcp/asset/c732bbcf-2b6b-4d67-b8f2-2e6ffd624853" width="16" height="16" alt="">
+          <span class="nav-label">Skills</span>
+        </div>
+        <div class="nav-item secondary">
+          <img src="https://www.figma.com/api/mcp/asset/8caae9cf-fb82-49a9-8ff1-206172049ef4" width="16" height="16" alt="">
+          <span class="nav-label">Knowledge</span>
+        </div>
+        <div class="nav-item secondary">
+          <img src="https://www.figma.com/api/mcp/asset/25a0eea8-a7a7-463b-bdbc-32eb80fa65e6" width="16" height="16" alt="">
+          <span class="nav-label">Performance</span>
+        </div>
+        <div class="nav-item secondary">
+          <img src="https://www.figma.com/api/mcp/asset/8ea66aba-cd61-45be-b203-fcbf406f6c63" width="16" height="16" alt="">
+          <span class="nav-label">Settings</span>
         </div>
       </div>
 
@@ -467,14 +484,14 @@
 
       <!-- Page header -->
       <div class="page-header">
-        <h1 class="greeting">Good morning, Jane!</h1>
+        <h1 class="greeting">Good morning, Inês!</h1>
         <div class="date-tag" style="background: white; border: 1px solid #e8e8ec;">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <rect x="1.5" y="2.5" width="11" height="10" rx="1.5" stroke="#6e7686" stroke-width="1.2"/>
             <path d="M4.5 1.5V3.5M9.5 1.5V3.5" stroke="#6e7686" stroke-width="1.2" stroke-linecap="round"/>
             <path d="M1.5 6H12.5" stroke="#6e7686" stroke-width="1.2"/>
           </svg>
-          Apr 2, 2026 · 11:30 AM
+          April 9, 2026 · 8:47 AM
         </div>
       </div>
 
@@ -508,13 +525,11 @@
               </div>
             </div>
           </div>
-          <div class="chat-suggestion-btns">
+          <div class="chat-suggestion-btns" style="display:none">
             <button class="suggestion-btn">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 4.01001H7.55691M11.99 4.01001L11.9898 8.44334M11.99 4.01001L4.01001 11.99" stroke="#1E242E" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Why did subscription spike?
             </button>
             <button class="suggestion-btn">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 4.01001H7.55691M11.99 4.01001L11.9898 8.44334M11.99 4.01001L4.01001 11.99" stroke="#1E242E" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Compare performance to last week
             </button>
           </div>
@@ -529,120 +544,81 @@
           <div class="metric-card">
             <div class="metric-label">Adherence</div>
             <div>
+              <div class="metric-value">91%</div>
+              <div class="metric-sub" style="display:flex;align-items:center;gap:6px;">
+                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#32c898;flex-shrink:0;"></span>
+                Holding steady
+              </div>
+            </div>
+          </div>
+
+          <!-- Success rate -->
+          <div class="metric-card">
+            <div class="metric-label">Success rate</div>
+            <div>
+              <div class="metric-value">78%</div>
+              <div class="delta delta-up">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                5pp vs last week
+              </div>
+            </div>
+          </div>
+
+          <!-- Coverage rate -->
+          <div class="metric-card">
+            <div class="metric-label">Coverage rate</div>
+            <div>
+              <div class="metric-value">64%</div>
+              <div class="delta delta-up">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                3pp vs last week
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer satisfaction -->
+          <div class="metric-card">
+            <div class="metric-label">Customer satisfaction</div>
+            <div>
               <div class="metric-value-row">
-                <svg width="40" height="36" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="mask0_234_34848" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="0" width="33" height="33"><circle cx="19.4844" cy="16.9036" r="16" fill="#D9D9D9"/></mask><g mask="url(#mask0_234_34848)"><g filter="url(#filter0_f_234_34848)"><ellipse cx="15.7636" cy="18.0136" rx="11.7636" ry="10.6496" fill="#EF4C00"/><ellipse cx="24.3686" cy="10.6232" rx="10.7441" ry="6.62315" fill="#32C898"/><ellipse cx="18.7558" cy="24.4901" rx="10.7441" ry="6.62315" fill="#FFCB31"/><ellipse cx="24.843" cy="17.4464" rx="9.07986" ry="5.59723" fill="#32C898"/></g></g><circle cx="19.0633" cy="17.3243" r="11.3685" fill="url(#paint0_radial_234_34848)" fill-opacity="0.72"/><circle cx="19.0633" cy="17.3243" r="11.6614" stroke="white" stroke-opacity="0.8" stroke-width="0.585859"/><g filter="url(#filter1_d_234_34848)"><circle cx="25.3788" cy="16.0612" r="3.07547" stroke="white" stroke-width="1.42803" shape-rendering="crispEdges"/></g><defs><filter id="filter0_f_234_34848" x="0" y="0" width="39.1128" height="35.1133" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur_234_34848"/></filter><filter id="filter1_d_234_34848" x="20.1613" y="12.2717" width="10.4352" height="10.4349" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="1.42803"/><feGaussianBlur stdDeviation="0.714015"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_234_34848"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_234_34848" result="shape"/></filter><radialGradient id="paint0_radial_234_34848" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(19.0633 17.3243) rotate(90) scale(12)"><stop offset="0.8" stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white"/></radialGradient></defs></svg>
-                <span class="metric-value">92%</span>
+                <img src="https://www.figma.com/api/mcp/asset/200ebbe2-caba-4f70-9214-b5d58b0e2045" width="36" height="36" alt="">
+                <span class="metric-value">4.3/5</span>
               </div>
-              <div class="metric-sub">Everything running normally</div>
-            </div>
-          </div>
-
-          <!-- Automation rate -->
-          <div class="metric-card">
-            <div class="metric-label">Automation rate</div>
-            <div>
-              <div class="metric-value">89%</div>
-              <div class="metric-sub">847 of 853 conversations</div>
-            </div>
-          </div>
-
-          <!-- Total sales -->
-          <div class="metric-card">
-            <div class="metric-label">Total sales</div>
-            <div>
-              <div class="metric-value">$12,800</div>
               <div class="delta delta-up">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                14% vs last week
-              </div>
-            </div>
-          </div>
-
-          <!-- Conversation sentiment -->
-          <div class="metric-card">
-            <div class="metric-label">Conversation sentiment</div>
-            <div>
-              <div class="metric-value">84%</div>
-              <div class="delta delta-up">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                0.5% vs last week
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                from brand voice tweaks
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Needs attention (revamped) -->
+        <!-- Insights section -->
         <div class="attention-section">
           <div class="attention-header">
-            Needs attention <span class="attention-count">3</span>
+            Insights <span class="attention-count">2</span>
           </div>
 
-          <!-- Card 1: Alert — Spike in subscription -->
-          <div class="attention-card monitor-btn">
-            <div class="attention-card-body">
-              <span class="attn-tag alert">Alert</span>
-              <div class="attn-title">Spike in subscription reactivations</div>
-              <div class="attn-desc">47 customers asked to skip their next delivery had their entire subscription paused indefinitely.</div>
-              <div class="attn-metrics">
-                <div>
-                  <div class="attn-metric-label">Adherence</div>
-                  <div class="attn-metric-value">91% <span class="attn-metric-delta down">↘ 71%</span></div>
-                </div>
-                <div>
-                  <div class="attn-metric-label">Reactivations</div>
-                  <div class="attn-metric-value">312 <span class="attn-metric-delta up">↗ 340%</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="attn-chart">
-              <img src="https://www.figma.com/api/mcp/asset/cad79da9-4c1a-4b26-8b55-d30bc7ab1495" alt="chart">
-            </div>
-          </div>
-
-          <!-- Card 2: Review — Adjust tone of voice -->
+          <!-- Card 1: Tracking — Delivery frequency cancellations -->
           <div class="attention-card">
             <div class="attention-card-body">
-              <span class="attn-tag review">Review</span>
-              <div class="attn-title">Adjust tone of voice</div>
-              <div class="attn-desc">Responses were too formal for casual customer inquiries, customers expect a warmer, more conversational tone.</div>
-              <div class="attn-metrics">
-                <div>
-                  <div class="attn-metric-label">Tone of voice score</div>
-                  <div class="attn-metric-value">75% <span class="attn-metric-delta down">↘ 8%</span></div>
-                </div>
-                <div>
-                  <div class="attn-metric-label">Flagged</div>
-                  <div class="attn-metric-value">2</div>
-                </div>
-              </div>
-            </div>
-            <div class="attn-chart">
-              <img src="https://www.figma.com/api/mcp/asset/62760aab-a400-4233-869a-3244e7d4cc21" alt="chart">
+              <span class="attn-tag tracking">Tracking</span>
+              <div class="attn-title">5 of 14 cancellations mention delivery frequency</div>
+              <div class="attn-desc">Customers are saying "too often," "can't keep up," and "every two weeks is too much." These may not be product-dissatisfied — they might be cadence-dissatisfied. I'm tracking this pattern and will have more data by end of week.</div>
+              <div class="attn-timestamp">Last 24 hours</div>
             </div>
           </div>
 
-          <!-- Card 3: Opportunity — High-intent dropoff -->
+          <!-- Card 2: Alert + escalations — Pet safety -->
           <div class="attention-card">
             <div class="attention-card-body">
-              <span class="attn-tag opp">Opportunity</span>
-              <div class="attn-title">High-intent shoppers dropped off before Mother's Day</div>
-              <div class="attn-desc">34 shoppers asked about delivery timing but never completed their purchase.</div>
-              <div class="attn-metrics">
-                <div>
-                  <div class="attn-metric-label">High-intent dropoff</div>
-                  <div class="attn-metric-value">34 <span class="attn-metric-delta up">+280%</span></div>
-                </div>
-                <div>
-                  <div class="attn-metric-label">Est. revenue at risk</div>
-                  <div class="attn-metric-value">$4.2K</div>
-                </div>
+              <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                <span class="attn-tag alert">Alert</span>
+                <span class="attn-tag neutral">4 escalations</span>
               </div>
+              <div class="attn-title">Pet safety questions — no skill coverage</div>
+              <div class="attn-desc">4 customers asked whether their bouquet is safe for a recipient's pet. I don't have pet safety data in my product knowledge, so I escalated all 4. These follow the same resolution pattern.</div>
+              <div class="attn-timestamp">Overnight</div>
             </div>
-            <div class="attn-chart"></div>
           </div>
 
         </div>
@@ -743,14 +719,16 @@
   const ELEVEN_API_KEY = 'sk_bdb72b91df9a9340374c092f7ce565c7d91c36dee0d7cc08';
   const ELEVEN_VOICE_ID = 'IKne3meq5aSn9XLyUdCD';
 
-  // The script the voice will narrate — based on the 3 attention cards
-  const NARRATION_TEXT = `Good morning, Inês. Here's what needs your attention today.
+  // The script the voice will narrate — based on the Insights cards
+  const NARRATION_TEXT = `Good morning, Inês. Here's your daily digest for April 9th.
 
-First, an alert: Spike in subscription reactivations. 47 customers who asked to skip their next delivery had their entire subscription paused indefinitely. Adherence is down to 91%, and reactivations are up 340%.
+Your key metrics: Adherence is at 91% and holding steady. Success rate is 78%, up 5 percentage points versus last week. Coverage rate is 64%, up 3 points. And customer satisfaction is 4.3 out of 5, improving thanks to recent brand voice tweaks.
 
-Second, a review: Adjust tone of voice. Responses were too formal for casual customer inquiries. Customers expect a warmer, more conversational tone. Tone of voice score is currently at 75%.
+Two insights need your attention today.
 
-Third, an opportunity: High-intent shoppers dropped off before Mother's Day. 34 shoppers asked about delivery timing but never completed their purchase. That's an estimated 4.2 thousand dollars in revenue at risk.`;
+First, I'm tracking a pattern: 5 of 14 cancellations in the last 24 hours mention delivery frequency. Customers are saying things like "too often" and "every two weeks is too much." These customers may not be product-dissatisfied — they might be cadence-dissatisfied. I'll have more data by end of week.
+
+Second, an alert from overnight: 4 customers asked whether their bouquet is safe for a recipient's pet. I don't have pet safety data in my product knowledge, so I escalated all 4. These follow the same resolution pattern and may be worth adding to your knowledge base.`;
 
   let currentAudio = null;
   let isPlaying = false;
