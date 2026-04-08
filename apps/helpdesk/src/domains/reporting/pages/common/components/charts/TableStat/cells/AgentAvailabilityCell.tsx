@@ -5,7 +5,7 @@ import {
     AgentAvailabilityStatusSelect,
     useUpdateUserAvailabilityStatus,
 } from '@repo/agent-status'
-import { isAdmin } from '@repo/utils'
+import { isAdmin, isTeamLead } from '@repo/utils'
 
 import {
     Box,
@@ -38,7 +38,8 @@ export function AgentAvailabilityCell({ userId }: Props) {
         hasNoData,
     } = useAvailabilityCellData({ userId })
 
-    const canEditStatus = isAdmin(currentUser.toJS())
+    const canEditStatus =
+        isAdmin(currentUser.toJS()) || isTeamLead(currentUser.toJS())
 
     const handleSelectStatus = useCallback(
         async (status: AgentStatusWithSystem) => {

@@ -297,35 +297,61 @@ describe('AgentAvailabilityCell', () => {
             })
         })
 
-        it('should disable dropdown for non-admin users', () => {
-            const nonAdminUser = {
+        it('should enable dropdown for team lead users', async () => {
+            const testUser = userEvent.setup()
+
+            const teamLeadUser = {
                 ...user,
                 role: { name: UserRole.Agent },
             }
 
-            const nonAdminState = {
-                currentUser: fromJS(nonAdminUser),
+            const teamLeadState = {
+                currentUser: fromJS(teamLeadUser),
             }
 
-            renderComponent(nonAdminState)
+            renderComponent(teamLeadState)
+
+            const badge = screen.getByRole('button', { name: /Available/i })
+            expect(badge).not.toHaveAttribute('aria-disabled', 'true')
+
+            await testUser.click(badge)
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: /Unavailable/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should disable dropdown for non-admin, non-team-lead users', () => {
+            const basicAgentUser = {
+                ...user,
+                role: { name: UserRole.BasicAgent },
+            }
+
+            const basicAgentState = {
+                currentUser: fromJS(basicAgentUser),
+            }
+
+            renderComponent(basicAgentState)
 
             const badge = screen.getByRole('button', { name: /Available/i })
             expect(badge).toBeDisabled()
         })
 
-        it('should not open dropdown when non-admin user clicks', async () => {
+        it('should not open dropdown when non-admin, non-team-lead user clicks', async () => {
             const testUser = userEvent.setup()
 
-            const nonAdminUser = {
+            const basicAgentUser = {
                 ...user,
-                role: { name: UserRole.Agent },
+                role: { name: UserRole.BasicAgent },
             }
 
-            const nonAdminState = {
-                currentUser: fromJS(nonAdminUser),
+            const basicAgentState = {
+                currentUser: fromJS(basicAgentUser),
             }
 
-            renderComponent(nonAdminState)
+            renderComponent(basicAgentState)
 
             const badge = screen.getByRole('button', { name: /Available/i })
             await testUser.click(badge)
