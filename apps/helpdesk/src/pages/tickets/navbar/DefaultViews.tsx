@@ -9,6 +9,8 @@ import { Box, Button, Text } from '@gorgias/axiom'
 
 import { TicketNavbarViewLinkItem } from './TicketNavbarViewLinkItem'
 
+import css from './DefaultViews.less'
+
 export function DefaultViews() {
     const { isAdmin } = useCurrentUserRole()
     const { displayedViews, showToggle, isExpanded, toggleExpanded } =
@@ -17,6 +19,7 @@ export function DefaultViews() {
     return (
         <Box flexDirection="column" gap="xxxxs">
             <Box
+                className={css.header}
                 alignItems="center"
                 justifyContent="space-between"
                 width="100%"

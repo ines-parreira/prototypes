@@ -1,0 +1,18 @@
+:local {
+    .header {
+        [data-name='multi-select'] {
+            opacity: 0;
+            transition: opacity 0.2s ease-in;
+        }
+
+        &:hover {
+            [data-name='multi-select'] {
+                opacity: 1;
+            }
+        }
+
+        [data-name='multi-select'][data-open] {
+            opacity: 1;
+        }
+    }
+}
