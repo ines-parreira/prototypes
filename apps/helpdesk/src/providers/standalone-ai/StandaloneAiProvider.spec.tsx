@@ -20,6 +20,7 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 
 const mockUseFlag = jest.mocked(useFlag)
 const mockUseGetCurrentUser = jest.mocked(useGetCurrentUser)
+const STANDALONE_AI_HELPDESK_ID = '69b020cb62b0f057d64d0307'
 
 const FEATURE_ACCESS_LIST = {
     statistics: { canRead: false, canWrite: false },
@@ -53,13 +54,23 @@ function givenNoUser() {
     } as ReturnType<typeof useGetCurrentUser>)
 }
 
+function givenAppClientId(appClientId: string | undefined) {
+    Object.defineProperty(window, 'APP_CLIENT_ID', {
+        configurable: true,
+        writable: true,
+        value: appClientId,
+    })
+}
+
 describe('StandaloneAiProvider', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        givenAppClientId(STANDALONE_AI_HELPDESK_ID)
     })
 
     afterEach(() => {
         jest.restoreAllMocks()
+        givenAppClientId(undefined)
     })
 
     it('should throw when the context hook is used outside the provider', () => {
@@ -72,6 +83,19 @@ describe('StandaloneAiProvider', () => {
 
     it('should return default access when the feature flag is disabled', () => {
         givenFeatureFlag(false)
+        givenUserRole(UserRole.Admin)
+
+        const { result } = renderHook(() => useStandaloneAiContext(), {
+            wrapper,
+        })
+
+        expect(result.current.isStandaloneAiAgent).toBe(false)
+        expect(result.current.accessFeaturesMapped).toEqual(FEATURE_ACCESS_LIST)
+    })
+
+    it('should return default access when the feature flag is enabled for a different app client id', () => {
+        givenFeatureFlag(true)
+        givenAppClientId('different-helpdesk-id')
         givenUserRole(UserRole.Admin)
 
         const { result } = renderHook(() => useStandaloneAiContext(), {

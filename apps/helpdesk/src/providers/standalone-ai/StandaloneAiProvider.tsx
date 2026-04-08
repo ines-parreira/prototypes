@@ -58,7 +58,16 @@ type Props = {
 }
 
 export const StandaloneAiProvider = ({ children }: Props) => {
-    const isStandaloneAiAgent = useFlag(FeatureFlagKey.AiStandaloneAgent, false)
+    const STANDALONE_AI_HELPDESK_ID = '69b020cb62b0f057d64d0307'
+    const APP_CLIENT_ID = window.APP_CLIENT_ID as unknown as string
+
+    const isStandaloneAiAgentEnabled = useFlag(
+        FeatureFlagKey.AiStandaloneAgent,
+        false,
+    )
+    const isStandaloneAiAgent =
+        isStandaloneAiAgentEnabled &&
+        APP_CLIENT_ID === STANDALONE_AI_HELPDESK_ID
 
     const { data: currentUser } = useGetCurrentUser()
 
