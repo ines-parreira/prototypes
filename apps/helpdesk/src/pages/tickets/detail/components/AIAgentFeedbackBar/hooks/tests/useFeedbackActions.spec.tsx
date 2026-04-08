@@ -287,13 +287,29 @@ describe('useFeedbackActions', () => {
         )
 
         it('should handle STORE_WEBSITE_QUESTION_SNIPPET type', async () => {
-            const mockData = createMockData(
-                AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
-            )
-            const { result, mocks } = renderHookWithData(mockData)
             const mockChoice = createMockChoice(
                 AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+                { value: '12345' },
             )
+            const mockData = createMockData(
+                AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+                {
+                    storeWebsiteQuestions: [
+                        {
+                            id: 'store_website_question_snippet-1',
+                            helpCenterId: 101,
+                            url: 'https://store.example.com/faq',
+                            article_id: 12345,
+                        },
+                    ],
+                    enrichedData: createMockEnrichedData({
+                        suggestedResources: [
+                            createSuggestedResource(mockChoice),
+                        ],
+                    }),
+                },
+            )
+            const { result, mocks } = renderHookWithData(mockData)
 
             await result.current.onSubmitMissingKnowledge([mockChoice])
 

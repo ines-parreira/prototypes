@@ -121,7 +121,7 @@ export const useFeedbackActions = ({
                 }
                 case AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET: {
                     const storeWebsiteQuestion = storeWebsiteQuestions?.find(
-                        (a) => a.id.toString() === choice.value,
+                        (a) => a.article_id.toString() === choice.value,
                     )
                     if (!storeWebsiteQuestion) return null
                     return {

@@ -35,6 +35,19 @@ import type { useGetAllRelatedResourceData } from './useEnrichKnowledgeFeedbackD
 import { getResourceMetadata } from './useEnrichKnowledgeFeedbackData/utils'
 import { knowledgeResourceShouldBeLink } from './utils'
 
+const RESOURCE_TYPE_TO_LABEL_KEY: Partial<
+    Record<AiAgentKnowledgeResourceTypeEnum, string>
+> = {
+    [AiAgentKnowledgeResourceTypeEnum.GUIDANCE]: 'guidance',
+    [AiAgentKnowledgeResourceTypeEnum.ACTION]: 'action',
+    [AiAgentKnowledgeResourceTypeEnum.ARTICLE]: 'article',
+    [AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET]: 'external_snippet',
+    [AiAgentKnowledgeResourceTypeEnum.FILE_EXTERNAL_SNIPPET]:
+        'file_external_snippet',
+    [AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET]:
+        'store_website',
+}
+
 type MissingKnowledgeSelectProps = {
     helpCenterId?: number | null
     guidanceHelpCenterId?: number
@@ -204,7 +217,7 @@ const MissingKnowledgeSelect = ({
                     ),
                     resource: question,
                     label: `${SIMPLIFIED_RESOURCE_LABELS.store_website}${question.title}`,
-                    value: question.id.toString(),
+                    value: question.article_id.toString(),
                     type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
                     hide: question.helpCenterId !== snippetHelpCenterId,
                 })),
@@ -484,8 +497,16 @@ const MissingKnowledgeSelect = ({
             {initialValues.length > 0 && (
                 <div className={css.tags}>
                     {initialValues.map((value) => {
+                        const labelKey =
+                            RESOURCE_TYPE_TO_LABEL_KEY[
+                                value.parsedResource
+                                    .resourceType as AiAgentKnowledgeResourceTypeEnum
+                            ]
+                        const prefix = labelKey
+                            ? (SIMPLIFIED_RESOURCE_LABELS[labelKey] ?? '')
+                            : ''
                         let choice = findChoiceFromDisplayLabel(
-                            value.metadata.title,
+                            `${prefix}${value.metadata.title}`,
                         )
                         if (!choice) {
                             choice = {

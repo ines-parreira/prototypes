@@ -1159,6 +1159,94 @@ describe('MissingKnowledgeSelect', () => {
         ])
     })
 
+    it('handles removing a store website question tag via the close button', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        getResourceMetadataMock.mockReturnValue({
+            title: 'Store Website Question Test',
+            content: 'Store Website Question Test',
+            isDeleted: false,
+            isLoading: false,
+        })
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[
+                    {
+                        executionId: 'execution1',
+                        feedback: {} as any,
+                        parsedResource: {
+                            resourceId: '1',
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+                        },
+                        metadata: {
+                            title: 'Store Website Question Test',
+                            content: 'Store Website Question Test',
+                        },
+                    } as SuggestedResource,
+                ]}
+                resourcesData={enrichedDataMock}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        const closeButton = screen.getByText('close')
+        fireEvent.click(closeButton)
+
+        expect(onRemove).toHaveBeenCalledWith([
+            expect.objectContaining({
+                isDeleted: true,
+                value: '1',
+                type: AiAgentKnowledgeResourceTypeEnum.STORE_WEBSITE_QUESTION_SNIPPET,
+            }),
+        ])
+    })
+
+    it('falls back to empty prefix when resource type label is not in SIMPLIFIED_RESOURCE_LABELS', () => {
+        const onSubmit = jest.fn()
+        const onRemove = jest.fn()
+
+        render(
+            <MissingKnowledgeSelect
+                shopName="test-shop"
+                shopType="test-type"
+                helpCenterId={1}
+                guidanceHelpCenterId={2}
+                snippetHelpCenterId={3}
+                accountId={123}
+                initialValues={[
+                    {
+                        executionId: 'execution1',
+                        feedback: {} as any,
+                        parsedResource: {
+                            resourceId: '5',
+                            resourceType:
+                                AiAgentKnowledgeResourceTypeEnum.EXTERNAL_SNIPPET,
+                        },
+                        metadata: {
+                            title: 'Source Item Test',
+                            content: 'Source Item Test',
+                        },
+                    } as SuggestedResource,
+                ]}
+                resourcesData={enrichedDataMock}
+                onSubmit={onSubmit}
+                onRemove={onRemove}
+            />,
+        )
+
+        expect(screen.getByText('Source Item Test')).toBeInTheDocument()
+    })
+
     it('handles null enrichedData correctly', () => {
         const onSubmit = jest.fn()
         const onRemove = jest.fn()
