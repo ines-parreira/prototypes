@@ -2,7 +2,6 @@ import { Card, Elevation, Heading, Icon, Text, TextField } from '@gorgias/axiom'
 
 import type { GorgiasChatPosition } from 'models/integration/types'
 import { GorgiasChatLauncherType } from 'models/integration/types'
-import { useGorgiasChatCreationWizardContext } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { LauncherPositionPicker } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/LauncherPositionPicker/LauncherPositionPicker'
 import { LauncherPreview } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationAppearance/LauncherPreview'
 import type { GorgiasChatLauncherSettings } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useAppearanceForm'
@@ -30,15 +29,6 @@ export const ChatLauncherCard = ({
     const isIconAndLabel =
         launcher.type === GorgiasChatLauncherType.ICON_AND_LABEL
 
-    const { closeChat, updatePosition, updateLauncher, updateTexts } =
-        useGorgiasChatCreationWizardContext()
-
-    const handleLauncherChange = (settings: GorgiasChatLauncherSettings) => {
-        onLauncherChange(settings)
-        updateLauncher(settings)
-        updateTexts({ chatWithUs: settings.label })
-    }
-
     return (
         <Card className={css.card} elevation={Elevation.Mid}>
             <div className={css.cardContent}>
@@ -59,7 +49,7 @@ export const ChatLauncherCard = ({
                                 type="button"
                                 className={`${launcherCss.typeOption} ${launcher.type === GorgiasChatLauncherType.ICON ? launcherCss.typeOptionSelected : ''}`}
                                 onClick={() =>
-                                    handleLauncherChange({
+                                    onLauncherChange({
                                         ...launcher,
                                         type: GorgiasChatLauncherType.ICON,
                                     })
@@ -85,7 +75,7 @@ export const ChatLauncherCard = ({
                                 type="button"
                                 className={`${launcherCss.typeOption} ${isIconAndLabel ? launcherCss.typeOptionSelected : ''}`}
                                 onClick={() =>
-                                    handleLauncherChange({
+                                    onLauncherChange({
                                         ...launcher,
                                         type: GorgiasChatLauncherType.ICON_AND_LABEL,
                                     })
@@ -121,12 +111,11 @@ export const ChatLauncherCard = ({
                                     value={launcher.label}
                                     maxLength={LABEL_MAX_LENGTH}
                                     onChange={(value) =>
-                                        handleLauncherChange({
+                                        onLauncherChange({
                                             ...launcher,
                                             label: value,
                                         })
                                     }
-                                    onFocus={closeChat}
                                     caption={`${launcher.label.length}/${LABEL_MAX_LENGTH} characters · Short labels work best`}
                                 />
                             </div>
@@ -134,15 +123,12 @@ export const ChatLauncherCard = ({
                     )}
 
                     <div className={css.fieldSection}>
-                        <span onFocus={closeChat}>
-                            <LauncherPositionPicker
-                                value={position}
-                                onChange={(position) => {
-                                    onPositionChange(position)
-                                    updatePosition(position)
-                                }}
-                            />
-                        </span>
+                        <LauncherPositionPicker
+                            value={position}
+                            onChange={(position) => {
+                                onPositionChange(position)
+                            }}
+                        />
                     </div>
                 </div>
             </div>
