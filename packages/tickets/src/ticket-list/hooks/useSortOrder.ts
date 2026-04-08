@@ -6,10 +6,22 @@ import { useGetView } from '@gorgias/helpdesk-queries'
 import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 
 const validSortOrders = Object.values(ListViewItemsUpdatesOrderBy)
-const initialSortOrders: Record<number, ListViewItemsUpdatesOrderBy> = {}
+const initialSortOrders: Record<string, ListViewItemsUpdatesOrderBy> = {}
 
-export function useSortOrder(viewId: number) {
-    const { data: viewResponse } = useGetView(viewId)
+type Options = {
+    isDraftView?: boolean
+}
+
+export function useSortOrder(
+    viewId: number,
+    { isDraftView = false }: Options = {},
+) {
+    const { data: viewResponse } = useGetView(viewId, {
+        query: {
+            enabled: !isDraftView,
+        },
+    })
+    const storageKey = isDraftView ? 'draft' : String(viewId)
 
     const defaultSortOrder = useMemo(() => {
         const view = viewResponse?.data
@@ -26,15 +38,15 @@ export function useSortOrder(viewId: number) {
     )
 
     const sortOrder = useMemo(
-        () => sortOrders[viewId] ?? defaultSortOrder,
-        [defaultSortOrder, sortOrders, viewId],
+        () => sortOrders[storageKey] ?? defaultSortOrder,
+        [defaultSortOrder, sortOrders, storageKey],
     )
 
     const setSortOrder = useCallback(
         (order: ListViewItemsUpdatesOrderBy) => {
-            setSortOrders({ ...sortOrders, [viewId]: order })
+            setSortOrders({ ...sortOrders, [storageKey]: order })
         },
-        [setSortOrders, sortOrders, viewId],
+        [setSortOrders, sortOrders, storageKey],
     )
 
     return [sortOrder, setSortOrder] as const

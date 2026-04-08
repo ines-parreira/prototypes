@@ -32,6 +32,7 @@ type Props = {
     onChange: (value: string) => void
     units?: Array<Unit>
     value: string
+    menuContainer?: string | HTMLElement | React.RefObject<HTMLElement>
 } & Omit<ComponentProps<typeof NumberInput>, 'onChange' | 'value'>
 
 const UNITS = [
@@ -44,6 +45,7 @@ const UNITS = [
 const TimedeltaPicker = ({
     className,
     min = 0,
+    menuContainer,
     onChange,
     units = UNITS,
     value = TIMEDELTA_OPERATOR_DEFAULT_VALUE,
@@ -108,7 +110,7 @@ const TimedeltaPicker = ({
                         {unitLabel}
                     </Button>
                 </DropdownToggle>
-                <DropdownMenu>
+                <DropdownMenu container={menuContainer}>
                     {units.map((unit) => (
                         <DropdownItem
                             key={unit.value}

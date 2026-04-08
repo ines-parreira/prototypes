@@ -67,6 +67,12 @@ describe('ViewHeader', () => {
         })
     })
 
+    it('renders the draft title override when provided', () => {
+        render(<ViewHeader viewId={viewId} titleOverride="New view" />)
+
+        expect(screen.getByText('New view')).toBeInTheDocument()
+    })
+
     it('calls onExpand when the "Show ticket panel" button is clicked', async () => {
         const onExpand = vi.fn()
         const { user } = render(
@@ -76,6 +82,19 @@ describe('ViewHeader', () => {
             screen.getByRole('button', { name: /show ticket panel/i }),
         )
         expect(onExpand).toHaveBeenCalledTimes(1)
+    })
+
+    it('hides the view controls that do not apply to draft views', () => {
+        render(
+            <ViewHeader viewId={viewId} isDraftView titleOverride="New view" />,
+        )
+
+        expect(
+            screen.queryByRole('button', { name: /show ticket panel/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /edit view/i }),
+        ).not.toBeInTheDocument()
     })
 
     it('calls onEditView when the "Edit view" button is clicked', async () => {
@@ -93,6 +112,14 @@ describe('ViewHeader', () => {
             expect(
                 screen.getByRole('button', { name: /create ticket/i }),
             ).toBeInTheDocument()
+        })
+
+        it('hides the create ticket button when requested', () => {
+            render(<ViewHeader viewId={viewId} hideCreateTicket />)
+
+            expect(
+                screen.queryByRole('button', { name: /create ticket/i }),
+            ).not.toBeInTheDocument()
         })
 
         it('calls onCreateTicket when the button is clicked', async () => {

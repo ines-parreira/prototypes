@@ -3,6 +3,7 @@ import type { ReactNode } from 'react'
 import { Panel } from '@repo/layout'
 
 import { Box } from '@gorgias/axiom'
+import type { ViewField } from '@gorgias/helpdesk-types'
 
 import { TicketTable } from '../ticket-list'
 import type { DirtyViewInput } from '../ticket-list/hooks/useTicketTableData'
@@ -23,6 +24,11 @@ type ViewPanelProps = {
     onApplyMacro?: (ticketIds: number[]) => void
     topContent?: ReactNode
     dirtyView?: DirtyViewInput
+    titleOverride?: string
+    hideCreateTicket?: boolean
+    isDraftView?: boolean
+    draftFields?: ViewField[]
+    onDraftFieldsChange?: (fields: ViewField[]) => void
 }
 
 export function ViewPanel({
@@ -34,6 +40,11 @@ export function ViewPanel({
     onApplyMacro,
     topContent,
     dirtyView,
+    titleOverride,
+    hideCreateTicket,
+    isDraftView,
+    draftFields,
+    onDraftFieldsChange,
 }: ViewPanelProps) {
     return (
         <Panel name="views" config={panelConfig}>
@@ -42,6 +53,9 @@ export function ViewPanel({
                     viewId={viewId}
                     onExpand={onExpand}
                     onEditView={onEditView}
+                    titleOverride={titleOverride}
+                    hideCreateTicket={hideCreateTicket}
+                    isDraftView={isDraftView}
                 />
                 {topContent}
                 <TicketTable
@@ -50,6 +64,9 @@ export function ViewPanel({
                     onNavigateToTicket={onNavigateToTicket}
                     onApplyMacro={onApplyMacro}
                     dirtyView={dirtyView}
+                    isDraftView={isDraftView}
+                    draftFields={draftFields}
+                    onDraftFieldsChange={onDraftFieldsChange}
                 />
             </Box>
         </Panel>

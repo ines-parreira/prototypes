@@ -878,4 +878,73 @@ describe('selectors', () => {
             expect(selectors.getViewPlainJS(state, '22')).toEqual(null)
         })
     })
+    describe('areFiltersValidAst()', () => {
+        it('should return false when the active view contains incomplete AST filter values', () => {
+            const state = {
+                views: initialState.set(
+                    'active',
+                    fromJS({
+                        filters_ast: {
+                            type: 'Program',
+                            body: [
+                                {
+                                    type: 'ExpressionStatement',
+                                    expression: {
+                                        type: 'CallExpression',
+                                        callee: { name: 'eq' },
+                                        arguments: [
+                                            {
+                                                type: 'Identifier',
+                                                name: 'ticket.channel',
+                                            },
+                                            {
+                                                type: 'Literal',
+                                                value: '',
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    }),
+                ),
+            } as RootState
+
+            expect(selectors.areFiltersValidAst(state)).toBe(false)
+        })
+
+        it('should return true when the active view AST filter values are complete', () => {
+            const state = {
+                views: initialState.set(
+                    'active',
+                    fromJS({
+                        filters_ast: {
+                            type: 'Program',
+                            body: [
+                                {
+                                    type: 'ExpressionStatement',
+                                    expression: {
+                                        type: 'CallExpression',
+                                        callee: { name: 'eq' },
+                                        arguments: [
+                                            {
+                                                type: 'Identifier',
+                                                name: 'ticket.channel',
+                                            },
+                                            {
+                                                type: 'Literal',
+                                                value: 'email',
+                                            },
+                                        ],
+                                    },
+                                },
+                            ],
+                        },
+                    }),
+                ),
+            } as RootState
+
+            expect(selectors.areFiltersValidAst(state)).toBe(true)
+        })
+    })
 })

@@ -223,6 +223,67 @@ describe('utils', () => {
         })
     })
 
+    describe('hasIncompleteFilterValues', () => {
+        it('should detect incomplete filter values in the AST', () => {
+            expect(
+                utils.hasIncompleteFilterValues(
+                    fromAST(getAST("eq(ticket.channel, '')")),
+                ),
+            ).toBe(true)
+
+            expect(
+                utils.hasIncompleteFilterValues(
+                    fromAST(getAST('containsAny(ticket.tags, [])')),
+                ),
+            ).toBe(true)
+
+            expect(
+                utils.hasIncompleteFilterValues(
+                    fromAST(getAST("eq(ticket.channel, 'email')")),
+                ),
+            ).toBe(false)
+        })
+
+        it('should detect incomplete values nested in expression statements and logical expressions', () => {
+            expect(
+                utils.hasIncompleteFilterValues(
+                    fromAST(
+                        getAST(
+                            "eq(ticket.channel, 'email') && containsAny(ticket.tags, [])",
+                        ),
+                    ),
+                ),
+            ).toBe(true)
+
+            expect(
+                utils.hasIncompleteFilterValues(
+                    fromAST(
+                        getAST(
+                            "eq(ticket.channel, 'email') && eq(ticket.status, 'open')",
+                        ),
+                    ),
+                ),
+            ).toBe(false)
+        })
+
+        it('should treat call expressions without a second argument as incomplete', () => {
+            expect(
+                utils.hasIncompleteFilterValues(
+                    fromJS({
+                        type: 'CallExpression',
+                        callee: { name: 'eq' },
+                        arguments: [
+                            {
+                                type: 'Identifier',
+                                name: 'ticket.channel',
+                            },
+                        ],
+                    }),
+                ),
+            ).toBe(true)
+        })
+    })
+
     describe('activeViewUrl', () => {
         it('should return index url with no active view', () => {
             const url = utils.activeViewUrl(

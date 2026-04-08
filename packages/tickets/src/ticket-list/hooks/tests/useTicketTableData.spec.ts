@@ -107,6 +107,52 @@ describe('useTicketTableData', () => {
         )
     })
 
+    it('uses the search query baseline instead of persisted view items for draft views', () => {
+        useSearchTicketsMock.mockReturnValue(
+            makeDirtyQueryResult({
+                data: {
+                    data: [{ id: 9001 }] as never[],
+                    meta: {},
+                },
+            }),
+        )
+
+        const { result } = renderHook(() =>
+            useTicketTableData({
+                viewId: 0,
+                enablePersistedUpdates: true,
+                pauseUpdates: false,
+                isDraftView: true,
+                dirtyView: {
+                    enabled: false,
+                    search: '',
+                    filters: '',
+                    areFiltersValid: true,
+                },
+            }),
+        )
+
+        expect(useTicketsListMock).toHaveBeenCalledWith(
+            0,
+            expect.objectContaining({
+                enabled: false,
+            }),
+        )
+        expect(useSearchTicketsMock).toHaveBeenCalledWith(
+            {
+                search: '',
+                filters: '',
+            },
+            expect.anything(),
+            expect.objectContaining({
+                query: expect.objectContaining({
+                    enabled: true,
+                }),
+            }),
+        )
+        expect(result.current.items).toEqual([{ id: 9001 }])
+    })
+
     it('returns dirty search results when the dirty filters are valid', () => {
         const dirtyItems = [{ id: 9001 }, { id: 9002 }]
 

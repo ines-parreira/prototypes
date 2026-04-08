@@ -127,4 +127,34 @@ describe('useSortOrder', () => {
             )
         })
     })
+
+    it('uses a separate draft sort bucket without fetching persisted view metadata', async () => {
+        const { result } = renderHook(() =>
+            useSortOrder(viewId, { isDraftView: true }),
+        )
+
+        await waitFor(() => {
+            expect(result.current[0]).toBe(
+                ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
+            )
+        })
+
+        act(() => {
+            result.current[1](ListViewItemsUpdatesOrderBy.CreatedDatetimeDesc)
+        })
+
+        await waitFor(() => {
+            expect(result.current[0]).toBe(
+                ListViewItemsUpdatesOrderBy.CreatedDatetimeDesc,
+            )
+        })
+
+        expect(
+            JSON.parse(
+                localStorage.getItem('ticket-list-view-sort-orders') ?? '{}',
+            ),
+        ).toEqual({
+            draft: ListViewItemsUpdatesOrderBy.CreatedDatetimeDesc,
+        })
+    })
 })

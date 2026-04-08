@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { usePrevious } from '@repo/hooks'
 import { useUserDateTimePreferences } from '@repo/preferences'
@@ -7,7 +7,11 @@ import { useHistory } from 'react-router-dom'
 import { DataTable, DataTablePagination } from '@gorgias/axiom'
 import type { RowSelectionState, SortingState } from '@gorgias/axiom'
 import { useGetView } from '@gorgias/helpdesk-queries'
-import type { Language, TicketCompact } from '@gorgias/helpdesk-types'
+import type {
+    Language,
+    TicketCompact,
+    ViewField,
+} from '@gorgias/helpdesk-types'
 
 import { useCurrentUserLanguagePreferences } from '../../../translations/hooks/useCurrentUserLanguagePreferences'
 import { useTicketsTranslatedProperties } from '../../../translations/hooks/useTicketsTranslatedProperties'
@@ -39,15 +43,21 @@ type Props = {
     onApplyMacro?: (ticketIds: number[]) => void
     onNavigateToTicket?: () => void
     dirtyView?: DirtyViewInput
+    isDraftView?: boolean
+    draftFields?: ViewField[]
+    onDraftFieldsChange?: (fields: ViewField[]) => void
 }
 
-export function TicketTable({
+function TicketTableComponent({
     viewId,
     currentUserId,
     onFixFilters,
     onApplyMacro,
     onNavigateToTicket,
     dirtyView,
+    isDraftView = false,
+    draftFields,
+    onDraftFieldsChange,
 }: Props) {
     const history = useHistory()
     const [rowSelection, setRowSelection] = useState<RowSelectionState>({})
@@ -56,7 +66,11 @@ export function TicketTable({
         [rowSelection],
     )
 
-    const { data: viewResponse } = useGetView(viewId)
+    const { data: viewResponse } = useGetView(viewId, {
+        query: {
+            enabled: !isDraftView,
+        },
+    })
     const view = viewResponse?.data
     const isInboxView = viewResponse ? getIsInboxView(view) : undefined
 
@@ -78,6 +92,7 @@ export function TicketTable({
         dirtyView,
         enablePersistedUpdates: !view?.deactivated_datetime,
         pauseUpdates: hasSelection,
+        isDraftView,
     })
 
     const placeholderKind = getPlaceholderKind({
@@ -125,7 +140,11 @@ export function TicketTable({
         : []
 
     const { defaultVisibleColumns, onChange: onColumnVisibilityChange } =
-        useTicketTableColumnVisibility(viewId)
+        useTicketTableColumnVisibility(viewId, {
+            isDraftView,
+            draftFields,
+            onDraftFieldsChange,
+        })
 
     const columns = useMemo(
         () =>
@@ -179,7 +198,7 @@ export function TicketTable({
         onApplyMacro,
     })
     const { canUseRestrictedBulkActions } = useBulkActionMenuState()
-    const isTrashLikeView = useIsTrashLikeView(viewId)
+    const isTrashLikeView = useIsTrashLikeView(viewId, { isDraftView })
     const [isAssignUserOpen, setIsAssignUserOpen] = useState(false)
     const [isAddTagOpen, setIsAddTagOpen] = useState(false)
     useEffect(() => {
@@ -240,7 +259,7 @@ export function TicketTable({
         )
     }
 
-    if (!viewResponse) {
+    if (!viewResponse && !isDraftView) {
         return (
             <div className={css.container}>
                 <TicketListEmptyPlaceholder
@@ -258,7 +277,11 @@ export function TicketTable({
                 key={`${viewId}-${sortOrder}`}
                 persistence={{
                     enable: true,
-                    localStorage: { id: `ticket-table-${viewId}` },
+                    localStorage: {
+                        id: isDraftView
+                            ? 'ticket-table-draft'
+                            : `ticket-table-${viewId}`,
+                    },
                 }}
                 data={items}
                 columns={columns}
@@ -333,3 +356,5 @@ export function TicketTable({
         </div>
     )
 }
+
+export const TicketTable = memo(TicketTableComponent)

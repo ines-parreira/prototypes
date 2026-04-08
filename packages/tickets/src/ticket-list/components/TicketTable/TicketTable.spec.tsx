@@ -1,3 +1,5 @@
+import type { ComponentProps } from 'react'
+
 import { UserRole } from '@repo/utils'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -226,8 +228,10 @@ vi.mock('./TicketTableColumns', () => ({
     ],
 }))
 
-function renderTicketTable() {
-    return render(<TicketTable viewId={123} />)
+function renderTicketTable(
+    props?: Partial<ComponentProps<typeof TicketTable>>,
+) {
+    return render(<TicketTable viewId={123} currentUserId={1} {...props} />)
 }
 
 async function openBulkMoreActionsMenu() {
@@ -619,7 +623,7 @@ describe('TicketTable', () => {
         await selectFirstRow(user)
 
         mockState.isBulkActionLoading = true
-        rerender(<TicketTable viewId={123} />)
+        rerender(<TicketTable viewId={123} currentUserId={2} />)
 
         await waitFor(() => {
             expect(screen.getByLabelText('Status selection')).toBeDisabled()
@@ -640,7 +644,7 @@ describe('TicketTable', () => {
             { id: 3, subject: 'Replacement ticket' },
             { id: 4, subject: 'Another replacement ticket' },
         ]
-        rerender(<TicketTable viewId={123} />)
+        rerender(<TicketTable viewId={123} currentUserId={2} />)
 
         await waitForSelectionToClear()
 
@@ -660,7 +664,7 @@ describe('TicketTable', () => {
         await selectFirstRow(user)
 
         mockState.sortOrder = 'updated_datetime:desc'
-        rerender(<TicketTable viewId={123} />)
+        rerender(<TicketTable viewId={123} currentUserId={2} />)
 
         await waitForSelectionToClear()
 

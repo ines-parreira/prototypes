@@ -34,7 +34,7 @@ import { createImmutableSelector, isCurrentlyOnView } from 'utils'
 
 import { SYSTEM_VIEWS } from './constants'
 import type { ViewsState } from './types'
-import { sortViews } from './utils'
+import { hasIncompleteFilterValues, sortViews } from './utils'
 
 export const getViewsState = (state: RootState): ViewsState =>
     state.views || fromJS({})
@@ -172,6 +172,10 @@ export const areFiltersValid = createSelector(getActiveView, (view) => {
     return ![", '')", ', [])'].some((pattern: string) =>
         filters.includes(pattern),
     )
+})
+
+export const areFiltersValidAst = createSelector(getActiveView, (view) => {
+    return !hasIncompleteFilterValues(view.get('filters_ast'))
 })
 
 export const getActiveViewOrderDirection = createSelector(

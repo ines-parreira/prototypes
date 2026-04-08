@@ -52,13 +52,26 @@ const FIELD_TO_COLUMN: Record<string, string> = Object.fromEntries(
     Object.entries(COLUMN_TO_FIELD).map(([col, field]) => [field, col]),
 )
 
-export function useTicketTableColumnVisibility(viewId: number) {
+type Options = {
+    isDraftView?: boolean
+    draftFields?: ViewField[]
+    onDraftFieldsChange?: (fields: ViewField[]) => void
+}
+
+export function useTicketTableColumnVisibility(
+    viewId: number,
+    { isDraftView = false, draftFields, onDraftFieldsChange }: Options = {},
+) {
     const queryClient = useQueryClient()
-    const { data: viewResponse } = useGetView(viewId)
+    const { data: viewResponse } = useGetView(viewId, {
+        query: {
+            enabled: !isDraftView,
+        },
+    })
     const { mutate: updateView } = useUpdateView()
 
     const defaultVisibleColumns = useMemo(() => {
-        const fields = viewResponse?.data?.fields
+        const fields = isDraftView ? draftFields : viewResponse?.data?.fields
         if (!fields?.length) {
             return [SELECTION_COLUMN, MANDATORY_COLUMN, ...ALL_COLUMNS]
         }
@@ -68,7 +81,7 @@ export function useTicketTableColumnVisibility(viewId: number) {
             .filter(Boolean) as string[]
 
         return [SELECTION_COLUMN, MANDATORY_COLUMN, ...mapped]
-    }, [viewResponse])
+    }, [draftFields, isDraftView, viewResponse])
 
     const onChange = useCallback(
         (newVisibleColumns: string[]) => {
@@ -80,6 +93,11 @@ export function useTicketTableColumnVisibility(viewId: number) {
                 .map((col) => COLUMN_TO_FIELD[col])
                 .filter(Boolean) as ViewField[]
 
+            if (isDraftView) {
+                onDraftFieldsChange?.(fields)
+                return
+            }
+
             updateView(
                 { id: viewId, data: { fields } },
                 {
@@ -90,7 +108,7 @@ export function useTicketTableColumnVisibility(viewId: number) {
                 },
             )
         },
-        [viewId, updateView, queryClient],
+        [isDraftView, onDraftFieldsChange, viewId, updateView, queryClient],
     )
 
     return { defaultVisibleColumns, onChange }

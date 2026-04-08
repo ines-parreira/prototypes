@@ -2,8 +2,19 @@ import { useMemo } from 'react'
 
 import { useGetView } from '@gorgias/helpdesk-queries'
 
-export function useIsTrashLikeView(viewId: number) {
-    const { data: viewResponse } = useGetView(viewId)
+type Options = {
+    isDraftView?: boolean
+}
+
+export function useIsTrashLikeView(
+    viewId: number,
+    { isDraftView = false }: Options = {},
+) {
+    const { data: viewResponse } = useGetView(viewId, {
+        query: {
+            enabled: !isDraftView,
+        },
+    })
 
     return useMemo(() => {
         const filters = viewResponse?.data?.filters ?? ''

@@ -11,12 +11,40 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { useGetView } from '@gorgias/helpdesk-queries'
 import type { useGetView as useGetViewType } from '@gorgias/helpdesk-queries'
 
+import { BASE_VIEW_ID } from 'constants/view'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { ViewField, ViewVisibility } from 'models/view/types'
 import type { StoreState } from 'state/types'
-import { resetView, setViewActive, setViewEditMode } from 'state/views/actions'
+import {
+    resetView,
+    setViewActive,
+    setViewEditMode,
+    updateView,
+} from 'state/views/actions'
 
 import { ViewPanelEntrypoint } from '../ViewPanelEntrypoint'
+
+jest.mock('config/views', () => ({
+    getConfigByType: jest.fn(() => ({
+        get: jest.fn((key: string) => {
+            if (key !== 'newView') {
+                return undefined
+            }
+
+            return (visibility?: ViewVisibility) =>
+                fromJS({
+                    id: BASE_VIEW_ID,
+                    type: 'ticket-list',
+                    visibility,
+                    name: 'New view',
+                    slug: 'new-view',
+                    filters: '',
+                    search: '',
+                })
+        }),
+    })),
+}))
 
 jest.mock('@repo/tickets/feature-flags', () => ({
     useHelpdeskV2MS4Dot5Flag: jest.fn(),
@@ -51,6 +79,7 @@ const useAppSelectorMock = assumeMock(useAppSelector)
 
 jest.mock('state/views/selectors', () => ({
     areFiltersValid: jest.fn(),
+    areFiltersValidAst: jest.fn(),
     getActiveView: jest.fn(),
     getViewPlainJS: jest.fn(),
     isDirty: jest.fn(),
@@ -58,12 +87,14 @@ jest.mock('state/views/selectors', () => ({
 }))
 const {
     areFiltersValid: getAreFiltersValid,
+    areFiltersValidAst: getAreFiltersValidAst,
     getActiveView,
     getViewPlainJS,
     isDirty: getIsDirty,
     isEditMode: getIsEditMode,
 } = jest.requireMock('state/views/selectors') as {
     areFiltersValid: jest.Mock
+    areFiltersValidAst: jest.Mock
     getActiveView: jest.Mock
     getViewPlainJS: jest.Mock
     isDirty: jest.Mock
@@ -74,15 +105,76 @@ jest.mock('state/views/actions', () => ({
     resetView: jest.fn(),
     setViewActive: jest.fn(),
     setViewEditMode: jest.fn(),
+    updateView: jest.fn(),
 }))
 const resetViewMock = assumeMock(resetView)
 const setViewActiveMock = assumeMock(setViewActive)
 const setViewEditModeMock = assumeMock(setViewEditMode)
+const updateViewMock = assumeMock(updateView)
+
+type DirtyViewProps = {
+    enabled: boolean
+    search: string
+    filters: string
+    areFiltersValid: boolean
+}
+
+type MockViewPanelProps = {
+    viewId: number
+    onExpand?: () => void
+    onEditView?: () => void
+    onFixFilters?: () => void
+    onApplyMacro?: (ticketIds: number[]) => void
+    topContent?: React.ReactNode
+    titleOverride?: string
+    hideCreateTicket?: boolean
+    isDraftView?: boolean
+    dirtyView?: DirtyViewProps
+    draftFields?: ViewField[]
+    onDraftFieldsChange?: (fields: ViewField[]) => void
+}
+
+function buildCallExpressionAst(operator: string, right: unknown) {
+    return fromJS({
+        type: 'Program',
+        body: [
+            {
+                type: 'ExpressionStatement',
+                expression: {
+                    type: 'CallExpression',
+                    callee: { name: operator },
+                    arguments: [
+                        {
+                            type: 'Identifier',
+                            name: 'ticket.channel',
+                        },
+                        {
+                            type: 'Literal',
+                            value: right,
+                        },
+                    ],
+                },
+            },
+        ],
+    })
+}
+
+function getLastSetViewEditModeDraftView() {
+    const draftView = setViewEditModeMock.mock.calls.at(-1)?.[0]
+
+    if (!draftView) {
+        throw new Error(
+            'Expected setViewEditMode to be called with a draft view',
+        )
+    }
+
+    return draftView
+}
 
 function mockUseGetViewResult(data?: unknown) {
     return {
         data,
-    } as ReturnType<typeof useGetViewType>
+    } as unknown as ReturnType<typeof useGetViewType>
 }
 
 function mockSelectors({
@@ -91,72 +183,63 @@ function mockSelectors({
     isDirty = false,
     isEditMode = false,
     areFiltersValid = true,
+    areFiltersValidAst = true,
 }: {
     view?: unknown
     currentActiveView?: unknown
     isDirty?: boolean
     isEditMode?: boolean
     areFiltersValid?: boolean
+    areFiltersValidAst?: boolean
 } = {}) {
     getViewPlainJS.mockReturnValue(view)
     getActiveView.mockReturnValue(currentActiveView)
     getIsDirty.mockReturnValue(isDirty)
     getIsEditMode.mockReturnValue(isEditMode)
     getAreFiltersValid.mockReturnValue(areFiltersValid)
+    getAreFiltersValidAst.mockReturnValue(areFiltersValidAst)
     useAppSelectorMock.mockImplementation((selector) =>
         selector({} as StoreState),
     )
 }
 
-const mockViewPanel = jest.fn(
-    ({
+const mockViewPanel = jest.fn((props: MockViewPanelProps) => {
+    const {
         viewId,
         onExpand,
         onApplyMacro,
         topContent,
+        titleOverride,
+        hideCreateTicket,
+        isDraftView,
         dirtyView,
-    }: {
-        viewId: number
-        onExpand?: () => void
-        onEditView?: () => void
-        onFixFilters?: () => void
-        onApplyMacro?: (ticketIds: number[]) => void
-        topContent?: React.ReactNode
-        dirtyView?: {
-            enabled: boolean
-            search: string
-            filters: string
-            areFiltersValid: boolean
-        }
-    }) => (
+    } = props
+
+    return (
         <div>
             <p>ViewPanel</p>
             <p>viewId: {viewId}</p>
+            <p>titleOverride: {titleOverride ?? 'none'}</p>
+            <p>hideCreateTicket: {String(hideCreateTicket)}</p>
+            <p>isDraftView: {String(isDraftView)}</p>
             <p>dirtyView: {JSON.stringify(dirtyView)}</p>
+            <p>draftFields: {JSON.stringify(props.draftFields ?? [])}</p>
             <button onClick={onExpand}>Expand</button>
             <button onClick={() => onApplyMacro?.([1, 2, 3])}>
                 Open macro
             </button>
+            <button
+                onClick={() => props.onDraftFieldsChange?.([ViewField.Subject])}
+            >
+                Change draft fields
+            </button>
             {topContent}
         </div>
-    ),
-)
+    )
+})
 
 jest.mock('@repo/tickets/views', () => ({
-    ViewPanel: (props: {
-        viewId: number
-        onExpand?: () => void
-        onEditView?: () => void
-        onFixFilters?: () => void
-        onApplyMacro?: (ticketIds: number[]) => void
-        topContent?: React.ReactNode
-        dirtyView?: {
-            enabled: boolean
-            search: string
-            filters: string
-            areFiltersValid: boolean
-        }
-    }) => mockViewPanel(props),
+    ViewPanel: (props: MockViewPanelProps) => mockViewPanel(props),
 }))
 
 jest.mock('ticket-list-view/components/bulk-actions/ApplyMacro', () => ({
@@ -215,6 +298,11 @@ describe('ViewPanelEntrypoint', () => {
         type: 'SET_VIEW_EDIT_MODE',
         view: undefined,
     }
+    const updateViewAction: ReturnType<typeof updateView> = {
+        type: 'UPDATE_VIEW',
+        view: undefined,
+        edit: true,
+    }
     const persistedView = {
         id: 123456,
         type: 'ticket-list',
@@ -256,6 +344,7 @@ describe('ViewPanelEntrypoint', () => {
         resetViewMock.mockReturnValue(resetViewAction)
         setViewActiveMock.mockReturnValue(setViewActiveAction)
         setViewEditModeMock.mockReturnValue(setViewEditModeAction)
+        updateViewMock.mockReturnValue(updateViewAction)
     })
 
     it('should render LegacyViewPanel when MS4.5 flag is disabled', () => {
@@ -277,6 +366,9 @@ describe('ViewPanelEntrypoint', () => {
         )
         expect(screen.getByText('ViewPanel')).toBeInTheDocument()
         expect(screen.getByText('viewId: 123456')).toBeInTheDocument()
+        expect(screen.getByText('titleOverride: none')).toBeInTheDocument()
+        expect(screen.getByText('hideCreateTicket: false')).toBeInTheDocument()
+        expect(screen.getByText('isDraftView: false')).toBeInTheDocument()
         expect(
             screen.getByText(
                 'dirtyView: {"enabled":false,"search":"test search","filters":"status:open","areFiltersValid":true}',
@@ -517,6 +609,283 @@ describe('ViewPanelEntrypoint', () => {
         expect(setViewEditModeMock).not.toHaveBeenCalledWith(
             fromJS(nextPersistedView),
         )
+    })
+
+    it('should initialize a new public draft view route in edit mode', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/new/public',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({ id: 999, type: 'ticket-list' }),
+            isEditMode: false,
+        })
+        getIsEditMode.mockImplementation(() =>
+            dispatchMock.mock.calls.some(
+                ([action]) => action === setViewEditModeAction,
+            ),
+        )
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await waitFor(() => {
+            expect(setViewEditModeMock).toHaveBeenCalled()
+        })
+
+        const draftView = getLastSetViewEditModeDraftView()
+        expect(draftView.get('id')).toBe(BASE_VIEW_ID)
+        expect(draftView.get('visibility')).toBe(ViewVisibility.Public)
+        expect(draftView.get('name')).toBe('')
+        expect(useGetViewMock).toHaveBeenCalledWith(mockViewId, {
+            query: { enabled: false },
+        })
+        expect(screen.getByText(`viewId: ${BASE_VIEW_ID}`)).toBeInTheDocument()
+        expect(screen.getByText('titleOverride: New view')).toBeInTheDocument()
+        expect(screen.getByText('hideCreateTicket: true')).toBeInTheDocument()
+        expect(screen.getByText('isDraftView: true')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'dirtyView: {"enabled":false,"search":"","filters":"","areFiltersValid":true}',
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('ViewPanelFiltersBridge expanded: true'),
+        ).toBeInTheDocument()
+        expect(setViewActiveMock).not.toHaveBeenCalled()
+    })
+
+    it('should initialize a new private draft view route in edit mode', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/new/private',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({ id: 999, type: 'ticket-list' }),
+            isEditMode: false,
+        })
+        getIsEditMode.mockImplementation(() =>
+            dispatchMock.mock.calls.some(
+                ([action]) => action === setViewEditModeAction,
+            ),
+        )
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await waitFor(() => {
+            expect(setViewEditModeMock).toHaveBeenCalled()
+        })
+
+        const draftView = getLastSetViewEditModeDraftView()
+        expect(draftView.get('visibility')).toBe(ViewVisibility.Private)
+        expect(draftView.get('name')).toBe('')
+        expect(setViewActiveMock).not.toHaveBeenCalled()
+    })
+
+    it('should wire draft fields and update the draft when they change on a new view route', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/new/public',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({
+                id: BASE_VIEW_ID,
+                type: 'ticket-list',
+                fields: [ViewField.Details, ViewField.Customer],
+            }),
+            isEditMode: true,
+        })
+
+        const user = userEvent.setup()
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        expect(
+            screen.getByText(
+                `draftFields: ${JSON.stringify([
+                    ViewField.Details,
+                    ViewField.Customer,
+                ])}`,
+            ),
+        ).toBeInTheDocument()
+
+        await act(async () => {
+            await user.click(
+                screen.getByRole('button', { name: 'Change draft fields' }),
+            )
+        })
+
+        const nextDraftView = updateViewMock.mock.calls.at(-1)?.[0]
+        expect(nextDraftView?.get('fields')?.toJS()).toEqual([
+            ViewField.Subject,
+        ])
+        expect(dispatchMock).toHaveBeenCalledWith(updateViewAction)
+    })
+
+    it('should reinitialize the draft when the new view route visibility changes', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+
+        let currentPathname = '/app/tickets/new/public'
+        useLocationMock.mockImplementation(
+            () =>
+                ({
+                    pathname: currentPathname,
+                    state: undefined,
+                }) as ReturnType<typeof useLocation>,
+        )
+
+        let currentActiveView = fromJS({
+            id: 999,
+            type: 'ticket-list',
+        })
+        getActiveView.mockImplementation(() => currentActiveView)
+        getIsEditMode.mockImplementation(() =>
+            dispatchMock.mock.calls.some(
+                ([action]) => action === setViewEditModeAction,
+            ),
+        )
+        useAppSelectorMock.mockImplementation((selector) =>
+            selector({} as StoreState),
+        )
+
+        const { rerender } = render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await waitFor(() => {
+            expect(setViewEditModeMock).toHaveBeenCalledTimes(1)
+        })
+        expect(getLastSetViewEditModeDraftView().get('visibility')).toBe(
+            ViewVisibility.Public,
+        )
+
+        currentActiveView = fromJS({
+            id: BASE_VIEW_ID,
+            type: 'ticket-list',
+            visibility: ViewVisibility.Public,
+        })
+        currentPathname = '/app/tickets/new/private'
+
+        rerender(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await waitFor(() => {
+            expect(setViewEditModeMock).toHaveBeenCalledTimes(2)
+        })
+        expect(getLastSetViewEditModeDraftView().get('visibility')).toBe(
+            ViewVisibility.Private,
+        )
+    })
+
+    it('should keep the new view table preview on the stable baseline when a draft filter is incomplete', () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/new/public',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({
+                id: BASE_VIEW_ID,
+                type: 'ticket-list',
+                search: '',
+                filters: "eq(ticket.channel, '')",
+                filters_ast: buildCallExpressionAst('eq', ''),
+            }),
+            isDirty: true,
+            isEditMode: true,
+            areFiltersValid: true,
+            areFiltersValidAst: false,
+        })
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        expect(
+            screen.getByText(
+                'dirtyView: {"enabled":true,"search":"","filters":"","areFiltersValid":true}',
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should preview completed draft filters on a new view after an incomplete draft', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/new/public',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+
+        let currentActiveView = fromJS({
+            id: BASE_VIEW_ID,
+            type: 'ticket-list',
+            search: '',
+            filters: "eq(ticket.channel, '')",
+            filters_ast: buildCallExpressionAst('eq', ''),
+        })
+
+        getViewPlainJS.mockReturnValue(null)
+        getActiveView.mockImplementation(() => currentActiveView)
+        getIsDirty.mockReturnValue(true)
+        getIsEditMode.mockReturnValue(true)
+        getAreFiltersValid.mockReturnValue(true)
+        getAreFiltersValidAst.mockReturnValue(false)
+        useAppSelectorMock.mockImplementation((selector) =>
+            selector({} as StoreState),
+        )
+
+        const { rerender } = render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        expect(
+            screen.getByText(
+                'dirtyView: {"enabled":true,"search":"","filters":"","areFiltersValid":true}',
+            ),
+        ).toBeInTheDocument()
+
+        currentActiveView = fromJS({
+            id: BASE_VIEW_ID,
+            type: 'ticket-list',
+            search: '',
+            filters: "eq(ticket.channel, 'chat')",
+            filters_ast: buildCallExpressionAst('eq', 'chat'),
+        })
+        getAreFiltersValidAst.mockReturnValue(true)
+
+        rerender(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        expect(
+            screen.getByText(
+                'dirtyView: {"enabled":true,"search":"","filters":"eq(ticket.channel, \'chat\')","areFiltersValid":true}',
+            ),
+        ).toBeInTheDocument()
     })
 
     describe('Apply macro', () => {

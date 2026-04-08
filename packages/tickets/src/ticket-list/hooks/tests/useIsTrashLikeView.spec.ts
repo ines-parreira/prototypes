@@ -6,9 +6,14 @@ import {
     mockGetViewHandler,
     mockGetViewResponse,
 } from '@gorgias/helpdesk-mocks'
+import { useGetView } from '@gorgias/helpdesk-queries'
 
 import { renderHook, testAppQueryClient } from '../../../tests/render.utils'
 import { useIsTrashLikeView } from '../useIsTrashLikeView'
+
+vi.mock('@gorgias/helpdesk-queries', { spy: true })
+
+const useGetViewMock = vi.mocked(useGetView)
 
 const viewId = 123
 
@@ -34,6 +39,7 @@ beforeEach(() => {
 
 afterEach(() => {
     server.resetHandlers()
+    useGetViewMock.mockRestore()
 })
 
 afterAll(() => {
@@ -41,6 +47,20 @@ afterAll(() => {
 })
 
 describe('useIsTrashLikeView', () => {
+    it('disables the view query for draft views', () => {
+        useGetViewMock.mockReturnValue({
+            data: undefined,
+        } as ReturnType<typeof useGetView>)
+
+        renderHook(() => useIsTrashLikeView(viewId, { isDraftView: true }))
+
+        expect(useGetViewMock).toHaveBeenCalledWith(viewId, {
+            query: {
+                enabled: false,
+            },
+        })
+    })
+
     it('returns false when the current view does not include the trash filter', async () => {
         const { result } = renderHook(() => useIsTrashLikeView(viewId))
 

@@ -32,6 +32,7 @@ type Props = {
     dirtyView?: DirtyViewInput
     enablePersistedUpdates: boolean
     pauseUpdates: boolean
+    isDraftView?: boolean
 }
 
 export function useTicketTableData({
@@ -39,8 +40,9 @@ export function useTicketTableData({
     dirtyView,
     enablePersistedUpdates,
     pauseUpdates,
+    isDraftView = false,
 }: Props) {
-    const [sortOrder, setSortOrder] = useSortOrder(viewId)
+    const [sortOrder, setSortOrder] = useSortOrder(viewId, { isDraftView })
     const [pageSize, setPageSize] = useState(20)
     const [currentPageIndex, setCurrentPageIndex] = useState(0)
     const [dirtyCursor, setDirtyCursor] = useState<string | undefined>()
@@ -49,6 +51,7 @@ export function useTicketTableData({
     const requestedPersistedPageIndexRef = useRef<number | null>(null)
 
     const isDirtyMode = dirtyView?.enabled ?? false
+    const usesSearchQuery = isDraftView || isDirtyMode
 
     const persistedParams = useMemo(
         () => ({ order_by: sortOrder, limit: pageSize }),
@@ -59,7 +62,7 @@ export function useTicketTableData({
         params: persistedParams,
         pauseUpdates,
         enableStaleUpdates: enablePersistedUpdates,
-        enabled: !isDirtyMode,
+        enabled: !usesSearchQuery,
     })
 
     const dirtyQuery = useSearchTickets<DirtyTicketsResponse>(
@@ -75,7 +78,8 @@ export function useTicketTableData({
         },
         {
             query: {
-                enabled: isDirtyMode && (dirtyView?.areFiltersValid ?? false),
+                enabled:
+                    usesSearchQuery && (dirtyView?.areFiltersValid ?? false),
                 refetchOnWindowFocus: false,
                 staleTime: DurationInMs.FiveSeconds,
                 select: (response) => ({
@@ -87,7 +91,7 @@ export function useTicketTableData({
     )
 
     useEffect(() => {
-        if (!isDirtyMode) {
+        if (!usesSearchQuery) {
             setDirtyCursor(undefined)
             setLastValidDirtyResponse(null)
             return
@@ -98,7 +102,7 @@ export function useTicketTableData({
     }, [
         dirtyView?.filters,
         dirtyView?.search,
-        isDirtyMode,
+        usesSearchQuery,
         pageSize,
         sortOrder,
     ])
@@ -123,7 +127,9 @@ export function useTicketTableData({
         : lastValidDirtyResponse
 
     const shouldRenderDirtyData =
-        isDirtyMode && dirtyView?.areFiltersValid && activeDirtyResponse != null
+        usesSearchQuery &&
+        (dirtyView?.areFiltersValid ?? false) &&
+        activeDirtyResponse != null
 
     useEffect(() => {
         const requestedPersistedPageIndex =
@@ -253,7 +259,7 @@ export function useTicketTableData({
     const refresh = useCallback(() => {
         if (
             shouldRenderDirtyData ||
-            (isDirtyMode && dirtyView?.areFiltersValid)
+            (usesSearchQuery && dirtyView?.areFiltersValid)
         ) {
             if (!dirtyView?.areFiltersValid) {
                 return
@@ -266,7 +272,7 @@ export function useTicketTableData({
     }, [
         dirtyQuery,
         dirtyView?.areFiltersValid,
-        isDirtyMode,
+        usesSearchQuery,
         persisted,
         shouldRenderDirtyData,
     ])

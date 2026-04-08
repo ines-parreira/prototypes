@@ -63,21 +63,26 @@ export function useCachedTicketViewNavigation({
     ticketId?: number
 }) {
     const queryClient = useQueryClient()
-    const [sortOrder] = useSortOrder(viewId ?? 0)
+    const [sortOrder] = useSortOrder(viewId ?? 0, {
+        isDraftView: viewId == null,
+    })
 
     const params =
         viewId != null
             ? ({ order_by: sortOrder } satisfies UseTicketsListParams)
             : undefined
 
-    const queryKey = queryKeys.views.listViewItems(viewId ?? 0, params)
+    const queryKey =
+        viewId != null ? queryKeys.views.listViewItems(viewId, params) : null
 
     const cachedList = useSyncExternalStore(
         (onStoreChange) => queryClient.getQueryCache().subscribe(onStoreChange),
         () =>
-            queryClient.getQueryData<
-                InfiniteData<{ data?: Array<{ id?: number }> }>
-            >(queryKey),
+            queryKey == null
+                ? undefined
+                : queryClient.getQueryData<
+                      InfiniteData<{ data?: Array<{ id?: number }> }>
+                  >(queryKey),
         () => undefined,
     )
 

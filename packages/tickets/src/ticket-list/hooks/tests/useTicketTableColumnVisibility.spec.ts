@@ -153,4 +153,41 @@ describe('useTicketTableColumnVisibility', () => {
             expect(invalidateQueries).toHaveBeenCalledWith(expect.anything())
         })
     })
+
+    it('uses draft fields and skips persistence in draft mode', async () => {
+        const queryClient = createTestQueryClient()
+        const invalidateQueries = vi.spyOn(queryClient, 'invalidateQueries')
+        const onDraftFieldsChange = vi.fn()
+
+        const { result } = renderHook(
+            () =>
+                useTicketTableColumnVisibility(viewId, {
+                    isDraftView: true,
+                    draftFields: [
+                        ViewField.Subject,
+                        ViewField.Customer,
+                        ViewField.Created,
+                    ],
+                    onDraftFieldsChange,
+                }),
+            { queryClient },
+        )
+
+        await waitFor(() => {
+            expect(result.current.defaultVisibleColumns).toEqual([
+                'select',
+                'ticket',
+                'subject',
+                'customer',
+                'created_datetime',
+            ])
+        })
+
+        act(() => {
+            result.current.onChange(['select', 'ticket', 'subject'])
+        })
+
+        expect(onDraftFieldsChange).toHaveBeenCalledWith([ViewField.Subject])
+        expect(invalidateQueries).not.toHaveBeenCalled()
+    })
 })

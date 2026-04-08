@@ -37,10 +37,17 @@ import { ViewPanelFiltersBridge } from '../ViewPanelFiltersBridge'
 
 const pushMock = jest.fn()
 const addFilterDropdownPropsMock = jest.fn()
+const setSplitTicketViewEnabledMock = jest.fn()
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ push: pushMock }),
+}))
+
+jest.mock('split-ticket-view-toggle', () => ({
+    useSplitTicketView: () => ({
+        setIsEnabled: setSplitTicketViewEnabledMock,
+    }),
 }))
 
 jest.mock('@tanstack/react-query', () => ({
@@ -187,18 +194,24 @@ const getDefaultOperatorMock = assumeMock(getDefaultOperator)
 jest.mock('state/views/selectors', () => ({
     areFiltersValid: jest.fn(),
     getActiveView: jest.fn(),
+    getLastViewId: jest.fn(),
     getPristineActiveView: jest.fn(),
+    getViewIdToDisplay: jest.fn(),
     isDirty: jest.fn(),
 }))
 const {
     areFiltersValid: getAreFiltersValid,
     getActiveView,
+    getLastViewId,
     getPristineActiveView,
+    getViewIdToDisplay,
     isDirty: getIsDirty,
 } = jest.requireMock('state/views/selectors') as {
     areFiltersValid: unknown
     getActiveView: unknown
+    getLastViewId: unknown
     getPristineActiveView: unknown
+    getViewIdToDisplay: unknown
     isDirty: unknown
 }
 
@@ -277,6 +290,7 @@ describe('ViewPanelFiltersBridge', () => {
         invalidateQueriesMock.mockClear()
         onExpandedChange.mockReset()
         pushMock.mockReset()
+        setSplitTicketViewEnabledMock.mockReset()
         logEventMock.mockReset()
         addFilterDropdownPropsMock.mockClear()
 
@@ -304,11 +318,16 @@ describe('ViewPanelFiltersBridge', () => {
             if (selector === getPristineActiveView) return activeView
             if (selector === getAreFiltersValid) return true
             if (selector === getIsDirty) return false
+            if (selector === getLastViewId) return 3
             if (selector === getCurrentUser) return currentUser
             if (selector === getHasAutomate) return true
             if (selector === getSchemas) return fromJS({})
+            if (typeof selector === 'function') {
+                return selector({} as never)
+            }
             return undefined
         })
+        ;(getViewIdToDisplay as jest.Mock).mockReturnValue(() => 3)
 
         getDefaultOperatorMock.mockReturnValue('is')
         getDefaultCustomFieldOperatorMock.mockReturnValue('is')
@@ -442,6 +461,43 @@ describe('ViewPanelFiltersBridge', () => {
         expect(dispatchMock).not.toHaveBeenCalledWith(addFieldFilterAction)
     })
 
+    it('keeps the typed view name when draft filters change', async () => {
+        const user = userEvent.setup()
+        let draftView = activeView.delete('id').set('name', '').set('slug', '')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return draftView
+            if (selector === getPristineActiveView) return draftView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        const { rerender } = renderComponent()
+
+        await user.type(
+            screen.getByRole('textbox', { name: /view name/i }),
+            'Urgent tickets',
+        )
+
+        draftView = draftView.set('filters', 'priority:urgent')
+
+        rerender(
+            <ViewPanelFiltersBridge
+                viewId={42}
+                isExpanded
+                onExpandedChange={onExpandedChange}
+            />,
+        )
+
+        expect(screen.getByRole('textbox', { name: /view name/i })).toHaveValue(
+            'Urgent tickets',
+        )
+    })
+
     it('keeps the disclosure open after successfully updating a view', async () => {
         const user = userEvent.setup()
 
@@ -483,6 +539,7 @@ describe('ViewPanelFiltersBridge', () => {
 
         renderComponent()
         await user.click(screen.getByRole('button', { name: /update view/i }))
+        await user.click(screen.getByRole('button', { name: /confirm/i }))
 
         expect(submitViewMock).toHaveBeenCalledWith(
             expect.objectContaining({
@@ -511,8 +568,7 @@ describe('ViewPanelFiltersBridge', () => {
         expect(payload.get('shared_with_users')).toEqual([7])
     })
 
-    it('returns early when update is forced while saving is disabled', async () => {
-        const user = userEvent.setup()
+    it('replaces save and delete actions with explanatory text for system views', () => {
         const systemView = activeView.set('category', 'system')
 
         useAppSelectorMock.mockImplementation((selector) => {
@@ -528,14 +584,52 @@ describe('ViewPanelFiltersBridge', () => {
 
         renderComponent()
 
-        const updateButton = screen.getByRole('button', {
-            name: /update view/i,
+        expect(
+            screen.getByText('This view cannot be saved.'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /cancel/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /update view/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /more save actions/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /^delete$/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /export tickets/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /share view/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('shows a tooltip on the disabled save action when filters are invalid', async () => {
+        const user = userEvent.setup()
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return activeView
+            if (selector === getPristineActiveView) return activeView
+            if (selector === getAreFiltersValid) return false
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
         })
-        updateButton.removeAttribute('disabled')
 
-        await user.click(updateButton)
+        renderComponent()
 
-        expect(submitViewMock).not.toHaveBeenCalled()
+        await user.hover(screen.getByRole('button', { name: /update view/i }))
+
+        expect(
+            await screen.findByText(
+                'Fix incomplete filters before saving this view.',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('ignores save responses that are not views', async () => {
@@ -571,13 +665,45 @@ describe('ViewPanelFiltersBridge', () => {
         expect(onExpandedChange).toHaveBeenCalledWith(false)
     })
 
+    it('navigates back to the previous inbox view when cancel is clicked on a new draft', async () => {
+        const user = userEvent.setup()
+        const draftView = activeView
+            .delete('id')
+            .set('name', '')
+            .set('slug', '')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return draftView
+            if (selector === getPristineActiveView) return draftView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getLastViewId) return 3
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            if (typeof selector === 'function') {
+                return selector({} as never)
+            }
+            return undefined
+        })
+
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /cancel/i }))
+
+        expect(dispatchMock).toHaveBeenCalledWith(activeViewIdSetAction)
+        expect(pushMock).toHaveBeenCalledWith('/app/tickets/3')
+        expect(dispatchMock).not.toHaveBeenCalledWith(resetViewAction)
+        expect(onExpandedChange).not.toHaveBeenCalledWith(false)
+    })
+
     it('only collapses the disclosure when the user manually collapses it', async () => {
         const user = userEvent.setup()
 
         renderComponent()
 
         await user.click(
-            screen.getByRole('button', { name: /filters/i, expanded: true }),
+            screen.getByRole('button', { name: /edit view/i, expanded: true }),
         )
 
         expect(onExpandedChange).toHaveBeenCalledWith(false)
@@ -601,7 +727,7 @@ describe('ViewPanelFiltersBridge', () => {
         renderComponent()
 
         await user.click(
-            screen.getByRole('button', { name: /filters/i, expanded: true }),
+            screen.getByRole('button', { name: /edit view/i, expanded: true }),
         )
 
         expect(onExpandedChange).toHaveBeenCalledWith(false)
@@ -625,11 +751,11 @@ describe('ViewPanelFiltersBridge', () => {
         expect(
             screen.getAllByText(
                 'Live ticket updates are paused while filters are being edited',
-            ).length,
-        ).toBeGreaterThan(0)
+            ),
+        ).toHaveLength(1)
     })
 
-    it('shows the stale updates warning above the footer actions when the draft is dirty and expanded', () => {
+    it('shows the stale updates warning in the same header location when the draft is dirty and expanded', () => {
         useAppSelectorMock.mockImplementation((selector) => {
             if (selector === getActiveView) return activeView
             if (selector === getPristineActiveView) return activeView
@@ -658,6 +784,31 @@ describe('ViewPanelFiltersBridge', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: /share view/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('uses edit view as the disclosure label', () => {
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', { name: /edit view/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /filters/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('keeps the action row visible when the bridge is collapsed', () => {
+        renderComponent(false)
+
+        expect(
+            screen.getByRole('button', { name: /update view/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /cancel/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /^delete$/i }),
         ).toBeInTheDocument()
     })
 
@@ -697,6 +848,212 @@ describe('ViewPanelFiltersBridge', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('starts with an empty name and disabled update action for a new draft', () => {
+        const draftView = activeView
+            .delete('id')
+            .set('name', '')
+            .set('slug', '')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return draftView
+            if (selector === getPristineActiveView) return draftView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        renderComponent()
+
+        expect(screen.getByLabelText(/view name/i)).toHaveValue('')
+        expect(
+            screen.getByRole('button', { name: /create view/i }),
+        ).toBeDisabled()
+        expect(
+            screen.queryByRole('button', { name: /^delete$/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /more save actions/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /share view/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('renders a single create view button for a new draft', () => {
+        const draftView = activeView
+            .delete('id')
+            .set('name', '')
+            .set('slug', '')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return draftView
+            if (selector === getPristineActiveView) return draftView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', { name: /create view/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /update view/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /more save actions/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('creates a new draft view and lands on the saved route in full width', async () => {
+        const user = userEvent.setup()
+        const draftView = activeView
+            .delete('id')
+            .set('name', '')
+            .set('slug', '')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return draftView
+            if (selector === getPristineActiveView) return draftView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        renderComponent()
+
+        await user.type(screen.getByLabelText(/view name/i), 'New queue')
+        await user.click(screen.getByRole('button', { name: /create view/i }))
+
+        await waitFor(() => {
+            expect(pushMock).toHaveBeenCalledWith('/app/tickets/42')
+        })
+
+        expect(setSplitTicketViewEnabledMock).toHaveBeenCalledWith(false)
+    })
+
+    it('shows the confirmation modal before updating a public view', async () => {
+        const user = userEvent.setup()
+        const publicView = fromJS({
+            id: 42,
+            name: 'Public tickets',
+            slug: 'public-tickets',
+            filters: 'status:open',
+            search: '',
+            category: 'custom',
+            visibility: 'public',
+            shared_with_users: [7],
+            shared_with_teams: [],
+        })
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return publicView
+            if (selector === getPristineActiveView) return publicView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        renderComponent()
+        await user.click(screen.getByRole('button', { name: /update view/i }))
+
+        expect(screen.getByText('Are you sure?')).toBeInTheDocument()
+        expect(
+            screen.getByText('You are about to edit this view for all users.'),
+        ).toBeInTheDocument()
+        expect(submitViewMock).not.toHaveBeenCalled()
+    })
+
+    it('does not submit a public view update when the modal is canceled', async () => {
+        const user = userEvent.setup()
+        const publicView = fromJS({
+            id: 42,
+            name: 'Public tickets',
+            slug: 'public-tickets',
+            filters: 'status:open',
+            search: '',
+            category: 'custom',
+            visibility: 'public',
+            shared_with_users: [7],
+            shared_with_teams: [],
+        })
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return publicView
+            if (selector === getPristineActiveView) return publicView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        renderComponent()
+        await user.click(screen.getByRole('button', { name: /update view/i }))
+        await user.click(screen.getByRole('button', { name: /^cancel$/i }))
+
+        expect(submitViewMock).not.toHaveBeenCalled()
+        expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument()
+    })
+
+    it('submits a public view update after confirmation', async () => {
+        const user = userEvent.setup()
+        const publicView = fromJS({
+            id: 42,
+            name: 'Public tickets',
+            slug: 'public-tickets',
+            filters: 'status:open',
+            search: '',
+            category: 'custom',
+            visibility: 'public',
+            shared_with_users: [7],
+            shared_with_teams: [],
+        })
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return publicView
+            if (selector === getPristineActiveView) return publicView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        renderComponent()
+        await user.click(screen.getByRole('button', { name: /update view/i }))
+        await user.click(screen.getByRole('button', { name: /confirm/i }))
+
+        await waitFor(() => {
+            expect(submitViewMock).toHaveBeenCalled()
+        })
+    })
+
+    it('updates private views without showing the confirmation modal', async () => {
+        const user = userEvent.setup()
+
+        renderComponent()
+        await user.click(screen.getByRole('button', { name: /update view/i }))
+
+        expect(submitViewMock).toHaveBeenCalled()
+        expect(screen.queryByText('Are you sure?')).not.toBeInTheDocument()
+    })
+
     it('saves a new view from the save menu action', async () => {
         const user = userEvent.setup()
 
@@ -712,6 +1069,30 @@ describe('ViewPanelFiltersBridge', () => {
         expect(submitViewMock).toHaveBeenCalled()
     })
 
+    it('hides delete for unsaved draft views', () => {
+        const draftView = activeView
+            .delete('id')
+            .set('name', '')
+            .set('slug', '')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return draftView
+            if (selector === getPristineActiveView) return draftView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        renderComponent()
+
+        expect(
+            screen.queryByRole('button', { name: /^delete$/i }),
+        ).not.toBeInTheDocument()
+    })
+
     it('does nothing when delete resolves to a non-map destination', async () => {
         const user = userEvent.setup()
 
@@ -725,10 +1106,8 @@ describe('ViewPanelFiltersBridge', () => {
 
         renderComponent()
 
-        await user.click(screen.getByRole('button', { name: /delete view/i }))
-        await user.click(
-            screen.getByRole('button', { name: /confirm delete/i }),
-        )
+        await user.click(screen.getByRole('button', { name: /^delete$/i }))
+        await user.click(screen.getByRole('button', { name: /confirm/i }))
 
         await waitFor(() => {
             expect(deleteViewMock).toHaveBeenCalled()
@@ -762,10 +1141,8 @@ describe('ViewPanelFiltersBridge', () => {
 
         renderComponent()
 
-        await user.click(screen.getByRole('button', { name: /delete view/i }))
-        await user.click(
-            screen.getByRole('button', { name: /confirm delete/i }),
-        )
+        await user.click(screen.getByRole('button', { name: /^delete$/i }))
+        await user.click(screen.getByRole('button', { name: /confirm/i }))
 
         await waitFor(() => {
             expect(dispatchMock).toHaveBeenCalledWith(viewDeletedAction)
@@ -777,6 +1154,33 @@ describe('ViewPanelFiltersBridge', () => {
         })
         expect(pushMock).toHaveBeenCalledWith('/app/views/88')
         expect(onExpandedChange).toHaveBeenCalledWith(false)
+    })
+
+    it('shows the shared delete confirmation copy for public views', async () => {
+        const user = userEvent.setup()
+        const publicView = activeView.set('visibility', 'public')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return publicView
+            if (selector === getPristineActiveView) return publicView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /^delete$/i }))
+
+        expect(screen.getByText('Are you sure?')).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                'You are about to delete this view for all users.',
+            ),
+        ).toBeInTheDocument()
     })
 
     it('renders nothing when the active view is empty', () => {

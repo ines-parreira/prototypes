@@ -256,6 +256,7 @@ export class RightContainer extends Component<Props, State> {
                         options={options}
                         singular="integration"
                         plural="integrations"
+                        dropdownMenuContainer={menuContainer}
                         onChange={(value: Option[]) =>
                             updateFieldFilter(index, value)
                         }
@@ -299,6 +300,7 @@ export class RightContainer extends Component<Props, State> {
                         options={storeOptions}
                         singular="store"
                         plural="stores"
+                        dropdownMenuContainer={menuContainer}
                         onChange={(value: Option[]) =>
                             updateFieldFilter(index, value)
                         }
@@ -357,6 +359,7 @@ export class RightContainer extends Component<Props, State> {
                     <TimedeltaPicker
                         className={css.timedeltaPicker}
                         value={displayedValue as string}
+                        menuContainer={menuContainer}
                         onChange={(value: string) =>
                             updateFieldFilter(index, value)
                         }
@@ -445,6 +448,7 @@ export class RightContainer extends Component<Props, State> {
                         options={options}
                         singular="channel"
                         plural="channels"
+                        dropdownMenuContainer={menuContainer}
                         onChange={(value: Option[]) =>
                             updateFieldFilter(index, value)
                         }
@@ -479,6 +483,7 @@ export class RightContainer extends Component<Props, State> {
                         options={options}
                         singular={isResolutionCompleteness ? 'value' : 'score'}
                         plural={isResolutionCompleteness ? 'values' : 'scores'}
+                        dropdownMenuContainer={menuContainer}
                         onChange={(value: Option[]) =>
                             updateFieldFilter(index, value)
                         }
@@ -537,6 +542,7 @@ export class RightContainer extends Component<Props, State> {
                         options={options}
                         singular="feedback value"
                         plural="feedback values"
+                        dropdownMenuContainer={menuContainer}
                         onChange={(value: Option[]) =>
                             updateFieldFilter(index, value)
                         }
@@ -563,6 +569,7 @@ export class RightContainer extends Component<Props, State> {
                         options={options}
                         singular="priority"
                         plural="priorities"
+                        dropdownMenuContainer={menuContainer}
                         onChange={(value: Option[]) =>
                             updateFieldFilter(index, value)
                         }

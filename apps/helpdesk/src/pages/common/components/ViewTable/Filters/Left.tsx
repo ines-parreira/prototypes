@@ -81,6 +81,7 @@ export default function Left({
                     value={customFieldId}
                     onChange={onCustomFieldChange}
                     showManagedFields={true}
+                    container={menuContainer}
                     objectType={
                         isCustomerFieldObject
                             ? OBJECT_TYPES.CUSTOMER

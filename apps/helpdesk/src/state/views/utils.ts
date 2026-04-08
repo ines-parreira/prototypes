@@ -342,6 +342,70 @@ export function updateQAScoreFilter(
     return updateAstLoc(newAst)
 }
 
+type FilterAstNode = {
+    type?: string
+    body?: Array<{ expression?: FilterAstNode }>
+    expression?: FilterAstNode
+    left?: FilterAstNode
+    right?: FilterAstNode
+    arguments?: FilterAstNode[]
+    value?: unknown
+    elements?: Array<FilterAstNode | null>
+}
+
+export function hasIncompleteFilterValues(node: unknown): boolean {
+    if (!node) {
+        return false
+    }
+
+    const ast =
+        typeof node === 'object' &&
+        node !== null &&
+        'toJS' in node &&
+        typeof (node as { toJS: () => FilterAstNode }).toJS === 'function'
+            ? (node as { toJS: () => FilterAstNode }).toJS()
+            : (node as FilterAstNode)
+
+    switch (ast.type) {
+        case 'Program':
+            return hasIncompleteFilterValues(ast.body?.[0]?.expression)
+        case 'ExpressionStatement':
+            return hasIncompleteFilterValues(ast.expression)
+        case 'LogicalExpression':
+            return (
+                hasIncompleteFilterValues(ast.left) ||
+                hasIncompleteFilterValues(ast.right)
+            )
+        case 'CallExpression': {
+            const secondArg = ast.arguments?.[1]
+
+            if (!secondArg) {
+                return true
+            }
+
+            if (secondArg.type === 'Literal' && secondArg.value === '') {
+                return true
+            }
+
+            if (secondArg.type === 'ArrayExpression') {
+                const elements = secondArg.elements ?? []
+
+                return (
+                    elements.length === 0 ||
+                    elements.some(
+                        (element) =>
+                            element?.type === 'Literal' && element.value === '',
+                    )
+                )
+            }
+
+            return false
+        }
+        default:
+            return false
+    }
+}
+
 /**
  * Sort view by `hide` and `display_order` property.
  * hidden views are at the bottom.

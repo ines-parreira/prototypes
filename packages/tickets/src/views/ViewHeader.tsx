@@ -17,11 +17,25 @@ type ViewHeaderProps = {
     viewId: number
     onExpand?: () => void
     onEditView?: () => void
+    titleOverride?: string
+    hideCreateTicket?: boolean
+    isDraftView?: boolean
 }
 
-export function ViewHeader({ viewId, onExpand, onEditView }: ViewHeaderProps) {
-    const { data: viewResponse } = useGetView(viewId)
-    const viewName = viewResponse?.data?.name
+export function ViewHeader({
+    viewId,
+    onExpand,
+    onEditView,
+    titleOverride,
+    hideCreateTicket = false,
+    isDraftView = false,
+}: ViewHeaderProps) {
+    const { data: viewResponse } = useGetView(viewId, {
+        query: {
+            enabled: !titleOverride && !isDraftView,
+        },
+    })
+    const viewName = titleOverride ?? viewResponse?.data?.name
     const { hasDraft, onCreateTicket, onResumeDraft, onDiscardDraft } =
         useCreateTicketDraft()
 
@@ -65,36 +79,40 @@ export function ViewHeader({ viewId, onExpand, onEditView }: ViewHeaderProps) {
             p="lg"
         >
             <Box flexDirection="row" alignItems="center" gap="xs">
-                <Tooltip
-                    trigger={
-                        <Button
-                            variant="secondary"
-                            size="sm"
-                            icon="system-bar-left"
-                            aria-label="Show ticket panel"
-                            onClick={onExpand}
-                        />
-                    }
-                >
-                    <TooltipContent title="Show ticket panel" />
-                </Tooltip>
+                {!isDraftView && (
+                    <Tooltip
+                        trigger={
+                            <Button
+                                variant="secondary"
+                                size="sm"
+                                icon="system-bar-left"
+                                aria-label="Show ticket panel"
+                                onClick={onExpand}
+                            />
+                        }
+                    >
+                        <TooltipContent title="Show ticket panel" />
+                    </Tooltip>
+                )}
                 <Heading size="xl">{viewName}</Heading>
             </Box>
             <Box flexDirection="row" alignItems="center" gap="xs">
-                <Tooltip
-                    trigger={
-                        <Button
-                            variant="tertiary"
-                            size="sm"
-                            icon="slider-filter"
-                            aria-label="Edit view"
-                            onClick={onEditView}
-                        />
-                    }
-                >
-                    <TooltipContent title="Edit view" />
-                </Tooltip>
-                {createTicketButton}
+                {!isDraftView && (
+                    <Tooltip
+                        trigger={
+                            <Button
+                                variant="tertiary"
+                                size="sm"
+                                icon="slider-filter"
+                                aria-label="Edit view"
+                                onClick={onEditView}
+                            />
+                        }
+                    >
+                        <TooltipContent title="Edit view" />
+                    </Tooltip>
+                )}
+                {!hideCreateTicket && createTicketButton}
             </Box>
         </Box>
     )
