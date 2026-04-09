@@ -8,6 +8,8 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
+import { useListSlaPolicies } from '@gorgias/helpdesk-queries'
+
 import {
     AIJourneyMetric,
     AIJourneyMetricsConfig,
@@ -84,6 +86,9 @@ const useCampaignStatsFiltersMock = assumeMock(useCampaignStatsFilters)
 
 const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
 
+jest.mock('@gorgias/helpdesk-queries')
+const useListSlaPoliciesMock = assumeMock(useListSlaPolicies)
+
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
@@ -107,6 +112,7 @@ describe('<LegacyDrillDownTable />', () => {
             metricValueFormat: 'decimal',
         })
         numberedPaginationMock.mockImplementation(() => <div />)
+        useListSlaPoliciesMock.mockReturnValue({ data: undefined } as any)
     })
 
     const renderTable = (
@@ -316,6 +322,115 @@ describe('<LegacyDrillDownTable />', () => {
             expect(
                 screen.getByText(SlaStatusLabel[metricStatus]),
             ).toBeInTheDocument()
+        })
+
+        it('should render SLA Policy column header when metricValueFormat is SLA_FORMAT', () => {
+            getDrillDownMetricColumnMock.mockReturnValue({
+                showMetric: true,
+                metricTitle: SlaMetricConfig[SlaMetric.AchievementRate].title,
+                metricValueFormat: SLA_FORMAT,
+            })
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            expect(screen.getByText('SLA Policy')).toBeInTheDocument()
+        })
+
+        it('should render SlaPolicyNameCell with resolved policy name for SLA metrics', () => {
+            const policyUuid = 'policy-uuid-1'
+            const policyName = 'My SLA Policy'
+            const metricName = 'someMetric'
+            const dataWithSlas = {
+                ...exampleRow,
+                slas: {
+                    [metricName]: {
+                        [TicketSLADimension.SlaPolicyUuid]: policyUuid,
+                        [TicketSLADimension.SlaPolicyMetricName]: metricName,
+                        [TicketSLADimension.SlaPolicyMetricStatus]:
+                            TicketSLAStatus.Satisfied,
+                        [TicketSLADimension.SlaDelta]: -60,
+                        [TicketSLADimension.SlaStatus]:
+                            TicketSLAStatus.Satisfied,
+                    },
+                },
+            }
+            getDrillDownMetricColumnMock.mockReturnValue({
+                showMetric: true,
+                metricTitle: SlaMetricConfig[SlaMetric.AchievementRate].title,
+                metricValueFormat: SLA_FORMAT,
+            })
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [dataWithSlas],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
+            useListSlaPoliciesMock.mockReturnValue({
+                data: {
+                    data: {
+                        data: [
+                            {
+                                uuid: policyUuid,
+                                name: policyName,
+                            },
+                        ],
+                    },
+                },
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            expect(screen.getByText(policyName)).toBeInTheDocument()
+        })
+
+        it('should render N/A placeholder in SLA Policy column when slas is not set', () => {
+            getDrillDownMetricColumnMock.mockReturnValue({
+                showMetric: true,
+                metricTitle: SlaMetricConfig[SlaMetric.AchievementRate].title,
+                metricValueFormat: SLA_FORMAT,
+            })
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [exampleRow],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            expect(screen.getByText('-')).toBeInTheDocument()
+        })
+
+        it('should not render SLA Policy column when metricValueFormat is not SLA_FORMAT', () => {
+            getDrillDownMetricColumnMock.mockReturnValue({
+                showMetric: true,
+                metricTitle: 'Some metric',
+                metricValueFormat: 'decimal',
+            })
+            useEnrichedDrillDownDataMock.mockReturnValue({
+                data: [exampleRow],
+                isFetching: false,
+            } as any)
+            useDataHookMock.mockReturnValue({
+                currentPage,
+                perPage: 1,
+            } as any)
+
+            renderTableForTicket(metricData)
+
+            expect(screen.queryByText('SLA Policy')).not.toBeInTheDocument()
         })
 
         it('should render surveyScore cell', () => {

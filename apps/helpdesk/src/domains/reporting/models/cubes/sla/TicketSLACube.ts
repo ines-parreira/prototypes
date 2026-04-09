@@ -14,6 +14,7 @@ export enum TicketSLADimension {
     PeriodStart = 'TicketSLA.periodStart',
     PeriodEnd = 'TicketSLA.periodEnd',
     SlaStatus = 'TicketSLA.slaStatus',
+    SlaPolicyUuid = 'TicketSLA.slaPolicyUuid',
     SlaAnchorDatetime = 'TicketSLA.slaAnchorDatetime',
     SlaAssignedDatetime = 'TicketSLA.slaAssignedDatetime',
     SlaPolicyMetricName = 'TicketSLA.slaPolicyMetricName',
@@ -41,6 +42,14 @@ export enum TicketSLAStatus {
     Breached = 'BREACHED',
     Satisfied = 'SATISFIED',
     Pending = 'PENDING',
+}
+
+export type TicketSLAPolicyDrilldownItem = {
+    [TicketSLADimension.SlaPolicyUuid]: string
+    [TicketSLADimension.SlaPolicyMetricName]: string
+    [TicketSLADimension.SlaPolicyMetricStatus]: TicketSLAStatus
+    [TicketSLADimension.SlaDelta]: number | null
+    [TicketSLADimension.SlaStatus]: TicketSLAStatus
 }
 
 export type SatisfiedOrBreachedTicketSLAStatus =

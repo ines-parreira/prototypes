@@ -90,6 +90,7 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
                 dimensions: [
                     TicketDimension.TicketId,
                     TicketSLADimension.TicketId,
+                    TicketSLADimension.SlaPolicyUuid,
                     TicketSLADimension.SlaStatus,
                     TicketSLADimension.SlaPolicyMetricName,
                     TicketSLADimension.SlaPolicyMetricStatus,
@@ -168,6 +169,7 @@ describe('satisfiedOrBreachedTicketsTicketsQueryFactory', () => {
                 dimensions: [
                     TicketDimension.TicketId,
                     TicketSLADimension.TicketId,
+                    TicketSLADimension.SlaPolicyUuid,
                     TicketSLADimension.SlaStatus,
                     TicketSLADimension.SlaPolicyMetricName,
                     TicketSLADimension.SlaPolicyMetricStatus,

@@ -11,13 +11,13 @@ import {
     AiSalesAgentOrdersMeasure,
 } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import { AIAgentCSATDimension } from 'domains/reporting/models/cubes/automate_v2/AIAgentCSATCube'
+import type { TicketSLAPolicyDrilldownItem } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { TicketInsightsTaskMeasure } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import { TicketSatisfactionSurveyDimension } from 'domains/reporting/models/cubes/TicketSatisfactionSurveyCube'
 import { VoiceCallDimension } from 'domains/reporting/models/cubes/VoiceCallCube'
 import { VoiceEventsByAgentDimension } from 'domains/reporting/models/cubes/VoiceEventsByAgent'
 import { EnrichmentFields } from 'domains/reporting/models/types'
 import { OrderConversionDimension } from 'domains/reporting/pages/convert/clients/constants'
-import type { SLAPolicyStatus } from 'domains/reporting/pages/sla/components/SlaStatusCell'
 import type { VoiceCallSummary } from 'domains/reporting/pages/voice/models/types'
 
 export interface TicketDetails {
@@ -43,7 +43,7 @@ export interface TicketDrillDownRowData extends BaseDrillDownRowData {
               id: number
           } & Partial<User>)
         | null
-    slas?: Record<string, SLAPolicyStatus>
+    slas?: Record<string, TicketSLAPolicyDrilldownItem>
     surveyScore?: string | null
     outcome?: string | null
     intent?: string | null

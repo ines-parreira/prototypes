@@ -8,22 +8,16 @@ import {
     TicketSLADimension,
     TicketSLAStatus,
 } from 'domains/reporting/models/cubes/sla/TicketSLACube'
+import type { TicketSLAPolicyDrilldownItem } from 'domains/reporting/models/cubes/sla/TicketSLACube'
 import { formatDuration } from 'domains/reporting/pages/common/utils'
 import { SlaStatusLabel } from 'domains/reporting/services/constants'
-
-export type SLAPolicyStatus = {
-    [TicketSLADimension.SlaPolicyMetricName]: string
-    [TicketSLADimension.SlaPolicyMetricStatus]: TicketSLAStatus
-    [TicketSLADimension.SlaDelta]: number | null
-    [TicketSLADimension.SlaStatus]: TicketSLAStatus
-}
 
 export const PENDING_SLA_TIME_LABEL = 'time pending'
 
 export const SLAStatusCell = ({
     item,
 }: {
-    item: Record<string, SLAPolicyStatus>
+    item: Record<string, TicketSLAPolicyDrilldownItem>
 }) => {
     const id = useId()
     const badgeId = `badge-${id}`

@@ -20,6 +20,7 @@ describe('<SLAStatusCell />', () => {
         const metricStatus = TicketSLAStatus.Satisfied
         const slaData = {
             [metricName]: {
+                [TicketSLADimension.SlaPolicyUuid]: 'aaaa-bbbb-cccc-dddd',
                 [TicketSLADimension.SlaPolicyMetricName]: metricName,
                 [TicketSLADimension.SlaPolicyMetricStatus]: metricStatus,
                 [TicketSLADimension.SlaDelta]: null,
@@ -38,6 +39,7 @@ describe('<SLAStatusCell />', () => {
         const anotherMetricName = 'anotherMetric'
         const anotherMetricStatus = TicketSLAStatus.Breached
         const breachedMetric = {
+            [TicketSLADimension.SlaPolicyUuid]: 'aaaa-bbbb-cccc-dddd',
             [TicketSLADimension.SlaPolicyMetricName]: anotherMetricName,
             [TicketSLADimension.SlaPolicyMetricStatus]: anotherMetricStatus,
             [TicketSLADimension.SlaDelta]: 123,
@@ -45,6 +47,7 @@ describe('<SLAStatusCell />', () => {
         }
         const breachedWithoutDeltaMetricName = 'breachedWithoutDeltaMetric'
         const breachedWithoutDeltaMetric = {
+            [TicketSLADimension.SlaPolicyUuid]: 'aaaa-bbbb-cccc-dddd',
             [TicketSLADimension.SlaPolicyMetricName]:
                 breachedWithoutDeltaMetricName,
             [TicketSLADimension.SlaPolicyMetricStatus]: anotherMetricStatus,
@@ -53,6 +56,7 @@ describe('<SLAStatusCell />', () => {
         }
         const slaData = {
             [metricName]: {
+                [TicketSLADimension.SlaPolicyUuid]: 'aaaa-bbbb-cccc-dddd',
                 [TicketSLADimension.SlaPolicyMetricName]: metricName,
                 [TicketSLADimension.SlaPolicyMetricStatus]:
                     satisfiedMetricStatus,

@@ -33,6 +33,7 @@ import type { ColumnConfig } from 'domains/reporting/pages/common/drill-down/typ
 import { HintTooltipContent } from 'domains/reporting/pages/common/HintTooltip'
 import { NOT_AVAILABLE_PLACEHOLDER } from 'domains/reporting/pages/common/utils'
 import { CSAT_SCORE } from 'domains/reporting/pages/quality-management/satisfaction/SatisfactionMetricsConfig'
+import { SlaPolicyNameCell } from 'domains/reporting/pages/sla/components/SlaPolicyNameCell'
 import { SLAStatusCell } from 'domains/reporting/pages/sla/components/SlaStatusCell'
 import { SLA_FORMAT } from 'domains/reporting/pages/sla/SlaConfig'
 import { AutoQAAgentsTableColumn } from 'domains/reporting/pages/support-performance/auto-qa/AutoQAAgentsTableConfig'
@@ -282,6 +283,7 @@ export const TicketDrillDownTableContent = ({
     const columnWidths = {
         ticket: getTicketColumnWidth(),
         metric: 140,
+        slaPolicy: 180,
         surveyScore: 48,
         assignee: 180,
         created: 180,
@@ -346,6 +348,9 @@ export const TicketDrillDownTableContent = ({
                 ? [columnWidths.product]
                 : []),
             ...(hasOutcomeColumn ? [columnWidths.outcome] : []),
+            ...(metricValueFormat === SLA_FORMAT
+                ? [columnWidths.slaPolicy]
+                : []),
             ...(showMetric ? [columnWidths.metric] : []),
             ...(showSurveyScore ? [columnWidths.surveyScore] : []),
             ...(isAutoQAResolutionCompleteness ? [columnWidths.metric] : []),
@@ -447,6 +452,14 @@ export const TicketDrillDownTableContent = ({
                         className={css.headerCell}
                         titleClassName={css.headerCellTitle}
                         tooltip={tooltipHints.outcome}
+                    />
+                )}
+                {metricValueFormat === SLA_FORMAT && (
+                    <HeaderCellProperty
+                        title="SLA Policy"
+                        width={columnWidths.slaPolicy}
+                        className={css.headerCell}
+                        titleClassName={css.headerCellTitle}
                     />
                 )}
                 {showMetric && (
@@ -771,6 +784,15 @@ export const TicketDrillDownTableContent = ({
                                         <span className={css.noData}>
                                             {NOT_AVAILABLE_PLACEHOLDER}
                                         </span>
+                                    )}
+                                </BodyCell>
+                            )}
+                            {metricValueFormat === SLA_FORMAT && (
+                                <BodyCell width={columnWidths.slaPolicy}>
+                                    {item.slas ? (
+                                        <SlaPolicyNameCell item={item.slas} />
+                                    ) : (
+                                        NOT_AVAILABLE_PLACEHOLDER
                                     )}
                                 </BodyCell>
                             )}

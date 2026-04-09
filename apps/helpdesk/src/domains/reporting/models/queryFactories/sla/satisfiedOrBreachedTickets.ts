@@ -87,6 +87,7 @@ export const satisfiedOrBreachedTicketsDrillDownQueryFactory = (
     dimensions: [
         TicketDimension.TicketId,
         TicketSLADimension.TicketId,
+        TicketSLADimension.SlaPolicyUuid,
         TicketSLADimension.SlaStatus,
         TicketSLADimension.SlaPolicyMetricName,
         TicketSLADimension.SlaPolicyMetricStatus,
@@ -126,6 +127,7 @@ export const breachedTicketsDrillDownQueryFactory = (
     dimensions: [
         TicketDimension.TicketId,
         TicketSLADimension.TicketId,
+        TicketSLADimension.SlaPolicyUuid,
         TicketSLADimension.SlaStatus,
         TicketSLADimension.SlaPolicyMetricName,
         TicketSLADimension.SlaPolicyMetricStatus,
