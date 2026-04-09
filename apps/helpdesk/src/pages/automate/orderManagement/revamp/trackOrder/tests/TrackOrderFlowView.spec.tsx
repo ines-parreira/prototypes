@@ -3,6 +3,8 @@ import userEvent from '@testing-library/user-event'
 import { useParams } from 'react-router-dom'
 
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
+import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 
 import useTrackOrderFlow from '../../../legacy/trackOrder/hooks/useTrackOrderFlow'
 import { TrackOrderFlowView } from '../TrackOrderFlowView'
@@ -13,6 +15,47 @@ jest.mock('react-router-dom', () => ({
 }))
 
 jest.mock('../../../legacy/trackOrder/hooks/useTrackOrderFlow')
+
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
+    __esModule: true,
+    default: jest.fn(() => []),
+}))
+
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
+    () => ({
+        useChatPreviewPanel: jest.fn(() => ({
+            showPreviewPanel: jest.fn(),
+            chatPreviewPortal: null,
+        })),
+    }),
+)
+
+jest.mock(
+    'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector',
+    () => ({
+        ChatChannelSelector: () => <div>ChatChannelSelector</div>,
+    }),
+)
+
+const mockUseSelfServiceChatChannels =
+    useSelfServiceChatChannels as jest.MockedFunction<
+        typeof useSelfServiceChatChannels
+    >
+const mockUseChatPreviewPanel = useChatPreviewPanel as jest.MockedFunction<
+    typeof useChatPreviewPanel
+>
+
+const mockChatChannel = {
+    type: 'chat' as const,
+    value: {
+        id: 1,
+        meta: {
+            app_id: 'test-app-id',
+            languages: [{ language: 'en', primary: true }],
+        },
+    },
+} as any
 
 jest.mock(
     '../../components/OrderManagementFlowHeader/OrderManagementFlowHeader',
@@ -94,6 +137,19 @@ describe('TrackOrderFlowView', () => {
         await user.type(screen.getByRole('textbox'), 'custom message')
 
         expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
+    })
+
+    it('should initialize the chat preview panel when channels are available', () => {
+        const mockShowPreviewPanel = jest.fn()
+        mockUseSelfServiceChatChannels.mockReturnValue([mockChatChannel])
+        mockUseChatPreviewPanel.mockReturnValue({
+            showPreviewPanel: mockShowPreviewPanel,
+            chatPreviewPortal: null,
+        } as any)
+
+        render(<TrackOrderFlowView />)
+
+        expect(mockShowPreviewPanel).toHaveBeenCalledWith('test-app-id')
     })
 
     it('should call handleTrackOrderFlowUpdate with the updated message on save', async () => {
