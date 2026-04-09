@@ -38,8 +38,8 @@
     .product-logo { display: flex; align-items: center; gap: 2px; }
     .product-icon {
       width: 32px; height: 32px;
-      background: #ebecef;
-      border: 0.5px solid rgba(103,113,131,0.5);
+      background: #f1ecff;
+      border: 0.2px solid #7e55f6;
       border-radius: 8px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
@@ -60,7 +60,7 @@
     .recents-group { gap: 4px; }
     .nav-item {
       display: flex; align-items: center; gap: 8px;
-      height: 24px; padding: 0 8px;
+      height: 24px; padding: 0 4px 0 8px;
       border-radius: 8px; cursor: pointer;
       width: 224px; transition: background 0.1s;
     }
@@ -332,9 +332,9 @@
     .attention-section { display: flex; flex-direction: column; gap: 12px; }
     .attention-header {
       display: flex; align-items: center; gap: 8px;
-      font-size: 16px; font-weight: 600; color: #1e242e;
+      font-size: 14px; font-weight: 600; color: #1e242e;
     }
-    /* Quantity badge — matches Axiom Quantity component with border="on" */
+    /* Quantity badge — matches Axiom Quantity with border="on" */
     .attention-count {
       display: inline-flex; align-items: center; justify-content: center;
       min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px;
@@ -343,28 +343,31 @@
     }
     .attention-card {
       background: white; border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 12px; padding: 20px 24px;
+      border-radius: 12px; padding: 24px;
       box-shadow: 0 2px 20px 0 rgba(0,0,0,0.04);
-      display: flex; align-items: flex-start; gap: 16px;
       cursor: pointer; transition: box-shadow 0.15s;
     }
     .attention-card:hover { box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08); }
-    .attention-card-body { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    /* Card body: 12px between tag row | title+desc group | timestamp */
+    .attention-card-body { display: flex; flex-direction: column; gap: 12px; }
+    /* Title + description grouped with 6px gap between them */
+    .attn-content-group { display: flex; flex-direction: column; gap: 6px; }
+    /* Axiom Tag md — 6px radius, 12px/500, 2px 8px padding */
     .attn-tag {
       display: inline-flex; align-items: center;
-      padding: 2px 8px; border-radius: 20px;
-      font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
-      align-self: flex-start;
+      padding: 2px 8px; border-radius: 6px;
+      font-size: 12px; font-weight: 500;
+      align-self: flex-start; white-space: nowrap;
     }
-    /* Tag colors match Axiom */
+    /* Tag colors matching Axiom color tokens */
     .attn-tag.alert    { background: #ffecef; color: #d90b28; border: 1px solid rgba(217,11,40,0.15); }
-    .attn-tag.tracking { background: #fff5ee; color: #a94f13; border: 1px solid rgba(169,79,19,0.15); }
-    .attn-tag.neutral  { background: white; color: #1e242e; border: 0.5px solid rgba(103,113,131,0.5); }
-    .attn-tag.review   { background: #fff7ed; color: #ea580c; border: 1px solid rgba(234,88,12,0.2); }
+    .attn-tag.tracking { background: #fff5ee; color: #c2410c; border: 1px solid rgba(194,65,12,0.2); }
+    .attn-tag.neutral  { background: white; color: #1e242e; border: 1px solid rgba(0,0,0,0.12); }
+    .attn-tag.review   { background: #fff7ed; color: #c2410c; border: 1px solid rgba(194,65,12,0.2); }
     .attn-tag.opp      { background: #f1ecff; color: #683fcf; border: 1px solid rgba(104,63,207,0.2); }
-    .attn-timestamp    { font-size: 10px; font-weight: 400; color: #6e7686; margin-top: 8px; }
-    .attn-title { font-size: 15px; font-weight: 600; color: #1e242e; line-height: 1.4; }
-    .attn-desc  { font-size: 13px; font-weight: 400; color: #5c6370; line-height: 1.5; }
+    .attn-timestamp    { font-size: 10px; font-weight: 400; color: #5c6370; line-height: 14px; }
+    .attn-title { font-size: 14px; font-weight: 600; color: #1e242e; line-height: 20px; }
+    .attn-desc  { font-size: 12px; font-weight: 400; color: #5c6370; line-height: 16px; letter-spacing: 0.12px; }
     .attn-metrics { display: flex; gap: 24px; margin-top: 12px; }
     /* Each metric pair stacks label above value with 4px gap */
     .attn-metrics > div { display: flex; flex-direction: column; gap: 4px; }
@@ -768,8 +771,10 @@
           <div class="attention-card">
             <div class="attention-card-body">
               <span class="attn-tag tracking">Tracking</span>
-              <div class="attn-title">5 of 14 cancellations mention delivery frequency</div>
-              <div class="attn-desc">Customers are saying "too often," "can't keep up," and "every two weeks is too much." These may not be product-dissatisfied — they might be cadence-dissatisfied. I'm tracking this pattern and will have more data by end of week.</div>
+              <div class="attn-content-group">
+                <div class="attn-title">5 of 14 cancellations mention delivery frequency</div>
+                <div class="attn-desc">Customers are saying "too often," "can't keep up," and "every two weeks is too much." These may not be product-dissatisfied — they might be cadence-dissatisfied. I'm tracking this pattern and will have more data by end of week.</div>
+              </div>
               <div class="attn-timestamp">Last 24 hours</div>
             </div>
           </div>
@@ -777,12 +782,14 @@
           <!-- Card 2: Alert + escalations — Pet safety -->
           <div class="attention-card">
             <div class="attention-card-body">
-              <div style="display:flex;gap:4px;flex-wrap:wrap;">
+              <div style="display:flex;gap:4px;align-items:center;">
                 <span class="attn-tag alert">Alert</span>
                 <span class="attn-tag neutral">4 escalations</span>
               </div>
-              <div class="attn-title">Pet safety questions — no skill coverage</div>
-              <div class="attn-desc">4 customers asked whether their bouquet is safe for a recipient's pet. I don't have pet safety data in my product knowledge, so I escalated all 4. These follow the same resolution pattern.</div>
+              <div class="attn-content-group">
+                <div class="attn-title">Pet safety questions — no skill coverage</div>
+                <div class="attn-desc">4 customers asked whether their bouquet is safe for a recipient's pet. I don't have pet safety data in my product knowledge, so I escalated all 4. These follow the same resolution pattern.</div>
+              </div>
               <div class="attn-timestamp">Overnight</div>
             </div>
           </div>
