@@ -36,6 +36,7 @@ export const useReportingTrendCardProps = ({
         comingSoon?: boolean
         queryFactory?: MetricQueryFactory
         valueFormatter?: (value: number) => string
+        valueTransform?: (value: number | null) => number | null
     }
 }) => {
     const { cleanStatsFilters, userTimezone, granularity } = useStatsFilters()
@@ -86,7 +87,7 @@ export const useReportingTrendCardProps = ({
             }
         }
 
-        const { queryFactory, valueFormatter } = timeSeriesView
+        const { queryFactory, valueFormatter, valueTransform } = timeSeriesView
         return {
             comingSoon: timeSeriesView.comingSoon ?? false,
             useChartData: queryFactory
@@ -96,6 +97,7 @@ export const useReportingTrendCardProps = ({
                           filters,
                           userTimezone,
                           granularity,
+                          valueTransform,
                       )
                 : undefined,
             valueFormatter: valueFormatter

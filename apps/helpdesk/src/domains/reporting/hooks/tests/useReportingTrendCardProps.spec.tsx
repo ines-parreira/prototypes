@@ -622,6 +622,26 @@ describe('useReportingTrendCardProps', () => {
                 { period: mockCleanStatsFilters.period },
                 'UTC',
                 ReportingGranularity.Day,
+                undefined,
+            )
+        })
+
+        it('passes valueTransform to useOverallTimeSeries when provided', () => {
+            const valueTransform = jest.fn((v: number | null) => v)
+
+            const { result } = renderWithTimeSeries({
+                queryFactory: mockQueryFactory,
+                valueTransform,
+            })
+
+            result.current.timeSeriesView?.useChartData?.()
+
+            expect(mockUseOverallTimeSeries).toHaveBeenCalledWith(
+                mockQueryFactory,
+                { period: mockCleanStatsFilters.period },
+                'UTC',
+                ReportingGranularity.Day,
+                valueTransform,
             )
         })
 

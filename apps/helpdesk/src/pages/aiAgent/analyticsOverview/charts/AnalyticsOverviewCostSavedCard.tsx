@@ -1,4 +1,4 @@
-import { formatMetricValue, TrendCard } from '@repo/reporting'
+import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2 } from 'domains/reporting/models/scopes/overallAutomatedInteractions'
@@ -24,11 +24,8 @@ export const AnalyticsOverviewCostSavedCard = ({
         timeSeriesView: {
             queryFactory:
                 dynamicOverallAutomatedInteractionsTimeseriesQueryFactoryV2,
-            valueFormatter: (value: number) =>
-                formatMetricValue(
-                    costSavedPerInteraction * (value ?? 0),
-                    'currency-precision-1',
-                ),
+            valueTransform: (value: number | null) =>
+                costSavedPerInteraction * (value ?? 0),
         },
     })
 

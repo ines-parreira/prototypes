@@ -551,6 +551,7 @@ export const useOverallTimeSeries = (
     filters: StatsFilters,
     timezone: string,
     granularity: ReportingGranularity,
+    valueTransform?: (value: number | null) => number | null,
 ) => {
     const data = useStatsTimeSeries(
         query({
@@ -560,8 +561,14 @@ export const useOverallTimeSeries = (
         }),
     )
 
+    const values = formatTimeSeriesValues(data.data?.[0])
     return {
-        data: formatTimeSeriesValues(data.data?.[0]),
+        data: valueTransform
+            ? values.map((item) => ({
+                  ...item,
+                  value: valueTransform(item.value),
+              }))
+            : values,
         isLoading: data.isFetching,
     }
 }

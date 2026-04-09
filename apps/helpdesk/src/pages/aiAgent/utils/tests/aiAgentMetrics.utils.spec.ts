@@ -1547,6 +1547,33 @@ describe('useOverallTimeSeries', () => {
         })
         expect(useStatsTimeSeriesMock).toHaveBeenCalledWith(mockBuiltQuery)
     })
+
+    it('should apply valueTransform to each data value when provided', () => {
+        useStatsTimeSeriesMock.mockReturnValue({
+            data: [
+                [
+                    { dateTime: '2025-01-01', value: 100 },
+                    { dateTime: '2025-01-02', value: 200 },
+                ],
+            ],
+            isFetching: false,
+        } as any)
+
+        const { result } = renderHook(() =>
+            useOverallTimeSeries(
+                mockQuery,
+                defaultFilters,
+                defaultTimezone,
+                defaultGranularity,
+                (value) => (value !== null ? value * 2 : null),
+            ),
+        )
+
+        expect(result.current.data).toEqual([
+            { date: 'Jan 1', value: 200 },
+            { date: 'Jan 2', value: 400 },
+        ])
+    })
 })
 
 describe('useAutomationTimeSeriesPerAutomationFeatureType', () => {

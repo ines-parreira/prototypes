@@ -435,7 +435,7 @@ describe('Analytics Dynamic Trend Cards', () => {
             },
             timeSeriesView: {
                 queryFactory: expect.any(Function),
-                valueFormatter: expect.any(Function),
+                valueTransform: expect.any(Function),
             },
         },
         {
@@ -624,7 +624,7 @@ describe('Analytics Dynamic Trend Cards', () => {
             },
             timeSeriesView: {
                 queryFactory: expect.any(Function),
-                valueFormatter: expect.any(Function),
+                valueTransform: expect.any(Function),
             },
         },
         {
@@ -766,8 +766,8 @@ describe('Analytics Dynamic Trend Cards', () => {
                 expect(mockTrendCard).toHaveBeenCalledWith(trendCardProps, {})
             })
 
-            if (timeSeriesView?.valueFormatter) {
-                it('should produce a string when valueFormatter is called with a value', () => {
+            if (timeSeriesView?.valueTransform) {
+                it('should produce a number when valueTransform is called with a value', () => {
                     render(
                         <Component
                             chartConfig={chartConfig}
@@ -776,12 +776,12 @@ describe('Analytics Dynamic Trend Cards', () => {
                         />,
                     )
 
-                    const capturedValueFormatter =
+                    const capturedValueTransform =
                         mockUseReportingTrendCardProps.mock.calls[0][0]
-                            .timeSeriesView?.valueFormatter
+                            .timeSeriesView?.valueTransform
 
-                    expect(capturedValueFormatter?.(100)).toEqual(
-                        expect.any(String),
+                    expect(capturedValueTransform?.(100)).toEqual(
+                        expect.any(Number),
                     )
                 })
             }
