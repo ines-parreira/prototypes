@@ -5,7 +5,7 @@ import {
     AgentAvailabilityStatusSelect,
     useUpdateUserAvailabilityStatus,
 } from '@repo/agent-status'
-import { isAdmin, isTeamLead } from '@repo/utils'
+import { isAdmin, isTeamLead } from '@repo/permissions'
 
 import {
     Box,

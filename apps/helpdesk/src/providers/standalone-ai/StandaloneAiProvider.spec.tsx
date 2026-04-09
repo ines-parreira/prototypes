@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import { UserRole } from '@repo/permissions'
 import { renderHook } from '@repo/testing'
-import { UserRole } from '@repo/utils'
 
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 

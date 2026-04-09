@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react'
 
-import { hasRole, isAdmin } from '@repo/utils'
-import type { UserRole } from '@repo/utils'
+import { hasRole, isAdmin } from '@repo/permissions'
+import type { UserRole } from '@repo/permissions'
 
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 

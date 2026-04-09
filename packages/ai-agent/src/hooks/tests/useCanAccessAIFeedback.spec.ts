@@ -1,4 +1,4 @@
-import { isTeamLead } from '@repo/utils'
+import { isTeamLead } from '@repo/permissions'
 import { renderHook } from '@testing-library/react'
 
 import type * as helpdeskQueriesModule from '@gorgias/helpdesk-queries'
@@ -6,7 +6,7 @@ import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 
 import { useCanAccessAIFeedback } from '../useCanAccessAIFeedback'
 
-vi.mock('@repo/utils', () => ({
+vi.mock('@repo/permissions', () => ({
     isTeamLead: vi.fn(),
 }))
 

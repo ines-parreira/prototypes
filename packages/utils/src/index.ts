@@ -11,16 +11,6 @@ export {
     encodeRFC3986URIComponent,
     ensureHTTPS,
 } from './url'
-export {
-    UserRole,
-    USER_ROLES,
-    USER_ROLES_ORDERED_BY_PRIVILEGES,
-    hasRole,
-    isAdmin,
-    hasAgentPrivileges,
-    isTeamLead,
-    filterUserByRole,
-} from './access-control/roles'
 export { sleep } from './misc/sleep'
 export { getMoneySymbol } from './misc/getMoneySymbol'
 export { isTimedelta } from './misc/ast'

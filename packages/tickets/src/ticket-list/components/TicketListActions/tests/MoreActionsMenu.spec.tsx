@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { UserRole } from '@repo/utils'
+import { UserRole } from '@repo/permissions'
 import { screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'

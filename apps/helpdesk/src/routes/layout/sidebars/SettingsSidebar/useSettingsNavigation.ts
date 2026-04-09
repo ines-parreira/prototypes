@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 
 import { useCustomAgentUnavailableStatusesFlag } from '@repo/agent-status'
 import { logEvent, SegmentEvent } from '@repo/logging'
-import { filterUserByRole, UserRole } from '@repo/utils'
+import { filterUserByRole, UserRole } from '@repo/permissions'
 
 import type { IconName } from '@gorgias/axiom'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'

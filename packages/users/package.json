@@ -20,6 +20,7 @@
         "@gorgias/helpdesk-client": "catalog:rest-api-sdk",
         "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
         "@repo/hooks": "workspace:*",
+        "@repo/permissions": "workspace:*",
         "@repo/utils": "workspace:*",
         "react": "catalog:react"
     },
@@ -31,6 +32,7 @@
         "@repo/config": "workspace:*",
         "@repo/hooks": "workspace:*",
         "@repo/testing": "workspace:*",
+        "@repo/permissions": "workspace:*",
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
         "@testing-library/dom": "catalog:test",

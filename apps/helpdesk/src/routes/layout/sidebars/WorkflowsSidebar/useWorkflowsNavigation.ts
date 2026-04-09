@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
-import type { UserRole } from '@repo/utils'
-import { filterUserByRole } from '@repo/utils'
+import type { UserRole } from '@repo/permissions'
+import { filterUserByRole } from '@repo/permissions'
 
 import type { IconName } from '@gorgias/axiom'
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'

@@ -1,5 +1,5 @@
+import { isAdmin } from '@repo/permissions'
 import { assumeMock, renderHook } from '@repo/testing'
-import { isAdmin } from '@repo/utils'
 import { fromJS } from 'immutable'
 
 import { BannerCategories } from 'AlertBanners'
@@ -9,8 +9,8 @@ import { BillingAddressValidationStatus } from 'models/billing/types'
 
 import { useBillingAddressValidationBanner } from '../useBillingAddressValidationBanner'
 
-jest.mock('@repo/utils', () => ({
-    ...jest.requireActual('@repo/utils'),
+jest.mock('@repo/permissions', () => ({
+    ...jest.requireActual('@repo/permissions'),
     isAdmin: jest.fn(),
 }))
 

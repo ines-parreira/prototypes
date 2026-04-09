@@ -1,4 +1,4 @@
-import { isTeamLead } from '@repo/utils'
+import { isTeamLead } from '@repo/permissions'
 
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 

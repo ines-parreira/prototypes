@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 
-import { UserRole } from '@repo/utils'
+import { UserRole } from '@repo/permissions'
 import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'

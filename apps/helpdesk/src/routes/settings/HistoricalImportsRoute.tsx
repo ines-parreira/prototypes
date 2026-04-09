@@ -1,4 +1,4 @@
-import { UserRole } from '@repo/utils'
+import { UserRole } from '@repo/permissions'
 import { Route, Switch, useRouteMatch } from 'react-router-dom'
 
 import { PageSection } from 'config/pages'

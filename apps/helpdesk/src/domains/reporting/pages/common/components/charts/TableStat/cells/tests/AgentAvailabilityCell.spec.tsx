@@ -1,8 +1,8 @@
 import type React from 'react'
 
 import { AVAILABLE_STATUS } from '@repo/agent-status'
+import { UserRole } from '@repo/permissions'
 import { assumeMock } from '@repo/testing'
-import { UserRole } from '@repo/utils'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'

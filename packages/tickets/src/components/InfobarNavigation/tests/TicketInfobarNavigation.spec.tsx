@@ -1,6 +1,7 @@
 import { useHelpdeskV2MS2Flag } from '@repo/feature-flags'
 import * as repoNavigation from '@repo/navigation'
-import { shortcutManager, UserRole } from '@repo/utils'
+import { UserRole } from '@repo/permissions'
+import { shortcutManager } from '@repo/utils'
 import { act, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'

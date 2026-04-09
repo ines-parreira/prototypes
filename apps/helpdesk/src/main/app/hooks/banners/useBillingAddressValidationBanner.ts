@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 
 import { BILLING_PAYMENT_PATH } from '@repo/billing'
-import { isAdmin } from '@repo/utils'
+import { isAdmin } from '@repo/permissions'
 
 import type { ContextBanner } from 'AlertBanners'
 import { AlertBannerTypes, BannerCategories, useBanners } from 'AlertBanners'

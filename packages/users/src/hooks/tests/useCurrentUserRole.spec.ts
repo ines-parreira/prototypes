@@ -1,5 +1,5 @@
+import { UserRole } from '@repo/permissions'
 import { renderHook } from '@repo/testing/vitest'
-import { UserRole } from '@repo/utils'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'

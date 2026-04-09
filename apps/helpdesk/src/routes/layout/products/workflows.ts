@@ -1,4 +1,4 @@
-import { UserRole } from '@repo/utils'
+import { UserRole } from '@repo/permissions'
 
 import type { IconName } from '@gorgias/axiom'
 

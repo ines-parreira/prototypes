@@ -1,4 +1,4 @@
-import { UserRole } from '@repo/utils'
+import { UserRole } from '@repo/permissions'
 
 /**
  * Standalone AI agent accounts should only see a subset of Settings pages.

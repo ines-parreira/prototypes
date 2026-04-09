@@ -6,7 +6,7 @@ import {
     TicketInfobarTab,
     useTicketInfobarNavigation,
 } from '@repo/navigation'
-import { isAdmin } from '@repo/utils'
+import { isAdmin } from '@repo/permissions'
 import { useHistory } from 'react-router-dom'
 
 import {

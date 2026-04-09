@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
-import type { UserRole } from '@repo/utils'
+import type { UserRole } from '@repo/permissions'
 
 import { Tag } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'

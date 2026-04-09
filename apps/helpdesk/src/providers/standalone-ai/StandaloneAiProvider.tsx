@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { useMemo } from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { UserRole } from '@repo/utils'
+import { UserRole } from '@repo/permissions'
 
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 

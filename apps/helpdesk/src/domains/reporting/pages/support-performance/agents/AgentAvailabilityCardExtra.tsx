@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { isAdmin } from '@repo/utils'
+import { isAdmin } from '@repo/permissions'
 
 import { useStatsFilters } from 'domains/reporting/hooks/support-performance/useStatsFilters'
 import { AgentAvailabilityEditColumns } from 'domains/reporting/pages/support-performance/agents/AgentAvailabilityEditColumns'

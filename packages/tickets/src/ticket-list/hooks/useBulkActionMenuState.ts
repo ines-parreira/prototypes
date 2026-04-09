@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { hasRole, UserRole } from '@repo/utils'
+import { hasRole, UserRole } from '@repo/permissions'
 
 import { useGetCurrentUser } from '@gorgias/helpdesk-queries'
 

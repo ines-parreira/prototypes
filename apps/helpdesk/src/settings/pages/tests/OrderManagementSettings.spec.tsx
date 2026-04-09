@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 
+import { UserRole } from '@repo/permissions'
 import { assumeMock } from '@repo/testing'
-import { UserRole } from '@repo/utils'
 import { screen } from '@testing-library/react'
 import { fromJS, Map } from 'immutable'
 import { Provider } from 'react-redux'

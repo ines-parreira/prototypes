@@ -1,0 +1,34 @@
+{
+    "name": "@repo/permissions",
+    "version": "1.0.0",
+    "description": "Role-based access control and permission utilities",
+    "private": true,
+    "exports": {
+        ".": "./src/index.ts"
+    },
+    "scripts": {
+        "format:check": "prettier --check .",
+        "format:fix": "prettier --write .",
+        "lint": "oxlint --quiet",
+        "lint:unused": "knip --directory ../.. --workspace @repo/permissions --no-progress",
+        "test": "vitest run --configLoader=runner",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage --silent",
+        "test:watch": "vitest watch --configLoader=runner",
+        "typecheck": "tsc -p ./tsconfig.json --noEmit true"
+    },
+    "peerDependencies": {
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk"
+    },
+    "devDependencies": {
+        "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
+        "@repo/config": "workspace:*",
+        "@repo/testing": "workspace:*",
+        "@testing-library/jest-dom": "catalog:test",
+        "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
+        "@vitest/coverage-v8": "catalog:test",
+        "oxlint": "catalog:oxlint",
+        "prettier": "catalog:prettier",
+        "typescript": "catalog:typescript",
+        "vitest": "catalog:test"
+    }
+}

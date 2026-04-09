@@ -1,4 +1,5 @@
-import { DateFormatType, TimeFormatType, UserRole } from '@repo/utils'
+import { UserRole } from '@repo/permissions'
+import { DateFormatType, TimeFormatType } from '@repo/utils'
 import { fromJS } from 'immutable'
 
 import { GORGIAS_CHAT_MAIN_FONT_FAMILY_DEFAULT } from 'config/integrations/gorgias_chat'
