@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
 
+import type { VoiceCall } from '@gorgias/helpdesk-queries'
+
 import type {
     TicketThreadAiAgentDraftMessageItem,
     TicketThreadAiAgentMessageItem,
@@ -98,6 +100,10 @@ export type LegacyBridgeState = {
     newMessage: LegacyBridgeNewMessageState
 }
 
+export type VoiceCallBridgeCallbacks = {
+    renderMonitorCallButton?: (voiceCall: VoiceCall) => React.ReactNode
+}
+
 export type TicketThreadAiAgentReasoningParams = {
     message: TicketThreadAiAgentMessageItem['data']
 }
@@ -131,4 +137,5 @@ export type LegacyBridgeContextType = {
     renderAiAgentReasoning?: (
         params: TicketThreadAiAgentReasoningParams,
     ) => ReactNode
+    voiceCallCallbacks?: VoiceCallBridgeCallbacks
 }

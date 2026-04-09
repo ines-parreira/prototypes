@@ -75,6 +75,7 @@ describe('DefaultViews', () => {
         mockUseCurrentUserRole.mockReturnValue({
             isAdmin: true,
             hasRole: jest.fn(),
+            currentUser: { id: 1, role: { name: 'viewer' } },
         })
         mockUseExpandableDefaultViews.mockReturnValue({
             displayedViews: [inboxView, unassignedView],
@@ -100,6 +101,7 @@ describe('DefaultViews', () => {
         mockUseCurrentUserRole.mockReturnValue({
             isAdmin: false,
             hasRole: jest.fn(),
+            currentUser: { id: 1, role: { name: 'viewer' } },
         })
 
         renderComponent()

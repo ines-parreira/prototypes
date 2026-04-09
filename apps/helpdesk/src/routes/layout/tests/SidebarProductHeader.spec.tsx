@@ -82,6 +82,7 @@ describe('SidebarProductHeader', () => {
         mockUseCurrentUserRole.mockReturnValue({
             isAdmin: true,
             hasRole: jest.fn().mockReturnValue(true),
+            currentUser: { id: 1, role: { name: 'viewer' } },
         })
     })
 
@@ -185,6 +186,7 @@ describe('SidebarProductHeader', () => {
             mockUseCurrentUserRole.mockReturnValue({
                 isAdmin: false,
                 hasRole: jest.fn().mockReturnValue(false),
+                currentUser: { id: 1, role: { name: 'viewer' } },
             })
 
             renderComponent()

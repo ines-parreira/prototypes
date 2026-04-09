@@ -95,4 +95,21 @@ describe('useCurrentUserRole', () => {
             })
         })
     })
+
+    describe('currentUser', () => {
+        it('returns the current user once data is loaded', async () => {
+            server.use(
+                mockGetCurrentUserHandler(async () =>
+                    HttpResponse.json(agentUser),
+                ).handler,
+            )
+
+            const { result } = renderHook(() => useCurrentUserRole())
+
+            await waitFor(() => {
+                expect(result.current.currentUser).toBeDefined()
+            })
+            expect(result.current.currentUser?.id).toBe(1)
+        })
+    })
 })

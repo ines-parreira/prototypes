@@ -11,6 +11,7 @@ import type {
     LegacyBridgeState,
     TicketThreadAiAgentDraftMessageParams,
     TicketThreadAiAgentReasoningParams,
+    VoiceCallBridgeCallbacks,
 } from './types'
 
 type TicketThreadLegacyBridgeProviderProps = {
@@ -36,6 +37,7 @@ type TicketThreadLegacyBridgeProviderProps = {
     renderAiAgentReasoning?: (
         params: TicketThreadAiAgentReasoningParams,
     ) => React.ReactNode
+    voiceCallCallbacks?: VoiceCallBridgeCallbacks
 }
 
 const defaultLegacyActions: LegacyBridgeActions = {
@@ -67,6 +69,7 @@ export const TicketThreadLegacyBridgeProvider = ({
     legacyState = defaultLegacyState,
     renderAiAgentDraftMessage,
     renderAiAgentReasoning,
+    voiceCallCallbacks,
 }: TicketThreadLegacyBridgeProviderProps) => {
     return (
         <LegacyBridgeContext.Provider
@@ -82,6 +85,7 @@ export const TicketThreadLegacyBridgeProvider = ({
                 legacyState,
                 renderAiAgentDraftMessage,
                 renderAiAgentReasoning,
+                voiceCallCallbacks,
             }}
         >
             {children}

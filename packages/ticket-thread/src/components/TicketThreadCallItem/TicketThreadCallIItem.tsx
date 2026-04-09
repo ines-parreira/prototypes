@@ -4,6 +4,7 @@ import type {
     TicketThreadVoiceCallItem,
 } from '../../hooks/voice-calls/types'
 import { assertNever } from '../../utils/assertNever'
+import { useTicketThreadLegacyBridge } from '../../utils/LegacyBridge'
 import { MessageBubble } from '../MessageBubble/MessageBubble'
 import { VoiceCallInbound } from './components/VoiceCallInbound'
 import { VoiceCallOutbound } from './components/VoiceCallOutbound'
@@ -14,6 +15,8 @@ type TicketThreadCallItemProps = {
 }
 
 export function TicketThreadCallItem({ item }: TicketThreadCallItemProps) {
+    const { voiceCallCallbacks } = useTicketThreadLegacyBridge()
+
     const summary = item.data.summaries && item.data.summaries.length > 0 && (
         <MessageBubble variant="internal-note">
             <VoiceCallSummary summaries={item.data.summaries} />
@@ -25,7 +28,12 @@ export function TicketThreadCallItem({ item }: TicketThreadCallItemProps) {
             return (
                 <>
                     <MessageBubble>
-                        <VoiceCallInbound voiceCall={item.data} />
+                        <VoiceCallInbound
+                            voiceCall={item.data}
+                            renderMonitorCallButton={
+                                voiceCallCallbacks?.renderMonitorCallButton
+                            }
+                        />
                     </MessageBubble>
                     {summary}
                 </>
@@ -34,7 +42,12 @@ export function TicketThreadCallItem({ item }: TicketThreadCallItemProps) {
             return (
                 <>
                     <MessageBubble>
-                        <VoiceCallOutbound voiceCall={item.data} />
+                        <VoiceCallOutbound
+                            voiceCall={item.data}
+                            renderMonitorCallButton={
+                                voiceCallCallbacks?.renderMonitorCallButton
+                            }
+                        />
                     </MessageBubble>
                     {summary}
                 </>

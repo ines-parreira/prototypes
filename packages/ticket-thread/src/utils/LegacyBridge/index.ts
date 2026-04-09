@@ -16,4 +16,5 @@ export type {
     LegacyBridgeState,
     TicketThreadAiAgentDraftMessageParams,
     TicketThreadAiAgentReasoningParams,
+    VoiceCallBridgeCallbacks,
 } from './types'

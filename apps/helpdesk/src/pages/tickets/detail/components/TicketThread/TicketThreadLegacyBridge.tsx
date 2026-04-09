@@ -6,6 +6,7 @@ import { fromJS } from 'immutable'
 import { useFetchInfluencedOrdersForCurrentTicket } from 'hooks/aiAgent/useFetchInfluencedOrdersForCurrentTicket'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import { VoiceCallMonitorButton } from 'pages/common/components/VoiceCallMonitorButton'
 import useRuleSuggestionForDemos from 'pages/tickets/detail/hooks/useRuleSuggestionForDemos'
 import * as NewMessageActions from 'state/newMessage/actions'
 import * as TicketActions from 'state/ticket/actions'
@@ -95,6 +96,11 @@ export const TicketThreadLegacyBridge = ({
             renderAiAgentReasoning={(params) => (
                 <TicketThreadAiAgentReasoning {...params} />
             )}
+            voiceCallCallbacks={{
+                renderMonitorCallButton: (voiceCall) => (
+                    <VoiceCallMonitorButton voiceCall={voiceCall} />
+                ),
+            }}
         >
             {children}
             {instagramPrivateReplyData && (
