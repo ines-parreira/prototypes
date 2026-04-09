@@ -1,5 +1,6 @@
 import type React from 'react'
 
+import { storeWithActiveSubscriptionWithConvert } from '@repo/billing/fixtures'
 import { reportError } from '@repo/logging'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
@@ -7,7 +8,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { useGetFeedback } from 'models/knowledgeService/queries'
-import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { useFeedbackPolling } from './useFeedbackPolling'

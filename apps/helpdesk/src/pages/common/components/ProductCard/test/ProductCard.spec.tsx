@@ -1,9 +1,8 @@
+import { storeWithActiveSubscriptionWithConvert } from '@repo/billing/fixtures'
 import { userEvent } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
-
-import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
 
 import { ProductCard } from '../ProductCard'
 

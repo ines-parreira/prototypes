@@ -4,7 +4,8 @@
     "description": "Billing types, constants, and utilities",
     "private": true,
     "exports": {
-        ".": "./src/index.ts"
+        ".": "./src/index.ts",
+        "./fixtures": "./src/fixtures.ts"
     },
     "scripts": {
         "format:check": "prettier --check .",
@@ -18,6 +19,8 @@
     },
     "peerDependencies": {
         "@repo/logging": "workspace:*",
+        "immutable": "3.8.3",
+        "moment": "catalog:moment",
         "react": "catalog:react",
         "react-dom": "catalog:react",
         "react-router-dom": "catalog:react-router",
@@ -35,6 +38,8 @@
         "@types/react-router": "catalog:react-router",
         "@types/react-router-dom": "catalog:react-router",
         "@vitest/coverage-v8": "catalog:test",
+        "immutable": "3.8.3",
+        "moment": "catalog:moment",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react": "catalog:react",

@@ -1,4 +1,5 @@
 import client from '@repo/api-resources'
+import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, screen, waitFor } from '@testing-library/react'
@@ -24,7 +25,6 @@ import {
     voicePlan1,
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
-import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'

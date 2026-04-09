@@ -1,3 +1,4 @@
+import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
@@ -7,7 +8,6 @@ import {
     voicePlan0,
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
-import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import { InternalConfirmModal } from './InternalConfirmModal'

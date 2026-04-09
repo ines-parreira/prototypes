@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { storeWithActiveSubscriptionWithConvert } from '@repo/billing/fixtures'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
@@ -10,7 +11,6 @@ import { Skeleton } from '@gorgias/axiom'
 
 import type { StoreConfiguration } from 'models/aiAgent/types'
 import { TicketOutcome } from 'models/aiAgentPlayground/types'
-import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
 import { AiAgentKnowledgeResourceTypeEnum } from 'pages/tickets/detail/components/AIAgentFeedbackBar/types'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 

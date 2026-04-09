@@ -1,5 +1,6 @@
 import type { ComponentProps } from 'react'
 
+import { storeWithActiveSubscriptionWithConvert } from '@repo/billing/fixtures'
 import { render, screen } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { Provider } from 'react-redux'
@@ -14,7 +15,6 @@ import {
 } from 'models/aiAgentPlayground/types'
 import type { PlaygroundTextMessage } from 'models/aiAgentPlayground/types'
 import { AI_AGENT } from 'pages/aiAgent/constants'
-import { storeWithActiveSubscriptionWithConvert } from 'pages/settings/new_billing/fixtures'
 
 import {
     playgroundAttachmentFixture,

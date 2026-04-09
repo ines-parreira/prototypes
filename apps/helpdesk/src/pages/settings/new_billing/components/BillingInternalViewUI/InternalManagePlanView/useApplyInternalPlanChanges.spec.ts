@@ -1,3 +1,4 @@
+import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { assumeMock } from '@repo/testing'
 import { act, renderHook } from '@testing-library/react'
 
@@ -9,7 +10,6 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useUpdateInternalSubscription } from 'models/billing/queries'
 import { ProductType } from 'models/billing/types'
-import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 
 import { useApplyInternalPlanChanges } from './useApplyInternalPlanChanges'
 import type { ResolvedPlan } from './useInternalPlanEditor'

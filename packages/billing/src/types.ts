@@ -147,6 +147,155 @@ export type ConvertPlan = BasePlan & {
     tier?: number
 }
 
+export type CouponSummary = {
+    name: string
+    duration: string
+    duration_in_months: number | null
+    amount_off_in_cents: number | null
+    amount_off_decimal: string | null
+    percent_off: number | null
+    products: ProductType[]
+}
+
+type ProductUsage = {
+    num_tickets: number
+    num_extra_tickets: number
+    extra_tickets_cost_in_cents: number
+}
+
+export type ProductUsages = {
+    helpdesk: ProductUsage
+    automation: ProductUsage | null
+    sms: ProductUsage | null
+    voice: ProductUsage | null
+    convert: ProductUsage | null
+}
+
+export type UpcomingInvoiceSummary = {
+    coupon: CouponSummary | null
+    subtotal_in_cents: number
+    subtotal_decimal: string
+    total_in_cents: number
+    total_decimal: string
+    usages: ProductUsages
+}
+
+export enum BillingAddressValidationStatus {
+    NotValidated = 'not_validated',
+    Valid = 'valid',
+    PartiallyValid = 'partially_valid',
+    Invalid = 'invalid',
+}
+
+export enum SubscriptionStatus {
+    ACTIVE = 'active',
+    CANCELED = 'canceled',
+    PAST_DUE = 'past_due',
+    TRIALING = 'trialing',
+}
+
+export type SubscriptionSummary = {
+    status: SubscriptionStatus
+    cadence: Cadence
+    invoice_cadence: InvoiceCadence
+    is_paused: boolean
+    is_trialing: boolean
+    trial_start_datetime: string | null
+    trial_end_datetime: string | null
+    has_schedule: boolean
+    downgrade_scheduled: boolean
+    scheduled_to_cancel_at: string | null
+    current_billing_cycle_start_datetime: string
+    current_billing_cycle_end_datetime: string
+    coupon: CouponSummary | null
+    trial_extended_until: string | null
+    resource_version: number
+    schedule_resource_version?: number
+}
+
+export type CreditCard = {
+    brand: string
+    last4: string
+    exp_month: number
+    exp_year: number
+}
+
+export type ShopifyBilling = {
+    subscription_id: string | null
+}
+
+export type AchCreditBankAccount = {
+    bank_name: string
+    last4: string
+}
+
+export type AchDebitBankAccount = {
+    bank_name: string
+    last4: string
+}
+
+type CustomerSummary = {
+    trial_extended_until?: string | null
+    coupon?: CouponSummary | null
+    credit_card?: CreditCard | null
+    shopify_billing?: ShopifyBilling | null
+    ach_debit_bank_account?: AchDebitBankAccount | null
+    ach_credit_bank_account?: AchCreditBankAccount | null
+    payment_term_days: number | null
+    is_vetted: boolean
+    billing_address_validation_status: BillingAddressValidationStatus
+}
+
+export type CurrentPlans = {
+    helpdesk: HelpdeskPlan
+    automate: AutomatePlan | null
+    voice: SMSOrVoicePlan | null
+    sms: SMSOrVoicePlan | null
+    convert: ConvertPlan | null
+}
+
+export type BillingState = {
+    upcoming_invoice: UpcomingInvoiceSummary | null
+    subscription: SubscriptionSummary
+    customer: CustomerSummary
+    current_plans: CurrentPlans
+}
+
+export enum PaymentType {
+    Stripe = 'stripe',
+    Shopify = 'shopify',
+}
+
+export enum PaymentIntentStatus {
+    RequiresSource = 'requires_source',
+    RequiresConfirmation = 'requires_source_action',
+    RequiresPaymentMethod = 'requires_payment_method',
+    Succeeded = 'succeeded',
+}
+
+export type Invoice = {
+    total: number
+    amount_paid: number
+    amount_due: number
+    attempted: boolean
+    date: number
+    description: string | null
+    id: string
+    invoice_pdf: string
+    metadata: {
+        payment_service: PaymentType
+        extra_tickets?: string
+        extra_usage?: string
+        gorgias_release?: string
+    }
+    paid: boolean
+    payment_confirmation_url: string | null
+    payment_intent: {
+        status: PaymentIntentStatus
+    }
+    has_payment_schedules?: boolean
+}
+
 export enum TaxIdType {
     eu_vat = 'eu_vat',
     au_abn = 'au_abn',

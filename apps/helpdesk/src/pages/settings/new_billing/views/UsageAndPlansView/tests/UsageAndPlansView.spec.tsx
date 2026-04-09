@@ -3,6 +3,10 @@ import {
     BILLING_PAYMENT_FREQUENCY_PATH,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
 } from '@repo/billing'
+import {
+    storeWithCanceledSubscription,
+    storeWithTrialingSubscription,
+} from '@repo/billing/fixtures'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -45,10 +49,6 @@ import { useStoreConfiguration } from 'pages/aiAgent/hooks/useStoreConfiguration
 import { AlertType } from 'pages/common/components/Alert/Alert'
 import ProductCard from 'pages/settings/new_billing/components/ProductCard'
 import type { ProductCardProps } from 'pages/settings/new_billing/components/ProductCard/ProductCard'
-import {
-    storeWithCanceledSubscription,
-    storeWithTrialingSubscription,
-} from 'pages/settings/new_billing/fixtures'
 import useProductCancellations from 'pages/settings/new_billing/hooks/useProductCancellations'
 import UsageAndPlansView from 'pages/settings/new_billing/views/UsageAndPlansView/UsageAndPlansView'
 import { TicketPurpose } from 'state/billing/types'

@@ -3,12 +3,6 @@ import {
     ACTIVATE_PAYMENT_WITH_SHOPIFY_URL,
     BILLING_PAYMENT_CARD_PATH,
 } from '@repo/billing'
-import { waitFor } from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-
-import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
-import useAppDispatch from 'hooks/useAppDispatch'
-import type { CreditCard } from 'models/billing/types'
 import {
     payingWithAchCredit,
     payingWithAchDebit,
@@ -17,7 +11,13 @@ import {
     payWithShopify,
     payWithShopifyButNotActivated,
     trial,
-} from 'pages/settings/new_billing/fixtures'
+} from '@repo/billing/fixtures'
+import { waitFor } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+
+import { AlertBannerTypes, BannerCategories } from 'AlertBanners'
+import useAppDispatch from 'hooks/useAppDispatch'
+import type { CreditCard } from 'models/billing/types'
 import { useIsPaymentEnabled } from 'pages/settings/new_billing/hooks/useIsPaymentEnabled'
 import { notify } from 'state/notifications/actions'
 import { renderHookWithStoreAndQueryClientProvider } from 'tests/renderHookWithStoreAndQueryClientProvider'

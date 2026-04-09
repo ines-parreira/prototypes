@@ -1,5 +1,9 @@
 import type React from 'react'
 
+import {
+    payingWithCreditCard,
+    storeWithActiveSubscriptionWithAutomation,
+} from '@repo/billing/fixtures'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
@@ -20,10 +24,6 @@ import type { StoreConfiguration } from 'models/aiAgent/types'
 import { useGetHelpCenterList } from 'models/helpCenter/queries'
 import { AiAgentActivationModal } from 'pages/aiAgent/Activation/components/AiAgentActivationModal/AiAgentActivationModal'
 import { useStoresKnowledgeStatus } from 'pages/aiAgent/hooks/useStoresKnowledgeStatus'
-import {
-    payingWithCreditCard,
-    storeWithActiveSubscriptionWithAutomation,
-} from 'pages/settings/new_billing/fixtures'
 import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import { SalesEarlyAccessUtils } from '../../utils'

@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { trial } from '@repo/billing/fixtures'
 import { useFlag } from '@repo/feature-flags'
 import * as segment from '@repo/logging'
 import { assumeMock, renderHook } from '@repo/testing'
@@ -33,7 +34,6 @@ import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
 import { useTrialModalProps } from 'pages/aiAgent/trial/hooks/useTrialModalProps'
 import { useUpgradePlan } from 'pages/aiAgent/trial/hooks/useUpgradePlan'
-import { trial } from 'pages/settings/new_billing/fixtures'
 
 jest.mock('@repo/logging', () => ({
     ...jest.requireActual('@repo/logging'),

@@ -1,15 +1,15 @@
 import client from '@repo/api-resources'
-import { screen } from '@testing-library/react'
-import MockAdapter from 'axios-mock-adapter'
-import { MemoryRouter } from 'react-router-dom'
-
 import {
     payingWithCreditCard,
     payWithShopify,
     payWithShopifyButNotActivated,
     payWithShopifyButNotActivatedAndPastDue,
     trial,
-} from 'pages/settings/new_billing/fixtures'
+} from '@repo/billing/fixtures'
+import { screen } from '@testing-library/react'
+import MockAdapter from 'axios-mock-adapter'
+import { MemoryRouter } from 'react-router-dom'
+
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 
 import { ShopifyBillingInactiveBanner } from '../ShopifyBillingInactiveBanner'

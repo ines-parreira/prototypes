@@ -1,7 +1,7 @@
+import { baseInvoice } from '@repo/billing/fixtures'
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
-import { baseInvoice } from 'pages/settings/new_billing/fixtures'
 import type { Invoice } from 'state/billing/types'
 import { PaymentIntentStatus } from 'state/billing/types'
 

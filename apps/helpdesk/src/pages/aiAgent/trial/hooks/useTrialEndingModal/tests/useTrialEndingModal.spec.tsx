@@ -1,5 +1,6 @@
 import * as React from 'react'
 
+import { trial } from '@repo/billing/fixtures'
 import { assumeMock, renderHook } from '@repo/testing'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render } from '@testing-library/react'
@@ -17,7 +18,6 @@ import { createMockTrialAccess } from 'pages/aiAgent/trial/hooks/fixtures'
 import { useTrialEnding } from 'pages/aiAgent/trial/hooks/useTrialEnding'
 import { useTrialEndingModal } from 'pages/aiAgent/trial/hooks/useTrialEndingModal/useTrialEndingModal'
 import { useTrialMetrics } from 'pages/aiAgent/trial/hooks/useTrialMetrics'
-import { trial } from 'pages/settings/new_billing/fixtures'
 
 jest.mock('models/billing/queries')
 jest.mock('pages/aiAgent/trial/hooks/useTrialMetrics')

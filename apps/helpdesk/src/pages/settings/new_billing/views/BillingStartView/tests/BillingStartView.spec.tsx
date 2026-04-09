@@ -4,6 +4,13 @@ import {
     BILLING_PAYMENT_CARD_PATH,
     BILLING_PAYMENT_PATH,
 } from '@repo/billing'
+import {
+    currentProductsUsageWithPhone,
+    storeWithActiveSubscriptionWithConvert,
+    storeWithActiveSubscriptionWithPhone,
+    storeWithCanceledSubscription,
+    storeWithNewlyActiveSubscriptionWithPhone,
+} from '@repo/billing/fixtures'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { resetLDMocks } from '@repo/feature-flags/testing'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -18,13 +25,6 @@ import {
 } from 'fixtures/convert'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'
 import useGetConvertStatus from 'pages/convert/common/hooks/useGetConvertStatus'
-import {
-    currentProductsUsageWithPhone,
-    storeWithActiveSubscriptionWithConvert,
-    storeWithActiveSubscriptionWithPhone,
-    storeWithCanceledSubscription,
-    storeWithNewlyActiveSubscriptionWithPhone,
-} from 'pages/settings/new_billing/fixtures'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 import BillingStartView from '../BillingStartView'

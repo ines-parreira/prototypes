@@ -1,11 +1,7 @@
-import { fromJS } from 'immutable'
-import moment from 'moment/moment'
-
 import { InvoiceCadence } from '@gorgias/helpdesk-types'
 
-import { account } from 'fixtures/account'
-import { shopifyIntegration } from 'fixtures/integrations'
 import {
+    account,
     automate02MonthlyMeteredPlan,
     AUTOMATION_PRODUCT_ID,
     basicMonthlyHelpdeskPlan,
@@ -14,25 +10,31 @@ import {
     HELPDESK_PRODUCT_ID,
     products,
     proMonthlyHelpdeskPlan,
+    shopifyIntegration,
     SMS_PRODUCT_ID,
     smsPlan1,
     VOICE_PRODUCT_ID,
     voicePlan1,
-} from 'fixtures/plans'
+} from './fixtures.data'
 import type {
     BillingState,
+    Invoice,
     ProductUsages,
     SubscriptionSummary,
     UpcomingInvoiceSummary,
-} from 'models/billing/types'
+} from './types'
 import {
     BillingAddressValidationStatus,
     Cadence,
+    PaymentIntentStatus,
+    PaymentType,
     ProductType,
     SubscriptionStatus,
-} from 'models/billing/types'
-import type { Invoice } from 'state/billing/types'
-import { PaymentIntentStatus, PaymentType } from 'state/billing/types'
+} from './types'
+
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const { fromJS } = require('immutable') as { fromJS: (obj: any) => any }
 
 export const baseInvoice: Invoice = {
     description: 'Pro plan for 2023-04',
@@ -106,6 +108,12 @@ export const storeWithActiveSubscriptionWithConvert = {
     billing: fromJS({ invoices: [], products, currentProductsUsage: {} }),
 }
 
+function addOneMonth(date: Date): Date {
+    const result = new Date(date)
+    result.setUTCMonth(result.getUTCMonth() + 1)
+    return result
+}
+
 const defaultProductUsage = {
     data: {
         extra_tickets_cost_in_cents: 0,
@@ -113,8 +121,8 @@ const defaultProductUsage = {
         num_extra_tickets: 0,
     },
     meta: {
-        subscription_start_datetime: moment.utc().toISOString(),
-        subscription_end_datetime: moment.utc().add(1, 'month').toISOString(),
+        subscription_start_datetime: new Date().toISOString(),
+        subscription_end_datetime: addOneMonth(new Date()).toISOString(),
     },
 }
 
@@ -156,7 +164,7 @@ export const storeWithNewlyActiveSubscriptionWithPhone = {
                 [SMS_PRODUCT_ID]: smsPlan1.plan_id,
                 [VOICE_PRODUCT_ID]: voicePlan1.plan_id,
             },
-            start_datetime: moment.utc().toISOString(),
+            start_datetime: new Date().toISOString(),
             status: SubscriptionStatus.ACTIVE,
         },
     }),

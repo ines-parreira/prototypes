@@ -1,4 +1,5 @@
 import client from '@repo/api-resources'
+import { payingWithCreditCard, trial } from '@repo/billing/fixtures'
 import { assumeMock } from '@repo/testing'
 import type { Stripe } from '@stripe/stripe-js'
 import { loadStripe } from '@stripe/stripe-js'
@@ -11,10 +12,6 @@ import { createBillingPaymentMethodSetup } from '@gorgias/helpdesk-client'
 import { account } from 'fixtures/account'
 import { products } from 'fixtures/plans'
 import { billingContact } from 'fixtures/resources'
-import {
-    payingWithCreditCard,
-    trial,
-} from 'pages/settings/new_billing/fixtures'
 import * as useSetupIntentModule from 'pages/settings/new_billing/views/PaymentMethodSetupView/hooks/useSetupIntent'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 

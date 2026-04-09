@@ -1,4 +1,5 @@
 import client from '@repo/api-resources'
+import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { screen, waitFor } from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -9,7 +10,6 @@ import { UserRole } from 'config/types/user'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import ConvertSubscriptionModal from 'pages/convert/common/components/ConvertSubscriptionModal/ConvertSubscriptionModal'
-import { payingWithCreditCard } from 'pages/settings/new_billing/fixtures'
 import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 

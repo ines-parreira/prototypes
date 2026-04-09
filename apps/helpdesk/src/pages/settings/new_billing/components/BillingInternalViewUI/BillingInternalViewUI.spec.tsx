@@ -1,4 +1,5 @@
 import client from '@repo/api-resources'
+import { payingWithCreditCard, trial, usages } from '@repo/billing/fixtures'
 import { assumeMock } from '@repo/testing'
 import { screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
@@ -13,11 +14,6 @@ import type {
 } from 'models/billing/types'
 import { ProductType, SubscriptionStatus } from 'models/billing/types'
 import { BillingInternalViewUI } from 'pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI'
-import {
-    payingWithCreditCard,
-    trial,
-    usages,
-} from 'pages/settings/new_billing/fixtures'
 import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 import { notify } from 'state/notifications/actions'
