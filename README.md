@@ -223,9 +223,9 @@ The quality check workflow (`.github/workflows/quality-check.yml`) runs:
 - **Formatting**: Ensures code formatting consistency
 - **Type Checking**: Validates TypeScript types across the codebase
 - **Testing**: Runs tests in parallel across 10 shards for the main helpdesk app
-- **Package Tests**: Runs tests for affected packages in the monorepo
+- **Package Tests**: Buckets affected non-helpdesk packages across up to 6 workers and runs `test:ci:cover` via Nx
 
-Tests are intelligently skipped for unaffected packages to optimize CI time.
+Unused package test workers are marked successful without spinning them up, and the aggregate `Packages tests` check remains present even when no non-helpdesk packages are affected.
 
 ### Code Coverage
 
@@ -234,9 +234,9 @@ Code coverage is managed through Codecov with the following features:
 - **Coverage Targets**:
     - Project coverage: Auto-calculated with 0.5% threshold
     - Patch coverage: 80% target for new code
-- **Flag Management**: Coverage is tracked per test shard and package
+- **Flag Management**: Coverage is tracked per helpdesk test shard and per affected monorepo package
 - **Carryforward**: Coverage from previous commits is carried forward when tests are skipped
-- **Reporting**: Coverage reports are uploaded for both the main app and individual packages
+- **Reporting**: Coverage reports are uploaded for both the main app and affected monorepo packages, even when package tests are executed inside shared CI buckets
 
 Configuration is defined in `codecov.yaml`
 

@@ -19,12 +19,12 @@ on:
         description: If there are affected packages other than helpdesk
         type: string
         required: true
-      other-affected-packages:
-        description: Other affected packages
+      packages-test-buckets:
+        description: Bucketed affected packages for package tests
         type: string
         required: true
-      other-unaffected-packages:
-        description: Other unaffected packages
+      packages-test-bucket-count:
+        description: Number of package test buckets that need to run
         type: string
         required: true
       has-react-doctor-affected-packages:
@@ -250,20 +250,22 @@ jobs:
           version: ${{ env.CODECOV_CLI_VERSION }}
           report_type: test_results
 
-  affected-tests:
-    name: 'Packages tests'
+  package-tests:
+    name: Packages test (${{ matrix.bucket }})
     runs-on: gh-actions-large-runner-set
     timeout-minutes: 15
-    if: inputs.has-other-affected-packages == 'true'
+    if: inputs.packages-test-bucket-count != '0'
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJSON(inputs.other-affected-packages) }}
+        include: ${{ fromJSON(inputs.packages-test-buckets) }}
     env:
       CODECOV_CLI_VERSION: "v10.2.1"
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup workspace
         uses: ./.github/actions/setup-workspace
@@ -272,96 +274,188 @@ jobs:
           cache-key: ${{ inputs.cache-key }}
           npm-token: ${{ secrets.GH_READ_PACKAGES_TOKEN }}
 
-      - name: 'Test ${{ matrix.project }}'
-        run: pnpm --filter=${{ matrix.project }} test:ci:cover
-
-      - name: Create sanitized flag name
-        id: sanitize
+      - name: Install Codecov CLI
         run: |
-          # Convert @repo/xxx to repo-xxx for use in flags
-          # Docs: https://docs.codecov.com/docs/flags#one-to-one-relationship-of-flags-to-uploads
-          SANITIZED_NAME=$(echo "${{ matrix.project }}" | sed 's/@//g' | sed 's/\//-/g')
-          echo "flag-name=$SANITIZED_NAME" >> $GITHUB_OUTPUT
+          curl -fsSLO "https://cli.codecov.io/${{ env.CODECOV_CLI_VERSION }}/linux/codecov"
+          curl -fsSLO "https://cli.codecov.io/${{ env.CODECOV_CLI_VERSION }}/linux/codecov.SHA256SUM"
+          curl -fsSLO "https://cli.codecov.io/${{ env.CODECOV_CLI_VERSION }}/linux/codecov.SHA256SUM.sig"
 
-      - name: Find test artifacts
-        id: artifacts
+          gpg --batch --no-default-keyring --keyring ./trustedkeys.gpg --import codecov_pgp_key.asc
+          gpgv --keyring ./trustedkeys.gpg codecov.SHA256SUM.sig codecov.SHA256SUM
+          shasum -a 256 -c codecov.SHA256SUM
+
+          chmod +x codecov
+
+      - name: Run package tests
         run: |
-          PROJECT_NAME="${{ matrix.project }}"
-          echo "Looking for artifacts for project: $PROJECT_NAME"
-          
-          # Get the actual project root directory from nx
-          PROJECT_ROOT=$(npx nx show project "$PROJECT_NAME" --json | jq -r '.root')
-          echo "Project root directory: $PROJECT_ROOT"
-          
-          if [ "$PROJECT_ROOT" = "null" ] || [ -z "$PROJECT_ROOT" ]; then
-            echo "Could not determine project root, falling back to search"
-            PROJECT_ROOT="."
-          fi
-          
-          COVERAGE_DIR=""
-          JUNIT_FILE=""
-          
-          # Look for coverage directory in project root
-          if [ -d "$PROJECT_ROOT/coverage/jest" ]; then
-            COVERAGE_DIR="$PROJECT_ROOT/coverage/jest"
-          elif [ -d "$PROJECT_ROOT/coverage" ]; then
-            COVERAGE_DIR="$PROJECT_ROOT/coverage"
-          fi
-          
-          # Look for junit.xml file in project root
-          if [ -f "$PROJECT_ROOT/junit.xml" ]; then
-            JUNIT_FILE="$PROJECT_ROOT/junit.xml"
-          elif [ -f "$PROJECT_ROOT/coverage/junit.xml" ]; then
-            JUNIT_FILE="$PROJECT_ROOT/coverage/junit.xml"
-          fi
-          
-          echo "coverage-directory=$COVERAGE_DIR" >> $GITHUB_OUTPUT
-          echo "junit-file=$JUNIT_FILE" >> $GITHUB_OUTPUT
-          echo "Found coverage directory: $COVERAGE_DIR"
-          echo "Found junit file: $JUNIT_FILE"
-          
-      - name: Upload coverage to Codecov
-        if: ${{ !cancelled() && steps.artifacts.outputs.coverage-directory }}
-        uses: codecov/codecov-action@v5
-        with:
-          directory: ${{ steps.artifacts.outputs.coverage-directory }}
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: "${{ steps.sanitize.outputs.flag-name }}-unit"
-          name: "${{ steps.sanitize.outputs.flag-name }}-unit"
-          version: ${{ env.CODECOV_CLI_VERSION }}
+          npx nx run-many \
+            --target=test:ci:cover \
+            --projects="${{ join(matrix.projects, ',') }}" \
+            --parallel=${{ matrix.localParallel }} \
+            --outputStyle=stream
 
-      - name: Upload test results to Codecov
-        if: ${{ !cancelled() && steps.artifacts.outputs.junit-file }}
-        uses: codecov/codecov-action@v5
-        with:
-          files: ${{ steps.artifacts.outputs.junit-file }}
-          token: ${{ secrets.CODECOV_TOKEN }}
-          flags: '${{ steps.sanitize.outputs.flag-name }}-results'
-          name: '${{ steps.sanitize.outputs.flag-name }}-results'
-          version: ${{ env.CODECOV_CLI_VERSION }}
-          report_type: test_results
+      - name: Upload package coverage to Codecov
+        if: ${{ !cancelled() }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          PROJECTS_JSON='${{ toJSON(matrix.projects) }}'
+          mapfile -t PROJECTS < <(jq -r '.[]' <<<"$PROJECTS_JSON")
 
-  unaffected-tests:
-    name: 'Unaffected packages status'
+          for PROJECT_NAME in "${PROJECTS[@]}"; do
+            PROJECT_ROOT=$(npx nx show project "$PROJECT_NAME" --json | jq -r '.root')
+            SANITIZED_NAME=$(echo "$PROJECT_NAME" | sed 's/@//g' | sed 's/\//-/g')
+            COVERAGE_FILE=""
+            COVERAGE_DIR=""
+
+            if [ -f "$PROJECT_ROOT/coverage/jest/lcov.info" ]; then
+              COVERAGE_FILE="$PROJECT_ROOT/coverage/jest/lcov.info"
+              COVERAGE_DIR="$PROJECT_ROOT/coverage/jest"
+            elif [ -f "$PROJECT_ROOT/coverage/lcov.info" ]; then
+              COVERAGE_FILE="$PROJECT_ROOT/coverage/lcov.info"
+              COVERAGE_DIR="$PROJECT_ROOT/coverage"
+            elif [ -f "$PROJECT_ROOT/coverage/clover.xml" ]; then
+              COVERAGE_FILE="$PROJECT_ROOT/coverage/clover.xml"
+              COVERAGE_DIR="$PROJECT_ROOT/coverage"
+            fi
+
+            if [ -z "$COVERAGE_FILE" ]; then
+              echo "No coverage file found for $PROJECT_NAME, skipping upload"
+              continue
+            fi
+
+            ./codecov --verbose upload-coverage \
+              --disable-search \
+              --fail-on-error \
+              --git-service github \
+              --token "$CODECOV_TOKEN" \
+              --gcov-executable gcov \
+              --name "${SANITIZED_NAME}-unit" \
+              --flag "${SANITIZED_NAME}-unit" \
+              --dir "$COVERAGE_DIR" \
+              --file "$COVERAGE_FILE"
+          done
+
+      - name: Upload package test results to Codecov
+        if: ${{ !cancelled() }}
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          PROJECTS_JSON='${{ toJSON(matrix.projects) }}'
+          mapfile -t PROJECTS < <(jq -r '.[]' <<<"$PROJECTS_JSON")
+
+          for PROJECT_NAME in "${PROJECTS[@]}"; do
+            PROJECT_ROOT=$(npx nx show project "$PROJECT_NAME" --json | jq -r '.root')
+            SANITIZED_NAME=$(echo "$PROJECT_NAME" | sed 's/@//g' | sed 's/\//-/g')
+            JUNIT_FILE=""
+
+            if [ -f "$PROJECT_ROOT/junit.xml" ]; then
+              JUNIT_FILE="$PROJECT_ROOT/junit.xml"
+            elif [ -f "$PROJECT_ROOT/coverage/junit.xml" ]; then
+              JUNIT_FILE="$PROJECT_ROOT/coverage/junit.xml"
+            fi
+
+            if [ -z "$JUNIT_FILE" ]; then
+              echo "No junit file found for $PROJECT_NAME, skipping upload"
+              continue
+            fi
+
+            ./codecov --verbose upload-coverage \
+              --disable-search \
+              --fail-on-error \
+              --git-service github \
+              --token "$CODECOV_TOKEN" \
+              --gcov-executable gcov \
+              --name "${SANITIZED_NAME}-results" \
+              --flag "${SANITIZED_NAME}-results" \
+              --file "$JUNIT_FILE" \
+              --report-type test_results
+          done
+
+  unused-package-test-statuses:
+    name: 'Unused package test statuses'
     runs-on: gh-actions-small-runner-set
-    if: inputs.other-unaffected-packages != '[]'
+    if: ${{ !cancelled() && fromJSON(inputs.packages-test-bucket-count) < 6 }}
     steps:
-      - name: Set tests status checks to success for unaffected packages
+      - name: Set unused package test status checks to success
         uses: actions/github-script@v7
         with:
           script: |
-            const unaffectedPackages = ${{ inputs.other-unaffected-packages }};
-            
-            for (const packageInfo of unaffectedPackages) {
+            const bucketCount = Number('${{ inputs.packages-test-bucket-count }}');
+
+            for (let bucket = bucketCount + 1; bucket <= 6; bucket++) {
               await github.rest.repos.createCommitStatus({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 sha: context.sha,
                 state: 'success',
-                context: `Quality check / Packages tests (${packageInfo.project})`,
-                description: `Package ${packageInfo.project} unaffected, skipping tests`
+                context: `Quality check / Packages test (${bucket})`,
+                description: `Bucket ${bucket} not needed for this change set`
               });
             }
+
+  packages-tests-rollup:
+    name: 'Packages tests'
+    runs-on: gh-actions-small-runner-set
+    needs:
+      - package-tests
+      - unused-package-test-statuses
+    if: ${{ always() && !cancelled() }}
+    steps:
+      - name: Validate package test buckets
+        run: |
+          if [ "${{ needs.package-tests.result }}" != "success" ] && [ "${{ needs.package-tests.result }}" != "skipped" ]; then
+            echo "Package test buckets did not complete successfully"
+            exit 1
+          fi
+
+          if [ "${{ needs.unused-package-test-statuses.result }}" != "success" ] && [ "${{ needs.unused-package-test-statuses.result }}" != "skipped" ]; then
+            echo "Unused package test statuses did not complete successfully"
+            exit 1
+          fi
+
+          if [ "${{ inputs.packages-test-bucket-count }}" = "0" ]; then
+            echo "No affected non-helpdesk packages to test"
+          else
+            echo "All required package test buckets completed successfully"
+          fi
+
+  codecov-notifications:
+    name: 'Codecov notifications'
+    runs-on: gh-actions-small-runner-set
+    needs:
+      - tests
+      - packages-tests-rollup
+    if: ${{ always() && !cancelled() && (inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true') }}
+    env:
+      CODECOV_CLI_VERSION: "v10.2.1"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Codecov CLI
+        run: |
+          curl -fsSLO "https://cli.codecov.io/${{ env.CODECOV_CLI_VERSION }}/linux/codecov"
+          curl -fsSLO "https://cli.codecov.io/${{ env.CODECOV_CLI_VERSION }}/linux/codecov.SHA256SUM"
+          curl -fsSLO "https://cli.codecov.io/${{ env.CODECOV_CLI_VERSION }}/linux/codecov.SHA256SUM.sig"
+
+          gpg --batch --no-default-keyring --keyring ./trustedkeys.gpg --import codecov_pgp_key.asc
+          gpgv --keyring ./trustedkeys.gpg codecov.SHA256SUM.sig codecov.SHA256SUM
+          shasum -a 256 -c codecov.SHA256SUM
+
+          chmod +x codecov
+
+      - name: Send Codecov notifications
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        run: |
+          ./codecov --verbose send-notifications \
+            --fail-on-error \
+            --git-service github \
+            --token "$CODECOV_TOKEN" \
+            --sha "${{ github.sha }}" \
+            --slug "${{ github.repository }}"
+
   no-application-code-changes:
     name: 'No application code changes'
     runs-on: gh-actions-small-runner-set

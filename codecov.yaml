@@ -1,7 +1,7 @@
 codecov:
   require_ci_to_pass: false
   notify:
-    after_n_builds: 10
+    manual_trigger: true
     wait_for_ci: true
 
 flag_management:
