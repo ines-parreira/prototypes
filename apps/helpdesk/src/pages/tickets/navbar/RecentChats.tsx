@@ -4,7 +4,6 @@ import { useHelpdeskV2WayfindingMS1Flag } from '@repo/feature-flags'
 import { usePrevious } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { NavigationSectionItem, useSidebar } from '@repo/navigation'
-import { history } from '@repo/routing'
 import { IconWithDot } from '@repo/tickets'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
@@ -65,9 +64,11 @@ const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
         if (isCollapsed) {
             return (
                 <MenuItem
+                    as={Link}
                     id={ticketId}
                     label={customerName}
-                    onAction={() => history.push(to)}
+                    to={to}
+                    onAction={onClick}
                     leadingSlot={
                         <IconWithDot
                             size="sm"
@@ -90,6 +91,7 @@ const RecentChatsItem = ({ recentTicket, position }: ItemProps) => {
                         position,
                         ticket: recentTicket.toJS(),
                     })
+                    onClick()
                 }}
                 leadingSlot={
                     <IconWithDot

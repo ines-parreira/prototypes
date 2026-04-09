@@ -7,6 +7,9 @@ import { useCurrentUserRole } from '@repo/users'
 
 import { Box, Button, Text } from '@gorgias/axiom'
 
+import useAppDispatch from 'hooks/useAppDispatch'
+import { activeViewIdSet } from 'state/ui/views/actions'
+
 import { TicketNavbarViewLinkItem } from './TicketNavbarViewLinkItem'
 
 import css from './DefaultViews.less'
@@ -15,6 +18,7 @@ export function DefaultViews() {
     const { isAdmin } = useCurrentUserRole()
     const { displayedViews, showToggle, isExpanded, toggleExpanded } =
         useExpandableDefaultViews()
+    const dispatch = useAppDispatch()
 
     return (
         <Box flexDirection="column" gap="xxxxs">
@@ -42,6 +46,9 @@ export function DefaultViews() {
                                 view={view}
                                 icon={SYSTEM_VIEW_DEFINITIONS[view.name].icon}
                                 label={SYSTEM_VIEW_DEFINITIONS[view.name].label}
+                                onClick={() =>
+                                    dispatch(activeViewIdSet(view.id))
+                                }
                             />
                         ),
                 )}

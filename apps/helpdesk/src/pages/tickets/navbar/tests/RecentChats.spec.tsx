@@ -141,7 +141,7 @@ describe('RecentChats', () => {
             expect(container).toBeEmptyDOMElement()
         })
 
-        it('should log a segment event when a ticket item is clicked', async () => {
+        it('should log a segment event and dispatch actions when a ticket item is clicked', async () => {
             const user = userEvent.setup()
             render(<RecentChats />, { wrapper })
 
@@ -154,7 +154,12 @@ describe('RecentChats', () => {
                     ticket: recentTicket,
                 },
             )
-            expect(dispatch).not.toHaveBeenCalled()
+            expect(dispatch).toHaveBeenCalledWith({ type: 'close-panels' })
+            expect(dispatch).toHaveBeenCalledWith(dispatch)
+            expect(dispatch).toHaveBeenCalledWith({
+                type: 'active-view-id-set',
+                payload: 0,
+            })
         })
 
         describe('when sidebar is collapsed', () => {
