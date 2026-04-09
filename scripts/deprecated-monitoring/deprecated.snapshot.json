@@ -1,161 +1,12 @@
 {
-  "date": "2026-04-08T10:59:51.422Z",
-  "total": 5122,
+  "date": "2026-04-09T15:04:48.935Z",
+  "total": 5072,
   "deprecated": [
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "Dropdown",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Menu />` or `<Select />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 135,
-      "filePath": "apps/helpdesk/src/pages/common/components/dropdown/Dropdown.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
-            "apps/helpdesk/src/common/navigation/components/UserItem.tsx",
-            "apps/helpdesk/src/common/navigation/components/UserMenuWithToggle.tsx",
-            "apps/helpdesk/src/common/notifications/components/Button.tsx",
-            "apps/helpdesk/src/common/notifications/components/FeedHeader.tsx",
-            "apps/helpdesk/src/common/notifications/components/SoundSelect.tsx",
-            "apps/helpdesk/src/core/ui/flows/components/AddStepButton.tsx",
-            "apps/helpdesk/src/custom-fields/components/MultiLevelSelect/MultiLevelSelect.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/components/ActionMenu.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/components/Filter/Filter.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/filters/AddFilterButton.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/filters/SavedFilterMenu.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardsPageActions.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/side-panel/TrendOverviewReport/PeriodShortcutSelector.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter.tsx",
-            "apps/helpdesk/src/pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/SmsIntegrationListSelection/SmsIntegrationListSelection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/TicketTag/TagSearchSelect.tsx",
-            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/LearnDropdown.tsx",
-            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/InUseByAIFilter.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/components/DropdownSelector/DropdownSelector.tsx",
-            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformAppSelectBox.tsx",
-            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformAuthTypeSelectBox.tsx",
-            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformStepAppSelectBox.tsx",
-            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformTemplateAppsSelectBox.tsx",
-            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformTrackstarIntegrationSelectBox.tsx",
-            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformUseCaseTemplateCategory.tsx",
-            "apps/helpdesk/src/pages/automate/common/components/HelpCenterSelect.tsx",
-            "apps/helpdesk/src/pages/automate/common/components/preview/SelfServicePreviewChannelSelect.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/CurrentlyViewingDropdown.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FlowsSettings.tsx",
-            "apps/helpdesk/src/pages/automate/orderManagement/legacy/cancelOrder/components/CancelOrderEligibility.tsx",
-            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioConditionRule.tsx",
-            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioConditions.tsx",
-            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReasons.tsx",
-            "apps/helpdesk/src/pages/automate/orderManagement/legacy/returnOrder/components/ReturnOrderAction.tsx",
-            "apps/helpdesk/src/pages/automate/orderManagement/legacy/returnOrder/components/ReturnOrderEligibility.tsx",
-            "apps/helpdesk/src/pages/automate/trainMyAi/components/ArticleSelect.tsx",
-            "apps/helpdesk/src/pages/automate/trainMyAi/components/RecommendationFilters.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/components/ChatChannelSelector.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/components/LanguageSelector.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/components/WorkflowLanguageSelect.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/components/WorkflowRow.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/components/NodeDeleteIcon.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/components/NodeMenu.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/components/translations/TranslationPreviewHeader.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/conditions/StringConditionType.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/EndNodeEditor/EndNodeTypeSelect.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/BodyContentTypeSelect.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/MethodSelect.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/Outputs.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/LLMPromptTriggerEditor.tsx",
-            "apps/helpdesk/src/pages/common/components/ChannelFilter/ChannelFilter.tsx",
-            "apps/helpdesk/src/pages/common/components/Condition/Condition.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/Dropdown.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/DropdownFooter.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/DropdownHeader.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/DropdownItemLabel.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/DropdownSearch.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/DropdownSection.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/tests/Dropdown.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/tests/DropdownSearch.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/UncontrolledDropdown.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerDeliveryInformation/ProvinceInputNew.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/AddressesDropdown.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/fields/ModifierSelect.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/fields/ModifierSwatch.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/popover-container/PopoverContainer.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/CurrencyPickerDropdown.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/components/RefundOrderFooter.tsx",
-            "apps/helpdesk/src/pages/common/components/PageEmbedmentForm/PageEmbedmentForm.tsx",
-            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/CallTransferDropdown.tsx",
-            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/tests/AgentCallTransferDropdownContent.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/tests/ExternalCallTransferDropdownContent.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/tests/QueueCallTransferDropdownContent.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/ViewTable/AddFilterDropdown.tsx",
-            "apps/helpdesk/src/pages/common/components/ViewTable/Filters/Operator.tsx",
-            "apps/helpdesk/src/pages/common/draftjs/plugins/slashCommand/SlashCommandSuggestions.tsx",
-            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/GuidanceActionDropdown.tsx",
-            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/GuidanceVariableDropdown.tsx",
-            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/Translate/LanguageDropdown.tsx",
-            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown.tsx",
-            "apps/helpdesk/src/pages/common/forms/CountryInput/CountryInput.tsx",
-            "apps/helpdesk/src/pages/common/forms/input/InputGroup.stories.tsx",
-            "apps/helpdesk/src/pages/common/forms/input/SelectInputBox.stories.tsx",
-            "apps/helpdesk/src/pages/common/forms/ProvinceInput/ProvinceInput.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/components/AdvancedTriggersSelect/AdvancedTriggersSelect.tsx",
-            "apps/helpdesk/src/pages/convert/discountOffer/components/CollectionSelector/CollectionSelector.tsx",
-            "apps/helpdesk/src/pages/convert/discountOffer/components/CustomerSegmentSelector/CustomerSegmentSelector.tsx",
-            "apps/helpdesk/src/pages/convert/discountOffer/components/ProductSelector/ProductSelector.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneDevice.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneDeviceDialerIntegrationSelect.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneSelectField.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/sms/SmsIntegrationSelect.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/IvrMenuActionSelect.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/IvrPhoneNumberSelectField.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationPreferencesTeamSelect.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationSelectField.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceMessageField.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceQueueSelectField.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/WaitMusicLibrarySelect.tsx",
-            "apps/helpdesk/src/pages/settings/businessHours/BusinessHoursSelectField.tsx",
-            "apps/helpdesk/src/pages/settings/customFields/components/TypeSelectInput.tsx",
-            "apps/helpdesk/src/pages/settings/historicalImports/Modal/form/EmailSelectSearch.tsx",
-            "apps/helpdesk/src/pages/settings/macros/MoreActions.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/components/CancelProductModal/UI/PrimaryReasons.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/components/CountriesDropdown/CountriesDropdown.tsx",
-            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_ChannelSelectBox.tsx",
-            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_TimeUnitSelectBox.tsx",
-            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/Channels/ChannelsFilter/ChannelsFilter.tsx",
-            "apps/helpdesk/src/pages/settings/teams/RuleCreationModalContent.tsx",
-            "apps/helpdesk/src/pages/settings/teams/TeamCreationModal.tsx",
-            "apps/helpdesk/src/pages/standalone/components/HandoverEmailDropdown.tsx",
-            "apps/helpdesk/src/pages/standalone/components/HandoverHelpdeskDropdown.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/FeedbackReportIssue.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/SenderSelectField.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/Snooze.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketActions.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TagDropdown.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketPriorityDropdown.tsx",
-            "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
-            "apps/helpdesk/src/ticket-list-view/components/bulk-actions/AssignUser.tsx",
-            "apps/helpdesk/src/ticket-list-view/components/bulk-actions/MoreActions.tsx",
-            "apps/helpdesk/src/ticket-list-view/components/SortOrderDropdown.tsx",
-            "apps/helpdesk/src/timeline/filters/InteractionType.tsx",
-            "apps/helpdesk/src/timeline/filters/TicketStatusFilter.tsx",
-            "apps/helpdesk/src/timeline/Sort.tsx"
-          ]
-        }
-      ]
-    },
     {
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "default",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-01-05\n * @type ui-kit-migration\n ",
-      "count": 130,
+      "count": 129,
       "filePath": "apps/helpdesk/src/pages/common/components/modal/Modal.tsx",
       "usages": [
         {
@@ -208,7 +59,6 @@
             "apps/helpdesk/src/pages/common/components/KeyboardHelp/KeyboardHelp.tsx",
             "apps/helpdesk/src/pages/common/components/MergeCustomers/MergeCustomersModal.tsx",
             "apps/helpdesk/src/pages/common/components/MergeTickets/MergeTicketsContainer.tsx",
-            "apps/helpdesk/src/pages/common/components/modal/Modal.stories.tsx",
             "apps/helpdesk/src/pages/common/components/modal/tests/Modal.spec.tsx",
             "apps/helpdesk/src/pages/common/components/MonitoringCallSwitchModal/MonitoringCallSwitchModal.tsx",
             "apps/helpdesk/src/pages/common/components/OptOutModal/OptOutModal.tsx",
@@ -296,10 +146,152 @@
       ]
     },
     {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "Dropdown",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Menu />` or `<Select />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 128,
+      "filePath": "apps/helpdesk/src/pages/common/components/dropdown/Dropdown.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
+            "apps/helpdesk/src/common/navigation/components/UserItem.tsx",
+            "apps/helpdesk/src/common/navigation/components/UserMenuWithToggle.tsx",
+            "apps/helpdesk/src/common/notifications/components/Button.tsx",
+            "apps/helpdesk/src/common/notifications/components/FeedHeader.tsx",
+            "apps/helpdesk/src/common/notifications/components/SoundSelect.tsx",
+            "apps/helpdesk/src/core/ui/flows/components/AddStepButton.tsx",
+            "apps/helpdesk/src/custom-fields/components/MultiLevelSelect/MultiLevelSelect.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/components/ActionMenu.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/components/Filter/Filter.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/filters/AddFilterButton.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/filters/SavedFilterMenu.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/common/filters/SavedFiltersActions/ApplySavedFilters/ApplySavedFilters.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/dashboards/ChartsActionMenu/ChartsActionMenu.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/dashboards/DashboardsPageActions.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/quality-management/satisfaction/AverageScorePerDimensionTrendChart/AverageScorePerDimensionTrendChart.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/ticket-insights/ticket-fields/CustomFieldSelect.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/side-panel/TrendOverviewReport/PeriodShortcutSelector.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/voice/components/VoiceCallFilter/VoiceCallFilter.tsx",
+            "apps/helpdesk/src/pages/aiAgent/analyticsOverview/components/DashboardExportButton/DashboardExportButton.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/ChatIntegrationListSelection/ChatIntegrationListSelection.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/EmailIntegrationListSelection/EmailIntegrationListSelection.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/SmsIntegrationListSelection/SmsIntegrationListSelection.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/TicketTag/TagSearchSelect.tsx",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/KnowledgeHubHeader/LearnDropdown.tsx",
+            "apps/helpdesk/src/pages/aiAgent/KnowledgeHub/Table/InUseByAIFilter.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Onboarding_V2/components/DropdownSelector/DropdownSelector.tsx",
+            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformAppSelectBox.tsx",
+            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformAuthTypeSelectBox.tsx",
+            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformStepAppSelectBox.tsx",
+            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformTemplateAppsSelectBox.tsx",
+            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformTrackstarIntegrationSelectBox.tsx",
+            "apps/helpdesk/src/pages/automate/actionsPlatform/components/ActionsPlatformUseCaseTemplateCategory.tsx",
+            "apps/helpdesk/src/pages/automate/common/components/HelpCenterSelect.tsx",
+            "apps/helpdesk/src/pages/automate/common/components/preview/SelfServicePreviewChannelSelect.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/CurrentlyViewingDropdown.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/FlowsSettings.tsx",
+            "apps/helpdesk/src/pages/automate/orderManagement/legacy/cancelOrder/components/CancelOrderEligibility.tsx",
+            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioConditionRule.tsx",
+            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioConditions.tsx",
+            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReasons.tsx",
+            "apps/helpdesk/src/pages/automate/orderManagement/legacy/returnOrder/components/ReturnOrderAction.tsx",
+            "apps/helpdesk/src/pages/automate/orderManagement/legacy/returnOrder/components/ReturnOrderEligibility.tsx",
+            "apps/helpdesk/src/pages/automate/trainMyAi/components/ArticleSelect.tsx",
+            "apps/helpdesk/src/pages/automate/trainMyAi/components/RecommendationFilters.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/components/ChatChannelSelector.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/components/LanguageSelector.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/components/WorkflowLanguageSelect.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/components/WorkflowRow.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/components/NodeDeleteIcon.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/components/NodeMenu.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/components/translations/TranslationPreviewHeader.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/conditions/StringConditionType.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/EndNodeEditor/EndNodeTypeSelect.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/BodyContentTypeSelect.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/MethodSelect.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/Outputs.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/LLMPromptTriggerEditor.tsx",
+            "apps/helpdesk/src/pages/common/components/ChannelFilter/ChannelFilter.tsx",
+            "apps/helpdesk/src/pages/common/components/Condition/Condition.tsx",
+            "apps/helpdesk/src/pages/common/components/dropdown/tests/Dropdown.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/dropdown/tests/DropdownSearch.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/dropdown/UncontrolledDropdown.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerDeliveryInformation/ProvinceInputNew.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/AddressesDropdown.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/fields/ModifierSelect.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/modifiers-popover/fields/ModifierSwatch.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/components/popover-container/PopoverContainer.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/CurrencyPickerDropdown.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/components/RefundOrderFooter.tsx",
+            "apps/helpdesk/src/pages/common/components/PageEmbedmentForm/PageEmbedmentForm.tsx",
+            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/CallTransferDropdown.tsx",
+            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/tests/AgentCallTransferDropdownContent.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/tests/ExternalCallTransferDropdownContent.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/tests/QueueCallTransferDropdownContent.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/ViewTable/AddFilterDropdown.tsx",
+            "apps/helpdesk/src/pages/common/components/ViewTable/Filters/Operator.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/slashCommand/SlashCommandSuggestions.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/GuidanceActionDropdown.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/GuidanceVariableDropdown.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/Translate/LanguageDropdown.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/WorkflowVariableDropdown.tsx",
+            "apps/helpdesk/src/pages/common/forms/CountryInput/CountryInput.tsx",
+            "apps/helpdesk/src/pages/common/forms/input/InputGroup.stories.tsx",
+            "apps/helpdesk/src/pages/common/forms/ProvinceInput/ProvinceInput.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/components/AdvancedTriggersSelect/AdvancedTriggersSelect.tsx",
+            "apps/helpdesk/src/pages/convert/discountOffer/components/CollectionSelector/CollectionSelector.tsx",
+            "apps/helpdesk/src/pages/convert/discountOffer/components/CustomerSegmentSelector/CustomerSegmentSelector.tsx",
+            "apps/helpdesk/src/pages/convert/discountOffer/components/ProductSelector/ProductSelector.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneDevice.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneDeviceDialerIntegrationSelect.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/phone/PhoneSelectField.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/sms/SmsIntegrationSelect.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/IvrMenuActionSelect.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/IvrPhoneNumberSelectField.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationPreferencesTeamSelect.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceIntegrationSelectField.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceMessageField.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceQueueSelectField.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/WaitMusicLibrarySelect.tsx",
+            "apps/helpdesk/src/pages/settings/businessHours/BusinessHoursSelectField.tsx",
+            "apps/helpdesk/src/pages/settings/customFields/components/TypeSelectInput.tsx",
+            "apps/helpdesk/src/pages/settings/historicalImports/Modal/form/EmailSelectSearch.tsx",
+            "apps/helpdesk/src/pages/settings/macros/MoreActions.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/components/CancelProductModal/UI/PrimaryReasons.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/components/CountriesDropdown/CountriesDropdown.tsx",
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_ChannelSelectBox.tsx",
+            "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_TimeUnitSelectBox.tsx",
+            "apps/helpdesk/src/pages/settings/storeManagement/storeDetailsPage/Channels/ChannelsFilter/ChannelsFilter.tsx",
+            "apps/helpdesk/src/pages/settings/teams/RuleCreationModalContent.tsx",
+            "apps/helpdesk/src/pages/settings/teams/TeamCreationModal.tsx",
+            "apps/helpdesk/src/pages/standalone/components/HandoverEmailDropdown.tsx",
+            "apps/helpdesk/src/pages/standalone/components/HandoverHelpdeskDropdown.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/CreateKnowledgeSection.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/Deprecated_MultiLevelSelect/Deprecated_MultiLevelSelect.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/FeedbackReportIssue.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/MessageSourceFields/components/SenderSelectField/SenderSelectField.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/Snooze.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketActions.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketDetails/TagDropdown.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketPriorityDropdown.tsx",
+            "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
+            "apps/helpdesk/src/ticket-list-view/components/bulk-actions/AssignUser.tsx",
+            "apps/helpdesk/src/ticket-list-view/components/bulk-actions/MoreActions.tsx",
+            "apps/helpdesk/src/ticket-list-view/components/SortOrderDropdown.tsx",
+            "apps/helpdesk/src/timeline/filters/InteractionType.tsx",
+            "apps/helpdesk/src/timeline/filters/TicketStatusFilter.tsx",
+            "apps/helpdesk/src/timeline/Sort.tsx"
+          ]
+        }
+      ]
+    },
+    {
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "default",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<TextField />` from @gorgias/axiom instead.\n * @date 2026-01-06\n * @type ui-kit-migration\n ",
-      "count": 120,
+      "count": 118,
       "filePath": "apps/helpdesk/src/pages/common/forms/input/InputField.tsx",
       "usages": [
         {
@@ -328,7 +320,6 @@
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/TestRequestInputs.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/LiquidTemplateEditor/TestLiquidTemplateModal.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ReusableLLMPromptCallEditor.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/Accordion.stories.tsx",
             "apps/helpdesk/src/pages/common/components/ast/widget/CustomFieldInput.tsx",
             "apps/helpdesk/src/pages/common/components/DropdownButtonWithSearch/DropdownButtonWithSearch.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/AddCustomProductPopover.tsx",
@@ -344,7 +335,6 @@
             "apps/helpdesk/src/pages/common/components/TimeScheduleField/tests/TimeScheduleRow.spec.tsx",
             "apps/helpdesk/src/pages/common/components/TimeScheduleField/TimeInputField.tsx",
             "apps/helpdesk/src/pages/common/components/UniqueDiscountOfferCreateModal/UniqueDiscountOfferCreateModal.tsx",
-            "apps/helpdesk/src/pages/common/forms/input/InputField.stories.tsx",
             "apps/helpdesk/src/pages/common/forms/input/tests/InputField.spec.tsx",
             "apps/helpdesk/src/pages/common/forms/ProvinceInput/ProvinceInput.tsx",
             "apps/helpdesk/src/pages/convert/abTests/components/UpdateReportLinkModal/UpdateReportLinkModal.tsx",
@@ -433,7 +423,7 @@
       "nodeType": "VariableDeclaration",
       "nodeName": "ModalHeader",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 114,
+      "count": 113,
       "filePath": "apps/helpdesk/src/pages/common/components/modal/ModalHeader.tsx",
       "usages": [
         {
@@ -478,7 +468,6 @@
             "apps/helpdesk/src/pages/common/components/KeyboardHelp/KeyboardHelp.tsx",
             "apps/helpdesk/src/pages/common/components/MergeCustomers/MergeCustomersModal.tsx",
             "apps/helpdesk/src/pages/common/components/MergeTickets/MergeTicketsContainer.tsx",
-            "apps/helpdesk/src/pages/common/components/modal/Modal.stories.tsx",
             "apps/helpdesk/src/pages/common/components/modal/tests/__snapshots__/ModalHeader.spec.tsx",
             "apps/helpdesk/src/pages/common/components/modal/tests/Modal.spec.tsx",
             "apps/helpdesk/src/pages/common/components/MonitoringCallSwitchModal/MonitoringCallSwitchModal.tsx",
@@ -561,7 +550,7 @@
       "nodeType": "VariableDeclaration",
       "nodeName": "Alert",
       "comment": "*\n * @deprecated This component is being phased out. Please use `<Banner variant=\"inline\" />` from `@gorgias/axiom` instead.\n * @date 2024-03-05\n * @type ui-kit-migration\n ",
-      "count": 106,
+      "count": 105,
       "filePath": "apps/helpdesk/src/pages/common/components/Alert/Alert.tsx",
       "usages": [
         {
@@ -593,7 +582,6 @@
             "apps/helpdesk/src/pages/automate/workflows/analytics/WorkflowAnalyticsBanner.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/components/SupportedChannelsWarning.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/publisher/helper/NoChannelAlert.tsx",
-            "apps/helpdesk/src/pages/common/components/Alert/Alert.stories.tsx",
             "apps/helpdesk/src/pages/common/components/Alert/LinkAlert.tsx",
             "apps/helpdesk/src/pages/common/components/Alert/tests/Alert.spec.tsx",
             "apps/helpdesk/src/pages/common/components/ast/widget/CustomFieldSelect.tsx",
@@ -681,7 +669,7 @@
       "nodeType": "VariableDeclaration",
       "nodeName": "IconButton",
       "comment": "*\n * @deprecated This component is being phased out. Please use `IconButton` from `@gorgias/axiom` instead.\n * @date 2024-03-05\n * @type ui-kit-migration\n ",
-      "count": 101,
+      "count": 99,
       "filePath": "apps/helpdesk/src/pages/common/components/button/IconButton.tsx",
       "usages": [
         {
@@ -716,7 +704,6 @@
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/Variables.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/WorkflowEditorActionButtons.tsx",
             "apps/helpdesk/src/pages/common/components/button/DropdownButton.tsx",
-            "apps/helpdesk/src/pages/common/components/button/IconButton.stories.tsx",
             "apps/helpdesk/src/pages/common/components/button/tests/IconButton.spec.tsx",
             "apps/helpdesk/src/pages/common/components/Condition/Condition.tsx",
             "apps/helpdesk/src/pages/common/components/CopyText/CopyText.tsx",
@@ -729,7 +716,6 @@
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Display/ButtonsGroup.tsx",
             "apps/helpdesk/src/pages/common/components/Navigation/Navigation.tsx",
             "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/LegacyIconButtonTooltip.tsx",
-            "apps/helpdesk/src/pages/common/components/popover/ConfirmationPopover.stories.tsx",
             "apps/helpdesk/src/pages/common/components/ProductDetail/Slides.tsx",
             "apps/helpdesk/src/pages/common/components/UniqueDiscountOfferResults/UniqueDiscountOfferResults.tsx",
             "apps/helpdesk/src/pages/common/components/ViewSharing/ViewSharingModal/SharedBody.tsx",
@@ -796,7 +782,7 @@
       "nodeType": "VariableDeclaration",
       "nodeName": "ModalActionsFooter",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 85,
+      "count": 84,
       "filePath": "apps/helpdesk/src/pages/common/components/modal/ModalActionsFooter.tsx",
       "usages": [
         {
@@ -830,7 +816,6 @@
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/NewPhoneNumber.tsx",
             "apps/helpdesk/src/pages/common/components/MergeCustomers/MergeCustomersModal.tsx",
             "apps/helpdesk/src/pages/common/components/MergeTickets/MergeTicketsContainer.tsx",
-            "apps/helpdesk/src/pages/common/components/modal/Modal.stories.tsx",
             "apps/helpdesk/src/pages/common/components/modal/tests/ModalActionsFooter.spec.tsx",
             "apps/helpdesk/src/pages/common/components/MonitoringCallSwitchModal/MonitoringCallSwitchModal.tsx",
             "apps/helpdesk/src/pages/common/components/ScriptTagMigrationModal/ScriptTagMigrationModal.tsx",
@@ -990,7 +975,7 @@
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "default",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<TextField />` from @gorgias/axiom instead.\n * @date 2026-01-06\n * @type ui-kit-migration\n ",
-      "count": 78,
+      "count": 77,
       "filePath": "apps/helpdesk/src/pages/common/forms/input/TextInput.tsx",
       "usages": [
         {
@@ -1031,7 +1016,6 @@
             "apps/helpdesk/src/pages/common/forms/input/InputGroup.stories.tsx",
             "apps/helpdesk/src/pages/common/forms/input/tests/GroupAddon.spec.tsx",
             "apps/helpdesk/src/pages/common/forms/input/tests/TextInput.spec.tsx",
-            "apps/helpdesk/src/pages/common/forms/input/TextInput.stories.tsx",
             "apps/helpdesk/src/pages/common/forms/ListField.tsx",
             "apps/helpdesk/src/pages/common/forms/PhoneNumberInput/PhoneNumberInput.tsx",
             "apps/helpdesk/src/pages/common/forms/SearchInput/SearchInput.tsx",
@@ -1172,7 +1156,7 @@
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "MacroActionName",
       "comment": "*\n * @deprecated Use MacroActionName from @repo/tickets instead\n * @date 2026-02-12\n * @type macro-action-name-migration\n ",
-      "count": 68,
+      "count": 67,
       "filePath": "apps/helpdesk/src/models/macroAction/types.ts",
       "usages": [
         {
@@ -1206,7 +1190,6 @@
             "apps/helpdesk/src/pages/tickets/common/macros/Preview/tests/Preview.spec.tsx",
             "apps/helpdesk/src/pages/tickets/common/macros/Preview/tests/SetCustomerCustomFieldValuesPreview.spec.tsx",
             "apps/helpdesk/src/pages/tickets/common/tests/utils.spec.ts",
-            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentDraftMessage/AIAgentDraftMessage.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply/ActionPreviews/ActionPreviews.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/MacrosQuickReply/ActionPreviews/SimpleActionPreview.tsx",
             "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/tests/TicketReply.spec.tsx",
@@ -1254,7 +1237,7 @@
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "default",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<SelectField />` from @gorgias/axiom instead.\n * @date 2026-01-13\n * @type ui-kit-migration\n ",
-      "count": 67,
+      "count": 66,
       "filePath": "apps/helpdesk/src/pages/common/forms/input/SelectInputBox.tsx",
       "usages": [
         {
@@ -1297,7 +1280,6 @@
             "apps/helpdesk/src/pages/common/components/ViewTable/Filters/Operator.tsx",
             "apps/helpdesk/src/pages/common/forms/CountryInput/CountryInput.tsx",
             "apps/helpdesk/src/pages/common/forms/input/InputGroup.stories.tsx",
-            "apps/helpdesk/src/pages/common/forms/input/SelectInputBox.stories.tsx",
             "apps/helpdesk/src/pages/common/forms/input/tests/SelectInputBox.spec.tsx",
             "apps/helpdesk/src/pages/common/forms/ProvinceInput/ProvinceInput.tsx",
             "apps/helpdesk/src/pages/convert/discountOffer/components/CollectionSelector/CollectionSelector.tsx",
@@ -1335,7 +1317,7 @@
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "default",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<CheckboxField />` from @gorgias/axiom instead.\n * @date 2025-04-01\n * @type ui-kit-migration\n ",
-      "count": 66,
+      "count": 65,
       "filePath": "apps/helpdesk/src/pages/common/forms/CheckBox.tsx",
       "usages": [
         {
@@ -1353,7 +1335,6 @@
             "apps/helpdesk/src/pages/aiAgent/AiAgentOnboardingWizard/HeaderSection.tsx",
             "apps/helpdesk/src/pages/automate/trainMyAi/components/RecommendationFilters.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ReusableLLMPromptTriggerEditor.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/Accordion.stories.tsx",
             "apps/helpdesk/src/pages/common/components/dropdown/DropdownItem.tsx",
             "apps/helpdesk/src/pages/common/components/dropdown/DropdownQuickSelect.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerSyncForm/CustomerSyncForm.tsx",
@@ -1598,7 +1579,7 @@
       "nodeType": "VariableDeclaration",
       "nodeName": "ModalFooter",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 35,
+      "count": 34,
       "filePath": "apps/helpdesk/src/pages/common/components/modal/ModalFooter.tsx",
       "usages": [
         {
@@ -1616,7 +1597,6 @@
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/CustomAddressModal.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/OrderModal.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/RefundOrderModal/RefundOrderModal.tsx",
-            "apps/helpdesk/src/pages/common/components/modal/Modal.stories.tsx",
             "apps/helpdesk/src/pages/common/components/modal/ModalActionsFooter.tsx",
             "apps/helpdesk/src/pages/common/components/OptOutModal/OptOutModal.tsx",
             "apps/helpdesk/src/pages/common/components/RequestTrialModal/RequestTrialModal.tsx",
@@ -1647,7 +1627,7 @@
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "ConfirmationPopover",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 35,
+      "count": 34,
       "filePath": "apps/helpdesk/src/pages/common/components/popover/ConfirmationPopover.tsx",
       "usages": [
         {
@@ -1668,7 +1648,6 @@
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/HttpRequestEditor/Variables.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/nodes/MultipleChoicesNode/ReplyButtonItem.tsx",
             "apps/helpdesk/src/pages/common/components/button/ConfirmButton.tsx",
-            "apps/helpdesk/src/pages/common/components/popover/ConfirmationPopover.stories.tsx",
             "apps/helpdesk/src/pages/common/components/popover/tests/ConfirmationPopover.spec.tsx",
             "apps/helpdesk/src/pages/common/components/ViewTable/FilterTopbar.tsx",
             "apps/helpdesk/src/pages/convert/abVariants/components/VariantActions/VariantActions.tsx",
@@ -1696,7 +1675,7 @@
       "nodeType": "ExportDefaultDeclaration",
       "nodeName": "BigNumberMetric",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * If you need to add a loading state, use Skeleton from '@gorgias/axiom' instead\n * @date 2025-09-15\n * @type reporting-ui-kit\n ",
-      "count": 34,
+      "count": 33,
       "filePath": "apps/helpdesk/src/domains/reporting/pages/common/components/BigNumberMetric.tsx",
       "usages": [
         {
@@ -1706,7 +1685,6 @@
             "apps/helpdesk/src/domains/reporting/pages/automate/overview/charts/AIAgentAutomationRateKPIChart.tsx",
             "apps/helpdesk/src/domains/reporting/pages/automate/overview/charts/tests/AIAgentAutomatedInteractionsKPIChart.spec.tsx",
             "apps/helpdesk/src/domains/reporting/pages/automate/overview/charts/tests/AIAgentAutomationRateKPIChart.spec.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/components/BigNumberMetric.stories.tsx",
             "apps/helpdesk/src/domains/reporting/pages/common/components/tests/BigNumberMetric.spec.tsx",
             "apps/helpdesk/src/domains/reporting/pages/common/components/TrendCard.tsx",
             "apps/helpdesk/src/domains/reporting/pages/convert/charts/CampaignRevenueKPIChart.tsx",
@@ -2184,77 +2162,6 @@
       ]
     },
     {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "AccordionBody",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 22,
-      "filePath": "apps/helpdesk/src/pages/common/components/accordion/AccordionBody.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/pages/aiAgent/actions/components/ActionStepAccordionItem.tsx",
-            "apps/helpdesk/src/pages/aiAgent/actions/components/TransitionConditionsAccordion.tsx",
-            "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/PostOnboardingTasksSection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/CategoryContent.tsx",
-            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx",
-            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReason.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchItem.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/Accordion.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/SortableAccordion.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/tests/Accordion.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/tests/AccordionHeader.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/tests/SortableAccordion.spec.tsx",
-            "apps/helpdesk/src/pages/common/forms/AccordionRadioFieldSet.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/components/StatefulAccordion/StatefulAccordion.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/containers/CampaignAudienceStep/CampaignAudienceStep.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailSettings.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/DomainVerificationAccordionItem.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/MigrationTutorialList.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/SingleSenderVerificationAccordionItem.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceSettingAccordionItem.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "RadioFieldSet",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<RadioGroup />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 21,
-      "filePath": "apps/helpdesk/src/pages/common/forms/RadioFieldSet.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/ChatPreferencesAutoReplyWaitTimeSettings.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/ChatPreferencesEmailCaptureSettings.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/ShippingMethod.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Form/Body.tsx",
-            "apps/helpdesk/src/pages/common/forms/RadioButtonField.tsx",
-            "apps/helpdesk/src/pages/common/forms/RadioFieldSet.stories.tsx",
-            "apps/helpdesk/src/pages/common/forms/tests/RadioButtonField.spec.tsx",
-            "apps/helpdesk/src/pages/common/forms/tests/RadioFieldSet.spec.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/containers/CampaignPublishScheduleStep/CampaignPublishScheduleStep.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationDeliverabilitySettings.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationPreferences.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/WhatsAppMigrationForm.tsx",
-            "apps/helpdesk/src/pages/settings/historicalImports/Modal/form/EmailMultiselect.tsx",
-            "apps/helpdesk/src/pages/settings/new_billing/components/CancelProductModal/UI/SecondaryReasons.tsx",
-            "apps/helpdesk/src/pages/settings/yourProfile/components/DateAndTimeFormatting.tsx",
-            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/HttpAction.tsx",
-            "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/ShippingPopover.tsx"
-          ]
-        }
-      ]
-    },
-    {
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "DEPRECATED_getIntegrationsState",
       "comment": "*\n * @deprecated\n * @date 2021-02-01\n * @type feature-helper-fn\n ",
@@ -2285,6 +2192,74 @@
             "apps/helpdesk/src/state/widgets/actions.ts",
             "apps/helpdesk/src/Widgets/modules/Shopify/components/Customer.tsx",
             "apps/helpdesk/src/Widgets/modules/Template/modules/Wrapper/components/Wrapper.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "AccordionBody",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 20,
+      "filePath": "apps/helpdesk/src/pages/common/components/accordion/AccordionBody.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/actions/components/ActionStepAccordionItem.tsx",
+            "apps/helpdesk/src/pages/aiAgent/actions/components/TransitionConditionsAccordion.tsx",
+            "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/PostOnboardingTasksSection.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/CategoryContent.tsx",
+            "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx",
+            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReason.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchItem.tsx",
+            "apps/helpdesk/src/pages/common/components/accordion/tests/Accordion.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/accordion/tests/AccordionHeader.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/accordion/tests/SortableAccordion.spec.tsx",
+            "apps/helpdesk/src/pages/common/forms/AccordionRadioFieldSet.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/components/StatefulAccordion/StatefulAccordion.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/containers/CampaignAudienceStep/CampaignAudienceStep.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailSettings.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/DomainVerificationAccordionItem.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/MigrationTutorialList.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/SingleSenderVerificationAccordionItem.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceSettingAccordionItem.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "RadioFieldSet",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<RadioGroup />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 20,
+      "filePath": "apps/helpdesk/src/pages/common/forms/RadioFieldSet.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/domains/reporting/pages/common/components/Filter/components/LogicalOperator/LogicalOperator.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/AIAgentPreviewModeSection/AiAgentPreviewModeSection.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/ChatPreferencesAutoReplyWaitTimeSettings.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/HandoverCustomization/FormComponents/ChatPreferencesEmailCaptureSettings.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/bigcommerce/AddOrderModal/ShippingMethod.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/ActionButtons/Editor/Form/Body.tsx",
+            "apps/helpdesk/src/pages/common/forms/RadioButtonField.tsx",
+            "apps/helpdesk/src/pages/common/forms/tests/RadioButtonField.spec.tsx",
+            "apps/helpdesk/src/pages/common/forms/tests/RadioFieldSet.spec.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/containers/CampaignPublishScheduleStep/CampaignPublishScheduleStep.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailIntegrationDeliverabilitySettings.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationPreferences.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationPreferences/GorgiasChatIntegrationPreferences.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/WhatsAppMigrationForm.tsx",
+            "apps/helpdesk/src/pages/settings/historicalImports/Modal/form/EmailMultiselect.tsx",
+            "apps/helpdesk/src/pages/settings/new_billing/components/CancelProductModal/UI/SecondaryReasons.tsx",
+            "apps/helpdesk/src/pages/settings/yourProfile/components/DateAndTimeFormatting.tsx",
+            "apps/helpdesk/src/pages/tickets/common/macros/components/actions/HttpAction.tsx",
+            "apps/helpdesk/src/Widgets/modules/Shopify/modules/DraftOrderModal/components/ShippingPopover.tsx"
           ]
         }
       ]
@@ -2327,7 +2302,7 @@
       "nodeType": "VariableDeclaration",
       "nodeName": "AccordionHeader",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 19,
+      "count": 18,
       "filePath": "apps/helpdesk/src/pages/common/components/accordion/AccordionHeader.tsx",
       "usages": [
         {
@@ -2339,7 +2314,6 @@
             "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/PostOnboardingTasksSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/CategoryContent.tsx",
             "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/Accordion.stories.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/SortableAccordionHeader.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/tests/Accordion.spec.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/tests/AccordionHeader.spec.tsx",
@@ -2360,7 +2334,7 @@
       "nodeType": "VariableDeclaration",
       "nodeName": "AccordionItem",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 19,
+      "count": 18,
       "filePath": "apps/helpdesk/src/pages/common/components/accordion/AccordionItem.tsx",
       "usages": [
         {
@@ -2372,7 +2346,6 @@
             "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/PostOnboardingTasksSection.tsx",
             "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/CategoryContent.tsx",
             "apps/helpdesk/src/pages/automate/connectedChannels/legacy/components/ConnectedChannelAccordionItem.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/Accordion.stories.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/SortableAccordionItem.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/tests/Accordion.spec.tsx",
             "apps/helpdesk/src/pages/common/components/accordion/tests/AccordionHeader.spec.tsx",
@@ -2384,70 +2357,6 @@
             "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/MigrationTutorialList.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/SingleSenderVerificationAccordionItem.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceSettingAccordionItem.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "ExportNamedDeclaration",
-      "nodeName": "AlertBanner",
-      "comment": "*\n * @deprecated This component is being phased out. Please use `<Banner variant=\"full\" />` from `@gorgias/axiom` instead.\n * @date 2024-03-05\n * @type ui-kit-migration\n ",
-      "count": 18,
-      "filePath": "apps/helpdesk/src/AlertBanners/components/AlertBanner.tsx",
-      "usages": [
-        {
-          "name": "AlertBanner",
-          "files": [
-            "apps/helpdesk/src/AlertBanners/components/AlertBanner.stories.tsx",
-            "apps/helpdesk/src/AlertBanners/components/AlertBanners.tsx",
-            "apps/helpdesk/src/AlertBanners/components/ImpersonationBanner.tsx",
-            "apps/helpdesk/src/AlertBanners/components/tests/AlertBanner.spec.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor.tsx",
-            "apps/helpdesk/src/pages/common/components/EmailDisconnectedBanner/index.tsx",
-            "apps/helpdesk/src/pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner.tsx",
-            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/EmailMigrationBanner.tsx",
-            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/IncomingPhoneCall/IncomingPhoneCall.tsx",
-            "apps/helpdesk/src/pages/common/components/ProductDetail/Detail.tsx",
-            "apps/helpdesk/src/pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/providers/CampaignDetailsForm/CampaignDetailsForm.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/app/App.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationNotInstalledBanner.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationOutdatedSnippetBanner.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatShopifyCheckoutChatBanner.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterStartView/HelpCenterStartView.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "Accordion",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 18,
-      "filePath": "apps/helpdesk/src/pages/common/components/accordion/Accordion.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/pages/aiAgent/actions/components/ActionEventSidePanel.tsx",
-            "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/PostOnboardingTasksSection.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/CategoryContent.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/Accordion.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/SortableAccordion.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/tests/Accordion.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/tests/AccordionHeader.spec.tsx",
-            "apps/helpdesk/src/pages/common/forms/AccordionRadioFieldSet.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/components/StatefulAccordion/__tests__/StatefulAccordion.spec.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/components/StatefulAccordion/StatefulAccordion.stories.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/containers/CampaignAudienceStep/CampaignAudienceStep.tsx",
-            "apps/helpdesk/src/pages/convert/campaigns/providers/CampaignDetailsForm/CampaignDetailsForm.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailSettings.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/MigrationDomainList.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/MigrationTutorialList.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceQueueSettingsFormCallFlowSection.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx"
           ]
         }
@@ -2487,6 +2396,68 @@
     },
     {
       "nodeType": "ExportNamedDeclaration",
+      "nodeName": "AlertBanner",
+      "comment": "*\n * @deprecated This component is being phased out. Please use `<Banner variant=\"full\" />` from `@gorgias/axiom` instead.\n * @date 2024-03-05\n * @type ui-kit-migration\n ",
+      "count": 17,
+      "filePath": "apps/helpdesk/src/AlertBanners/components/AlertBanner.tsx",
+      "usages": [
+        {
+          "name": "AlertBanner",
+          "files": [
+            "apps/helpdesk/src/AlertBanners/components/AlertBanners.tsx",
+            "apps/helpdesk/src/AlertBanners/components/ImpersonationBanner.tsx",
+            "apps/helpdesk/src/AlertBanners/components/tests/AlertBanner.spec.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/TestFlowEditor.tsx",
+            "apps/helpdesk/src/pages/common/components/EmailDisconnectedBanner/index.tsx",
+            "apps/helpdesk/src/pages/common/components/EmailDomainVerificationBanner/EmailDomainVerificationBanner.tsx",
+            "apps/helpdesk/src/pages/common/components/EmailMigrationBanner/EmailMigrationBanner.tsx",
+            "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/IncomingPhoneCall/IncomingPhoneCall.tsx",
+            "apps/helpdesk/src/pages/common/components/ProductDetail/Detail.tsx",
+            "apps/helpdesk/src/pages/common/components/ScriptTagMigrationBanner/ScriptTagMigrationBanner.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/providers/CampaignDetailsForm/CampaignDetailsForm.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/app/App.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/facebook/FacebookIntegrationCustomerChat/FacebookIntegrationCustomerChat.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationNotInstalledBanner.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationOutdatedSnippetBanner.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatShopifyCheckoutChatBanner.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterStartView/HelpCenterStartView.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "Accordion",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 17,
+      "filePath": "apps/helpdesk/src/pages/common/components/accordion/Accordion.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/aiAgent/actions/components/ActionEventSidePanel.tsx",
+            "apps/helpdesk/src/pages/aiAgent/AiAgentScrapedDomainContent/ScrapedDomainSelectedContent.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/PostOnboardingTasksSection.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Overview/components/SetupTasksSection/CategoryContent.tsx",
+            "apps/helpdesk/src/pages/common/components/accordion/SortableAccordion.tsx",
+            "apps/helpdesk/src/pages/common/components/accordion/tests/Accordion.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/accordion/tests/AccordionHeader.spec.tsx",
+            "apps/helpdesk/src/pages/common/forms/AccordionRadioFieldSet.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/components/StatefulAccordion/__tests__/StatefulAccordion.spec.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/components/StatefulAccordion/StatefulAccordion.stories.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/containers/CampaignAudienceStep/CampaignAudienceStep.tsx",
+            "apps/helpdesk/src/pages/convert/campaigns/providers/CampaignDetailsForm/CampaignDetailsForm.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailIntegrationUpdate/EmailSettings.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/MigrationDomainList.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailMigration/MigrationTutorialList.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/voice/VoiceQueueSettingsFormCallFlowSection.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
       "nodeName": "getMoment",
       "comment": "*\n * Return moment()\n *\n * We encapsulate it here so that it's easy to mock during tests.\n * @deprecated use the @repo/utils version instead\n * @date 2026-01-15\n * @types date-migration\n ",
       "count": 17,
@@ -2512,36 +2483,6 @@
             "apps/helpdesk/src/state/queries/reducers.ts",
             "apps/helpdesk/src/state/views/actions.ts",
             "apps/helpdesk/src/ticket-list-view/components/bulk-actions/MoreActions.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "LinkButton",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Button />` or `<Link />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 16,
-      "filePath": "apps/helpdesk/src/pages/common/components/button/LinkButton.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/voice/VoicePaywall.tsx",
-            "apps/helpdesk/src/pages/aiAgent/AiAgentPaywallView.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/ShoppingAssistant/hooks/useAiAgentPaywallCTA.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware.tsx",
-            "apps/helpdesk/src/pages/automate/common/components/AutomatePaywallView.tsx",
-            "apps/helpdesk/src/pages/automate/common/components/StoreIntegrationView.tsx",
-            "apps/helpdesk/src/pages/automate/trainMyAi/TrainMyAiView.tsx",
-            "apps/helpdesk/src/pages/common/components/button/LinkButton.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/button/tests/LinkButton.spec.tsx",
-            "apps/helpdesk/src/pages/convert/common/components/ConvertPaywallView/ConvertPaywallView.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationButtons.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationActionButtons.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationShopifyCheckoutChatInstallationCard.tsx",
-            "apps/helpdesk/src/pages/settings/conditionalFields/components/ThenFieldRow.tsx",
-            "apps/helpdesk/src/pages/settings/customFields/components/DropdownCSVImport.tsx"
           ]
         }
       ]
@@ -2636,10 +2577,39 @@
       ]
     },
     {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "LinkButton",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Button />` or `<Link />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 15,
+      "filePath": "apps/helpdesk/src/pages/common/components/button/LinkButton.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/voice/VoicePaywall.tsx",
+            "apps/helpdesk/src/pages/aiAgent/AiAgentPaywallView.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/ShoppingAssistant/hooks/useAiAgentPaywallCTA.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Overview/middlewares/SalesPaywallMiddleware.tsx",
+            "apps/helpdesk/src/pages/automate/common/components/AutomatePaywallView.tsx",
+            "apps/helpdesk/src/pages/automate/common/components/StoreIntegrationView.tsx",
+            "apps/helpdesk/src/pages/automate/trainMyAi/TrainMyAiView.tsx",
+            "apps/helpdesk/src/pages/common/components/button/tests/LinkButton.spec.tsx",
+            "apps/helpdesk/src/pages/convert/common/components/ConvertPaywallView/ConvertPaywallView.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/CustomerOnboarding/OnboardingDomainVerificationButtons.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/email/EmailDomainVerification/EmailDomainVerificationActionButtons.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationInstall/GorgiasChatIntegrationShopifyCheckoutChatInstallationCard.tsx",
+            "apps/helpdesk/src/pages/settings/conditionalFields/components/ThenFieldRow.tsx",
+            "apps/helpdesk/src/pages/settings/customFields/components/DropdownCSVImport.tsx"
+          ]
+        }
+      ]
+    },
+    {
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "Wrapper",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ButtonGroup />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 15,
+      "count": 14,
       "filePath": "apps/helpdesk/src/pages/common/components/ToggleButton/ToggleButton.tsx",
       "usages": [
         {
@@ -2656,7 +2626,6 @@
             "apps/helpdesk/src/pages/automate/workflows/editor/WorkflowEditorView.tsx",
             "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/OngoingPhoneCall/CallTransferDropdown/CallTransferDropdown.tsx",
             "apps/helpdesk/src/pages/common/components/ToggleButton/__tests__/ToggleButton.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/ToggleButton/ToggleButton.stories.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatCreationWizard/components/GorgiasChatCreationWizardPreview.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/legacy/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance.tsx",
             "apps/helpdesk/src/pages/settings/helpCenter/components/AIArticlesLibraryView/components/AIArticlesToggleButton/AIArticlesToggleButton.tsx"
@@ -2742,32 +2711,6 @@
             "apps/helpdesk/src/tests/utils.spec.ts",
             "apps/helpdesk/src/tickets/ticket-detail/helpers/processContent.ts",
             "apps/helpdesk/src/tickets/ticket-detail/helpers/tests/processContent.spec.ts"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "LinkAlert",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Banner variant=\"inline\" />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 12,
-      "filePath": "apps/helpdesk/src/pages/common/components/Alert/LinkAlert.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/pages/common/components/Alert/LinkAlert.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/Alert/tests/LinkAlert.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/LegacyPlanBanner.tsx",
-            "apps/helpdesk/src/pages/common/components/RestrictedFeature/RestrictedFeature.tsx",
-            "apps/helpdesk/src/pages/common/components/tip/Tip.tsx",
-            "apps/helpdesk/src/pages/common/components/ViewTable/Table/MissingBillingInformationRow.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/magento2/Integration.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/recharge/Integration.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/smile/SmileIntegrationDetail.tsx",
-            "apps/helpdesk/src/pages/integrations/integration/components/SyncNotification.tsx",
-            "apps/helpdesk/src/pages/integrations/Store/LimitWarning.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx"
           ]
         }
       ]
@@ -2877,6 +2820,31 @@
       ]
     },
     {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "LinkAlert",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Banner variant=\"inline\" />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 11,
+      "filePath": "apps/helpdesk/src/pages/common/components/Alert/LinkAlert.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/common/components/Alert/tests/LinkAlert.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/LegacyPlanBanner.tsx",
+            "apps/helpdesk/src/pages/common/components/RestrictedFeature/RestrictedFeature.tsx",
+            "apps/helpdesk/src/pages/common/components/tip/Tip.tsx",
+            "apps/helpdesk/src/pages/common/components/ViewTable/Table/MissingBillingInformationRow.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/magento2/Integration.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/recharge/Integration.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/smile/SmileIntegrationDetail.tsx",
+            "apps/helpdesk/src/pages/integrations/integration/components/SyncNotification.tsx",
+            "apps/helpdesk/src/pages/integrations/Store/LimitWarning.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx"
+          ]
+        }
+      ]
+    },
+    {
       "nodeType": "ExportNamedDeclaration",
       "nodeName": "proxifyURL",
       "comment": "*\n * Append a proxy URL before an image url, for signing/resizing/cropping.\n *\n * The default format string `cw-1` is a hack for https://github.com/willnorris/imageproxy\n * to maintain the full image width/height, but still parse the image (eg. exif rotation).\n * imageproxy has no explicit option for it.\n * https://godoc.org/willnorris.com/go/imageproxy#ParseOptions\n *\n * @deprecated use the @repo/utils version instead\n * @date 2026-03-02\n * @type migration to @repo/utils\n ",
@@ -2945,30 +2913,6 @@
             "apps/helpdesk/src/pages/common/components/ast/widget/StatusSelect.tsx",
             "apps/helpdesk/src/pages/common/components/ast/widget/tests/ReactSelect.spec.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/http/Integration/JSONBody.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "ExportDefaultDeclaration",
-      "nodeName": "UncontrolledDropdown",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Menu />` or `<Select />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 10,
-      "filePath": "apps/helpdesk/src/pages/common/components/dropdown/UncontrolledDropdown.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/core/ui/flows/components/CustomZoomDropdownControl.tsx",
-            "apps/helpdesk/src/core/ui/flows/components/StepCardActionMenu.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/side-panel/InsightsTab/InsightsTab.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/TrainButton.tsx",
-            "apps/helpdesk/src/pages/common/components/CreateTicket/CreateTicketButton.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/tests/UncontrolledDropdown.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/UncontrolledDropdown.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerOptionsDropdown.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/SearchView/SearchView.tsx",
-            "apps/helpdesk/src/pages/tickets/navbar/CreateTicketNavbarButton.tsx"
           ]
         }
       ]
@@ -3045,24 +2989,24 @@
       ]
     },
     {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "ShortcutIcon",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ShortcutKey />` from @gorgias/axiom instead.\n * @date 2025-04-02\n * @type ui-kit-migration\n ",
+      "nodeType": "ExportDefaultDeclaration",
+      "nodeName": "UncontrolledDropdown",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Menu />` or `<Select />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
       "count": 9,
-      "filePath": "apps/helpdesk/src/pages/common/components/ShortcutIcon/ShortcutIcon.tsx",
+      "filePath": "apps/helpdesk/src/pages/common/components/dropdown/UncontrolledDropdown.tsx",
       "usages": [
         {
           "name": "default",
           "files": [
-            "apps/helpdesk/src/common/navigation/components/GlobalNavigationSpotlight.tsx",
-            "apps/helpdesk/src/common/navigation/components/NavBarButtonTooltip.tsx",
-            "apps/helpdesk/src/pages/common/components/PlaceCallNavbarButton.tsx",
-            "apps/helpdesk/src/pages/common/components/ShortcutIcon/ShortcutIcon.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/ShortcutIcon/tests/ShortcutIcon.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightButton.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightModal.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightRow.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketNavigation/TicketNavigationArrowPagination.tsx"
+            "apps/helpdesk/src/core/ui/flows/components/CustomZoomDropdownControl.tsx",
+            "apps/helpdesk/src/core/ui/flows/components/StepCardActionMenu.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/voice-of-customer/side-panel/InsightsTab/InsightsTab.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Overview/components/PostOnboardingTasksSection/TrainButton.tsx",
+            "apps/helpdesk/src/pages/common/components/CreateTicket/CreateTicketButton.tsx",
+            "apps/helpdesk/src/pages/common/components/dropdown/tests/UncontrolledDropdown.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/infobar/Infobar/InfobarCustomerInfo/CustomerOptionsDropdown.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/SearchView/SearchView.tsx",
+            "apps/helpdesk/src/pages/tickets/navbar/CreateTicketNavbarButton.tsx"
           ]
         }
       ]
@@ -3086,29 +3030,6 @@
             "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/AutoReplyReturnEditor.tsx",
             "apps/helpdesk/src/pages/settings/rules/accountRules/components/ruleEditors/AutoReplyWismoEditor.tsx",
             "apps/helpdesk/src/pages/settings/rules/components/RulesTriggerSelect.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "ExportNamedDeclaration",
-      "nodeName": "NewToggleButton",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ToggleField />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 9,
-      "filePath": "apps/helpdesk/src/pages/common/forms/NewToggleButton.tsx",
-      "usages": [
-        {
-          "name": "NewToggleButton",
-          "files": [
-            "apps/helpdesk/src/pages/aiAgent/Activation/components/AiAgentActivationStoreCard/ChannelToggle.tsx",
-            "apps/helpdesk/src/pages/aiAgent/Activation/components/AiAgentActivationStoreCard/LegacyAiAgentActivationStoreCard.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardToggle.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/ConversationLauncherSettings.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/ToggleCard/ToggleCard.tsx",
-            "apps/helpdesk/src/pages/common/components/SettingsCard/SettingsFeatureRow.tsx",
-            "apps/helpdesk/src/pages/common/forms/NewToggleButton.stories.tsx",
-            "apps/helpdesk/src/pages/common/forms/NewToggleField.tsx",
-            "apps/helpdesk/src/pages/common/forms/tests/NewToggleButton.spec.tsx"
           ]
         }
       ]
@@ -3159,45 +3080,45 @@
       ]
     },
     {
-      "nodeType": "ExportDefaultDeclaration",
-      "nodeName": "DEPRECATED_PeriodStatsFilter",
-      "comment": "*\n * @deprecated\n * @date 2024-06-26\n * @type feature-component\n ",
+      "nodeType": "VariableDeclaration",
+      "nodeName": "ShortcutIcon",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ShortcutKey />` from @gorgias/axiom instead.\n * @date 2025-04-02\n * @type ui-kit-migration\n ",
       "count": 8,
-      "filePath": "apps/helpdesk/src/domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter.tsx",
+      "filePath": "apps/helpdesk/src/pages/common/components/ShortcutIcon/ShortcutIcon.tsx",
       "usages": [
         {
           "name": "default",
           "files": [
-            "apps/helpdesk/src/domains/reporting/pages/common/filters/PeriodStatsFilter.stories.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/common/filters/tests/DEPRECATED_PeriodStatsFilter.spec.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/self-service/DEPRECATED_SelfServiceStatsPageFilters.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/ticket-insights/intents/AutomateIntentsFilters.tsx",
-            "apps/helpdesk/src/domains/reporting/pages/ticket-insights/macros/AutomateMacros.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/analytics/WorkflowAnalytics.tsx"
+            "apps/helpdesk/src/common/navigation/components/GlobalNavigationSpotlight.tsx",
+            "apps/helpdesk/src/common/navigation/components/NavBarButtonTooltip.tsx",
+            "apps/helpdesk/src/pages/common/components/PlaceCallNavbarButton.tsx",
+            "apps/helpdesk/src/pages/common/components/ShortcutIcon/tests/ShortcutIcon.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightButton.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightModal.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightRow.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketNavigation/TicketNavigationArrowPagination.tsx"
           ]
         }
       ]
     },
     {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "TabNavigator",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<TabNavigation />` from @gorgias/axiom instead.\n * @date 2025-04-08\n * @type ui-kit-migration\n ",
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "NewToggleButton",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ToggleField />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
       "count": 8,
-      "filePath": "apps/helpdesk/src/pages/common/components/TabNavigator/TabNavigator.tsx",
+      "filePath": "apps/helpdesk/src/pages/common/forms/NewToggleButton.tsx",
       "usages": [
         {
-          "name": "default",
+          "name": "NewToggleButton",
           "files": [
-            "apps/helpdesk/src/pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper.tsx",
-            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightModal.tsx",
-            "apps/helpdesk/src/pages/common/components/TabNavigator/TabNavigator.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/TabNavigator/tests/TabNavigator.spec.tsx",
-            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/AddLink.tsx",
-            "apps/helpdesk/src/pages/convert/settings/components/TermsAndConditionsSetting.tsx",
-            "apps/helpdesk/src/pages/convert/settings/ConvertSettingsView.tsx",
-            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx"
+            "apps/helpdesk/src/pages/aiAgent/Activation/components/AiAgentActivationStoreCard/ChannelToggle.tsx",
+            "apps/helpdesk/src/pages/aiAgent/Activation/components/AiAgentActivationStoreCard/LegacyAiAgentActivationStoreCard.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/card/EngagementSettingsCardToggle.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/CustomerEngagementSettings/ConversationLauncherSettings.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/ToggleCard/ToggleCard.tsx",
+            "apps/helpdesk/src/pages/common/components/SettingsCard/SettingsFeatureRow.tsx",
+            "apps/helpdesk/src/pages/common/forms/NewToggleField.tsx",
+            "apps/helpdesk/src/pages/common/forms/tests/NewToggleButton.spec.tsx"
           ]
         }
       ]
@@ -3248,21 +3169,21 @@
     },
     {
       "nodeType": "ExportDefaultDeclaration",
-      "nodeName": "Popover",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "nodeName": "DEPRECATED_PeriodStatsFilter",
+      "comment": "*\n * @deprecated\n * @date 2024-06-26\n * @type feature-component\n ",
       "count": 7,
-      "filePath": "apps/helpdesk/src/components/Popover/Popover.tsx",
+      "filePath": "apps/helpdesk/src/domains/reporting/pages/common/filters/DEPRECATED_PeriodStatsFilter.tsx",
       "usages": [
         {
           "name": "default",
           "files": [
-            "apps/helpdesk/src/components/Popover/Popover.stories.tsx",
-            "apps/helpdesk/src/components/Popover/tests/Popover.spec.tsx",
-            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundPredefinedMessages/PlaygroundPredefinedMessages.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover.tsx",
-            "apps/helpdesk/src/pages/tickets/detail/components/TicketSummaryPopover.tsx",
-            "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
-            "apps/helpdesk/src/ticket-list-view/components/bulk-actions/MoreActions.tsx"
+            "apps/helpdesk/src/domains/reporting/pages/common/filters/tests/DEPRECATED_PeriodStatsFilter.spec.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/self-service/DEPRECATED_SelfServiceStatsPageFilters.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/revenue/SupportPerformanceRevenueFilters.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/support-performance/satisfaction/SupportPerformanceSatisfactionFilters.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/ticket-insights/intents/AutomateIntentsFilters.tsx",
+            "apps/helpdesk/src/domains/reporting/pages/ticket-insights/macros/AutomateMacros.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/analytics/WorkflowAnalytics.tsx"
           ]
         }
       ]
@@ -3347,6 +3268,27 @@
             "apps/helpdesk/src/pages/aiAgent/trial/components/UpgradePlanModal/UpgradePlanModal.tsx",
             "apps/helpdesk/src/pages/common/components/ViewTable/FilterTopbar.tsx",
             "apps/helpdesk/src/pages/common/components/ViewTable/ViewTable.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "TabNavigator",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<TabNavigation />` from @gorgias/axiom instead.\n * @date 2025-04-08\n * @type ui-kit-migration\n ",
+      "count": 7,
+      "filePath": "apps/helpdesk/src/pages/common/components/TabNavigator/TabNavigator.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/common/components/DiscountCodeResultsWrapper/DiscountCodeResultsWrapper.tsx",
+            "apps/helpdesk/src/pages/common/components/Spotlight/SpotlightModal.tsx",
+            "apps/helpdesk/src/pages/common/components/TabNavigator/tests/TabNavigator.spec.tsx",
+            "apps/helpdesk/src/pages/common/draftjs/plugins/toolbar/components/AddLink.tsx",
+            "apps/helpdesk/src/pages/convert/settings/components/TermsAndConditionsSetting.tsx",
+            "apps/helpdesk/src/pages/convert/settings/ConvertSettingsView.tsx",
+            "apps/helpdesk/src/pages/settings/helpCenter/components/HelpCenterPublishAndTrackView.tsx"
           ]
         }
       ]
@@ -3578,6 +3520,26 @@
             "apps/helpdesk/src/pages/integrations/integration/components/email/tests/MigrationOutboundVerification.spec.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/email/tests/StartMigration.spec.tsx",
             "apps/helpdesk/src/pages/integrations/integration/components/whatsapp/tests/whatsAppUtils.spec.ts"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportDefaultDeclaration",
+      "nodeName": "Popover",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Modal />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 6,
+      "filePath": "apps/helpdesk/src/components/Popover/Popover.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/components/Popover/tests/Popover.spec.tsx",
+            "apps/helpdesk/src/pages/aiAgent/PlaygroundV2/components/PlaygroundPredefinedMessages/PlaygroundPredefinedMessages.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/AIAgentFeedbackBar/KnowledgeSourcePopover.tsx",
+            "apps/helpdesk/src/pages/tickets/detail/components/TicketSummaryPopover.tsx",
+            "apps/helpdesk/src/pages/tickets/list/components/TicketListActions.tsx",
+            "apps/helpdesk/src/ticket-list-view/components/bulk-actions/MoreActions.tsx"
           ]
         }
       ]
@@ -3963,78 +3925,6 @@
     },
     {
       "nodeType": "VariableDeclaration",
-      "nodeName": "SortableAccordion",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 4,
-      "filePath": "apps/helpdesk/src/pages/common/components/accordion/SortableAccordion.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReasons.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsNodeEditor.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/SortableAccordion.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/tests/SortableAccordion.spec.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "SortableAccordionHeader",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 4,
-      "filePath": "apps/helpdesk/src/pages/common/components/accordion/SortableAccordionHeader.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReason.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchItem.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/SortableAccordion.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/tests/SortableAccordion.spec.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "SortableAccordionItem",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 4,
-      "filePath": "apps/helpdesk/src/pages/common/components/accordion/SortableAccordionItem.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReasons.tsx",
-            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsNodeEditor.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/SortableAccordion.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/tests/SortableAccordion.spec.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
-      "nodeName": "CheckboxCard",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<RadioCard />` or `<CheckBoxField />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
-      "count": 4,
-      "filePath": "apps/helpdesk/src/pages/common/components/CheckboxCard/CheckboxCard.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/PersonalitySelector.tsx",
-            "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/ToneOfVoiceComponent.tsx",
-            "apps/helpdesk/src/pages/common/components/CheckboxCard/CheckboxCard.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/CheckboxCard/tests/CheckboxCard.spec.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
       "nodeName": "ToggleInputField",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ToggleField />` from @gorgias/axiom instead.\n * @date 2025-03-25\n * @type ui-kit-migration\n ",
       "count": 4,
@@ -4047,23 +3937,6 @@
             "apps/helpdesk/src/pages/settings/conditionalFields/components/ConditionForm.tsx",
             "apps/helpdesk/src/pages/settings/conditionalFields/components/tests/ConditionForm.spec.tsx",
             "apps/helpdesk/src/pages/settings/SLAs/features/SLAForm/views/DEPRECATED_SLAFormView.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "ExportNamedDeclaration",
-      "nodeName": "Tag",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Tag />` from @gorgias/axiom instead.\n * @date 2025-04-07\n * @type ui-kit-migration\n ",
-      "count": 3,
-      "filePath": "apps/helpdesk/src/components/Tag/Tag.tsx",
-      "usages": [
-        {
-          "name": "Tag",
-          "files": [
-            "apps/helpdesk/src/components/Tag/Tag.stories.tsx",
-            "apps/helpdesk/src/components/Tag/tests/Tag.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/TicketTag.tsx"
           ]
         }
       ]
@@ -4189,6 +4062,57 @@
     },
     {
       "nodeType": "VariableDeclaration",
+      "nodeName": "SortableAccordion",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 3,
+      "filePath": "apps/helpdesk/src/pages/common/components/accordion/SortableAccordion.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReasons.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsNodeEditor.tsx",
+            "apps/helpdesk/src/pages/common/components/accordion/tests/SortableAccordion.spec.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "SortableAccordionHeader",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 3,
+      "filePath": "apps/helpdesk/src/pages/common/components/accordion/SortableAccordionHeader.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReason.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsBranchItem.tsx",
+            "apps/helpdesk/src/pages/common/components/accordion/tests/SortableAccordion.spec.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "SortableAccordionItem",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Disclosure />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
+      "count": 3,
+      "filePath": "apps/helpdesk/src/pages/common/components/accordion/SortableAccordionItem.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReasons.tsx",
+            "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/editors/ConditionsNodeEditor/ConditionsNodeEditor.tsx",
+            "apps/helpdesk/src/pages/common/components/accordion/tests/SortableAccordion.spec.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
       "nodeName": "BaseButton",
       "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Button />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
       "count": 3,
@@ -4206,34 +4130,17 @@
     },
     {
       "nodeType": "VariableDeclaration",
-      "nodeName": "ProgressBar",
-      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ProgressBar />` from @gorgias/axiom instead.\n * @date 2025-04-02\n * @type ui-kit-migration\n ",
+      "nodeName": "CheckboxCard",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<RadioCard />` or `<CheckBoxField />` from @gorgias/axiom instead.\n * @date 2026-03-11\n * @type ui-kit-migration\n ",
       "count": 3,
-      "filePath": "apps/helpdesk/src/pages/common/components/ProgressBar/ProgressBar.tsx",
+      "filePath": "apps/helpdesk/src/pages/common/components/CheckboxCard/CheckboxCard.tsx",
       "usages": [
         {
           "name": "default",
           "files": [
-            "apps/helpdesk/src/pages/automate/trainMyAi/TrainMyAiView.tsx",
-            "apps/helpdesk/src/pages/common/components/ProgressBar/ProgressBar.stories.tsx",
-            "apps/helpdesk/src/pages/common/components/ProgressBar/tests/ProgressBar.spec.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "ExportNamedDeclaration",
-      "nodeName": "ViewTableContainer",
-      "comment": "*\n * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.\n * @date 2025-10-02\n * @type automate-deprecation\n ",
-      "count": 3,
-      "filePath": "apps/helpdesk/src/pages/common/components/ViewTable/ViewTable.tsx",
-      "usages": [
-        {
-          "name": "ViewTableContainer",
-          "files": [
-            "apps/helpdesk/src/pages/common/components/ViewTable/tests/ViewTable.spec.tsx",
-            "apps/helpdesk/src/pages/common/components/ViewTable/ViewTable.stories.tsx",
-            "apps/helpdesk/src/pages/tickets/list/tests/TicketList.spec.tsx"
+            "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/PersonalitySelector.tsx",
+            "apps/helpdesk/src/pages/aiAgent/components/StoreConfigForm/FormComponents/ToneOfVoiceComponent.tsx",
+            "apps/helpdesk/src/pages/common/components/CheckboxCard/tests/CheckboxCard.spec.tsx"
           ]
         }
       ]
@@ -4319,6 +4226,22 @@
             "apps/helpdesk/src/pages/tickets/detail/components/ReplyArea/TicketReplyEditor.tsx",
             "apps/helpdesk/src/state/newMessage/utils.ts",
             "apps/helpdesk/src/tickets/ticket-detail/components/MessageStatusIndicator.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "Tag",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<Tag />` from @gorgias/axiom instead.\n * @date 2025-04-07\n * @type ui-kit-migration\n ",
+      "count": 2,
+      "filePath": "apps/helpdesk/src/components/Tag/Tag.tsx",
+      "usages": [
+        {
+          "name": "Tag",
+          "files": [
+            "apps/helpdesk/src/components/Tag/tests/Tag.spec.tsx",
+            "apps/helpdesk/src/pages/common/components/TicketTag.tsx"
           ]
         }
       ]
@@ -4453,22 +4376,6 @@
     },
     {
       "nodeType": "VariableDeclaration",
-      "nodeName": "AutomateAllRecommendationsCard",
-      "comment": "*\n * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.\n * @date 2025-10-02\n * @type automate-deprecation\n ",
-      "count": 2,
-      "filePath": "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsCard.tsx",
-      "usages": [
-        {
-          "name": "default",
-          "files": [
-            "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsCard.stories.tsx",
-            "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsView.tsx"
-          ]
-        }
-      ]
-    },
-    {
-      "nodeType": "VariableDeclaration",
       "nodeName": "AutomateAllRecommendationsPage",
       "comment": "*\n * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.\n * @date 2025-10-02\n * @type automate-deprecation\n ",
       "count": 2,
@@ -4559,6 +4466,38 @@
           "files": [
             "apps/helpdesk/src/pages/common/components/button/tests/ConfirmButtonWithModal.spec.tsx",
             "apps/helpdesk/src/pages/settings/businessHours/EditCustomBusinessHoursActions.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "ProgressBar",
+      "comment": "*\n * @deprecated This component is deprecated and will be removed in future versions.\n * Please use `<ProgressBar />` from @gorgias/axiom instead.\n * @date 2025-04-02\n * @type ui-kit-migration\n ",
+      "count": 2,
+      "filePath": "apps/helpdesk/src/pages/common/components/ProgressBar/ProgressBar.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/automate/trainMyAi/TrainMyAiView.tsx",
+            "apps/helpdesk/src/pages/common/components/ProgressBar/tests/ProgressBar.spec.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "ExportNamedDeclaration",
+      "nodeName": "ViewTableContainer",
+      "comment": "*\n * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.\n * @date 2025-10-02\n * @type automate-deprecation\n ",
+      "count": 2,
+      "filePath": "apps/helpdesk/src/pages/common/components/ViewTable/ViewTable.tsx",
+      "usages": [
+        {
+          "name": "ViewTableContainer",
+          "files": [
+            "apps/helpdesk/src/pages/common/components/ViewTable/tests/ViewTable.spec.tsx",
+            "apps/helpdesk/src/pages/tickets/list/tests/TicketList.spec.tsx"
           ]
         }
       ]
@@ -4776,6 +4715,21 @@
           "name": "default",
           "files": [
             "apps/helpdesk/src/pages/automate/articleRecommendation/tests/ArticleRecommendationViewContainer.spec.tsx"
+          ]
+        }
+      ]
+    },
+    {
+      "nodeType": "VariableDeclaration",
+      "nodeName": "AutomateAllRecommendationsCard",
+      "comment": "*\n * @deprecated This component is outdated and not used anymore. Do not add any new usage of this component.\n * @date 2025-10-02\n * @type automate-deprecation\n ",
+      "count": 1,
+      "filePath": "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsCard.tsx",
+      "usages": [
+        {
+          "name": "default",
+          "files": [
+            "apps/helpdesk/src/pages/automate/common/components/AutomateAllRecommendationsView.tsx"
           ]
         }
       ]
@@ -5250,11 +5204,11 @@
   "deprecatedPackageUsages": [
     {
       "packageName": "@gorgias/axiom",
-      "count": 1504,
+      "count": 1501,
       "usages": [
         {
           "name": "LegacyButton",
-          "count": 560,
+          "count": 558,
           "files": [
             "apps/helpdesk/src/AlertBanners/components/CTA.tsx",
             "apps/helpdesk/src/auto_qa/components/Dimension.tsx",
@@ -5415,7 +5369,6 @@
             "apps/helpdesk/src/pages/common/components/CreateTicket/CreateTicketButton.tsx",
             "apps/helpdesk/src/pages/common/components/DiscountCodeCreateModal/DiscountCodeCreateModal.tsx",
             "apps/helpdesk/src/pages/common/components/DiscountCodeResults/DiscountCodeResults.tsx",
-            "apps/helpdesk/src/pages/common/components/dropdown/DropdownFooter.stories.tsx",
             "apps/helpdesk/src/pages/common/components/HeroImageCarousel/HeroImageCarousel.tsx",
             "apps/helpdesk/src/pages/common/components/ImageUpload/components/DropZone/DropZone.tsx",
             "apps/helpdesk/src/pages/common/components/infobar/Infobar/Infobar.tsx",
@@ -5446,7 +5399,6 @@
             "apps/helpdesk/src/pages/common/components/InstallationCodeSnippet/InstallationCodeSnippet.tsx",
             "apps/helpdesk/src/pages/common/components/MergeCustomers/MergeCustomersModal.tsx",
             "apps/helpdesk/src/pages/common/components/MergeTickets/MergeTicketsContainer.tsx",
-            "apps/helpdesk/src/pages/common/components/modal/Modal.stories.tsx",
             "apps/helpdesk/src/pages/common/components/OptOutModal/OptOutModal.tsx",
             "apps/helpdesk/src/pages/common/components/PaywallView/PaywallView.stories.tsx",
             "apps/helpdesk/src/pages/common/components/PhoneIntegrationBar/IncomingPhoneCall/IncomingPhoneCall.tsx",
@@ -6526,7 +6478,7 @@
         },
         {
           "name": "LegacyToggleField",
-          "count": 46,
+          "count": 45,
           "files": [
             "apps/helpdesk/src/common/navigation/components/AvailabilityToggle.tsx",
             "apps/helpdesk/src/common/navigation/components/AxiomMigrationToggle.tsx",
@@ -6546,7 +6498,6 @@
             "apps/helpdesk/src/pages/automate/orderManagement/legacy/components/OrderManagementFlowItem.tsx",
             "apps/helpdesk/src/pages/automate/orderManagement/legacy/reportOrderIssue/components/ReportOrderIssueScenarioReasonAction.tsx",
             "apps/helpdesk/src/pages/automate/workflows/editor/visualBuilder/publisher/channels/ChannelToggle.tsx",
-            "apps/helpdesk/src/pages/common/components/accordion/Accordion.stories.tsx",
             "apps/helpdesk/src/pages/common/components/AxiomMigrationHighlightTokensToggle.tsx",
             "apps/helpdesk/src/pages/common/components/Collapse/Collapse.stories.tsx",
             "apps/helpdesk/src/pages/common/components/ExtraHtmlSection/ExtraHtmlSection.tsx",
@@ -6994,7 +6945,7 @@
     },
     {
       "packageName": "reactstrap",
-      "count": 999,
+      "count": 998,
       "usages": [
         {
           "name": "Container",
@@ -7756,10 +7707,9 @@
         },
         {
           "name": "Button",
-          "count": 29,
+          "count": 28,
           "files": [
             "apps/helpdesk/src/domains/reporting/pages/common/layout/StatWrapper.tsx",
-            "apps/helpdesk/src/pages/common/components/Alert/Alert.stories.tsx",
             "apps/helpdesk/src/pages/common/components/ast/operations/AddLogicalCondition.tsx",
             "apps/helpdesk/src/pages/common/components/HeaderTitle.tsx",
             "apps/helpdesk/src/pages/common/components/ViewTable/Filters/Left.tsx",
