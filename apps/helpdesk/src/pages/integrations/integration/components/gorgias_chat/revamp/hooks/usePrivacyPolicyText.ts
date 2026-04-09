@@ -47,12 +47,13 @@ export const usePrivacyPolicyText = ({
                 multiLanguage[defaultLanguage as LanguageChat]
             const text = textsPerLanguage?.texts?.privacyPolicyDisclaimer ?? ''
 
-            // Update ref before state so isPrivacyPolicyTextDirty is false
-            // on the render triggered by setPrivacyPolicyText.
-            // Normalize with sanitizeHtmlDefault so the baseline matches what
-            // TicketRichField produces on initial mount (e.g. adds rel="noreferrer noopener").
-            savedPrivacyPolicyTextRef.current = sanitizeHtmlDefault(text)
-            setPrivacyPolicyText(text)
+            // Normalize with sanitizeHtmlDefault so privacyPolicyText and the
+            // saved baseline both hold the same value on initial load.
+            // TicketRichField's first onChange is skipped (isEditorInitializing),
+            // so we must sanitize here to avoid a spurious dirty on mount.
+            const sanitizedText = sanitizeHtmlDefault(text)
+            savedPrivacyPolicyTextRef.current = sanitizedText
+            setPrivacyPolicyText(sanitizedText)
         })
     }, [chatApplicationId, defaultLanguage])
 

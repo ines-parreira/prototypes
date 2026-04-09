@@ -1,3 +1,5 @@
+import { useRef } from 'react'
+
 import { sanitizeHtmlDefault } from '@repo/utils'
 import type { EditorState } from 'draft-js'
 
@@ -30,6 +32,8 @@ export const LegalCard = ({
         updateLegalDisclaimerEnabled,
     } = useGorgiasChatCreationWizardContext()
 
+    const isEditorInitializing = useRef(true)
+
     const focusPreviewLegalDisclaimerSettings = () => {
         openChat()
         displayPage('conversation')
@@ -42,9 +46,14 @@ export const LegalCard = ({
             html = ''
         }
 
-        focusPreviewLegalDisclaimerSettings()
         updateLegalDisclaimer(html)
         onLegalDisclaimerTextChange(html)
+
+        if (isEditorInitializing.current) {
+            isEditorInitializing.current = false
+            return
+        }
+        focusPreviewLegalDisclaimerSettings()
     }
 
     const handleLegalDisclaimerEnabled = (value: boolean) => {
