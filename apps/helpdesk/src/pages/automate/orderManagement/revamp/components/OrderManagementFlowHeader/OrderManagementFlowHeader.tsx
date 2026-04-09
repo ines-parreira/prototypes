@@ -58,11 +58,11 @@ export const OrderManagementFlowHeader = ({
             {
                 id: 'order-management',
                 label: 'Order Management',
-                link: BASE_PATH,
+                link: storePath,
             },
             { id: 'flow', label: title },
         ],
-        [title],
+        [title, storePath],
     )
 
     return (
@@ -100,7 +100,7 @@ export const OrderManagementFlowHeader = ({
                                 variant={ButtonVariant.Secondary}
                                 intent={ButtonIntent.Regular}
                                 aria-label="Go back"
-                                onClick={() => history.push(BASE_PATH)}
+                                onClick={() => history.push(storePath)}
                             />
                             <Heading size={HeadingSize.Xl}>{title}</Heading>
                         </>

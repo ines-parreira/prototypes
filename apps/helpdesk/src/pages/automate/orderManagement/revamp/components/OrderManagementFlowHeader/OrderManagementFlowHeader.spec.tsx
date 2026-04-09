@@ -144,7 +144,7 @@ describe('OrderManagementFlowHeader', () => {
             const link = screen.getByText('Order Management').closest('a')
             expect(link).toHaveAttribute(
                 'href',
-                '/app/settings/order-management',
+                '/app/settings/order-management/shopify/my-store',
             )
         })
 
@@ -174,7 +174,7 @@ describe('OrderManagementFlowHeader', () => {
             await user.click(screen.getByRole('button', { name: /go back/i }))
 
             expect(mockPush).toHaveBeenCalledWith(
-                '/app/settings/order-management',
+                '/app/settings/order-management/shopify/my-store',
             )
         })
     })
