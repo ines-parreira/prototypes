@@ -1,0 +1,143 @@
+:local {
+    .playerContainer {
+        --track-height: 2px;
+        --track-border-radius: 2px;
+        --thumb-size: 8px;
+        --thumb-margin-top: -3px;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-xxs);
+        width: 100%;
+    }
+
+    .progressSection {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: var(--spacing-xs);
+        flex: 1;
+        min-width: 0;
+    }
+
+    .progressBar {
+        flex: 1;
+        min-width: 0;
+        cursor: pointer;
+        appearance: none;
+        height: var(--track-height);
+        border-radius: var(--track-border-radius);
+        background: linear-gradient(
+            to right,
+            var(--surface-accent-primary) var(--seek-percent),
+            var(--surface-neutral-secondary) var(--seek-percent)
+        );
+        outline: none;
+
+        &::-webkit-slider-runnable-track {
+            height: var(--track-height);
+            background: transparent;
+            border-radius: var(--track-border-radius);
+        }
+
+        &::-moz-range-track {
+            height: var(--track-height);
+            background: var(--surface-neutral-secondary);
+            border-radius: var(--track-border-radius);
+        }
+
+        &::-moz-range-progress {
+            height: var(--track-height);
+            background: var(--surface-accent-primary);
+            border-radius: var(--track-border-radius);
+        }
+
+        &::-webkit-slider-thumb {
+            appearance: none;
+            width: var(--thumb-size);
+            height: var(--thumb-size);
+            border-radius: 50%;
+            background: var(--surface-accent-primary);
+            border: none;
+            cursor: pointer;
+            margin-top: var(--thumb-margin-top);
+        }
+
+        &::-moz-range-thumb {
+            width: var(--thumb-size);
+            height: var(--thumb-size);
+            border-radius: 50%;
+            background: var(--surface-accent-primary);
+            border: none;
+            cursor: pointer;
+        }
+    }
+
+    .volumeRange {
+        width: 80px;
+        cursor: pointer;
+        appearance: none;
+        height: var(--track-height);
+        border-radius: var(--track-border-radius);
+        background: linear-gradient(
+            to right,
+            var(--content-neutral-default) var(--volume-percent),
+            var(--surface-neutral-secondary) var(--volume-percent)
+        );
+        outline: none;
+
+        &:focus,
+        &:focus-visible {
+            outline: none;
+            box-shadow: none;
+        }
+
+        &:focus::-webkit-slider-thumb {
+            outline: none;
+            box-shadow: none;
+        }
+
+        &::-webkit-slider-runnable-track {
+            height: var(--track-height);
+            background: transparent;
+            border-radius: var(--track-border-radius);
+        }
+
+        &:hover::-webkit-slider-runnable-track {
+            background: transparent;
+        }
+
+        &::-moz-range-track {
+            height: var(--track-height);
+            background: var(--surface-neutral-secondary);
+            border-radius: var(--track-border-radius);
+        }
+
+        &::-moz-range-progress {
+            height: var(--track-height);
+            background: var(--content-neutral-default);
+            border-radius: var(--track-border-radius);
+        }
+
+        &::-webkit-slider-thumb {
+            appearance: none;
+            width: var(--thumb-size);
+            height: var(--thumb-size);
+            border-radius: 50%;
+            background: var(--content-neutral-default);
+            border: none;
+            cursor: pointer;
+            margin-top: var(--thumb-margin-top);
+        }
+
+        &::-moz-range-thumb {
+            width: var(--thumb-size);
+            height: var(--thumb-size);
+            border-radius: 50%;
+            background: var(--content-neutral-default);
+            border: none;
+            cursor: pointer;
+        }
+    }
+}

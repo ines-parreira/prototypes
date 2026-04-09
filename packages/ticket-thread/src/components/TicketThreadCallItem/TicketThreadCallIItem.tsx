@@ -1,29 +1,45 @@
-import { useMemo } from 'react'
-
-import { Box } from '@gorgias/axiom'
-
 import { TicketThreadItemTag } from '../../hooks/types'
 import type {
     TicketThreadOutboundVoiceCallItem,
     TicketThreadVoiceCallItem,
 } from '../../hooks/voice-calls/types'
 import { assertNever } from '../../utils/assertNever'
+import { MessageBubble } from '../MessageBubble/MessageBubble'
+import { VoiceCallInbound } from './components/VoiceCallInbound'
+import { VoiceCallOutbound } from './components/VoiceCallOutbound'
+import { VoiceCallSummary } from './components/VoiceCallSummary'
 
 type TicketThreadCallItemProps = {
     item: TicketThreadVoiceCallItem | TicketThreadOutboundVoiceCallItem
 }
 
 export function TicketThreadCallItem({ item }: TicketThreadCallItemProps) {
-    const content = useMemo(() => {
-        switch (item._tag) {
-            case TicketThreadItemTag.VoiceCalls.VoiceCall:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
-            case TicketThreadItemTag.VoiceCalls.OutboundVoiceCall:
-                return <Box padding="md">{JSON.stringify(item.data)}</Box>
-            default:
-                return assertNever(item)
-        }
-    }, [item])
+    const summary = item.data.summaries && item.data.summaries.length > 0 && (
+        <MessageBubble variant="internal-note">
+            <VoiceCallSummary summaries={item.data.summaries} />
+        </MessageBubble>
+    )
 
-    return <Box alignSelf="flex-end">{content}</Box>
+    switch (item._tag) {
+        case TicketThreadItemTag.VoiceCalls.VoiceCall:
+            return (
+                <>
+                    <MessageBubble>
+                        <VoiceCallInbound voiceCall={item.data} />
+                    </MessageBubble>
+                    {summary}
+                </>
+            )
+        case TicketThreadItemTag.VoiceCalls.OutboundVoiceCall:
+            return (
+                <>
+                    <MessageBubble>
+                        <VoiceCallOutbound voiceCall={item.data} />
+                    </MessageBubble>
+                    {summary}
+                </>
+            )
+        default:
+            return assertNever(item)
+    }
 }

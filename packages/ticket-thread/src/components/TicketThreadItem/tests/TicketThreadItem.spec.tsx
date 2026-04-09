@@ -1,15 +1,22 @@
 import type * as TicketsModule from '@repo/tickets'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
 import {
+    mockCustomer,
+    mockGetCustomerHandler,
     mockGetTicketHandler,
     mockListIntegrationsHandler,
     mockListIntegrationsResponse,
     mockListUsersHandler,
     mockListUsersResponse,
+    mockListVoiceCallEventsHandler,
+    mockListVoiceCallEventsResponse,
+    mockListVoiceCallRecordingsHandler,
+    mockListVoiceCallRecordingsResponse,
     mockTicket,
     mockTicketMessage,
+    mockVoiceCall,
 } from '@gorgias/helpdesk-mocks'
 
 import { PHONE_EVENTS } from '../../../hooks/events/constants'
@@ -84,6 +91,22 @@ beforeEach(() => {
                 }),
             ),
         ).handler,
+        mockGetCustomerHandler(async () =>
+            HttpResponse.json(
+                mockCustomer({
+                    id: 100,
+                    name: 'Test Customer',
+                }),
+            ),
+        ).handler,
+        mockListVoiceCallEventsHandler(async () =>
+            HttpResponse.json(mockListVoiceCallEventsResponse({ data: [] })),
+        ).handler,
+        mockListVoiceCallRecordingsHandler(async () =>
+            HttpResponse.json(
+                mockListVoiceCallRecordingsResponse({ data: [] }),
+            ),
+        ).handler,
     )
     mockUseTicketThreadLegacyBridge.mockReturnValue({
         currentTicketShoppingAssistantData: {
@@ -124,7 +147,18 @@ const phoneEventData = {
     object_type: 'Ticket',
     type: PHONE_EVENTS[0],
 } as const
-const voiceCallData = { id: 1, status: 'completed' }
+const voiceCallData = mockVoiceCall({
+    id: 1,
+    status: 'completed',
+    direction: 'inbound',
+    customer_id: 100,
+    phone_number_source: '+1234567890',
+    phone_number_destination: '+0987654321',
+    created_datetime: '2024-03-21T11:00:00Z',
+    started_datetime: '2024-03-21T11:00:00Z',
+    duration: 120,
+    last_answered_by_agent_id: 1,
+})
 const satisfactionSurveyData = {
     authorLabel: 'Jane Customer',
     body_text: 'Great support',
@@ -217,28 +251,40 @@ describe('TicketThreadItem', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders a voice call item', () => {
+    it('renders a voice call item', async () => {
         renderItem({
             _tag: TicketThreadItemTag.VoiceCalls.VoiceCall,
             data: voiceCallData,
             datetime: '2024-03-21T11:00:00Z',
         } as TicketThreadItem)
 
-        expect(
-            screen.getByText(JSON.stringify(voiceCallData)),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('called')).toBeInTheDocument()
+        })
     })
 
-    it('renders an outbound voice call item', () => {
+    it('renders an outbound voice call item', async () => {
+        const outboundData = mockVoiceCall({
+            id: 2,
+            status: 'completed',
+            direction: 'outbound',
+            customer_id: 100,
+            initiated_by_agent_id: 1,
+            phone_number_source: '+0987654321',
+            phone_number_destination: '+1234567890',
+            created_datetime: '2024-03-21T11:00:00Z',
+            started_datetime: '2024-03-21T11:00:00Z',
+            duration: 60,
+        })
         renderItem({
             _tag: TicketThreadItemTag.VoiceCalls.OutboundVoiceCall,
-            data: voiceCallData,
+            data: outboundData,
             datetime: '2024-03-21T11:00:00Z',
         } as TicketThreadItem)
 
-        expect(
-            screen.getByText(JSON.stringify(voiceCallData)),
-        ).toBeInTheDocument()
+        await waitFor(() => {
+            expect(screen.getByText('made a call')).toBeInTheDocument()
+        })
     })
 
     it('renders a satisfaction survey item', () => {

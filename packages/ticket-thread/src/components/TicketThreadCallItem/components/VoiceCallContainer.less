@@ -1,0 +1,54 @@
+:local {
+    .container {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        word-break: break-word;
+        overflow-y: visible;
+        width: 100%;
+    }
+
+    .callDetails {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        flex: 1;
+        min-width: 0;
+    }
+
+    .row {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-xs);
+    }
+
+    .statusRow {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-xxs);
+        padding-left: calc(24px + var(--spacing-xs));
+    }
+
+    .callStatus {
+        flex: 1;
+    }
+
+    .meta {
+        white-space: nowrap;
+        flex-shrink: 0;
+        color: var(--content-neutral-secondary);
+    }
+
+    .recordingCard {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        width: 100%;
+        background-color: var(--elevation-neutral-bg);
+        border: 1px solid var(--border-neutral-default);
+        border-radius: var(--spacing-sm);
+        padding: var(--spacing-sm);
+    }
+}
