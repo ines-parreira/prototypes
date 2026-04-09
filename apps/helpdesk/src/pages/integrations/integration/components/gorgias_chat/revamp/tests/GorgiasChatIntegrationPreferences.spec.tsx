@@ -138,6 +138,10 @@ jest.mock('state/currentAccount/selectors', () => ({
     getSurveysSettingsJS: jest.fn(),
 }))
 
+jest.mock('state/billing/selectors', () => ({
+    getCurrentConvertPlan: jest.fn(),
+}))
+
 const mockSubmitSetting = submitSetting as jest.MockedFunction<
     typeof submitSetting
 >

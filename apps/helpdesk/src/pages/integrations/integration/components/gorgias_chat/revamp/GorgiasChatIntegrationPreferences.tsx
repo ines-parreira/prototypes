@@ -25,6 +25,7 @@ import { ChatShopperExperienceCard } from 'pages/integrations/integration/compon
 import { ChatVisibilityCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatVisibilityCard/ChatVisibilityCard'
 import { ChatWaitTimeCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/GorgiasChatIntegrationPreferences/ChatWaitTimeCard/ChatWaitTimeCard'
 import { GorgiasChatRevampLayout } from 'pages/integrations/integration/components/gorgias_chat/revamp/GorgiasChatRevampLayout'
+import { getCurrentConvertPlan } from 'state/billing/selectors'
 import { submitSetting } from 'state/currentAccount/actions'
 import { getSurveysSettingsJS } from 'state/currentAccount/selectors'
 import { AccountSettingType } from 'state/currentAccount/types'
@@ -101,6 +102,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
     const { reloadPreview } = useGorgiasChatCreationWizardContext()
     const surveysSettings = useAppSelector(getSurveysSettingsJS)
     const sendCsatGlobal = surveysSettings?.data?.send_survey_for_chat ?? false
+    const hasConvert = Boolean(useAppSelector(getCurrentConvertPlan))
 
     const integration = useMemo(
         () => integrationMap.toJS() as GorgiasChatIntegration,
@@ -217,6 +219,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                             displayCampaignsWhenHidden={
                                 values.displayCampaignsWhenHidden
                             }
+                            hasConvert={hasConvert}
                             onDisplayChatChange={(value) =>
                                 setFieldValue('displayChat', value)
                             }

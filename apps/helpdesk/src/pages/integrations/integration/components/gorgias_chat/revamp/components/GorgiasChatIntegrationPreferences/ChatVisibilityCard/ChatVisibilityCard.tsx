@@ -7,6 +7,7 @@ type Props = {
     showOutsideBusinessHours: boolean
     showOnMobile: boolean
     displayCampaignsWhenHidden: boolean
+    hasConvert: boolean
     onDisplayChatChange: (value: boolean) => void
     onShowOutsideBusinessHoursChange: (value: boolean) => void
     onShowOnMobileChange: (value: boolean) => void
@@ -18,6 +19,7 @@ export const ChatVisibilityCard = ({
     showOutsideBusinessHours,
     showOnMobile,
     displayCampaignsWhenHidden,
+    hasConvert,
     onDisplayChatChange,
     onShowOutsideBusinessHoursChange,
     onShowOnMobileChange,
@@ -52,12 +54,14 @@ export const ChatVisibilityCard = ({
                         value={showOnMobile}
                         onChange={onShowOnMobileChange}
                     />
-                    <ToggleField
-                        label="Show campaigns when chat is hidden"
-                        caption="Keep campaigns visible even when chat is turned off. Shoppers won't be able to reply."
-                        value={displayCampaignsWhenHidden}
-                        onChange={onDisplayCampaignsWhenHiddenChange}
-                    />
+                    {hasConvert && (
+                        <ToggleField
+                            label="Show campaigns when chat is hidden"
+                            caption="Keep campaigns visible even when chat is turned off. Shoppers won't be able to reply."
+                            value={displayCampaignsWhenHidden}
+                            onChange={onDisplayCampaignsWhenHiddenChange}
+                        />
+                    )}
                 </div>
             </div>
         </Card>

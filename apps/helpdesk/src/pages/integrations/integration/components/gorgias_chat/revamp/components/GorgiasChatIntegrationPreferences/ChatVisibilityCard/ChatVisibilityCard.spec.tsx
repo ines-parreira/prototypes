@@ -37,6 +37,7 @@ describe('ChatVisibilityCard', () => {
         showOutsideBusinessHours: true,
         showOnMobile: true,
         displayCampaignsWhenHidden: false,
+        hasConvert: true,
         onDisplayChatChange: jest.fn(),
         onShowOutsideBusinessHoursChange: jest.fn(),
         onShowOnMobileChange: jest.fn(),
