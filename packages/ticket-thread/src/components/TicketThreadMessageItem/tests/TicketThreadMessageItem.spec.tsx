@@ -70,6 +70,9 @@ const mockUseTicketThreadDateTimeFormat = vi.mocked(
 )
 const mockUseTicketThreadLegacyBridge = vi.mocked(useTicketThreadLegacyBridge)
 const renderAiAgentReasoning = vi.fn(() => <div>AiAgentReasoningSlot</div>)
+const renderAiAgentDraftMessage = vi.fn(() => (
+    <div>AiAgentDraftMessageSlot</div>
+))
 
 const aliceSender: RegularMessageData['sender'] = {
     ...mockTicketMessageUserOrCustomer({
@@ -244,6 +247,7 @@ function createLegacyBridgeValue(
                 isSubmittingMessage: false,
             },
         },
+        renderAiAgentDraftMessage: undefined,
         renderAiAgentReasoning: undefined,
         ...overrides,
     }
@@ -697,6 +701,7 @@ function renderItem(item: TicketThreadMessageItem) {
 }
 
 beforeEach(() => {
+    renderAiAgentDraftMessage.mockClear()
     renderAiAgentReasoning.mockClear()
     server.use(getCurrentUserHandler().handler)
     window.GORGIAS_STATE = {
@@ -845,7 +850,7 @@ describe('TicketThreadMessageItem', () => {
         ).not.toBeInTheDocument()
     })
 
-    it('renders AI agent draft message item', () => {
+    it('renders AI agent draft message item without legacy bridge content', () => {
         mockUseTicketThreadLegacyBridge.mockReturnValue(
             createLegacyBridgeValue({
                 renderAiAgentReasoning,
@@ -855,11 +860,32 @@ describe('TicketThreadMessageItem', () => {
         renderItem(createAiAgentDraftMessageItem())
 
         expect(screen.getByText('AI Agent')).toBeInTheDocument()
-        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
+        expect(
+            screen.queryByText('AiAgentDraftMessageSlot'),
+        ).not.toBeInTheDocument()
+        expect(screen.queryByText(HELLO_MESSAGE_TEXT)).not.toBeInTheDocument()
         expect(
             screen.queryByText('AiAgentReasoningSlot'),
         ).not.toBeInTheDocument()
         expect(renderAiAgentReasoning).not.toHaveBeenCalled()
+    })
+
+    it('renders AI agent draft message items through the legacy bridge when provided', () => {
+        mockUseTicketThreadLegacyBridge.mockReturnValue(
+            createLegacyBridgeValue({
+                renderAiAgentDraftMessage,
+            }),
+        )
+
+        const item = createAiAgentDraftMessageItem()
+
+        renderItem(item)
+
+        expect(screen.getByText('AiAgentDraftMessageSlot')).toBeInTheDocument()
+        expect(renderAiAgentDraftMessage).toHaveBeenCalledWith({
+            message: item.data,
+            isTrial: false,
+        })
     })
 
     it('renders AI agent trial message item', () => {
@@ -877,6 +903,24 @@ describe('TicketThreadMessageItem', () => {
             screen.queryByText('AiAgentReasoningSlot'),
         ).not.toBeInTheDocument()
         expect(renderAiAgentReasoning).not.toHaveBeenCalled()
+    })
+
+    it('does not render AI agent draft bridge content for AI agent trial message items', () => {
+        mockUseTicketThreadLegacyBridge.mockReturnValue(
+            createLegacyBridgeValue({
+                renderAiAgentDraftMessage,
+            }),
+        )
+
+        const item = createAiAgentTrialMessageItem()
+
+        renderItem(item)
+
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
+        expect(
+            screen.queryByText('AiAgentDraftMessageSlot'),
+        ).not.toBeInTheDocument()
+        expect(renderAiAgentDraftMessage).not.toHaveBeenCalled()
     })
 
     it.each(aiAgentErrorBannerItems)(

@@ -9,6 +9,7 @@ import type {
     InstagramCommentPrivateReplyData,
     LegacyBridgeActions,
     LegacyBridgeState,
+    TicketThreadAiAgentDraftMessageParams,
     TicketThreadAiAgentReasoningParams,
 } from './types'
 
@@ -29,6 +30,9 @@ type TicketThreadLegacyBridgeProviderProps = {
     onFacebookCommentLike: (data: FacebookCommentLikeData) => void
     legacyActions?: LegacyBridgeActions
     legacyState?: LegacyBridgeState
+    renderAiAgentDraftMessage?: (
+        params: TicketThreadAiAgentDraftMessageParams,
+    ) => React.ReactNode
     renderAiAgentReasoning?: (
         params: TicketThreadAiAgentReasoningParams,
     ) => React.ReactNode
@@ -61,6 +65,7 @@ export const TicketThreadLegacyBridgeProvider = ({
     onFacebookCommentLike,
     legacyActions = defaultLegacyActions,
     legacyState = defaultLegacyState,
+    renderAiAgentDraftMessage,
     renderAiAgentReasoning,
 }: TicketThreadLegacyBridgeProviderProps) => {
     return (
@@ -75,6 +80,7 @@ export const TicketThreadLegacyBridgeProvider = ({
                 onFacebookCommentLike,
                 legacyActions,
                 legacyState,
+                renderAiAgentDraftMessage,
                 renderAiAgentReasoning,
             }}
         >

@@ -1,6 +1,10 @@
 import type { ReactNode } from 'react'
 
-import type { TicketThreadAiAgentMessageItem } from '../../hooks/messages/types'
+import type {
+    TicketThreadAiAgentDraftMessageItem,
+    TicketThreadAiAgentMessageItem,
+    TicketThreadAiAgentTrialMessageItem,
+} from '../../hooks/messages/types'
 
 export type LegacyBridgeInfluencedOrder = {
     id: number
@@ -98,6 +102,13 @@ export type TicketThreadAiAgentReasoningParams = {
     message: TicketThreadAiAgentMessageItem['data']
 }
 
+export type TicketThreadAiAgentDraftMessageParams = {
+    message:
+        | TicketThreadAiAgentDraftMessageItem['data']
+        | TicketThreadAiAgentTrialMessageItem['data']
+    isTrial: boolean
+}
+
 export type LegacyBridgeContextType = {
     currentTicketShoppingAssistantData: CurrentTicketShoppingAssistantData
     currentTicketRuleSuggestionData: CurrentTicketRuleSuggestionData
@@ -114,6 +125,9 @@ export type LegacyBridgeContextType = {
     onFacebookCommentLike: (data: FacebookCommentLikeData) => void
     legacyActions: LegacyBridgeActions
     legacyState: LegacyBridgeState
+    renderAiAgentDraftMessage?: (
+        params: TicketThreadAiAgentDraftMessageParams,
+    ) => ReactNode
     renderAiAgentReasoning?: (
         params: TicketThreadAiAgentReasoningParams,
     ) => ReactNode

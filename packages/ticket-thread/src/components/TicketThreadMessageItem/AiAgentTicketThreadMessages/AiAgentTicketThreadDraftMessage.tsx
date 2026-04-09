@@ -1,7 +1,7 @@
 import { AIThinking, Box } from '@gorgias/axiom'
 
 import type { TicketThreadAiAgentDraftMessageItem } from '../../../hooks/messages/types'
-import { MessageBody } from '../../MessageBubble/components/MessageBody'
+import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { MessageErrors } from '../../MessageBubble/components/MessageErrors'
 import { MessageHeaderContainer } from '../../MessageBubble/components/MessageHeader/Layout'
 import { MessageChannel } from '../../MessageBubble/components/MessageHeader/MessageChannel'
@@ -17,8 +17,10 @@ type AiAgentTicketThreadDraftMessageProps = {
 export function AiAgentTicketThreadDraftMessage({
     item,
 }: AiAgentTicketThreadDraftMessageProps) {
+    const { renderAiAgentDraftMessage } = useTicketThreadLegacyBridge()
+
     return (
-        <MessageBubble variant="ai-agent">
+        <MessageBubble variant="internal-note">
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
                     <AIThinking variant="static" />
@@ -35,7 +37,10 @@ export function AiAgentTicketThreadDraftMessage({
                     />
                 </Box>
             </MessageHeaderContainer>
-            <MessageBody item={item} />
+            {renderAiAgentDraftMessage?.({
+                message: item.data,
+                isTrial: false,
+            })}
             {item.data.ticket_id && (
                 <MessageErrors
                     message={item.data}

@@ -1,0 +1,54 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .row {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-xs);
+        width: 100%;
+        min-height: 24px;
+        align-items: center;
+    }
+
+    .rowValueContainer {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+    }
+
+    .integrationIcon {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+    }
+
+    .htmlPreview {
+        .body-regular();
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 16px;
+        color: var(--content-neutral-default);
+
+        p {
+            margin: 0 0 var(--spacing-xs);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        ul,
+        ol {
+            margin: 0;
+            padding-left: var(--spacing-md);
+        }
+    }
+
+    .bodyText,
+    .valueText {
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+}

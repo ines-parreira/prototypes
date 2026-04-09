@@ -114,7 +114,7 @@ describe('useTicketThreadMessages', () => {
         )
 
         await waitFor(() => {
-            expect(result.current.messages).toEqual([])
+            expect(getMessageIds(result.current.messages)).toEqual([])
         })
         expect(result.current.activePendingMessages).toEqual([])
     })

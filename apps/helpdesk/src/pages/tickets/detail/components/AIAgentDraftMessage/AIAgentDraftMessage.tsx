@@ -1,21 +1,9 @@
-import { useMemo } from 'react'
-
-import { isSessionImpersonated } from '@repo/activity-tracker/utils'
-import { logEvent, SegmentEvent } from '@repo/logging'
-import { fromJS } from 'immutable'
-import scrollIntoView from 'scroll-into-view-if-needed'
-
 import { LegacyButton as Button, Skeleton } from '@gorgias/axiom'
 
-import useAppDispatch from 'hooks/useAppDispatch'
-import useAppSelector from 'hooks/useAppSelector'
-import { useGetAiAgentFeedback } from 'models/aiAgentFeedback/queries'
-import { MacroActionName, MacroActionType } from 'models/macroAction/types'
 import type { TicketMessage } from 'models/ticket/types'
-import { getCurrentAccountId } from 'state/currentAccount/selectors'
-import { applyMacro, applyMacroAction } from 'state/ticket/actions'
 
 import InTicketSuggestion from '../RuleSuggestion/InTicketSuggestion'
+import { useAiAgentDraftMessage } from './useAiAgentDraftMessage'
 
 import css from './AIAgentDraftMessage.less'
 
@@ -25,62 +13,24 @@ export type Props = {
     isTrial?: boolean
 }
 
+/**
+ * The Helpdesk V2 version of this component is located in
+ * AiAgentDraftMessageHelpdeskV2.tsx. Please update the Helpdesk V2 version if
+ * you make any changes to this component.
+ */
 const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
-    const accountId = useAppSelector(getCurrentAccountId)
-    const { data, isLoading } = useGetAiAgentFeedback()
-    const dispatch = useAppDispatch()
-    const isImpersonated = useMemo(() => isSessionImpersonated(), [])
-
-    const feedback = data?.data
-
-    const feedbackMessage = useMemo(
-        () => feedback?.messages.find((m) => m.messageId === message.id),
-        [feedback, message],
-    )
-
-    const draftMessage = feedbackMessage?.draftMessage
-
-    const handleCopyToEditor = () => {
-        const editorElement = document.getElementById('ticket-reply-editor')
-        if (editorElement) {
-            scrollIntoView(editorElement, {
-                scrollMode: 'if-needed',
-                behavior: 'smooth',
-                block: 'nearest',
-            })
-        }
-
-        logEvent(SegmentEvent.AiAgentCopiedToEditor, {
-            accountId,
-            banner: isTrial ? 'trial' : 'qa_failed',
-        })
-
-        if (draftMessage) {
-            dispatch(
-                applyMacroAction(
-                    fromJS({
-                        arguments: {
-                            body_html: draftMessage.content,
-                        },
-                        name: MacroActionName.SetResponseText,
-                        title: 'Set Response Text',
-                        type: MacroActionType.User,
-                    }),
-                ),
-            )
-
-            if (draftMessage.ticketActions) {
-                void dispatch(
-                    applyMacro(
-                        fromJS({
-                            actions: draftMessage.ticketActions,
-                        }),
-                        ticketId,
-                    ),
-                )
-            }
-        }
-    }
+    const {
+        draftMessage,
+        executionId,
+        feedback,
+        handleCopyToEditor,
+        isLoading,
+        summary,
+    } = useAiAgentDraftMessage({
+        ticketId,
+        message,
+        isTrial,
+    })
 
     if (isLoading) {
         return (
@@ -134,16 +84,14 @@ const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
             infoContent={
                 <div
                     dangerouslySetInnerHTML={{
-                        __html: feedbackMessage.summary ?? '',
+                        __html: summary,
                     }}
                 />
             }
             text={draftMessage.content || ''}
             macroActions={draftMessage.ticketActions || []}
             isTrialMessage={isTrial}
-            executionId={
-                isImpersonated ? feedbackMessage?.executionId : undefined
-            }
+            executionId={executionId}
         />
     )
 }
