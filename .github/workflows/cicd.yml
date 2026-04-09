@@ -24,8 +24,6 @@ jobs:
       build-dir: apps/helpdesk/build
       bucket-path: web-app
       node-version: "22.22.0"
-      react-doctor-gcloud-project: gorgias-helpdesk-staging
-      react-doctor-gcs-bucket: gs://gorgias-assets-staging/react-doctor-reports/helpdesk-web-app
     steps:
       - name: Workspace vars
         run: echo "empty step"
@@ -40,14 +38,12 @@ jobs:
       has-other-affected-packages: ${{ env.HAS_OTHER_AFFECTED_PACKAGES }}
       packages-test-buckets: ${{ env.PACKAGES_TEST_BUCKETS }}
       packages-test-bucket-count: ${{ env.PACKAGES_TEST_BUCKET_COUNT }}
-      has-react-doctor-affected-packages: ${{ env.HAS_REACT_DOCTOR_AFFECTED_PACKAGES }}
-      react-doctor-affected-packages: ${{ env.REACT_DOCTOR_AFFECTED_PACKAGES }}
       nx-base-commit: ${{ env.NX_BASE_COMMIT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          fetch-depth: 2
 
       - name: Install dependencies
         uses: ./.github/actions/install-dependencies
@@ -70,6 +66,10 @@ jobs:
             echo "On feature branch, using base commit: $NX_BASE_COMMIT"
           fi
           echo "NX_BASE_COMMIT=$NX_BASE_COMMIT" >> $GITHUB_ENV
+
+          if [[ "$NX_BASE_COMMIT" == "origin/main" ]]; then
+            git fetch --no-tags --prune --depth=1 origin +refs/heads/main:refs/remotes/origin/main
+          fi
 
           # Check if @repo/helpdesk is affected
           HELPDESK_AFFECTED_JSON=$(npx nx show projects --affected --projects=@repo/helpdesk --json --base=$NX_BASE_COMMIT --head=HEAD)
@@ -100,20 +100,6 @@ jobs:
             echo "No other affected packages with test:ci:cover target found"
           fi
 
-          # Get affected packages for React Doctor diagnostics
-          REACT_DOCTOR_AFFECTED_PACKAGES_JSON=$(npx nx show projects --affected --with-target=lint --exclude=@repo/root --json --base=$NX_BASE_COMMIT --head=HEAD)
-
-          if echo "$REACT_DOCTOR_AFFECTED_PACKAGES_JSON" | jq -e '. | length > 0' > /dev/null; then
-            REACT_DOCTOR_AFFECTED_PACKAGES_MATRIX=$(echo "$REACT_DOCTOR_AFFECTED_PACKAGES_JSON" | jq -c 'map({project: ., alias: (sub("^@"; "") | gsub("/"; "-"))})')
-            echo "REACT_DOCTOR_AFFECTED_PACKAGES=$REACT_DOCTOR_AFFECTED_PACKAGES_MATRIX" >> $GITHUB_ENV
-            echo "HAS_REACT_DOCTOR_AFFECTED_PACKAGES=true" >> $GITHUB_ENV
-            echo "Found affected packages for React Doctor: $REACT_DOCTOR_AFFECTED_PACKAGES_JSON"
-          else
-            echo "REACT_DOCTOR_AFFECTED_PACKAGES=[]" >> $GITHUB_ENV
-            echo "HAS_REACT_DOCTOR_AFFECTED_PACKAGES=false" >> $GITHUB_ENV
-            echo "No affected packages with lint target found for React Doctor"
-          fi
-
   quality-check:
     name: Quality check
     needs:
@@ -128,10 +114,6 @@ jobs:
       has-other-affected-packages: ${{ needs.workspace-setup.outputs.has-other-affected-packages }}
       packages-test-buckets: ${{ needs.workspace-setup.outputs.packages-test-buckets }}
       packages-test-bucket-count: ${{ needs.workspace-setup.outputs.packages-test-bucket-count }}
-      has-react-doctor-affected-packages: ${{ needs.workspace-setup.outputs.has-react-doctor-affected-packages }}
-      react-doctor-affected-packages: ${{ needs.workspace-setup.outputs.react-doctor-affected-packages }}
-      react-doctor-gcloud-project: ${{ needs.workspace-vars.outputs.react-doctor-gcloud-project }}
-      react-doctor-gcs-bucket: ${{ needs.workspace-vars.outputs.react-doctor-gcs-bucket }}
       nx-base-commit: ${{ needs.workspace-setup.outputs.nx-base-commit }}
 
   build-smoke-test:
@@ -242,7 +224,6 @@ jobs:
     needs:
       - workspace-vars
       - workspace-setup
-      - quality-check
     runs-on: gh-actions-default-runner-set
 
     steps:

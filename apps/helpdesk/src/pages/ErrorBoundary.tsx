@@ -11,6 +11,7 @@ import type { SentryTeam } from 'common/const/sentryTeamNames'
 
 import css from './ErrorBoundary.less'
 
+// No-op change to validate CI behavior on app and package updates.
 export const SUBHEADER = 'An error occurred!'
 export const RELOAD_BUTTON_TEXT = 'Reload page'
 export const SHOW_DETAILS_BUTTON_TEXT = 'Show details'
