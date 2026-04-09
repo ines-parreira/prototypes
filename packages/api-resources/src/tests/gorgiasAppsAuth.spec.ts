@@ -1,7 +1,6 @@
 import type { AxiosInstance } from 'axios'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import MockDate from 'mockdate'
 
 import client from '../client'
 import { buildGorgiasAppsAuthInterceptor } from '../gorgiasAppsAuth'
@@ -30,7 +29,7 @@ describe('gorgiasAppsAuth', () => {
     })
 
     afterEach(() => {
-        MockDate.reset()
+        vi.useRealTimers()
     })
 
     it('passes the access token in the request headers', async () => {
@@ -45,7 +44,8 @@ describe('gorgiasAppsAuth', () => {
     it('renews the token when it is expired', async () => {
         await axiosClient.get('/test')
 
-        MockDate.set(new Date(3000, 1, 1))
+        vi.useFakeTimers()
+        vi.setSystemTime(new Date(3000, 1, 1))
 
         await axiosClient.get('/test')
 

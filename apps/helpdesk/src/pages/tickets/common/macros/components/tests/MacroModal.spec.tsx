@@ -5,7 +5,6 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
-import MockDate from 'mockdate'
 
 import type { Macro, MacroAction } from '@gorgias/helpdesk-queries'
 
@@ -103,8 +102,6 @@ jest.mock('pages/common/components/modal/ModalBody', () => {
     )
 })
 
-const date = '2021-01-24T17:30:00.000Z'
-
 describe('<MacroModal />', () => {
     const macros = [
         {
@@ -142,7 +139,6 @@ describe('<MacroModal />', () => {
     let dispatch: jest.Mock
 
     beforeEach(() => {
-        MockDate.set(date)
         dispatch = jest.fn((func) => func as unknown)
         useAppSelectorMock.mockReturnValue(jest.fn())
         useAppDispatchMock.mockReturnValue(dispatch)
@@ -161,10 +157,6 @@ describe('<MacroModal />', () => {
         mockUseUpdateMacro.mockReturnValue({
             mutate: mockMutateUpdate,
         } as unknown as ReturnType<typeof useUpdateMacro>)
-    })
-
-    afterEach(() => {
-        MockDate.reset()
     })
 
     it('should render MacroModal', () => {

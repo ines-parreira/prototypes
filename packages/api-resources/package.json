@@ -48,7 +48,6 @@
         "axios": "^1.10.0",
         "axios-mock-adapter": "^1.22.0",
         "axios-rate-limit": "^1.4.0",
-        "mockdate": "^3.0.5",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "react": "catalog:react",

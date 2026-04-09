@@ -2,7 +2,6 @@ import client from '@repo/api-resources'
 import { history } from '@repo/routing'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
-import mockDate from 'mockdate'
 import moment from 'moment'
 import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
@@ -211,7 +210,7 @@ describe('current user actions', () => {
 
     describe('handle2FAEnforced()', () => {
         it('should redirect to the 2fa page with 2fa setup modal open and non-dismissible', () => {
-            mockDate.set(new Date('2022-05-12'))
+            jest.useFakeTimers({ now: new Date('2022-05-12') })
 
             store = mockStore({
                 currentUser: fromJS({
@@ -242,11 +241,11 @@ describe('current user actions', () => {
             jest.spyOn(history, 'push')
             expect(history.push).toHaveBeenCalledWith(OPEN_TWO_FA_MODAL_URL)
 
-            mockDate.reset()
+            jest.useRealTimers()
         })
 
         it('should display the banner', () => {
-            mockDate.set(new Date('2022-05-12'))
+            jest.useFakeTimers({ now: new Date('2022-05-12') })
 
             store = mockStore({
                 currentUser: fromJS({
@@ -271,13 +270,13 @@ describe('current user actions', () => {
 
             expect(notify.mock.calls).toMatchSnapshot()
 
-            mockDate.reset()
+            jest.useRealTimers()
         })
     })
 
     describe('handle2FAEnforcedGorgiasAgent()', () => {
         it('should not redirect to the 2fa page for the Gorgias Support Agent', () => {
-            mockDate.set(new Date('2025-03-31'))
+            jest.useFakeTimers({ now: new Date('2025-03-31') })
 
             store = mockStore({
                 currentUser: fromJS({
@@ -309,7 +308,7 @@ describe('current user actions', () => {
             jest.spyOn(history, 'push')
             expect(history.push).toHaveBeenCalledTimes(0)
 
-            mockDate.reset()
+            jest.useRealTimers()
         })
     })
 })

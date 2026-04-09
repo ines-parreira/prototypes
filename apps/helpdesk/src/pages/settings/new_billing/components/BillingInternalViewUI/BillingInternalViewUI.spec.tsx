@@ -4,7 +4,6 @@ import { assumeMock } from '@repo/testing'
 import { screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
-import MockDate from 'mockdate'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import type {
@@ -119,6 +118,10 @@ describe('BillingInternalViewUI', () => {
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
         useExtendTrialMutateMock.mockClear()
         useReactivateTrialMutateMock.mockClear()
+    })
+
+    afterEach(() => {
+        jest.useRealTimers()
     })
 
     it('When customer has a paying subscription', () => {
@@ -247,8 +250,24 @@ describe('BillingInternalViewUI', () => {
     })
 
     it('When trial has ended and has NOT been extended previously + customer has not converted (no active subscription)', async () => {
+        jest.useFakeTimers({
+            now: new Date('2050-08-10T00:00:00.000Z'),
+            doNotFake: [
+                'setTimeout',
+                'clearTimeout',
+                'setInterval',
+                'clearInterval',
+                'setImmediate',
+                'clearImmediate',
+                'nextTick',
+                'queueMicrotask',
+                'requestAnimationFrame',
+                'cancelAnimationFrame',
+                'requestIdleCallback',
+                'cancelIdleCallback',
+            ],
+        })
         const user = userEvent.setup()
-        MockDate.set('2050-08-10T00:00:00.000Z')
 
         renderWithStoreAndQueryClientAndRouter(
             <BillingInternalViewUI
