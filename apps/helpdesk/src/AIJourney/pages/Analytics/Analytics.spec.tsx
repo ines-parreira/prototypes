@@ -1,7 +1,7 @@
 import { appQueryClient } from '@repo/api-resources'
 import { assumeMock } from '@repo/testing'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { act, screen, waitFor, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import moment from 'moment/moment'
@@ -96,6 +96,20 @@ jest.mock(
 )
 
 jest.mock(
+    'AIJourney/hooks/useAIJourneyProviderTotalOrders/useAIJourneyProviderTotalOrders',
+    () => ({
+        useAIJourneyProviderTotalOrders: jest.fn(),
+    }),
+)
+
+jest.mock(
+    'AIJourney/hooks/useAIJourneyProviderTotalSales/useAIJourneyProviderTotalSales',
+    () => ({
+        useAIJourneyProviderTotalSales: jest.fn(),
+    }),
+)
+
+jest.mock(
     'domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore',
     () => ({
         useGetNamespacedShopNameForStore: jest.fn(),
@@ -140,6 +154,12 @@ const mockUseAverageOrderValue =
 const mockUseRevenuePerRecipient =
     require('AIJourney/hooks/useRevenuePerRecipient/useRevenuePerRecipient')
         .useRevenuePerRecipient as jest.Mock
+const mockUseAIJourneyProviderTotalOrders =
+    require('AIJourney/hooks/useAIJourneyProviderTotalOrders/useAIJourneyProviderTotalOrders')
+        .useAIJourneyProviderTotalOrders as jest.Mock
+const mockUseAIJourneyProviderTotalSales =
+    require('AIJourney/hooks/useAIJourneyProviderTotalSales/useAIJourneyProviderTotalSales')
+        .useAIJourneyProviderTotalSales as jest.Mock
 const mockUseGetNamespacedShopNameForStore =
     require('domains/reporting/pages/convert/hooks/useGetNamespacedShopNameForStore')
         .useGetNamespacedShopNameForStore as jest.Mock
@@ -325,6 +345,27 @@ describe('<Analytics />', () => {
 
         mockUseRevenuePerRecipient.mockReturnValue({
             label: 'Revenue Per Recipient',
+            value: 0,
+            prevValue: null,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'currency',
+            currency: 'USD',
+            isLoading: false,
+        })
+
+        mockUseAIJourneyProviderTotalOrders.mockReturnValue({
+            label: 'Provider Orders',
+            value: 0,
+            prevValue: null,
+            series: [],
+            interpretAs: 'more-is-better',
+            metricFormat: 'decimal-precision-1',
+            isLoading: false,
+        })
+
+        mockUseAIJourneyProviderTotalSales.mockReturnValue({
+            label: 'Provider Total Sales',
             value: 0,
             prevValue: null,
             series: [],
@@ -643,11 +684,7 @@ describe('<Analytics />', () => {
             </Provider>,
         )
 
-        await act(async () => {
-            await user.click(
-                screen.getByRole('button', { name: /edit metrics/i }),
-            )
-        })
+        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
 
         await waitFor(() => {
             const modal = screen.getByRole('dialog')
@@ -991,11 +1028,7 @@ describe('<Analytics />', () => {
                 </QueryClientProvider>
             </Provider>,
         )
-        await act(async () => {
-            await user.click(
-                screen.getByRole('button', { name: /edit metrics/i }),
-            )
-        })
+        await user.click(screen.getByRole('button', { name: /edit metrics/i }))
         await waitFor(() => {
             const modal = screen.getByRole('dialog')
             const infoIcons = within(modal).getAllByLabelText('info')
@@ -1046,10 +1079,409 @@ describe('<Analytics />', () => {
         )
 
         const ordersValue = screen.getByText('50')
-        await act(async () => {
-            await user.click(ordersValue)
-        })
+        await user.click(ordersValue)
 
         expect(mockOpenDrillDownModal).toHaveBeenCalled()
+    })
+
+    describe('Attribution model comparison', () => {
+        it('should not show provider metrics when attributionModelComparison is null', () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: undefined,
+                currentIntegration: { id: 286584 },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+                attributionModelComparison: null,
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByText('Orders (click 5d > delivery 12h)'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Total sales (click 5d > delivery 12h)'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('should call provider hooks with forceEmpty when no attribution model', () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: undefined,
+                currentIntegration: { id: 286584 },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+                attributionModelComparison: null,
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(mockUseAIJourneyProviderTotalOrders).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    provider: null,
+                    forceEmpty: true,
+                }),
+            )
+            expect(mockUseAIJourneyProviderTotalSales).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    provider: null,
+                    forceEmpty: true,
+                }),
+            )
+        })
+
+        it('should call provider hooks with correct cube name for Klaviyo', () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: undefined,
+                currentIntegration: { id: 286584 },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+                attributionModelComparison: 'klaviyo',
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(mockUseAIJourneyProviderTotalOrders).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    provider: 'klaviyo',
+                    forceEmpty: false,
+                }),
+            )
+            expect(mockUseAIJourneyProviderTotalSales).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    provider: 'klaviyo',
+                    forceEmpty: false,
+                }),
+            )
+        })
+
+        it('should show provider metrics in edit metrics modal for Attentive', async () => {
+            const user = userEvent.setup()
+
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: undefined,
+                currentIntegration: { id: 286584 },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+                attributionModelComparison: 'attentive',
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /edit metrics/i }),
+            )
+
+            await waitFor(() => {
+                const modal = screen.getByRole('dialog')
+                expect(
+                    within(modal).getByText(
+                        'Total sales (click 5d > delivery 24h)',
+                    ),
+                ).toBeInTheDocument()
+                expect(
+                    within(modal).getByText('Orders (click 5d > delivery 24h)'),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('should not show provider metrics in line chart dropdown', async () => {
+            const user = userEvent.setup()
+
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: undefined,
+                currentIntegration: { id: 286584 },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+                attributionModelComparison: 'klaviyo',
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            const chartDropdownButton = screen.getByRole('button', {
+                name: /arrow-chevron-down/i,
+            })
+            await user.click(chartDropdownButton)
+
+            await waitFor(() => {
+                const listItems = screen.getAllByRole('option')
+                const labels = listItems.map((item) => item.textContent)
+                expect(labels).toContain('Total sales')
+                expect(labels).toContain('Orders')
+                expect(labels).not.toContain(
+                    'Total sales (click 5d > delivery 12h)',
+                )
+                expect(labels).not.toContain('Orders (click 5d > delivery 12h)')
+            })
+        })
+
+        it('should show provider TrendCard when toggled visible in preferences', () => {
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: undefined,
+                currentIntegration: { id: 286584 },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+                attributionModelComparison: 'klaviyo',
+            })
+
+            mockUseAIJourneyProviderTotalOrders.mockReturnValue({
+                label: 'Provider Orders',
+                value: 42,
+                prevValue: 30,
+                series: [],
+                interpretAs: 'more-is-better',
+                metricFormat: 'decimal-precision-1',
+                isLoading: false,
+            })
+
+            localStorage.setItem(
+                'ai-journey-analytics-key-metrics-preferences',
+                JSON.stringify([
+                    {
+                        id: 'Total sales',
+                        label: 'Total sales',
+                        visibility: true,
+                    },
+                    {
+                        id: 'Orders (click 5d > delivery 12h)',
+                        label: 'Orders (click 5d > delivery 12h)',
+                        visibility: true,
+                    },
+                ]),
+            )
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(screen.getByText('42')).toBeInTheDocument()
+        })
+
+        it('should use correct provider for each attribution model', () => {
+            const providers = [
+                'klaviyo',
+                'attentive',
+                'liverecover',
+                'postscript',
+            ] as const
+
+            for (const model of providers) {
+                jest.clearAllMocks()
+
+                mockUseStatsFilters.mockReturnValue({
+                    cleanStatsFilters: {
+                        period: {
+                            end_datetime: moment().toISOString(),
+                            start_datetime: moment().toISOString(),
+                        },
+                    },
+                    userTimezone: 'America/New_York',
+                    granularity: ReportingGranularity.Day,
+                })
+
+                mockUseJourneyContext.mockReturnValue({
+                    journeyData: undefined,
+                    currentIntegration: { id: 286584 },
+                    shopName: 'shopify-store',
+                    isLoading: false,
+                    journeyType: 'cart_abandoned',
+                    storeConfiguration: {
+                        monitoredSmsIntegrations: [1, 2],
+                    },
+                    attributionModelComparison: model,
+                })
+
+                mockUseAIJourneyRevenue.mockReturnValue({
+                    label: 'GMV',
+                    value: 0,
+                    prevValue: null,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'currency',
+                    currency: 'USD',
+                    isLoading: false,
+                })
+                mockUseAIJourneyTotalOrders.mockReturnValue({
+                    label: 'Orders',
+                    value: 0,
+                    prevValue: null,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'decimal-precision-1',
+                    isLoading: false,
+                })
+                mockUseAIJourneyConversionRate.mockReturnValue({
+                    label: 'Conversion Rate',
+                    value: 0,
+                    prevValue: null,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'percent',
+                    isLoading: false,
+                })
+                mockUseAIJourneyMessagesSent.mockReturnValue({
+                    label: 'Messages sent',
+                    value: 0,
+                    prevValue: null,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'decimal',
+                    isLoading: false,
+                })
+                mockUseAIJourneyResponseRate.mockReturnValue({
+                    label: 'Response Rate',
+                    value: 0,
+                    prevValue: null,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'percent',
+                    isLoading: false,
+                })
+                mockUseClickThroughRate.mockReturnValue({
+                    label: 'CTR',
+                    value: 0,
+                    prevValue: null,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'percent',
+                    isLoading: false,
+                })
+                mockUseAverageOrderValue.mockReturnValue({
+                    label: 'AOV',
+                    value: 0,
+                    prevValue: null,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'currency',
+                    currency: 'USD',
+                    isLoading: false,
+                })
+                mockUseRevenuePerRecipient.mockReturnValue({
+                    label: 'RPR',
+                    value: 0,
+                    prevValue: null,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'currency',
+                    currency: 'USD',
+                    isLoading: false,
+                })
+                mockUseAIJourneyProviderTotalOrders.mockReturnValue({
+                    label: 'Provider Orders',
+                    value: 0,
+                    prevValue: null,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'decimal-precision-1',
+                    isLoading: false,
+                })
+                mockUseAIJourneyProviderTotalSales.mockReturnValue({
+                    label: 'Provider Total Sales',
+                    value: 0,
+                    prevValue: null,
+                    series: [],
+                    interpretAs: 'more-is-better',
+                    metricFormat: 'currency',
+                    currency: 'USD',
+                    isLoading: false,
+                })
+                mockUseGetNamespacedShopNameForStore.mockReturnValue(
+                    'shopify-store',
+                )
+                mockUseDrillDownModalTrigger.mockReturnValue({
+                    openDrillDownModal: jest.fn(),
+                    tooltipText: 'Click to view',
+                })
+                FiltersPanelComponentMock.mockImplementation(() => <div />)
+
+                renderWithRouter(
+                    <Provider store={mockStore}>
+                        <QueryClientProvider client={appQueryClient}>
+                            <JourneyProvider>
+                                <Analytics />
+                            </JourneyProvider>
+                        </QueryClientProvider>
+                    </Provider>,
+                )
+
+                expect(
+                    mockUseAIJourneyProviderTotalOrders,
+                ).toHaveBeenCalledWith(
+                    expect.objectContaining({ provider: model }),
+                )
+                expect(mockUseAIJourneyProviderTotalSales).toHaveBeenCalledWith(
+                    expect.objectContaining({ provider: model }),
+                )
+            }
+        })
     })
 })

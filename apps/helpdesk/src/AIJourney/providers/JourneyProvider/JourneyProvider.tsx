@@ -8,11 +8,13 @@ import type {
     JourneyDetailApiDTO,
 } from '@gorgias/convert-client'
 import { JourneyTypeEnum } from '@gorgias/convert-client'
+import { useGetStoreConfiguration } from '@gorgias/convert-queries'
 import type { Integration } from '@gorgias/helpdesk-types'
 
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyData } from 'AIJourney/queries/useJourneyData/useJourneyData'
 import { useJourneys } from 'AIJourney/queries/useJourneys/useJourneys'
+import type { AttributionModelComparison } from 'AIJourney/utils/attributionModelComparison'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
 import type { StoreConfiguration } from 'models/aiAgent/types'
@@ -32,6 +34,7 @@ type JourneyContextType = {
     isLoadingJourneyData: boolean
     journeyType: JOURNEY_TYPES
     storeConfiguration: StoreConfiguration | undefined
+    attributionModelComparison: AttributionModelComparison | null
 }
 
 const JourneyContext = createContext<JourneyContextType | undefined>(undefined)
@@ -121,6 +124,17 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             },
         )
 
+    const { data: convertStoreConfig, isLoading: isConvertStoreConfigLoading } =
+        useGetStoreConfiguration(integrationId ?? 0, {
+            query: {
+                enabled: !!integrationId,
+                staleTime: Infinity,
+            },
+        })
+
+    const attributionModelComparison =
+        convertStoreConfig?.data?.attribution_model_comparison ?? null
+
     const { data: journeyData, isLoading: isLoadingJourneyData } =
         useJourneyData(journeyId, {
             enabled: !!integrationId && !!journeyId,
@@ -129,6 +143,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
     const isLoading =
         isLoadingJourneys ||
         isStoreConfigurationLoading ||
+        isConvertStoreConfigLoading ||
         (!!journeyId && isLoadingJourneyData)
 
     const contextValue = useMemo(
@@ -144,6 +159,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             isLoadingJourneyData,
             journeyType,
             storeConfiguration,
+            attributionModelComparison,
         }),
         [
             journeys,
@@ -157,6 +173,7 @@ export const JourneyProvider = ({ children }: JourneyProviderProps) => {
             isLoadingJourneyData,
             journeyType,
             storeConfiguration,
+            attributionModelComparison,
         ],
     )
 

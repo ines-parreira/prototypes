@@ -1,5 +1,12 @@
 import { JOURNEY_COMPLETE_REASON } from 'AIJourney/constants'
+import type { AttributionModelComparison } from 'AIJourney/utils/attributionModelComparison'
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { AIJourneyOrdersAsProviderCube } from 'domains/reporting/models/cubes/ai-sales-agent/AIJourneyOrdersAsProvider'
+import {
+    AIJourneyOrdersAsProviderDimension,
+    AIJourneyOrdersAsProviderFilterMember,
+    AIJourneyOrdersAsProviderMeasure,
+} from 'domains/reporting/models/cubes/ai-sales-agent/AIJourneyOrdersAsProvider'
 import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import {
     AiSalesAgentConversationsDimension,
@@ -1269,3 +1276,175 @@ export const aiJourneySankeyOrdersQueryFactory = (
         timezone,
     }
 }
+
+const providerDefaultFiltersMembers = {
+    periodStart: AIJourneyOrdersAsProviderFilterMember.PeriodStart,
+    periodEnd: AIJourneyOrdersAsProviderFilterMember.PeriodEnd,
+    storeIntegrations: AIJourneyOrdersAsProviderFilterMember.IntegrationId,
+    channels: AIJourneyOrdersAsProviderFilterMember.Channel,
+    handover: AIJourneyOrdersAsProviderFilterMember.Outcome,
+}
+
+export const aiJourneyProviderRevenueQueryFactory =
+    (provider: AttributionModelComparison | null) =>
+    (
+        integrationId: string,
+        filters: StatsFilters,
+        timezone: string,
+        journeyIds?: string[],
+    ): ReportingQuery<AIJourneyOrdersAsProviderCube> => {
+        const journeyFilter =
+            journeyIds && journeyIds.length > 0
+                ? [
+                      {
+                          member: AIJourneyOrdersAsProviderDimension.JourneyId,
+                          operator: ReportingFilterOperator.Equals,
+                          values: journeyIds,
+                      },
+                  ]
+                : []
+
+        return {
+            metricName: METRIC_NAMES.AI_JOURNEY_PROVIDER_GMV_INFLUENCED,
+            measures: [AIJourneyOrdersAsProviderMeasure.Gmv],
+            dimensions: [AIJourneyOrdersAsProviderDimension.Currency],
+            filters: [
+                {
+                    member: AIJourneyOrdersAsProviderFilterMember.Provider,
+                    operator: ReportingFilterOperator.Equals,
+                    values: provider ? [provider] : [],
+                },
+                {
+                    member: AIJourneyOrdersAsProviderDimension.InfluencedBy,
+                    operator: ReportingFilterOperator.Set,
+                    values: [],
+                },
+                {
+                    member: AIJourneyOrdersAsProviderDimension.IntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [integrationId],
+                },
+                {
+                    member: AIJourneyOrdersAsProviderDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['ai-journey'],
+                },
+                ...statsFiltersToReportingFilters(
+                    providerDefaultFiltersMembers,
+                    filters,
+                ),
+                ...journeyFilter,
+            ],
+            timezone,
+        }
+    }
+
+export const aiJourneyProviderRevenueTimeSeriesQuery =
+    (provider: AttributionModelComparison | null) =>
+    (
+        integrationId: string,
+        filters: StatsFilters,
+        timezone: string,
+        granularity: ReportingGranularity,
+        journeyIds?: string[],
+    ): TimeSeriesQuery<AIJourneyOrdersAsProviderCube> => {
+        return {
+            ...aiJourneyProviderRevenueQueryFactory(provider)(
+                integrationId,
+                filters,
+                timezone,
+                journeyIds,
+            ),
+            metricName:
+                METRIC_NAMES.AI_JOURNEY_PROVIDER_GMV_INFLUENCED_TIME_SERIES,
+            timeDimensions: [
+                {
+                    dimension: AIJourneyOrdersAsProviderDimension.PeriodStart,
+                    granularity,
+                    dateRange: getFilterDateRange(filters.period),
+                },
+            ],
+        }
+    }
+
+export const aiJourneyProviderTotalNumberOfOrderQueryFactory =
+    (provider: AttributionModelComparison | null) =>
+    (
+        integrationId: string,
+        filters: StatsFilters,
+        timezone: string,
+        journeyIds?: string[],
+    ): ReportingQuery<AIJourneyOrdersAsProviderCube> => {
+        const journeyFilter =
+            journeyIds && journeyIds.length > 0
+                ? [
+                      {
+                          member: AIJourneyOrdersAsProviderDimension.JourneyId,
+                          operator: ReportingFilterOperator.Equals,
+                          values: journeyIds,
+                      },
+                  ]
+                : []
+
+        return {
+            metricName: METRIC_NAMES.AI_JOURNEY_PROVIDER_TOTAL_NUMBER_OF_ORDER,
+            measures: [AIJourneyOrdersAsProviderMeasure.Count],
+            dimensions: [],
+            filters: [
+                {
+                    member: AIJourneyOrdersAsProviderFilterMember.Provider,
+                    operator: ReportingFilterOperator.Equals,
+                    values: provider ? [provider] : [],
+                },
+                {
+                    member: AIJourneyOrdersAsProviderDimension.InfluencedBy,
+                    operator: ReportingFilterOperator.Set,
+                    values: [],
+                },
+                {
+                    member: AIJourneyOrdersAsProviderDimension.IntegrationId,
+                    operator: ReportingFilterOperator.Equals,
+                    values: [integrationId],
+                },
+                {
+                    member: AIJourneyOrdersAsProviderDimension.Source,
+                    operator: ReportingFilterOperator.Equals,
+                    values: ['ai-journey'],
+                },
+                ...statsFiltersToReportingFilters(
+                    providerDefaultFiltersMembers,
+                    filters,
+                ),
+                ...journeyFilter,
+            ],
+            timezone,
+        }
+    }
+
+export const aiJourneyProviderTotalNumberOfOrderTimeSeriesQuery =
+    (provider: AttributionModelComparison | null) =>
+    (
+        integrationId: string,
+        filters: StatsFilters,
+        timezone: string,
+        granularity: ReportingGranularity,
+        journeyIds?: string[],
+    ): TimeSeriesQuery<AIJourneyOrdersAsProviderCube> => {
+        return {
+            ...aiJourneyProviderTotalNumberOfOrderQueryFactory(provider)(
+                integrationId,
+                filters,
+                timezone,
+                journeyIds,
+            ),
+            metricName:
+                METRIC_NAMES.AI_JOURNEY_PROVIDER_TOTAL_NUMBER_OF_ORDER_TIME_SERIES,
+            timeDimensions: [
+                {
+                    dimension: AIJourneyOrdersAsProviderDimension.PeriodStart,
+                    granularity,
+                    dateRange: getFilterDateRange(filters.period),
+                },
+            ],
+        }
+    }

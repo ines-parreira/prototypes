@@ -74,6 +74,7 @@ const mockJourneyContextDefaults = {
     isLoadingIntegrations: false,
     journeyType: 'cart_abandoned' as any,
     storeConfiguration: undefined,
+    attributionModelComparison: null,
 }
 
 const renderComponent = () => {

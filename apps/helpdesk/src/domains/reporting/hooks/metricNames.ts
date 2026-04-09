@@ -217,6 +217,15 @@ export const METRIC_NAMES = {
     AI_JOURNEY_SANKEY_CONVERSATIONS: 'ai-journey-sankey-conversations',
     AI_JOURNEY_SANKEY_ORDERS: 'ai-journey-sankey-orders',
 
+    // AI Journey Provider Attribution
+    AI_JOURNEY_PROVIDER_GMV_INFLUENCED: 'ai-journey-provider-gmv-influenced',
+    AI_JOURNEY_PROVIDER_GMV_INFLUENCED_TIME_SERIES:
+        'ai-journey-provider-gmv-influenced-time-series',
+    AI_JOURNEY_PROVIDER_TOTAL_NUMBER_OF_ORDER:
+        'ai-journey-provider-total-number-of-order',
+    AI_JOURNEY_PROVIDER_TOTAL_NUMBER_OF_ORDER_TIME_SERIES:
+        'ai-journey-provider-total-number-of-order-time-series',
+
     // AI Sales Agent
     AI_SALES_AGENT_AVERAGE_DISCOUNT_PERCENTAGE:
         'ai-sales-agent-average-discount-percentage',

@@ -20,3 +20,5 @@ export { useAIJourneySankeyMetrics } from './useAIJourneySankeyMetrics/useAIJour
 export { useAIJourneyDiscountCodeUsageMetrics } from './useAIJourneyDiscountCodeUsageMetrics/useAIJourneyDiscountCodeUsageMetrics'
 export { useAIJourneyTotalReplies } from './useAIJourneyTotalReplies/useAIJourneyTotalReplies'
 export { useStoredProductResolution } from './useStoredProductResolution/useStoredProductResolution'
+export { useAIJourneyProviderTotalOrders } from './useAIJourneyProviderTotalOrders/useAIJourneyProviderTotalOrders'
+export { useAIJourneyProviderTotalSales } from './useAIJourneyProviderTotalSales/useAIJourneyProviderTotalSales'

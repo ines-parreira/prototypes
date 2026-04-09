@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { useEffectOnce, useLocalStorage } from '@repo/hooks'
 import { ConfigureMetricsModal, LineChart, TrendCard } from '@repo/reporting'
@@ -23,6 +23,8 @@ import {
 import {
     useAIJourneyConversionRate,
     useAIJourneyMessagesSent,
+    useAIJourneyProviderTotalOrders,
+    useAIJourneyProviderTotalSales,
     useAIJourneyResponseRate,
     useAIJourneyTotalOrders,
     useAIJourneyTotalSales,
@@ -32,6 +34,10 @@ import {
 } from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import { AIJourneyMetric } from 'AIJourney/types/AIJourneyTypes'
+import {
+    ATTRIBUTION_MODEL_HINTS,
+    ATTRIBUTION_MODEL_LABELS,
+} from 'AIJourney/utils/attributionModelComparison'
 import { useDrillDownModalTrigger } from 'domains/reporting/hooks/drill-down/useDrillDownModalTrigger'
 import { seriesToTwoDimensionalDataItem } from 'domains/reporting/hooks/useTimeSeries'
 
@@ -50,8 +56,21 @@ export const Analytics = () => {
         userTimezone,
         granularity,
     } = useStatsFilters()
-    const { journeys, campaigns, currency, isLoading, currentIntegration } =
-        useJourneyContext()
+    const {
+        journeys,
+        campaigns,
+        currency,
+        isLoading,
+        currentIntegration,
+        attributionModelComparison,
+    } = useJourneyContext()
+
+    const attributionLabel = attributionModelComparison
+        ? ATTRIBUTION_MODEL_LABELS[attributionModelComparison]
+        : null
+    const attributionHint = attributionModelComparison
+        ? ATTRIBUTION_MODEL_HINTS[attributionModelComparison]
+        : null
     const integrationId = useMemo(() => {
         return (currentIntegration?.id || 0).toString()
     }, [currentIntegration])
@@ -195,6 +214,27 @@ export const Analytics = () => {
         granularity,
         journeyIds: journeysIdsToFilter,
         forceEmpty,
+    })
+
+    const providerOrders = useAIJourneyProviderTotalOrders({
+        provider: attributionModelComparison ?? null,
+        integrationId,
+        userTimezone,
+        filters,
+        granularity,
+        journeyIds: journeysIdsToFilter,
+        forceEmpty: forceEmpty || !attributionModelComparison,
+    })
+
+    const providerTotalSales = useAIJourneyProviderTotalSales({
+        provider: attributionModelComparison ?? null,
+        integrationId,
+        userTimezone,
+        filters,
+        currency,
+        granularity,
+        journeyIds: journeysIdsToFilter,
+        forceEmpty: forceEmpty || !attributionModelComparison,
     })
 
     const ordersDrillDown = useDrillDownModalTrigger({
@@ -351,6 +391,54 @@ export const Analytics = () => {
         },
     ]
 
+    const providerMetrics = attributionLabel
+        ? [
+              {
+                  id: `Total sales (${attributionLabel})`,
+                  label: `Total sales (${attributionLabel})`,
+                  currency: providerTotalSales.currency,
+                  hint: `Total value of orders attributed. ${attributionHint}`,
+                  withFixedWidth: true,
+                  interpretAs: providerTotalSales.interpretAs,
+                  isLoading: providerTotalSales.isLoading,
+                  metricFormat: 'currency' as MetricTrendFormat,
+                  series: seriesToTwoDimensionalDataItem(
+                      providerTotalSales.series,
+                      {
+                          label: `Total sales (${attributionLabel})`,
+                          ...seriesBaseOptions,
+                      },
+                  ),
+                  trend: {
+                      prevValue: providerTotalSales.prevValue ?? null,
+                      value: providerTotalSales.value,
+                  },
+              },
+              {
+                  id: `Orders (${attributionLabel})`,
+                  label: `Orders (${attributionLabel})`,
+                  hint: `Total number of orders attributed. ${attributionHint}`,
+                  withFixedWidth: true,
+                  interpretAs: providerOrders.interpretAs,
+                  isLoading: providerOrders.isLoading,
+                  metricFormat: 'decimal-precision-1' as MetricTrendFormat,
+                  series: seriesToTwoDimensionalDataItem(
+                      providerOrders.series,
+                      {
+                          label: `Orders (${attributionLabel})`,
+                          ...seriesBaseOptions,
+                      },
+                  ),
+                  trend: {
+                      prevValue: providerOrders.prevValue ?? null,
+                      value: providerOrders.value,
+                  },
+              },
+          ]
+        : []
+
+    const allMetrics = [...metrics, ...providerMetrics]
+
     const [title, setTitle] = useState(metrics[0].id)
     const metricsLabels = metrics.map(({ id, label }) => ({
         id,
@@ -364,7 +452,7 @@ export const Analytics = () => {
         'Conversion rate',
         'Reply rate',
     ])
-    const defaultMetricsConfig: MetricConfigItem[] = metrics.map(
+    const defaultMetricsConfig: MetricConfigItem[] = allMetrics.map(
         ({ id, label }) => ({
             id,
             label,
@@ -382,6 +470,40 @@ export const Analytics = () => {
         if (localStorage.getItem(legacyItemKey))
             localStorage.removeItem(legacyItemKey)
     })
+
+    const providerMetricEntries = useMemo(() => {
+        if (!attributionLabel) return []
+        return [
+            {
+                id: `Total sales (${attributionLabel})`,
+                label: `Total sales (${attributionLabel})`,
+            },
+            {
+                id: `Orders (${attributionLabel})`,
+                label: `Orders (${attributionLabel})`,
+            },
+        ]
+    }, [attributionLabel])
+
+    useEffect(() => {
+        if (providerMetricEntries.length === 0) return
+
+        const existingIds = new Set(keyKpisConfig.map((c) => c.id))
+        const missingMetrics = providerMetricEntries.filter(
+            (m) => !existingIds.has(m.id),
+        )
+
+        if (missingMetrics.length > 0) {
+            const newEntries: MetricConfigItem[] = missingMetrics.map(
+                ({ id, label }) => ({
+                    id,
+                    label,
+                    visibility: false,
+                }),
+            )
+            setKeyKpisConfig([...keyKpisConfig, ...newEntries])
+        }
+    }, [providerMetricEntries, keyKpisConfig, setKeyKpisConfig])
 
     if (isLoading) {
         return <LoadingSpinner />
@@ -432,7 +554,8 @@ export const Analytics = () => {
                         onClose={() => setIsEditModalOpen(false)}
                         metrics={keyKpisConfig.map((config) => ({
                             ...config,
-                            hint: metrics.find((m) => m.id === config.id)?.hint,
+                            hint: allMetrics.find((m) => m.id === config.id)
+                                ?.hint,
                         }))}
                         onSave={setKeyKpisConfig}
                         size={SidePanelSize.Md}
@@ -443,7 +566,7 @@ export const Analytics = () => {
                     {keyKpisConfig
                         .filter((config) => config.visibility)
                         .map((config) => {
-                            const metricData = metrics.find(
+                            const metricData = allMetrics.find(
                                 (m) => m.id === config.id,
                             )
                             if (!metricData) return null
@@ -455,7 +578,6 @@ export const Analytics = () => {
                                 interpretAs,
                                 isLoading,
                                 trend,
-                                drillDown,
                             } = metricData
 
                             return (
@@ -469,7 +591,11 @@ export const Analytics = () => {
                                     isLoading={isLoading}
                                     metricFormat={metricFormat}
                                     interpretAs={interpretAs}
-                                    drillDown={drillDown}
+                                    drillDown={
+                                        'drillDown' in metricData
+                                            ? metricData.drillDown
+                                            : undefined
+                                    }
                                     trend={{
                                         isError: false,
                                         isFetching: isLoading,

@@ -1,5 +1,6 @@
 import type { AgentTimeTrackingCube } from 'domains/reporting/models/cubes/agentxp/AgentTimeTrackingCube'
 import type { HandleTimeCubeWithJoins } from 'domains/reporting/models/cubes/agentxp/HandleTimeCube'
+import type { AIJourneyOrdersAsProviderCube } from 'domains/reporting/models/cubes/ai-sales-agent/AIJourneyOrdersAsProvider'
 import type { AiSalesAgentConversationsCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentConversations'
 import type { AiSalesAgentOrdersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrders'
 import type { AiSalesAgentOrderCustomersCube } from 'domains/reporting/models/cubes/ai-sales-agent/AiSalesAgentOrdersCustomers'
@@ -56,6 +57,7 @@ export type Cubes =
     | TicketTagsEnrichedCube
     | RecommendedResourcesCube
     | AiSalesAgentConversationsCube
+    | AIJourneyOrdersAsProviderCube
     | AiSalesAgentOrdersCube
     | AiSalesAgentOrderCustomersCube
     | ConvertTrackingEventsCube
