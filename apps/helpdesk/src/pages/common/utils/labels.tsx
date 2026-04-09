@@ -33,6 +33,12 @@ import DatetimeLabel from './DatetimeLabel'
 
 import css from './labels.less'
 
+type TeamEmoji = Map<any, any> | Record<string, unknown> | string
+
+function getRenderableEmoji(emoji: TeamEmoji) {
+    return isImmutable(emoji) ? (emoji as Map<any, any>).toJS() : emoji
+}
+
 export const RecipientsLabel = ({ recipients }: { recipients: string }) => (
     <>
         {recipients.split(',').map((recipient) => (
@@ -132,7 +138,7 @@ export const TeamLabel = ({
     name: string
     maxWidth?: number
     className?: string
-    emoji?: Map<any, any>
+    emoji?: TeamEmoji
     shouldDisplayAvatar?: boolean
     shouldDisplayTeamIcon?: boolean
 }) => (
@@ -141,7 +147,7 @@ export const TeamLabel = ({
             emoji ? (
                 <span className={css.avatar}>
                     <Emoji
-                        emoji={emoji.toJS()}
+                        emoji={getRenderableEmoji(emoji)}
                         size={26}
                         sheetSize={32}
                         forceSize
@@ -391,14 +397,14 @@ export const TeamAssigneeLabel = ({
     const team = teams.find(
         (team) => team!.get('id') === assigneeTeam.get('id'),
     )
-    const emoji = team && (team.getIn(['decoration', 'emoji']) as Map<any, any>)
+    const emoji = team?.getIn(['decoration', 'emoji']) as TeamEmoji | undefined
 
     return assigneeTeam.isEmpty() ? null : (
         <div className={css.assigneeLabelContainer}>
             {emoji ? (
                 <span className={css.assigneeLabelAvatar}>
                     <Emoji
-                        emoji={emoji.toJS()}
+                        emoji={getRenderableEmoji(emoji)}
                         size={26}
                         sheetSize={32}
                         forceSize

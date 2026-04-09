@@ -38,6 +38,15 @@ const integrationJsObject = {
     meta: { address: 'specific' },
 }
 const integrationMap = fromJS(integrationJsObject)
+const plainJsEmoji = {
+    colons: ':wink:',
+    emoticons: [';)', ';-)'],
+    id: 'wink',
+    name: 'Winking Face',
+    native: '😉',
+    skin: null,
+    unified: '1f609',
+}
 
 const mockStore = configureMockStore()
 const store = mockStore({})
@@ -462,19 +471,35 @@ describe('components utils: labels', () => {
                     <labels.TeamLabel
                         name="Team 1"
                         shouldDisplayAvatar
-                        emoji={fromJS({
-                            colons: ':wink:',
-                            emoticons: [';)', ';-)'],
-                            id: 'wink',
-                            name: 'Winking Face',
-                            native: '😉',
-                            skin: null,
-                            unified: '1f609',
-                        })}
+                        emoji={fromJS(plainJsEmoji)}
                     />,
                 )
 
                 expect(container.firstChild).toMatchSnapshot()
+            })
+
+            it('should render with a plain js emoji payload', () => {
+                render(
+                    <labels.TeamLabel
+                        name="Team 1"
+                        shouldDisplayAvatar
+                        emoji={plainJsEmoji}
+                    />,
+                )
+
+                expect(screen.getByText('Team 1')).toBeInTheDocument()
+            })
+
+            it('should render with a plain string emoji', () => {
+                render(
+                    <labels.TeamLabel
+                        name="Team 1"
+                        shouldDisplayAvatar
+                        emoji="🔥"
+                    />,
+                )
+
+                expect(screen.getByText('Team 1')).toBeInTheDocument()
             })
 
             it('should render with default avatar and "team" icon', () => {
@@ -488,6 +513,61 @@ describe('components utils: labels', () => {
 
                 expect(container.firstChild).toMatchSnapshot()
             })
+        })
+    })
+
+    describe('<TeamAssigneeLabel/>', () => {
+        it('should render when the team emoji is stored as a plain js object', () => {
+            const teamsState = fromJS({
+                all: {
+                    1: {
+                        id: 1,
+                        name: 'Team 1',
+                    },
+                },
+            }).setIn(['all', '1', 'decoration', 'emoji'], plainJsEmoji)
+
+            render(
+                <Provider store={mockStore({ teams: teamsState })}>
+                    <labels.TeamAssigneeLabel
+                        assigneeTeam={fromJS({
+                            id: 1,
+                            name: 'Team 1',
+                        })}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Team 1')).toBeInTheDocument()
+        })
+
+        it('should render when the team emoji is stored as a plain string', () => {
+            render(
+                <Provider
+                    store={mockStore({
+                        teams: fromJS({
+                            all: {
+                                1: {
+                                    id: 1,
+                                    name: 'Team 1',
+                                    decoration: {
+                                        emoji: '🔥',
+                                    },
+                                },
+                            },
+                        }),
+                    })}
+                >
+                    <labels.TeamAssigneeLabel
+                        assigneeTeam={fromJS({
+                            id: 1,
+                            name: 'Team 1',
+                        })}
+                    />
+                </Provider>,
+            )
+
+            expect(screen.getByText('Team 1')).toBeInTheDocument()
         })
     })
 
