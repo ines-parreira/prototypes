@@ -9,13 +9,15 @@ import css from './KnowledgeEditorSidePanelSection.less'
 type Props = {
     header: {
         title: string | React.ReactNode
-        subtitle?: string
+        subtitle?: string | React.ReactNode
         subtitleAlign?: 'center' | 'left'
+        subtitleClassname?: string
         tooltip?: React.ReactNode
     } | null
     bottomElement?: React.ReactNode
     children: React.ReactNode
     sectionId: string
+    alwaysExpanded?: boolean
 }
 
 export const KnowledgeEditorSidePanelSection = ({
@@ -23,6 +25,7 @@ export const KnowledgeEditorSidePanelSection = ({
     bottomElement,
     children,
     sectionId,
+    alwaysExpanded = false,
 }: Props) => {
     const headerTooltipContent =
         typeof header?.tooltip === 'string' ? (
@@ -30,6 +33,65 @@ export const KnowledgeEditorSidePanelSection = ({
         ) : (
             <TooltipContent>{header?.tooltip}</TooltipContent>
         )
+
+    const headerContent = header && (
+        <div className={css.titleAndSubtitle}>
+            <div className={css.title}>
+                {header.tooltip ? (
+                    <div className={css.titleWithTooltip}>
+                        {header.title}
+                        <Tooltip
+                            trigger={<Icon name="info" size={IconSize.Xs} />}
+                        >
+                            {headerTooltipContent}
+                        </Tooltip>
+                    </div>
+                ) : (
+                    header.title
+                )}
+            </div>
+            {header.subtitle &&
+                (typeof header.subtitle === 'string' ? (
+                    <div
+                        className={classNames(
+                            css.subtitle,
+                            header.subtitleAlign === 'left' &&
+                                css.subtitleLeftAligned,
+                            header.subtitleClassname,
+                        )}
+                    >
+                        {header.subtitle}
+                    </div>
+                ) : (
+                    header.subtitle
+                ))}
+        </div>
+    )
+
+    const bottomContent = bottomElement && (
+        <div className={css.bottomElement}>{bottomElement}</div>
+    )
+
+    if (alwaysExpanded) {
+        return (
+            <div className={css.section}>
+                {header && (
+                    <div
+                        className={classNames(
+                            css.header,
+                            header.subtitle && css.headerWithSubtitle,
+                        )}
+                    >
+                        {headerContent}
+                    </div>
+                )}
+                <div className={css.content}>
+                    {children}
+                    {bottomContent}
+                </div>
+            </div>
+        )
+    }
 
     return (
         <Accordion.Item value={sectionId}>
@@ -41,38 +103,7 @@ export const KnowledgeEditorSidePanelSection = ({
                             header.subtitle && css.headerWithSubtitle,
                         )}
                     >
-                        <div className={css.titleAndSubtitle}>
-                            <div className={css.title}>
-                                {header.tooltip ? (
-                                    <div className={css.titleWithTooltip}>
-                                        {header.title}
-                                        <Tooltip
-                                            trigger={
-                                                <Icon
-                                                    name="info"
-                                                    size={IconSize.Xs}
-                                                />
-                                            }
-                                        >
-                                            {headerTooltipContent}
-                                        </Tooltip>
-                                    </div>
-                                ) : (
-                                    header.title
-                                )}
-                            </div>
-                            {header.subtitle && (
-                                <div
-                                    className={classNames(
-                                        css.subtitle,
-                                        header.subtitleAlign === 'left' &&
-                                            css.subtitleLeftAligned,
-                                    )}
-                                >
-                                    {header.subtitle}
-                                </div>
-                            )}
-                        </div>
+                        {headerContent}
                         <Accordion.ItemIndicator>
                             <Icon name="arrow-chevron-down" />
                         </Accordion.ItemIndicator>
@@ -80,9 +111,7 @@ export const KnowledgeEditorSidePanelSection = ({
                 )}
                 <Accordion.ItemContent className={css.content}>
                     {children}
-                    {bottomElement && (
-                        <div className={css.bottomElement}>{bottomElement}</div>
-                    )}
+                    {bottomContent}
                 </Accordion.ItemContent>
             </div>
         </Accordion.Item>

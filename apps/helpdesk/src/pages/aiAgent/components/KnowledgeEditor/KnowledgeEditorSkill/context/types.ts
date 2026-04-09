@@ -41,6 +41,8 @@ export type SkillState = Omit<
     // Form data
     visibility: boolean
     skill: GuidanceArticle | undefined
+    // Intents (resolved from skill, route, or template)
+    intents: string[]
     // Autosave
     autoSaveError: boolean
     // Template tracking
@@ -79,6 +81,7 @@ export type SkillReducerAction =
     | { type: 'SWITCH_VERSION'; payload: GuidanceArticle }
     | { type: 'SET_MODAL'; payload: ModalType }
     | { type: 'CLOSE_MODAL' }
+    | { type: 'SET_INTENTS'; payload: string[] }
     | { type: 'SET_UPDATING'; payload: boolean }
     | {
           type: 'SWITCH_SKILL'
@@ -170,6 +173,12 @@ export const createInitialState = (
     const title = article?.title || templateName || routeState?.title || ''
     const content = article?.content ?? templateContent
 
+    const intents: string[] =
+        article?.intents ??
+        routeState?.intents ??
+        skillTemplate?.intents?.map((i) => i.name) ??
+        []
+
     const state: SkillState = {
         mode: initialMode,
         isFullscreen: false,
@@ -182,6 +191,7 @@ export const createInitialState = (
             content,
         },
         skill: article ?? undefined,
+        intents,
         isAutoSaving: false,
         hasAutoSavedInSession: false,
         autoSaveError: false,

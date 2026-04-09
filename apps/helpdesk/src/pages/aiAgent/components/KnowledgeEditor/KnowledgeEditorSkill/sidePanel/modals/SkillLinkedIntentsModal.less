@@ -1,0 +1,129 @@
+:local {
+    .selectionCount {
+        color: var(--content-neutral-secondary);
+    }
+
+    .modalContent {
+        color: var(--content-neutral-default);
+        min-height: 0;
+        max-height: 600px;
+        display: flex;
+        gap: var(--spacing-md);
+        margin: var(--spacing-xxxs) 0;
+    }
+
+    .intentsContainer {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .group {
+        border-bottom: 1px solid var(--border-neutral-default);
+        padding: var(--spacing-xs) 0;
+    }
+
+    .group:last-child {
+        border-bottom: none;
+    }
+
+    .groupHeader {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: var(--spacing-xs) var(--spacing-xs) 0;
+    }
+
+    .groupName {
+        text-transform: capitalize;
+    }
+
+    .groupItems {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxxs);
+    }
+
+    .intentRow {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-xxs);
+        padding: var(--spacing-xxxs,) var(--spacing-xs);
+        border-radius: var(--spacing-xxxs);
+        opacity: 0.5;
+    }
+
+    .intentRowClickable {
+        cursor: pointer;
+        opacity: 1;
+    }
+
+    .intentRowSelected {
+        background-color: var(--surface-accent-default);
+        color: var(--content-accent-default);
+    }
+
+    .intentLabel {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxxxs);
+    }
+
+    .intentDescription {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .intentTrailing {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xs);
+        flex-shrink: 0;
+    }
+
+    .intentTicketCount {
+        display: inline-flex;
+        align-items: center;
+        gap: var(--spacing-xxxxs);
+        flex-shrink: 0;
+        color: var(--content-neutral-secondary);
+    }
+
+    .intentTicketCountDisabled {
+        color: var(--content-neutral-tertiary);
+    }
+
+    .errorState {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-xs);
+        padding: var(--spacing-sm) 0;
+    }
+
+    .loadingState {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xs);
+        padding-bottom: var(--spacing-xs);
+    }
+
+    .intentRowSkeleton {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--spacing-xxs);
+        padding-right: var(--spacing-xxxs);
+        padding: var(--spacing-xxxs) var(--spacing-xs);
+    }
+
+    .intentInfoSkeleton {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xxs);
+    }
+}

@@ -79,8 +79,15 @@ export function skillReducer(
                 hasAutoSavedInSession: true,
                 autoSaveError: false,
                 skill: newArticle,
+                intents: newArticle?.intents ?? state.intents,
             }
         }
+
+        case 'SET_INTENTS':
+            return {
+                ...state,
+                intents: action.payload,
+            }
 
         case 'SET_AUTO_SAVING': {
             const nextIsAutoSaving = action.payload

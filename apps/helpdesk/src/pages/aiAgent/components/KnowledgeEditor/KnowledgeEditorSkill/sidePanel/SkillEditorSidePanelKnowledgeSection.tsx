@@ -11,6 +11,7 @@ export const SkillEditorSidePanelKnowledgeSection = ({ sectionId }: Props) => {
         <KnowledgeEditorSidePanelSection
             header={{ title: 'Knowledge' }}
             sectionId={sectionId}
+            alwaysExpanded
         >
             <Text size="sm" color="content-neutral-secondary">
                 Knowledge will be available here.

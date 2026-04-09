@@ -1,7 +1,10 @@
 import { render, screen } from '@testing-library/react'
 
+import { useSkillDetailsFromContext } from '../hooks/useSkillDetailsFromContext'
+import type { SkillDetailsData } from '../hooks/useSkillDetailsFromContext'
 import { SkillEditorSidePanelDetailsSection } from './SkillEditorSidePanelDetailsSection'
 
+jest.mock('../hooks/useSkillDetailsFromContext')
 jest.mock(
     'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelSection',
     () => ({
@@ -13,12 +16,53 @@ jest.mock(
     }),
 )
 
+const mockUseSkillDetailsFromContext =
+    useSkillDetailsFromContext as jest.MockedFunction<
+        typeof useSkillDetailsFromContext
+    >
+
+const defaultDetails: SkillDetailsData = {
+    status: 'enabled',
+    isDraft: false,
+    createdDatetime: new Date('2024-03-01T00:00:00Z'),
+    lastUpdatedDatetime: new Date('2024-03-15T00:00:00Z'),
+    mode: 'read',
+}
+
 describe('SkillEditorSidePanelDetailsSection', () => {
-    it('renders the placeholder text', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        mockUseSkillDetailsFromContext.mockReturnValue(defaultDetails)
+    })
+
+    it('should render Enabled tag when status is enabled', () => {
         render(<SkillEditorSidePanelDetailsSection sectionId="details" />)
 
-        expect(
-            screen.getByText('Details will be available here.'),
-        ).toBeInTheDocument()
+        expect(screen.getByText('Enabled')).toBeInTheDocument()
+    })
+
+    it('should render Disabled tag when status is disabled and not a draft', () => {
+        mockUseSkillDetailsFromContext.mockReturnValue({
+            ...defaultDetails,
+            status: 'disabled',
+            isDraft: false,
+        })
+
+        render(<SkillEditorSidePanelDetailsSection sectionId="details" />)
+
+        expect(screen.getByText('Disabled')).toBeInTheDocument()
+    })
+
+    it('should render Draft tag when article is a draft', () => {
+        mockUseSkillDetailsFromContext.mockReturnValue({
+            ...defaultDetails,
+            isDraft: true,
+        })
+
+        render(<SkillEditorSidePanelDetailsSection sectionId="details" />)
+
+        expect(screen.getByText('Draft')).toBeInTheDocument()
+        expect(screen.queryByText('Enabled')).not.toBeInTheDocument()
+        expect(screen.queryByText('Disabled')).not.toBeInTheDocument()
     })
 })
