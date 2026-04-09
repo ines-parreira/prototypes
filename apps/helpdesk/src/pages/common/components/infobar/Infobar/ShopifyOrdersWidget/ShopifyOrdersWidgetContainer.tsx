@@ -8,7 +8,9 @@ import { useGetCustomer } from '@gorgias/helpdesk-queries'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { Customer } from 'models/customer/types'
+import { IntegrationType } from 'models/integration/types'
 import { getActiveCustomer } from 'state/customers/selectors'
+import { getIntegrationByIdAndType } from 'state/integrations/selectors'
 import { getTicketCustomer } from 'state/ticket/selectors'
 import { OrderSidePanelWithActions } from 'Widgets/modules/Shopify/modules/Order/components/OrderSidePanelWithActions'
 
@@ -40,6 +42,10 @@ export function ShopifyOrdersWidgetContainer({
 
     const { lastOrder, totalCount, unfulfilledCount, integrationId } =
         useShopifyOrdersSummary(customer)
+
+    const integration = useAppSelector(
+        getIntegrationByIdAndType(integrationId!, IntegrationType.Shopify),
+    )
 
     const { productsMap } = useWidgetOrderProducts({
         integrationId,
@@ -76,6 +82,7 @@ export function ShopifyOrdersWidgetContainer({
                 onOpenChange={setIsOrderOpen}
                 productsMap={productsMap}
                 integrationId={integrationId}
+                storeName={integration?.name}
                 customerId={String(lastOrder.customer?.id ?? '')}
                 renderEditShippingAddressModal={renderEditShippingAddressModal}
             />

@@ -86,16 +86,14 @@ export function OrderSidePanelPreview<T extends OrderData = OrderData>({
                 renderEditShippingAddressModal={renderEditShippingAddressModal}
             />
 
-            {(onNavigatePrevious ||
-                onNavigateNext ||
-                order.order_status_url) && (
+            {(onNavigatePrevious || onNavigateNext || storeName) && (
                 <OverlayFooter hideCancelButton>
                     <div className={css.footer}>
-                        {order.order_status_url && (
+                        {storeName && (
                             <Box mr="xs">
                                 <Button
                                     as="a"
-                                    href={order.order_status_url}
+                                    href={`https://admin.shopify.com/store/${storeName}/orders/${order.id}`}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     variant="secondary"

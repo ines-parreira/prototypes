@@ -25,11 +25,7 @@ export function CollapsibleFieldSection({
         <Disclosure defaultExpanded={defaultExpanded}>
             <DisclosureHeader title={<Text variant="bold">{label}</Text>} />
             <DisclosurePanel>
-                <CustomerInfoFieldList
-                    fields={fields}
-                    context={context}
-                    showOverflowToggle={false}
-                />
+                <CustomerInfoFieldList fields={fields} context={context} />
             </DisclosurePanel>
         </Disclosure>
     )

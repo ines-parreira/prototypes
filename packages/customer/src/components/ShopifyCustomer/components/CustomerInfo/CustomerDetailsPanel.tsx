@@ -106,17 +106,20 @@ export function CustomerDetailsPanel({
                 </TemplateResolverProvider>
                 {hasData && (
                     <>
-                        <CustomerInfoFieldList
-                            fields={customerFields}
-                            context={context}
-                        />
-                        <MetafieldsSection
-                            integrationId={selectedIntegration?.id}
-                            metafields={normalizeMetafields(
-                                shopper?.data?.metafields,
-                            )}
-                            storeName={selectedIntegration?.name}
-                        />
+                        <Box flexDirection="column" gap="xxs">
+                            <CustomerInfoFieldList
+                                fields={customerFields}
+                                context={context}
+                            />
+
+                            <MetafieldsSection
+                                integrationId={selectedIntegration?.id}
+                                metafields={normalizeMetafields(
+                                    shopper?.data?.metafields,
+                                )}
+                                storeName={selectedIntegration?.name}
+                            />
+                        </Box>
                         {sections.map((section) => {
                             const addresses =
                                 context.shopper?.data?.addresses ?? []
