@@ -44,6 +44,7 @@ import {
 } from 'models/view/types'
 import ViewSharingButton from 'pages/common/components/ViewSharing/ViewSharingButton'
 import { AddFilterDropdown } from 'pages/common/components/ViewTable/AddFilterDropdown'
+import EmojiSelect from 'pages/common/components/ViewTable/EmojiSelect/EmojiSelect'
 import { getDefaultCustomFieldOperator } from 'pages/common/components/ViewTable/Filters/utils'
 import ViewFilters from 'pages/common/components/ViewTable/Filters/ViewFilters'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
@@ -64,6 +65,7 @@ import {
     setViewActive,
     setViewEditMode,
     submitView,
+    updateView,
 } from 'state/views/actions'
 import {
     getActiveView,
@@ -158,6 +160,10 @@ export function ViewPanelFiltersBridge({
     const [isSharedUpdateConfirmOpen, setIsSharedUpdateConfirmOpen] =
         useState(false)
     const activeViewName = activeView.get('name', '') as string
+    const activeViewEmoji = activeView.getIn(
+        ['decoration', 'emoji'],
+        '',
+    ) as string
     const [viewName, setViewName] = useState(activeViewName)
 
     const activeViewId = activeView.get('id')
@@ -525,6 +531,40 @@ export function ViewPanelFiltersBridge({
                                     value={viewName}
                                     onChange={setViewName}
                                     isDisabled={isSubmitting || isSystemView}
+                                    leadingSlot={
+                                        <EmojiSelect
+                                            container={filterMenuContainer}
+                                            emoji={activeViewEmoji || null}
+                                            triggerMode="axiom-button"
+                                            onEmojiSelect={(emoji) => {
+                                                dispatch(
+                                                    updateView(
+                                                        activeView.mergeDeep({
+                                                            decoration: {
+                                                                emoji,
+                                                            },
+                                                        }),
+                                                    ),
+                                                )
+                                            }}
+                                            onEmojiClear={() => {
+                                                if (
+                                                    activeView.get('decoration')
+                                                ) {
+                                                    dispatch(
+                                                        updateView(
+                                                            activeView.deleteIn(
+                                                                [
+                                                                    'decoration',
+                                                                    'emoji',
+                                                                ],
+                                                            ),
+                                                        ),
+                                                    )
+                                                }
+                                            }}
+                                        />
+                                    }
                                 />
                             </Box>
                         </Box>

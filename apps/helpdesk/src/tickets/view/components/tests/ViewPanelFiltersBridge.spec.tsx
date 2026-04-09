@@ -30,6 +30,7 @@ import {
     resetView,
     setViewActive,
     submitView,
+    updateView,
 } from 'state/views/actions'
 import { getDefaultOperator } from 'utils'
 
@@ -38,7 +39,6 @@ import { ViewPanelFiltersBridge } from '../ViewPanelFiltersBridge'
 const pushMock = jest.fn()
 const addFilterDropdownPropsMock = jest.fn()
 const setSplitTicketViewEnabledMock = jest.fn()
-
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useHistory: () => ({ push: pushMock }),
@@ -177,6 +177,7 @@ jest.mock('state/views/actions', () => ({
     setViewActive: jest.fn(),
     setViewEditMode: jest.fn(),
     submitView: jest.fn(),
+    updateView: jest.fn(),
 }))
 const addFieldFilterMock = assumeMock(addFieldFilter)
 const createJobMock = assumeMock(createJob)
@@ -184,6 +185,7 @@ const deleteViewMock = assumeMock(deleteView)
 const resetViewMock = assumeMock(resetView)
 const setViewActiveMock = assumeMock(setViewActive)
 const submitViewMock = assumeMock(submitView)
+const updateViewMock = assumeMock(updateView)
 
 jest.mock('utils', () => ({
     ...jest.requireActual('utils'),
@@ -259,6 +261,11 @@ describe('ViewPanelFiltersBridge', () => {
         type: 'RESET_VIEW',
         configName: undefined,
     }
+    const updateViewAction: ReturnType<typeof updateView> = {
+        type: 'UPDATE_VIEW',
+        view: activeView,
+        edit: true,
+    }
     const activeViewIdSetAction: ReturnType<typeof activeViewIdSet> = {
         type: 'ACTIVE_VIEW_ID_SET',
         payload: 42,
@@ -293,6 +300,7 @@ describe('ViewPanelFiltersBridge', () => {
         setSplitTicketViewEnabledMock.mockReset()
         logEventMock.mockReset()
         addFilterDropdownPropsMock.mockClear()
+        updateViewMock.mockReset()
 
         useQueryClientMock.mockReturnValue({
             invalidateQueries: invalidateQueriesMock,
@@ -336,6 +344,7 @@ describe('ViewPanelFiltersBridge', () => {
         createJobMock.mockReturnValue(createJobAction)
         setViewActiveMock.mockReturnValue(setViewActiveAction)
         resetViewMock.mockReturnValue(resetViewAction)
+        updateViewMock.mockReturnValue(updateViewAction)
         activeViewIdSetMock.mockReturnValue(activeViewIdSetAction)
         viewCreatedMock.mockReturnValue(viewCreatedAction)
         viewDeletedMock.mockReturnValue(viewDeletedAction)
@@ -496,6 +505,160 @@ describe('ViewPanelFiltersBridge', () => {
         expect(screen.getByRole('textbox', { name: /view name/i })).toHaveValue(
             'Urgent tickets',
         )
+    })
+
+    it('initializes the emoji picker from the active view decoration', () => {
+        const emojiView = activeView.setIn(['decoration', 'emoji'], '🔥')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return emojiView
+            if (selector === getPristineActiveView) return emojiView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', { name: /view emoji/i }),
+        ).toHaveTextContent('🔥')
+    })
+
+    it('renders the emoji trigger in the view name field', () => {
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', { name: /view emoji/i }),
+        ).toBeInTheDocument()
+    })
+
+    it('selecting an emoji updates the draft view decoration', async () => {
+        const user = userEvent.setup()
+
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /view emoji/i }))
+        const emojiSelection = await waitFor(() => {
+            const pickerEmoji =
+                document.getElementsByClassName('emoji-mart-emoji')[0]
+
+            expect(pickerEmoji).toBeInTheDocument()
+            return pickerEmoji as HTMLElement
+        })
+        await user.click(emojiSelection)
+
+        const nextDraftView = updateViewMock.mock.calls.at(-1)?.[0]
+        expect(nextDraftView?.getIn(['decoration', 'emoji'])).toBe(
+            emojiSelection.textContent,
+        )
+        expect(dispatchMock).toHaveBeenCalledWith(updateViewAction)
+    })
+
+    it('keeps the typed view name when emoji updates change the draft view', async () => {
+        const user = userEvent.setup()
+        let draftView = activeView.delete('id').set('name', '').set('slug', '')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return draftView
+            if (selector === getPristineActiveView) return draftView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        const { rerender } = renderComponent()
+
+        await user.type(
+            screen.getByRole('textbox', { name: /view name/i }),
+            'Urgent tickets',
+        )
+
+        draftView = draftView.setIn(['decoration', 'emoji'], '🔥')
+
+        rerender(
+            <ViewPanelFiltersBridge
+                viewId={42}
+                isExpanded
+                onExpandedChange={onExpandedChange}
+            />,
+        )
+
+        expect(screen.getByRole('textbox', { name: /view name/i })).toHaveValue(
+            'Urgent tickets',
+        )
+        expect(
+            screen.getByRole('button', { name: /view emoji/i }),
+        ).toHaveTextContent('🔥')
+    })
+
+    it('clearing removes the draft emoji', async () => {
+        const user = userEvent.setup()
+        const emojiView = activeView.setIn(['decoration', 'emoji'], '🔥')
+        const clearedViewAction: ReturnType<typeof updateView> = {
+            type: 'UPDATE_VIEW',
+            view: emojiView.deleteIn(['decoration', 'emoji']),
+            edit: true,
+        }
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return emojiView
+            if (selector === getPristineActiveView) return emojiView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+        updateViewMock.mockReturnValueOnce(clearedViewAction)
+
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /view emoji/i }))
+        await user.click(screen.getByRole('button', { name: /clear icon/i }))
+
+        const nextDraftView = updateViewMock.mock.calls.at(-1)?.[0]
+        expect(nextDraftView?.getIn(['decoration', 'emoji'])).toBeUndefined()
+        expect(dispatchMock).toHaveBeenCalledWith(clearedViewAction)
+    })
+
+    it('includes draft emoji from active view in the create payload', async () => {
+        const user = userEvent.setup()
+        const draftView = activeView
+            .delete('id')
+            .set('name', '')
+            .set('slug', '')
+            .setIn(['decoration', 'emoji'], '🔥')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return draftView
+            if (selector === getPristineActiveView) return draftView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            return undefined
+        })
+
+        renderComponent()
+
+        await user.type(screen.getByLabelText(/view name/i), 'New queue')
+        await user.click(screen.getByRole('button', { name: /create view/i }))
+
+        const payload = submitViewMock.mock.calls.at(-1)?.[0]
+        if (!payload) {
+            throw new Error('Expected submitView to be called')
+        }
+
+        expect(payload.getIn(['decoration', 'emoji'])).toBe('🔥')
     })
 
     it('keeps the disclosure open after successfully updating a view', async () => {

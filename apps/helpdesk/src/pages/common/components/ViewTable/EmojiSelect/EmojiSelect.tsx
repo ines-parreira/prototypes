@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import type { BaseEmoji, EmojiData } from 'emoji-mart'
 import { Popover } from 'reactstrap'
 
-import { LegacyButton as Button } from '@gorgias/axiom'
+import { Box, Button, Icon, LegacyButton } from '@gorgias/axiom'
 
 import { useAppNode } from 'appNode'
 import EmojiPicker from 'pages/common/components/EmojiPicker/EmojiPicker'
@@ -20,6 +20,7 @@ type Props = {
         emoji: BaseEmoji['native'],
         event: MouseEvent<HTMLElement>,
     ) => void
+    triggerMode?: 'legacy' | 'axiom-button'
 } & Pick<ComponentProps<typeof Popover>, 'container'>
 
 const EmojiSelect = ({
@@ -28,31 +29,68 @@ const EmojiSelect = ({
     emoji,
     onEmojiClear,
     onEmojiSelect,
+    triggerMode = 'legacy',
 }: Props) => {
     const [isOpen, setIsOpen] = useState(false)
     const iconRef: RefObject<HTMLSpanElement> = useRef(null)
+    const buttonRef: RefObject<HTMLButtonElement> = useRef(null)
     const toggle = () => setIsOpen(!isOpen)
     const appNode = useAppNode()
+    const targetRef =
+        triggerMode === 'axiom-button' ? buttonRef.current : iconRef.current
 
     return (
-        <div className={classNames(css.picker, className)}>
-            <span
-                ref={iconRef}
-                className={classNames(
-                    {
-                        'material-icons': !emoji,
-                        [css.empty]: !emoji,
-                    },
-                    css.icon,
-                )}
-                onClick={toggle}
-            >
-                {emoji ? emoji : 'insert_emoticon'}
-            </span>
-            {iconRef.current && (
+        <div
+            className={classNames(
+                {
+                    [css.picker]: triggerMode === 'legacy',
+                },
+                className,
+            )}
+        >
+            {triggerMode === 'axiom-button' ? (
+                <Button
+                    ref={buttonRef}
+                    slot="button"
+                    variant="secondary"
+                    aria-label="View emoji"
+                    icon={
+                        emoji ? (
+                            <Box
+                                display="inline-flex"
+                                alignItems="center"
+                                justifyContent="center"
+                            >
+                                {emoji}
+                            </Box>
+                        ) : (
+                            <Icon
+                                name="emoji-smile"
+                                color="content-neutral-tertiary"
+                            />
+                        )
+                    }
+                    onClick={toggle}
+                />
+            ) : (
+                <span
+                    ref={iconRef}
+                    className={classNames(
+                        {
+                            'material-icons': !emoji,
+                            [css.empty]: !emoji,
+                        },
+                        css.icon,
+                    )}
+                    onClick={toggle}
+                >
+                    {emoji ? emoji : 'insert_emoticon'}
+                </span>
+            )}
+            {targetRef && (
                 <Popover
                     isOpen={isOpen}
-                    target={iconRef.current}
+                    target={targetRef}
                     placement="bottom"
                     toggle={toggle}
                     fade={false}
@@ -73,7 +111,7 @@ const EmojiSelect = ({
                             }}
                         />
                         {emoji && (
-                            <Button
+                            <LegacyButton
                                 fillStyle="ghost"
                                 intent="primary"
                                 className={css.clearButton}
@@ -86,7 +124,7 @@ const EmojiSelect = ({
                                 leadingIcon="clear"
                             >
                                 Clear icon
-                            </Button>
+                            </LegacyButton>
                         )}
                     </div>
                 </Popover>
