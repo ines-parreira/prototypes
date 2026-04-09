@@ -1,3 +1,4 @@
+import { forwardRef } from 'react'
 import type { ReactNode } from 'react'
 
 import { userEvent } from '@repo/testing'
@@ -9,6 +10,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import Editor from 'pages/common/editor/Editor'
 import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFilters'
+import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getTicket, getTicketState } from 'state/ticket/selectors'
 import { editorFocused } from 'state/ui/editor/actions'
@@ -17,6 +19,10 @@ import { TicketThread } from '../TicketThread'
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 jest.mock('hooks/useAppSelector', () => jest.fn())
+jest.mock(
+    'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection',
+    () => jest.fn(),
+)
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
     useParams: () => ({ ticketId: '1' }),
@@ -25,8 +31,28 @@ jest.mock('@repo/routing', () => ({
     useSearchParams: jest.fn(),
 }))
 jest.mock('@repo/ticket-thread', () => ({
-    TicketThreadContainer: ({ children }: { children: ReactNode }) => (
-        <section aria-label="Ticket thread container">{children}</section>
+    ViewingActivity: ({ agents }: { agents: Array<{ name: string }> }) => (
+        <div>{agents.map((agent) => agent.name).join(', ')}</div>
+    ),
+    TypingActivity: ({
+        agents,
+        customers,
+    }: {
+        agents?: Array<{ name: string }>
+        customers?: Array<{ name: string }>
+    }) => (
+        <div>
+            {`TypingActivity customers=${customers?.map((customer) => customer.name).join(', ') ?? ''} agents=${agents?.map((agent) => agent.name).join(', ') ?? ''}`}
+        </div>
+    ),
+    TicketThreadContainer: forwardRef<HTMLElement, { children: ReactNode }>(
+        function MockTicketThreadContainer({ children }, ref) {
+            return (
+                <section aria-label="Ticket thread container" ref={ref}>
+                    {children}
+                </section>
+            )
+        },
     ),
     TicketThreadItemsContainer: ({ children }: { children: ReactNode }) => (
         <div>{children}</div>
@@ -55,11 +81,6 @@ jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(() => createMockStandaloneAiAccess()),
 }))
 jest.mock('state/ui/editor/actions', () => ({ editorFocused: jest.fn() }))
-jest.mock('pages/tickets/detail/components/TypingActivity', () =>
-    jest.fn(({ isTyping, name }: { isTyping: boolean; name: string }) => (
-        <p>{`TypingActivity ${name} ${isTyping}`}</p>
-    )),
-)
 jest.mock(
     'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider',
     () =>
@@ -70,6 +91,7 @@ jest.mock(
 
 const mockUseAppDispatch = useAppDispatch as jest.Mock
 const mockUseAppSelector = useAppSelector as jest.Mock
+const mockUseCollisionDetection = useCollisionDetection as jest.Mock
 const mockUseInitialMacroFilters = useInitialMacroFilters as jest.Mock
 const mockUseStandaloneAiAccess = useStandaloneAiAccess as jest.Mock
 const mockEditor = Editor as jest.Mock
@@ -102,6 +124,12 @@ describe('<TicketThread />', () => {
         })
 
         mockUseAppDispatch.mockReturnValue(dispatch)
+        mockUseCollisionDetection.mockReturnValue({
+            agentsViewing: [],
+            agentsViewingNotTyping: [],
+            agentsTyping: [],
+            hasBoth: false,
+        })
         mockUseInitialMacroFilters.mockReturnValue(initialMacroFilters)
         mockUseStandaloneAiAccess.mockReturnValue(
             createMockStandaloneAiAccess(),
@@ -138,7 +166,7 @@ describe('<TicketThread />', () => {
         expect(screen.getByText('Thread feed item 1')).toBeInTheDocument()
         expect(screen.getByText('Thread feed item 100')).toBeInTheDocument()
         expect(
-            screen.getByText('TypingActivity Jane Doe true'),
+            screen.getByText('TypingActivity customers=Jane Doe agents='),
         ).toBeInTheDocument()
         expect(mockEditor).toHaveBeenCalledWith(
             {
@@ -158,13 +186,39 @@ describe('<TicketThread />', () => {
         })
     })
 
+    it('renders the agents viewing banner before the thread items', () => {
+        mockUseCollisionDetection.mockReturnValue({
+            agentsViewing: [
+                { id: 1, name: 'Alice' },
+                { id: 2, name: 'Bob' },
+            ],
+            agentsViewingNotTyping: [
+                { id: 1, name: 'Alice' },
+                { id: 2, name: 'Bob' },
+            ],
+            agentsTyping: [],
+            hasBoth: false,
+        })
+
+        render(<TicketThread submit={submit} />)
+
+        const banner = screen.getByText('Alice, Bob')
+        const firstThreadItem = screen.getByText('Thread feed item 1')
+
+        expect(
+            banner.compareDocumentPosition(firstThreadItem) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy()
+        expect(mockUseCollisionDetection).toHaveBeenCalledWith(1)
+    })
+
     it('falls back to "Customer" when the ticket customer has no name', () => {
         ticket = { id: 1, customer: {} }
 
         render(<TicketThread submit={submit} />)
 
         expect(
-            screen.getByText('TypingActivity Customer true'),
+            screen.getByText('TypingActivity customers=Customer agents='),
         ).toBeInTheDocument()
     })
 
@@ -174,8 +228,29 @@ describe('<TicketThread />', () => {
         render(<TicketThread submit={submit} />)
 
         expect(
-            screen.getByText('TypingActivity Customer true'),
+            screen.getByText('TypingActivity customers=Customer agents='),
         ).toBeInTheDocument()
+    })
+
+    it('passes agent typing activity to the ticket-thread typing component', () => {
+        mockUseCollisionDetection.mockReturnValue({
+            agentsViewing: [],
+            agentsViewingNotTyping: [],
+            agentsTyping: [
+                { id: 1, name: 'Alice' },
+                { id: 2, name: 'Bob' },
+            ],
+            hasBoth: false,
+        })
+
+        render(<TicketThread submit={submit} />)
+
+        expect(
+            screen.getByText(
+                'TypingActivity customers=Jane Doe agents=Alice, Bob',
+            ),
+        ).toBeInTheDocument()
+        expect(mockUseCollisionDetection).toHaveBeenCalledWith(1)
     })
 
     it('dispatches editor focus state on editor focus and blur', async () => {

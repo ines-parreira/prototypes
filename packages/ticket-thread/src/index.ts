@@ -1,3 +1,5 @@
+export { ViewingActivity } from './components/TicketActivity/ViewingActivity/ViewingActivity'
+export { TypingActivity } from './components/TicketActivity/TypingActivity/TypingActivity'
 export { TicketThreadItemsContainer } from './layout/TicketThreadItemsContainer'
 export { TicketThreadContainer } from './layout/TicketThreadContainer'
 export { TicketThreadItem } from './components/TicketThreadItem/TicketThreadItem'

@@ -5,7 +5,9 @@ import {
     TicketThreadContainer,
     TicketThreadItem,
     TicketThreadItemsContainer,
+    TypingActivity,
     useTicketThread,
+    ViewingActivity,
 } from '@repo/ticket-thread'
 import { TicketSearchParamsKeys } from '@repo/tickets/utils/routing'
 import { useParams } from 'react-router-dom'
@@ -15,11 +17,15 @@ import useAppSelector from 'hooks/useAppSelector'
 import Editor from 'pages/common/editor/Editor'
 import useInitialMacroFilters from 'pages/common/editor/hooks/useInitialMacroFilters'
 import WhatsAppEditorProvider from 'pages/integrations/integration/components/whatsapp/WhatsAppEditorProvider'
-import TypingActivity from 'pages/tickets/detail/components/TypingActivity'
+import useCollisionDetection from 'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection'
 import type { SubmitArgs } from 'pages/tickets/detail/TicketDetailContainer'
 import { useStandaloneAiContext as useStandaloneAiAccess } from 'providers/standalone-ai/StandaloneAiContext'
 import { getTicket, getTicketState } from 'state/ticket/selectors'
 import { editorFocused } from 'state/ui/editor/actions'
+
+import { toActivityParticipants } from './utils/toActivityParticipants'
+
+import css from './TicketThread.less'
 
 type TicketThreadProps = {
     submit: (params: SubmitArgs) => any
@@ -34,6 +40,9 @@ export function TicketThread({ submit }: TicketThreadProps) {
         useStandaloneAiAccess()
     const { ticketId } = useParams<{ ticketId: string }>()
     const [searchParams] = useSearchParams()
+    const { agentsViewing, agentsTyping } = useCollisionDetection(
+        Number(ticketId),
+    )
 
     const ticket = useAppSelector(getTicket)
     const initialMacroFilters = useInitialMacroFilters()
@@ -62,6 +71,26 @@ export function TicketThread({ submit }: TicketThreadProps) {
         () => ticket.customer?.name ?? 'Customer',
         [ticket.customer?.name],
     )
+    const customersTyping = useMemo(
+        () =>
+            isShopperTyping
+                ? [
+                      {
+                          id: ticket.customer?.id ?? 'customer',
+                          name: shopperName,
+                      },
+                  ]
+                : [],
+        [isShopperTyping, shopperName, ticket.customer?.id],
+    )
+    const activityAgentsViewing = useMemo(
+        () => toActivityParticipants(agentsViewing),
+        [agentsViewing],
+    )
+    const activityAgentsTyping = useMemo(
+        () => toActivityParticipants(agentsTyping),
+        [agentsTyping],
+    )
 
     const handleBlur = useCallback(() => {
         dispatch(editorFocused(false))
@@ -72,28 +101,34 @@ export function TicketThread({ submit }: TicketThreadProps) {
     }, [dispatch])
 
     return (
-        <TicketThreadContainer>
-            <TicketThreadItemsContainer>
-                {ticketThreadItems.map((item, index) => (
-                    <TicketThreadItem
-                        key={`${item._tag}-${index}`}
-                        item={item}
+        <div className={css.wrapper}>
+            <ViewingActivity agents={activityAgentsViewing} />
+            <TicketThreadContainer>
+                <TicketThreadItemsContainer>
+                    {ticketThreadItems.map((item, index) => (
+                        <TicketThreadItem
+                            key={`${item._tag}-${index}`}
+                            item={item}
+                        />
+                    ))}
+                </TicketThreadItemsContainer>
+                <div>
+                    <TypingActivity
+                        agents={activityAgentsTyping}
+                        customers={customersTyping}
                     />
-                ))}
-            </TicketThreadItemsContainer>
-            <div>
-                <TypingActivity isTyping={isShopperTyping} name={shopperName} />
-                <WhatsAppEditorProvider>
-                    <Editor
-                        internalNotesOnly={internalNotesOnly}
-                        initialMacroFilters={initialMacroFilters}
-                        submit={submit}
-                        ticket={ticket}
-                        onBlur={handleBlur}
-                        onFocus={handleFocus}
-                    />
-                </WhatsAppEditorProvider>
-            </div>
-        </TicketThreadContainer>
+                    <WhatsAppEditorProvider>
+                        <Editor
+                            internalNotesOnly={internalNotesOnly}
+                            initialMacroFilters={initialMacroFilters}
+                            submit={submit}
+                            ticket={ticket}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
+                        />
+                    </WhatsAppEditorProvider>
+                </div>
+            </TicketThreadContainer>
+        </div>
     )
 }
