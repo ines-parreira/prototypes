@@ -83,9 +83,13 @@ CLAUDE.md
 .claude/commands/
 .claude/skills/
 .claude/settings.json
+.claude/settings.local.json
 .codex/
 .cursor/
 .opencode/
 .rulesync/skills/.curated/
 
 .agents/
+
+__pycache__
+
