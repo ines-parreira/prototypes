@@ -2,9 +2,13 @@ import { useRef, useState } from 'react'
 
 import { Box, Button, Heading, Size } from '@gorgias/axiom'
 
-import { SegmentsSidePanel, SegmentsTable } from 'AIJourney/components'
+import {
+    DeleteSegmentConfirmation,
+    SegmentsSidePanel,
+    SegmentsTable,
+} from 'AIJourney/components'
 import { useJourneyContext } from 'AIJourney/providers'
-import { useSegments } from 'AIJourney/queries'
+import { useDeleteSegment, useSegments } from 'AIJourney/queries'
 
 import css from './Segments.less'
 
@@ -20,9 +24,13 @@ export type Segment = {
 export const Segments = () => {
     const selectedSegmentRef = useRef<Segment | undefined>(undefined)
     const [isSidePanelOpen, setIsSidePanelOpen] = useState(false)
+    const [segmentToDelete, setSegmentToDelete] = useState<Segment | undefined>(
+        undefined,
+    )
     const [cursor, setCursor] = useState<string | undefined>(undefined)
     const [pageSize, setPageSize] = useState(10)
     const { currentIntegration } = useJourneyContext()
+    const { mutate: deleteSegment } = useDeleteSegment()
     const { data: segmentsData, isLoading } = useSegments(
         currentIntegration?.id,
         {
@@ -83,7 +91,17 @@ export const Segments = () => {
                 onSegmentClick={openSidePanel}
                 onEditClick={openSidePanel}
                 onDuplicateClick={handleDuplicateClick}
-                onDeleteClick={() => {}}
+                onDeleteClick={(segment) => setSegmentToDelete(segment)}
+            />
+            <DeleteSegmentConfirmation
+                isOpen={!!segmentToDelete}
+                onClose={() => setSegmentToDelete(undefined)}
+                onConfirm={() => {
+                    if (segmentToDelete) {
+                        deleteSegment({ segmentId: segmentToDelete.id })
+                    }
+                    setSegmentToDelete(undefined)
+                }}
             />
             <SegmentsSidePanel
                 isOpen={isSidePanelOpen}

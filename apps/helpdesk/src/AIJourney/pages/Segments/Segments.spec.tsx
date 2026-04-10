@@ -5,7 +5,7 @@ import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useJourneyContext } from 'AIJourney/providers'
-import { useSegments } from 'AIJourney/queries'
+import { useDeleteSegment, useSegments } from 'AIJourney/queries'
 
 import { Segments } from './Segments'
 
@@ -48,6 +48,7 @@ jest.mock('@gorgias/axiom', () => ({
 
 jest.mock('AIJourney/queries', () => ({
     useSegments: jest.fn(),
+    useDeleteSegment: jest.fn(),
 }))
 
 jest.mock('AIJourney/providers', () => ({
@@ -75,6 +76,7 @@ const mockSegments = [
 
 const mockUseSegments = useSegments as jest.Mock
 const mockUseJourneyContext = useJourneyContext as jest.Mock
+const mockUseDeleteSegment = useDeleteSegment as jest.Mock
 
 describe('<Segments />', () => {
     beforeEach(() => {
@@ -82,6 +84,7 @@ describe('<Segments />', () => {
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: { id: 123 },
         })
+        mockUseDeleteSegment.mockReturnValue({ mutate: jest.fn() })
         mockUseSegments.mockReturnValue({
             data: {
                 data: mockSegments,
@@ -351,6 +354,64 @@ describe('<Segments />', () => {
             expect(screen.getByLabelText(/segment name/i)).toHaveValue(
                 'Support small business (copy)',
             )
+        })
+    })
+
+    describe('delete segment', () => {
+        it('should open the delete confirmation modal when delete is clicked', async () => {
+            const user = userEvent.setup()
+            render(<Segments />)
+
+            await act(async () => {
+                await user.click(
+                    screen.getAllByRole('button', { name: 'Delete' })[0],
+                )
+            })
+
+            expect(screen.getByText('Delete segment?')).toBeInTheDocument()
+        })
+
+        it('should call deleteSegment with the segment id when deletion is confirmed', async () => {
+            const user = userEvent.setup()
+            const mockMutate = jest.fn()
+            mockUseDeleteSegment.mockReturnValue({ mutate: mockMutate })
+            render(<Segments />)
+
+            await act(async () => {
+                await user.click(
+                    screen.getAllByRole('button', { name: 'Delete' })[0],
+                )
+            })
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: 'Delete segment' }),
+                )
+            })
+
+            expect(mockMutate).toHaveBeenCalledWith({ segmentId: '1' })
+        })
+
+        it('should close the confirmation modal without deleting when Cancel is clicked', async () => {
+            const user = userEvent.setup()
+            const mockMutate = jest.fn()
+            mockUseDeleteSegment.mockReturnValue({ mutate: mockMutate })
+            render(<Segments />)
+
+            await act(async () => {
+                await user.click(
+                    screen.getAllByRole('button', { name: 'Delete' })[0],
+                )
+            })
+
+            await act(async () => {
+                await user.click(screen.getByRole('button', { name: 'Cancel' }))
+            })
+
+            expect(mockMutate).not.toHaveBeenCalled()
+            expect(
+                screen.queryByText('Delete segment?'),
+            ).not.toBeInTheDocument()
         })
     })
 })

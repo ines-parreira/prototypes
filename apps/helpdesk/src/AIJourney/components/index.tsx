@@ -23,3 +23,4 @@ export { AiJourneySankeyChart } from './AiJourneySankeyChart/AiJourneySankeyChar
 export { SegmentsTable } from './SegmentsTable/SegmentsTable'
 export { SegmentsSidePanel } from './SegmentsSidePanel/SegmentsSidePanel'
 export { CreateNewSegmentButton } from './CreateNewSegmentButton/CreateNewSegmentButton'
+export { default as DeleteSegmentConfirmation } from './DeleteSegmentConfirmation/DeleteSegmentConfirmation'
