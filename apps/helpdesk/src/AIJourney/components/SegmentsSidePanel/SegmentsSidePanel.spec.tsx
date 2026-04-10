@@ -1,11 +1,44 @@
 import type { ReactNode } from 'react'
 
+import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { act } from 'react-dom/test-utils'
 
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
+import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
+import type { ConditionsSchema } from 'AIJourney/types/conditionField'
 
 import { SegmentsSidePanel } from './SegmentsSidePanel'
+
+jest.mock(
+    'AIJourney/queries/useConditionsMetadata/useConditionsMetadata',
+    () => ({
+        useConditionsMetadata: jest.fn().mockReturnValue({ data: undefined }),
+    }),
+)
+
+jest.mock(
+    'AIJourney/components/AudienceConditionField/AudienceConditionField',
+    () => ({
+        AudienceConditionField: () => <div>conditions-section</div>,
+    }),
+)
+
+const mockSchema: ConditionsSchema = {
+    operators: {
+        comparison: ['eq', 'neq'],
+        set: ['containsAny'],
+        unary: ['isEmpty'],
+    },
+    objects: {
+        shopper: {
+            fields: {
+                lifetime_value: { type: 'number', operators: ['gt'] },
+            },
+        },
+    },
+}
 
 type MockSidePanelProps = {
     children: ReactNode
@@ -42,6 +75,9 @@ const renderComponent = (
 describe('<SegmentsSidePanel />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+        assumeMock(useConditionsMetadata).mockReturnValue({
+            data: undefined,
+        } as unknown as ReturnType<typeof useConditionsMetadata>)
     })
 
     describe('create mode (no segment)', () => {
@@ -57,6 +93,22 @@ describe('<SegmentsSidePanel />', () => {
             renderComponent()
 
             expect(screen.getByLabelText(/segment name/i)).toHaveValue('')
+        })
+
+        it('should allow typing in the segment name field', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await act(async () => {
+                await user.type(
+                    screen.getByLabelText(/segment name/i),
+                    'My new segment',
+                )
+            })
+
+            expect(screen.getByLabelText(/segment name/i)).toHaveValue(
+                'My new segment',
+            )
         })
     })
 
@@ -93,9 +145,34 @@ describe('<SegmentsSidePanel />', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(screen.getByRole('button', { name: /cancel/i }))
-
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /cancel/i }),
+                )
+            })
             expect(onClose).toHaveBeenCalledTimes(1)
+        })
+
+        it('should reset the form when Cancel is clicked', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await act(async () => {
+                await user.type(
+                    screen.getByLabelText(/segment name/i),
+                    'My segment',
+                )
+            })
+            expect(screen.getByLabelText(/segment name/i)).toHaveValue(
+                'My segment',
+            )
+
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /cancel/i }),
+                )
+            })
+            expect(screen.getByLabelText(/segment name/i)).toHaveValue('')
         })
     })
 
@@ -104,9 +181,11 @@ describe('<SegmentsSidePanel />', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(
-                screen.getByRole('button', { name: /save segment/i }),
-            )
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /save segment/i }),
+                )
+            })
 
             expect(onClose).toHaveBeenCalledTimes(1)
         })
@@ -117,11 +196,32 @@ describe('<SegmentsSidePanel />', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            await user.click(
-                screen.getByRole('button', { name: /close panel/i }),
-            )
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /close panel/i }),
+                )
+            })
 
             expect(onClose).toHaveBeenCalledTimes(1)
+        })
+    })
+
+    describe('conditions section', () => {
+        it('should render AudienceConditionField when schema is available', () => {
+            assumeMock(useConditionsMetadata).mockReturnValue({
+                data: mockSchema,
+            } as unknown as ReturnType<typeof useConditionsMetadata>)
+            renderComponent()
+
+            expect(screen.getByText('conditions-section')).toBeInTheDocument()
+        })
+
+        it('should not render AudienceConditionField when schema is not available', () => {
+            renderComponent()
+
+            expect(
+                screen.queryByText('conditions-section'),
+            ).not.toBeInTheDocument()
         })
     })
 })

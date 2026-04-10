@@ -51,6 +51,13 @@ jest.mock('AIJourney/queries', () => ({
     useDeleteSegment: jest.fn(),
 }))
 
+jest.mock(
+    'AIJourney/queries/useConditionsMetadata/useConditionsMetadata',
+    () => ({
+        useConditionsMetadata: jest.fn().mockReturnValue({ data: undefined }),
+    }),
+)
+
 jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
 }))

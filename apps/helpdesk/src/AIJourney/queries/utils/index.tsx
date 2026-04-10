@@ -13,6 +13,8 @@ export const aiJourneyKeys = {
     journeyConfiguration: (journeyId: string | undefined) =>
         [...aiJourneyKeys.all(), 'journeyConfiguration', journeyId] as const,
     segmentsAll: () => [...aiJourneyKeys.all(), 'segments'] as const,
+    conditionsMetadata: () =>
+        [...aiJourneyKeys.all(), 'conditionsMetadata'] as const,
     segments: (
         integrationId?: number,
         params?: Omit<ListSegmentsParams, 'integration_id'>,

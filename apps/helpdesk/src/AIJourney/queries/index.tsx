@@ -1,3 +1,4 @@
+export { useConditionsMetadata } from './useConditionsMetadata/useConditionsMetadata'
 export { useJourneyData } from './useJourneyData/useJourneyData'
 export { useSegments } from './useSegments/useSegments'
 export { useCreateNewJourney } from './useCreateNewJourney/useCreateNewJourney'
