@@ -9,9 +9,10 @@ import {
     mockUser,
     mockVoiceCallRecording,
 } from '@gorgias/helpdesk-mocks'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import type { VoiceCallRecording } from '@gorgias/helpdesk-types'
 
-import { render } from '../../../tests/render.utils'
+import { createTestQueryClient, render } from '../../../tests/render.utils'
 import { server } from '../../../tests/server'
 import { VoiceCallAudioPlayer } from '../components/VoiceCallAudioPlayer'
 import {
@@ -59,6 +60,46 @@ describe('VoiceCallAudioPlayer', () => {
             expect(
                 screen.getByRole('button', { name: /play/i }),
             ).toBeInTheDocument()
+        })
+
+        it('invalidates voice call recordings query cache on successful delete', async () => {
+            const queryClient = createTestQueryClient()
+            const invalidateQueriesSpy = vi.spyOn(
+                queryClient,
+                'invalidateQueries',
+            )
+
+            const audio = mockVoiceCallRecording({
+                id: 1,
+                url: 'https://example.com/audio.mp3',
+                deleted_datetime: undefined,
+                error_code: null,
+            }) as VoiceCallRecording
+
+            const { user } = render(
+                <VoiceCallAudioPlayer
+                    audio={audio}
+                    type={VoiceCallRecordingType.Recording}
+                />,
+                { queryClient },
+            )
+
+            await user.click(
+                screen.getByRole('button', { name: /more options/i }),
+            )
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('menuitem', { name: /delete/i }),
+                ).toBeInTheDocument()
+            })
+            await user.click(screen.getByRole('menuitem', { name: /delete/i }))
+            await user.click(screen.getByRole('button', { name: /^delete$/i }))
+
+            await waitFor(() => {
+                expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+                    queryKey: queryKeys.voiceCallRecordings.all(),
+                })
+            })
         })
     })
 

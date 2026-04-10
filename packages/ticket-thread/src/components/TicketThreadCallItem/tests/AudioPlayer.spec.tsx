@@ -60,7 +60,7 @@ describe('AudioPlayer', () => {
         })
     })
 
-    it('calls onDelete when Delete is clicked', async () => {
+    it('shows confirmation modal when Delete is clicked', async () => {
         const onDelete = vi.fn()
         const { user } = renderComponent({ onDelete })
         await user.click(screen.getByRole('button', { name: /more options/i }))
@@ -70,7 +70,36 @@ describe('AudioPlayer', () => {
             ).toBeInTheDocument()
         })
         await user.click(screen.getByRole('menuitem', { name: /delete/i }))
+        expect(screen.getByText('Delete recording')).toBeInTheDocument()
+        expect(onDelete).not.toHaveBeenCalled()
+    })
+
+    it('calls onDelete when confirmed in the modal', async () => {
+        const onDelete = vi.fn()
+        const { user } = renderComponent({ onDelete })
+        await user.click(screen.getByRole('button', { name: /more options/i }))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('menuitem', { name: /delete/i }),
+            ).toBeInTheDocument()
+        })
+        await user.click(screen.getByRole('menuitem', { name: /delete/i }))
+        await user.click(screen.getByRole('button', { name: /^delete$/i }))
         expect(onDelete).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not call onDelete when cancelled in the modal', async () => {
+        const onDelete = vi.fn()
+        const { user } = renderComponent({ onDelete })
+        await user.click(screen.getByRole('button', { name: /more options/i }))
+        await waitFor(() => {
+            expect(
+                screen.getByRole('menuitem', { name: /delete/i }),
+            ).toBeInTheDocument()
+        })
+        await user.click(screen.getByRole('menuitem', { name: /delete/i }))
+        await user.click(screen.getByRole('button', { name: /cancel/i }))
+        expect(onDelete).not.toHaveBeenCalled()
     })
 
     it('shows Pause button after clicking Play', async () => {

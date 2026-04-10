@@ -100,14 +100,27 @@ export function VoiceCallInboundStatus({
                             {displayStatus ===
                             VoiceCallDisplayStatus.CallbackRequested ? (
                                 <>
-                                    <Icon name="comm-phone" size="sm" />
+                                    <Icon
+                                        name="comm-phone"
+                                        size="sm"
+                                        color="content-error-default"
+                                    />
                                     <Text color="content-error-default">
                                         Callback requested
                                     </Text>
                                 </>
                             ) : (
                                 <>
-                                    <Icon name="comm-phone-missed" size="sm" />
+                                    <Icon
+                                        name="comm-phone-missed"
+                                        size="sm"
+                                        color={
+                                            displayStatus ===
+                                            VoiceCallDisplayStatus.Cancelled
+                                                ? 'content-neutral-secondary'
+                                                : 'content-error-default'
+                                        }
+                                    />
                                     <Text
                                         color={
                                             displayStatus ===

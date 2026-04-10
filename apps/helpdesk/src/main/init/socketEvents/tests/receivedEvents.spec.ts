@@ -12,6 +12,7 @@ import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
 import { appQueryClient } from '@repo/api-resources'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import { shouldTicketBeDisplayedInRecentChats } from 'business/recentChats'
 import { TicketStatuses } from 'business/ticket'
 import { store as reduxStore } from 'common/store'
@@ -1251,6 +1252,38 @@ describe('receivedEvents', () => {
                 data: [{ id: 2 }, voiceCall],
             })
         })
+
+        it('should update helpdesk-queries listVoiceCalls cache', () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallCreated,
+            }) as ReceivedEvent
+
+            const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
+            isVoiceCallSpy.mockReturnValueOnce(true)
+
+            const voiceCall = {
+                id: 1,
+                ticket_id: 123,
+            } as voiceCallTypes.VoiceCall
+            const sdkQueryKey = queryKeys.voiceCalls.listVoiceCalls({
+                ticket_id: voiceCall.ticket_id,
+            })
+
+            appQueryClient.setQueryData(sdkQueryKey, {
+                data: { data: [{ id: 2 }] },
+            })
+
+            handler.onReceive({
+                event: {
+                    type: SocketEventType.VoiceCallCreated,
+                },
+                voice_call: voiceCall,
+            })
+
+            expect(appQueryClient.getQueryData(sdkQueryKey)).toEqual({
+                data: { data: [{ id: 2 }, voiceCall] },
+            })
+        })
     })
 
     describe('voice-call-updated', () => {
@@ -1315,6 +1348,70 @@ describe('receivedEvents', () => {
                 data: [{ id: 1 }, { id: 2 }],
             })
         })
+
+        it('should update helpdesk-queries listVoiceCalls cache when voiceCall exists', () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallUpdated,
+            }) as ReceivedEvent
+
+            const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
+            isVoiceCallSpy.mockReturnValueOnce(true)
+
+            const voiceCall = {
+                id: 1,
+                ticket_id: 123,
+            } as voiceCallTypes.VoiceCall
+            const sdkQueryKey = queryKeys.voiceCalls.listVoiceCalls({
+                ticket_id: voiceCall.ticket_id,
+            })
+
+            appQueryClient.setQueryData(sdkQueryKey, {
+                data: { data: [{ id: 1 }, { id: 2 }] },
+            })
+
+            handler.onReceive({
+                event: {
+                    type: SocketEventType.VoiceCallUpdated,
+                },
+                voice_call: voiceCall,
+            })
+
+            expect(appQueryClient.getQueryData(sdkQueryKey)).toEqual({
+                data: { data: [voiceCall, { id: 2 }] },
+            })
+        })
+
+        it('should not update helpdesk-queries listVoiceCalls cache when voiceCall does not exist', () => {
+            const handler = _find(receivedEvents, {
+                name: SocketEventType.VoiceCallUpdated,
+            }) as ReceivedEvent
+
+            const isVoiceCallSpy = jest.spyOn(voiceCallTypes, 'isVoiceCall')
+            isVoiceCallSpy.mockReturnValueOnce(true)
+
+            const voiceCall = {
+                id: 3,
+                ticket_id: 123,
+            } as voiceCallTypes.VoiceCall
+            const sdkQueryKey = queryKeys.voiceCalls.listVoiceCalls({
+                ticket_id: voiceCall.ticket_id,
+            })
+
+            appQueryClient.setQueryData(sdkQueryKey, {
+                data: { data: [{ id: 1 }, { id: 2 }] },
+            })
+
+            handler.onReceive({
+                event: {
+                    type: SocketEventType.VoiceCallUpdated,
+                },
+                voice_call: voiceCall,
+            })
+
+            expect(appQueryClient.getQueryData(sdkQueryKey)).toEqual({
+                data: { data: [{ id: 1 }, { id: 2 }] },
+            })
+        })
     })
 
     describe('voice-call-recording-updated', () => {
@@ -1326,7 +1423,7 @@ describe('receivedEvents', () => {
             const refetchSpy = jest.spyOn(appQueryClient, 'refetchQueries')
 
             const voiceCallId = 1
-            const queryKey = voiceCallsKeys.listRecordings({
+            const legacyQueryKey = voiceCallsKeys.listRecordings({
                 call_id: voiceCallId,
             })
 
@@ -1343,7 +1440,14 @@ describe('receivedEvents', () => {
                 },
             })
 
-            expect(refetchSpy).toHaveBeenCalledWith(queryKey)
+            expect(refetchSpy).toHaveBeenCalledWith({
+                queryKey: queryKeys.voiceCallRecordings.listVoiceCallRecordings(
+                    {
+                        call_id: voiceCallId,
+                    },
+                ),
+            })
+            expect(refetchSpy).toHaveBeenCalledWith(legacyQueryKey)
         })
 
         it('should not refetch query when the transcription status is not provided', () => {

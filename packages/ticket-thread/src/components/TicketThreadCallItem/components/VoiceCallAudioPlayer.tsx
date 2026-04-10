@@ -1,7 +1,11 @@
 import { replaceAttachmentURL } from '@repo/utils'
+import { useQueryClient } from '@tanstack/react-query'
 
 import { Box, Icon, Text, toast } from '@gorgias/axiom'
-import { useDeleteVoiceCallRecording } from '@gorgias/helpdesk-queries'
+import {
+    queryKeys,
+    useDeleteVoiceCallRecording,
+} from '@gorgias/helpdesk-queries'
 import type { VoiceCallRecording } from '@gorgias/helpdesk-types'
 
 import {
@@ -31,9 +35,15 @@ export function VoiceCallAudioPlayer({
     audio,
     type,
 }: VoiceCallAudioPlayerProps) {
+    const queryClient = useQueryClient()
     const { mutate: deleteRecording } = useDeleteVoiceCallRecording({
         mutation: {
-            onSuccess: () => toast.success('Recording deleted successfully'),
+            onSuccess: () => {
+                toast.success('Recording deleted successfully')
+                queryClient.invalidateQueries({
+                    queryKey: queryKeys.voiceCallRecordings.all(),
+                })
+            },
             onError: () => toast.error('Failed to delete recording'),
         },
     })

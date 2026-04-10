@@ -688,6 +688,23 @@ const receivedEvents: ReceivedEvent[] = [
 
             if (!isVoiceCall(voice_call)) return
 
+            appQueryClient.setQueryData(
+                queryKeys.voiceCalls.listVoiceCalls({
+                    ticket_id: voice_call.ticket_id,
+                }),
+                (oldData: any) => {
+                    if (!oldData?.data?.data) return oldData
+
+                    return {
+                        ...oldData,
+                        data: {
+                            ...oldData.data,
+                            data: [...oldData.data.data, voice_call],
+                        },
+                    }
+                },
+            )
+
             appQueryClient.setQueryData<UseListVoiceCalls>(
                 voiceCallsKeys.list({ ticket_id: voice_call.ticket_id }),
                 (oldData) => {
@@ -707,6 +724,32 @@ const receivedEvents: ReceivedEvent[] = [
             const { voice_call } = json as VoiceCallUpdatedEvent
 
             if (!isVoiceCall(voice_call)) return
+
+            appQueryClient.setQueryData(
+                queryKeys.voiceCalls.listVoiceCalls({
+                    ticket_id: voice_call.ticket_id,
+                }),
+                (oldData: any) => {
+                    if (!oldData?.data?.data) return oldData
+
+                    const voiceCallIndex = oldData.data.data.findIndex(
+                        (vc: any) => vc.id === voice_call.id,
+                    )
+
+                    if (voiceCallIndex === -1) return oldData
+
+                    const newItems = [...oldData.data.data]
+                    newItems[voiceCallIndex] = voice_call
+
+                    return {
+                        ...oldData,
+                        data: {
+                            ...oldData.data,
+                            data: newItems,
+                        },
+                    }
+                },
+            )
 
             appQueryClient.setQueryData<UseListVoiceCalls>(
                 voiceCallsKeys.list({ ticket_id: voice_call.ticket_id }),
@@ -733,11 +776,19 @@ const receivedEvents: ReceivedEvent[] = [
                 json as VoiceCallRecordingUpdatedEvent
 
             if (!!voice_call_recording.transcription_status) {
-                await appQueryClient.refetchQueries(
-                    voiceCallsKeys.listRecordings({
-                        call_id: voice_call_recording.call_id,
+                await Promise.all([
+                    appQueryClient.refetchQueries({
+                        queryKey:
+                            queryKeys.voiceCallRecordings.listVoiceCallRecordings(
+                                { call_id: voice_call_recording.call_id },
+                            ),
                     }),
-                )
+                    appQueryClient.refetchQueries(
+                        voiceCallsKeys.listRecordings({
+                            call_id: voice_call_recording.call_id,
+                        }),
+                    ),
+                ])
             }
         },
     },

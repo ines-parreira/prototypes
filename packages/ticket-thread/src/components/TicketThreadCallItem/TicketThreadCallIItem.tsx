@@ -1,3 +1,5 @@
+import { Box } from '@gorgias/axiom'
+
 import { TicketThreadItemTag } from '../../hooks/types'
 import type {
     TicketThreadOutboundVoiceCallItem,
@@ -26,7 +28,12 @@ export function TicketThreadCallItem({ item }: TicketThreadCallItemProps) {
     switch (item._tag) {
         case TicketThreadItemTag.VoiceCalls.VoiceCall:
             return (
-                <>
+                <Box
+                    width="100%"
+                    alignItems="flex-start"
+                    flexDirection="column"
+                    gap="xs"
+                >
                     <MessageBubble>
                         <VoiceCallInbound
                             voiceCall={item.data}
@@ -36,12 +43,17 @@ export function TicketThreadCallItem({ item }: TicketThreadCallItemProps) {
                         />
                     </MessageBubble>
                     {summary}
-                </>
+                </Box>
             )
         case TicketThreadItemTag.VoiceCalls.OutboundVoiceCall:
             return (
-                <>
-                    <MessageBubble>
+                <Box
+                    width="100%"
+                    alignItems="flex-end"
+                    flexDirection="column"
+                    gap="xs"
+                >
+                    <MessageBubble variant="from-agent">
                         <VoiceCallOutbound
                             voiceCall={item.data}
                             renderMonitorCallButton={
@@ -50,7 +62,7 @@ export function TicketThreadCallItem({ item }: TicketThreadCallItemProps) {
                         />
                     </MessageBubble>
                     {summary}
-                </>
+                </Box>
             )
         default:
             return assertNever(item)

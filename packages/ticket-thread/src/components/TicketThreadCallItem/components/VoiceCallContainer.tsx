@@ -115,7 +115,7 @@ export function VoiceCallContainer({
                                 alignItems="center"
                                 gap="xxs"
                             >
-                                <Icon name="comm-voicemail" size="sm" />
+                                <Icon name="soundwave" size="sm" />
                                 <Text as="span" variant="medium" size="md">
                                     Voicemail left
                                 </Text>
