@@ -21,17 +21,7 @@ type UseAiAgentDraftMessageArgs = {
     isTrial?: boolean
 }
 
-const AI_AGENT_MOCK_FEEDBACK_META_KEY = 'ai_agent_mock_feedback'
 const SET_RESPONSE_TEXT_ACTION_NAME = 'setResponseText' as MacroAction['name']
-
-function getAiAgentMockFeedbackFromMessage(
-    message: TicketMessage,
-): MessageFeedback | undefined {
-    const meta = message.meta as Record<string, unknown> | null
-    const feedback = meta?.[AI_AGENT_MOCK_FEEDBACK_META_KEY]
-
-    return feedback as MessageFeedback | undefined
-}
 
 export function useAiAgentDraftMessage({
     ticketId,
@@ -44,89 +34,82 @@ export function useAiAgentDraftMessage({
     const isImpersonated = useMemo(() => isSessionImpersonated(), [])
 
     const feedback = data?.data
-    const mockFeedbackMessage = useMemo(
-        () => getAiAgentMockFeedbackFromMessage(message),
-        [message],
-    )
 
     const feedbackMessage = useMemo<MessageFeedback | undefined>(() => {
         if (!message.id) {
             return undefined
         }
 
-        return (
-            feedback?.messages.find(
-                (candidate) => candidate.messageId === message.id,
-            ) ?? mockFeedbackMessage
+        return feedback?.messages.find(
+            (candidate) => candidate.messageId === message.id,
         )
-    }, [feedback, message.id, mockFeedbackMessage])
+    }, [feedback, message.id])
 
     const draftMessage = feedbackMessage?.draftMessage
-    const feedbackWithFallback = useMemo(() => {
-        if (feedback) {
-            return feedback
-        }
 
-        if (!feedbackMessage) {
-            return undefined
-        }
+    const copyDraftToEditor = useCallback(
+        (includeTicketActions: boolean) => {
+            const editorElement = document.getElementById('ticket-reply-editor')
 
-        return {
-            messages: [feedbackMessage],
-        }
-    }, [feedback, feedbackMessage])
+            if (editorElement) {
+                scrollIntoView(editorElement, {
+                    scrollMode: 'if-needed',
+                    behavior: 'smooth',
+                    block: 'nearest',
+                })
+            }
 
-    const handleCopyToEditor = useCallback(() => {
-        const editorElement = document.getElementById('ticket-reply-editor')
-
-        if (editorElement) {
-            scrollIntoView(editorElement, {
-                scrollMode: 'if-needed',
-                behavior: 'smooth',
-                block: 'nearest',
+            logEvent(SegmentEvent.AiAgentCopiedToEditor, {
+                accountId,
+                banner: isTrial ? 'trial' : 'qa_failed',
             })
-        }
 
-        logEvent(SegmentEvent.AiAgentCopiedToEditor, {
-            accountId,
-            banner: isTrial ? 'trial' : 'qa_failed',
-        })
+            if (!draftMessage) {
+                return
+            }
 
-        if (!draftMessage) {
-            return
-        }
-
-        dispatch(
-            applyMacroAction(
-                fromJS({
-                    arguments: {
-                        body_html: draftMessage.content,
-                    },
-                    name: SET_RESPONSE_TEXT_ACTION_NAME,
-                    title: 'Set Response Text',
-                    type: MacroActionType.User,
-                }),
-            ),
-        )
-
-        if (draftMessage.ticketActions) {
-            void dispatch(
-                applyMacro(
+            dispatch(
+                applyMacroAction(
                     fromJS({
-                        actions: draftMessage.ticketActions,
+                        arguments: {
+                            body_html: draftMessage.content,
+                        },
+                        name: SET_RESPONSE_TEXT_ACTION_NAME,
+                        title: 'Set Response Text',
+                        type: MacroActionType.User,
                     }),
-                    ticketId,
                 ),
             )
-        }
-    }, [accountId, dispatch, draftMessage, isTrial, ticketId])
+
+            if (includeTicketActions && draftMessage.ticketActions) {
+                void dispatch(
+                    applyMacro(
+                        fromJS({
+                            actions: draftMessage.ticketActions,
+                        }),
+                        ticketId,
+                    ),
+                )
+            }
+        },
+        [accountId, dispatch, draftMessage, isTrial, ticketId],
+    )
+
+    const handleCopyMessageToEditor = useCallback(() => {
+        copyDraftToEditor(false)
+    }, [copyDraftToEditor])
+
+    const handleCopyMessageAndActionsToEditor = useCallback(() => {
+        copyDraftToEditor(true)
+    }, [copyDraftToEditor])
 
     return {
         draftMessage,
         executionId: isImpersonated ? feedbackMessage?.executionId : undefined,
-        feedback: feedbackWithFallback,
+        feedback,
         feedbackMessage,
-        handleCopyToEditor,
+        handleCopyMessageAndActionsToEditor,
+        handleCopyMessageToEditor,
         isImpersonated,
         isLoading,
         summary: feedbackMessage?.summary ?? '',

@@ -44,6 +44,7 @@ type LegacyBridgeOptions = {
     legacyActions?: LegacyBridgeActions
     legacyState?: LegacyBridgeState
     renderAiAgentDraftMessage?: LegacyBridgeContextType['renderAiAgentDraftMessage']
+    renderAiAgentTrialMessage?: LegacyBridgeContextType['renderAiAgentTrialMessage']
     renderAiAgentReasoning?: LegacyBridgeContextType['renderAiAgentReasoning']
 }
 
@@ -102,6 +103,7 @@ export const render = (element: ReactElement, options?: RenderOptions) => {
             mergedOptions.legacyActions ?? defaultOptions.legacyActions,
         legacyState: mergedOptions.legacyState ?? defaultOptions.legacyState,
         renderAiAgentDraftMessage: mergedOptions.renderAiAgentDraftMessage,
+        renderAiAgentTrialMessage: mergedOptions.renderAiAgentTrialMessage,
         renderAiAgentReasoning: mergedOptions.renderAiAgentReasoning,
         onInstagramCommentPrivateReply: () => undefined,
         onInstagramCommentHideComment: () => undefined,
@@ -155,6 +157,7 @@ export const renderHook = <TProps, TResult>(
             mergedOptions.legacyActions ?? defaultOptions.legacyActions,
         legacyState: mergedOptions.legacyState ?? defaultOptions.legacyState,
         renderAiAgentDraftMessage: mergedOptions.renderAiAgentDraftMessage,
+        renderAiAgentTrialMessage: mergedOptions.renderAiAgentTrialMessage,
         renderAiAgentReasoning: mergedOptions.renderAiAgentReasoning,
         onInstagramCommentPrivateReply: () => undefined,
         onInstagramCommentHideComment: () => undefined,

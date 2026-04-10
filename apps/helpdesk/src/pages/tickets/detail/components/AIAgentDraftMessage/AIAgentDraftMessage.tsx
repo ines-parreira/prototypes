@@ -23,7 +23,7 @@ const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
         draftMessage,
         executionId,
         feedback,
-        handleCopyToEditor,
+        handleCopyMessageAndActionsToEditor,
         isLoading,
         summary,
     } = useAiAgentDraftMessage({
@@ -76,7 +76,7 @@ const AIAgentDraftMessage = ({ ticketId, message, isTrial }: Props) => {
                 <Button
                     intent="primary"
                     size="small"
-                    onClick={handleCopyToEditor}
+                    onClick={handleCopyMessageAndActionsToEditor}
                 >
                     Copy to Editor
                 </Button>

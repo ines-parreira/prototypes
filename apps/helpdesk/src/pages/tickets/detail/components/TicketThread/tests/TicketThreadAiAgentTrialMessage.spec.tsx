@@ -1,15 +1,15 @@
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
-import type { TicketThreadAiAgentDraftMessageParams } from '@repo/ticket-thread/legacy-bridge'
+import type { TicketThreadAiAgentTrialMessageParams } from '@repo/ticket-thread/legacy-bridge'
 import { render, screen } from '@testing-library/react'
 import { Map } from 'immutable'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { BANNER_TYPE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
-import { AiAgentDraftMessageHelpdeskV2 } from 'pages/tickets/detail/components/TicketMessages/AIAgentDraftMessageHelpdeskV2/AiAgentDraftMessageHelpdeskV2'
+import { AiAgentTrialMessageHelpdeskV2 } from 'pages/tickets/detail/components/TicketMessages/AIAgentTrialMessageHelpdeskV2/AiAgentTrialMessageHelpdeskV2'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getActiveView } from 'state/views/selectors'
 
-import { TicketThreadAiAgentDraftMessage } from '../TicketThreadAiAgentDraftMessage'
+import { TicketThreadAiAgentTrialMessage } from '../TicketThreadAiAgentTrialMessage'
 
 jest.mock('hooks/useAppSelector')
 jest.mock('@repo/logging', () => ({
@@ -17,18 +17,18 @@ jest.mock('@repo/logging', () => ({
     logEventWithSampling: jest.fn(),
 }))
 jest.mock(
-    'pages/tickets/detail/components/TicketMessages/AIAgentDraftMessageHelpdeskV2/AiAgentDraftMessageHelpdeskV2',
+    'pages/tickets/detail/components/TicketMessages/AIAgentTrialMessageHelpdeskV2/AiAgentTrialMessageHelpdeskV2',
     () => ({
-        AiAgentDraftMessageHelpdeskV2: jest.fn(() => (
-            <div>AiAgentDraftMessageHelpdeskV2</div>
+        AiAgentTrialMessageHelpdeskV2: jest.fn(() => (
+            <div>AiAgentTrialMessageHelpdeskV2</div>
         )),
     }),
 )
 
 const mockUseAppSelector = useAppSelector as jest.Mock
 const logEventWithSamplingMock = logEventWithSampling as jest.Mock
-const mockAiAgentDraftMessageHelpdeskV2 =
-    AiAgentDraftMessageHelpdeskV2 as jest.Mock
+const mockAiAgentTrialMessageHelpdeskV2 =
+    AiAgentTrialMessageHelpdeskV2 as jest.Mock
 
 const currentAccount = Map({ id: 123 })
 const activeView = Map({ slug: 'tickets' })
@@ -45,17 +45,17 @@ const message = {
         email: 'bot@658d6f54fbff9b7c6f2d0321',
         name: 'AI Agent',
     },
-} as unknown as TicketThreadAiAgentDraftMessageParams['message']
+} as unknown as TicketThreadAiAgentTrialMessageParams['message']
 
 function renderComponent(
-    props: TicketThreadAiAgentDraftMessageParams = {
+    props: TicketThreadAiAgentTrialMessageParams = {
         message,
     },
 ) {
-    return render(<TicketThreadAiAgentDraftMessage {...props} />)
+    return render(<TicketThreadAiAgentTrialMessage {...props} />)
 }
 
-describe('TicketThreadAiAgentDraftMessage', () => {
+describe('TicketThreadAiAgentTrialMessage', () => {
     beforeEach(() => {
         jest.clearAllMocks()
 
@@ -72,13 +72,13 @@ describe('TicketThreadAiAgentDraftMessage', () => {
         })
     })
 
-    it('renders the Helpdesk V2 draft message component for draft messages', () => {
+    it('renders the Helpdesk V2 trial message component for trial messages', () => {
         renderComponent()
 
         expect(
-            screen.getByText('AiAgentDraftMessageHelpdeskV2'),
+            screen.getByText('AiAgentTrialMessageHelpdeskV2'),
         ).toBeInTheDocument()
-        expect(mockAiAgentDraftMessageHelpdeskV2).toHaveBeenCalledWith(
+        expect(mockAiAgentTrialMessageHelpdeskV2).toHaveBeenCalledWith(
             {
                 ticketId: 1,
                 message,
@@ -89,7 +89,7 @@ describe('TicketThreadAiAgentDraftMessage', () => {
             SegmentEvent.AiAgentTicketViewed,
             {
                 accountId: 123,
-                banner: BANNER_TYPE.QA_FAILED,
+                banner: BANNER_TYPE.TRIAL,
                 viewedFrom: 'tickets',
                 userType: 'agent',
             },
@@ -102,10 +102,18 @@ describe('TicketThreadAiAgentDraftMessage', () => {
             message: {
                 ...message,
                 ticket_id: undefined,
-            } as unknown as TicketThreadAiAgentDraftMessageParams['message'],
+            } as unknown as TicketThreadAiAgentTrialMessageParams['message'],
         })
 
         expect(container.firstChild).toBeNull()
-        expect(mockAiAgentDraftMessageHelpdeskV2).not.toHaveBeenCalled()
+        expect(mockAiAgentTrialMessageHelpdeskV2).not.toHaveBeenCalled()
+    })
+
+    it('tracks the trial impression only once across rerenders', () => {
+        const { rerender } = renderComponent()
+
+        rerender(<TicketThreadAiAgentTrialMessage message={message} />)
+
+        expect(logEventWithSamplingMock).toHaveBeenCalledTimes(1)
     })
 })

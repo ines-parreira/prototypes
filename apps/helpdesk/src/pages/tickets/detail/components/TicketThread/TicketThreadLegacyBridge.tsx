@@ -14,6 +14,7 @@ import * as TicketActions from 'state/ticket/actions'
 import { CommentPrivateReplyModal } from './CommentPrivateReplyModal'
 import { TicketThreadAiAgentDraftMessage } from './TicketThreadAiAgentDraftMessage'
 import { TicketThreadAiAgentReasoning } from './TicketThreadAiAgentReasoning'
+import { TicketThreadAiAgentTrialMessage } from './TicketThreadAiAgentTrialMessage'
 import { useFacebookCommentActions } from './useFacebookCommentActions'
 import { useInstagramCommentActions } from './useInstagramCommentActions'
 
@@ -92,6 +93,9 @@ export const TicketThreadLegacyBridge = ({
             legacyState={legacyState}
             renderAiAgentDraftMessage={(params) => (
                 <TicketThreadAiAgentDraftMessage {...params} />
+            )}
+            renderAiAgentTrialMessage={(params) => (
+                <TicketThreadAiAgentTrialMessage {...params} />
             )}
             renderAiAgentReasoning={(params) => (
                 <TicketThreadAiAgentReasoning {...params} />

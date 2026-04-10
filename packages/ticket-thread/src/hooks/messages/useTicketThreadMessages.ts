@@ -51,7 +51,6 @@ export function useTicketThreadMessages({
         const activePendingMessages = normalizedPendingMessages.filter(
             isActivePendingMessage,
         )
-
         const groupedMessages = groupConsecutiveMessages(
             sortMessagesByDate([
                 ...persistedMessages,

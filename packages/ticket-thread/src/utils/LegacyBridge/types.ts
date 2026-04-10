@@ -109,10 +109,11 @@ export type TicketThreadAiAgentReasoningParams = {
 }
 
 export type TicketThreadAiAgentDraftMessageParams = {
-    message:
-        | TicketThreadAiAgentDraftMessageItem['data']
-        | TicketThreadAiAgentTrialMessageItem['data']
-    isTrial: boolean
+    message: TicketThreadAiAgentDraftMessageItem['data']
+}
+
+export type TicketThreadAiAgentTrialMessageParams = {
+    message: TicketThreadAiAgentTrialMessageItem['data']
 }
 
 export type LegacyBridgeContextType = {
@@ -133,6 +134,9 @@ export type LegacyBridgeContextType = {
     legacyState: LegacyBridgeState
     renderAiAgentDraftMessage?: (
         params: TicketThreadAiAgentDraftMessageParams,
+    ) => ReactNode
+    renderAiAgentTrialMessage?: (
+        params: TicketThreadAiAgentTrialMessageParams,
     ) => ReactNode
     renderAiAgentReasoning?: (
         params: TicketThreadAiAgentReasoningParams,

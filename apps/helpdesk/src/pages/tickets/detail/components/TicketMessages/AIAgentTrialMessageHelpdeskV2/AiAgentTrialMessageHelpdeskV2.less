@@ -1,0 +1,47 @@
+@import (reference) '~@gorgias/design-tokens/dist/css/layout';
+@import (reference) '~css/typography';
+
+:local {
+    .skeletonGroup {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-xxs);
+    }
+
+    .previewBanner {
+        padding: var(--spacing-xs);
+        border: 0.5px solid var(--border-accent-default);
+        border-radius: var(--spacing-xs);
+        background-color: var(--surface-accent-default);
+    }
+
+    .previewBannerText {
+        .body-regular();
+        color: var(--content-neutral-default);
+
+        a,
+        .enableText {
+            color: var(--content-accent-default);
+            font-weight: 600;
+        }
+    }
+
+    .messageContent {
+        .body-regular();
+        color: var(--content-neutral-secondary);
+
+        p {
+            margin: 0 0 var(--spacing-xs);
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        ul,
+        ol {
+            margin: 0;
+            padding-left: var(--spacing-md);
+        }
+    }
+}

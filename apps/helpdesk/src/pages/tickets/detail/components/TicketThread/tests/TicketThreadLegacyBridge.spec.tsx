@@ -1,6 +1,9 @@
 import type { ReactNode } from 'react'
 
-import type { TicketThreadAiAgentDraftMessageParams } from '@repo/ticket-thread/legacy-bridge'
+import type {
+    TicketThreadAiAgentDraftMessageParams,
+    TicketThreadAiAgentTrialMessageParams,
+} from '@repo/ticket-thread/legacy-bridge'
 import { TicketThreadLegacyBridgeProvider } from '@repo/ticket-thread/legacy-bridge'
 import { render, screen } from '@testing-library/react'
 
@@ -10,6 +13,7 @@ import useAppSelector from 'hooks/useAppSelector'
 import useRuleSuggestionForDemos from 'pages/tickets/detail/hooks/useRuleSuggestionForDemos'
 
 import { TicketThreadAiAgentDraftMessage } from '../TicketThreadAiAgentDraftMessage'
+import { TicketThreadAiAgentTrialMessage } from '../TicketThreadAiAgentTrialMessage'
 import { TicketThreadLegacyBridge } from '../TicketThreadLegacyBridge'
 
 jest.mock('hooks/useAppDispatch')
@@ -46,6 +50,11 @@ jest.mock('../TicketThreadAiAgentDraftMessage', () => ({
         <div>AiAgentDraftMessageSlot</div>
     )),
 }))
+jest.mock('../TicketThreadAiAgentTrialMessage', () => ({
+    TicketThreadAiAgentTrialMessage: jest.fn(() => (
+        <div>AiAgentTrialMessageSlot</div>
+    )),
+}))
 jest.mock('@repo/ticket-thread/legacy-bridge', () => ({
     TicketThreadLegacyBridgeProvider: jest.fn(
         ({ children }: { children?: ReactNode }) => <div>{children}</div>,
@@ -61,6 +70,8 @@ const mockTicketThreadLegacyBridgeProvider =
     TicketThreadLegacyBridgeProvider as jest.Mock
 const mockTicketThreadAiAgentDraftMessage =
     TicketThreadAiAgentDraftMessage as jest.Mock
+const mockTicketThreadAiAgentTrialMessage =
+    TicketThreadAiAgentTrialMessage as jest.Mock
 
 describe('TicketThreadLegacyBridge', () => {
     beforeEach(() => {
@@ -101,7 +112,6 @@ describe('TicketThreadLegacyBridge', () => {
 
         render(
             providerProps.renderAiAgentDraftMessage({
-                isTrial: false,
                 message: {
                     id: 123,
                     ticket_id: 1,
@@ -112,10 +122,44 @@ describe('TicketThreadLegacyBridge', () => {
         expect(screen.getByText('AiAgentDraftMessageSlot')).toBeInTheDocument()
         expect(mockTicketThreadAiAgentDraftMessage).toHaveBeenCalledWith(
             {
-                isTrial: false,
                 message: {
                     id: 123,
                     ticket_id: 1,
+                },
+            },
+            expect.anything(),
+        )
+    })
+
+    it('registers the AI agent trial bridge renderer on the legacy bridge provider', () => {
+        render(
+            <TicketThreadLegacyBridge>
+                <div>Ticket thread child</div>
+            </TicketThreadLegacyBridge>,
+        )
+
+        const providerProps =
+            mockTicketThreadLegacyBridgeProvider.mock.calls[0][0]
+
+        expect(providerProps.renderAiAgentTrialMessage).toEqual(
+            expect.any(Function),
+        )
+
+        render(
+            providerProps.renderAiAgentTrialMessage({
+                message: {
+                    id: 456,
+                    ticket_id: 2,
+                },
+            } as TicketThreadAiAgentTrialMessageParams),
+        )
+
+        expect(screen.getByText('AiAgentTrialMessageSlot')).toBeInTheDocument()
+        expect(mockTicketThreadAiAgentTrialMessage).toHaveBeenCalledWith(
+            {
+                message: {
+                    id: 456,
+                    ticket_id: 2,
                 },
             },
             expect.anything(),

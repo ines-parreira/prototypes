@@ -15,6 +15,7 @@ export type {
     LegacyBridgeShopifyOrder,
     LegacyBridgeState,
     TicketThreadAiAgentDraftMessageParams,
+    TicketThreadAiAgentTrialMessageParams,
     TicketThreadAiAgentReasoningParams,
     VoiceCallBridgeCallbacks,
 } from './types'

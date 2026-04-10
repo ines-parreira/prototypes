@@ -1,18 +1,18 @@
 import { useEffect, useRef } from 'react'
 
 import { logEventWithSampling, SegmentEvent } from '@repo/logging'
-import type { TicketThreadAiAgentDraftMessageParams } from '@repo/ticket-thread/legacy-bridge'
+import type { TicketThreadAiAgentTrialMessageParams } from '@repo/ticket-thread/legacy-bridge'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { TicketMessage } from 'models/ticket/types'
 import { BANNER_TYPE } from 'pages/tickets/detail/components/AIAgentFeedbackBar/constants'
-import { AiAgentDraftMessageHelpdeskV2 } from 'pages/tickets/detail/components/TicketMessages/AIAgentDraftMessageHelpdeskV2/AiAgentDraftMessageHelpdeskV2'
+import { AiAgentTrialMessageHelpdeskV2 } from 'pages/tickets/detail/components/TicketMessages/AIAgentTrialMessageHelpdeskV2/AiAgentTrialMessageHelpdeskV2'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 import { getActiveView } from 'state/views/selectors'
 
-export function TicketThreadAiAgentDraftMessage({
+export function TicketThreadAiAgentTrialMessage({
     message,
-}: TicketThreadAiAgentDraftMessageParams) {
+}: TicketThreadAiAgentTrialMessageParams) {
     const trackedImpression = useRef(false)
     const currentAccount = useAppSelector(getCurrentAccountState)
     const currentUser = useAppSelector((state) => state.currentUser)
@@ -35,7 +35,7 @@ export function TicketThreadAiAgentDraftMessage({
             SegmentEvent.AiAgentTicketViewed,
             {
                 accountId,
-                banner: BANNER_TYPE.QA_FAILED,
+                banner: BANNER_TYPE.TRIAL,
                 viewedFrom: viewType,
                 userType,
             },
@@ -48,7 +48,7 @@ export function TicketThreadAiAgentDraftMessage({
     }
 
     return (
-        <AiAgentDraftMessageHelpdeskV2
+        <AiAgentTrialMessageHelpdeskV2
             ticketId={ticketId}
             message={legacyMessage}
         />

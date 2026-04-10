@@ -1,13 +1,10 @@
-import { AIThinking, Box } from '@gorgias/axiom'
+import { AIThinking, Box, Icon, Text } from '@gorgias/axiom'
 
 import type { TicketThreadAiAgentTrialMessageItem } from '../../../hooks/messages/types'
-import { MessageBody } from '../../MessageBubble/components/MessageBody'
+import { useTicketThreadLegacyBridge } from '../../../utils/LegacyBridge'
 import { MessageErrors } from '../../MessageBubble/components/MessageErrors'
 import { MessageHeaderContainer } from '../../MessageBubble/components/MessageHeader/Layout'
-import { MessageChannel } from '../../MessageBubble/components/MessageHeader/MessageChannel'
-import { MessageDeliveryIcon } from '../../MessageBubble/components/MessageHeader/MessageDeliveryIcon'
 import { MessageSender } from '../../MessageBubble/components/MessageHeader/MessageSender'
-import { MessageTimestamp } from '../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../MessageBubble/MessageBubble'
 
 type AiAgentTicketThreadTrialMessageProps = {
@@ -17,25 +14,29 @@ type AiAgentTicketThreadTrialMessageProps = {
 export function AiAgentTicketThreadTrialMessage({
     item,
 }: AiAgentTicketThreadTrialMessageProps) {
+    const { renderAiAgentTrialMessage } = useTicketThreadLegacyBridge()
+
     return (
-        <MessageBubble variant="ai-agent">
+        <MessageBubble variant="from-agent">
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
                     <AIThinking variant="static" />
                     <MessageSender sender={{ name: 'AI Agent' }} />
                 </Box>
                 <Box alignItems="center" gap="xs">
-                    <MessageChannel
-                        channel={item.data.channel}
-                        createdDatetime={item.data.created_datetime}
+                    <Icon
+                        name="hide"
+                        size="sm"
+                        color="content-neutral-secondary"
                     />
-                    <MessageDeliveryIcon item={item} />
-                    <MessageTimestamp
-                        createdDatetime={item.data.created_datetime}
-                    />
+                    <Text size="sm" color="content-neutral-secondary">
+                        Preview message, only visible to you
+                    </Text>
                 </Box>
             </MessageHeaderContainer>
-            <MessageBody item={item} />
+            {renderAiAgentTrialMessage?.({
+                message: item.data,
+            })}
             {item.data.ticket_id && (
                 <MessageErrors
                     message={item.data}

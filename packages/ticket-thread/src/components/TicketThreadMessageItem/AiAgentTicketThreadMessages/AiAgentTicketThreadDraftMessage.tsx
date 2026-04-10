@@ -39,7 +39,6 @@ export function AiAgentTicketThreadDraftMessage({
             </MessageHeaderContainer>
             {renderAiAgentDraftMessage?.({
                 message: item.data,
-                isTrial: false,
             })}
             {item.data.ticket_id && (
                 <MessageErrors

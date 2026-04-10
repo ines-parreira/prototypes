@@ -64,6 +64,8 @@ const renderAiAgentReasoning: LegacyBridgeContextType['renderAiAgentReasoning'] 
     vi.fn(() => <span>reasoning slot</span>)
 const renderAiAgentDraftMessage: LegacyBridgeContextType['renderAiAgentDraftMessage'] =
     vi.fn(() => <span>draft slot</span>)
+const renderAiAgentTrialMessage: LegacyBridgeContextType['renderAiAgentTrialMessage'] =
+    vi.fn(() => <span>trial slot</span>)
 
 describe('useTicketThreadLegacyBridge', () => {
     it('throws when used outside of TicketThreadLegacyBridgeProvider', () => {
@@ -88,6 +90,7 @@ describe('useTicketThreadLegacyBridge', () => {
             legacyActions,
             legacyState,
             renderAiAgentDraftMessage,
+            renderAiAgentTrialMessage,
             renderAiAgentReasoning,
         })
 
@@ -102,6 +105,9 @@ describe('useTicketThreadLegacyBridge', () => {
         expect(result.current.legacyState).toBe(legacyState)
         expect(result.current.renderAiAgentDraftMessage).toBe(
             renderAiAgentDraftMessage,
+        )
+        expect(result.current.renderAiAgentTrialMessage).toBe(
+            renderAiAgentTrialMessage,
         )
         expect(result.current.renderAiAgentReasoning).toBe(
             renderAiAgentReasoning,
@@ -122,6 +128,7 @@ describe('TicketThreadLegacyBridgeProvider', () => {
                 legacyActions={legacyActions}
                 legacyState={legacyState}
                 renderAiAgentDraftMessage={renderAiAgentDraftMessage}
+                renderAiAgentTrialMessage={renderAiAgentTrialMessage}
                 renderAiAgentReasoning={renderAiAgentReasoning}
                 onInstagramCommentPrivateReply={() => undefined}
                 onInstagramCommentHideComment={() => undefined}

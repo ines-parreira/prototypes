@@ -217,29 +217,6 @@ describe('AiAgentDraftMessageHelpdeskV2', () => {
         expect(screen.queryByText('Drafted message')).not.toBeInTheDocument()
     })
 
-    it('renders when the ticket message carries embedded mock feedback', () => {
-        useGetAiAgentFeedbackMock.mockReturnValue({
-            data: undefined,
-            isLoading: false,
-        } as unknown as ReturnType<typeof useGetAiAgentFeedback>)
-
-        renderComponent({
-            message: {
-                ...defaultMessage,
-                meta: {
-                    ai_agent_mock_feedback: messageFeedback,
-                } as typeof defaultMessage.meta,
-            },
-        })
-
-        expect(screen.getByText('Copy message and actions')).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                'AI Agent sent a response and left the ticket open pending further information from the customer.',
-            ),
-        ).toBeInTheDocument()
-    })
-
     it('renders HTML summaries as markup instead of escaped text', () => {
         useGetAiAgentFeedbackMock.mockReturnValue({
             data: {
@@ -430,7 +407,7 @@ describe('AiAgentDraftMessageHelpdeskV2', () => {
             isLoading: false,
         } as unknown as ReturnType<typeof useGetAiAgentFeedback>)
 
-        renderComponent({ isTrial: true })
+        renderComponent()
 
         expect(screen.getByText('Data Used')).toBeInTheDocument()
         expect(screen.getByText('Action: setStatus')).toBeInTheDocument()

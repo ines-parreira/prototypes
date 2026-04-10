@@ -22,26 +22,20 @@ import css from './AiAgentDraftMessageHelpdeskV2.less'
 type Props = {
     ticketId: number
     message: TicketMessage
-    isTrial?: boolean
 }
 
-export function AiAgentDraftMessageHelpdeskV2({
-    ticketId,
-    message,
-    isTrial,
-}: Props) {
+export function AiAgentDraftMessageHelpdeskV2({ ticketId, message }: Props) {
     const {
         draftMessage,
         executionId,
         feedbackMessage,
-        handleCopyToEditor,
+        handleCopyMessageAndActionsToEditor,
         summary,
         isLoading,
         feedback,
     } = useAiAgentDraftMessage({
         ticketId,
         message,
-        isTrial,
     })
     const resolvedSummary =
         summary ||
@@ -148,7 +142,7 @@ export function AiAgentDraftMessageHelpdeskV2({
                     <Button
                         variant="secondary"
                         size="sm"
-                        onClick={handleCopyToEditor}
+                        onClick={handleCopyMessageAndActionsToEditor}
                     >
                         Copy message and actions
                     </Button>
