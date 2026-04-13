@@ -44,7 +44,6 @@ const IGNORED_DIRECTORIES = new Set([
     'dist',
     'node_modules',
 ])
-const MAX_BUCKET_LOCAL_PARALLEL = 2
 
 function parseArgs(): Args {
     const args = process.argv.slice(2)
@@ -251,10 +250,7 @@ function buildBuckets(
     return buckets.map((bucket) => ({
         bucket: bucket.bucket,
         projects: bucket.projects,
-        localParallel: Math.max(
-            1,
-            Math.min(MAX_BUCKET_LOCAL_PARALLEL, bucket.projects.length),
-        ),
+        localParallel: 1,
     }))
 }
 
