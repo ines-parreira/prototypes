@@ -17,7 +17,11 @@ function LocationDisplay() {
     return <div role="status">{pathname}</div>
 }
 
-const ticket = mockTicketCompact({ id: 42, subject: 'Test Ticket' })
+const ticket = mockTicketCompact({
+    id: 42,
+    subject: 'Test Ticket',
+    language: 'en',
+})
 const viewId = 123
 const defaultProps = { ticket, viewId, isActive: false }
 
@@ -71,8 +75,8 @@ describe('TicketListItem', () => {
         expect(screen.getByRole('status')).toHaveTextContent('/')
     })
 
-    it('shows the translate icon when translated subject or excerpt is available', () => {
-        render(
+    it('shows the translated tooltip message when translated subject or excerpt is available', async () => {
+        const { user } = render(
             <TicketListItem
                 {...defaultProps}
                 showTranslatedContent
@@ -80,7 +84,13 @@ describe('TicketListItem', () => {
             />,
         )
 
-        expect(screen.getByLabelText('translate')).toBeInTheDocument()
+        await user.hover(
+            screen.getByLabelText('Ticket translated from English'),
+        )
+
+        expect(
+            await screen.findByText('Ticket translated from English'),
+        ).toBeInTheDocument()
     })
 
     it('does not show the translate icon when translated content is enabled without translated fields', () => {
@@ -92,6 +102,8 @@ describe('TicketListItem', () => {
             />,
         )
 
-        expect(screen.queryByLabelText('translate')).not.toBeInTheDocument()
+        expect(
+            screen.queryByLabelText('Ticket translated from English'),
+        ).not.toBeInTheDocument()
     })
 })

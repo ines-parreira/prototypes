@@ -12,14 +12,19 @@ import {
     Tile,
     TileContent,
     TileHeader,
+    Tooltip,
+    TooltipContent,
 } from '@gorgias/axiom'
 import type {
+    Language,
     TicketCompact,
     TicketTranslationCompact,
 } from '@gorgias/helpdesk-types'
 
 import { TicketMessageSourceIcon } from '../../../components/TicketMessageSourceIcon/TicketMessageSourceIcon'
 import type { TicketMessageSource } from '../../../components/TicketMessageSourceIcon/utils'
+import { useCurrentUserLanguagePreferences } from '../../../translations/hooks/useCurrentUserLanguagePreferences'
+import { getTicketTranslationHelper } from '../../../translations/hooks/useTicketTranslationHelper'
 import { useTicketDisplayData } from '../../hooks/useTicketDisplayData'
 import type { OnSelectTicketParams } from '../../hooks/useTicketSelection'
 import { TicketListItemAgentsViewing } from './components/TicketListItemAgentsViewing'
@@ -58,6 +63,12 @@ export const TicketListItem = memo(function TicketListItem({
     const hasTranslatedContent =
         !!showTranslatedContent &&
         (!!translation?.subject?.trim() || !!translation?.excerpt?.trim())
+    const { primary } = useCurrentUserLanguagePreferences()
+    const translationHelper = getTicketTranslationHelper({
+        language: ticket.language as Language | null,
+        primary: (primary as Language | null) ?? null,
+        isTranslated: hasTranslatedContent,
+    })
 
     const shiftKeyRef = useRef(false)
 
@@ -73,6 +84,26 @@ export const TicketListItem = memo(function TicketListItem({
         },
         [onSelect, ticket.id],
     )
+
+    const translationIcon = hasTranslatedContent ? (
+        <Box mr="xxxs">
+            <Tooltip
+                placement="left"
+                trigger={
+                    <span aria-label={translationHelper}>
+                        <Icon
+                            aria-hidden="true"
+                            name="translate"
+                            size="sm"
+                            color="content-neutral-secondary"
+                        />
+                    </span>
+                }
+            >
+                <TooltipContent title={translationHelper} />
+            </Tooltip>
+        </Box>
+    ) : null
 
     return (
         <Tile
@@ -107,16 +138,7 @@ export const TicketListItem = memo(function TicketListItem({
                             <Box mr="xxs">
                                 <Dot color="red" />
                             </Box>
-                            {hasTranslatedContent && (
-                                <Box mr="xxxs">
-                                    <Icon
-                                        aria-label="translate"
-                                        name="translate"
-                                        size="sm"
-                                        color="content-neutral-secondary"
-                                    />
-                                </Box>
-                            )}
+                            {translationIcon}
                             <Text
                                 overflow="ellipsis"
                                 variant="bold"
@@ -128,16 +150,7 @@ export const TicketListItem = memo(function TicketListItem({
                         </Box>
                     ) : (
                         <Box flexDirection="row" alignItems="center">
-                            {hasTranslatedContent && (
-                                <Box mr="xxxs">
-                                    <Icon
-                                        aria-label="translate"
-                                        name="translate"
-                                        size="sm"
-                                        color="content-neutral-secondary"
-                                    />
-                                </Box>
-                            )}
+                            {translationIcon}
                             <Text
                                 overflow="ellipsis"
                                 variant="bold"
