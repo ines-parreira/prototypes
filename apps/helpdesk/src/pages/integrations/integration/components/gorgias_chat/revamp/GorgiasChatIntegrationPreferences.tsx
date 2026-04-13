@@ -200,7 +200,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
             >
                 <div className={css.preferencesTab}>
                     <div className={css.cardsWrapper}>
-                        {isAiAgentEnabled && (
+                        {!isAiAgentEnabled && (
                             <ChatAvailabilityCard
                                 liveChatAvailability={
                                     values.liveChatAvailability
@@ -236,7 +236,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                                 )
                             }
                         />
-                        {isAiAgentEnabled && (
+                        {!isAiAgentEnabled && (
                             <ChatWaitTimeCard
                                 autoResponderEnabled={
                                     values.autoResponderEnabled
@@ -250,7 +250,7 @@ export const GorgiasChatIntegrationPreferencesRevamp = ({
                                 }
                             />
                         )}
-                        {isAiAgentEnabled && (
+                        {!isAiAgentEnabled && (
                             <ChatAutomationCard
                                 controlTicketVolume={values.controlTicketVolume}
                                 onControlTicketVolumeChange={(value) =>
