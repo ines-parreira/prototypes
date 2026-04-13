@@ -26,6 +26,14 @@ jest.mock('react-dnd', () => ({
 }))
 jest.mock('react-dnd-html5-backend', () => ({ HTML5Backend: {} }))
 
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlagWithLoading: jest.fn(),
+}))
+
+const mockUseFlagWithLoading = require('@repo/feature-flags')
+    .useFlagWithLoading as jest.Mock
+
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
     ...jest.requireActual(
         'AIJourney/providers/JourneyProvider/JourneyProvider',
@@ -218,6 +226,10 @@ describe('<Analytics />', () => {
         jest.clearAllMocks()
         localStorage.removeItem('ai-journey-analytics-key-metrics-preferences')
         FiltersPanelComponentMock.mockImplementation(() => <div />)
+        mockUseFlagWithLoading.mockReturnValue({
+            value: true,
+            isLoading: false,
+        })
 
         mockUseStatsFilters.mockReturnValue({
             cleanStatsFilters: {
@@ -1085,6 +1097,55 @@ describe('<Analytics />', () => {
     })
 
     describe('Attribution model comparison', () => {
+        it('should hide provider metrics when feature flag is OFF even if attributionModelComparison is set', () => {
+            mockUseFlagWithLoading.mockReturnValue({
+                value: false,
+                isLoading: false,
+            })
+
+            mockUseJourneyContext.mockReturnValue({
+                journeyData: undefined,
+                currentIntegration: { id: 286584 },
+                shopName: 'shopify-store',
+                isLoading: false,
+                journeyType: 'cart_abandoned',
+                storeConfiguration: {
+                    monitoredSmsIntegrations: [1, 2],
+                },
+                attributionModelComparison: 'klaviyo',
+            })
+
+            renderWithRouter(
+                <Provider store={mockStore}>
+                    <QueryClientProvider client={appQueryClient}>
+                        <JourneyProvider>
+                            <Analytics />
+                        </JourneyProvider>
+                    </QueryClientProvider>
+                </Provider>,
+            )
+
+            expect(
+                screen.queryByText('Orders (click 5d > delivery 12h)'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Total sales (click 5d > delivery 12h)'),
+            ).not.toBeInTheDocument()
+
+            expect(mockUseAIJourneyProviderTotalOrders).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    provider: null,
+                    forceEmpty: true,
+                }),
+            )
+            expect(mockUseAIJourneyProviderTotalSales).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    provider: null,
+                    forceEmpty: true,
+                }),
+            )
+        })
+
         it('should not show provider metrics when attributionModelComparison is null', () => {
             mockUseJourneyContext.mockReturnValue({
                 journeyData: undefined,

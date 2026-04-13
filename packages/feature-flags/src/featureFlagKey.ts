@@ -58,6 +58,7 @@ export enum FeatureFlagKey {
     AiJourneyWinBackEnabled = 'ai-journey-win-back-enabled',
     AiJourneyCampaignImageEnabled = 'ai-journey-campaign-image-enabled',
     AiJourneyAnalyticsEnabled = 'ai-journey-analytics-enabled',
+    AiJourneyAttributionModelComparison = 'linear.AIJOU-1796-show-custom-attribution-model',
     AiJourneyPostPurchaseEnabled = 'ai-journey-post-purchase-enabled',
     AiJourneyWelcomeFlowEnabled = 'ai-journey-welcome-flow-enabled',
     AiJourneyCampaignSendingEnabled = 'campaign-sending-enabled',

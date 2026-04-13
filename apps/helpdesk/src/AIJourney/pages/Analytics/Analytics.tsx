@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlagWithLoading } from '@repo/feature-flags'
 import { useEffectOnce, useLocalStorage } from '@repo/hooks'
 import { ConfigureMetricsModal, LineChart, TrendCard } from '@repo/reporting'
 import type { MetricConfigItem, MetricTrendFormat } from '@repo/reporting'
@@ -65,11 +66,18 @@ export const Analytics = () => {
         attributionModelComparison,
     } = useJourneyContext()
 
-    const attributionLabel = attributionModelComparison
-        ? ATTRIBUTION_MODEL_LABELS[attributionModelComparison]
+    const { value: isAttributionModelComparisonEnabled } = useFlagWithLoading(
+        FeatureFlagKey.AiJourneyAttributionModelComparison,
+    )
+    const gatedAttributionModelComparison = isAttributionModelComparisonEnabled
+        ? attributionModelComparison
         : null
-    const attributionHint = attributionModelComparison
-        ? ATTRIBUTION_MODEL_HINTS[attributionModelComparison]
+
+    const attributionLabel = gatedAttributionModelComparison
+        ? ATTRIBUTION_MODEL_LABELS[gatedAttributionModelComparison]
+        : null
+    const attributionHint = gatedAttributionModelComparison
+        ? ATTRIBUTION_MODEL_HINTS[gatedAttributionModelComparison]
         : null
     const integrationId = useMemo(() => {
         return (currentIntegration?.id || 0).toString()
@@ -217,24 +225,24 @@ export const Analytics = () => {
     })
 
     const providerOrders = useAIJourneyProviderTotalOrders({
-        provider: attributionModelComparison ?? null,
+        provider: gatedAttributionModelComparison ?? null,
         integrationId,
         userTimezone,
         filters,
         granularity,
         journeyIds: journeysIdsToFilter,
-        forceEmpty: forceEmpty || !attributionModelComparison,
+        forceEmpty: forceEmpty || !gatedAttributionModelComparison,
     })
 
     const providerTotalSales = useAIJourneyProviderTotalSales({
-        provider: attributionModelComparison ?? null,
+        provider: gatedAttributionModelComparison ?? null,
         integrationId,
         userTimezone,
         filters,
         currency,
         granularity,
         journeyIds: journeysIdsToFilter,
-        forceEmpty: forceEmpty || !attributionModelComparison,
+        forceEmpty: forceEmpty || !gatedAttributionModelComparison,
     })
 
     const ordersDrillDown = useDrillDownModalTrigger({
