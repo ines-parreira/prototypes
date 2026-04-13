@@ -64,10 +64,10 @@ interface Props<T extends SelfServiceChannel> {
     channels: T[]
     showConnectCallToAction?: boolean
     onConnect?: () => void
-    onSelectedChannelChange: (value: string | number) => void
+    onSelectedChannelChange: (value: number | string) => void
     renderOption: (channel: T) => {
         label: string
-        value: string | number
+        value: number | string
     }
 }
 export const CurrentlyViewingDropdown = <T extends SelfServiceChannel>({

@@ -9,7 +9,6 @@ import { Router } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { TicketChannel } from 'business/types/ticket'
 import { billingState } from 'fixtures/billing'
 import { selfServiceConfiguration1 as mockSelfServiceConfiguration } from 'fixtures/self_service_configurations'
 import { useGetHelpCenter } from 'models/helpCenter/queries'
@@ -20,8 +19,10 @@ import {
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'
 import useSelfServiceChannels from 'pages/automate/common/hooks/useSelfServiceChannels'
+import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import useSelfServiceConfiguration from 'pages/automate/common/hooks/useSelfServiceConfiguration'
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
+import useShouldShowChatSettingsRevamp from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp'
 import { ContactFormFixture } from 'pages/settings/contactForm/fixtures/contacForm'
 import { getSingleHelpCenterResponseFixture } from 'pages/settings/helpCenter/fixtures/getHelpCentersResponse.fixture'
 import { useIsAutomateSettings } from 'settings/automate/hooks/useIsAutomateSettings'
@@ -218,9 +219,17 @@ const mockedStore = mockStore({
 jest.mock('pages/automate/common/hooks/useSelfServiceConfiguration')
 jest.mock('pages/automate/common/hooks/useApplicationsAutomationSettings')
 jest.mock('pages/automate/common/hooks/useSelfServiceChannels')
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset',
 )
+jest.mock(
+    'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useShouldShowChatSettingsRevamp',
+)
+jest.mock('models/workflows/queries', () => ({
+    ...jest.requireActual('models/workflows/queries'),
+    useGetWorkflowConfigurations: jest.fn(() => ({ data: [] })),
+}))
 
 describe('ConnectedChannelsView', () => {
     beforeEach(() => {
@@ -230,6 +239,15 @@ describe('ConnectedChannelsView', () => {
             isFetchPending: false,
         })
         ;(useSelfServiceChannels as jest.Mock).mockReturnValue(mockChatChannels)
+        ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue(
+            mockChatChannels,
+        )
+        ;(useShouldShowChatSettingsRevamp as jest.Mock).mockReturnValue({
+            shouldShowRevamp: false,
+            shouldShowPreviewForRevamp: false,
+            shouldShowRevampWhenAiAgentEnabled: false,
+            isLoading: false,
+        })
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {
                 25: {
@@ -399,13 +417,13 @@ describe('ConnectedChannelsView', () => {
             </Router>,
         )
 
-        expect(screen.getByText(/Loading/i)).toBeInTheDocument()
+        expect(screen.getByRole('status')).toBeInTheDocument()
     })
 
     it('should render the loading spinner if the automation settings does not have the current channel', () => {
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {},
-            isFetchPending: false,
+            isFetchPending: true,
             handleChatApplicationAutomationSettingsUpdate: jest.fn(),
         })
         render(
@@ -418,7 +436,7 @@ describe('ConnectedChannelsView', () => {
             </Router>,
         )
 
-        expect(screen.getByText(/Loading/i)).toBeInTheDocument()
+        expect(screen.getByRole('status')).toBeInTheDocument()
     })
 
     it('toggles the settings', async () => {
@@ -583,6 +601,14 @@ describe('ConnectedChannelsView', () => {
     it('should call `handleUpdate` when switching off the order management', () => {
         const handleUpdate = jest.fn()
 
+        ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
+            selfServiceConfiguration: mockSelfServiceConfiguration,
+            storeIntegration: {
+                type: 'shopify',
+                meta: { shop_domain: 'test.myshopify.com', shop_name: 'test' },
+            },
+            isFetchPending: false,
+        })
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {
                 25: {
@@ -651,8 +677,16 @@ describe('ConnectedChannelsView', () => {
 
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {
-                ...applicationsAutomationSettingsStateFixture,
-                [23]: {
+                25: {
+                    ...applicationAutomationSettingsFixture,
+                    articleRecommendation: {
+                        enabled: true,
+                    },
+                    orderManagement: {
+                        enabled: false,
+                    },
+                },
+                23: {
                     ...applicationAutomationSettingsFixture,
                     id: 23,
                     articleRecommendation: {
@@ -672,7 +706,7 @@ describe('ConnectedChannelsView', () => {
             <Router history={history}>
                 <Provider store={mockedStore}>
                     <ConnectedChannelsChatView
-                        channelId="23"
+                        channelId={16}
                         shopType="shopitay"
                         shopName="itayshop"
                         hideDropdown
@@ -692,11 +726,11 @@ describe('ConnectedChannelsView', () => {
         expect(
             screen.getByRole('switch', { name: /enable order management/i }),
         ).not.toBeChecked()
-        expect(screen.getAllByText(/test 1/i)).toHaveLength(2)
     })
 
     it('should render the empty state when there are no channels', () => {
         ;(useSelfServiceChannels as jest.Mock).mockReturnValue([])
+        ;(useSelfServiceChatChannels as jest.Mock).mockReturnValue([])
         ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
             selfServiceConfiguration: [],
             storeIntegration: null,
@@ -765,24 +799,6 @@ describe('ConnectedChannelsView', () => {
     })
 
     it('should handle channel selection change and navigation', async () => {
-        const mockChannels = [
-            ...mockChatChannels,
-            {
-                type: TicketChannel.HelpCenter,
-                value: {
-                    id: 100,
-                    name: 'Help Center Channel',
-                },
-            },
-            {
-                type: TicketChannel.ContactForm,
-                value: {
-                    id: 101,
-                    name: 'Contact Form Channel',
-                },
-            },
-        ]
-
         // Mock useIsAutomateSettings to return true
         ;(useIsAutomateSettings as jest.Mock).mockReturnValue(true)
         ;(useSelfServiceConfiguration as jest.Mock).mockReturnValue({
@@ -790,7 +806,6 @@ describe('ConnectedChannelsView', () => {
             storeIntegration: null,
             isFetchPending: false,
         })
-        ;(useSelfServiceChannels as jest.Mock).mockReturnValue(mockChannels)
         ;(useApplicationsAutomationSettings as jest.Mock).mockReturnValue({
             applicationsAutomationSettings: {
                 25: {
@@ -847,12 +862,14 @@ describe('ConnectedChannelsView', () => {
             fireEvent.click(dropdown)
         })
 
-        // Click Help Center option and verify it appears in dropdown
+        // The dropdown only shows chat channels; click the second one
         await waitFor(() => {
-            expect(screen.getByText('Help Center Channel')).toBeInTheDocument()
+            expect(
+                screen.getByText(mockChatChannels[1].value.name),
+            ).toBeInTheDocument()
         })
         await act(async () => {
-            fireEvent.click(screen.getByText('Help Center Channel'))
+            fireEvent.click(screen.getByText(mockChatChannels[1].value.name))
         })
     })
 

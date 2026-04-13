@@ -1,16 +1,20 @@
-import { useParams, useRouteMatch } from 'react-router-dom'
+import { useRouteMatch } from 'react-router-dom'
 
-import useAppSelector from 'hooks/useAppSelector'
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
+import {
+    ChatSettingsRevampConnectedChannelsContext,
+    useChatSettingsRevampConnectedChannels,
+} from 'pages/automate/connectedChannels/revamp/hooks/useChatSettingsRevampConnectedChannels'
 import { useShouldShowChatSettingsRevamp } from 'pages/integrations/integration/components/gorgias_chat/revamp/hooks/useShouldShowChatSettingsRevamp'
-import { getGorgiasChatIntegrationsByStoreName } from 'state/integrations/selectors'
 
 import LegacyConnectedChannelsViewContainer from './legacy/ConnectedChannelsViewContainer'
 import { ConnectedChannelsViewContainerRevamp } from './revamp/ConnectedChannelsViewContainer'
 
 export const ConnectedChannelsViewContainer = () => {
-    const { shopName } = useParams<{ shopName: string }>()
+    const { selectedChannelId, setSelectedChannelId, shopName } =
+        useChatSettingsRevampConnectedChannels()
+
     const isOrderManagementPath = useRouteMatch(
         '/app/settings/order-management',
     )
@@ -21,23 +25,24 @@ export const ConnectedChannelsViewContainer = () => {
             getShopNameFromStoreIntegration(integration) === shopName,
     )
 
-    const chatIntegration = useAppSelector(
-        getGorgiasChatIntegrationsByStoreName(shopName ?? ''),
-    )
-    const chatId = chatIntegration?.id
-
     const {
         shouldShowFlowsScreensRevamp,
         shouldShowOrderManagementScreensRevamp,
-    } = useShouldShowChatSettingsRevamp(storeIntegration, chatId)
+    } = useShouldShowChatSettingsRevamp(storeIntegration, selectedChannelId)
 
     const shouldShowRevamp = isOrderManagementPath
         ? shouldShowOrderManagementScreensRevamp
         : shouldShowFlowsScreensRevamp
 
-    if (shouldShowRevamp) {
-        return <ConnectedChannelsViewContainerRevamp />
-    }
-
-    return <LegacyConnectedChannelsViewContainer />
+    return (
+        <ChatSettingsRevampConnectedChannelsContext.Provider
+            value={{ selectedChannelId, setSelectedChannelId }}
+        >
+            {shouldShowRevamp ? (
+                <ConnectedChannelsViewContainerRevamp />
+            ) : (
+                <LegacyConnectedChannelsViewContainer />
+            )}
+        </ChatSettingsRevampConnectedChannelsContext.Provider>
+    )
 }

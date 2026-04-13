@@ -23,7 +23,7 @@ export const GorgiasAutomateChatIntegration = ({ integration }: Props) => {
         ['meta', 'shop_integration_id'],
         null,
     )
-    const channelId = integration.getIn(['meta', 'app_id'])
+    const channelId = integration.get('id')
 
     const storeIntegration = storeIntegrations.find(
         (integration) => integration.id === shopIntegrationId,

@@ -104,6 +104,7 @@ describe('GorgiasAutomateChatIntegration', () => {
             <Provider store={mockedStore}>
                 <GorgiasAutomateChatIntegration
                     integration={Map({
+                        id: 'channelId',
                         meta: Map({
                             shop_integration_id: 1,
                             app_id: 'channelId',

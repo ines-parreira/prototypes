@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
 
 import { useParams } from 'react-router-dom'
 
@@ -7,6 +7,7 @@ import { useListWorkflowEntryPoints } from 'models/workflows/queries'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { AutomateFeatures } from 'pages/automate/common/types'
 import { ChatChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector'
+import { ChatSettingsRevampConnectedChannelsContext } from 'pages/automate/connectedChannels/revamp/hooks/useChatSettingsRevampConnectedChannels'
 import { ArticleRecommendationCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ArticleRecommendationCard/ArticleRecommendationCard'
 import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
 import { FlowsCard } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/FlowsCard/FlowsCard'
@@ -24,12 +25,11 @@ export const ConnectedChannelsChatView = () => {
         shopName: string
         shopType: string
     }>()
-
     const chatChannels = useSelfServiceChatChannels(shopType, shopName)
 
-    const [selectedChannelId, setSelectedChannelId] = useState<
-        number | undefined
-    >(() => chatChannels[0]?.value.id)
+    const { selectedChannelId, setSelectedChannelId } = useContext(
+        ChatSettingsRevampConnectedChannelsContext,
+    )
 
     const selectedChannel =
         chatChannels.find((c) => c.value.id === selectedChannelId) ??
@@ -86,7 +86,7 @@ export const ConnectedChannelsChatView = () => {
                 onSelect={setSelectedChannelId}
             />
         ) : undefined
-    }, [selectedChannelId, chatChannels])
+    }, [selectedChannelId, chatChannels, setSelectedChannelId])
 
     const { showPreviewPanel, chatPreviewPortal, updateWorkflowEntryPoints } =
         useChatPreviewPanel(PreviewPanelHeaderActions, selectedChannelLanguage)

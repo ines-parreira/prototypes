@@ -11,7 +11,7 @@ import { CurrentlyViewingDropdown } from '../components/CurrentlyViewingDropdown
 
 const renderOption = (channel: SelfServiceChatChannel) => ({
     label: channel.value.name,
-    value: channel.value.meta.app_id ?? '',
+    value: channel.value.id,
 })
 
 const channels = [
