@@ -31,7 +31,8 @@ type TicketThreadProps = {
     submit: (params: SubmitArgs) => any
 }
 
-const { key, parse } = TicketSearchParamsKeys.showTicketEvents
+const { key: showTicketEventsKey, parse: parseShowTicketEvents } =
+    TicketSearchParamsKeys.showTicketEvents
 
 export function TicketThread({ submit }: TicketThreadProps) {
     const dispatch = useAppDispatch()
@@ -56,7 +57,7 @@ export function TicketThread({ submit }: TicketThreadProps) {
         [ticketState],
     )
     const showTicketEvents = useMemo(
-        () => parse(searchParams.get(key)),
+        () => parseShowTicketEvents(searchParams.get(showTicketEventsKey)),
         [searchParams],
     )
 

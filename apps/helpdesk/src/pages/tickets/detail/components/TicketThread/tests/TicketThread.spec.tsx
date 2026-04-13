@@ -30,6 +30,7 @@ jest.mock('react-router-dom', () => ({
 jest.mock('@repo/routing', () => ({
     useSearchParams: jest.fn(),
 }))
+
 jest.mock('@repo/ticket-thread', () => ({
     ViewingActivity: ({ agents }: { agents: Array<{ name: string }> }) => (
         <div>{agents.map((agent) => agent.name).join(', ')}</div>
@@ -57,9 +58,9 @@ jest.mock('@repo/ticket-thread', () => ({
     TicketThreadItemsContainer: ({ children }: { children: ReactNode }) => (
         <div>{children}</div>
     ),
-    TicketThreadItem: ({ item }: { item: { _tag: string } }) => (
+    TicketThreadItem: jest.fn(({ item }: { item: { _tag: string } }) => (
         <div>{item._tag}</div>
-    ),
+    )),
     useTicketThread: jest.fn(),
 }))
 jest.mock('pages/common/editor/Editor', () =>
@@ -98,6 +99,8 @@ const mockEditor = Editor as jest.Mock
 const mockEditorFocused = editorFocused as unknown as jest.Mock
 const mockUseSearchParams = jest.requireMock('@repo/routing')
     .useSearchParams as jest.Mock
+const mockTicketThreadItem = jest.requireMock('@repo/ticket-thread')
+    .TicketThreadItem as jest.Mock
 const mockUseTicketThread = jest.requireMock('@repo/ticket-thread')
     .useTicketThread as jest.Mock
 
@@ -184,6 +187,13 @@ describe('<TicketThread />', () => {
             showTicketEvents: false,
             ticketId: 1,
         })
+        expect(mockTicketThreadItem).toHaveBeenNthCalledWith(
+            1,
+            expect.objectContaining({
+                item: { _tag: 'Thread feed item 1' },
+            }),
+            expect.objectContaining({}),
+        )
     })
 
     it('renders the agents viewing banner before the thread items', () => {
@@ -282,5 +292,42 @@ describe('<TicketThread />', () => {
             showTicketEvents: true,
             ticketId: 1,
         })
+    })
+
+    it('passes pending messages from the ticket state to the thread hook', () => {
+        ticketState = fromJS({
+            _internal: {
+                isShopperTyping: true,
+                pendingMessages: [{ id: 'pending-1' }],
+            },
+        })
+
+        render(<TicketThread submit={submit} />)
+
+        expect(mockUseTicketThread).toHaveBeenCalledWith({
+            pendingMessages: [{ id: 'pending-1' }],
+            showTicketEvents: false,
+            ticketId: 1,
+        })
+    })
+
+    it('enables internal notes only mode for standalone AI agents with read access', () => {
+        mockUseStandaloneAiAccess.mockReturnValue(
+            createMockStandaloneAiAccess({
+                isStandaloneAiAgent: true,
+                ticketsView: {
+                    canRead: true,
+                },
+            }),
+        )
+
+        render(<TicketThread submit={submit} />)
+
+        expect(mockEditor).toHaveBeenCalledWith(
+            expect.objectContaining({
+                internalNotesOnly: true,
+            }),
+            expect.objectContaining({}),
+        )
     })
 })

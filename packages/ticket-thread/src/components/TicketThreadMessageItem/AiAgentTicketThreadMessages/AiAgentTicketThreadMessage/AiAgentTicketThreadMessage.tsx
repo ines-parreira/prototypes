@@ -12,6 +12,8 @@ import { MessageSender } from '../../../MessageBubble/components/MessageHeader/M
 import { MessageTimestamp } from '../../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../../MessageBubble/MessageBubble'
 import { TicketMessageActions } from '../../../TicketMessageActions/TicketMessageActions'
+import { SmartFollowUps } from './SmartFollowUps'
+import { useSmartFollowUps } from './useSmartFollowUps'
 
 type AiAgentTicketThreadMessageProps = {
     item: TicketThreadAiAgentMessageItem
@@ -21,6 +23,15 @@ export function AiAgentTicketThreadMessage({
     item,
 }: AiAgentTicketThreadMessageProps) {
     const { renderAiAgentReasoning } = useTicketThreadLegacyBridge()
+    const {
+        selectedSmartFollowUpIndex,
+        showAllSmartFollowUps,
+        shouldRenderMessageContent,
+        shouldRenderSmartFollowUps,
+        smartFollowUps,
+    } = useSmartFollowUps({
+        ticketMessageMetadata: item.data.meta,
+    })
 
     return (
         <MessageBubble variant="ai-agent">
@@ -40,7 +51,14 @@ export function AiAgentTicketThreadMessage({
                     />
                 </Box>
             </MessageHeaderContainer>
-            <MessageBody item={item} />
+            {shouldRenderMessageContent && <MessageBody item={item} />}
+            {shouldRenderSmartFollowUps && (
+                <SmartFollowUps
+                    selectedSmartFollowUpIndex={selectedSmartFollowUpIndex}
+                    showAllSmartFollowUps={showAllSmartFollowUps}
+                    smartFollowUps={smartFollowUps}
+                />
+            )}
             <MessageAttachments item={item} />
             <TicketMessageActions message={item.data} />
             {item.data.ticket_id && (

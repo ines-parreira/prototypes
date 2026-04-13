@@ -1,3 +1,4 @@
+import { useFlag } from '@repo/feature-flags'
 import type * as TicketsModule from '@repo/tickets'
 import { screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
@@ -47,6 +48,13 @@ vi.mock('@repo/tickets', async () => {
     }
 })
 
+vi.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        SmartFollowUps: 'smart-follow-ups',
+    },
+    useFlag: vi.fn(),
+}))
+
 vi.mock('../../../utils/LegacyBridge', () => ({
     useTicketThreadLegacyBridge: vi.fn(),
 }))
@@ -65,6 +73,7 @@ type RegularMessageData = TicketThreadRegularMessageItem['data']
 const HELLO_MESSAGE_TEXT = 'hello'
 const MESSAGE_DATETIME = '2024-03-21T11:00:00Z'
 
+const mockUseFlag = vi.mocked(useFlag)
 const mockUseTicketThreadDateTimeFormat = vi.mocked(
     useTicketThreadDateTimeFormat,
 )
@@ -104,6 +113,21 @@ const aiAgentSender: ItemForTag<
     email: AI_AGENT_BOT_EMAILS[0],
     meta: null,
 }
+
+const mockSmartFollowUps = [
+    {
+        text: 'More than 20 miles',
+        type: 'dynamic_follow_up' as const,
+    },
+    {
+        text: 'Less than 5 miles',
+        type: 'dynamic_follow_up' as const,
+    },
+    {
+        text: '5-10 miles',
+        type: 'dynamic_follow_up' as const,
+    },
+]
 
 const facebookCommentSource: ItemForTag<
     typeof TicketThreadItemTag.Messages.SocialMediaFacebookComment
@@ -700,8 +724,13 @@ function createWhatsAppMessageItem(
     }
 }
 
-function renderItem(item: TicketThreadMessageItem) {
-    return render(<TicketThreadMessageItemComponent item={item} />)
+function renderItem(
+    item: TicketThreadMessageItem,
+    options?: {
+        initialEntries?: string[]
+    },
+) {
+    return render(<TicketThreadMessageItemComponent item={item} />, options)
 }
 
 beforeEach(() => {
@@ -732,6 +761,7 @@ beforeEach(() => {
         },
         timezone: undefined,
     })
+    mockUseFlag.mockReturnValue(false)
     mockUseTicketThreadLegacyBridge.mockReturnValue(createLegacyBridgeValue())
 })
 
@@ -825,6 +855,60 @@ describe('TicketThreadMessageItem', () => {
         expect(renderAiAgentReasoning).toHaveBeenCalledWith({
             message: item.data,
         })
+    })
+
+    it('renders only the selected smart follow-up when the feature is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        renderItem(
+            createAiAgentMessageItem({
+                meta: {
+                    smart_follow_ups: mockSmartFollowUps,
+                    selected_smart_follow_up_index: 0,
+                },
+            }),
+        )
+
+        expect(screen.queryByText(HELLO_MESSAGE_TEXT)).not.toBeInTheDocument()
+        expect(screen.getByText('More than 20 miles')).toBeInTheDocument()
+        expect(screen.queryByText('Less than 5 miles')).not.toBeInTheDocument()
+        expect(screen.queryByText('5-10 miles')).not.toBeInTheDocument()
+    })
+
+    it('renders every smart follow-up when the URL toggle is enabled', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        renderItem(
+            createAiAgentMessageItem({
+                meta: {
+                    smart_follow_ups: mockSmartFollowUps,
+                    selected_smart_follow_up_index: 0,
+                },
+            }),
+            {
+                initialEntries: ['/?show_ticket_quick_replies=true'],
+            },
+        )
+
+        expect(screen.getByText('More than 20 miles')).toBeInTheDocument()
+        expect(screen.getByText('Less than 5 miles')).toBeInTheDocument()
+        expect(screen.getByText('5-10 miles')).toBeInTheDocument()
+    })
+
+    it('keeps the message body visible when the selected smart follow-up index is invalid', () => {
+        mockUseFlag.mockReturnValue(true)
+
+        renderItem(
+            createAiAgentMessageItem({
+                meta: {
+                    smart_follow_ups: mockSmartFollowUps,
+                    selected_smart_follow_up_index: mockSmartFollowUps.length,
+                },
+            }),
+        )
+
+        expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
+        expect(screen.queryByText('More than 20 miles')).not.toBeInTheDocument()
     })
 
     it('renders AI agent internal note item', () => {
