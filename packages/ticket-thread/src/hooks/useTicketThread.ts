@@ -9,6 +9,7 @@ import { useTicketThreadMessages } from './messages/useTicketThreadMessages'
 import { useRuleSuggestion } from './rules-suggestions/useRuleSuggestion'
 import { useTicketThreadSatisfactionSurveys } from './satisfaction-survey/useTicketThreadSatisfactionSurveys'
 import { getQueryOptions } from './shared/queryOption'
+import { useTicketThreadShoppingAssistantEvents } from './shopping-assistant-events/useTicketThreadShoppingAssistantEvents'
 import { sortTicketThreadItems } from './sortTicketThread'
 import type { TicketThreadItem } from './types'
 import { useTicketThreadVoiceCalls } from './voice-calls/useTicketThreadVoiceCalls'
@@ -36,6 +37,10 @@ export function useTicketThread({
         pendingMessages,
     })
     const { events } = useTicketThreadEvents({ ticketId })
+    const { items: shoppingAssistantItems } =
+        useTicketThreadShoppingAssistantEvents({
+            ticketId,
+        })
     const voiceCalls = useTicketThreadVoiceCalls({ ticketId })
     const satisfactionSurveys = useTicketThreadSatisfactionSurveys({
         ticketId,
@@ -51,6 +56,7 @@ export function useTicketThread({
         let items: TicketThreadItem[] = sortTicketThreadItems([
             ...messages,
             ...(showTicketEvents ? events : []),
+            ...shoppingAssistantItems,
             ...voiceCalls,
             ...satisfactionSurveys,
         ])
@@ -64,6 +70,7 @@ export function useTicketThread({
         messages,
         activePendingMessages,
         events,
+        shoppingAssistantItems,
         voiceCalls,
         satisfactionSurveys,
         showTicketEvents,

@@ -5,102 +5,22 @@ import type { Event } from '@gorgias/helpdesk-queries'
 
 import type { TicketThreadItem } from '../types'
 import { TicketThreadItemTag } from '../types'
-import { InfluencedOrderSource } from './constants'
 import {
     isActionExecutedEvent,
     isAuditLogEvent,
-    isInfluencedOrder,
     isPhoneEvent,
     isPrivateReplyEvent,
     isSatisfactionSurveyRespondedEvent,
-    isShopifyIntegration,
-    isShopifyOrder,
-    isShoppingAssistantEvent,
     isSingleEventItem,
 } from './predicates'
-import type { ShoppingAssistantEventSchema, TicketEventSchema } from './schemas'
+import type { TicketEventSchema } from './schemas'
 import type {
     TicketThreadAuditLogAttribution,
     TicketThreadAuditLogEvent,
     TicketThreadAuditLogEventItem,
     TicketThreadEventSource,
-    TicketThreadShoppingAssistantEventSources,
     TicketThreadSingleEventItem,
 } from './types'
-
-function sourceToInfluencedOrderSource(
-    source: string | null | undefined,
-): InfluencedOrderSource {
-    switch (source) {
-        case InfluencedOrderSource.AI_JOURNEY:
-            return InfluencedOrderSource.AI_JOURNEY
-        case InfluencedOrderSource.AI_AGENT:
-            return InfluencedOrderSource.AI_AGENT
-        case InfluencedOrderSource.SHOPPING_ASSISTANT:
-            return InfluencedOrderSource.SHOPPING_ASSISTANT
-        default:
-            return InfluencedOrderSource.SHOPPING_ASSISTANT
-    }
-}
-
-export function toShoppingAssistantEvents({
-    ticketId,
-    influencedOrders,
-    shopifyOrders,
-    shopifyIntegrations,
-}: TicketThreadShoppingAssistantEventSources): ShoppingAssistantEventSchema[] {
-    const normalizedInfluencedOrders = (influencedOrders ?? []).filter(
-        isInfluencedOrder,
-    )
-    const normalizedShopifyOrders = (shopifyOrders ?? []).filter(isShopifyOrder)
-    const normalizedShopifyIntegrations = (shopifyIntegrations ?? []).filter(
-        isShopifyIntegration,
-    )
-
-    if (
-        !ticketId ||
-        !normalizedInfluencedOrders.length ||
-        !normalizedShopifyOrders.length ||
-        !normalizedShopifyIntegrations.length
-    ) {
-        return []
-    }
-
-    return normalizedInfluencedOrders.reduce<ShoppingAssistantEventSchema[]>(
-        (events, influencedOrder) => {
-            if (influencedOrder.ticketId !== ticketId) {
-                return events
-            }
-
-            const order = normalizedShopifyOrders.find(
-                (shopifyOrder) => shopifyOrder.id === influencedOrder.id,
-            )
-            const integration = normalizedShopifyIntegrations.find(
-                (shopifyIntegration) =>
-                    shopifyIntegration.id === influencedOrder.integrationId,
-            )
-
-            if (!order || !integration) {
-                return events
-            }
-
-            const createdDatetime = influencedOrder.createdDatetime
-
-            events.push({
-                orderId: influencedOrder.id,
-                orderNumber: order.order_number,
-                shopName: integration.name,
-                created_datetime: createdDatetime,
-                influencedBy: sourceToInfluencedOrderSource(
-                    influencedOrder.source,
-                ),
-            })
-
-            return events
-        },
-        [],
-    )
-}
 
 export function toTaggedEvent(
     event: TicketThreadEventSource,
@@ -113,14 +33,6 @@ export function toTaggedEvent(
     if (isActionExecutedEvent(event)) {
         return {
             _tag: TicketThreadItemTag.Events.ActionExecutedEvent,
-            data: event,
-            datetime,
-        }
-    }
-
-    if (isShoppingAssistantEvent(event)) {
-        return {
-            _tag: TicketThreadItemTag.Events.ShoppingAssistantEvent,
             data: event,
             datetime,
         }
@@ -210,7 +122,6 @@ export function shouldRenderTicketThreadEvent(
     event: TicketThreadEventSource,
 ): boolean {
     return (
-        isShoppingAssistantEvent(event) ||
         isPhoneEvent(event) ||
         isPrivateReplyEvent(event) ||
         isSatisfactionSurveyRespondedEvent(event) ||

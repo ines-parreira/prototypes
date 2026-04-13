@@ -9,6 +9,7 @@ import { useTicketThreadEvents } from '../events/useTicketThreadEvents'
 import { useTicketThreadMessages } from '../messages/useTicketThreadMessages'
 import { useRuleSuggestion } from '../rules-suggestions/useRuleSuggestion'
 import { useTicketThreadSatisfactionSurveys } from '../satisfaction-survey/useTicketThreadSatisfactionSurveys'
+import { useTicketThreadShoppingAssistantEvents } from '../shopping-assistant-events/useTicketThreadShoppingAssistantEvents'
 import { TicketThreadItemTag } from '../types'
 import { useTicketThread } from '../useTicketThread'
 import { useTicketThreadVoiceCalls } from '../voice-calls/useTicketThreadVoiceCalls'
@@ -25,6 +26,12 @@ vi.mock('../voice-calls/useTicketThreadVoiceCalls', () => ({
 vi.mock('../satisfaction-survey/useTicketThreadSatisfactionSurveys', () => ({
     useTicketThreadSatisfactionSurveys: vi.fn(),
 }))
+vi.mock(
+    '../shopping-assistant-events/useTicketThreadShoppingAssistantEvents',
+    () => ({
+        useTicketThreadShoppingAssistantEvents: vi.fn(),
+    }),
+)
 vi.mock('../rules-suggestions/useRuleSuggestion', () => ({
     useRuleSuggestion: vi.fn(),
 }))
@@ -37,6 +44,9 @@ const mockUseTicketThreadEvents = vi.mocked(useTicketThreadEvents)
 const mockUseTicketThreadVoiceCalls = vi.mocked(useTicketThreadVoiceCalls)
 const mockUseTicketThreadSatisfactionSurveys = vi.mocked(
     useTicketThreadSatisfactionSurveys,
+)
+const mockUseTicketThreadShoppingAssistantEvents = vi.mocked(
+    useTicketThreadShoppingAssistantEvents,
 )
 const mockUseRuleSuggestion = vi.mocked(useRuleSuggestion)
 const mockUseContactReasonPrediction = vi.mocked(useContactReasonPrediction)
@@ -62,6 +72,9 @@ describe('useTicketThread', () => {
         })
         mockUseTicketThreadVoiceCalls.mockReturnValue([])
         mockUseTicketThreadSatisfactionSurveys.mockReturnValue([])
+        mockUseTicketThreadShoppingAssistantEvents.mockReturnValue({
+            items: [],
+        })
         mockUseRuleSuggestion.mockReturnValue({
             insertRuleSuggestion: (items) => items,
         })
@@ -87,6 +100,10 @@ describe('useTicketThread', () => {
             _tag: 'voice-late',
             datetime: '2024-03-21T11:04:00Z',
         }
+        const influencedOrderMid = {
+            _tag: TicketThreadItemTag.ShoppingAssistant.InfluencedOrder,
+            datetime: '2024-03-21T11:02:15Z',
+        }
         const surveyMidLate = {
             _tag: 'survey-mid-late',
             datetime: '2024-03-21T11:02:30Z',
@@ -107,6 +124,9 @@ describe('useTicketThread', () => {
             hasSatisfactionSurveyRespondedEvent: false,
         })
         mockUseTicketThreadVoiceCalls.mockReturnValue([voiceLate] as any)
+        mockUseTicketThreadShoppingAssistantEvents.mockReturnValue({
+            items: [influencedOrderMid] as any,
+        })
         mockUseTicketThreadSatisfactionSurveys.mockReturnValue([
             surveyMidLate,
         ] as any)
@@ -131,6 +151,7 @@ describe('useTicketThread', () => {
         const expectedBeforeInsertions = [
             messageEarly,
             eventMid,
+            influencedOrderMid,
             surveyMidLate,
             messageLate,
             voiceLate,
@@ -177,6 +198,42 @@ describe('useTicketThread', () => {
         )
 
         expect(result.current.ticketThreadItems).toEqual([message])
+    })
+
+    it('keeps influenced order items visible when showTicketEvents is false', () => {
+        const message = {
+            _tag: 'message',
+            datetime: '2024-03-21T11:01:00Z',
+        }
+        const event = {
+            _tag: 'event',
+            datetime: '2024-03-21T11:00:00Z',
+        }
+        const influencedOrder = {
+            _tag: TicketThreadItemTag.ShoppingAssistant.InfluencedOrder,
+            datetime: '2024-03-21T11:00:30Z',
+        }
+
+        mockUseTicketThreadMessages.mockReturnValue({
+            messages: [message] as any,
+            activePendingMessages: [],
+        })
+        mockUseTicketThreadEvents.mockReturnValue({
+            events: [event] as any,
+            hasSatisfactionSurveyRespondedEvent: false,
+        })
+        mockUseTicketThreadShoppingAssistantEvents.mockReturnValue({
+            items: [influencedOrder] as any,
+        })
+
+        const { result } = renderHook(() =>
+            useTicketThread({ ticketId: 7, showTicketEvents: false }),
+        )
+
+        expect(result.current.ticketThreadItems).toEqual([
+            influencedOrder,
+            message,
+        ])
     })
 
     it('merges consecutive event items in the final ticket thread output', () => {

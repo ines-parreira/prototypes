@@ -74,9 +74,3 @@ export const MESSAGING_TICKET_PRIVATE_REPLY_EVENT =
     'MessagingTicketPrivateReplyEvent'
 export const COMMENT_TICKET_PRIVATE_REPLY_EVENT =
     'CommentTicketPrivateReplyEvent'
-
-export enum InfluencedOrderSource {
-    AI_JOURNEY = 'ai-journey',
-    SHOPPING_ASSISTANT = 'shopping-assistant',
-    AI_AGENT = 'ai-agent',
-}

@@ -2,11 +2,6 @@ import type { Prettify } from '@repo/types'
 
 import type { Event } from '@gorgias/helpdesk-queries'
 
-import type {
-    LegacyBridgeInfluencedOrder,
-    LegacyBridgeShopifyIntegration,
-    LegacyBridgeShopifyOrder,
-} from '../../utils/LegacyBridge'
 import type { TicketThreadItemTag } from '../types'
 import type {
     ActionExecutedEventSchema,
@@ -14,7 +9,6 @@ import type {
     PhoneEventSchema,
     PrivateReplyActionEventSchema,
     SatisfactionSurveyRespondedEventSchema,
-    ShoppingAssistantEventSchema,
     TicketEventSchema,
 } from './schemas'
 
@@ -70,12 +64,6 @@ export type TicketThreadPrivateReplyEventItem = {
     datetime: string
 }
 
-export type TicketThreadShoppingAssistantEventItem = {
-    _tag: typeof TicketThreadItemTag.Events.ShoppingAssistantEvent
-    data: ShoppingAssistantEventSchema
-    datetime: string
-}
-
 export type TicketThreadActionExecutedEventItem = {
     _tag: typeof TicketThreadItemTag.Events.ActionExecutedEvent
     data: Prettify<EventWithSchema<ActionExecutedEventSchema>>
@@ -89,7 +77,6 @@ export type TicketThreadSingleEventItem =
     | TicketThreadAuditLogEventItem
     | TicketThreadSatisfactionSurveyRespondedEventItem
     | TicketThreadPrivateReplyEventItem
-    | TicketThreadShoppingAssistantEventItem
 
 export type TicketThreadGroupedEventsItem = {
     _tag: typeof TicketThreadItemTag.Events.GroupedEvents
@@ -97,14 +84,7 @@ export type TicketThreadGroupedEventsItem = {
     datetime: string
 }
 
-export type TicketThreadEventSource = Event | ShoppingAssistantEventSchema
-
-export type TicketThreadShoppingAssistantEventSources = {
-    ticketId: number
-    influencedOrders?: LegacyBridgeInfluencedOrder[]
-    shopifyOrders?: LegacyBridgeShopifyOrder[]
-    shopifyIntegrations?: LegacyBridgeShopifyIntegration[]
-}
+export type TicketThreadEventSource = Event
 
 export type TicketThreadEventItem =
     | TicketThreadSingleEventItem

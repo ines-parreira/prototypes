@@ -9,7 +9,6 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import {
-    InfluencedOrderSource,
     PHONE_EVENTS,
     PRIVATE_REPLY_ACTIONS,
 } from '../../../hooks/events/constants'
@@ -45,13 +44,6 @@ const privateReplyEventData = {
     data: {
         action_name: PRIVATE_REPLY_ACTIONS[0],
     },
-} as const
-const shoppingAssistantEventData = {
-    orderId: 100,
-    orderNumber: 200,
-    shopName: 'Acme Shop',
-    created_datetime: '2024-03-21T11:00:00Z',
-    influencedBy: InfluencedOrderSource.SHOPPING_ASSISTANT,
 } as const
 const auditLogEventData = {
     object_type: 'Ticket',
@@ -165,15 +157,6 @@ describe('TicketThreadEventItem', () => {
                 datetime: '2024-03-21T11:00:00Z',
             },
             renderedText: JSON.stringify(privateReplyEventData),
-        },
-        {
-            label: 'shopping assistant event',
-            item: {
-                _tag: TicketThreadItemTag.Events.ShoppingAssistantEvent,
-                data: shoppingAssistantEventData,
-                datetime: '2024-03-21T11:00:00Z',
-            },
-            renderedText: JSON.stringify(shoppingAssistantEventData),
         },
         {
             label: 'action executed event',

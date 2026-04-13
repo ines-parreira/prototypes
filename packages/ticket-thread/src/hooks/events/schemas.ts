@@ -5,7 +5,6 @@ import type { AUDIT_LOG_EVENT_TYPES } from './constants'
 import {
     ACTION_EXECUTED_EVENT_TYPE,
     COMMENT_TICKET_PRIVATE_REPLY_EVENT,
-    InfluencedOrderSource,
     MESSAGING_TICKET_PRIVATE_REPLY_EVENT,
     PHONE_EVENTS,
     PRIVATE_REPLY_ACTIONS,
@@ -517,38 +516,6 @@ export const deprecatedPrivateEventSchema = z.union([
 export type DeprecatedPrivateEventSchema = z.infer<
     typeof deprecatedPrivateEventSchema
 >
-
-export const shoppingAssistantEventSchema = z.object({
-    orderId: z.number(),
-    orderNumber: z.number(),
-    shopName: z.string(),
-    created_datetime: z.string(),
-    influencedBy: z.nativeEnum(InfluencedOrderSource),
-})
-export type ShoppingAssistantEventSchema = z.infer<
-    typeof shoppingAssistantEventSchema
->
-
-export const influencedOrderSchema = z.object({
-    id: z.number(),
-    integrationId: z.number(),
-    ticketId: z.number(),
-    createdDatetime: z.string(),
-    source: z.string().nullable().optional(),
-})
-export type InfluencedOrderSchema = z.infer<typeof influencedOrderSchema>
-
-export const shopifyOrderSchema = z.object({
-    id: z.number(),
-    order_number: z.number(),
-})
-export type ShopifyOrderSchema = z.infer<typeof shopifyOrderSchema>
-
-export const shopifyIntegrationSchema = z.object({
-    id: z.number(),
-    name: z.string(),
-})
-export type ShopifyIntegrationSchema = z.infer<typeof shopifyIntegrationSchema>
 
 export const satisfactionSurveyRespondedEventSchema = ticketEventSchema.extend({
     type: z.literal(SATISFACTION_SURVEY_RESPONDED_EVENT_TYPE),

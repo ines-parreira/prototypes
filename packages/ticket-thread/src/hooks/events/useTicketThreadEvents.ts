@@ -1,25 +1,21 @@
 import { useMemo } from 'react'
 
-import { useTicketThreadLegacyBridge } from '../../utils/LegacyBridge'
 import {
     isAuditLogEvent,
     isNonRenderablePrivateReplyEvent,
     isSatisfactionSurveyRespondedEvent,
     isViaRuleEvent,
 } from './predicates'
-import {
-    shouldRenderTicketThreadEvent,
-    toShoppingAssistantEvents,
-    toTaggedEvent,
-} from './transforms'
+import { shouldRenderTicketThreadEvent, toTaggedEvent } from './transforms'
 import type {
     TicketThreadAuditLogAttribution,
-    TicketThreadShoppingAssistantEventSources,
     TicketThreadSingleEventItem,
 } from './types'
 import { useListAllTicketEvents } from './useListAllEvents'
 
-type UseTicketThreadEventsParams = TicketThreadShoppingAssistantEventSources
+type UseTicketThreadEventsParams = {
+    ticketId: number
+}
 
 type UseTicketThreadEventsResult = {
     events: TicketThreadSingleEventItem[]
@@ -56,27 +52,12 @@ function getAuditLogAttribution(
 export function useTicketThreadEvents({
     ticketId,
 }: UseTicketThreadEventsParams): UseTicketThreadEventsResult {
-    const {
-        currentTicketShoppingAssistantData: {
-            influencedOrders,
-            shopifyOrders,
-            shopifyIntegrations,
-        },
-    } = useTicketThreadLegacyBridge()
     const { data: events } = useListAllTicketEvents(ticketId)
 
     return useMemo(() => {
         let hasSatisfactionSurveyRespondedEvent = false
         const rawTicketEvents = events ?? []
-
-        const shoppingAssistantEvents = toShoppingAssistantEvents({
-            ticketId,
-            influencedOrders,
-            shopifyOrders,
-            shopifyIntegrations,
-        })
-
-        const items = [...rawTicketEvents, ...shoppingAssistantEvents]
+        const items = rawTicketEvents
             .filter((event) => !isNonRenderablePrivateReplyEvent(event))
             .filter(shouldRenderTicketThreadEvent)
             .map((event): TicketThreadSingleEventItem => {
@@ -99,5 +80,5 @@ export function useTicketThreadEvents({
             .filter((item): item is TicketThreadSingleEventItem => !!item)
 
         return { events: items, hasSatisfactionSurveyRespondedEvent }
-    }, [events, ticketId, influencedOrders, shopifyOrders, shopifyIntegrations])
+    }, [events])
 }

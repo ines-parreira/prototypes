@@ -29,8 +29,6 @@ export function TicketThreadSingleEventItem({
             return <Box padding="md">{JSON.stringify(item.data)}</Box>
         case TicketThreadItemTag.Events.PrivateReplyEvent:
             return <Box padding="md">{JSON.stringify(item.data)}</Box>
-        case TicketThreadItemTag.Events.ShoppingAssistantEvent:
-            return <Box padding="md">{JSON.stringify(item.data)}</Box>
         case TicketThreadItemTag.Events.ActionExecutedEvent:
             return <TicketThreadActionExecutedEventItem item={item} />
         default:

@@ -9,14 +9,10 @@ import type {
     ActionNameEventSchema,
     AuditLogEventSchema,
     DeprecatedPrivateEventSchema,
-    InfluencedOrderSchema,
     PhoneEventSchema,
     PrivateReplyActionEventSchema,
     RuleExecutedTypeEventSchema,
     SatisfactionSurveyRespondedEventSchema,
-    ShopifyIntegrationSchema,
-    ShopifyOrderSchema,
-    ShoppingAssistantEventSchema,
     SystemRuleEventSchema,
     TicketEventSchema,
 } from './schemas'
@@ -26,15 +22,11 @@ import {
     auditLogEventSchema,
     deprecatedPrivateEventSchema,
     eventWithContextSchema,
-    influencedOrderSchema,
     phoneEventSchema,
     privateReplyActionEventSchema,
     ruleExecutedEventWithContextSchema,
     ruleExecutedTypeEventSchema,
     satisfactionSurveyRespondedEventSchema,
-    shopifyIntegrationSchema,
-    shopifyOrderSchema,
-    shoppingAssistantEventSchema,
     systemRuleEventSchema,
     ticketEventSchema,
 } from './schemas'
@@ -147,28 +139,6 @@ export function isNonRenderablePrivateReplyEvent(
     return isPrivateReplyActionEvent(input) && !isDeprecatedPrivateEvent(input)
 }
 
-export function isShoppingAssistantEvent(
-    input: unknown,
-): input is ShoppingAssistantEventSchema {
-    return shoppingAssistantEventSchema.safeParse(input).success
-}
-
-export function isInfluencedOrder(
-    input: unknown,
-): input is InfluencedOrderSchema {
-    return influencedOrderSchema.safeParse(input).success
-}
-
-export function isShopifyOrder(input: unknown): input is ShopifyOrderSchema {
-    return shopifyOrderSchema.safeParse(input).success
-}
-
-export function isShopifyIntegration(
-    input: unknown,
-): input is ShopifyIntegrationSchema {
-    return shopifyIntegrationSchema.safeParse(input).success
-}
-
 export function isSingleEventItem(
     item: TicketThreadItem,
 ): item is TicketThreadSingleEventItem {
@@ -179,7 +149,6 @@ export function isSingleEventItem(
         case TicketThreadItemTag.Events.ActionExecutedEvent:
         case TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent:
         case TicketThreadItemTag.Events.PrivateReplyEvent:
-        case TicketThreadItemTag.Events.ShoppingAssistantEvent:
             return true
         default:
             return false

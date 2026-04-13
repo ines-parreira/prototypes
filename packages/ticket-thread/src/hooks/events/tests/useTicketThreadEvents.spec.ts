@@ -26,25 +26,6 @@ type AuditLogEventParams = {
     data?: Record<string, unknown> | null
 }
 
-const shoppingAssistantBridgeData = {
-    currentTicketShoppingAssistantData: {
-        influencedOrders: [
-            {
-                id: 1001,
-                integrationId: 42,
-                ticketId: 7,
-                createdDatetime: '2024-01-01T11:00:00Z',
-                source: 'shopping-assistant',
-            },
-        ],
-        shopifyOrders: [{ id: 1001, order_number: 3001 }],
-        shopifyIntegrations: [{ id: 42, name: 'Primary shop' }],
-    },
-    currentTicketRuleSuggestionData: {
-        shouldDisplayDemoSuggestion: true,
-    },
-}
-
 function getAuditLogEvent({
     id,
     type,
@@ -90,7 +71,7 @@ function getAuditLogItemByType(
 }
 
 describe('useTicketThreadEvents', () => {
-    it('applies strict action-executed filtering and merges shopping assistant events', async () => {
+    it('applies strict action-executed filtering to renderable ticket events', async () => {
         const mockListEvents = getEventsHandler([
             mockEvent({
                 object_type: 'ticket',
@@ -162,11 +143,8 @@ describe('useTicketThreadEvents', () => {
 
         server.use(mockListEvents.handler)
 
-        const { result } = renderHook(
-            () => useTicketThreadEvents({ ticketId: 7 }),
-            {
-                ...shoppingAssistantBridgeData,
-            },
+        const { result } = renderHook(() =>
+            useTicketThreadEvents({ ticketId: 7 }),
         )
 
         await waitForListEventsRequest((request) => {
@@ -174,13 +152,12 @@ describe('useTicketThreadEvents', () => {
             expect(url.searchParams.get('object_id')).toBe('7')
         })
         await waitFor(() => {
-            expect(result.current.events).toHaveLength(3)
+            expect(result.current.events).toHaveLength(2)
         })
 
         expect(result.current.events.map((event) => event._tag)).toEqual([
             TicketThreadItemTag.Events.PrivateReplyEvent,
             TicketThreadItemTag.Events.ActionExecutedEvent,
-            TicketThreadItemTag.Events.ShoppingAssistantEvent,
         ])
         expect(result.current.hasSatisfactionSurveyRespondedEvent).toBe(true)
     })
@@ -314,18 +291,8 @@ describe('useTicketThreadEvents', () => {
 
         server.use(mockListEvents.handler)
 
-        const { result } = renderHook(
-            () => useTicketThreadEvents({ ticketId: 999 }),
-            {
-                currentTicketShoppingAssistantData: {
-                    influencedOrders: [],
-                    shopifyOrders: [],
-                    shopifyIntegrations: [],
-                },
-                currentTicketRuleSuggestionData: {
-                    shouldDisplayDemoSuggestion: true,
-                },
-            },
+        const { result } = renderHook(() =>
+            useTicketThreadEvents({ ticketId: 999 }),
         )
 
         await waitFor(() => {

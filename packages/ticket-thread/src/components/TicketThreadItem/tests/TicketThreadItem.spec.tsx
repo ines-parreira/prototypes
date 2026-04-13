@@ -20,6 +20,7 @@ import {
 } from '@gorgias/helpdesk-mocks'
 
 import { PHONE_EVENTS } from '../../../hooks/events/constants'
+import { InfluencedOrderSource } from '../../../hooks/shopping-assistant-events/constants'
 import type { TicketThreadItem } from '../../../hooks/types'
 import { TicketThreadItemTag } from '../../../hooks/types'
 import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
@@ -159,6 +160,13 @@ const voiceCallData = mockVoiceCall({
     duration: 120,
     last_answered_by_agent_id: 1,
 })
+const influencedOrderData = {
+    orderId: 123456789,
+    orderNumber: 1001,
+    shopName: 'test-shop',
+    created_datetime: '2024-03-20T10:00:00Z',
+    influencedBy: InfluencedOrderSource.SHOPPING_ASSISTANT,
+}
 const satisfactionSurveyData = {
     authorLabel: 'Jane Customer',
     body_text: 'Great support',
@@ -184,6 +192,11 @@ const actionExecutedEventData = {
 
 function renderItem(item: TicketThreadItem) {
     return render(<TicketThreadItemComponent item={item} />)
+}
+
+function hasExactText(text: string) {
+    return (_content: string, node: Element | null) =>
+        node?.textContent === text
 }
 
 describe('TicketThreadItem', () => {
@@ -296,6 +309,22 @@ describe('TicketThreadItem', () => {
         } as TicketThreadItem)
 
         expect(screen.getByText('4 stars CSAT review')).toBeInTheDocument()
+    })
+
+    it('renders an influenced order item', () => {
+        renderItem({
+            _tag: TicketThreadItemTag.ShoppingAssistant.InfluencedOrder,
+            data: influencedOrderData,
+            datetime: '2024-03-20T10:00:00Z',
+        } as TicketThreadItem)
+
+        expect(
+            screen.getByRole('link', { name: /order #1001/i }),
+        ).toBeInTheDocument()
+        expect(screen.getByText('influenced')).toBeInTheDocument()
+        expect(
+            screen.getByText(hasExactText('via Shopping Assistant')),
+        ).toBeInTheDocument()
     })
 
     it('renders a rule suggestion item', () => {

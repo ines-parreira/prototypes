@@ -3,6 +3,7 @@ import type { TicketThreadEventItem } from './events/types'
 import type { TicketThreadMessageItem } from './messages/types'
 import type { TicketThreadRuleSuggestionItem } from './rules-suggestions/types'
 import type { TicketThreadSatisfactionSurveyItem } from './satisfaction-survey/types'
+import type { TicketThreadShoppingAssistantItem } from './shopping-assistant-events/types'
 import type {
     TicketThreadOutboundVoiceCallItem,
     TicketThreadVoiceCallItem,
@@ -38,12 +39,14 @@ export const TicketThreadItemTag = {
         ActionExecutedEvent: 'action-executed-event',
         SatisfactionSurveyRespondedEvent: 'satisfaction-survey-responded-event',
         PrivateReplyEvent: 'private-reply-event',
-        ShoppingAssistantEvent: 'shopping-assistant-event',
         GroupedEvents: 'grouped-events',
     },
     VoiceCalls: {
         VoiceCall: 'voice-call',
         OutboundVoiceCall: 'outbound-voice-call',
+    },
+    ShoppingAssistant: {
+        InfluencedOrder: 'shopping-assistant-influenced-order',
     },
     SatisfactionSurvey: 'satisfaction-survey',
     RuleSuggestion: 'rule-suggestion',
@@ -55,6 +58,7 @@ export type TicketThreadItem =
     | TicketThreadEventItem
     | TicketThreadVoiceCallItem
     | TicketThreadOutboundVoiceCallItem
+    | TicketThreadShoppingAssistantItem
     | TicketThreadSatisfactionSurveyItem
     | TicketThreadRuleSuggestionItem
     | TicketThreadContactReasonSuggestionItem

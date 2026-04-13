@@ -94,6 +94,50 @@ describe('TicketThreadLegacyBridge', () => {
         })
     })
 
+    it('passes Shopping Assistant bridge data through to the ticket-thread provider', () => {
+        mockUseFetchInfluencedOrdersForCurrentTicket.mockReturnValue({
+            influencedOrders: {
+                data: [
+                    {
+                        id: 1001,
+                        integrationId: 42,
+                        ticketId: 1,
+                        createdDatetime: '2024-01-01T11:00:00Z',
+                        source: 'shopping-assistant',
+                    },
+                ],
+            },
+            ticketContext: {
+                orders: [{ id: 1001, order_number: 3001 }],
+                shopifyIntegrations: [{ id: 42, name: 'Primary shop' }],
+                ticketId: 1,
+            },
+        })
+
+        render(
+            <TicketThreadLegacyBridge>
+                <div>Ticket thread child</div>
+            </TicketThreadLegacyBridge>,
+        )
+
+        const providerProps =
+            mockTicketThreadLegacyBridgeProvider.mock.calls[0][0]
+
+        expect(providerProps.currentTicketShoppingAssistantData).toEqual({
+            influencedOrders: [
+                {
+                    id: 1001,
+                    integrationId: 42,
+                    ticketId: 1,
+                    createdDatetime: '2024-01-01T11:00:00Z',
+                    source: 'shopping-assistant',
+                },
+            ],
+            shopifyOrders: [{ id: 1001, order_number: 3001 }],
+            shopifyIntegrations: [{ id: 42, name: 'Primary shop' }],
+        })
+    })
+
     it('registers the AI agent draft bridge renderer on the legacy bridge provider', () => {
         render(
             <TicketThreadLegacyBridge>

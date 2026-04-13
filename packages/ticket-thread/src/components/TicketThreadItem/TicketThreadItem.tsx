@@ -4,6 +4,7 @@ import { assertNever } from '../../utils/assertNever'
 import { TicketThreadCallItem } from '../TicketThreadCallItem/TicketThreadCallIItem'
 import { TicketThreadSingleEventItem } from '../TicketThreadEventItem/TicketTheadEventItem'
 import { TicketThreadGroupedEventsItem } from '../TicketThreadEventItem/TicketTheadGroupedEventsItem'
+import { TicketThreadInfluencedOrderItem } from '../TicketThreadInfluencedOrderItem/TicketThreadInfluencedOrderItem'
 import { TicketThreadMessageItem } from '../TicketThreadMessageItem/TicketThreadMessageItem'
 import { TicketThreadSatisfactionSurveyItem } from '../TicketThreadSatisfactionSurveyItem/TicketTheadSatisfactionSurveyItem'
 import { TicketThreadSuggestionItem } from '../TicketThreadSuggestions/TicketThreadSuggestionItem'
@@ -39,13 +40,14 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
         case TicketThreadItemTag.Events.ActionExecutedEvent:
         case TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent:
         case TicketThreadItemTag.Events.PrivateReplyEvent:
-        case TicketThreadItemTag.Events.ShoppingAssistantEvent:
             return <TicketThreadSingleEventItem item={item} />
         case TicketThreadItemTag.Events.GroupedEvents:
             return <TicketThreadGroupedEventsItem item={item} />
         case TicketThreadItemTag.VoiceCalls.VoiceCall:
         case TicketThreadItemTag.VoiceCalls.OutboundVoiceCall:
             return <TicketThreadCallItem item={item} />
+        case TicketThreadItemTag.ShoppingAssistant.InfluencedOrder:
+            return <TicketThreadInfluencedOrderItem item={item} />
         case TicketThreadItemTag.SatisfactionSurvey:
             return <TicketThreadSatisfactionSurveyItem item={item} />
         case TicketThreadItemTag.RuleSuggestion:
