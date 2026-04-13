@@ -57,12 +57,11 @@ describe('FormUnsavedChangesPrompt', () => {
     })
 
     it('should call onSave when form is valid', async () => {
-        const handleSubmitMock = jest.fn((callback) => callback)
+        const handleSubmitMock = jest.fn(
+            (validCallback) => () => validCallback(),
+        )
         useFormContextMock.mockReturnValue({
-            formState: {
-                isDirty: true,
-                isValid: true,
-            },
+            formState: { isDirty: true },
             handleSubmit: handleSubmitMock,
         } as any)
 
@@ -72,17 +71,51 @@ describe('FormUnsavedChangesPrompt', () => {
 
         await handleOnSave()
 
-        expect(handleSubmitMock).toHaveBeenCalledWith(onSave)
+        expect(handleSubmitMock).toHaveBeenCalledWith(
+            onSave,
+            expect.any(Function),
+        )
         expect(onSave).toHaveBeenCalled()
     })
 
-    it('should show error when form is invalid', async () => {
+    it('should forward shouldRedirectAfterSave to UnsavedChangesPrompt', () => {
         useFormContextMock.mockReturnValue({
-            formState: {
-                isDirty: true,
-                isValid: false,
-            },
-            handleSubmit: jest.fn(),
+            formState: { isDirty: false },
+            handleSubmit: jest.fn((callback) => () => callback()),
+        } as any)
+
+        render(
+            <FormUnsavedChangesPrompt
+                onSave={onSave}
+                shouldRedirectAfterSave
+            />,
+        )
+
+        expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
+            expect.objectContaining({ shouldRedirectAfterSave: true }),
+        )
+    })
+
+    it('should not forward shouldRedirectAfterSave when not provided', () => {
+        useFormContextMock.mockReturnValue({
+            formState: { isDirty: false },
+            handleSubmit: jest.fn((callback) => () => callback()),
+        } as any)
+
+        render(<FormUnsavedChangesPrompt onSave={onSave} />)
+
+        expect(mockUnsavedChangesPrompt).toHaveBeenLastCalledWith(
+            expect.objectContaining({ shouldRedirectAfterSave: undefined }),
+        )
+    })
+
+    it('should show error when form is invalid', async () => {
+        const handleSubmitMock = jest.fn(
+            (_validCallback, invalidCallback) => () => invalidCallback(),
+        )
+        useFormContextMock.mockReturnValue({
+            formState: { isDirty: true },
+            handleSubmit: handleSubmitMock,
         } as any)
 
         render(<FormUnsavedChangesPrompt onSave={onSave} />)

@@ -277,7 +277,7 @@ describe('VoiceQueueSettingsForm', () => {
             )
         })
 
-        getLastMockCall(mockUnsavedChangesPrompt)[0].onSave()
+        await getLastMockCall(mockUnsavedChangesPrompt)[0].onSave()
         expect(notify).toHaveBeenCalledWith({
             message:
                 'Please make sure all fields are filled out correctly before saving',
