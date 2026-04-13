@@ -14,75 +14,6 @@
     /* ── Layout ─────────────────────────────────────────────────── */
     .app { display: flex; height: 100vh; }
 
-    /* ── Sidebar ─────────────────────────────────────────────────── */
-    .sidebar {
-      width: 240px;
-      flex-shrink: 0;
-      background: #fafafa;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 8px;
-      height: 100vh;
-    }
-
-    .top-nav { display: flex; flex-direction: column; gap: 16px; }
-
-    /* Product header row */
-    .product-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-left: 2px;
-    }
-    .product-logo { display: flex; align-items: center; gap: 2px; }
-    .product-icon {
-      width: 32px; height: 32px;
-      background: #f1ecff;
-      border: 0.2px solid #7e55f6;
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .product-name { font-size: 16px; font-weight: 600; color: #1e242e; padding: 0 8px; }
-    .header-actions { display: flex; gap: 8px; }
-    .icon-btn {
-      width: 28px; height: 28px;
-      border-radius: 6px; border: none; background: transparent;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-    }
-    .icon-btn:hover { background: #ebecef; }
-
-    /* Nav items */
-    .nav-group { display: flex; flex-direction: column; gap: 8px; }
-    .nav-item svg, .nav-item img { display: block; flex-shrink: 0; width: 16px; height: 16px; }
-    .recents-group { display: flex; flex-direction: column; gap: 4px; }
-    .nav-item {
-      display: flex; align-items: center; gap: 8px;
-      height: 24px; padding: 0 4px 0 8px;
-      border-radius: 8px; cursor: pointer;
-      width: 224px; transition: background 0.1s;
-    }
-    .nav-item:hover:not(.active) { background: rgba(0,0,0,0.04); }
-    .nav-item.active { background: #f1ecff; }
-    .nav-item.active .nav-label { font-size: 14px; font-weight: 600; color: #683fcf; }
-    .nav-item.secondary .nav-label { font-size: 14px; font-weight: 500; color: #1e242e; }
-    .nav-item.recent .nav-label { font-size: 14px; font-weight: 400; color: #1e242e; }
-
-    /* Bottom avatar */
-    .bottom-nav { padding-top: 16px; }
-    .avatar-btn { background: none; border: none; cursor: pointer; position: relative; display: inline-block; }
-    .avatar {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: linear-gradient(155deg, #ebecef 17%, #c7cad1 92%);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 600; color: #5c6370;
-    }
-    .online-dot {
-      width: 9px; height: 9px;
-      background: #22c55e; border: 1.5px solid white;
-      border-radius: 50%; position: absolute; bottom: -1px; right: -1px;
-    }
 
     /* ── Main ────────────────────────────────────────────────────── */
     .main { flex: 1; padding: 8px; display: flex; flex-direction: column; min-width: 0; }
@@ -371,17 +302,6 @@
     .attn-chart { flex-shrink: 0; width: 120px; display: flex; align-items: center; }
     .attn-chart img { width: 100%; }
 
-    /* Recents header */
-    .recents-header {
-      height: 24px; padding: 0 8px;
-      display: flex; align-items: center;
-    }
-    .recents-label { font-size: 12px; font-weight: 400; color: #6e7686; letter-spacing: 0.12px; }
-
-    /* ── Nav icon color via CSS (currentColor on SVG strokes) ─────────── */
-    .nav-item.active  { color: #683fcf; }
-    .nav-item.secondary { color: #1e242e; }
-    .nav-item.recent  { color: #5c6370; }
 
     /* ── Performance Page ──────────────────────────────────────────────── */
 
@@ -535,96 +455,6 @@
 <body>
 <div class="app" id="app-shell">
 
-  <!-- ── Sidebar ──────────────────────────────────────────────────── -->
-  <nav class="sidebar">
-    <div class="top-nav">
-
-      <!-- Product header -->
-      <div class="product-header">
-        <div class="product-logo">
-          <div class="product-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.8426 14.4231V9.67768C16.8426 9.22065 16.8422 8.992 16.7867 8.77933C16.7374 8.59086 16.6566 8.41251 16.5472 8.25134C16.4237 8.06947 16.2521 7.91865 15.9081 7.61769L11.8025 4.02527C11.1639 3.46649 10.8446 3.18724 10.4852 3.08097C10.1686 2.98733 9.8311 2.98733 9.51446 3.08097C9.15538 3.18716 8.83654 3.46614 8.1989 4.02408L4.09192 7.61769C3.74796 7.91865 3.57638 8.06947 3.45292 8.25134C3.34351 8.41251 3.26205 8.59086 3.2128 8.77933C3.15723 8.992 3.15723 9.22064 3.15723 9.67768V14.4231C3.15723 15.2201 3.15723 15.6185 3.28744 15.9329C3.46107 16.352 3.79387 16.6855 4.21303 16.8591C4.52741 16.9893 4.92595 16.9893 5.72302 16.9893C6.5201 16.9893 6.91907 16.9893 7.23345 16.8591C7.65261 16.6855 7.98533 16.3521 8.15895 15.933C8.28917 15.6186 8.28926 15.22 8.28926 14.423V13.5676C8.28926 12.6229 9.05515 11.857 9.99993 11.857C10.9447 11.857 11.7106 12.6229 11.7106 13.5676V14.423C11.7106 15.22 11.7106 15.6186 11.8408 15.933C12.0144 16.3521 12.3473 16.6855 12.7664 16.8591C13.0808 16.9893 13.4793 16.9893 14.2764 16.9893C15.0735 16.9893 15.4725 16.9893 15.7868 16.8591C16.206 16.6855 16.5387 16.352 16.7123 15.9329C16.8425 15.6185 16.8426 15.2201 16.8426 14.4231Z" stroke="#5C6370" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </div>
-          <span class="product-name">Home</span>
-        </div>
-        <div class="header-actions">
-          <button class="icon-btn" title="Search">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="7" cy="7" r="4.5" stroke="#5c6370" stroke-width="1.3"/>
-              <path d="M11 11L14 14" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/>
-            </svg>
-          </button>
-          <button class="icon-btn" title="Expand sidebar">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M3 6V3H6M13 6V3H10M3 10V13H6M13 10V13H10" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Primary nav — icons use currentColor so CSS controls active/inactive tint -->
-      <div class="nav-group">
-        <div class="nav-item active" id="nav-digest" onclick="showDigest()">
-          <svg width="16" height="16" viewBox="17.3332 61.3333 13.3333 13.3333" fill="none">
-            <path d="M25.3332 67.3333H21.3332M22.6665 69.9999H21.3332M26.6665 64.6666H21.3332M29.3332 64.5333V71.4666C29.3332 72.5867 29.3332 73.1467 29.1152 73.5746C28.9234 73.9509 28.6175 74.2569 28.2412 74.4486C27.8133 74.6666 27.2533 74.6666 26.1332 74.6666H21.8665C20.7464 74.6666 20.1863 74.6666 19.7585 74.4486C19.3822 74.2569 19.0762 73.9509 18.8845 73.5746C18.6665 73.1467 18.6665 72.5867 18.6665 71.4666V64.5333C18.6665 63.4131 18.6665 62.8531 18.8845 62.4253C19.0762 62.0489 19.3822 61.743 19.7585 61.5512C20.1863 61.3333 20.7464 61.3333 21.8665 61.3333H26.1332C27.2533 61.3333 27.8133 61.3333 28.2412 61.5512C28.6175 61.743 28.9234 62.0489 29.1152 62.4253C29.3332 62.8531 29.3332 63.4131 29.3332 64.5333Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="nav-label">Daily digest</span>
-        </div>
-        <div class="nav-item secondary" id="nav-inbox">
-          <svg width="16" height="16" viewBox="17.3335 93.3332 13.3333 13.3333" fill="none">
-            <path d="M17.6668 100H19.9215C20.3783 100 20.7959 100.258 21.0002 100.667C21.2045 101.075 21.622 101.333 22.0789 101.333H25.9215C26.3783 101.333 26.7959 101.075 27.0002 100.667C27.2045 100.258 27.622 100 28.0789 100H30.3335M21.9779 94.6667H26.0225C26.7404 94.6667 27.0993 94.6667 27.4162 94.7761C27.6965 94.8727 27.9517 95.0305 28.1635 95.2379C28.403 95.4725 28.5636 95.7935 28.8846 96.4357L30.329 99.3244C30.455 99.5764 30.518 99.7024 30.5624 99.8344C30.6019 99.9517 30.6304 100.072 30.6475 100.195C30.6668 100.333 30.6668 100.474 30.6668 100.755V102.133C30.6668 103.254 30.6668 103.814 30.4488 104.241C30.2571 104.618 29.9511 104.924 29.5748 105.115C29.147 105.333 28.5869 105.333 27.4668 105.333H20.5335C19.4134 105.333 18.8533 105.333 18.4255 105.115C18.0492 104.924 17.7432 104.618 17.5515 104.241C17.3335 103.814 17.3335 103.254 17.3335 102.133V100.755C17.3335 100.474 17.3335 100.333 17.3528 100.195C17.37 100.072 17.3985 99.9517 17.4379 99.8344C17.4823 99.7024 17.5453 99.5764 17.6713 99.3244L19.1157 96.4357C19.4368 95.7935 19.5973 95.4725 19.8368 95.2379C20.0486 95.0305 20.3038 94.8727 20.5841 94.7761C20.901 94.6667 21.26 94.6667 21.9779 94.6667Z" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="nav-label">Inbox</span>
-        </div>
-        <div class="nav-item secondary" id="nav-skills">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M6.334 14.667h3.333m.333-4.45a4.667 4.667 0 1 0-4 0v.45c0 .62 0 .931.102 1.177.135.326.395.586.721.721.245.102.556.102 1.177.102s.932 0 1.177-.102c.327-.135.586-.395.722-.721.101-.245.101-.556.101-1.177z" vector-effect="non-scaling-stroke"/>
-          </svg>
-          <span class="nav-label">Skills</span>
-        </div>
-        <div class="nav-item secondary" id="nav-knowledge">
-          <svg width="16" height="16" viewBox="18.4351 158.435 11.1299 11.1299" fill="none">
-            <path d="M24.0001 162.33V168.637M24.0001 162.33C24.0001 161.292 24.0001 160.772 24.2022 160.375C24.3801 160.026 24.6636 159.743 25.0127 159.565C25.4095 159.363 25.929 159.363 26.9679 159.363H28.5756C28.9219 159.363 29.0952 159.363 29.2274 159.43C29.3438 159.489 29.4381 159.584 29.4974 159.7C29.5648 159.832 29.565 160.006 29.565 160.352V165.793C29.565 166.14 29.5648 166.312 29.4974 166.445C29.4381 166.561 29.344 166.656 29.2276 166.715C29.0955 166.783 28.9226 166.783 28.577 166.783H26.8254C26.2447 166.783 25.9538 166.783 25.6902 166.863C25.4569 166.933 25.2402 167.049 25.0518 167.204C24.839 167.379 24.6778 167.621 24.3556 168.104L24.0001 168.637M24.0001 162.33C24.0001 161.292 23.9999 160.772 23.7978 160.375C23.6199 160.026 23.3361 159.743 22.9871 159.565C22.5903 159.363 22.0707 159.363 21.0318 159.363H19.4241C19.0779 159.363 18.9049 159.363 18.7726 159.43C18.6563 159.489 18.5617 159.584 18.5025 159.7C18.4351 159.832 18.4351 160.006 18.4351 160.352V165.793C18.4351 166.14 18.4351 166.312 18.5025 166.445C18.5617 166.561 18.6563 166.656 18.7726 166.715C18.9047 166.783 19.0775 166.783 19.4231 166.783H21.1747C21.7555 166.783 22.0458 166.783 22.3093 166.863C22.5427 166.933 22.7604 167.049 22.9488 167.204C23.1607 167.379 23.3209 167.619 23.6405 168.098L24.0001 168.637" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="nav-label">Knowledge</span>
-        </div>
-        <div class="nav-item secondary" id="nav-performance" onclick="showPerformance()">
-          <svg width="16" height="16" viewBox="18.4351 190.435 11.1299 11.1299" fill="none">
-            <path d="M18.4351 197.546V198.659C18.4351 199.351 18.4351 199.697 18.5698 199.962C18.6884 200.195 18.8775 200.384 19.1101 200.503C19.3744 200.637 19.7206 200.637 20.4118 200.637H29.565M18.4351 197.546V191.363M18.4351 197.546L20.8177 195.56L20.8197 195.559C21.2507 195.2 21.4666 195.02 21.7008 194.947C21.9774 194.86 22.2753 194.874 22.5429 194.985C22.7698 195.079 22.9688 195.278 23.3667 195.676L23.3707 195.68C23.7747 196.084 23.9773 196.287 24.2079 196.38C24.4807 196.492 24.7844 196.501 25.0639 196.408C25.301 196.33 25.5175 196.141 25.9504 195.762L29.5649 192.599" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-          <span class="nav-label">Performance</span>
-        </div>
-        <div class="nav-item secondary" id="nav-settings">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m8.926 13.252 3.16-1.824c.337-.195.505-.292.628-.428.109-.121.19-.263.24-.417.057-.174.057-.369.057-.756V6.173c0-.388 0-.582-.056-.756a1.2 1.2 0 0 0-.24-.417c-.123-.135-.29-.232-.625-.425L8.926 2.748c-.338-.195-.506-.292-.685-.33a1.2 1.2 0 0 0-.482 0c-.179.038-.348.135-.685.33l-3.16 1.824c-.337.195-.506.292-.628.428-.109.12-.19.263-.24.417-.057.174-.057.37-.057.759v3.648c0 .39 0 .585.056.759.05.154.132.296.24.417.123.136.292.233.63.428l3.159 1.824c.337.195.506.292.685.33.159.034.323.034.482 0 .179-.038.348-.135.685-.33" vector-effect="non-scaling-stroke"/>
-            <path d="M6.264 8a1.736 1.736 0 1 0 3.472 0 1.736 1.736 0 0 0-3.472 0" vector-effect="non-scaling-stroke"/>
-          </svg>
-          <span class="nav-label">Settings</span>
-        </div>
-      </div>
-
-      <!-- Recents -->
-      <div>
-        <div class="recents-header">
-          <span class="recents-label">Recents</span>
-        </div>
-        <div class="recents-group nav-group">
-          <div class="nav-item recent"><span class="nav-label">Improve skills</span></div>
-          <div class="nav-item recent"><span class="nav-label">Recent escalations</span></div>
-          <div class="nav-item recent"><span class="nav-label">Onboarding</span></div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Avatar -->
-    <div class="bottom-nav">
-      <button class="avatar-btn">
-        <div class="avatar">J</div>
-        <div class="online-dot"></div>
-      </button>
-    </div>
-  </nav>
 
   <!-- ── Main content ──────────────────────────────────────────────── -->
   <main class="main" id="main-digest">
