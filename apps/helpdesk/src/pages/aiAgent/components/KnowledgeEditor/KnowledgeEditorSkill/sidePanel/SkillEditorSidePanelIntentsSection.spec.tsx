@@ -41,21 +41,22 @@ jest.mock('./modals/SkillUnlinkIntentModal', () => ({
 }))
 
 const defaultHookReturn = {
-    displayedIntentIds: [] as string[],
-    intentDiffParts: [] as {
+    items: [] as {
         intentId: string
-        diffStatus: 'added' | 'removed' | null
+        label: string
+        color?: string
+        showLeadingDot: boolean
+        tooltip?: string
     }[],
-    isDiffMode: false,
-    linkIntentsDisabledTooltip: undefined,
-    isLinkIntentsButtonDisabled: false,
-    canUnlinkIntentsFromSidebar: true,
-    isUpdating: false,
-    getLinkedIntentLabelById: (id: string) =>
-        id
-            .split('::')
-            .map((p) => p.replace(/\b\w/g, (c) => c.toUpperCase()))
-            .join(' / '),
+    showBanner: false,
+    showLinkButton: true,
+    linkButton: {
+        isDisabled: false,
+        disabledTooltip: undefined as string | undefined,
+        canUnlink: true,
+        isUpdating: false,
+    },
+    intentsCount: 0,
 }
 
 const setup = (overrides?: Partial<typeof defaultHookReturn>) => {
@@ -78,7 +79,7 @@ describe('SkillEditorSidePanelIntentsSection', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders Link intents button when no intents', () => {
+    it('renders Link intents button when showLinkButton is true', () => {
         setup()
 
         expect(
@@ -86,29 +87,33 @@ describe('SkillEditorSidePanelIntentsSection', () => {
         ).toBeInTheDocument()
     })
 
-    it('renders intent tags when intents exist', () => {
-        setup({
-            displayedIntentIds: ['order::status', 'order::cancel'],
-        })
+    it('hides Link intents button when showLinkButton is false', () => {
+        setup({ showLinkButton: false })
 
-        expect(screen.getByText('Order / Status')).toBeInTheDocument()
-        expect(screen.getByText('Order / Cancel')).toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /Link intents/ }),
+        ).not.toBeInTheDocument()
     })
 
-    it('renders all intents without truncation', () => {
+    it('renders intent tags from items', () => {
         setup({
-            displayedIntentIds: [
-                'order::status',
-                'order::cancel',
-                'order::edit',
-                'order::refund',
+            items: [
+                {
+                    intentId: 'order::status',
+                    label: 'Order / Status',
+                    showLeadingDot: false,
+                },
+                {
+                    intentId: 'order::cancel',
+                    label: 'Order / Cancel',
+                    showLeadingDot: false,
+                },
             ],
+            intentsCount: 2,
         })
 
         expect(screen.getByText('Order / Status')).toBeInTheDocument()
         expect(screen.getByText('Order / Cancel')).toBeInTheDocument()
-        expect(screen.getByText('Order / Edit')).toBeInTheDocument()
-        expect(screen.getByText('Order / Refund')).toBeInTheDocument()
     })
 
     it('opens link modal when Link intents is clicked', async () => {
@@ -120,15 +125,43 @@ describe('SkillEditorSidePanelIntentsSection', () => {
         expect(screen.getByTestId('link-modal')).toBeInTheDocument()
     })
 
-    it('hides Link intents button in diff mode', () => {
+    it('renders warning banner when showBanner is true', () => {
         setup({
-            isDiffMode: true,
-            intentDiffParts: [{ intentId: 'order::status', diffStatus: null }],
-            displayedIntentIds: ['order::status'],
+            showBanner: true,
+            items: [
+                {
+                    intentId: 'order::status',
+                    label: 'Order / Status',
+                    showLeadingDot: true,
+                    tooltip: 'Intent already linked to an existing skill',
+                },
+            ],
+            intentsCount: 1,
         })
 
         expect(
-            screen.queryByRole('button', { name: /Link intents/ }),
+            screen.getByText('Some intents below are used in other skills'),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText('Publish this skill to reassign them to this one'),
+        ).toBeInTheDocument()
+    })
+
+    it('does not render banner when showBanner is false', () => {
+        setup({
+            showBanner: false,
+            items: [
+                {
+                    intentId: 'order::status',
+                    label: 'Order / Status',
+                    showLeadingDot: false,
+                },
+            ],
+            intentsCount: 1,
+        })
+
+        expect(
+            screen.queryByText('Some intents below are used in other skills'),
         ).not.toBeInTheDocument()
     })
 })

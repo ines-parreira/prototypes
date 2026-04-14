@@ -1,44 +1,51 @@
-import { useCallback } from 'react'
+import { useMemo } from 'react'
 
 import { useShallow } from 'zustand/react/shallow'
 
 import { formatIntentName } from 'pages/aiAgent/skills/utils'
 
 import { useSkillEditorStore } from '../../context/KnowledgeEditorSkillContext'
+import { useIntentConflicts } from './useIntentConflicts'
+import { useIntentLinkButton } from './useIntentLinkButton'
 
 const EMPTY_INTENT_IDS: string[] = []
 
-const LINK_INTENTS_HISTORICAL_TOOLTIP =
-    'You are viewing a past version. Switch to the latest version to link intents.'
-const LINK_INTENTS_PUBLISHED_WITH_DRAFT_TOOLTIP =
-    'A draft of this skill exists. Switch to the draft to link intents.'
+type TagColor = 'green' | 'red' | 'grey' | 'purple'
 
-type IntentDiffStatus = 'added' | 'removed' | null
-
-type IntentDiffPart = {
+export type IntentItem = {
     intentId: string
-    diffStatus: IntentDiffStatus
+    label: string
+    color?: TagColor
+    showLeadingDot: boolean
+    tooltip?: string
 }
 
-function buildIntentDiffParts(
-    oldIntents?: string[] | null,
-    newIntents?: string[] | null,
-): IntentDiffPart[] {
-    const previousIntentIds = oldIntents ?? EMPTY_INTENT_IDS
-    const nextIntentIds = newIntents ?? EMPTY_INTENT_IDS
-    const nextIntentSet = new Set(nextIntentIds)
-    const previousIntentSet = new Set(previousIntentIds)
+function buildDiffItems(
+    oldIntents: string[],
+    newIntents: string[],
+): IntentItem[] {
+    const nextIntentSet = new Set(newIntents)
+    const previousIntentSet = new Set(oldIntents)
 
-    const unchangedAndRemoved = previousIntentIds.map((intentId) => ({
-        intentId,
-        diffStatus: nextIntentSet.has(intentId) ? null : ('removed' as const),
-    }))
+    const unchangedAndRemoved = oldIntents.map((intentId) => {
+        const isRemoved = !nextIntentSet.has(intentId)
+        return {
+            intentId,
+            label: formatIntentName(intentId),
+            color: isRemoved ? ('red' as TagColor) : undefined,
+            showLeadingDot: false,
+            tooltip: undefined,
+        }
+    })
 
-    const added = nextIntentIds
+    const added = newIntents
         .filter((intentId) => !previousIntentSet.has(intentId))
         .map((intentId) => ({
             intentId,
-            diffStatus: 'added' as const,
+            label: formatIntentName(intentId),
+            color: 'green' as TagColor,
+            showLeadingDot: false,
+            tooltip: undefined,
         }))
 
     return [...unchangedAndRemoved, ...added]
@@ -50,12 +57,10 @@ export const useLinkedIntentsSidebarSkill = () => {
         intentIds,
         historicalVersionIntentIds,
         comparisonVersionIntentIds,
-        skillIsCurrent,
         publishedVersionId,
         draftVersionId,
+        isFromTemplate,
         historicalPublishedDatetime,
-        isUpdating,
-        isAutoSaving,
     } = useSkillEditorStore(
         useShallow((storeState) => ({
             mode: storeState.state.mode,
@@ -64,68 +69,120 @@ export const useLinkedIntentsSidebarSkill = () => {
                 storeState.state.historicalVersion?.intents ?? EMPTY_INTENT_IDS,
             comparisonVersionIntentIds:
                 storeState.state.comparisonVersion?.intents ?? EMPTY_INTENT_IDS,
-            skillIsCurrent: storeState.state.skill?.isCurrent,
             publishedVersionId: storeState.state.skill?.publishedVersionId,
             draftVersionId: storeState.state.skill?.draftVersionId,
+            isFromTemplate: storeState.state.isFromTemplate,
             historicalPublishedDatetime:
                 storeState.state.historicalVersion?.publishedDatetime,
-            isUpdating: storeState.state.isUpdating,
-            isAutoSaving: storeState.state.isAutoSaving,
         })),
     )
 
-    const isViewingHistoricalVersion =
-        historicalPublishedDatetime !== null &&
-        historicalPublishedDatetime !== undefined
+    const linkButton = useIntentLinkButton()
+    const conflictingIntentIds = useIntentConflicts()
+
+    const isViewingHistoricalVersion = historicalPublishedDatetime != null
+    const isDiffMode = mode === 'diff'
     const hasDraft =
         draftVersionId != null &&
         publishedVersionId != null &&
         draftVersionId !== publishedVersionId
-    const isViewingPublishedWithDraft = skillIsCurrent === true && hasDraft
+    const hasPublishedVersion = publishedVersionId != null
 
-    const linkIntentsDisabledTooltip = isViewingHistoricalVersion
-        ? LINK_INTENTS_HISTORICAL_TOOLTIP
-        : isViewingPublishedWithDraft
-          ? LINK_INTENTS_PUBLISHED_WITH_DRAFT_TOOLTIP
-          : undefined
-
-    const isLinkIntentsButtonDisabled =
-        linkIntentsDisabledTooltip !== undefined || isUpdating || isAutoSaving
-    const canUnlinkIntentsFromSidebar =
-        !isViewingHistoricalVersion &&
-        !isLinkIntentsButtonDisabled &&
-        !isUpdating &&
-        !isAutoSaving
-
-    const isDiffMode = mode === 'diff'
     const displayedIntentIds = isViewingHistoricalVersion
         ? historicalVersionIntentIds
         : intentIds
-    const intentDiffParts = isDiffMode
-        ? buildIntentDiffParts(
-              isViewingHistoricalVersion
-                  ? historicalVersionIntentIds
-                  : comparisonVersionIntentIds,
-              isViewingHistoricalVersion
-                  ? comparisonVersionIntentIds
-                  : intentIds,
-          )
-        : []
 
-    const getLinkedIntentLabelById = useCallback(
-        (intentId: string) => formatIntentName(intentId),
-        [],
-    )
-
-    return {
+    const publishedIntentIdsSet = useMemo<Set<string>>(() => {
+        if (!hasDraft) {
+            if (hasPublishedVersion) {
+                return new Set(displayedIntentIds)
+            }
+            return new Set()
+        }
+        return new Set(comparisonVersionIntentIds)
+    }, [
+        hasDraft,
+        hasPublishedVersion,
         displayedIntentIds,
-        intentDiffParts,
+        comparisonVersionIntentIds,
+    ])
+
+    const items = useMemo<IntentItem[]>(() => {
+        if (isDiffMode) {
+            const oldIntents = isViewingHistoricalVersion
+                ? historicalVersionIntentIds
+                : comparisonVersionIntentIds
+            const newIntents = isViewingHistoricalVersion
+                ? comparisonVersionIntentIds
+                : intentIds
+            return buildDiffItems(oldIntents, newIntents)
+        }
+
+        if (isViewingHistoricalVersion) {
+            return displayedIntentIds.map((intentId) => ({
+                intentId,
+                label: formatIntentName(intentId),
+                color: undefined,
+                showLeadingDot: false,
+                tooltip: undefined,
+            }))
+        }
+
+        return displayedIntentIds.map((intentId) => {
+            const isConflict = conflictingIntentIds.has(intentId)
+            if (isConflict) {
+                return {
+                    intentId,
+                    label: formatIntentName(intentId),
+                    color: undefined,
+                    showLeadingDot: true,
+                    tooltip: 'Intent already linked to an existing skill',
+                }
+            }
+
+            const isNewInDraft =
+                !publishedIntentIdsSet.has(intentId) &&
+                !isFromTemplate &&
+                hasPublishedVersion
+            if (isNewInDraft) {
+                return {
+                    intentId,
+                    label: formatIntentName(intentId),
+                    color: 'purple' as TagColor,
+                    showLeadingDot: false,
+                    tooltip:
+                        'Intent not yet linked to skill. Publish your changes to link.',
+                }
+            }
+
+            return {
+                intentId,
+                label: formatIntentName(intentId),
+                color: undefined,
+                showLeadingDot: false,
+                tooltip: undefined,
+            }
+        })
+    }, [
         isDiffMode,
         isViewingHistoricalVersion,
-        linkIntentsDisabledTooltip,
-        isLinkIntentsButtonDisabled,
-        canUnlinkIntentsFromSidebar,
-        isUpdating,
-        getLinkedIntentLabelById,
+        historicalVersionIntentIds,
+        comparisonVersionIntentIds,
+        intentIds,
+        displayedIntentIds,
+        conflictingIntentIds,
+        publishedIntentIdsSet,
+        isFromTemplate,
+        hasPublishedVersion,
+    ])
+
+    const showBanner = !isDiffMode && items.some((item) => item.showLeadingDot)
+
+    return {
+        items,
+        showBanner,
+        showLinkButton: !isDiffMode,
+        linkButton,
+        intentsCount: displayedIntentIds.length,
     }
 }
