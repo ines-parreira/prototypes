@@ -7,7 +7,10 @@ import {
     mockListVoiceCallRecordingsResponse,
     mockVoiceCall,
 } from '@gorgias/helpdesk-mocks'
-import type { VoiceCall } from '@gorgias/helpdesk-queries'
+import type {
+    TicketMessageUserOrCustomer,
+    VoiceCall,
+} from '@gorgias/helpdesk-queries'
 import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { getCurrentUserHandler } from '../../../tests/getCurrentUser.mock'
@@ -37,6 +40,15 @@ beforeEach(() => {
     server.use(getCurrentUserHandler().handler, emptyRecordingsHandler.handler)
 })
 
+const testSender: TicketMessageUserOrCustomer = {
+    id: 1,
+    name: 'Test User',
+    firstname: 'Test',
+    lastname: 'User',
+    email: null,
+    meta: null,
+}
+
 function renderContainer(
     voiceCall: VoiceCall,
     extra?: {
@@ -47,10 +59,9 @@ function renderContainer(
         <VoiceCallContainer
             header={<span>Test Header</span>}
             callStatus={<span>Test Status</span>}
-            dateTime="2024-03-21T11:00:00Z"
             voiceCall={voiceCall}
+            sender={testSender}
             directionIcon="arrow-down"
-            avatarName="Test User"
             renderMonitorCallButton={extra?.renderMonitorCallButton}
         />,
     )

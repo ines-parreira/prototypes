@@ -1,10 +1,12 @@
 import { Text } from '@gorgias/axiom'
-import type { VoiceCall } from '@gorgias/helpdesk-queries'
+import type {
+    TicketMessageUserOrCustomer,
+    VoiceCall,
+} from '@gorgias/helpdesk-queries'
 
+import { MessageSender } from '../../MessageBubble/components/MessageHeader/MessageSender'
 import { useVoiceCallAgent } from '../hooks/useVoiceCallAgent'
-import { formatPhoneNumberInternational } from '../models/phoneFormatting'
 import { isFinalVoiceCallStatus } from '../models/utils'
-import { VoiceCallAgentLabel } from './VoiceCallAgentLabel'
 import { VoiceCallContainer } from './VoiceCallContainer'
 import { VoiceCallOutboundStatus } from './VoiceCallOutboundStatus'
 
@@ -18,20 +20,22 @@ export function VoiceCallOutbound({
     renderMonitorCallButton,
 }: VoiceCallOutboundProps) {
     const agent = useVoiceCallAgent(voiceCall.initiated_by_agent_id)
-    const agentName =
-        agent?.name ||
-        formatPhoneNumberInternational(voiceCall.phone_number_source)
+
+    const sender: TicketMessageUserOrCustomer = {
+        id: voiceCall.initiated_by_agent_id,
+        name: agent?.name ?? null,
+        firstname: agent?.firstname ?? '',
+        lastname: agent?.lastname ?? '',
+        email: agent?.email ?? null,
+        meta: agent?.meta ?? null,
+    }
 
     return (
         <VoiceCallContainer
-            dateTime={voiceCall.created_datetime}
-            avatarName={agentName}
+            sender={sender}
             header={
                 <>
-                    <VoiceCallAgentLabel
-                        agentId={voiceCall.initiated_by_agent_id}
-                        phoneNumber={voiceCall.phone_number_source}
-                    />
+                    <MessageSender sender={sender} />
                     <Text as="span" color="content-neutral-secondary">
                         {isFinalVoiceCallStatus(voiceCall.status)
                             ? 'made a call'

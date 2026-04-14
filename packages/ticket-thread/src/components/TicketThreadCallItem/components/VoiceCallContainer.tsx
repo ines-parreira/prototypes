@@ -1,14 +1,14 @@
-import { useUserDateTimePreferences } from '@repo/preferences'
-import {
-    DateAndTimeFormatting,
-    formatDatetime,
-    getDateAndTimeFormat,
-} from '@repo/utils'
-
-import { Avatar, Box, Icon, Text } from '@gorgias/axiom'
+import { Box, Icon, Text } from '@gorgias/axiom'
 import type { IconName } from '@gorgias/axiom'
-import type { VoiceCall } from '@gorgias/helpdesk-queries'
+import type {
+    TicketMessageUserOrCustomer,
+    VoiceCall,
+} from '@gorgias/helpdesk-queries'
 
+import { MessageAvatar } from '../../MessageBubble/components/MessageHeader/MessageAvatar'
+import { MessageChannel } from '../../MessageBubble/components/MessageHeader/MessageChannel'
+import { MessageTimestamp } from '../../MessageBubble/components/MessageHeader/MessageTimestamp'
+import { formatPhoneNumberInternational } from '../models/phoneFormatting'
 import { VoiceCallRecordingType } from '../models/types'
 import { isFinalVoiceCallStatus } from '../models/utils'
 import {
@@ -21,29 +21,20 @@ import css from './VoiceCallContainer.less'
 type VoiceCallContainerProps = {
     header: React.ReactNode
     callStatus: React.ReactNode
-    dateTime: string
     voiceCall: VoiceCall
     directionIcon: IconName
-    avatarName: string
+    sender: TicketMessageUserOrCustomer
     renderMonitorCallButton?: (voiceCall: VoiceCall) => React.ReactNode
 }
 
 export function VoiceCallContainer({
     header,
     callStatus,
-    dateTime,
     voiceCall,
+    sender,
     directionIcon,
-    avatarName,
     renderMonitorCallButton,
 }: VoiceCallContainerProps) {
-    const { dateFormat, timeFormat } = useUserDateTimePreferences()
-    const compactDateWithTimeFormat = getDateAndTimeFormat(
-        dateFormat,
-        timeFormat,
-        DateAndTimeFormatting.CompactDateWithTime,
-    )
-
     return (
         <div className={css.container}>
             <div className={css.callDetails}>
@@ -54,7 +45,7 @@ export function VoiceCallContainer({
                         gap="xs"
                         flexWrap="wrap"
                     >
-                        <Avatar name={avatarName} size="md" />
+                        <MessageAvatar sender={sender} />
                         {header}
                         <Icon name={directionIcon} size="sm" />
                     </Box>
@@ -64,17 +55,20 @@ export function VoiceCallContainer({
                         gap="xs"
                         className={css.meta}
                     >
-                        <Icon name="comm-phone" />
-                        <Text
-                            as="span"
-                            size="sm"
-                            color="content-neutral-secondary"
-                        >
-                            {formatDatetime(
-                                dateTime,
-                                compactDateWithTimeFormat,
+                        <MessageChannel
+                            channelIcon="comm-phone"
+                            channel="phone"
+                            createdDatetime={voiceCall.created_datetime}
+                            from={formatPhoneNumberInternational(
+                                voiceCall.phone_number_source,
                             )}
-                        </Text>
+                            to={formatPhoneNumberInternational(
+                                voiceCall.phone_number_destination,
+                            )}
+                        />
+                        <MessageTimestamp
+                            createdDatetime={voiceCall.created_datetime}
+                        />
                     </Box>
                 </div>
                 <div className={css.statusRow}>

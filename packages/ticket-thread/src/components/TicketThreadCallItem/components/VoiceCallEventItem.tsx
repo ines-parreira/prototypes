@@ -1,12 +1,6 @@
-import { useUserDateTimePreferences } from '@repo/preferences'
-import {
-    DateAndTimeFormatting,
-    formatDatetime,
-    getDateAndTimeFormat,
-} from '@repo/utils'
-
 import { Box, Text } from '@gorgias/axiom'
 
+import { MessageTimestamp } from '../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import type { ProcessedEvent } from '../models/processEvents'
 import { VoiceCallSubjectLabel } from './VoiceCallSubjectLabel'
 import { VoiceCallTimelineItem } from './VoiceCallTimeline'
@@ -27,13 +21,6 @@ function getActionPrettyName(event: ProcessedEvent) {
 }
 
 export function VoiceCallEventItem({ event }: VoiceCallEventItemProps) {
-    const { dateFormat, timeFormat } = useUserDateTimePreferences()
-    const timeDoubleDigitFormat = getDateAndTimeFormat(
-        dateFormat,
-        timeFormat,
-        DateAndTimeFormatting.TimeDoubleDigitHour,
-    )
-
     return (
         <VoiceCallTimelineItem>
             <Box
@@ -97,13 +84,7 @@ export function VoiceCallEventItem({ event }: VoiceCallEventItemProps) {
                         </Text>
                     )}
                 </Box>
-                <Text
-                    as="span"
-                    size={TEXT_SIZE}
-                    color="content-neutral-secondary"
-                >
-                    {formatDatetime(event.datetime, timeDoubleDigitFormat)}
-                </Text>
+                <MessageTimestamp createdDatetime={event.datetime} />
             </Box>
         </VoiceCallTimelineItem>
     )

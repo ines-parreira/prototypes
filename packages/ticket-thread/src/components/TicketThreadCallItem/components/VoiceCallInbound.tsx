@@ -1,11 +1,13 @@
 import { Text } from '@gorgias/axiom'
-import type { VoiceCall } from '@gorgias/helpdesk-queries'
+import type {
+    TicketMessageUserOrCustomer,
+    VoiceCall,
+} from '@gorgias/helpdesk-queries'
 
+import { MessageSender } from '../../MessageBubble/components/MessageHeader/MessageSender'
 import { useVoiceCallCustomer } from '../hooks/useVoiceCallCustomer'
-import { formatPhoneNumberInternational } from '../models/phoneFormatting'
 import { isFinalVoiceCallStatus } from '../models/utils'
 import { VoiceCallContainer } from './VoiceCallContainer'
-import { VoiceCallCustomerLabel } from './VoiceCallCustomerLabel'
 import { VoiceCallInboundStatus } from './VoiceCallInboundStatus'
 
 type VoiceCallInboundProps = {
@@ -18,21 +20,23 @@ export function VoiceCallInbound({
     renderMonitorCallButton,
 }: VoiceCallInboundProps) {
     const { customer } = useVoiceCallCustomer(voiceCall.customer_id ?? 0)
-    const customerName =
-        customer?.name ||
-        customer?.email ||
-        formatPhoneNumberInternational(voiceCall.phone_number_source)
+
+    const sender: TicketMessageUserOrCustomer = {
+        ...customer,
+        name: customer?.name ?? null,
+        firstname: customer?.firstname ?? '',
+        lastname: customer?.lastname ?? '',
+        email: customer?.email ?? null,
+        meta: customer?.meta ?? null,
+        id: voiceCall.customer_id ?? 0,
+    }
 
     return (
         <VoiceCallContainer
-            dateTime={voiceCall.created_datetime}
-            avatarName={customerName}
+            sender={sender}
             header={
                 <>
-                    <VoiceCallCustomerLabel
-                        customerId={voiceCall.customer_id ?? 0}
-                        phoneNumber={voiceCall.phone_number_source}
-                    />
+                    <MessageSender sender={sender} />
                     <Text as="span" color="content-neutral-secondary">
                         {isFinalVoiceCallStatus(voiceCall.status)
                             ? 'called'
