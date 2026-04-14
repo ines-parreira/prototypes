@@ -607,6 +607,70 @@
     .vol-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #5c6370; }
     .vol-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
 
+    /* ── Ask-anything real input ─────────────────────────────────────── */
+    .ask-input {
+      flex: 1; border: none; outline: none; background: transparent;
+      font-family: inherit; font-size: 14px; color: #1e242e; min-width: 0;
+    }
+    .ask-input::placeholder { color: #9ea6b3; }
+
+    /* ── Chat conversation view ──────────────────────────────────────── */
+    .chat-view-header {
+      padding: 14px 24px; border-bottom: 1px solid rgba(0,0,0,0.06);
+      flex-shrink: 0; display: flex; align-items: center; gap: 10px;
+    }
+    .chat-view-back {
+      width: 28px; height: 28px; border-radius: 6px; border: none; background: none;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #5c6370; flex-shrink: 0;
+    }
+    .chat-view-back:hover { background: rgba(0,0,0,0.05); }
+    .chat-view-title { font-size: 14px; font-weight: 600; color: #1e242e; }
+    .chat-messages {
+      flex: 1; overflow-y: auto; padding: 28px 24px;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    /* User bubble */
+    .chat-msg-row-user { display: flex; justify-content: flex-end; }
+    .chat-bubble-user {
+      max-width: 68%; background: #683fcf; color: white;
+      border-radius: 14px 14px 3px 14px; padding: 10px 14px;
+      font-size: 14px; line-height: 1.55; white-space: pre-wrap;
+    }
+    /* Agent message */
+    .chat-msg-row-agent { display: flex; align-items: flex-start; gap: 10px; }
+    .chat-agent-avatar {
+      width: 26px; height: 26px; border-radius: 7px; background: #f1ecff;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+    }
+    /* Thinking dots */
+    .chat-thinking {
+      display: flex; align-items: center; gap: 5px;
+      padding: 10px 14px; background: #f5f5f7;
+      border-radius: 14px 14px 14px 3px;
+    }
+    .thinking-dot {
+      width: 5px; height: 5px; border-radius: 50%; background: #9ea6b3;
+      animation: th-pulse 1.2s ease-in-out infinite;
+    }
+    .thinking-dot:nth-child(2) { animation-delay: 0.2s; }
+    .thinking-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes th-pulse {
+      0%, 60%, 100% { opacity: 0.3; transform: translateY(0); }
+      30% { opacity: 1; transform: translateY(-3px); }
+    }
+    /* Chat view footer input */
+    .chat-view-footer {
+      padding: 16px 24px; border-top: 1px solid rgba(0,0,0,0.06);
+      flex-shrink: 0; display: flex; justify-content: center;
+    }
+    .chat-view-footer .chat-input-box { width: 100%; max-width: 600px; }
+
+    /* Active state for recent items */
+    .nav-item.recent.active { background: rgba(103,63,207,0.08); border-radius: 8px; }
+    .nav-item.recent.active .nav-label { color: #683fcf; font-weight: 500; }
+
     /* Experiments empty state */
     .experiments-empty {
       display: flex; flex-direction: column; align-items: center;
@@ -673,7 +737,7 @@
         <div class="recents-header">
           <span class="recents-label">Recents</span>
         </div>
-        <div class="recents-group">
+        <div class="recents-group" id="recents-group">
           <div class="nav-item recent"><span class="nav-label">Improve skills</span></div>
           <div class="nav-item recent"><span class="nav-label">Recent escalations</span></div>
           <div class="nav-item recent"><span class="nav-label">Onboarding</span></div>
@@ -766,7 +830,7 @@
           </button>
           <div class="chat-input-box">
             <div class="chat-input-inner">
-              <span class="chat-placeholder">Ask anything...</span>
+              <input id="ask-input" class="ask-input" type="text" placeholder="Ask anything..." autocomplete="off">
               <div class="chat-actions">
                 <button class="chat-icon-btn" title="Attach file">
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -1136,6 +1200,49 @@
     </div><!-- /content-card -->
   </main><!-- /main-performance -->
 
+  <!-- ── Chat conversation view ─────────────────────────────────────── -->
+  <main class="main" id="main-chat" style="display:none">
+    <div class="content-card" style="padding:0; gap:0; overflow:hidden;">
+
+      <!-- Header -->
+      <div class="chat-view-header">
+        <button class="chat-view-back" onclick="showDigest()" title="Back to digest">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M10 3L5 8L10 13" stroke="#5c6370" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <span class="chat-view-title" id="chat-view-title"></span>
+      </div>
+
+      <!-- Messages -->
+      <div class="chat-messages" id="chat-messages"></div>
+
+      <!-- Footer input -->
+      <div class="chat-view-footer">
+        <div class="chat-input-box">
+          <div class="chat-input-inner">
+            <input id="chat-reply-input" class="ask-input" type="text" placeholder="Ask anything..." autocomplete="off">
+            <div class="chat-actions">
+              <button class="chat-icon-btn" title="Attach file">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <path d="M13.5 7.5L8 13C6.34315 14.6569 3.65685 14.6569 2 13C0.343146 11.3431 0.343146 8.65685 2 7L7.5 1.5C8.60457 0.395431 10.3954 0.395431 11.5 1.5C12.6046 2.60457 12.6046 4.39543 11.5 5.5L6 11C5.44772 11.5523 4.55228 11.5523 4 11C3.44772 10.4477 3.44772 9.55228 4 9L9 4" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+              </button>
+              <button class="chat-icon-btn" title="Voice input">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                  <rect x="5.5" y="1.5" width="5" height="8" rx="2.5" stroke="#5c6370" stroke-width="1.3"/>
+                  <path d="M3 8.5C3 11.2614 5.23858 13.5 8 13.5C10.7614 13.5 13 11.2614 13 8.5" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/>
+                  <line x1="8" y1="13.5" x2="8" y2="15" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main><!-- /main-chat -->
+
 </div>
 
 <!-- ── Spike page ──────────────────────────────────────────────────── -->
@@ -1279,6 +1386,125 @@
 
   document.querySelectorAll('.monitor-btn').forEach(btn => btn.addEventListener('click', showSpike));
   document.getElementById('spike-back-btn').addEventListener('click', showDigest);
+
+  // ── Ask anything → new conversation ───────────────────────────────────
+
+  // Generate a short natural title from the user's question
+  function generateTitle(text) {
+    let t = text.trim().replace(/[?!.]+$/, '').trim();
+    // Strip leading question + optional subject pronoun
+    // e.g. "How can I improve" → "improve", "Why did subscription spike" → "subscription spike"
+    t = t.replace(/^(what(?:'s| is| are| was| were)?|how (?:can|do|does|did|should|would|could|to)|why (?:did|do|does|is|are|was)?|when (?:did|do|does|is|are)?|where (?:did|do|does|is|are)?|who (?:did|do|does|is|are)?|can (?:you|i|we)|could (?:you|i|we)|should (?:i|we)|would (?:you|i|we)|will (?:you|i|we)|do (?:you|i|we)|does (?:the|this|that)|is (?:there|the|it|this|that)|are (?:there|the|they|we))\s+/i, '');
+    // Strip leftover leading filler words repeatedly until clean
+    let prev; do { prev = t; t = t.replace(/^(i|we|you|the|my|your|me)\s+/i, ''); } while (t !== prev);
+    // Capitalize first letter
+    t = t.charAt(0).toUpperCase() + t.slice(1);
+    // Keep to 6 words max
+    const words = t.split(/\s+/);
+    return words.length > 6 ? words.slice(0, 6).join(' ') : t;
+  }
+
+  // Add a new item to the top of Recents and return the element
+  function addRecentItem(title, onClick) {
+    const group = document.getElementById('recents-group');
+    // Clear active from any existing recent
+    group.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    const item = document.createElement('div');
+    item.className = 'nav-item recent active';
+    item.innerHTML = `<span class="nav-label">${title}</span>`;
+    item.addEventListener('click', onClick);
+    group.insertBefore(item, group.firstChild);
+    return item;
+  }
+
+  // Append a user bubble to the chat messages area
+  function appendUserMessage(text) {
+    const row = document.createElement('div');
+    row.className = 'chat-msg-row-user';
+    row.innerHTML = `<div class="chat-bubble-user">${text.replace(/</g,'&lt;')}</div>`;
+    document.getElementById('chat-messages').appendChild(row);
+  }
+
+  // Append the animated thinking indicator, returns the element so it can be removed
+  function appendThinking() {
+    const row = document.createElement('div');
+    row.className = 'chat-msg-row-agent';
+    row.innerHTML = `
+      <div class="chat-agent-avatar">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <rect x="2" y="2" width="12" height="12" rx="3" fill="#683fcf" opacity="0.15"/>
+          <path d="M5 8h6M8 5v6" stroke="#683fcf" stroke-width="1.4" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="chat-thinking">
+        <div class="thinking-dot"></div>
+        <div class="thinking-dot"></div>
+        <div class="thinking-dot"></div>
+      </div>`;
+    document.getElementById('chat-messages').appendChild(row);
+    return row;
+  }
+
+  // Open the chat view for a conversation
+  function openChatView(title) {
+    document.getElementById('chat-view-title').textContent = title;
+    // Clear active from primary nav, set on recents handled by addRecentItem
+    document.querySelectorAll('.nav-group .nav-item').forEach(el => {
+      el.classList.remove('active');
+      el.classList.add('secondary');
+    });
+    showMain('main-chat');
+  }
+
+  // Main handler: submit from "Ask anything"
+  function submitQuestion(text) {
+    if (!text) return;
+    const title = generateTitle(text);
+    // Clear messages
+    document.getElementById('chat-messages').innerHTML = '';
+    // Add to recents; clicking it reopens this chat
+    addRecentItem(title, () => openChatView(title));
+    // Open view
+    openChatView(title);
+    // Render user message + thinking
+    appendUserMessage(text);
+    appendThinking();
+    // Scroll to bottom
+    const msgs = document.getElementById('chat-messages');
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  // Handle reply inside the chat view (adds another user turn)
+  function submitReply(text) {
+    if (!text) return;
+    // Remove any existing thinking indicator before adding new message
+    const existing = document.querySelector('#chat-messages .chat-msg-row-agent:last-child');
+    if (existing) existing.remove();
+    appendUserMessage(text);
+    appendThinking();
+    const msgs = document.getElementById('chat-messages');
+    msgs.scrollTop = msgs.scrollHeight;
+  }
+
+  // ── Bind ask-input ────────────────────────────────────────────────────
+  const askInput = document.getElementById('ask-input');
+  askInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const val = askInput.value.trim();
+      if (val) { submitQuestion(val); askInput.value = ''; }
+    }
+  });
+
+  // ── Bind chat reply input ─────────────────────────────────────────────
+  const chatReplyInput = document.getElementById('chat-reply-input');
+  chatReplyInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      const val = chatReplyInput.value.trim();
+      if (val) { submitReply(val); chatReplyInput.value = ''; }
+    }
+  });
 
   // ── ElevenLabs narration — persistent playback ──────────────────────
   const ELEVEN_API_KEY  = 'sk_bdb72b91df9a9340374c092f7ce565c7d91c36dee0d7cc08';
