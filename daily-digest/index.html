@@ -203,6 +203,7 @@
       width: 600px; border: 1px solid rgba(0,0,0,0.08);
       border-radius: 12px; overflow: hidden; background: white;
       box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
     .chat-input-inner {
       display: flex; align-items: center; justify-content: space-between;
@@ -662,6 +663,10 @@
       flex-shrink: 0; display: flex; justify-content: center;
     }
     .chat-view-footer .chat-input-box { width: 100%; max-width: 600px; }
+    .chat-input-box:focus-within {
+      border-color: #683fcf;
+      box-shadow: 0 0 0 3px rgba(104,63,207,0.12), 0 4px 24px 0 rgba(0,0,0,0.08);
+    }
 
     /* Active state for recent items */
     .nav-item.recent.active { background: rgba(103,63,207,0.08); border-radius: 8px; }
