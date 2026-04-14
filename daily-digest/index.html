@@ -72,16 +72,97 @@
     }
 
     /* Digest playing pill */
+    /* ── Soundwave bar animation ────────────────────────────────── */
+    @keyframes sw-bounce {
+      0%, 100% { transform: scaleY(0.22); }
+      50%       { transform: scaleY(1); }
+    }
+    .sw-bar {
+      stroke-width: 1.5; stroke-linecap: round;
+      transform-box: fill-box; transform-origin: 50% 50%;
+      vector-effect: non-scaling-stroke;
+    }
+    /* Staggered animation when is-playing ancestor present */
+    .is-playing .sw-bar-1 { animation: sw-bounce 0.85s ease-in-out infinite 0.00s; }
+    .is-playing .sw-bar-2 { animation: sw-bounce 0.85s ease-in-out infinite 0.17s; }
+    .is-playing .sw-bar-3 { animation: sw-bounce 0.85s ease-in-out infinite 0.34s; }
+    .is-playing .sw-bar-4 { animation: sw-bounce 0.85s ease-in-out infinite 0.17s; }
+    .is-playing .sw-bar-5 { animation: sw-bounce 0.85s ease-in-out infinite 0.08s; }
+    /* Paused: bars shrunk and dimmed */
+    .is-paused .sw-bar { transform: scaleY(0.28); opacity: 0.5; }
+
+    /* ── Listen pill (digest page) ─────────────────────────────── */
+    .listen-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 12px; border-radius: 20px;
+      background: #1e242e; border: none; cursor: pointer;
+      font-family: inherit; font-size: 13px; font-weight: 500; color: white;
+      transition: background 0.15s;
+    }
+    .listen-pill:not(.is-playing):not(.is-paused):not(.is-loading):hover { background: #2e3644; }
+    .listen-pill.is-loading  { opacity: 0.65; cursor: wait; }
+    .listen-pill.is-playing  { background: #683fcf; }
+    .listen-pill.is-playing:hover { background: #5b34b5; }
+    .listen-pill.is-paused   { background: #3d4250; }
+    .listen-pill.is-paused:hover { background: #4a5060; }
+    /* Icon slot */
+    .lp-icon { position: relative; width: 16px; height: 16px; flex-shrink: 0; }
+    .lp-icon svg { position: absolute; inset: 0; width: 16px; height: 16px; }
+    /* Default: speaker, all others hidden */
+    .lp-icon .icon-speaker { display: block; }
+    .lp-icon .icon-wave, .lp-icon .icon-pause, .lp-icon .icon-play { display: none; }
+    /* Playing state */
+    .listen-pill.is-playing  .lp-icon .icon-speaker { display: none; }
+    .listen-pill.is-playing  .lp-icon .icon-wave    { display: block; }
+    .listen-pill.is-playing:hover .lp-icon .icon-wave   { display: none; }
+    .listen-pill.is-playing:hover .lp-icon .icon-pause  { display: block; }
+    /* Paused state */
+    .listen-pill.is-paused   .lp-icon .icon-speaker { display: none; }
+    .listen-pill.is-paused   .lp-icon .icon-wave    { display: block; }
+    .listen-pill.is-paused:hover .lp-icon .icon-wave  { display: none; }
+    .listen-pill.is-paused:hover .lp-icon .icon-play  { display: block; }
+    /* Loading state */
+    .listen-pill.is-loading  .lp-icon .icon-speaker { display: block; }
+    /* Label: hide when active */
+    .listen-pill.is-playing .lp-label,
+    .listen-pill.is-paused  .lp-label,
+    .listen-pill.is-loading .lp-label { display: none; }
+    .listen-pill-time, .lp-time {
+      font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.6);
+      margin-left: 2px; white-space: nowrap;
+    }
+
+    /* ── Nav digest pill (persistent playback) ─────────────────── */
     .digest-pill {
-      display: inline-flex; align-items: center; gap: 4px;
-      height: 28px; padding: 2px 6px 2px 8px;
+      display: inline-flex; align-items: center; gap: 2px;
+      height: 28px; padding: 2px 8px 2px 4px;
       background: white; border: 0.2px solid rgba(103,113,131,0.5);
       border-radius: 1000px; box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.05);
-      cursor: default;
+      cursor: pointer; user-select: none; transition: box-shadow 0.15s;
     }
-    .digest-pill svg { flex-shrink: 0; width: 16px; height: 16px; }
+    .digest-pill:hover { box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.12); }
+    /* Icon button inside pill */
+    .nav-pill-icon-btn {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; color: #1e242e; transition: background 0.1s;
+    }
+    .nav-pill-icon-btn:hover { background: rgba(0,0,0,0.07); }
+    .nav-pill-icon-btn svg { width: 14px; height: 14px; }
+    /* Nav pill icons */
+    .np-icon-wave, .np-icon-pause, .np-icon-play { display: none; }
+    .digest-pill.is-playing .np-icon-wave              { display: block; }
+    .digest-pill.is-playing .nav-pill-icon-btn:hover .np-icon-wave  { display: none; }
+    .digest-pill.is-playing .nav-pill-icon-btn:hover .np-icon-pause { display: block; }
+    .digest-pill.is-paused  .np-icon-wave              { display: block; }
+    .digest-pill.is-paused  .nav-pill-icon-btn:hover .np-icon-wave  { display: none; }
+    .digest-pill.is-paused  .nav-pill-icon-btn:hover .np-icon-play  { display: block; }
+    /* Nav pill text */
+    .nav-pill-info { display: flex; align-items: center; gap: 4px; padding-left: 2px; }
     .digest-pill-title { font-size: 12px; font-weight: 600; color: #1e242e; letter-spacing: 0.12px; white-space: nowrap; }
     .digest-pill-time  { font-size: 12px; font-weight: 400; color: rgba(30,36,46,0.6); letter-spacing: 0.12px; white-space: nowrap; }
+    .digest-pill.is-paused .digest-pill-title { color: #6e7686; }
 
 
     /* ── Main ────────────────────────────────────────────────────── */
@@ -116,19 +197,7 @@
     /* ── Chat input ───────────────────────────────────────────────── */
     .chat-area { display: flex; flex-direction: column; align-items: center; gap: 24px; }
 
-    /* Listen daily digest pill */
-    .listen-pill {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 12px; border-radius: 20px;
-      background: #1e242e; border: none; cursor: pointer;
-      font-family: inherit; font-size: 13px; font-weight: 500; color: white;
-      transition: background 0.15s;
-    }
-    .listen-pill:hover { background: #2e3644; }
-    .listen-pill-time {
-      font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.6);
-      margin-left: 2px;
-    }
+    /* listen-pill styles defined above in soundwave/nav-pill section */
 
     .chat-input-box {
       width: 600px; border: 1px solid rgba(0,0,0,0.08);
@@ -575,10 +644,30 @@
 
     <!-- Bottom: digest pill + avatar -->
     <div class="bottom-nav">
-      <div class="digest-pill">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#1e242e" stroke-linecap="round" stroke-linejoin="round"><path d="M2.4 5.722v5M8 3.5v9M13.6 5v6M5.2 2v12m5.6-11.5v11" vector-effect="non-scaling-stroke"/></svg>
-        <span class="digest-pill-title">Digest playing</span>
-        <span class="digest-pill-time">01:32</span>
+      <!-- Floating playback pill — hidden until audio plays on a non-digest page -->
+      <div class="digest-pill" id="nav-pill" style="display:none">
+        <!-- Icon zone: click to pause/resume -->
+        <button class="nav-pill-icon-btn" id="nav-pill-btn">
+          <svg class="np-icon-wave" viewBox="0 0 16 16" fill="none" stroke="#1e242e">
+            <line x1="2.4" y1="5.7" x2="2.4" y2="10.7" class="sw-bar sw-bar-1"/>
+            <line x1="5.2" y1="2"   x2="5.2" y2="14"   class="sw-bar sw-bar-2"/>
+            <line x1="8"   y1="3.5" x2="8"   y2="12.5" class="sw-bar sw-bar-3"/>
+            <line x1="10.8" y1="2.5" x2="10.8" y2="13.5" class="sw-bar sw-bar-4"/>
+            <line x1="13.6" y1="5"  x2="13.6" y2="11"  class="sw-bar sw-bar-5"/>
+          </svg>
+          <svg class="np-icon-pause" viewBox="0 0 16 16" fill="none" stroke="#1e242e" stroke-linecap="round">
+            <line x1="5.5" y1="3" x2="5.5" y2="13" stroke-width="1.8"/>
+            <line x1="10.5" y1="3" x2="10.5" y2="13" stroke-width="1.8"/>
+          </svg>
+          <svg class="np-icon-play" viewBox="0 0 16 16" fill="#1e242e">
+            <path d="M4.5 3.2l8.5 4.8-8.5 4.8z"/>
+          </svg>
+        </button>
+        <!-- Info zone: click to navigate back to digest page -->
+        <div class="nav-pill-info" id="nav-pill-info">
+          <span class="digest-pill-title" id="nav-pill-title">Digest playing</span>
+          <span class="digest-pill-time" id="nav-pill-time">01:32</span>
+        </div>
       </div>
       <button class="avatar-btn">
         <div class="avatar">J</div>
@@ -593,7 +682,7 @@
 
       <!-- Page header -->
       <div class="page-header">
-        <h1 class="greeting">Good morning, Inês!</h1>
+        <h1 class="greeting">Good morning, UrbanStems!</h1>
         <div class="date-tag" style="background: white; border: 1px solid #e8e8ec;">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <rect x="1.5" y="2.5" width="11" height="10" rx="1.5" stroke="#6e7686" stroke-width="1.2"/>
@@ -610,10 +699,30 @@
         <!-- Chat input -->
         <div class="chat-area">
           <!-- Listen daily digest pill -->
-          <button class="listen-pill">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.734 4.00903C12.281 4.51911 12.7177 5.13585 13.0171 5.82122C13.3165 6.50658 13.4723 7.24602 13.475 7.99394C13.4776 8.74185 13.3269 9.48236 13.0323 10.1698C12.7376 10.8572 12.3053 11.477 11.7619 11.9909M10.2405 5.61064C10.5687 5.91669 10.8307 6.28673 11.0103 6.69795C11.19 7.10917 11.2835 7.55283 11.2851 8.00158C11.2866 8.45033 11.1962 8.89464 11.0194 9.3071C10.8427 9.71956 10.5832 10.0914 10.2572 10.3998M5.52574 9.87824L6.4429 11.0132C6.92101 11.6049 7.16007 11.9007 7.36951 11.9329C7.55081 11.9608 7.73403 11.896 7.85753 11.7604C8.00019 11.6037 8.00019 11.2234 8.00019 10.4627V5.56344C8.00019 4.80274 8.00019 4.4224 7.85753 4.26571C7.73403 4.13007 7.55081 4.0653 7.36951 4.09318C7.16007 4.12538 6.92101 4.42121 6.4429 5.01287L5.52574 6.14786C5.42916 6.26738 5.38086 6.32715 5.32111 6.37015C5.26817 6.40825 5.20885 6.43658 5.14594 6.45381C5.07493 6.47326 4.9981 6.47326 4.84442 6.47326H4.06518C3.65117 6.47326 3.44417 6.47326 3.27688 6.52853C2.94767 6.63728 2.68941 6.89554 2.58066 7.22475C2.52539 7.39204 2.52539 7.59904 2.52539 8.01305C2.52539 8.42705 2.52539 8.63406 2.58066 8.80134C2.68941 9.13056 2.94767 9.38881 3.27688 9.49757C3.44417 9.55284 3.65117 9.55284 4.06518 9.55284H4.84442C4.9981 9.55284 5.07493 9.55284 5.14594 9.57228C5.20885 9.58951 5.26817 9.61785 5.32111 9.65595C5.38086 9.69895 5.42916 9.75871 5.52574 9.87824Z" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Listen daily digest
-            <span class="listen-pill-time">01:34</span>
+          <button class="listen-pill" id="listen-btn">
+            <span class="lp-icon">
+              <!-- Speaker icon: idle state -->
+              <svg class="icon-speaker" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.734 4.00903C12.281 4.51911 12.7177 5.13585 13.0171 5.82122C13.3165 6.50658 13.4723 7.24602 13.475 7.99394C13.4776 8.74185 13.3269 9.48236 13.0323 10.1698C12.7376 10.8572 12.3053 11.477 11.7619 11.9909M10.2405 5.61064C10.5687 5.91669 10.8307 6.28673 11.0103 6.69795C11.19 7.10917 11.2835 7.55283 11.2851 8.00158C11.2866 8.45033 11.1962 8.89464 11.0194 9.3071C10.8427 9.71956 10.5832 10.0914 10.2572 10.3998M5.52574 9.87824L6.4429 11.0132C6.92101 11.6049 7.16007 11.9007 7.36951 11.9329C7.55081 11.9608 7.73403 11.896 7.85753 11.7604C8.00019 11.6037 8.00019 11.2234 8.00019 10.4627V5.56344C8.00019 4.80274 8.00019 4.4224 7.85753 4.26571C7.73403 4.13007 7.55081 4.0653 7.36951 4.09318C7.16007 4.12538 6.92101 4.42121 6.4429 5.01287L5.52574 6.14786C5.42916 6.26738 5.38086 6.32715 5.32111 6.37015C5.26817 6.40825 5.20885 6.43658 5.14594 6.45381C5.07493 6.47326 4.9981 6.47326 4.84442 6.47326H4.06518C3.65117 6.47326 3.44417 6.47326 3.27688 6.52853C2.94767 6.63728 2.68941 6.89554 2.58066 7.22475C2.52539 7.39204 2.52539 7.59904 2.58066 8.80134C2.68941 9.13056 2.94767 9.38881 3.27688 9.49757C3.44417 9.55284 3.65117 9.55284 4.06518 9.55284H4.84442C4.9981 9.55284 5.07493 9.55284 5.14594 9.57228C5.20885 9.58951 5.26817 9.61785 5.32111 9.65595C5.38086 9.69895 5.42916 9.75871 5.52574 9.87824Z" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <!-- Soundwave bars: playing (animated) & paused (static/dim) -->
+              <svg class="icon-wave" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white">
+                <line x1="2.4" y1="5.7" x2="2.4" y2="10.7" class="sw-bar sw-bar-1"/>
+                <line x1="5.2" y1="2"   x2="5.2" y2="14"   class="sw-bar sw-bar-2"/>
+                <line x1="8"   y1="3.5" x2="8"   y2="12.5" class="sw-bar sw-bar-3"/>
+                <line x1="10.8" y1="2.5" x2="10.8" y2="13.5" class="sw-bar sw-bar-4"/>
+                <line x1="13.6" y1="5"  x2="13.6" y2="11"  class="sw-bar sw-bar-5"/>
+              </svg>
+              <!-- Pause icon: shown on hover when playing -->
+              <svg class="icon-pause" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-linecap="round">
+                <line x1="5.5" y1="3" x2="5.5" y2="13" stroke-width="1.8"/>
+                <line x1="10.5" y1="3" x2="10.5" y2="13" stroke-width="1.8"/>
+              </svg>
+              <!-- Play icon: shown on hover when paused -->
+              <svg class="icon-play" width="16" height="16" viewBox="0 0 16 16" fill="white">
+                <path d="M4.5 3.2l8.5 4.8-8.5 4.8z"/>
+              </svg>
+            </span>
+            <span class="lp-label">Listen daily digest</span>
+            <span class="lp-time">01:34</span>
           </button>
           <div class="chat-input-box">
             <div class="chat-input-inner">
@@ -999,6 +1108,8 @@
     // Hide all mains inside app-shell
     document.querySelectorAll('#app-shell > main').forEach(el => el.style.display = 'none');
     document.getElementById(mainId).style.display = 'flex';
+    // Refresh playback pill visibility for new page context
+    if (typeof refreshPlaybackUI === 'function') refreshPlaybackUI();
   }
 
   function showDigest() {
@@ -1038,12 +1149,11 @@
   document.querySelectorAll('.monitor-btn').forEach(btn => btn.addEventListener('click', showSpike));
   document.getElementById('spike-back-btn').addEventListener('click', showDigest);
 
-  // ── ElevenLabs narration ────────────────────────────────────────────
-  const ELEVEN_API_KEY = 'sk_bdb72b91df9a9340374c092f7ce565c7d91c36dee0d7cc08';
+  // ── ElevenLabs narration — persistent playback ──────────────────────
+  const ELEVEN_API_KEY  = 'sk_bdb72b91df9a9340374c092f7ce565c7d91c36dee0d7cc08';
   const ELEVEN_VOICE_ID = 'IKne3meq5aSn9XLyUdCD';
 
-  // The script the voice will narrate — based on the Insights cards
-  const NARRATION_TEXT = `Good morning, Inês. Here's your daily digest for April 9th.
+  const NARRATION_TEXT = `Good morning. Here's your daily digest for April 9th.
 
 Your key metrics: Adherence is at 91% and holding steady. Success rate is 78%, up 5 percentage points versus last week. Coverage rate is 64%, up 3 points. And customer satisfaction is 4.3 out of 5, improving thanks to recent brand voice tweaks.
 
@@ -1053,77 +1163,167 @@ First, I'm tracking a pattern: 5 of 14 cancellations in the last 24 hours mentio
 
 Second, an alert from overnight: 4 customers asked whether their bouquet is safe for a recipient's pet. I don't have pet safety data in my product knowledge, so I escalated all 4. These follow the same resolution pattern and may be worth adding to your knowledge base.`;
 
-  let currentAudio = null;
-  let isPlaying = false;
+  // ── State ────────────────────────────────────────────────────────────
+  let audioState     = 'idle'; // 'idle' | 'loading' | 'playing' | 'paused'
+  let currentAudio   = null;
+  let cachedAudioUrl = null;   // reuse blob so no re-fetch on replay
+  let totalDuration  = 0;      // seconds, set on loadedmetadata
 
-  const listenBtn = document.querySelector('.listen-pill');
-  const pillTimeEl = listenBtn.querySelector('.listen-pill-time');
+  // ── DOM refs ─────────────────────────────────────────────────────────
+  const listenBtn    = document.getElementById('listen-btn');
+  const lpTime       = listenBtn.querySelector('.lp-time');
+  const navPill      = document.getElementById('nav-pill');
+  const navPillBtn   = document.getElementById('nav-pill-btn');
+  const navPillTime  = document.getElementById('nav-pill-time');
+  const navPillTitle = document.getElementById('nav-pill-title');
 
-  function updatePillState(state) {
-    if (state === 'loading') {
-      listenBtn.style.opacity = '0.7';
-      listenBtn.style.cursor = 'wait';
-      pillTimeEl.textContent = '...';
-    } else if (state === 'playing') {
-      listenBtn.style.opacity = '1';
-      listenBtn.style.cursor = 'pointer';
-      listenBtn.style.background = '#683fcf'; // purple while playing
-      pillTimeEl.textContent = '▐▐';
-    } else {
-      listenBtn.style.opacity = '1';
-      listenBtn.style.cursor = 'pointer';
-      listenBtn.style.background = '#1e242e';
-      pillTimeEl.textContent = '01:34';
-      isPlaying = false;
-    }
+  // ── Helpers ──────────────────────────────────────────────────────────
+  function fmt(secs) {
+    if (!isFinite(secs) || secs < 0) return '--:--';
+    const m = Math.floor(secs / 60), s = Math.floor(secs % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
   }
 
-  async function playNarration() {
-    // If already playing, stop it
-    if (isPlaying && currentAudio) {
+  function isOnDigestPage() {
+    return document.getElementById('main-digest').style.display !== 'none';
+  }
+
+  function setTimeDisplays(secs) {
+    const t = fmt(secs);
+    lpTime.textContent      = t;
+    navPillTime.textContent = t;
+  }
+
+  // ── UI refresh (called on state change + navigation) ─────────────────
+  function refreshPlaybackUI() {
+    const onDigest = isOnDigestPage();
+
+    // Listen pill classes
+    listenBtn.className = 'listen-pill';
+    if (audioState === 'loading') listenBtn.classList.add('is-loading');
+    if (audioState === 'playing') listenBtn.classList.add('is-playing');
+    if (audioState === 'paused')  listenBtn.classList.add('is-paused');
+
+    // Nav pill: only visible on non-digest pages while active
+    const showPill = !onDigest && (audioState === 'playing' || audioState === 'paused');
+    navPill.style.display = showPill ? 'inline-flex' : 'none';
+    navPill.className = 'digest-pill';
+    if (audioState === 'playing') navPill.classList.add('is-playing');
+    if (audioState === 'paused')  navPill.classList.add('is-paused');
+
+    // Nav pill label
+    navPillTitle.textContent = audioState === 'paused' ? 'Digest paused' : 'Digest playing';
+  }
+
+  // ── Timer sync via timeupdate ─────────────────────────────────────────
+  function onTimeUpdate() {
+    if (!currentAudio) return;
+    const remaining = currentAudio.duration - currentAudio.currentTime;
+    setTimeDisplays(Math.max(0, remaining));
+  }
+
+  // ── Attach events to a newly created Audio object ─────────────────────
+  function attachAudioEvents(audio) {
+    audio.addEventListener('loadedmetadata', () => {
+      totalDuration = audio.duration;
+      setTimeDisplays(totalDuration);
+    });
+    audio.addEventListener('timeupdate', onTimeUpdate);
+    audio.addEventListener('ended', () => {
+      audioState    = 'idle';
+      currentAudio  = null;
+      setTimeDisplays(totalDuration || 0);
+      refreshPlaybackUI();
+    });
+    audio.addEventListener('error', () => {
+      audioState    = 'idle';
+      currentAudio  = null;
+      refreshPlaybackUI();
+    });
+  }
+
+  // ── Core playback toggle ─────────────────────────────────────────────
+  async function handleListenBtn() {
+    if (audioState === 'loading') return;
+
+    if (audioState === 'playing') {
       currentAudio.pause();
-      currentAudio = null;
-      updatePillState('idle');
+      audioState = 'paused';
+      refreshPlaybackUI();
       return;
     }
 
-    updatePillState('loading');
+    if (audioState === 'paused') {
+      currentAudio.play();
+      audioState = 'playing';
+      refreshPlaybackUI();
+      return;
+    }
+
+    // ── Idle → fetch & start ──────────────────────────────────────────
+    audioState = 'loading';
+    lpTime.textContent = '...';
+    refreshPlaybackUI();
 
     try {
-      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`, {
-        method: 'POST',
-        headers: {
-          'xi-api-key': ELEVEN_API_KEY,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: NARRATION_TEXT,
-          model_id: 'eleven_turbo_v2',
-          voice_settings: { stability: 0.5, similarity_boost: 0.75 }
-        })
-      });
+      if (!cachedAudioUrl) {
+        const res = await fetch(
+          `https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`,
+          {
+            method: 'POST',
+            headers: { 'xi-api-key': ELEVEN_API_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              text: NARRATION_TEXT,
+              model_id: 'eleven_turbo_v2',
+              voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+            })
+          }
+        );
+        if (!res.ok) throw new Error('ElevenLabs API error');
+        cachedAudioUrl = URL.createObjectURL(await res.blob());
+      }
 
-      if (!response.ok) throw new Error('ElevenLabs API error');
-
-      const audioBlob = await response.blob();
-      const audioUrl = URL.createObjectURL(audioBlob);
-      currentAudio = new Audio(audioUrl);
-
-      currentAudio.addEventListener('ended', () => updatePillState('idle'));
-      currentAudio.addEventListener('error', () => updatePillState('idle'));
-
-      isPlaying = true;
-      updatePillState('playing');
-      currentAudio.play();
+      currentAudio = new Audio(cachedAudioUrl);
+      attachAudioEvents(currentAudio);
+      audioState = 'playing';
+      refreshPlaybackUI();
+      await currentAudio.play();
 
     } catch (err) {
       console.error('Narration error:', err);
-      updatePillState('idle');
+      audioState = 'idle';
+      setTimeDisplays(totalDuration || 0);
+      refreshPlaybackUI();
       alert('Could not load narration. Check the console for details.');
     }
   }
 
-  listenBtn.addEventListener('click', playNarration);
+  // ── Nav pill icon click: toggle pause/resume ──────────────────────────
+  function toggleNavPlayback(e) {
+    e.stopPropagation(); // don't bubble to the pill's navigate-to-digest handler
+    if (audioState === 'playing') {
+      currentAudio.pause();
+      audioState = 'paused';
+      refreshPlaybackUI();
+    } else if (audioState === 'paused') {
+      currentAudio.play();
+      audioState = 'playing';
+      refreshPlaybackUI();
+    }
+  }
+
+  // ── Nav pill body click: go to digest page ────────────────────────────
+  function navPillGoToDigest() {
+    showDigest();
+  }
+
+  // ── Bind events ───────────────────────────────────────────────────────
+  listenBtn.addEventListener('click', handleListenBtn);
+  navPillBtn.addEventListener('click', toggleNavPlayback);
+  navPill.addEventListener('click', navPillGoToDigest);
+
+  // Initial UI state (nav pill hidden, timer at default)
+  refreshPlaybackUI();
 </script>
 </body>
 </html>
