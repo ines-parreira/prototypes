@@ -576,30 +576,36 @@
       display: flex; flex-direction: column; gap: 6px;
     }
     .esc-card-label { font-size: 12px; font-weight: 500; color: #5c6370; }
-    .esc-card-value { font-size: 28px; font-weight: 700; color: #1e242e; line-height: 1.1; }
+    .esc-card-value { font-size: 28px; font-weight: 600; color: #1e242e; line-height: 1.1; }
     .esc-card-desc  { font-size: 12px; color: #6e7686; line-height: 1.5; }
 
-    /* Volume and efficiency layout */
-    .vol-eff-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+    /* Volume and efficiency — single combined card */
+    .vol-full-card {
+      background: white; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px; overflow: hidden;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+    }
+    /* Efficiency metrics row at top */
+    .eff-metrics-row {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      padding: 20px 24px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .eff-metric-col {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 0 24px;
+    }
+    .eff-metric-col:first-child { padding-left: 0; }
+    .eff-metric-col + .eff-metric-col { border-left: 1px solid rgba(0,0,0,0.06); }
+    .eff-stat-label { font-size: 12px; color: #5c6370; }
+    .eff-stat-value { font-size: 26px; font-weight: 600; color: #1e242e; line-height: 1.2; }
+    .eff-stat-sub { font-size: 12px; color: #147656; }
+    /* Chart section */
+    .vol-chart-section { padding: 20px 24px 16px; }
     .vol-card-label { font-size: 12px; font-weight: 500; color: #5c6370; margin-bottom: 16px; }
-    .vol-legend { display: flex; gap: 14px; margin-top: 14px; }
+    .vol-legend { display: flex; gap: 14px; margin-top: 12px; }
     .vol-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #5c6370; }
     .vol-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-
-    /* Conversation efficiency card */
-    .eff-card {
-      background: white; border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 12px; padding: 20px;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
-      display: flex; flex-direction: column;
-    }
-    .eff-card-header { font-size: 12px; font-weight: 500; color: #5c6370; margin-bottom: 4px; }
-    .eff-stat-group { display: flex; flex-direction: column; gap: 4px; padding: 16px 0; }
-    .eff-stat-group:first-of-type { padding-top: 0; }
-    .eff-stat-label { font-size: 12px; color: #5c6370; }
-    .eff-stat-value { font-size: 26px; font-weight: 700; color: #1e242e; line-height: 1.2; }
-    .eff-stat-sub { font-size: 12px; color: #147656; }
-    .eff-divider { height: 1px; background: rgba(0,0,0,0.06); flex-shrink: 0; }
 
     /* Experiments empty state */
     .experiments-empty {
@@ -1033,18 +1039,36 @@
         <!-- ── Volume and efficiency ──────────────────────────────────── -->
         <div>
           <div class="perf-section-title">Volume and efficiency</div>
-          <div class="vol-eff-row">
+          <div class="vol-full-card">
+
+            <!-- Efficiency metrics — horizontal row at top -->
+            <div class="eff-metrics-row">
+              <div class="eff-metric-col">
+                <div class="eff-stat-label">Avg. turns per resolution</div>
+                <div class="eff-stat-value">2.8</div>
+              </div>
+              <div class="eff-metric-col">
+                <div class="eff-stat-label">Avg. first response time</div>
+                <div class="eff-stat-value">&lt;5 sec</div>
+                <div class="eff-stat-sub">↗ vs ~4 min for human team</div>
+              </div>
+              <div class="eff-metric-col">
+                <div class="eff-stat-label">Avg. resolution time (automated)</div>
+                <div class="eff-stat-value">~1.2 min</div>
+                <div class="eff-stat-sub">↗ vs ~18 min human-handled</div>
+              </div>
+            </div>
 
             <!-- Daily ticket volume chart -->
-            <div class="volume-card">
+            <div class="vol-chart-section">
               <div class="vol-card-label">Daily ticket volume</div>
-              <svg viewBox="0 0 490 185" style="width:100%; display:block; overflow:visible;">
+              <svg viewBox="0 0 520 185" style="width:100%; display:block;">
                 <!-- Horizontal grid lines -->
-                <line x1="38" y1="10"    x2="490" y2="10"    stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="48"    x2="490" y2="48"    stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="85"    x2="490" y2="85"    stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="123"   x2="490" y2="123"   stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="160"   x2="490" y2="160"   stroke="#e5e7eb" stroke-width="0.8"/>
+                <line x1="38" y1="10"  x2="518" y2="10"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="48"  x2="518" y2="48"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="85"  x2="518" y2="85"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="123" x2="518" y2="123" stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="160" x2="518" y2="160" stroke="#e5e7eb" stroke-width="0.8"/>
                 <!-- Y-axis labels -->
                 <text x="33" y="13"  text-anchor="end" font-size="9" fill="#9ea6b3">2K</text>
                 <text x="33" y="51"  text-anchor="end" font-size="9" fill="#9ea6b3">1.5K</text>
@@ -1052,34 +1076,34 @@
                 <text x="33" y="126" text-anchor="end" font-size="9" fill="#9ea6b3">500</text>
                 <text x="33" y="163" text-anchor="end" font-size="9" fill="#9ea6b3">0</text>
                 <!-- Jun 1: total=960, esc=280, auto=680 -->
-                <rect x="50"  y="88"  width="42" height="51" rx="2" fill="#F4956A"/><!-- auto -->
-                <rect x="50"  y="139" width="42" height="21" rx="2" fill="#7B6CF6"/><!-- esc -->
+                <rect x="50"  y="88"  width="44" height="51" rx="2" fill="#F4956A"/>
+                <rect x="50"  y="139" width="44" height="21" rx="2" fill="#7B6CF6"/>
                 <!-- Jun 2: total=880, esc=150, auto=730 -->
-                <rect x="118" y="94"  width="42" height="57" rx="2" fill="#F4956A"/>
-                <rect x="118" y="151" width="42" height="9"  rx="2" fill="#7B6CF6"/>
+                <rect x="119" y="94"  width="44" height="55" rx="2" fill="#F4956A"/>
+                <rect x="119" y="149" width="44" height="11" rx="2" fill="#7B6CF6"/>
                 <!-- Jun 3: total=1350, esc=200, auto=1150 -->
-                <rect x="186" y="59"  width="42" height="86" rx="2" fill="#F4956A"/>
-                <rect x="186" y="145" width="42" height="15" rx="2" fill="#7B6CF6"/>
+                <rect x="188" y="59"  width="44" height="86" rx="2" fill="#F4956A"/>
+                <rect x="188" y="145" width="44" height="15" rx="2" fill="#7B6CF6"/>
                 <!-- Jun 4: total=1310, esc=210, auto=1100 -->
-                <rect x="254" y="62"  width="42" height="82" rx="2" fill="#F4956A"/>
-                <rect x="254" y="144" width="42" height="16" rx="2" fill="#7B6CF6"/>
+                <rect x="257" y="62"  width="44" height="82" rx="2" fill="#F4956A"/>
+                <rect x="257" y="144" width="44" height="16" rx="2" fill="#7B6CF6"/>
                 <!-- Jun 5: total=1100, esc=200, auto=900 -->
-                <rect x="322" y="77"  width="42" height="68" rx="2" fill="#F4956A"/>
-                <rect x="322" y="145" width="42" height="15" rx="2" fill="#7B6CF6"/>
+                <rect x="326" y="78"  width="44" height="67" rx="2" fill="#F4956A"/>
+                <rect x="326" y="145" width="44" height="15" rx="2" fill="#7B6CF6"/>
                 <!-- Jun 6: total=1080, esc=290, auto=790 -->
-                <rect x="390" y="79"  width="42" height="59" rx="2" fill="#F4956A"/>
-                <rect x="390" y="138" width="42" height="22" rx="2" fill="#7B6CF6"/>
+                <rect x="395" y="79"  width="44" height="59" rx="2" fill="#F4956A"/>
+                <rect x="395" y="138" width="44" height="22" rx="2" fill="#7B6CF6"/>
                 <!-- Jun 7: total=1500, esc=400, auto=1100 -->
-                <rect x="458" y="47"  width="42" height="82" rx="2" fill="#F4956A"/>
-                <rect x="458" y="129" width="42" height="31" rx="2" fill="#7B6CF6"/>
+                <rect x="464" y="48"  width="44" height="82" rx="2" fill="#F4956A"/>
+                <rect x="464" y="130" width="44" height="30" rx="2" fill="#7B6CF6"/>
                 <!-- X-axis labels -->
-                <text x="71"  y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 1</text>
-                <text x="139" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 2</text>
-                <text x="207" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 3</text>
-                <text x="275" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 4</text>
-                <text x="343" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 5</text>
-                <text x="411" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 6</text>
-                <text x="479" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 7</text>
+                <text x="72"  y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 1</text>
+                <text x="141" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 2</text>
+                <text x="210" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 3</text>
+                <text x="279" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 4</text>
+                <text x="348" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 5</text>
+                <text x="417" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 6</text>
+                <text x="486" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 7</text>
               </svg>
               <div class="vol-legend">
                 <div class="vol-legend-item">
@@ -1090,27 +1114,6 @@
                   <div class="vol-legend-dot" style="background:#F4956A;"></div>
                   Automated
                 </div>
-              </div>
-            </div>
-
-            <!-- Conversation efficiency -->
-            <div class="eff-card">
-              <div class="eff-card-header">Conversation efficiency</div>
-              <div class="eff-stat-group">
-                <div class="eff-stat-label">Avg. turns per resolution</div>
-                <div class="eff-stat-value">2.8</div>
-              </div>
-              <div class="eff-divider"></div>
-              <div class="eff-stat-group">
-                <div class="eff-stat-label">Avg. first response time</div>
-                <div class="eff-stat-value">&lt;5 sec</div>
-                <div class="eff-stat-sub">↗ vs ~4 min for human team</div>
-              </div>
-              <div class="eff-divider"></div>
-              <div class="eff-stat-group">
-                <div class="eff-stat-label">Avg. resolution time (automated)</div>
-                <div class="eff-stat-value">~1.2 min</div>
-                <div class="eff-stat-sub">↗ vs ~18 min human-handled</div>
               </div>
             </div>
 
