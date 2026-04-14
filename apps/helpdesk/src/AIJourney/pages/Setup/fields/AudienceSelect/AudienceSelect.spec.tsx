@@ -45,13 +45,13 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
-                name="Audience to include"
+                name="Segments to include"
                 value={[]}
                 onChange={() => {}}
             />,
         )
 
-        expect(screen.getByText('Audience to include')).toBeInTheDocument()
+        expect(screen.getByText('Segments to include')).toBeInTheDocument()
         expect(screen.getByText('Select audience')).toBeInTheDocument()
     })
 
@@ -80,7 +80,7 @@ describe('AudienceSelect', () => {
         const user = userEvent.setup()
         render(
             <AudienceSelect
-                name="Audience to include"
+                name="Segments to include"
                 value={[]}
                 exclude={['list3', 'seg3']}
                 onChange={() => {}}
@@ -148,7 +148,7 @@ describe('AudienceSelect', () => {
         const user = userEvent.setup()
         render(
             <AudienceSelect
-                name="Audience to include"
+                name="Segments to include"
                 value={[]}
                 onChange={handleChange}
             />,
@@ -187,7 +187,7 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
-                name="Audience to include"
+                name="Segments to include"
                 value={[]}
                 onChange={() => {}}
                 isDisabled={true}
@@ -210,7 +210,7 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
-                name="Audience to include"
+                name="Segments to include"
                 value={[]}
                 onChange={() => {}}
             />,
@@ -232,7 +232,7 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
-                name="Audience to include"
+                name="Segments to include"
                 value={[]}
                 onChange={() => {}}
             />,
@@ -258,13 +258,13 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
-                name="Audience to include"
+                name="Segments to include"
                 value={[]}
                 onChange={() => {}}
             />,
         )
 
-        expect(screen.getByText('Audience to include')).toBeInTheDocument()
+        expect(screen.getByText('Segments to include')).toBeInTheDocument()
         expect(mockUseAudienceLists).toHaveBeenCalledWith(undefined)
         expect(mockUseAudienceSegments).toHaveBeenCalledWith(undefined)
     })
@@ -282,7 +282,7 @@ describe('AudienceSelect', () => {
         render(<AudienceSelect value={[]} onChange={() => {}} />)
 
         expect(
-            screen.queryByText('Audience to include'),
+            screen.queryByText('Segments to include'),
         ).not.toBeInTheDocument()
         expect(screen.getByText('Select audience')).toBeInTheDocument()
     })
@@ -320,14 +320,14 @@ describe('AudienceSelect', () => {
 
         render(
             <AudienceSelect
-                name="Audience to include"
+                name="Segments to include"
                 label="Choose your audience"
                 value={[]}
                 onChange={() => {}}
             />,
         )
 
-        expect(screen.getByText('Audience to include')).toBeInTheDocument()
+        expect(screen.getByText('Segments to include')).toBeInTheDocument()
         expect(screen.getByText('Choose your audience')).toBeInTheDocument()
     })
 

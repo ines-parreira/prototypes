@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useFormContext } from 'react-hook-form'
 
 import { Box } from '@gorgias/axiom'
@@ -53,12 +54,16 @@ export const Setup = () => {
     const { reset } = useFormContext<SetupFormValues>()
     const [isFormReady, setIsFormReady] = useState(false)
 
+    const isAiJourneySegmentsEnabled = useFlag(
+        FeatureFlagKey.AiJourneySegmentsUiEnabled,
+    )
+
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
-    const shouldRenderTimingCard = ![
-        JOURNEY_TYPES.CART_ABANDONMENT,
-        JOURNEY_TYPES.SESSION_ABANDONMENT,
-        JOURNEY_TYPES.CAMPAIGN,
-    ].includes(journeyType)
+
+    const shouldRenderTimingCard = !isCampaign
+    const shouldRenderAudienceCard = isCampaign
+        ? true
+        : isAiJourneySegmentsEnabled
 
     useEffect(() => {
         if (!isLoadingJourneyData) {
@@ -121,15 +126,17 @@ export const Setup = () => {
 
     return (
         <Box flexDirection="column" gap="lg">
-            <GeneralCard isFormReady={isFormReady} />
-            <DiscountCodeCard isFormReady={isFormReady} />
             {shouldRenderTimingCard && (
                 <TimingCard
                     isFormReady={isFormReady}
                     journeyType={journeyType}
                 />
             )}
-            {isCampaign && <AudienceCard isFormReady={isFormReady} />}
+            {shouldRenderAudienceCard && (
+                <AudienceCard isFormReady={isFormReady} />
+            )}
+            <DiscountCodeCard isFormReady={isFormReady} />
+            <GeneralCard isFormReady={isFormReady} />
         </Box>
     )
 }

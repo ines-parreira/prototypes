@@ -28,3 +28,4 @@ export { IdentitySettingsCard } from './IdentitySettingsCard/IdentitySettingsCar
 export { SenderIdentityTab } from './SenderIdentityTab/SenderIdentityTab'
 export { FrequencyCapsCard } from './FrequencyCapsCard/FrequencyCapsCard'
 export { ComplianceTab } from './ComplianceTab/ComplianceTab'
+export { StaticTimingContent } from './StaticTimingContent/StaticTimingContent'

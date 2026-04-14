@@ -5,11 +5,11 @@ import { Box, ButtonGroup, ButtonGroupItem, Text } from '@gorgias/axiom'
 const fieldProps = {
     ['cooldown']: {
         fieldName: 'cooldown_days',
-        label: 'Shopper inactive for at least',
+        label: 'Shopper can re-enter after',
     },
     ['inactive-days']: {
         fieldName: 'inactive_days',
-        label: 'Shopper can re-enter after',
+        label: 'Shopper inactive for at least',
     },
 }
 

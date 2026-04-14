@@ -344,7 +344,59 @@ describe('<AiJourneyOnboarding />', () => {
                 expect(mockHandleCreate).toHaveBeenCalledWith(
                     expect.objectContaining({
                         cooldownDays: 30,
-                        inactiveDays: undefined,
+                        inactiveDays: 30,
+                    }),
+                )
+            })
+        })
+
+        it('sends inactiveDays from inactive_days field, not wait_time_minutes, on create', async () => {
+            mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.WIN_BACK,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleCreate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        inactiveDays: 30,
+                        waitTimeMinutes: undefined,
+                    }),
+                )
+            })
+        })
+
+        it('sends inactiveDays from inactive_days field, not wait_time_minutes, on update', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'existing-journey-id', campaign: null },
+            } as any)
+            mockHandleUpdate.mockResolvedValue(undefined)
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.WIN_BACK,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        inactiveDays: 30,
+                        waitTimeMinutes: undefined,
                     }),
                 )
             })

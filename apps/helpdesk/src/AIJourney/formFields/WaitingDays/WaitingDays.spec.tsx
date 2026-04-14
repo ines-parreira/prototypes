@@ -28,7 +28,7 @@ describe('<WaitingDays />', () => {
         renderComponent('cooldown', { cooldown_days: 30 })
 
         expect(
-            screen.getByText('Shopper inactive for at least'),
+            screen.getByText('Shopper can re-enter after'),
         ).toBeInTheDocument()
         expect(screen.getByText('30 days')).toBeInTheDocument()
         expect(screen.getByText('60 days')).toBeInTheDocument()
@@ -39,7 +39,7 @@ describe('<WaitingDays />', () => {
         renderComponent('inactive-days', { inactive_days: 30 })
 
         expect(
-            screen.getByText('Shopper can re-enter after'),
+            screen.getByText('Shopper inactive for at least'),
         ).toBeInTheDocument()
         expect(screen.getByText('30 days')).toBeInTheDocument()
         expect(screen.getByText('60 days')).toBeInTheDocument()
@@ -50,7 +50,7 @@ describe('<WaitingDays />', () => {
         renderComponent('cooldown', {})
 
         expect(
-            screen.getByText('Shopper inactive for at least'),
+            screen.getByText('Shopper can re-enter after'),
         ).toBeInTheDocument()
         expect(screen.getByText('30 days')).toBeInTheDocument()
     })

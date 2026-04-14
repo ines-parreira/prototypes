@@ -15,12 +15,12 @@ const fieldProps = {
     include: {
         fieldName: 'included_audience_list_ids',
         excludeFieldName: 'excluded_audience_list_ids',
-        label: 'Audience to include',
+        label: 'Segments to include',
     },
     exclude: {
         fieldName: 'excluded_audience_list_ids',
         excludeFieldName: 'included_audience_list_ids',
-        label: 'Audience to exclude',
+        label: 'Segments to exclude',
     },
 }
 

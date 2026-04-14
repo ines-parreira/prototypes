@@ -93,16 +93,16 @@ describe('<AudienceSelect />', () => {
     })
 
     describe('label', () => {
-        it('renders "Audience to include" label for include type', async () => {
+        it('renders "Segments to include" label for include type', async () => {
             await renderComponent('include')
 
-            expect(screen.getByText('Audience to include')).toBeInTheDocument()
+            expect(screen.getByText('Segments to include')).toBeInTheDocument()
         })
 
-        it('renders "Audience to exclude" label for exclude type', async () => {
+        it('renders "Segments to exclude" label for exclude type', async () => {
             await renderComponent('exclude')
 
-            expect(screen.getByText('Audience to exclude')).toBeInTheDocument()
+            expect(screen.getByText('Segments to exclude')).toBeInTheDocument()
         })
     })
 

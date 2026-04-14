@@ -1,5 +1,14 @@
-import { Box, Card, CardHeader, Skeleton } from '@gorgias/axiom'
+import {
+    Box,
+    Card,
+    CardHeader,
+    Icon,
+    Skeleton,
+    Tooltip,
+    TooltipContent,
+} from '@gorgias/axiom'
 
+import { StaticTimingContent } from 'AIJourney/components/StaticTimingContent/StaticTimingContent'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { MinutesDelay, TargetOrderStatus } from 'AIJourney/formFields'
 import { WaitingDays } from 'AIJourney/formFields/WaitingDays/WaitingDays'
@@ -14,6 +23,13 @@ export const TimingCard = ({
     const isPostPurchase = journeyType === JOURNEY_TYPES.POST_PURCHASE
     const isWelcome = journeyType === JOURNEY_TYPES.WELCOME
     const isWinBack = journeyType === JOURNEY_TYPES.WIN_BACK
+    const isCartAbandonment = journeyType === JOURNEY_TYPES.CART_ABANDONMENT
+    const isSessionAbandonment =
+        journeyType === JOURNEY_TYPES.SESSION_ABANDONMENT
+
+    const shouldRenderStaticContent =
+        isCartAbandonment || isSessionAbandonment || isWelcome
+    const shouldRenderTooltip = isCartAbandonment || isSessionAbandonment
 
     if (!isFormReady) {
         return (
@@ -24,9 +40,21 @@ export const TimingCard = ({
     }
 
     return (
-        <Card width={680}>
-            <Box flexDirection="column" gap="md">
+        <Card width={680} gap="lg">
+            <Box alignItems="center" gap="xxs">
                 <CardHeader title="Timing" />
+                {shouldRenderTooltip && (
+                    <span>
+                        <Tooltip delay={0} trigger={<Icon name="info" />}>
+                            <TooltipContent title="These settings are managed by Gorgias and cannot be edited for this flow type." />
+                        </Tooltip>
+                    </span>
+                )}
+            </Box>
+            <Box flexDirection="column" gap="md">
+                {shouldRenderStaticContent && (
+                    <StaticTimingContent journeyType={journeyType} />
+                )}
                 {isPostPurchase && (
                     <>
                         <TargetOrderStatus />
@@ -36,8 +64,8 @@ export const TimingCard = ({
                 {isWelcome && <MinutesDelay journeyType={journeyType} />}
                 {isWinBack && (
                     <>
-                        <WaitingDays type="cooldown" />
                         <WaitingDays type="inactive-days" />
+                        <WaitingDays type="cooldown" />
                     </>
                 )}
             </Box>

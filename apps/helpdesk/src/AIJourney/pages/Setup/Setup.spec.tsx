@@ -1,3 +1,4 @@
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { render, waitFor } from '@testing-library/react'
 
 import { OrderStatusEnum } from '@gorgias/convert-client'
@@ -13,6 +14,11 @@ jest.mock('react-hook-form', () => ({
     useFormContext: jest.fn(() => ({
         reset: mockReset,
     })),
+}))
+
+jest.mock('@repo/feature-flags', () => ({
+    ...jest.requireActual('@repo/feature-flags'),
+    useFlag: jest.fn(),
 }))
 
 jest.mock('AIJourney/providers/JourneyProvider/JourneyProvider', () => ({
@@ -33,6 +39,8 @@ const mockUseJourneyContext =
     require('AIJourney/providers/JourneyProvider/JourneyProvider')
         .useJourneyContext as jest.Mock
 
+const mockUseFlag = useFlag as jest.Mock
+
 const mockGeneralCard = require('AIJourney/components').GeneralCard as jest.Mock
 const mockDiscountCodeCard = require('AIJourney/components')
     .DiscountCodeCard as jest.Mock
@@ -43,6 +51,8 @@ const mockAudienceCard = require('AIJourney/components')
 describe('<Setup />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+
+        mockUseFlag.mockReturnValue(false)
 
         mockUseJourneyContext.mockReturnValue({
             isLoading: false,
@@ -797,6 +807,34 @@ describe('<Setup />', () => {
                 )
             })
         })
+
+        it('should pass isFormReady=true to AudienceCard for non-campaign journey when AiJourneySegmentsUiEnabled flag is enabled', async () => {
+            mockUseFlag.mockImplementation((key: FeatureFlagKey) =>
+                key === FeatureFlagKey.AiJourneySegmentsUiEnabled
+                    ? true
+                    : false,
+            )
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                journeyData: {
+                    configuration: {
+                        sms_sender_integration_id: 1,
+                        sms_sender_number: '+1 555-123-4567',
+                        max_follow_up_messages: 2,
+                    },
+                },
+            })
+
+            render(<Setup />)
+
+            await waitFor(() => {
+                expect(mockAudienceCard).toHaveBeenLastCalledWith(
+                    expect.objectContaining({ isFormReady: true }),
+                    expect.anything(),
+                )
+            })
+        })
     })
 
     describe('TimingCard rendering', () => {
@@ -804,6 +842,8 @@ describe('<Setup />', () => {
             JOURNEY_TYPES.POST_PURCHASE,
             JOURNEY_TYPES.WELCOME,
             JOURNEY_TYPES.WIN_BACK,
+            JOURNEY_TYPES.CART_ABANDONMENT,
+            JOURNEY_TYPES.SESSION_ABANDONMENT,
         ])('should render TimingCard for %s journey type', (journeyType) => {
             mockUseJourneyContext.mockReturnValue({
                 isLoading: false,
@@ -816,43 +856,40 @@ describe('<Setup />', () => {
             expect(getByText('TimingCard')).toBeInTheDocument()
         })
 
-        it.each([
-            JOURNEY_TYPES.CART_ABANDONMENT,
-            JOURNEY_TYPES.SESSION_ABANDONMENT,
-            JOURNEY_TYPES.CAMPAIGN,
-        ])(
-            'should not render TimingCard for %s journey type',
-            (journeyType) => {
-                mockUseJourneyContext.mockReturnValue({
-                    isLoading: false,
-                    journeyType,
-                    journeyData: undefined,
-                })
-
-                const { queryByText } = render(<Setup />)
-
-                expect(queryByText('TimingCard')).not.toBeInTheDocument()
-            },
-        )
-
-        it('should pass journeyType to TimingCard', () => {
+        it('should not render TimingCard for campaign journey type', () => {
             mockUseJourneyContext.mockReturnValue({
                 isLoading: false,
-                journeyType: JOURNEY_TYPES.WELCOME,
+                journeyType: JOURNEY_TYPES.CAMPAIGN,
+                journeyData: undefined,
+            })
+
+            const { queryByText } = render(<Setup />)
+
+            expect(queryByText('TimingCard')).not.toBeInTheDocument()
+        })
+
+        it.each([
+            JOURNEY_TYPES.WELCOME,
+            JOURNEY_TYPES.CART_ABANDONMENT,
+            JOURNEY_TYPES.SESSION_ABANDONMENT,
+        ])('should pass journeyType to TimingCard for %s', (journeyType) => {
+            mockUseJourneyContext.mockReturnValue({
+                isLoading: false,
+                journeyType,
                 journeyData: undefined,
             })
 
             render(<Setup />)
 
             expect(mockTimingCard).toHaveBeenLastCalledWith(
-                expect.objectContaining({ journeyType: JOURNEY_TYPES.WELCOME }),
+                expect.objectContaining({ journeyType }),
                 expect.anything(),
             )
         })
     })
 
     describe('AudienceCard rendering', () => {
-        it('should render AudienceCard for campaign journey type', async () => {
+        it('should render AudienceCard for campaign journey type regardless of feature flag', async () => {
             mockUseJourneyContext.mockReturnValue({
                 isLoading: false,
                 journeyType: JOURNEY_TYPES.CAMPAIGN,
@@ -872,7 +909,12 @@ describe('<Setup />', () => {
             })
         })
 
-        it('should not render AudienceCard for non-campaign journey types', () => {
+        it('should not render AudienceCard for non-campaign journey types when AiJourneySegmentsUiEnabled flag is disabled', () => {
+            mockUseFlag.mockImplementation((key: FeatureFlagKey) =>
+                key === FeatureFlagKey.AiJourneySegmentsUiEnabled
+                    ? false
+                    : false,
+            )
             mockUseJourneyContext.mockReturnValue({
                 isLoading: false,
                 journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
@@ -889,5 +931,31 @@ describe('<Setup />', () => {
 
             expect(queryByText('AudienceCard')).not.toBeInTheDocument()
         })
+
+        it.each([
+            JOURNEY_TYPES.POST_PURCHASE,
+            JOURNEY_TYPES.WELCOME,
+            JOURNEY_TYPES.WIN_BACK,
+            JOURNEY_TYPES.CART_ABANDONMENT,
+            JOURNEY_TYPES.SESSION_ABANDONMENT,
+        ])(
+            'should render AudienceCard for %s journey type when AiJourneySegmentsUiEnabled flag is enabled',
+            (journeyType) => {
+                mockUseFlag.mockImplementation((key: FeatureFlagKey) =>
+                    key === FeatureFlagKey.AiJourneySegmentsUiEnabled
+                        ? true
+                        : false,
+                )
+                mockUseJourneyContext.mockReturnValue({
+                    isLoading: false,
+                    journeyType,
+                    journeyData: undefined,
+                })
+
+                const { getByText } = render(<Setup />)
+
+                expect(getByText('AudienceCard')).toBeInTheDocument()
+            },
+        )
     })
 })
