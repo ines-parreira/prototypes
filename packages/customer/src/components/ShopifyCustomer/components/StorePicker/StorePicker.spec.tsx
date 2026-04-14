@@ -23,6 +23,12 @@ const mockIntegrations: Integration[] = [
 ]
 
 describe('StorePicker', () => {
+    async function openStorePicker(user: ReturnType<typeof render>['user']) {
+        await user.click(
+            screen.getByRole('textbox', { name: /select a store/i }),
+        )
+    }
+
     it('renders selected integration', async () => {
         render(
             <StorePicker
@@ -44,13 +50,9 @@ describe('StorePicker', () => {
             />,
         )
 
-        await user.click(screen.getByRole('textbox'))
+        await openStorePicker(user)
 
-        await waitFor(() => {
-            expect(
-                screen.getByRole('option', { name: /test shopify store/i }),
-            ).toBeInTheDocument()
-        })
+        await screen.findByRole('option', { name: /test shopify store/i })
 
         expect(
             screen.queryByRole('button', { name: /sync to other stores/i }),
@@ -68,13 +70,13 @@ describe('StorePicker', () => {
             />,
         )
 
-        await user.click(screen.getByRole('textbox'))
+        await openStorePicker(user)
 
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', { name: /sync to other stores/i }),
-            ).toBeInTheDocument()
-        })
+        expect(
+            await screen.findByRole('button', {
+                name: /sync to other stores/i,
+            }),
+        ).toBeInTheDocument()
     })
 
     it('calls onSyncProfile when clicking the sync action', async () => {
@@ -88,46 +90,46 @@ describe('StorePicker', () => {
             />,
         )
 
-        await user.click(screen.getByRole('textbox'))
-
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', { name: /sync to other stores/i }),
-            ).toBeInTheDocument()
-        })
+        await openStorePicker(user)
 
         await user.click(
-            screen.getByRole('button', { name: /sync to other stores/i }),
+            await screen.findByRole('button', {
+                name: /sync to other stores/i,
+            }),
         )
 
         expect(onSyncProfile).toHaveBeenCalledTimes(1)
     })
 
     it('closes dropdown when clicking the sync action', async () => {
+        const onSyncProfile = vi.fn()
         const { user } = render(
             <StorePicker
                 integrations={mockIntegrations}
                 selectedIntegrationId={1}
                 onChange={vi.fn()}
-                onSyncProfile={vi.fn()}
+                onSyncProfile={onSyncProfile}
             />,
         )
 
-        await user.click(screen.getByRole('textbox'))
+        await openStorePicker(user)
 
-        await waitFor(() => {
-            expect(
-                screen.getByRole('button', { name: /sync to other stores/i }),
-            ).toBeInTheDocument()
+        const syncAction = await screen.findByRole('button', {
+            name: /sync to other stores/i,
+        })
+        const selectedStoreOption = await screen.findByRole('option', {
+            name: /test shopify store/i,
         })
 
-        await user.click(
-            screen.getByRole('button', { name: /sync to other stores/i }),
-        )
+        await user.click(syncAction)
 
+        expect(onSyncProfile).toHaveBeenCalledTimes(1)
         await waitFor(() => {
+            expect(selectedStoreOption).not.toBeInTheDocument()
             expect(
-                screen.queryByRole('button', { name: /sync to other stores/i }),
+                screen.queryByRole('button', {
+                    name: /sync to other stores/i,
+                }),
             ).not.toBeInTheDocument()
         })
     })
