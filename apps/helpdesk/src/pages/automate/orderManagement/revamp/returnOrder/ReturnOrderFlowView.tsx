@@ -70,10 +70,10 @@ export const ReturnOrderFlowView = () => {
         ) : undefined
     }, [selectedChannelId, chatChannels])
 
-    const { showPreviewPanel, chatPreviewPortal } = useChatPreviewPanel(
-        PreviewPanelHeaderActions,
-        selectedChannelLanguage,
-    )
+    const { showPreviewPanel, chatPreviewPortal } = useChatPreviewPanel({
+        headerActions: PreviewPanelHeaderActions,
+        locale: selectedChannelLanguage,
+    })
 
     useEffect(() => {
         showPreviewPanel(appId)

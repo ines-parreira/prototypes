@@ -196,6 +196,26 @@ describe('useChatPreviewPanel', () => {
         expect(() => result.current.displayPage('homepage')).not.toThrow()
     })
 
+    it('displayPage("orders") does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() => result.current.displayPage('orders')).not.toThrow()
+    })
+
+    it('passes initialPage to ChatPreviewPanel', () => {
+        renderHook(() => useChatPreviewPanel({ initialPage: 'orders' }))
+
+        const element = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        expect(element.props.initialPage).toBe('orders')
+    })
+
+    it('does not pass initialPage to ChatPreviewPanel when not provided', () => {
+        renderHook(() => useChatPreviewPanel())
+
+        const element = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        expect(element.props.initialPage).toBeUndefined()
+    })
+
     it('reloadPreview does not throw when ref is unattached', () => {
         const { result } = renderHook(() => useChatPreviewPanel())
 
@@ -320,6 +340,32 @@ describe('useChatPreviewPanel', () => {
         expect(() => result.current.updateWorkflowEntryPoints([])).not.toThrow()
     })
 
+    it('updatePreviewOrders does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.updatePreviewOrders({ orders: {} }),
+        ).not.toThrow()
+    })
+
+    it('updatePreviewOrders calls updatePreviewOrders on the ref when attached', () => {
+        const mockUpdatePreviewOrders = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                updatePreviewOrders: mockUpdatePreviewOrders,
+            }
+        }
+
+        const options = { orders: { '#1001': { name: '#1001' } as any } }
+        result.current.updatePreviewOrders(options)
+
+        expect(mockUpdatePreviewOrders).toHaveBeenCalledWith(options)
+    })
+
     it('updateWorkflowEntryPoints calls displayPage with homepage and updateWorkflowEntryPoints on the ref when attached', () => {
         const mockDisplayPage = jest.fn()
         const mockUpdateWorkflowEntrypoints = jest.fn()
@@ -373,6 +419,7 @@ describe('useGorgiasChatCreationWizardContext', () => {
             reloadPreview: jest.fn(),
             updateAvatarSettings: jest.fn(),
             updateQuickReplies: jest.fn(),
+            updatePreviewOrders: jest.fn(),
         }
 
         const wrapper = ({ children }: { children: ReactNode }) => (

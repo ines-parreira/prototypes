@@ -22,15 +22,20 @@ import type {
     GorgiasChatPosition,
     GorgiasChatPreviewApplicationSettings,
 } from 'models/integration/types'
-import type { GorgiasChatWorkflowEntrypoint } from 'models/integration/types/gorgiasChat'
+import type {
+    GorgiasChatPreviewOrdersOptions,
+    GorgiasChatWorkflowEntrypoint,
+} from 'models/integration/types/gorgiasChat'
 
 import { ChatPreview } from './components/ChatPreview/ChatPreview'
 import type { ChatPreviewHandle } from './components/ChatPreview/ChatPreview'
 
 import css from './ChatPreviewPanel.less'
 
+export type ChatPreviewPage = 'homepage' | 'conversation' | 'orders' | 'track'
+
 export type ChatPreviewPanelHandle = {
-    displayPage: (page: 'homepage' | 'conversation') => void
+    displayPage: (page: ChatPreviewPage) => void
     updatePosition: (position: GorgiasChatPosition) => void
     updateSettings: (settings: GorgiasChatPreviewApplicationSettings) => void
     updateTexts: (texts: Record<string, string>) => void
@@ -40,20 +45,28 @@ export type ChatPreviewPanelHandle = {
         workflowEntrypoints: GorgiasChatWorkflowEntrypoint[],
     ) => void
     reloadPreview: () => void
+    updatePreviewOrders: (options: GorgiasChatPreviewOrdersOptions) => void
 }
 
 type Props = {
     appId: string | null
     headerActions?: ReactNode
     locale?: LANGUAGE
+    initialPage?: ChatPreviewPage
+    previewOrders?: GorgiasChatPreviewOrdersOptions
 }
 
 export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
-    ({ appId, headerActions, locale }: Props, ref) => {
+    (
+        { appId, headerActions, locale, initialPage, previewOrders }: Props,
+        ref,
+    ) => {
         const chatPreviewRef = useRef<ChatPreviewHandle>(null)
-        const [selectedPage, setSelectedPage] = useState<
-            'homepage' | 'conversation'
-        >('homepage')
+        const [selectedPage, setSelectedPage] =
+            useState<Exclude<ChatPreviewPage, 'track' | 'orders'>>('homepage')
+        const previewOrdersRef = useRef(previewOrders)
+        previewOrdersRef.current = previewOrders
+
         const [reloadKey, setReloadKey] = useState(0)
         const chatPreviewKey = useMemo(() => {
             return `${reloadKey}${locale ? '-' + locale : ''}`
@@ -88,13 +101,14 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
         }
 
         const displayPage = useCallback(
-            (page: 'homepage' | 'conversation') => {
-                if (page !== selectedPage) {
-                    withGorgiasChat((gorgiasChat) => {
+            (page: ChatPreviewPage) => {
+                withGorgiasChat((gorgiasChat) => {
+                    if (page === 'homepage' || page === 'conversation') {
+                        if (page === selectedPage) return
                         setSelectedPage(page)
-                        gorgiasChat.setPage(page)
-                    })
-                }
+                    }
+                    gorgiasChat.setPage(page)
+                })
             },
             [selectedPage],
         )
@@ -158,11 +172,29 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             setReloadKey(reloadKey + 1)
         }
 
+        const updatePreviewOrders = (
+            options: GorgiasChatPreviewOrdersOptions,
+        ) => {
+            withGorgiasChat((gorgiasChat) => {
+                gorgiasChat.setOrders?.(options)
+            })
+        }
+
         const onLoaded = useCallback(
-            (gorgiasChat: any) => {
-                gorgiasChat?.setPage(selectedPage)
+            (gorgiasChat: NonNullable<Window['GorgiasChat']>) => {
+                const currentOrders = previewOrdersRef.current
+                if (currentOrders) {
+                    gorgiasChat.setOrders?.(currentOrders)
+                }
+                const page = initialPage ?? selectedPage
+                if (page === 'track' && currentOrders?.orders) {
+                    const orderName = Object.keys(currentOrders.orders)[0]
+                    gorgiasChat.setPage('track', { orderName })
+                } else {
+                    gorgiasChat.setPage(page)
+                }
             },
-            [selectedPage],
+            [initialPage, selectedPage],
         )
 
         useImperativeHandle(ref, () => ({
@@ -174,6 +206,7 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             openChat,
             updateWorkflowEntryPoints,
             reloadPreview,
+            updatePreviewOrders,
         }))
 
         return (

@@ -162,6 +162,98 @@ export type GorgiasChatPreviewSelfServiceConfiguration = {
     workflowsEntrypoints?: GorgiasChatWorkflowEntrypoint[]
 }
 
+type GorgiasChatPreviewPriceSet = {
+    shop_money: { amount: string; currency_code: string }
+    presentment_money: { amount: string; currency_code: string }
+}
+
+export type GorgiasChatPreviewOrderFulfillment = {
+    id: number
+    name: string
+    shipment_status: string | null
+    line_items: unknown[]
+    tracking_urls: string[]
+    tracking_numbers: string[]
+    tracking_company: string | null
+    gorgias_order_status: string
+    updated_at: string
+    created_at: string
+    flows: {
+        track_order?: boolean
+        cancel_order?: boolean
+        return_order?: boolean
+        report_issue_reasons?: string[]
+        track_order_unfulfilled_message?: { html: string; text: string }
+    }
+}
+
+export type GorgiasChatPreviewOrder = {
+    id: number
+    email: string
+    name: string
+    order_number: number
+    processed_at: string
+    created_at: string
+    updated_at: string
+    cancelled_at: string | null
+    closed_at: string | null
+    financial_status: string
+    fulfillment_status: string | null
+    shipping_address: {
+        name?: string
+        first_name?: string
+        last_name?: string
+        address1?: string
+        address2?: string | null
+        city?: string
+        province?: string
+        zip?: string
+        country?: string
+        country_code?: string
+        phone?: string | null
+        company?: string | null
+        latitude?: number | null
+        longitude?: number | null
+        province_code?: string | null
+    } | null
+    billing_address: unknown | null
+    line_items: unknown[]
+    fulfillments: GorgiasChatPreviewOrderFulfillment[]
+    subtotal_price_set: GorgiasChatPreviewPriceSet
+    total_price_set: GorgiasChatPreviewPriceSet
+    total_shipping_price_set: GorgiasChatPreviewPriceSet
+    refunded_amount: number
+}
+
+export type GorgiasChatPreviewTrackingCheckpoint = {
+    status: string
+    happened_at?: string
+    message?: string
+}
+
+export type GorgiasChatPreviewTracking = {
+    status: string
+    tracking_company?: string | null
+    tracking_numbers?: string[]
+    courier_tracking_urls?: string[]
+    expected_delivery?: string
+    last_updated_at?: string
+    checkpoints?: GorgiasChatPreviewTrackingCheckpoint[]
+}
+
+export type GorgiasChatPreviewFlows = {
+    track_order?: boolean
+    cancel_order?: boolean
+    return_order?: boolean
+    report_issue?: boolean
+}
+
+export type GorgiasChatPreviewOrdersOptions = {
+    orders?: Record<string, GorgiasChatPreviewOrder>
+    tracking?: GorgiasChatPreviewTracking
+    flows?: GorgiasChatPreviewFlows
+}
+
 export enum GorgiasChatStatusEnum {
     ONLINE = 'online',
     OFFLINE = 'offline',

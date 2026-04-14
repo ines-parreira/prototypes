@@ -100,6 +100,8 @@ export type {
     GorgiasChatMetaInstallation,
     GorgiasChatPosition,
     GorgiasChatPreviewApplicationSettings,
+    GorgiasChatPreviewOrdersOptions,
+    GorgiasChatPreviewSelfServiceConfiguration,
     SelfServiceConfiguration,
 } from './gorgiasChat'
 export { isFacebookIntegration } from './facebook'

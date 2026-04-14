@@ -1,7 +1,10 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { createPortal } from 'react-dom'
 import { useParams } from 'react-router-dom'
 
+import { TicketChannel } from 'business/types/ticket'
+import { chatIntegrationFixtures } from 'fixtures/chat'
 import { selfServiceConfiguration1 } from 'fixtures/self_service_configurations'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
@@ -15,47 +18,10 @@ jest.mock('react-router-dom', () => ({
 }))
 
 jest.mock('../../../legacy/trackOrder/hooks/useTrackOrderFlow')
-
-jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels', () => ({
-    __esModule: true,
-    default: jest.fn(() => []),
-}))
-
+jest.mock('pages/automate/common/hooks/useSelfServiceChatChannels')
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel',
-    () => ({
-        useChatPreviewPanel: jest.fn(() => ({
-            showPreviewPanel: jest.fn(),
-            chatPreviewPortal: null,
-        })),
-    }),
 )
-
-jest.mock(
-    'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector',
-    () => ({
-        ChatChannelSelector: () => <div>ChatChannelSelector</div>,
-    }),
-)
-
-const mockUseSelfServiceChatChannels =
-    useSelfServiceChatChannels as jest.MockedFunction<
-        typeof useSelfServiceChatChannels
-    >
-const mockUseChatPreviewPanel = useChatPreviewPanel as jest.MockedFunction<
-    typeof useChatPreviewPanel
->
-
-const mockChatChannel = {
-    type: 'chat' as const,
-    value: {
-        id: 1,
-        meta: {
-            app_id: 'test-app-id',
-            languages: [{ language: 'en', primary: true }],
-        },
-    },
-} as any
 
 jest.mock(
     '../../components/OrderManagementFlowHeader/OrderManagementFlowHeader',
@@ -78,12 +44,56 @@ const mockUseParams = useParams as jest.MockedFunction<typeof useParams>
 const mockUseTrackOrderFlow = useTrackOrderFlow as jest.MockedFunction<
     typeof useTrackOrderFlow
 >
+const mockUseSelfServiceChatChannels =
+    useSelfServiceChatChannels as jest.MockedFunction<
+        typeof useSelfServiceChatChannels
+    >
+const mockUseChatPreviewPanel = useChatPreviewPanel as jest.MockedFunction<
+    typeof useChatPreviewPanel
+>
+
 const mockHandleTrackOrderFlowUpdate = jest.fn()
+const mockShowPreviewPanel = jest.fn()
+
+const mockChatChannel = {
+    type: TicketChannel.Chat,
+    value: {
+        ...chatIntegrationFixtures[0],
+        meta: { ...chatIntegrationFixtures[0].meta, app_id: 'test-app-id-123' },
+    },
+} satisfies ReturnType<typeof useSelfServiceChatChannels>[number]
 
 describe('TrackOrderFlowView', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        mockUseParams.mockReturnValue({ shopName: 'test-store' })
+        mockUseParams.mockReturnValue({
+            shopName: 'test-store',
+            shopType: 'shopify',
+        })
+        mockUseSelfServiceChatChannels.mockReturnValue([mockChatChannel])
+        mockUseChatPreviewPanel.mockReturnValue({
+            showPreviewPanel: mockShowPreviewPanel,
+            chatPreviewPortal: createPortal(
+                <div data-testid="chat-preview-portal" />,
+                document.body,
+            ),
+            hidePreviewPanel: jest.fn(),
+            openChat: jest.fn(),
+            closeChat: jest.fn(),
+            displayPage: jest.fn(),
+            updateMainColor: jest.fn(),
+            updatePosition: jest.fn(),
+            updateHeaderPictureUrl: jest.fn(),
+            updateLauncher: jest.fn(),
+            updateTexts: jest.fn(),
+            updateLegalDisclaimer: jest.fn(),
+            updateLegalDisclaimerEnabled: jest.fn(),
+            updateWorkflowEntryPoints: jest.fn(),
+            reloadPreview: jest.fn(),
+            updateAvatarSettings: jest.fn(),
+            updateQuickReplies: jest.fn(),
+            updatePreviewOrders: jest.fn(),
+        } satisfies ReturnType<typeof useChatPreviewPanel>)
         mockUseTrackOrderFlow.mockReturnValue({
             trackOrderFlow: {
                 ...selfServiceConfiguration1.trackOrderPolicy,
@@ -139,19 +149,6 @@ describe('TrackOrderFlowView', () => {
         expect(screen.getByRole('button', { name: 'Save' })).toBeEnabled()
     })
 
-    it('should initialize the chat preview panel when channels are available', () => {
-        const mockShowPreviewPanel = jest.fn()
-        mockUseSelfServiceChatChannels.mockReturnValue([mockChatChannel])
-        mockUseChatPreviewPanel.mockReturnValue({
-            showPreviewPanel: mockShowPreviewPanel,
-            chatPreviewPortal: null,
-        } as any)
-
-        render(<TrackOrderFlowView />)
-
-        expect(mockShowPreviewPanel).toHaveBeenCalledWith('test-app-id')
-    })
-
     it('should call handleTrackOrderFlowUpdate with the updated message on save', async () => {
         const user = userEvent.setup()
         render(<TrackOrderFlowView />)
@@ -167,5 +164,46 @@ describe('TrackOrderFlowView', () => {
                 },
             }),
         )
+    })
+
+    describe('chat preview panel', () => {
+        it('renders the chat preview portal', () => {
+            render(<TrackOrderFlowView />)
+
+            expect(
+                screen.getByTestId('chat-preview-portal'),
+            ).toBeInTheDocument()
+        })
+
+        it('calls useChatPreviewPanel with "track" as initialPage and track order preview data', () => {
+            render(<TrackOrderFlowView />)
+
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    headerActions: expect.anything(),
+                    locale: undefined,
+                    initialPage: 'track',
+                    previewOrders: expect.objectContaining({
+                        orders: expect.any(Object),
+                        tracking: expect.any(Object),
+                        flows: expect.objectContaining({ track_order: true }),
+                    }),
+                }),
+            )
+        })
+
+        it('calls showPreviewPanel with the appId of the first chat channel', () => {
+            render(<TrackOrderFlowView />)
+
+            expect(mockShowPreviewPanel).toHaveBeenCalledWith('test-app-id-123')
+        })
+
+        it('calls showPreviewPanel with null when there are no chat channels', () => {
+            mockUseSelfServiceChatChannels.mockReturnValue([])
+
+            render(<TrackOrderFlowView />)
+
+            expect(mockShowPreviewPanel).toHaveBeenCalledWith(null)
+        })
     })
 })

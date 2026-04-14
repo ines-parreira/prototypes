@@ -4,6 +4,7 @@ import { LANGUAGE } from 'constants/languages'
 import type {
     GorgiasChatPosition,
     GorgiasChatPreviewApplicationSettings,
+    GorgiasChatPreviewOrdersOptions,
     GorgiasChatPreviewSelfServiceConfiguration,
 } from 'models/integration/types'
 import { Page } from 'services/statusPageManager/types'
@@ -54,7 +55,7 @@ declare global {
         GorgiasChat?: {
             open: () => void
             close: () => void
-            setPage: (page: string) => void
+            setPage: (page: string, options?: Record<string, unknown>) => void
             isOpen: () => boolean
             previewFlow: (params: {
                 flowLabel: string
@@ -70,6 +71,7 @@ declare global {
             updateSelfServiceConfiguration?: (
                 selfServiceConfiguration: GorgiasChatPreviewSelfServiceConfiguration,
             ) => void
+            setOrders?: (options: GorgiasChatPreviewOrdersOptions) => void
             on(event: string, callback: (data?: unknown) => void): void
             off(event: string, callback: (data?: unknown) => void): void
             init(): Promise<void>

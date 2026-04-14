@@ -80,7 +80,7 @@ export const GorgiasChatIntegration = ({
         hidePreviewPanel,
         chatPreviewPortal,
         ...charPreviewPanelControls
-    } = useChatPreviewPanel(undefined, chatLanguage)
+    } = useChatPreviewPanel({ locale: chatLanguage })
     const isQuickRepliesEnabled = useIsQuickRepliesEnabled()
     const { hasAccess } = useAiAgentAccess()
     const { storeIntegration } = useStoreIntegration(integration)

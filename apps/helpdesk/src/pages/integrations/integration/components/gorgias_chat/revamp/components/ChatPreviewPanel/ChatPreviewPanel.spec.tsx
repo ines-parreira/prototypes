@@ -1,4 +1,4 @@
-import { createRef } from 'react'
+import React, { createRef } from 'react'
 
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
@@ -51,10 +51,15 @@ jest.mock(
             updateTexts: jest.fn(),
             setLanguage: jest.fn().mockResolvedValue(undefined),
             updateSelfServiceConfiguration: jest.fn(),
+            setOrders: jest.fn(),
         }
 
+        const captureOnLoaded: { fn?: (gorgiasChat: any) => void } = {}
+
         const ChatPreview = React.forwardRef(
-            (_props: { appId: string }, ref: React.Ref<ChatPreviewHandle>) => {
+            (props: any, ref: React.Ref<ChatPreviewHandle>) => {
+                captureOnLoaded.fn = props.onLoaded
+
                 React.useEffect(() => {
                     mockMountCount++
                 }, [])
@@ -77,11 +82,11 @@ jest.mock(
             },
         )
 
-        return { ChatPreview, mockGorgiasChat }
+        return { ChatPreview, mockGorgiasChat, captureOnLoaded }
     },
 )
 
-const { mockGorgiasChat } = jest.requireMock(
+const { mockGorgiasChat, captureOnLoaded } = jest.requireMock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/components/ChatPreview/ChatPreview',
 )
 
@@ -94,9 +99,14 @@ describe('ChatPreviewPanel', () => {
         mockMountCount = 0
     })
 
-    const renderComponent = (appId: string | null = 'test-app-id') => {
+    const renderComponent = (
+        appId: string | null = 'test-app-id',
+        props?: Partial<React.ComponentProps<typeof ChatPreviewPanel>>,
+    ) => {
         const ref = createRef<ChatPreviewPanelHandle>()
-        const result = render(<ChatPreviewPanel ref={ref} appId={appId} />)
+        const result = render(
+            <ChatPreviewPanel ref={ref} appId={appId} {...props} />,
+        )
         return { ...result, ref }
     }
 
@@ -248,6 +258,15 @@ describe('ChatPreviewPanel', () => {
 
             expect(mockMountCount).toBe(2)
         })
+
+        it('updatePreviewOrders calls GorgiasChat.setOrders', () => {
+            const { ref } = renderComponent()
+            const options = { orders: { '#1001': { name: '#1001' } as any } }
+
+            ref.current?.updatePreviewOrders(options)
+
+            expect(mockGorgiasChat.setOrders).toHaveBeenCalledWith(options)
+        })
     })
 
     describe('withGorgiasChat guards', () => {
@@ -309,6 +328,118 @@ describe('ChatPreviewPanel', () => {
             expect(
                 mockGorgiasChat.updateSelfServiceConfiguration,
             ).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('initialPage', () => {
+        it('calls setPage with "homepage" by default when the widget loads', () => {
+            renderComponent()
+
+            act(() => {
+                captureOnLoaded.fn?.(mockGorgiasChat)
+            })
+
+            expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('homepage')
+        })
+
+        it('calls setPage with the provided initialPage when the widget loads', () => {
+            renderComponent('test-app-id', { initialPage: 'orders' })
+
+            act(() => {
+                captureOnLoaded.fn?.(mockGorgiasChat)
+            })
+
+            expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('orders')
+        })
+
+        it('calls setOrders with previewOrders when the widget loads', () => {
+            const previewOrders = {
+                orders: { '#1001': { name: '#1001' } as any },
+            }
+            renderComponent('test-app-id', { previewOrders })
+
+            act(() => {
+                captureOnLoaded.fn?.(mockGorgiasChat)
+            })
+
+            expect(mockGorgiasChat.setOrders).toHaveBeenCalledWith(
+                previewOrders,
+            )
+        })
+
+        it('calls setPage with "track" and orderName when initialPage is "track" and previewOrders has orders', () => {
+            const previewOrders = {
+                orders: { '#1001': { name: '#1001' } as any },
+            }
+            renderComponent('test-app-id', {
+                initialPage: 'track',
+                previewOrders,
+            })
+
+            act(() => {
+                captureOnLoaded.fn?.(mockGorgiasChat)
+            })
+
+            expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('track', {
+                orderName: '#1001',
+            })
+        })
+
+        it('falls back to setPage with "track" when initialPage is "track" but previewOrders has no orders', () => {
+            const previewOrders = {} as any
+            renderComponent('test-app-id', {
+                initialPage: 'track',
+                previewOrders,
+            })
+
+            act(() => {
+                captureOnLoaded.fn?.(mockGorgiasChat)
+            })
+
+            expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('track')
+        })
+
+        it('falls back to selectedPage when no initialPage is provided', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            await user.click(
+                screen.getByTestId('button-group-item-conversation'),
+            )
+            jest.clearAllMocks()
+
+            act(() => {
+                captureOnLoaded.fn?.(mockGorgiasChat)
+            })
+
+            expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('conversation')
+        })
+    })
+
+    describe('displayPage with orders', () => {
+        it('calls GorgiasChat.setPage with "orders"', () => {
+            const { ref } = renderComponent()
+
+            ref.current?.displayPage('orders')
+
+            expect(mockGorgiasChat.setPage).toHaveBeenCalledWith('orders')
+        })
+
+        it('does not update the button group selection when navigating to orders', async () => {
+            const user = userEvent.setup()
+            renderComponent()
+
+            const { ref } = renderComponent()
+            ref.current?.displayPage('orders')
+
+            await user.click(
+                screen.getAllByTestId('button-group-item-conversation')[0],
+            )
+            jest.clearAllMocks()
+
+            ref.current?.displayPage('orders')
+
+            expect(mockGorgiasChat.open).not.toHaveBeenCalled()
         })
     })
 })

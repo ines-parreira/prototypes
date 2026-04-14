@@ -16,12 +16,16 @@ import type {
     GorgiasChatAvatarSettings,
     GorgiasChatAvatarType,
     GorgiasChatLauncherSettings,
+    GorgiasChatPreviewOrdersOptions,
     GorgiasChatWorkflowEntrypoint,
 } from 'models/integration/types/gorgiasChat'
 import { useCollapsibleColumn } from 'pages/common/hooks/useCollapsibleColumn'
 
 import { ChatPreviewPanel } from '../ChatPreviewPanel'
-import type { ChatPreviewPanelHandle } from '../ChatPreviewPanel'
+import type {
+    ChatPreviewPage,
+    ChatPreviewPanelHandle,
+} from '../ChatPreviewPanel'
 
 export type ChatPreviewPanelContextValue = Omit<
     ReturnType<typeof useChatPreviewPanel>,
@@ -42,10 +46,19 @@ export const useGorgiasChatCreationWizardContext =
         return context
     }
 
-export const useChatPreviewPanel = (
-    headerActions?: ReactNode,
-    locale?: LANGUAGE,
-) => {
+type UseChatPreviewPanelOptions = {
+    headerActions?: ReactNode
+    locale?: LANGUAGE
+    initialPage?: ChatPreviewPage
+    previewOrders?: GorgiasChatPreviewOrdersOptions
+}
+
+export const useChatPreviewPanel = ({
+    headerActions,
+    locale,
+    initialPage,
+    previewOrders,
+}: UseChatPreviewPanelOptions = {}) => {
     const { setIsCollapsibleColumnOpen, warpToCollapsibleColumn } =
         useCollapsibleColumn()
 
@@ -58,6 +71,8 @@ export const useChatPreviewPanel = (
             appId={appId}
             headerActions={headerActions}
             locale={locale}
+            initialPage={initialPage}
+            previewOrders={previewOrders}
         />,
     )
 
@@ -87,7 +102,7 @@ export const useChatPreviewPanel = (
         chatPreviewPanelRef.current?.openChat()
     }, [])
 
-    const displayPage = useCallback((page: 'homepage' | 'conversation') => {
+    const displayPage = useCallback((page: ChatPreviewPage) => {
         chatPreviewPanelRef.current?.displayPage(page)
     }, [])
 
@@ -173,6 +188,13 @@ export const useChatPreviewPanel = (
         chatPreviewPanelRef.current?.reloadPreview()
     }, [])
 
+    const updatePreviewOrders = useCallback(
+        (options: GorgiasChatPreviewOrdersOptions) => {
+            chatPreviewPanelRef.current?.updatePreviewOrders(options)
+        },
+        [],
+    )
+
     const updateAvatarSettings = useCallback(
         (avatarSettings: {
             avatarTeamPictureUrl?: string
@@ -217,5 +239,6 @@ export const useChatPreviewPanel = (
         reloadPreview,
         updateAvatarSettings,
         updateQuickReplies,
+        updatePreviewOrders,
     }
 }

@@ -12,11 +12,38 @@ import { useChatPreviewPanel } from 'pages/integrations/integration/components/g
 
 import useTrackOrderFlow from '../../legacy/trackOrder/hooks/useTrackOrderFlow'
 import { OrderManagementFlowHeader } from '../components/OrderManagementFlowHeader/OrderManagementFlowHeader'
+import { TRACK_ORDER_PREVIEW_ORDERS } from '../utils/previewOrdersData'
 
 import css from './TrackOrderFlowView.less'
 
 type FormValues = {
     unfulfilledMessage: string
+}
+
+function buildPreviewOrders(unfulfilledMessage: string) {
+    const order = TRACK_ORDER_PREVIEW_ORDERS.orders!['#1001']
+    return {
+        ...TRACK_ORDER_PREVIEW_ORDERS,
+        orders: {
+            '#1001': {
+                ...order,
+                fulfillments: [
+                    {
+                        ...order.fulfillments[0],
+                        flows: {
+                            ...order.fulfillments[0].flows,
+                            ...(unfulfilledMessage && {
+                                track_order_unfulfilled_message: {
+                                    html: unfulfilledMessage,
+                                    text: unfulfilledMessage,
+                                },
+                            }),
+                        },
+                    },
+                ],
+            },
+        },
+    }
 }
 
 export const TrackOrderFlowView = () => {
@@ -52,7 +79,7 @@ export const TrackOrderFlowView = () => {
         return primaryLanguage
     }, [selectedChannel])
 
-    const PreviewPanelHeaderActions = useMemo(() => {
+    const previewPanelHeaderActions = useMemo(() => {
         return chatChannels.length > 0 ? (
             <ChatChannelSelector
                 chatChannels={chatChannels}
@@ -62,20 +89,34 @@ export const TrackOrderFlowView = () => {
         ) : undefined
     }, [selectedChannelId, chatChannels])
 
-    const { showPreviewPanel, chatPreviewPortal } = useChatPreviewPanel(
-        PreviewPanelHeaderActions,
-        selectedChannelLanguage,
+    const { register, handleSubmit, formState, watch } = useForm<FormValues>({
+        values: {
+            unfulfilledMessage: trackOrderFlow?.unfulfilledMessage?.text ?? '',
+        },
+    })
+
+    const unfulfilledMessage = watch('unfulfilledMessage')
+
+    const computedPreviewOrders = useMemo(
+        () => buildPreviewOrders(unfulfilledMessage),
+        [unfulfilledMessage],
     )
+
+    const { showPreviewPanel, chatPreviewPortal, updatePreviewOrders } =
+        useChatPreviewPanel({
+            headerActions: previewPanelHeaderActions,
+            locale: selectedChannelLanguage,
+            initialPage: 'track',
+            previewOrders: computedPreviewOrders,
+        })
 
     useEffect(() => {
         showPreviewPanel(appId)
     }, [showPreviewPanel, appId])
 
-    const { register, handleSubmit, formState } = useForm<FormValues>({
-        values: {
-            unfulfilledMessage: trackOrderFlow?.unfulfilledMessage?.text ?? '',
-        },
-    })
+    useEffect(() => {
+        updatePreviewOrders(computedPreviewOrders)
+    }, [computedPreviewOrders, updatePreviewOrders])
 
     const onSave = handleSubmit(async ({ unfulfilledMessage }) => {
         if (!trackOrderFlow) return

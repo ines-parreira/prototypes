@@ -89,7 +89,10 @@ export const ConnectedChannelsChatView = () => {
     }, [selectedChannelId, chatChannels, setSelectedChannelId])
 
     const { showPreviewPanel, chatPreviewPortal, updateWorkflowEntryPoints } =
-        useChatPreviewPanel(PreviewPanelHeaderActions, selectedChannelLanguage)
+        useChatPreviewPanel({
+            headerActions: PreviewPanelHeaderActions,
+            locale: selectedChannelLanguage,
+        })
 
     useEffect(() => {
         showPreviewPanel(appId)

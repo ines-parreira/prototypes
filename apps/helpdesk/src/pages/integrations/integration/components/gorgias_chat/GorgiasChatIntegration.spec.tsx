@@ -425,10 +425,9 @@ describe('<GorgiasChatIntegration />', () => {
                 />,
             )
 
-            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
-                undefined,
-                'en',
-            )
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith({
+                locale: 'en',
+            })
         })
 
         it('passes undefined as the language to useChatPreviewPanel when the integration has no languages', () => {
@@ -442,10 +441,9 @@ describe('<GorgiasChatIntegration />', () => {
                 />,
             )
 
-            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith(
-                undefined,
-                undefined,
-            )
+            expect(mockUseChatPreviewPanel).toHaveBeenCalledWith({
+                locale: undefined,
+            })
         })
     })
 
