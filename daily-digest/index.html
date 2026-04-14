@@ -567,6 +567,40 @@
     .eff-value { font-size: 22px; font-weight: 600; color: #1e242e; line-height: 1.2; }
     .eff-sub { font-size: 11px; color: #5c6370; }
 
+    /* Escalation reasons grid */
+    .esc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .esc-card {
+      background: white; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 20px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .esc-card-label { font-size: 12px; font-weight: 500; color: #5c6370; }
+    .esc-card-value { font-size: 28px; font-weight: 700; color: #1e242e; line-height: 1.1; }
+    .esc-card-desc  { font-size: 12px; color: #6e7686; line-height: 1.5; }
+
+    /* Volume and efficiency layout */
+    .vol-eff-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+    .vol-card-label { font-size: 12px; font-weight: 500; color: #5c6370; margin-bottom: 16px; }
+    .vol-legend { display: flex; gap: 14px; margin-top: 14px; }
+    .vol-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #5c6370; }
+    .vol-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* Conversation efficiency card */
+    .eff-card {
+      background: white; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 20px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      display: flex; flex-direction: column;
+    }
+    .eff-card-header { font-size: 12px; font-weight: 500; color: #5c6370; margin-bottom: 4px; }
+    .eff-stat-group { display: flex; flex-direction: column; gap: 4px; padding: 16px 0; }
+    .eff-stat-group:first-of-type { padding-top: 0; }
+    .eff-stat-label { font-size: 12px; color: #5c6370; }
+    .eff-stat-value { font-size: 26px; font-weight: 700; color: #1e242e; line-height: 1.2; }
+    .eff-stat-sub { font-size: 12px; color: #147656; }
+    .eff-divider { height: 1px; background: rgba(0,0,0,0.06); flex-shrink: 0; }
+
     /* Experiments empty state */
     .experiments-empty {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -853,47 +887,42 @@
     <div class="content-card" style="padding:0; gap:0; overflow:hidden;">
 
       <!-- Page header -->
-      <div class="page-header" style="padding: 24px 24px 24px;">
-        <h1 class="greeting" style="font-size:20px; line-height:32px; margin:0;">Performance</h1>
+      <div class="page-header" style="padding:24px 24px 0;">
+        <h1 style="font-size:20px; font-weight:700; color:#1e242e; margin:0; line-height:32px;">Performance</h1>
         <div class="perf-range-tabs">
-          <button class="range-tab" onclick="setRange(this,'today')">Today</button>
-          <button class="range-tab active" onclick="setRange(this,'week')">This week</button>
-          <button class="range-tab" onclick="setRange(this,'month')">This month</button>
+          <button class="range-tab active" onclick="setRange(this,'7d')">7d</button>
+          <button class="range-tab" onclick="setRange(this,'14d')">14d</button>
+          <button class="range-tab" onclick="setRange(this,'30d')">30d</button>
         </div>
       </div>
 
       <!-- Tabs -->
-      <div class="perf-nav-tabs">
-        <div class="perf-tab active" id="tab-overview" onclick="showPerfTab('overview')">Skills</div>
-        <div class="perf-tab" id="tab-experiments" onclick="showPerfTab('experiments')">Team</div>
+      <div class="perf-nav-tabs" style="margin-top:16px;">
+        <div class="perf-tab active" id="tab-overview" onclick="showPerfTab('overview')">Overview</div>
+        <div class="perf-tab" id="tab-experiments" onclick="showPerfTab('experiments')">Experiments</div>
       </div>
 
-      <!-- ── Skills tab ──────────────────────────────────────────────── -->
-      <div class="page-body" id="perf-overview" style="gap:32px; padding:32px 24px 24px;">
+      <!-- ── Overview tab ───────────────────────────────────────────────── -->
+      <div class="page-body" id="perf-overview" style="gap:32px; padding:32px 24px 48px; overflow-y:auto;">
 
-        <!-- Metric cards -->
+        <!-- KPI cards -->
         <div class="perf-metric-grid">
 
           <!-- Adherence -->
           <div class="perf-metric-card">
             <div class="perf-metric-label">Adherence</div>
-            <div class="perf-metric-stats">
-              <span class="perf-metric-value">88%</span>
-            </div>
+            <div class="perf-metric-stats"><span class="perf-metric-value">91%</span></div>
             <div class="perf-delta-neutral">
               <div class="perf-dot-green"></div>
-              Stable
+              Holding steady
             </div>
           </div>
 
           <!-- Success rate -->
           <div class="perf-metric-card">
             <div class="perf-metric-label">Success rate</div>
-            <div class="perf-metric-stats">
-              <span class="perf-metric-value">78%</span>
-            </div>
+            <div class="perf-metric-stats"><span class="perf-metric-value">78%</span></div>
             <div class="perf-metric-delta perf-delta-up">
-              <!-- trending up arrow -->
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 9L4.5 5.5L6.5 7.5L10.5 2.5" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               5pp vs last week
             </div>
@@ -902,9 +931,7 @@
           <!-- Coverage rate -->
           <div class="perf-metric-card">
             <div class="perf-metric-label">Coverage rate</div>
-            <div class="perf-metric-stats">
-              <span class="perf-metric-value">64%</span>
-            </div>
+            <div class="perf-metric-stats"><span class="perf-metric-value">64%</span></div>
             <div class="perf-metric-delta perf-delta-up">
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 9L4.5 5.5L6.5 7.5L10.5 2.5" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               3pp vs last week
@@ -915,7 +942,6 @@
           <div class="perf-metric-card">
             <div class="perf-metric-label">Customer satisfaction</div>
             <div class="perf-metric-stats">
-              <!-- sentiment emoji approximation -->
               <span style="font-size:28px; line-height:32px;">🙂</span>
               <span class="perf-metric-value">4.3/5</span>
             </div>
@@ -927,7 +953,7 @@
 
         </div>
 
-        <!-- Skills table -->
+        <!-- ── Skills ──────────────────────────────────────────────────── -->
         <div>
           <div class="perf-section-title">Skills</div>
           <div class="skill-table-card">
@@ -944,48 +970,150 @@
               <tbody>
                 <tr>
                   <td class="skill-name-cell">Order status, tracking and delivery</td>
-                  <td>1,290</td>
-                  <td>92%</td>
-                  <td>4.5</td>
-                  <td><span class="skill-tag-green">Active</span></td>
+                  <td>1,290</td><td>92%</td><td>4.5</td>
+                  <td><span class="skill-tag-green">Enabled</span></td>
                 </tr>
                 <tr>
                   <td class="skill-name-cell">Order cancellation</td>
-                  <td>903</td>
-                  <td>61%</td>
-                  <td>3.9</td>
-                  <td><span class="skill-tag-green">Active</span></td>
+                  <td>903</td><td>61%</td><td>3.9</td>
+                  <td><span class="skill-tag-green">Enabled</span></td>
                 </tr>
                 <tr>
                   <td class="skill-name-cell">Shipping</td>
-                  <td>85</td>
-                  <td>84%</td>
-                  <td>4.4</td>
-                  <td><span class="skill-tag-green">Active</span></td>
+                  <td>85</td><td>84%</td><td>4.4</td>
+                  <td><span class="skill-tag-green">Enabled</span></td>
                 </tr>
                 <tr>
                   <td class="skill-name-dim">Subscription management</td>
-                  <td class="skill-dim">~823</td>
-                  <td class="skill-dim">–</td>
-                  <td class="skill-dim">–</td>
-                  <td><span class="skill-tag-grey">Not trained</span></td>
+                  <td class="skill-dim">~823</td><td class="skill-dim">–</td><td class="skill-dim">–</td>
+                  <td><span class="skill-tag-grey">Disabled</span></td>
                 </tr>
                 <tr>
                   <td class="skill-name-dim">Returns and refunds</td>
-                  <td class="skill-dim">~623</td>
-                  <td class="skill-dim">–</td>
-                  <td class="skill-dim">–</td>
-                  <td><span class="skill-tag-grey">Not trained</span></td>
+                  <td class="skill-dim">~623</td><td class="skill-dim">–</td><td class="skill-dim">–</td>
+                  <td><span class="skill-tag-grey">Disabled</span></td>
                 </tr>
                 <tr>
                   <td class="skill-name-dim">Product recommendations</td>
-                  <td class="skill-dim">~73</td>
-                  <td class="skill-dim">–</td>
-                  <td class="skill-dim">–</td>
-                  <td><span class="skill-tag-grey">Not trained</span></td>
+                  <td class="skill-dim">~73</td><td class="skill-dim">–</td><td class="skill-dim">–</td>
+                  <td><span class="skill-tag-grey">Disabled</span></td>
                 </tr>
               </tbody>
             </table>
+          </div>
+        </div>
+
+        <!-- ── Escalation reasons ─────────────────────────────────────── -->
+        <div>
+          <div class="perf-section-title">Escalation reasons</div>
+          <div class="esc-grid">
+            <div class="esc-card">
+              <div class="esc-card-label">No skill coverage</div>
+              <div class="esc-card-value">12</div>
+              <div class="esc-card-desc">E.g. "Is this bouquet safe for cats?" — pet safety questions</div>
+            </div>
+            <div class="esc-card">
+              <div class="esc-card-label">Low confidence</div>
+              <div class="esc-card-value">8</div>
+              <div class="esc-card-desc">Ambiguous customer intent — agent unsure which skill applied</div>
+            </div>
+            <div class="esc-card">
+              <div class="esc-card-label">Customer requested human</div>
+              <div class="esc-card-value">5</div>
+              <div class="esc-card-desc">"Can I speak to a person?"</div>
+            </div>
+            <div class="esc-card">
+              <div class="esc-card-label">Policy edge case</div>
+              <div class="esc-card-value">3</div>
+              <div class="esc-card-desc">Refund amount exceeded threshold you set</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Volume and efficiency ──────────────────────────────────── -->
+        <div>
+          <div class="perf-section-title">Volume and efficiency</div>
+          <div class="vol-eff-row">
+
+            <!-- Daily ticket volume chart -->
+            <div class="volume-card">
+              <div class="vol-card-label">Daily ticket volume</div>
+              <svg viewBox="0 0 490 185" style="width:100%; display:block; overflow:visible;">
+                <!-- Horizontal grid lines -->
+                <line x1="38" y1="10"    x2="490" y2="10"    stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="48"    x2="490" y2="48"    stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="85"    x2="490" y2="85"    stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="123"   x2="490" y2="123"   stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="160"   x2="490" y2="160"   stroke="#e5e7eb" stroke-width="0.8"/>
+                <!-- Y-axis labels -->
+                <text x="33" y="13"  text-anchor="end" font-size="9" fill="#9ea6b3">2K</text>
+                <text x="33" y="51"  text-anchor="end" font-size="9" fill="#9ea6b3">1.5K</text>
+                <text x="33" y="88"  text-anchor="end" font-size="9" fill="#9ea6b3">1K</text>
+                <text x="33" y="126" text-anchor="end" font-size="9" fill="#9ea6b3">500</text>
+                <text x="33" y="163" text-anchor="end" font-size="9" fill="#9ea6b3">0</text>
+                <!-- Jun 1: total=960, esc=280, auto=680 -->
+                <rect x="50"  y="88"  width="42" height="51" rx="2" fill="#F4956A"/><!-- auto -->
+                <rect x="50"  y="139" width="42" height="21" rx="2" fill="#7B6CF6"/><!-- esc -->
+                <!-- Jun 2: total=880, esc=150, auto=730 -->
+                <rect x="118" y="94"  width="42" height="57" rx="2" fill="#F4956A"/>
+                <rect x="118" y="151" width="42" height="9"  rx="2" fill="#7B6CF6"/>
+                <!-- Jun 3: total=1350, esc=200, auto=1150 -->
+                <rect x="186" y="59"  width="42" height="86" rx="2" fill="#F4956A"/>
+                <rect x="186" y="145" width="42" height="15" rx="2" fill="#7B6CF6"/>
+                <!-- Jun 4: total=1310, esc=210, auto=1100 -->
+                <rect x="254" y="62"  width="42" height="82" rx="2" fill="#F4956A"/>
+                <rect x="254" y="144" width="42" height="16" rx="2" fill="#7B6CF6"/>
+                <!-- Jun 5: total=1100, esc=200, auto=900 -->
+                <rect x="322" y="77"  width="42" height="68" rx="2" fill="#F4956A"/>
+                <rect x="322" y="145" width="42" height="15" rx="2" fill="#7B6CF6"/>
+                <!-- Jun 6: total=1080, esc=290, auto=790 -->
+                <rect x="390" y="79"  width="42" height="59" rx="2" fill="#F4956A"/>
+                <rect x="390" y="138" width="42" height="22" rx="2" fill="#7B6CF6"/>
+                <!-- Jun 7: total=1500, esc=400, auto=1100 -->
+                <rect x="458" y="47"  width="42" height="82" rx="2" fill="#F4956A"/>
+                <rect x="458" y="129" width="42" height="31" rx="2" fill="#7B6CF6"/>
+                <!-- X-axis labels -->
+                <text x="71"  y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 1</text>
+                <text x="139" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 2</text>
+                <text x="207" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 3</text>
+                <text x="275" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 4</text>
+                <text x="343" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 5</text>
+                <text x="411" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 6</text>
+                <text x="479" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 7</text>
+              </svg>
+              <div class="vol-legend">
+                <div class="vol-legend-item">
+                  <div class="vol-legend-dot" style="background:#7B6CF6;"></div>
+                  Escalated
+                </div>
+                <div class="vol-legend-item">
+                  <div class="vol-legend-dot" style="background:#F4956A;"></div>
+                  Automated
+                </div>
+              </div>
+            </div>
+
+            <!-- Conversation efficiency -->
+            <div class="eff-card">
+              <div class="eff-card-header">Conversation efficiency</div>
+              <div class="eff-stat-group">
+                <div class="eff-stat-label">Avg. turns per resolution</div>
+                <div class="eff-stat-value">2.8</div>
+              </div>
+              <div class="eff-divider"></div>
+              <div class="eff-stat-group">
+                <div class="eff-stat-label">Avg. first response time</div>
+                <div class="eff-stat-value">&lt;5 sec</div>
+                <div class="eff-stat-sub">↗ vs ~4 min for human team</div>
+              </div>
+              <div class="eff-divider"></div>
+              <div class="eff-stat-group">
+                <div class="eff-stat-label">Avg. resolution time (automated)</div>
+                <div class="eff-stat-value">~1.2 min</div>
+                <div class="eff-stat-sub">↗ vs ~18 min human-handled</div>
+              </div>
+            </div>
+
           </div>
         </div>
 
