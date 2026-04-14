@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Box, Button, Heading, Size } from '@gorgias/axiom'
 
@@ -9,6 +9,10 @@ import {
 } from 'AIJourney/components'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useDeleteSegment, useSegments } from 'AIJourney/queries'
+import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
+import useAppDispatch from 'hooks/useAppDispatch'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import css from './Segments.less'
 
@@ -38,6 +42,24 @@ export const Segments = () => {
             cursor,
         },
     )
+    const dispatch = useAppDispatch()
+    const {
+        data: schema,
+        isLoading: isSchemaLoading,
+        isError: isSchemaError,
+    } = useConditionsMetadata()
+
+    useEffect(() => {
+        if (isSchemaError) {
+            dispatch(
+                notify({
+                    message:
+                        'Failed to load segment conditions. Please refresh the page.',
+                    status: NotificationStatus.Error,
+                }),
+            )
+        }
+    }, [isSchemaError, dispatch])
 
     const hasNextPage = !!segmentsData?.metadata.next_cursor
     const hasPrevPage = !!segmentsData?.metadata.prev_cursor
@@ -63,6 +85,7 @@ export const Segments = () => {
                     <Button
                         variant="secondary"
                         leadingSlot="cloud"
+                        isDisabled={isSchemaLoading || isSchemaError}
                         onClick={() => {
                             selectedSegmentRef.current = undefined
                             setIsSidePanelOpen(true)
@@ -103,11 +126,14 @@ export const Segments = () => {
                     setSegmentToDelete(undefined)
                 }}
             />
-            <SegmentsSidePanel
-                isOpen={isSidePanelOpen}
-                onClose={handleClose}
-                segment={selectedSegmentRef.current}
-            />
+            {schema && (
+                <SegmentsSidePanel
+                    isOpen={isSidePanelOpen}
+                    onClose={handleClose}
+                    segment={selectedSegmentRef.current}
+                    schema={schema}
+                />
+            )}
         </Box>
     )
 }

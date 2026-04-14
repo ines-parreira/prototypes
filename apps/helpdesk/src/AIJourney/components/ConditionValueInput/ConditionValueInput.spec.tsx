@@ -1,15 +1,14 @@
-import { fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen } from '@testing-library/react'
 
 import type { FieldDef } from '../../types/conditionField'
 import { ConditionValueInput } from './ConditionValueInput'
 
-// Callbacks captured from the mocked Select so tests can invoke them directly.
-const capturedSelect = {
-    onSearchChange: undefined as ((val: string) => void) | undefined,
-    onOpenChange: undefined as ((isOpen: boolean) => void) | undefined,
-    onSelect: undefined as ((item: any) => void) | undefined,
-    onLoadMore: undefined as (() => void) | undefined,
-    isLoading: false,
+const capturedSelectField = {
+    onChange: undefined as ((item: any) => void) | undefined,
+}
+
+const capturedMultiSelectField = {
+    onChange: undefined as ((items: any[]) => void) | undefined,
 }
 
 const capturedInlineSelect = {
@@ -18,21 +17,35 @@ const capturedInlineSelect = {
 
 jest.mock('@gorgias/axiom', () => ({
     ...jest.requireActual('@gorgias/axiom'),
-    Select: (props: any) => {
-        capturedSelect.onSearchChange = props.onSearchChange
-        capturedSelect.onOpenChange = props.onOpenChange
-        capturedSelect.onSelect = props.onSelect
-        capturedSelect.onLoadMore = props.onLoadMore
-        capturedSelect.isLoading = props.isLoading
+    SelectField: (props: any) => {
+        capturedSelectField.onChange = props.onChange
         return (
             <div aria-label={props['aria-label']}>
-                {props.trigger({ ref: { current: null } })}
+                {props.value ? (
+                    <span>{props.value.label}</span>
+                ) : (
+                    <span>{props.placeholder}</span>
+                )}
+                {props.items?.map((section: any) => props.children(section))}
             </div>
         )
     },
-    SelectTrigger: ({ children }: any) => <div>{children}</div>,
-    SelectPlacement: { BottomLeft: 'bottom-left' },
-    Text: ({ children }: any) => <span>{children}</span>,
+    MultiSelectField: (props: any) => {
+        capturedMultiSelectField.onChange = props.onChange
+        return (
+            <div aria-label={props['aria-label']}>
+                {props.value?.length > 0 ? (
+                    props.value.map((item: any) => (
+                        <span key={item.id}>{item.label}</span>
+                    ))
+                ) : (
+                    <span>{props.placeholder}</span>
+                )}
+                {props.items?.map((item: any) => props.children(item))}
+            </div>
+        )
+    },
+    MultiSelectItem: ({ label, id }: any) => <span data-id={id}>{label}</span>,
     TextField: ({
         onChange,
         value,
@@ -56,8 +69,11 @@ jest.mock('@gorgias/axiom', () => ({
     ),
     TooltipContent: ({ title }: any) => <span>{title}</span>,
     ListItem: ({ label }: any) => <span>{label}</span>,
-    ListSection: ({ children, items }: any) => (
-        <div>{items?.map((item: any) => children(item))}</div>
+    ListSection: ({ children, items, name }: any) => (
+        <div>
+            {name && <span>{name}</span>}
+            {items?.map((item: any) => children(item))}
+        </div>
     ),
 }))
 
@@ -68,19 +84,29 @@ jest.mock('../ConditionInlineSelect/ConditionInlineSelect', () => ({
     },
 }))
 
+jest.mock('AIJourney/providers', () => ({
+    useJourneyContext: jest.fn().mockReturnValue({
+        currentIntegration: { id: 42 },
+    }),
+}))
+
+jest.mock('@repo/customer', () => ({
+    useShopifyShopTags: jest
+        .fn()
+        .mockReturnValue({ data: ['vip', 'wholesale', 'new-customer'] }),
+}))
+
 const mockOnChange = jest.fn()
 
 const stringFieldDef: FieldDef = { type: 'string', operators: ['eq'] }
 const numberFieldDef: FieldDef = { type: 'number', operators: ['gt'] }
+const datetimeFieldDef: FieldDef = { type: 'datetime', operators: ['eq'] }
 
 describe('<ConditionValueInput />', () => {
     beforeEach(() => {
         jest.clearAllMocks()
-        capturedSelect.onSearchChange = undefined
-        capturedSelect.onOpenChange = undefined
-        capturedSelect.onSelect = undefined
-        capturedSelect.onLoadMore = undefined
-        capturedSelect.isLoading = false
+        capturedSelectField.onChange = undefined
+        capturedMultiSelectField.onChange = undefined
         capturedInlineSelect.onSelect = undefined
     })
 
@@ -237,6 +263,326 @@ describe('<ConditionValueInput />', () => {
                     'Enter multiple values separated by a comma',
                 ),
             ).not.toBeInTheDocument()
+        })
+    })
+
+    describe('datetime type', () => {
+        it('should render ConditionInlineSelect and call onChange when a period is selected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={datetimeFieldDef}
+                    value="30d"
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(capturedInlineSelect.onSelect).toBeDefined()
+
+            act(() => {
+                capturedInlineSelect.onSelect!('90d')
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith('90d')
+        })
+    })
+
+    describe('address_state_code field (StateValueSelect)', () => {
+        it('should render "Select state" placeholder when no value is set', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="address_state_code"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.getByText('Select state')).toBeInTheDocument()
+        })
+
+        it('should display the selected state label and hide the placeholder', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="address_state_code"
+                    value="AL"
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.queryByText('Select state')).not.toBeInTheDocument()
+            expect(screen.getAllByText('Alabama').length).toBeGreaterThan(0)
+        })
+
+        it('should render United States and Canada section headers', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="address_state_code"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.getByText('United States')).toBeInTheDocument()
+            expect(screen.getByText('Canada')).toBeInTheDocument()
+        })
+
+        it('should render all states without pagination', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="address_state_code"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.getByText('Idaho')).toBeInTheDocument()
+            expect(screen.getByText('Ontario')).toBeInTheDocument()
+        })
+
+        it('should call onChange with the state code when a state is selected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="address_state_code"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            act(() => {
+                capturedSelectField.onChange!({
+                    id: 'CA',
+                    label: 'California',
+                    sectionId: 'section-US',
+                })
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith('CA')
+        })
+
+        it('should call onChange with null when the selection is cleared', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="address_state_code"
+                    value="AL"
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            act(() => {
+                capturedSelectField.onChange!(null)
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(null)
+        })
+    })
+
+    describe('address_state_code field with multi-select operators (StateMultiValueSelect)', () => {
+        it.each(['containsAny', 'notContainsAny'])(
+            'should render "Select states" placeholder for "%s" operator when no value is set',
+            (operator) => {
+                render(
+                    <ConditionValueInput
+                        fieldDef={stringFieldDef}
+                        field="address_state_code"
+                        value={null}
+                        onChange={mockOnChange}
+                        isUnary={false}
+                        operator={operator}
+                    />,
+                )
+
+                expect(screen.getByText('Select states')).toBeInTheDocument()
+            },
+        )
+
+        it('should display selected state labels when value is an array', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="address_state_code"
+                    value={['CA', 'NY']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.queryByText('Select states')).not.toBeInTheDocument()
+            expect(screen.getAllByText('California').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('New York').length).toBeGreaterThan(0)
+        })
+
+        it('should show empty placeholder when value is a non-array (graceful fallback)', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="address_state_code"
+                    value="CA"
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            expect(screen.getByText('Select states')).toBeInTheDocument()
+        })
+
+        it('should call onChange with an array of state codes when states are selected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="address_state_code"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="containsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onChange!([
+                    { id: 'CA', label: 'California' },
+                    { id: 'NY', label: 'New York' },
+                ])
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(['CA', 'NY'])
+        })
+
+        it('should call onChange with null when all states are deselected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="address_state_code"
+                    value={['CA']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                    operator="notContainsAny"
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onChange!([])
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(null)
+        })
+    })
+
+    describe('tags field (TagsMultiSelect)', () => {
+        it('should render "Select tags" placeholder when no tags are selected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.getByText('Select tags')).toBeInTheDocument()
+        })
+
+        it('should render all fetched tags as options', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.getByText('vip')).toBeInTheDocument()
+            expect(screen.getByText('wholesale')).toBeInTheDocument()
+            expect(screen.getByText('new-customer')).toBeInTheDocument()
+        })
+
+        it('should display selected tag labels when value is set', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="tags"
+                    value={['vip', 'wholesale']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(screen.queryByText('Select tags')).not.toBeInTheDocument()
+            expect(screen.getAllByText('vip').length).toBeGreaterThan(0)
+            expect(screen.getAllByText('wholesale').length).toBeGreaterThan(0)
+        })
+
+        it('should call onChange with an array of tag ids when tags are selected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onChange!([
+                    { id: 'vip', label: 'vip' },
+                    { id: 'wholesale', label: 'wholesale' },
+                ])
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(['vip', 'wholesale'])
+        })
+
+        it('should call onChange with null when all tags are deselected', () => {
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="tags"
+                    value={['vip']}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            act(() => {
+                capturedMultiSelectField.onChange!([])
+            })
+
+            expect(mockOnChange).toHaveBeenCalledWith(null)
+        })
+
+        it('should fetch tags using the integration id from context', () => {
+            const { useShopifyShopTags } = jest.requireMock('@repo/customer')
+
+            render(
+                <ConditionValueInput
+                    fieldDef={stringFieldDef}
+                    field="tags"
+                    value={null}
+                    onChange={mockOnChange}
+                    isUnary={false}
+                />,
+            )
+
+            expect(useShopifyShopTags).toHaveBeenCalledWith({
+                integrationId: 42,
+            })
         })
     })
 })

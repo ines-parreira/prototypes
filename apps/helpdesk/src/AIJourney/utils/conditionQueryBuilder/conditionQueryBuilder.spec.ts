@@ -1,9 +1,13 @@
-import { buildFullQuery } from 'AIJourney/utils/conditionQueryBuilder/conditionQueryBuilder'
+import {
+    buildFullQuery,
+    parseConditionsQuery,
+} from 'AIJourney/utils/conditionQueryBuilder/conditionQueryBuilder'
 
 import type {
     ConditionsSchema,
     ConditionState,
 } from '../../types/conditionField'
+import { DEFAULT_CONDITION } from '../../types/conditionField'
 
 const schema: ConditionsSchema = {
     operators: {
@@ -112,6 +116,36 @@ describe('buildFullQuery', () => {
             const condition: ConditionState = { ...baseCondition, value: '' }
             expect(buildFullQuery([condition], schema)).toBe('')
         })
+
+        it('filters out conditions with an empty array value', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                field: 'tags',
+                operator: 'containsAny',
+                value: [],
+            }
+            expect(buildFullQuery([condition], schema)).toBe('')
+        })
+
+        it('filters out a contains condition whose string value contains only commas', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                field: 'tags',
+                operator: 'containsAny',
+                value: ',',
+            }
+            expect(buildFullQuery([condition], schema)).toBe('')
+        })
+
+        it('filters out a contains condition whose string value is only whitespace and commas', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                field: 'tags',
+                operator: 'notContainsAny',
+                value: ' , , ',
+            }
+            expect(buildFullQuery([condition], schema)).toBe('')
+        })
     })
 
     describe('formatFieldValue', () => {
@@ -164,6 +198,42 @@ describe('buildFullQuery', () => {
             )
         })
 
+        it('strips trailing comma and empty entry from contains value', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                field: 'tags',
+                operator: 'containsAny',
+                value: '1, 2, 3,',
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "containsAny(shopper.tags, ['1', '2', '3'])",
+            )
+        })
+
+        it('formats a string array value directly into array notation', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                field: 'tags',
+                operator: 'containsAny',
+                value: ['vip', 'wholesale', 'new-customer'],
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "containsAny(shopper.tags, ['vip', 'wholesale', 'new-customer'])",
+            )
+        })
+
+        it('formats a single-element string array into array notation', () => {
+            const condition: ConditionState = {
+                ...baseCondition,
+                field: 'tags',
+                operator: 'containsAny',
+                value: ['vip'],
+            }
+            expect(buildFullQuery([condition], schema)).toBe(
+                "containsAny(shopper.tags, ['vip'])",
+            )
+        })
+
         it('wraps datetime type values in single quotes', () => {
             const condition: ConditionState = {
                 ...baseCondition,
@@ -201,5 +271,182 @@ describe('buildFullQuery', () => {
                 "eq(shopper.sms_state, 'subscribed')",
             )
         })
+    })
+})
+
+describe('parseConditionsQuery', () => {
+    it('returns DEFAULT_CONDITION for an empty string', () => {
+        expect(parseConditionsQuery('')).toEqual([DEFAULT_CONDITION])
+    })
+
+    it('returns DEFAULT_CONDITION for a whitespace-only string', () => {
+        expect(parseConditionsQuery('   ')).toEqual([DEFAULT_CONDITION])
+    })
+
+    it('parses a binary condition with a string value', () => {
+        expect(
+            parseConditionsQuery("eq(shopper.sms_state, 'subscribed')"),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'sms_state',
+                isAggregate: false,
+                operator: 'eq',
+                value: 'subscribed',
+            },
+        ])
+    })
+
+    it('parses a binary condition with a number value', () => {
+        expect(parseConditionsQuery('gt(shopper.order_count, 5)')).toEqual([
+            {
+                object: 'shopper',
+                field: 'order_count',
+                isAggregate: false,
+                operator: 'gt',
+                value: 5,
+            },
+        ])
+    })
+
+    it('parses a binary condition with a negative number value', () => {
+        expect(parseConditionsQuery('gt(shopper.order_count, -3)')).toEqual([
+            {
+                object: 'shopper',
+                field: 'order_count',
+                isAggregate: false,
+                operator: 'gt',
+                value: -3,
+            },
+        ])
+    })
+
+    it('parses a single-element array value as a plain string', () => {
+        expect(
+            parseConditionsQuery("containsAny(shopper.tags, ['vip'])"),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'tags',
+                isAggregate: false,
+                operator: 'containsAny',
+                value: 'vip',
+            },
+        ])
+    })
+
+    it('parses a multi-element array value as string[]', () => {
+        expect(
+            parseConditionsQuery(
+                "containsAny(shopper.tags, ['vip', 'wholesale', 'new-customer'])",
+            ),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'tags',
+                isAggregate: false,
+                operator: 'containsAny',
+                value: ['vip', 'wholesale', 'new-customer'],
+            },
+        ])
+    })
+
+    it('parses a unary condition with no value', () => {
+        expect(parseConditionsQuery('isEmpty(shopper.sms_state)')).toEqual([
+            {
+                object: 'shopper',
+                field: 'sms_state',
+                isAggregate: false,
+                operator: 'isEmpty',
+                value: null,
+            },
+        ])
+    })
+
+    it('parses multiple conditions joined by &&', () => {
+        expect(
+            parseConditionsQuery(
+                "eq(shopper.sms_state, 'subscribed') && gt(shopper.order_count, 5)",
+            ),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'sms_state',
+                isAggregate: false,
+                operator: 'eq',
+                value: 'subscribed',
+            },
+            {
+                object: 'shopper',
+                field: 'order_count',
+                isAggregate: false,
+                operator: 'gt',
+                value: 5,
+            },
+        ])
+    })
+
+    it('parses an aggregate condition without splitting on nested parentheses', () => {
+        expect(parseConditionsQuery('gt(shopper.orders(30d), 5)')).toEqual([
+            {
+                object: 'shopper',
+                field: 'orders',
+                isAggregate: true,
+                operator: 'gt',
+                value: 5,
+            },
+        ])
+    })
+
+    it('returns DEFAULT_CONDITION when the condition string has no operator call syntax', () => {
+        expect(parseConditionsQuery('invalid_condition')).toEqual([
+            DEFAULT_CONDITION,
+        ])
+    })
+
+    it('returns DEFAULT_CONDITION when dslRef has no dot separator', () => {
+        expect(parseConditionsQuery('gt(nodot, 5)')).toEqual([
+            DEFAULT_CONDITION,
+        ])
+    })
+
+    it('parses a condition with an empty value argument as null', () => {
+        expect(parseConditionsQuery('eq(shopper.sms_state, )')).toEqual([
+            {
+                object: 'shopper',
+                field: 'sms_state',
+                isAggregate: false,
+                operator: 'eq',
+                value: null,
+            },
+        ])
+    })
+
+    it('parses a condition with an unrecognized value format as null', () => {
+        expect(parseConditionsQuery('eq(shopper.sms_state, unquoted)')).toEqual(
+            [
+                {
+                    object: 'shopper',
+                    field: 'sms_state',
+                    isAggregate: false,
+                    operator: 'eq',
+                    value: null,
+                },
+            ],
+        )
+    })
+
+    it('skips unparseable conditions and returns only valid ones', () => {
+        expect(
+            parseConditionsQuery("invalid && eq(shopper.sms_state, 'active')"),
+        ).toEqual([
+            {
+                object: 'shopper',
+                field: 'sms_state',
+                isAggregate: false,
+                operator: 'eq',
+                value: 'active',
+            },
+        ])
     })
 })

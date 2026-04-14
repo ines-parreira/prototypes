@@ -65,7 +65,7 @@ const useWatchMock = assumeMock(useWatch)
 const mockSchema: ConditionsSchema = {
     operators: {
         comparison: ['eq', 'neq'],
-        set: ['containsAny'],
+        set: ['containsAny', 'notContainsAny'],
         unary: ['isEmpty'],
     },
     objects: {
@@ -73,6 +73,10 @@ const mockSchema: ConditionsSchema = {
             fields: {
                 sms_state: { type: 'string', operators: ['eq', 'neq'] },
                 name: { type: 'string', operators: ['eq'] },
+                address_state_code: {
+                    type: 'string',
+                    operators: ['eq', 'neq', 'containsAny', 'notContainsAny'],
+                },
             },
         },
     },
@@ -276,6 +280,98 @@ describe('<ConditionRow />', () => {
                 null,
             )
         })
+    })
+
+    describe('operator selection for address_state_code field', () => {
+        it('should reset value when switching from single to multi-select operator', () => {
+            useWatchMock.mockReturnValue([
+                'shopper',
+                'address_state_code',
+                false,
+                'eq',
+                'CA',
+            ])
+            renderComponent()
+
+            captured.inlineSelectOnSelect?.('containsAny')
+
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.value',
+                null,
+            )
+        })
+
+        it('should reset value when switching from multi to single-select operator', () => {
+            useWatchMock.mockReturnValue([
+                'shopper',
+                'address_state_code',
+                false,
+                'containsAny',
+                ['CA', 'NY'],
+            ])
+            renderComponent()
+
+            captured.inlineSelectOnSelect?.('eq')
+
+            expect(mockSetValue).toHaveBeenCalledWith(
+                'conditions.0.value',
+                null,
+            )
+        })
+
+        it('should not reset value when switching between two single-select operators', () => {
+            useWatchMock.mockReturnValue([
+                'shopper',
+                'address_state_code',
+                false,
+                'eq',
+                'CA',
+            ])
+            renderComponent()
+
+            captured.inlineSelectOnSelect?.('neq')
+
+            expect(mockSetValue).not.toHaveBeenCalledWith(
+                'conditions.0.value',
+                null,
+            )
+        })
+
+        it('should not reset value when switching between two multi-select operators', () => {
+            useWatchMock.mockReturnValue([
+                'shopper',
+                'address_state_code',
+                false,
+                'containsAny',
+                ['CA'],
+            ])
+            renderComponent()
+
+            captured.inlineSelectOnSelect?.('notContainsAny')
+
+            expect(mockSetValue).not.toHaveBeenCalledWith(
+                'conditions.0.value',
+                null,
+            )
+        })
+    })
+
+    it('should not reset value when switching operators for a non-address_state_code field', () => {
+        useWatchMock.mockReturnValue([
+            'shopper',
+            'sms_state',
+            false,
+            'eq',
+            'subscribed',
+        ])
+        renderComponent()
+
+        captured.inlineSelectOnSelect?.('neq')
+
+        expect(mockSetValue).not.toHaveBeenCalledWith(
+            'conditions.0.value',
+            null,
+        )
     })
 
     it('should set value when ConditionValueInput onChange is called', () => {

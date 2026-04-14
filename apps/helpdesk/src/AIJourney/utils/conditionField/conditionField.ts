@@ -22,6 +22,12 @@ export const OPERATOR_LABELS: Record<string, string> = {
     isNotEmpty: 'is not empty',
 }
 
+export const DATETIME_PRESETS: SelectOption[] = [
+    { id: '30d', label: '30 days' },
+    { id: '90d', label: '90 days' },
+    { id: '365d', label: '365 days' },
+]
+
 export function toLabel(name: string): string {
     return name.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase())
 }
@@ -61,11 +67,10 @@ const CONDITION_ALLOWLIST = [
         sectionId: 'shopper',
         sectionName: 'Shopper characteristics',
         items: [
-            {
-                field: 'sms_state',
-                label: 'SMS subscription status',
-                isAggregate: false,
-            },
+            { field: 'sms_state', label: 'SMS subscription status' },
+            { field: 'sms_state_date', label: 'SMS subscription date' },
+            { field: 'tags', label: 'Shopify customer tag' },
+            { field: 'address_state_code', label: 'State' },
         ],
     },
 ] as const
@@ -74,16 +79,15 @@ export function buildSections(schema: ConditionsSchema) {
     return CONDITION_ALLOWLIST.flatMap(({ sectionId, sectionName, items }) => {
         const objectDef = schema.objects[sectionId]
         if (!objectDef) return []
-        const allowedItems = items
-            .filter(({ field, isAggregate }) =>
-                isAggregate
-                    ? objectDef.aggregates?.[field] != null
-                    : objectDef.fields[field] != null,
-            )
-            .map(({ field, label, isAggregate }) => ({
-                id: buildSelectId(sectionId, field, isAggregate),
-                label,
-            }))
+        const allowedItems = items.flatMap(({ field, label }) => {
+            if (objectDef.fields[field] != null) {
+                return [{ id: buildSelectId(sectionId, field, false), label }]
+            }
+            if (objectDef.aggregates?.[field] != null) {
+                return [{ id: buildSelectId(sectionId, field, true), label }]
+            }
+            return []
+        })
         if (allowedItems.length === 0) return []
         return [{ id: sectionId, name: sectionName, items: allowedItems }]
     })

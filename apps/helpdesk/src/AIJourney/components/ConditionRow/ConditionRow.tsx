@@ -49,7 +49,7 @@ export const ConditionRow = ({
         string | null,
         boolean,
         string,
-        string | number | null,
+        string | number | string[] | null,
     ]
 
     const set = (path: string, val: unknown) =>
@@ -136,6 +136,16 @@ export const ConditionRow = ({
                                     set('operator', id)
                                     if (schema.operators.unary.includes(id)) {
                                         set('value', null)
+                                    } else if (field === 'address_state_code') {
+                                        const isMulti =
+                                            id === 'containsAny' ||
+                                            id === 'notContainsAny'
+                                        const wasMulti =
+                                            operator === 'containsAny' ||
+                                            operator === 'notContainsAny'
+                                        if (isMulti !== wasMulti) {
+                                            set('value', null)
+                                        }
                                     }
                                 }}
                                 ariaLabel="operator"

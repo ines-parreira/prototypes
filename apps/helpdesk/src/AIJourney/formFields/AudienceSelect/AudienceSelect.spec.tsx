@@ -4,8 +4,10 @@ import userEvent from '@testing-library/user-event'
 import { FormProvider, useForm } from 'react-hook-form'
 
 import { useJourneyContext } from 'AIJourney/providers'
+import { useConditionsMetadata } from 'AIJourney/queries'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
 import { useAudienceSegments } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
+import type { ConditionsSchema } from 'AIJourney/types/conditionField'
 
 import { AudienceSelect } from './AudienceSelect'
 
@@ -35,6 +37,10 @@ jest.mock('AIJourney/components/SegmentsSidePanel/SegmentsSidePanel', () => ({
     }) => (isOpen ? <button onClick={onClose}>Close side panel</button> : null),
 }))
 
+jest.mock('AIJourney/queries', () => ({
+    useConditionsMetadata: jest.fn().mockReturnValue({ data: undefined }),
+}))
+
 jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
 }))
@@ -47,10 +53,16 @@ jest.mock('AIJourney/queries/useAudienceSegments/useAudienceSegments', () => ({
     useAudienceSegments: jest.fn(),
 }))
 
+const mockSchema: ConditionsSchema = {
+    operators: { comparison: [], set: [], unary: [] },
+    objects: {},
+}
+
 const mockUseFlag = useFlag as jest.Mock
 const mockUseJourneyContext = useJourneyContext as jest.Mock
 const mockUseAudienceLists = useAudienceLists as jest.Mock
 const mockUseAudienceSegments = useAudienceSegments as jest.Mock
+const mockUseConditionsMetadata = useConditionsMetadata as jest.Mock
 
 beforeAll(() => {
     HTMLElement.prototype.getAnimations = jest.fn().mockReturnValue([])
@@ -90,6 +102,7 @@ describe('<AudienceSelect />', () => {
             data: null,
             isLoading: false,
         })
+        mockUseConditionsMetadata.mockReturnValue({ data: undefined })
     })
 
     describe('label', () => {
@@ -373,9 +386,30 @@ describe('<AudienceSelect />', () => {
         })
     })
 
+    describe('useConditionsMetadata', () => {
+        it('is enabled when feature flag is disabled', async () => {
+            mockUseFlag.mockReturnValue(false)
+            await renderComponent('include')
+
+            expect(mockUseConditionsMetadata).toHaveBeenCalledWith({
+                enabled: true,
+            })
+        })
+
+        it('is disabled when feature flag is enabled', async () => {
+            mockUseFlag.mockReturnValue(true)
+            await renderComponent('include')
+
+            expect(mockUseConditionsMetadata).toHaveBeenCalledWith({
+                enabled: false,
+            })
+        })
+    })
+
     describe('segments side panel', () => {
         beforeEach(() => {
             mockUseFlag.mockReturnValue(true)
+            mockUseConditionsMetadata.mockReturnValue({ data: mockSchema })
         })
 
         it('shows CreateNewSegmentButton in footer when feature flag is enabled', async () => {

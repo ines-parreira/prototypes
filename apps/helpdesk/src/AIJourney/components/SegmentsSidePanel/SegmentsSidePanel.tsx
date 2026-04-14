@@ -14,10 +14,15 @@ import {
 
 import { AudienceConditionField } from 'AIJourney/components/AudienceConditionField/AudienceConditionField'
 import type { Segment } from 'AIJourney/pages/Segments/Segments'
-import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
-import type { ConditionState } from 'AIJourney/types/conditionField'
+import type {
+    ConditionsSchema,
+    ConditionState,
+} from 'AIJourney/types/conditionField'
 import { DEFAULT_CONDITION } from 'AIJourney/types/conditionField'
-import { buildFullQuery } from 'AIJourney/utils/conditionQueryBuilder/conditionQueryBuilder'
+import {
+    buildFullQuery,
+    parseConditionsQuery,
+} from 'AIJourney/utils/conditionQueryBuilder/conditionQueryBuilder'
 
 type SegmentFormValues = {
     name: string
@@ -28,10 +33,12 @@ export const SegmentsSidePanel = ({
     isOpen,
     onClose,
     segment,
+    schema,
 }: {
     isOpen: boolean
     onClose: () => void
     segment?: Segment
+    schema: ConditionsSchema
 }) => {
     const form = useForm<SegmentFormValues>({
         defaultValues: {
@@ -39,8 +46,6 @@ export const SegmentsSidePanel = ({
             conditions: [DEFAULT_CONDITION],
         },
     })
-
-    const { data: schema } = useConditionsMetadata()
 
     useEffect(() => {
         if (isOpen) {
@@ -57,6 +62,42 @@ export const SegmentsSidePanel = ({
     }, [form, onClose])
 
     const conditions = useWatch({ control: form.control, name: 'conditions' })
+    const name = useWatch({ control: form.control, name: 'name' })
+
+    useEffect(() => {
+        buildFullQuery(conditions, schema)
+    }, [conditions, schema])
+
+    const hasNoConditions = conditions.length === 0
+
+    const hasConditionWithoutValue = conditions.some((c) => {
+        if (!c.object || !c.field || !c.operator) return false
+        if (schema.operators.unary.includes(c.operator)) return false
+        const val = c.value
+        if (val === null || val === undefined || val === '') return true
+        if (Array.isArray(val) && val.length === 0) return true
+        if (typeof val === 'string') {
+            const items = val
+                .split(',')
+                .map((v) => v.trim())
+                .filter((v) => v !== '')
+            return items.length === 0
+        }
+        return false
+    })
+
+    const shouldDisableSaveButton =
+        !name.trim() || hasNoConditions || hasConditionWithoutValue
+
+    useEffect(() => {
+        if (!isOpen) return
+        form.reset({
+            name: segment?.name ?? '',
+            conditions: segment?.conditions
+                ? parseConditionsQuery(segment.conditions)
+                : [DEFAULT_CONDITION],
+        })
+    }, [isOpen, segment, form])
 
     const isEditing = segment !== undefined
 
@@ -97,7 +138,7 @@ export const SegmentsSidePanel = ({
                                 />
                             )}
                         />
-                        {schema && <AudienceConditionField schema={schema} />}
+                        <AudienceConditionField schema={schema} />
                         <Box gap={Size.Xs} justifyContent="flex-end">
                             <Button
                                 variant="tertiary"
@@ -106,17 +147,13 @@ export const SegmentsSidePanel = ({
                                 Cancel
                             </Button>
                             <Button
+                                isDisabled={shouldDisableSaveButton}
                                 onClick={() => {
-                                    if (schema) {
-                                        const query = buildFullQuery(
-                                            conditions,
-                                            schema,
-                                        )
-                                        window.alert(
-                                            JSON.stringify(query, null, 2),
-                                        )
-                                    }
-                                    onClose()
+                                    const query = buildFullQuery(
+                                        conditions,
+                                        schema,
+                                    )
+                                    window.alert(JSON.stringify(query, null, 2))
                                 }}
                             >
                                 Save segment

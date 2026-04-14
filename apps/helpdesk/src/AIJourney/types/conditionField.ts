@@ -30,10 +30,12 @@ export type SelectOption = {
     label: string
 }
 
+export type ConditionValue = string | number | string[] | null
+
 export type WhereClause = {
     field: string
     operator: string
-    value: string | number | null
+    value: ConditionValue
 }
 
 export type ConditionState = {
@@ -41,7 +43,7 @@ export type ConditionState = {
     field: string | null
     isAggregate: boolean
     operator: string
-    value: string | number | null
+    value: ConditionValue
 }
 
 export const DEFAULT_CONDITION: ConditionState = {

@@ -8,6 +8,7 @@ import { ListItem, ListSection, MultiSelectField } from '@gorgias/axiom'
 import { CreateNewSegmentButton } from 'AIJourney/components/CreateNewSegmentButton/CreateNewSegmentButton'
 import { SegmentsSidePanel } from 'AIJourney/components/SegmentsSidePanel/SegmentsSidePanel'
 import { useJourneyContext } from 'AIJourney/providers'
+import { useConditionsMetadata } from 'AIJourney/queries'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
 import { useAudienceSegments } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
 
@@ -47,6 +48,10 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
 
     const { data: audienceSegments, isLoading: isLoadingAudienceSegments } =
         useAudienceSegments(currentIntegration?.id)
+
+    const { data: schema } = useConditionsMetadata({
+        enabled: !isAiJourneySegmentsEnabled,
+    })
 
     const sections = useMemo(() => {
         const excluded = excludedValuesRef.current
@@ -123,10 +128,13 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
                     </MultiSelectField>
                 )}
             />
-            <SegmentsSidePanel
-                isOpen={isSidePanelOpen}
-                onClose={() => setIsSidePanelOpen(false)}
-            />
+            {schema && (
+                <SegmentsSidePanel
+                    isOpen={isSidePanelOpen}
+                    onClose={() => setIsSidePanelOpen(false)}
+                    schema={schema}
+                />
+            )}
         </>
     )
 }

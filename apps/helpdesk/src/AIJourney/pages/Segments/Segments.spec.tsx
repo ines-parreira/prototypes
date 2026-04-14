@@ -1,11 +1,16 @@
 import { forwardRef } from 'react'
 import type { ReactNode, Ref } from 'react'
 
-import { act, render, screen } from '@testing-library/react'
+import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { useJourneyContext } from 'AIJourney/providers'
 import { useDeleteSegment, useSegments } from 'AIJourney/queries'
+import { useConditionsMetadata } from 'AIJourney/queries/useConditionsMetadata/useConditionsMetadata'
+import type { ConditionsSchema } from 'AIJourney/types/conditionField'
+import useAppDispatch from 'hooks/useAppDispatch'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import { Segments } from './Segments'
 
@@ -49,18 +54,50 @@ jest.mock('@gorgias/axiom', () => ({
 jest.mock('AIJourney/queries', () => ({
     useSegments: jest.fn(),
     useDeleteSegment: jest.fn(),
+    useCreateSegment: jest.fn().mockReturnValue({
+        mutateAsync: jest.fn(),
+        isLoading: false,
+    }),
 }))
 
 jest.mock(
     'AIJourney/queries/useConditionsMetadata/useConditionsMetadata',
     () => ({
-        useConditionsMetadata: jest.fn().mockReturnValue({ data: undefined }),
+        useConditionsMetadata: jest.fn(),
     }),
 )
 
 jest.mock('AIJourney/providers', () => ({
     useJourneyContext: jest.fn(),
 }))
+
+jest.mock('hooks/useAppDispatch')
+
+jest.mock('state/notifications/actions')
+
+const mockUseSegments = useSegments as jest.Mock
+const mockUseJourneyContext = useJourneyContext as jest.Mock
+const mockUseDeleteSegment = useDeleteSegment as jest.Mock
+const mockUseConditionsMetadata = useConditionsMetadata as jest.Mock
+const mockUseAppDispatch = useAppDispatch as jest.MockedFunction<
+    typeof useAppDispatch
+>
+const mockNotify = notify as jest.MockedFunction<typeof notify>
+
+const mockSchema: ConditionsSchema = {
+    operators: {
+        comparison: ['eq', 'gt'],
+        set: ['containsAny'],
+        unary: ['isEmpty'],
+    },
+    objects: {
+        shopper: {
+            fields: {
+                sms_state: { type: 'string', operators: ['eq', 'isEmpty'] },
+            },
+        },
+    },
+}
 
 const mockSegments = [
     {
@@ -81,13 +118,12 @@ const mockSegments = [
     },
 ]
 
-const mockUseSegments = useSegments as jest.Mock
-const mockUseJourneyContext = useJourneyContext as jest.Mock
-const mockUseDeleteSegment = useDeleteSegment as jest.Mock
-
 describe('<Segments />', () => {
+    const mockDispatch = jest.fn()
+
     beforeEach(() => {
         jest.clearAllMocks()
+        mockUseAppDispatch.mockReturnValue(mockDispatch)
         mockUseJourneyContext.mockReturnValue({
             currentIntegration: { id: 123 },
         })
@@ -98,6 +134,11 @@ describe('<Segments />', () => {
                 metadata: { next_cursor: null, prev_cursor: null },
             },
             isLoading: false,
+        })
+        mockUseConditionsMetadata.mockReturnValue({
+            data: mockSchema,
+            isLoading: false,
+            isError: false,
         })
     })
 
@@ -289,7 +330,77 @@ describe('<Segments />', () => {
         })
     })
 
+    describe('Create segment button state', () => {
+        it('should be disabled while the schema is loading', () => {
+            mockUseConditionsMetadata.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+                isError: false,
+            })
+            render(<Segments />)
+
+            expect(
+                screen.getByRole('button', { name: /create segment/i }),
+            ).toBeDisabled()
+        })
+
+        it('should be enabled once the schema has loaded', () => {
+            render(<Segments />)
+
+            expect(
+                screen.getByRole('button', { name: /create segment/i }),
+            ).toBeEnabled()
+        })
+
+        it('should be disabled when the schema request fails', () => {
+            mockUseConditionsMetadata.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: true,
+            })
+            render(<Segments />)
+
+            expect(
+                screen.getByRole('button', { name: /create segment/i }),
+            ).toBeDisabled()
+        })
+
+        it('should dispatch an error notification when the schema request fails', async () => {
+            mockNotify.mockReturnValue(
+                jest.fn() as unknown as ReturnType<typeof notify>,
+            )
+            mockUseConditionsMetadata.mockReturnValue({
+                data: undefined,
+                isLoading: false,
+                isError: true,
+            })
+            render(<Segments />)
+
+            await waitFor(() => {
+                expect(mockNotify).toHaveBeenCalledWith({
+                    message:
+                        'Failed to load segment conditions. Please refresh the page.',
+                    status: NotificationStatus.Error,
+                })
+            })
+            expect(mockDispatch).toHaveBeenCalled()
+        })
+    })
+
     describe('side panel interactions', () => {
+        it('should not render the side panel when schema is unavailable', () => {
+            mockUseConditionsMetadata.mockReturnValue({
+                data: undefined,
+                isLoading: true,
+                isError: false,
+            })
+            render(<Segments />)
+
+            expect(
+                screen.queryByRole('heading', { name: 'Create new segment' }),
+            ).not.toBeInTheDocument()
+        })
+
         it('should open the side panel in create mode when "Create segment" is clicked', async () => {
             const user = userEvent.setup()
             render(<Segments />)
