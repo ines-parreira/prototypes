@@ -110,6 +110,25 @@ afterAll(() => {
     server.close()
 })
 
+const findTranslateButton = () =>
+    screen.findByRole('button', { name: /translate/i })
+
+const openTranslationMenu = async (user: ReturnType<typeof render>['user']) => {
+    const translateButton = await findTranslateButton()
+    await user.click(translateButton)
+    await screen.findByRole('menuitem', { name: /translation settings/i })
+}
+
+const waitForTranslationMenuToClose = async () => {
+    await waitFor(() => {
+        expect(
+            screen.queryByRole('menuitem', {
+                name: /translation settings/i,
+            }),
+        ).not.toBeInTheDocument()
+    })
+}
+
 describe('TicketTranslationMenu', () => {
     describe('menu button', () => {
         it('should render a translate button', async () => {
@@ -231,35 +250,33 @@ describe('TicketTranslationMenu', () => {
                 <TicketTranslationMenu ticket={testTicket} />,
             )
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('button', { name: /translate/i }),
-                ).toBeInTheDocument()
-            })
-
-            await act(() =>
-                user.click(screen.getByRole('button', { name: /translate/i })),
-            )
+            await openTranslationMenu(user)
 
             expect(
-                screen.getByRole('menuitem', { name: /show original/i }),
+                await screen.findByRole('menuitem', { name: /show original/i }),
             ).toBeInTheDocument()
             expect(
                 screen.queryByRole('menuitem', { name: /see translation/i }),
             ).not.toBeInTheDocument()
 
-            await act(() =>
-                user.click(
-                    screen.getByRole('menuitem', { name: /show original/i }),
-                ),
+            await user.click(
+                screen.getByRole('menuitem', { name: /show original/i }),
             )
 
-            await act(() =>
-                user.click(screen.getByRole('button', { name: /translate/i })),
-            )
+            await waitFor(() => {
+                expect(
+                    useTicketMessageTranslationDisplay.getState()
+                        .allMessageDisplayState,
+                ).toBe(DisplayedContent.Original)
+            })
+            await waitForTranslationMenuToClose()
+
+            await openTranslationMenu(user)
 
             expect(
-                screen.getByRole('menuitem', { name: /see translation/i }),
+                await screen.findByRole('menuitem', {
+                    name: /see translation/i,
+                }),
             ).toBeInTheDocument()
             expect(
                 screen.queryByRole('menuitem', { name: /show original/i }),
