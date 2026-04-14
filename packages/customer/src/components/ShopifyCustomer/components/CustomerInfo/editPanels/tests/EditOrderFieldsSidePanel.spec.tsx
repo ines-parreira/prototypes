@@ -1,6 +1,6 @@
 import { render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 
 import type {
     OrderFieldPreferences,
@@ -50,6 +50,33 @@ const defaultPreferences: OrderFieldPreferences = {
 }
 
 describe('EditOrderFieldsSidePanel', () => {
+    function getFieldToggle(label: string) {
+        const row = screen.getByText(label).closest('tr')
+
+        if (!row) {
+            throw new Error(`Unable to find row for "${label}"`)
+        }
+
+        return within(row).getByRole('switch')
+    }
+
+    function getSectionToggle(label: string) {
+        const sectionCollapseButton = screen.getByRole('button', {
+            name: new RegExp(`(?:collapse|expand) ${label} fields`, 'i'),
+        })
+        let sectionHeader = sectionCollapseButton.parentElement
+
+        while (sectionHeader && !within(sectionHeader).queryByRole('switch')) {
+            sectionHeader = sectionHeader.parentElement
+        }
+
+        if (!sectionHeader) {
+            throw new Error(`Unable to find section toggle for "${label}"`)
+        }
+
+        return within(sectionHeader).getByRole('switch')
+    }
+
     const defaultProps = {
         isOpen: true,
         onOpenChange: vi.fn(),
@@ -83,9 +110,7 @@ describe('EditOrderFieldsSidePanel', () => {
     it('enables confirm and calls onConfirm with updated preferences after toggling a field', async () => {
         const { user } = render(<EditOrderFieldsSidePanel {...defaultProps} />)
 
-        const toggles = screen.getAllByRole('switch')
-        // toggles[0] = "Order details" toggle-all, [1]=tags, [2]=store, [3]=id
-        await user.click(toggles[1])
+        await user.click(getFieldToggle('Tags'))
 
         const saveButton = screen.getByRole('button', { name: /confirm/i })
         expect(saveButton).not.toBeDisabled()
@@ -104,8 +129,7 @@ describe('EditOrderFieldsSidePanel', () => {
     it('toggles all fields in a configurable section', async () => {
         const { user } = render(<EditOrderFieldsSidePanel {...defaultProps} />)
 
-        const sectionToggle = screen.getAllByRole('switch')[0]
-        await user.click(sectionToggle)
+        await user.click(getSectionToggle('Order details'))
 
         await user.click(screen.getByRole('button', { name: /confirm/i }))
 
@@ -127,14 +151,7 @@ describe('EditOrderFieldsSidePanel', () => {
     it('toggles non-configurable section visibility and calls onConfirm', async () => {
         const { user } = render(<EditOrderFieldsSidePanel {...defaultProps} />)
 
-        // Find the Shipping address section toggle — non-configurable sections come
-        // after configurable ones. The switches are:
-        // [0] Order details toggle-all, [1-3] order detail fields,
-        // [4] Shipping toggle-all, [5-6] shipping fields,
-        // [7] Line items (disabled), [8] Shipping address, [9] Billing address
-        const switches = screen.getAllByRole('switch')
-        const shippingAddressToggle = switches[switches.length - 2]
-        await user.click(shippingAddressToggle)
+        await user.click(getSectionToggle('Shipping address'))
 
         await user.click(screen.getByRole('button', { name: /confirm/i }))
 
