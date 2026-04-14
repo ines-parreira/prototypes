@@ -192,21 +192,11 @@ function countTestFiles(projectRoot: string): number {
 }
 
 function resolveBucketCount(projectCount: number, maxBuckets: number): number {
-    let desiredBucketCount = 0
-
     if (projectCount === 0) {
-        desiredBucketCount = 0
-    } else if (projectCount <= 4) {
-        desiredBucketCount = 1
-    } else if (projectCount <= 8) {
-        desiredBucketCount = 2
-    } else if (projectCount <= 16) {
-        desiredBucketCount = 4
-    } else {
-        desiredBucketCount = 6
+        return 0
     }
 
-    return Math.min(desiredBucketCount, maxBuckets)
+    return Math.min(projectCount, maxBuckets)
 }
 
 function buildBuckets(
