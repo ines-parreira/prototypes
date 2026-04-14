@@ -1,6 +1,5 @@
 import { ActivityEvents, logActivityEvent } from '@repo/activity-tracker'
 import { appQueryClient } from '@repo/api-resources'
-import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import { setViewsCount } from '@repo/views'
 import * as Sentry from '@sentry/react'
@@ -41,7 +40,6 @@ import type {
     TicketMessageActionFailedEvent,
     TicketMessageChatCreatedEvent,
     TicketMessageCreatedEvent,
-    TicketMessageFailedEvent,
     TicketTypingActivityShopperStartedEvent,
     TicketUpdatedEvent,
     ViewCountUpdatedEvent,
@@ -182,17 +180,6 @@ const receivedEvents: ReceivedEvent[] = [
                 ticketActions.handleMessageActionError(
                     (json as TicketMessageActionFailedEvent)
                         .ticket_id as unknown as string,
-                ) as any,
-            )
-        },
-    },
-    {
-        name: 'ticket-message-failed',
-        onReceive: function (json) {
-            logEvent(SegmentEvent.TicketMessageFailed, { data: json })
-            reduxStore.dispatch(
-                ticketActions.handleMessageError(
-                    json as TicketMessageFailedEvent,
                 ) as any,
             )
         },

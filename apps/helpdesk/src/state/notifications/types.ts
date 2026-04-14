@@ -39,7 +39,6 @@ export type AlertNotification = Omit<ReapopNotification, 'status' | 'id'> & {
     type?: NotificationStatus
     closeOnNext?: boolean
     noAutoDismiss?: boolean
-    isTicketMessageFailedEvent?: boolean
 }
 
 // Types below are due to mixing reapop with banners :(

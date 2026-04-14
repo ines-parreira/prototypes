@@ -19,11 +19,7 @@ import type {
     TicketPriority,
 } from '@gorgias/helpdesk-types'
 
-import {
-    TicketChannel,
-    TicketMessageSourceType,
-    TicketStatus,
-} from 'business/types/ticket'
+import { TicketChannel, TicketMessageSourceType } from 'business/types/ticket'
 import {
     setInvalidCustomFieldsToErrored,
     triggerTicketFieldsRefreshAndInvalidation,
@@ -55,7 +51,6 @@ import type {
 import type { View } from 'models/view/types'
 import GorgiasApi from 'services/gorgiasApi'
 import socketManager from 'services/socketManager/socketManager'
-import type { TicketMessageFailedEvent } from 'services/socketManager/types'
 import { JoinEventType, SocketEventType } from 'services/socketManager/types'
 import { markChatAsRead } from 'state/chats/actions'
 import type { InTicketSuggestionState } from 'state/entities/rules/types'
@@ -1241,49 +1236,6 @@ export const handleMessageActionError =
                 dismissAfter: 0,
                 allowHTML: true,
                 message: 'Last message not sent because an action failed.',
-                buttons,
-            }),
-        )
-
-        return fetchPromise || Promise.resolve()
-    }
-
-export const handleMessageError =
-    (json: TicketMessageFailedEvent) => (dispatch: StoreDispatch) => {
-        const buttons: NotificationButton[] = [
-            {
-                primary: true,
-                name: 'Review',
-                onClick: () => {
-                    logEvent(SegmentEvent.TicketFailedReview)
-                    history.push(`/app/ticket/${json.ticket_id}`)
-                },
-            },
-        ]
-
-        let fetchPromise = null
-
-        if (isCurrentlyOnTicket(json.ticket_id)) {
-            fetchPromise = dispatch(
-                fetchTicket(json.ticket_id as unknown as string, {
-                    discreetly: true,
-                    isCurrentlyOnTicket: true,
-                }),
-            )
-        }
-
-        void dispatch(
-            ticketPartialUpdate({ status: TicketStatus.Open }, json.ticket_id),
-        )
-        void dispatch(
-            notify({
-                status: NotificationStatus.Error,
-                noAutoDismiss: true,
-                isTicketMessageFailedEvent: true,
-                allowHTML: true,
-                message:
-                    `Your last message in the ticket with id ${json.ticket_id} could not be sent because ` +
-                    json.event.data.error.message,
                 buttons,
             }),
         )

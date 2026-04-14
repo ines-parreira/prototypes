@@ -39,16 +39,6 @@ const isDuplicate = (
     notification: Notification,
     oldNotification: Notification,
 ): boolean => {
-    if (
-        isAlertNotification(notification) &&
-        isAlertNotification(oldNotification) &&
-        !!notification.isTicketMessageFailedEvent &&
-        !!oldNotification.isTicketMessageFailedEvent &&
-        notification.message === oldNotification.message
-    ) {
-        return true
-    }
-
     return _isEqual(
         cleanNotification(notification),
         cleanNotification(oldNotification),

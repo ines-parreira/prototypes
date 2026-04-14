@@ -30,7 +30,6 @@ import {
 import type { Ticket, TicketMessage } from 'models/ticket/types'
 import { ViewType } from 'models/view/types'
 import socketManager from 'services/socketManager/socketManager'
-import type { TicketMessageFailedEvent } from 'services/socketManager/types'
 import { SocketEventType } from 'services/socketManager/types'
 import { initialState as newMessageState } from 'state/newMessage/reducers'
 import { notify } from 'state/notifications/actions'
@@ -898,56 +897,6 @@ describe('ticket actions', () => {
                         { id: 3, type: 'satisfaction_survey_responded' },
                     ])
                 })
-        })
-    })
-
-    describe('handleMessageError()', () => {
-        it('should fetch the ticket because the user is currently on it and reopen the ticket', (done) => {
-            mockServer
-                .onGet(endpointMatchers.ticket1)
-                .reply(200, { id: 1, messages: [], events: [] })
-            mockServer
-                .onPut(endpointMatchers.ticket1)
-                .reply(200, { id: 1, messages: [], events: [] })
-            const json = {
-                ticket_id: '1',
-                event: {
-                    data: {
-                        error: {
-                            message: 'test handling message error',
-                        },
-                    },
-                },
-            } as unknown as TicketMessageFailedEvent
-
-            void store.dispatch(actions.handleMessageError(json))
-            setImmediate(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                done()
-            })
-        })
-
-        it('should not fetch the ticket because the user is not currently on it and reopen the ticket', (done) => {
-            mockServer
-                .onPut(endpointMatchers.ticket2)
-                .reply(200, { id: 2, messages: [] })
-
-            const json = {
-                ticket_id: 2,
-                event: {
-                    data: {
-                        error: {
-                            message: 'test handling message error',
-                        },
-                    },
-                },
-            } as unknown as TicketMessageFailedEvent
-
-            void store.dispatch(actions.handleMessageError(json))
-            setImmediate(() => {
-                expect(store.getActions()).toMatchSnapshot()
-                done()
-            })
         })
     })
 

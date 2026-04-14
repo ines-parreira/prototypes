@@ -139,18 +139,6 @@ export type TicketMessageActionFailedEvent = {
     ticket_id: number
 }
 
-export type TicketMessageFailedEvent = {
-    event: {
-        type: 'ticket-message-failed'
-        data: {
-            error: {
-                message: string
-            }
-        }
-    }
-    ticket_id: number
-}
-
 export type ActionExecutedEvent = ActionData & {
     event: {
         type: 'action-executed'
@@ -402,7 +390,6 @@ export type ServerMessage =
     | TicketUpdatedEvent
     | TicketMessageCreatedEvent
     | TicketMessageActionFailedEvent
-    | TicketMessageFailedEvent
     | ActionExecutedEvent
     | ViewCreatedEvent
     | ViewUpdatedEvent
