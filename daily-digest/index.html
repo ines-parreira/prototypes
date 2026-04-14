@@ -1128,56 +1128,57 @@
             <!-- Daily ticket volume chart -->
             <div class="vol-chart-section">
               <div class="vol-card-label">Daily ticket volume</div>
-              <svg viewBox="0 0 520 130" style="width:100%; height:90px; display:block;">
-                <!-- Horizontal grid lines -->
-                <line x1="38" y1="8"   x2="518" y2="8"   stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="32"  x2="518" y2="32"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="57"  x2="518" y2="57"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="81"  x2="518" y2="81"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
-                <line x1="38" y1="105" x2="518" y2="105" stroke="#e5e7eb" stroke-width="0.8"/>
+              <!-- viewBox 520×248 matches Figma's ~2.5:1 aspect ratio (4 grid rows × ~53px each) -->
+              <svg viewBox="0 0 520 248" style="width:100%; display:block;">
+                <!-- Horizontal grid lines — dashed except baseline -->
+                <line x1="38" y1="16"  x2="518" y2="16"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="69"  x2="518" y2="69"  stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="122" x2="518" y2="122" stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="175" x2="518" y2="175" stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="228" x2="518" y2="228" stroke="#c8cbd0" stroke-width="0.8"/>
                 <!-- Y-axis labels -->
-                <text x="33" y="11"  text-anchor="end" font-size="9" fill="#9ea6b3">2K</text>
-                <text x="33" y="35"  text-anchor="end" font-size="9" fill="#9ea6b3">1.5K</text>
-                <text x="33" y="60"  text-anchor="end" font-size="9" fill="#9ea6b3">1K</text>
-                <text x="33" y="84"  text-anchor="end" font-size="9" fill="#9ea6b3">500</text>
-                <text x="33" y="108" text-anchor="end" font-size="9" fill="#9ea6b3">0</text>
-                <!-- Jun 1: total=960, esc=280, auto=680 -->
-                <rect x="50"  y="58"  width="44" height="33" rx="2" fill="#F4956A"/>
-                <rect x="50"  y="91"  width="44" height="14" rx="2" fill="#7B6CF6"/>
-                <!-- Jun 2: total=880, esc=150, auto=730 -->
-                <rect x="119" y="62"  width="44" height="36" rx="2" fill="#F4956A"/>
-                <rect x="119" y="98"  width="44" height="7"  rx="2" fill="#7B6CF6"/>
-                <!-- Jun 3: total=1350, esc=200, auto=1150 -->
-                <rect x="188" y="39"  width="44" height="56" rx="2" fill="#F4956A"/>
-                <rect x="188" y="95"  width="44" height="10" rx="2" fill="#7B6CF6"/>
-                <!-- Jun 4: total=1310, esc=210, auto=1100 -->
-                <rect x="257" y="42"  width="44" height="53" rx="2" fill="#F4956A"/>
-                <rect x="257" y="95"  width="44" height="10" rx="2" fill="#7B6CF6"/>
-                <!-- Jun 5: total=1100, esc=200, auto=900 -->
-                <rect x="326" y="52"  width="44" height="43" rx="2" fill="#F4956A"/>
-                <rect x="326" y="95"  width="44" height="10" rx="2" fill="#7B6CF6"/>
-                <!-- Jun 6: total=1080, esc=290, auto=790 -->
-                <rect x="395" y="53"  width="44" height="38" rx="2" fill="#F4956A"/>
-                <rect x="395" y="91"  width="44" height="14" rx="2" fill="#7B6CF6"/>
-                <!-- Jun 7: total=1500, esc=400, auto=1100 -->
-                <rect x="464" y="33"  width="44" height="53" rx="2" fill="#F4956A"/>
-                <rect x="464" y="86"  width="44" height="19" rx="2" fill="#7B6CF6"/>
+                <text x="33" y="20"  text-anchor="end" font-size="9" fill="#9ea6b3">2K</text>
+                <text x="33" y="73"  text-anchor="end" font-size="9" fill="#9ea6b3">1.5K</text>
+                <text x="33" y="126" text-anchor="end" font-size="9" fill="#9ea6b3">1K</text>
+                <text x="33" y="179" text-anchor="end" font-size="9" fill="#9ea6b3">500</text>
+                <text x="33" y="232" text-anchor="end" font-size="9" fill="#9ea6b3">0</text>
+                <!-- Jun 1: escalated=813 (86px), automated=671 (71px), total≈1484 -->
+                <rect x="50"  y="71"  width="44" height="71" rx="2" fill="#ff9780"/>
+                <rect x="50"  y="142" width="44" height="86" rx="2" fill="#7e55f6"/>
+                <!-- Jun 2: escalated=305 (32px), automated=671 (71px), total≈976 -->
+                <rect x="119" y="125" width="44" height="71" rx="2" fill="#ff9780"/>
+                <rect x="119" y="196" width="44" height="32" rx="2" fill="#7e55f6"/>
+                <!-- Jun 3: escalated=305 (32px), automated=1016 (108px), total≈1321 -->
+                <rect x="188" y="88"  width="44" height="108" rx="2" fill="#ff9780"/>
+                <rect x="188" y="196" width="44" height="32"  rx="2" fill="#7e55f6"/>
+                <!-- Jun 4: same as Jun 3 -->
+                <rect x="257" y="88"  width="44" height="108" rx="2" fill="#ff9780"/>
+                <rect x="257" y="196" width="44" height="32"  rx="2" fill="#7e55f6"/>
+                <!-- Jun 5: escalated=772 (82px), automated=356 (38px), total≈1128 -->
+                <rect x="326" y="108" width="44" height="38" rx="2" fill="#ff9780"/>
+                <rect x="326" y="146" width="44" height="82" rx="2" fill="#7e55f6"/>
+                <!-- Jun 6: same as Jun 5 -->
+                <rect x="395" y="108" width="44" height="38" rx="2" fill="#ff9780"/>
+                <rect x="395" y="146" width="44" height="82" rx="2" fill="#7e55f6"/>
+                <!-- Jun 7: same as Jun 1 -->
+                <rect x="464" y="71"  width="44" height="71" rx="2" fill="#ff9780"/>
+                <rect x="464" y="142" width="44" height="86" rx="2" fill="#7e55f6"/>
                 <!-- X-axis labels -->
-                <text x="72"  y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 1</text>
-                <text x="141" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 2</text>
-                <text x="210" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 3</text>
-                <text x="279" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 4</text>
-                <text x="348" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 5</text>
-                <text x="417" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 6</text>
-                <text x="486" y="120" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 7</text>
+                <text x="72"  y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 1</text>
+                <text x="141" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 2</text>
+                <text x="210" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 3</text>
+                <text x="279" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 4</text>
+                <text x="348" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 5</text>
+                <text x="417" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 6</text>
+                <text x="486" y="244" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 7</text>
               </svg>
               <div class="vol-legend">
                 <div class="vol-legend-item">
-                  <div class="vol-legend-dot" style="background:#7B6CF6;"></div>
+                  <div class="vol-legend-dot" style="background:#7e55f6;"></div>
                   Escalated
                 </div>
                 <div class="vol-legend-item">
-                  <div class="vol-legend-dot" style="background:#F4956A;"></div>
+                  <div class="vol-legend-dot" style="background:#ff9780;"></div>
                   Automated
                 </div>
               </div>
