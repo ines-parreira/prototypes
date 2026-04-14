@@ -1,6 +1,6 @@
 import { render } from '@repo/testing/vitest'
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 
 import type { FieldRenderContext, ShopifyFieldPreferences } from '../../types'
 import { EditShopifyFieldsSidePanel } from '../EditShopifyFieldsSidePanel'
@@ -37,6 +37,31 @@ const defaultPreferences: ShopifyFieldPreferences = {
 }
 
 describe('EditShopifyFieldsSidePanel', () => {
+    function getFieldToggle(label: string) {
+        const row = screen.getByText(label).closest('tr')
+
+        if (!row) {
+            throw new Error(`Unable to find row for "${label}"`)
+        }
+
+        return within(row).getByRole('switch')
+    }
+
+    function getSectionToggle(label: string) {
+        const sectionLabel = screen.getByText(label)
+        let sectionHeader = sectionLabel.parentElement
+
+        while (sectionHeader && !within(sectionHeader).queryByRole('switch')) {
+            sectionHeader = sectionHeader.parentElement
+        }
+
+        if (!sectionHeader) {
+            throw new Error(`Unable to find section toggle for "${label}"`)
+        }
+
+        return within(sectionHeader).getByRole('switch')
+    }
+
     const defaultProps = {
         isOpen: true,
         onOpenChange: vi.fn(),
@@ -92,8 +117,7 @@ describe('EditShopifyFieldsSidePanel', () => {
             <EditShopifyFieldsSidePanel {...defaultProps} />,
         )
 
-        const toggles = screen.getAllByRole('switch')
-        await user.click(toggles[1])
+        await user.click(getFieldToggle('Note'))
 
         await waitFor(() => {
             expect(
@@ -107,8 +131,7 @@ describe('EditShopifyFieldsSidePanel', () => {
             <EditShopifyFieldsSidePanel {...defaultProps} />,
         )
 
-        const toggles = screen.getAllByRole('switch')
-        await user.click(toggles[1])
+        await user.click(getFieldToggle('Note'))
 
         const saveButton = screen.getByRole('button', { name: /confirm/i })
 
@@ -163,8 +186,7 @@ describe('EditShopifyFieldsSidePanel', () => {
             />,
         )
 
-        const sectionToggle = screen.getAllByRole('switch')[0]
-        await user.click(sectionToggle)
+        await user.click(getSectionToggle('Customer'))
 
         await user.click(screen.getByRole('button', { name: /confirm/i }))
 
