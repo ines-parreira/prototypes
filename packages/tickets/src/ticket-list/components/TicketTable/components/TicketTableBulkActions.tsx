@@ -1,4 +1,5 @@
-import { Box, DataTableToolbar } from '@gorgias/axiom'
+import { Box, DataTableColumnEditing, DataTableToolbar } from '@gorgias/axiom'
+import type { DataTableColumnEditingProps } from '@gorgias/axiom'
 import type {
     Team,
     TicketPriority,
@@ -33,6 +34,7 @@ type Props = {
     onMoveToTrash: () => void | Promise<void>
     onUndelete: () => void | Promise<void>
     onDeleteForever: () => void | Promise<void>
+    columnEditingFooter?: DataTableColumnEditingProps['footer']
 }
 
 export function TicketTableBulkActions({
@@ -55,6 +57,7 @@ export function TicketTableBulkActions({
     onMoveToTrash,
     onUndelete,
     onDeleteForever,
+    columnEditingFooter,
 }: Props) {
     return (
         <DataTableToolbar>
@@ -96,6 +99,7 @@ export function TicketTableBulkActions({
                     </>
                 ) : null}
             </Box>
+            <DataTableColumnEditing footer={columnEditingFooter} />
         </DataTableToolbar>
     )
 }

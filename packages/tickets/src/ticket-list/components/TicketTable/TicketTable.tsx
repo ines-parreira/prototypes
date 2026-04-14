@@ -8,9 +8,11 @@ import {
     createLocalStoragePersistence,
     DataTable,
     DataTablePagination,
+    toast,
 } from '@gorgias/axiom'
 import type { RowSelectionState, SortingState } from '@gorgias/axiom'
 import { useGetView } from '@gorgias/helpdesk-queries'
+import { ViewVisibility } from '@gorgias/helpdesk-types'
 import type {
     Language,
     TicketCompact,
@@ -37,6 +39,7 @@ import { getPlaceholderKind } from '../../utils/getPlaceholderKind'
 import { TicketListEmptyPlaceholder } from '../TicketListEmptyPlaceholder'
 import { parseSortOrder } from '../TicketListHeader/SortOrderDropdown'
 import { TicketTableBulkActions } from './components/TicketTableBulkActions'
+import { TicketTableColumnEditingFooter } from './components/TicketTableColumnEditingFooter'
 import { createTicketTableColumns } from './TicketTableColumns'
 
 import css from './TicketTable.module.less'
@@ -50,6 +53,13 @@ type Props = {
     isDraftView?: boolean
     draftFields?: ViewField[]
     onDraftFieldsChange?: (fields: ViewField[]) => void
+}
+
+function areColumnsEqual(left: string[], right: string[]) {
+    return (
+        left.length === right.length &&
+        left.every((column, index) => column === right[index])
+    )
 }
 
 function TicketTableComponent({
@@ -77,6 +87,8 @@ function TicketTableComponent({
     })
     const view = viewResponse?.data
     const isInboxView = viewResponse ? getIsInboxView(view) : undefined
+    const shouldShowColumnEditingFooter =
+        !isDraftView && view?.visibility !== ViewVisibility.Private
 
     const {
         items,
@@ -134,7 +146,7 @@ function TicketTableComponent({
             onNavigateToTicket?.()
             history.push(`/app/views/${viewId}/${ticket.id}`)
         },
-        [markAsRead, onNavigateToTicket, history, viewId],
+        [history, markAsRead, onNavigateToTicket, viewId],
     )
 
     const { field: currentSortField, direction: currentSortDirection } =
@@ -143,12 +155,27 @@ function TicketTableComponent({
         ? [{ id: currentSortField.id, desc: currentSortDirection === 'desc' }]
         : []
 
-    const { defaultVisibleColumns, onChange: onColumnVisibilityChange } =
-        useTicketTableColumnVisibility(viewId, {
-            isDraftView,
-            draftFields,
-            onDraftFieldsChange,
-        })
+    const {
+        defaultVisibleColumns,
+        onLocalChange: onColumnVisibilityChange,
+        onColumnOrderChange,
+        saveForEveryone,
+        canSaveForEveryone,
+        isSavingForEveryone,
+    } = useTicketTableColumnVisibility(viewId, {
+        isDraftView,
+        draftFields,
+        onDraftFieldsChange,
+    })
+    const localStoragePersistence = useMemo(
+        () =>
+            isDraftView
+                ? undefined
+                : createLocalStoragePersistence(`ticket-table-${viewId}`),
+        [isDraftView, viewId],
+    )
+    // Remove this remount workaround once Axiom exposes a mounted column reset API.
+    const [tableVersion, setTableVersion] = useState(0)
 
     const columns = useMemo(
         () =>
@@ -161,10 +188,10 @@ function TicketTableComponent({
                 dateTimePreferences,
             }),
         [
-            translationMap,
-            shouldShowTranslatedContent,
             currentUserId,
             dateTimePreferences,
+            shouldShowTranslatedContent,
+            translationMap,
         ],
     )
 
@@ -203,16 +230,9 @@ function TicketTableComponent({
     })
     const { canUseRestrictedBulkActions } = useBulkActionMenuState()
     const isTrashLikeView = useIsTrashLikeView(viewId, { isDraftView })
-    const persistenceId = useMemo(
-        () => (isDraftView ? 'ticket-table-draft' : `ticket-table-${viewId}`),
-        [isDraftView, viewId],
-    )
-    const localStoragePersistence = useMemo(
-        () => createLocalStoragePersistence(persistenceId),
-        [persistenceId],
-    )
     const [isAssignUserOpen, setIsAssignUserOpen] = useState(false)
     const [isAddTagOpen, setIsAddTagOpen] = useState(false)
+
     useEffect(() => {
         if (
             previousDisplayedTicketIdsKey !== undefined &&
@@ -260,6 +280,28 @@ function TicketTableComponent({
         await handleUndelete({ removeFromCurrentViewCache: true })
     }, [handleUndelete])
 
+    const handleResetToDefault = useCallback(() => {
+        if (!localStoragePersistence) {
+            return
+        }
+
+        localStoragePersistence.clear()
+        setTableVersion((currentVersion) => currentVersion + 1)
+    }, [localStoragePersistence])
+
+    const handleSaveForEveryone = useCallback(
+        async (visibleColumns: string[]) => {
+            try {
+                await saveForEveryone(visibleColumns)
+                toast.success('Columns saved for everyone')
+            } catch {
+                toast.error('Failed to save columns for everyone')
+                throw new Error('Failed to save columns for everyone')
+            }
+        },
+        [saveForEveryone],
+    )
+
     const shouldShowErrorPlaceholder =
         placeholderKind === EmptyViewsState.Error && items.length === 0
 
@@ -289,11 +331,15 @@ function TicketTableComponent({
     return (
         <div className={css.container}>
             <DataTable
-                key={`${viewId}-${sortOrder}`}
-                persistence={{
-                    enable: true,
-                    localStorage: localStoragePersistence,
-                }}
+                key={`${viewId}-${sortOrder}-${tableVersion}`}
+                persistence={
+                    localStoragePersistence
+                        ? {
+                              enable: true,
+                              localStorage: localStoragePersistence,
+                          }
+                        : undefined
+                }
                 data={items}
                 columns={columns}
                 isLoading={isLoading}
@@ -328,6 +374,7 @@ function TicketTableComponent({
                     enable: true,
                     defaultVisibleColumns,
                     onVisibleColumnsChange: onColumnVisibilityChange,
+                    onColumnOrderChange,
                 }}
                 renderEmptyState={() => (
                     <TicketListEmptyPlaceholder
@@ -361,6 +408,38 @@ function TicketTableComponent({
                     onMoveToTrash={handleMoveToTrash}
                     onUndelete={handleUndeleteFromTrashView}
                     onDeleteForever={handleDeleteForever}
+                    columnEditingFooter={({
+                        visibleColumns,
+                        orderedColumns,
+                        setIsOpen,
+                    }) => {
+                        if (!shouldShowColumnEditingFooter) {
+                            return undefined
+                        }
+
+                        const orderedVisibleColumns = orderedColumns.filter(
+                            (column) => visibleColumns.includes(column),
+                        )
+                        const hasDivergedFromSavedView = !areColumnsEqual(
+                            orderedVisibleColumns,
+                            defaultVisibleColumns,
+                        )
+
+                        if (!hasDivergedFromSavedView) {
+                            return undefined
+                        }
+
+                        return (
+                            <TicketTableColumnEditingFooter
+                                visibleColumns={orderedVisibleColumns}
+                                canSaveForEveryone={canSaveForEveryone}
+                                isSavingForEveryone={isSavingForEveryone}
+                                onClose={() => setIsOpen(false)}
+                                onResetToDefault={handleResetToDefault}
+                                onSaveForEveryone={handleSaveForEveryone}
+                            />
+                        )
+                    }}
                 />
                 <DataTablePagination />
             </DataTable>

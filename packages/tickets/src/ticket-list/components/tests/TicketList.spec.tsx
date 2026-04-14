@@ -27,18 +27,13 @@ import type {
     TicketCompact,
 } from '@gorgias/helpdesk-types'
 
-import {
-    createTestQueryClient,
-    render,
-    testAppQueryClient,
-} from '../../../tests/render.utils'
+import { render, testAppQueryClient } from '../../../tests/render.utils'
 import * as useCurrentUserLanguagePreferencesModule from '../../../translations/hooks/useCurrentUserLanguagePreferences'
 import * as useTicketsTranslatedPropertiesModule from '../../../translations/hooks/useTicketsTranslatedProperties'
 import * as useMarkTicketAsReadModule from '../../hooks/useMarkTicketAsRead'
 import * as useSortOrderModule from '../../hooks/useSortOrder'
 import * as useTicketSelectionModule from '../../hooks/useTicketSelection'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
-import { getTicketsListQueryKey } from '../../hooks/useTicketsList'
 import * as useViewVisibleTicketsModule from '../../hooks/useViewVisibleTickets'
 import { TicketList } from '../TicketList'
 
@@ -247,40 +242,6 @@ describe('TicketList', () => {
         ).toBeInTheDocument()
         expect(
             screen.getByRole('button', { name: 'Refresh' }),
-        ).toBeInTheDocument()
-    })
-
-    it.skip('should keep rendering loaded tickets when a refresh fails', async () => {
-        const queryClient = createTestQueryClient()
-        const queryKey = getTicketsListQueryKey(viewId, {
-            order_by: 'last_message_datetime:asc',
-        })
-
-        renderWithVirtuoso(
-            <TicketList viewId={viewId} onCollapse={vi.fn()} />,
-            {
-                queryClient,
-            },
-        )
-
-        await waitFor(() => {
-            expect(screen.getByText('First Ticket')).toBeInTheDocument()
-        })
-
-        server.use(
-            mockListViewItemsHandler(async () =>
-                HttpResponse.json(undefined, { status: 500 }),
-            ).handler,
-        )
-        await queryClient.refetchQueries({ queryKey })
-        await waitFor(() => {
-            expect(queryClient.getQueryState(queryKey)?.status).toBe('error')
-        })
-
-        expect(screen.getByText('Second Ticket')).toBeInTheDocument()
-        expect(screen.queryByText('Network error')).not.toBeInTheDocument()
-        expect(
-            screen.getByRole('checkbox', { name: 'Select all' }),
         ).toBeInTheDocument()
     })
 

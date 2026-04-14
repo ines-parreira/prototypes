@@ -29,6 +29,7 @@ import {
     TooltipContent,
 } from '@gorgias/axiom'
 import { queryKeys } from '@gorgias/helpdesk-queries'
+import type { ViewField } from '@gorgias/helpdesk-types'
 
 import * as viewsConfig from 'config/views'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
@@ -82,6 +83,7 @@ import css from './ViewPanelFiltersBridge.less'
 
 type Props = {
     viewId: number
+    draftFields?: ViewField[]
     isExpanded: boolean
     onExpandedChange: (isExpanded: boolean) => void
 }
@@ -132,6 +134,7 @@ function isViewResponse(response: unknown): response is View {
 
 export function ViewPanelFiltersBridge({
     viewId,
+    draftFields,
     isExpanded,
     onExpandedChange,
 }: Props) {
@@ -241,6 +244,10 @@ export function ViewPanelFiltersBridge({
                 .set('name', viewName.trim())
                 .set('slug', slugify(viewName.trim()))
 
+            if (draftFields !== undefined) {
+                nextView = nextView.set('fields', fromJS(draftFields))
+            }
+
             if (nextView.get('visibility') === ViewVisibility.Private) {
                 nextView = nextView.set('shared_with_users', [
                     currentUser.get('id'),
@@ -273,7 +280,7 @@ export function ViewPanelFiltersBridge({
 
             return nextView
         },
-        [activeView, currentUser, viewName],
+        [activeView, currentUser, draftFields, viewName],
     )
 
     const handleAddFilter = useCallback(

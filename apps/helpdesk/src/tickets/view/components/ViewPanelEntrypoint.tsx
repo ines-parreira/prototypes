@@ -6,21 +6,13 @@ import { fromJS } from 'immutable'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { useGetView } from '@gorgias/helpdesk-queries'
-import type { ViewField } from '@gorgias/helpdesk-types'
 
-import * as viewsConfig from 'config/views'
 import { BASE_VIEW_ID } from 'constants/view'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import type { ViewVisibility as ViewVisibilityType } from 'models/view/types'
-import { ViewType, ViewVisibility } from 'models/view/types'
 import { useSplitTicketView } from 'split-ticket-view-toggle'
-import {
-    resetView,
-    setViewActive,
-    setViewEditMode,
-    updateView,
-} from 'state/views/actions'
+import { resetView, setViewActive, setViewEditMode } from 'state/views/actions'
 import {
     getActiveView,
     areFiltersValid as getAreFiltersValid,
@@ -32,6 +24,13 @@ import {
 import ApplyMacro from 'ticket-list-view/components/bulk-actions/ApplyMacro'
 import { useViewId } from 'tickets/core/hooks'
 
+import {
+    areDraftFieldsEqual,
+    createInitialDraftView,
+    getDraftFields,
+    getNewRouteVisibility,
+    useDraftViewState,
+} from './useDraftViewState'
 import LegacyViewPanel from './ViewPanel'
 import { ViewPanelFiltersBridge } from './ViewPanelFiltersBridge'
 
@@ -44,19 +43,6 @@ type ViewPanelLocationState = {
 type DraftTableState = {
     search: string
     filters: string
-}
-
-function getNewRouteVisibility(
-    pathname: string,
-): ViewVisibility.Public | ViewVisibility.Private | null {
-    const match = pathname.match(/^\/app\/tickets\/new\/(public|private)$/)
-    if (!match) {
-        return null
-    }
-
-    return match[1] === ViewVisibility.Private
-        ? ViewVisibility.Private
-        : ViewVisibility.Public
 }
 
 export function ViewPanelEntrypoint() {
@@ -84,6 +70,19 @@ export function ViewPanelEntrypoint() {
     const [macroTicketIds, setMacroTicketIds] = useState<number[] | null>(null)
     const [draftPreviewState, setDraftPreviewState] =
         useState<DraftTableState | null>(null)
+    const {
+        effectiveDraftFields,
+        draftFields,
+        setDraftFields,
+        resetDraftFields,
+        initializedDraftKeyRef,
+        hasHydratedDraftFieldsRef,
+    } = useDraftViewState({
+        activeView,
+        isNewViewRoute,
+        newRouteVisibility,
+        locationState: location.state,
+    })
 
     const persistedView = isNewViewRoute ? null : (viewResponse?.data ?? view)
     const shouldOpenViewFiltersFromRoute =
@@ -160,6 +159,8 @@ export function ViewPanelEntrypoint() {
             return
         }
 
+        const nextDraftKey = `${location.pathname}:${location.state?.viewName ?? ''}:${location.state?.filters ?? ''}`
+
         const currentActiveViewId = activeView.get('id') as number | undefined
         const currentDraftVisibility = activeView.get(
             'visibility',
@@ -167,35 +168,45 @@ export function ViewPanelEntrypoint() {
         const shouldInitializeDraft =
             currentActiveViewId !== BASE_VIEW_ID ||
             !isEditMode ||
-            currentDraftVisibility !== newRouteVisibility
+            (currentDraftVisibility !== null &&
+                currentDraftVisibility !== newRouteVisibility)
 
         if (!shouldInitializeDraft) {
             return
         }
 
-        const initialDraftView = (
-            viewsConfig.getConfigByType(ViewType.TicketList).get('newView') as (
-                visibility?: ViewVisibilityType,
-                viewName?: string,
-                filters?: string,
-            ) => {
-                set: (key: string, value: unknown) => any
-            }
-        )(newRouteVisibility, location.state?.viewName, location.state?.filters)
-            .set('name', '')
-            .set('slug', '')
+        if (initializedDraftKeyRef.current === nextDraftKey) {
+            return
+        }
 
+        const initialDraftView = createInitialDraftView(
+            newRouteVisibility,
+            location.state?.viewName,
+            location.state?.filters,
+        )
+
+        const nextDraftFields = getDraftFields(initialDraftView)
+        initializedDraftKeyRef.current = nextDraftKey
+        hasHydratedDraftFieldsRef.current = true
+        if (!areDraftFieldsEqual(draftFields, nextDraftFields)) {
+            setDraftFields(nextDraftFields)
+        }
         dispatch(setViewEditMode(initialDraftView))
         setIsFiltersExpanded(true)
     }, [
         activeView,
         dispatch,
+        draftFields,
         hasUIVisionMS4Dot5,
+        hasHydratedDraftFieldsRef,
+        initializedDraftKeyRef,
         isEditMode,
         isNewViewRoute,
+        location.pathname,
         location.state?.filters,
         location.state?.viewName,
         newRouteVisibility,
+        setDraftFields,
     ])
 
     useEffect(() => {
@@ -238,15 +249,28 @@ export function ViewPanelEntrypoint() {
             isEditMode || isNewViewRoute ? (
                 <ViewPanelFiltersBridge
                     viewId={effectiveViewId}
+                    draftFields={
+                        isNewViewRoute ? effectiveDraftFields : undefined
+                    }
                     isExpanded={isFiltersExpanded}
                     onExpandedChange={setIsFiltersExpanded}
                 />
             ) : null,
-        [effectiveViewId, isEditMode, isFiltersExpanded, isNewViewRoute],
+        [
+            effectiveDraftFields,
+            effectiveViewId,
+            isEditMode,
+            isFiltersExpanded,
+            isNewViewRoute,
+        ],
     )
 
     const handleToggleFiltersBridge = useCallback(() => {
         if (isEditMode) {
+            if (isNewViewRoute && newRouteVisibility) {
+                resetDraftFields()
+            }
+
             dispatch(resetView())
             setIsFiltersExpanded(false)
             return
@@ -256,7 +280,14 @@ export function ViewPanelEntrypoint() {
             setViewEditMode(persistedView ? fromJS(persistedView) : undefined),
         )
         setIsFiltersExpanded(true)
-    }, [dispatch, isEditMode, persistedView])
+    }, [
+        dispatch,
+        isEditMode,
+        isNewViewRoute,
+        newRouteVisibility,
+        persistedView,
+        resetDraftFields,
+    ])
 
     const handleOpenFilters = useCallback(() => {
         if (!isEditMode) {
@@ -265,24 +296,6 @@ export function ViewPanelEntrypoint() {
 
         setIsFiltersExpanded(true)
     }, [dispatch, isEditMode])
-
-    const draftFields = useMemo(
-        () =>
-            (activeView.get('fields')?.toJS?.() as ViewField[] | undefined) ??
-            [],
-        [activeView],
-    )
-
-    const handleDraftFieldsChange = useCallback(
-        (nextFields: ViewField[]) => {
-            if (!isNewViewRoute && !isEditMode) {
-                return
-            }
-
-            dispatch(updateView(activeView.set('fields', fromJS(nextFields))))
-        },
-        [activeView, dispatch, isEditMode, isNewViewRoute],
-    )
 
     const handleExpand = useCallback(() => {
         setIsEnabled(true)
@@ -305,8 +318,8 @@ export function ViewPanelEntrypoint() {
                     titleOverride={isNewViewRoute ? 'New view' : undefined}
                     hideCreateTicket={isNewViewRoute}
                     isDraftView={isNewViewRoute}
-                    draftFields={draftFields}
-                    onDraftFieldsChange={handleDraftFieldsChange}
+                    draftFields={effectiveDraftFields}
+                    onDraftFieldsChange={setDraftFields}
                     topContent={topContent}
                     dirtyView={dirtyView}
                 />

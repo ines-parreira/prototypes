@@ -8,6 +8,8 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 
+import { ViewField } from '@gorgias/helpdesk-types'
+
 import * as viewsConfig from 'config/views'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import useAppDispatch from 'hooks/useAppDispatch'
@@ -283,10 +285,17 @@ describe('ViewPanelFiltersBridge', () => {
         payload: 42,
     }
 
-    const renderComponent = (isExpanded = true) =>
+    const renderComponent = ({
+        isExpanded = true,
+        draftFields,
+    }: {
+        isExpanded?: boolean
+        draftFields?: ViewField[]
+    } = {}) =>
         render(
             <ViewPanelFiltersBridge
                 viewId={42}
+                draftFields={draftFields}
                 isExpanded={isExpanded}
                 onExpandedChange={onExpandedChange}
             />,
@@ -675,6 +684,97 @@ describe('ViewPanelFiltersBridge', () => {
         expect(onExpandedChange).not.toHaveBeenCalledWith(false)
     })
 
+    it('uses the provided draft fields when creating a new view', async () => {
+        const user = userEvent.setup()
+        const draftView = activeView
+            .delete('id')
+            .set('name', '')
+            .set('slug', '')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return draftView
+            if (selector === getPristineActiveView) return draftView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getLastViewId) return 3
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            if (typeof selector === 'function') {
+                return selector({} as never)
+            }
+            return undefined
+        })
+
+        renderComponent({
+            draftFields: [ViewField.Subject, ViewField.Customer],
+        })
+
+        await user.type(
+            screen.getByRole('textbox', { name: /view name/i }),
+            'Urgent tickets',
+        )
+        await user.click(screen.getByRole('button', { name: /create view/i }))
+
+        const payload = submitViewMock.mock.calls.at(-1)?.[0]
+        if (!payload) {
+            throw new Error('Expected submitView to be called')
+        }
+
+        expect(payload.get('fields')?.toJS()).toEqual([
+            ViewField.Subject,
+            ViewField.Customer,
+        ])
+    })
+
+    it('preserves the provided draft field order when creating a new view', async () => {
+        const user = userEvent.setup()
+        const draftView = activeView
+            .delete('id')
+            .set('name', '')
+            .set('slug', '')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return draftView
+            if (selector === getPristineActiveView) return draftView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getLastViewId) return 3
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            if (typeof selector === 'function') {
+                return selector({} as never)
+            }
+            return undefined
+        })
+
+        renderComponent({
+            draftFields: [
+                ViewField.Customer,
+                ViewField.Created,
+                ViewField.Subject,
+            ],
+        })
+
+        await user.type(
+            screen.getByRole('textbox', { name: /view name/i }),
+            'Ordered tickets',
+        )
+        await user.click(screen.getByRole('button', { name: /create view/i }))
+
+        const payload = submitViewMock.mock.calls.at(-1)?.[0]
+        if (!payload) {
+            throw new Error('Expected submitView to be called')
+        }
+
+        expect(payload.get('fields')?.toJS()).toEqual([
+            ViewField.Customer,
+            ViewField.Created,
+            ViewField.Subject,
+        ])
+    })
+
     it('normalizes shared visibility ids before updating a view', async () => {
         const user = userEvent.setup()
         const sharedView = fromJS({
@@ -909,7 +1009,7 @@ describe('ViewPanelFiltersBridge', () => {
             return undefined
         })
 
-        renderComponent(false)
+        renderComponent({ isExpanded: false })
 
         expect(
             screen.getAllByText(
@@ -962,7 +1062,7 @@ describe('ViewPanelFiltersBridge', () => {
     })
 
     it('keeps the action row visible when the bridge is collapsed', () => {
-        renderComponent(false)
+        renderComponent({ isExpanded: false })
 
         expect(
             screen.getByRole('button', { name: /update view/i }),

@@ -40,6 +40,21 @@ const { createTicketTableColumnsMock, pushMock } = vi.hoisted(() => ({
     observeTableMock: vi.fn(() => ({ unsubscribe: vi.fn() })),
 }))
 
+const localStorageState = new Map<string, string>()
+
+vi.stubGlobal('localStorage', {
+    getItem: vi.fn((key: string) => localStorageState.get(key) ?? null),
+    setItem: vi.fn((key: string, value: string) => {
+        localStorageState.set(key, value)
+    }),
+    removeItem: vi.fn((key: string) => {
+        localStorageState.delete(key)
+    }),
+    clear: vi.fn(() => {
+        localStorageState.clear()
+    }),
+})
+
 const listUser1 = mockUser({ id: 5, name: 'Agent Smith' })
 const listUser2 = mockUser({ id: 6, name: 'Alice Agent' })
 const supportTeam = mockTeam({ id: 8, name: 'Support' })
@@ -71,6 +86,8 @@ const mockState = {
     tickets: [] as Array<{ id: number; subject: string; is_unread?: boolean }>,
     error: null as Error | null,
     isBulkActionLoading: false,
+    canSaveColumnsForEveryone: true,
+    isSavingColumnsForEveryone: false,
     handleApplyMacroSpy: vi.fn(),
     handleAddTagSpy: vi.fn(),
     handleChangePrioritySpy: vi.fn(),
@@ -86,6 +103,8 @@ const mockState = {
     markAsRead: vi.fn(),
     refetchSpy: vi.fn(),
     setSortOrder: vi.fn(),
+    onLocalColumnChangeSpy: vi.fn(),
+    saveColumnsForEveryoneSpy: vi.fn().mockResolvedValue(undefined),
 }
 
 vi.mock('react-router-dom', async () => {
@@ -162,7 +181,11 @@ vi.mock('../../hooks/useTicketsList', () => ({
 vi.mock('../../hooks/useTicketTableColumnVisibility', () => ({
     useTicketTableColumnVisibility: () => ({
         defaultVisibleColumns: ['ticket', 'subject'],
-        onChange: vi.fn(),
+        onLocalChange: mockState.onLocalColumnChangeSpy,
+        onColumnOrderChange: vi.fn(),
+        saveForEveryone: mockState.saveColumnsForEveryoneSpy,
+        canSaveForEveryone: mockState.canSaveColumnsForEveryone,
+        isSavingForEveryone: mockState.isSavingColumnsForEveryone,
     }),
 }))
 
@@ -360,6 +383,8 @@ afterAll(() => {
 describe('TicketTable', () => {
     beforeEach(() => {
         createTicketTableColumnsMock.mockClear()
+        localStorageState.clear()
+        localStorage.clear()
         testAppQueryClient.clear()
         server.use(
             mockGetCurrentUserHandler(async () => HttpResponse.json(agentUser))
@@ -384,6 +409,8 @@ describe('TicketTable', () => {
         ]
         mockState.error = null
         mockState.isBulkActionLoading = false
+        mockState.canSaveColumnsForEveryone = true
+        mockState.isSavingColumnsForEveryone = false
         mockState.handleApplyMacroSpy.mockReset()
         mockState.handleAddTagSpy.mockReset()
         mockState.handleChangePrioritySpy.mockReset()
@@ -403,6 +430,9 @@ describe('TicketTable', () => {
         mockUseTicketTableBulkActionShortcuts.mockImplementation(
             () => undefined,
         )
+        mockState.onLocalColumnChangeSpy.mockReset()
+        mockState.saveColumnsForEveryoneSpy.mockReset()
+        mockState.saveColumnsForEveryoneSpy.mockResolvedValue(undefined)
         vi.mocked(useTicketsListModule.useTicketsList).mockClear()
         mockUseListTagsSearch.mockReturnValue({
             tags: [vipTag, urgentTag],

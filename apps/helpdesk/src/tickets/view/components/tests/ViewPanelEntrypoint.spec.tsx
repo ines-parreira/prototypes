@@ -16,12 +16,7 @@ import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ViewField, ViewVisibility } from 'models/view/types'
 import type { StoreState } from 'state/types'
-import {
-    resetView,
-    setViewActive,
-    setViewEditMode,
-    updateView,
-} from 'state/views/actions'
+import { resetView, setViewActive, setViewEditMode } from 'state/views/actions'
 
 import { ViewPanelEntrypoint } from '../ViewPanelEntrypoint'
 
@@ -41,6 +36,15 @@ jest.mock('config/views', () => ({
                     slug: 'new-view',
                     filters: '',
                     search: '',
+                    fields: [
+                        ViewField.Details,
+                        ViewField.Channel,
+                        ViewField.Assignee,
+                        ViewField.Status,
+                        ViewField.Customer,
+                        ViewField.Created,
+                        ViewField.LastMessage,
+                    ],
                 })
         }),
     })),
@@ -105,12 +109,10 @@ jest.mock('state/views/actions', () => ({
     resetView: jest.fn(),
     setViewActive: jest.fn(),
     setViewEditMode: jest.fn(),
-    updateView: jest.fn(),
 }))
 const resetViewMock = assumeMock(resetView)
 const setViewActiveMock = assumeMock(setViewActive)
 const setViewEditModeMock = assumeMock(setViewEditMode)
-const updateViewMock = assumeMock(updateView)
 
 type DirtyViewProps = {
     enabled: boolean
@@ -225,6 +227,7 @@ const mockViewPanel = jest.fn((props: MockViewPanelProps) => {
             <p>dirtyView: {JSON.stringify(dirtyView)}</p>
             <p>draftFields: {JSON.stringify(props.draftFields ?? [])}</p>
             <button onClick={onExpand}>Expand</button>
+            <button onClick={props.onEditView}>Edit view</button>
             <button onClick={() => onApplyMacro?.([1, 2, 3])}>
                 Open macro
             </button>
@@ -275,14 +278,28 @@ jest.mock('split-ticket-view-toggle', () => ({
 }))
 
 const mockViewPanelFiltersBridge = jest.fn(
-    ({ isExpanded }: { isExpanded: boolean }) => (
-        <div>ViewPanelFiltersBridge expanded: {String(isExpanded)}</div>
+    ({
+        isExpanded,
+        draftFields,
+    }: {
+        isExpanded: boolean
+        draftFields?: ViewField[]
+    }) => (
+        <div>
+            <p>ViewPanelFiltersBridge expanded: {String(isExpanded)}</p>
+            <p>
+                ViewPanelFiltersBridge draftFields:{' '}
+                {JSON.stringify(draftFields ?? [])}
+            </p>
+        </div>
     ),
 )
 
 jest.mock('../ViewPanelFiltersBridge', () => ({
-    ViewPanelFiltersBridge: (props: { isExpanded: boolean }) =>
-        mockViewPanelFiltersBridge(props),
+    ViewPanelFiltersBridge: (props: {
+        isExpanded: boolean
+        draftFields?: ViewField[]
+    }) => mockViewPanelFiltersBridge(props),
 }))
 
 describe('ViewPanelEntrypoint', () => {
@@ -297,11 +314,6 @@ describe('ViewPanelEntrypoint', () => {
     const setViewEditModeAction: ReturnType<typeof setViewEditMode> = {
         type: 'SET_VIEW_EDIT_MODE',
         view: undefined,
-    }
-    const updateViewAction: ReturnType<typeof updateView> = {
-        type: 'UPDATE_VIEW',
-        view: undefined,
-        edit: true,
     }
     const persistedView = {
         id: 123456,
@@ -344,7 +356,6 @@ describe('ViewPanelEntrypoint', () => {
         resetViewMock.mockReturnValue(resetViewAction)
         setViewActiveMock.mockReturnValue(setViewActiveAction)
         setViewEditModeMock.mockReturnValue(setViewEditModeAction)
-        updateViewMock.mockReturnValue(updateViewAction)
     })
 
     it('should render LegacyViewPanel when MS4.5 flag is disabled', () => {
@@ -650,7 +661,7 @@ describe('ViewPanelEntrypoint', () => {
         expect(screen.getByText('isDraftView: true')).toBeInTheDocument()
         expect(
             screen.getByText(
-                'dirtyView: {"enabled":false,"search":"","filters":"","areFiltersValid":true}',
+                'dirtyView: {"enabled":true,"search":"","filters":"","areFiltersValid":true}',
             ),
         ).toBeInTheDocument()
         expect(
@@ -691,7 +702,7 @@ describe('ViewPanelEntrypoint', () => {
         expect(setViewActiveMock).not.toHaveBeenCalled()
     })
 
-    it('should wire draft fields and update the draft when they change on a new view route', async () => {
+    it('should keep draft fields local when they change on a new view route', async () => {
         useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
         useLocationMock.mockReturnValue({
             pathname: '/app/tickets/new/public',
@@ -729,11 +740,152 @@ describe('ViewPanelEntrypoint', () => {
             )
         })
 
-        const nextDraftView = updateViewMock.mock.calls.at(-1)?.[0]
-        expect(nextDraftView?.get('fields')?.toJS()).toEqual([
-            ViewField.Subject,
-        ])
-        expect(dispatchMock).toHaveBeenCalledWith(updateViewAction)
+        expect(
+            screen.getByText(
+                `draftFields: ${JSON.stringify([ViewField.Subject])}`,
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                `ViewPanelFiltersBridge draftFields: ${JSON.stringify([
+                    ViewField.Subject,
+                ])}`,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should reset local draft fields when resetting a new view route', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/new/public',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({
+                id: BASE_VIEW_ID,
+                type: 'ticket-list',
+                fields: [ViewField.Details, ViewField.Customer],
+            }),
+            isEditMode: true,
+        })
+
+        const user = userEvent.setup()
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await user.click(
+            screen.getByRole('button', { name: 'Change draft fields' }),
+        )
+
+        expect(
+            screen.getByText(
+                `draftFields: ${JSON.stringify([ViewField.Subject])}`,
+            ),
+        ).toBeInTheDocument()
+
+        await user.click(screen.getByRole('button', { name: 'Edit view' }))
+
+        expect(dispatchMock).toHaveBeenCalledWith(resetViewAction)
+        expect(
+            screen.getByText(
+                `draftFields: ${JSON.stringify([
+                    ViewField.Details,
+                    ViewField.Channel,
+                    ViewField.Assignee,
+                    ViewField.Status,
+                    ViewField.Customer,
+                    ViewField.Created,
+                    ViewField.LastMessage,
+                ])}`,
+            ),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByText(
+                `ViewPanelFiltersBridge draftFields: ${JSON.stringify([
+                    ViewField.Details,
+                    ViewField.Channel,
+                    ViewField.Assignee,
+                    ViewField.Status,
+                    ViewField.Customer,
+                    ViewField.Created,
+                    ViewField.LastMessage,
+                ])}`,
+            ),
+        ).toBeInTheDocument()
+    })
+
+    it('should use the route default draft fields when re-entering a new view route', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+
+        let currentPathname = '/app/tickets/new/public'
+        useLocationMock.mockImplementation(
+            () =>
+                ({
+                    pathname: currentPathname,
+                    state: undefined,
+                }) as ReturnType<typeof useLocation>,
+        )
+
+        let currentActiveView = fromJS({
+            id: BASE_VIEW_ID,
+            type: 'ticket-list',
+            fields: [ViewField.Subject],
+        })
+        getActiveView.mockImplementation(() => currentActiveView)
+        getIsEditMode.mockReturnValue(true)
+        useAppSelectorMock.mockImplementation((selector) =>
+            selector({} as StoreState),
+        )
+
+        const { rerender } = render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        expect(
+            screen.getByText(
+                `draftFields: ${JSON.stringify([ViewField.Subject])}`,
+            ),
+        ).toBeInTheDocument()
+
+        currentPathname = '/app/views/123'
+        rerender(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        currentActiveView = fromJS({
+            id: BASE_VIEW_ID,
+            type: 'ticket-list',
+            fields: [],
+        })
+        currentPathname = '/app/tickets/new/public'
+
+        rerender(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        expect(
+            screen.getByText(
+                `draftFields: ${JSON.stringify([
+                    ViewField.Details,
+                    ViewField.Channel,
+                    ViewField.Assignee,
+                    ViewField.Status,
+                    ViewField.Customer,
+                    ViewField.Created,
+                    ViewField.LastMessage,
+                ])}`,
+            ),
+        ).toBeInTheDocument()
     })
 
     it('should reinitialize the draft when the new view route visibility changes', async () => {

@@ -1,193 +1,356 @@
-import { act, waitFor } from '@testing-library/react'
-import { HttpResponse } from 'msw'
-import { setupServer } from 'msw/node'
+import { UserRole } from '@repo/permissions'
+import { act } from '@testing-library/react'
 
-import {
-    mockGetViewHandler,
-    mockGetViewResponse,
-    mockUpdateViewHandler,
-    mockUpdateViewResponse,
-} from '@gorgias/helpdesk-mocks'
 import { ViewField } from '@gorgias/helpdesk-types'
 
 import { createTestQueryClient, renderHook } from '../../../tests/render.utils'
 import { useTicketTableColumnVisibility } from '../useTicketTableColumnVisibility'
 
+const useGetCurrentUserMock = vi.fn()
+const useGetViewMock = vi.fn()
+const mutateAsyncUpdateViewMock = vi.fn()
+const useUpdateViewMock = vi.fn()
+vi.mock('@gorgias/helpdesk-queries', () => ({
+    queryKeys: {
+        views: {
+            getView: (viewId: number) => ['views', viewId],
+        },
+    },
+    useGetCurrentUser: () => useGetCurrentUserMock(),
+    useGetView: () => useGetViewMock(),
+    useUpdateView: () => useUpdateViewMock(),
+}))
+
 const viewId = 123
-
-const mockGetView = mockGetViewHandler(async () =>
-    HttpResponse.json(
-        mockGetViewResponse({
-            id: viewId,
-            fields: undefined,
-        }),
-    ),
-)
-
-const mockUpdateView = mockUpdateViewHandler(async () =>
-    HttpResponse.json(
-        mockUpdateViewResponse({
-            id: viewId,
-        }),
-    ),
-)
-
-const server = setupServer()
-
-beforeAll(() => {
-    server.listen({ onUnhandledRequest: 'error' })
-})
-
-beforeEach(() => {
-    server.use(mockGetView.handler, mockUpdateView.handler)
-})
-
-afterEach(() => {
-    server.resetHandlers()
-    vi.clearAllMocks()
-})
-
-afterAll(() => {
-    server.close()
-})
+const agentUser = {
+    data: {
+        id: 1,
+        role: { name: UserRole.Agent },
+    },
+}
 
 describe('useTicketTableColumnVisibility', () => {
-    it('returns all columns when the view has no saved fields', async () => {
-        const { result } = renderHook(() =>
-            useTicketTableColumnVisibility(viewId),
-        )
-
-        await waitFor(() => {
-            expect(result.current.defaultVisibleColumns).toEqual([
-                'select',
-                'ticket',
-                'subject',
-                'customer',
-                'assignee',
-                'status',
-                'last_message_datetime',
-                'tags',
-                'priority',
-                'assignee_team',
-                'integrations',
-                'id',
-                'language',
-                'channel',
-                'created_datetime',
-                'updated_datetime',
-                'last_received_message_datetime',
-                'closed',
-                'snooze',
-            ])
+    beforeEach(() => {
+        useGetCurrentUserMock.mockReturnValue({
+            data: agentUser,
+        })
+        useGetViewMock.mockReturnValue({
+            data: {
+                data: {
+                    fields: undefined,
+                },
+            },
+        })
+        mutateAsyncUpdateViewMock.mockReset()
+        mutateAsyncUpdateViewMock.mockResolvedValue(undefined)
+        useUpdateViewMock.mockReturnValue({
+            mutateAsync: mutateAsyncUpdateViewMock,
+            isLoading: false,
         })
     })
 
-    it('maps view fields to column ids and prepends the mandatory ticket column', async () => {
-        server.use(
-            mockGetViewHandler(async () =>
-                HttpResponse.json(
-                    mockGetViewResponse({
-                        id: viewId,
-                        fields: [
-                            ViewField.Subject,
-                            ViewField.Customer,
-                            ViewField.Created,
-                        ],
-                    }),
-                ),
-            ).handler,
+    it('returns all columns when the view has no saved fields', () => {
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
         )
+
+        expect(result.current.defaultVisibleColumns).toEqual([
+            'select',
+            'ticket',
+            'subject',
+            'integrations',
+            'tags',
+            'customer',
+            'assignee_team',
+            'assignee',
+            'id',
+            'status',
+            'language',
+            'channel',
+            'created_datetime',
+            'updated_datetime',
+            'last_message_datetime',
+            'last_received_message_datetime',
+            'closed',
+            'snooze',
+            'priority',
+        ])
+    })
+
+    it('maps view fields to column ids and prepends the mandatory ticket column', () => {
+        useGetViewMock.mockReturnValue({
+            data: {
+                data: {
+                    fields: [
+                        ViewField.Subject,
+                        ViewField.Customer,
+                        ViewField.Created,
+                    ],
+                },
+            },
+        })
 
         const { result } = renderHook(() =>
             useTicketTableColumnVisibility(viewId),
         )
 
-        await waitFor(() => {
-            expect(result.current.defaultVisibleColumns).toEqual([
+        expect(result.current.defaultVisibleColumns).toEqual([
+            'select',
+            'ticket',
+            'subject',
+            'customer',
+            'created_datetime',
+        ])
+    })
+
+    it('does not persist mapped fields when columns only change locally', () => {
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
+        )
+
+        act(() => {
+            result.current.onLocalChange([
                 'select',
                 'ticket',
                 'subject',
                 'customer',
+                'priority',
                 'created_datetime',
             ])
         })
+
+        expect(mutateAsyncUpdateViewMock).not.toHaveBeenCalled()
     })
 
     it('persists mapped fields and invalidates the view query on success', async () => {
         const queryClient = createTestQueryClient()
-        const invalidateQueries = vi.spyOn(queryClient, 'invalidateQueries')
-        const waitForUpdateViewRequest = mockUpdateView.waitForRequest(server)
-
+        const invalidateQueriesSpy = vi.spyOn(queryClient, 'invalidateQueries')
         const { result } = renderHook(
             () => useTicketTableColumnVisibility(viewId),
             { queryClient },
         )
 
-        await waitFor(() => {
-            expect(result.current.defaultVisibleColumns).toContain('ticket')
-        })
+        await result.current.saveForEveryone([
+            'select',
+            'ticket',
+            'subject',
+            'customer',
+            'priority',
+            'created_datetime',
+        ])
 
-        act(() => {
-            result.current.onChange([
-                'select',
-                'ticket',
-                'subject',
-                'customer',
-                'priority',
-                'created_datetime',
-            ])
-        })
-
-        await waitForUpdateViewRequest(async (request) => {
-            expect(await request.json()).toEqual({
+        expect(mutateAsyncUpdateViewMock).toHaveBeenCalledWith({
+            id: viewId,
+            data: {
                 fields: [
                     ViewField.Subject,
                     ViewField.Customer,
                     ViewField.Priority,
                     ViewField.Created,
                 ],
-            })
+            },
         })
-
-        await waitFor(() => {
-            expect(invalidateQueries).toHaveBeenCalledWith(expect.anything())
+        expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+            queryKey: ['views', viewId],
         })
     })
 
-    it('uses draft fields and skips persistence in draft mode', async () => {
-        const queryClient = createTestQueryClient()
-        const invalidateQueries = vi.spyOn(queryClient, 'invalidateQueries')
+    it('omits selection and mandatory columns from the shared save payload', async () => {
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
+        )
+
+        await result.current.saveForEveryone(['select', 'ticket'])
+
+        expect(mutateAsyncUpdateViewMock).toHaveBeenCalledWith({
+            id: viewId,
+            data: {
+                fields: [],
+            },
+        })
+    })
+
+    it('uses draft fields and skips persistence in draft mode', () => {
         const onDraftFieldsChange = vi.fn()
 
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId, {
+                isDraftView: true,
+                draftFields: [
+                    ViewField.Subject,
+                    ViewField.Customer,
+                    ViewField.Created,
+                ],
+                onDraftFieldsChange,
+            }),
+        )
+
+        expect(result.current.defaultVisibleColumns).toEqual([
+            'select',
+            'ticket',
+            'subject',
+            'customer',
+            'created_datetime',
+        ])
+
+        act(() => {
+            result.current.onLocalChange(['select', 'ticket', 'subject'])
+        })
+
+        expect(onDraftFieldsChange).toHaveBeenCalledWith([
+            ViewField.Details,
+            ViewField.Subject,
+        ])
+
+        act(() => {
+            result.current.onColumnOrderChange([
+                'ticket',
+                'created_datetime',
+                'customer',
+                'subject',
+                'status',
+            ])
+        })
+
+        expect(onDraftFieldsChange).toHaveBeenLastCalledWith([
+            ViewField.Details,
+            ViewField.Created,
+            ViewField.Customer,
+            ViewField.Subject,
+        ])
+        expect(mutateAsyncUpdateViewMock).not.toHaveBeenCalled()
+        expect(result.current.canSaveForEveryone).toBe(false)
+    })
+
+    it('does not save for everyone in draft mode', async () => {
+        const onDraftFieldsChange = vi.fn()
+        const queryClient = createTestQueryClient()
+        const invalidateQueriesSpy = vi.spyOn(queryClient, 'invalidateQueries')
         const { result } = renderHook(
             () =>
                 useTicketTableColumnVisibility(viewId, {
                     isDraftView: true,
-                    draftFields: [
-                        ViewField.Subject,
-                        ViewField.Customer,
-                        ViewField.Created,
-                    ],
+                    draftFields: [ViewField.Subject, ViewField.Customer],
                     onDraftFieldsChange,
                 }),
             { queryClient },
         )
 
-        await waitFor(() => {
-            expect(result.current.defaultVisibleColumns).toEqual([
-                'select',
-                'ticket',
-                'subject',
-                'customer',
-                'created_datetime',
-            ])
-        })
+        await result.current.saveForEveryone([
+            'select',
+            'ticket',
+            'subject',
+            'customer',
+        ])
+
+        expect(mutateAsyncUpdateViewMock).not.toHaveBeenCalled()
+        expect(invalidateQueriesSpy).not.toHaveBeenCalled()
+    })
+
+    it('does not throw when draft column changes have no draft callback', () => {
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId, {
+                isDraftView: true,
+                draftFields: [ViewField.Subject, ViewField.Customer],
+            }),
+        )
 
         act(() => {
-            result.current.onChange(['select', 'ticket', 'subject'])
+            result.current.onLocalChange(['select', 'ticket', 'subject'])
+            result.current.onColumnOrderChange(['ticket', 'subject'])
         })
 
-        expect(onDraftFieldsChange).toHaveBeenCalledWith([ViewField.Subject])
-        expect(invalidateQueries).not.toHaveBeenCalled()
+        expect(mutateAsyncUpdateViewMock).not.toHaveBeenCalled()
+    })
+
+    it('returns all columns for draft views when no draft fields are provided', () => {
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId, {
+                isDraftView: true,
+            }),
+        )
+
+        expect(result.current.defaultVisibleColumns).toEqual([
+            'select',
+            'ticket',
+            'subject',
+            'integrations',
+            'tags',
+            'customer',
+            'assignee_team',
+            'assignee',
+            'id',
+            'status',
+            'language',
+            'channel',
+            'created_datetime',
+            'updated_datetime',
+            'last_message_datetime',
+            'last_received_message_datetime',
+            'closed',
+            'snooze',
+            'priority',
+        ])
+    })
+
+    it('returns save permissions for leads and admins only', () => {
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
+        )
+
+        expect(result.current.canSaveForEveryone).toBe(true)
+
+        useGetCurrentUserMock.mockReturnValue({
+            data: {
+                data: {
+                    id: 3,
+                    role: { name: UserRole.Admin },
+                },
+            },
+        })
+
+        const { result: adminResult } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
+        )
+
+        expect(adminResult.current.canSaveForEveryone).toBe(true)
+
+        useGetCurrentUserMock.mockReturnValue({
+            data: {
+                data: {
+                    id: 2,
+                    role: { name: UserRole.BasicAgent },
+                },
+            },
+        })
+
+        const { result: unauthorizedResult } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
+        )
+
+        expect(unauthorizedResult.current.canSaveForEveryone).toBe(false)
+
+        useGetCurrentUserMock.mockReturnValue({
+            data: undefined,
+        })
+
+        const { result: missingUserResult } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
+        )
+
+        expect(missingUserResult.current.canSaveForEveryone).toBe(false)
+    })
+
+    it('keeps local state intact when saving for everyone fails', async () => {
+        mutateAsyncUpdateViewMock.mockRejectedValueOnce(new Error('nope'))
+
+        const { result } = renderHook(() =>
+            useTicketTableColumnVisibility(viewId),
+        )
+
+        await expect(
+            result.current.saveForEveryone(['select', 'ticket', 'subject']),
+        ).rejects.toThrow('nope')
+        expect(mutateAsyncUpdateViewMock).toHaveBeenCalledTimes(1)
     })
 })
