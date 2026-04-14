@@ -1,4 +1,6 @@
-import { screen, waitFor } from '@testing-library/react'
+import type { ReactElement } from 'react'
+
+import { cleanup, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -24,18 +26,28 @@ import {
     ObjectType,
 } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import {
+    createTestQueryClient,
+    render as renderPrimitive,
+} from '../../../tests/render.utils'
 import { InfobarCustomCustomerFields } from '../InfobarCustomCustomerFields'
 
 const server = setupServer()
+let queryClient = createTestQueryClient()
+
+const render = (element: ReactElement) =>
+    renderPrimitive(element, { queryClient })
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
-afterEach(() => {
+afterEach(async () => {
+    cleanup()
+    await waitForQueriesSettled()
+    await queryClient.cancelQueries()
+    queryClient.clear()
     server.resetHandlers()
-    testAppQueryClient.clear()
 })
 
 afterAll(() => {
@@ -45,7 +57,7 @@ afterAll(() => {
 const waitForQueriesSettled = async () => {
     await waitFor(
         () => {
-            expect(testAppQueryClient.isFetching()).toBe(0)
+            expect(queryClient.isFetching()).toBe(0)
         },
         { timeout: 5000 },
     )
@@ -132,6 +144,10 @@ const TestComponent = () => {
 }
 
 describe('InfobarCustomCustomerFields', () => {
+    beforeEach(() => {
+        queryClient = createTestQueryClient()
+    })
+
     it('should render custom fields', async () => {
         const textField = createTextField()
         const numberField = createNumberField()

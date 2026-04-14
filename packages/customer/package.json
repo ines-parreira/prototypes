@@ -12,7 +12,7 @@
         "lint": "oxlint --quiet",
         "lint:unused": "knip --directory ../.. --workspace @repo/customer --no-progress",
         "test": "vitest run --configLoader=runner",
-        "test:ci:cover": "vitest run --configLoader=runner --coverage --silent",
+        "test:ci:cover": "vitest run --configLoader=runner --coverage --silent=true",
         "test:watch": "vitest watch --configLoader=runner",
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },

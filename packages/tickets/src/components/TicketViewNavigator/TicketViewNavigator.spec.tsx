@@ -9,6 +9,7 @@ import { ListViewItemsUpdatesOrderBy } from '@gorgias/helpdesk-types'
 import type { TicketCompact } from '@gorgias/helpdesk-types'
 
 import { createTestQueryClient, render } from '../../tests/render.utils'
+import * as useSortOrderModule from '../../ticket-list/hooks/useSortOrder'
 import { getNavigableTicketsListQueryKey } from '../../ticket-list/hooks/useTicketsList'
 import type { LegacyBridgeContextType } from '../../utils/LegacyBridge/context'
 import { TicketViewNavigator } from './TicketViewNavigator'
@@ -52,6 +53,10 @@ function makeInfiniteData(
 describe('TicketViewNavigator', () => {
     beforeEach(() => {
         vi.clearAllMocks()
+        vi.spyOn(useSortOrderModule, 'useSortOrder').mockReturnValue([
+            ListViewItemsUpdatesOrderBy.LastMessageDatetimeAsc,
+            vi.fn(),
+        ])
     })
 
     describe('when shouldDisplay is false', () => {

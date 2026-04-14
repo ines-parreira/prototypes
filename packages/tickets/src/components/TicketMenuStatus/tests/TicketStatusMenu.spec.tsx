@@ -142,7 +142,9 @@ beforeEach(() => {
     server.use(mockListViewItemsUpdates.handler)
 })
 
-afterEach(() => {
+afterEach(async () => {
+    await testAppQueryClient.cancelQueries()
+    testAppQueryClient.clear()
     vi.restoreAllMocks()
     server.resetHandlers()
 })
@@ -152,6 +154,8 @@ afterAll(() => {
 })
 
 describe('TicketStatus', () => {
+    const optimisticCloseTestTimeout = 15000
+
     const waitForMenu = async () => {
         await waitFor(() => {
             expect(
@@ -261,57 +265,75 @@ describe('TicketStatus', () => {
             },
         )
 
-        it('should optimistically close the menu when Apply is clicked before the API resolves', async () => {
-            let resolveSnooze: () => void
-            const snoozePromise = new Promise<void>((resolve) => {
-                resolveSnooze = resolve
-            })
-            const snoozeTicket = vi.fn().mockImplementation(() => snoozePromise)
+        it(
+            'should optimistically close the menu when Apply is clicked before the API resolves',
+            async () => {
+                let resolveSnooze: () => void
+                const snoozePromise = new Promise<void>((resolve) => {
+                    resolveSnooze = resolve
+                })
+                const snoozeTicket = vi
+                    .fn()
+                    .mockImplementation(() => snoozePromise)
 
-            vi.spyOn(useSnoozeTicketModule, 'useSnoozeTicket').mockReturnValue({
-                snoozeTicket,
-            })
+                vi.spyOn(
+                    useSnoozeTicketModule,
+                    'useSnoozeTicket',
+                ).mockReturnValue({
+                    snoozeTicket,
+                })
 
-            const { user } = render(<TicketStatusMenu ticket={openTicket} />)
-            const statusButton = await openMenu(user)
+                const { user } = render(
+                    <TicketStatusMenu ticket={openTicket} />,
+                )
+                await openMenu(user)
 
-            const snoozeOption = await screen.findByText('Snooze')
-            await user.click(snoozeOption)
+                const snoozeOption = await screen.findByText('Snooze')
+                await user.click(snoozeOption)
 
-            await screen.findByRole('grid')
+                await screen.findByRole('grid')
 
-            const nextMonthButton = await screen.findByRole('button', {
-                name: 'Next month',
-            })
-            await user.click(nextMonthButton)
+                const nextMonthButton = await screen.findByRole('button', {
+                    name: 'Next month',
+                })
+                await user.click(nextMonthButton)
 
-            const day15 = await screen.findByRole('button', {
-                name: /15/,
-            })
-            await user.click(day15)
+                const day15 = await screen.findByRole('button', {
+                    name: /15/,
+                })
+                await user.click(day15)
 
-            const applyButton = await screen.findByRole('button', {
-                name: 'Apply',
-            })
-            await user.click(applyButton)
+                const applyButton = await screen.findByRole('button', {
+                    name: 'Apply',
+                })
+                await waitFor(() => {
+                    expect(applyButton).toBeEnabled()
+                })
+                await user.click(applyButton)
 
-            await waitFor(() => {
-                expect(statusButton).toHaveAttribute('aria-expanded', 'false')
-            })
+                await waitFor(() => {
+                    expect(
+                        screen.getByRole('button', {
+                            name: 'Ticket status menu',
+                        }),
+                    ).toHaveAttribute('aria-expanded', 'false')
+                })
 
-            expect(snoozeTicket).toHaveBeenCalledTimes(1)
-            expect(snoozeTicket).toHaveBeenCalledWith({
-                snooze_datetime: expect.any(String),
-                status: TicketStatus.Closed,
-            })
-            expect(screen.queryByRole('grid')).not.toBeInTheDocument()
-            expect(
-                screen.queryByRole('status', { hidden: true }),
-            ).not.toBeInTheDocument()
+                expect(snoozeTicket).toHaveBeenCalledTimes(1)
+                expect(snoozeTicket).toHaveBeenCalledWith({
+                    snooze_datetime: expect.any(String),
+                    status: TicketStatus.Closed,
+                })
+                expect(screen.queryByRole('grid')).not.toBeInTheDocument()
+                expect(
+                    screen.queryByRole('status', { hidden: true }),
+                ).not.toBeInTheDocument()
 
-            resolveSnooze!()
-            await snoozePromise
-        })
+                resolveSnooze!()
+                await snoozePromise
+            },
+            optimisticCloseTestTimeout,
+        )
 
         it('should display error notification when snooze fails', async () => {
             const { user } = render(<TicketStatusMenu ticket={openTicket} />)

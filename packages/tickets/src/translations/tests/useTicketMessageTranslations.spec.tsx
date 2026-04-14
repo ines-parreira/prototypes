@@ -1,5 +1,5 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
-import { waitFor } from '@testing-library/react'
+import { cleanup, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -12,7 +12,10 @@ import {
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
-import { renderHook, testAppQueryClient } from '../../tests/render.utils'
+import {
+    createTestQueryClient,
+    renderHook as renderHookPrimitive,
+} from '../../tests/render.utils'
 import { useTicketMessageTranslations } from '../hooks/useTicketMessageTranslations'
 
 // Mock the feature flag hook
@@ -108,6 +111,10 @@ const localHandlers = [
     mockGetCurrentUser.handler,
     mockListTicketMessageTranslations.handler,
 ]
+let queryClient = createTestQueryClient()
+
+const renderHook = <TResult,>(hook: () => TResult) =>
+    renderHookPrimitive(hook, { queryClient })
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -115,13 +122,16 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(...localHandlers)
-    testAppQueryClient.clear()
+    queryClient = createTestQueryClient()
     mockUseFlag.mockImplementation(
         (flag) => flag === FeatureFlagKey.MessagesTranslations,
     )
 })
 
-afterEach(() => {
+afterEach(async () => {
+    cleanup()
+    await queryClient.cancelQueries()
+    queryClient.clear()
     server.resetHandlers()
     vi.clearAllMocks()
 })
@@ -427,8 +437,8 @@ describe('useTicketMessageTranslations', () => {
             server.use(mockGetCurrentUser.handler, handler)
 
             // Invalidate and refetch the query
-            await testAppQueryClient.invalidateQueries()
-            await testAppQueryClient.refetchQueries()
+            await queryClient.invalidateQueries()
+            await queryClient.refetchQueries()
 
             // Force a rerender to get updated data
             rerender()

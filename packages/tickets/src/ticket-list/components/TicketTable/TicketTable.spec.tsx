@@ -18,7 +18,7 @@ import {
 
 import { useCreateTicketTag } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useCreateTicketTag'
 import { useListTagsSearch } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import { createTestQueryClient, render } from '../../../tests/render.utils'
 import { TicketStatus } from '../../../types/ticket'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
 import { useTicketTableBulkActionShortcuts } from '../../hooks/useTicketTableBulkActionShortcuts'
@@ -79,6 +79,7 @@ const mockListTeams = mockListTeamsHandler(async ({ data }) =>
 )
 
 const server = setupServer()
+let queryClient = createTestQueryClient()
 
 const mockState = {
     sortOrder: 'last_message_datetime:desc',
@@ -268,7 +269,7 @@ vi.mock('./TicketTableColumns', () => ({
 function renderTicketTable(
     props?: Partial<ComponentProps<typeof TicketTable>>,
 ) {
-    return render(<TicketTable viewId={123} {...props} />)
+    return render(<TicketTable viewId={123} {...props} />, { queryClient })
 }
 
 function rerenderTicketTable(
@@ -280,22 +281,51 @@ function rerenderTicketTable(
     )
 }
 
+const bulkActionTestTimeout = 10000
+
+async function waitForSelectedCount(count = 1) {
+    await waitFor(() => {
+        expect(
+            screen.getAllByText(`${count} items selected`).length,
+        ).toBeGreaterThan(0)
+    })
+}
+
 async function openBulkMoreActionsMenu() {
-    fireEvent.click(screen.getByRole('button', { name: 'More actions' }))
+    const moreActionsButton = await waitFor(() => {
+        const button = screen.getByRole('button', { name: 'More actions' })
+        expect(button).toBeEnabled()
+
+        return button
+    })
+
+    fireEvent.click(moreActionsButton)
     const menu = (await screen.findAllByRole('menu')).at(-1)!
     await within(menu).findByRole('menuitem', { name: /mark as read/i })
 
     return menu
 }
 
-async function waitForTicketTableToBeReady() {
+function getTicketRow(subject = 'First ticket') {
+    const ticketCell = screen.getByRole('cell', { name: subject })
+    const row = ticketCell.closest('tr')
+
+    if (!row) {
+        throw new Error(`Expected a row for ticket "${subject}"`)
+    }
+
+    return row
+}
+
+async function waitForTicketTableToBeReady(subject = 'First ticket') {
     await waitFor(() => {
         expect(screen.getByRole('table')).toBeInTheDocument()
-        expect(getRowSelectionCheckbox()).toBeEnabled()
+        expect(getRowSelectionCheckbox(subject)).toBeEnabled()
     })
 }
 
 async function waitForBulkToolbarToBeReady() {
+    await waitForSelectedCount()
     await waitFor(() => {
         expect(
             screen.getByRole('button', { name: 'More actions' }),
@@ -303,14 +333,21 @@ async function waitForBulkToolbarToBeReady() {
     })
 }
 
-function getRowSelectionCheckbox() {
-    return screen.getAllByRole('checkbox').at(1)!
+function getRowSelectionCheckbox(subject = 'First ticket') {
+    return within(getTicketRow(subject)).getByRole('checkbox')
 }
 
 async function selectFirstRow(user: ReturnType<typeof render>['user']) {
     await waitForTicketTableToBeReady()
-    await user.click(getRowSelectionCheckbox())
-    await waitForBulkToolbarToBeReady()
+
+    await act(async () => {
+        await user.click(getRowSelectionCheckbox())
+    })
+
+    await waitFor(() => {
+        expect(getRowSelectionCheckbox()).toBeChecked()
+    })
+    await waitForSelectedCount()
 }
 
 async function getEnabledBulkControl(label: string) {
@@ -329,6 +366,7 @@ async function openStatusSelection(user: ReturnType<typeof render>['user']) {
 
 async function waitForSelectionToClear() {
     await waitFor(() => {
+        expect(screen.queryAllByText('1 items selected')).toHaveLength(0)
         expect(
             screen.queryByLabelText('Status selection'),
         ).not.toBeInTheDocument()
@@ -372,7 +410,13 @@ beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
-afterEach(() => {
+beforeEach(() => {
+    queryClient = createTestQueryClient()
+})
+
+afterEach(async () => {
+    await queryClient.cancelQueries()
+    queryClient.clear()
     server.resetHandlers()
 })
 
@@ -385,7 +429,6 @@ describe('TicketTable', () => {
         createTicketTableColumnsMock.mockClear()
         localStorageState.clear()
         localStorage.clear()
-        testAppQueryClient.clear()
         server.use(
             mockGetCurrentUserHandler(async () => HttpResponse.json(agentUser))
                 .handler,
@@ -509,17 +552,16 @@ describe('TicketTable', () => {
         expect(pushMock).toHaveBeenCalledWith('/app/views/123/1')
     })
 
-    it('enables the bulk action controls and shows the selected count when a row is selected', async () => {
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
+    it(
+        'enables the bulk action controls and shows the selected count when a row is selected',
+        async () => {
+            const { user } = renderTicketTable()
+            await selectFirstRow(user)
 
-        expect(screen.getAllByText('1 items selected').length).toBeGreaterThan(
-            0,
-        )
-        expect(
-            screen.getByRole('button', { name: 'More actions' }),
-        ).toBeEnabled()
-    })
+            await waitForBulkToolbarToBeReady()
+        },
+        bulkActionTestTimeout,
+    )
 
     it('pauses updates while a row is selected and resumes after clearing the selection', async () => {
         const { user } = renderTicketTable()
@@ -650,136 +692,172 @@ describe('TicketTable', () => {
         expect((await screen.findAllByText('VIP')).length).toBeGreaterThan(0)
     }, 10000)
 
-    it('sets the selected tickets to open and clears the selection on success', async () => {
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
+    it(
+        'sets the selected tickets to open and clears the selection on success',
+        async () => {
+            const { user } = renderTicketTable()
+            await selectFirstRow(user)
 
-        const statusListbox = await openStatusSelection(user)
-        await user.click(
-            within(statusListbox).getByRole('option', { name: 'Open' }),
-        )
-
-        await waitFor(() => {
-            expect(mockState.handleSetStatusSpy).toHaveBeenCalledWith(
-                TicketStatus.Open,
+            const statusListbox = await openStatusSelection(user)
+            await user.click(
+                within(statusListbox).getByRole('option', { name: 'Open' }),
             )
-        })
 
-        await waitForSelectionToClear()
+            await waitFor(() => {
+                expect(mockState.handleSetStatusSpy).toHaveBeenCalledWith(
+                    TicketStatus.Open,
+                )
+            })
 
-        expect(
-            screen.queryByLabelText('Status selection'),
-        ).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Assign agent')).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Assign team')).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
-        expect(
-            screen.queryByRole('button', { name: 'More actions' }),
-        ).not.toBeInTheDocument()
-    })
+            await waitForSelectionToClear()
 
-    it('sets the selected tickets to closed', async () => {
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
-
-        const statusListbox = await openStatusSelection(user)
-        await user.click(
-            within(statusListbox).getByRole('option', { name: 'Close' }),
-        )
-
-        await waitFor(() => {
-            expect(mockState.handleSetStatusSpy).toHaveBeenCalledWith(
-                TicketStatus.Closed,
-            )
-        })
-
-        await waitForSelectionToClear()
-    })
-
-    it('assigns the selected tickets to an agent and clears the selection on success', async () => {
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
-        await user.click(await getEnabledBulkControl('Assign agent'))
-        const agentOptions = await screen.findAllByText('Agent Smith')
-        await user.click(agentOptions[agentOptions.length - 1])
-
-        expect(mockState.handleAssignUserSpy).toHaveBeenCalledWith(
-            expect.objectContaining({
-                id: 5,
-                name: 'Agent Smith',
-            }),
-        )
-
-        await waitForSelectionToClear()
-
-        expect(screen.queryByLabelText('Assign agent')).not.toBeInTheDocument()
-    })
-
-    it('assigns the selected tickets to a team and clears the selection on success', async () => {
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
-        await user.click(await getEnabledBulkControl('Assign team'))
-        const supportOptions = await screen.findAllByText('Support')
-        await user.click(supportOptions[supportOptions.length - 1])
-
-        expect(mockState.handleAssignTeamSpy).toHaveBeenCalledWith(
-            expect.objectContaining({
-                id: 8,
-                name: 'Support',
-            }),
-        )
-
-        await waitForSelectionToClear()
-
-        expect(screen.queryByLabelText('Assign team')).not.toBeInTheDocument()
-    })
-
-    it('adds a tag to the selected tickets and clears the selection on success', async () => {
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
-        await user.click(await getEnabledBulkControl('Add tag'))
-        const vipOptions = await screen.findAllByText('VIP')
-        await user.click(vipOptions[vipOptions.length - 1])
-
-        expect(mockState.handleAddTagSpy).toHaveBeenCalledWith(
-            expect.objectContaining({
-                id: 11,
-                name: 'VIP',
-            }),
-        )
-
-        await waitForSelectionToClear()
-
-        expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
-    })
-
-    it('clears the selected team assignment when requested', async () => {
-        const { user } = renderTicketTable()
-        await selectFirstRow(user)
-        await user.click(await getEnabledBulkControl('Assign team'))
-        const noTeamOptions = await screen.findAllByText('No team')
-        await user.click(noTeamOptions[noTeamOptions.length - 1])
-
-        expect(mockState.handleAssignTeamSpy).toHaveBeenCalledWith(null)
-    })
-
-    it('disables team assignment while the bulk action is loading', async () => {
-        const { user, rerender } = renderTicketTable()
-        await selectFirstRow(user)
-
-        mockState.isBulkActionLoading = true
-        rerenderTicketTable(rerender)
-
-        await waitFor(() => {
-            expect(screen.getByLabelText('Status selection')).toBeDisabled()
-            expect(screen.getByLabelText('Assign agent')).toBeDisabled()
-            expect(screen.getByLabelText('Assign team')).toBeDisabled()
-            expect(screen.getByLabelText('Add tag')).toBeDisabled()
             expect(
-                screen.getByRole('button', { name: 'More actions' }),
-            ).toBeDisabled()
-        })
-    })
+                screen.queryByLabelText('Status selection'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Assign agent'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Assign team'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'More actions' }),
+            ).not.toBeInTheDocument()
+        },
+        bulkActionTestTimeout,
+    )
+
+    it(
+        'sets the selected tickets to closed',
+        async () => {
+            const { user } = renderTicketTable()
+            await selectFirstRow(user)
+
+            const statusListbox = await openStatusSelection(user)
+            await user.click(
+                within(statusListbox).getByRole('option', { name: 'Close' }),
+            )
+
+            await waitFor(() => {
+                expect(mockState.handleSetStatusSpy).toHaveBeenCalledWith(
+                    TicketStatus.Closed,
+                )
+            })
+
+            await waitForSelectionToClear()
+        },
+        bulkActionTestTimeout,
+    )
+
+    it(
+        'assigns the selected tickets to an agent and clears the selection on success',
+        async () => {
+            const { user } = renderTicketTable()
+            await selectFirstRow(user)
+            await user.click(await getEnabledBulkControl('Assign agent'))
+            const agentOptions = await screen.findAllByText('Agent Smith')
+            await user.click(agentOptions[agentOptions.length - 1])
+
+            expect(mockState.handleAssignUserSpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    id: 5,
+                    name: 'Agent Smith',
+                }),
+            )
+
+            await waitForSelectionToClear()
+
+            expect(
+                screen.queryByLabelText('Assign agent'),
+            ).not.toBeInTheDocument()
+        },
+        bulkActionTestTimeout,
+    )
+
+    it(
+        'assigns the selected tickets to a team and clears the selection on success',
+        async () => {
+            const { user } = renderTicketTable()
+            await selectFirstRow(user)
+            await user.click(await getEnabledBulkControl('Assign team'))
+            const supportOptions = await screen.findAllByText('Support')
+            await user.click(supportOptions[supportOptions.length - 1])
+
+            expect(mockState.handleAssignTeamSpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    id: 8,
+                    name: 'Support',
+                }),
+            )
+
+            await waitForSelectionToClear()
+
+            expect(
+                screen.queryByLabelText('Assign team'),
+            ).not.toBeInTheDocument()
+        },
+        bulkActionTestTimeout,
+    )
+
+    it(
+        'adds a tag to the selected tickets and clears the selection on success',
+        async () => {
+            const { user } = renderTicketTable()
+            await selectFirstRow(user)
+            await user.click(await getEnabledBulkControl('Add tag'))
+            const vipOptions = await screen.findAllByText('VIP')
+            await user.click(vipOptions[vipOptions.length - 1])
+
+            expect(mockState.handleAddTagSpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    id: 11,
+                    name: 'VIP',
+                }),
+            )
+
+            await waitForSelectionToClear()
+
+            expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
+        },
+        bulkActionTestTimeout,
+    )
+
+    it(
+        'clears the selected team assignment when requested',
+        async () => {
+            const { user } = renderTicketTable()
+            await selectFirstRow(user)
+            await user.click(await getEnabledBulkControl('Assign team'))
+            const noTeamOptions = await screen.findAllByText('No team')
+            await user.click(noTeamOptions[noTeamOptions.length - 1])
+
+            expect(mockState.handleAssignTeamSpy).toHaveBeenCalledWith(null)
+        },
+        bulkActionTestTimeout,
+    )
+
+    it(
+        'disables team assignment while the bulk action is loading',
+        async () => {
+            const { user, rerender } = renderTicketTable()
+            await selectFirstRow(user)
+
+            mockState.isBulkActionLoading = true
+            rerenderTicketTable(rerender)
+
+            await waitFor(() => {
+                expect(screen.getByLabelText('Status selection')).toBeDisabled()
+                expect(screen.getByLabelText('Assign agent')).toBeDisabled()
+                expect(screen.getByLabelText('Assign team')).toBeDisabled()
+                expect(screen.getByLabelText('Add tag')).toBeDisabled()
+                expect(
+                    screen.getByRole('button', { name: 'More actions' }),
+                ).toBeDisabled()
+            })
+        },
+        bulkActionTestTimeout,
+    )
 
     it('renders the table empty state when the loaded view has no tickets', async () => {
         mockState.tickets = []
@@ -843,46 +921,78 @@ describe('TicketTable', () => {
         expect(screen.getByRole('table')).toBeInTheDocument()
     })
 
-    it('clears the selection when the displayed tickets change', async () => {
-        const { user, rerender } = renderTicketTable()
-        await selectFirstRow(user)
+    it(
+        'clears the selection when the displayed tickets change',
+        async () => {
+            const { user, rerender } = renderTicketTable()
+            await selectFirstRow(user)
 
-        mockState.tickets = [
-            { id: 3, subject: 'Replacement ticket' },
-            { id: 4, subject: 'Another replacement ticket' },
-        ]
-        rerenderTicketTable(rerender)
+            mockState.tickets = [
+                { id: 3, subject: 'Replacement ticket' },
+                { id: 4, subject: 'Another replacement ticket' },
+            ]
+            rerenderTicketTable(rerender)
 
-        await waitForSelectionToClear()
+            await waitForTicketTableToBeReady('Replacement ticket')
+            await waitForSelectionToClear()
 
-        expect(
-            screen.queryByLabelText('Status selection'),
-        ).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Assign agent')).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Assign team')).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
-        expect(
-            screen.queryByRole('button', { name: 'More actions' }),
-        ).not.toBeInTheDocument()
-    })
+            expect(
+                screen.queryByLabelText('Status selection'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Assign agent'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Assign team'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'More actions' }),
+            ).not.toBeInTheDocument()
+        },
+        bulkActionTestTimeout,
+    )
 
-    it('clears the selection when the sort order changes', async () => {
-        const { user, rerender } = renderTicketTable()
-        await selectFirstRow(user)
+    it(
+        'clears the selection when the sort order changes',
+        async () => {
+            const { user, rerender } = renderTicketTable()
+            await selectFirstRow(user)
 
-        mockState.sortOrder = 'updated_datetime:desc'
-        rerenderTicketTable(rerender)
+            mockState.sortOrder = 'updated_datetime:desc'
+            rerenderTicketTable(rerender)
 
-        await waitForSelectionToClear()
+            await waitFor(() => {
+                expect(
+                    useTicketsListModule.useTicketsList,
+                ).toHaveBeenLastCalledWith(
+                    123,
+                    expect.objectContaining({
+                        params: {
+                            order_by: 'updated_datetime:desc',
+                            limit: 20,
+                        },
+                        pauseUpdates: false,
+                        enableStaleUpdates: true,
+                    }),
+                )
+            })
+            await waitForSelectionToClear()
 
-        expect(
-            screen.queryByLabelText('Status selection'),
-        ).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Assign agent')).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Assign team')).not.toBeInTheDocument()
-        expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
-        expect(
-            screen.queryByRole('button', { name: 'More actions' }),
-        ).not.toBeInTheDocument()
-    })
+            expect(
+                screen.queryByLabelText('Status selection'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Assign agent'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByLabelText('Assign team'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByLabelText('Add tag')).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', { name: 'More actions' }),
+            ).not.toBeInTheDocument()
+        },
+        bulkActionTestTimeout,
+    )
 })

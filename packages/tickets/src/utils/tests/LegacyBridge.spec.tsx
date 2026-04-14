@@ -76,10 +76,28 @@ describe('useTicketsLegacyBridge', () => {
             useTicketsLegacyBridge()
             return null
         }
+        const preventExpectedWindowError = (event: ErrorEvent) => {
+            if (
+                event.error instanceof Error &&
+                event.error.message ===
+                    'useTicketsLegacyBridge must be used within TicketsLegacyBridgeProvider'
+            ) {
+                event.preventDefault()
+            }
+        }
+        const consoleErrorSpy = vi
+            .spyOn(console, 'error')
+            .mockImplementation(() => {})
+        window.addEventListener('error', preventExpectedWindowError)
 
-        expect(() => render(<TestComponent />)).toThrow(
-            'useTicketsLegacyBridge must be used within TicketsLegacyBridgeProvider',
-        )
+        try {
+            expect(() => render(<TestComponent />)).toThrow(
+                'useTicketsLegacyBridge must be used within TicketsLegacyBridgeProvider',
+            )
+        } finally {
+            window.removeEventListener('error', preventExpectedWindowError)
+            consoleErrorSpy.mockRestore()
+        }
     })
 
     it('should return context value when used within provider', () => {

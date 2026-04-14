@@ -137,9 +137,10 @@ beforeEach(() => {
     server.use(mockListIntegrations.handler)
 })
 
-afterEach(() => {
-    server.resetHandlers()
+afterEach(async () => {
+    await testAppQueryClient.cancelQueries()
     testAppQueryClient.clear()
+    server.resetHandlers()
     vi.clearAllMocks()
 })
 

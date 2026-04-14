@@ -1,5 +1,7 @@
+import type { ReactElement } from 'react'
+
 import { useFlag } from '@repo/feature-flags'
-import { act, screen, waitFor } from '@testing-library/react'
+import { act, cleanup, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import { Route, useLocation } from 'react-router-dom'
@@ -12,7 +14,10 @@ import {
 } from '@gorgias/helpdesk-mocks'
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 
-import { render, testAppQueryClient } from '../../../tests/render.utils'
+import {
+    createTestQueryClient,
+    render as renderPrimitive,
+} from '../../../tests/render.utils'
 import type { CurrentUser } from '../../hooks/useCurrentUserLanguagePreferences'
 import { DisplayedContent } from '../../store/constants'
 import { useTicketMessageTranslationDisplay } from '../../store/useTicketMessageTranslationDisplay'
@@ -74,6 +79,12 @@ const mockTranslation = mockTicketTranslationCompact({
     ticket_id: testTicket.id,
     subject: 'Translated subject',
 })
+let queryClient = createTestQueryClient()
+
+const render = (
+    element: ReactElement,
+    options?: Omit<Parameters<typeof renderPrimitive>[1], 'queryClient'>,
+) => renderPrimitive(element, { ...options, queryClient })
 
 const mockListTicketTranslations = mockListTicketTranslationsHandler(
     async ({ data }) =>
@@ -89,20 +100,25 @@ beforeAll(() => {
 
 beforeEach(() => {
     mockUseFlag.mockReturnValue(true)
+    queryClient = createTestQueryClient()
     useTicketMessageTranslationDisplay.setState({
         ticketMessagesTranslationDisplayMap: {},
         allMessageDisplayState: DisplayedContent.Translated,
     })
-    testAppQueryClient.clear()
     server.use(
         mockGetCurrentUserWithEnglish.handler,
         mockListTicketTranslations.handler,
     )
 })
 
-afterEach(() => {
+afterEach(async () => {
+    cleanup()
+    await waitFor(() => {
+        expect(queryClient.isFetching()).toBe(0)
+    })
+    await queryClient.cancelQueries()
+    queryClient.clear()
     server.resetHandlers()
-    testAppQueryClient.clear()
     vi.clearAllMocks()
 })
 

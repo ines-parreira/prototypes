@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { screen, waitFor } from '@testing-library/react'
+import { cleanup, screen, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import {
@@ -19,7 +19,7 @@ import {
     mockGetViewResponse,
 } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../tests/render.utils'
+import { createTestQueryClient, render } from '../../tests/render.utils'
 import { useCreateTicketDraft } from '../useCreateTicketDraft'
 import { ViewHeader } from '../ViewHeader'
 
@@ -34,13 +34,45 @@ const mockGetView = mockGetViewHandler(async () =>
 )
 
 const server = setupServer()
+let queryClient = createTestQueryClient()
+
+const waitForQueriesSettled = async () => {
+    await waitFor(() => {
+        expect(queryClient.isFetching()).toBe(0)
+    })
+}
+
+const renderViewHeader = (
+    props: Partial<React.ComponentProps<typeof ViewHeader>> = {},
+    options?: {
+        loadTitleFromApi?: boolean
+    },
+) => {
+    const { loadTitleFromApi = false } = options ?? {}
+
+    const titleOverride =
+        !loadTitleFromApi &&
+        props.titleOverride === undefined &&
+        !props.isDraftView
+            ? viewName
+            : props.titleOverride
+
+    return render(
+        <ViewHeader
+            viewId={props.viewId ?? viewId}
+            {...props}
+            titleOverride={titleOverride}
+        />,
+        { queryClient },
+    )
+}
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
+    queryClient = createTestQueryClient()
     server.use(mockGetView.handler)
     useCreateTicketDraftMock.mockReturnValue({
         hasDraft: false,
@@ -50,7 +82,11 @@ beforeEach(() => {
     })
 })
 
-afterEach(() => {
+afterEach(async () => {
+    cleanup()
+    await waitForQueriesSettled()
+    await queryClient.cancelQueries()
+    queryClient.clear()
     server.resetHandlers()
     vi.clearAllMocks()
 })
@@ -61,23 +97,21 @@ afterAll(() => {
 
 describe('ViewHeader', () => {
     it('renders the view name from the API', async () => {
-        render(<ViewHeader viewId={viewId} />)
+        renderViewHeader({}, { loadTitleFromApi: true })
         await waitFor(() => {
             expect(screen.getByText(viewName)).toBeInTheDocument()
         })
     })
 
     it('renders the draft title override when provided', () => {
-        render(<ViewHeader viewId={viewId} titleOverride="New view" />)
+        renderViewHeader({ titleOverride: 'New view' })
 
         expect(screen.getByText('New view')).toBeInTheDocument()
     })
 
     it('calls onExpand when the "Show ticket panel" button is clicked', async () => {
         const onExpand = vi.fn()
-        const { user } = render(
-            <ViewHeader viewId={viewId} onExpand={onExpand} />,
-        )
+        const { user } = renderViewHeader({ onExpand })
         await user.click(
             screen.getByRole('button', { name: /show ticket panel/i }),
         )
@@ -85,9 +119,7 @@ describe('ViewHeader', () => {
     })
 
     it('hides the view controls that do not apply to draft views', () => {
-        render(
-            <ViewHeader viewId={viewId} isDraftView titleOverride="New view" />,
-        )
+        renderViewHeader({ isDraftView: true, titleOverride: 'New view' })
 
         expect(
             screen.queryByRole('button', { name: /show ticket panel/i }),
@@ -99,23 +131,21 @@ describe('ViewHeader', () => {
 
     it('calls onEditView when the "Edit view" button is clicked', async () => {
         const onEditView = vi.fn()
-        const { user } = render(
-            <ViewHeader viewId={viewId} onEditView={onEditView} />,
-        )
+        const { user } = renderViewHeader({ onEditView })
         await user.click(screen.getByRole('button', { name: /edit view/i }))
         expect(onEditView).toHaveBeenCalledTimes(1)
     })
 
     describe('when no draft exists', () => {
         it('renders a plain "Create ticket" button', () => {
-            render(<ViewHeader viewId={viewId} />)
+            renderViewHeader()
             expect(
                 screen.getByRole('button', { name: /create ticket/i }),
             ).toBeInTheDocument()
         })
 
         it('hides the create ticket button when requested', () => {
-            render(<ViewHeader viewId={viewId} hideCreateTicket />)
+            renderViewHeader({ hideCreateTicket: true })
 
             expect(
                 screen.queryByRole('button', { name: /create ticket/i }),
@@ -130,7 +160,7 @@ describe('ViewHeader', () => {
                 onResumeDraft: vi.fn(),
                 onDiscardDraft: vi.fn(),
             })
-            const { user } = render(<ViewHeader viewId={viewId} />)
+            const { user } = renderViewHeader()
             await user.click(
                 screen.getByRole('button', { name: /create ticket/i }),
             )
@@ -149,7 +179,7 @@ describe('ViewHeader', () => {
         })
 
         it('opens the draft menu when "Create ticket" is clicked', async () => {
-            const { user } = render(<ViewHeader viewId={viewId} />)
+            const { user } = renderViewHeader()
             await user.click(
                 screen.getByRole('button', { name: /create ticket/i }),
             )
@@ -180,7 +210,7 @@ describe('ViewHeader', () => {
                     onDiscardDraft: vi.fn(),
                     [action]: handler,
                 })
-                const { user } = render(<ViewHeader viewId={viewId} />)
+                const { user } = renderViewHeader()
                 await user.click(
                     screen.getByRole('button', { name: /create ticket/i }),
                 )

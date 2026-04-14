@@ -95,7 +95,9 @@ beforeEach(() => {
     testAppQueryClient.clear()
 })
 
-afterEach(() => {
+afterEach(async () => {
+    await testAppQueryClient.cancelQueries()
+    testAppQueryClient.clear()
     server.resetHandlers()
 })
 

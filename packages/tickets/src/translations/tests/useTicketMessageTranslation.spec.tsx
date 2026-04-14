@@ -1,8 +1,9 @@
 import type React from 'react'
 
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+import type { QueryClient } from '@tanstack/react-query'
 import { QueryClientProvider } from '@tanstack/react-query'
-import { renderHook, waitFor } from '@testing-library/react'
+import { cleanup, renderHook, waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -15,7 +16,7 @@ import {
 import { Language, UserSettingType } from '@gorgias/helpdesk-types'
 import type { TicketMessageTranslation } from '@gorgias/helpdesk-types'
 
-import { testAppQueryClient } from '../../tests/render.utils'
+import { createTestQueryClient } from '../../tests/render.utils'
 import { useTicketMessageTranslation } from '../hooks/useTicketMessageTranslation'
 
 // Mock the feature flag hook
@@ -58,6 +59,7 @@ const mockCurrentUser = {
 
 // Server setup
 const server = setupServer()
+let queryClient: QueryClient = createTestQueryClient()
 
 // Create mock handlers
 const mockGetCurrentUser = mockGetCurrentUserHandler(async () =>
@@ -89,13 +91,16 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(...localHandlers)
-    testAppQueryClient.clear()
+    queryClient = createTestQueryClient()
     mockUseFlag.mockImplementation(
         (flag) => flag === FeatureFlagKey.MessagesTranslations,
     )
 })
 
-afterEach(() => {
+afterEach(async () => {
+    cleanup()
+    await queryClient.cancelQueries()
+    queryClient.clear()
     server.resetHandlers()
     vi.clearAllMocks()
 })
@@ -105,9 +110,7 @@ afterAll(() => {
 })
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={testAppQueryClient}>
-        {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 )
 describe('useTicketMessageTranslation', () => {
     it('should return undefined when messageId is not provided', async () => {

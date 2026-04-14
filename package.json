@@ -27,6 +27,7 @@
         "lint:unused:affected": "nx affected --target=lint:unused --exclude=@repo/helpdesk",
         "lint:deprecated": "tsx scripts/deprecated-monitoring/deprecated.monitoring.ts",
         "test": "nx test",
+        "test:constrained": "bash ./scripts/ci/run-constrained-package-tests.sh",
         "test:all": "nx run-many --target=test",
         "test:affected": "nx affected --target=test",
         "test:helpdesk:ci:cover": "pnpm --filter @repo/helpdesk test:ci:cover",

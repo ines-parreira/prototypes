@@ -1,5 +1,6 @@
 import { shortcutManager } from '@repo/utils'
-import { screen, waitFor } from '@testing-library/react'
+import { cleanup, screen, waitFor } from '@testing-library/react'
+import { userEvent } from '@testing-library/user-event'
 import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
@@ -10,7 +11,8 @@ import {
     mockTicketTag,
 } from '@gorgias/helpdesk-mocks'
 
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import { createTestQueryClient, render } from '../../../../tests/render.utils'
+import type { TagsMultiSelectProps } from './TagsMultiSelect'
 import { TagsMultiSelect } from './TagsMultiSelect'
 
 vi.mock('@repo/utils', async () => {
@@ -70,6 +72,7 @@ const mockCreateTag = mockCreateTagHandler()
 const localHandlers = [mockListTags.handler, mockCreateTag.handler]
 
 const server = setupServer()
+let queryClient = createTestQueryClient()
 
 beforeAll(() => {
     server.listen({ onUnhandledRequest: 'error' })
@@ -77,12 +80,18 @@ beforeAll(() => {
 
 beforeEach(() => {
     server.use(...localHandlers)
-    testAppQueryClient.clear()
+    queryClient = createTestQueryClient()
 })
 
 afterEach(async () => {
-    await testAppQueryClient.cancelQueries()
-    testAppQueryClient.clear()
+    cleanup()
+    if (vi.isFakeTimers()) {
+        await vi.runOnlyPendingTimersAsync()
+        vi.useRealTimers()
+    }
+    await waitForQueriesSettled()
+    await queryClient.cancelQueries()
+    queryClient.clear()
     server.resetHandlers(...localHandlers)
 })
 
@@ -93,39 +102,92 @@ afterAll(() => {
 const waitForQueriesSettled = async () => {
     await waitFor(
         () => {
-            expect(testAppQueryClient.isFetching()).toBe(0)
+            expect(queryClient.isFetching()).toBe(0)
         },
         { timeout: 3000 },
     )
 }
 
+const renderTagsMultiSelect = (props: TagsMultiSelectProps) => {
+    return render(<TagsMultiSelect {...props} />, { queryClient })
+}
+
+const flushSearchDebounce = async () => {
+    await vi.advanceTimersByTimeAsync(300)
+}
+
+const setupFakeTimersUser = () =>
+    userEvent.setup({
+        advanceTimers: vi.advanceTimersByTime,
+    })
+
+const flushPendingTimersIfNeeded = async () => {
+    if (vi.isFakeTimers()) {
+        await vi.runOnlyPendingTimersAsync()
+    }
+}
+
 const getTagsTriggerButton = () => {
     return screen
         .getAllByRole('button', { hidden: true })
-        .find((button) => button.getAttribute('aria-haspopup') === 'listbox')!
+        .find(
+            (button) =>
+                button.getAttribute('aria-haspopup') === 'listbox' &&
+                button.getAttribute('aria-label') === 'Tags selection' &&
+                button.closest('template') === null,
+        )!
+}
+
+const queryOpenTagsPopupElement = (role: 'listbox' | 'searchbox') => {
+    return screen
+        .queryAllByRole(role, { hidden: true })
+        .find(
+            (element) =>
+                element.closest('template') === null &&
+                element.closest('[data-testid="hidden-select-container"]') ===
+                    null,
+        )
+}
+
+const findOpenTagsPopupElement = async (role: 'listbox' | 'searchbox') => {
+    return waitFor(() => {
+        const element = queryOpenTagsPopupElement(role)
+
+        expect(getTagsTriggerButton()).toHaveAttribute('aria-expanded', 'true')
+        expect(element).toBeVisible()
+
+        return element!
+    })
 }
 
 const openTagsMenu = async (user: ReturnType<typeof render>['user']) => {
-    await waitForQueriesSettled()
-    await user.click(getTagsTriggerButton())
+    const triggerButton = getTagsTriggerButton()
 
-    const listbox = await screen.findByRole('listbox')
-    const searchbox = await screen.findByRole('searchbox')
+    if (triggerButton.getAttribute('aria-expanded') !== 'true') {
+        await user.click(triggerButton)
+        await flushPendingTimersIfNeeded()
+    }
+
+    const listbox = await findOpenTagsPopupElement('listbox')
+    const searchbox = await findOpenTagsPopupElement('searchbox')
 
     return { listbox, searchbox }
 }
 
 const closeTagsMenu = async (user: ReturnType<typeof render>['user']) => {
-    await user.click(getTagsTriggerButton())
+    await user.click(document.body)
+    await flushPendingTimersIfNeeded()
 
     await waitFor(() => {
-        expect(screen.queryByRole('searchbox')).not.toBeInTheDocument()
+        expect(getTagsTriggerButton()).toHaveAttribute('aria-expanded', 'false')
+        expect(queryOpenTagsPopupElement('listbox')).toBeUndefined()
+        expect(queryOpenTagsPopupElement('searchbox')).toBeUndefined()
     })
 }
 
 describe('TagsMultiSelect', () => {
     it('renders correctly with selected tags', async () => {
-        render(<TagsMultiSelect value={mockTicketTags} onChange={vi.fn()} />)
+        renderTagsMultiSelect({ value: mockTicketTags, onChange: vi.fn() })
 
         await waitForQueriesSettled()
 
@@ -134,7 +196,7 @@ describe('TagsMultiSelect', () => {
     })
 
     it('renders add tags button when no tags are selected', async () => {
-        render(<TagsMultiSelect value={[]} onChange={vi.fn()} />)
+        renderTagsMultiSelect({ value: [], onChange: vi.fn() })
 
         await waitForQueriesSettled()
 
@@ -146,9 +208,10 @@ describe('TagsMultiSelect', () => {
     it('calls onChange with remaining tags when close button is clicked', async () => {
         const onChange = vi.fn()
 
-        const { user } = render(
-            <TagsMultiSelect value={mockTicketTags} onChange={onChange} />,
-        )
+        const { user } = renderTagsMultiSelect({
+            value: mockTicketTags,
+            onChange,
+        })
 
         await waitForQueriesSettled()
 
@@ -163,20 +226,20 @@ describe('TagsMultiSelect', () => {
     describe('Create tag', () => {
         it('should show create button when search returns no results', async () => {
             server.use(mockListTagsSearchAware.handler)
+            vi.useFakeTimers({ shouldAdvanceTime: true })
 
-            const { user } = render(
-                <TagsMultiSelect value={[]} onChange={vi.fn()} />,
-            )
+            renderTagsMultiSelect({
+                value: [],
+                onChange: vi.fn(),
+            })
+            const user = setupFakeTimersUser()
 
             await waitForQueriesSettled()
 
-            await user.click(screen.getByRole('button', { name: /add tags/i }))
+            const { searchbox } = await openTagsMenu(user)
 
-            await waitFor(() => {
-                expect(screen.getByRole('searchbox')).toBeInTheDocument()
-            })
-
-            await user.type(screen.getByRole('searchbox'), 'NewTag')
+            await user.type(searchbox, 'NewTag')
+            await flushSearchDebounce()
 
             await waitFor(() => {
                 expect(
@@ -190,17 +253,14 @@ describe('TagsMultiSelect', () => {
         it('should not show create button when search is empty', async () => {
             server.use(mockListTagsSearchAware.handler)
 
-            const { user } = render(
-                <TagsMultiSelect value={[]} onChange={vi.fn()} />,
-            )
+            const { user } = renderTagsMultiSelect({
+                value: [],
+                onChange: vi.fn(),
+            })
 
             await waitForQueriesSettled()
 
-            await user.click(screen.getByRole('button', { name: /add tags/i }))
-
-            await waitFor(() => {
-                expect(screen.getByRole('searchbox')).toBeInTheDocument()
-            })
+            await openTagsMenu(user)
 
             expect(
                 screen.queryByRole('button', { name: /create tag/i }),
@@ -210,9 +270,10 @@ describe('TagsMultiSelect', () => {
         })
 
         it('should not show create button when results exist', async () => {
-            const { user } = render(
-                <TagsMultiSelect value={[]} onChange={vi.fn()} />,
-            )
+            const { user } = renderTagsMultiSelect({
+                value: [],
+                onChange: vi.fn(),
+            })
 
             await waitForQueriesSettled()
 
@@ -246,19 +307,20 @@ describe('TagsMultiSelect', () => {
                 mockListTagsSearchAware.handler,
                 mockCreateTagCustom.handler,
             )
+            vi.useFakeTimers({ shouldAdvanceTime: true })
 
             const onChange = vi.fn()
-            const { user } = render(
-                <TagsMultiSelect value={mockTicketTags} onChange={onChange} />,
-            )
+            renderTagsMultiSelect({
+                value: mockTicketTags,
+                onChange,
+            })
+            const user = setupFakeTimersUser()
 
             await waitForQueriesSettled()
 
-            await openTagsMenu(user)
-
-            await screen.findByRole('searchbox', {}, { timeout: 3000 })
-
-            await user.type(screen.getByRole('searchbox'), 'NewTag')
+            const { searchbox } = await openTagsMenu(user)
+            await user.type(searchbox, 'NewTag')
+            await flushSearchDebounce()
 
             await waitFor(() => {
                 expect(
@@ -295,18 +357,19 @@ describe('TagsMultiSelect', () => {
                 mockListTagsSearchAware.handler,
                 mockCreateTagFailing.handler,
             )
+            vi.useFakeTimers({ shouldAdvanceTime: true })
 
-            const { user } = render(
-                <TagsMultiSelect value={mockTicketTags} onChange={vi.fn()} />,
-            )
+            renderTagsMultiSelect({
+                value: mockTicketTags,
+                onChange: vi.fn(),
+            })
+            const user = setupFakeTimersUser()
 
             await waitForQueriesSettled()
 
-            await openTagsMenu(user)
-
-            await screen.findByRole('searchbox', {}, { timeout: 3000 })
-
-            await user.type(screen.getByRole('searchbox'), 'NewTag')
+            const { searchbox } = await openTagsMenu(user)
+            await user.type(searchbox, 'NewTag')
+            await flushSearchDebounce()
 
             await waitFor(() => {
                 expect(
@@ -330,29 +393,32 @@ describe('TagsMultiSelect', () => {
 
     it('should clear search field when menu is closed and reopened', async () => {
         server.use(mockListTagsSearchAware.handler)
+        vi.useFakeTimers({ shouldAdvanceTime: true })
 
-        const { user } = render(
-            <TagsMultiSelect value={mockTicketTags} onChange={vi.fn()} />,
-        )
+        renderTagsMultiSelect({
+            value: mockTicketTags,
+            onChange: vi.fn(),
+        })
+        const user = setupFakeTimersUser()
 
         await waitForQueriesSettled()
 
-        await openTagsMenu(user)
-        const searchInput = await screen.findByRole(
-            'searchbox',
-            {},
-            {
-                timeout: 3000,
-            },
-        )
+        const { searchbox: searchInput } = await openTagsMenu(user)
         await user.type(searchInput, 'NewTag')
+        await flushSearchDebounce()
         expect(searchInput).toHaveValue('NewTag')
 
         await closeTagsMenu(user)
         await waitForQueriesSettled()
 
         const { searchbox: reopenedSearchbox } = await openTagsMenu(user)
-        expect(reopenedSearchbox).toHaveValue('')
+
+        await waitFor(() => {
+            expect(reopenedSearchbox).toHaveValue('')
+            expect(
+                screen.queryByRole('button', { name: /create tag/i }),
+            ).not.toBeInTheDocument()
+        })
 
         await waitForQueriesSettled()
     })
@@ -361,9 +427,10 @@ describe('TagsMultiSelect', () => {
         const denylistSpy = vi.spyOn(shortcutManager, 'denylist')
         const clearSpy = vi.spyOn(shortcutManager, 'clear')
 
-        const { user } = render(
-            <TagsMultiSelect value={[]} onChange={vi.fn()} />,
-        )
+        const { user } = renderTagsMultiSelect({
+            value: [],
+            onChange: vi.fn(),
+        })
 
         await waitForQueriesSettled()
 
@@ -408,18 +475,16 @@ describe('TagsMultiSelect', () => {
         server.use(mockListTagsNameSorted.handler)
 
         const onChange = vi.fn()
-        const { user } = render(
-            <TagsMultiSelect
-                value={[
-                    mockTicketTag({
-                        id: 1,
-                        name: 'Zulu',
-                        decoration: null,
-                    }),
-                ]}
-                onChange={onChange}
-            />,
-        )
+        const { user } = renderTagsMultiSelect({
+            value: [
+                mockTicketTag({
+                    id: 1,
+                    name: 'Zulu',
+                    decoration: null,
+                }),
+            ],
+            onChange,
+        })
 
         await waitForQueriesSettled()
 
@@ -448,7 +513,7 @@ describe('TagsMultiSelect', () => {
             mockTicketTag({ id: 3, name: 'Mango', decoration: null }),
         ]
 
-        render(<TagsMultiSelect value={unorderedTags} onChange={vi.fn()} />)
+        renderTagsMultiSelect({ value: unorderedTags, onChange: vi.fn() })
 
         await waitForQueriesSettled()
 
@@ -462,9 +527,10 @@ describe('TagsMultiSelect', () => {
     it('allows selecting a tag from the dropdown and removing it', async () => {
         const onChange = vi.fn()
 
-        const { user, rerender } = render(
-            <TagsMultiSelect value={[mockTicketTags[0]]} onChange={onChange} />,
-        )
+        const { user, rerender } = renderTagsMultiSelect({
+            value: [mockTicketTags[0]],
+            onChange,
+        })
 
         await waitForQueriesSettled()
 

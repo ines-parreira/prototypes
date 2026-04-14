@@ -20,6 +20,10 @@ const {
     observeTableMock: vi.fn(() => ({ unsubscribe: vi.fn() })),
 }))
 
+vi.mock('../../hooks/useCurrentUserId', () => ({
+    useCurrentUserId: () => ({ currentUserId: 123 }),
+}))
+
 vi.mock('react-router-dom', async () => {
     const actual = await vi.importActual('react-router-dom')
     return {

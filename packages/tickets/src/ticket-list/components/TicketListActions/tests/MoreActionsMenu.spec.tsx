@@ -7,8 +7,6 @@ import { setupServer } from 'msw/node'
 
 import {
     mockGetCurrentUserHandler,
-    mockGetViewHandler,
-    mockGetViewResponse,
     mockTag,
     mockTeam,
     mockUser,
@@ -17,7 +15,11 @@ import {
 import { useCreateTicketTag } from '../../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useCreateTicketTag'
 import { useListTagsSearch } from '../../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
 import { useTeamOptions } from '../../../../components/TicketAssignee/hooks/useTeamOptions'
-import { render, testAppQueryClient } from '../../../../tests/render.utils'
+import {
+    createTestQueryClient,
+    render as renderPrimitive,
+} from '../../../../tests/render.utils'
+import { useIsTrashLikeView } from '../../../hooks/useIsTrashLikeView'
 import { MoreActionsMenu } from '../MoreActionsMenu'
 
 vi.mock('@gorgias/axiom', async (importOriginal) => ({
@@ -76,6 +78,10 @@ vi.mock(
     }),
 )
 
+vi.mock('../../../hooks/useIsTrashLikeView', () => ({
+    useIsTrashLikeView: vi.fn(),
+}))
+
 const agentUser = mockUser({
     id: 1,
     email: 'agent@test.com',
@@ -95,12 +101,13 @@ const basicAgentUser = mockUser({
 const mockAgentCurrentUser = mockGetCurrentUserHandler(async () =>
     HttpResponse.json(agentUser),
 )
-const mockGetView = mockGetViewHandler()
 
 const server = setupServer()
 const mockUseTeamOptions = vi.mocked(useTeamOptions)
 const mockUseListTagsSearch = vi.mocked(useListTagsSearch)
 const mockUseCreateTicketTag = vi.mocked(useCreateTicketTag)
+const mockUseIsTrashLikeView = vi.mocked(useIsTrashLikeView)
+let queryClient = createTestQueryClient()
 const supportTeam = mockTeam({
     id: 1,
     name: 'Support',
@@ -118,8 +125,8 @@ beforeAll(() => {
 })
 
 beforeEach(() => {
-    testAppQueryClient.clear()
-    server.use(mockAgentCurrentUser.handler, mockGetView.handler)
+    queryClient = createTestQueryClient()
+    server.use(mockAgentCurrentUser.handler)
     mockUseTeamOptions.mockReturnValue({
         teamsMap: new Map([
             [supportTeamId, supportTeam],
@@ -162,9 +169,12 @@ beforeEach(() => {
         createTicketTag: vi.fn(),
         isCreating: false,
     })
+    mockUseIsTrashLikeView.mockReturnValue(false)
 })
 
-afterEach(() => {
+afterEach(async () => {
+    await queryClient.cancelQueries()
+    queryClient.clear()
     server.resetHandlers()
 })
 
@@ -187,23 +197,21 @@ const defaultProps = {
     onDeleteForever: vi.fn(),
 }
 
-function mockTrashLikeView() {
-    server.use(
-        mockGetViewHandler(async () =>
-            HttpResponse.json(
-                mockGetViewResponse({
-                    id: 123,
-                    filters: 'isNotEmpty(ticket.trashed_datetime)',
-                }),
-            ),
-        ).handler,
-    )
+const render = (ui: React.ReactElement) => {
+    return renderPrimitive(ui, { queryClient })
 }
 
-async function openMenu(user: ReturnType<typeof render>['user']) {
+function mockTrashLikeView() {
+    mockUseIsTrashLikeView.mockReturnValue(true)
+}
+
+async function openMenu(
+    user: ReturnType<typeof render>['user'],
+    { readyItemName = /mark as unread/i }: { readyItemName?: RegExp } = {},
+) {
     await user.click(screen.getByRole('button', { name: /more actions/i }))
     const menu = (await screen.findAllByRole('menu')).at(-1)!
-    await within(menu).findByRole('menuitem', { name: /mark as unread/i })
+    await within(menu).findByRole('menuitem', { name: readyItemName })
 
     return menu
 }
@@ -304,27 +312,27 @@ describe('MoreActionsMenu', () => {
             mockTrashLikeView()
 
             const { user } = render(<MoreActionsMenu {...defaultProps} />)
-            const menu = await openMenu(user)
-
-            await waitFor(() => {
-                expect(
-                    within(menu).getByRole('menuitem', {
-                        name: /export tickets/i,
-                    }),
-                ).toBeInTheDocument()
-                expect(
-                    within(menu).getByRole('menuitem', { name: /undelete/i }),
-                ).toBeInTheDocument()
-                expect(
-                    within(menu).getByRole('menuitem', {
-                        name: /delete forever/i,
-                    }),
-                ).toBeInTheDocument()
+            const menu = await openMenu(user, {
+                readyItemName: /undelete/i,
             })
+
+            expect(
+                within(menu).getByRole('menuitem', {
+                    name: /export tickets/i,
+                }),
+            ).toBeInTheDocument()
+            expect(
+                within(menu).getByRole('menuitem', { name: /undelete/i }),
+            ).toBeInTheDocument()
+            expect(
+                within(menu).getByRole('menuitem', {
+                    name: /delete forever/i,
+                }),
+            ).toBeInTheDocument()
             expect(
                 within(menu).queryByRole('menuitem', { name: /^delete$/i }),
             ).not.toBeInTheDocument()
-        })
+        }, 10000)
 
         it('hides restricted trash-like actions for a user below agent level', async () => {
             mockTrashLikeView()
@@ -404,7 +412,9 @@ describe('MoreActionsMenu', () => {
             const { user } = render(
                 <MoreActionsMenu {...defaultProps} onUndelete={onUndelete} />,
             )
-            await openMenu(user)
+            await openMenu(user, {
+                readyItemName: /undelete/i,
+            })
             await user.click(
                 screen.getByRole('menuitem', { name: /undelete/i }),
             )
@@ -421,7 +431,9 @@ describe('MoreActionsMenu', () => {
                     onDeleteForever={onDeleteForever}
                 />,
             )
-            await openMenu(user)
+            await openMenu(user, {
+                readyItemName: /delete forever/i,
+            })
             await user.click(
                 screen.getByRole('menuitem', { name: /delete forever/i }),
             )

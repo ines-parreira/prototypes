@@ -2,6 +2,7 @@ import { screen } from '@testing-library/react'
 import { useLocation } from 'react-router-dom'
 
 import { mockTicketCompact } from '@gorgias/helpdesk-mocks'
+import { Language } from '@gorgias/helpdesk-types'
 
 import { render, testAppQueryClient } from '../../../../tests/render.utils'
 import { TicketListItem } from '../TicketListItem'
@@ -11,6 +12,18 @@ vi.mock('@gorgias/realtime', () => ({
         getTicketActivity: vi.fn().mockReturnValue({ viewing: [] }),
     }),
 }))
+
+vi.mock(
+    '../../../../translations/hooks/useCurrentUserLanguagePreferences',
+    () => ({
+        useCurrentUserLanguagePreferences: () => ({
+            isFetching: false,
+            primary: Language.Fr,
+            proficient: [],
+            shouldShowTranslatedContent: vi.fn(),
+        }),
+    }),
+)
 
 function LocationDisplay() {
     const { pathname } = useLocation()
