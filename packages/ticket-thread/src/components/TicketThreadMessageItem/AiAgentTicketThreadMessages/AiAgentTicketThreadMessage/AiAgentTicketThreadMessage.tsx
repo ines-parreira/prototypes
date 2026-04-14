@@ -35,7 +35,12 @@ export function AiAgentTicketThreadMessage({
     })
 
     return (
-        <Box flexDirection="column" alignItems="flex-end" gap="xxs">
+        <Box
+            width="100%"
+            flexDirection="column"
+            alignItems="flex-end"
+            gap="xxs"
+        >
             <MessageBubble variant="ai-agent">
                 <MessageHeaderContainer>
                     <Box alignItems="center" gap="xs">

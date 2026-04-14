@@ -959,6 +959,25 @@ describe('TicketThreadMessageItem', () => {
         expect(screen.getAllByText('AI Agent')).toHaveLength(3)
     })
 
+    it('keeps the AI agent message wrapper at full row width when pseudo-events are rendered', () => {
+        const { container } = renderItem(
+            createAiAgentMessageItem({
+                decorations: {
+                    aiAgentPseudoEvent: {
+                        action: TicketThreadAiAgentPseudoEventAction.Snooze,
+                        tags: [],
+                    },
+                },
+            }),
+        )
+
+        expect(
+            container.querySelector('[data-variant="ai-agent"]')?.parentElement,
+        ).toHaveStyle({
+            width: '100%',
+        })
+    })
+
     it('renders attached AI pseudo-event rows for AI agent internal notes', () => {
         const attachedPseudoEvent: TicketThreadAiAgentPseudoEvent = {
             action: TicketThreadAiAgentPseudoEventAction.Snooze,
@@ -975,6 +994,26 @@ describe('TicketThreadMessageItem', () => {
 
         expect(screen.getByText('Snoozed')).toBeInTheDocument()
         expect(screen.getAllByText('AI Agent')).toHaveLength(2)
+    })
+
+    it('keeps the AI agent internal note wrapper at full row width when pseudo-events are rendered', () => {
+        const { container } = renderItem(
+            createAiAgentInternalNoteItem({
+                decorations: {
+                    aiAgentPseudoEvent: {
+                        action: TicketThreadAiAgentPseudoEventAction.Snooze,
+                        tags: [],
+                    },
+                },
+            }),
+        )
+
+        expect(
+            container.querySelector('[data-variant="internal-note"]')
+                ?.parentElement,
+        ).toHaveStyle({
+            width: '100%',
+        })
     })
 
     it('does not render the reasoning slot for AI agent internal note when renderAiAgentReasoning is undefined', () => {
