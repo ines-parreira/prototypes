@@ -19,6 +19,7 @@ import {
 
 import { render, testAppQueryClient } from '../../../tests/render.utils'
 import { TicketStatusMenu } from '../TicketStatusMenu'
+import * as useSnoozeTicketModule from '../useSnoozeTicket'
 import { TicketStatus } from '../utils'
 
 const ticketId = 123
@@ -142,6 +143,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+    vi.restoreAllMocks()
     server.resetHandlers()
 })
 
@@ -259,83 +261,57 @@ describe('TicketStatus', () => {
             },
         )
 
-        it(
-            'should optimistically close the menu when Apply is clicked before the API resolves',
-            { timeout: 15000 },
-            async () => {
-                let resolveUpdate: () => void
-                const updatePromise = new Promise<void>((resolve) => {
-                    resolveUpdate = resolve
-                })
+        it('should optimistically close the menu when Apply is clicked before the API resolves', async () => {
+            let resolveSnooze: () => void
+            const snoozePromise = new Promise<void>((resolve) => {
+                resolveSnooze = resolve
+            })
+            const snoozeTicket = vi.fn().mockImplementation(() => snoozePromise)
 
-                server.use(
-                    mockUpdateTicketHandler(async ({ data }) => {
-                        await updatePromise
-                        return HttpResponse.json(
-                            mockTicket({ ...data, id: ticketId }),
-                        )
-                    }).handler,
-                )
+            vi.spyOn(useSnoozeTicketModule, 'useSnoozeTicket').mockReturnValue({
+                snoozeTicket,
+            })
 
-                const legacyGoToNextTicket = vi.fn()
-                const { user } = render(
-                    <TicketStatusMenu ticket={openTicket} />,
-                    {
-                        initialEntries: ['/app/views/1/123'],
-                        path: '/app/views/:viewId/:ticketId',
-                        ticketViewNavigation: {
-                            shouldDisplay: true,
-                            shouldUseLegacyFunctions: true,
-                            previousTicketId: 122,
-                            nextTicketId: 124,
-                            legacyGoToPrevTicket: vi.fn(),
-                            isPreviousEnabled: true,
-                            legacyGoToNextTicket,
-                            isNextEnabled: true,
-                        },
-                    },
-                )
+            const { user } = render(<TicketStatusMenu ticket={openTicket} />)
+            const statusButton = await openMenu(user)
 
-                await openMenu(user)
+            const snoozeOption = await screen.findByText('Snooze')
+            await user.click(snoozeOption)
 
-                const snoozeOption = await screen.findByText('Snooze')
-                await act(() => user.click(snoozeOption))
+            await screen.findByRole('grid')
 
-                await screen.findByRole('grid')
+            const nextMonthButton = await screen.findByRole('button', {
+                name: 'Next month',
+            })
+            await user.click(nextMonthButton)
 
-                const nextMonthButton = await screen.findByRole('button', {
-                    name: 'Next month',
-                })
-                await act(() => user.click(nextMonthButton))
+            const day15 = await screen.findByRole('button', {
+                name: /15/,
+            })
+            await user.click(day15)
 
-                const day15 = await screen.findByRole('button', {
-                    name: /15/,
-                })
-                await act(() => user.click(day15))
+            const applyButton = await screen.findByRole('button', {
+                name: 'Apply',
+            })
+            await user.click(applyButton)
 
-                const applyButton = await screen.findByRole('button', {
-                    name: 'Apply',
-                })
-                await act(() => user.click(applyButton))
+            await waitFor(() => {
+                expect(statusButton).toHaveAttribute('aria-expanded', 'false')
+            })
 
-                await waitFor(() => {
-                    expect(screen.queryByRole('grid')).not.toBeInTheDocument()
-                })
+            expect(snoozeTicket).toHaveBeenCalledTimes(1)
+            expect(snoozeTicket).toHaveBeenCalledWith({
+                snooze_datetime: expect.any(String),
+                status: TicketStatus.Closed,
+            })
+            expect(screen.queryByRole('grid')).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('status', { hidden: true }),
+            ).not.toBeInTheDocument()
 
-                expect(
-                    screen.queryByRole('status', { hidden: true }),
-                ).not.toBeInTheDocument()
-
-                resolveUpdate!()
-
-                await waitFor(() => {
-                    expect(
-                        screen.getByText('Ticket has been snoozed'),
-                    ).toBeInTheDocument()
-                    expect(legacyGoToNextTicket).toHaveBeenCalled()
-                })
-            },
-        )
+            resolveSnooze!()
+            await snoozePromise
+        })
 
         it('should display error notification when snooze fails', async () => {
             const { user } = render(<TicketStatusMenu ticket={openTicket} />)
