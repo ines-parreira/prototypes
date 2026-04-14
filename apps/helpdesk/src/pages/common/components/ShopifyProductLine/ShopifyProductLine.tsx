@@ -61,24 +61,63 @@ const generateResultProps = (
     return props
 }
 
-const generateVariantName = (
-    productOptions?: Array<Record<string, any>>,
-    variantOptions?: Record<string, any>,
-) => {
-    if (!productOptions?.length || !variantOptions) return undefined
-    let variantName = ''
+export const getVariantOptionDisplayValue = (value: unknown): string | null => {
+    if (typeof value === 'string') {
+        return value.length > 0 ? value : null
+    }
 
-    productOptions.forEach(function (productOption, index) {
-        variantName = variantName.concat(
-            ' ',
-            productOption.name,
-            ': ',
-            variantOptions[index],
-        )
-        if (index < productOptions.length - 1)
-            variantName = variantName.concat(' | ')
-    })
-    return variantName
+    if (typeof value === 'number' || typeof value === 'boolean') {
+        return String(value)
+    }
+
+    if (Array.isArray(value)) {
+        const normalizedValues = value
+            .map((optionValue) => getVariantOptionDisplayValue(optionValue))
+            .filter((optionValue): optionValue is string => !!optionValue)
+
+        return normalizedValues.length > 0 ? normalizedValues.join(', ') : null
+    }
+
+    if (value && typeof value === 'object') {
+        const optionValue = value as Record<string, unknown>
+
+        for (const key of ['label', 'value', 'name', 'title']) {
+            const normalizedValue = getVariantOptionDisplayValue(
+                optionValue[key],
+            )
+
+            if (normalizedValue) {
+                return normalizedValue
+            }
+        }
+    }
+
+    return null
+}
+
+export const generateVariantName = (
+    productOptions?: Array<Record<string, any>>,
+    variantOptions?: unknown[],
+) => {
+    if (!productOptions?.length || !variantOptions?.length) return undefined
+
+    const variantName = productOptions
+        .map((productOption, index) => {
+            const optionName = getVariantOptionDisplayValue(productOption.name)
+            const optionValue = getVariantOptionDisplayValue(
+                variantOptions[index],
+            )
+
+            if (!optionName || !optionValue) {
+                return null
+            }
+
+            return ` ${optionName}: ${optionValue}`
+        })
+        .filter((value): value is string => value !== null)
+        .join(' | ')
+
+    return variantName || undefined
 }
 
 export default function ShopifyProductLine({

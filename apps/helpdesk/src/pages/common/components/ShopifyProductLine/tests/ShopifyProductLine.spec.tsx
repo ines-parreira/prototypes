@@ -15,7 +15,10 @@ import { RichFieldEditorPlacement } from 'pages/common/forms/RichField/enums'
 
 import { PRODUCTS_PER_PAGE } from '../../../../../constants/integration'
 import { shopifyProductResult } from '../../../../../fixtures/shopify'
-import ShopifyProductLine from '../ShopifyProductLine'
+import ShopifyProductLine, {
+    generateVariantName,
+    getVariantOptionDisplayValue,
+} from '../ShopifyProductLine'
 
 import css from '../ShopifyProductLine.less'
 
@@ -40,6 +43,69 @@ describe('<ShopifyProductLine/>', () => {
     beforeEach(() => {
         mockServer = new MockAdapter(client)
         store = mockStore({})
+    })
+
+    describe('getVariantOptionDisplayValue', () => {
+        it('normalizes primitive values and unsupported inputs', () => {
+            expect(getVariantOptionDisplayValue('XL')).toBe('XL')
+            expect(getVariantOptionDisplayValue('')).toBeNull()
+            expect(getVariantOptionDisplayValue(42)).toBe('42')
+            expect(getVariantOptionDisplayValue(false)).toBe('false')
+            expect(getVariantOptionDisplayValue(undefined)).toBeNull()
+            expect(getVariantOptionDisplayValue({})).toBeNull()
+        })
+
+        it('normalizes arrays and object-backed values', () => {
+            expect(
+                getVariantOptionDisplayValue([
+                    { label: 'Black' },
+                    '',
+                    { value: 'White' },
+                ]),
+            ).toBe('Black, White')
+
+            expect(
+                getVariantOptionDisplayValue({
+                    name: { title: 'Color' },
+                }),
+            ).toBe('Color')
+
+            expect(
+                getVariantOptionDisplayValue({
+                    title: 'Ottoman',
+                }),
+            ).toBe('Ottoman')
+        })
+    })
+
+    describe('generateVariantName', () => {
+        it('returns undefined when variant metadata cannot be built', () => {
+            expect(generateVariantName()).toBeUndefined()
+            expect(generateVariantName([{ name: 'Size' }], [])).toBeUndefined()
+            expect(
+                generateVariantName([{ name: '' }], [{ value: 'XL' }]),
+            ).toBeUndefined()
+            expect(
+                generateVariantName([{ name: 'Size' }], [{}]),
+            ).toBeUndefined()
+        })
+
+        it('builds variant metadata from structured option values', () => {
+            expect(
+                generateVariantName(
+                    [
+                        { name: { title: 'Size' } },
+                        { name: 'Color' },
+                        { name: 'Material' },
+                    ],
+                    [
+                        { value: 'XL' },
+                        { label: 'Black' },
+                        [{ name: 'Leather' }, null],
+                    ],
+                ),
+            ).toBe(' Size: XL |  Color: Black |  Material: Leather')
+        })
     })
 
     it('should render the product picker', () => {
@@ -290,6 +356,68 @@ describe('<ShopifyProductLine/>', () => {
                 fullProductTitle: 'Black shirt-S',
                 productId: 1,
                 variantId: 39923189874897,
+            })
+        })
+    })
+
+    it('should format object-based variant options when a variant is clicked', async () => {
+        const shopifyProduct = shopifyProductResult()[0]
+
+        shopifyProduct.data.options = [
+            {
+                id: 2,
+                name: 'Size',
+                values: ['S', 'XL'],
+                position: 1,
+                product_id: 1,
+            },
+            {
+                id: 3,
+                name: 'Color',
+                values: ['Black'],
+                position: 2,
+                product_id: 1,
+            },
+        ]
+        shopifyProduct.data.variants[3] = {
+            ...shopifyProduct.data.variants[3],
+            option1: { value: 'XL' } as any,
+            option2: { label: 'Black' } as any,
+        }
+
+        mockServer.onGet('/api/integrations/1/product/').reply(200, {
+            data: [shopifyProduct],
+        })
+
+        const { getByText } = render(
+            <Provider store={store}>
+                <ShopifyProductLine {...minProps} />
+            </Provider>,
+        )
+
+        await waitFor(() => {
+            expect(getByText(/Black shirt/i)).toBeDefined()
+        })
+
+        fireEvent.click(getByText(/Black shirt/i))
+
+        await waitFor(() => {
+            expect(getByText(/781A899/i)).toBeDefined()
+        })
+
+        fireEvent.click(getByText(/781A899/i))
+
+        await waitFor(() => {
+            expect(minProps.productClicked).toHaveBeenCalledWith({
+                imageUrl:
+                    'https://cdn.shopify.com/s/files/1/0586/5295/0737/products/black-shirt.jpg?v=1626170834',
+                price: '25.00',
+                link: 'https://undefined/products/?variant=39923189973201',
+                productTitle: 'Black shirt',
+                variantTitle: ' Size: XL |  Color: Black',
+                fullProductTitle: 'Black shirt-XL',
+                productId: 1,
+                variantId: 39923189973201,
             })
         })
     })
