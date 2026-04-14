@@ -133,16 +133,23 @@ describe('IntermediateEditPanel', () => {
         })
     }
 
+    function getFieldToggle(dialog: HTMLElement, label: string) {
+        const row = within(dialog).getByText(label).closest('tr')
+
+        expect(row).not.toBeNull()
+
+        return within(row as HTMLElement).getByRole('switch')
+    }
+
     async function confirmShopifyMetricsChanges(
         user: ReturnType<typeof render>['user'],
     ) {
         const dialog = await openShopifyMetricsPanel(user)
-        const switches = within(dialog).getAllByRole('switch')
         const confirmButton = within(dialog).getByRole('button', {
             name: /confirm/i,
         })
 
-        await user.click(switches[0])
+        await user.click(getFieldToggle(dialog, 'Note'))
 
         await waitFor(() => {
             expect(confirmButton).toBeEnabled()
@@ -163,12 +170,11 @@ describe('IntermediateEditPanel', () => {
         user: ReturnType<typeof render>['user'],
     ) {
         const dialog = await openOrderDetailsPanel(user)
-        const switches = within(dialog).getAllByRole('switch')
         const confirmButton = within(dialog).getByRole('button', {
             name: /confirm/i,
         })
 
-        await user.click(switches[0])
+        await user.click(getFieldToggle(dialog, 'Tags'))
 
         await waitFor(() => {
             expect(confirmButton).toBeEnabled()
