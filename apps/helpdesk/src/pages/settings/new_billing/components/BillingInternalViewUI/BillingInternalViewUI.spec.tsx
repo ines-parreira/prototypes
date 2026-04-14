@@ -1,10 +1,12 @@
 import client from '@repo/api-resources'
 import { payingWithCreditCard, trial, usages } from '@repo/billing/fixtures'
 import { assumeMock } from '@repo/testing'
-import { screen, waitFor, within } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
+import { fromJS } from 'immutable'
 
+import { account } from 'fixtures/account'
 import useAppDispatch from 'hooks/useAppDispatch'
 import type {
     BillingState,
@@ -17,6 +19,7 @@ import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/
 import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+import type { RootState } from 'state/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
 
 const mockedServer = new MockAdapter(client)
@@ -175,16 +178,20 @@ describe('BillingInternalViewUI', () => {
         expect(screen.getByText('Next invoice')).toBeInTheDocument()
 
         // When clicking on 'Extend trial' button
-        await user.click(screen.getByRole('button', { name: /Extend trial/i }))
+        await act(() =>
+            user.click(screen.getByRole('button', { name: /Extend trial/i })),
+        )
         const confirmButton = await screen.findByRole('button', {
             name: /Confirm/i,
         })
 
-        await user.click(confirmButton)
+        await act(() => user.click(confirmButton))
         expect(useExtendTrialMutateMock).toHaveBeenCalledWith([])
 
         // When clicking on 'Apply coupon' button
-        await user.click(screen.getByRole('button', { name: /Apply coupon/i }))
+        await act(() =>
+            user.click(screen.getByRole('button', { name: /Apply coupon/i })),
+        )
         // Then a modal should show up
         const modal = screen.getByRole('dialog')
         expect(
@@ -299,8 +306,10 @@ describe('BillingInternalViewUI', () => {
         expect(screen.queryByText(/Trial ended on/i)).toBeInTheDocument()
 
         // When clicking on 'Reactivate trial' button
-        await user.click(
-            screen.getByRole('button', { name: /Reactivate trial/i }),
+        await act(() =>
+            user.click(
+                screen.getByRole('button', { name: /Reactivate trial/i }),
+            ),
         )
 
         // Then
@@ -319,7 +328,7 @@ describe('BillingInternalViewUI', () => {
         const confirmButton = await screen.findByRole('button', {
             name: /Confirm/i,
         })
-        await user.click(confirmButton)
+        await act(() => user.click(confirmButton))
 
         expect(useReactivateTrialMutateMock).toHaveBeenCalledWith([])
     })
@@ -367,11 +376,15 @@ describe('BillingInternalViewUI', () => {
         )
 
         const deactivateButton = screen.getByRole('button', {
-            name: /Deactivate\/Ban Account/i,
+            name: /Deactivate account/i,
         })
 
         mockedServer.onPost('/billing/deactivate-account').reply(200, {})
-        await user.click(deactivateButton)
+        mockedServer.onGet('/api/account/').reply(200, {
+            ...account,
+            deactivated_datetime: '2025-01-01T00:00:00Z',
+        })
+        await act(() => user.click(deactivateButton))
 
         await waitFor(() => expect(mockedServer.history.post.length).toBe(1))
         expect(mockedServer.history.post[0].url).toBe(
@@ -398,14 +411,21 @@ describe('BillingInternalViewUI', () => {
                 {...BillingInternalViewUIDefaultProps}
                 billingState={payingWithCreditCard}
             />,
+            {
+                currentAccount: fromJS({
+                    ...account,
+                    deactivated_datetime: '2025-01-01T00:00:00Z',
+                }),
+            } as Partial<RootState>,
         )
 
         const reactivateButton = screen.getByRole('button', {
-            name: /Reactivate Account/i,
+            name: /Reactivate account/i,
         })
 
         mockedServer.onPost('/billing/reactivate-account').reply(200, {})
-        await user.click(reactivateButton)
+        mockedServer.onGet('/api/account/').reply(200, account)
+        await act(() => user.click(reactivateButton))
 
         await waitFor(() => expect(mockedServer.history.post.length).toBe(1))
         expect(mockedServer.history.post[0].url).toBe(
@@ -438,7 +458,7 @@ describe('BillingInternalViewUI', () => {
         })
 
         mockedServer.onPost('/billing/vet-account').reply(200, {})
-        await user.click(vetButton)
+        await act(() => user.click(vetButton))
 
         await waitFor(() => expect(mockedServer.history.post.length).toBe(1))
         expect(mockedServer.history.post[0].url).toBe('/billing/vet-account')
@@ -477,7 +497,7 @@ describe('BillingInternalViewUI', () => {
         })
 
         mockedServer.onPost('/billing/vet-account').reply(200, {})
-        await user.click(unvetButton)
+        await act(() => user.click(unvetButton))
 
         await waitFor(() => expect(mockedServer.history.post.length).toBe(1))
         expect(mockedServer.history.post[0].url).toBe('/billing/vet-account')

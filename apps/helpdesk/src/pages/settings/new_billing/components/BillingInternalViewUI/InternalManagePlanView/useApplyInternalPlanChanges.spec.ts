@@ -10,6 +10,8 @@ import {
 import useAppDispatch from 'hooks/useAppDispatch'
 import { useUpdateInternalSubscription } from 'models/billing/queries'
 import { ProductType } from 'models/billing/types'
+import { notify } from 'state/notifications/actions'
+import { NotificationStatus } from 'state/notifications/types'
 
 import { useApplyInternalPlanChanges } from './useApplyInternalPlanChanges'
 import type { ResolvedPlan } from './useInternalPlanEditor'
@@ -21,9 +23,13 @@ jest.mock('react-router-dom', () => ({
 }))
 jest.mock('hooks/useAppDispatch')
 jest.mock('models/billing/queries')
+jest.mock('state/notifications/actions', () => ({
+    notify: jest.fn((payload) => ({ type: 'NOTIFY', payload })),
+}))
 
 const mockDispatch = jest.fn()
 const mockMutateAsync = jest.fn()
+const mockNotify = assumeMock(notify)
 
 const mockUseAppDispatch = assumeMock(useAppDispatch)
 const mockUseUpdateInternalSubscription = assumeMock(
@@ -117,21 +123,93 @@ describe('useApplyInternalPlanChanges', () => {
 
         await act(() => result.current.apply(true))
 
-        expect(mockDispatch).toHaveBeenCalled()
+        expect(mockNotify).toHaveBeenCalledWith(
+            expect.objectContaining({
+                status: NotificationStatus.Success,
+                message: 'Subscription updated',
+            }),
+        )
         expect(mockPush).toHaveBeenCalledWith(
             expect.stringContaining('internal'),
         )
     })
 
-    it('dispatches error toast and does not navigate on failure', async () => {
-        mockMutateAsync.mockRejectedValue(new Error('update failed'))
+    it('dispatches stale-state toast with Refresh button when BE reports modified subscription', async () => {
+        const staleError = {
+            isAxiosError: true,
+            response: {
+                status: 400,
+                data: {
+                    error: {
+                        msg: "We couldn't process your request because the subscription got modified in the meantime, please reload the page.",
+                    },
+                },
+            },
+        }
+        mockMutateAsync.mockRejectedValue(staleError)
         const { result } = renderHook(() =>
             useApplyInternalPlanChanges(payingWithCreditCard, resolvedPlans),
         )
 
         await act(() => result.current.apply(true))
 
-        expect(mockDispatch).toHaveBeenCalled()
+        expect(mockNotify).toHaveBeenCalledWith(
+            expect.objectContaining({
+                status: NotificationStatus.Error,
+                message:
+                    'This subscription was modified since you loaded this page.',
+                noAutoDismiss: true,
+                showDismissButton: true,
+                buttons: [
+                    expect.objectContaining({
+                        name: 'Refresh',
+                    }),
+                ],
+            }),
+        )
+        expect(mockPush).not.toHaveBeenCalled()
+    })
+
+    it('dispatches toast with BE error message on non-stale API failure', async () => {
+        const beError = {
+            isAxiosError: true,
+            response: {
+                status: 500,
+                data: {
+                    error: { msg: 'Internal server error from BE' },
+                },
+            },
+        }
+        mockMutateAsync.mockRejectedValue(beError)
+        const { result } = renderHook(() =>
+            useApplyInternalPlanChanges(payingWithCreditCard, resolvedPlans),
+        )
+
+        await act(() => result.current.apply(true))
+
+        expect(mockNotify).toHaveBeenCalledWith(
+            expect.objectContaining({
+                status: NotificationStatus.Error,
+                message: 'Internal server error from BE',
+            }),
+        )
+        expect(mockPush).not.toHaveBeenCalled()
+    })
+
+    it('dispatches fallback toast for unknown errors', async () => {
+        mockMutateAsync.mockRejectedValue(new Error('unknown'))
+        const { result } = renderHook(() =>
+            useApplyInternalPlanChanges(payingWithCreditCard, resolvedPlans),
+        )
+
+        await act(() => result.current.apply(true))
+
+        expect(mockNotify).toHaveBeenCalledWith(
+            expect.objectContaining({
+                status: NotificationStatus.Error,
+                message: 'Failed to update subscription. Please try again.',
+            }),
+        )
         expect(mockPush).not.toHaveBeenCalled()
     })
 

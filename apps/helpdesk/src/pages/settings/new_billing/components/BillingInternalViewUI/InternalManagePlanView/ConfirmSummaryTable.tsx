@@ -67,7 +67,7 @@ export function ConfirmSummaryTable({
                     </Fragment>
                 ),
             )}
-            <Separator />
+            <Separator variant="dashed" />
             <Box flexDirection="column" gap="sm">
                 <Box justifyContent="space-between">
                     <Text variant="bold">Total</Text>
@@ -91,10 +91,15 @@ export function ConfirmSummaryTable({
                         today
                     </Text>
                 </Box>
-                <Box justifyContent="flex-end" marginTop="sm">
-                    <Text size="sm" color="content-neutral-secondary">
+                <Box marginTop="sm" marginBottom="sm" flexDirection="column">
+                    <Text
+                        size="sm"
+                        color="content-neutral-secondary"
+                        align="end"
+                    >
                         Prices exclusive of sales tax
                     </Text>
+                    <Separator />
                 </Box>
             </Box>
         </Box>

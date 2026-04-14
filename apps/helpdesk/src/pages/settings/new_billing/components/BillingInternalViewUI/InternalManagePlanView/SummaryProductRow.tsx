@@ -53,10 +53,8 @@ export function SummaryProductRow({
 }: SummaryProductRowProps) {
     const isRemoved = status === 'removed'
     const displayPlan = plan ?? (isRemoved ? currentPlan : null)
-    const priceChanged =
-        ((status === 'upgraded' || status === 'downgraded') &&
-            currentPlan !== null) ||
-        isRemoved
+    const showPreviousPrice =
+        currentPlan !== null && status !== 'unchanged' && status !== 'added'
     const tag = STATUS_TAG[status]
 
     return (
@@ -75,7 +73,7 @@ export function SummaryProductRow({
                 )}
             </Box>
             <Box alignItems="center" gap="xs">
-                {priceChanged && currentPlan && (
+                {showPreviousPrice && currentPlan && (
                     <Text color="content-neutral-tertiary">
                         <s>{getProductPrice(currentPlan, productType)}</s>
                     </Text>

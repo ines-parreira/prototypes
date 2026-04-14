@@ -35,6 +35,28 @@ import type { Notification } from 'state/notifications/types'
 import { NotificationStatus } from 'state/notifications/types'
 import type { RootState, StoreDispatch } from 'state/types'
 
+export const fetchAccount =
+    () =>
+    (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        return client
+            .get<Account>('/api/account/')
+            .then((json) => json?.data)
+            .then(
+                (resp) => {
+                    dispatch({
+                        type: constants.UPDATE_ACCOUNT_SUCCESS,
+                        resp,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: constants.UPDATE_ACCOUNT_ERROR,
+                        error,
+                    })
+                },
+            )
+    }
+
 export const updateAccount =
     (values: Account) =>
     (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {

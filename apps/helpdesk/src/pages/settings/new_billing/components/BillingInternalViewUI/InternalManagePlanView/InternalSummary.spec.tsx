@@ -5,6 +5,8 @@ import {
     basicMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
     voicePlan0,
+    voicePlan3,
+    voicePlan4,
 } from 'fixtures/plans'
 import { ProductType } from 'models/billing/types'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
@@ -71,6 +73,22 @@ describe('InternalSummary', () => {
         expect(screen.getByText('$60/month')).toBeInTheDocument()
     })
 
+    it('renders Changed tag and strikethrough old price when plan changes at same amount', () => {
+        const plans: ResolvedPlan[] = [
+            makeResolved({
+                productType: ProductType.Voice,
+                plan: voicePlan4,
+                currentPlan: voicePlan3,
+                status: 'changed',
+            }),
+        ]
+        renderComponent(plans, true)
+
+        expect(screen.getByText('Changed')).toBeInTheDocument()
+        expect(screen.getByText('$30/quarter')).toBeInTheDocument()
+        expect(screen.getByText('$30/year')).toBeInTheDocument()
+    })
+
     it('excludes trial plans from total calculation', () => {
         const plans: ResolvedPlan[] = [
             makeResolved({
@@ -123,7 +141,7 @@ describe('InternalSummary', () => {
             makeResolved({
                 productType: ProductType.Voice,
                 plan: null,
-                currentPlan: voicePlan0,
+                currentPlan: voicePlan3,
                 status: 'removed',
             }),
         ]
@@ -131,6 +149,8 @@ describe('InternalSummary', () => {
 
         expect(screen.getByText('Removed')).toBeInTheDocument()
         expect(screen.getByText('Voice')).toBeInTheDocument()
+        expect(screen.getByText('$30/quarter').closest('s')).not.toBeNull()
+        expect(screen.queryByText('$30/year')).not.toBeInTheDocument()
     })
 
     it('renders strikethrough on the total row when total price changes', () => {

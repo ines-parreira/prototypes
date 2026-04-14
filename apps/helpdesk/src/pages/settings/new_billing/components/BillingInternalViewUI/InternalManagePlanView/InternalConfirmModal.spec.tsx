@@ -1,5 +1,5 @@
 import { payingWithCreditCard } from '@repo/billing/fixtures'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import {
@@ -101,8 +101,10 @@ describe('InternalConfirmModal', () => {
         const user = userEvent.setup()
         const { props } = renderComponent()
 
-        await user.click(
-            screen.getByRole('button', { name: /apply with invoice/i }),
+        await act(() =>
+            user.click(
+                screen.getByRole('button', { name: /apply with invoice/i }),
+            ),
         )
 
         expect(props.onApply).toHaveBeenCalledWith(true)
@@ -112,8 +114,10 @@ describe('InternalConfirmModal', () => {
         const user = userEvent.setup()
         const { props } = renderComponent()
 
-        await user.click(
-            screen.getByRole('button', { name: /apply without invoice/i }),
+        await act(() =>
+            user.click(
+                screen.getByRole('button', { name: /apply without invoice/i }),
+            ),
         )
 
         expect(props.onApply).toHaveBeenCalledWith(false)
@@ -128,6 +132,63 @@ describe('InternalConfirmModal', () => {
         expect(
             screen.getByRole('button', { name: /apply with invoice/i }),
         ).toBeDisabled()
+    })
+
+    describe('when there is no upgrade (downgrade/removal only)', () => {
+        const downgradeOnly: ResolvedPlan[] = [
+            makeResolved({
+                productType: ProductType.Helpdesk,
+                plan: basicMonthlyHelpdeskPlan,
+                currentPlan: proMonthlyHelpdeskPlan,
+                status: 'downgraded',
+            }),
+            makeResolved({
+                productType: ProductType.Voice,
+                plan: voicePlan0,
+                currentPlan: voicePlan0,
+            }),
+        ]
+
+        it('renders a single "Apply" button instead of invoice options', () => {
+            renderComponent({ resolvedPlans: downgradeOnly })
+
+            expect(
+                screen.getByRole('button', { name: /^Apply$/i }),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', {
+                    name: /apply with invoice/i,
+                }),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByRole('button', {
+                    name: /apply without invoice/i,
+                }),
+            ).not.toBeInTheDocument()
+        })
+
+        it('calls onApply(false) when "Apply" is clicked', async () => {
+            const user = userEvent.setup()
+            const { props } = renderComponent({ resolvedPlans: downgradeOnly })
+
+            await act(() =>
+                user.click(screen.getByRole('button', { name: /^Apply$/i })),
+            )
+
+            expect(props.onApply).toHaveBeenCalledWith(false)
+        })
+
+        it('shows loading state when isSubmitting is true', () => {
+            renderComponent({
+                resolvedPlans: downgradeOnly,
+                isSubmitting: true,
+            })
+
+            const applyButton = screen.getByRole('button', {
+                name: /Apply/i,
+            })
+            expect(applyButton).toHaveAttribute('aria-disabled', 'true')
+        })
     })
 
     it('renders "Prices exclusive of sales tax" text', () => {

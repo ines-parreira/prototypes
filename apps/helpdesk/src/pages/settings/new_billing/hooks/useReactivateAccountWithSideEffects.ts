@@ -6,6 +6,7 @@ import {
     getBillingStateQuery,
     useReactivateAccount,
 } from 'models/billing/queries'
+import { fetchAccount } from 'state/currentAccount/actions'
 import { notify } from 'state/notifications/actions'
 import {
     NotificationStatus,
@@ -19,6 +20,7 @@ export const useReactivateAccountWithSideEffects = () => {
     return useReactivateAccount({
         onSuccess: () => {
             void queryClient.invalidateQueries(getBillingStateQuery)
+            void dispatch(fetchAccount())
             void dispatch(
                 notify({
                     message: 'Account has been successfully reactivated.',

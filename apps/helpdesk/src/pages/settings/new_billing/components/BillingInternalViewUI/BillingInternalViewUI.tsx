@@ -1,5 +1,6 @@
 import { Button } from '@gorgias/axiom'
 
+import { useIsAccountDeactivated } from 'hooks/useIsAccountDeactivated'
 import type { BillingState } from 'models/billing/types'
 import { SubscriptionStatus } from 'models/billing/types'
 
@@ -26,7 +27,6 @@ export function BillingInternalViewUI({
     const deactivateAccount = useDeactivateAccountWithSideEffects()
     const reactivateAccount = useReactivateAccountWithSideEffects()
     const setIsVettedAccount = useSetIsVettedWithSideEffects()
-
     const currentCoupon = billingState.subscription?.coupon
 
     const isHelpdeskAndAutomateCoupon = (currentCoupon?.name || '').includes(
@@ -34,6 +34,7 @@ export function BillingInternalViewUI({
     )
     const isHelpdeskCoupon = (currentCoupon?.name || '').includes('-hd-')
     const isAutomateCoupon = (currentCoupon?.name || '').includes('-ao-')
+    const isDeactivated = useIsAccountDeactivated()
     const isTrialing =
         billingState.subscription.status === SubscriptionStatus.TRIALING
     const endOfTrialDatetime = billingState.subscription.trial_end_datetime
@@ -41,24 +42,26 @@ export function BillingInternalViewUI({
     return (
         <div className={css.container}>
             <div className={css.buttons_line}>
-                <Button
-                    onClick={() => {
-                        deactivateAccount.mutate([])
-                    }}
-                    isLoading={deactivateAccount.isLoading}
-                >
-                    Deactivate/Ban account
-                </Button>
-                <Button
-                    onClick={() => {
-                        reactivateAccount.mutate([])
-                    }}
-                    isLoading={reactivateAccount.isLoading}
-                >
-                    Reactivate account
-                </Button>
-            </div>
-            <div className={css.buttons_line}>
+                {isDeactivated ? (
+                    <Button
+                        onClick={() => {
+                            reactivateAccount.mutate([])
+                        }}
+                        isLoading={reactivateAccount.isLoading}
+                    >
+                        Reactivate account
+                    </Button>
+                ) : (
+                    <Button
+                        onClick={() => {
+                            deactivateAccount.mutate([])
+                        }}
+                        isLoading={deactivateAccount.isLoading}
+                        intent="destructive"
+                    >
+                        Deactivate account
+                    </Button>
+                )}
                 <Button
                     onClick={() => {
                         setIsVettedAccount.mutate([
@@ -66,6 +69,7 @@ export function BillingInternalViewUI({
                         ])
                     }}
                     isLoading={setIsVettedAccount.isLoading}
+                    isDisabled={isDeactivated}
                 >
                     {billingState.customer.is_vetted
                         ? 'Unvet account'
@@ -76,6 +80,7 @@ export function BillingInternalViewUI({
                     onClick={() => {
                         history.push(BILLING_INTERNAL_MANAGE_PLAN_PATH)
                     }}
+                    isDisabled={isDeactivated}
                 >
                     Manage plans
                 </Button> */}
@@ -102,6 +107,7 @@ export function BillingInternalViewUI({
                     plan={billingState.current_plans.helpdesk}
                     canApplyProductCoupon={!currentCoupon}
                     availableCoupons={helpdeskOnlyCoupons}
+                    isDeactivated={isDeactivated}
                 />
                 <ProductCardForCoupon
                     productName="AI Agent"
@@ -111,6 +117,7 @@ export function BillingInternalViewUI({
                     plan={billingState.current_plans.automate}
                     canApplyProductCoupon={!currentCoupon}
                     availableCoupons={automateOnlyCoupons}
+                    isDeactivated={isDeactivated}
                 />
                 <ProductCardForCoupon
                     productName="Voice"
@@ -119,6 +126,7 @@ export function BillingInternalViewUI({
                     currentCoupon={null}
                     plan={billingState.current_plans.voice}
                     canApplyProductCoupon={false}
+                    isDeactivated={isDeactivated}
                 />
                 <ProductCardForCoupon
                     productName="SMS"
@@ -127,6 +135,7 @@ export function BillingInternalViewUI({
                     currentCoupon={null}
                     plan={billingState.current_plans.sms}
                     canApplyProductCoupon={false}
+                    isDeactivated={isDeactivated}
                 />
                 <ProductCardForCoupon
                     productName="Convert"
@@ -135,6 +144,7 @@ export function BillingInternalViewUI({
                     currentCoupon={null}
                     plan={billingState.current_plans.convert}
                     canApplyProductCoupon={false}
+                    isDeactivated={isDeactivated}
                 />
             </div>
         </div>
