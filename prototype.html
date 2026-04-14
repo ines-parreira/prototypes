@@ -16,69 +16,49 @@
 
     /* ── Sidebar ─────────────────────────────────────────────────── */
     .sidebar {
-      width: 240px;
-      flex-shrink: 0;
+      width: 240px; flex-shrink: 0;
       background: #fafafa;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 8px;
-      height: 100vh;
+      display: flex; flex-direction: column; justify-content: space-between;
+      padding: 8px; height: 100vh;
     }
-
     .top-nav { display: flex; flex-direction: column; gap: 16px; }
 
-    /* Product header row */
-    .product-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-left: 2px;
-    }
+    /* Product header */
+    .product-header { display: flex; align-items: center; justify-content: space-between; padding-left: 2px; }
     .product-logo { display: flex; align-items: center; gap: 2px; }
     .product-icon {
-      width: 32px; height: 32px;
-      background: #ebecef;
-      border: 0.5px solid rgba(103,113,131,0.5);
-      border-radius: 8px;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
+      width: 32px; height: 32px; background: #7e55f6;
+      border: none; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .product-name { font-size: 16px; font-weight: 600; color: #1e242e; padding: 0 8px; }
     .header-actions { display: flex; gap: 8px; }
     .icon-btn {
-      width: 28px; height: 28px;
-      border-radius: 6px; border: none; background: transparent;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px; border-radius: 6px; border: none;
+      background: transparent; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
     }
     .icon-btn:hover { background: #ebecef; }
 
     /* Nav items */
-    .nav-group { display: flex; flex-direction: column; gap: 12px; }
-    .recents-group { gap: 4px; }
-    .nav-item {
-      display: flex; align-items: center; gap: 8px;
-      height: 24px; padding: 0 8px;
-      border-radius: 8px; cursor: pointer;
-      width: 224px; transition: background 0.1s;
-    }
+    .nav-group { display: flex; flex-direction: column; gap: 2px; }
+    .nav-item { display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 4px 0 8px; border-radius: 8px; cursor: pointer; width: 224px; transition: background 0.1s; }
+    .nav-item svg, .nav-item img { display: block; flex-shrink: 0; width: 16px; height: 16px; }
     .nav-item:hover:not(.active) { background: rgba(0,0,0,0.04); }
-    .nav-item.active { background: #f1ecff; }
+    .nav-item.active { background: #f1ecff; color: #683fcf; }
     .nav-item.active .nav-label { font-size: 14px; font-weight: 600; color: #683fcf; }
+    .nav-item.secondary { color: #1e242e; }
     .nav-item.secondary .nav-label { font-size: 14px; font-weight: 500; color: #1e242e; }
     .nav-item.recent .nav-label { font-size: 14px; font-weight: 400; color: #1e242e; }
 
-    .section-header {
-      height: 24px; padding: 0 8px;
-      display: flex; align-items: center;
-      font-size: 10px; font-weight: 600;
-      color: #6e7686;
-    }
-    .recents-group { display: flex; flex-direction: column; gap: 0; margin-top: 8px; }
+    /* Recents */
+    .recents-group { display: flex; flex-direction: column; gap: 4px; }
+    .recents-header { height: 24px; padding: 0 8px; display: flex; align-items: center; }
+    .recents-label { font-size: 12px; font-weight: 400; color: #6e7686; letter-spacing: 0.12px; }
 
-    /* Bottom avatar */
-    .bottom-nav { padding-top: 16px; }
-    .avatar-btn { background: none; border: none; cursor: pointer; position: relative; display: inline-block; }
+    /* Bottom nav */
+    .bottom-nav { padding-top: 16px; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+    .avatar-btn { background: none; border: none; cursor: pointer; position: relative; display: inline-block; align-self: flex-start; }
     .avatar {
       width: 32px; height: 32px; border-radius: 50%;
       background: linear-gradient(155deg, #ebecef 17%, #c7cad1 92%);
@@ -86,10 +66,104 @@
       font-size: 13px; font-weight: 600; color: #5c6370;
     }
     .online-dot {
-      width: 9px; height: 9px;
-      background: #22c55e; border: 1.5px solid white;
-      border-radius: 50%; position: absolute; bottom: -1px; right: -1px;
+      width: 9px; height: 9px; background: #22c55e;
+      border: 1.5px solid #fafafa; border-radius: 50%;
+      position: absolute; bottom: -1px; right: -1px;
     }
+
+    /* Digest playing pill */
+    /* ── Soundwave bar animation ────────────────────────────────── */
+    @keyframes sw-bounce {
+      0%, 100% { transform: scaleY(0.22); }
+      50%       { transform: scaleY(1); }
+    }
+    .sw-bar {
+      stroke-width: 1.5; stroke-linecap: round;
+      transform-box: fill-box; transform-origin: 50% 50%;
+      vector-effect: non-scaling-stroke;
+    }
+    /* Staggered animation when is-playing ancestor present */
+    .is-playing .sw-bar-1 { animation: sw-bounce 0.85s ease-in-out infinite 0.00s; }
+    .is-playing .sw-bar-2 { animation: sw-bounce 0.85s ease-in-out infinite 0.17s; }
+    .is-playing .sw-bar-3 { animation: sw-bounce 0.85s ease-in-out infinite 0.34s; }
+    .is-playing .sw-bar-4 { animation: sw-bounce 0.85s ease-in-out infinite 0.17s; }
+    .is-playing .sw-bar-5 { animation: sw-bounce 0.85s ease-in-out infinite 0.08s; }
+    /* Paused: bars shrunk and dimmed */
+    .is-paused .sw-bar { transform: scaleY(0.28); opacity: 0.5; }
+
+    /* ── Listen pill (digest page) ─────────────────────────────── */
+    .listen-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 7px 12px; border-radius: 20px;
+      background: #1e242e; border: none; cursor: pointer;
+      font-family: inherit; font-size: 13px; font-weight: 500; color: white;
+      transition: background 0.15s;
+    }
+    .listen-pill:not(.is-playing):not(.is-paused):not(.is-loading):hover { background: #2e3644; }
+    .listen-pill.is-loading  { opacity: 0.65; cursor: wait; }
+    .listen-pill.is-playing  { background: #683fcf; }
+    .listen-pill.is-playing:hover { background: #5b34b5; }
+    .listen-pill.is-paused   { background: #3d4250; }
+    .listen-pill.is-paused:hover { background: #4a5060; }
+    /* Icon slot */
+    .lp-icon { position: relative; width: 16px; height: 16px; flex-shrink: 0; }
+    .lp-icon svg { position: absolute; inset: 0; width: 16px; height: 16px; }
+    /* Default: speaker, all others hidden */
+    .lp-icon .icon-speaker { display: block; }
+    .lp-icon .icon-wave, .lp-icon .icon-pause, .lp-icon .icon-play { display: none; }
+    /* Playing state */
+    .listen-pill.is-playing  .lp-icon .icon-speaker { display: none; }
+    .listen-pill.is-playing  .lp-icon .icon-wave    { display: block; }
+    .listen-pill.is-playing:hover .lp-icon .icon-wave   { display: none; }
+    .listen-pill.is-playing:hover .lp-icon .icon-pause  { display: block; }
+    /* Paused state */
+    .listen-pill.is-paused   .lp-icon .icon-speaker { display: none; }
+    .listen-pill.is-paused   .lp-icon .icon-wave    { display: block; }
+    .listen-pill.is-paused:hover .lp-icon .icon-wave  { display: none; }
+    .listen-pill.is-paused:hover .lp-icon .icon-play  { display: block; }
+    /* Loading state */
+    .listen-pill.is-loading  .lp-icon .icon-speaker { display: block; }
+    /* Label: hide when active */
+    .listen-pill.is-playing .lp-label,
+    .listen-pill.is-paused  .lp-label,
+    .listen-pill.is-loading .lp-label { display: none; }
+    .listen-pill-time, .lp-time {
+      font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.6);
+      margin-left: 2px; white-space: nowrap;
+    }
+
+    /* ── Nav digest pill (persistent playback) ─────────────────── */
+    .digest-pill {
+      display: inline-flex; align-items: center; gap: 2px;
+      height: 28px; padding: 2px 8px 2px 4px;
+      background: white; border: 0.2px solid rgba(103,113,131,0.5);
+      border-radius: 1000px; box-shadow: 0px 2px 3px 0px rgba(0,0,0,0.05);
+      cursor: pointer; user-select: none; transition: box-shadow 0.15s;
+    }
+    .digest-pill:hover { box-shadow: 0px 2px 8px 0px rgba(0,0,0,0.12); }
+    /* Icon button inside pill */
+    .nav-pill-icon-btn {
+      width: 22px; height: 22px; border-radius: 50%; flex-shrink: 0;
+      background: none; border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0; color: #1e242e; transition: background 0.1s;
+    }
+    .nav-pill-icon-btn:hover { background: rgba(0,0,0,0.07); }
+    .nav-pill-icon-btn svg { width: 14px; height: 14px; }
+    /* Nav pill icons */
+    .np-icon-wave, .np-icon-pause, .np-icon-play { display: none; }
+    .digest-pill.is-playing .np-icon-wave              { display: block; }
+    .digest-pill.is-playing .nav-pill-icon-btn:hover .np-icon-wave  { display: none; }
+    .digest-pill.is-playing .nav-pill-icon-btn:hover .np-icon-pause { display: block; }
+    .digest-pill.is-paused  .np-icon-wave              { display: block; }
+    .digest-pill.is-paused  .nav-pill-icon-btn:hover .np-icon-wave  { display: none; }
+    .digest-pill.is-paused  .nav-pill-icon-btn:hover .np-icon-play  { display: block; }
+    /* Nav pill text */
+    .nav-pill-info { display: flex; align-items: center; gap: 4px; padding-left: 2px; }
+    .digest-pill-title { font-size: 12px; font-weight: 600; color: #1e242e; letter-spacing: 0.12px; white-space: nowrap; }
+    .digest-pill-time  { font-size: 12px; font-weight: 400; color: rgba(30,36,46,0.6); letter-spacing: 0.12px; white-space: nowrap; }
+    .digest-pill.is-paused .digest-pill-title { color: #6e7686; }
+
 
     /* ── Main ────────────────────────────────────────────────────── */
     .main { flex: 1; padding: 8px; display: flex; flex-direction: column; min-width: 0; }
@@ -121,11 +195,13 @@
     }
 
     /* ── Chat input ───────────────────────────────────────────────── */
-    .chat-area { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+    .chat-area { display: flex; flex-direction: column; align-items: center; gap: 24px; }
+
+    /* listen-pill styles defined above in soundwave/nav-pill section */
 
     .chat-input-box {
       width: 600px; border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 8px; overflow: hidden; background: white;
+      border-radius: 12px; overflow: hidden; background: white;
       box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
     }
     .chat-input-inner {
@@ -316,9 +392,9 @@
     .attention-section { display: flex; flex-direction: column; gap: 12px; }
     .attention-header {
       display: flex; align-items: center; gap: 8px;
-      font-size: 16px; font-weight: 600; color: #1e242e;
+      font-size: 14px; font-weight: 600; color: #1e242e;
     }
-    /* Quantity badge — matches Axiom Quantity component with border="on" */
+    /* Quantity badge — matches Axiom Quantity with border="on" */
     .attention-count {
       display: inline-flex; align-items: center; justify-content: center;
       min-width: 20px; height: 20px; padding: 0 6px; border-radius: 10px;
@@ -327,25 +403,31 @@
     }
     .attention-card {
       background: white; border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 12px; padding: 20px 24px;
+      border-radius: 12px; padding: 24px;
       box-shadow: 0 2px 20px 0 rgba(0,0,0,0.04);
-      display: flex; align-items: flex-start; gap: 16px;
       cursor: pointer; transition: box-shadow 0.15s;
     }
     .attention-card:hover { box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08); }
-    .attention-card-body { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+    /* Card body: 12px between tag row | title+desc group | timestamp */
+    .attention-card-body { display: flex; flex-direction: column; gap: 12px; }
+    /* Title + description grouped with 6px gap between them */
+    .attn-content-group { display: flex; flex-direction: column; gap: 6px; }
+    /* Axiom Tag md — 6px radius, 12px/500, 2px 8px padding */
     .attn-tag {
       display: inline-flex; align-items: center;
-      padding: 2px 8px; border-radius: 20px;
-      font-size: 11px; font-weight: 600; letter-spacing: 0.02em;
-      align-self: flex-start;
+      padding: 2px 8px; border-radius: 6px;
+      font-size: 12px; font-weight: 500;
+      align-self: flex-start; white-space: nowrap;
     }
-    /* Tag colors match Axiom: Red=Alert, Orange=Review, Accent=Opportunity */
-    .attn-tag.alert   { background: #fff1f0; color: #d90b28; border: 1px solid rgba(217,11,40,0.2); }
-    .attn-tag.review  { background: #fff7ed; color: #ea580c; border: 1px solid rgba(234,88,12,0.2); }
-    .attn-tag.opp     { background: #f1ecff; color: #683fcf; border: 1px solid rgba(104,63,207,0.2); }
-    .attn-title { font-size: 15px; font-weight: 600; color: #1e242e; line-height: 1.4; }
-    .attn-desc  { font-size: 13px; font-weight: 400; color: #5c6370; line-height: 1.5; }
+    /* Tag colors matching Axiom color tokens */
+    .attn-tag.alert    { background: #ffecef; color: #d90b28; border: 1px solid rgba(217,11,40,0.15); }
+    .attn-tag.tracking { background: #fff5ee; color: #c2410c; border: 1px solid rgba(194,65,12,0.2); }
+    .attn-tag.neutral  { background: white; color: #1e242e; border: 1px solid rgba(0,0,0,0.12); }
+    .attn-tag.review   { background: #fff7ed; color: #c2410c; border: 1px solid rgba(194,65,12,0.2); }
+    .attn-tag.opp      { background: #f1ecff; color: #683fcf; border: 1px solid rgba(104,63,207,0.2); }
+    .attn-timestamp    { font-size: 10px; font-weight: 400; color: #5c6370; line-height: 14px; }
+    .attn-title { font-size: 14px; font-weight: 600; color: #1e242e; line-height: 20px; }
+    .attn-desc  { font-size: 12px; font-weight: 400; color: #5c6370; line-height: 16px; letter-spacing: 0.12px; }
     .attn-metrics { display: flex; gap: 24px; margin-top: 12px; }
     /* Each metric pair stacks label above value with 4px gap */
     .attn-metrics > div { display: flex; flex-direction: column; gap: 4px; }
@@ -358,25 +440,183 @@
     .attn-chart { flex-shrink: 0; width: 120px; display: flex; align-items: center; }
     .attn-chart img { width: 100%; }
 
-    /* Recents header with + btn */
-    .recents-header {
-      height: 24px; padding: 0 8px;
-      display: flex; align-items: center; justify-content: space-between;
+
+    /* ── Performance Page ──────────────────────────────────────────────── */
+
+    /* Date range pill tabs */
+    .perf-range-tabs {
+      display: flex; gap: 2px;
+      background: #f0f0f3; border-radius: 8px; padding: 3px;
     }
-    .recents-label { font-size: 10px; font-weight: 600; color: #6e7686; }
-    /* + button hidden, appears only on hover of the Recents row */
-    .recents-add-btn {
-      width: 16px; height: 16px; border: none; background: transparent;
-      cursor: pointer; display: flex; align-items: center; justify-content: center;
-      color: #6e7686; border-radius: 4px; padding: 0;
-      opacity: 0; transition: opacity 0.15s;
+    .range-tab {
+      padding: 4px 10px; border-radius: 6px; border: none; background: transparent;
+      font-family: inherit; font-size: 12px; font-weight: 500; color: #5c6370;
+      cursor: pointer; transition: all 0.1s;
     }
-    .recents-header:hover .recents-add-btn { opacity: 1; }
-    .recents-add-btn:hover { background: rgba(0,0,0,0.06); color: #1e242e; }
+    .range-tab.active { background: white; color: #1e242e; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .range-tab:hover:not(.active) { color: #1e242e; }
+
+    /* Page-level tabs */
+    .perf-nav-tabs {
+      display: flex; gap: 0;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      padding: 0 24px; flex-shrink: 0;
+    }
+    .perf-tab {
+      padding: 10px 16px; font-size: 13px; font-weight: 500; color: #5c6370;
+      cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px;
+      transition: color 0.1s;
+    }
+    .perf-tab.active { color: #1e242e; border-bottom-color: #1e242e; }
+    .perf-tab:hover:not(.active) { color: #1e242e; }
+
+    /* Section title */
+    .perf-section-title {
+      font-size: 14px; font-weight: 600; color: #1e242e; margin-bottom: 16px;
+    }
+
+    /* Metric cards */
+    .perf-metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .perf-metric-card {
+      background: white; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 16px 24px 24px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      display: flex; flex-direction: column; gap: 4px;
+    }
+    .perf-metric-label { font-size: 12px; font-weight: 500; color: #5c6370; letter-spacing: 0.12px; height: 24px; display: flex; align-items: center; }
+    .perf-metric-stats { display: flex; align-items: center; gap: 8px; height: 32px; }
+    .perf-metric-value { font-size: 24px; font-weight: 600; color: #1e242e; line-height: 32px; }
+    .perf-metric-delta { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 400; letter-spacing: 0.12px; padding: 1px 4px; border-radius: 4px; }
+    .perf-delta-up { color: #147656; }
+    .perf-delta-down { color: #a94f13; }
+    .perf-delta-neutral { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6e7686; letter-spacing: 0.12px; }
+    .perf-dot-green { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
+
+    /* Skills table */
+    .skill-table-card {
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px; overflow: hidden;
+    }
+    .skill-table { width: 100%; border-collapse: collapse; }
+    .skill-table thead th {
+      font-size: 12px; font-weight: 600; color: #5c6370;
+      text-align: left; padding: 8px 16px; height: 40px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      letter-spacing: 0.12px; white-space: nowrap;
+    }
+    .skill-table tbody td {
+      padding: 10px 16px; height: 40px; border-bottom: 1px solid rgba(0,0,0,0.08);
+      font-size: 14px; color: #1e242e; white-space: nowrap;
+    }
+    .skill-table tbody tr:last-child td { border-bottom: none; }
+    .skill-name-cell { font-weight: 600; }
+    .skill-name-dim { font-weight: 600; color: #8992a0; }
+    .skill-dim { color: #8992a0; }
+    /* Status tags */
+    .skill-tag-green {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px; border-radius: 4px;
+      background: #dcfce7; font-size: 12px; font-weight: 500; color: #147656;
+    }
+    .skill-tag-grey {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px; border-radius: 4px;
+      background: #f0f0f3; font-size: 12px; font-weight: 500; color: #6e7686;
+    }
+
+    /* Escalation reasons */
+    .escalation-card {
+      background: white; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 16px 20px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .esc-row { display: flex; align-items: center; gap: 12px; }
+    .esc-label { font-size: 13px; color: #1e242e; width: 180px; flex-shrink: 0; }
+    .esc-bar-wrap { flex: 1; background: #f0f0f3; border-radius: 3px; height: 5px; overflow: hidden; }
+    .esc-bar { height: 100%; border-radius: 3px; }
+    .esc-count { font-size: 13px; font-weight: 600; color: #1e242e; width: 22px; text-align: right; flex-shrink: 0; }
+    .esc-example { font-size: 11px; color: #9ea6b3; flex-shrink: 0; max-width: 220px; }
+
+    /* Volume & efficiency */
+    .volume-card {
+      background: white; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 16px 20px 20px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+    }
+    .volume-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+    .volume-legend { display: flex; gap: 14px; }
+    .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #5c6370; }
+    .legend-swatch { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .volume-chart-wrap { position: relative; }
+    .volume-chart-wrap svg { width: 100%; display: block; }
+    .volume-axis { display: flex; justify-content: space-between; margin-top: 6px; font-size: 10px; color: #9ea6b3; padding: 0 4px; }
+    /* Annotation label on chart */
+    .chart-annotation {
+      position: absolute; top: 0; font-size: 10px; color: #683fcf;
+      white-space: nowrap; transform: translateX(-50%);
+    }
+    /* Efficiency stats */
+    .efficiency-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+      margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.06);
+    }
+    .eff-stat { display: flex; flex-direction: column; gap: 3px; padding: 0 4px; }
+    .eff-stat + .eff-stat { border-left: 1px solid rgba(0,0,0,0.06); padding-left: 16px; }
+    .eff-label { font-size: 11px; color: #6e7686; }
+    .eff-value { font-size: 22px; font-weight: 600; color: #1e242e; line-height: 1.2; }
+    .eff-sub { font-size: 11px; color: #5c6370; }
+
+    /* Escalation reasons grid */
+    .esc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .esc-card {
+      background: white; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 20px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .esc-card-label { font-size: 12px; font-weight: 500; color: #5c6370; }
+    .esc-card-value { font-size: 28px; font-weight: 700; color: #1e242e; line-height: 1.1; }
+    .esc-card-desc  { font-size: 12px; color: #6e7686; line-height: 1.5; }
+
+    /* Volume and efficiency layout */
+    .vol-eff-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; align-items: start; }
+    .vol-card-label { font-size: 12px; font-weight: 500; color: #5c6370; margin-bottom: 16px; }
+    .vol-legend { display: flex; gap: 14px; margin-top: 14px; }
+    .vol-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #5c6370; }
+    .vol-legend-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+
+    /* Conversation efficiency card */
+    .eff-card {
+      background: white; border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 12px; padding: 20px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      display: flex; flex-direction: column;
+    }
+    .eff-card-header { font-size: 12px; font-weight: 500; color: #5c6370; margin-bottom: 4px; }
+    .eff-stat-group { display: flex; flex-direction: column; gap: 4px; padding: 16px 0; }
+    .eff-stat-group:first-of-type { padding-top: 0; }
+    .eff-stat-label { font-size: 12px; color: #5c6370; }
+    .eff-stat-value { font-size: 26px; font-weight: 700; color: #1e242e; line-height: 1.2; }
+    .eff-stat-sub { font-size: 12px; color: #147656; }
+    .eff-divider { height: 1px; background: rgba(0,0,0,0.06); flex-shrink: 0; }
+
+    /* Experiments empty state */
+    .experiments-empty {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 24px; gap: 10px;
+    }
+    .experiments-empty-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      background: #f5f5f7; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 4px;
+    }
+    .experiments-empty-title { font-size: 15px; font-weight: 600; color: #1e242e; }
+    .experiments-empty-desc { font-size: 13px; color: #5c6370; text-align: center; max-width: 300px; line-height: 1.6; }
   </style>
 </head>
 <body>
-<div class="app" id="daily-digest-page">
+<div class="app" id="app-shell">
 
   <!-- ── Sidebar ──────────────────────────────────────────────────── -->
   <nav class="sidebar">
@@ -386,52 +626,39 @@
       <div class="product-header">
         <div class="product-logo">
           <div class="product-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16.8426 14.4231V9.67768C16.8426 9.22065 16.8422 8.992 16.7867 8.77933C16.7374 8.59086 16.6566 8.41251 16.5472 8.25134C16.4237 8.06947 16.2521 7.91865 15.9081 7.61769L11.8025 4.02527C11.1639 3.46649 10.8446 3.18724 10.4852 3.08097C10.1686 2.98733 9.8311 2.98733 9.51446 3.08097C9.15538 3.18716 8.83654 3.46614 8.1989 4.02408L4.09192 7.61769C3.74796 7.91865 3.57638 8.06947 3.45292 8.25134C3.34351 8.41251 3.26205 8.59086 3.2128 8.77933C3.15723 8.992 3.15723 9.22064 3.15723 9.67768V14.4231C3.15723 15.2201 3.15723 15.6185 3.28744 15.9329C3.46107 16.352 3.79387 16.6855 4.21303 16.8591C4.52741 16.9893 4.92595 16.9893 5.72302 16.9893C6.5201 16.9893 6.91907 16.9893 7.23345 16.8591C7.65261 16.6855 7.98533 16.3521 8.15895 15.933C8.28917 15.6186 8.28926 15.22 8.28926 14.423V13.5676C8.28926 12.6229 9.05515 11.857 9.99993 11.857C10.9447 11.857 11.7106 12.6229 11.7106 13.5676V14.423C11.7106 15.22 11.7106 15.6186 11.8408 15.933C12.0144 16.3521 12.3473 16.6855 12.7664 16.8591C13.0808 16.9893 13.4793 16.9893 14.2764 16.9893C15.0735 16.9893 15.4725 16.9893 15.7868 16.8591C16.206 16.6855 16.5387 16.352 16.7123 15.9329C16.8425 15.6185 16.8426 15.2201 16.8426 14.4231Z" stroke="#5C6370" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.8426 14.4231V9.67768C16.8426 9.22065 16.8422 8.992 16.7867 8.77933C16.7374 8.59086 16.6566 8.41251 16.5472 8.25134C16.4237 8.06947 16.2521 7.91865 15.9081 7.61769L11.8025 4.02527C11.1639 3.46649 10.8446 3.18724 10.4852 3.08097C10.1686 2.98733 9.8311 2.98733 9.51446 3.08097C9.15538 3.18716 8.83654 3.46614 8.1989 4.02408L4.09192 7.61769C3.74796 7.91865 3.57638 8.06947 3.45292 8.25134C3.34351 8.41251 3.26205 8.59086 3.2128 8.77933C3.15723 8.992 3.15723 9.22064 3.15723 9.67768V14.4231C3.15723 15.2201 3.15723 15.6185 3.28744 15.9329C3.46107 16.352 3.79387 16.6855 4.21303 16.8591C4.52741 16.9893 4.92595 16.9893 5.72302 16.9893C6.5201 16.9893 6.91907 16.9893 7.23345 16.8591C7.65261 16.6855 7.98533 16.3521 8.15895 15.933C8.28917 15.6186 8.28926 15.22 8.28926 14.423V13.5676C8.28926 12.6229 9.05515 11.857 9.99993 11.857C10.9447 11.857 11.7106 12.6229 11.7106 13.5676V14.423C11.7106 15.22 11.7106 15.6186 11.8408 15.933C12.0144 16.3521 12.3473 16.6855 12.7664 16.8591C13.0808 16.9893 13.4793 16.9893 14.2764 16.9893C15.0735 16.9893 15.4725 16.9893 15.7868 16.8591C16.206 16.6855 16.5387 16.352 16.7123 15.9329C16.8425 15.6185 16.8426 15.2201 16.8426 14.4231Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <span class="product-name">Home</span>
         </div>
         <div class="header-actions">
           <button class="icon-btn" title="Search">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="7" cy="7" r="4.5" stroke="#5c6370" stroke-width="1.3"/>
-              <path d="M11 11L14 14" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/>
-            </svg>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#5c6370" stroke-width="1.3"/><path d="M11 11L14 14" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/></svg>
           </button>
-          <button class="icon-btn" title="Expand sidebar">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M3 6V3H6M13 6V3H10M3 10V13H6M13 10V13H10" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+          <button class="icon-btn" title="Collapse">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#5c6370" stroke-linecap="round" stroke-linejoin="round"><path d="M5.85 13.733V2.266m0 11.467h5.59c.802 0 1.204 0 1.51-.156.27-.137.49-.357.627-.626.156-.307.156-.709.156-1.511V4.56c0-.803 0-1.204-.156-1.51a1.43 1.43 0 0 0-.626-.627c-.307-.157-.708-.157-1.509-.157H5.85m0 11.467H4.56c-.803 0-1.204 0-1.51-.156a1.43 1.43 0 0 1-.627-.626c-.157-.307-.157-.708-.157-1.509V4.558c0-.802 0-1.202.157-1.508.137-.27.357-.49.627-.627.306-.157.706-.157 1.508-.157H5.85m4.883 8.134-2.31-2.31 2.31-2.31" vector-effect="non-scaling-stroke"/></svg>
           </button>
         </div>
       </div>
 
-      <!-- Primary nav — icons from Figma node 279-906 -->
+      <!-- Primary nav -->
       <div class="nav-group">
-        <div class="nav-item active">
-          <img src="https://www.figma.com/api/mcp/asset/f45ff9c4-c5a6-419c-8899-2249ef2b784a" width="16" height="16" alt="">
+        <div class="nav-item active" id="nav-digest" onclick="showDigest()">
           <span class="nav-label">Daily digest</span>
         </div>
-        <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/185ac1b3-7e15-4c95-bf60-cf866433fb39" width="16" height="16" alt="">
-          <span class="nav-label">Insights</span>
-        </div>
-        <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/943ffed8-1096-4f89-b072-ef5b2549167d" width="16" height="16" alt="">
+        <div class="nav-item secondary" id="nav-inbox">
           <span class="nav-label">Inbox</span>
         </div>
-        <div class="nav-item secondary">
-          <img src="https://www.figma.com/api/mcp/asset/efa11ed3-6988-4d87-b8df-bd47f174a2d8" width="16" height="16" alt="">
+        <div class="nav-item secondary" id="nav-skills">
+          <span class="nav-label">Skills</span>
+        </div>
+        <div class="nav-item secondary" id="nav-knowledge">
+          <span class="nav-label">Knowledge</span>
+        </div>
+        <div class="nav-item secondary" id="nav-performance" onclick="showPerformance()">
           <span class="nav-label">Performance</span>
         </div>
-        <div class="nav-item secondary">
-          <!-- Customers: person/user icon -->
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="5.5" r="2.5" stroke="#5c6370" stroke-width="1.3"/><path d="M2.5 13.5C2.5 11.015 5.015 9 8 9C10.985 9 13.5 11.015 13.5 13.5" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/></svg>
-          <span class="nav-label">Customers</span>
-        </div>
-        <div class="nav-item secondary">
-          <!-- Activity: pulse/activity icon -->
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polyline points="1,8 4,8 5.5,3.5 7.5,12.5 9.5,6 11,8 15,8" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <span class="nav-label">Activity</span>
+        <div class="nav-item secondary" id="nav-settings">
+          <span class="nav-label">Settings</span>
         </div>
       </div>
 
@@ -439,11 +666,8 @@
       <div>
         <div class="recents-header">
           <span class="recents-label">Recents</span>
-          <button class="recents-add-btn" title="New chat">
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1V11M1 6H11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
-          </button>
         </div>
-        <div class="recents-group nav-group">
+        <div class="recents-group">
           <div class="nav-item recent"><span class="nav-label">Improve skills</span></div>
           <div class="nav-item recent"><span class="nav-label">Recent escalations</span></div>
           <div class="nav-item recent"><span class="nav-label">Onboarding</span></div>
@@ -452,29 +676,54 @@
 
     </div>
 
-    <!-- Avatar -->
+    <!-- Bottom: digest pill + avatar -->
     <div class="bottom-nav">
+      <!-- Floating playback pill — hidden until audio plays on a non-digest page -->
+      <div class="digest-pill" id="nav-pill" style="display:none">
+        <!-- Icon zone: click to pause/resume -->
+        <button class="nav-pill-icon-btn" id="nav-pill-btn">
+          <svg class="np-icon-wave" viewBox="0 0 16 16" fill="none" stroke="#1e242e">
+            <line x1="2.4" y1="5.7" x2="2.4" y2="10.7" class="sw-bar sw-bar-1"/>
+            <line x1="5.2" y1="2"   x2="5.2" y2="14"   class="sw-bar sw-bar-2"/>
+            <line x1="8"   y1="3.5" x2="8"   y2="12.5" class="sw-bar sw-bar-3"/>
+            <line x1="10.8" y1="2.5" x2="10.8" y2="13.5" class="sw-bar sw-bar-4"/>
+            <line x1="13.6" y1="5"  x2="13.6" y2="11"  class="sw-bar sw-bar-5"/>
+          </svg>
+          <svg class="np-icon-pause" viewBox="0 0 16 16" fill="none" stroke="#1e242e" stroke-linecap="round">
+            <line x1="5.5" y1="3" x2="5.5" y2="13" stroke-width="1.8"/>
+            <line x1="10.5" y1="3" x2="10.5" y2="13" stroke-width="1.8"/>
+          </svg>
+          <svg class="np-icon-play" viewBox="0 0 16 16" fill="#1e242e">
+            <path d="M4.5 3.2l8.5 4.8-8.5 4.8z"/>
+          </svg>
+        </button>
+        <!-- Info zone: click to navigate back to digest page -->
+        <div class="nav-pill-info" id="nav-pill-info">
+          <span class="digest-pill-title" id="nav-pill-title">Digest playing</span>
+          <span class="digest-pill-time" id="nav-pill-time">01:32</span>
+        </div>
+      </div>
       <button class="avatar-btn">
-        <div class="avatar">J</div>
+        <div class="avatar">U</div>
         <div class="online-dot"></div>
       </button>
     </div>
   </nav>
 
   <!-- ── Main content ──────────────────────────────────────────────── -->
-  <main class="main">
+  <main class="main" id="main-digest">
     <div class="content-card">
 
       <!-- Page header -->
       <div class="page-header">
-        <h1 class="greeting">Good morning, Jane!</h1>
+        <h1 class="greeting">Good morning, UrbanStems!</h1>
         <div class="date-tag" style="background: white; border: 1px solid #e8e8ec;">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <rect x="1.5" y="2.5" width="11" height="10" rx="1.5" stroke="#6e7686" stroke-width="1.2"/>
             <path d="M4.5 1.5V3.5M9.5 1.5V3.5" stroke="#6e7686" stroke-width="1.2" stroke-linecap="round"/>
             <path d="M1.5 6H12.5" stroke="#6e7686" stroke-width="1.2"/>
           </svg>
-          Apr 2, 2026 · 11:30 AM
+          April 9, 2026 · 8:47 AM
         </div>
       </div>
 
@@ -483,6 +732,32 @@
 
         <!-- Chat input -->
         <div class="chat-area">
+          <!-- Listen daily digest pill -->
+          <button class="listen-pill" id="listen-btn">
+            <span class="lp-icon">
+              <!-- Speaker icon: idle state -->
+              <svg class="icon-speaker" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M11.734 4.00903C12.281 4.51911 12.7177 5.13585 13.0171 5.82122C13.3165 6.50658 13.4723 7.24602 13.475 7.99394C13.4776 8.74185 13.3269 9.48236 13.0323 10.1698C12.7376 10.8572 12.3053 11.477 11.7619 11.9909M10.2405 5.61064C10.5687 5.91669 10.8307 6.28673 11.0103 6.69795C11.19 7.10917 11.2835 7.55283 11.2851 8.00158C11.2866 8.45033 11.1962 8.89464 11.0194 9.3071C10.8427 9.71956 10.5832 10.0914 10.2572 10.3998M5.52574 9.87824L6.4429 11.0132C6.92101 11.6049 7.16007 11.9007 7.36951 11.9329C7.55081 11.9608 7.73403 11.896 7.85753 11.7604C8.00019 11.6037 8.00019 11.2234 8.00019 10.4627V5.56344C8.00019 4.80274 8.00019 4.4224 7.85753 4.26571C7.73403 4.13007 7.55081 4.0653 7.36951 4.09318C7.16007 4.12538 6.92101 4.42121 6.4429 5.01287L5.52574 6.14786C5.42916 6.26738 5.38086 6.32715 5.32111 6.37015C5.26817 6.40825 5.20885 6.43658 5.14594 6.45381C5.07493 6.47326 4.9981 6.47326 4.84442 6.47326H4.06518C3.65117 6.47326 3.44417 6.47326 3.27688 6.52853C2.94767 6.63728 2.68941 6.89554 2.58066 7.22475C2.52539 7.39204 2.52539 7.59904 2.58066 8.80134C2.68941 9.13056 2.94767 9.38881 3.27688 9.49757C3.44417 9.55284 3.65117 9.55284 4.06518 9.55284H4.84442C4.9981 9.55284 5.07493 9.55284 5.14594 9.57228C5.20885 9.58951 5.26817 9.61785 5.32111 9.65595C5.38086 9.69895 5.42916 9.75871 5.52574 9.87824Z" stroke="white" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <!-- Soundwave bars: playing (animated) & paused (static/dim) -->
+              <svg class="icon-wave" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white">
+                <line x1="2.4" y1="5.7" x2="2.4" y2="10.7" class="sw-bar sw-bar-1"/>
+                <line x1="5.2" y1="2"   x2="5.2" y2="14"   class="sw-bar sw-bar-2"/>
+                <line x1="8"   y1="3.5" x2="8"   y2="12.5" class="sw-bar sw-bar-3"/>
+                <line x1="10.8" y1="2.5" x2="10.8" y2="13.5" class="sw-bar sw-bar-4"/>
+                <line x1="13.6" y1="5"  x2="13.6" y2="11"  class="sw-bar sw-bar-5"/>
+              </svg>
+              <!-- Pause icon: shown on hover when playing -->
+              <svg class="icon-pause" width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="white" stroke-linecap="round">
+                <line x1="5.5" y1="3" x2="5.5" y2="13" stroke-width="1.8"/>
+                <line x1="10.5" y1="3" x2="10.5" y2="13" stroke-width="1.8"/>
+              </svg>
+              <!-- Play icon: shown on hover when paused -->
+              <svg class="icon-play" width="16" height="16" viewBox="0 0 16 16" fill="white">
+                <path d="M4.5 3.2l8.5 4.8-8.5 4.8z"/>
+              </svg>
+            </span>
+            <span class="lp-label">Listen daily digest</span>
+            <span class="lp-time">01:34</span>
+          </button>
           <div class="chat-input-box">
             <div class="chat-input-inner">
               <span class="chat-placeholder">Ask anything...</span>
@@ -502,13 +777,11 @@
               </div>
             </div>
           </div>
-          <div class="chat-suggestion-btns">
+          <div class="chat-suggestion-btns" style="display:none">
             <button class="suggestion-btn">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 4.01001H7.55691M11.99 4.01001L11.9898 8.44334M11.99 4.01001L4.01001 11.99" stroke="#1E242E" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Why did subscription spike?
             </button>
             <button class="suggestion-btn">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.99 4.01001H7.55691M11.99 4.01001L11.9898 8.44334M11.99 4.01001L4.01001 11.99" stroke="#1E242E" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Compare performance to last week
             </button>
           </div>
@@ -523,126 +796,342 @@
           <div class="metric-card">
             <div class="metric-label">Adherence</div>
             <div>
+              <div class="metric-value">88%</div>
+              <div class="metric-sub" style="display:flex;align-items:center;gap:6px;">
+                <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#32c898;flex-shrink:0;"></span>
+                Stable
+              </div>
+            </div>
+          </div>
+
+          <!-- Success rate -->
+          <div class="metric-card">
+            <div class="metric-label">Success rate</div>
+            <div>
+              <div class="metric-value">78%</div>
+              <div class="delta delta-up">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                5pp vs last week
+              </div>
+            </div>
+          </div>
+
+          <!-- Coverage rate -->
+          <div class="metric-card">
+            <div class="metric-label">Coverage rate</div>
+            <div>
+              <div class="metric-value">64%</div>
+              <div class="delta delta-up">
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                3pp vs last week
+              </div>
+            </div>
+          </div>
+
+          <!-- Customer satisfaction -->
+          <div class="metric-card">
+            <div class="metric-label">Customer satisfaction</div>
+            <div>
               <div class="metric-value-row">
-                <svg width="40" height="36" viewBox="0 0 40 36" fill="none" xmlns="http://www.w3.org/2000/svg"><mask id="mask0_234_34848" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="3" y="0" width="33" height="33"><circle cx="19.4844" cy="16.9036" r="16" fill="#D9D9D9"/></mask><g mask="url(#mask0_234_34848)"><g filter="url(#filter0_f_234_34848)"><ellipse cx="15.7636" cy="18.0136" rx="11.7636" ry="10.6496" fill="#EF4C00"/><ellipse cx="24.3686" cy="10.6232" rx="10.7441" ry="6.62315" fill="#32C898"/><ellipse cx="18.7558" cy="24.4901" rx="10.7441" ry="6.62315" fill="#FFCB31"/><ellipse cx="24.843" cy="17.4464" rx="9.07986" ry="5.59723" fill="#32C898"/></g></g><circle cx="19.0633" cy="17.3243" r="11.3685" fill="url(#paint0_radial_234_34848)" fill-opacity="0.72"/><circle cx="19.0633" cy="17.3243" r="11.6614" stroke="white" stroke-opacity="0.8" stroke-width="0.585859"/><g filter="url(#filter1_d_234_34848)"><circle cx="25.3788" cy="16.0612" r="3.07547" stroke="white" stroke-width="1.42803" shape-rendering="crispEdges"/></g><defs><filter id="filter0_f_234_34848" x="0" y="0" width="39.1128" height="35.1133" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/><feGaussianBlur stdDeviation="2" result="effect1_foregroundBlur_234_34848"/></filter><filter id="filter1_d_234_34848" x="20.1613" y="12.2717" width="10.4352" height="10.4349" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB"><feFlood flood-opacity="0" result="BackgroundImageFix"/><feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/><feOffset dy="1.42803"/><feGaussianBlur stdDeviation="0.714015"/><feComposite in2="hardAlpha" operator="out"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/><feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_234_34848"/><feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_234_34848" result="shape"/></filter><radialGradient id="paint0_radial_234_34848" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(19.0633 17.3243) rotate(90) scale(12)"><stop offset="0.8" stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white"/></radialGradient></defs></svg>
-                <span class="metric-value">92%</span>
+                <img src="https://www.figma.com/api/mcp/asset/200ebbe2-caba-4f70-9214-b5d58b0e2045" width="36" height="36" alt="">
+                <span class="metric-value">4.3/5</span>
               </div>
-              <div class="metric-sub">Everything running normally</div>
-            </div>
-          </div>
-
-          <!-- Automation rate -->
-          <div class="metric-card">
-            <div class="metric-label">Automation rate</div>
-            <div>
-              <div class="metric-value">89%</div>
-              <div class="metric-sub">847 of 853 conversations</div>
-            </div>
-          </div>
-
-          <!-- Total sales -->
-          <div class="metric-card">
-            <div class="metric-label">Total sales</div>
-            <div>
-              <div class="metric-value">$12,800</div>
               <div class="delta delta-up">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                14% vs last week
-              </div>
-            </div>
-          </div>
-
-          <!-- Conversation sentiment -->
-          <div class="metric-card">
-            <div class="metric-label">Conversation sentiment</div>
-            <div>
-              <div class="metric-value">84%</div>
-              <div class="delta delta-up">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
-                  <path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                0.5% vs last week
+                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                from brand voice tweaks
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Needs attention (revamped) -->
+        <!-- Insights section -->
         <div class="attention-section">
           <div class="attention-header">
-            Needs attention <span class="attention-count">3</span>
+            Insights <span class="attention-count">2</span>
           </div>
 
-          <!-- Card 1: Alert — Spike in subscription -->
-          <div class="attention-card monitor-btn">
-            <div class="attention-card-body">
-              <span class="attn-tag alert">Alert</span>
-              <div class="attn-title">Spike in subscription reactivations</div>
-              <div class="attn-desc">47 customers asked to skip their next delivery had their entire subscription paused indefinitely.</div>
-              <div class="attn-metrics">
-                <div>
-                  <div class="attn-metric-label">Adherence</div>
-                  <div class="attn-metric-value">91% <span class="attn-metric-delta down">↘ 71%</span></div>
-                </div>
-                <div>
-                  <div class="attn-metric-label">Reactivations</div>
-                  <div class="attn-metric-value">312 <span class="attn-metric-delta up">↗ 340%</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="attn-chart">
-              <img src="https://www.figma.com/api/mcp/asset/cad79da9-4c1a-4b26-8b55-d30bc7ab1495" alt="chart">
-            </div>
-          </div>
-
-          <!-- Card 2: Review — Adjust tone of voice -->
+          <!-- Card 1: Alert + escalations — Pet safety -->
           <div class="attention-card">
             <div class="attention-card-body">
-              <span class="attn-tag review">Review</span>
-              <div class="attn-title">Adjust tone of voice</div>
-              <div class="attn-desc">Responses were too formal for casual customer inquiries, customers expect a warmer, more conversational tone.</div>
-              <div class="attn-metrics">
-                <div>
-                  <div class="attn-metric-label">Tone of voice score</div>
-                  <div class="attn-metric-value">75% <span class="attn-metric-delta down">↘ 8%</span></div>
-                </div>
-                <div>
-                  <div class="attn-metric-label">Flagged</div>
-                  <div class="attn-metric-value">2</div>
-                </div>
+              <div style="display:flex;gap:4px;align-items:center;">
+                <span class="attn-tag alert">Alert</span>
+                <span class="attn-tag neutral">4 escalations</span>
               </div>
-            </div>
-            <div class="attn-chart">
-              <img src="https://www.figma.com/api/mcp/asset/62760aab-a400-4233-869a-3244e7d4cc21" alt="chart">
+              <div class="attn-content-group">
+                <div class="attn-title">Pet safety questions — no skill coverage</div>
+                <div class="attn-desc">4 customers asked whether their bouquet is safe for a recipient's pet. I don't have pet safety data in my product knowledge, so I escalated all 4. These follow the same resolution pattern.</div>
+              </div>
+              <div class="attn-timestamp">Overnight</div>
             </div>
           </div>
 
-          <!-- Card 3: Opportunity — High-intent dropoff -->
+          <!-- Card 2: Tracking — Delivery frequency cancellations -->
           <div class="attention-card">
             <div class="attention-card-body">
-              <span class="attn-tag opp">Opportunity</span>
-              <div class="attn-title">High-intent shoppers dropped off before Mother's Day</div>
-              <div class="attn-desc">34 shoppers asked about delivery timing but never completed their purchase.</div>
-              <div class="attn-metrics">
-                <div>
-                  <div class="attn-metric-label">High-intent dropoff</div>
-                  <div class="attn-metric-value">34 <span class="attn-metric-delta up">+280%</span></div>
-                </div>
-                <div>
-                  <div class="attn-metric-label">Est. revenue at risk</div>
-                  <div class="attn-metric-value">$4.2K</div>
-                </div>
+              <span class="attn-tag tracking">Tracking</span>
+              <div class="attn-content-group">
+                <div class="attn-title">5 of 14 cancellations mention delivery frequency</div>
+                <div class="attn-desc">Customers are saying "too often," "can't keep up," and "every two weeks is too much." These may not be product-dissatisfied — they might be cadence-dissatisfied. I'm tracking this pattern and will have more data by end of week.</div>
               </div>
+              <div class="attn-timestamp">Last 24 hours</div>
             </div>
-            <div class="attn-chart"></div>
           </div>
 
         </div>
       </div>
     </div>
   </main>
+
+  <!-- ── Performance page ────────────────────────────────────────────── -->
+  <main class="main" id="main-performance" style="display:none">
+    <div class="content-card" style="padding:0; gap:0; overflow:hidden;">
+
+      <!-- Page header -->
+      <div class="page-header" style="padding:24px 24px 0;">
+        <h1 style="font-size:20px; font-weight:700; color:#1e242e; margin:0; line-height:32px;">Performance</h1>
+        <div class="perf-range-tabs">
+          <button class="range-tab active" onclick="setRange(this,'7d')">7d</button>
+          <button class="range-tab" onclick="setRange(this,'14d')">14d</button>
+          <button class="range-tab" onclick="setRange(this,'30d')">30d</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="perf-nav-tabs" style="margin-top:16px;">
+        <div class="perf-tab active" id="tab-overview" onclick="showPerfTab('overview')">Overview</div>
+        <div class="perf-tab" id="tab-experiments" onclick="showPerfTab('experiments')">Experiments</div>
+      </div>
+
+      <!-- ── Overview tab ───────────────────────────────────────────────── -->
+      <div class="page-body" id="perf-overview" style="gap:32px; padding:32px 24px 48px; overflow-y:auto;">
+
+        <!-- KPI cards -->
+        <div class="perf-metric-grid">
+
+          <!-- Adherence -->
+          <div class="perf-metric-card">
+            <div class="perf-metric-label">Adherence</div>
+            <div class="perf-metric-stats"><span class="perf-metric-value">91%</span></div>
+            <div class="perf-delta-neutral">
+              <div class="perf-dot-green"></div>
+              Holding steady
+            </div>
+          </div>
+
+          <!-- Success rate -->
+          <div class="perf-metric-card">
+            <div class="perf-metric-label">Success rate</div>
+            <div class="perf-metric-stats"><span class="perf-metric-value">78%</span></div>
+            <div class="perf-metric-delta perf-delta-up">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 9L4.5 5.5L6.5 7.5L10.5 2.5" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              5pp vs last week
+            </div>
+          </div>
+
+          <!-- Coverage rate -->
+          <div class="perf-metric-card">
+            <div class="perf-metric-label">Coverage rate</div>
+            <div class="perf-metric-stats"><span class="perf-metric-value">64%</span></div>
+            <div class="perf-metric-delta perf-delta-up">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 9L4.5 5.5L6.5 7.5L10.5 2.5" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              3pp vs last week
+            </div>
+          </div>
+
+          <!-- Customer satisfaction -->
+          <div class="perf-metric-card">
+            <div class="perf-metric-label">Customer satisfaction</div>
+            <div class="perf-metric-stats">
+              <img src="https://www.figma.com/api/mcp/asset/200ebbe2-caba-4f70-9214-b5d58b0e2045" width="32" height="32" alt="">
+              <span class="perf-metric-value">4.3/5</span>
+            </div>
+            <div class="perf-metric-delta perf-delta-up">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 9L4.5 5.5L6.5 7.5L10.5 2.5" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              0.2 from brand voice tweaks
+            </div>
+          </div>
+
+        </div>
+
+        <!-- ── Skills ──────────────────────────────────────────────────── -->
+        <div>
+          <div class="perf-section-title">Skills</div>
+          <div class="skill-table-card">
+            <table class="skill-table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Volume</th>
+                  <th>Success rate</th>
+                  <th>Customer satisfaction</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="skill-name-cell">Order status, tracking and delivery</td>
+                  <td>1,290</td><td>92%</td><td>4.5</td>
+                  <td><span class="skill-tag-green">Enabled</span></td>
+                </tr>
+                <tr>
+                  <td class="skill-name-cell">Order cancellation</td>
+                  <td>903</td><td>61%</td><td>3.9</td>
+                  <td><span class="skill-tag-green">Enabled</span></td>
+                </tr>
+                <tr>
+                  <td class="skill-name-cell">Shipping</td>
+                  <td>85</td><td>84%</td><td>4.4</td>
+                  <td><span class="skill-tag-green">Enabled</span></td>
+                </tr>
+                <tr>
+                  <td class="skill-name-dim">Subscription management</td>
+                  <td class="skill-dim">~823</td><td class="skill-dim">–</td><td class="skill-dim">–</td>
+                  <td><span class="skill-tag-grey">Disabled</span></td>
+                </tr>
+                <tr>
+                  <td class="skill-name-dim">Returns and refunds</td>
+                  <td class="skill-dim">~623</td><td class="skill-dim">–</td><td class="skill-dim">–</td>
+                  <td><span class="skill-tag-grey">Disabled</span></td>
+                </tr>
+                <tr>
+                  <td class="skill-name-dim">Product recommendations</td>
+                  <td class="skill-dim">~73</td><td class="skill-dim">–</td><td class="skill-dim">–</td>
+                  <td><span class="skill-tag-grey">Disabled</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── Escalation reasons ─────────────────────────────────────── -->
+        <div>
+          <div class="perf-section-title">Escalation reasons</div>
+          <div class="esc-grid">
+            <div class="esc-card">
+              <div class="esc-card-label">No skill coverage</div>
+              <div class="esc-card-value">12</div>
+              <div class="esc-card-desc">E.g. "Is this bouquet safe for cats?" — pet safety questions</div>
+            </div>
+            <div class="esc-card">
+              <div class="esc-card-label">Low confidence</div>
+              <div class="esc-card-value">8</div>
+              <div class="esc-card-desc">Ambiguous customer intent — agent unsure which skill applied</div>
+            </div>
+            <div class="esc-card">
+              <div class="esc-card-label">Customer requested human</div>
+              <div class="esc-card-value">5</div>
+              <div class="esc-card-desc">"Can I speak to a person?"</div>
+            </div>
+            <div class="esc-card">
+              <div class="esc-card-label">Policy edge case</div>
+              <div class="esc-card-value">3</div>
+              <div class="esc-card-desc">Refund amount exceeded threshold you set</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── Volume and efficiency ──────────────────────────────────── -->
+        <div>
+          <div class="perf-section-title">Volume and efficiency</div>
+          <div class="vol-eff-row">
+
+            <!-- Daily ticket volume chart -->
+            <div class="volume-card">
+              <div class="vol-card-label">Daily ticket volume</div>
+              <svg viewBox="0 0 490 185" style="width:100%; display:block; overflow:visible;">
+                <!-- Horizontal grid lines -->
+                <line x1="38" y1="10"    x2="490" y2="10"    stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="48"    x2="490" y2="48"    stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="85"    x2="490" y2="85"    stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="123"   x2="490" y2="123"   stroke="#e5e7eb" stroke-width="0.8" stroke-dasharray="3,3"/>
+                <line x1="38" y1="160"   x2="490" y2="160"   stroke="#e5e7eb" stroke-width="0.8"/>
+                <!-- Y-axis labels -->
+                <text x="33" y="13"  text-anchor="end" font-size="9" fill="#9ea6b3">2K</text>
+                <text x="33" y="51"  text-anchor="end" font-size="9" fill="#9ea6b3">1.5K</text>
+                <text x="33" y="88"  text-anchor="end" font-size="9" fill="#9ea6b3">1K</text>
+                <text x="33" y="126" text-anchor="end" font-size="9" fill="#9ea6b3">500</text>
+                <text x="33" y="163" text-anchor="end" font-size="9" fill="#9ea6b3">0</text>
+                <!-- Jun 1: total=960, esc=280, auto=680 -->
+                <rect x="50"  y="88"  width="42" height="51" rx="2" fill="#F4956A"/><!-- auto -->
+                <rect x="50"  y="139" width="42" height="21" rx="2" fill="#7B6CF6"/><!-- esc -->
+                <!-- Jun 2: total=880, esc=150, auto=730 -->
+                <rect x="118" y="94"  width="42" height="57" rx="2" fill="#F4956A"/>
+                <rect x="118" y="151" width="42" height="9"  rx="2" fill="#7B6CF6"/>
+                <!-- Jun 3: total=1350, esc=200, auto=1150 -->
+                <rect x="186" y="59"  width="42" height="86" rx="2" fill="#F4956A"/>
+                <rect x="186" y="145" width="42" height="15" rx="2" fill="#7B6CF6"/>
+                <!-- Jun 4: total=1310, esc=210, auto=1100 -->
+                <rect x="254" y="62"  width="42" height="82" rx="2" fill="#F4956A"/>
+                <rect x="254" y="144" width="42" height="16" rx="2" fill="#7B6CF6"/>
+                <!-- Jun 5: total=1100, esc=200, auto=900 -->
+                <rect x="322" y="77"  width="42" height="68" rx="2" fill="#F4956A"/>
+                <rect x="322" y="145" width="42" height="15" rx="2" fill="#7B6CF6"/>
+                <!-- Jun 6: total=1080, esc=290, auto=790 -->
+                <rect x="390" y="79"  width="42" height="59" rx="2" fill="#F4956A"/>
+                <rect x="390" y="138" width="42" height="22" rx="2" fill="#7B6CF6"/>
+                <!-- Jun 7: total=1500, esc=400, auto=1100 -->
+                <rect x="458" y="47"  width="42" height="82" rx="2" fill="#F4956A"/>
+                <rect x="458" y="129" width="42" height="31" rx="2" fill="#7B6CF6"/>
+                <!-- X-axis labels -->
+                <text x="71"  y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 1</text>
+                <text x="139" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 2</text>
+                <text x="207" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 3</text>
+                <text x="275" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 4</text>
+                <text x="343" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 5</text>
+                <text x="411" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 6</text>
+                <text x="479" y="178" text-anchor="middle" font-size="9" fill="#9ea6b3">Jun 7</text>
+              </svg>
+              <div class="vol-legend">
+                <div class="vol-legend-item">
+                  <div class="vol-legend-dot" style="background:#7B6CF6;"></div>
+                  Escalated
+                </div>
+                <div class="vol-legend-item">
+                  <div class="vol-legend-dot" style="background:#F4956A;"></div>
+                  Automated
+                </div>
+              </div>
+            </div>
+
+            <!-- Conversation efficiency -->
+            <div class="eff-card">
+              <div class="eff-card-header">Conversation efficiency</div>
+              <div class="eff-stat-group">
+                <div class="eff-stat-label">Avg. turns per resolution</div>
+                <div class="eff-stat-value">2.8</div>
+              </div>
+              <div class="eff-divider"></div>
+              <div class="eff-stat-group">
+                <div class="eff-stat-label">Avg. first response time</div>
+                <div class="eff-stat-value">&lt;5 sec</div>
+                <div class="eff-stat-sub">↗ vs ~4 min for human team</div>
+              </div>
+              <div class="eff-divider"></div>
+              <div class="eff-stat-group">
+                <div class="eff-stat-label">Avg. resolution time (automated)</div>
+                <div class="eff-stat-value">~1.2 min</div>
+                <div class="eff-stat-sub">↗ vs ~18 min human-handled</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div><!-- /perf-overview -->
+
+      <!-- ── Experiments tab ───────────────────────────────────────────── -->
+      <div id="perf-experiments" style="display:none; flex:1; align-items:center; justify-content:center;">
+        <div class="experiments-empty">
+          <div class="experiments-empty-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M8 3H14M11 3V8M7 8H15L18 19H4L7 8Z" stroke="#9ea6b3" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="experiments-empty-title">No experiments yet</div>
+          <div class="experiments-empty-desc">Run A/B tests on your agent's instructions, tone, or skill configurations here. Nothing is running right now.</div>
+        </div>
+      </div>
+
+    </div><!-- /content-card -->
+  </main><!-- /main-performance -->
 
 </div>
 
@@ -721,17 +1210,248 @@
 </div>
 
 <script>
+  // ── Page navigation helpers ────────────────────────────────────────────
+
+  // All top-level nav item IDs and their corresponding page main IDs
+  const NAV_PAGES = {
+    'nav-digest':      'main-digest',
+    'nav-performance': 'main-performance',
+  };
+
+  function setActiveNav(activeId) {
+    // Clear all nav active states
+    document.querySelectorAll('.nav-group .nav-item').forEach(el => {
+      el.classList.remove('active');
+      el.classList.add('secondary');
+    });
+    // Set the clicked one active
+    const activeEl = document.getElementById(activeId);
+    if (activeEl) {
+      activeEl.classList.remove('secondary');
+      activeEl.classList.add('active');
+    }
+  }
+
+  function showMain(mainId) {
+    // Hide all mains inside app-shell
+    document.querySelectorAll('#app-shell > main').forEach(el => el.style.display = 'none');
+    document.getElementById(mainId).style.display = 'flex';
+    // Refresh playback pill visibility for new page context
+    if (typeof refreshPlaybackUI === 'function') refreshPlaybackUI();
+  }
+
+  function showDigest() {
+    document.getElementById('spike-page').style.display = 'none';
+    document.getElementById('app-shell').style.display = 'flex';
+    showMain('main-digest');
+    setActiveNav('nav-digest');
+  }
+
+  function showPerformance() {
+    document.getElementById('spike-page').style.display = 'none';
+    document.getElementById('app-shell').style.display = 'flex';
+    showMain('main-performance');
+    setActiveNav('nav-performance');
+  }
+
   function showSpike() {
-    document.getElementById('daily-digest-page').style.display = 'none';
+    document.getElementById('app-shell').style.display = 'none';
     const spike = document.getElementById('spike-page');
     spike.style.display = 'flex';
   }
-  function showDigest() {
-    document.getElementById('spike-page').style.display = 'none';
-    document.getElementById('daily-digest-page').style.display = 'flex';
+
+  // ── Performance sub-tabs ───────────────────────────────────────────────
+  function showPerfTab(tab) {
+    document.getElementById('perf-overview').style.display    = tab === 'overview'    ? 'flex' : 'none';
+    document.getElementById('perf-experiments').style.display = tab === 'experiments' ? 'flex' : 'none';
+    document.getElementById('tab-overview').classList.toggle('active', tab === 'overview');
+    document.getElementById('tab-experiments').classList.toggle('active', tab === 'experiments');
   }
+
+  // ── Time range selector ────────────────────────────────────────────────
+  function setRange(btn, range) {
+    btn.closest('.perf-range-tabs').querySelectorAll('.range-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
   document.querySelectorAll('.monitor-btn').forEach(btn => btn.addEventListener('click', showSpike));
   document.getElementById('spike-back-btn').addEventListener('click', showDigest);
+
+  // ── ElevenLabs narration — persistent playback ──────────────────────
+  const ELEVEN_API_KEY  = 'sk_bdb72b91df9a9340374c092f7ce565c7d91c36dee0d7cc08';
+  const ELEVEN_VOICE_ID = 'IKne3meq5aSn9XLyUdCD';
+
+  const NARRATION_TEXT = `Good morning. Here's your daily digest for April 9th.
+
+Your key metrics: Adherence is at 88% and stable. Success rate is 78%, up 5 percentage points versus last week. Coverage rate is 64%, up 3 points. And customer satisfaction is 4.3 out of 5, improving thanks to recent brand voice tweaks.
+
+Two insights need your attention today.
+
+First, I'm tracking a pattern: 5 of 14 cancellations in the last 24 hours mention delivery frequency. Customers are saying things like "too often" and "every two weeks is too much." These customers may not be product-dissatisfied — they might be cadence-dissatisfied. I'll have more data by end of week.
+
+Second, an alert from overnight: 4 customers asked whether their bouquet is safe for a recipient's pet. I don't have pet safety data in my product knowledge, so I escalated all 4. These follow the same resolution pattern and may be worth adding to your knowledge base.`;
+
+  // ── State ────────────────────────────────────────────────────────────
+  let audioState     = 'idle'; // 'idle' | 'loading' | 'playing' | 'paused'
+  let currentAudio   = null;
+  let cachedAudioUrl = null;   // reuse blob so no re-fetch on replay
+  let totalDuration  = 0;      // seconds, set on loadedmetadata
+
+  // ── DOM refs ─────────────────────────────────────────────────────────
+  const listenBtn    = document.getElementById('listen-btn');
+  const lpTime       = listenBtn.querySelector('.lp-time');
+  const navPill      = document.getElementById('nav-pill');
+  const navPillBtn   = document.getElementById('nav-pill-btn');
+  const navPillTime  = document.getElementById('nav-pill-time');
+  const navPillTitle = document.getElementById('nav-pill-title');
+
+  // ── Helpers ──────────────────────────────────────────────────────────
+  function fmt(secs) {
+    if (!isFinite(secs) || secs < 0) return '--:--';
+    const m = Math.floor(secs / 60), s = Math.floor(secs % 60);
+    return `${m}:${s.toString().padStart(2, '0')}`;
+  }
+
+  function isOnDigestPage() {
+    return document.getElementById('main-digest').style.display !== 'none';
+  }
+
+  function setTimeDisplays(secs) {
+    const t = fmt(secs);
+    lpTime.textContent      = t;
+    navPillTime.textContent = t;
+  }
+
+  // ── UI refresh (called on state change + navigation) ─────────────────
+  function refreshPlaybackUI() {
+    const onDigest = isOnDigestPage();
+
+    // Listen pill classes
+    listenBtn.className = 'listen-pill';
+    if (audioState === 'loading') listenBtn.classList.add('is-loading');
+    if (audioState === 'playing') listenBtn.classList.add('is-playing');
+    if (audioState === 'paused')  listenBtn.classList.add('is-paused');
+
+    // Nav pill: only visible on non-digest pages while active
+    const showPill = !onDigest && (audioState === 'playing' || audioState === 'paused');
+    navPill.style.display = showPill ? 'inline-flex' : 'none';
+    navPill.className = 'digest-pill';
+    if (audioState === 'playing') navPill.classList.add('is-playing');
+    if (audioState === 'paused')  navPill.classList.add('is-paused');
+
+    // Nav pill label
+    navPillTitle.textContent = audioState === 'paused' ? 'Digest paused' : 'Digest playing';
+  }
+
+  // ── Timer sync via timeupdate ─────────────────────────────────────────
+  function onTimeUpdate() {
+    if (!currentAudio) return;
+    const remaining = currentAudio.duration - currentAudio.currentTime;
+    setTimeDisplays(Math.max(0, remaining));
+  }
+
+  // ── Attach events to a newly created Audio object ─────────────────────
+  function attachAudioEvents(audio) {
+    audio.addEventListener('loadedmetadata', () => {
+      totalDuration = audio.duration;
+      setTimeDisplays(totalDuration);
+    });
+    audio.addEventListener('timeupdate', onTimeUpdate);
+    audio.addEventListener('ended', () => {
+      audioState    = 'idle';
+      currentAudio  = null;
+      setTimeDisplays(totalDuration || 0);
+      refreshPlaybackUI();
+    });
+    audio.addEventListener('error', () => {
+      audioState    = 'idle';
+      currentAudio  = null;
+      refreshPlaybackUI();
+    });
+  }
+
+  // ── Core playback toggle ─────────────────────────────────────────────
+  async function handleListenBtn() {
+    if (audioState === 'loading') return;
+
+    if (audioState === 'playing') {
+      currentAudio.pause();
+      audioState = 'paused';
+      refreshPlaybackUI();
+      return;
+    }
+
+    if (audioState === 'paused') {
+      currentAudio.play();
+      audioState = 'playing';
+      refreshPlaybackUI();
+      return;
+    }
+
+    // ── Idle → fetch & start ──────────────────────────────────────────
+    audioState = 'loading';
+    lpTime.textContent = '...';
+    refreshPlaybackUI();
+
+    try {
+      if (!cachedAudioUrl) {
+        const res = await fetch(
+          `https://api.elevenlabs.io/v1/text-to-speech/${ELEVEN_VOICE_ID}`,
+          {
+            method: 'POST',
+            headers: { 'xi-api-key': ELEVEN_API_KEY, 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              text: NARRATION_TEXT,
+              model_id: 'eleven_turbo_v2',
+              voice_settings: { stability: 0.5, similarity_boost: 0.75 }
+            })
+          }
+        );
+        if (!res.ok) throw new Error('ElevenLabs API error');
+        cachedAudioUrl = URL.createObjectURL(await res.blob());
+      }
+
+      currentAudio = new Audio(cachedAudioUrl);
+      attachAudioEvents(currentAudio);
+      audioState = 'playing';
+      refreshPlaybackUI();
+      await currentAudio.play();
+
+    } catch (err) {
+      console.error('Narration error:', err);
+      audioState = 'idle';
+      setTimeDisplays(totalDuration || 0);
+      refreshPlaybackUI();
+      alert('Could not load narration. Check the console for details.');
+    }
+  }
+
+  // ── Nav pill icon click: toggle pause/resume ──────────────────────────
+  function toggleNavPlayback(e) {
+    e.stopPropagation(); // don't bubble to the pill's navigate-to-digest handler
+    if (audioState === 'playing') {
+      currentAudio.pause();
+      audioState = 'paused';
+      refreshPlaybackUI();
+    } else if (audioState === 'paused') {
+      currentAudio.play();
+      audioState = 'playing';
+      refreshPlaybackUI();
+    }
+  }
+
+  // ── Nav pill body click: go to digest page ────────────────────────────
+  function navPillGoToDigest() {
+    showDigest();
+  }
+
+  // ── Bind events ───────────────────────────────────────────────────────
+  listenBtn.addEventListener('click', handleListenBtn);
+  navPillBtn.addEventListener('click', toggleNavPlayback);
+  navPill.addEventListener('click', navPillGoToDigest);
+
+  // Initial UI state (nav pill hidden, timer at default)
+  refreshPlaybackUI();
 </script>
 </body>
 </html>
