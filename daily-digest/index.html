@@ -27,8 +27,8 @@
     .product-header { display: flex; align-items: center; justify-content: space-between; padding-left: 2px; }
     .product-logo { display: flex; align-items: center; gap: 2px; }
     .product-icon {
-      width: 32px; height: 32px; background: #f1ecff;
-      border: 0.2px solid #7e55f6; border-radius: 8px;
+      width: 32px; height: 32px; background: #7e55f6;
+      border: none; border-radius: 8px;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
     .product-name { font-size: 16px; font-weight: 600; color: #1e242e; padding: 0 8px; }
@@ -41,8 +41,8 @@
     .icon-btn:hover { background: #ebecef; }
 
     /* Nav items */
-    .nav-group { display: flex; flex-direction: column; gap: 8px; }
-    .nav-item { display: flex; align-items: center; gap: 8px; height: 24px; padding: 0 4px 0 8px; border-radius: 8px; cursor: pointer; width: 224px; transition: background 0.1s; }
+    .nav-group { display: flex; flex-direction: column; gap: 2px; }
+    .nav-item { display: flex; align-items: center; gap: 8px; height: 28px; padding: 0 4px 0 8px; border-radius: 8px; cursor: pointer; width: 224px; transition: background 0.1s; }
     .nav-item svg, .nav-item img { display: block; flex-shrink: 0; width: 16px; height: 16px; }
     .nav-item:hover:not(.active) { background: rgba(0,0,0,0.04); }
     .nav-item.active { background: #f1ecff; color: #683fcf; }
@@ -132,7 +132,7 @@
 
     .chat-input-box {
       width: 600px; border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 8px; overflow: hidden; background: white;
+      border-radius: 12px; overflow: hidden; background: white;
       box-shadow: 0 4px 24px 0 rgba(0,0,0,0.08);
     }
     .chat-input-inner {
@@ -380,18 +380,18 @@
       background: #f0f0f3; border-radius: 8px; padding: 3px;
     }
     .range-tab {
-      padding: 4px 12px; border-radius: 6px; border: none; background: transparent;
+      padding: 4px 10px; border-radius: 6px; border: none; background: transparent;
       font-family: inherit; font-size: 12px; font-weight: 500; color: #5c6370;
       cursor: pointer; transition: all 0.1s;
     }
     .range-tab.active { background: white; color: #1e242e; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
     .range-tab:hover:not(.active) { color: #1e242e; }
 
-    /* Page-level tabs (Overview / Experiments) */
+    /* Page-level tabs */
     .perf-nav-tabs {
       display: flex; gap: 0;
       border-bottom: 1px solid rgba(0,0,0,0.08);
-      padding: 0 120px; flex-shrink: 0;
+      padding: 0 24px; flex-shrink: 0;
     }
     .perf-tab {
       padding: 10px 16px; font-size: 13px; font-weight: 500; color: #5c6370;
@@ -403,65 +403,56 @@
 
     /* Section title */
     .perf-section-title {
-      font-size: 11px; font-weight: 600; color: #9ea6b3;
-      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;
+      font-size: 14px; font-weight: 600; color: #1e242e; margin-bottom: 16px;
     }
 
-    /* Metric cards with sparklines */
+    /* Metric cards */
     .perf-metric-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
     .perf-metric-card {
       background: white; border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 12px; padding: 16px 16px 14px;
+      border-radius: 12px; padding: 16px 24px 24px;
       box-shadow: 0 2px 20px rgba(0,0,0,0.04);
-      display: flex; flex-direction: column; gap: 10px;
+      display: flex; flex-direction: column; gap: 4px;
     }
-    .perf-metric-label { font-size: 11px; font-weight: 500; color: #5c6370; letter-spacing: 0.04em; }
-    .perf-metric-value { font-size: 26px; font-weight: 600; color: #1e242e; line-height: 1.1; margin-top: 2px; }
-    .sparkline-wrap { overflow: hidden; }
-    .sparkline-wrap svg { width: 100%; display: block; }
-    .perf-metric-delta { display: flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; }
+    .perf-metric-label { font-size: 12px; font-weight: 500; color: #5c6370; letter-spacing: 0.12px; height: 24px; display: flex; align-items: center; }
+    .perf-metric-stats { display: flex; align-items: center; gap: 8px; height: 32px; }
+    .perf-metric-value { font-size: 24px; font-weight: 600; color: #1e242e; line-height: 32px; }
+    .perf-metric-delta { display: flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 400; letter-spacing: 0.12px; padding: 1px 4px; border-radius: 4px; }
     .perf-delta-up { color: #147656; }
-    .perf-delta-neutral { color: #6e7686; }
+    .perf-delta-down { color: #a94f13; }
+    .perf-delta-neutral { display: flex; align-items: center; gap: 6px; font-size: 12px; color: #6e7686; letter-spacing: 0.12px; }
+    .perf-dot-green { width: 8px; height: 8px; border-radius: 50%; background: #22c55e; flex-shrink: 0; }
 
     /* Skills table */
     .skill-table-card {
-      background: white; border: 1px solid rgba(0,0,0,0.08);
-      border-radius: 12px; overflow: hidden;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.04);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 8px; overflow: hidden;
     }
     .skill-table { width: 100%; border-collapse: collapse; }
     .skill-table thead th {
-      font-size: 10px; font-weight: 600; color: #9ea6b3;
-      text-align: left; padding: 10px 16px;
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-      text-transform: uppercase; letter-spacing: 0.07em;
+      font-size: 12px; font-weight: 600; color: #5c6370;
+      text-align: left; padding: 8px 16px; height: 40px;
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+      letter-spacing: 0.12px; white-space: nowrap;
     }
     .skill-table tbody td {
-      padding: 11px 16px; border-bottom: 1px solid rgba(0,0,0,0.05);
-      font-size: 13px; color: #1e242e;
+      padding: 10px 16px; height: 40px; border-bottom: 1px solid rgba(0,0,0,0.08);
+      font-size: 14px; color: #1e242e; white-space: nowrap;
     }
     .skill-table tbody tr:last-child td { border-bottom: none; }
-    .skill-name-cell { font-weight: 500; }
-    .skill-volume-cell { font-variant-numeric: tabular-nums; color: #5c6370; }
-    .skill-success-high { color: #147656; font-weight: 500; }
-    .skill-success-mid  { color: #a94f13; font-weight: 500; }
-    .skill-success-good { color: #147656; font-weight: 500; }
-    .sat-dots { display: flex; gap: 3px; align-items: center; }
-    .sat-dot { width: 8px; height: 8px; border-radius: 50%; }
-    .sat-dot.f { background: #f59e0b; }
-    .sat-dot.e { background: #e8e8ec; }
-    /* Inactive skills — muted row */
-    .skill-row-inactive td { opacity: 0.4; }
-    .skill-inactive-header td {
-      padding: 8px 16px 4px;
-      font-size: 10px; font-weight: 600; color: #9ea6b3;
-      text-transform: uppercase; letter-spacing: 0.07em;
-      background: #fafafa; border-top: 1px solid rgba(0,0,0,0.05);
-    }
-    .skill-off-badge {
+    .skill-name-cell { font-weight: 600; }
+    .skill-name-dim { font-weight: 600; color: #8992a0; }
+    .skill-dim { color: #8992a0; }
+    /* Status tags */
+    .skill-tag-green {
       display: inline-flex; align-items: center;
-      padding: 2px 7px; border-radius: 4px;
-      background: #f0f0f3; font-size: 11px; font-weight: 500; color: #6e7686;
+      padding: 2px 8px; border-radius: 4px;
+      background: #dcfce7; font-size: 12px; font-weight: 500; color: #147656;
+    }
+    .skill-tag-grey {
+      display: inline-flex; align-items: center;
+      padding: 2px 8px; border-radius: 4px;
+      background: #f0f0f3; font-size: 12px; font-weight: 500; color: #6e7686;
     }
 
     /* Escalation reasons */
@@ -532,7 +523,7 @@
       <div class="product-header">
         <div class="product-logo">
           <div class="product-icon">
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.8426 14.4231V9.67768C16.8426 9.22065 16.8422 8.992 16.7867 8.77933C16.7374 8.59086 16.6566 8.41251 16.5472 8.25134C16.4237 8.06947 16.2521 7.91865 15.9081 7.61769L11.8025 4.02527C11.1639 3.46649 10.8446 3.18724 10.4852 3.08097C10.1686 2.98733 9.8311 2.98733 9.51446 3.08097C9.15538 3.18716 8.83654 3.46614 8.1989 4.02408L4.09192 7.61769C3.74796 7.91865 3.57638 8.06947 3.45292 8.25134C3.34351 8.41251 3.26205 8.59086 3.2128 8.77933C3.15723 8.992 3.15723 9.22064 3.15723 9.67768V14.4231C3.15723 15.2201 3.15723 15.6185 3.28744 15.9329C3.46107 16.352 3.79387 16.6855 4.21303 16.8591C4.52741 16.9893 4.92595 16.9893 5.72302 16.9893C6.5201 16.9893 6.91907 16.9893 7.23345 16.8591C7.65261 16.6855 7.98533 16.3521 8.15895 15.933C8.28917 15.6186 8.28926 15.22 8.28926 14.423V13.5676C8.28926 12.6229 9.05515 11.857 9.99993 11.857C10.9447 11.857 11.7106 12.6229 11.7106 13.5676V14.423C11.7106 15.22 11.7106 15.6186 11.8408 15.933C12.0144 16.3521 12.3473 16.6855 12.7664 16.8591C13.0808 16.9893 13.4793 16.9893 14.2764 16.9893C15.0735 16.9893 15.4725 16.9893 15.7868 16.8591C16.206 16.6855 16.5387 16.352 16.7123 15.9329C16.8425 15.6185 16.8426 15.2201 16.8426 14.4231Z" stroke="#5C6370" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M16.8426 14.4231V9.67768C16.8426 9.22065 16.8422 8.992 16.7867 8.77933C16.7374 8.59086 16.6566 8.41251 16.5472 8.25134C16.4237 8.06947 16.2521 7.91865 15.9081 7.61769L11.8025 4.02527C11.1639 3.46649 10.8446 3.18724 10.4852 3.08097C10.1686 2.98733 9.8311 2.98733 9.51446 3.08097C9.15538 3.18716 8.83654 3.46614 8.1989 4.02408L4.09192 7.61769C3.74796 7.91865 3.57638 8.06947 3.45292 8.25134C3.34351 8.41251 3.26205 8.59086 3.2128 8.77933C3.15723 8.992 3.15723 9.22064 3.15723 9.67768V14.4231C3.15723 15.2201 3.15723 15.6185 3.28744 15.9329C3.46107 16.352 3.79387 16.6855 4.21303 16.8591C4.52741 16.9893 4.92595 16.9893 5.72302 16.9893C6.5201 16.9893 6.91907 16.9893 7.23345 16.8591C7.65261 16.6855 7.98533 16.3521 8.15895 15.933C8.28917 15.6186 8.28926 15.22 8.28926 14.423V13.5676C8.28926 12.6229 9.05515 11.857 9.99993 11.857C10.9447 11.857 11.7106 12.6229 11.7106 13.5676V14.423C11.7106 15.22 11.7106 15.6186 11.8408 15.933C12.0144 16.3521 12.3473 16.6855 12.7664 16.8591C13.0808 16.9893 13.4793 16.9893 14.2764 16.9893C15.0735 16.9893 15.4725 16.9893 15.7868 16.8591C16.206 16.6855 16.5387 16.352 16.7123 15.9329C16.8425 15.6185 16.8426 15.2201 16.8426 14.4231Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <span class="product-name">Home</span>
         </div>
@@ -540,8 +531,8 @@
           <button class="icon-btn" title="Search">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#5c6370" stroke-width="1.3"/><path d="M11 11L14 14" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round"/></svg>
           </button>
-          <button class="icon-btn" title="Expand">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 6V3H6M13 6V3H10M3 10V13H6M13 10V13H10" stroke="#5c6370" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <button class="icon-btn" title="Collapse">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#5c6370" stroke-linecap="round" stroke-linejoin="round"><path d="M5.85 13.733V2.266m0 11.467h5.59c.802 0 1.204 0 1.51-.156.27-.137.49-.357.627-.626.156-.307.156-.709.156-1.511V4.56c0-.803 0-1.204-.156-1.51a1.43 1.43 0 0 0-.626-.627c-.307-.157-.708-.157-1.509-.157H5.85m0 11.467H4.56c-.803 0-1.204 0-1.51-.156a1.43 1.43 0 0 1-.627-.626c-.157-.307-.157-.708-.157-1.509V4.558c0-.802 0-1.202.157-1.508.137-.27.357-.49.627-.627.306-.157.706-.157 1.508-.157H5.85m4.883 8.134-2.31-2.31 2.31-2.31" vector-effect="non-scaling-stroke"/></svg>
           </button>
         </div>
       </div>
@@ -750,337 +741,142 @@
 
   <!-- ── Performance page ────────────────────────────────────────────── -->
   <main class="main" id="main-performance" style="display:none">
-    <div class="content-card">
+    <div class="content-card" style="padding:0; gap:0; overflow:hidden;">
 
       <!-- Page header -->
-      <div class="page-header">
-        <h1 class="greeting">Performance</h1>
-        <!-- Time range selector -->
+      <div class="page-header" style="padding: 24px 24px 24px;">
+        <h1 class="greeting" style="font-size:20px; line-height:32px; margin:0;">Performance</h1>
         <div class="perf-range-tabs">
-          <button class="range-tab" onclick="setRange(this,'7d')">7d</button>
-          <button class="range-tab active" onclick="setRange(this,'14d')">14d</button>
-          <button class="range-tab" onclick="setRange(this,'30d')">30d</button>
+          <button class="range-tab" onclick="setRange(this,'today')">Today</button>
+          <button class="range-tab active" onclick="setRange(this,'week')">This week</button>
+          <button class="range-tab" onclick="setRange(this,'month')">This month</button>
         </div>
       </div>
 
-      <!-- Overview / Experiments tabs -->
+      <!-- Tabs -->
       <div class="perf-nav-tabs">
-        <div class="perf-tab active" id="tab-overview" onclick="showPerfTab('overview')">Overview</div>
-        <div class="perf-tab" id="tab-experiments" onclick="showPerfTab('experiments')">Experiments</div>
+        <div class="perf-tab active" id="tab-overview" onclick="showPerfTab('overview')">Skills</div>
+        <div class="perf-tab" id="tab-experiments" onclick="showPerfTab('experiments')">Team</div>
       </div>
 
-      <!-- ── Overview tab ──────────────────────────────────────────────── -->
-      <div class="page-body" id="perf-overview" style="gap:28px;">
+      <!-- ── Skills tab ──────────────────────────────────────────────── -->
+      <div class="page-body" id="perf-overview" style="gap:32px; padding:32px 24px 24px;">
 
-        <!-- Section 1: Core Metrics -->
-        <div>
-          <div class="perf-section-title">Core metrics · Week 3 since launch</div>
-          <div class="perf-metric-grid">
+        <!-- Metric cards -->
+        <div class="perf-metric-grid">
 
-            <!-- Adherence -->
-            <div class="perf-metric-card">
-              <div class="perf-metric-label">Adherence</div>
-              <div class="perf-metric-value">88%</div>
-              <!-- Sparkline: flat/stable, slight variation — gray -->
-              <div class="sparkline-wrap">
-                <svg viewBox="0 0 120 36" fill="none" preserveAspectRatio="none">
-                  <path d="M0,18 C8,16 16,20 26,18 C36,16 44,21 54,18 C62,15 72,20 82,17 C90,15 100,19 120,18" stroke="#9ea6b3" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="perf-metric-delta perf-delta-neutral">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 4H9" stroke="#9ea6b3" stroke-width="1.3" stroke-linecap="round"/></svg>
-                Holding steady
-              </div>
+          <!-- Adherence -->
+          <div class="perf-metric-card">
+            <div class="perf-metric-label">Adherence</div>
+            <div class="perf-metric-stats">
+              <span class="perf-metric-value">91%</span>
             </div>
-
-            <!-- Success Rate -->
-            <div class="perf-metric-card">
-              <div class="perf-metric-label">Success rate</div>
-              <div class="perf-metric-value">78%</div>
-              <!-- Sparkline: gradual rise then step-change at day 9 (Apr 4 brand voice) — green -->
-              <div class="sparkline-wrap">
-                <svg viewBox="0 0 120 36" fill="none" preserveAspectRatio="none">
-                  <path d="M0,30 C12,29 24,27 36,25 C46,23 54,21 62,19 C68,11 76,6 84,4 C90,3 104,3 120,3 L120,36 L0,36 Z" fill="rgba(34,197,94,0.08)"/>
-                  <path d="M0,30 C12,29 24,27 36,25 C46,23 54,21 62,19 C68,11 76,6 84,4 C90,3 104,3 120,3" stroke="#22c55e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                  <!-- Annotation dot at brand voice inflection (day 9 ≈ x=67) -->
-                  <circle cx="67" cy="14" r="3" fill="#683fcf"/>
-                </svg>
-              </div>
-              <div class="perf-metric-delta perf-delta-up">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                ↑ 5pp since launch
-              </div>
+            <div class="perf-delta-neutral">
+              <div class="perf-dot-green"></div>
+              Holding steady
             </div>
-
-            <!-- Coverage Rate -->
-            <div class="perf-metric-card">
-              <div class="perf-metric-label">Coverage rate</div>
-              <div class="perf-metric-value">64%</div>
-              <!-- Sparkline: steady upward — green -->
-              <div class="sparkline-wrap">
-                <svg viewBox="0 0 120 36" fill="none" preserveAspectRatio="none">
-                  <path d="M0,28 C14,26 28,24 42,22 C54,20 66,17 78,14 C90,11 104,9 120,8 L120,36 L0,36 Z" fill="rgba(34,197,94,0.08)"/>
-                  <path d="M0,28 C14,26 28,24 42,22 C54,20 66,17 78,14 C90,11 104,9 120,8" stroke="#22c55e" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                </svg>
-              </div>
-              <div class="perf-metric-delta perf-delta-up">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                ↑ 3pp since launch
-              </div>
-            </div>
-
-            <!-- Customer Satisfaction -->
-            <div class="perf-metric-card">
-              <div class="perf-metric-label">Customer satisfaction</div>
-              <div class="perf-metric-value">4.3/5</div>
-              <!-- Sparkline: flat then inflection at day 9 (brand voice tweaks) — purple -->
-              <div class="sparkline-wrap">
-                <svg viewBox="0 0 120 36" fill="none" preserveAspectRatio="none">
-                  <path d="M0,24 C16,23 32,23 48,23 C58,22 65,21 72,14 C78,8 86,5 96,4 C104,3 112,3 120,3 L120,36 L0,36 Z" fill="rgba(104,63,207,0.07)"/>
-                  <path d="M0,24 C16,23 32,23 48,23 C58,22 65,21 72,14 C78,8 86,5 96,4 C104,3 112,3 120,3" stroke="#683fcf" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-                  <!-- Annotation dot at inflection -->
-                  <circle cx="70" cy="16" r="3" fill="#683fcf"/>
-                </svg>
-              </div>
-              <div class="perf-metric-delta perf-delta-up" style="color:#683fcf">
-                <svg width="10" height="8" viewBox="0 0 10 8" fill="none"><path d="M1 6.5L3.5 3.5L5.5 5.5L9 1" stroke="#683fcf" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                ↑ 0.2 · brand voice tweak
-              </div>
-            </div>
-
           </div>
-          <!-- Purple dot legend -->
-          <div style="margin-top:8px; display:flex; align-items:center; gap:6px; font-size:11px; color:#9ea6b3;">
-            <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#683fcf"/></svg>
-            April 4 — brand voice changes applied
+
+          <!-- Success rate -->
+          <div class="perf-metric-card">
+            <div class="perf-metric-label">Success rate</div>
+            <div class="perf-metric-stats">
+              <span class="perf-metric-value">78%</span>
+            </div>
+            <div class="perf-metric-delta perf-delta-up">
+              <!-- trending up arrow -->
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 9L4.5 5.5L6.5 7.5L10.5 2.5" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              5pp vs last week
+            </div>
           </div>
+
+          <!-- Coverage rate -->
+          <div class="perf-metric-card">
+            <div class="perf-metric-label">Coverage rate</div>
+            <div class="perf-metric-stats">
+              <span class="perf-metric-value">64%</span>
+            </div>
+            <div class="perf-metric-delta perf-delta-up">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 9L4.5 5.5L6.5 7.5L10.5 2.5" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              3pp vs last week
+            </div>
+          </div>
+
+          <!-- Customer satisfaction -->
+          <div class="perf-metric-card">
+            <div class="perf-metric-label">Customer satisfaction</div>
+            <div class="perf-metric-stats">
+              <!-- sentiment emoji approximation -->
+              <span style="font-size:28px; line-height:32px;">🙂</span>
+              <span class="perf-metric-value">4.3/5</span>
+            </div>
+            <div class="perf-metric-delta perf-delta-up">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1.5 9L4.5 5.5L6.5 7.5L10.5 2.5" stroke="#147656" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              0.2 from brand voice tweaks
+            </div>
+          </div>
+
         </div>
 
-        <!-- Section 2: Per-Skill Breakdown -->
+        <!-- Skills table -->
         <div>
-          <div class="perf-section-title">Skills · Last 7 days</div>
+          <div class="perf-section-title">Skills</div>
           <div class="skill-table-card">
             <table class="skill-table">
               <thead>
                 <tr>
-                  <th>Skill</th>
+                  <th>Name</th>
                   <th>Volume</th>
                   <th>Success rate</th>
-                  <th>Satisfaction</th>
+                  <th>Customer satisfaction</th>
                   <th>Status</th>
                 </tr>
               </thead>
               <tbody>
-                <!-- Active skills -->
                 <tr>
-                  <td class="skill-name-cell">Order Tracking</td>
-                  <td class="skill-volume-cell">~275 tickets</td>
-                  <td class="skill-success-high">92%</td>
-                  <td>
-                    <div style="display:flex;align-items:center;gap:6px;">
-                      <div class="sat-dots">
-                        <div class="sat-dot f"></div><div class="sat-dot f"></div><div class="sat-dot f"></div><div class="sat-dot f"></div><div class="sat-dot f"></div>
-                      </div>
-                      <span style="font-size:12px;color:#5c6370;">4.5</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:#147656;">
-                      <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span> Active
-                    </div>
-                  </td>
+                  <td class="skill-name-cell">Order status, tracking and delivery</td>
+                  <td>1,290</td>
+                  <td>92%</td>
+                  <td>4.5</td>
+                  <td><span class="skill-tag-green">Active</span></td>
                 </tr>
                 <tr>
-                  <td class="skill-name-cell">Delivery Issues</td>
-                  <td class="skill-volume-cell">~170 tickets</td>
-                  <td class="skill-success-mid">61%</td>
-                  <td>
-                    <div style="display:flex;align-items:center;gap:6px;">
-                      <div class="sat-dots">
-                        <div class="sat-dot f"></div><div class="sat-dot f"></div><div class="sat-dot f"></div><div class="sat-dot f" style="background:#fed7aa;"></div><div class="sat-dot e"></div>
-                      </div>
-                      <span style="font-size:12px;color:#5c6370;">3.9</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:#147656;">
-                      <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span> Active
-                    </div>
-                  </td>
+                  <td class="skill-name-cell">Order cancellation</td>
+                  <td>903</td>
+                  <td>61%</td>
+                  <td>3.9</td>
+                  <td><span class="skill-tag-green">Active</span></td>
                 </tr>
                 <tr>
-                  <td class="skill-name-cell">Gift Messaging</td>
-                  <td class="skill-volume-cell">~85 tickets</td>
-                  <td class="skill-success-good">84%</td>
-                  <td>
-                    <div style="display:flex;align-items:center;gap:6px;">
-                      <div class="sat-dots">
-                        <div class="sat-dot f"></div><div class="sat-dot f"></div><div class="sat-dot f"></div><div class="sat-dot f"></div><div class="sat-dot f" style="background:#fde68a;"></div>
-                      </div>
-                      <span style="font-size:12px;color:#5c6370;">4.4</span>
-                    </div>
-                  </td>
-                  <td>
-                    <div style="display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:#147656;">
-                      <span style="width:6px;height:6px;border-radius:50%;background:#22c55e;display:inline-block;"></span> Active
-                    </div>
-                  </td>
+                  <td class="skill-name-cell">Shipping</td>
+                  <td>85</td>
+                  <td>84%</td>
+                  <td>4.4</td>
+                  <td><span class="skill-tag-green">Active</span></td>
                 </tr>
-                <!-- Inactive header row -->
-                <tr class="skill-inactive-header">
-                  <td colspan="5">Inactive — estimated weekly volume shown</td>
+                <tr>
+                  <td class="skill-name-dim">Subscription management</td>
+                  <td class="skill-dim">~823</td>
+                  <td class="skill-dim">–</td>
+                  <td class="skill-dim">–</td>
+                  <td><span class="skill-tag-grey">Not trained</span></td>
                 </tr>
-                <!-- Inactive skills — greyed out -->
-                <tr class="skill-row-inactive">
-                  <td class="skill-name-cell">Subscription Management</td>
-                  <td class="skill-volume-cell">~130 tickets/wk</td>
-                  <td style="color:#9ea6b3;">—</td>
-                  <td style="color:#9ea6b3;">—</td>
-                  <td><span class="skill-off-badge">Off</span></td>
+                <tr>
+                  <td class="skill-name-dim">Returns and refunds</td>
+                  <td class="skill-dim">~623</td>
+                  <td class="skill-dim">–</td>
+                  <td class="skill-dim">–</td>
+                  <td><span class="skill-tag-grey">Not trained</span></td>
                 </tr>
-                <tr class="skill-row-inactive">
-                  <td class="skill-name-cell">Returns &amp; Refunds</td>
-                  <td class="skill-volume-cell">~103 tickets/wk</td>
-                  <td style="color:#9ea6b3;">—</td>
-                  <td style="color:#9ea6b3;">—</td>
-                  <td><span class="skill-off-badge">Off</span></td>
-                </tr>
-                <tr class="skill-row-inactive">
-                  <td class="skill-name-cell">Product Recommendations</td>
-                  <td class="skill-volume-cell">~73 tickets/wk</td>
-                  <td style="color:#9ea6b3;">—</td>
-                  <td style="color:#9ea6b3;">—</td>
-                  <td><span class="skill-off-badge">Off</span></td>
+                <tr>
+                  <td class="skill-name-dim">Product recommendations</td>
+                  <td class="skill-dim">~73</td>
+                  <td class="skill-dim">–</td>
+                  <td class="skill-dim">–</td>
+                  <td><span class="skill-tag-grey">Not trained</span></td>
                 </tr>
               </tbody>
             </table>
-          </div>
-        </div>
-
-        <!-- Section 3: Escalation Reasons -->
-        <div>
-          <div class="perf-section-title">Escalation reasons · Last 7 days</div>
-          <div class="escalation-card">
-            <!-- Max = 12 → 100% width -->
-            <div class="esc-row">
-              <div class="esc-label">No skill coverage</div>
-              <div class="esc-bar-wrap"><div class="esc-bar" style="width:100%;background:#683fcf;"></div></div>
-              <div class="esc-count">12</div>
-              <div class="esc-example">e.g. pet safety questions</div>
-            </div>
-            <div class="esc-row">
-              <div class="esc-label">Low confidence</div>
-              <div class="esc-bar-wrap"><div class="esc-bar" style="width:66.7%;background:#9ea6b3;"></div></div>
-              <div class="esc-count">8</div>
-              <div class="esc-example">ambiguous customer intent</div>
-            </div>
-            <div class="esc-row">
-              <div class="esc-label">Customer requested human</div>
-              <div class="esc-bar-wrap"><div class="esc-bar" style="width:41.7%;background:#9ea6b3;"></div></div>
-              <div class="esc-count">5</div>
-              <div class="esc-example">"Can I speak to a person?"</div>
-            </div>
-            <div class="esc-row">
-              <div class="esc-label">Policy edge case</div>
-              <div class="esc-bar-wrap"><div class="esc-bar" style="width:25%;background:#9ea6b3;"></div></div>
-              <div class="esc-count">3</div>
-              <div class="esc-example">refund exceeded threshold</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Section 4: Volume & Efficiency -->
-        <div>
-          <div class="perf-section-title">Volume &amp; efficiency · 14-day trend</div>
-          <div class="volume-card">
-            <div class="volume-header">
-              <div class="volume-legend">
-                <div class="legend-item">
-                  <div class="legend-swatch" style="background:#22c55e;"></div> Automated
-                </div>
-                <div class="legend-item">
-                  <div class="legend-swatch" style="background:#e8e8ec;border:1px solid #d0d3da;"></div> Escalated
-                </div>
-              </div>
-              <div style="font-size:11px;color:#9ea6b3;display:flex;align-items:center;gap:4px;">
-                <svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#683fcf"/></svg>
-                Apr 4 — brand voice tweaks
-              </div>
-            </div>
-
-            <!-- Stacked bar chart — 14 days, viewBox 560×80 -->
-            <div class="volume-chart-wrap">
-              <svg viewBox="0 0 560 80" preserveAspectRatio="none" style="height:90px;">
-                <!-- Day 1 Mar 27 -->
-                <rect x="0"   y="44" width="28" height="36" rx="2" fill="#22c55e"/>
-                <rect x="0"   y="27" width="28" height="17" rx="2" fill="#e8e8ec"/>
-                <!-- Day 2 Mar 28 -->
-                <rect x="40"  y="40" width="28" height="40" rx="2" fill="#22c55e"/>
-                <rect x="40"  y="25" width="28" height="15" rx="2" fill="#e8e8ec"/>
-                <!-- Day 3 Mar 29 -->
-                <rect x="80"  y="43" width="28" height="37" rx="2" fill="#22c55e"/>
-                <rect x="80"  y="29" width="28" height="14" rx="2" fill="#e8e8ec"/>
-                <!-- Day 4 Mar 30 -->
-                <rect x="120" y="38" width="28" height="42" rx="2" fill="#22c55e"/>
-                <rect x="120" y="23" width="28" height="15" rx="2" fill="#e8e8ec"/>
-                <!-- Day 5 Mar 31 -->
-                <rect x="160" y="42" width="28" height="38" rx="2" fill="#22c55e"/>
-                <rect x="160" y="29" width="28" height="13" rx="2" fill="#e8e8ec"/>
-                <!-- Day 6 Apr 1 -->
-                <rect x="200" y="35" width="28" height="45" rx="2" fill="#22c55e"/>
-                <rect x="200" y="21" width="28" height="14" rx="2" fill="#e8e8ec"/>
-                <!-- Day 7 Apr 2 -->
-                <rect x="240" y="39" width="28" height="41" rx="2" fill="#22c55e"/>
-                <rect x="240" y="26" width="28" height="13" rx="2" fill="#e8e8ec"/>
-                <!-- Day 8 Apr 3 -->
-                <rect x="280" y="34" width="28" height="46" rx="2" fill="#22c55e"/>
-                <rect x="280" y="21" width="28" height="13" rx="2" fill="#e8e8ec"/>
-                <!-- Day 9 Apr 4 — brand voice Friday, annotation line -->
-                <line x1="323" y1="0" x2="323" y2="80" stroke="#683fcf" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
-                <rect x="320" y="37" width="28" height="43" rx="2" fill="#22c55e"/>
-                <rect x="320" y="26" width="28" height="11" rx="2" fill="#e8e8ec"/>
-                <!-- Day 10 Apr 5 -->
-                <rect x="360" y="32" width="28" height="48" rx="2" fill="#22c55e"/>
-                <rect x="360" y="21" width="28" height="11" rx="2" fill="#e8e8ec"/>
-                <!-- Day 11 Apr 6 -->
-                <rect x="400" y="35" width="28" height="45" rx="2" fill="#22c55e"/>
-                <rect x="400" y="25" width="28" height="10" rx="2" fill="#e8e8ec"/>
-                <!-- Day 12 Apr 7 -->
-                <rect x="440" y="29" width="28" height="51" rx="2" fill="#22c55e"/>
-                <rect x="440" y="19" width="28" height="10" rx="2" fill="#e8e8ec"/>
-                <!-- Day 13 Apr 8 -->
-                <rect x="480" y="30" width="28" height="50" rx="2" fill="#22c55e"/>
-                <rect x="480" y="20" width="28" height="10" rx="2" fill="#e8e8ec"/>
-                <!-- Day 14 Apr 9 (today) — escalation spike from pet safety -->
-                <rect x="520" y="37" width="28" height="43" rx="2" fill="#22c55e"/>
-                <rect x="520" y="20" width="28" height="17" rx="2" fill="#e8e8ec"/>
-              </svg>
-              <div class="volume-axis">
-                <span>Mar 27</span>
-                <span style="color:#683fcf;">Apr 4</span>
-                <span>Apr 9</span>
-              </div>
-            </div>
-
-            <!-- Efficiency stats -->
-            <div class="efficiency-stats">
-              <div class="eff-stat">
-                <div class="eff-label">Avg. turns per resolution</div>
-                <div class="eff-value">2.8</div>
-                <div class="eff-sub">down from 3.4 at launch</div>
-              </div>
-              <div class="eff-stat">
-                <div class="eff-label">Avg. first response time</div>
-                <div class="eff-value">&lt;5 sec</div>
-                <div class="eff-sub">vs ~4 min for human team</div>
-              </div>
-              <div class="eff-stat">
-                <div class="eff-label">Avg. resolution time</div>
-                <div class="eff-value">1.2 min</div>
-                <div class="eff-sub">automated · 18 min human</div>
-              </div>
-            </div>
-
           </div>
         </div>
 
