@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 
-import { KnowledgeEditorGuidanceDiffView } from './KnowledgeEditorGuidanceDiffView'
+import { DiffView } from './DiffView'
 
 jest.mock(
     'common/knowledge-editor/components/DiffReadOnlyEditor/DiffReadOnlyEditor',
@@ -9,10 +9,10 @@ jest.mock(
     }),
 )
 
-describe('KnowledgeEditorGuidanceDiffView', () => {
+describe('DiffView', () => {
     it('renders the diff editor content', () => {
         render(
-            <KnowledgeEditorGuidanceDiffView
+            <DiffView
                 oldTitle="Old title"
                 oldContent="<p>Old content</p>"
                 newTitle="New title"

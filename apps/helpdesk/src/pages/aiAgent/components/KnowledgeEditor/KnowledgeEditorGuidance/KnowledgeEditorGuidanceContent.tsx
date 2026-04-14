@@ -9,9 +9,9 @@ import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/varia
 import { KnowledgeEditorSidePanelGuidance } from '../KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelGuidance'
 import { KnowledgeEditorTopBar } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBar'
 import { GuidanceToolbarControls } from '../KnowledgeEditorTopBar/KnowledgeEditorTopBarGuidanceControls'
+import { DiffView } from '../shared/DiffView'
 import { isFormValid, useGuidanceStore } from './context'
 import { useGuidanceAutoSave } from './context/useGuidanceAutoSave'
-import { KnowledgeEditorGuidanceDiffView } from './diff/KnowledgeEditorGuidanceDiffView'
 import { KnowledgeEditorGuidanceEditView } from './edit/KnowledgeEditorGuidanceEditView'
 import { KnowledgeEditorGuidanceVersionBanner } from './KnowledgeEditorGuidanceVersionBanner'
 import { KnowledgeEditorGuidanceDeleteModal } from './modals/KnowledgeEditorGuidanceDeleteModal'
@@ -174,7 +174,7 @@ export const KnowledgeEditorGuidanceContent = ({ closeHandlerRef }: Props) => {
                         )}
 
                         {mode === 'diff' && (
-                            <KnowledgeEditorGuidanceDiffView
+                            <DiffView
                                 oldTitle={
                                     historicalVersion
                                         ? historicalVersion.title

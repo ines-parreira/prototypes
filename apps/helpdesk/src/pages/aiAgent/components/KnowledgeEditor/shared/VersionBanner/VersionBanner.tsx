@@ -163,20 +163,21 @@ export function VersionBanner({
                 <Banner
                     variant="inline"
                     intent="info"
-                    size="sm"
+                    size="md"
                     isClosable={false}
-                    icon="info"
                     title={
                         <>
                             This is a draft version. You also have a{' '}
-                            <span
+                            <button
+                                type="button"
                                 className={
                                     isDisabled ? css.linkDisabled : css.link
                                 }
-                                onClick={isDisabled ? undefined : switchVersion}
+                                onClick={switchVersion}
+                                disabled={isDisabled}
                             >
                                 published version
-                            </span>
+                            </button>
                             .
                         </>
                     }
@@ -222,18 +223,19 @@ export function VersionBanner({
             <Banner
                 variant="inline"
                 intent="info"
-                size="sm"
+                size="md"
                 isClosable={false}
-                icon="info"
                 title={
                     <>
                         This is a published version. You also have a{' '}
-                        <span
+                        <button
+                            type="button"
                             className={isDisabled ? css.linkDisabled : css.link}
-                            onClick={isDisabled ? undefined : switchVersion}
+                            onClick={switchVersion}
+                            disabled={isDisabled}
                         >
                             draft version
-                        </span>
+                        </button>
                         .
                     </>
                 }

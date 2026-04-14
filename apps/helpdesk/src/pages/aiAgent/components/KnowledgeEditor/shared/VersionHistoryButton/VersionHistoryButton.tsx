@@ -67,7 +67,7 @@ function buildVersionLabel(
     const dateText = dateSource ? formatDate(dateSource) : ''
     const parts: string[] = [dateText || `Version ${version.version}`]
     if (isDraft) {
-        parts.push('(draft edits)')
+        parts.push('(draft)')
     } else if (isCurrent) {
         parts.push('(current)')
     }
@@ -160,10 +160,9 @@ export function VersionHistoryButton<V extends VersionItem>({
         [versions],
     )
 
-    const items: SelectOption<V>[] = useMemo(
-        () => (isSelectLoading ? LOADING_OPTIONS : versionItems),
-        [isSelectLoading, versionItems],
-    )
+    const items: SelectOption<V>[] = isSelectLoading
+        ? LOADING_OPTIONS
+        : versionItems
 
     const currentlySelectedVersionId =
         selectedVersionId ?? currentVersionId ?? null
@@ -295,6 +294,7 @@ export function VersionHistoryButton<V extends VersionItem>({
                                 userName={userName}
                             />
                         }
+                        wrap={false}
                         textValue={[label, captionText]
                             .filter(Boolean)
                             .join(' ')}

@@ -9,8 +9,10 @@ import { useGetGuidancesAvailableActions } from 'pages/aiAgent/components/Guidan
 import { guidanceVariables } from 'pages/aiAgent/components/GuidanceEditor/variables'
 import { SkillToolbarControls } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorTopBar/KnowledgeEditorTopBarSkillControls'
 
+import { DiffView } from '../shared/DiffView'
 import { useSkillEditorStore } from './context'
 import { KnowledgeEditorSkillEditView } from './edit/KnowledgeEditorSkillEditView'
+import { KnowledgeEditorSkillVersionBanner } from './KnowledgeEditorSkillVersionBanner'
 import { KnowledgeEditorSkillReadView } from './read/KnowledgeEditorSkillReadView'
 import { SkillEditorSidePanel } from './sidePanel/SkillEditorSidePanel'
 import { SkillEditorHeader } from './SkillEditorHeader'
@@ -25,13 +27,16 @@ export const KnowledgeEditorSkillContent = () => {
         })),
     )
 
-    const { mode, title, content } = useSkillEditorStore(
-        useShallow((storeState) => ({
-            mode: storeState.state.mode,
-            title: storeState.state.title,
-            content: storeState.state.content,
-        })),
-    )
+    const { mode, title, content, historicalVersion, comparisonVersion } =
+        useSkillEditorStore(
+            useShallow((storeState) => ({
+                mode: storeState.state.mode,
+                title: storeState.state.title,
+                content: storeState.state.content,
+                historicalVersion: storeState.state.historicalVersion,
+                comparisonVersion: storeState.state.comparisonVersion,
+            })),
+        )
 
     const { guidanceActions } = useGetGuidancesAvailableActions(
         shopName,
@@ -70,6 +75,35 @@ export const KnowledgeEditorSkillContent = () => {
                 </SkillEditorHeader>
 
                 <Box flexDirection="column" flex={1} alignItems="center">
+                    <KnowledgeEditorSkillVersionBanner />
+
+                    {mode === 'diff' && (
+                        <DiffView
+                            oldTitle={
+                                historicalVersion
+                                    ? historicalVersion.title
+                                    : (comparisonVersion?.title ?? '')
+                            }
+                            oldContent={
+                                historicalVersion
+                                    ? historicalVersion.content
+                                    : (comparisonVersion?.content ?? '')
+                            }
+                            newTitle={
+                                historicalVersion
+                                    ? (comparisonVersion?.title ?? '')
+                                    : title
+                            }
+                            newContent={
+                                historicalVersion
+                                    ? (comparisonVersion?.content ?? '')
+                                    : content
+                            }
+                            availableVariables={guidanceVariables}
+                            availableActions={guidanceActions}
+                        />
+                    )}
+
                     {mode === 'read' && (
                         <KnowledgeEditorSkillReadView
                             content={content}

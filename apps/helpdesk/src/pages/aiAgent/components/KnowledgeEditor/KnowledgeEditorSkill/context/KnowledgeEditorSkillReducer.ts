@@ -122,6 +122,7 @@ export function skillReducer(
                 ...state,
                 versionStatus: newVersionStatus,
                 skill: action.payload,
+                intents: action.payload.intents ?? state.intents,
                 savedSnapshot: {
                     title: action.payload.title,
                     content: action.payload.content,

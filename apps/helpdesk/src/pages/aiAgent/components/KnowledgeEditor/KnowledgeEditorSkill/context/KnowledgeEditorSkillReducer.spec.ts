@@ -183,6 +183,24 @@ describe('skillReducer', () => {
         expect(result.historicalVersion).toBeNull()
     })
 
+    it('SWITCH_VERSION updates intents from the new article', () => {
+        const newArticle = getGuidanceArticleFixture(2, {
+            title: 'Published',
+            content: 'Published content',
+            intents: ['order::status', 'order::cancel'],
+        })
+        const state = createDefaultState({
+            versionStatus: 'latest_draft',
+            intents: ['shipping::delay'],
+        })
+        const result = skillReducer(state, {
+            type: 'SWITCH_VERSION',
+            payload: newArticle,
+        })
+
+        expect(result.intents).toEqual(['order::status', 'order::cancel'])
+    })
+
     it('SWITCH_SKILL resets to initial state for the new article', () => {
         const state = createDefaultState({
             title: 'Old skill',

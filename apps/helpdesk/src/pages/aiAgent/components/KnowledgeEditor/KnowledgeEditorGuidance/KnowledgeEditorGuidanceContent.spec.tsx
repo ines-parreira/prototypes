@@ -72,10 +72,8 @@ jest.mock('./read', () => ({
     ),
 }))
 
-jest.mock('./diff/KnowledgeEditorGuidanceDiffView', () => ({
-    KnowledgeEditorGuidanceDiffView: () => (
-        <div data-testid="diff-view">Diff View</div>
-    ),
+jest.mock('../shared/DiffView', () => ({
+    DiffView: () => <div data-testid="diff-view">Diff View</div>,
 }))
 
 jest.mock('./modals/KnowledgeEditorGuidanceDeleteModal', () => ({

@@ -11,23 +11,35 @@ import type { SkillModeType } from '../context/types'
 export type SkillDetailsData = {
     status: TransformedArticle['status']
     isDraft: boolean
+    isViewingHistoricalVersion: boolean
     createdDatetime?: Date
     lastUpdatedDatetime?: Date
     mode: SkillModeType
 }
 
 export const useSkillDetailsFromContext = (): SkillDetailsData => {
-    const { visibility, mode, createdDatetime, lastUpdated, isCurrent } =
-        useSkillEditorStore(
-            useShallow((storeState) => ({
-                visibility: storeState.skill?.visibility,
-                mode: storeState.state.mode,
-                createdDatetime: storeState.skill?.createdDatetime,
-                lastUpdated: storeState.skill?.lastUpdated,
-                isCurrent: storeState.skill?.isCurrent,
-            })),
-        )
+    const {
+        visibility,
+        mode,
+        createdDatetime,
+        lastUpdated,
+        isCurrent,
+        historicalPublishedDatetime,
+    } = useSkillEditorStore(
+        useShallow((storeState) => ({
+            visibility: storeState.state.skill?.visibility,
+            mode: storeState.state.mode,
+            createdDatetime: storeState.state.skill?.createdDatetime,
+            lastUpdated: storeState.state.skill?.lastUpdated,
+            isCurrent: storeState.state.skill?.isCurrent,
+            historicalPublishedDatetime:
+                storeState.state.historicalVersion?.publishedDatetime,
+        })),
+    )
     const isDraft = isCurrent === undefined ? false : !isCurrent
+    const isViewingHistoricalVersion =
+        historicalPublishedDatetime !== null &&
+        historicalPublishedDatetime !== undefined
 
     return useMemo(
         () => ({
@@ -36,6 +48,7 @@ export const useSkillDetailsFromContext = (): SkillDetailsData => {
                     ? 'enabled'
                     : 'disabled',
             isDraft,
+            isViewingHistoricalVersion,
             createdDatetime: createdDatetime
                 ? new Date(createdDatetime)
                 : undefined,
@@ -44,6 +57,13 @@ export const useSkillDetailsFromContext = (): SkillDetailsData => {
                 : undefined,
             mode,
         }),
-        [visibility, isDraft, createdDatetime, lastUpdated, mode],
+        [
+            visibility,
+            isDraft,
+            isViewingHistoricalVersion,
+            createdDatetime,
+            lastUpdated,
+            mode,
+        ],
     )
 }

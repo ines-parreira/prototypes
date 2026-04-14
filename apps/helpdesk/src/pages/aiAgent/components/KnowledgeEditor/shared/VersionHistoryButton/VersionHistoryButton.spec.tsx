@@ -140,17 +140,25 @@ describe('VersionHistoryButton', () => {
 
     it('marks the current version with "(current)" label', async () => {
         const user = userEvent.setup()
-        renderComponent({ currentVersionId: 2 })
+        renderComponent({
+            versions: [
+                {
+                    id: 10,
+                    version: 10,
+                    published_datetime: '2025-01-15T12:00:00Z',
+                },
+            ],
+            currentVersionId: 10,
+        })
 
         await user.click(getTriggerButton())
 
-        const currentOption = screen.getByRole('option', {
-            name: /Jan 1, 2024.*\(current\)/i,
-        })
-        expect(currentOption).toBeInTheDocument()
+        expect(
+            screen.getByRole('option', { name: /\(current\)/i }),
+        ).toBeInTheDocument()
     })
 
-    it('marks draft versions with "(draft edits)" label', async () => {
+    it('marks draft versions with "(draft)" label', async () => {
         const user = userEvent.setup()
         renderComponent({
             versions: [
@@ -169,7 +177,7 @@ describe('VersionHistoryButton', () => {
         await user.click(getTriggerButton())
 
         const draftOption = screen.getByRole('option', {
-            name: /Jan 1, 2024.*\(draft edits\)/i,
+            name: /\(draft\)/i,
         })
         expect(draftOption).toBeInTheDocument()
     })

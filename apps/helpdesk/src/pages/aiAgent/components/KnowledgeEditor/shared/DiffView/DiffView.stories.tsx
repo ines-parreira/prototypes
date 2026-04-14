@@ -2,16 +2,16 @@ import React from 'react'
 
 import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 
-import { KnowledgeEditorGuidanceDiffView } from './KnowledgeEditorGuidanceDiffView'
+import { DiffView } from './DiffView'
 
-const meta: Meta<typeof KnowledgeEditorGuidanceDiffView> = {
-    title: 'AI Agent/Knowledge/KnowledgeEditor/KnowledgeEditorGuidanceDiffView',
-    component: KnowledgeEditorGuidanceDiffView,
+const meta: Meta<typeof DiffView> = {
+    title: 'AI Agent/Knowledge/KnowledgeEditor/DiffView',
+    component: DiffView,
 }
 
 export default meta
 
-type Story = StoryObj<typeof KnowledgeEditorGuidanceDiffView>
+type Story = StoryObj<typeof DiffView>
 
 const oldContent = `
 <ol>

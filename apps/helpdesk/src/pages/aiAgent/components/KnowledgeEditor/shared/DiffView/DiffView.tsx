@@ -10,7 +10,7 @@ import type { GuidanceVariableGroup } from 'pages/aiAgent/components/GuidanceEdi
 import type { GuidanceAction } from 'pages/common/draftjs/plugins/guidanceActions/types'
 import { contentStateFromTextOrHTML } from 'utils/editor'
 
-import css from './KnowledgeEditorGuidanceDiffView.less'
+import css from './DiffView.less'
 
 type Props = {
     oldTitle: string
@@ -21,7 +21,7 @@ type Props = {
     availableActions?: GuidanceAction[]
 }
 
-export function KnowledgeEditorGuidanceDiffView({
+export function DiffView({
     oldTitle,
     oldContent,
     newTitle,
@@ -52,9 +52,9 @@ export function KnowledgeEditorGuidanceDiffView({
     return (
         <div className={css.container}>
             <Heading size="lg">
-                {titleDiff.map((part, index) => (
+                {titleDiff.map((part) => (
                     <span
-                        key={index}
+                        key={`${part.value}-${part.added ? 'a' : part.removed ? 'r' : 'u'}`}
                         className={
                             part.added
                                 ? css.added

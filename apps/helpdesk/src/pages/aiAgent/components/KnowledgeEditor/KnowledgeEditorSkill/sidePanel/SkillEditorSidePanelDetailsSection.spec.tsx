@@ -24,6 +24,7 @@ const mockUseSkillDetailsFromContext =
 const defaultDetails: SkillDetailsData = {
     status: 'enabled',
     isDraft: false,
+    isViewingHistoricalVersion: false,
     createdDatetime: new Date('2024-03-01T00:00:00Z'),
     lastUpdatedDatetime: new Date('2024-03-15T00:00:00Z'),
     mode: 'read',

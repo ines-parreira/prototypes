@@ -35,7 +35,12 @@ const setStoreData = (
     mockUseSkillEditorStore.mockImplementation((selector: Function) =>
         selector({
             skill,
-            state: { mode: 'read', ...stateOverrides },
+            state: {
+                mode: 'read',
+                skill,
+                historicalVersion: null,
+                ...stateOverrides,
+            },
         }),
     )
 }

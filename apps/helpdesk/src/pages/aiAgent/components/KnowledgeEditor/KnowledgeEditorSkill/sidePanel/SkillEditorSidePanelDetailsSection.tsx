@@ -13,21 +13,36 @@ type Props = {
 }
 
 export const SkillEditorSidePanelDetailsSection = ({ sectionId }: Props) => {
-    const { status, isDraft, createdDatetime, lastUpdatedDatetime } =
-        useSkillDetailsFromContext()
+    const {
+        status,
+        isDraft,
+        isViewingHistoricalVersion,
+        createdDatetime,
+        lastUpdatedDatetime,
+        mode,
+    } = useSkillDetailsFromContext()
 
-    const statusTag = isDraft ? (
-        <Tag color="grey">Draft</Tag>
-    ) : (
-        <Tag color={status === 'enabled' ? 'green' : 'grey'}>
-            {status === 'enabled' ? 'Enabled' : 'Disabled'}
-        </Tag>
-    )
+    const getStatusTag = () => {
+        if (isViewingHistoricalVersion) {
+            return <Tag>Previous version</Tag>
+        }
+        if (mode === 'create') {
+            return <span>-</span>
+        }
+        if (isDraft) {
+            return <Tag color="grey">Draft</Tag>
+        }
+        return (
+            <Tag color={status === 'enabled' ? 'green' : 'grey'}>
+                {status === 'enabled' ? 'Enabled' : 'Disabled'}
+            </Tag>
+        )
+    }
 
     const columns = [
         {
             left: 'Status',
-            right: statusTag,
+            right: getStatusTag(),
         },
         {
             left: 'Created',

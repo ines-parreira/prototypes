@@ -11,8 +11,6 @@ import { fromArticleTranslation, useGuidanceStore } from './context'
 import { useVersionBanner } from './hooks/useVersionBanner'
 import { useVersionHistory } from './hooks/useVersionHistory'
 
-import css from './KnowledgeEditorGuidanceVersionBanner.less'
-
 export function KnowledgeEditorGuidanceVersionBanner() {
     const {
         isViewingDraft,
@@ -115,7 +113,6 @@ export function KnowledgeEditorGuidanceVersionBanner() {
             historicalVersion={historicalVersion}
             isDiffMode={isDiffMode}
             onToggleDiff={shouldShowDiffToggle ? onToggleDiff : undefined}
-            className={css.guidanceBanner}
             isFromConversation={isFromConversation}
         />
     )
