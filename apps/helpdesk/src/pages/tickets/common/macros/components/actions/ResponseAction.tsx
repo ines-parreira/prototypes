@@ -190,9 +190,6 @@ export default function ResponseAction({
     const isMacroResponseCcBccEnabled = useFlag(
         FeatureFlagKey.MacroResponseTextCcBcc,
     )
-    const isMacroForwardByEmailEnabled = useFlag(
-        FeatureFlagKey.MacroForwardByEmail,
-    )
 
     const insertEditorText = useCallback<InsertEditorText>((text) => {
         if (!richArea.current) {
@@ -246,17 +243,20 @@ export default function ResponseAction({
         bcc,
     }
 
-    const showConvertHeader = actions && convertAction
+    const showConvertHeader = !!actions && !!convertAction
+    const showReplyActionControls =
+        type === MacroActionName.ForwardByEmail || isMacroResponseCcBccEnabled
 
     return (
         <div className={classnames('field', className)}>
-            {isMacroResponseCcBccEnabled || isMacroForwardByEmailEnabled ? (
+            {showConvertHeader || showReplyActionControls ? (
                 type === MacroActionName.SetResponseText &&
-                !isMacroResponseCcBccEnabled ? (
+                !isMacroResponseCcBccEnabled &&
+                showConvertHeader ? (
                     showConvertHeader && (
                         <MacroMessageActionsHeader
                             actions={actions}
-                            type={MacroActionName.AddInternalNote}
+                            type={type}
                             onSelect={convertAction}
                         >
                             <span className="font-weight-medium">
@@ -303,24 +303,32 @@ export default function ResponseAction({
                                 type={type}
                                 onSelect={convertAction}
                             >
+                                {showReplyActionControls ? (
+                                    <MacroReplyActionControls
+                                        fields={fields}
+                                        tabIndex={tabIndex}
+                                        onChange={_setField}
+                                        onShowCcBcc={() => setShowCcTip(true)}
+                                        showCcBccTooltip
+                                        className={replyControlsClassName}
+                                    />
+                                ) : (
+                                    <span className="font-weight-medium">
+                                        Response text
+                                    </span>
+                                )}
+                            </MacroMessageActionsHeader>
+                        )}
+                        {!showConvertHeader &&
+                            showReplyControls &&
+                            showReplyActionControls && (
                                 <MacroReplyActionControls
                                     fields={fields}
                                     tabIndex={tabIndex}
                                     onChange={_setField}
-                                    onShowCcBcc={() => setShowCcTip(true)}
-                                    showCcBccTooltip
                                     className={replyControlsClassName}
                                 />
-                            </MacroMessageActionsHeader>
-                        )}
-                        {!showConvertHeader && showReplyControls && (
-                            <MacroReplyActionControls
-                                fields={fields}
-                                tabIndex={tabIndex}
-                                onChange={_setField}
-                                className={replyControlsClassName}
-                            />
-                        )}
+                            )}
                     </>
                 )
             ) : null}

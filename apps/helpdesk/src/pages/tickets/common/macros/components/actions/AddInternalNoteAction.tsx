@@ -1,6 +1,5 @@
 import { useRef } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { EditorState } from 'draft-js'
 import type { List, Map } from 'immutable'
 import {
@@ -45,13 +44,6 @@ export default function AddInternalNoteAction({
     renderVariables = true,
     convertAction,
 }: Props) {
-    const isMacroResponseCcBccEnabled = useFlag(
-        FeatureFlagKey.MacroResponseTextCcBcc,
-    )
-    const isMacroForwardByEmailEnabled = useFlag(
-        FeatureFlagKey.MacroForwardByEmail,
-    )
-
     const hasIntegrationOfTypes = useAppSelector(makeHasIntegrationOfTypes)
     const richArea = useRef<RichField>(null)
 
@@ -133,19 +125,15 @@ export default function AddInternalNoteAction({
 
     return (
         <div className={css.field}>
-            {(isMacroResponseCcBccEnabled || isMacroForwardByEmailEnabled) &&
-                actions &&
-                convertAction && (
-                    <MacroMessageActionsHeader
-                        actions={actions}
-                        type={MacroActionName.AddInternalNote}
-                        onSelect={convertAction}
-                    >
-                        <span className="font-weight-medium">
-                            Internal note
-                        </span>
-                    </MacroMessageActionsHeader>
-                )}
+            {actions && convertAction && (
+                <MacroMessageActionsHeader
+                    actions={actions}
+                    type={MacroActionName.AddInternalNote}
+                    onSelect={convertAction}
+                >
+                    <span className="font-weight-medium">Internal note</span>
+                </MacroMessageActionsHeader>
+            )}
             <TicketRichField
                 ref={richArea}
                 value={{

@@ -161,7 +161,6 @@ export enum FeatureFlagKey {
     KnowledgeIntentManagementSystem = 'linear.project_knowledge-intent-management-system.enable-feature',
     LiquidTemplateStep = 'liquid-template-step',
     MacroArchives = 'macro-archives',
-    MacroForwardByEmail = 'macro-forward-by-email',
     MacroResponseTextCcBcc = 'macro-response-text-cc-bcc',
     MessagesTranslations = 'linear.introduce-native-translations-for-inbound-and-outbound-messages.fe-implementation',
     MLFeaturesKillswitch = 'ml-features-killswitch',

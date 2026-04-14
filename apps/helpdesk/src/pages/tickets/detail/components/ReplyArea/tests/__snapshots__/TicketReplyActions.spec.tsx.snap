@@ -635,6 +635,99 @@ exports[`<TicketReplyActions/> should render the ticket reply macro actions coll
               class="field responseAction"
             >
               <div
+                class="alert info mb-2"
+              >
+                <div
+                  class="iconContainer"
+                >
+                  <img
+                    alt="icon"
+                    src="test-file-stub"
+                  />
+                </div>
+                <div
+                  class="content"
+                >
+                  <span
+                    class="label"
+                  >
+                    In some cases, forwarded messages may be visible to the original sender.
+                     
+                    <a
+                      href="https://docs.gorgias.com/en-US/macro-actions-81913"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      Learn more
+                    </a>
+                  </span>
+                  <div
+                    class="customActions"
+                  >
+                    <a
+                      class="actionLink"
+                      href="/"
+                    >
+                      Got It
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="replyControls"
+              >
+                <div
+                  class="wrapper"
+                >
+                  <div
+                    class="optionalFields"
+                  >
+                    <span>
+                      Cc
+                    </span>
+                     / 
+                    <span>
+                      Bcc
+                    </span>
+                  </div>
+                  <div
+                    class="recipient"
+                  >
+                    <span
+                      class="fieldLabel"
+                    >
+                      To
+                      :
+                    </span>
+                    <div
+                      class="field"
+                    >
+                      <div
+                        class="values"
+                      >
+                        <input
+                          class="input"
+                          placeholder="Search customers..."
+                          tabindex="4"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                      <div
+                        class="suggestions suggestions--hidden"
+                        tabindex="-1"
+                      >
+                        <div
+                          class="emptySuggestions"
+                        >
+                          Type to search
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
                 class="rich-textarea-wrapper"
               >
                 <div

@@ -1,4 +1,4 @@
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
+import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 import { reportError } from '@repo/logging'
 import { isProduction } from '@repo/utils'
 import { Call, Device, TwilioError } from '@twilio/voice-sdk'
@@ -205,9 +205,9 @@ export function handleDeviceEvents(
 
         handleCallEvents(call, dispatch, actions)
 
-        const ld = getLDClient()
-        const hasDesktopNotifications = ld.variation(
+        const { flag: hasDesktopNotifications } = await fetchFlag(
             FeatureFlagKey.DesktopNotifications,
+            false,
         )
         if (hasDesktopNotifications) {
             const hasPermission = await requestNotificationPermission()

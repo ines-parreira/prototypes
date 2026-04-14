@@ -1,4 +1,3 @@
-import { useFlag } from '@repo/feature-flags'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { List, Map } from 'immutable'
 
@@ -7,8 +6,6 @@ import { MacroActionName } from 'models/macroAction/types'
 import MacroMessageActionsHeader from '../MacroMessageActionsHeader'
 
 const onSelect = jest.fn()
-jest.mock('@repo/feature-flags')
-const mockUseFlag = useFlag as jest.Mock
 
 const minProps = {
     actions: List(),
@@ -18,7 +15,6 @@ const minProps = {
 describe('MacroMessageActionsHeader', () => {
     beforeEach(() => {
         onSelect.mockReset()
-        mockUseFlag.mockReturnValue(true)
     })
 
     it('should fire onSelect on unused option', () => {
@@ -66,9 +62,7 @@ describe('MacroMessageActionsHeader', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should show Forward by email option when feature flag is enabled', () => {
-        mockUseFlag.mockReturnValue(true)
-
+    it('should show Forward by email option', () => {
         render(
             <MacroMessageActionsHeader
                 {...minProps}
@@ -79,20 +73,5 @@ describe('MacroMessageActionsHeader', () => {
         )
 
         expect(screen.getByText('Forward by email')).toBeInTheDocument()
-    })
-
-    it('should hide Forward by email option when feature flag is disabled', () => {
-        mockUseFlag.mockReturnValue(false)
-
-        render(
-            <MacroMessageActionsHeader
-                {...minProps}
-                type={MacroActionName.ForwardByEmail}
-            >
-                test
-            </MacroMessageActionsHeader>,
-        )
-
-        expect(screen.queryByText('Forward by email')).not.toBeInTheDocument()
     })
 })

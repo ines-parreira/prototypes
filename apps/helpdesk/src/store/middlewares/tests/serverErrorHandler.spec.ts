@@ -1,5 +1,3 @@
-import { getLDClient } from '@repo/feature-flags'
-import { ldClientMock } from '@repo/feature-flags/testing'
 import { waitFor } from '@testing-library/react'
 import _get from 'lodash/get'
 import type { MockStoreEnhanced } from 'redux-mock-store'
@@ -7,13 +5,6 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import serverErrorHandler from '../serverErrorHandler'
-
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    getLDClient: jest.fn(),
-}))
-
-const getLDClientMock = getLDClient as jest.Mock
 
 const middlewares = [thunk, serverErrorHandler]
 const mockStore = configureMockStore(middlewares)
@@ -210,13 +201,6 @@ describe('middlewares', () => {
                 type: 'error',
             }
 
-            function setDocumentHidden(hidden: boolean): void {
-                Object.defineProperty(document, 'hidden', {
-                    value: hidden,
-                    configurable: true,
-                })
-            }
-
             beforeEach(() => {
                 Object.defineProperty(window, 'location', {
                     configurable: true,
@@ -225,24 +209,20 @@ describe('middlewares', () => {
                 })
 
                 jest.useFakeTimers()
-                getLDClientMock.mockReset()
             })
 
-            it('should redirect to the login page on 401 after 3 seconds', () => {
-                ldClientMock.variation.mockReturnValue(false)
-                getLDClientMock.mockReturnValue(ldClientMock)
-
+            it('should redirect to the login page on 401 after 3 seconds', async () => {
                 store.dispatch(errorAction)
                 expect(window.location.href).not.toContain('/login')
 
                 jest.advanceTimersByTime(3000)
-                expect(window.location.href).toContain('/login')
+
+                await waitFor(() => {
+                    expect(window.location.href).toContain('/login')
+                })
             })
 
-            it('should include the current path as next parameter when redirecting to login', () => {
-                ldClientMock.variation.mockReturnValue(false)
-                getLDClientMock.mockReturnValue(ldClientMock)
-
+            it('should include the current path as next parameter when redirecting to login', async () => {
                 Object.defineProperty(window, 'location', {
                     configurable: true,
                     enumerable: true,
@@ -254,34 +234,9 @@ describe('middlewares', () => {
                 store.dispatch(errorAction)
                 jest.advanceTimersByTime(3000)
 
-                expect(window.location.href).toBe(
-                    'https://example.gorgias.com/login?next=%2Fapp%2Fviews%2F123%2F456',
-                )
-            })
-
-            it('should wait for the tab to be active to redirect when the feature flag is enabled', async () => {
-                ldClientMock.variation.mockReturnValue(true)
-                getLDClientMock.mockReturnValue(ldClientMock)
-                setDocumentHidden(true)
-
-                Object.defineProperty(window, 'location', {
-                    configurable: true,
-                    enumerable: true,
-                    value: new URL('https://example.gorgias.com/app/settings'),
-                })
-
-                store.dispatch(errorAction)
-                expect(window.location.href).not.toContain('/login')
-
-                jest.advanceTimersByTime(3000)
-                expect(window.location.href).not.toContain('/login')
-
-                setDocumentHidden(false)
-                document.dispatchEvent(new Event('visibilitychange'))
-
                 await waitFor(() => {
                     expect(window.location.href).toBe(
-                        'https://example.gorgias.com/login?next=%2Fapp%2Fsettings',
+                        'https://example.gorgias.com/login?next=%2Fapp%2Fviews%2F123%2F456',
                     )
                 })
             })

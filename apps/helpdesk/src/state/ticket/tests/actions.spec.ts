@@ -31,6 +31,7 @@ import type { Ticket, TicketMessage } from 'models/ticket/types'
 import { ViewType } from 'models/view/types'
 import socketManager from 'services/socketManager/socketManager'
 import { SocketEventType } from 'services/socketManager/types'
+import { initialState as integrationsState } from 'state/integrations/reducers'
 import { initialState as newMessageState } from 'state/newMessage/reducers'
 import { notify } from 'state/notifications/actions'
 import type { AlertNotification } from 'state/notifications/types'
@@ -40,7 +41,7 @@ import {
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER,
     MERGE_CUSTOMER_ECOMMERCE_DATA_SHOPPER_ADDRESS,
 } from 'state/ticket/constants'
-import type { StoreDispatch } from 'state/types'
+import type { RootState, StoreDispatch } from 'state/types'
 
 import * as actions from '../actions'
 import { initialState } from '../reducers'
@@ -50,6 +51,7 @@ type MockedRootState = {
     newMessage?: Map<any, any>
     currentUser?: Map<any, any>
     views?: Map<any, any>
+    integrations?: Map<any, any>
 }
 
 const middlewares = [thunk]
@@ -107,16 +109,12 @@ jest.mock('@repo/routing', () => ({
 jest.mock('@repo/feature-flags', () => ({
     ...jest.requireActual('@repo/feature-flags'),
     useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    getLDClient: jest.fn(() => ({
-        variation: jest.fn((flag, defaultValue) => defaultValue),
-        waitForInitialization: jest.fn(() => Promise.resolve()),
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({})),
+    fetchFlag: jest.fn(async (_flag, defaultValue = false) => ({
+        flag: defaultValue,
+        error: null,
     })),
 }))
-const variationMock = require('@repo/feature-flags').getLDClient()
-    .variation as jest.Mock
+const fetchFlagMock = require('@repo/feature-flags').fetchFlag as jest.Mock
 
 describe('ticket actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
@@ -138,7 +136,12 @@ describe('ticket actions', () => {
             newMessage: newMessageState,
         })
         mockServer = new MockAdapter(client)
-        variationMock.mockImplementation(() => true)
+        fetchFlagMock.mockImplementation(
+            async (_flag, defaultValue = false) => ({
+                flag: defaultValue,
+                error: null,
+            }),
+        )
     })
 
     const endpointMatchers = {
@@ -642,9 +645,96 @@ describe('ticket actions', () => {
         })
 
         store = mockStore({ ticket: initialState.set('id', 1) })
-        return expect(
+        expect(
             store.dispatch(actions.applyMacroAction(action)),
         ).toMatchSnapshot()
+    })
+
+    it('applyMacroAction() applies response cc and bcc without checking the rollout flag', async () => {
+        const action = fromJS({
+            type: 'user',
+            name: 'setResponseText',
+            arguments: {
+                contentState: {},
+                selectionState: {},
+                cc: 'new-cc@gorgias.com',
+                bcc: 'new-bcc@gorgias.com',
+            },
+        })
+
+        const dispatch = jest.fn((value) => value)
+        const getState = () =>
+            ({
+                ticket: initialState.mergeDeep({
+                    id: 1,
+                    customer: {
+                        name: 'Customer',
+                        channels: [
+                            {
+                                type: 'email',
+                                address: 'customer@gorgias.com',
+                            },
+                        ],
+                    },
+                    messages: [],
+                }),
+                newMessage: newMessageState.mergeDeep({
+                    newMessage: {
+                        source: {
+                            type: 'chat',
+                            cc: [
+                                {
+                                    name: 'Existing Cc',
+                                    address: 'cc@gorgias.com',
+                                },
+                            ],
+                            bcc: [
+                                {
+                                    name: 'Existing Bcc',
+                                    address: 'bcc@gorgias.com',
+                                },
+                            ],
+                            extra: { forward: false },
+                        },
+                    },
+                }),
+                currentUser: fromJS({ id: 1 }),
+                integrations: integrationsState,
+            }) as MockedRootState
+
+        await actions.applyMacroAction(action)(
+            dispatch as unknown as StoreDispatch,
+            getState as unknown as () => RootState,
+        )
+
+        expect(fetchFlagMock).not.toHaveBeenCalledWith(
+            'macro-response-text-cc-bcc',
+            expect.anything(),
+        )
+        expect(dispatch).toHaveBeenCalledWith(
+            expect.objectContaining({
+                type: 'NEW_MESSAGE_SET_RECEIVERS',
+                receivers: expect.objectContaining({
+                    to: [{ name: 'Customer', address: 'customer@gorgias.com' }],
+                    cc: expect.arrayContaining([
+                        expect.objectContaining({
+                            address: 'cc@gorgias.com',
+                        }),
+                        expect.objectContaining({
+                            address: 'new-cc@gorgias.com',
+                        }),
+                    ]),
+                    bcc: expect.arrayContaining([
+                        expect.objectContaining({
+                            address: 'bcc@gorgias.com',
+                        }),
+                        expect.objectContaining({
+                            address: 'new-bcc@gorgias.com',
+                        }),
+                    ]),
+                }),
+            }),
+        )
     })
 
     describe('applyMacro()', () => {
@@ -685,12 +775,49 @@ describe('ticket actions', () => {
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
-        it('notifies a warning', () => {
-            void store.dispatch(actions.applyMacro(macro, 1))
+        it('notifies a warning', async () => {
+            await store.dispatch(actions.applyMacro(macro, 1))
             expect(notify).toBeCalledWith({
                 type: NotificationStatus.Warning,
                 title: 'This customer does not have any Magento2 information',
             })
+        })
+
+        it('keeps forward by email actions without checking a feature flag', async () => {
+            const macroWithForwardByEmail = fromJS({
+                id: 2,
+                actions: [
+                    {
+                        type: 'user',
+                        name: 'forwardByEmail',
+                        arguments: {
+                            to: 'support@gorgias.com',
+                            body_text: 'Forward this',
+                            body_html: '<p>Forward this</p>',
+                        },
+                    },
+                ],
+            })
+
+            store = mockStore({
+                ticket: initialState.set('id', 1),
+                currentUser: fromJS({ id: 1 }),
+            })
+
+            await store.dispatch(
+                actions.applyMacro(macroWithForwardByEmail, 1, false),
+            )
+
+            const applyMacroAction = store
+                .getActions()
+                .find((action) => action.type === 'APPLY_MACRO')
+
+            expect(fetchFlagMock).not.toHaveBeenCalled()
+            expect(applyMacroAction).toBeDefined()
+            expect(applyMacroAction?.macro.get('actions').size).toBe(1)
+            expect(applyMacroAction?.macro.getIn(['actions', 0, 'name'])).toBe(
+                'forwardByEmail',
+            )
         })
     })
 

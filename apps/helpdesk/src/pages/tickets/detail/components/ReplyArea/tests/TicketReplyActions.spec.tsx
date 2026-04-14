@@ -6,6 +6,7 @@ import { QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
+import { MemoryRouter } from 'react-router-dom'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -64,9 +65,11 @@ describe('<TicketReplyActions/>', () => {
 
     it('should render the ticket reply macro actions uncollapsed', () => {
         const { container } = render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketReplyActions {...minProps} />
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketReplyActions {...minProps} />
+                </Provider>
+            </MemoryRouter>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -94,9 +97,11 @@ describe('<TicketReplyActions/>', () => {
         }
 
         const { container } = render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketReplyActions {...props} />
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketReplyActions {...props} />
+                </Provider>
+            </MemoryRouter>,
         )
 
         expect(container.firstChild).toMatchSnapshot()
@@ -104,9 +109,11 @@ describe('<TicketReplyActions/>', () => {
 
     it('should collapse the macro actions', async () => {
         const { container } = render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketReplyActions {...minProps} />
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketReplyActions {...minProps} />
+                </Provider>
+            </MemoryRouter>,
         )
         const header = screen.getByText('Actions performed')
         const collapsingElement = container.firstChild?.lastChild as HTMLElement
@@ -120,9 +127,11 @@ describe('<TicketReplyActions/>', () => {
 
     it('should call delete action function when the close icon is clicked', () => {
         render(
-            <Provider store={mockStore(defaultState)}>
-                <TicketReplyActions {...minProps} />
-            </Provider>,
+            <MemoryRouter>
+                <Provider store={mockStore(defaultState)}>
+                    <TicketReplyActions {...minProps} />
+                </Provider>
+            </MemoryRouter>,
         )
 
         fireEvent.click(screen.getByText('close'))
@@ -188,11 +197,13 @@ describe('<TicketReplyActions/>', () => {
         }
 
         const { container } = render(
-            <QueryClientProvider client={queryClient}>
-                <Provider store={mockStore(defaultState)}>
-                    <TicketReplyActions {...props} />
-                </Provider>
-            </QueryClientProvider>,
+            <MemoryRouter>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={mockStore(defaultState)}>
+                        <TicketReplyActions {...props} />
+                    </Provider>
+                </QueryClientProvider>
+            </MemoryRouter>,
         )
 
         // Verify that both actions are rendered

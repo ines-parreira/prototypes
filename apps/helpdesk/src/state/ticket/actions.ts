@@ -1,6 +1,5 @@
 import { createAction } from '@reduxjs/toolkit'
 import client, { appQueryClient } from '@repo/api-resources'
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { history } from '@repo/routing'
 import type { AxiosError } from 'axios'
@@ -601,10 +600,7 @@ const getRecipientsArray = (
 
 export const applyMacroAction =
     (action: Map<any, any>) =>
-    (
-        dispatch: StoreDispatch,
-        getState: () => RootState,
-    ): ReturnType<StoreDispatch> => {
+    (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
         const { ticket, currentUser } = state
 
@@ -615,13 +611,8 @@ export const applyMacroAction =
 
         const args = action.get('arguments') as Map<any, any>
 
-        const flags = getLDClient().allFlags()
-        const isMacroResponseCcBccEnabled =
-            flags?.[FeatureFlagKey.MacroResponseTextCcBcc]
-
         if (
             name === MacroActionName.SetResponseText &&
-            isMacroResponseCcBccEnabled &&
             (args.get('cc') || args.get('bcc'))
         ) {
             const {
@@ -685,7 +676,7 @@ export const applyMacro =
         shouldUpdateNewMessage = true,
         topRankMacroState?: TopRankMacroState,
     ) =>
-    (
+    async (
         dispatch: StoreDispatch,
         getState: () => RootState,
     ): Promise<ReturnType<StoreDispatch>> => {
@@ -711,34 +702,23 @@ export const applyMacro =
             })
         }
 
-        const flags = getLDClient().allFlags()
-        const isMacroForwardByEmailEnabled =
-            !!flags?.[FeatureFlagKey.MacroForwardByEmail]
-
         const renderedMacro = macro.update(
             'actions',
             (actions: List<any> | null) =>
-                actions
-                    ?.filter(
-                        (action: Map<any, any>) =>
-                            isMacroForwardByEmailEnabled ||
-                            action.get('name') !==
-                                MacroActionName.ForwardByEmail,
-                    )
-                    .map((action: Map<any, any>) =>
-                        action.update(
-                            'arguments',
-                            (args: List<any>) =>
-                                nestedReplace(
-                                    args,
-                                    state.ticket,
-                                    state.currentUser,
-                                    ((args: Notification) => {
-                                        return dispatch(notify(args))
-                                    }) as any,
-                                ) as List<any>,
-                        ),
+                actions?.map((action: Map<any, any>) =>
+                    action.update(
+                        'arguments',
+                        (args: List<any>) =>
+                            nestedReplace(
+                                args,
+                                state.ticket,
+                                state.currentUser,
+                                ((args: Notification) => {
+                                    return dispatch(notify(args))
+                                }) as any,
+                            ) as List<any>,
                     ),
+                ) ?? actions,
         )
 
         dispatch({
@@ -748,18 +728,18 @@ export const applyMacro =
         })
 
         if (shouldUpdateNewMessage) {
-            ;(renderedMacro.get('actions', fromJS([])) as List<any>).forEach(
-                (action: Map<any, any>) => {
-                    if (
-                        [
-                            MacroActionName.SetResponseText,
-                            MacroActionName.AddAttachments,
-                        ].includes(action.get('name'))
-                    ) {
-                        dispatch(applyMacroAction(action))
-                    }
-                },
-            )
+            for (const action of (
+                renderedMacro.get('actions', fromJS([])) as List<any>
+            ).toArray()) {
+                if (
+                    [
+                        MacroActionName.SetResponseText,
+                        MacroActionName.AddAttachments,
+                    ].includes(action.get('name'))
+                ) {
+                    dispatch(applyMacroAction(action))
+                }
+            }
             dispatch({
                 type: newMessageTypes.NEW_MESSAGE_RECORD_MACRO,
                 macro,

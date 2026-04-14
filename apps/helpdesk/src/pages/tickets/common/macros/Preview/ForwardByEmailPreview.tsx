@@ -4,14 +4,8 @@ import type { MacroAction } from '@gorgias/helpdesk-types'
 
 import css from './Preview.less'
 
-export const ForwardByEmailPreview = ({
-    action,
-    isMacroForwardByEmailEnabled,
-}: {
-    action?: MacroAction
-    isMacroForwardByEmailEnabled: boolean
-}) => {
-    if (!action || !isMacroForwardByEmailEnabled) return null
+export const ForwardByEmailPreview = ({ action }: { action?: MacroAction }) => {
+    if (!action) return null
 
     return (
         <div className={css.macroData}>

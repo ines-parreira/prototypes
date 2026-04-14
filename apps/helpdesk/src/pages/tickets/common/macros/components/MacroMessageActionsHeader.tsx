@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classNames from 'classnames'
 import type { List, Map } from 'immutable'
 import {
@@ -19,7 +18,6 @@ import css from './MacroMessageActionsHeader.less'
 type MessageOptionConfig = {
     title: string
     icon: string
-    featureFlagKey?: FeatureFlagKey
 }
 
 const optionsConfig: Record<MacroResponseActionName, MessageOptionConfig> = {
@@ -51,18 +49,7 @@ const MacroMessageActionsHeaderDropdownItem: React.FC<
     const disabled = !current && used
     const onClick = useCallback(() => onSelect(type), [onSelect, type])
 
-    const isMacroForwardByEmailEnabled = useFlag(
-        FeatureFlagKey.MacroForwardByEmail,
-    )
-
     const { title, icon } = optionsConfig[type]
-
-    if (
-        type === MacroActionName.ForwardByEmail &&
-        !isMacroForwardByEmailEnabled
-    ) {
-        return null
-    }
 
     return (
         <>

@@ -493,6 +493,14 @@ describe('MacroEdit component', () => {
         )
     })
 
+    it('should show forward email in the add action dropdown even when flags are false', () => {
+        renderComponent()
+
+        fireEvent.click(screen.getByText(new RegExp('Add action', 'i')))
+
+        expect(screen.getByText('Forward email')).toBeInTheDocument()
+    })
+
     it('should render ExcludeFromAutoMerge action', () => {
         const action = {
             name: MacroActionName.ExcludeFromAutoMerge,

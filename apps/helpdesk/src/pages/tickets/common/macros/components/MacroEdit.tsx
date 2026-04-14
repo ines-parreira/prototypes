@@ -1,10 +1,8 @@
 import type { ComponentProps } from 'react'
 import { useCallback } from 'react'
 
-import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import classnames from 'classnames'
-import type { List } from 'immutable'
-import { fromJS, Map } from 'immutable'
+import { fromJS, List, Map } from 'immutable'
 import {
     DropdownItem,
     DropdownMenu,
@@ -65,9 +63,6 @@ export const MacroEdit = ({
     setLanguage,
 }: Props) => {
     const hasIntegrationOfTypes = useAppSelector(makeHasIntegrationOfTypes)
-    const isMacroForwardByEmailEnabled = useFlag(
-        FeatureFlagKey.MacroForwardByEmail,
-    )
 
     const extractText = useCallback(() => {
         const action: Map<any, any> = actions?.find(
@@ -177,79 +172,67 @@ export const MacroEdit = ({
         [actions, setActions],
     )
 
-    const renderNewActionMenu = useCallback(
-        ({
-            isMacroForwardByEmailEnabled,
-        }: {
-            isMacroForwardByEmailEnabled: boolean
-        }) => {
-            const ticketActions = ACTION_TEMPLATES.filter(
-                (template) =>
-                    template.execution !== ActionTemplateExecution.External,
-            )
-                .filter(
-                    ({ name }) =>
-                        isMacroForwardByEmailEnabled ||
-                        name !== MacroActionName.ForwardByEmail,
-                )
-                // remove actions that have already been used
-                // except for SetCustomFieldValue and SetCustomerCustomFieldValue which are allowed multiple times
-                .filter(
-                    (action) =>
-                        action.name === MacroActionName.SetCustomFieldValue ||
-                        action.name ===
-                            MacroActionName.SetCustomerCustomFieldValue ||
-                        !actions?.find(
-                            (usedActions: Map<any, any>) =>
-                                usedActions.get('name') === action.name,
-                        ),
-                )
-
-            const nonIntegrationActions = ACTION_TEMPLATES.filter(
-                ({ execution, integrationType }) =>
-                    execution === ActionTemplateExecution.External &&
-                    !integrationType,
+    const renderNewActionMenu = useCallback(() => {
+        const ticketActions = ACTION_TEMPLATES.filter(
+            (template) =>
+                template.execution !== ActionTemplateExecution.External,
+        )
+            // remove actions that have already been used
+            // except for SetCustomFieldValue and SetCustomerCustomFieldValue which are allowed multiple times
+            .filter(
+                (action) =>
+                    action.name === MacroActionName.SetCustomFieldValue ||
+                    action.name ===
+                        MacroActionName.SetCustomerCustomFieldValue ||
+                    !actions?.find(
+                        (usedActions: Map<any, any>) =>
+                            usedActions.get('name') === action.name,
+                    ),
             )
 
-            const hasActions = ticketActions.length > 0
+        const nonIntegrationActions = ACTION_TEMPLATES.filter(
+            ({ execution, integrationType }) =>
+                execution === ActionTemplateExecution.External &&
+                !integrationType,
+        )
 
-            return (
-                <DropdownMenu className={css.dropdown}>
-                    {hasActions && (
-                        <DropdownItem header>TICKET ACTIONS</DropdownItem>
-                    )}
-                    {hasActions && <DropdownItem divider />}
-                    {ticketActions.map((action) => {
-                        const actionName = action.name
-                        return (
-                            <DropdownItem
-                                key={actionName}
-                                type="button"
-                                onClick={() => addAction(actionName)}
-                            >
-                                {action.title || humanizeString(actionName)}
-                            </DropdownItem>
-                        )
-                    })}
-                    {hasActions && <DropdownItem divider />}
-                    <DropdownItem header>EXTERNAL ACTIONS</DropdownItem>
-                    {nonIntegrationActions.map((action) => {
-                        const actionName = action.name
-                        return (
-                            <DropdownItem
-                                key={actionName}
-                                type="button"
-                                onClick={() => addAction(actionName)}
-                            >
-                                {action.title || humanizeString(actionName)}
-                            </DropdownItem>
-                        )
-                    })}
-                </DropdownMenu>
-            )
-        },
-        [actions, addAction],
-    )
+        const hasActions = ticketActions.length > 0
+
+        return (
+            <DropdownMenu className={css.dropdown}>
+                {hasActions && (
+                    <DropdownItem header>TICKET ACTIONS</DropdownItem>
+                )}
+                {hasActions && <DropdownItem divider />}
+                {ticketActions.map((action) => {
+                    const actionName = action.name
+                    return (
+                        <DropdownItem
+                            key={actionName}
+                            type="button"
+                            onClick={() => addAction(actionName)}
+                        >
+                            {action.title || humanizeString(actionName)}
+                        </DropdownItem>
+                    )
+                })}
+                {hasActions && <DropdownItem divider />}
+                <DropdownItem header>EXTERNAL ACTIONS</DropdownItem>
+                {nonIntegrationActions.map((action) => {
+                    const actionName = action.name
+                    return (
+                        <DropdownItem
+                            key={actionName}
+                            type="button"
+                            onClick={() => addAction(actionName)}
+                        >
+                            {action.title || humanizeString(actionName)}
+                        </DropdownItem>
+                    )
+                })}
+            </DropdownMenu>
+        )
+    }, [actions, addAction])
 
     const renderAction = useCallback(
         (action: Maybe<Map<any, any>>, index: Maybe<number>) => {
@@ -569,13 +552,7 @@ export const MacroEdit = ({
                         </span>
                     </div>
                 </div>
-                {actions
-                    ?.filter(
-                        (action: Map<any, any>) =>
-                            isMacroForwardByEmailEnabled ||
-                            action.get('name') !==
-                                MacroActionName.ForwardByEmail,
-                    )
+                {(actions ?? List<any>())
                     .map(
                         (action: Map<any, any>, index) =>
                             action.set('idx', index), // Store the initial index for action updates
@@ -589,9 +566,7 @@ export const MacroEdit = ({
                         <DropdownToggle color="secondary" caret type="button">
                             Add action
                         </DropdownToggle>
-                        {renderNewActionMenu({
-                            isMacroForwardByEmailEnabled,
-                        })}
+                        {renderNewActionMenu()}
                     </UncontrolledButtonDropdown>
 
                     {integrationMenus

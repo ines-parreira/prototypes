@@ -103,18 +103,13 @@ describe('<Preview />', () => {
         expect(screen.getByText('TicketRichField')).toBeInTheDocument()
     })
 
-    it('should not render forward by email preview when feature flag is disabled', () => {
-        mockUseFlag.mockImplementation((flag) => {
-            if (flag === FeatureFlagKey.MacroForwardByEmail) {
-                return false
-            }
-
-            return true
-        })
+    it('should render forward by email preview regardless of feature flag values', () => {
+        mockUseFlag.mockReturnValue(false)
 
         renderComponent({ actions: [forwardByEmailAction] })
 
-        expect(screen.queryByText(/forward/i)).not.toBeInTheDocument()
+        expect(screen.getByText('Forward email:')).toBeInTheDocument()
+        expect(screen.getByText('forward')).toBeInTheDocument()
     })
 
     it('should not render CC/BCC when feature flag is disabled', () => {

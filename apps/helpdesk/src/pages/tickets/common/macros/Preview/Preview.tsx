@@ -39,9 +39,6 @@ export const Preview = ({
     const isMacroResponseCcBccEnabled = useFlag(
         FeatureFlagKey.MacroResponseTextCcBcc,
     )
-    const isMacroForwardByEmailEnabled = useFlag(
-        FeatureFlagKey.MacroForwardByEmail,
-    )
 
     if (!actions?.length) return null
 
@@ -78,7 +75,6 @@ export const Preview = ({
             />
             <ForwardByEmailPreview
                 action={findAction(MacroActionName.ForwardByEmail)}
-                isMacroForwardByEmailEnabled={isMacroForwardByEmailEnabled}
             />
             <IntegrationsPreview actions={actions} />
             <AddAttachmentsPreview

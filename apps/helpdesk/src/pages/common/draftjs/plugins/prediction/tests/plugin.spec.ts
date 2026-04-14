@@ -11,20 +11,7 @@ import client from '../client'
 import createPredictionPlugin, { clearCache } from '../index'
 import { cachedSelection, predictionKey } from '../state'
 
-const variationMock = jest.fn(() => true)
-
 jest.mock('@repo/logging')
-jest.mock('@repo/feature-flags', () => ({
-    ...jest.requireActual('@repo/feature-flags'),
-    useFlag: jest.fn((flag, defaultValue) => defaultValue),
-    getLDClient: jest.fn(() => ({
-        variation: variationMock,
-        waitForInitialization: jest.fn(() => Promise.resolve()),
-        on: jest.fn(),
-        off: jest.fn(),
-        allFlags: jest.fn(() => ({})),
-    })),
-}))
 jest.mock('../client')
 
 const defaultContext: Map<any, any> = fromJS({})
@@ -35,7 +22,6 @@ beforeEach(() => {
     cachedSelection.set(null)
     jest.clearAllMocks()
     jest.useFakeTimers()
-    variationMock.mockReturnValue(true)
 })
 
 describe('prediction plugin', () => {

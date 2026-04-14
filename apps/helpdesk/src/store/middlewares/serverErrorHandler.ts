@@ -1,4 +1,3 @@
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import _get from 'lodash/get'
 import _some from 'lodash/some'
 import type { Middleware } from 'redux'
@@ -12,7 +11,6 @@ import type { Notification } from '../../state/notifications/types'
 import { NotificationStatus } from '../../state/notifications/types'
 import type { RootState, StoreDispatch } from '../../state/types'
 import { errorToChildren, stripErrorMessage } from '../../utils'
-import { waitForDocumentVisible } from '../../utils/waitForDocumentVisible'
 
 const IGNORED_PREFIXES = ['SUBMIT_ACTIVITY_ERROR']
 
@@ -57,18 +55,7 @@ const serverErrorHandler: Middleware<
                 window.location.hash
             const loginUrl = `${window.location.origin}/login?next=${encodeURIComponent(nextPath)}`
 
-            if (
-                getLDClient().variation(
-                    FeatureFlagKey.DontTriggerLoginsOnInactiveTabs,
-                    false,
-                )
-            ) {
-                void waitForDocumentVisible().then(() => {
-                    window.location.href = loginUrl
-                })
-            } else {
-                window.location.href = loginUrl
-            }
+            window.location.href = loginUrl
         }, 3000)
 
         return next(action)

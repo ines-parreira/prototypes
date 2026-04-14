@@ -1,6 +1,5 @@
 import type { KeyboardEvent } from 'react'
 
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
 import { EditorState } from 'draft-js'
 import type { Map } from 'immutable'
 import { debounce } from 'lodash'
@@ -55,8 +54,6 @@ const requestPrediction = async (
     context: Map<any, any>,
     plugin: PluginMethods,
 ) => {
-    if (!getLDClient()?.variation(FeatureFlagKey.MLFeaturesKillswitch)) return
-
     const predictionText = await client.requestPrediction(text, context.toJS())
 
     if (!predictionText) {

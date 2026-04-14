@@ -1,4 +1,4 @@
-import { FeatureFlagKey, getLDClient } from '@repo/feature-flags'
+import { FeatureFlagKey, fetchFlag } from '@repo/feature-flags'
 
 export const isSessionImpersonated = () => {
     return !!window.USER_IMPERSONATED
@@ -6,10 +6,9 @@ export const isSessionImpersonated = () => {
 
 export const checkIfTrackerIsEnabled = async () => {
     try {
-        const launchDarklyClient = getLDClient()
-        await launchDarklyClient.waitForInitialization(3)
-        const isActivityTrackerEnabled = !!launchDarklyClient.variation(
+        const { flag: isActivityTrackerEnabled } = await fetchFlag(
             FeatureFlagKey.AgentActivityTracking,
+            false,
         )
 
         return isActivityTrackerEnabled && !isSessionImpersonated()

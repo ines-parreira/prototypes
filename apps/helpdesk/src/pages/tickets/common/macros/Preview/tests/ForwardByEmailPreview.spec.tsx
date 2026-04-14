@@ -5,13 +5,8 @@ import { forwardByEmailAction } from 'fixtures/macro'
 import { ForwardByEmailPreview } from '../ForwardByEmailPreview'
 
 describe('<ForwardByEmailPreview />', () => {
-    it('should render forward by email preview when feature flag is enabled', () => {
-        render(
-            <ForwardByEmailPreview
-                action={forwardByEmailAction}
-                isMacroForwardByEmailEnabled={true}
-            />,
-        )
+    it('should render forward by email preview', () => {
+        render(<ForwardByEmailPreview action={forwardByEmailAction} />)
 
         expect(
             screen.getByText(new RegExp(forwardByEmailAction.title, 'i')),
@@ -22,23 +17,9 @@ describe('<ForwardByEmailPreview />', () => {
         expect(screen.getByText('forward')).toBeInTheDocument()
     })
 
-    it('should not render forward by email preview when feature flag is disabled', () => {
-        const { container } = render(
-            <ForwardByEmailPreview
-                action={forwardByEmailAction}
-                isMacroForwardByEmailEnabled={false}
-            />,
-        )
-
-        expect(container.firstChild).toBeNull()
-    })
-
     it('should return null when no action is provided', () => {
         const { container } = render(
-            <ForwardByEmailPreview
-                action={undefined}
-                isMacroForwardByEmailEnabled={true}
-            />,
+            <ForwardByEmailPreview action={undefined} />,
         )
 
         expect(container.firstChild).toBeNull()
@@ -50,12 +31,7 @@ describe('<ForwardByEmailPreview />', () => {
             arguments: { to: 'support@example.com' },
         }
 
-        render(
-            <ForwardByEmailPreview
-                action={customEmailAction}
-                isMacroForwardByEmailEnabled={true}
-            />,
-        )
+        render(<ForwardByEmailPreview action={customEmailAction} />)
 
         expect(screen.getByText('support@example.com')).toBeInTheDocument()
     })
