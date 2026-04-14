@@ -629,6 +629,11 @@
     .chat-view-title { font-size: 14px; font-weight: 600; color: #1e242e; }
     .chat-messages {
       flex: 1; overflow-y: auto; padding: 28px 24px;
+      display: flex; flex-direction: column; align-items: center;
+    }
+    /* Inner wrapper — constrains thread to 600px, matching the input box width */
+    .chat-messages-inner {
+      width: 100%; max-width: 600px;
       display: flex; flex-direction: column; gap: 20px;
     }
     /* User bubble — light grey */
@@ -1212,7 +1217,9 @@
       </div>
 
       <!-- Messages -->
-      <div class="chat-messages" id="chat-messages"></div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-messages-inner" id="chat-messages-inner"></div>
+      </div>
 
       <!-- Footer input -->
       <div class="chat-view-footer">
@@ -1415,7 +1422,7 @@
     const row = document.createElement('div');
     row.className = 'chat-msg-row-user';
     row.innerHTML = `<div class="chat-bubble-user">${text.replace(/</g,'&lt;')}</div>`;
-    document.getElementById('chat-messages').appendChild(row);
+    document.getElementById('chat-messages-inner').appendChild(row);
   }
 
   // Append the animated thinking indicator, returns the element so it can be removed
@@ -1423,7 +1430,7 @@
     const row = document.createElement('div');
     row.className = 'chat-msg-row-agent';
     row.innerHTML = `<span class="chat-thinking-text">Thinking...</span>`;
-    document.getElementById('chat-messages').appendChild(row);
+    document.getElementById('chat-messages-inner').appendChild(row);
     return row;
   }
 
@@ -1443,7 +1450,7 @@
     if (!text) return;
     const title = generateTitle(text);
     // Clear messages
-    document.getElementById('chat-messages').innerHTML = '';
+    document.getElementById('chat-messages-inner').innerHTML = '';
     // Add to recents; clicking it reopens this chat
     addRecentItem(title, () => openChatView(title));
     // Open view
@@ -1460,7 +1467,7 @@
   function submitReply(text) {
     if (!text) return;
     // Remove any existing thinking indicator before adding new message
-    const existing = document.querySelector('#chat-messages .chat-msg-row-agent:last-child');
+    const existing = document.querySelector('#chat-messages-inner .chat-msg-row-agent:last-child');
     if (existing) existing.remove();
     appendUserMessage(text);
     appendThinking();
