@@ -1626,7 +1626,10 @@ Second, an alert from overnight: 4 customers asked whether their bouquet is safe
             })
           }
         );
-        if (!res.ok) throw new Error('ElevenLabs API error');
+        if (!res.ok) {
+          const errBody = await res.text();
+          throw new Error(`ElevenLabs ${res.status}: ${errBody}`);
+        }
         cachedAudioUrl = URL.createObjectURL(await res.blob());
       }
 
@@ -1641,7 +1644,7 @@ Second, an alert from overnight: 4 customers asked whether their bouquet is safe
       audioState = 'idle';
       setTimeDisplays(totalDuration || 0);
       refreshPlaybackUI();
-      alert('Could not load narration. Check the console for details.');
+      alert('Could not load narration: ' + err.message);
     }
   }
 
