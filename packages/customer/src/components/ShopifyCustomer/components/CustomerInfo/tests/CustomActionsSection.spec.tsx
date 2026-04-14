@@ -117,10 +117,19 @@ type UpdateWidgetRequestBody = {
 
 function createUpdateWidgetCapture() {
     let requestBody: UpdateWidgetRequestBody | undefined
+    let resolveRequestBody:
+        | ((value: UpdateWidgetRequestBody) => void)
+        | undefined
+    const requestBodyPromise = new Promise<UpdateWidgetRequestBody>(
+        (resolve) => {
+            resolveRequestBody = resolve
+        },
+    )
 
     const updateWidgetMock = mockUpdateWidgetHandler(
         async ({ request, data }) => {
             requestBody = (await request.json()) as UpdateWidgetRequestBody
+            resolveRequestBody?.(requestBody)
 
             return HttpResponse.json(data)
         },
@@ -128,6 +137,7 @@ function createUpdateWidgetCapture() {
 
     return {
         handler: updateWidgetMock.handler,
+        awaitRequestBody: () => requestBodyPromise,
         getRequestBody: () => requestBody,
     }
 }
@@ -152,9 +162,7 @@ describe('CustomActionsSection', () => {
         it('renders integration name and Add button', async () => {
             renderComponent()
 
-            await waitFor(() => {
-                expect(screen.getByText('Shopify')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Shopify')).toBeInTheDocument()
 
             expect(
                 screen.getByRole('button', { name: /add/i }),
@@ -164,9 +172,7 @@ describe('CustomActionsSection', () => {
         it('renders buttons and links', async () => {
             renderComponent()
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Button')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Button')).toBeInTheDocument()
 
             expect(screen.getByText('Test Link')).toBeInTheDocument()
         })
@@ -179,9 +185,7 @@ describe('CustomActionsSection', () => {
 
             render(<CustomActionsSection integrationName="Shopify" />)
 
-            await waitFor(() => {
-                expect(screen.getByText('Shopify')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Shopify')).toBeInTheDocument()
 
             expect(screen.queryByRole('separator')).not.toBeInTheDocument()
         })
@@ -203,41 +207,33 @@ describe('CustomActionsSection', () => {
         it('opens "Add button" dialog', async () => {
             const { user } = renderComponent()
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Button')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Button')).toBeInTheDocument()
 
             await user.click(screen.getByRole('button', { name: /add/i }))
             await user.click(
                 screen.getByRole('menuitem', { name: /add button/i }),
             )
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('dialog', {
-                        name: /configure http action/i,
-                    }),
-                ).toBeInTheDocument()
-            })
+            expect(
+                await screen.findByRole('dialog', {
+                    name: /configure http action/i,
+                }),
+            ).toBeInTheDocument()
         })
 
         it('opens "Add link" dialog', async () => {
             const { user } = renderComponent()
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Button')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Button')).toBeInTheDocument()
 
             await user.click(screen.getByRole('button', { name: /add/i }))
             await user.click(
                 screen.getByRole('menuitem', { name: /add link/i }),
             )
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('dialog', { name: /add link/i }),
-                ).toBeInTheDocument()
-            })
+            expect(
+                await screen.findByRole('dialog', { name: /add link/i }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -245,39 +241,31 @@ describe('CustomActionsSection', () => {
         it('opens edit button dialog', async () => {
             const { user } = renderComponent()
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Button')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Button')).toBeInTheDocument()
 
             await user.click(
                 screen.getByRole('button', { name: /edit test button/i }),
             )
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('dialog', {
-                        name: /edit http action/i,
-                    }),
-                ).toBeInTheDocument()
-            })
+            expect(
+                await screen.findByRole('dialog', {
+                    name: /edit http action/i,
+                }),
+            ).toBeInTheDocument()
         })
 
         it('opens edit link dialog', async () => {
             const { user } = renderComponent()
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Link')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Link')).toBeInTheDocument()
 
             await user.click(
                 screen.getByRole('button', { name: /edit test link/i }),
             )
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('dialog', { name: /edit link/i }),
-                ).toBeInTheDocument()
-            })
+            expect(
+                await screen.findByRole('dialog', { name: /edit link/i }),
+            ).toBeInTheDocument()
         })
     })
 
@@ -293,22 +281,16 @@ describe('CustomActionsSection', () => {
                 <CustomActionsSection integrationName="Shopify" />,
             )
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Link')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Link')).toBeInTheDocument()
 
             await user.click(screen.getByRole('button', { name: /add/i }))
             await user.click(
                 screen.getByRole('menuitem', { name: /add link/i }),
             )
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('dialog', { name: /add link/i }),
-                ).toBeInTheDocument()
+            const dialog = await screen.findByRole('dialog', {
+                name: /add link/i,
             })
-
-            const dialog = screen.getByRole('dialog', { name: /add link/i })
             await user.type(within(dialog).getByLabelText(/title/i), 'New Link')
             await user.type(
                 within(dialog).getByLabelText(/url/i),
@@ -324,12 +306,8 @@ describe('CustomActionsSection', () => {
             })
             await user.click(saveButton)
 
-            await waitFor(() => {
-                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
-            })
-
             const customerWidget = findCustomerWidget(
-                updateWidgetCapture.getRequestBody(),
+                await updateWidgetCapture.awaitRequestBody(),
             )
 
             expect(customerWidget?.meta.custom.links).toHaveLength(2)
@@ -350,21 +328,15 @@ describe('CustomActionsSection', () => {
                 <CustomActionsSection integrationName="Shopify" />,
             )
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Link')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Link')).toBeInTheDocument()
 
             await user.click(
                 screen.getByRole('button', { name: /edit test link/i }),
             )
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('dialog', { name: /edit link/i }),
-                ).toBeInTheDocument()
+            const dialog = await screen.findByRole('dialog', {
+                name: /edit link/i,
             })
-
-            const dialog = screen.getByRole('dialog', { name: /edit link/i })
             const titleInput = within(dialog).getByLabelText(/title/i)
             const urlInput = within(dialog).getByLabelText(/url/i)
 
@@ -383,12 +355,8 @@ describe('CustomActionsSection', () => {
 
             await user.click(saveButton)
 
-            await waitFor(() => {
-                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
-            })
-
             const customerWidget = findCustomerWidget(
-                updateWidgetCapture.getRequestBody(),
+                await updateWidgetCapture.awaitRequestBody(),
             )
 
             expect(customerWidget?.meta.custom.links).toHaveLength(1)
@@ -411,24 +379,14 @@ describe('CustomActionsSection', () => {
                 <CustomActionsSection integrationName="Shopify" />,
             )
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Button')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Button')).toBeInTheDocument()
 
             await user.click(screen.getByRole('button', { name: /add/i }))
             await user.click(
                 screen.getByRole('menuitem', { name: /add button/i }),
             )
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('dialog', {
-                        name: /configure http action/i,
-                    }),
-                ).toBeInTheDocument()
-            })
-
-            const dialog = screen.getByRole('dialog', {
+            const dialog = await screen.findByRole('dialog', {
                 name: /configure http action/i,
             })
             await user.type(
@@ -449,12 +407,8 @@ describe('CustomActionsSection', () => {
             })
             await user.click(saveButton)
 
-            await waitFor(() => {
-                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
-            })
-
             const customerWidget = findCustomerWidget(
-                updateWidgetCapture.getRequestBody(),
+                await updateWidgetCapture.awaitRequestBody(),
             )
 
             expect(customerWidget?.meta.custom.buttons).toHaveLength(2)
@@ -477,23 +431,13 @@ describe('CustomActionsSection', () => {
                 <CustomActionsSection integrationName="Shopify" />,
             )
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Button')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Button')).toBeInTheDocument()
 
             await user.click(
                 screen.getByRole('button', { name: /edit test button/i }),
             )
 
-            await waitFor(() => {
-                expect(
-                    screen.getByRole('dialog', {
-                        name: /edit http action/i,
-                    }),
-                ).toBeInTheDocument()
-            })
-
-            const dialog = screen.getByRole('dialog', {
+            const dialog = await screen.findByRole('dialog', {
                 name: /edit http action/i,
             })
             const titleInput = within(dialog).getByLabelText(/button title/i)
@@ -514,12 +458,8 @@ describe('CustomActionsSection', () => {
 
             await user.click(saveButton)
 
-            await waitFor(() => {
-                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
-            })
-
             const customerWidget = findCustomerWidget(
-                updateWidgetCapture.getRequestBody(),
+                await updateWidgetCapture.awaitRequestBody(),
             )
 
             expect(customerWidget?.meta.custom.buttons).toHaveLength(1)
@@ -544,9 +484,7 @@ describe('CustomActionsSection', () => {
                 <CustomActionsSection integrationName="Shopify" />,
             )
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Button')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Button')).toBeInTheDocument()
 
             await user.click(
                 screen.getByRole('button', {
@@ -554,12 +492,8 @@ describe('CustomActionsSection', () => {
                 }),
             )
 
-            await waitFor(() => {
-                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
-            })
-
             const customerWidget = findCustomerWidget(
-                updateWidgetCapture.getRequestBody(),
+                await updateWidgetCapture.awaitRequestBody(),
             )
 
             expect(customerWidget?.meta.custom.buttons).toHaveLength(0)
@@ -576,9 +510,7 @@ describe('CustomActionsSection', () => {
                 <CustomActionsSection integrationName="Shopify" />,
             )
 
-            await waitFor(() => {
-                expect(screen.getByText('Test Link')).toBeInTheDocument()
-            })
+            expect(await screen.findByText('Test Link')).toBeInTheDocument()
 
             await user.click(
                 screen.getByRole('button', {
@@ -586,12 +518,8 @@ describe('CustomActionsSection', () => {
                 }),
             )
 
-            await waitFor(() => {
-                expect(updateWidgetCapture.getRequestBody()).toBeDefined()
-            })
-
             const customerWidget = findCustomerWidget(
-                updateWidgetCapture.getRequestBody(),
+                await updateWidgetCapture.awaitRequestBody(),
             )
 
             expect(customerWidget?.meta.custom.links).toHaveLength(0)
