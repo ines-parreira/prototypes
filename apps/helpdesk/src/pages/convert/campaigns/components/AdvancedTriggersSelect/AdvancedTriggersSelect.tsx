@@ -109,7 +109,6 @@ export const AdvancedTriggersSelect = ({
                 intent="secondary"
                 name="add condition"
                 data-testid="btn:add-condition" // used in e2e tests
-                role="button"
                 ref={buttonRef}
                 onClick={() => setIsOpen(!isOpen)}
             >

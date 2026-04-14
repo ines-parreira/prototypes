@@ -38,7 +38,7 @@ const nameColumn = createTableV1SortableColumn<Field>(
 
                         <TypeNotSupportedTooltip
                             trigger={
-                                <span role="button" tabIndex={0}>
+                                <span tabIndex={0}>
                                     <Icon
                                         color={'var(--content-warning-primary)'}
                                         name="triangle-warning"

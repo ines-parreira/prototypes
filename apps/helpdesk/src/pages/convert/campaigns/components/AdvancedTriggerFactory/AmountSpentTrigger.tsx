@@ -70,7 +70,6 @@ export const AmountSpentTrigger = ({
         <>
             <div>
                 <Button
-                    role="button"
                     aria-label="Total spent"
                     intent="secondary"
                     className="btn-frozen"

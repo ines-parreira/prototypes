@@ -148,7 +148,6 @@ export const CurrentlyViewingDropdown = <T extends SelfServiceChannel>({
                         to={link}
                         className={css.channelTypeSettingsLink}
                         target="_blank"
-                        role="link"
                     >
                         <ButtonIconLabel icon="open_in_new" position="right">
                             {channelTypeLabel} Settings

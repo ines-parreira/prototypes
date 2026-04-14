@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 
 import {
     LegacyButton as Button,
+    Icon,
     LegacyIconButton as IconButton,
 } from '@gorgias/axiom'
 
@@ -251,30 +252,17 @@ const VideoThumbnail = ({
     }
 
     return (
-        <div
-            className={className}
+        <button
+            type="button"
+            className={cn(css.videoThumbnailButton, className)}
             onClick={handleClick}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault()
-                    handleClick()
-                }
-            }}
+            aria-label="Play video"
         >
             <img src={poster} alt={alt || 'thumbnail image'} />
-            <div>
-                <IconButton
-                    aria-label="Play video"
-                    icon="play_circle_filled"
-                    intent="secondary"
-                    fillStyle="fill"
-                    size="small"
-                    iconClassName={css.playButton}
-                />
+            <div className={css.playButton}>
+                <Icon name="media-play-circle" aria-hidden={true} />
             </div>
-        </div>
+        </button>
     )
 }
 

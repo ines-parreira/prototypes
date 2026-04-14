@@ -105,7 +105,6 @@ const UpdatePaymentTerms = () => {
                             <Button
                                 id="update-payment-terms-submit"
                                 type="submit"
-                                role="button"
                                 intent="primary"
                                 className={cssSettings.mt16}
                                 isLoading={useUpdatePaymentTerms.isLoading}

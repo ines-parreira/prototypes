@@ -3,7 +3,14 @@ import React from 'react'
 
 import client from '@repo/api-resources'
 import { userEvent } from '@repo/testing'
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import {
+    act,
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS, Map as ImmutableMap } from 'immutable'
 import { Provider } from 'react-redux'
@@ -324,7 +331,11 @@ describe('RefundOrderModalConnected', () => {
         })
 
         // Change the refund method => available amount for refund is displayed
-        fireEvent.click(screen.getByRole('radio', { name: /Manual amount/ }))
+        fireEvent.click(
+            screen.getByLabelText(/Manual amount/i, {
+                selector: 'div[role="radio"]',
+            }),
+        )
         act(() => jest.runAllTimers())
 
         // Select an amount to refund
@@ -457,8 +468,16 @@ describe('RefundOrderModalConnected', () => {
         })
 
         // Click `Shipping cost` & `Handling fee` checkboxes
-        fireEvent.click(screen.getAllByRole('checkbox')[2]) // Shipping cost
-        fireEvent.click(screen.getAllByRole('checkbox')[3]) // Handling fee
+        fireEvent.click(
+            within(screen.getByText('Shipping').closest('tr')!).getByRole(
+                'checkbox',
+            ),
+        )
+        fireEvent.click(
+            within(screen.getByText('Handling').closest('tr')!).getByRole(
+                'checkbox',
+            ),
+        )
         act(() => jest.runAllTimers())
 
         expect(
@@ -600,8 +619,16 @@ describe('RefundOrderModalConnected', () => {
         })
 
         // Click `Shipping cost` & `Handling fee` checkboxes
-        fireEvent.click(screen.getAllByRole('checkbox')[2]) // Shipping cost
-        fireEvent.click(screen.getAllByRole('checkbox')[3]) // Handling fee
+        fireEvent.click(
+            within(screen.getByText('Shipping').closest('tr')!).getByRole(
+                'checkbox',
+            ),
+        )
+        fireEvent.click(
+            within(screen.getByText('Handling').closest('tr')!).getByRole(
+                'checkbox',
+            ),
+        )
         act(() => jest.runAllTimers())
 
         expect(
@@ -609,8 +636,16 @@ describe('RefundOrderModalConnected', () => {
         ).toHaveBeenCalledTimes(3)
 
         // Deselect `Shipping cost` & `Handling fee` checkboxes
-        fireEvent.click(screen.getAllByRole('checkbox')[2]) // Shipping cost
-        fireEvent.click(screen.getAllByRole('checkbox')[3]) // Handling fee
+        fireEvent.click(
+            within(screen.getByText('Shipping').closest('tr')!).getByRole(
+                'checkbox',
+            ),
+        )
+        fireEvent.click(
+            within(screen.getByText('Handling').closest('tr')!).getByRole(
+                'checkbox',
+            ),
+        )
         act(() => jest.runAllTimers())
 
         expect(

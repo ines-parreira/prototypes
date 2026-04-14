@@ -102,7 +102,6 @@ export const OrderedProductsTriggers = ({
             <div>
                 <Button
                     intent="secondary"
-                    role="button"
                     aria-label="products purchased"
                     className="btn-frozen"
                 >

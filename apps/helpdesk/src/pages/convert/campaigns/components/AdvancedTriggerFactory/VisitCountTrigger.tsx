@@ -65,7 +65,6 @@ export const VisitCountTrigger = ({
         <>
             <div>
                 <Button
-                    role="button"
                     aria-label="Number of visits"
                     intent="secondary"
                     className="btn-frozen"

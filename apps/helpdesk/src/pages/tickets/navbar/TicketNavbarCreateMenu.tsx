@@ -112,13 +112,11 @@ export function TicketNavbarCreateMenu() {
                             isPlaceCallButtonDisabled ? (
                                 <Tooltip
                                     trigger={
-                                        <span role="button" tabIndex={0}>
-                                            <Icon
-                                                name="octagon-error"
-                                                size="sm"
-                                                color="red"
-                                            />
-                                        </span>
+                                        <Icon
+                                            name="octagon-error"
+                                            size="sm"
+                                            color="red"
+                                        />
                                     }
                                 >
                                     <TooltipContent

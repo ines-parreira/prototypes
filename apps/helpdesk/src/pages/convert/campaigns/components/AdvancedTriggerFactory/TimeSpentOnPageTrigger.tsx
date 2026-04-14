@@ -43,7 +43,6 @@ export const TimeSpentOnPageTrigger = ({
         <>
             <div>
                 <Button
-                    role="button"
                     aria-label="Time spent on page"
                     intent="secondary"
                     className="btn-frozen"

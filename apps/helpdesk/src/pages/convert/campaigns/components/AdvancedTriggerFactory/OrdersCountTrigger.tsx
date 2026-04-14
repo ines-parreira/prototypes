@@ -68,7 +68,6 @@ export const OrdersCountTrigger = ({
         <>
             <div>
                 <Button
-                    role="button"
                     aria-label="orders-placed"
                     intent="secondary"
                     className="btn-frozen"

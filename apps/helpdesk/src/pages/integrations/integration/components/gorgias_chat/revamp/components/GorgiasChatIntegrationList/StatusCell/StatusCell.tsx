@@ -177,7 +177,7 @@ export const StatusCell = ({ chat, loading }: StatusCellProps) => {
                         chatIsPublishedButNotInstalled
                     )
                 }
-                trigger={<span role="button">{getStatusTag(chatStatus)}</span>}
+                trigger={<span>{getStatusTag(chatStatus)}</span>}
             >
                 <TooltipContent>
                     {chatIsHiddenOutsideBusinessHours && (

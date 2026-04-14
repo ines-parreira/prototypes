@@ -113,7 +113,6 @@ export const CustomerCountryTrigger = ({
             <div>
                 <Button
                     intent="secondary"
-                    role="button"
                     aria-label="Visitor location"
                     className="btn-frozen"
                 >

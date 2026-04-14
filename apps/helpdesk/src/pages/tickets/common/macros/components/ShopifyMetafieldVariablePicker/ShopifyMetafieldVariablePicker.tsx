@@ -105,23 +105,17 @@ export function ShopifyMetafieldVariablePicker({
 
     return (
         <div className={css.triggerContainer}>
-            <div
+            <button
+                type="button"
                 ref={refs.setReference}
-                role="button"
-                tabIndex={0}
                 className={css.triggerItem}
                 onClick={handleOpenSubmenu}
-                onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        handleOpenSubmenu(e)
-                    }
-                }}
             >
                 <span>Shopify metafields</span>
-                <span className={css.chevronIcon}>
+                <span className={css.chevronIcon} aria-hidden={true}>
                     <Icon name="arrow-chevron-right" />
                 </span>
-            </div>
+            </button>
 
             {isOpen && (
                 <div
@@ -131,21 +125,23 @@ export function ShopifyMetafieldVariablePicker({
                     {...getFloatingProps()}
                 >
                     {currentLevel !== 'stores' && (
-                        <div
-                            role="button"
-                            tabIndex={0}
+                        <button
+                            type="button"
                             onClick={handleBack}
                             className={css.backHeader}
                         >
                             <span className={css.backButton}>
-                                <span className={css.backIcon}>
+                                <span
+                                    className={css.backIcon}
+                                    aria-hidden={true}
+                                >
                                     <Icon name="arrow-chevron-left" />
                                 </span>
                                 <span className={css.backLabel}>
                                     {backButtonLabel}
                                 </span>
                             </span>
-                        </div>
+                        </button>
                     )}
 
                     <div className={css.dropdownBody}>

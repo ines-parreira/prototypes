@@ -25,7 +25,6 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
           <input
             class="input"
             id="radio-button-option-0"
-            role="checkbox"
             tabindex="-1"
             type="radio"
           />
@@ -53,7 +52,6 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
             checked=""
             class="input"
             id="radio-button-option-1"
-            role="checkbox"
             tabindex="-1"
             type="radio"
           />
@@ -86,7 +84,6 @@ exports[`RefundMethodPickerSection snapshot renders refund methods & selected re
           <input
             class="input"
             id="radio-button-option-2"
-            role="checkbox"
             tabindex="-1"
             type="radio"
           />

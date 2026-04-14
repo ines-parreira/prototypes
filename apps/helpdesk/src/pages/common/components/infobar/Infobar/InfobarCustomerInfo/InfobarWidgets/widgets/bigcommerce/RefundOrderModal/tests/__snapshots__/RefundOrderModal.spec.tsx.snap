@@ -69,7 +69,6 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
                     checked=""
                     class="input"
                     id="radio-button-Entire order"
-                    role="checkbox"
                     tabindex="-1"
                     type="radio"
                   />
@@ -92,7 +91,6 @@ exports[`RefundOrderModal should render Refund Order - ERROR popup 1`] = `
                   <input
                     class="input"
                     id="radio-button-Manual amount"
-                    role="checkbox"
                     tabindex="-1"
                     type="radio"
                   />
@@ -392,7 +390,6 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
                     class="input"
                     disabled=""
                     id="radio-button-Entire order"
-                    role="checkbox"
                     tabindex="-1"
                     type="radio"
                   />
@@ -416,7 +413,6 @@ exports[`RefundOrderModal should render Refund Order - OK 1`] = `
                     class="input"
                     disabled=""
                     id="radio-button-Manual amount"
-                    role="checkbox"
                     tabindex="-1"
                     type="radio"
                   />
@@ -685,7 +681,6 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
                     checked=""
                     class="input"
                     id="radio-button-Entire order"
-                    role="checkbox"
                     tabindex="-1"
                     type="radio"
                   />
@@ -708,7 +703,6 @@ exports[`RefundOrderModal should render Refund Order - Too Many Requests ERROR p
                   <input
                     class="input"
                     id="radio-button-Manual amount"
-                    role="checkbox"
                     tabindex="-1"
                     type="radio"
                   />

@@ -124,7 +124,6 @@ const ArticleSection: React.FC<Props> = ({
                                             onEdit(item.key)
                                         }}
                                         tabIndex={0}
-                                        role="button"
                                     >
                                         {item.type === ArticleTemplateType.AI &&
                                         item.related_tickets_count &&

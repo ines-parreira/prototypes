@@ -229,7 +229,6 @@ export function RefundOrderModal({
                             ].map((refund) => {
                                 return (
                                     <PreviewRadioButton
-                                        role="checkbox"
                                         className={
                                             css.previewRadioButtonWrapper
                                         }

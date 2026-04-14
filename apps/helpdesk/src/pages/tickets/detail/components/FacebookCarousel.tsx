@@ -82,7 +82,6 @@ const FacebookCarousel = ({ data = [] }: Props) => (
                                                                 )
                                                                 ?.focus()
                                                         }}
-                                                        role="link"
                                                     >
                                                         {button.title}
                                                     </Button>

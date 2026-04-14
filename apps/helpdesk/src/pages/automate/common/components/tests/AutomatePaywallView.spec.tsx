@@ -165,7 +165,7 @@ describe('AutomatePaywallView', () => {
     it('displays a custom call to action when provided, instead of the default "Select plan to get started"', () => {
         mockUsePaywallConfig.mockReturnValue({
             ...paywallConfig,
-            customCta: <div role="button">My custom call to Action</div>,
+            customCta: <button type="button">My custom call to Action</button>,
         })
 
         renderWithProvider(

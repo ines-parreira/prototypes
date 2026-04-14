@@ -82,8 +82,7 @@ describe('RefundMethodPickerSection', () => {
             />,
         )
 
-        // Select second option
-        userEvent.click(screen.getAllByRole('checkbox')[1])
+        userEvent.click(screen.getByLabelText(/Store Credit/i))
 
         expect(dispatchRefundOrderStateMock).toHaveBeenCalledTimes(1)
         expect(dispatchRefundOrderStateMock).toHaveBeenCalledWith({

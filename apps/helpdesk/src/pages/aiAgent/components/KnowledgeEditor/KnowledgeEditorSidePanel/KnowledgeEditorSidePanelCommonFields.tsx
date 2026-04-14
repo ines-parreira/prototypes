@@ -106,7 +106,7 @@ export const KnowledgeEditorSidePanelFieldAIAgentStatus = ({
             {showMultiLanguageInfo && multiLanguageTooltip && (
                 <Tooltip
                     trigger={
-                        <span role="button" tabIndex={0}>
+                        <span tabIndex={0}>
                             <Icon name="info" color="ai" />
                         </span>
                     }

@@ -24,7 +24,7 @@ export default function ArrowLink({
 
     if (href?.startsWith('/') || href?.startsWith('?')) {
         return (
-            <Link className={classnames} to={href} role="link" {...props}>
+            <Link className={classnames} to={href} {...props}>
                 {children}
                 {arrow}
             </Link>

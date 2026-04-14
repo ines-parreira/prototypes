@@ -36,12 +36,11 @@ describe('PendingTask', () => {
         },
     )
     it('render the loading state', () => {
-        renderWithRouter(<PendingTask isLoading={true} />)
+        const { container } = renderWithRouter(<PendingTask isLoading={true} />)
 
-        expect(screen.getAllByRole('link')[0]).toHaveAttribute(
-            'aria-busy',
-            'true',
-        )
+        expect(
+            container.querySelector('[aria-busy="true"]'),
+        ).toBeInTheDocument()
     })
 
     it.each(['BASIC' as const, 'RECOMMENDED' as const])(

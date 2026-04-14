@@ -69,7 +69,6 @@ export const CartValueTrigger = ({
         <>
             <div>
                 <Button
-                    role="button"
                     aria-label="Amount added to cart"
                     intent="secondary"
                     className="btn-frozen"

@@ -8,7 +8,6 @@ export const OutOfStockProductPagesTrigger = (): JSX.Element => {
             <div>
                 <Button
                     intent="secondary"
-                    role="button"
                     aria-label="Out Of Stock Product Pages"
                     className="btn-frozen"
                 >

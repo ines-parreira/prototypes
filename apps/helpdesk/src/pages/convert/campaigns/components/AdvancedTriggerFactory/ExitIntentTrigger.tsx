@@ -8,7 +8,6 @@ export const ExitIntentTrigger = (): JSX.Element => {
             <div>
                 <Button
                     intent="secondary"
-                    role="button"
                     aria-label="Exit intent"
                     className="btn-frozen"
                 >

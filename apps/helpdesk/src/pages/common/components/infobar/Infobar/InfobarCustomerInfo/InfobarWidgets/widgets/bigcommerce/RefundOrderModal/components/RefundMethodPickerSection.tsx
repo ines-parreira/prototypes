@@ -66,7 +66,6 @@ export function RefundMethodPickerSection({
                         )
                         return (
                             <PreviewRadioButton
-                                role="checkbox"
                                 className={css.previewRadioButtonWrapper}
                                 isDisabled={isLoading}
                                 key={`option-${index}`}

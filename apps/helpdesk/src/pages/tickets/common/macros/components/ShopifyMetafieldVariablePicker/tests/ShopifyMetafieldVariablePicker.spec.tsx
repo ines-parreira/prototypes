@@ -74,12 +74,7 @@ const clickButtonWithText = async (
     user: ReturnType<typeof userEvent.setup>,
     text: string,
 ) => {
-    const element = screen.getByText(text)
-    const button =
-        element.closest('button') ?? element.closest('[role="button"]')
-    if (!button)
-        throw new Error(`Could not find button containing text "${text}"`)
-    await user.click(button)
+    await user.click(screen.getByRole('button', { name: text }))
 }
 
 describe('<ShopifyMetafieldVariablePicker />', () => {
@@ -249,9 +244,9 @@ describe('<ShopifyMetafieldVariablePicker />', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            const trigger = screen
-                .getByText('Shopify metafields')
-                .closest('[role="button"]') as HTMLElement
+            const trigger = screen.getByRole('button', {
+                name: 'Shopify metafields',
+            })
             trigger.focus()
             await user.keyboard('{Enter}')
 
@@ -264,9 +259,9 @@ describe('<ShopifyMetafieldVariablePicker />', () => {
             const user = userEvent.setup()
             renderComponent()
 
-            const trigger = screen
-                .getByText('Shopify metafields')
-                .closest('[role="button"]') as HTMLElement
+            const trigger = screen.getByRole('button', {
+                name: 'Shopify metafields',
+            })
             trigger.focus()
             await user.keyboard(' ')
 
@@ -284,9 +279,7 @@ describe('<ShopifyMetafieldVariablePicker />', () => {
 
             expect(screen.getByText('Customer')).toBeInTheDocument()
 
-            const backButton = screen
-                .getByText('Store 1')
-                .closest('[role="button"]')!
+            const backButton = screen.getByRole('button', { name: 'Store 1' })
             await user.click(backButton)
 
             const storesList = screen
@@ -305,9 +298,9 @@ describe('<ShopifyMetafieldVariablePicker />', () => {
 
             expect(screen.getByText('Loyalty Points')).toBeInTheDocument()
 
-            const backButton = screen
-                .getByText('Customer')
-                .closest('[role="button"]')!
+            const backButton = screen.getByRole('button', {
+                name: 'Customer',
+            })
             await user.click(backButton)
 
             expect(screen.getByText('Last Order')).toBeInTheDocument()

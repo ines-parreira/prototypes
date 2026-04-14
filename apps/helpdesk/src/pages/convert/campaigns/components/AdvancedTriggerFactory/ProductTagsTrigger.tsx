@@ -56,7 +56,6 @@ export const ProductTagsTrigger = ({
         <>
             <div>
                 <Button
-                    role="button"
                     aria-label="Cart includes"
                     intent="secondary"
                     className="btn-frozen"

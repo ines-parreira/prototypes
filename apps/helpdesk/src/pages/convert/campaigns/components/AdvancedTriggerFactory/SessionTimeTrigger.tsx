@@ -43,7 +43,6 @@ export const SessionTimeTrigger = ({
         <>
             <div>
                 <Button
-                    role="button"
                     aria-label="Time Spent Per Visit"
                     intent="secondary"
                     className="btn-frozen"

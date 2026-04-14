@@ -64,7 +64,7 @@ describe('PromoCard', () => {
             )
 
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -91,7 +91,7 @@ describe('PromoCard', () => {
             )
 
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -311,7 +311,7 @@ describe('PromoCard', () => {
             )
 
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             expect(videoThumbnail).toHaveClass('custom-video-thumbnail')
         })
@@ -439,7 +439,7 @@ describe('PromoCard', () => {
             )
 
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
 
             await act(async () => {
@@ -468,7 +468,7 @@ describe('PromoCard', () => {
             )
 
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
 
             await act(async () => {
@@ -505,7 +505,7 @@ describe('PromoCard', () => {
             )
 
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
 
             await act(async () => {
@@ -546,7 +546,7 @@ describe('PromoCard', () => {
             )
 
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
 
             await act(async () => {
@@ -604,7 +604,7 @@ describe('PromoCard', () => {
             )
 
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -656,7 +656,7 @@ describe('PromoCard', () => {
             )
 
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -712,7 +712,7 @@ describe('PromoCard', () => {
             )
 
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -781,7 +781,7 @@ describe('PromoCard', () => {
 
             // Open modal
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -845,7 +845,7 @@ describe('PromoCard', () => {
 
             // Open modal and end video
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -892,7 +892,7 @@ describe('PromoCard', () => {
 
             // Open modal and end video
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -942,7 +942,7 @@ describe('PromoCard', () => {
 
             // Open modal and end video
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -989,7 +989,7 @@ describe('PromoCard', () => {
 
             // Open modal and end video
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -1044,7 +1044,7 @@ describe('PromoCard', () => {
 
             // Open modal and end video
             const videoThumbnail = screen.getByRole('button', {
-                name: /test video/i,
+                name: /play video/i,
             })
             await act(async () => {
                 await userEvent.click(videoThumbnail)
@@ -1460,7 +1460,7 @@ describe('PromoCard', () => {
             )
 
             expect(
-                screen.getByRole('button', { name: /integration test video/i }),
+                screen.getByRole('button', { name: /play video/i }),
             ).toBeInTheDocument()
             expect(screen.getByText('Integration Test')).toBeInTheDocument()
             expect(

@@ -12,7 +12,11 @@ export function SubmenuItem({
     return (
         <button type="button" onClick={onClick} className={css.navItem}>
             <span className={css.itemLabel}>{label}</span>
-            {showChevron && <Icon name="arrow-chevron-right" />}
+            {showChevron && (
+                <span aria-hidden={true}>
+                    <Icon name="arrow-chevron-right" />
+                </span>
+            )}
         </button>
     )
 }

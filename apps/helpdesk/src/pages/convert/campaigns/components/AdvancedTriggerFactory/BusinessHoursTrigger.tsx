@@ -42,7 +42,6 @@ export const BusinessHoursTrigger = ({
             <div>
                 <Button
                     intent="secondary"
-                    role="button"
                     aria-label="Business hours"
                     className="btn-frozen"
                 >

@@ -64,7 +64,6 @@ export const PendingTask: React.FC<Props> = ({
             className={classNames(css.wrapperA, { [css.isLoading]: isLoading })}
             aria-label={title}
             tabIndex={0}
-            role="link"
             onClick={onTaskClick}
             {...ariaLoadingProps}
         >

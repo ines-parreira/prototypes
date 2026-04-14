@@ -71,13 +71,11 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
                     !!view.deactivated_datetime ? (
                         <Tooltip
                             trigger={
-                                <span role="button" tabIndex={0}>
-                                    <Icon
-                                        name="octagon-error"
-                                        size="sm"
-                                        color="red"
-                                    />
-                                </span>
+                                <Icon
+                                    name="octagon-error"
+                                    size="sm"
+                                    color="red"
+                                />
                             }
                         >
                             <TooltipContent

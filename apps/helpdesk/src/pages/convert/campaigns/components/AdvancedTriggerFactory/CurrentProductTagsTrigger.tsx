@@ -56,7 +56,6 @@ export const CurrentProductTagsTrigger = ({
         <>
             <div>
                 <Button
-                    role="button"
                     aria-label="Currently visited product"
                     intent="secondary"
                     className="btn-frozen"

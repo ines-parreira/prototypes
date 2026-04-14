@@ -23,7 +23,7 @@ const completedTasks = [
 
 describe('PendingTasksSection', () => {
     it('render the section in loading', () => {
-        renderWithRouter(
+        const { container } = renderWithRouter(
             <PendingTasksSection
                 completedTasks={completedTasks}
                 pendingTasks={pendingTasks}
@@ -32,10 +32,9 @@ describe('PendingTasksSection', () => {
             />,
         )
 
-        expect(screen.getAllByRole('link')[0]).toHaveAttribute(
-            'aria-busy',
-            'true',
-        )
+        expect(
+            container.querySelector('[aria-busy="true"]'),
+        ).toBeInTheDocument()
     })
 
     it('render the component after loading', () => {

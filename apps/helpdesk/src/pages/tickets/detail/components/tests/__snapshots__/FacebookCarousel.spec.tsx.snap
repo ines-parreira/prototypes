@@ -61,7 +61,6 @@ exports[`FacebookCarousel component render generic template 1`] = `
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
-                    role="link"
                     type="button"
                   >
                     <span
@@ -84,7 +83,6 @@ exports[`FacebookCarousel component render generic template 1`] = `
                   <button
                     aria-disabled="false"
                     class="ui-button-wrapper-cef1 ui-button-fill-cef1 ui-button-secondary-cef1"
-                    role="link"
                     type="button"
                   >
                     <span

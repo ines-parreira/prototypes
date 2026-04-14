@@ -33,7 +33,6 @@ export default function TicketIdBodyCell({
                 to={`/app/ticket/${ticketId}#satisfactionSurvey`}
                 target="_blank"
                 rel="noopener noreferrer"
-                role="link"
             >
                 <IconButton
                     ref={IconButtonRef}

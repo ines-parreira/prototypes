@@ -185,13 +185,15 @@ describe('usePaywallConfig', () => {
     })
 
     it('should return the correct config for AutomateFeatures.AutomateChat', () => {
-        const customCta = <div role="button">My custom call to Action</div>
+        const customCta = (
+            <button type="button">My custom call to Action</button>
+        )
         const { result } = renderHook(() =>
             usePaywallConfig(AutomateFeatures.AutomateChat, customCta),
         )
 
         const expectedConfig: PaywallFeature = {
-            customCta: <div role="button">My custom call to Action</div>,
+            customCta: <button type="button">My custom call to Action</button>,
             descriptions: [
                 'Display Flows as interactive triggers on your Chat to proactively resolve top customer requests',
                 'Allow customers to track and manage their orders directly within your Chat',
@@ -216,7 +218,9 @@ describe('usePaywallConfig', () => {
     })
 
     it('should return the correct config for AutomateFeatures.AutomateContactForm', () => {
-        const customCta = <div role="button">My custom call to Action</div>
+        const customCta = (
+            <button type="button">My custom call to Action</button>
+        )
         const { result } = renderHook(() =>
             usePaywallConfig(AutomateFeatures.AutomateContactForm, customCta),
         )
@@ -246,7 +250,9 @@ describe('usePaywallConfig', () => {
     })
 
     it('should return the correct config for AutomateFeatures.AutomateHelpCenter', () => {
-        const customCta = <div role="button">My custom call to Action</div>
+        const customCta = (
+            <button type="button">My custom call to Action</button>
+        )
         const { result } = renderHook(() =>
             usePaywallConfig(AutomateFeatures.AutomateHelpCenter, customCta),
         )

@@ -153,14 +153,14 @@ function TextInput(
                 </span>
             )}
             {withClearText && (
-                <span
-                    className={css.suffix}
+                <button
+                    type="button"
+                    className={classnames(css.suffix, css.clearButton)}
                     onClick={handleClearText}
-                    role="button"
                     aria-label="Clear text"
                 >
                     <IconInput className={css.clearIcon} icon="close" />
-                </span>
+                </button>
             )}
         </div>
     )
