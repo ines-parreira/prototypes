@@ -2,12 +2,12 @@ import { assumeMock, renderHook } from '@repo/testing'
 import type { InfiniteQueryObserverSuccessResult } from '@tanstack/react-query'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
+import { listIntegrations } from '@gorgias/helpdesk-client'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import {
     IntegrationType,
-    listIntegrations,
     ListIntegrationsOrderBy,
-} from '@gorgias/helpdesk-client'
-import { queryKeys } from '@gorgias/helpdesk-queries'
+} from '@gorgias/helpdesk-types'
 
 import { useInfiniteListVoiceIntegrations } from '../useInfiniteListVoiceIntegrations'
 

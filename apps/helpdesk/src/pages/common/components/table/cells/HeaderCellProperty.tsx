@@ -2,7 +2,7 @@ import type { HTMLProps, ReactNode } from 'react'
 
 import classnames from 'classnames'
 
-import { OrderDirection } from '@gorgias/helpdesk-queries'
+import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import HeaderCell from 'pages/common/components/table/cells/HeaderCell'
 import css from 'pages/common/components/table/cells/HeaderCellProperty.less'

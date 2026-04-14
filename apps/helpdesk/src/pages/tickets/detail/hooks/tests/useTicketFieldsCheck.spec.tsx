@@ -1,11 +1,11 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import { Map as mockMap } from 'immutable'
 
-import { RequirementType } from '@gorgias/helpdesk-queries'
 import {
     ExpressionFieldSource,
     ExpressionFieldType,
     ExpressionOperator,
+    RequirementType,
     TicketStatus,
 } from '@gorgias/helpdesk-types'
 

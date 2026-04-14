@@ -10,7 +10,7 @@ import type { Moment } from 'moment'
 import moment from 'moment'
 
 import colors from '@gorgias/design-tokens/tokens/colors'
-import { OrderDirection } from '@gorgias/helpdesk-queries'
+import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import {
     calculateRate,

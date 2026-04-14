@@ -10,7 +10,8 @@ import type {
     TicketCompact,
     TicketCompactCustomFieldsAnyOf,
 } from '@gorgias/helpdesk-queries'
-import { ObjectType, useListCustomFields } from '@gorgias/helpdesk-queries'
+import { useListCustomFields } from '@gorgias/helpdesk-queries'
+import { ObjectType } from '@gorgias/helpdesk-types'
 
 import getWrappedElementCount from 'common/utils/getWrappedElementCount'
 import { AI_MANAGED_TYPES, OBJECT_TYPES } from 'custom-fields/constants'

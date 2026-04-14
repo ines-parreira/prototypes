@@ -3,7 +3,7 @@ import {
     PhoneRingingBehaviour,
     VoiceQueueTargetScope,
     VoiceQueueWaitMusicLibraryTypeType,
-} from '@gorgias/helpdesk-queries'
+} from '@gorgias/helpdesk-types'
 
 export const voiceQueue: VoiceQueue = {
     id: 1,

@@ -4,7 +4,7 @@ import { assumeMock } from '@repo/testing'
 import type { RenderResult } from '@testing-library/react'
 import { render, screen } from '@testing-library/react'
 
-import { VoiceQueueTargetScope } from '@gorgias/helpdesk-queries'
+import { VoiceQueueTargetScope } from '@gorgias/helpdesk-types'
 
 import VoiceQueueSettingsFormCallFlowSection from '../VoiceQueueSettingsFormCallFlowSection'
 

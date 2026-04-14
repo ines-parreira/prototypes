@@ -7,12 +7,12 @@ import type {
     ListIntegrations200,
     ListIntegrationsParams,
 } from '@gorgias/helpdesk-client'
+import { listIntegrations } from '@gorgias/helpdesk-client'
+import { queryKeys } from '@gorgias/helpdesk-queries'
 import {
     IntegrationType,
-    listIntegrations,
     ListIntegrationsOrderBy,
-} from '@gorgias/helpdesk-client'
-import { queryKeys } from '@gorgias/helpdesk-queries'
+} from '@gorgias/helpdesk-types'
 
 export function useInfiniteListVoiceIntegrations<
     TData = HttpResponse<ListIntegrations200>,

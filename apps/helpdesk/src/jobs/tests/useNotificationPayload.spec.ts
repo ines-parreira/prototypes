@@ -2,7 +2,7 @@ import { assumeMock, renderHook } from '@repo/testing'
 import { buildJobMessage } from '@repo/utils'
 import { POSITIONS } from 'reapop'
 
-import { JobType } from '@gorgias/helpdesk-queries'
+import { JobType } from '@gorgias/helpdesk-types'
 
 import {
     NotificationStatus,

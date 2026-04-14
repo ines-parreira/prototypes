@@ -5,7 +5,7 @@ import type {
     LiveCallQueueAgent,
     LiveCallQueueVoiceCall,
 } from '@gorgias/helpdesk-queries'
-import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { LiveVoiceStatusFilterOption } from 'domains/reporting/pages/voice/components/LiveVoice/types'
 import {

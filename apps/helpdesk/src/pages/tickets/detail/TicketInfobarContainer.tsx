@@ -14,7 +14,8 @@ import { connect } from 'react-redux'
 import { useLocation, useParams } from 'react-router-dom'
 import { Navbar } from 'reactstrap'
 
-import { IntegrationType, useGetTicket } from '@gorgias/helpdesk-queries'
+import { useGetTicket } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { AutoQA } from 'auto_qa'
 import { TicketStatus } from 'business/types/ticket'

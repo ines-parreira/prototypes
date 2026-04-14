@@ -9,11 +9,8 @@ import {
 import { isValidPhoneNumber } from 'libphonenumber-js'
 import { Provider } from 'react-redux'
 
-import {
-    LegacyChannelSlug,
-    useGetCustomer,
-    useUpdateCustomer,
-} from '@gorgias/helpdesk-queries'
+import { useGetCustomer, useUpdateCustomer } from '@gorgias/helpdesk-queries'
+import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'

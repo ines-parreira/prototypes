@@ -1,4 +1,4 @@
-import { IntegrationType } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import useHasIntegration from './useHasIntegration'
 

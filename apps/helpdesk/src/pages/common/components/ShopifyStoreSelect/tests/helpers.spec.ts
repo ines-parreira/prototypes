@@ -1,6 +1,6 @@
 import { fromJS, List, Map } from 'immutable'
 
-import { IntegrationType } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import type { IntegrationWithDefaultFlag } from '../helpers'
 import {

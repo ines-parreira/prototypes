@@ -7,7 +7,8 @@ import { notify as updateNotification } from 'reapop'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { JobType, useCreateJob, ViewType } from '@gorgias/helpdesk-queries'
+import { useCreateJob } from '@gorgias/helpdesk-queries'
+import { JobType, ViewType } from '@gorgias/helpdesk-types'
 
 import { axiosSuccessResponse } from 'fixtures/axiosResponse'
 import { view } from 'fixtures/views'

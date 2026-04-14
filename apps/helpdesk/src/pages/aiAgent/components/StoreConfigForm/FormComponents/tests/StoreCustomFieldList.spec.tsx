@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { RequirementType } from '@gorgias/helpdesk-queries'
+import { RequirementType } from '@gorgias/helpdesk-types'
 
 import type { CustomField } from 'custom-fields/types'
 

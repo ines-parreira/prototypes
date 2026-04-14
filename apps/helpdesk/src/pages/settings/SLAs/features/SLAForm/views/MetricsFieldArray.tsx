@@ -31,7 +31,7 @@ const fieldTexts: Record<string, { label: string; tooltip: string }> = {
 }
 
 export function MetricsFieldArray() {
-    const { fields } = useFieldArray<CreateSLAPolicy>({
+    const { fields } = useFieldArray<Pick<CreateSLAPolicy, 'metrics'>>({
         name: 'metrics',
     })
 

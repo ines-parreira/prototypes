@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { IntegrationType } from '@gorgias/helpdesk-client'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import gmailIcon from 'assets/img/integrations/gmail.svg'
 import outlookIcon from 'assets/img/integrations/outlook.svg'

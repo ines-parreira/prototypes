@@ -4,7 +4,7 @@ import { reportError } from '@repo/logging'
 import { Link } from 'react-router-dom'
 
 import { LegacyLabel as Label } from '@gorgias/axiom'
-import { RequirementType } from '@gorgias/helpdesk-queries'
+import { RequirementType } from '@gorgias/helpdesk-types'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import { OBJECT_TYPES } from 'custom-fields/constants'

@@ -10,7 +10,7 @@ import {
     mockUpdateAccountSettingHandler,
 } from '@gorgias/helpdesk-mocks'
 import type {
-    AccountSettingsItem,
+    AccountSettingBusinessHoursTyped,
     BusinessHoursTimeframe,
 } from '@gorgias/helpdesk-types'
 
@@ -31,7 +31,7 @@ jest.mock('pages/common/components/FormUnsavedChangesPrompt', () => () => (
     <div>Form Unsaved Changes Prompt</div>
 ))
 
-const mockBusinessHoursData: AccountSettingsItem = {
+const mockBusinessHoursData: AccountSettingBusinessHoursTyped = {
     id: 1,
     type: 'business-hours',
     data: {
@@ -319,7 +319,7 @@ describe('<DefaultBusinessHours />', () => {
         })
 
         it('should handle multiple business hours with mixed everyday and regular days', async () => {
-            const mockDataWithMixedHours: AccountSettingsItem = {
+            const mockDataWithMixedHours: AccountSettingBusinessHoursTyped = {
                 id: 1,
                 type: 'business-hours',
                 data: {

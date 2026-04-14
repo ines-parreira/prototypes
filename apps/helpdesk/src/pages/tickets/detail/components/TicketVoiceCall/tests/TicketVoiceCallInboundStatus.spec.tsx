@@ -6,10 +6,8 @@ import {
     mockGetVoiceQueueHandler,
     mockVoiceQueue,
 } from '@gorgias/helpdesk-mocks'
-import {
-    PhoneRingingBehaviour,
-    useGetVoiceQueue,
-} from '@gorgias/helpdesk-queries'
+import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
+import { PhoneRingingBehaviour } from '@gorgias/helpdesk-types'
 
 import type { VoiceCall, VoiceCallSubject } from 'models/voiceCall/types'
 import {

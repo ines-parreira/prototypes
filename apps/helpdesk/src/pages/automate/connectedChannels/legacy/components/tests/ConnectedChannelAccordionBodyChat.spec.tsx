@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render } from '@testing-library/react'
 
-import { LegacyChannelSlug } from '@gorgias/helpdesk-queries'
+import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import useApplicationsAutomationSettings from 'pages/automate/common/hooks/useApplicationsAutomationSettings'

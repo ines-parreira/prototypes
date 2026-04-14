@@ -22,7 +22,7 @@ import {
     LegacyIconButton as IconButton,
     MultiButton,
 } from '@gorgias/axiom'
-import { JobType } from '@gorgias/helpdesk-queries'
+import { JobType } from '@gorgias/helpdesk-types'
 
 import { Popover } from 'components/Popover'
 import { UserRole } from 'config/types/user'

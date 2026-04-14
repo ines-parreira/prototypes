@@ -3,7 +3,8 @@ import { Panel } from '@repo/layout'
 import { TicketInfobarNavigation } from '@repo/tickets'
 import { useParams } from 'react-router-dom'
 
-import { IntegrationType, useGetTicket } from '@gorgias/helpdesk-queries'
+import { useGetTicket } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import useHasAIAgent from 'pages/tickets/detail/components/TicketFeedback/hooks/useHasAIAgent'
 import useHasCustomIntegrations from 'pages/tickets/detail/hooks/useHasCustomIntegrations'

@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import { IntegrationType } from '@gorgias/helpdesk-client'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import useAllIntegrations from 'hooks/useAllIntegrations'
 import type {

@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { VoiceCallTableColumn } from 'domains/reporting/pages/voice/components/VoiceCallTable/constants'
 import VoiceCallTableContent from 'domains/reporting/pages/voice/components/VoiceCallTable/VoiceCallTableContent'

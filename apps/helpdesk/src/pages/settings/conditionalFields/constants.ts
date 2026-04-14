@@ -1,7 +1,7 @@
 import {
     ExpressionFieldSource,
     ExpressionOperator,
-} from '@gorgias/helpdesk-queries'
+} from '@gorgias/helpdesk-types'
 
 import { SUPPORTED_UI_DATA_TYPES } from 'custom-fields/constants'
 import type { SupportedUIDataType } from 'custom-fields/types'

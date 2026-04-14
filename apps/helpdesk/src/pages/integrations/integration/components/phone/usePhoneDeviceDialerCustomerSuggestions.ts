@@ -3,7 +3,8 @@ import { useCallback, useState } from 'react'
 
 import { debounce, isArray } from 'lodash'
 
-import { SearchType, useSearch } from '@gorgias/helpdesk-queries'
+import { useSearch } from '@gorgias/helpdesk-queries'
+import { SearchType } from '@gorgias/helpdesk-types'
 
 import type { UserSearchResult } from 'models/search/types'
 import { isUserSearchResult } from 'models/search/types'

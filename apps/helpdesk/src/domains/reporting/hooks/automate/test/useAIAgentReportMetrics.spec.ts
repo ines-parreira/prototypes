@@ -1,7 +1,7 @@
 import { assumeMock, renderHook } from '@repo/testing'
 import moment from 'moment'
 
-import { OrderDirection } from '@gorgias/helpdesk-queries'
+import { OrderDirection } from '@gorgias/helpdesk-types'
 
 import { AI_MANAGED_TYPES } from 'custom-fields/constants'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

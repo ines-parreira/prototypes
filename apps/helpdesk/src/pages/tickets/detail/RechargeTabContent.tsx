@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { fromJS } from 'immutable'
 import type { List, Map } from 'immutable'
 
-import { IntegrationType } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import type { Source, Template } from 'models/widget/types'
 import { EditionContext } from 'providers/infobar/EditionContext'

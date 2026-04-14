@@ -1,6 +1,6 @@
 import { useContext, useMemo } from 'react'
 
-import { IntegrationType } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { CustomerIntegration } from 'models/customer/types'

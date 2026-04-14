@@ -3,7 +3,7 @@ import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import { IntegrationType } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { billingState } from 'fixtures/billing'
 import type { RootState, StoreDispatch } from 'state/types'

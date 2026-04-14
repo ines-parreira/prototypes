@@ -2,7 +2,7 @@ import client from '@repo/api-resources'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
-import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
 import { tags as tagsFixtures } from 'fixtures/tag'
 import { OrderDirection } from 'models/api/types'

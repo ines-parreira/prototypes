@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 
-import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
+import { VoiceCallDirection } from '@gorgias/helpdesk-types'
 
 import css from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel.less'
 import {

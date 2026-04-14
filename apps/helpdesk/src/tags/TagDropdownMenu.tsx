@@ -6,8 +6,9 @@ import type { QueryKey } from '@tanstack/react-query'
 import { useQueryClient } from '@tanstack/react-query'
 import cn from 'classnames'
 
-import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
-import { ListTagsOrderBy, queryKeys } from '@gorgias/helpdesk-queries'
+import { queryKeys } from '@gorgias/helpdesk-queries'
+import type { ListTagsParams, Tag } from '@gorgias/helpdesk-types'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
 import type { Item } from 'components/Dropdown'
 import { Body, Context, focusOnNextItem } from 'components/Dropdown'

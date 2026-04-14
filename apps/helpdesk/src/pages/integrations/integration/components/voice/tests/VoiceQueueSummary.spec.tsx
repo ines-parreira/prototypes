@@ -7,7 +7,11 @@ import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 
 import VoiceQueueSummary from '../VoiceQueueSummary'
 
-jest.mock('@gorgias/helpdesk-queries')
+jest.mock('@gorgias/helpdesk-queries', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-queries'),
+    useGetVoiceQueue: jest.fn(),
+    useGetTeam: jest.fn(),
+}))
 const useGetVoiceQueueMock = assumeMock(useGetVoiceQueue)
 const useGetTeamMock = assumeMock(useGetTeam)
 

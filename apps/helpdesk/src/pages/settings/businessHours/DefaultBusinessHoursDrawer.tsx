@@ -14,10 +14,7 @@ import {
     LegacyIconButton as IconButton,
     Label,
 } from '@gorgias/axiom'
-import type {
-    AccountSettingsItem,
-    ListAccountSettings200DataItem,
-} from '@gorgias/helpdesk-types'
+import type { AccountSettingsItem } from '@gorgias/helpdesk-types'
 import { validateUpdateAccountSettingBody } from '@gorgias/helpdesk-validators'
 
 import { Drawer } from 'components/Drawer/Drawer'
@@ -29,7 +26,7 @@ import { getMomentTimezoneNames } from 'utils/date'
 import css from './DefaultBusinessHours.less'
 
 type Props = {
-    businessHoursSettingsData?: ListAccountSettings200DataItem
+    businessHoursSettingsData?: AccountSettingsItem
     updateAccountSetting: (data: {
         id: number
         data: AccountSettingsItem

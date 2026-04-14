@@ -3,8 +3,7 @@ import React from 'react'
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
-import { VoiceCallStatus } from '@gorgias/helpdesk-types'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import LiveVoiceCallStatusLabel from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel'
 import {

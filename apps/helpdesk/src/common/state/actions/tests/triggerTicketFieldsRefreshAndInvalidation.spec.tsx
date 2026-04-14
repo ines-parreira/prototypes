@@ -12,11 +12,11 @@ import {
     listCustomFieldConditions,
     listCustomFields,
 } from '@gorgias/helpdesk-client'
-import { RequirementType } from '@gorgias/helpdesk-queries'
 import {
     ExpressionFieldSource,
     ExpressionFieldType,
     ExpressionOperator,
+    RequirementType,
 } from '@gorgias/helpdesk-types'
 
 import {

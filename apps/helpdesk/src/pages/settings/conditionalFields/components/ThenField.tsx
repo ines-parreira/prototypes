@@ -2,7 +2,7 @@ import React, { forwardRef, useCallback, useMemo, useState } from 'react'
 
 import { produce } from 'immer'
 
-import { RequirementType } from '@gorgias/helpdesk-queries'
+import { RequirementType } from '@gorgias/helpdesk-types'
 import type {
     CustomFieldConditionField,
     ExpressionFieldType,

@@ -3,7 +3,7 @@ import { useMemo } from 'react'
 import { DateAndTimeFormatting, formatDatetime } from '@repo/utils'
 import moment from 'moment'
 
-import { VoiceCallDirection } from '@gorgias/helpdesk-queries'
+import { VoiceCallDirection } from '@gorgias/helpdesk-types'
 
 import { TicketStatus } from 'business/types/ticket'
 import useGetDateAndTimeFormat from 'hooks/useGetDateAndTimeFormat'

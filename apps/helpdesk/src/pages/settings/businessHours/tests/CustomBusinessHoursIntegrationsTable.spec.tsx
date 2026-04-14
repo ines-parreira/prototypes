@@ -7,7 +7,7 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
-    mockBusinessHoursConfig,
+    mockAccountSettingBusinessHoursTyped,
     mockIntegrationWithBusinessHoursAndStore,
     mockListAccountSettingsHandler,
     mockListAccountSettingsResponse,
@@ -47,12 +47,7 @@ const mockHandler = mockListIntegrationsForBusinessHoursHandler(async () =>
 )
 
 const accountSettingsResponse = mockListAccountSettingsResponse({
-    data: [
-        {
-            type: 'business_hours',
-            ...mockBusinessHoursConfig(),
-        },
-    ],
+    data: [mockAccountSettingBusinessHoursTyped()],
 })
 const mockAccountSettingsHandler = mockListAccountSettingsHandler(async () =>
     HttpResponse.json(accountSettingsResponse),

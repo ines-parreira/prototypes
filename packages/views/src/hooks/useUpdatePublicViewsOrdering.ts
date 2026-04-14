@@ -6,7 +6,7 @@ import {
     useCreateAccountSetting,
     useUpdateAccountSetting,
 } from '@gorgias/helpdesk-queries'
-import type { ListAccountSettings200DataItem } from '@gorgias/helpdesk-types'
+import type { AccountSettingsItem } from '@gorgias/helpdesk-types'
 
 import type { PublicViewsOrderingData } from '../types'
 import {
@@ -60,7 +60,7 @@ export function useUpdatePublicViewsOrdering() {
 
 type AccountSettingsCache = {
     data: {
-        data: ListAccountSettings200DataItem[]
+        data: AccountSettingsItem[]
     }
 }
 

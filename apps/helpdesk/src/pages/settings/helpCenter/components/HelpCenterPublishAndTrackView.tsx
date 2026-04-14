@@ -9,7 +9,7 @@ import _debounce from 'lodash/debounce'
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { IntegrationType } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import warningIcon from 'assets/img/icons/warning2.svg'
 import useAppDispatch from 'hooks/useAppDispatch'

@@ -1,8 +1,8 @@
 import client from '@repo/api-resources'
 import type { AxiosRequestConfig } from 'axios'
 
-import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
-import { ListTagsOrderBy, OrderDirection } from '@gorgias/helpdesk-queries'
+import type { ListTagsParams, Tag } from '@gorgias/helpdesk-types'
+import { ListTagsOrderBy, OrderDirection } from '@gorgias/helpdesk-types'
 
 import type { ApiListResponseCursorPagination } from 'models/api/types'
 

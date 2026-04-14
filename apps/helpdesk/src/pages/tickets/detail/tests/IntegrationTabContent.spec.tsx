@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { IntegrationType } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { WidgetEnvironment } from 'state/widgets/types'
 

@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
 
-import { IntegrationType } from '@gorgias/helpdesk-client'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { renderWithQueryClientProvider } from 'tests/reactQueryTestingUtils'
 

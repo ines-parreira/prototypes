@@ -3,12 +3,12 @@ import { useCallback, useEffect, useState } from 'react'
 
 import _get from 'lodash/get'
 
+import { useUploadCustomVoiceRecording } from '@gorgias/helpdesk-queries'
 import {
-    useUploadCustomVoiceRecording,
+    CustomRecordingType,
     VoiceQueueWaitMusicCustomRecordingTypeType,
     VoiceQueueWaitMusicLibraryTypeType,
-} from '@gorgias/helpdesk-queries'
-import { CustomRecordingType } from '@gorgias/helpdesk-types'
+} from '@gorgias/helpdesk-types'
 
 import { useNotify } from 'hooks/useNotify'
 import type { GorgiasApiResponseDataError } from 'models/api/types'

@@ -14,8 +14,8 @@ import type {
     CursorPaginationMeta,
     ListTagsParams,
     Tag,
-} from '@gorgias/helpdesk-queries'
-import { ListTagsOrderBy, OrderDirection } from '@gorgias/helpdesk-queries'
+} from '@gorgias/helpdesk-types'
+import { ListTagsOrderBy, OrderDirection } from '@gorgias/helpdesk-types'
 
 import { useAppNode } from 'appNode'
 import useAppDispatch from 'hooks/useAppDispatch'

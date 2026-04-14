@@ -1,4 +1,4 @@
-import { LegacyChannelSlug } from '@gorgias/helpdesk-queries'
+import { LegacyChannelSlug } from '@gorgias/helpdesk-types'
 
 import { assetsUrl } from 'utils'
 

@@ -1,7 +1,7 @@
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
 
-import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { useSummaryMetric } from 'domains/reporting/hooks/useSummaryMetric'
 import { VoiceCallSummaryMeasure } from 'domains/reporting/models/cubes/VoiceCallSummaryCube'

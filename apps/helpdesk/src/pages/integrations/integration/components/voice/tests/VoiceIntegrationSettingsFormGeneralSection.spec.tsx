@@ -3,7 +3,7 @@ import { assumeMock } from '@repo/testing'
 import { screen } from '@testing-library/react'
 
 import type { PhoneIntegration } from '@gorgias/helpdesk-queries'
-import { IntegrationType } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import { renderWithRouter } from 'utils/testing'

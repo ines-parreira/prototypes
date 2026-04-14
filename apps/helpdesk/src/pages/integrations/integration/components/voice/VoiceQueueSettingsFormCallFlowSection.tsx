@@ -12,7 +12,7 @@ import {
 import {
     PhoneRingingBehaviour,
     VoiceQueueTargetScope,
-} from '@gorgias/helpdesk-queries'
+} from '@gorgias/helpdesk-types'
 
 import { HintTooltip } from 'domains/reporting/pages/common/HintTooltip'
 import Accordion from 'pages/common/components/accordion/Accordion'

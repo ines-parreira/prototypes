@@ -8,8 +8,8 @@ import type { MockStoreEnhanced } from 'redux-mock-store'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import type { Tag } from '@gorgias/helpdesk-queries'
-import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-types'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
 import { OrderDirection } from 'models/api/types'
 import type { TagDraft } from 'models/tag/types'

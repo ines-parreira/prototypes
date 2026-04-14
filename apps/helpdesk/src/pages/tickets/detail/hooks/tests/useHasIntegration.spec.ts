@@ -1,7 +1,7 @@
 import { renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 
-import { IntegrationType } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 

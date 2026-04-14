@@ -5,7 +5,7 @@ import { assumeMock } from '@repo/testing'
 import { render } from '@testing-library/react'
 import type { Moment } from 'moment'
 
-import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-queries'
+import { VoiceCallDirection, VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import { LiveVoiceMetricCard } from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetricCard'
 import LiveVoiceMetrics from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceMetrics'

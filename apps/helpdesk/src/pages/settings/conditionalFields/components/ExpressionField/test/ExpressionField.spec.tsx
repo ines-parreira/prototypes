@@ -8,7 +8,7 @@ import { render, screen } from '@testing-library/react'
 import {
     ExpressionFieldSource,
     ExpressionOperator,
-} from '@gorgias/helpdesk-queries'
+} from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'
 import type { CustomField } from 'custom-fields/types'

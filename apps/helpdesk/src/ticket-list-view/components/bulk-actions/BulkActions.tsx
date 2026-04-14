@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
 
-import { JobType } from '@gorgias/helpdesk-queries'
+import { JobType } from '@gorgias/helpdesk-types'
 
 import type { Update } from 'jobs'
 import { useBulkAction } from 'jobs'

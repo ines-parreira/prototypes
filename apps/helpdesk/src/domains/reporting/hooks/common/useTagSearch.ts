@@ -4,8 +4,8 @@ import { useAsyncFn, useDebouncedEffect } from '@repo/hooks'
 import type { CancelToken } from 'axios'
 import { filter } from 'lodash'
 
-import type { ListTagsParams, Tag } from '@gorgias/helpdesk-queries'
-import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
+import type { ListTagsParams, Tag } from '@gorgias/helpdesk-types'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'

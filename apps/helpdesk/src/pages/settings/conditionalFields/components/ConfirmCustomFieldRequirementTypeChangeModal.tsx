@@ -3,7 +3,7 @@ import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import { RequirementType } from '@gorgias/helpdesk-queries'
+import { RequirementType } from '@gorgias/helpdesk-types'
 
 import { useUpdateCustomFieldDefinition } from 'custom-fields/hooks/queries/useUpdateCustomFieldDefinition'
 import type { CustomField, CustomFieldObjectTypes } from 'custom-fields/types'

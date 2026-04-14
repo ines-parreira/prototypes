@@ -1,10 +1,8 @@
 import classNames from 'classnames'
 
 import { Skeleton } from '@gorgias/axiom'
-import {
-    PhoneRingingBehaviour,
-    useGetVoiceQueue,
-} from '@gorgias/helpdesk-queries'
+import { useGetVoiceQueue } from '@gorgias/helpdesk-queries'
+import { PhoneRingingBehaviour } from '@gorgias/helpdesk-types'
 
 import type { VoiceCall } from 'models/voiceCall/types'
 import {

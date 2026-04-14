@@ -39,7 +39,7 @@ const fieldTexts: Record<string, { label: string; tooltip: string }> = {
  * @type sla-config-form-migration
  */
 export default function MetricsFieldArray() {
-    const { fields } = useFieldArray<CreateSLAPolicy>({
+    const { fields } = useFieldArray<Pick<CreateSLAPolicy, 'metrics'>>({
         name: 'metrics',
     })
 

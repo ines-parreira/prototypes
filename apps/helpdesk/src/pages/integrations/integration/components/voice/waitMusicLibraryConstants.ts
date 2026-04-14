@@ -1,5 +1,5 @@
 import type { VoiceQueueWaitMusicLibrary } from '@gorgias/helpdesk-queries'
-import { VoiceQueueWaitMusicLibraryTypeType } from '@gorgias/helpdesk-queries'
+import { VoiceQueueWaitMusicLibraryTypeType } from '@gorgias/helpdesk-types'
 
 export const RINGTONE_AUDIO_FILE_PATHS = [
     {

@@ -1,4 +1,4 @@
-import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 export const LIVE_VOICE_PAGE_TITLE = 'Live voice'
 export const LIVE_VOICE_PAGE_TITLE_DESCRIPTION =

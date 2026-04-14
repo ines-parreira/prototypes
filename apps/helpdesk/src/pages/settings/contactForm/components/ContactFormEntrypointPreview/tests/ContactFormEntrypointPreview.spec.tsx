@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { IntegrationType } from '@gorgias/helpdesk-queries'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { account } from 'fixtures/account'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'

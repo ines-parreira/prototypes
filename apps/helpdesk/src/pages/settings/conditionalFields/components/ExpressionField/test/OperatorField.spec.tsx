@@ -5,7 +5,7 @@ import { assumeMock, getLastMockCall } from '@repo/testing'
 import { render } from '@testing-library/react'
 
 import { LegacySelectField as SelectField } from '@gorgias/axiom'
-import { ExpressionOperator } from '@gorgias/helpdesk-queries'
+import { ExpressionOperator } from '@gorgias/helpdesk-types'
 
 import { ticketDropdownFieldDefinition } from 'fixtures/customField'
 import {

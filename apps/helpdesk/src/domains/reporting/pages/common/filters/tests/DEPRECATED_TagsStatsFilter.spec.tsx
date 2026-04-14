@@ -8,7 +8,7 @@ import type { Action } from 'redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
 import DEPRECATED_TagsStatsFilter from 'domains/reporting/pages/common/filters/DEPRECATED_TagsStatsFilter'
 import {

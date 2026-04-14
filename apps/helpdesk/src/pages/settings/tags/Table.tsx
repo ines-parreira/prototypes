@@ -4,8 +4,8 @@ import classnames from 'classnames'
 import type { List } from 'immutable'
 
 import { LegacyButton as Button } from '@gorgias/axiom'
-import type { Tag } from '@gorgias/helpdesk-queries'
-import { ListTagsOrderBy } from '@gorgias/helpdesk-queries'
+import type { Tag } from '@gorgias/helpdesk-types'
+import { ListTagsOrderBy } from '@gorgias/helpdesk-types'
 
 import useAppSelector from 'hooks/useAppSelector'
 import type { OrderBy } from 'models/tag/types'

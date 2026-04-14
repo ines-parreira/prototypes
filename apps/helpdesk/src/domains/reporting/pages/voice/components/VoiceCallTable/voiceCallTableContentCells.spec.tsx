@@ -1,7 +1,7 @@
 import { assumeMock } from '@repo/testing'
 import { render, screen } from '@testing-library/react'
 
-import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import LiveVoiceCallStatusLabel from 'domains/reporting/pages/voice/components/LiveVoice/LiveVoiceCallStatusLabel'
 import MonitorCell from 'domains/reporting/pages/voice/components/LiveVoice/MonitorCell'

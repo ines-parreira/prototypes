@@ -37,7 +37,11 @@ import {
 
 const queryClient = mockQueryClient()
 
-jest.mock('@gorgias/helpdesk-client')
+jest.mock('@gorgias/helpdesk-client', () => ({
+    ...jest.requireActual('@gorgias/helpdesk-client'),
+    updateAllPhoneSettings: jest.fn(),
+    deleteIntegration: jest.fn(),
+}))
 const updateAllPhoneSettingsMock = assumeMock(updateAllPhoneSettings)
 const deleteIntegrationMock = assumeMock(deleteIntegration)
 

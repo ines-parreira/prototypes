@@ -3,9 +3,9 @@ import { HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 
 import {
+    mockAccountSettingBusinessHoursTyped,
     mockGetBusinessHoursDetailsHandler,
     mockListAccountSettingsHandler,
-    mockListAccountSettingsResponse,
 } from '@gorgias/helpdesk-mocks'
 import type { BusinessHoursDetails } from '@gorgias/helpdesk-queries'
 
@@ -38,8 +38,14 @@ const mockCustomBusinessHours = {
     },
 } as BusinessHoursDetails
 
+const mockBusinessHoursSetting = mockAccountSettingBusinessHoursTyped({
+    type: 'business-hours',
+})
+
 beforeEach(() => {
-    const mockListAccountSettings = mockListAccountSettingsHandler()
+    const mockListAccountSettings = mockListAccountSettingsHandler(async () =>
+        HttpResponse.json({ data: [mockBusinessHoursSetting] }),
+    )
     const mockGetBusinessHours = mockGetBusinessHoursDetailsHandler(async () =>
         HttpResponse.json(mockCustomBusinessHours),
     )
@@ -74,7 +80,7 @@ describe('useIntegrationBusinessHours', () => {
         await waitFor(() => {
             expect(result.current.name).toEqual('Default')
             expect(result.current.businessHours).toEqual(
-                mockListAccountSettingsResponse().data[0].data,
+                mockBusinessHoursSetting.data,
             )
         })
     })

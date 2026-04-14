@@ -5,7 +5,7 @@ import { assumeMock } from '@repo/testing'
 import { fireEvent, screen } from '@testing-library/react'
 import { fromJS } from 'immutable'
 
-import { VoiceCallStatus } from '@gorgias/helpdesk-queries'
+import { VoiceCallStatus } from '@gorgias/helpdesk-types'
 
 import type { User } from 'config/types/user'
 import { UserRole } from 'config/types/user'

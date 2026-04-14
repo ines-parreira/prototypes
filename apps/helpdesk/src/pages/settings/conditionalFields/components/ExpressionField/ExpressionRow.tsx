@@ -1,6 +1,6 @@
 import { FormField, useWatch } from '@repo/forms'
 
-import { ExpressionOperator } from '@gorgias/helpdesk-queries'
+import { ExpressionOperator } from '@gorgias/helpdesk-types'
 
 import type { CustomField } from 'custom-fields/types'
 import IconButton from 'pages/common/components/button/IconButton'

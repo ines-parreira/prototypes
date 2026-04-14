@@ -5,7 +5,7 @@ import type {
 import {
     PhoneRingingBehaviour,
     VoiceQueueTargetScope,
-} from '@gorgias/helpdesk-queries'
+} from '@gorgias/helpdesk-types'
 
 import { QUEUE_DEFAULT_WAIT_MUSIC_PREFERENCES } from './waitMusicLibraryConstants'
 

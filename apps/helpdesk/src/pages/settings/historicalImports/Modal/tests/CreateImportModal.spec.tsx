@@ -2,7 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import moment from 'moment-timezone'
 
-import { IntegrationType } from '@gorgias/helpdesk-client'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { renderWithRouter } from 'utils/testing'
 

@@ -4,7 +4,7 @@ import { FormField, useWatch } from '@repo/forms'
 import { assumeMock } from '@repo/testing'
 import { fireEvent, render, screen } from '@testing-library/react'
 
-import { ExpressionOperator } from '@gorgias/helpdesk-queries'
+import { ExpressionOperator } from '@gorgias/helpdesk-types'
 
 import type { CustomField } from 'custom-fields/types'
 

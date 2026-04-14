@@ -2,8 +2,7 @@ import { assumeMock } from '@repo/testing'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import { RequirementType } from '@gorgias/helpdesk-queries'
-import { ExpressionFieldType } from '@gorgias/helpdesk-types'
+import { ExpressionFieldType, RequirementType } from '@gorgias/helpdesk-types'
 
 import { useCustomFieldDefinition } from 'custom-fields/hooks/queries/useCustomFieldDefinition'
 import { useCustomFieldDefinitions } from 'custom-fields/hooks/queries/useCustomFieldDefinitions'

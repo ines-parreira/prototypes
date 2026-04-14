@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react'
 
-import { IntegrationType } from '@gorgias/helpdesk-client'
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { useEmailIntegrations } from '../useEmailIntegrations'
 
