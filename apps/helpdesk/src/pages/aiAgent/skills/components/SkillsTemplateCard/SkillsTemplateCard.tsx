@@ -7,7 +7,6 @@ import {
     Button,
     Skeleton,
     Tag,
-    TagColor,
     Text,
     Tooltip,
     TooltipContent,
@@ -22,7 +21,6 @@ import { TruncatedTextWithTooltip } from 'pages/aiAgent/KnowledgeHub/Table/Trunc
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 import { MetricCell } from 'pages/aiAgent/skills/components/SharedTableComponents/MetricCells'
 import type { IntentMetrics } from 'pages/aiAgent/skills/hooks/useIntentsTable'
-import { IntentStatus } from 'pages/aiAgent/skills/types'
 import type { SkillTemplate } from 'pages/aiAgent/skills/types'
 import { formatIntentName } from 'pages/aiAgent/skills/utils'
 
@@ -101,30 +99,11 @@ export const SkillsTemplateCard: React.FC<Props> = ({
                     </Text>
                 </TruncatedTextWithTooltip>
                 <Box className={css.tagsContainer}>
-                    {displayedIntents.map((intent) => {
-                        const isLinked = intent.status === IntentStatus.Linked
-
-                        if (isLinked) {
-                            return (
-                                <Tooltip
-                                    key={intent.name}
-                                    trigger={
-                                        <Tag size="sm" color={TagColor.Grey}>
-                                            {formatIntentName(intent.name)}
-                                        </Tag>
-                                    }
-                                >
-                                    <TooltipContent title="Intent already linked to an existing skill" />
-                                </Tooltip>
-                            )
-                        }
-
-                        return (
-                            <Tag key={intent.name} size="sm">
-                                {formatIntentName(intent.name)}
-                            </Tag>
-                        )
-                    })}
+                    {displayedIntents.map((intent) => (
+                        <Tag key={intent.name} size="sm">
+                            {formatIntentName(intent.name)}
+                        </Tag>
+                    ))}
                     {remainingCount > 0 && (
                         <Tooltip
                             trigger={

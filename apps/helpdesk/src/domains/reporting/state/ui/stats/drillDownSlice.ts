@@ -161,6 +161,7 @@ export type KnowledgeMetrics = {
     shopIntegrationId?: number
     outcomeCustomFieldId?: number
     intentCustomFieldId?: number
+    ticketIds?: string[]
     dateRange: {
         start_datetime: string
         end_datetime: string

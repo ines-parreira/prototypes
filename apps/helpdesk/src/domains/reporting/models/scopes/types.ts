@@ -301,6 +301,7 @@ export type StringFilterName =
     | 'customField'
     | 'engagementType'
     | 'currency'
+    | 'ticketId'
 
 export type NumberFilterName =
     | 'agentId'

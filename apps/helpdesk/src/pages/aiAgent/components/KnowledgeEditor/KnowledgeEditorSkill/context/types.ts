@@ -22,6 +22,7 @@ export type ImpactDateRange = BaseImpactDateRange
 export type HistoricalVersionState =
     | (NonNullable<BaseHistoricalVersionState> & {
           intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
+          useSupportingContent?: boolean | null
       })
     | null
 
@@ -32,6 +33,7 @@ export type SkillComparisonVersion = {
     title: string
     content: string
     intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
+    useSupportingContent?: boolean | null
 } | null
 
 export type SkillState = Omit<
@@ -52,6 +54,8 @@ export type SkillState = Omit<
     historicalVersion: HistoricalVersionState
     // Comparison version
     comparisonVersion: SkillComparisonVersion
+    // Supporting content
+    useSupportingContent: boolean
 }
 
 export type SkillReducerAction =
@@ -103,6 +107,7 @@ export type SkillReducerAction =
               title: string
               content: string
               intents?: Components.Schemas.ArticleTranslationResponseDto['intents']
+              useSupportingContent?: boolean | null
           }
       }
 
@@ -172,6 +177,7 @@ export const createInitialState = (
     const templateContent = skillTemplate?.guidance?.content ?? ''
     const title = article?.title || templateName || routeState?.title || ''
     const content = article?.content ?? templateContent
+    const useSupportingContent = article?.useSupportingContent ?? true
 
     const intents: string[] =
         article?.intents ??
@@ -202,6 +208,7 @@ export const createInitialState = (
         comparisonVersion: null,
         activeModal: null,
         isUpdating: false,
+        useSupportingContent: useSupportingContent,
     }
 
     if (initialVersionData) {

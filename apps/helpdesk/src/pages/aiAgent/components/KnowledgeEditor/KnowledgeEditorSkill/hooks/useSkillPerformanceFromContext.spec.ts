@@ -76,14 +76,16 @@ describe('useSkillPerformanceFromContext', () => {
 
         mockUseSkillEditorStore.mockImplementation((selector) =>
             selector({
-                skill: { id: 42 },
+                state: {
+                    skill: { id: 42 },
+                    historicalVersion: null,
+                },
                 config: {
                     helpCenter: {
                         id: 10,
                         shop_integration_id: 999,
                     },
                 },
-                state: { historicalVersion: undefined },
             }),
         )
 
@@ -109,11 +111,10 @@ describe('useSkillPerformanceFromContext', () => {
         it('returns null metrics when skillArticleId is undefined', () => {
             mockUseSkillEditorStore.mockImplementation((selector) =>
                 selector({
-                    skill: undefined,
+                    state: { skill: undefined, historicalVersion: null },
                     config: {
                         helpCenter: { id: 10, shop_integration_id: 999 },
                     },
-                    state: { historicalVersion: undefined },
                 }),
             )
 
@@ -140,11 +141,10 @@ describe('useSkillPerformanceFromContext', () => {
         it('returns null metrics when no entry matches skillArticleId', () => {
             mockUseSkillEditorStore.mockImplementation((selector) =>
                 selector({
-                    skill: { id: 999 },
+                    state: { skill: { id: 999 }, historicalVersion: null },
                     config: {
                         helpCenter: { id: 10, shop_integration_id: 999 },
                     },
-                    state: { historicalVersion: undefined },
                 }),
             )
 
@@ -184,11 +184,10 @@ describe('useSkillPerformanceFromContext', () => {
         it('returns resourceSourceId as 0 when no skill', () => {
             mockUseSkillEditorStore.mockImplementation((selector) =>
                 selector({
-                    skill: undefined,
+                    state: { skill: undefined, historicalVersion: null },
                     config: {
                         helpCenter: { id: 10, shop_integration_id: 999 },
                     },
-                    state: { historicalVersion: undefined },
                 }),
             )
 
@@ -305,11 +304,10 @@ describe('useSkillPerformanceFromContext', () => {
         it('disables useKnowledgeRecentTickets when skillArticleId is undefined', () => {
             mockUseSkillEditorStore.mockImplementation((selector) =>
                 selector({
-                    skill: undefined,
+                    state: { skill: undefined, historicalVersion: null },
                     config: {
                         helpCenter: { id: 10, shop_integration_id: 999 },
                     },
-                    state: { historicalVersion: undefined },
                 }),
             )
 

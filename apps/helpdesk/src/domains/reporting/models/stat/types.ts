@@ -70,6 +70,7 @@ export enum APIOnlyFilterKey {
     EngagementType = 'engagementType',
     Currency = 'currency',
     OrderId = 'orderId',
+    TicketId = 'ticketId',
 }
 
 export type StateOnlyFilterKeys = Exclude<
@@ -342,6 +343,7 @@ export type ApiOnlyStatsFiltersWithLogicalOperator = {
     [APIOnlyFilterKey.EngagementType]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.Currency]?: WithLogicalOperator<string>
     [APIOnlyFilterKey.OrderId]?: WithLogicalOperator<number>
+    [APIOnlyFilterKey.TicketId]?: WithLogicalOperator<string>
 }
 
 export type StatsFilters = StatsFiltersWithLogicalOperator

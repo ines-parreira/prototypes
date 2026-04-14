@@ -718,6 +718,7 @@ export const getDrillDownQuery = (
                     timezone,
                     knowledgeMetricData.resourceSourceId,
                     knowledgeMetricData.resourceSourceSetId,
+                    knowledgeMetricData.ticketIds,
                 )
             }
         }

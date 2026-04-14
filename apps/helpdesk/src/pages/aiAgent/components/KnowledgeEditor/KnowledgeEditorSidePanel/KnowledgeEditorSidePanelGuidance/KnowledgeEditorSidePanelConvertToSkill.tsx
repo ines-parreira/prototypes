@@ -1,10 +1,12 @@
 import { Box, Button, Text } from '@gorgias/axiom'
 
 type Props = {
+    isConvertDisabled: boolean
     onConvert: () => void
 }
 
 export const KnowledgeEditorSidePanelConvertToSkill = ({
+    isConvertDisabled,
     onConvert,
 }: Props) => {
     return (
@@ -24,6 +26,7 @@ export const KnowledgeEditorSidePanelConvertToSkill = ({
                     onClick={onConvert}
                     aria-label="Convert to skill"
                     variant="secondary"
+                    isDisabled={isConvertDisabled}
                 >
                     Convert
                 </Button>

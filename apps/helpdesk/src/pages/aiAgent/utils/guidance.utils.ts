@@ -55,6 +55,8 @@ export const mapUpdateGuidanceArticleToArticleApi = (
             : undefined,
         is_current: updateGuidanceArticle.isCurrent,
         commit_message: updateGuidanceArticle.commitMessage,
+        use_supporting_content:
+            updateGuidanceArticle.useSupportingContent ?? undefined,
         ...(intents !== undefined
             ? {
                   intents,
@@ -80,6 +82,7 @@ export const mapArticleApiToGuidanceArticle = (
         draftVersionId: article.translation.draft_version_id,
         publishedVersionId: article.translation.published_version_id,
         intents: article.translation.intents,
+        useSupportingContent: article.translation.use_supporting_content,
     }
 }
 

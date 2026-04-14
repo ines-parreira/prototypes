@@ -23,6 +23,7 @@ const knowledgeStatisticsScope = defineScope({
         'resourceSourceId',
         'resourceSourceSetId',
         'storeId',
+        'ticketId',
     ],
     order: [
         'createdDatetime',
@@ -174,3 +175,13 @@ export const knowledgeIntents = knowledgeStatisticsScope
 
 export const knowledgeIntentsQueryV2Factory = (ctx: Context) =>
     knowledgeIntents.build(ctx)
+
+export const knowledgeResourceTicketIds = knowledgeStatisticsScope
+    .defineMetricName(METRIC_NAMES.KNOWLEDGE_RESOURCE_TICKET_IDS)
+    .defineQuery(() => ({
+        measures: [] as const,
+        dimensions: ['ticketId'] as const,
+    }))
+
+export const knowledgeResourceTicketIdsQueryV2Factory = (ctx: Context) =>
+    knowledgeResourceTicketIds.build(ctx)

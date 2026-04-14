@@ -16,6 +16,7 @@ export const fromArticleTranslation = (
     templateKey: article.template_key ?? null,
     isCurrent: article.translation.is_current,
     intents: article.translation.intents,
+    useSupportingContent: article.translation.use_supporting_content,
 })
 
 export const fromArticleTranslationResponse = (
@@ -37,4 +38,5 @@ export const fromArticleTranslationResponse = (
     lastUpdated: response.updated_datetime,
     isCurrent: response.is_current,
     intents: response.intents,
+    useSupportingContent: response.use_supporting_content,
 })

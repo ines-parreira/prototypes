@@ -13,7 +13,7 @@ export const SkillEditorSidePanelInfoTab = () => {
         >
             <SkillEditorSidePanelDetailsSection sectionId="details" />
             <SkillEditorSidePanelIntentsSection sectionId="intents" />
-            <SkillEditorSidePanelKnowledgeSection sectionId="knowledge" />
+            <SkillEditorSidePanelKnowledgeSection />
         </KnowledgeEditorSidePanel>
     )
 }

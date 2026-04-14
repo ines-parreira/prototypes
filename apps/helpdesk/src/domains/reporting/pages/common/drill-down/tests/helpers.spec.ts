@@ -2001,6 +2001,44 @@ describe('getDrillDownQuery', () => {
             timezone,
             123,
             456,
+            undefined,
+        )
+    })
+
+    it('should pass ticketIds to knowledgeTicketsDrillDownQueryFactory when provided', () => {
+        const periodStart = moment()
+        const periodEnd = periodStart.add(7, 'days')
+        const statsFilters: StatsFilters = {
+            period: {
+                end_datetime: periodEnd.toISOString(),
+                start_datetime: periodStart.toISOString(),
+            },
+        }
+        const timezone = 'someTimeZone'
+        const dateRange = {
+            start_datetime: '2025-01-15T00:00:00.000',
+            end_datetime: '2025-01-20T23:59:59.000',
+        }
+        const ticketIds = ['T1', 'T2', 'T3']
+        const drillDownMetric = {
+            metricName: KnowledgeMetric.Tickets,
+            resourceSourceId: 123,
+            resourceSourceSetId: 456,
+            shopIntegrationId: 789,
+            dateRange,
+            ticketIds,
+        }
+
+        getDrillDownQuery(drillDownMetric)(statsFilters, timezone)
+
+        expect(knowledgeTicketsDrillDownQueryFactoryMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                period: dateRange,
+            }),
+            timezone,
+            123,
+            456,
+            ticketIds,
         )
     })
 

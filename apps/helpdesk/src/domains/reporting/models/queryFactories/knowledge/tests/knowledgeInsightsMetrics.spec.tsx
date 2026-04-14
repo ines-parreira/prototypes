@@ -9,7 +9,10 @@ import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
 import { useMetric } from 'domains/reporting/hooks/useMetric'
 import { useMetricPerDimensionV2 } from 'domains/reporting/hooks/useMetricPerDimension'
 import { TicketDimension } from 'domains/reporting/models/cubes/TicketCube'
-import { TicketInsightsTaskMeasure } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
+import {
+    TicketInsightsTaskDimension,
+    TicketInsightsTaskMeasure,
+} from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
 import {
     aggregateResourceMetrics,
     createV1DrillDownQuery,
@@ -3134,6 +3137,54 @@ describe('knowledgeTicketsDrillDownQueryFactory', () => {
             operator: 'equals',
             values: [String(resourceSourceSetId)],
         })
+    })
+
+    it('should not add a ticketId filter when ticketIds is not provided', () => {
+        const query = knowledgeTicketsDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+        )
+
+        expect(query.filters).not.toContainEqual(
+            expect.objectContaining({
+                member: TicketInsightsTaskDimension.TicketId,
+            }),
+        )
+    })
+
+    it('should add a ticketId filter when ticketIds are provided', () => {
+        const ticketIds = ['T1', 'T2', 'T3']
+        const query = knowledgeTicketsDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+            ticketIds,
+        )
+
+        expect(query.filters).toContainEqual({
+            member: TicketInsightsTaskDimension.TicketId,
+            operator: 'equals',
+            values: ticketIds,
+        })
+    })
+
+    it('should not add a ticketId filter when ticketIds is an empty array', () => {
+        const query = knowledgeTicketsDrillDownQueryFactory(
+            statsFilters,
+            timezone,
+            resourceSourceId,
+            resourceSourceSetId,
+            [],
+        )
+
+        expect(query.filters).not.toContainEqual(
+            expect.objectContaining({
+                member: TicketInsightsTaskDimension.TicketId,
+            }),
+        )
     })
 })
 

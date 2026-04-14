@@ -482,6 +482,7 @@ export const METRIC_NAMES = {
     KNOWLEDGE_CSAT: 'knowledge-csat',
     KNOWLEDGE_CSAT_DRILL_DOWN: 'knowledge-csat-drill-down',
     KNOWLEDGE_INTENTS: 'knowledge-intents',
+    KNOWLEDGE_RESOURCE_TICKET_IDS: 'knowledge-tickets-ticket-ids',
 
     // Satisfaction
     SATISFACTION_AVERAGE_CSAT_SCORE_PER_AGENT_TIME_SERIES:
@@ -903,6 +904,7 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.KNOWLEDGE_HANDOVER_TICKETS,
         METRIC_NAMES.KNOWLEDGE_CSAT,
         METRIC_NAMES.KNOWLEDGE_INTENTS,
+        METRIC_NAMES.KNOWLEDGE_RESOURCE_TICKET_IDS,
     ],
     [MetricScope.VoiceServiceLevelAgreement]: [
         METRIC_NAMES.SLA_SATISFIED_OR_BREACHED_VOICE_CALLS_TIME_SERIES,

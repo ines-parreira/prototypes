@@ -54,6 +54,7 @@ export const useKnowledgeDrillDownTrigger = ({
     dateRange,
     outcomeCustomFieldId,
     intentCustomFieldId,
+    ticketIds,
     segmentEventName = SegmentEvent.AiAgentTicketDrilldownClicked,
 }: {
     metricName: KnowledgeMetric
@@ -64,6 +65,7 @@ export const useKnowledgeDrillDownTrigger = ({
     dateRange: { start_datetime: string; end_datetime: string }
     outcomeCustomFieldId?: number
     intentCustomFieldId?: number
+    ticketIds?: string[]
     segmentEventName?: SegmentEvent
 }) => {
     const dispatch = useAppDispatch()
@@ -79,6 +81,7 @@ export const useKnowledgeDrillDownTrigger = ({
             dateRange,
             ...(outcomeCustomFieldId && { outcomeCustomFieldId }),
             ...(intentCustomFieldId && { intentCustomFieldId }),
+            ...(ticketIds?.length && { ticketIds }),
         }),
         [
             tooltipText,
@@ -89,6 +92,7 @@ export const useKnowledgeDrillDownTrigger = ({
             dateRange,
             outcomeCustomFieldId,
             intentCustomFieldId,
+            ticketIds,
         ],
     )
 

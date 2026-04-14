@@ -80,6 +80,9 @@ export function skillReducer(
                 autoSaveError: false,
                 skill: newArticle,
                 intents: newArticle?.intents ?? state.intents,
+                useSupportingContent:
+                    newArticle?.useSupportingContent ??
+                    state.useSupportingContent,
             }
         }
 
@@ -123,6 +126,9 @@ export function skillReducer(
                 versionStatus: newVersionStatus,
                 skill: action.payload,
                 intents: action.payload.intents ?? state.intents,
+                useSupportingContent:
+                    action.payload.useSupportingContent ??
+                    state.useSupportingContent,
                 savedSnapshot: {
                     title: action.payload.title,
                     content: action.payload.content,
@@ -150,6 +156,7 @@ export function skillReducer(
                 historicalVersion: {
                     ...updates.historicalVersion,
                     intents: action.payload.intents,
+                    useSupportingContent: action.payload.use_supporting_content,
                 },
                 mode: 'read',
             }
@@ -172,6 +179,7 @@ export function skillReducer(
                     title: action.payload.title,
                     content: action.payload.content,
                     intents: action.payload.intents,
+                    useSupportingContent: action.payload.useSupportingContent,
                 },
             }
 

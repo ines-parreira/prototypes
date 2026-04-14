@@ -142,6 +142,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
                 {isKnowledgeIntentManagementSystemEnabled && (
                     <KnowledgeEditorSidePanelConvertToSkill
                         onConvert={handleConvert}
+                        isConvertDisabled={isViewingHistoricalVersion}
                     />
                 )}
             </KnowledgeEditorSidePanelSection>

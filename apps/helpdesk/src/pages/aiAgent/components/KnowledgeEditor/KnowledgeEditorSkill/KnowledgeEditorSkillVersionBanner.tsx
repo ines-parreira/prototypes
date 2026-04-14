@@ -67,6 +67,7 @@ export function KnowledgeEditorSkillVersionBanner() {
                         title: article.title,
                         content: article.content,
                         intents: article.intents,
+                        useSupportingContent: article.useSupportingContent,
                     },
                 })
             }

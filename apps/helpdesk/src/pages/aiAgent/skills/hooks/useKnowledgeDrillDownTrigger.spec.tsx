@@ -130,6 +130,48 @@ describe('useKnowledgeDrillDownTrigger', () => {
         )
     })
 
+    it('should include ticketIds in metricData when provided', () => {
+        const { result } = renderHook(() =>
+            useKnowledgeDrillDownTrigger({
+                ...defaultParams,
+                ticketIds: ['T1', 'T2', 'T3'],
+            }),
+        )
+
+        result.current.openDrillDownModal()
+
+        expect(mockSetMetricData).toHaveBeenCalledWith(
+            expect.objectContaining({ ticketIds: ['T1', 'T2', 'T3'] }),
+        )
+    })
+
+    it('should not include ticketIds in metricData when not provided', () => {
+        const { result } = renderHook(() =>
+            useKnowledgeDrillDownTrigger(defaultParams),
+        )
+
+        result.current.openDrillDownModal()
+
+        expect(mockSetMetricData).toHaveBeenCalledWith(
+            expect.not.objectContaining({ ticketIds: expect.anything() }),
+        )
+    })
+
+    it('should not include ticketIds in metricData when empty array provided', () => {
+        const { result } = renderHook(() =>
+            useKnowledgeDrillDownTrigger({
+                ...defaultParams,
+                ticketIds: [],
+            }),
+        )
+
+        result.current.openDrillDownModal()
+
+        expect(mockSetMetricData).toHaveBeenCalledWith(
+            expect.not.objectContaining({ ticketIds: expect.anything() }),
+        )
+    })
+
     it('should memoize callback when params unchanged', () => {
         const { result, rerender } = renderHook(
             (props) => useKnowledgeDrillDownTrigger(props),

@@ -19,11 +19,16 @@ import {
     TicketInsightsTaskMeasure,
     TicketInsightsTaskMeasureV2,
 } from 'domains/reporting/models/cubes/TicketInsightsTaskCube'
+import {
+    usePostReporting,
+    usePostReportingV2,
+} from 'domains/reporting/models/queries'
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
 import {
     knowledgeCSATQueryV2Factory,
     knowledgeHandoverTicketsCountQueryV2Factory,
     knowledgeIntentsQueryV2Factory,
+    knowledgeResourceTicketIdsQueryV2Factory,
     knowledgeTicketsCountQueryV2Factory,
     knowledgeTicketsResourceCountQueryV2Factory,
 } from 'domains/reporting/models/scopes/knowledgeInsights'
@@ -282,14 +287,27 @@ export const knowledgeTicketsDrillDownQueryFactory = (
     timezone: string,
     resourceSourceId: number,
     resourceSourceSetId: number,
+    ticketIds?: string[],
 ): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
-    return createV1DrillDownQuery(
+    const baseQuery = createV1DrillDownQuery(
         METRIC_NAMES.KNOWLEDGE_TICKETS_DRILL_DOWN,
         resourceSourceId,
         resourceSourceSetId,
         filters,
         timezone,
     )
+    if (!ticketIds?.length) return baseQuery
+    return {
+        ...baseQuery,
+        filters: [
+            ...baseQuery.filters,
+            {
+                member: TicketInsightsTaskDimension.TicketId,
+                operator: ReportingFilterOperator.Equals,
+                values: ticketIds,
+            },
+        ],
+    }
 }
 
 /**
@@ -367,6 +385,179 @@ export const knowledgeRecentTicketsQueryFactory = (
         ...baseQuery,
         limit: 3,
         order: [[TicketDimension.CreatedDatetime, OrderDirection.Desc]],
+    }
+}
+
+const knowledgeSupportingResourcesQueryFactory = (
+    filters: ApiStatsFilters,
+    timezone: string,
+    ticketIds: string[],
+): ReportingQuery<TicketInsightsTaskCubeWithJoins> => {
+    const baseQuery = createV1Query<TicketInsightsTaskCubeWithJoins>(
+        METRIC_NAMES.KNOWLEDGE_TICKETS_RESOURCE_TICKET_COUNT,
+        null,
+        null,
+        filters,
+        timezone,
+        TicketInsightsTaskMeasure.TicketCount,
+    )
+    return {
+        ...baseQuery,
+        dimensions: [
+            ...baseQuery.dimensions,
+            TicketInsightsTaskDimension.TicketId,
+        ] as any,
+        filters: [
+            ...baseQuery.filters,
+            {
+                member: TicketInsightsTaskDimension.TicketId,
+                operator: ReportingFilterOperator.Equals,
+                values: ticketIds,
+            },
+        ],
+    }
+}
+
+type SkillSupportingKnowledgesMetricParams = {
+    skillId: number
+    helpCenterId: number
+    shopIntegrationId: number
+    timezone: string
+    dateRange: { start_datetime: string; end_datetime: string }
+    enabled: boolean
+}
+
+export type SkillSupportingKnowledgesMetricResult = {
+    coUsedResources: {
+        resourceSourceId: string
+        resourceSourceSetId: string
+        ticketId: string
+        ticketCount: number
+    }[]
+    isLoading: boolean
+}
+
+export const useSkillSupportingKnowledgesMetric = ({
+    skillId,
+    helpCenterId,
+    shopIntegrationId,
+    timezone,
+    dateRange,
+    enabled,
+}: SkillSupportingKnowledgesMetricParams): SkillSupportingKnowledgesMetricResult => {
+    const q1Filters = useMemo(
+        () => ({
+            [FilterKey.Period]: {
+                start_datetime: dateRange.start_datetime,
+                end_datetime: dateRange.end_datetime,
+            },
+            ...(shopIntegrationId && {
+                [FilterKey.Stores]: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [shopIntegrationId],
+                },
+            }),
+            [APIOnlyFilterKey.ResourceSourceId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [String(skillId)],
+            },
+            [APIOnlyFilterKey.ResourceSourceSetId]: {
+                operator: LogicalOperatorEnum.ONE_OF,
+                values: [String(helpCenterId)],
+            },
+        }),
+        [dateRange, shopIntegrationId, skillId, helpCenterId],
+    )
+
+    const q1V2Query = useMemo(
+        () =>
+            knowledgeResourceTicketIdsQueryV2Factory({
+                timezone,
+                filters: q1Filters,
+            }),
+        [timezone, q1Filters],
+    )
+
+    const { data: ticketIds, isFetching: isTicketIdsFetching } =
+        usePostReportingV2<Record<string, unknown>[], string[]>(
+            undefined,
+            q1V2Query,
+            {
+                select: (response) =>
+                    (response.data.data as Record<string, unknown>[])
+                        .map((row) => String(row['ticketId'] ?? ''))
+                        .filter(Boolean),
+                enabled,
+            },
+        )
+
+    const resolvedTicketIds = useMemo(() => ticketIds ?? [], [ticketIds])
+
+    const q2Enabled =
+        enabled && !isTicketIdsFetching && resolvedTicketIds.length > 0
+
+    const q2Filters = useMemo(
+        () => ({
+            [FilterKey.Period]: {
+                start_datetime: dateRange.start_datetime,
+                end_datetime: dateRange.end_datetime,
+            },
+            ...(shopIntegrationId && {
+                [FilterKey.Stores]: {
+                    operator: LogicalOperatorEnum.ONE_OF,
+                    values: [shopIntegrationId],
+                },
+            }),
+        }),
+        [dateRange, shopIntegrationId],
+    )
+
+    const q2Query = useMemo(
+        () =>
+            knowledgeSupportingResourcesQueryFactory(
+                q2Filters,
+                timezone,
+                resolvedTicketIds,
+            ),
+        [q2Filters, timezone, resolvedTicketIds],
+    )
+
+    const { data: coUsedResources, isFetching: isCoUsedResourcesFetching } =
+        usePostReporting<
+            Record<string, unknown>[],
+            SkillSupportingKnowledgesMetricResult['coUsedResources']
+        >([q2Query], {
+            select: (response) =>
+                (response.data.data as Record<string, unknown>[])
+                    .filter(
+                        (row) =>
+                            row[
+                                TicketInsightsTaskDimension.ResourceSourceId
+                            ] !== undefined,
+                    )
+                    .map((row) => ({
+                        resourceSourceId: String(
+                            row[TicketInsightsTaskDimension.ResourceSourceId],
+                        ),
+                        resourceSourceSetId: String(
+                            row[
+                                TicketInsightsTaskDimension.ResourceSourceSetId
+                            ] ?? '',
+                        ),
+                        ticketId: String(
+                            row[TicketInsightsTaskDimension.TicketId] ?? '',
+                        ),
+                        ticketCount: Number(
+                            row[TicketInsightsTaskMeasure.TicketCount] ?? 0,
+                        ),
+                    })),
+            enabled: q2Enabled,
+        })
+
+    return {
+        coUsedResources: coUsedResources ?? [],
+        isLoading:
+            isTicketIdsFetching || (q2Enabled && isCoUsedResourcesFetching),
     }
 }
 

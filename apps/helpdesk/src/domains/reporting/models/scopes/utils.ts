@@ -300,6 +300,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'engagementType':
             case 'currency':
             case 'orderId':
+            case 'ticketId':
                 {
                     const filter = statFilters[filterKey]
                     if (filter && hasFilter(filter)) {

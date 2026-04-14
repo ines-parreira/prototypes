@@ -34,7 +34,7 @@ export const useSkillPerformanceFromContext = (): SkillPerformanceData => {
     const { skillArticleId, shopIntegrationId, helpCenterId } =
         useSkillEditorStore(
             useShallow((storeState) => ({
-                skillArticleId: storeState.skill?.id,
+                skillArticleId: storeState.state.skill?.id,
                 shopIntegrationId:
                     storeState.config.helpCenter.shop_integration_id ?? 0,
                 helpCenterId: storeState.config.helpCenter.id,
