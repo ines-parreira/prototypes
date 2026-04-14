@@ -675,6 +675,27 @@
 
     /* Active state for recent items */
     .nav-item.recent.active { background: rgba(103,63,207,0.08); border-radius: 8px; }
+
+    /* Nav badge (count pill) */
+    .nav-badge {
+      margin-left: auto; font-size: 11px; font-weight: 500;
+      color: #5c6370; background: rgba(0,0,0,0.06);
+      border-radius: 10px; padding: 1px 6px; flex-shrink: 0;
+    }
+    .nav-item.active .nav-badge { background: rgba(104,63,207,0.12); color: #683fcf; }
+
+    /* Opportunities empty state */
+    .opps-empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 8px;
+      padding: 40px 24px; text-align: center;
+    }
+    .opps-empty-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: #f5f3ff; display: flex; align-items: center; justify-content: center; margin-bottom: 4px;
+    }
+    .opps-empty-title { font-size: 14px; font-weight: 600; color: #1e242e; }
+    .opps-empty-desc  { font-size: 13px; color: #9ea6b3; max-width: 260px; line-height: 1.5; }
     .nav-item.recent.active .nav-label { color: #683fcf; font-weight: 500; }
 
     /* Experiments empty state */
@@ -727,6 +748,10 @@
         </div>
         <div class="nav-item secondary" id="nav-outbound">
           <span class="nav-label">Outbound</span>
+        </div>
+        <div class="nav-item secondary" id="nav-opportunities" onclick="showOpportunities()">
+          <span class="nav-label">Opportunities</span>
+          <span class="nav-badge">0</span>
         </div>
         <div class="nav-item secondary" id="nav-knowledge">
           <span class="nav-label">Knowledge</span>
@@ -1204,6 +1229,23 @@
     </div><!-- /content-card -->
   </main><!-- /main-performance -->
 
+  <!-- ── Opportunities page ────────────────────────────────────────── -->
+  <main class="main" id="main-opportunities" style="display:none">
+    <div class="content-card" style="justify-content:center;">
+      <div class="opps-empty">
+        <div class="opps-empty-icon">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 2.5C10 2.5 5 5.5 5 10.5C5 13.26 7.24 15.5 10 15.5C12.76 15.5 15 13.26 15 10.5C15 5.5 10 2.5 10 2.5Z" stroke="#7e55f6" stroke-width="1.4" stroke-linejoin="round"/>
+            <line x1="10" y1="15.5" x2="10" y2="17.5" stroke="#7e55f6" stroke-width="1.4" stroke-linecap="round"/>
+            <line x1="7.5" y1="17.5" x2="12.5" y2="17.5" stroke="#7e55f6" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="opps-empty-title">No opportunities yet</div>
+        <div class="opps-empty-desc">Opportunities will be surfaced here</div>
+      </div>
+    </div>
+  </main><!-- /main-opportunities -->
+
   <!-- ── Chat conversation view ─────────────────────────────────────── -->
   <main class="main" id="main-chat" style="display:none">
     <div class="content-card" style="padding:0; gap:0; overflow:hidden;">
@@ -1326,8 +1368,9 @@
 
   // All top-level nav item IDs and their corresponding page main IDs
   const NAV_PAGES = {
-    'nav-digest':      'main-digest',
-    'nav-performance': 'main-performance',
+    'nav-digest':        'main-digest',
+    'nav-performance':   'main-performance',
+    'nav-opportunities': 'main-opportunities',
   };
 
   function setActiveNav(activeId) {
@@ -1364,6 +1407,13 @@
     document.getElementById('app-shell').style.display = 'flex';
     showMain('main-performance');
     setActiveNav('nav-performance');
+  }
+
+  function showOpportunities() {
+    document.getElementById('spike-page').style.display = 'none';
+    document.getElementById('app-shell').style.display = 'flex';
+    showMain('main-opportunities');
+    setActiveNav('nav-opportunities');
   }
 
   function showSpike() {
