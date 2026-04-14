@@ -49,7 +49,7 @@
     .nav-item.active .nav-label { font-size: 14px; font-weight: 600; color: #683fcf; }
     .nav-item.secondary { color: #1e242e; }
     .nav-item.secondary .nav-label { font-size: 14px; font-weight: 500; color: #1e242e; }
-    .nav-item.recent .nav-label { font-size: 14px; font-weight: 400; color: #1e242e; }
+    .nav-item.recent .nav-label { font-size: 14px; font-weight: 400; color: #1e242e; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
     /* Recents */
     .recents-group { display: flex; flex-direction: column; gap: 4px; }
@@ -616,7 +616,7 @@
 
     /* ── Chat conversation view ──────────────────────────────────────── */
     .chat-view-header {
-      padding: 14px 24px; border-bottom: 1px solid rgba(0,0,0,0.06);
+      padding: 14px 24px;
       flex-shrink: 0; display: flex; align-items: center; gap: 10px;
     }
     .chat-view-back {
