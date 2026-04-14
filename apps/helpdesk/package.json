@@ -135,7 +135,7 @@
         "@xyflow/react": "^12.8.3",
         "algoliasearch": "^4.13.1",
         "array-includes": "3.1.1",
-        "axios": "catalog:axios",
+        "axios": "catalog:rest-api-sdk",
         "axios-rate-limit": "1.3.0",
         "bootstrap": "^4.6.2",
         "bootstrap-daterangepicker": "3.1.0",

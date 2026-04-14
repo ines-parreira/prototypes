@@ -24,7 +24,7 @@
         "@repo/utils": "workspace:*",
         "@tanstack/react-query": "catalog:rest-api-sdk",
         "@tanstack/react-query-devtools": "catalog:rest-api-sdk",
-        "axios": "catalog:axios",
+        "axios": "catalog:rest-api-sdk",
         "axios-rate-limit": "^1.4.0",
         "react": "catalog:react",
         "react-dom": "catalog:react"
@@ -45,7 +45,7 @@
         "@types/react": "catalog:react",
         "@types/react-dom": "catalog:react",
         "@vitest/coverage-v8": "catalog:test",
-        "axios": "catalog:axios",
+        "axios": "catalog:rest-api-sdk",
         "axios-mock-adapter": "^1.22.0",
         "axios-rate-limit": "^1.4.0",
         "oxlint": "catalog:oxlint",

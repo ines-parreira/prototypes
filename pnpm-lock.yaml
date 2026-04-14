@@ -16,10 +16,6 @@ catalogs:
     '@gorgias/design-tokens':
       specifier: 0.11.4
       version: 0.11.4
-  axios:
-    axios:
-      specifier: ^1.15.0
-      version: 1.15.0
   browser-storage:
     '@types/zen-observable':
       specifier: ^0.8.7
@@ -310,6 +306,9 @@ catalogs:
     '@tanstack/react-query-devtools':
       specifier: 4.22.4
       version: 4.22.4
+    axios:
+      specifier: ^1.15.0
+      version: 1.15.0
   sentry:
     '@sentry/cli':
       specifier: ^2.47.0
@@ -768,7 +767,7 @@ importers:
         specifier: 3.1.1
         version: 3.1.1
       axios:
-        specifier: catalog:axios
+        specifier: catalog:rest-api-sdk
         version: 1.15.0(debug@4.4.3)
       axios-rate-limit:
         specifier: 1.3.0
@@ -1675,7 +1674,7 @@ importers:
         specifier: catalog:test
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
       axios:
-        specifier: catalog:axios
+        specifier: catalog:rest-api-sdk
         version: 1.15.0(debug@4.4.3)
       oxlint:
         specifier: catalog:oxlint
@@ -1910,7 +1909,7 @@ importers:
         specifier: catalog:test
         version: 4.0.18(vitest@4.0.18(@types/node@22.13.13)(jiti@2.6.1)(jsdom@21.0.0)(less@4.1.3)(msw@2.9.0(@types/node@22.13.13)(typescript@5.9.3))(terser@5.44.1)(tsx@4.20.3)(yaml@2.8.0))
       axios:
-        specifier: catalog:axios
+        specifier: catalog:rest-api-sdk
         version: 1.15.0(debug@4.4.3)
       axios-mock-adapter:
         specifier: ^1.22.0

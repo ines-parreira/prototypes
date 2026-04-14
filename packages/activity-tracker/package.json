@@ -24,7 +24,7 @@
         "@repo/feature-flags": "workspace:*",
         "@repo/logging": "workspace:*",
         "@repo/utils": "workspace:*",
-        "axios": "catalog:axios"
+        "axios": "catalog:rest-api-sdk"
     },
     "devDependencies": {
         "@gorgias/event-tracker-api": "catalog:event-tracker",
@@ -36,7 +36,7 @@
         "@repo/utils": "workspace:*",
         "@trivago/prettier-plugin-sort-imports": "catalog:prettier",
         "@vitest/coverage-v8": "catalog:test",
-        "axios": "catalog:axios",
+        "axios": "catalog:rest-api-sdk",
         "oxlint": "catalog:oxlint",
         "prettier": "catalog:prettier",
         "typescript": "catalog:typescript",
