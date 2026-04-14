@@ -1,5 +1,3 @@
-import parsePhoneNumberFromString from 'libphonenumber-js'
-
 import {
     getPhoneEventCustomerName,
     getPhoneEventDetailsEntries,
@@ -176,13 +174,9 @@ describe('phone event transforms', () => {
                     },
                 },
             })
-            const expectedFormattedPhone =
-                parsePhoneNumberFromString(
-                    '+14567654985',
-                )?.formatInternational() ?? '+14567654985'
 
             expect(getPhoneEventDetailsEntries(event)).toEqual([
-                { key: 'Forwarded to', value: expectedFormattedPhone },
+                { key: 'Forwarded to', value: '+1 456 765 4985' },
             ])
         })
 

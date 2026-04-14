@@ -10,8 +10,11 @@ import {
     mockTicketMessageSource,
     mockTicketMessageSourceAddress,
     mockTicketMessageUserOrCustomer,
+    mockTicketTag,
 } from '@gorgias/helpdesk-mocks'
 
+import type { TicketThreadAiAgentPseudoEvent } from '../../../hooks/ai-agent-pseudo-events/types'
+import { TicketThreadAiAgentPseudoEventAction } from '../../../hooks/ai-agent-pseudo-events/types'
 import {
     AI_AGENT_BOT_EMAILS,
     AI_AGENT_DRAFT_MESSAGE_TAG,
@@ -928,6 +931,50 @@ describe('TicketThreadMessageItem', () => {
         expect(renderAiAgentReasoning).toHaveBeenCalledWith({
             message: item.data,
         })
+    })
+
+    it('renders attached AI pseudo-event rows for AI agent messages', () => {
+        const attachedPseudoEvent: TicketThreadAiAgentPseudoEvent = {
+            action: TicketThreadAiAgentPseudoEventAction.Close,
+            tags: [
+                mockTicketTag({
+                    id: 11,
+                    name: 'customer-follow-up',
+                    decoration: { color: 'red' },
+                }),
+            ],
+        }
+
+        renderItem(
+            createAiAgentMessageItem({
+                decorations: {
+                    aiAgentPseudoEvent: attachedPseudoEvent,
+                },
+            }),
+        )
+
+        expect(screen.getByText('Tagged')).toBeInTheDocument()
+        expect(screen.getByText('Closed')).toBeInTheDocument()
+        expect(screen.getByText('customer-follow-up')).toBeInTheDocument()
+        expect(screen.getAllByText('AI Agent')).toHaveLength(3)
+    })
+
+    it('renders attached AI pseudo-event rows for AI agent internal notes', () => {
+        const attachedPseudoEvent: TicketThreadAiAgentPseudoEvent = {
+            action: TicketThreadAiAgentPseudoEventAction.Snooze,
+            tags: [],
+        }
+
+        renderItem(
+            createAiAgentInternalNoteItem({
+                decorations: {
+                    aiAgentPseudoEvent: attachedPseudoEvent,
+                },
+            }),
+        )
+
+        expect(screen.getByText('Snoozed')).toBeInTheDocument()
+        expect(screen.getAllByText('AI Agent')).toHaveLength(2)
     })
 
     it('does not render the reasoning slot for AI agent internal note when renderAiAgentReasoning is undefined', () => {

@@ -12,6 +12,7 @@ import { MessageSender } from '../../../MessageBubble/components/MessageHeader/M
 import { MessageTimestamp } from '../../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../../MessageBubble/MessageBubble'
 import { TicketMessageActions } from '../../../TicketMessageActions/TicketMessageActions'
+import { AiAgentTicketThreadPseudoEvent } from '../AiAgentTicketThreadPseudoEvent'
 import { SmartFollowUps } from './SmartFollowUps'
 import { useSmartFollowUps } from './useSmartFollowUps'
 
@@ -34,40 +35,45 @@ export function AiAgentTicketThreadMessage({
     })
 
     return (
-        <MessageBubble variant="ai-agent">
-            <MessageHeaderContainer>
-                <Box alignItems="center" gap="xs">
-                    <AIThinking variant="static" />
-                    <MessageSender sender={{ name: 'AI Agent' }} />
-                </Box>
-                <Box alignItems="center" gap="xs">
-                    <MessageChannel
-                        channel={item.data.channel}
-                        createdDatetime={item.data.created_datetime}
+        <Box flexDirection="column" alignItems="flex-end" gap="xxs">
+            <MessageBubble variant="ai-agent">
+                <MessageHeaderContainer>
+                    <Box alignItems="center" gap="xs">
+                        <AIThinking variant="static" />
+                        <MessageSender sender={{ name: 'AI Agent' }} />
+                    </Box>
+                    <Box alignItems="center" gap="xs">
+                        <MessageChannel
+                            channel={item.data.channel}
+                            createdDatetime={item.data.created_datetime}
+                        />
+                        <MessageDeliveryIcon item={item} />
+                        <MessageTimestamp
+                            createdDatetime={item.data.created_datetime}
+                        />
+                    </Box>
+                </MessageHeaderContainer>
+                {shouldRenderMessageContent && <MessageBody item={item} />}
+                {shouldRenderSmartFollowUps && (
+                    <SmartFollowUps
+                        selectedSmartFollowUpIndex={selectedSmartFollowUpIndex}
+                        showAllSmartFollowUps={showAllSmartFollowUps}
+                        smartFollowUps={smartFollowUps}
                     />
-                    <MessageDeliveryIcon item={item} />
-                    <MessageTimestamp
-                        createdDatetime={item.data.created_datetime}
+                )}
+                <MessageAttachments item={item} />
+                <TicketMessageActions message={item.data} />
+                {item.data.ticket_id && (
+                    <MessageErrors
+                        message={item.data}
+                        ticketId={item.data.ticket_id}
                     />
-                </Box>
-            </MessageHeaderContainer>
-            {shouldRenderMessageContent && <MessageBody item={item} />}
-            {shouldRenderSmartFollowUps && (
-                <SmartFollowUps
-                    selectedSmartFollowUpIndex={selectedSmartFollowUpIndex}
-                    showAllSmartFollowUps={showAllSmartFollowUps}
-                    smartFollowUps={smartFollowUps}
-                />
-            )}
-            <MessageAttachments item={item} />
-            <TicketMessageActions message={item.data} />
-            {item.data.ticket_id && (
-                <MessageErrors
-                    message={item.data}
-                    ticketId={item.data.ticket_id}
-                />
-            )}
-            {renderAiAgentReasoning?.({ message: item.data })}
-        </MessageBubble>
+                )}
+                {renderAiAgentReasoning?.({ message: item.data })}
+            </MessageBubble>
+            <AiAgentTicketThreadPseudoEvent
+                pseudoEvent={item.data.decorations?.aiAgentPseudoEvent}
+            />
+        </Box>
     )
 }

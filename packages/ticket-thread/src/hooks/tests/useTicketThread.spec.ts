@@ -1,11 +1,21 @@
+import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
 
-import { mockGetTicketHandler, mockTicket } from '@gorgias/helpdesk-mocks'
+import {
+    mockGetTicketHandler,
+    mockListTicketTagsHandler,
+    mockListTicketTagsResponse,
+    mockTicket,
+    mockTicketMessage,
+} from '@gorgias/helpdesk-mocks'
+import { TicketStatus } from '@gorgias/helpdesk-queries'
 
-import { renderHook } from '../../tests/render.utils'
+import { createTestQueryClient, renderHook } from '../../tests/render.utils'
 import { server } from '../../tests/server'
+import { TicketThreadAiAgentPseudoEventAction } from '../ai-agent-pseudo-events/types'
 import { useContactReasonPrediction } from '../contact-reason-prediction/useContactReasonPrediction'
 import { useTicketThreadEvents } from '../events/useTicketThreadEvents'
+import { AI_AGENT_BOT_EMAILS } from '../messages/constants'
 import { useTicketThreadMessages } from '../messages/useTicketThreadMessages'
 import { useRuleSuggestion } from '../rules-suggestions/useRuleSuggestion'
 import { useTicketThreadSatisfactionSurveys } from '../satisfaction-survey/useTicketThreadSatisfactionSurveys'
@@ -50,6 +60,38 @@ const mockUseTicketThreadShoppingAssistantEvents = vi.mocked(
 )
 const mockUseRuleSuggestion = vi.mocked(useRuleSuggestion)
 const mockUseContactReasonPrediction = vi.mocked(useContactReasonPrediction)
+
+function getTicketIdFromRequest(request: Request): number {
+    return Number(new URL(request.url).pathname.split('/').at(-2))
+}
+
+function createAiAgentMessageItem(
+    overrides: Record<string, unknown> = {},
+): any {
+    const data = mockTicketMessage({
+        id: 42,
+        created_datetime: '2024-03-21T11:01:00Z',
+        channel: 'chat',
+        public: true,
+        from_agent: true,
+        via: 'api',
+        sender: {
+            id: 2,
+            name: 'AI Agent',
+            firstname: 'AI',
+            lastname: 'Agent',
+            email: AI_AGENT_BOT_EMAILS[0],
+            meta: null,
+        },
+        ...overrides,
+    })
+
+    return {
+        _tag: TicketThreadItemTag.Messages.AiAgentMessage,
+        data,
+        datetime: data.created_datetime,
+    }
+}
 
 describe('useTicketThread', () => {
     beforeEach(() => {
@@ -232,6 +274,67 @@ describe('useTicketThread', () => {
 
         expect(result.current.ticketThreadItems).toEqual([
             influencedOrder,
+            message,
+        ])
+    })
+
+    it('applies AI pseudo-event enrichment only when ticket events are hidden', async () => {
+        const message = createAiAgentMessageItem({
+            actions: [
+                {
+                    name: 'setStatus',
+                    arguments: { status: TicketStatus.Closed },
+                },
+            ],
+        })
+        const onRequest = vi.fn()
+
+        mockUseTicketThreadMessages.mockReturnValue({
+            messages: [message],
+            activePendingMessages: [],
+        })
+        server.use(
+            mockListTicketTagsHandler(async ({ request }) => {
+                onRequest({ ticketId: getTicketIdFromRequest(request) })
+
+                return HttpResponse.json(
+                    mockListTicketTagsResponse({
+                        data: [],
+                    }),
+                )
+            }).handler,
+        )
+
+        const hiddenResult = renderHook(
+            () => useTicketThread({ ticketId: 7, showTicketEvents: false }),
+            { queryClient: createTestQueryClient() },
+        )
+
+        await waitFor(() => {
+            expect(hiddenResult.result.current.ticketThreadItems).toEqual([
+                {
+                    ...message,
+                    data: {
+                        ...message.data,
+                        decorations: {
+                            aiAgentPseudoEvent: {
+                                action: TicketThreadAiAgentPseudoEventAction.Close,
+                                tags: [],
+                            },
+                        },
+                    },
+                },
+            ])
+        })
+        expect(onRequest).toHaveBeenCalledTimes(1)
+        expect(onRequest).toHaveBeenCalledWith({ ticketId: 7 })
+
+        const visibleResult = renderHook(
+            () => useTicketThread({ ticketId: 7, showTicketEvents: true }),
+            { queryClient: createTestQueryClient() },
+        )
+
+        expect(visibleResult.result.current.ticketThreadItems).toEqual([
             message,
         ])
     })

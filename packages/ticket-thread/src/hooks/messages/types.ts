@@ -2,6 +2,7 @@ import type { Prettify } from '@repo/types'
 
 import type { TicketMessage } from '@gorgias/helpdesk-queries'
 
+import type { TicketThreadAiAgentPseudoEvent } from '../ai-agent-pseudo-events/types'
 import type { TicketThreadItemTag } from '../types'
 import type {
     AiAgentDraftMessageSchema,
@@ -27,6 +28,17 @@ export type TicketThreadMessageData<TSchema extends object = {}> = Prettify<
     TicketMessage & Pick<TicketMessageSchema, 'channel'> & TSchema
 >
 
+export type TicketThreadMessageDecorations = {
+    aiAgentPseudoEvent?: TicketThreadAiAgentPseudoEvent
+}
+
+type TicketThreadAiAgentMessageData<TSchema extends object> =
+    TicketThreadMessageData<
+        TSchema & {
+            decorations?: TicketThreadMessageDecorations
+        }
+    >
+
 export type TicketThreadRegularMessageItem = {
     _tag: typeof TicketThreadItemTag.Messages.Message
     data: TicketThreadMessageData
@@ -43,13 +55,13 @@ export type TicketThreadInternalNoteItem = {
 
 export type TicketThreadAiAgentMessageItem = {
     _tag: typeof TicketThreadItemTag.Messages.AiAgentMessage
-    data: TicketThreadMessageData<AiAgentMessageSchema>
+    data: TicketThreadAiAgentMessageData<AiAgentMessageSchema>
     datetime: string
 }
 
 export type TicketThreadAiAgentInternalNoteItem = {
     _tag: typeof TicketThreadItemTag.Messages.AiAgentInternalNote
-    data: TicketThreadMessageData<AIAgentInternalNoteSchema>
+    data: TicketThreadAiAgentMessageData<AIAgentInternalNoteSchema>
     datetime: string
 }
 

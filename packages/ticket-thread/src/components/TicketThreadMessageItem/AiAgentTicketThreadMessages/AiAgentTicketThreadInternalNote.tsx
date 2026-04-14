@@ -10,6 +10,7 @@ import { MessageDeliveryIcon } from '../../MessageBubble/components/MessageHeade
 import { MessageSender } from '../../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../MessageBubble/MessageBubble'
+import { AiAgentTicketThreadPseudoEvent } from './AiAgentTicketThreadPseudoEvent'
 
 type AiAgentTicketThreadInternalNoteProps = {
     item: TicketThreadAiAgentInternalNoteItem
@@ -20,31 +21,36 @@ export function AiAgentTicketThreadInternalNote({
 }: AiAgentTicketThreadInternalNoteProps) {
     const { renderAiAgentReasoning } = useTicketThreadLegacyBridge()
     return (
-        <MessageBubble variant="internal-note">
-            <MessageHeaderContainer>
-                <Box alignItems="center" gap="xs">
-                    <AIThinking variant="static" />
-                    <MessageSender sender={{ name: 'AI Agent' }} />
-                </Box>
-                <Box alignItems="center" gap="xs">
-                    <MessageChannel
-                        channel={item.data.channel}
-                        createdDatetime={item.data.created_datetime}
+        <Box flexDirection="column" alignItems="flex-end" gap="xxs">
+            <MessageBubble variant="internal-note">
+                <MessageHeaderContainer>
+                    <Box alignItems="center" gap="xs">
+                        <AIThinking variant="static" />
+                        <MessageSender sender={{ name: 'AI Agent' }} />
+                    </Box>
+                    <Box alignItems="center" gap="xs">
+                        <MessageChannel
+                            channel={item.data.channel}
+                            createdDatetime={item.data.created_datetime}
+                        />
+                        <MessageDeliveryIcon item={item} />
+                        <MessageTimestamp
+                            createdDatetime={item.data.created_datetime}
+                        />
+                    </Box>
+                </MessageHeaderContainer>
+                <MessageBody item={item} />
+                {item.data.ticket_id && (
+                    <MessageErrors
+                        message={item.data}
+                        ticketId={item.data.ticket_id}
                     />
-                    <MessageDeliveryIcon item={item} />
-                    <MessageTimestamp
-                        createdDatetime={item.data.created_datetime}
-                    />
-                </Box>
-            </MessageHeaderContainer>
-            <MessageBody item={item} />
-            {item.data.ticket_id && (
-                <MessageErrors
-                    message={item.data}
-                    ticketId={item.data.ticket_id}
-                />
-            )}
-            {renderAiAgentReasoning?.({ message: item.data })}
-        </MessageBubble>
+                )}
+                {renderAiAgentReasoning?.({ message: item.data })}
+            </MessageBubble>
+            <AiAgentTicketThreadPseudoEvent
+                pseudoEvent={item.data.decorations?.aiAgentPseudoEvent}
+            />
+        </Box>
     )
 }

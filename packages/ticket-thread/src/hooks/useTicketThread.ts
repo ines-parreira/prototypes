@@ -2,6 +2,7 @@ import { useMemo } from 'react'
 
 import { useGetTicket } from '@gorgias/helpdesk-queries'
 
+import { useTicketThreadAiAgentPseudoEvents } from './ai-agent-pseudo-events/useTicketThreadAiAgentPseudoEvents'
 import { useContactReasonPrediction } from './contact-reason-prediction/useContactReasonPrediction'
 import { groupConsecutiveEvents } from './events/transforms'
 import { useTicketThreadEvents } from './events/useTicketThreadEvents'
@@ -52,9 +53,34 @@ export function useTicketThread({
         ticketId,
     })
 
+    const persistedItems = useMemo(
+        () =>
+            sortTicketThreadItems([
+                ...messages,
+                ...events,
+                ...shoppingAssistantItems,
+                ...voiceCalls,
+                ...satisfactionSurveys,
+            ]),
+        [
+            messages,
+            events,
+            shoppingAssistantItems,
+            voiceCalls,
+            satisfactionSurveys,
+        ],
+    )
+
+    const messagesWithAiAgentPseudoEvents = useTicketThreadAiAgentPseudoEvents({
+        ticketId,
+        messages,
+        persistedItems,
+        showTicketEvents,
+    })
+
     const ticketThreadItems = useMemo(() => {
         let items: TicketThreadItem[] = sortTicketThreadItems([
-            ...messages,
+            ...messagesWithAiAgentPseudoEvents,
             ...(showTicketEvents ? events : []),
             ...shoppingAssistantItems,
             ...voiceCalls,
@@ -67,7 +93,7 @@ export function useTicketThread({
 
         return groupConsecutiveEvents(items)
     }, [
-        messages,
+        messagesWithAiAgentPseudoEvents,
         activePendingMessages,
         events,
         shoppingAssistantItems,
