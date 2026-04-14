@@ -6,6 +6,24 @@ import type { ButtonConfig } from '../../utils/customActionTypes'
 import { ButtonActionDialog } from '../ButtonActionDialog'
 
 describe('ButtonActionDialog', () => {
+    function getParameterSection(container: HTMLElement, label: string) {
+        const sectionTitle = within(container).getByText(label)
+        let section = sectionTitle.parentElement
+
+        while (
+            section &&
+            !within(section).queryByRole('button', { name: /add parameter/i })
+        ) {
+            section = section.parentElement
+        }
+
+        if (!section) {
+            throw new Error(`Unable to find parameter section for "${label}"`)
+        }
+
+        return section
+    }
+
     const defaultProps = {
         isOpen: true,
         onOpenChange: vi.fn(),
@@ -240,14 +258,21 @@ describe('ButtonActionDialog', () => {
             />,
         )
 
-        await screen.findByText('Body (Form)')
-        const addButtons = screen.getAllByRole('button', {
-            name: /add parameter/i,
+        const dialog = screen.getByRole('dialog', {
+            name: /edit http action/i,
         })
-        await user.click(addButtons[addButtons.length - 1])
+        const formBodySection = getParameterSection(dialog, 'Body (Form)')
 
-        const keyInputs = screen.getAllByRole('textbox', { name: /key/i })
-        const formKeyInput = keyInputs[keyInputs.length - 1]
+        await user.click(
+            within(formBodySection).getByRole('button', {
+                name: /add parameter/i,
+            }),
+        )
+
+        const formKeyInput = await within(formBodySection).findByRole(
+            'textbox',
+            { name: /key/i },
+        )
         await user.type(formKeyInput, 'username')
 
         const saveButton = screen.getByRole('button', { name: /save/i })
@@ -290,19 +315,17 @@ describe('ButtonActionDialog', () => {
             'https://example.com',
         )
 
-        const addButtons = within(dialog).getAllByRole('button', {
-            name: /add parameter/i,
-        })
-        await user.click(addButtons[0])
+        const headersSection = getParameterSection(dialog, 'Headers')
+        await user.click(
+            within(headersSection).getByRole('button', {
+                name: /add parameter/i,
+            }),
+        )
 
-        await waitFor(() => {
-            expect(
-                within(dialog).getAllByRole('textbox', { name: /key/i }),
-            ).toHaveLength(1)
+        const keyInput = await within(headersSection).findByRole('textbox', {
+            name: /key/i,
         })
-
-        const keyInput = within(dialog).getByRole('textbox', { name: /key/i })
-        const valueInput = within(dialog).getByRole('textbox', {
+        const valueInput = within(headersSection).getByRole('textbox', {
             name: /^value$/i,
         })
 
