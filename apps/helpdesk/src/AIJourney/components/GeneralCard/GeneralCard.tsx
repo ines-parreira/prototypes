@@ -20,6 +20,9 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
     const campaignImageEnabled = useFlag(
         FeatureFlagKey.AiJourneyCampaignImageEnabled,
     )
+    const storeSettingsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
+    )
 
     const shouldRenderIncludeImage = !isCampaign && !isWelcome
     const shouldRenderImageUpload = isCampaign && campaignImageEnabled
@@ -37,7 +40,7 @@ export const GeneralCard = ({ isFormReady }: { isFormReady: boolean }) => {
             <CardHeader title="General" />
             <Box flexDirection="column" gap="md">
                 {isCampaign && <CampaignName />}
-                <SenderPhoneNumber />
+                {!storeSettingsEnabled && <SenderPhoneNumber />}
                 {!isCampaign && <NumberOfMessages />}
                 {shouldRenderIncludeImage && (
                     <IncludeImage journeyType={journeyType} />

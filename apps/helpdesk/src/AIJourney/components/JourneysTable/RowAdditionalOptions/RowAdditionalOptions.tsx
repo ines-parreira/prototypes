@@ -1,18 +1,23 @@
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useHistory } from 'react-router-dom'
 
 import { ListItem, Select, SelectTrigger } from '@gorgias/axiom'
-import { JourneyStatusEnum } from '@gorgias/convert-client'
-import type { JourneyTypeEnum } from '@gorgias/convert-client'
+import { JourneyStatusEnum, JourneyTypeEnum } from '@gorgias/convert-client'
 
 import { STEPS_NAMES } from 'AIJourney/constants'
-import { useJourneyUpdateHandler } from 'AIJourney/hooks'
+import {
+    useAiJourneyStoreConfiguration,
+    useJourneyUpdateHandler,
+} from 'AIJourney/hooks'
 import { useJourneyContext } from 'AIJourney/providers'
 import { getSetupStepPath } from 'AIJourney/utils'
 import useAppDispatch from 'hooks/useAppDispatch'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
+
+import { SmsSenderRequiredModal } from '../../SmsSenderRequiredModal/SmsSenderRequiredModal'
 
 import css from './RowAdditionalOptions.less'
 
@@ -71,6 +76,16 @@ export const RowAdditionalOptions = ({
         return currentIntegration?.id || 0
     }, [currentIntegration])
 
+    const storeSettingsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
+    )
+    const { storeConfiguration } = useAiJourneyStoreConfiguration(integrationId)
+    const isMissingSmsSender =
+        storeSettingsEnabled && !storeConfiguration?.sms_sender_integration_id
+    const isCampaign = journeyType === JourneyTypeEnum.Campaign
+
+    const [isSmsSenderModalOpen, setIsSmsSenderModalOpen] = useState(false)
+
     const { handleUpdate } = useJourneyUpdateHandler({
         integrationId,
         journeyId,
@@ -119,6 +134,10 @@ export const RowAdditionalOptions = ({
                     )
                     break
                 case Options.Activation:
+                    if (isMissingSmsSender) {
+                        setIsSmsSenderModalOpen(true)
+                        break
+                    }
                     history.push(
                         getSetupStepPath({
                             shopName,
@@ -132,13 +151,24 @@ export const RowAdditionalOptions = ({
                     handleUpdateJourneyState()
                     break
                 case Options.Play:
+                    if (isMissingSmsSender) {
+                        setIsSmsSenderModalOpen(true)
+                        break
+                    }
                     handleUpdateJourneyState()
                     break
                 default:
                     break
             }
         },
-        [shopName, journeyId, history, journeyType, handleUpdateJourneyState],
+        [
+            shopName,
+            journeyId,
+            history,
+            journeyType,
+            handleUpdateJourneyState,
+            isMissingSmsSender,
+        ],
     )
 
     const options = useMemo(() => {
@@ -189,6 +219,12 @@ export const RowAdditionalOptions = ({
 
     return (
         <div className={css.statusRight} style={{ position: 'relative' }}>
+            <SmsSenderRequiredModal
+                isOpen={isSmsSenderModalOpen}
+                onClose={() => setIsSmsSenderModalOpen(false)}
+                settingsUrl={`/app/ai-journey/${shopName}/settings`}
+                isCampaign={isCampaign}
+            />
             <Select
                 data-name="select-field"
                 placement="bottom right"

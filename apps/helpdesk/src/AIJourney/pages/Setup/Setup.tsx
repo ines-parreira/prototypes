@@ -22,7 +22,7 @@ import { JOURNEY_TYPES } from 'AIJourney/constants'
 import { useJourneyContext } from 'AIJourney/providers'
 
 export type SetupFormValues = {
-    sms_sender_integration_id: {
+    sms_sender_integration_id?: {
         id: number | null | undefined
         label: string | null | undefined
     }

@@ -1,6 +1,7 @@
 import type React from 'react'
 import { useMemo } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import type { SubmitHandler } from 'react-hook-form'
 import { FormProvider, useForm } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
@@ -8,7 +9,10 @@ import { useHistory } from 'react-router-dom'
 import { Box, Button, PageHeader } from '@gorgias/axiom'
 import { JourneyStatusEnum } from '@gorgias/convert-client'
 
-import { OnboardingStepper } from 'AIJourney/components'
+import {
+    OnboardingStepper,
+    SmsSenderRequiredBanner,
+} from 'AIJourney/components'
 import {
     JOURNEY_ONBOARDING_STEPS,
     JOURNEY_TYPES,
@@ -16,6 +20,7 @@ import {
     UpdatableJourneyCampaignState,
 } from 'AIJourney/constants'
 import {
+    useAiJourneyStoreConfiguration,
     useJourneyCreateHandler,
     useJourneyUpdateHandler,
 } from 'AIJourney/hooks'
@@ -39,9 +44,12 @@ export const AiJourneyOnboarding = ({
     stepComponent: StepComponent,
 }: AiJourneyOnboardingProps) => {
     const history = useHistory()
+    const storeSettingsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
+    )
+
     const methods = useForm<SetupFormValues>({
         defaultValues: {
-            sms_sender_integration_id: undefined,
             max_follow_up_messages: 1,
             include_image: false,
             offer_discount: false,
@@ -56,6 +64,11 @@ export const AiJourneyOnboarding = ({
 
     const { currentIntegration, journeyData, shopName } = useJourneyContext()
     const journeyId = journeyData?.id
+
+    const { storeConfiguration, isLoading: isLoadingStoreConfig } =
+        useAiJourneyStoreConfiguration(currentIntegration?.id)
+    const isMissingSmsSender =
+        storeSettingsEnabled && !storeConfiguration?.sms_sender_integration_id
 
     const { setIsCollapsibleColumnOpen } = useCollapsibleColumn()
 
@@ -125,8 +138,11 @@ export const AiJourneyOnboarding = ({
 
         if (journeyData?.id) {
             await handleUpdate({
-                phoneNumberIntegrationId: data.sms_sender_integration_id.id,
-                phoneNumber: data.sms_sender_integration_id.label,
+                ...(!storeSettingsEnabled && {
+                    phoneNumberIntegrationId:
+                        data.sms_sender_integration_id?.id,
+                    phoneNumber: data.sms_sender_integration_id?.label,
+                }),
                 followUpValue: data.max_follow_up_messages - 1,
                 includeImage: data.include_image,
                 uploadedImageAttachment: data.uploaded_image_attachment,
@@ -149,8 +165,11 @@ export const AiJourneyOnboarding = ({
             )
         } else {
             await handleCreate({
-                phoneNumberIntegrationId: data.sms_sender_integration_id.id,
-                phoneNumber: data.sms_sender_integration_id.label,
+                ...(!storeSettingsEnabled && {
+                    phoneNumberIntegrationId:
+                        data.sms_sender_integration_id?.id,
+                    phoneNumber: data.sms_sender_integration_id?.label,
+                }),
                 followUpValue: data.max_follow_up_messages - 1,
                 includeImage: data.include_image,
                 uploadedImageAttachment: data.uploaded_image_attachment,
@@ -191,9 +210,14 @@ export const AiJourneyOnboarding = ({
     }
 
     const isCampaign = journeyType === JOURNEY_TYPES.CAMPAIGN
+    const isPreviewStep = step === STEPS_NAMES.PREVIEW
 
     const shouldDisableContinueButton =
-        isLoadingHandleCreate || isLoadingHandleUpdate
+        isLoadingHandleCreate ||
+        isLoadingHandleUpdate ||
+        (!isPreviewStep &&
+            storeSettingsEnabled &&
+            (isLoadingStoreConfig || isMissingSmsSender))
 
     const primaryButtonLabel =
         step === STEPS_NAMES.ACTIVATE
@@ -217,6 +241,17 @@ export const AiJourneyOnboarding = ({
                         step={step}
                         currentStepIndex={currentStepIndex}
                     />
+                    {storeSettingsEnabled && (
+                        <>
+                            {/* {isLoadingStoreConfig && <Skeleton height={64} />} */}
+                            {!isLoadingStoreConfig && isMissingSmsSender && (
+                                <SmsSenderRequiredBanner
+                                    settingsUrl={`/app/ai-journey/${shopName}/settings`}
+                                    isCampaign={isCampaign}
+                                />
+                            )}
+                        </>
+                    )}
                     <form onSubmit={handleSubmit(handleContinue)}>
                         <Box flexDirection="column" gap="lg">
                             <StepComponent journeyType={journeyType} />

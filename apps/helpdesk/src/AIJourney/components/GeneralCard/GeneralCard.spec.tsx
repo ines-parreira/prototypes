@@ -7,6 +7,7 @@ import { GeneralCard } from './GeneralCard'
 jest.mock('@repo/feature-flags', () => ({
     FeatureFlagKey: {
         AiJourneyCampaignImageEnabled: 'ai_journey_campaign_image_enabled',
+        AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
     },
     useFlag: jest.fn(),
 }))
@@ -52,10 +53,27 @@ describe('<GeneralCard />', () => {
             expect(screen.getByText('General')).toBeInTheDocument()
         })
 
-        it('always renders SenderPhoneNumber', () => {
-            render(<GeneralCard isFormReady={true} />)
+        describe('SenderPhoneNumber', () => {
+            it('renders when AiJourneyStoreSettingsEnabled flag is off', () => {
+                render(<GeneralCard isFormReady={true} />)
 
-            expect(screen.getByText('SenderPhoneNumber')).toBeInTheDocument()
+                expect(
+                    screen.getByText('SenderPhoneNumber'),
+                ).toBeInTheDocument()
+            })
+
+            it('does not render when AiJourneyStoreSettingsEnabled flag is on', () => {
+                mockUseFlag.mockImplementation(
+                    (key: string) =>
+                        key === 'ai-journey-store-settings-enabled',
+                )
+
+                render(<GeneralCard isFormReady={true} />)
+
+                expect(
+                    screen.queryByText('SenderPhoneNumber'),
+                ).not.toBeInTheDocument()
+            })
         })
 
         describe('CampaignName', () => {

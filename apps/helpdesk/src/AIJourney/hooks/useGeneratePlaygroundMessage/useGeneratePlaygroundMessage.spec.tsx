@@ -22,12 +22,21 @@ import { NotificationStatus } from 'state/notifications/types'
 
 import { useGeneratePlaygroundMessage } from './useGeneratePlaygroundMessage'
 
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
+    },
+    useFlag: jest.fn(),
+}))
+
 jest.mock('state/notifications/actions', () => ({
     notify: jest.fn(),
 }))
 
 jest.mock('hooks/useAppDispatch', () => jest.fn())
 const mockUseAppDispatch = assumeMock(useAppDispatch)
+
+const mockUseFlag = jest.requireMock('@repo/feature-flags').useFlag as jest.Mock
 
 jest.mock('models/aiAgent/queries', () => ({
     useCreateTestSessionMutation: jest.fn(),
@@ -143,6 +152,8 @@ describe('useGeneratePlaygroundMessage', () => {
 
     beforeEach(() => {
         jest.clearAllMocks()
+
+        mockUseFlag.mockReturnValue(false)
 
         mockedUseCreateTestSessionMutation.mockReturnValue({
             mutateAsync: mockCreateTestSession,
@@ -339,6 +350,8 @@ describe('useGeneratePlaygroundMessage', () => {
         beforeEach(() => {
             jest.clearAllMocks()
             jest.resetAllMocks()
+
+            mockUseFlag.mockReturnValue(false)
 
             mockedUsePlaygroundPolling.mockReturnValue({
                 testSessionLogs: { logs: [], status: 'idle', id: '1' },
@@ -560,6 +573,165 @@ describe('useGeneratePlaygroundMessage', () => {
         expect(mockStartPolling).toHaveBeenCalled()
 
         jest.useRealTimers()
+    })
+
+    describe('settings - smsSender and brandName sourcing', () => {
+        const setupAndTrigger = async (props: {
+            storeSettingsEnabled: boolean
+            smsSenderNumber?: string | null
+            smsSenderIntegrationId?: number | null
+            brandName?: string | null
+        }) => {
+            jest.useFakeTimers()
+            mockUseFlag.mockReturnValue(props.storeSettingsEnabled)
+
+            mockCreateTestSession.mockResolvedValue({
+                testModeSession: { id: 'test-session-id' },
+            })
+            mockTriggerAIJourney.mockResolvedValue(undefined)
+
+            const testSessionLogsWithOneMessage = {
+                id: '123',
+                status: 'finished' as const,
+                logs: [
+                    {
+                        id: '566c50b5',
+                        data: { message: 'message-1' },
+                        type: TestSessionLogType.AI_AGENT_REPLY,
+                    },
+                ],
+            } as GetTestSessionLogsResponse
+
+            let currentTestSessionLogs:
+                | GetTestSessionLogsResponse
+                | { logs: []; status: 'idle'; id: string } = {
+                logs: [],
+                status: 'idle' as const,
+                id: '1',
+            }
+            let currentIsPolling = false
+
+            mockedUsePlaygroundPolling.mockImplementation(() => ({
+                testSessionLogs: currentTestSessionLogs,
+                startPolling: mockStartPolling,
+                stopPolling: mockStopPolling,
+                isPolling: currentIsPolling,
+            }))
+
+            const { result, rerender } = renderHook(
+                () =>
+                    useGeneratePlaygroundMessage({
+                        ...hookParameters,
+                        totalMessagesToBeGenerated: 1,
+                        smsSenderNumber: props.smsSenderNumber,
+                        smsSenderIntegrationId: props.smsSenderIntegrationId,
+                        brandName: props.brandName,
+                    }),
+                {
+                    wrapper: ({ children }) => (
+                        <Provider store={mockStore}>{children}</Provider>
+                    ),
+                },
+            )
+
+            const generatePromise = result.current.handleGenerateMessages()
+
+            await act(async () => {
+                await Promise.resolve()
+                await Promise.resolve()
+            })
+
+            currentIsPolling = true
+            rerender()
+
+            await act(async () => {
+                jest.advanceTimersByTime(5000)
+            })
+
+            currentIsPolling = false
+            currentTestSessionLogs = testSessionLogsWithOneMessage
+            rerender()
+
+            await act(async () => {
+                jest.advanceTimersByTime(5000)
+            })
+
+            await act(async () => {
+                await generatePromise
+            })
+
+            jest.useRealTimers()
+        }
+
+        it('uses journeyParams sender values when flag is OFF', async () => {
+            await setupAndTrigger({ storeSettingsEnabled: false })
+
+            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber:
+                            hookParameters.journeyParams.sms_sender_number,
+                        smsSenderIntegrationId:
+                            hookParameters.journeyParams
+                                .sms_sender_integration_id,
+                        brandName: hookParameters.currentIntegration.name,
+                    }),
+                }),
+            ])
+        })
+
+        it('uses store config sender values when flag is ON', async () => {
+            await setupAndTrigger({
+                storeSettingsEnabled: true,
+                smsSenderNumber: '+10000000000',
+                smsSenderIntegrationId: 999,
+                brandName: 'My Brand',
+            })
+
+            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: '+10000000000',
+                        smsSenderIntegrationId: 999,
+                        brandName: 'My Brand',
+                    }),
+                }),
+            ])
+        })
+
+        it('falls back to integration name when FF is ON but brandName is not set', async () => {
+            await setupAndTrigger({
+                storeSettingsEnabled: true,
+                smsSenderNumber: '+10000000000',
+                smsSenderIntegrationId: 999,
+                brandName: null,
+            })
+
+            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        brandName: hookParameters.currentIntegration.name,
+                    }),
+                }),
+            ])
+        })
+
+        it('sends null sender values when FF is ON but store config has none', async () => {
+            await setupAndTrigger({
+                storeSettingsEnabled: true,
+                smsSenderNumber: null,
+                smsSenderIntegrationId: null,
+            })
+
+            expect(mockTriggerAIJourney).toHaveBeenCalledWith([
+                expect.objectContaining({
+                    settings: expect.objectContaining({
+                        smsSenderNumber: null,
+                        smsSenderIntegrationId: null,
+                    }),
+                }),
+            ])
+        })
     })
 
     it('should use fallback values for order when product has no variants', async () => {

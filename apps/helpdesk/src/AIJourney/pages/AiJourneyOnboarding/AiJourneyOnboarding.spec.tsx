@@ -4,6 +4,7 @@ import { Controller, useFormContext } from 'react-hook-form'
 import { useHistory } from 'react-router-dom'
 
 import { JourneyStatusEnum } from '@gorgias/convert-client'
+import type { StoreConfigurationResponseSchema } from '@gorgias/convert-client'
 
 import {
     JOURNEY_TYPES,
@@ -11,6 +12,7 @@ import {
     UpdatableJourneyCampaignState,
 } from 'AIJourney/constants'
 import {
+    useAiJourneyStoreConfiguration,
     useJourneyCreateHandler,
     useJourneyUpdateHandler,
 } from 'AIJourney/hooks'
@@ -21,6 +23,13 @@ import { renderWithRouter } from 'utils/testing'
 
 import { AiJourneyOnboarding } from './AiJourneyOnboarding'
 import type { StepComponentProps } from './AiJourneyOnboarding'
+
+jest.mock('@repo/feature-flags', () => ({
+    FeatureFlagKey: {
+        AiJourneyStoreSettingsEnabled: 'ai-journey-store-settings-enabled',
+    },
+    useFlag: jest.fn(),
+}))
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -34,6 +43,7 @@ jest.mock('AIJourney/providers', () => ({
 jest.mock('AIJourney/hooks', () => ({
     useJourneyCreateHandler: jest.fn(),
     useJourneyUpdateHandler: jest.fn(),
+    useAiJourneyStoreConfiguration: jest.fn(),
 }))
 
 jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
@@ -45,6 +55,7 @@ const mockHandleCreate = jest.fn()
 const mockHandleUpdate = jest.fn()
 const mockSetIsCollapsibleColumnOpen = jest.fn()
 
+const mockUseFlag = jest.requireMock('@repo/feature-flags').useFlag as jest.Mock
 const mockUseHistory = useHistory as jest.MockedFunction<typeof useHistory>
 const mockUseJourneyContext = useJourneyContext as jest.MockedFunction<
     typeof useJourneyContext
@@ -60,6 +71,24 @@ const mockUseJourneyUpdateHandler =
 const mockUseCollapsibleColumn = useCollapsibleColumn as jest.MockedFunction<
     typeof useCollapsibleColumn
 >
+const mockUseAiJourneyStoreConfiguration =
+    useAiJourneyStoreConfiguration as jest.MockedFunction<
+        typeof useAiJourneyStoreConfiguration
+    >
+
+const buildStoreConfigMock = (
+    overrides: Partial<ReturnType<typeof useAiJourneyStoreConfiguration>> = {},
+): ReturnType<typeof useAiJourneyStoreConfiguration> =>
+    ({
+        storeConfiguration: {
+            sms_sender_integration_id: 123,
+        } as StoreConfigurationResponseSchema,
+        isLoading: false,
+        error: null,
+        isFetched: true,
+        saveConfiguration: jest.fn(),
+        ...overrides,
+    }) as ReturnType<typeof useAiJourneyStoreConfiguration>
 
 const MockStepComponent = ({ journeyType }: StepComponentProps) => {
     const { control } = useFormContext<SetupFormValues>()
@@ -73,6 +102,10 @@ const MockStepComponent = ({ journeyType }: StepComponentProps) => {
         />
     )
 }
+
+const MockStepComponentWithoutPhone = ({ journeyType }: StepComponentProps) => (
+    <div>Step content for {journeyType}</div>
+)
 
 const defaultContextValue = {
     currentIntegration: { id: 1, name: 'test-shop' },
@@ -117,6 +150,7 @@ describe('<AiJourneyOnboarding />', () => {
         mockHandleCreate.mockReset()
         mockHandleUpdate.mockReset()
         mockSetIsCollapsibleColumnOpen.mockReset()
+        mockUseFlag.mockReturnValue(false)
 
         mockUseHistory.mockReturnValue({ push: mockPush } as any)
         mockUseJourneyContext.mockReturnValue(defaultContextValue as any)
@@ -135,6 +169,9 @@ describe('<AiJourneyOnboarding />', () => {
         mockUseCollapsibleColumn.mockReturnValue({
             setIsCollapsibleColumnOpen: mockSetIsCollapsibleColumnOpen,
         } as any)
+        mockUseAiJourneyStoreConfiguration.mockReturnValue(
+            buildStoreConfigMock(),
+        )
     })
 
     afterEach(() => {
@@ -811,6 +848,62 @@ describe('<AiJourneyOnboarding />', () => {
         })
     })
 
+    describe('form submission - with AiJourneyStoreSettingsEnabled flag ON', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+        })
+
+        it('does not pass phoneNumberIntegrationId to handleCreate when flag is ON', async () => {
+            mockHandleCreate.mockResolvedValue({ id: 'new-journey-id' })
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleCreate).toHaveBeenCalled()
+            })
+
+            const callArgs = mockHandleCreate.mock.calls[0][0]
+            expect(callArgs).not.toHaveProperty('phoneNumberIntegrationId')
+            expect(callArgs).not.toHaveProperty('phoneNumber')
+        })
+
+        it('does not pass phoneNumberIntegrationId to handleUpdate when flag is ON', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'existing-journey-id', campaign: null },
+            } as any)
+            mockHandleUpdate.mockResolvedValue(undefined)
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalled()
+            })
+
+            const callArgs = mockHandleUpdate.mock.calls[0][0]
+            expect(callArgs).not.toHaveProperty('phoneNumberIntegrationId')
+            expect(callArgs).not.toHaveProperty('phoneNumber')
+        })
+    })
+
     describe('return button navigation', () => {
         it('navigates to previous step when journeyId exists on preview step', async () => {
             mockUseJourneyContext.mockReturnValue({
@@ -895,6 +988,161 @@ describe('<AiJourneyOnboarding />', () => {
             expect(mockPush).toHaveBeenCalledWith(
                 '/app/ai-journey/test-shop/flows',
             )
+        })
+    })
+
+    describe('missing SMS sender - AiJourneyStoreSettingsEnabled flag ON', () => {
+        beforeEach(() => {
+            mockUseFlag.mockReturnValue(true)
+            mockUseAiJourneyStoreConfiguration.mockReturnValue(
+                buildStoreConfigMock({
+                    storeConfiguration: {
+                        sms_sender_integration_id: null,
+                        sms_sender_number: null,
+                    } as StoreConfigurationResponseSchema,
+                }),
+            )
+        })
+
+        it('disables the continue button while store config is loading', () => {
+            mockUseAiJourneyStoreConfiguration.mockReturnValue(
+                buildStoreConfigMock({
+                    storeConfiguration: undefined,
+                    isLoading: true,
+                }),
+            )
+
+            renderComponent({ step: STEPS_NAMES.SETUP })
+
+            expect(
+                screen.getByRole('button', { name: /continue/i }),
+            ).toBeDisabled()
+        })
+
+        it('disables the continue button on setup step when sender is missing', () => {
+            renderComponent({ step: STEPS_NAMES.SETUP })
+
+            expect(
+                screen.getByRole('button', { name: /continue/i }),
+            ).toBeDisabled()
+        })
+
+        it('shows the SMS sender required banner on setup step when sender is missing', () => {
+            renderComponent({ step: STEPS_NAMES.SETUP })
+
+            expect(
+                screen.getByText('Add sender phone number to activate'),
+            ).toBeInTheDocument()
+        })
+
+        it('disables the continue button when store config fetch returned no data', () => {
+            mockUseAiJourneyStoreConfiguration.mockReturnValue(
+                buildStoreConfigMock({
+                    storeConfiguration: undefined,
+                    isLoading: false,
+                }),
+            )
+
+            renderComponent({ step: STEPS_NAMES.SETUP })
+
+            expect(
+                screen.getByRole('button', { name: /continue/i }),
+            ).toBeDisabled()
+        })
+
+        it('does not disable the continue button on preview step when sender is missing', () => {
+            renderComponent({ step: STEPS_NAMES.PREVIEW })
+
+            expect(
+                screen.getByRole('button', { name: /continue/i }),
+            ).not.toBeDisabled()
+        })
+
+        it('does not show the banner when sender is configured', () => {
+            mockUseAiJourneyStoreConfiguration.mockReturnValue(
+                buildStoreConfigMock({
+                    storeConfiguration: {
+                        sms_sender_integration_id: 456,
+                    } as StoreConfigurationResponseSchema,
+                }),
+            )
+
+            renderComponent({ step: STEPS_NAMES.SETUP })
+
+            expect(
+                screen.queryByText('Add sender phone number to activate'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: /continue/i }),
+            ).not.toBeDisabled()
+        })
+    })
+
+    describe('store configuration with null integration', () => {
+        it('calls useAiJourneyStoreConfiguration with undefined when currentIntegration is null', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                currentIntegration: null,
+            } as any)
+
+            renderComponent()
+
+            expect(mockUseAiJourneyStoreConfiguration).toHaveBeenCalledWith(
+                undefined,
+            )
+        })
+    })
+
+    describe('form submission - phone number fields optional', () => {
+        it('submits with undefined phone params on create when sms_sender_integration_id is not set', async () => {
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                stepComponent: MockStepComponentWithoutPhone,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleCreate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        phoneNumberIntegrationId: undefined,
+                        phoneNumber: undefined,
+                    }),
+                )
+            })
+        })
+
+        it('submits with undefined phone params on update when sms_sender_integration_id is not set', async () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'existing-journey-id', campaign: null },
+            } as any)
+
+            const { user } = renderComponent({
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+                stepComponent: MockStepComponentWithoutPhone,
+            })
+
+            await act(
+                async () =>
+                    await user.click(
+                        screen.getByRole('button', { name: /continue/i }),
+                    ),
+            )
+
+            await waitFor(() => {
+                expect(mockHandleUpdate).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        phoneNumberIntegrationId: undefined,
+                        phoneNumber: undefined,
+                    }),
+                )
+            })
         })
     })
 })

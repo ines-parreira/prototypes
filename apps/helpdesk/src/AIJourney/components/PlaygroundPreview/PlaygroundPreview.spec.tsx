@@ -207,6 +207,28 @@ describe('PlaygroundPreview', () => {
         expect(screen.getByText('blublu')).toBeInTheDocument()
     })
 
+    it('should disable the preview button when isGenerateDisabled is true', () => {
+        render(
+            <QueryClientProvider client={appQueryClient}>
+                <PlaygroundPreview isGenerateDisabled={true} />
+            </QueryClientProvider>,
+        )
+        expect(
+            screen.getByRole('button', { name: /preview messages/i }),
+        ).toBeDisabled()
+    })
+
+    it('should enable the preview button when isGenerateDisabled is false', () => {
+        render(
+            <QueryClientProvider client={appQueryClient}>
+                <PlaygroundPreview isGenerateDisabled={false} />
+            </QueryClientProvider>,
+        )
+        expect(
+            screen.getByRole('button', { name: /preview messages/i }),
+        ).not.toBeDisabled()
+    })
+
     it('should not render image when selectedProductImage is not passed', () => {
         const content = ['blublu'] as string[]
         const { container } = render(

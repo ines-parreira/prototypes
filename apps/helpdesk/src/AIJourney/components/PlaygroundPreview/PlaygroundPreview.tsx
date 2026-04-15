@@ -17,6 +17,7 @@ type PlaygroundPreviewProps = {
     content?: string[]
     includeImage?: boolean
     isGeneratingMessages?: boolean
+    isGenerateDisabled?: boolean
     selectedProductImage?: Maybe<Image>
     isCampaign?: boolean
     campaignImage?: AttachmentDTO
@@ -27,6 +28,7 @@ export const PlaygroundPreview = ({
     content,
     includeImage = false,
     isGeneratingMessages = false,
+    isGenerateDisabled = false,
     selectedProductImage,
     isCampaign,
     campaignImage,
@@ -133,7 +135,11 @@ export const PlaygroundPreview = ({
                         {isGeneratingMessages && <GeneratingMessage />}
                     </Box>
                 </Card>
-                <Button variant="secondary" onClick={onGenerateMessages}>
+                <Button
+                    variant="secondary"
+                    isDisabled={isGenerateDisabled}
+                    onClick={onGenerateMessages}
+                >
                     Preview messages
                 </Button>
             </Box>

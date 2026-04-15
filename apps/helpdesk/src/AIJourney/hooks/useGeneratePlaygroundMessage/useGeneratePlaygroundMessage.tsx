@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
+
 import type {
     JourneyApiDTO,
     JourneyConfigurationApiDTO,
@@ -29,6 +31,9 @@ type useGeneratePlaygroundMessageProps = {
     selectedProduct: Product | null
     totalMessagesToBeGenerated: number
     returningCustomer?: boolean
+    smsSenderIntegrationId?: number | null
+    smsSenderNumber?: string | null
+    brandName?: string | null
 }
 
 export const useGeneratePlaygroundMessage = ({
@@ -39,7 +44,13 @@ export const useGeneratePlaygroundMessage = ({
     selectedProduct,
     totalMessagesToBeGenerated,
     returningCustomer = false,
+    smsSenderIntegrationId,
+    smsSenderNumber,
+    brandName,
 }: useGeneratePlaygroundMessageProps) => {
+    const storeSettingsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
+    )
     const [testSessionId, setTestSessionId] = useState<string | null>(null)
     const [playgroundMessages, setPlaygroundMessages] = useState<
         string[] | undefined
@@ -159,13 +170,18 @@ export const useGeneratePlaygroundMessage = ({
                 settings: {
                     maxFollowUpMessages:
                         journeyParams.max_follow_up_messages ?? null,
-                    smsSenderNumber: journeyParams.sms_sender_number ?? null,
-                    smsSenderIntegrationId:
-                        journeyParams.sms_sender_integration_id ?? null,
+                    smsSenderNumber: storeSettingsEnabled
+                        ? (smsSenderNumber ?? null)
+                        : (journeyParams.sms_sender_number ?? null),
+                    smsSenderIntegrationId: storeSettingsEnabled
+                        ? (smsSenderIntegrationId ?? null)
+                        : (journeyParams.sms_sender_integration_id ?? null),
                     offerDiscount: journeyParams.offer_discount ?? false,
                     maxDiscountPercent:
                         journeyParams.max_discount_percent ?? null,
-                    brandName: currentIntegration.name,
+                    brandName: storeSettingsEnabled
+                        ? (brandName ?? currentIntegration.name)
+                        : currentIntegration.name,
                     discountCodeMessageThreshold:
                         journeyParams.discount_code_message_threshold ?? null,
                 },
@@ -237,6 +253,10 @@ export const useGeneratePlaygroundMessage = ({
         totalMessagesToBeGenerated,
         triggerAIJourney,
         returningCustomer,
+        smsSenderIntegrationId,
+        smsSenderNumber,
+        brandName,
+        storeSettingsEnabled,
     ])
 
     return {

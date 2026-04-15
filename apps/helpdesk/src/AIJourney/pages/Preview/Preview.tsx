@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 
+import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useFormContext, useWatch } from 'react-hook-form'
 
 import { Box, LegacyLoadingSpinner as LoadingSpinner } from '@gorgias/axiom'
@@ -12,6 +13,7 @@ import {
 } from 'AIJourney/components'
 import { JOURNEY_TYPES } from 'AIJourney/constants'
 import {
+    useAiJourneyStoreConfiguration,
     useGeneratePlaygroundMessage,
     useLastSelectedProduct,
 } from 'AIJourney/hooks'
@@ -55,6 +57,13 @@ export const Preview = () => {
 
     const integrationId = currentIntegration?.id
 
+    const storeSettingsEnabled = useFlag(
+        FeatureFlagKey.AiJourneyStoreSettingsEnabled,
+    )
+    const { storeConfiguration } = useAiJourneyStoreConfiguration(integrationId)
+    const isMissingSmsSender =
+        storeSettingsEnabled && !storeConfiguration?.sms_sender_integration_id
+
     const { configuration: journeyParams } = journeyData || {}
 
     const isCampaign = journeyData?.type === JOURNEY_TYPES.CAMPAIGN
@@ -92,6 +101,10 @@ export const Preview = () => {
             totalMessagesToBeGenerated,
             journeyMessageInstructions: journeyMessageInstructions ?? '',
             returningCustomer,
+            smsSenderIntegrationId:
+                storeConfiguration?.sms_sender_integration_id,
+            smsSenderNumber: storeConfiguration?.sms_sender_number,
+            brandName: storeConfiguration?.brand_name,
         })
 
     useEffect(() => {
@@ -146,6 +159,7 @@ export const Preview = () => {
                     content={playgroundMessages}
                     includeImage={journeyParams?.include_image}
                     isGeneratingMessages={isGeneratingMessages}
+                    isGenerateDisabled={isMissingSmsSender}
                     selectedProductImage={currentProductImage}
                     isCampaign={isCampaign}
                     campaignImage={campaignImage}
