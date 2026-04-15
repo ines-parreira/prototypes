@@ -89,7 +89,7 @@ export const getColumns = ({
                                 </Box>
                             }
                         >
-                            <TooltipContent caption="Unpublished changes" />
+                            <TooltipContent caption="Draft" />
                         </Tooltip>
                     )}
                 </Box>

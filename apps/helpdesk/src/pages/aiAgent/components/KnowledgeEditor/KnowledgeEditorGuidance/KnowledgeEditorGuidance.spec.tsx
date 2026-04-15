@@ -223,6 +223,11 @@ jest.mock('models/api/types', () => ({
     isGorgiasApiError: jest.fn(),
 }))
 
+jest.mock('models/helpCenter/mutations', () => ({
+    ...jest.requireActual('models/helpCenter/mutations'),
+    useUpdateArticle: () => ({ mutateAsync: jest.fn() }),
+}))
+
 jest.mock('@gorgias/helpdesk-queries', () => ({
     ...jest.requireActual('@gorgias/helpdesk-queries'),
     useGetUser: () => ({ data: undefined }),

@@ -16,6 +16,7 @@ import {
     deleteArticleTranslation,
     deleteArticleTranslationDraft,
     rebasePublishArticleTranslation,
+    updateArticle,
     updateArticleTranslation,
 } from './resources'
 import { CustomerVisibilityEnum, VisibilityStatusEnum } from './types'
@@ -600,5 +601,24 @@ export const useBulkUpdateArticleTranslationVisibility = (
             })
             await callbacks?.onSettled?.()
         },
+    })
+}
+
+export const useUpdateArticle = (helpCenterId: number) => {
+    const { client: helpCenterClient } = useHelpCenterApi()
+
+    return useMutation({
+        mutationFn: ({
+            articleId,
+            data,
+        }: {
+            articleId: number
+            data: Paths.UpdateArticle.RequestBody
+        }) =>
+            updateArticle(
+                helpCenterClient,
+                { help_center_id: helpCenterId, id: articleId },
+                data,
+            ),
     })
 }

@@ -459,7 +459,7 @@ describe('useAiAgentNavigation', () => {
                 '/app/ai-agent/shopify/test-shop/skills',
             )
             expect(skillsItem?.dataCanduId).toBe('ai-agent-navbar-skills')
-            expect(skillsItem?.exact).toBe(true)
+            expect(skillsItem?.exact).toBe(false)
         })
 
         it('should not include Skills when KnowledgeIntentManagementSystem feature flag is disabled', () => {

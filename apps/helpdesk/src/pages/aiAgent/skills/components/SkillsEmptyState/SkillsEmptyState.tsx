@@ -5,10 +5,14 @@ import aiAgentNoSkills from 'assets/img/ai-agent/ai-agent-no-skill.svg'
 import css from './SkillsEmptyState.less'
 
 export type SkillsEmptyStateProps = {
-    onCreateSkill?: () => void
+    onCreateSkillFromScratch?: () => void
+    onCreateSkillFromTemplate?: () => void
 }
 
-export const SkillsEmptyState = ({ onCreateSkill }: SkillsEmptyStateProps) => {
+export const SkillsEmptyState = ({
+    onCreateSkillFromScratch,
+    onCreateSkillFromTemplate,
+}: SkillsEmptyStateProps) => {
     return (
         <Box
             flexDirection="column"
@@ -49,12 +53,12 @@ export const SkillsEmptyState = ({ onCreateSkill }: SkillsEmptyStateProps) => {
                 <MenuItem
                     id="create-skill-from-scratch"
                     label="From scratch"
-                    onAction={onCreateSkill}
+                    onAction={onCreateSkillFromScratch}
                 />
                 <MenuItem
                     id="create-skill-from-template"
                     label="From template"
-                    onAction={onCreateSkill}
+                    onAction={onCreateSkillFromTemplate}
                 />
             </Menu>
         </Box>

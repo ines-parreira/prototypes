@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 
 import { Tag } from '@gorgias/axiom'
 
+import { useUpdateArticle } from 'models/helpCenter/mutations'
 import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
 import { KnowledgeEditorSidePanelConvertToSkill } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/KnowledgeEditorSidePanelConvertToSkill'
 import { KnowledgeEditorSidePanelSectionConvertToSkillModal } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorSidePanel/KnowledgeEditorSidePanelGuidance/modals/KnowledgeEditorSidePanelSectionConvertToSkillModal'
@@ -31,6 +32,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
 }: Props) => {
     const {
         guidanceId,
+        guidanceHelpCenterId,
         shopName,
         aiAgentStatus,
         createdDatetime,
@@ -43,6 +45,7 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         closeVisibilityConflictModal,
         rebaseAndEnableVisibility,
     } = useGuidanceDetailsFromContext()
+
     const [isTogglingAIAgentStatus, setIsTogglingAIAgentStatus] =
         useState(false)
     const [isConvertToSkillModalOpen, setIsConvertToSkillModalOpen] =
@@ -52,11 +55,18 @@ export const KnowledgeEditorSidePanelSectionGuidanceDetails = ({
         FeatureFlagKey.KnowledgeIntentManagementSystem,
     )
 
+    const { mutateAsync: updateArticle } = useUpdateArticle(
+        guidanceHelpCenterId ?? 0,
+    )
     const history = useHistory()
     const { routes } = useAiAgentNavigation({ shopName })
 
-    const handleConvertToSkill = () => {
-        if (guidanceId) {
+    const handleConvertToSkill = async () => {
+        if (guidanceId && guidanceHelpCenterId) {
+            await updateArticle({
+                articleId: guidanceId,
+                data: { origin: 'skill' },
+            })
             history.push(routes.skillDetail(guidanceId))
         } else {
             history.push(routes.newSkill)

@@ -8,6 +8,7 @@ import { useToggleVisibility } from '../context/useToggleVisibility'
 
 export type GuidanceDetailsData = {
     guidanceId?: number
+    guidanceHelpCenterId?: number
     shopName: string
     aiAgentStatus: {
         value: boolean
@@ -50,6 +51,7 @@ const getAiAgentStatusTooltip = (
 export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
     const {
         guidanceId,
+        guidanceHelpCenterId,
         shopName,
         visibility,
         isUpdating,
@@ -62,6 +64,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
     } = useGuidanceStore(
         useShallow((storeState) => ({
             guidanceId: storeState.state.guidance?.id,
+            guidanceHelpCenterId: storeState.config.guidanceHelpCenter?.id,
             shopName: storeState.config.shopName,
             visibility: storeState.state.visibility,
             isUpdating: storeState.state.isUpdating,
@@ -94,6 +97,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
     return useMemo(
         () => ({
             guidanceId,
+            guidanceHelpCenterId,
             shopName,
             aiAgentStatus: {
                 value:
@@ -130,6 +134,7 @@ export const useGuidanceDetailsFromContext = (): GuidanceDetailsData => {
         }),
         [
             guidanceId,
+            guidanceHelpCenterId,
             shopName,
             visibility,
             createdDatetime,

@@ -233,7 +233,7 @@ const useNavigationItems = (
                         route: routes.skills,
                         title: SKILLS,
                         dataCanduId: 'ai-agent-navbar-skills',
-                        exact: true,
+                        exact: false,
                     },
                     {
                         route: routes.knowledge,

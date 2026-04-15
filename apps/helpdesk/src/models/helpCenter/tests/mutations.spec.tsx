@@ -17,6 +17,7 @@ import {
     useDeleteArticleTranslation,
     useDeleteArticleTranslationDraft,
     useRebasePublishArticleTranslation,
+    useUpdateArticle,
     useUpdateArticleTranslation,
 } from '../mutations'
 import { helpCenterKeys } from '../queries'
@@ -25,6 +26,7 @@ import * as resources from '../resources'
 jest.mock('../resources', () => ({
     createArticle: jest.fn(),
     deleteArticle: jest.fn(),
+    updateArticle: jest.fn(),
     updateArticleTranslation: jest.fn(),
     createArticleTranslation: jest.fn(),
     deleteArticleTranslation: jest.fn(),
@@ -51,6 +53,7 @@ const mockBulkDeleteArticles = resources.bulkDeleteArticles as jest.Mock
 const mockBulkCopyArticles = resources.bulkCopyArticles as jest.Mock
 const mockBulkUpdateArticleTranslationVisibility =
     resources.bulkUpdateArticleTranslationVisibility as jest.Mock
+const mockUpdateArticle = resources.updateArticle as jest.Mock
 const mockRebasePublishArticleTranslation =
     resources.rebasePublishArticleTranslation as jest.Mock
 
@@ -873,6 +876,80 @@ describe('helpCenter mutations', () => {
                 expect(queryClient.invalidateQueries).toHaveBeenCalledWith({
                     queryKey: articleListKey,
                 })
+            })
+        })
+    })
+
+    describe('useUpdateArticle', () => {
+        const queryClient = mockQueryClient()
+
+        beforeEach(() => {
+            jest.clearAllMocks()
+            queryClient.clear()
+        })
+
+        const wrapper = ({ children }: { children?: React.ReactNode }) => (
+            <QueryClientProvider client={queryClient}>
+                {children}
+            </QueryClientProvider>
+        )
+
+        it('should call the resource with correct path params and body', async () => {
+            mockUpdateArticle.mockResolvedValue({ id: 1, origin: 'skill' })
+
+            const { result } = renderHook(
+                () => useUpdateArticle(helpCenterId),
+                { wrapper },
+            )
+
+            result.current.mutate({
+                articleId: 42,
+                data: { origin: 'skill' },
+            })
+
+            await waitFor(() => {
+                expect(mockUpdateArticle).toHaveBeenCalledWith(
+                    undefined,
+                    { help_center_id: helpCenterId, id: 42 },
+                    { origin: 'skill' },
+                )
+            })
+        })
+
+        it('should resolve on success', async () => {
+            const mockResponse = { id: 42, origin: 'skill' }
+            mockUpdateArticle.mockResolvedValue(mockResponse)
+
+            const { result } = renderHook(
+                () => useUpdateArticle(helpCenterId),
+                { wrapper },
+            )
+
+            result.current.mutate({
+                articleId: 42,
+                data: { origin: 'skill' },
+            })
+
+            await waitFor(() => {
+                expect(result.current.isSuccess).toBe(true)
+            })
+        })
+
+        it('should set error state on failure', async () => {
+            mockUpdateArticle.mockRejectedValue(new Error('Forbidden'))
+
+            const { result } = renderHook(
+                () => useUpdateArticle(helpCenterId),
+                { wrapper },
+            )
+
+            result.current.mutate({
+                articleId: 42,
+                data: { origin: 'skill' },
+            })
+
+            await waitFor(() => {
+                expect(result.current.isError).toBe(true)
             })
         })
     })

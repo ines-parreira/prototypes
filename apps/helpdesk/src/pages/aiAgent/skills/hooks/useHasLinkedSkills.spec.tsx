@@ -3,13 +3,13 @@ import type React from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { renderHook, waitFor } from '@testing-library/react'
 
-import { useListIntents } from 'models/helpCenter/queries'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
 import { useHasLinkedSkills } from './useHasLinkedSkills'
 
 jest.mock('models/helpCenter/queries', () => ({
-    useListIntents: jest.fn(),
+    useGetHelpCenterArticleList: jest.fn(),
 }))
 
 jest.mock('pages/aiAgent/providers/AiAgentStoreConfigurationContext', () => ({
@@ -31,14 +31,15 @@ describe('useHasLinkedSkills', () => {
 
     const mockUseAiAgentStoreConfigurationContext =
         useAiAgentStoreConfigurationContext as jest.Mock
-    const mockUseListIntents = useListIntents as jest.Mock
+    const mockUseGetHelpCenterArticleList =
+        useGetHelpCenterArticleList as jest.Mock
 
     beforeEach(() => {
         jest.clearAllMocks()
         queryClient.clear()
     })
 
-    it('should return hasLinkedSkills as true when there are linked intents', async () => {
+    it('should return hasSkills as true when there are skill articles', async () => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             isLoading: false,
             storeConfiguration: {
@@ -46,22 +47,9 @@ describe('useHasLinkedSkills', () => {
             },
         })
 
-        mockUseListIntents.mockReturnValue({
+        mockUseGetHelpCenterArticleList.mockReturnValue({
             data: {
-                intents: [
-                    {
-                        name: 'order::status',
-                        status: 'linked',
-                        help_center_id: 123,
-                        articles: [{ id: 1, title: 'Test Article' }],
-                    },
-                    {
-                        name: 'order::cancel',
-                        status: 'not_linked',
-                        help_center_id: 123,
-                        articles: [],
-                    },
-                ],
+                data: [{ id: 1, title: 'Test Skill' }],
             },
             isLoading: false,
             isError: false,
@@ -70,14 +58,14 @@ describe('useHasLinkedSkills', () => {
         const { result } = renderHook(() => useHasLinkedSkills(), { wrapper })
 
         await waitFor(() => {
-            expect(result.current.hasLinkedSkills).toBe(true)
+            expect(result.current.hasSkills).toBe(true)
         })
 
         expect(result.current.isLoading).toBe(false)
         expect(result.current.isError).toBe(false)
     })
 
-    it('should return hasLinkedSkills as false when all intents are not_linked or handover', async () => {
+    it('should return hasSkills as false when articles array is empty', async () => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             isLoading: false,
             storeConfiguration: {
@@ -85,23 +73,8 @@ describe('useHasLinkedSkills', () => {
             },
         })
 
-        mockUseListIntents.mockReturnValue({
-            data: {
-                intents: [
-                    {
-                        name: 'order::status',
-                        status: 'not_linked',
-                        help_center_id: 123,
-                        articles: [],
-                    },
-                    {
-                        name: 'order::cancel',
-                        status: 'handover',
-                        help_center_id: 123,
-                        articles: [],
-                    },
-                ],
-            },
+        mockUseGetHelpCenterArticleList.mockReturnValue({
+            data: { data: [] },
             isLoading: false,
             isError: false,
         })
@@ -109,13 +82,11 @@ describe('useHasLinkedSkills', () => {
         const { result } = renderHook(() => useHasLinkedSkills(), { wrapper })
 
         await waitFor(() => {
-            expect(result.current.hasLinkedSkills).toBe(false)
+            expect(result.current.hasSkills).toBe(false)
         })
-
-        expect(result.current.isLoading).toBe(false)
     })
 
-    it('should return hasLinkedSkills as false when intents array is empty', async () => {
+    it('should return hasSkills as false when data is null', async () => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             isLoading: false,
             storeConfiguration: {
@@ -123,30 +94,7 @@ describe('useHasLinkedSkills', () => {
             },
         })
 
-        mockUseListIntents.mockReturnValue({
-            data: {
-                intents: [],
-            },
-            isLoading: false,
-            isError: false,
-        })
-
-        const { result } = renderHook(() => useHasLinkedSkills(), { wrapper })
-
-        await waitFor(() => {
-            expect(result.current.hasLinkedSkills).toBe(false)
-        })
-    })
-
-    it('should return hasLinkedSkills as false when data is null', async () => {
-        mockUseAiAgentStoreConfigurationContext.mockReturnValue({
-            isLoading: false,
-            storeConfiguration: {
-                guidanceHelpCenterId: 123,
-            },
-        })
-
-        mockUseListIntents.mockReturnValue({
+        mockUseGetHelpCenterArticleList.mockReturnValue({
             data: null,
             isLoading: false,
             isError: false,
@@ -155,7 +103,7 @@ describe('useHasLinkedSkills', () => {
         const { result } = renderHook(() => useHasLinkedSkills(), { wrapper })
 
         await waitFor(() => {
-            expect(result.current.hasLinkedSkills).toBe(false)
+            expect(result.current.hasSkills).toBe(false)
         })
     })
 
@@ -165,7 +113,7 @@ describe('useHasLinkedSkills', () => {
             storeConfiguration: null,
         })
 
-        mockUseListIntents.mockReturnValue({
+        mockUseGetHelpCenterArticleList.mockReturnValue({
             data: null,
             isLoading: false,
             isError: false,
@@ -174,10 +122,10 @@ describe('useHasLinkedSkills', () => {
         const { result } = renderHook(() => useHasLinkedSkills(), { wrapper })
 
         expect(result.current.isLoading).toBe(true)
-        expect(result.current.hasLinkedSkills).toBe(false)
+        expect(result.current.hasSkills).toBe(false)
     })
 
-    it('should handle loading state from intents query', () => {
+    it('should handle loading state from articles query', () => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             isLoading: false,
             storeConfiguration: {
@@ -185,7 +133,7 @@ describe('useHasLinkedSkills', () => {
             },
         })
 
-        mockUseListIntents.mockReturnValue({
+        mockUseGetHelpCenterArticleList.mockReturnValue({
             data: null,
             isLoading: true,
             isError: false,
@@ -194,10 +142,10 @@ describe('useHasLinkedSkills', () => {
         const { result } = renderHook(() => useHasLinkedSkills(), { wrapper })
 
         expect(result.current.isLoading).toBe(true)
-        expect(result.current.hasLinkedSkills).toBe(false)
+        expect(result.current.hasSkills).toBe(false)
     })
 
-    it('should not call useListIntents when help center ID is not available', () => {
+    it('should disable query when help center ID is not available', () => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             isLoading: false,
             storeConfiguration: {
@@ -205,7 +153,7 @@ describe('useHasLinkedSkills', () => {
             },
         })
 
-        mockUseListIntents.mockReturnValue({
+        mockUseGetHelpCenterArticleList.mockReturnValue({
             data: null,
             isLoading: false,
             isError: false,
@@ -213,12 +161,14 @@ describe('useHasLinkedSkills', () => {
 
         renderHook(() => useHasLinkedSkills(), { wrapper })
 
-        expect(mockUseListIntents).toHaveBeenCalledWith(0, {
-            enabled: false,
-        })
+        expect(mockUseGetHelpCenterArticleList).toHaveBeenCalledWith(
+            0,
+            { origin: 'skill', per_page: 1 },
+            { enabled: false },
+        )
     })
 
-    it('should handle error state from intents query', () => {
+    it('should handle error state', () => {
         mockUseAiAgentStoreConfigurationContext.mockReturnValue({
             isLoading: false,
             storeConfiguration: {
@@ -226,7 +176,7 @@ describe('useHasLinkedSkills', () => {
             },
         })
 
-        mockUseListIntents.mockReturnValue({
+        mockUseGetHelpCenterArticleList.mockReturnValue({
             data: null,
             isLoading: false,
             isError: true,
@@ -235,6 +185,6 @@ describe('useHasLinkedSkills', () => {
         const { result } = renderHook(() => useHasLinkedSkills(), { wrapper })
 
         expect(result.current.isError).toBe(true)
-        expect(result.current.hasLinkedSkills).toBe(false)
+        expect(result.current.hasSkills).toBe(false)
     })
 })

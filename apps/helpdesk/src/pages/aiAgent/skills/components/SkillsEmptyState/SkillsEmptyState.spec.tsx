@@ -25,28 +25,41 @@ describe('SkillsEmptyState', () => {
         ).toBeInTheDocument()
     })
 
-    it('should call onCreateSkill when menu items are clicked', async () => {
+    it('should call onCreateSkillFromScratch when "From scratch" is clicked', async () => {
         const user = userEvent.setup()
-        const onCreateSkill = jest.fn()
+        const onCreateSkillFromScratch = jest.fn()
 
         render(
             <ThemeProvider>
-                <SkillsEmptyState onCreateSkill={onCreateSkill} />
+                <SkillsEmptyState
+                    onCreateSkillFromScratch={onCreateSkillFromScratch}
+                />
             </ThemeProvider>,
         )
 
-        // Test "From scratch" menu item
         await user.click(screen.getByRole('button', { name: /Create skill/i }))
         await user.click(
             screen.getByRole('menuitem', { name: /From scratch/i }),
         )
-        expect(onCreateSkill).toHaveBeenCalledTimes(1)
+        expect(onCreateSkillFromScratch).toHaveBeenCalledTimes(1)
+    })
 
-        // Test "From template" menu item
+    it('should call onCreateSkillFromTemplate when "From template" is clicked', async () => {
+        const user = userEvent.setup()
+        const onCreateSkillFromTemplate = jest.fn()
+
+        render(
+            <ThemeProvider>
+                <SkillsEmptyState
+                    onCreateSkillFromTemplate={onCreateSkillFromTemplate}
+                />
+            </ThemeProvider>,
+        )
+
         await user.click(screen.getByRole('button', { name: /Create skill/i }))
         await user.click(
             screen.getByRole('menuitem', { name: /From template/i }),
         )
-        expect(onCreateSkill).toHaveBeenCalledTimes(2)
+        expect(onCreateSkillFromTemplate).toHaveBeenCalledTimes(1)
     })
 })

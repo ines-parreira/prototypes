@@ -144,7 +144,7 @@ describe('AiAgentSkills', () => {
             availableSkillsTemplates: [mockSkillTemplate],
         })
         mockUseHasLinkedSkills.mockReturnValue({
-            hasLinkedSkills: false,
+            hasSkills: false,
             isLoading: false,
             isError: false,
         })
@@ -173,7 +173,7 @@ describe('AiAgentSkills', () => {
 
     it('should show skills table when there are linked skills', () => {
         mockUseHasLinkedSkills.mockReturnValue({
-            hasLinkedSkills: true,
+            hasSkills: true,
             isLoading: false,
             isError: false,
         })
@@ -190,7 +190,7 @@ describe('AiAgentSkills', () => {
 
     it('should show loading state', () => {
         mockUseHasLinkedSkills.mockReturnValue({
-            hasLinkedSkills: false,
+            hasSkills: false,
             isLoading: true,
             isError: false,
         })
@@ -237,7 +237,7 @@ describe('AiAgentSkills', () => {
     describe('Intents Table', () => {
         beforeEach(() => {
             mockUseHasLinkedSkills.mockReturnValue({
-                hasLinkedSkills: true,
+                hasSkills: true,
                 isLoading: false,
                 isError: false,
             })

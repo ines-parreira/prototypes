@@ -11,7 +11,7 @@ import dotSuccess from 'assets/img/icons/dot-success.svg'
 import { Navigation } from 'components/Navigation/Navigation'
 import useAppSelector from 'hooks/useAppSelector'
 import { useGetStoresConfigurationForAccount } from 'models/aiAgent/queries'
-import { OPPORTUNITIES } from 'pages/aiAgent/constants'
+import { OPPORTUNITIES, SKILLS } from 'pages/aiAgent/constants'
 import type { NavigationItem } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 import { useOpportunitiesCount } from 'pages/aiAgent/hooks/useOpportunitiesCount'
 import { HELP_CENTER_DEFAULT_LOCALE } from 'pages/settings/helpCenter/constants'
@@ -124,6 +124,10 @@ export const ActionDrivenNavigationItems = ({
                                             </Box>
                                         ) : subItem.title === OPPORTUNITIES ? (
                                             <Tag color="grey">Beta</Tag>
+                                        ) : subItem.title === SKILLS ? (
+                                            <Tag size="sm" color="purple">
+                                                New
+                                            </Tag>
                                         ) : null
                                     }
                                 />
@@ -220,6 +224,17 @@ export const ActionDrivenNavigationItems = ({
                                                         opportunitiesCount
                                                     )}
                                                 </div>
+                                            </div>
+                                        ) : subItem.title === SKILLS ? (
+                                            <div
+                                                className={
+                                                    css.navItemWithBadgeContent
+                                                }
+                                            >
+                                                <span>{subItem.title}</span>
+                                                <Tag size="sm" color="purple">
+                                                    New
+                                                </Tag>
                                             </div>
                                         ) : (
                                             subItem.title

@@ -192,6 +192,16 @@ export const bulkUpdateArticleTranslationVisibility = async (
     return response.data
 }
 
+export const updateArticle = async (
+    client: HelpCenterClient | undefined,
+    pathParams: Paths.UpdateArticle.PathParameters,
+    data: Paths.UpdateArticle.RequestBody,
+) => {
+    if (!client) return null
+    const response = await client.updateArticle(pathParams, data)
+    return response.data
+}
+
 export const updateArticleTranslation = async (
     client: HelpCenterClient | undefined,
     pathParams: Paths.UpdateArticleTranslation.PathParameters,

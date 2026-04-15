@@ -24,7 +24,7 @@ const SkillsLoading = () => {
 }
 
 export const AiAgentSkills = () => {
-    const { hasLinkedSkills, isLoading } = useHasLinkedSkills()
+    const { hasSkills, isLoading } = useHasLinkedSkills()
     const [isIntentsTableOpen, setIsIntentsTableOpen] = useState(false)
     const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
     const { allSkillsTemplates, availableSkillsTemplates } =
@@ -74,9 +74,10 @@ export const AiAgentSkills = () => {
 
                 {isLoading ? (
                     <SkillsLoading />
-                ) : !hasLinkedSkills ? (
+                ) : !hasSkills ? (
                     <SkillsEmptyState
-                        onCreateSkill={handleCreateSkillFromScratch}
+                        onCreateSkillFromScratch={handleCreateSkillFromScratch}
+                        onCreateSkillFromTemplate={handleOpenTemplateModal}
                     />
                 ) : (
                     <SkillsTable />

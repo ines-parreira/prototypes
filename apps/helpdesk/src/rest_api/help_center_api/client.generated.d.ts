@@ -173,6 +173,7 @@ declare namespace Components {
                 | 'aiLibraryTab'
                 | 'allRecommendationsPage'
                 | 'helpCenterWizard'
+                | 'skill'
                 | 'topQuestionsSection'
             ingested_resource_id: number | null
             id: number
@@ -268,6 +269,7 @@ declare namespace Components {
                 | 'aiLibraryTab'
                 | 'allRecommendationsPage'
                 | 'helpCenterWizard'
+                | 'skill'
                 | 'topQuestionsSection'
             ingested_resource_id: number | null
             available_locales: (
@@ -887,6 +889,7 @@ declare namespace Components {
                 | 'aiLibraryTab'
                 | 'allRecommendationsPage'
                 | 'helpCenterWizard'
+                | 'skill'
                 | 'topQuestionsSection'
             ingested_resource_id: number | null
             ingested_resource?: IngestedResourceDto
@@ -1441,6 +1444,7 @@ declare namespace Components {
                 | 'aiLibraryTab'
                 | 'allRecommendationsPage'
                 | 'helpCenterWizard'
+                | 'skill'
                 | 'topQuestionsSection'
             ingested_resource_id: number | null
             available_locales: (
@@ -2120,7 +2124,7 @@ declare namespace Components {
                  */
                 is_intent_usage_enabled?: boolean
                 /**
-                 * Whether the article content can be used as supporting content for AI responses.
+                 * Whether the article content can be used as supporting content for AI responses. When not provided during an update that creates a new version, defaults to true.
                  * example:
                  * true
                  */
@@ -2133,6 +2137,7 @@ declare namespace Components {
                 | 'aiLibraryTab'
                 | 'allRecommendationsPage'
                 | 'helpCenterWizard'
+                | 'skill'
                 | 'topQuestionsSection'
             ingested_resource_id?: number | null
         }
@@ -2301,7 +2306,7 @@ declare namespace Components {
              */
             is_intent_usage_enabled?: boolean
             /**
-             * Whether the article content can be used as supporting content for AI responses.
+             * Whether the article content can be used as supporting content for AI responses. When not provided during an update that creates a new version, defaults to true.
              * example:
              * true
              */
@@ -3095,6 +3100,18 @@ declare namespace Components {
             ]
             redirects?: RedirectDto[]
         }
+        export interface GuidanceActionDto {
+            pattern: string
+            id: string
+        }
+        export interface GuidanceMetadataDto {
+            actions: GuidanceActionDto[]
+            variables: GuidanceVariableDto[]
+        }
+        export interface GuidanceVariableDto {
+            variable: string
+            variableType: 'customer' | 'order' | 'refund' | 'return'
+        }
         export interface HelpCenterDto {
             /**
              * Creation date
@@ -3376,6 +3393,63 @@ declare namespace Components {
             accountId?: number
             type: 'url' | 'domain'
         }
+        export interface IntentAvailabilityResponseDto {
+            /**
+             * Whether the intent is available for AI Agent
+             */
+            available: boolean
+        }
+        export interface IntentDetailsDto {
+            intents?: string[]
+            useSupportingContent?: boolean
+        }
+        export interface IntentResolveDraftItemDto {
+            state: 'handover' | 'linked' | 'not_linked'
+            resource: KnowledgeResourceDto
+            use_supporting_content: boolean
+        }
+        export interface IntentResolveResponseDto {
+            /**
+             * The resolved intent
+             */
+            intent: string
+            /**
+             * The resolved state
+             */
+            state: 'handover' | 'linked' | 'not_linked'
+            resource: {
+                articleId: number
+                accountId: number
+                helpCenterId: number
+                locale: string
+                title: string
+                body: string
+                type:
+                    | 'article'
+                    | 'document_snippet'
+                    | 'external_snippet'
+                    | 'guidance'
+                    | 'store_domain_snippet'
+                    | 'url_snippet'
+                origin?: string | null
+                versionId: number
+                version: number
+                visibilityStatus?: string
+                intentDetails?: IntentDetailsDto
+                isDraft: boolean
+                createdDatetime: string // date-time
+                updatedDatetime: string // date-time
+                metadata: {
+                    actions: GuidanceActionDto[]
+                    variables: GuidanceVariableDto[]
+                } | null
+            } | null
+            /**
+             * Whether to use supporting content
+             */
+            use_supporting_content: boolean
+            drafts?: IntentResolveDraftItemDto[]
+        }
         export interface IntentResponseDto {
             /**
              * The intent name
@@ -3460,6 +3534,79 @@ declare namespace Components {
              * [{ id: 123, locale: "en-US", article_translation_version_id: 456, title: "How to cancel", status: "published" }]
              */
             articles: ArticleInIntentDto[]
+        }
+        export interface KnowledgeResourceDto {
+            articleId: number
+            accountId: number
+            helpCenterId: number
+            locale: string
+            title: string
+            body: string
+            type:
+                | 'article'
+                | 'document_snippet'
+                | 'external_snippet'
+                | 'guidance'
+                | 'store_domain_snippet'
+                | 'url_snippet'
+            origin?: string | null
+            versionId: number
+            version: number
+            visibilityStatus?: string
+            intentDetails?: IntentDetailsDto
+            isDraft: boolean
+            createdDatetime: string // date-time
+            updatedDatetime: string // date-time
+            metadata: {
+                actions: GuidanceActionDto[]
+                variables: GuidanceVariableDto[]
+            } | null
+        }
+        export interface KnowledgeResourceReferenceDto {
+            /**
+             * Article ID (sourceId in knowledge-service)
+             */
+            articleId: number
+            /**
+             * Help center ID (sourceSetId in knowledge-service)
+             */
+            helpCenterId: number
+            /**
+             * Version number to filter by
+             */
+            version?: number
+            /**
+             * Whether to query draft or published versions (defaults to published/false)
+             */
+            isDraft?: boolean
+            /**
+             * Locale code to filter by (e.g. en-US)
+             */
+            locale?: string
+            /**
+             * Origin to filter by
+             */
+            origin?: string
+            /**
+             * Visibility status to filter by (e.g. PUBLIC)
+             */
+            visibilityStatus?: 'GORGIAS_INTERNAL' | 'PUBLIC' | 'UNLISTED'
+        }
+        export interface KnowledgeResourcesQueryRequestDto {
+            /**
+             * Array of knowledge resource references to query (1-200 items)
+             */
+            resources: KnowledgeResourceReferenceDto[]
+            /**
+             * Whether to include soft-deleted resources in the results (defaults to false)
+             */
+            includeDeleted?: boolean
+        }
+        export interface KnowledgeResourcesQueryResponseDto {
+            /**
+             * Array of knowledge resources
+             */
+            resources: KnowledgeResourceDto[]
         }
         export interface KnowledgeStatusDto {
             help_center_id: number
@@ -3946,6 +4093,10 @@ declare namespace Components {
              */
             content?: string
             /**
+             * Whether the article content can be used as supporting content for AI responses. When not provided, the value from the currently published version is preserved.
+             */
+            use_supporting_content?: boolean
+            /**
              * Optional commit message describing the publication.
              */
             commit_message?: string
@@ -4065,6 +4216,13 @@ declare namespace Components {
         }
         export interface UpdateArticleDto {
             category_id?: number | null
+            origin?:
+                | 'aiGenerated'
+                | 'aiLibraryTab'
+                | 'allRecommendationsPage'
+                | 'helpCenterWizard'
+                | 'skill'
+                | 'topQuestionsSection'
         }
         export interface UpdateArticleTranslationDto {
             /**
@@ -4208,7 +4366,7 @@ declare namespace Components {
              */
             is_intent_usage_enabled?: boolean
             /**
-             * Whether the article content can be used as supporting content for AI responses.
+             * Whether the article content can be used as supporting content for AI responses. When not provided during an update that creates a new version, defaults to true.
              * example:
              * true
              */
@@ -4827,6 +4985,74 @@ declare namespace Paths {
             export interface $204 {}
         }
     }
+    namespace CheckIntentAvailability {
+        namespace Parameters {
+            export type HelpCenterId = number
+            export type Intent =
+                | 'account::deletion'
+                | 'account::login'
+                | 'account::other'
+                | 'account::registration'
+                | 'account::update'
+                | 'exchange::other'
+                | 'exchange::request'
+                | 'exchange::status'
+                | 'feedback::negative'
+                | 'feedback::other'
+                | 'feedback::positive'
+                | 'marketing::advertising'
+                | 'marketing::collaboration'
+                | 'marketing::other'
+                | 'marketing::unsubscribe'
+                | 'order::cancel'
+                | 'order::damaged'
+                | 'order::edit'
+                | 'order::missing item'
+                | 'order::other'
+                | 'order::payment'
+                | 'order::placement'
+                | 'order::refund'
+                | 'order::status'
+                | 'order::wrong item'
+                | 'other::no reply'
+                | 'other::other'
+                | 'other::spam'
+                | 'product::availability'
+                | 'product::customization'
+                | 'product::details'
+                | 'product::other'
+                | 'product::quality issues'
+                | 'product::usage'
+                | 'promotion & discount::information'
+                | 'promotion & discount::issue'
+                | 'promotion & discount::other'
+                | 'return::information'
+                | 'return::other'
+                | 'return::request'
+                | 'return::status'
+                | 'shipping::change address'
+                | 'shipping::delay'
+                | 'shipping::delivered not received'
+                | 'shipping::information'
+                | 'shipping::other'
+                | 'subscription::cancel'
+                | 'subscription::information'
+                | 'subscription::modification'
+                | 'subscription::other'
+                | 'warranty::claim'
+                | 'warranty::information'
+                | 'warranty::other'
+                | 'wholesale::information'
+                | 'wholesale::other'
+        }
+        export interface QueryParameters {
+            intent: Parameters.Intent
+            helpCenterId: Parameters.HelpCenterId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.IntentAvailabilityResponseDto
+        }
+    }
     namespace ContactFormPurgeCache {
         export type RequestBody = Components.Schemas.PurgeCacheContactFormDto
         namespace Responses {
@@ -4844,11 +5070,6 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $201 = Components.Schemas.ArticleWithLocalTranslation
-        }
-    }
-    namespace CreateAccessToken {
-        namespace Responses {
-            export type $201 = Components.Schemas.AccessTokenDto
         }
     }
     namespace CreateArticle {
@@ -5263,6 +5484,23 @@ declare namespace Paths {
         }
         namespace Responses {
             export type $200 = Components.Schemas.HelpCenterDto
+        }
+    }
+    namespace FindAll {
+        namespace Parameters {
+            export type ArticleIds = number[]
+            export type HelpCenterIds = number[]
+            export type Locale = string
+            export type OnlyAiGenerated = boolean
+        }
+        export interface QueryParameters {
+            onlyAiGenerated?: Parameters.OnlyAiGenerated
+            locale?: Parameters.Locale
+            articleIds?: Parameters.ArticleIds
+            helpCenterIds: Parameters.HelpCenterIds
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.KnowledgeResourceDto[]
         }
     }
     namespace GenerateCsvTemplate {
@@ -6095,6 +6333,13 @@ declare namespace Paths {
                 | 'sv-SE'
             export type OrderBy = 'position'
             export type OrderDir = 'asc' | 'desc'
+            export type Origin =
+                | 'aiGenerated'
+                | 'aiLibraryTab'
+                | 'allRecommendationsPage'
+                | 'helpCenterWizard'
+                | 'skill'
+                | 'topQuestionsSection'
             export type Page = any
             export type PerPage = any
             export type Title = string
@@ -6107,6 +6352,7 @@ declare namespace Paths {
             has_category?: Parameters.HasCategory
             content?: Parameters.Content
             title?: Parameters.Title
+            origin?: Parameters.Origin
             locale?: Parameters.Locale
             version_status?: Parameters.VersionStatus
             ids?: Parameters.Ids
@@ -6474,6 +6720,84 @@ declare namespace Paths {
         }
         namespace Responses {
             export interface $201 {}
+        }
+    }
+    namespace QueryKnowledgeResources {
+        export type RequestBody =
+            Components.Schemas.KnowledgeResourcesQueryRequestDto
+        namespace Responses {
+            export type $200 =
+                Components.Schemas.KnowledgeResourcesQueryResponseDto
+        }
+    }
+    namespace ResolveIntent {
+        namespace Parameters {
+            export type HelpCenterId = number
+            export type IncludeDrafts = boolean
+            export type Intent =
+                | 'account::deletion'
+                | 'account::login'
+                | 'account::other'
+                | 'account::registration'
+                | 'account::update'
+                | 'exchange::other'
+                | 'exchange::request'
+                | 'exchange::status'
+                | 'feedback::negative'
+                | 'feedback::other'
+                | 'feedback::positive'
+                | 'marketing::advertising'
+                | 'marketing::collaboration'
+                | 'marketing::other'
+                | 'marketing::unsubscribe'
+                | 'order::cancel'
+                | 'order::damaged'
+                | 'order::edit'
+                | 'order::missing item'
+                | 'order::other'
+                | 'order::payment'
+                | 'order::placement'
+                | 'order::refund'
+                | 'order::status'
+                | 'order::wrong item'
+                | 'other::no reply'
+                | 'other::other'
+                | 'other::spam'
+                | 'product::availability'
+                | 'product::customization'
+                | 'product::details'
+                | 'product::other'
+                | 'product::quality issues'
+                | 'product::usage'
+                | 'promotion & discount::information'
+                | 'promotion & discount::issue'
+                | 'promotion & discount::other'
+                | 'return::information'
+                | 'return::other'
+                | 'return::request'
+                | 'return::status'
+                | 'shipping::change address'
+                | 'shipping::delay'
+                | 'shipping::delivered not received'
+                | 'shipping::information'
+                | 'shipping::other'
+                | 'subscription::cancel'
+                | 'subscription::information'
+                | 'subscription::modification'
+                | 'subscription::other'
+                | 'warranty::claim'
+                | 'warranty::information'
+                | 'warranty::other'
+                | 'wholesale::information'
+                | 'wholesale::other'
+        }
+        export interface QueryParameters {
+            includeDrafts?: Parameters.IncludeDrafts
+            intent: Parameters.Intent
+            helpCenterId: Parameters.HelpCenterId
+        }
+        namespace Responses {
+            export type $200 = Components.Schemas.IntentResolveResponseDto
         }
     }
     namespace SetArticlesPositionsInCategory {
@@ -7884,14 +8208,6 @@ export interface OperationMethods {
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.ListHelpCenterShopifyPages.Responses.$200>
     /**
-     * createAccessToken - Generate JWT token
-     */
-    'createAccessToken'(
-        parameters?: Parameters<UnknownParamsObject> | null,
-        data?: any,
-        config?: AxiosRequestConfig,
-    ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
-    /**
      * getAgentAbilities - Get CASL ability rules for the authenticated agent
      */
     'getAgentAbilities'(
@@ -8047,6 +8363,38 @@ export interface OperationMethods {
         data?: Paths.HandleIngestionFail.RequestBody,
         config?: AxiosRequestConfig,
     ): OperationResponse<Paths.HandleIngestionFail.Responses.$204>
+    /**
+     * findAll - Get all knowledge resources
+     */
+    'findAll'(
+        parameters?: Parameters<Paths.FindAll.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.FindAll.Responses.$200>
+    /**
+     * queryKnowledgeResources - Query knowledge resources by references
+     */
+    'queryKnowledgeResources'(
+        parameters?: Parameters<UnknownParamsObject> | null,
+        data?: Paths.QueryKnowledgeResources.RequestBody,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.QueryKnowledgeResources.Responses.$200>
+    /**
+     * resolveIntent - Resolve the handling state for an intent
+     */
+    'resolveIntent'(
+        parameters?: Parameters<Paths.ResolveIntent.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.ResolveIntent.Responses.$200>
+    /**
+     * checkIntentAvailability - Check if an intent is available for AI Agent
+     */
+    'checkIntentAvailability'(
+        parameters?: Parameters<Paths.CheckIntentAvailability.QueryParameters> | null,
+        data?: any,
+        config?: AxiosRequestConfig,
+    ): OperationResponse<Paths.CheckIntentAvailability.Responses.$200>
     /**
      * getContactFormMailtoReplacementConfig - Get a Contact Form Mailto Replacement Config
      */
@@ -9330,16 +9678,6 @@ export interface PathsDictionary {
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.ListHelpCenterShopifyPages.Responses.$200>
     }
-    ['/api/help-center/auth']: {
-        /**
-         * createAccessToken - Generate JWT token
-         */
-        'post'(
-            parameters?: Parameters<UnknownParamsObject> | null,
-            data?: any,
-            config?: AxiosRequestConfig,
-        ): OperationResponse<Paths.CreateAccessToken.Responses.$201>
-    }
     ['/api/help-center/auth/abilities']: {
         /**
          * getAgentAbilities - Get CASL ability rules for the authenticated agent
@@ -9529,6 +9867,46 @@ export interface PathsDictionary {
             data?: Paths.HandleIngestionFail.RequestBody,
             config?: AxiosRequestConfig,
         ): OperationResponse<Paths.HandleIngestionFail.Responses.$204>
+    }
+    ['/api/help-center/knowledge-resources']: {
+        /**
+         * findAll - Get all knowledge resources
+         */
+        'get'(
+            parameters?: Parameters<Paths.FindAll.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.FindAll.Responses.$200>
+    }
+    ['/api/help-center/knowledge-resources/query']: {
+        /**
+         * queryKnowledgeResources - Query knowledge resources by references
+         */
+        'post'(
+            parameters?: Parameters<UnknownParamsObject> | null,
+            data?: Paths.QueryKnowledgeResources.RequestBody,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.QueryKnowledgeResources.Responses.$200>
+    }
+    ['/api/help-center/knowledge-resources/intent']: {
+        /**
+         * resolveIntent - Resolve the handling state for an intent
+         */
+        'get'(
+            parameters?: Parameters<Paths.ResolveIntent.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.ResolveIntent.Responses.$200>
+    }
+    ['/api/help-center/knowledge-resources/intent/check-availability']: {
+        /**
+         * checkIntentAvailability - Check if an intent is available for AI Agent
+         */
+        'get'(
+            parameters?: Parameters<Paths.CheckIntentAvailability.QueryParameters> | null,
+            data?: any,
+            config?: AxiosRequestConfig,
+        ): OperationResponse<Paths.CheckIntentAvailability.Responses.$200>
     }
     ['/api/help-center/contact-forms/{contact_form_id}/mailto-replacement-config']: {
         /**

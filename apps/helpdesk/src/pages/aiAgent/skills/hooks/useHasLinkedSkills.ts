@@ -1,12 +1,6 @@
-import { useMemo } from 'react'
-
-import { useListIntents } from 'models/helpCenter/queries'
+import { useGetHelpCenterArticleList } from 'models/helpCenter/queries'
 import { useAiAgentStoreConfigurationContext } from 'pages/aiAgent/providers/AiAgentStoreConfigurationContext'
 
-/**
- * Hook to check if there are any linked skills (intents with linked articles)
- * Used to determine whether to show the empty state or skills content
- */
 export const useHasLinkedSkills = () => {
     const { isLoading: isLoadingStoreConfiguration, storeConfiguration } =
         useAiAgentStoreConfigurationContext()
@@ -15,20 +9,24 @@ export const useHasLinkedSkills = () => {
 
     const {
         data,
-        isLoading: isLoadingIntents,
+        isLoading: isLoadingArticles,
         isError,
-    } = useListIntents(helpCenterId || 0, {
-        enabled: !isLoadingStoreConfiguration && !!helpCenterId,
-    })
+    } = useGetHelpCenterArticleList(
+        helpCenterId || 0,
+        {
+            origin: 'skill',
+            per_page: 1,
+        },
+        {
+            enabled: !isLoadingStoreConfiguration && !!helpCenterId,
+        },
+    )
 
-    const hasLinkedSkills = useMemo(() => {
-        if (!data?.intents) return false
-        return data.intents.some((intent) => intent.status === 'linked')
-    }, [data])
+    const hasSkills = (data?.data?.length ?? 0) > 0
 
     return {
-        hasLinkedSkills,
-        isLoading: isLoadingStoreConfiguration || isLoadingIntents,
+        hasSkills,
+        isLoading: isLoadingStoreConfiguration || isLoadingArticles,
         isError,
     }
 }

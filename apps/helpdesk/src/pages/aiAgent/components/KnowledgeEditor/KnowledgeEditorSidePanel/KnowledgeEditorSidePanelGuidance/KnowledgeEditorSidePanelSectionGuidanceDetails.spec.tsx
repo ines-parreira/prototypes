@@ -3,11 +3,16 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useHistory } from 'react-router-dom'
 
+import { useUpdateArticle } from 'models/helpCenter/mutations'
 import { useGuidanceDetailsFromContext } from 'pages/aiAgent/components/KnowledgeEditor/KnowledgeEditorGuidance/hooks'
 import { useAiAgentNavigation } from 'pages/aiAgent/hooks/useAiAgentNavigation'
 
 import { KnowledgeEditorSidePanel } from '../KnowledgeEditorSidePanel'
 import { KnowledgeEditorSidePanelSectionGuidanceDetails } from './KnowledgeEditorSidePanelSectionGuidanceDetails'
+
+jest.mock('models/helpCenter/mutations', () => ({
+    useUpdateArticle: jest.fn(),
+}))
 
 jest.mock('@repo/feature-flags', () => ({
     useFlag: jest.fn().mockReturnValue(false),
@@ -32,6 +37,7 @@ jest.mock('pages/aiAgent/hooks/useAiAgentNavigation', () => ({
     useAiAgentNavigation: jest.fn(),
 }))
 
+const mockUseUpdateArticle = useUpdateArticle as jest.Mock
 const mockUseFlag = useFlag as jest.Mock
 const mockUseHistory = useHistory as jest.Mock
 const mockUseAiAgentNavigation = useAiAgentNavigation as jest.Mock
@@ -61,8 +67,11 @@ jest.mock('../KnowledgeEditorSidePanelCommonFields', () => ({
 const mockUseGuidanceDetailsFromContext =
     useGuidanceDetailsFromContext as jest.Mock
 
+const mockMutateAsync = jest.fn().mockResolvedValue(undefined)
+
 const baseDetailsData = {
     guidanceId: 123,
+    guidanceHelpCenterId: 456,
     shopName: 'test-shop',
     aiAgentStatus: {
         value: true,
@@ -93,6 +102,9 @@ describe('KnowledgeEditorSidePanelSectionGuidanceDetails', () => {
     const mockPush = jest.fn()
 
     beforeEach(() => {
+        mockUseUpdateArticle.mockReturnValue({
+            mutateAsync: mockMutateAsync,
+        })
         mockUseGuidanceDetailsFromContext.mockReturnValue(baseDetailsData)
         mockUseHistory.mockReturnValue({ push: mockPush })
         mockUseAiAgentNavigation.mockReturnValue({
