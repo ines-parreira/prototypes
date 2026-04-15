@@ -9,7 +9,6 @@ import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricP
 import {
     assembleEntityRows,
     fetchEntityMetrics,
-    filterEntitiesWithData,
     useEntityMetrics,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -151,20 +150,17 @@ export const useShoppingAssistantPerformanceByEngagementFeatureMetrics = () => {
         [rawEntityData],
     )
 
-    const data = useMemo(() => {
-        const filteredEntities = filterEntitiesWithData(
-            SHOPPING_ASSISTANT_ENGAGEMENT_FEATURE_ENTITIES,
-            entityData,
-            isLoading,
-        )
-
-        return assembleEntityRows(
-            entityData,
-            filteredEntities,
-            buildShoppingAssistantPerformanceByEngagementFeatureRow(entityData),
-            { skipEmptyCheck: isLoading },
-        )
-    }, [entityData, isLoading])
+    const data = useMemo(
+        () =>
+            assembleEntityRows(
+                entityData,
+                SHOPPING_ASSISTANT_ENGAGEMENT_FEATURE_ENTITIES,
+                buildShoppingAssistantPerformanceByEngagementFeatureRow(
+                    entityData,
+                ),
+            ),
+        [entityData],
+    )
 
     const loadingStates = useMemo(
         () => ({
@@ -201,11 +197,7 @@ export const fetchShoppingAssistantPerformanceByEngagementFeatureMetrics =
 
         const data = assembleEntityRows(
             entityData,
-            filterEntitiesWithData(
-                SHOPPING_ASSISTANT_ENGAGEMENT_FEATURE_ENTITIES,
-                entityData,
-                false,
-            ),
+            SHOPPING_ASSISTANT_ENGAGEMENT_FEATURE_ENTITIES,
             buildShoppingAssistantPerformanceByEngagementFeatureRow(entityData),
         )
 

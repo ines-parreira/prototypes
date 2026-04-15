@@ -161,7 +161,7 @@ describe('fetchPerformanceMetricsPerFeature', () => {
         expect(orderRow).toContain('"5"')
     })
 
-    it('should return empty CSV when all data is zero', async () => {
+    it('should still return CSV rows when all data is zero', async () => {
         fetchHandoverInteractionsPerFeature.mockResolvedValue({
             data: {
                 allValues: [
@@ -197,7 +197,11 @@ describe('fetchPerformanceMetricsPerFeature', () => {
             'UTC',
         )
 
-        expect(files[fileName]).toBe('')
+        const csv = files[fileName]
+        expect(csv).toContain('AI Agent')
+        expect(csv).toContain('Flows')
+        expect(csv).toContain('Article Recommendation')
+        expect(csv).toContain('Order Management')
     })
 
     it('should include fileName with period dates and .csv extension', async () => {
@@ -234,7 +238,7 @@ describe('fetchPerformanceMetricsPerFeatureAsConfigurableTable', () => {
         expect(Object.keys(files)).toContain(fileName)
     })
 
-    it('returns empty files object when all data is zero', async () => {
+    it('returns CSV rows when all data is zero', async () => {
         fetchHandoverInteractionsPerFeature.mockResolvedValue({
             data: {
                 allValues: [
@@ -274,7 +278,9 @@ describe('fetchPerformanceMetricsPerFeatureAsConfigurableTable', () => {
                 ReportingGranularity.Day,
             )
 
-        expect(Object.values(files)).toEqual([''])
+        const csv = Object.values(files)[0]
+        expect(csv).toContain('AI Agent')
+        expect(csv).toContain('Flows')
     })
 
     it('forwards costSavedPerInteraction from extra', async () => {

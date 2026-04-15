@@ -15,7 +15,6 @@ jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useEntityMetrics: jest.fn(),
     assembleEntityRows: jest.fn(),
     fetchEntityMetrics: jest.fn(),
-    filterEntitiesWithData: jest.fn(),
     toEntityMap: jest.fn(),
     mapMetricValues: jest.fn(),
 }))
@@ -80,10 +79,6 @@ const mockFetchEntityMetrics = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
 ).fetchEntityMetrics as jest.Mock
 
-const mockFilterEntitiesWithData = jest.requireMock(
-    'domains/reporting/hooks/useStatsMetricPerDimension',
-).filterEntitiesWithData as jest.Mock
-
 const mockGetCsvFileNameWithDates = jest.requireMock(
     'domains/reporting/hooks/common/utils',
 ).getCsvFileNameWithDates as jest.Mock
@@ -144,7 +139,6 @@ describe('useSupportAgentsPerformanceByChannelMetrics', () => {
                 decreaseInFRT: false,
             },
         })
-        mockFilterEntitiesWithData.mockReturnValue(['email', 'chat'])
         mockAssembleEntityRows.mockReturnValue(defaultRows)
     })
 
@@ -285,7 +279,6 @@ describe('fetchSupportAgentsPerformanceByChannelMetrics', () => {
             isLoading: false,
             isError: false,
         })
-        mockFilterEntitiesWithData.mockReturnValue(['email'])
         mockAssembleEntityRows.mockReturnValue([mockRow])
         mockGetCsvFileNameWithDates.mockReturnValue(
             '2024-01-01_2024-01-31-support_agents_performance_by_channel_table',
@@ -336,24 +329,6 @@ describe('fetchSupportAgentsPerformanceByChannelMetrics', () => {
 
         const [passedConfig] = mockFetchEntityMetrics.mock.calls[0]
         expect(typeof passedConfig.costSaved.fetch).toBe('function')
-    })
-
-    it('calls filterEntitiesWithData with SUPPORT_AGENTS_CHANNEL_ENTITIES and isLoading=false', async () => {
-        await fetchSupportAgentsPerformanceByChannelMetrics(
-            MOCK_STATS_FILTERS,
-            MOCK_TIMEZONE,
-        )
-
-        const [entities, , isLoading] = mockFilterEntitiesWithData.mock.calls[0]
-        expect(entities).toEqual([
-            'email',
-            'chat',
-            'sms',
-            'contact-form',
-            'help-center',
-            'voice',
-        ])
-        expect(isLoading).toBe(false)
     })
 
     it('uses channel display names in CSV rows', async () => {
@@ -431,7 +406,6 @@ describe('fetchSupportAgentsPerformanceByChannelAsConfigurableTable', () => {
             isLoading: false,
             isError: false,
         })
-        mockFilterEntitiesWithData.mockReturnValue(['email'])
         mockAssembleEntityRows.mockReturnValue([mockRow])
         mockGetCsvFileNameWithDates.mockReturnValue(
             '2024-01-01_2024-01-31-support_agents_performance_by_channel_table',

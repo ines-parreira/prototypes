@@ -86,23 +86,6 @@ export const mapMetricValues = (
         : null,
 })
 
-export const filterEntitiesWithData = <TEntity extends string>(
-    entities: TEntity[],
-    entityData: Record<
-        string,
-        Partial<Record<string, number | null | undefined>>
-    >,
-    isLoading: boolean,
-): TEntity[] => {
-    if (isLoading) return entities
-    return entities.filter((entity) =>
-        Object.values(entityData).some((map) => {
-            const value = map[entity]
-            return value != null && !Number.isNaN(value)
-        }),
-    )
-}
-
 export const assembleEntityRows = <TRow, TEntity extends string = string>(
     entityData: Record<
         string,
@@ -110,17 +93,7 @@ export const assembleEntityRows = <TRow, TEntity extends string = string>(
     >,
     entities: TEntity[],
     buildRow: (entity: TEntity) => TRow,
-    options?: { skipEmptyCheck?: boolean },
 ): TRow[] => {
-    const isZeroOrMissing = (value?: number | null) =>
-        value == null || value === 0 || Number.isNaN(value)
-
-    const isEmpty = Object.values(entityData).every((map) =>
-        Object.values(map).every(isZeroOrMissing),
-    )
-
-    if (!options?.skipEmptyCheck && isEmpty) return []
-
     return entities.map(buildRow)
 }
 

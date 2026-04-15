@@ -142,9 +142,8 @@ export const useAllAgentsPerformanceByIntentMetrics = () => {
                 entityData,
                 entities,
                 buildAllAgentsPerformanceByIntentRow(entityData),
-                { skipEmptyCheck: isLoading },
             ),
-        [entityData, entities, isLoading],
+        [entityData, entities],
     )
 
     const loadingStates = useMemo(

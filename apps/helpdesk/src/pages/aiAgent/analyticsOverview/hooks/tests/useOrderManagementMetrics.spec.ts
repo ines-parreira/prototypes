@@ -15,7 +15,6 @@ jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useEntityMetrics: jest.fn(),
     assembleEntityRows: jest.fn(),
     fetchEntityMetrics: jest.fn(),
-    filterEntitiesWithData: jest.fn(),
     toEntityMap: jest.fn(),
     mapMetricValues: jest.fn(),
 }))
@@ -79,10 +78,6 @@ const mockAssembleEntityRows = jest.requireMock(
 const mockFetchEntityMetrics = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
 ).fetchEntityMetrics as jest.Mock
-
-const mockFilterEntitiesWithData = jest.requireMock(
-    'domains/reporting/hooks/useStatsMetricPerDimension',
-).filterEntitiesWithData as jest.Mock
 
 const mockGetCsvFileNameWithDates = jest.requireMock(
     'domains/reporting/hooks/common/utils',
@@ -185,12 +180,6 @@ describe('useOrderManagementMetrics', () => {
                 timeSaved: false,
             },
         })
-        mockFilterEntitiesWithData.mockReturnValue([
-            'cancel_order',
-            'track_order',
-            'loop_returns_started',
-            'automated_response_started',
-        ])
         mockAssembleEntityRows.mockReturnValue(defaultRows)
     })
 
@@ -367,7 +356,6 @@ describe('fetchOrderManagementMetrics', () => {
             isLoading: false,
             isError: false,
         })
-        mockFilterEntitiesWithData.mockReturnValue(['cancel_order'])
         mockAssembleEntityRows.mockReturnValue([mockRow])
         mockGetCsvFileNameWithDates.mockReturnValue(
             '2024-01-01_2024-01-31_order-management-breakdown',
@@ -418,19 +406,6 @@ describe('fetchOrderManagementMetrics', () => {
 
         const [passedConfig] = mockFetchEntityMetrics.mock.calls[0]
         expect(typeof passedConfig.costSaved.fetch).toBe('function')
-    })
-
-    it('calls filterEntitiesWithData with ORDER_MANAGEMENT_ENTITIES and isLoading=false', async () => {
-        await fetchOrderManagementMetrics(MOCK_STATS_FILTERS, MOCK_TIMEZONE)
-
-        const [entities, , isLoading] = mockFilterEntitiesWithData.mock.calls[0]
-        expect(entities).toEqual([
-            'cancel_order',
-            'track_order',
-            'loop_returns_started',
-            'automated_response_started',
-        ])
-        expect(isLoading).toBe(false)
     })
 
     it('uses entity display names in CSV rows', async () => {

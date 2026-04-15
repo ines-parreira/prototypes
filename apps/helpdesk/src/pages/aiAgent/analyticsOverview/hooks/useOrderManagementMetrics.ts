@@ -9,7 +9,6 @@ import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricP
 import {
     assembleEntityRows,
     fetchEntityMetrics,
-    filterEntitiesWithData,
     useEntityMetrics,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -149,19 +148,15 @@ export const useOrderManagementMetrics = (): OrderManagementMetricsData => {
         userTimezone,
     )
 
-    const data = useMemo(() => {
-        const filteredEntities = filterEntitiesWithData(
-            ORDER_MANAGEMENT_ENTITIES,
-            entityData,
-            isLoading,
-        )
-        return assembleEntityRows(
-            entityData,
-            filteredEntities,
-            buildOrderManagementRow(entityData),
-            { skipEmptyCheck: true },
-        )
-    }, [entityData, isLoading])
+    const data = useMemo(
+        () =>
+            assembleEntityRows(
+                entityData,
+                ORDER_MANAGEMENT_ENTITIES,
+                buildOrderManagementRow(entityData),
+            ),
+        [entityData],
+    )
 
     const loadingStates = useMemo(
         () => ({
@@ -215,7 +210,7 @@ export const fetchOrderManagementMetrics = async (
 
     const data = assembleEntityRows(
         metrics.data,
-        filterEntitiesWithData(ORDER_MANAGEMENT_ENTITIES, metrics.data, false),
+        ORDER_MANAGEMENT_ENTITIES,
         buildOrderManagementRow(metrics.data),
     )
 

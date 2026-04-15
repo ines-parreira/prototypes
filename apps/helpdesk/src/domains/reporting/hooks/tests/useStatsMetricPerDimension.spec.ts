@@ -7,7 +7,6 @@ import {
     assembleEntityRows,
     fetchEntityMetrics,
     fetchStatsMetricPerDimension,
-    filterEntitiesWithData,
     mapMetricValues,
     selectMeasurePerDimension,
     toEntityMap,
@@ -709,90 +708,12 @@ describe('useStatsMetricPerDimension', () => {
         })
     })
 
-    describe('filterEntitiesWithData', () => {
-        const entityData = {
-            automationRate: { flow_a: 0.5, flow_b: null, flow_c: NaN },
-            automatedInteractions: { flow_a: 10, flow_b: null, flow_c: null },
-        }
-
-        it('returns all entities when isLoading is true', () => {
-            const result = filterEntitiesWithData(
-                ['flow_a', 'flow_b', 'flow_c'],
-                entityData,
-                true,
-            )
-
-            expect(result).toEqual(['flow_a', 'flow_b', 'flow_c'])
-        })
-
-        it('returns only entities with at least one non-null, non-NaN value', () => {
-            const result = filterEntitiesWithData(
-                ['flow_a', 'flow_b', 'flow_c'],
-                entityData,
-                false,
-            )
-
-            expect(result).toEqual(['flow_a'])
-        })
-
-        it('includes entities with 0 values', () => {
-            const result = filterEntitiesWithData(
-                ['flow_a', 'flow_b'],
-                { metric: { flow_a: 0, flow_b: null } },
-                false,
-            )
-
-            expect(result).toEqual(['flow_a'])
-        })
-
-        it('returns empty array when no entity has data', () => {
-            const result = filterEntitiesWithData(
-                ['flow_a', 'flow_b'],
-                { metric: { flow_a: null, flow_b: null } },
-                false,
-            )
-
-            expect(result).toEqual([])
-        })
-
-        it('preserves the entity type', () => {
-            type FlowEntity = 'flow_a' | 'flow_b'
-            const result: FlowEntity[] = filterEntitiesWithData(
-                ['flow_a', 'flow_b'] as FlowEntity[],
-                { metric: { flow_a: 1, flow_b: null } },
-                false,
-            )
-
-            expect(result).toEqual(['flow_a'])
-        })
-    })
-
     describe('assembleEntityRows', () => {
         const buildRow = (entity: string) => ({ entity })
 
-        it('returns empty array when all values are zero', () => {
+        it('returns rows for all entities regardless of values', () => {
             const result = assembleEntityRows(
-                { metric1: { cancel_order: 0, track_order: 0 } },
-                ['cancel_order', 'track_order'],
-                buildRow,
-            )
-
-            expect(result).toEqual([])
-        })
-
-        it('returns empty array when all values are null', () => {
-            const result = assembleEntityRows(
-                { metric1: { cancel_order: null, track_order: null } },
-                ['cancel_order', 'track_order'],
-                buildRow,
-            )
-
-            expect(result).toEqual([])
-        })
-
-        it('returns rows for all entities when at least one value is non-zero', () => {
-            const result = assembleEntityRows(
-                { metric1: { cancel_order: 100, track_order: 0 } },
+                { metric1: { cancel_order: 0, track_order: null } },
                 ['cancel_order', 'track_order'],
                 buildRow,
             )
@@ -801,33 +722,6 @@ describe('useStatsMetricPerDimension', () => {
                 { entity: 'cancel_order' },
                 { entity: 'track_order' },
             ])
-        })
-
-        it('returns rows for all entities when data has values across multiple metrics', () => {
-            const result = assembleEntityRows(
-                {
-                    metric1: { cancel_order: 0, track_order: 0 },
-                    metric2: { cancel_order: 50, track_order: 0 },
-                },
-                ['cancel_order', 'track_order'],
-                buildRow,
-            )
-
-            expect(result).toEqual([
-                { entity: 'cancel_order' },
-                { entity: 'track_order' },
-            ])
-        })
-
-        it('skips empty check when skipEmptyCheck is true', () => {
-            const result = assembleEntityRows(
-                { metric1: { cancel_order: 0 } },
-                ['cancel_order'],
-                buildRow,
-                { skipEmptyCheck: true },
-            )
-
-            expect(result).toEqual([{ entity: 'cancel_order' }])
         })
 
         it('passes entity to buildRow', () => {

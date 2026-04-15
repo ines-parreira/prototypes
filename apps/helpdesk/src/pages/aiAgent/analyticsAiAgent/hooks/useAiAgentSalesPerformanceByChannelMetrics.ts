@@ -9,7 +9,6 @@ import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricP
 import {
     assembleEntityRows,
     fetchEntityMetrics,
-    filterEntitiesWithData,
     useEntityMetrics,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -145,19 +144,15 @@ export const useAiAgentSalesPerformanceByChannelMetrics =
             userTimezone,
         )
 
-        const data = useMemo(() => {
-            const filteredEntities = filterEntitiesWithData(
-                AI_AGENT_SALES_CHANNEL_ENTITIES,
-                entityData,
-                isLoading,
-            )
-            return assembleEntityRows(
-                entityData,
-                filteredEntities,
-                buildAiAgentSalesPerformanceByChannelRow(entityData),
-                { skipEmptyCheck: isLoading },
-            )
-        }, [entityData, isLoading])
+        const data = useMemo(
+            () =>
+                assembleEntityRows(
+                    entityData,
+                    AI_AGENT_SALES_CHANNEL_ENTITIES,
+                    buildAiAgentSalesPerformanceByChannelRow(entityData),
+                ),
+            [entityData],
+        )
 
         const loadingStates = useMemo(
             () => ({
@@ -195,11 +190,7 @@ export const fetchAiAgentSalesPerformanceByChannelMetrics = async (
 
     const data = assembleEntityRows(
         metrics.data,
-        filterEntitiesWithData(
-            AI_AGENT_SALES_CHANNEL_ENTITIES,
-            metrics.data,
-            false,
-        ),
+        AI_AGENT_SALES_CHANNEL_ENTITIES,
         buildAiAgentSalesPerformanceByChannelRow(metrics.data),
     )
 

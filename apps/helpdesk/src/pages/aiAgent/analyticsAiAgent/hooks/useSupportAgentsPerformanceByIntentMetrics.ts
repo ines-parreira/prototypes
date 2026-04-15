@@ -166,9 +166,8 @@ export const useSupportAgentsPerformanceByIntentMetrics = () => {
                 entityData,
                 entities,
                 buildSupportAgentsPerformanceByIntentRow(entityData),
-                { skipEmptyCheck: isLoading },
             ),
-        [entities, entityData, isLoading],
+        [entities, entityData],
     )
 
     const loadingStates = useMemo(

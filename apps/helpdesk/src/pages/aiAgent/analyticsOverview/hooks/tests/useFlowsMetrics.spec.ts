@@ -15,7 +15,6 @@ jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     useEntityMetrics: jest.fn(),
     assembleEntityRows: jest.fn(),
     fetchEntityMetrics: jest.fn(),
-    filterEntitiesWithData: jest.fn(),
     toEntityMap: jest.fn(),
     mapMetricValues: jest.fn(),
 }))
@@ -85,10 +84,6 @@ const mockFetchWorkflowConfigurations = jest.requireMock(
 const mockFetchEntityMetrics = jest.requireMock(
     'domains/reporting/hooks/useStatsMetricPerDimension',
 ).fetchEntityMetrics as jest.Mock
-
-const mockFilterEntitiesWithData = jest.requireMock(
-    'domains/reporting/hooks/useStatsMetricPerDimension',
-).filterEntitiesWithData as jest.Mock
 
 const mockGetCsvFileNameWithDates = jest.requireMock(
     'domains/reporting/hooks/common/utils',
@@ -214,12 +209,6 @@ describe('useFlowsMetrics', () => {
                 timeSaved: false,
             },
         })
-        mockFilterEntitiesWithData.mockReturnValue([
-            'uuid-10',
-            'uuid-25',
-            'uuid-6',
-            'uuid-9',
-        ])
         mockAssembleEntityRows.mockReturnValue(defaultRows)
     })
 
@@ -346,13 +335,16 @@ describe('useFlowsMetrics', () => {
         expect(result.current.displayNames).toEqual({})
     })
 
-    it('only passes entities with at least one non-null metric value to assembleEntityRows', () => {
-        mockFilterEntitiesWithData.mockReturnValue(['uuid-10'])
-
+    it('passes all workflow entities to assembleEntityRows', () => {
         renderHook(() => useFlowsMetrics())
 
         const entitiesPassedToAssemble = mockAssembleEntityRows.mock.calls[0][1]
-        expect(entitiesPassedToAssemble).toEqual(['uuid-10'])
+        expect(entitiesPassedToAssemble).toEqual([
+            'uuid-10',
+            'uuid-25',
+            'uuid-6',
+            'uuid-9',
+        ])
     })
 
     it('passes all entities to assembleEntityRows while loading', () => {
@@ -380,13 +372,16 @@ describe('useFlowsMetrics', () => {
         ])
     })
 
-    it('includes entities with a metric value of 0', () => {
-        mockFilterEntitiesWithData.mockReturnValue(['uuid-10'])
-
+    it('passes all workflow entities regardless of metric values', () => {
         renderHook(() => useFlowsMetrics())
 
         const entitiesPassedToAssemble = mockAssembleEntityRows.mock.calls[0][1]
-        expect(entitiesPassedToAssemble).toEqual(['uuid-10'])
+        expect(entitiesPassedToAssemble).toEqual([
+            'uuid-10',
+            'uuid-25',
+            'uuid-6',
+            'uuid-9',
+        ])
     })
 
     describe('buildFlowsRow', () => {
@@ -446,7 +441,7 @@ describe('fetchFlowsMetrics', () => {
             isLoading: false,
             isError: false,
         })
-        mockFilterEntitiesWithData.mockReturnValue(['uuid-10'])
+
         mockAssembleEntityRows.mockReturnValue([mockRow])
         mockGetCsvFileNameWithDates.mockReturnValue(
             '2024-01-01_2024-01-31_flows_breakdown_table',

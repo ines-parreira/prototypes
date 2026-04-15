@@ -14,9 +14,6 @@ jest.mock('domains/reporting/hooks/useStatsMetricPerDimension', () => ({
     assembleEntityRows: jest.requireActual(
         'domains/reporting/hooks/useStatsMetricPerDimension',
     ).assembleEntityRows,
-    filterEntitiesWithData: jest.requireActual(
-        'domains/reporting/hooks/useStatsMetricPerDimension',
-    ).filterEntitiesWithData,
     useEntityMetrics: jest.fn(),
     fetchEntityMetrics: jest.fn(),
 }))
@@ -96,12 +93,28 @@ describe('useShoppingAssistantPerformanceByEngagementFeatureMetrics', () => {
 
         expect(result.current.data).toEqual([
             {
+                entity: 'suggested_product_question',
+                automatedInteractions: null,
+                handoverInteractions: null,
+                totalSales: null,
+                ordersInfluenced: null,
+                revenuePerInteraction: null,
+            },
+            {
                 entity: 'search_bar',
                 automatedInteractions: 12,
                 handoverInteractions: 2,
                 totalSales: 100,
                 ordersInfluenced: 5,
                 revenuePerInteraction: 8.3,
+            },
+            {
+                entity: 'ask_anything',
+                automatedInteractions: null,
+                handoverInteractions: null,
+                totalSales: null,
+                ordersInfluenced: null,
+                revenuePerInteraction: null,
             },
             {
                 entity: 'null',
@@ -294,7 +307,7 @@ describe('fetchShoppingAssistantPerformanceByEngagementFeatureMetrics', () => {
         )
     })
 
-    it('returns an empty file when there is no data', async () => {
+    it('returns a csv file with all rows when there is no data', async () => {
         mockFetchEntityMetrics.mockResolvedValue({
             data: {
                 automatedInteractions: {},
@@ -316,7 +329,7 @@ describe('fetchShoppingAssistantPerformanceByEngagementFeatureMetrics', () => {
                 'UTC',
             )
 
-        expect(result.files[result.fileName]).toBe('')
+        expect(result.files[result.fileName]).toBe('csv-content')
     })
 
     it('formats each metric cell before building the CSV', async () => {
@@ -353,8 +366,10 @@ describe('fetchShoppingAssistantPerformanceByEngagementFeatureMetrics', () => {
             'Orders influenced',
             'Revenue per interaction',
         ])
-        expect(csvRows[1][0]).toBe('Search bar')
-        expect(csvRows[2][0]).toBe('Unknown')
+        expect(csvRows[1][0]).toBe('Suggested product question')
+        expect(csvRows[2][0]).toBe('Search bar')
+        expect(csvRows[3][0]).toBe('Ask anything')
+        expect(csvRows[4][0]).toBe('Unknown')
     })
 
     it('gets the filename from getCsvFileNameWithDates', async () => {

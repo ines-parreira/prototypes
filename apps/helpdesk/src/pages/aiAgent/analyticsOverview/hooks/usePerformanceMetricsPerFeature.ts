@@ -74,25 +74,7 @@ export type RawPerformanceData = {
 
 export const buildPerformanceMetrics = (
     raw: RawPerformanceData,
-    options?: { skipEmptyCheck?: boolean },
 ): FeatureMetrics[] => {
-    const isZeroOrMissing = (value?: number | null) =>
-        value == null || value === 0 || Number.isNaN(value)
-
-    const allAutomationRatesZero =
-        raw.automationRateByFeature?.every((item) => item.value === 0) ?? true
-
-    const isEmpty =
-        isZeroOrMissing(raw.handleTimeValue) &&
-        isZeroOrMissing(raw.aiAgentInteractionsValue) &&
-        isZeroOrMissing(raw.flowsInteractionsValue) &&
-        isZeroOrMissing(raw.articleRecommendationInteractionsValue) &&
-        isZeroOrMissing(raw.orderManagementInteractionsValue) &&
-        Object.values(raw.handoversByFeature).every(isZeroOrMissing) &&
-        allAutomationRatesZero
-
-    if (!options?.skipEmptyCheck && isEmpty) return []
-
     const buildMetric = (
         feature: FeatureName,
         interactions: number | null | undefined,
@@ -206,29 +188,23 @@ export const usePerformanceMetricsPerFeature =
 
         const data = useMemo(
             () =>
-                buildPerformanceMetrics(
-                    {
-                        aiAgentInteractionsValue:
-                            aiAgentInteractions.data?.value,
-                        flowsInteractionsValue: flowsInteractions.data?.value,
-                        articleRecommendationInteractionsValue:
-                            articleRecommendationInteractions.data?.value,
-                        orderManagementInteractionsValue:
-                            orderManagementInteractions.data?.value,
-                        handoversByFeature: Object.fromEntries(
-                            (
-                                handoverInteractionsPerFeature.data
-                                    ?.allValues ?? []
-                            ).map((v) => [v.dimension, v.value]),
-                        ),
-                        handleTimeValue: ticketHandleTime.data?.value,
-                        automationRateByFeature: automationRateByFeature.data,
-                        costSavedPerInteraction,
-                    },
-                    { skipEmptyCheck: isLoading },
-                ),
+                buildPerformanceMetrics({
+                    aiAgentInteractionsValue: aiAgentInteractions.data?.value,
+                    flowsInteractionsValue: flowsInteractions.data?.value,
+                    articleRecommendationInteractionsValue:
+                        articleRecommendationInteractions.data?.value,
+                    orderManagementInteractionsValue:
+                        orderManagementInteractions.data?.value,
+                    handoversByFeature: Object.fromEntries(
+                        (
+                            handoverInteractionsPerFeature.data?.allValues ?? []
+                        ).map((v) => [v.dimension, v.value]),
+                    ),
+                    handleTimeValue: ticketHandleTime.data?.value,
+                    automationRateByFeature: automationRateByFeature.data,
+                    costSavedPerInteraction,
+                }),
             [
-                isLoading,
                 aiAgentInteractions.data?.value,
                 flowsInteractions.data?.value,
                 articleRecommendationInteractions.data?.value,

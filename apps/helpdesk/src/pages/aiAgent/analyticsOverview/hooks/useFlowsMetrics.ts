@@ -9,7 +9,6 @@ import type { EntityMetricConfig } from 'domains/reporting/hooks/useStatsMetricP
 import {
     assembleEntityRows,
     fetchEntityMetrics,
-    filterEntitiesWithData,
     useEntityMetrics,
 } from 'domains/reporting/hooks/useStatsMetricPerDimension'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
@@ -140,19 +139,11 @@ export const useFlowsMetrics = () => {
 
     const isLoading = isLoadingWorkflows || isLoadingMetrics
 
-    const data = useMemo(() => {
-        const filteredEntities = filterEntitiesWithData(
-            entities,
-            entityData,
-            isLoading,
-        )
-        return assembleEntityRows(
-            entityData,
-            filteredEntities,
-            buildFlowsRow(entityData),
-            { skipEmptyCheck: isLoading },
-        )
-    }, [entityData, entities, isLoading])
+    const data = useMemo(
+        () =>
+            assembleEntityRows(entityData, entities, buildFlowsRow(entityData)),
+        [entityData, entities],
+    )
 
     const loadingStates = useMemo(
         () => ({
@@ -193,7 +184,7 @@ export const fetchFlowsMetrics = async (
 
     const data = assembleEntityRows(
         metrics.data,
-        filterEntitiesWithData(entities, metrics.data, false),
+        entities,
         buildFlowsRow(metrics.data),
     )
 
