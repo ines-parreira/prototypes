@@ -88,11 +88,15 @@ export const ConnectedChannelsChatView = () => {
         ) : undefined
     }, [selectedChannelId, chatChannels, setSelectedChannelId])
 
-    const { showPreviewPanel, chatPreviewPortal, updateWorkflowEntryPoints } =
-        useChatPreviewPanel({
-            headerActions: PreviewPanelHeaderActions,
-            locale: selectedChannelLanguage,
-        })
+    const {
+        showPreviewPanel,
+        chatPreviewPortal,
+        updateWorkflowEntryPoints,
+        reloadPreview,
+    } = useChatPreviewPanel({
+        headerActions: PreviewPanelHeaderActions,
+        locale: selectedChannelLanguage,
+    })
 
     useEffect(() => {
         showPreviewPanel(appId)
@@ -135,6 +139,11 @@ export const ConnectedChannelsChatView = () => {
         )
     }
 
+    const onOrderManagementChange = async (value: boolean) => {
+        await handleOrderManagementToggle(value)
+        reloadPreview()
+    }
+
     return (
         <div className={css.wrapper}>
             {channel && (
@@ -159,7 +168,7 @@ export const ConnectedChannelsChatView = () => {
                     isLoading={isOrderManagementLoading}
                     showStoreRequired={showStoreRequired}
                     orderManagementUrl={orderManagementUrl}
-                    onChange={handleOrderManagementToggle}
+                    onChange={onOrderManagementChange}
                 />
             )}
             {articleRecommendationEnabledInSettings && (

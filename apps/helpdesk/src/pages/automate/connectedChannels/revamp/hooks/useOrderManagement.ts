@@ -60,7 +60,7 @@ export function useOrderManagement({
         return `/app/settings/order-management/${shopType}/${shopName}`
     }, [shopType, shopName])
 
-    const handleToggle = (value: boolean) => {
+    const handleToggle = async (value: boolean) => {
         if (!appId) return
 
         const applicationAutomationSettings =
@@ -68,7 +68,7 @@ export function useOrderManagement({
 
         if (!applicationAutomationSettings) return
 
-        void handleChatApplicationAutomationSettingsUpdate(
+        await handleChatApplicationAutomationSettingsUpdate(
             {
                 ...applicationAutomationSettings,
                 orderManagement: { enabled: value },

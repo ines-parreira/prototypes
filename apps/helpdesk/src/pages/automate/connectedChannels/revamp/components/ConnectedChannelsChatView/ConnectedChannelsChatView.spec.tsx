@@ -91,7 +91,14 @@ jest.mock(
 jest.mock(
     'pages/integrations/integration/components/gorgias_chat/revamp/components/OrderManagementCard/OrderManagementCard',
     () => ({
-        OrderManagementCard: () => <div>OrderManagementCard</div>,
+        OrderManagementCard: ({
+            onChange,
+        }: {
+            onChange: (value: boolean) => Promise<void>
+        }) => {
+            mockOrderManagementCardHandlers.onChange = onChange
+            return <div>OrderManagementCard</div>
+        },
     }),
 )
 
@@ -132,6 +139,12 @@ const mockHandleFlowAdd = jest.fn()
 const mockHandleFlowRemove = jest.fn()
 const mockHandleFlowReorder = jest.fn()
 const mockUpdateWorkflowEntryPoints = jest.fn()
+const mockHandleOrderManagementToggle = jest.fn()
+const mockReloadPreview = jest.fn()
+
+const mockOrderManagementCardHandlers: {
+    onChange?: (value: boolean) => Promise<void>
+} = {}
 
 describe('ConnectedChannelsChatView', () => {
     beforeEach(() => {
@@ -165,7 +178,7 @@ describe('ConnectedChannelsChatView', () => {
             showStoreRequired: false,
             orderManagementUrl:
                 '/app/settings/order-management/shopify/test-shop',
-            handleToggle: jest.fn(),
+            handleToggle: mockHandleOrderManagementToggle,
         })
         mockedUseChatPreviewPanel.mockReturnValue({
             chatPreviewPortal: null,
@@ -176,7 +189,7 @@ describe('ConnectedChannelsChatView', () => {
             displayPage: jest.fn(),
             updateMainColor: jest.fn(),
             updateWorkflowEntryPoints: mockUpdateWorkflowEntryPoints,
-            reloadPreview: jest.fn(),
+            reloadPreview: mockReloadPreview,
             updatePosition: jest.fn(),
             updateHeaderPictureUrl: jest.fn(),
             updateLauncher: jest.fn(),
@@ -449,6 +462,73 @@ describe('ConnectedChannelsChatView', () => {
             })
 
             expect(mockUpdateWorkflowEntryPoints).not.toHaveBeenCalled()
+        })
+    })
+
+    describe('onOrderManagementChange', () => {
+        it('should call handleOrderManagementToggle with true when onChange is triggered with true', async () => {
+            mockHandleOrderManagementToggle.mockResolvedValue(undefined)
+
+            renderComponent()
+
+            await act(async () => {
+                await mockOrderManagementCardHandlers.onChange!(true)
+            })
+
+            expect(mockHandleOrderManagementToggle).toHaveBeenCalledWith(true)
+        })
+
+        it('should call handleOrderManagementToggle with false when onChange is triggered with false', async () => {
+            mockHandleOrderManagementToggle.mockResolvedValue(undefined)
+
+            renderComponent()
+
+            await act(async () => {
+                await mockOrderManagementCardHandlers.onChange!(false)
+            })
+
+            expect(mockHandleOrderManagementToggle).toHaveBeenCalledWith(false)
+        })
+
+        it('should call reloadPreview after handleOrderManagementToggle resolves', async () => {
+            const callOrder: string[] = []
+            mockHandleOrderManagementToggle.mockImplementation(async () => {
+                callOrder.push('handleToggle')
+            })
+            mockReloadPreview.mockImplementation(() => {
+                callOrder.push('reloadPreview')
+            })
+
+            renderComponent()
+
+            await act(async () => {
+                await mockOrderManagementCardHandlers.onChange!(true)
+            })
+
+            expect(callOrder).toEqual(['handleToggle', 'reloadPreview'])
+        })
+
+        it('should not call reloadPreview if handleOrderManagementToggle has not resolved yet', async () => {
+            let resolveToggle!: () => void
+            mockHandleOrderManagementToggle.mockReturnValue(
+                new Promise<void>((resolve) => {
+                    resolveToggle = resolve
+                }),
+            )
+
+            renderComponent()
+
+            const changePromise =
+                mockOrderManagementCardHandlers.onChange!(true)
+
+            expect(mockReloadPreview).not.toHaveBeenCalled()
+
+            await act(async () => {
+                resolveToggle()
+                await changePromise
+            })
+
+            expect(mockReloadPreview).toHaveBeenCalledTimes(1)
         })
     })
 })
