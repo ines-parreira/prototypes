@@ -1,14 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+
+import type { EditorState } from 'draft-js'
 
 import {
     LegacyCheckBoxField as CheckBoxField,
     LegacyLabel as Label,
 } from '@gorgias/axiom'
 
-import {
-    INITIAL_FORM_VALUES,
-    SIGNATURE_MAX_LENGTH,
-} from 'pages/aiAgent/constants'
+import { UploadType } from 'common/types'
+import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import {
     SettingsCard,
@@ -16,10 +16,24 @@ import {
     SettingsCardHeader,
     SettingsCardTitle,
 } from 'pages/common/components/SettingsCard'
+import { ActionName } from 'pages/common/draftjs/plugins/toolbar/types'
 import IconTooltip from 'pages/common/forms/IconTooltip/IconTooltip'
-import TextArea from 'pages/common/forms/TextArea'
+import RichField from 'pages/common/forms/RichField/RichField'
+import { convertToHTML } from 'utils/editor'
 
 import css from './SignatureFormComponent.less'
+
+const SIGNATURE_EDITOR_ACTIONS = [
+    ActionName.Bold,
+    ActionName.Italic,
+    ActionName.Underline,
+    ActionName.Link,
+    ActionName.Image,
+    ActionName.Emoji,
+    ActionName.Heading,
+    ActionName.BulletedList,
+    ActionName.OrderedList,
+]
 
 type SignatureFormComponentProps = {
     signature: string | null
@@ -36,7 +50,7 @@ export const SignatureFormComponent = ({
     setIsPristine,
     isRequired,
 }: SignatureFormComponentProps) => {
-    const initialValue =
+    const initialSignature =
         signature !== null ? signature : INITIAL_FORM_VALUES.signature
     const [isSignatureChecked, setIsSignatureChecked] = useState<
         boolean | null
@@ -52,14 +66,23 @@ export const SignatureFormComponent = ({
         isBlurred === false ||
         (signature && signature.trim() && signature.length > 0)
 
-    const handleChange = <K extends keyof FormValues>(
-        property: K,
-        newValue: FormValues[K],
-    ) => {
+    const handleCheckboxChange = (value: boolean) => {
+        const newValue = value ? false : true
         if (setIsPristine) setIsPristine(false)
-        updateValue(property, newValue)
-        setIsBlurred(false)
+        updateValue('useEmailIntegrationSignature', newValue)
     }
+
+    const handleSignatureChange = useCallback(
+        (editorState: EditorState) => {
+            const contentState = editorState.getCurrentContent()
+            const html = convertToHTML(contentState)
+
+            if (setIsPristine) setIsPristine(false)
+            updateValue('signature', html)
+            setIsBlurred(false)
+        },
+        [updateValue, setIsPristine],
+    )
 
     return (
         <div className={css.formGroup}>
@@ -91,30 +114,36 @@ export const SignatureFormComponent = ({
                         className={css.checkbox}
                         value={isSignatureChecked ? isSignatureChecked : false}
                         label="Use AI Agent signature"
-                        onChange={(value) => {
-                            const newValue = value ? false : true
-                            handleChange(
-                                'useEmailIntegrationSignature',
-                                newValue,
-                            )
-                        }}
+                        onChange={handleCheckboxChange}
                         caption="When enabled, AI Agent signs emails using the text below. Otherwise, the signature of the respective email integration is used."
                     />
-                    <TextArea
-                        aria-labelledby="signature-text-area"
-                        innerClassName={css.formInputEditor}
-                        placeholder="AI Agent email signature"
-                        value={initialValue}
-                        isDisabled={!isSignatureChecked}
-                        onChange={(value) => handleChange('signature', value)}
-                        onBlur={() => setIsBlurred(true)}
-                        maxLength={SIGNATURE_MAX_LENGTH}
-                        error={
-                            !isSignatureValid
-                                ? 'Email signature is required.'
-                                : undefined
+                    <div
+                        className={
+                            isSignatureChecked
+                                ? css.editorWrapper
+                                : css.editorWrapperDisabled
                         }
-                    />
+                    >
+                        <RichField
+                            allowExternalChanges
+                            displayedActions={SIGNATURE_EDITOR_ACTIONS}
+                            value={{
+                                text: initialSignature,
+                                html: initialSignature,
+                            }}
+                            onChange={handleSignatureChange}
+                            onBlur={() => setIsBlurred(true)}
+                            placeholder="AI Agent email signature"
+                            uploadType={UploadType.PublicAttachment}
+                        />
+                    </div>
+                    {!isSignatureValid && (
+                        <p
+                            className={`${css.formInputFooterInfo} ${css.error}`}
+                        >
+                            Email signature is required.
+                        </p>
+                    )}
                 </SettingsCardContent>
             </SettingsCard>
         </div>

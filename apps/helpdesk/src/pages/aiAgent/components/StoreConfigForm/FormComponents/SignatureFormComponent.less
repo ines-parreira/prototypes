@@ -26,7 +26,7 @@
     .formInputFooterInfo {
         .caption-regular();
         color: var(--neutral-grey-5); // legacy
-        margin-top: -20px;
+        margin-top: var(--spacing-xxs);
         &.error {
             color: var(--feedback-error); // legacy
         }
@@ -35,6 +35,16 @@
     .checkbox {
         border-bottom: none !important;
         margin-bottom: -24px !important;
+    }
+
+    .editorWrapper {
+        margin-top: var(--spacing-sm);
+    }
+
+    .editorWrapperDisabled {
+        margin-top: var(--spacing-sm);
+        opacity: 0.5;
+        pointer-events: none;
     }
 }
 

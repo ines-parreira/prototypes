@@ -1,123 +1,58 @@
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
+import { Provider } from 'react-redux'
 
 import { INITIAL_FORM_VALUES } from 'pages/aiAgent/constants'
+import { mockStore } from 'utils/testing'
 
 import { SignatureFormComponent } from '../FormComponents/SignatureFormComponent'
+
+const store = mockStore({})
 
 describe('SignatureFormComponent', () => {
     const mockUpdateValue = jest.fn()
 
-    const renderComponent = (signature: string | null, isRequired = true) => {
-        render(
-            <SignatureFormComponent
-                isRequired={isRequired}
-                signature={signature}
-                useEmailIntegrationSignature={true}
-                updateValue={mockUpdateValue}
-            />,
+    beforeEach(() => {
+        mockUpdateValue.mockClear()
+    })
+
+    const defaultProps = {
+        isRequired: true,
+        signature: INITIAL_FORM_VALUES.signature,
+        useEmailIntegrationSignature: true,
+        updateValue: mockUpdateValue,
+    }
+
+    const renderComponent = (overrides = {}) => {
+        return render(
+            <Provider store={store}>
+                <SignatureFormComponent {...defaultProps} {...overrides} />
+            </Provider>,
         )
     }
 
     test('renders the component correctly', () => {
-        renderComponent(INITIAL_FORM_VALUES.signature)
+        renderComponent()
 
-        // Check if the label and tooltip are rendered
         expect(
             screen.getByText(
                 'At the end of emails you can disclose that the message was created by AI, or provide a custom name for AI Agent. Do not include greetings (e.g. "Best regards"). Greetings will already be included in the message above the signature.',
             ),
         ).toBeInTheDocument()
-        // Check if the textarea is rendered with correct placeholder
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
-        expect(textArea).toBeInTheDocument()
-        expect(textArea).toHaveValue(INITIAL_FORM_VALUES.signature)
-    })
-
-    test('shows initial value correctly when signature is provided', () => {
-        renderComponent('Initial signature')
-
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
-        expect(textArea).toHaveValue('Initial signature')
-    })
-
-    test('calls updateValue when the user types in the textarea', () => {
-        renderComponent(null)
-
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
-
-        // Simulate typing
-        fireEvent.change(textArea, { target: { value: 'New signature' } })
-        fireEvent.blur(textArea)
-
-        expect(mockUpdateValue).toHaveBeenCalledWith(
-            'signature',
-            'New signature',
-        )
-    })
-
-    test('displays an error message when the signature is blurred and invalid', () => {
-        render(
-            <SignatureFormComponent
-                isRequired={true}
-                signature=""
-                useEmailIntegrationSignature={false}
-                updateValue={mockUpdateValue}
-            />,
-        )
-
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
-
-        // Simulate blur event (leaving the textarea)
-        fireEvent.blur(textArea)
 
         expect(
-            screen.getByText('Email signature is required.'),
+            screen.getByText(INITIAL_FORM_VALUES.signature),
         ).toBeInTheDocument()
     })
 
-    test('does not display error message when signature is valid', () => {
-        renderComponent('Valid signature')
+    test('renders signature text when provided', () => {
+        renderComponent({ signature: 'Custom signature text' })
 
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
-
-        // Simulate blur event
-        fireEvent.blur(textArea)
-
-        // Error message should not be present
-        expect(screen.queryByText('Email signature is required.')).toBeNull()
-    })
-
-    test('does not show error if input is modified after an invalid state', () => {
-        render(
-            <SignatureFormComponent
-                isRequired={true}
-                signature=""
-                useEmailIntegrationSignature={false}
-                updateValue={mockUpdateValue}
-            />,
-        )
-
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
-
-        // Simulate blur event
-        fireEvent.blur(textArea)
-
-        // Error message should be present
-        expect(
-            screen.getByText('Email signature is required.'),
-        ).toBeInTheDocument()
-
-        // Now type something to fix the error
-        fireEvent.change(textArea, {
-            target: { value: 'Corrected signature' },
-        })
-
-        // Error message should disappear
-        expect(screen.queryByText('Email signature is required.')).toBeNull()
+        expect(screen.getByText('Custom signature text')).toBeInTheDocument()
     })
 
     test('does not show error if signature is not required', () => {
-        renderComponent('', false)
+        renderComponent({ isRequired: false, signature: '' })
 
         expect(
             screen.queryByText('Email signature is required.'),
@@ -125,95 +60,53 @@ describe('SignatureFormComponent', () => {
     })
 
     test('does not show error when checkbox is unchecked (useEmailIntegrationSignature is true)', () => {
-        render(
-            <SignatureFormComponent
-                isRequired={true}
-                signature=""
-                useEmailIntegrationSignature={true}
-                updateValue={mockUpdateValue}
-            />,
-        )
+        renderComponent({
+            signature: '',
+            useEmailIntegrationSignature: true,
+        })
 
-        const textArea = screen.getByPlaceholderText('AI Agent email signature')
-
-        // Simulate blur event
-        fireEvent.blur(textArea)
-
-        // Error message should NOT be present because checkbox is unchecked
         expect(
             screen.queryByText('Email signature is required.'),
         ).not.toBeInTheDocument()
     })
 
-    test('checkbox toggles useEmailIntegrationSignature correctly', () => {
-        renderComponent('Initial signature')
+    test('checkbox toggles useEmailIntegrationSignature correctly', async () => {
+        const user = userEvent.setup()
+        renderComponent()
 
         const checkbox = screen.getByLabelText('Use AI Agent signature')
 
-        // Initial state - checkbox should be unchecked (useEmailIntegrationSignature is true)
         expect(checkbox).not.toBeChecked()
 
-        // Click checkbox to enable override
-        fireEvent.click(checkbox)
+        await user.click(checkbox)
 
-        // Should call updateValue with useEmailIntegrationSignature set to false
-        expect(mockUpdateValue).toHaveBeenCalledWith(
-            'useEmailIntegrationSignature',
-            false,
-        )
-
-        // Reset mock to clear previous calls
-        mockUpdateValue.mockClear()
-
-        // Click checkbox again to disable override
-        fireEvent.click(checkbox)
-
-        // Should call updateValue with useEmailIntegrationSignature set to false again
-        // because the onChange handler inverts the value (value ? false : true)
         expect(mockUpdateValue).toHaveBeenCalledWith(
             'useEmailIntegrationSignature',
             false,
         )
     })
 
-    test('textarea is disabled when checkbox is unchecked', async () => {
-        const { rerender } = render(
-            <SignatureFormComponent
-                isRequired={true}
-                signature="Initial signature"
-                useEmailIntegrationSignature={true}
-                updateValue={mockUpdateValue}
-            />,
-        )
+    test('editor is disabled when checkbox is unchecked', () => {
+        renderComponent({ useEmailIntegrationSignature: true })
 
         const checkbox = screen.getByLabelText('Use AI Agent signature')
-        const textArea = screen.getByRole('textbox', { name: /signature/i })
+        expect(checkbox).not.toBeChecked()
 
-        // Initial state - textarea should be disabled
-        expect(textArea).toBeDisabled()
+        const editorWrapper = screen
+            .getByText(INITIAL_FORM_VALUES.signature)
+            .closest('[class*="editorWrapper"]')
+        expect(editorWrapper?.className).toContain('Disabled')
+    })
 
-        // Click checkbox to enable override
-        await act(async () => {
-            fireEvent.click(checkbox)
-        })
+    test('editor is enabled when checkbox is checked', () => {
+        renderComponent({ useEmailIntegrationSignature: false })
 
-        // Debug: Check if mockUpdateValue was called with the correct value
-        expect(mockUpdateValue).toHaveBeenCalledWith(
-            'useEmailIntegrationSignature',
-            false,
-        )
+        const checkbox = screen.getByLabelText('Use AI Agent signature')
+        expect(checkbox).toBeChecked()
 
-        // Update the component with new props
-        rerender(
-            <SignatureFormComponent
-                isRequired={true}
-                signature="Initial signature"
-                useEmailIntegrationSignature={false}
-                updateValue={mockUpdateValue}
-            />,
-        )
-
-        // Textarea should be enabled after state update
-        expect(textArea).not.toBeDisabled()
+        const editorWrapper = screen
+            .getByText(INITIAL_FORM_VALUES.signature)
+            .closest('[class*="editorWrapper"]')
+        expect(editorWrapper?.className).not.toContain('Disabled')
     })
 })

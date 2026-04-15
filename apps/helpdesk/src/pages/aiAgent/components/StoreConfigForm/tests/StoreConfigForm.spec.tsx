@@ -99,6 +99,17 @@ jest.mock('../../PublicSourcesSection/PublicSourcesSection', () => ({
     PublicSourcesSection: jest.fn(() => <p>Public Source Section</p>),
 }))
 
+jest.mock('pages/common/forms/RichField/RichField', () => ({
+    __esModule: true,
+    default: ({ placeholder, value, onBlur }: any) => (
+        <textarea
+            placeholder={placeholder}
+            defaultValue={value?.text || ''}
+            onBlur={onBlur}
+        />
+    ),
+}))
+
 // Replace the useStoreActivations mock with useFetchChatIntegrationsStatusData mock
 // Remove this:
 // Mock useStoreActivations hook
@@ -946,6 +957,7 @@ describe('<StoreConfigForm />', () => {
         })
 
         renderComponent()
+        updateValueMocked.mockClear()
         const chatChannelToggle = findToggle('chat')!
         fireEvent.click(chatChannelToggle)
 

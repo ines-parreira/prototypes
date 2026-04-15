@@ -14,6 +14,11 @@ import {
 import type { useAiAgentNavigation } from '../hooks/useAiAgentNavigation'
 import type { FormValues, ValidFormValues } from '../types'
 
+const getPlainTextLength = (html: string): number => {
+    const text = html.replace(/<[^>]*>/g, '')
+    return text.length
+}
+
 export enum StoreConfigurationValidationMessage {
     SignatureEmpty = 'Signature cannot be empty',
     SignatureLength = `Signature must be less than ${SIGNATURE_MAX_LENGTH} characters`,
@@ -89,7 +94,8 @@ export const getValidStoreConfigurationFormValues = (
     // Validate signature only when email channel is activated
     if (formValues.emailChannelDeactivatedDatetime === null) {
         if (formValues.signature !== null) {
-            if (formValues.signature.length > SIGNATURE_MAX_LENGTH) {
+            const signatureTextLength = getPlainTextLength(formValues.signature)
+            if (signatureTextLength > SIGNATURE_MAX_LENGTH) {
                 throw new Error(
                     StoreConfigurationValidationMessage.SignatureLength,
                 )
