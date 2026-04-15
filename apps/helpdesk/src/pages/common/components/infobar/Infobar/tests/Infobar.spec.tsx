@@ -195,6 +195,23 @@ jest.mock(
     }),
 )
 
+jest.mock(
+    'pages/common/components/infobar/Infobar/ShopifyOrdersWidget',
+    () => ({
+        ShopifyOrdersWidgetContainer: () => (
+            <div>ShopifyOrdersWidgetContainer</div>
+        ),
+    }),
+)
+
+jest.mock('state/integrations/selectors', () => ({
+    ...jest.requireActual('state/integrations/selectors'),
+    makeHasIntegrationOfTypes: jest.fn(),
+}))
+const makeHasIntegrationOfTypesMock = jest.mocked(
+    require('state/integrations/selectors').makeHasIntegrationOfTypes,
+)
+
 jest.mock('hooks/useSearchRankScenario')
 const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
 
@@ -269,6 +286,7 @@ describe('<Infobar/>', () => {
     beforeEach(() => {
         useHelpdeskV2MS1FlagMock.mockReturnValue(false)
         useHelpdeskV2MS2FlagMock.mockReturnValue(false)
+        makeHasIntegrationOfTypesMock.mockReturnValue(() => false)
         useSearchRankScenarioMock.mockImplementation(() => mockSearchRank)
         dateNowSpy = jest
             .spyOn(Date, 'now')
@@ -1071,6 +1089,39 @@ describe('<Infobar/>', () => {
             )
 
             expect(screen.getByText('InfobarCustomerInfo')).toBeInTheDocument()
+        })
+    })
+
+    describe('new ticket page', () => {
+        it('should render legacy infobar content when MS2 flag is on and on new ticket page', () => {
+            useHelpdeskV2MS2FlagMock.mockReturnValue(true)
+            isCurrentlyOnCustomerPageMock.mockReturnValue(false)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+                { route: '/app/ticket/new' },
+            )
+
+            expect(screen.getByText('InfobarCustomerInfo')).toBeInTheDocument()
+        })
+
+        it('should not render Shopify orders widget when MS2 flag is on and on new ticket page', () => {
+            useHelpdeskV2MS2FlagMock.mockReturnValue(true)
+            makeHasIntegrationOfTypesMock.mockReturnValue(() => true)
+            isCurrentlyOnCustomerPageMock.mockReturnValue(false)
+
+            renderWithRouter(
+                <Provider store={store}>
+                    <Infobar {...commonProps} />
+                </Provider>,
+                { route: '/app/ticket/new' },
+            )
+
+            expect(
+                screen.queryByText('ShopifyOrdersWidgetContainer'),
+            ).not.toBeInTheDocument()
         })
     })
 

@@ -86,6 +86,7 @@ export const Infobar = ({
     const hasUIVisionMS1 = useHelpdeskV2MS1Flag()
     const hasUIVisionMilestone2 = useHelpdeskV2MS2Flag()
     const location = useLocation()
+    const isNewTicketPage = location.pathname === '/app/ticket/new'
     const dispatch = useAppDispatch()
     const currentUser = useAppSelector(getCurrentUser)
     const { ticketId } = useParams<{ ticketId: string }>()
@@ -342,7 +343,8 @@ export const Infobar = ({
 
                 {hasUIVisionMilestone2 &&
                     hasShopifyIntegration &&
-                    !isCurrentlyOnCustomerPage(defaultCustomerId) && (
+                    !isCurrentlyOnCustomerPage(defaultCustomerId) &&
+                    !isNewTicketPage && (
                         <ShopifyOrdersWidgetContainer
                             renderEditShippingAddressModal={
                                 renderEditShippingAddressModal
@@ -387,7 +389,8 @@ export const Infobar = ({
                     </div>
                 )}
                 {(!hasUIVisionMilestone2 ||
-                    isCurrentlyOnCustomerPage(defaultCustomerId)) && (
+                    isCurrentlyOnCustomerPage(defaultCustomerId) ||
+                    isNewTicketPage) && (
                     <div className={css.content}>
                         {mode === 'loading' ? (
                             <Loader />
