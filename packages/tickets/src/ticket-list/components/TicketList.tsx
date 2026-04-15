@@ -48,6 +48,7 @@ type ListContext = {
     emptyStateVariant: ViewEmptyStateKind
     isInboxView?: boolean
     onFixFilters?: () => void
+    errorMessage?: string
 }
 
 const List: NonNullable<Components<TicketCompact, ListContext>['List']> =
@@ -80,6 +81,7 @@ function EmptyPlaceholder({ context }: { context?: ListContext }) {
         emptyStateVariant = EmptyViewsState.Empty,
         isInboxView,
         onFixFilters,
+        errorMessage,
     } = context ?? {}
     return (
         <TicketListEmptyPlaceholder
@@ -87,6 +89,7 @@ function EmptyPlaceholder({ context }: { context?: ListContext }) {
             emptyStateVariant={emptyStateVariant}
             isInboxView={isInboxView}
             onFixFilters={onFixFilters}
+            errorMessage={errorMessage}
         />
     )
 }
@@ -144,6 +147,15 @@ type Props = {
     onFixFilters?: () => void
 }
 
+export function getTicketListErrorMessage(error: unknown) {
+    /* v8 ignore next -- codecov incorrectly reporting partial coverage */
+    if (error instanceof Error) {
+        return error.message
+    }
+
+    return undefined
+}
+
 export function TicketList({
     viewId,
     onCollapse,
@@ -190,6 +202,7 @@ export function TicketList({
         hasError: !!error,
         isEmpty: tickets.length === 0,
     })
+    const errorMessage = getTicketListErrorMessage(error)
 
     const {
         hasSelectedAll,
@@ -258,6 +271,7 @@ export function TicketList({
             emptyStateVariant: placeholderKind ?? EmptyViewsState.Empty,
             isInboxView,
             onFixFilters,
+            errorMessage,
         }),
         [
             viewId,
@@ -273,6 +287,7 @@ export function TicketList({
             placeholderKind,
             isInboxView,
             onFixFilters,
+            errorMessage,
         ],
     )
 
@@ -318,6 +333,7 @@ export function TicketList({
                 emptyStateVariant={placeholderKind}
                 isInboxView={isInboxView}
                 onRefresh={refetch}
+                errorMessage={errorMessage}
             />
         )
     }
@@ -354,6 +370,7 @@ export function TicketList({
                     isInboxView={isInboxView}
                     onFixFilters={onFixFilters}
                     onRefresh={refetch}
+                    errorMessage={errorMessage}
                 />
             ) : (
                 <Virtuoso<TicketCompact, ListContext>

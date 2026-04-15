@@ -35,7 +35,7 @@ import * as useSortOrderModule from '../../hooks/useSortOrder'
 import * as useTicketSelectionModule from '../../hooks/useTicketSelection'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
 import * as useViewVisibleTicketsModule from '../../hooks/useViewVisibleTickets'
-import { TicketList } from '../TicketList'
+import { getTicketListErrorMessage, TicketList } from '../TicketList'
 
 const mockViewTickets = vi.fn()
 const mockGetTicketActivity = vi.fn(() => ({
@@ -151,6 +151,18 @@ afterAll(() => {
 })
 
 describe('TicketList', () => {
+    it('returns an error message for Error instances', () => {
+        expect(getTicketListErrorMessage(new Error('Not found'))).toBe(
+            'Not found',
+        )
+    })
+
+    it('returns undefined for non-Error values', () => {
+        expect(getTicketListErrorMessage(undefined)).toBeUndefined()
+        expect(getTicketListErrorMessage(null)).toBeUndefined()
+        expect(getTicketListErrorMessage('Not found')).toBeUndefined()
+    })
+
     it('should render loading state', () => {
         renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
 
@@ -243,6 +255,34 @@ describe('TicketList', () => {
         expect(
             screen.getByRole('button', { name: 'Refresh' }),
         ).toBeInTheDocument()
+        expect(screen.getByText('Not found')).toBeInTheDocument()
+    })
+
+    it('should not render an error message when the tickets request error is not an Error instance', async () => {
+        vi.spyOn(useTicketsListModule, 'useTicketsList').mockReturnValue({
+            tickets: [],
+            fetchNextPage: vi.fn(),
+            hasNextPage: false,
+            isLoading: false,
+            isFetching: false,
+            isFetchingNextPage: false,
+            error: 'Not found',
+            data: undefined,
+            refetch: vi.fn(),
+        })
+
+        renderWithVirtuoso(<TicketList viewId={viewId} onCollapse={vi.fn()} />)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: 'Network error' }),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.getByRole('button', { name: 'Refresh' }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('Not found')).not.toBeInTheDocument()
     })
 
     describe('view-based empty states', () => {

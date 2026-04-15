@@ -24,7 +24,7 @@ import { TicketStatus } from '../../../types/ticket'
 import { useTicketSearchUrlState } from '../../hooks/useTicketSearchUrlState'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
 import { useTicketTableBulkActionShortcuts } from '../../hooks/useTicketTableBulkActionShortcuts'
-import { TicketTable } from './TicketTable'
+import { getTicketTableErrorMessage, TicketTable } from './TicketTable'
 
 const { createTicketTableColumnsMock, pushMock } = vi.hoisted(() => ({
     createTicketTableColumnsMock: vi.fn(() => [
@@ -87,7 +87,7 @@ const mockState = {
     sortOrder: 'last_message_datetime:desc',
     viewFilters: '',
     tickets: [] as Array<{ id: number; subject: string; is_unread?: boolean }>,
-    error: null as Error | null,
+    error: null as unknown,
     isBulkActionLoading: false,
     canSaveColumnsForEveryone: true,
     isSavingColumnsForEveryone: false,
@@ -453,6 +453,20 @@ afterAll(() => {
 })
 
 describe('TicketTable', () => {
+    it('returns an error message for Error instances', () => {
+        expect(
+            getTicketTableErrorMessage(new Error('Failed to load tickets')),
+        ).toBe('Failed to load tickets')
+    })
+
+    it('returns undefined for non-Error values', () => {
+        expect(getTicketTableErrorMessage(undefined)).toBeUndefined()
+        expect(getTicketTableErrorMessage(null)).toBeUndefined()
+        expect(
+            getTicketTableErrorMessage('Failed to load tickets'),
+        ).toBeUndefined()
+    })
+
     beforeEach(() => {
         createTicketTableColumnsMock.mockClear()
         localStorageState.clear()
@@ -1011,11 +1025,34 @@ describe('TicketTable', () => {
             expect(
                 screen.getByRole('button', { name: 'Refresh' }),
             ).toBeInTheDocument()
+            expect(
+                screen.getByText('Failed to load tickets'),
+            ).toBeInTheDocument()
         })
 
         await user.click(screen.getByRole('button', { name: 'Refresh' }))
 
         expect(mockState.refetchSpy).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not render an error message when loading tickets fails with a non-Error value', async () => {
+        mockState.tickets = []
+        mockState.error = 'Failed to load tickets'
+
+        renderTicketTable()
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('heading', { name: 'Network error' }),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByRole('button', { name: 'Refresh' }),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByText('Failed to load tickets'),
+        ).not.toBeInTheDocument()
     })
 
     it('renders loading placeholders while the view is still loading', () => {

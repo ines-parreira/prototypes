@@ -60,6 +60,15 @@ type Props = {
     searchTracking?: SearchTracking
 }
 
+export function getTicketTableErrorMessage(error: unknown) {
+    /* v8 ignore next -- codecov incorrectly reporting partial coverage */
+    if (error instanceof Error) {
+        return error.message
+    }
+
+    return undefined
+}
+
 function areColumnsEqual(left: string[], right: string[]) {
     return (
         left.length === right.length &&
@@ -141,6 +150,7 @@ function TicketTableComponent({
         hasError: !!error,
         isEmpty: items.length === 0,
     })
+    const errorMessage = getTicketTableErrorMessage(error)
     const { viewVisibleTickets } = useViewVisibleTickets()
     const displayedTicketIds = useMemo(
         () =>
@@ -367,6 +377,7 @@ function TicketTableComponent({
                 emptyStateVariant={placeholderKind}
                 isInboxView={isInboxView}
                 onRefresh={onRefresh}
+                errorMessage={errorMessage}
             />
         )
     }
@@ -440,6 +451,7 @@ function TicketTableComponent({
                         isInboxView={isInboxView}
                         onFixFilters={onFixFilters}
                         onRefresh={onRefresh}
+                        errorMessage={errorMessage}
                     />
                 )}
             >

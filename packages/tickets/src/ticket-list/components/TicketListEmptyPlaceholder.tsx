@@ -15,6 +15,7 @@ type Props = {
     isInboxView?: boolean
     onFixFilters?: () => void
     onRefresh?: () => void
+    errorMessage?: string
 }
 
 export function TicketListEmptyPlaceholder({
@@ -23,6 +24,7 @@ export function TicketListEmptyPlaceholder({
     isInboxView,
     onFixFilters,
     onRefresh,
+    errorMessage,
 }: Props) {
     if (isLoading) {
         return (
@@ -69,7 +71,20 @@ export function TicketListEmptyPlaceholder({
                     <Button onClick={onFixFilters}>Fix filters</Button>
                 )}
             {emptyStateVariant === EmptyViewsState.Error && onRefresh && (
-                <Button onClick={onRefresh}>Refresh</Button>
+                <>
+                    <Button onClick={onRefresh}>Refresh</Button>
+                    {errorMessage ? (
+                        <Text
+                            size="sm"
+                            variant="regular"
+                            align="center"
+                            color="content-neutral-secondary"
+                            className={css.emptyStateError}
+                        >
+                            {errorMessage}
+                        </Text>
+                    ) : null}
+                </>
             )}
         </Box>
     )
