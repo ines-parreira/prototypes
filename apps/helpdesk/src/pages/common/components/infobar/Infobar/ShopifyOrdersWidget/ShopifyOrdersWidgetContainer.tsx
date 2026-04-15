@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import type { EditShippingAddressModalRenderProps } from '@repo/customer'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
@@ -40,21 +40,47 @@ export function ShopifyOrdersWidgetContainer({
     })
     const customer = customerResponse?.data as Customer | undefined
 
-    const { lastOrder, totalCount, unfulfilledCount, integrationId } =
-        useShopifyOrdersSummary(customer)
+    const {
+        lastOrder,
+        totalCount,
+        unfulfilledCount,
+        integrationId,
+        integrationOrders,
+    } = useShopifyOrdersSummary(customer)
 
     const integration = useAppSelector(
         getIntegrationByIdAndType(integrationId!, IntegrationType.Shopify),
     )
 
+    const [isOrderOpen, setIsOrderOpen] = useState(false)
+    const [selectedOrderIndex, setSelectedOrderIndex] = useState(0)
+
+    useEffect(() => {
+        setSelectedOrderIndex(0)
+    }, [integrationOrders])
+
+    const selectedOrder = integrationOrders[selectedOrderIndex] ?? lastOrder
+
+    const hasPrevious = selectedOrderIndex > 0
+    const hasNext = selectedOrderIndex < integrationOrders.length - 1
+
+    const handleNavigatePrevious = useCallback(() => {
+        setSelectedOrderIndex((prev) => (prev > 0 ? prev - 1 : prev))
+    }, [])
+
+    const handleNavigateNext = useCallback(() => {
+        setSelectedOrderIndex((prev) =>
+            prev < integrationOrders.length - 1 ? prev + 1 : prev,
+        )
+    }, [integrationOrders.length])
+
     const { productsMap } = useWidgetOrderProducts({
         integrationId,
-        order: lastOrder,
+        orders: integrationOrders,
     })
 
-    const [isOrderOpen, setIsOrderOpen] = useState(false)
-
     const handleSelectOrder = useCallback(() => {
+        setSelectedOrderIndex(0)
         setIsOrderOpen(true)
     }, [])
 
@@ -77,14 +103,26 @@ export function ShopifyOrdersWidgetContainer({
                 onClick={handleSelectOrder}
             />
             <OrderSidePanelWithActions
-                order={lastOrder}
+                order={selectedOrder}
                 isOpen={isOrderOpen}
                 onOpenChange={setIsOrderOpen}
                 productsMap={productsMap}
                 integrationId={integrationId}
                 storeName={integration?.name}
-                customerId={String(lastOrder.customer?.id ?? '')}
+                customerId={String(selectedOrder?.customer?.id ?? '')}
                 renderEditShippingAddressModal={renderEditShippingAddressModal}
+                hasPrevious={hasPrevious}
+                hasNext={hasNext}
+                onNavigatePrevious={
+                    integrationOrders.length > 1
+                        ? handleNavigatePrevious
+                        : undefined
+                }
+                onNavigateNext={
+                    integrationOrders.length > 1
+                        ? handleNavigateNext
+                        : undefined
+                }
             />
         </div>
     )

@@ -13,6 +13,7 @@ type ShopifyOrdersSummary = {
     totalCount: number
     unfulfilledCount: number
     integrationId: number | undefined
+    integrationOrders: Order[]
 }
 
 export function useShopifyOrdersSummary(
@@ -25,6 +26,7 @@ export function useShopifyOrdersSummary(
                 totalCount: 0,
                 unfulfilledCount: 0,
                 integrationId: undefined,
+                integrationOrders: [],
             }
         }
 
@@ -38,10 +40,15 @@ export function useShopifyOrdersSummary(
                 totalCount: 0,
                 unfulfilledCount: 0,
                 integrationId: undefined,
+                integrationOrders: [],
             }
         }
 
         const sorted = sortOrdersByDateDesc(ordersWithIntegration)
+        const topIntegrationId = sorted[0].integrationId
+        const integrationOrders = sorted
+            .filter((item) => item.integrationId === topIntegrationId)
+            .map((item) => item.order)
 
         return {
             lastOrder: sorted[0].order,
@@ -50,7 +57,8 @@ export function useShopifyOrdersSummary(
                 (orderContainer) =>
                     orderContainer.order.fulfillment_status !== 'fulfilled',
             ).length,
-            integrationId: sorted[0].integrationId,
+            integrationId: topIntegrationId,
+            integrationOrders,
         }
     }, [customer])
 }

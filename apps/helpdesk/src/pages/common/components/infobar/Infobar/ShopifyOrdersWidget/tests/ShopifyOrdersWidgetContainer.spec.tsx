@@ -46,12 +46,40 @@ jest.mock(
         OrderSidePanelWithActions: ({
             isOpen,
             customerId,
+            order,
+            hasPrevious,
+            hasNext,
+            onNavigatePrevious,
+            onNavigateNext,
         }: {
             isOpen: boolean
             customerId?: string
+            order?: { name?: string } | null
+            hasPrevious?: boolean
+            hasNext?: boolean
+            onNavigatePrevious?: () => void
+            onNavigateNext?: () => void
         }) =>
             isOpen ? (
-                <div>OrderSidePanelWithActions customerId:{customerId}</div>
+                <div>
+                    <span>
+                        OrderSidePanelWithActions customerId:{customerId}
+                    </span>
+                    <span>order:{order?.name}</span>
+                    {onNavigatePrevious && (
+                        <button
+                            onClick={onNavigatePrevious}
+                            disabled={!hasPrevious}
+                        >
+                            Previous
+                        </button>
+                    )}
+                    {onNavigateNext && (
+                        <button onClick={onNavigateNext} disabled={!hasNext}>
+                            Next
+                        </button>
+                    )}
+                </div>
             ) : null,
     }),
 )
@@ -160,6 +188,7 @@ describe('ShopifyOrdersWidgetContainer', () => {
             totalCount: 0,
             unfulfilledCount: 0,
             integrationId: undefined,
+            integrationOrders: [],
         })
 
         const { container } = renderComponent()
@@ -170,11 +199,13 @@ describe('ShopifyOrdersWidgetContainer', () => {
     })
 
     it('should render the widget when there is a last order', async () => {
+        const order = createOrder()
         mockUseShopifyOrdersSummary.mockReturnValue({
-            lastOrder: createOrder(),
+            lastOrder: order,
             totalCount: 3,
             unfulfilledCount: 1,
             integrationId: 42,
+            integrationOrders: [order],
         })
 
         renderComponent()
@@ -189,12 +220,14 @@ describe('ShopifyOrdersWidgetContainer', () => {
 
     it('should open the order side panel when an order is clicked', async () => {
         const user = userEvent.setup()
+        const order = createOrder()
 
         mockUseShopifyOrdersSummary.mockReturnValue({
-            lastOrder: createOrder(),
+            lastOrder: order,
             totalCount: 1,
             unfulfilledCount: 0,
             integrationId: 42,
+            integrationOrders: [order],
         })
 
         renderComponent()
@@ -214,12 +247,14 @@ describe('ShopifyOrdersWidgetContainer', () => {
 
     it('should navigate to Shopify tab with integration id when "Show all" is clicked', async () => {
         const user = userEvent.setup()
+        const order = createOrder()
 
         mockUseShopifyOrdersSummary.mockReturnValue({
-            lastOrder: createOrder(),
+            lastOrder: order,
             totalCount: 1,
             unfulfilledCount: 0,
             integrationId: 42,
+            integrationOrders: [order],
         })
 
         renderComponent()
@@ -244,6 +279,7 @@ describe('ShopifyOrdersWidgetContainer', () => {
             totalCount: 0,
             unfulfilledCount: 0,
             integrationId: undefined,
+            integrationOrders: [],
         })
 
         const waitForGetCustomerRequest = mockGetCustomer.waitForRequest(server)
@@ -269,6 +305,7 @@ describe('ShopifyOrdersWidgetContainer', () => {
             totalCount: 0,
             unfulfilledCount: 0,
             integrationId: undefined,
+            integrationOrders: [],
         })
 
         const waitForGetCustomerRequest = mockGetCustomer.waitForRequest(server)
@@ -282,12 +319,14 @@ describe('ShopifyOrdersWidgetContainer', () => {
 
     it('should pass customerId from lastOrder.customer.id to OrderSidePanelWithActions', async () => {
         const user = userEvent.setup()
+        const order = createOrder({ customer: { id: 123 } })
 
         mockUseShopifyOrdersSummary.mockReturnValue({
-            lastOrder: createOrder({ customer: { id: 123 } }),
+            lastOrder: order,
             totalCount: 1,
             unfulfilledCount: 0,
             integrationId: 42,
+            integrationOrders: [order],
         })
 
         renderComponent()
@@ -303,12 +342,14 @@ describe('ShopifyOrdersWidgetContainer', () => {
 
     it('should pass empty customerId when lastOrder has no customer', async () => {
         const user = userEvent.setup()
+        const order = createOrder()
 
         mockUseShopifyOrdersSummary.mockReturnValue({
-            lastOrder: createOrder(),
+            lastOrder: order,
             totalCount: 1,
             unfulfilledCount: 0,
             integrationId: 42,
+            integrationOrders: [order],
         })
 
         renderComponent()
@@ -319,6 +360,84 @@ describe('ShopifyOrdersWidgetContainer', () => {
             expect(
                 screen.getByText('OrderSidePanelWithActions customerId:'),
             ).toBeInTheDocument()
+        })
+    })
+
+    it('should not render navigation buttons when there is only one order', async () => {
+        const user = userEvent.setup()
+        const order = createOrder()
+
+        mockUseShopifyOrdersSummary.mockReturnValue({
+            lastOrder: order,
+            totalCount: 1,
+            unfulfilledCount: 0,
+            integrationId: 42,
+            integrationOrders: [order],
+        })
+
+        renderComponent()
+
+        await user.click(screen.getByText('#1001'))
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(/OrderSidePanelWithActions/),
+            ).toBeInTheDocument()
+        })
+
+        expect(
+            screen.queryByRole('button', { name: /previous/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /next/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('should cycle through orders using navigation buttons', async () => {
+        const user = userEvent.setup()
+        const order1 = createOrder({ id: 1, name: '#1001' })
+        const order2 = createOrder({ id: 2, name: '#1002' })
+        const order3 = createOrder({ id: 3, name: '#1003' })
+
+        mockUseShopifyOrdersSummary.mockReturnValue({
+            lastOrder: order1,
+            totalCount: 3,
+            unfulfilledCount: 0,
+            integrationId: 42,
+            integrationOrders: [order1, order2, order3],
+        })
+
+        renderComponent()
+
+        await user.click(screen.getByText('#1001'))
+
+        await waitFor(() => {
+            expect(screen.getByText('order:#1001')).toBeInTheDocument()
+        })
+
+        expect(screen.getByRole('button', { name: /previous/i })).toBeDisabled()
+        expect(screen.getByRole('button', { name: /next/i })).toBeEnabled()
+
+        await user.click(screen.getByRole('button', { name: /next/i }))
+
+        await waitFor(() => {
+            expect(screen.getByText('order:#1002')).toBeInTheDocument()
+        })
+
+        expect(screen.getByRole('button', { name: /previous/i })).toBeEnabled()
+
+        await user.click(screen.getByRole('button', { name: /next/i }))
+
+        await waitFor(() => {
+            expect(screen.getByText('order:#1003')).toBeInTheDocument()
+        })
+
+        expect(screen.getByRole('button', { name: /next/i })).toBeDisabled()
+
+        await user.click(screen.getByRole('button', { name: /previous/i }))
+
+        await waitFor(() => {
+            expect(screen.getByText('order:#1002')).toBeInTheDocument()
         })
     })
 })

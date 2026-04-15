@@ -20,10 +20,10 @@ beforeEach(() => {
 
 describe('useWidgetOrderProducts', () => {
     it.each([
-        ['order is null', { integrationId: 1, order: null }],
+        ['orders is empty', { integrationId: 1, orders: [] }],
         [
             'integrationId is undefined',
-            { integrationId: undefined, order: createOrder([]) },
+            { integrationId: undefined, orders: [createOrder([])] },
         ],
     ])('should pass empty productExternalIds when %s', (_, params) => {
         renderHook(() => useWidgetOrderProducts(params))
@@ -42,11 +42,36 @@ describe('useWidgetOrderProducts', () => {
             { product_id: 300, product_exists: false },
         ])
 
-        renderHook(() => useWidgetOrderProducts({ integrationId: 1, order }))
+        renderHook(() =>
+            useWidgetOrderProducts({ integrationId: 1, orders: [order] }),
+        )
 
         expect(mockUseProductsMap).toHaveBeenCalledWith({
             integrationId: 1,
             productExternalIds: ['100', '200'],
+        })
+    })
+
+    it('should collect product ids across multiple orders', () => {
+        const order1 = createOrder([
+            { product_id: 100, product_exists: true },
+            { product_id: 200, product_exists: true },
+        ])
+        const order2 = createOrder([
+            { product_id: 200, product_exists: true },
+            { product_id: 300, product_exists: true },
+        ])
+
+        renderHook(() =>
+            useWidgetOrderProducts({
+                integrationId: 1,
+                orders: [order1, order2],
+            }),
+        )
+
+        expect(mockUseProductsMap).toHaveBeenCalledWith({
+            integrationId: 1,
+            productExternalIds: ['100', '200', '300'],
         })
     })
 })

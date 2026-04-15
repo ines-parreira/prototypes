@@ -6,23 +6,25 @@ import type { Order } from 'constants/integrations/types/shopify'
 
 type Params = {
     integrationId: number | undefined
-    order: Order | null
+    orders: Order[]
 }
 
-export function useWidgetOrderProducts({ integrationId, order }: Params) {
+export function useWidgetOrderProducts({ integrationId, orders }: Params) {
     const productExternalIds = useMemo(() => {
-        if (!order) return []
+        if (orders.length === 0) return []
 
         const ids = new Set<string>()
 
-        order.line_items.forEach((lineItem) => {
-            if (lineItem.product_id && lineItem.product_exists !== false) {
-                ids.add(String(lineItem.product_id))
-            }
+        orders.forEach((order) => {
+            order.line_items.forEach((lineItem) => {
+                if (lineItem.product_id && lineItem.product_exists !== false) {
+                    ids.add(String(lineItem.product_id))
+                }
+            })
         })
 
         return Array.from(ids)
-    }, [order])
+    }, [orders])
 
     const { productsMap } = useProductsMap({
         integrationId,
