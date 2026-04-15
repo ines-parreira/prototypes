@@ -34,6 +34,12 @@ import css from './ChatPreviewPanel.less'
 
 export type ChatPreviewPage = 'homepage' | 'conversation' | 'orders' | 'track'
 
+export type SimulateConversationMessage = {
+    text: string
+    isHtml?: boolean
+    fromAgent: boolean
+}
+
 export type ChatPreviewPanelHandle = {
     displayPage: (page: ChatPreviewPage) => void
     updatePosition: (position: GorgiasChatPosition) => void
@@ -46,6 +52,8 @@ export type ChatPreviewPanelHandle = {
     ) => void
     reloadPreview: () => void
     updatePreviewOrders: (options: GorgiasChatPreviewOrdersOptions) => void
+    simulateConversation: (messages: SimulateConversationMessage[]) => void
+    setConversationMessages: (messages: SimulateConversationMessage[]) => void
 }
 
 type Props = {
@@ -54,11 +62,19 @@ type Props = {
     locale?: LANGUAGE
     initialPage?: ChatPreviewPage
     previewOrders?: GorgiasChatPreviewOrdersOptions
+    onChatLoaded?: () => void
 }
 
 export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
     (
-        { appId, headerActions, locale, initialPage, previewOrders }: Props,
+        {
+            appId,
+            headerActions,
+            locale,
+            initialPage,
+            previewOrders,
+            onChatLoaded,
+        }: Props,
         ref,
     ) => {
         const chatPreviewRef = useRef<ChatPreviewHandle>(null)
@@ -180,6 +196,28 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             })
         }
 
+        const simulateConversation = useCallback(
+            (messages: SimulateConversationMessage[]) => {
+                withGorgiasChat((gorgiasChat) => {
+                    gorgiasChat.simulateConversation?.(messages, 0)
+                })
+            },
+            [],
+        )
+
+        const setConversationMessages = useCallback(
+            (messages: SimulateConversationMessage[]) => {
+                withGorgiasChat((gorgiasChat) => {
+                    if (gorgiasChat.setConversationMessages) {
+                        gorgiasChat.setConversationMessages(messages)
+                    } else {
+                        gorgiasChat.simulateConversation?.(messages, 0)
+                    }
+                })
+            },
+            [],
+        )
+
         const onLoaded = useCallback(
             (gorgiasChat: NonNullable<Window['GorgiasChat']>) => {
                 const currentOrders = previewOrdersRef.current
@@ -193,8 +231,9 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
                 } else {
                     gorgiasChat.setPage(page)
                 }
+                onChatLoaded?.()
             },
-            [initialPage, selectedPage],
+            [initialPage, selectedPage, onChatLoaded],
         )
 
         useImperativeHandle(ref, () => ({
@@ -207,6 +246,8 @@ export const ChatPreviewPanel = forwardRef<ChatPreviewPanelHandle, Props>(
             updateWorkflowEntryPoints,
             reloadPreview,
             updatePreviewOrders,
+            simulateConversation,
+            setConversationMessages,
         }))
 
         return (

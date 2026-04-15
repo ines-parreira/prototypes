@@ -72,6 +72,21 @@ declare global {
                 selfServiceConfiguration: GorgiasChatPreviewSelfServiceConfiguration,
             ) => void
             setOrders?: (options: GorgiasChatPreviewOrdersOptions) => void
+            simulateConversation?: (
+                messages: {
+                    text: string
+                    isHtml?: boolean
+                    fromAgent: boolean
+                }[],
+                delayBetweenMs?: number,
+            ) => void
+            setConversationMessages?: (
+                messages: {
+                    text: string
+                    isHtml?: boolean
+                    fromAgent: boolean
+                }[],
+            ) => void
             on(event: string, callback: (data?: unknown) => void): void
             off(event: string, callback: (data?: unknown) => void): void
             init(): Promise<void>

@@ -93,6 +93,7 @@ describe('TrackOrderFlowView', () => {
             updateAvatarSettings: jest.fn(),
             updateQuickReplies: jest.fn(),
             updatePreviewOrders: jest.fn(),
+            setConversationMessages: jest.fn(),
         } satisfies ReturnType<typeof useChatPreviewPanel>)
         mockUseTrackOrderFlow.mockReturnValue({
             trackOrderFlow: {

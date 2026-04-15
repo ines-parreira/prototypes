@@ -25,6 +25,8 @@ jest.mock(
         useChatPreviewPanel: jest.fn(() => ({
             showPreviewPanel: jest.fn(),
             chatPreviewPortal: null,
+            setConversationMessages: jest.fn(),
+            updateQuickReplies: jest.fn(),
         })),
     }),
 )
@@ -163,11 +165,51 @@ describe('CancelOrderFlowView', () => {
         mockUseChatPreviewPanel.mockReturnValue({
             showPreviewPanel: mockShowPreviewPanel,
             chatPreviewPortal: null,
+            setConversationMessages: jest.fn(),
+            updateQuickReplies: jest.fn(),
         } as any)
 
         render(<CancelOrderFlowView />)
 
         expect(mockShowPreviewPanel).toHaveBeenCalledWith('test-app-id')
+    })
+
+    it('should call setConversationMessages with only the customer message when response text is empty', () => {
+        render(<CancelOrderFlowView />)
+
+        const { setConversationMessages } =
+            mockUseChatPreviewPanel.mock.results[0].value
+        expect(setConversationMessages).toHaveBeenCalledWith([
+            expect.objectContaining({ fromAgent: false, isHtml: true }),
+        ])
+    })
+
+    it('should call setConversationMessages with both customer and agent messages when response text is non-empty', () => {
+        mockUseCancelOrderFlow.mockReturnValue({
+            ...defaultHookReturn,
+            eligibility: {
+                key: 'order_created_at',
+                value: '10',
+                operator: 'lt',
+            },
+            responseMessageContent: {
+                html: '<p>Your order has been cancelled.</p>',
+                text: 'Your order has been cancelled.',
+            },
+        })
+
+        render(<CancelOrderFlowView />)
+
+        const { setConversationMessages } =
+            mockUseChatPreviewPanel.mock.results[0].value
+        expect(setConversationMessages).toHaveBeenCalledWith([
+            expect.objectContaining({ fromAgent: false, isHtml: true }),
+            expect.objectContaining({
+                fromAgent: true,
+                isHtml: true,
+                text: '<p>Your order has been cancelled.</p>',
+            }),
+        ])
     })
 
     it('should call handleSave on save click', async () => {

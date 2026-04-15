@@ -25,6 +25,7 @@ import { ChatPreviewPanel } from '../ChatPreviewPanel'
 import type {
     ChatPreviewPage,
     ChatPreviewPanelHandle,
+    SimulateConversationMessage,
 } from '../ChatPreviewPanel'
 
 export type ChatPreviewPanelContextValue = Omit<
@@ -64,6 +65,26 @@ export const useChatPreviewPanel = ({
 
     const [appId, setAppId] = useState<string | null>(null)
     const chatPreviewPanelRef = useRef<ChatPreviewPanelHandle>(null)
+    const pendingConversationMessages = useRef<
+        SimulateConversationMessage[] | null
+    >(null)
+    const pendingQuickReplies = useRef<{
+        enabled: boolean
+        replies: string[]
+    } | null>(null)
+
+    const onChatLoaded = useCallback(() => {
+        if (pendingConversationMessages.current) {
+            chatPreviewPanelRef.current?.setConversationMessages(
+                pendingConversationMessages.current,
+            )
+        }
+        if (pendingQuickReplies.current) {
+            chatPreviewPanelRef.current?.updateSettings({
+                quickReplies: pendingQuickReplies.current,
+            })
+        }
+    }, [])
 
     const chatPreviewPortal = warpToCollapsibleColumn(
         <ChatPreviewPanel
@@ -73,6 +94,7 @@ export const useChatPreviewPanel = ({
             locale={locale}
             initialPage={initialPage}
             previewOrders={previewOrders}
+            onChatLoaded={onChatLoaded}
         />,
     )
 
@@ -215,10 +237,19 @@ export const useChatPreviewPanel = ({
 
     const updateQuickReplies = useCallback(
         (quickReplies: { enabled: boolean; replies: string[] }) => {
+            pendingQuickReplies.current = quickReplies
             openChat()
             chatPreviewPanelRef.current?.updateSettings({ quickReplies })
         },
         [openChat],
+    )
+
+    const setConversationMessages = useCallback(
+        (messages: SimulateConversationMessage[]) => {
+            pendingConversationMessages.current = messages
+            chatPreviewPanelRef.current?.setConversationMessages(messages)
+        },
+        [],
     )
 
     return {
@@ -240,5 +271,6 @@ export const useChatPreviewPanel = ({
         updateAvatarSettings,
         updateQuickReplies,
         updatePreviewOrders,
+        setConversationMessages,
     }
 }

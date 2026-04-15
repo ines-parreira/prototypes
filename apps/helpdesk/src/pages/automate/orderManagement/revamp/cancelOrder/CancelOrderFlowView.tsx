@@ -10,6 +10,7 @@ import { useChatPreviewPanel } from 'pages/integrations/integration/components/g
 import { OrderManagementFlowHeader } from '../components/OrderManagementFlowHeader/OrderManagementFlowHeader'
 import { CancelOrderConfiguration } from './components/CancelOrderConfiguration'
 import { useCancelOrderFlow } from './hooks/useCancelOrderFlow'
+import { buildCancelOrderSimulationMessages } from './utils/buildCancelOrderSimulationMessages'
 
 export const CancelOrderFlowView = () => {
     const { shopName, shopType } = useParams<{
@@ -48,9 +49,15 @@ export const CancelOrderFlowView = () => {
         ) : undefined
     }, [selectedChannelId, chatChannels])
 
-    const { showPreviewPanel, chatPreviewPortal } = useChatPreviewPanel({
+    const {
+        showPreviewPanel,
+        chatPreviewPortal,
+        setConversationMessages,
+        updateQuickReplies,
+    } = useChatPreviewPanel({
         headerActions: PreviewPanelHeaderActions,
         locale: selectedChannelLanguage,
+        initialPage: 'conversation',
     })
 
     useEffect(() => {
@@ -67,6 +74,19 @@ export const CancelOrderFlowView = () => {
         handleResponseMessageChange,
         handleSave,
     } = useCancelOrderFlow()
+
+    const simulationMessages = useMemo(
+        () => buildCancelOrderSimulationMessages(responseMessageContent),
+        [responseMessageContent],
+    )
+
+    useEffect(() => {
+        updateQuickReplies({ enabled: false, replies: [] })
+    }, [updateQuickReplies])
+
+    useEffect(() => {
+        setConversationMessages(simulationMessages)
+    }, [setConversationMessages, simulationMessages])
 
     const isSaveDisabled = !isDirty || isUpdatePending
 

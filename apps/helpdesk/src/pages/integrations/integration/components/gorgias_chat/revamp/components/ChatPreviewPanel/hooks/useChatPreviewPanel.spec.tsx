@@ -386,6 +386,91 @@ describe('useChatPreviewPanel', () => {
         expect(mockDisplayPage).toHaveBeenCalledWith('homepage')
         expect(mockUpdateWorkflowEntrypoints).toHaveBeenCalledWith(entrypoints)
     })
+
+    it('setConversationMessages does not throw when ref is unattached', () => {
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        expect(() =>
+            result.current.setConversationMessages([
+                { text: 'Hello', isHtml: false, fromAgent: false },
+            ]),
+        ).not.toThrow()
+    })
+
+    it('setConversationMessages calls setConversationMessages on the ref when attached', () => {
+        const mockSetConversationMessages = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                setConversationMessages: mockSetConversationMessages,
+            }
+        }
+
+        const messages = [{ text: 'Hello', isHtml: false, fromAgent: false }]
+        result.current.setConversationMessages(messages)
+
+        expect(mockSetConversationMessages).toHaveBeenCalledWith(messages)
+    })
+
+    it('applies pending messages via onChatLoaded when widget becomes ready after setConversationMessages', () => {
+        const mockSetConversationMessages = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const messages = [{ text: 'Hello', isHtml: false, fromAgent: false }]
+        result.current.setConversationMessages(messages)
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                setConversationMessages: mockSetConversationMessages,
+            }
+        }
+
+        panelArg.props.onChatLoaded()
+
+        expect(mockSetConversationMessages).toHaveBeenCalledWith(messages)
+    })
+
+    it('does not call setConversationMessages via onChatLoaded when no messages were set', () => {
+        const mockSetConversationMessages = jest.fn()
+
+        renderHook(() => useChatPreviewPanel())
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                setConversationMessages: mockSetConversationMessages,
+            }
+        }
+
+        panelArg.props.onChatLoaded()
+
+        expect(mockSetConversationMessages).not.toHaveBeenCalled()
+    })
+
+    it('applies pending quick replies via onChatLoaded when widget becomes ready after updateQuickReplies', () => {
+        const mockUpdateSettings = jest.fn()
+
+        const { result } = renderHook(() => useChatPreviewPanel())
+
+        const quickReplies = { enabled: true, replies: ['reply 1', 'reply 2'] }
+        result.current.updateQuickReplies(quickReplies)
+
+        const panelArg = mockWarpToCollapsibleColumn.mock.calls.at(-1)?.[0]
+        if (panelArg?.ref) {
+            panelArg.ref.current = {
+                updateSettings: mockUpdateSettings,
+            }
+        }
+
+        panelArg.props.onChatLoaded()
+
+        expect(mockUpdateSettings).toHaveBeenCalledWith({ quickReplies })
+    })
 })
 
 describe('useGorgiasChatCreationWizardContext', () => {
@@ -420,6 +505,7 @@ describe('useGorgiasChatCreationWizardContext', () => {
             updateAvatarSettings: jest.fn(),
             updateQuickReplies: jest.fn(),
             updatePreviewOrders: jest.fn(),
+            setConversationMessages: jest.fn(),
         }
 
         const wrapper = ({ children }: { children: ReactNode }) => (
