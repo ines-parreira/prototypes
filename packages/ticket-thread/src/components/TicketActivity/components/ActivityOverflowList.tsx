@@ -9,6 +9,8 @@ import {
     OverflowList,
     OverflowListItem,
     Text,
+    Tooltip,
+    TooltipContent,
     useOverflowList,
 } from '@gorgias/axiom'
 
@@ -25,6 +27,7 @@ type ActivityOverflowListProps = {
         hiddenCount?: number
         visibleParticipantsCount?: number
     }) => ReactNode
+    trailingContentClassName?: string
     textClassName?: string
 }
 
@@ -34,6 +37,7 @@ export function ActivityOverflowList({
     className,
     participants,
     renderTrailingContent,
+    trailingContentClassName,
     textClassName,
 }: ActivityOverflowListProps) {
     return (
@@ -47,6 +51,7 @@ export function ActivityOverflowList({
             <ActivityOverflowListContent
                 participants={participants}
                 renderTrailingContent={renderTrailingContent}
+                trailingContentClassName={trailingContentClassName}
                 textClassName={textClassName}
             />
         </OverflowList>
@@ -56,6 +61,7 @@ export function ActivityOverflowList({
 function ActivityOverflowListContent({
     participants,
     renderTrailingContent,
+    trailingContentClassName,
     textClassName,
 }: Omit<ActivityOverflowListProps, 'className'>) {
     const { allItemsFit, hiddenCount, registerShowMoreButton } =
@@ -64,6 +70,7 @@ function ActivityOverflowListContent({
     const visibleParticipantsCount = allItemsFit
         ? participants.length
         : Math.max(participants.length - hiddenCount, 0)
+    const hiddenParticipants = participants.slice(visibleParticipantsCount)
 
     useLayoutEffect(() => {
         if (trailingContentRef.current) {
@@ -125,20 +132,58 @@ function ActivityOverflowListContent({
                     </OverflowListItem>
                 )
             })}
-            <Box
-                alignItems="center"
-                className={css.trailingContent}
-                style={{
-                    display: allItemsFit ? 'none' : 'flex',
-                }}
-                ref={trailingContentRef}
+            <Tooltip
+                placement="top left"
+                trigger={
+                    <Box
+                        alignItems="center"
+                        className={classNames(
+                            css.trailingContent,
+                            trailingContentClassName,
+                        )}
+                        style={{
+                            display: allItemsFit ? 'none' : 'flex',
+                        }}
+                        ref={trailingContentRef}
+                    >
+                        {renderTrailingContent({
+                            allItemsFit,
+                            hiddenCount,
+                            visibleParticipantsCount,
+                        })}
+                    </Box>
+                }
             >
-                {renderTrailingContent({
-                    allItemsFit,
-                    hiddenCount,
-                    visibleParticipantsCount,
-                })}
-            </Box>
+                <TooltipContent>
+                    <Box flexDirection="column" gap="xxxxs">
+                        {hiddenParticipants.map((participant, index) => {
+                            const participantName =
+                                participant.name || 'Unknown'
+
+                            return (
+                                <Box
+                                    key={`${participant.id}-${index}`}
+                                    alignItems="center"
+                                    display="inline-flex"
+                                    gap="xxs"
+                                >
+                                    <Avatar
+                                        name={participantName}
+                                        size="sm"
+                                        url={
+                                            participant.meta
+                                                ?.profile_picture_url ?? ''
+                                        }
+                                    />
+                                    <Text size="sm" variant="bold">
+                                        {participantName}
+                                    </Text>
+                                </Box>
+                            )
+                        })}
+                    </Box>
+                </TooltipContent>
+            </Tooltip>
         </>
     )
 }

@@ -1,6 +1,7 @@
 import { forwardRef } from 'react'
 import type { ReactNode } from 'react'
 
+import { screen } from '@testing-library/react'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type * as Axiom from '@gorgias/axiom'
@@ -25,8 +26,23 @@ vi.mock('@gorgias/axiom', async () => {
 
     return {
         ...actual,
-        Avatar: ({ name }: { name: string }) => (
-            <div aria-label={`Avatar ${name}`} />
+        Avatar: ({ name, url }: { name: string; url?: string }) => (
+            <div aria-label={`Avatar ${name}`} data-url={url} />
+        ),
+        Tooltip: ({
+            children,
+            trigger,
+        }: {
+            children: ReactNode
+            trigger: ReactNode
+        }) => (
+            <div>
+                {trigger}
+                <div style={{ display: 'none' }}>{children}</div>
+            </div>
+        ),
+        TooltipContent: ({ children }: { children: ReactNode }) => (
+            <div aria-label="overflowed participants tooltip">{children}</div>
         ),
         OverflowList: ({
             children,
@@ -124,7 +140,7 @@ describe('ActivityOverflowList', () => {
         overflowListState.hiddenCount = 2
         overflowListState.visibleCount = 2
 
-        const { container, queryByText } = render(
+        const { container } = render(
             <ActivityOverflowList
                 participants={[
                     buildParticipant(1, 'Alice'),
@@ -141,10 +157,65 @@ describe('ActivityOverflowList', () => {
         expect(getUserVisibleTextContent(container)).toBe(
             'Alice, Bob2 visible / 2 hidden',
         )
-        expect(queryByText('Carol')).not.toBeInTheDocument()
-        expect(queryByText('Dave')).not.toBeInTheDocument()
+        expect(getUserVisibleTextContent(container)).not.toContain('Carol')
+        expect(getUserVisibleTextContent(container)).not.toContain('Dave')
         expect(overflowListState.registerShowMoreButton).toHaveBeenCalledWith(
             expect.any(HTMLDivElement),
+        )
+    })
+
+    it('renders the overflowed participant names inside the tooltip content', () => {
+        overflowListState.allItemsFit = false
+        overflowListState.hiddenCount = 2
+        overflowListState.visibleCount = 2
+
+        render(
+            <ActivityOverflowList
+                participants={[
+                    buildParticipant(1, 'Alice'),
+                    buildParticipant(2, 'Bob'),
+                    buildParticipant(3, 'Carol'),
+                    buildParticipant(4, 'Dave'),
+                ]}
+                renderTrailingContent={() => <span>suffix</span>}
+            />,
+        )
+
+        expect(
+            screen.getByLabelText('overflowed participants tooltip'),
+        ).toHaveTextContent('Carol')
+        expect(
+            screen.getByLabelText('overflowed participants tooltip'),
+        ).toHaveTextContent('Dave')
+        expect(screen.getByLabelText('Avatar Carol')).toBeInTheDocument()
+        expect(screen.getByLabelText('Avatar Dave')).toBeInTheDocument()
+    })
+
+    it('falls back to Unknown for missing name in list and an empty avatar url for overflowed participants without data', () => {
+        overflowListState.allItemsFit = false
+        overflowListState.hiddenCount = 1
+        overflowListState.visibleCount = 1
+
+        render(
+            <ActivityOverflowList
+                participants={[
+                    buildParticipant(1, 'Alice'),
+                    {
+                        id: 2,
+                        name: null,
+                        meta: null,
+                    },
+                ]}
+                renderTrailingContent={() => <span>suffix</span>}
+            />,
+        )
+
+        expect(
+            screen.getByLabelText('overflowed participants tooltip'),
+        ).toHaveTextContent('Unknown')
+        expect(screen.getByLabelText('Avatar Unknown')).toHaveAttribute(
+            'data-url',
+            '',
         )
     })
 

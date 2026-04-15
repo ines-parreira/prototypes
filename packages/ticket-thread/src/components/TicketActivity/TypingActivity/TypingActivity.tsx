@@ -6,6 +6,7 @@ import { Box, Text } from '@gorgias/axiom'
 
 import { ActivityOverflowList } from '../components/ActivityOverflowList'
 import type { ActivityParticipant } from '../helpers/activityParticipants'
+import { formatHiddenParticipantsLabel } from '../helpers/activityParticipants'
 import { useAnimatedCollection } from '../hooks/useAnimatedCollection'
 
 import css from './TypingActivity.less'
@@ -79,7 +80,7 @@ export function TypingActivity({
                         size="sm"
                         variant="bold"
                     >
-                        {`${hiddenCount} others`}
+                        {formatHiddenParticipantsLabel(hiddenCount)}
                     </Text>
                     {renderTypingStatus(typingCopy)}
                 </>
@@ -94,6 +95,7 @@ export function TypingActivity({
             className={classNames(css.root, {
                 [css.hidden]: !isVisible,
             })}
+            mb="xs"
             flex={1}
         >
             <ActivityOverflowList

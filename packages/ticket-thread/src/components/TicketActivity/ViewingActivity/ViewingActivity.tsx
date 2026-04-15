@@ -6,6 +6,7 @@ import { Box, Text } from '@gorgias/axiom'
 
 import { ActivityOverflowList } from '../components/ActivityOverflowList'
 import type { ActivityParticipant } from '../helpers/activityParticipants'
+import { formatHiddenParticipantsLabel } from '../helpers/activityParticipants'
 import { useAnimatedCollection } from '../hooks/useAnimatedCollection'
 import { useRenderingBehaviour } from './useRenderingBehaviour'
 
@@ -54,7 +55,7 @@ export function ViewingActivity({ agents }: ViewingActivityProps) {
                         <Text size="sm">{' and '}</Text>
                     ) : null}
                     <Text size="sm" variant="bold">
-                        {`${hiddenCount} others`}
+                        {formatHiddenParticipantsLabel(hiddenCount)}
                     </Text>
                     <Text size="sm">{' are also viewing this ticket'}</Text>
                 </>
@@ -87,6 +88,7 @@ export function ViewingActivity({ agents }: ViewingActivityProps) {
                     className={css.list}
                     participants={displayedAgents}
                     renderTrailingContent={renderTrailingViewingContent}
+                    trailingContentClassName={css.trailingContent}
                 />
             </Box>
         </Box>

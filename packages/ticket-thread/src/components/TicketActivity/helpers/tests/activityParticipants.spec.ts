@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest'
 
-import { getActivityParticipantTextParts } from '../activityParticipants'
+import {
+    formatHiddenParticipantsLabel,
+    getActivityParticipantTextParts,
+} from '../activityParticipants'
 
 describe('getActivityParticipantTextParts', () => {
     it('returns no prefix or suffix for a single visible participant', () => {
@@ -53,5 +56,15 @@ describe('getActivityParticipantTextParts', () => {
             shouldPrefixWithAnd: false,
             suffix: ', ',
         })
+    })
+})
+
+describe('formatHiddenParticipantsLabel', () => {
+    it('returns the singular label for one hidden participant', () => {
+        expect(formatHiddenParticipantsLabel(1)).toBe('1 other')
+    })
+
+    it('returns the plural label for multiple hidden participants', () => {
+        expect(formatHiddenParticipantsLabel(2)).toBe('2 others')
     })
 })

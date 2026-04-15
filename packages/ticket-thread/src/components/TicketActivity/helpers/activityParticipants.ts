@@ -34,3 +34,7 @@ export function getActivityParticipantTextParts({
         shouldPrefixWithAnd,
     }
 }
+
+export function formatHiddenParticipantsLabel(hiddenCount: number) {
+    return hiddenCount === 1 ? '1 other' : `${hiddenCount} others`
+}
