@@ -11,6 +11,7 @@ import { MessageSender } from '../../MessageBubble/components/MessageHeader/Mess
 import { MessageTimestamp } from '../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../MessageBubble/MessageBubble'
 import { AiAgentTicketThreadPseudoEvent } from './AiAgentTicketThreadPseudoEvent'
+import { getAiAgentDisplayName } from './getAiAgentDisplayName'
 
 type AiAgentTicketThreadInternalNoteProps = {
     item: TicketThreadAiAgentInternalNoteItem
@@ -20,6 +21,8 @@ export function AiAgentTicketThreadInternalNote({
     item,
 }: AiAgentTicketThreadInternalNoteProps) {
     const { renderAiAgentReasoning } = useTicketThreadLegacyBridge()
+    const aiAgentName = getAiAgentDisplayName(item.data.sender.name)
+
     return (
         <Box
             width="100%"
@@ -31,7 +34,7 @@ export function AiAgentTicketThreadInternalNote({
                 <MessageHeaderContainer>
                     <Box alignItems="center" gap="xs">
                         <AIThinking variant="static" />
-                        <MessageSender sender={{ name: 'AI Agent' }} />
+                        <MessageSender sender={{ name: aiAgentName }} />
                     </Box>
                     <Box alignItems="center" gap="xs">
                         <MessageChannel
@@ -54,6 +57,7 @@ export function AiAgentTicketThreadInternalNote({
                 {renderAiAgentReasoning?.({ message: item.data })}
             </MessageBubble>
             <AiAgentTicketThreadPseudoEvent
+                agentName={aiAgentName}
                 pseudoEvent={item.data.decorations?.aiAgentPseudoEvent}
             />
         </Box>

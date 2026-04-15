@@ -13,6 +13,7 @@ import { MessageTimestamp } from '../../../MessageBubble/components/MessageHeade
 import { MessageBubble } from '../../../MessageBubble/MessageBubble'
 import { TicketMessageActions } from '../../../TicketMessageActions/TicketMessageActions'
 import { AiAgentTicketThreadPseudoEvent } from '../AiAgentTicketThreadPseudoEvent'
+import { getAiAgentDisplayName } from '../getAiAgentDisplayName'
 import { SmartFollowUps } from './SmartFollowUps'
 import { useSmartFollowUps } from './useSmartFollowUps'
 
@@ -24,6 +25,7 @@ export function AiAgentTicketThreadMessage({
     item,
 }: AiAgentTicketThreadMessageProps) {
     const { renderAiAgentReasoning } = useTicketThreadLegacyBridge()
+    const aiAgentName = getAiAgentDisplayName(item.data.sender.name)
     const {
         selectedSmartFollowUpIndex,
         showAllSmartFollowUps,
@@ -45,7 +47,7 @@ export function AiAgentTicketThreadMessage({
                 <MessageHeaderContainer>
                     <Box alignItems="center" gap="xs">
                         <AIThinking variant="static" />
-                        <MessageSender sender={{ name: 'AI Agent' }} />
+                        <MessageSender sender={{ name: aiAgentName }} />
                     </Box>
                     <Box alignItems="center" gap="xs">
                         <MessageChannel
@@ -77,6 +79,7 @@ export function AiAgentTicketThreadMessage({
                 {renderAiAgentReasoning?.({ message: item.data })}
             </MessageBubble>
             <AiAgentTicketThreadPseudoEvent
+                agentName={aiAgentName}
                 pseudoEvent={item.data.decorations?.aiAgentPseudoEvent}
             />
         </Box>

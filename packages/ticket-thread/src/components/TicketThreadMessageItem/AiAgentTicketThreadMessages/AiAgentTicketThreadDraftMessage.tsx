@@ -9,6 +9,7 @@ import { MessageDeliveryIcon } from '../../MessageBubble/components/MessageHeade
 import { MessageSender } from '../../MessageBubble/components/MessageHeader/MessageSender'
 import { MessageTimestamp } from '../../MessageBubble/components/MessageHeader/MessageTimestamp'
 import { MessageBubble } from '../../MessageBubble/MessageBubble'
+import { getAiAgentDisplayName } from './getAiAgentDisplayName'
 
 type AiAgentTicketThreadDraftMessageProps = {
     item: TicketThreadAiAgentDraftMessageItem
@@ -18,13 +19,14 @@ export function AiAgentTicketThreadDraftMessage({
     item,
 }: AiAgentTicketThreadDraftMessageProps) {
     const { renderAiAgentDraftMessage } = useTicketThreadLegacyBridge()
+    const aiAgentName = getAiAgentDisplayName(item.data.sender.name)
 
     return (
         <MessageBubble variant="internal-note">
             <MessageHeaderContainer>
                 <Box alignItems="center" gap="xs">
                     <AIThinking variant="static" />
-                    <MessageSender sender={{ name: 'AI Agent' }} />
+                    <MessageSender sender={{ name: aiAgentName }} />
                 </Box>
                 <Box alignItems="center" gap="xs">
                     <MessageChannel

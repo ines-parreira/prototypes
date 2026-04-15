@@ -117,6 +117,13 @@ const aiAgentSender: ItemForTag<
     meta: null,
 }
 
+const CUSTOM_AI_AGENT_NAME = 'Support Copilot'
+
+const customAiAgentSender: typeof aiAgentSender = {
+    ...aiAgentSender,
+    name: CUSTOM_AI_AGENT_NAME,
+}
+
 const mockSmartFollowUps = [
     {
         text: 'More than 20 miles',
@@ -848,11 +855,13 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        const item = createAiAgentMessageItem()
+        const item = createAiAgentMessageItem({
+            sender: customAiAgentSender,
+        })
 
         renderItem(item)
 
-        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText(CUSTOM_AI_AGENT_NAME)).toBeInTheDocument()
         expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
         expect(screen.getByText('AiAgentReasoningSlot')).toBeInTheDocument()
         expect(renderAiAgentReasoning).toHaveBeenCalledWith({
@@ -921,11 +930,13 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        const item = createAiAgentInternalNoteItem()
+        const item = createAiAgentInternalNoteItem({
+            sender: customAiAgentSender,
+        })
 
         renderItem(item)
 
-        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText(CUSTOM_AI_AGENT_NAME)).toBeInTheDocument()
         expect(screen.getByText(HELLO_MESSAGE_TEXT)).toBeInTheDocument()
         expect(screen.getByText('AiAgentReasoningSlot')).toBeInTheDocument()
         expect(renderAiAgentReasoning).toHaveBeenCalledWith({
@@ -947,6 +958,7 @@ describe('TicketThreadMessageItem', () => {
 
         renderItem(
             createAiAgentMessageItem({
+                sender: customAiAgentSender,
                 decorations: {
                     aiAgentPseudoEvent: attachedPseudoEvent,
                 },
@@ -956,7 +968,7 @@ describe('TicketThreadMessageItem', () => {
         expect(screen.getByText('Tagged')).toBeInTheDocument()
         expect(screen.getByText('Closed')).toBeInTheDocument()
         expect(screen.getByText('customer-follow-up')).toBeInTheDocument()
-        expect(screen.getAllByText('AI Agent')).toHaveLength(3)
+        expect(screen.getAllByText(CUSTOM_AI_AGENT_NAME)).toHaveLength(3)
     })
 
     it('keeps the AI agent message wrapper at full row width when pseudo-events are rendered', () => {
@@ -986,6 +998,7 @@ describe('TicketThreadMessageItem', () => {
 
         renderItem(
             createAiAgentInternalNoteItem({
+                sender: customAiAgentSender,
                 decorations: {
                     aiAgentPseudoEvent: attachedPseudoEvent,
                 },
@@ -993,7 +1006,7 @@ describe('TicketThreadMessageItem', () => {
         )
 
         expect(screen.getByText('Snoozed')).toBeInTheDocument()
-        expect(screen.getAllByText('AI Agent')).toHaveLength(2)
+        expect(screen.getAllByText(CUSTOM_AI_AGENT_NAME)).toHaveLength(2)
     })
 
     it('keeps the AI agent internal note wrapper at full row width when pseudo-events are rendered', () => {
@@ -1032,9 +1045,13 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        renderItem(createAiAgentDraftMessageItem())
+        renderItem(
+            createAiAgentDraftMessageItem({
+                sender: customAiAgentSender,
+            }),
+        )
 
-        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText(CUSTOM_AI_AGENT_NAME)).toBeInTheDocument()
         expect(
             screen.queryByText('AiAgentDraftMessageSlot'),
         ).not.toBeInTheDocument()
@@ -1052,10 +1069,13 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        const item = createAiAgentDraftMessageItem()
+        const item = createAiAgentDraftMessageItem({
+            sender: customAiAgentSender,
+        })
 
         renderItem(item)
 
+        expect(screen.getByText(CUSTOM_AI_AGENT_NAME)).toBeInTheDocument()
         expect(screen.getByText('AiAgentDraftMessageSlot')).toBeInTheDocument()
         expect(renderAiAgentDraftMessage).toHaveBeenCalledWith({
             message: item.data,
@@ -1069,9 +1089,13 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        renderItem(createAiAgentTrialMessageItem())
+        renderItem(
+            createAiAgentTrialMessageItem({
+                sender: customAiAgentSender,
+            }),
+        )
 
-        expect(screen.getByText('AI Agent')).toBeInTheDocument()
+        expect(screen.getByText(CUSTOM_AI_AGENT_NAME)).toBeInTheDocument()
         expect(
             screen.queryByText('AiAgentTrialMessageSlot'),
         ).not.toBeInTheDocument()
@@ -1089,10 +1113,13 @@ describe('TicketThreadMessageItem', () => {
             }),
         )
 
-        const item = createAiAgentTrialMessageItem()
+        const item = createAiAgentTrialMessageItem({
+            sender: customAiAgentSender,
+        })
 
         renderItem(item)
 
+        expect(screen.getByText(CUSTOM_AI_AGENT_NAME)).toBeInTheDocument()
         expect(
             screen.getByText('Preview message, only visible to you'),
         ).toBeInTheDocument()

@@ -4,6 +4,7 @@ import { Box, Dot, Icon, Tag, Text } from '@gorgias/axiom'
 import type { TicketThreadAiAgentPseudoEvent } from '../../../hooks/ai-agent-pseudo-events/types'
 import { TicketThreadAiAgentPseudoEventAction } from '../../../hooks/ai-agent-pseudo-events/types'
 import { TicketThreadEventContainer } from '../../TicketThreadEventItem/components/TicketThreadEventContainer'
+import { getAiAgentDisplayName } from './getAiAgentDisplayName'
 
 const ACTION_LABELS: Record<
     NonNullable<TicketThreadAiAgentPseudoEvent['action']>,
@@ -23,13 +24,19 @@ const ACTION_ICONS: Record<
     [TicketThreadAiAgentPseudoEventAction.Snooze]: 'timer-snooze',
 }
 
-function ByAiAgent() {
+type ByAiAgentProps = {
+    agentName?: string
+}
+
+function ByAiAgent({ agentName }: ByAiAgentProps) {
+    const displayName = getAiAgentDisplayName(agentName)
+
     return (
         <Box alignItems="center" gap="xxxs">
             <Text size="sm">by</Text>
             <Icon name="ai-alt-1" size="sm" />
             <Text size="sm" variant="medium">
-                AI Agent
+                {displayName}
             </Text>
         </Box>
     )
@@ -53,10 +60,12 @@ function PseudoEventTag({ tag }: PseudoEventTagProps) {
 }
 
 type AiAgentTicketThreadPseudoEventProps = {
+    agentName?: string
     pseudoEvent?: TicketThreadAiAgentPseudoEvent
 }
 
 export function AiAgentTicketThreadPseudoEvent({
+    agentName,
     pseudoEvent,
 }: AiAgentTicketThreadPseudoEventProps) {
     /* v8 ignore next -- defensive fallback for unexpected renderer input */
@@ -76,14 +85,14 @@ export function AiAgentTicketThreadPseudoEvent({
                             tag={tag}
                         />
                     ))}
-                    <ByAiAgent />
+                    <ByAiAgent agentName={agentName} />
                 </TicketThreadEventContainer>
             )}
             {pseudoEvent.action && (
                 <TicketThreadEventContainer>
                     <Icon name={ACTION_ICONS[pseudoEvent.action]} />
                     <Text size="sm">{ACTION_LABELS[pseudoEvent.action]}</Text>
-                    <ByAiAgent />
+                    <ByAiAgent agentName={agentName} />
                 </TicketThreadEventContainer>
             )}
         </Box>
