@@ -44,6 +44,7 @@ function getCachedTicketViewNavigation({
     const isNextEnabled = nextTicketId !== undefined
 
     return {
+        isSearchView: false,
         shouldDisplay: isPreviousEnabled || isNextEnabled,
         shouldUseLegacyFunctions: false,
         previousTicketId,

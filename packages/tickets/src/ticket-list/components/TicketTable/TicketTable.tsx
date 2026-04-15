@@ -30,11 +30,13 @@ import { useBulkActionMenuState } from '../../hooks/useBulkActionMenuState'
 import { useIsTrashLikeView } from '../../hooks/useIsTrashLikeView'
 import { useMarkTicketAsRead } from '../../hooks/useMarkTicketAsRead'
 import { useTicketListActions } from '../../hooks/useTicketListActions'
+import { useTicketSearchUrlState } from '../../hooks/useTicketSearchUrlState'
 import { useTicketTableBulkActionShortcuts } from '../../hooks/useTicketTableBulkActionShortcuts'
 import { useTicketTableColumnVisibility } from '../../hooks/useTicketTableColumnVisibility'
 import type { DirtyViewInput } from '../../hooks/useTicketTableData'
 import { useTicketTableData } from '../../hooks/useTicketTableData'
 import { useViewVisibleTickets } from '../../hooks/useViewVisibleTickets'
+import type { SearchTracking } from '../../types/searchTracking'
 import { getPlaceholderKind } from '../../utils/getPlaceholderKind'
 import { TicketListEmptyPlaceholder } from '../TicketListEmptyPlaceholder'
 import { parseSortOrder } from '../TicketListHeader/SortOrderDropdown'
@@ -46,6 +48,8 @@ import css from './TicketTable.module.less'
 
 type Props = {
     viewId: number
+    isSearchMode?: boolean
+    onSearchResultCountChange?: (count?: number) => void
     onFixFilters?: () => void
     onApplyMacro?: (ticketIds: number[]) => void
     onNavigateToTicket?: () => void
@@ -53,6 +57,7 @@ type Props = {
     isDraftView?: boolean
     draftFields?: ViewField[]
     onDraftFieldsChange?: (fields: ViewField[]) => void
+    searchTracking?: SearchTracking
 }
 
 function areColumnsEqual(left: string[], right: string[]) {
@@ -64,6 +69,8 @@ function areColumnsEqual(left: string[], right: string[]) {
 
 function TicketTableComponent({
     viewId,
+    isSearchMode = false,
+    onSearchResultCountChange,
     onFixFilters,
     onApplyMacro,
     onNavigateToTicket,
@@ -71,6 +78,7 @@ function TicketTableComponent({
     isDraftView = false,
     draftFields,
     onDraftFieldsChange,
+    searchTracking,
 }: Props) {
     const history = useHistory()
     const { currentUserId } = useCurrentUserId()
@@ -79,6 +87,8 @@ function TicketTableComponent({
         () => Object.values(rowSelection).some(Boolean),
         [rowSelection],
     )
+    const { query, filters } = useTicketSearchUrlState()
+    const [searchCursor, setSearchCursor] = useState<string | undefined>()
 
     const { data: viewResponse } = useGetView(viewId, {
         query: {
@@ -86,15 +96,20 @@ function TicketTableComponent({
         },
     })
     const view = viewResponse?.data
-    const isInboxView = viewResponse ? getIsInboxView(view) : undefined
     const shouldShowColumnEditingFooter =
         !isDraftView && view?.visibility !== ViewVisibility.Private
+    const isInboxView = isSearchMode
+        ? false
+        : viewResponse
+          ? getIsInboxView(view)
+          : undefined
 
     const {
         items,
         isLoading,
         hasNextPage,
         hasPreviousPage,
+        totalResources,
         currentPageIndex,
         onPageChange,
         onPageSizeChange,
@@ -106,9 +121,19 @@ function TicketTableComponent({
     } = useTicketTableData({
         viewId,
         dirtyView,
+        searchView: isSearchMode
+            ? {
+                  enabled: true,
+                  query,
+                  filters,
+                  cursor: searchCursor,
+                  setCursor: setSearchCursor,
+              }
+            : undefined,
         enablePersistedUpdates: !view?.deactivated_datetime,
         pauseUpdates: hasSelection,
         isDraftView,
+        searchTracking,
     })
 
     const placeholderKind = getPlaceholderKind({
@@ -118,7 +143,10 @@ function TicketTableComponent({
     })
     const { viewVisibleTickets } = useViewVisibleTickets()
     const displayedTicketIds = useMemo(
-        () => items.map((ticket) => ticket.id),
+        () =>
+            items
+                .map((ticket) => ticket.id)
+                .filter((id): id is number => id !== undefined),
         [items],
     )
     const displayedTicketIdsKey = displayedTicketIds.join(',')
@@ -142,11 +170,20 @@ function TicketTableComponent({
 
     const handleRowClick = useCallback(
         (ticket: TicketCompact) => {
+            const selectedIndex = items.findIndex(
+                (item) => item.id === ticket.id,
+            )
+            if (selectedIndex >= 0) {
+                searchTracking?.onSelection?.({
+                    id: ticket.id,
+                    index: selectedIndex,
+                })
+            }
             if (ticket.is_unread) markAsRead(ticket.id)
             onNavigateToTicket?.()
-            history.push(`/app/views/${viewId}/${ticket.id}`)
+            history.push(`/app/ticket/${ticket.id}`)
         },
-        [history, markAsRead, onNavigateToTicket, viewId],
+        [history, items, markAsRead, onNavigateToTicket, searchTracking],
     )
 
     const { field: currentSortField, direction: currentSortDirection } =
@@ -167,13 +204,6 @@ function TicketTableComponent({
         draftFields,
         onDraftFieldsChange,
     })
-    const localStoragePersistence = useMemo(
-        () =>
-            isDraftView
-                ? undefined
-                : createLocalStoragePersistence(`ticket-table-${viewId}`),
-        [isDraftView, viewId],
-    )
     // Remove this remount workaround once Axiom exposes a mounted column reset API.
     const [tableVersion, setTableVersion] = useState(0)
 
@@ -186,10 +216,12 @@ function TicketTableComponent({
                 ) => boolean,
                 currentUserId,
                 dateTimePreferences,
+                isSearchMode,
             }),
         [
             currentUserId,
             dateTimePreferences,
+            isSearchMode,
             shouldShowTranslatedContent,
             translationMap,
         ],
@@ -255,6 +287,18 @@ function TicketTableComponent({
         }
     }, [clearSelection, previousSortOrder, sortOrder])
 
+    useEffect(() => {
+        if (!isSearchMode) {
+            return
+        }
+
+        setSearchCursor(undefined)
+    }, [filters, isSearchMode, query])
+
+    useEffect(() => {
+        onSearchResultCountChange?.(isSearchMode ? totalResources : undefined)
+    }, [isSearchMode, onSearchResultCountChange, totalResources])
+
     useTicketTableBulkActionShortcuts({
         hasSelection,
         isBulkActionLoading,
@@ -279,6 +323,17 @@ function TicketTableComponent({
     const handleUndeleteFromTrashView = useCallback(async () => {
         await handleUndelete({ removeFromCurrentViewCache: true })
     }, [handleUndelete])
+    const localStoragePersistence = useMemo(
+        () =>
+            isDraftView
+                ? undefined
+                : createLocalStoragePersistence(
+                      isSearchMode
+                          ? `ticket-table-${viewId}-search`
+                          : `ticket-table-${viewId}`,
+                  ),
+        [isDraftView, isSearchMode, viewId],
+    )
 
     const handleResetToDefault = useCallback(() => {
         if (!localStoragePersistence) {
@@ -316,7 +371,7 @@ function TicketTableComponent({
         )
     }
 
-    if (!viewResponse && !isDraftView) {
+    if (!viewResponse && !isDraftView && !isSearchMode) {
         return (
             <div className={css.container}>
                 <TicketListEmptyPlaceholder
@@ -331,15 +386,15 @@ function TicketTableComponent({
     return (
         <div className={css.container}>
             <DataTable
-                key={`${viewId}-${sortOrder}-${tableVersion}`}
-                persistence={
-                    localStoragePersistence
-                        ? {
-                              enable: true,
-                              localStorage: localStoragePersistence,
-                          }
-                        : undefined
+                key={
+                    isSearchMode
+                        ? `${viewId}-search-${query}-${searchCursor ?? ''}-${tableVersion}`
+                        : `${viewId}-${sortOrder}-${tableVersion}`
                 }
+                persistence={{
+                    enable: true,
+                    localStorage: localStoragePersistence,
+                }}
                 data={items}
                 columns={columns}
                 isLoading={isLoading}

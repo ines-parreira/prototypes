@@ -1,18 +1,21 @@
-import { DataTableBaseCell, OverflowTooltip, Text } from '@gorgias/axiom'
+import { DataTableBaseCell, OverflowTooltip } from '@gorgias/axiom'
+
+import type { DisplayTextValue } from '../../../types/display'
+import { DisplayText } from './DisplayText'
 
 type Props = {
-    value: string | null | undefined
+    value: DisplayTextValue | null | undefined
 }
 
 export function SingleLineTextCell({ value }: Props) {
-    if (!value) {
+    if (!value?.text && !value?.highlightedHtml) {
         return <DataTableBaseCell>{null}</DataTableBaseCell>
     }
 
     return (
         <DataTableBaseCell alignItems="stretch">
-            <OverflowTooltip placement="right">
-                <Text overflow="ellipsis">{value}</Text>
+            <OverflowTooltip>
+                <DisplayText value={value} overflow="ellipsis" />
             </OverflowTooltip>
         </DataTableBaseCell>
     )

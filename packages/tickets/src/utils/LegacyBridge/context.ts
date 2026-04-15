@@ -2,6 +2,7 @@ import { createContext } from 'react'
 
 export type LegacyBridgeContextType = {
     ticketViewNavigation: {
+        isSearchView?: boolean
         shouldDisplay: boolean
         shouldUseLegacyFunctions: boolean
         previousTicketId: number | undefined

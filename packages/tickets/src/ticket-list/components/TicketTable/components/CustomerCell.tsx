@@ -1,14 +1,10 @@
-import type { TicketCompact } from '@gorgias/helpdesk-types'
-
-import { useTicketDisplayData } from '../../../hooks/useTicketDisplayData'
+import type { DisplayTextValue } from '../../../types/display'
 import { SingleLineTextCell } from './SingleLineTextCell'
 
 type Props = {
-    ticket: TicketCompact
+    value: DisplayTextValue
 }
 
-export function CustomerCell({ ticket }: Props) {
-    const { customerName } = useTicketDisplayData({ ticket })
-
-    return <SingleLineTextCell value={customerName} />
+export function CustomerCell({ value }: Props) {
+    return <SingleLineTextCell value={value} />
 }

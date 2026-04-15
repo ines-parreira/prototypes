@@ -20,6 +20,7 @@ type ViewHeaderProps = {
     titleOverride?: string
     hideCreateTicket?: boolean
     isDraftView?: boolean
+    isSearchMode?: boolean
 }
 
 export function ViewHeader({
@@ -29,6 +30,7 @@ export function ViewHeader({
     titleOverride,
     hideCreateTicket = false,
     isDraftView = false,
+    isSearchMode = false,
 }: ViewHeaderProps) {
     const { data: viewResponse } = useGetView(viewId, {
         query: {
@@ -79,7 +81,7 @@ export function ViewHeader({
             p="lg"
         >
             <Box flexDirection="row" alignItems="center" gap="xs">
-                {!isDraftView && (
+                {!isDraftView && !isSearchMode && (
                     <Tooltip
                         trigger={
                             <Button
@@ -97,7 +99,7 @@ export function ViewHeader({
                 <Heading size="xl">{viewName}</Heading>
             </Box>
             <Box flexDirection="row" alignItems="center" gap="xs">
-                {!isDraftView && (
+                {!isDraftView && !isSearchMode && (
                     <Tooltip
                         trigger={
                             <Button
@@ -112,7 +114,7 @@ export function ViewHeader({
                         <TooltipContent title="Edit view" />
                     </Tooltip>
                 )}
-                {!hideCreateTicket && createTicketButton}
+                {!hideCreateTicket && !isSearchMode && createTicketButton}
             </Box>
         </Box>
     )

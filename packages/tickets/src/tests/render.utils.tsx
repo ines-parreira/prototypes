@@ -70,6 +70,7 @@ const defaultOptions = {
     toggleQuickReplies: vi.fn(),
     onToggleUnread: vi.fn(),
     ticketViewNavigation: {
+        isSearchView: false,
         shouldDisplay: false,
         shouldUseLegacyFunctions: false,
         previousTicketId: undefined,

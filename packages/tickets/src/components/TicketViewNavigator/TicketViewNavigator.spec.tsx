@@ -26,6 +26,7 @@ vi.mock('@repo/logging', () => ({
 
 const mockTicketViewNavigation: LegacyBridgeContextType['ticketViewNavigation'] =
     {
+        isSearchView: false,
         shouldDisplay: true,
         shouldUseLegacyFunctions: false,
         previousTicketId: 100,

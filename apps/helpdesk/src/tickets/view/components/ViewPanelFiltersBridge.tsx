@@ -86,6 +86,11 @@ type Props = {
     draftFields?: ViewField[]
     isExpanded: boolean
     onExpandedChange: (isExpanded: boolean) => void
+    hideViewNameInput?: boolean
+    hideFooterActions?: boolean
+    title?: string
+    isSearchMode?: boolean
+    searchResultCount?: number
 }
 
 type SaveMenuButtonProps = Pick<
@@ -137,6 +142,11 @@ export function ViewPanelFiltersBridge({
     draftFields,
     isExpanded,
     onExpandedChange,
+    hideViewNameInput = false,
+    hideFooterActions = false,
+    title = 'Edit view',
+    isSearchMode = false,
+    searchResultCount,
 }: Props) {
     const dispatch = useAppDispatch()
     const history = useHistory()
@@ -223,6 +233,11 @@ export function ViewPanelFiltersBridge({
         'Fix incomplete filters before saving this view.'
     const isSaveDisabled = isSubmitting || !areFiltersValid || !isViewNameValid
     const canExportTickets = isExistingView
+    const totalSearchResources = searchResultCount
+    const searchResultCountLabel =
+        totalSearchResources == null
+            ? null
+            : `${totalSearchResources >= 5000 ? '5000+' : totalSearchResources} ${totalSearchResources === 1 ? 'ticket' : 'tickets'}`
 
     const refreshViewData = useCallback(
         async (targetViewId: number = viewId) => {
@@ -499,7 +514,7 @@ export function ViewPanelFiltersBridge({
                     title={({ isExpanded }) => (
                         <Box flexDirection="row" alignItems="center" gap="xs">
                             <Icon name="slider-filter" size="sm" />
-                            <Text variant="bold">Edit view</Text>
+                            <Text variant="bold">{title}</Text>
                             <Icon
                                 name={
                                     isExpanded
@@ -511,7 +526,30 @@ export function ViewPanelFiltersBridge({
                         </Box>
                     )}
                     trailingSlot={
-                        isDirty ? (
+                        isSearchMode ? (
+                            searchResultCountLabel ? (
+                                <Box
+                                    className={css.headerTrailing}
+                                    flexShrink={0}
+                                >
+                                    <Text
+                                        size="sm"
+                                        color="content-neutral-secondary"
+                                    >
+                                        {searchResultCountLabel}
+                                    </Text>
+                                </Box>
+                            ) : null
+                        ) : searchResultCountLabel ? (
+                            <Box className={css.headerTrailing} flexShrink={0}>
+                                <Text
+                                    size="sm"
+                                    color="content-neutral-secondary"
+                                >
+                                    {searchResultCountLabel}
+                                </Text>
+                            </Box>
+                        ) : isDirty ? (
                             <Box className={css.headerTrailing} flexShrink={0}>
                                 <Text
                                     size="sm"
@@ -531,50 +569,59 @@ export function ViewPanelFiltersBridge({
                         gap="md"
                         width="100%"
                     >
-                        <Box flexDirection="column" gap="xs" width="100%">
-                            <Box width="40%">
-                                <TextField
-                                    label="View name"
-                                    value={viewName}
-                                    onChange={setViewName}
-                                    isDisabled={isSubmitting || isSystemView}
-                                    leadingSlot={
-                                        <EmojiSelect
-                                            container={filterMenuContainer}
-                                            emoji={activeViewEmoji || null}
-                                            triggerMode="axiom-button"
-                                            onEmojiSelect={(emoji) => {
-                                                dispatch(
-                                                    updateView(
-                                                        activeView.mergeDeep({
-                                                            decoration: {
-                                                                emoji,
-                                                            },
-                                                        }),
-                                                    ),
-                                                )
-                                            }}
-                                            onEmojiClear={() => {
-                                                if (
-                                                    activeView.get('decoration')
-                                                ) {
+                        {!hideViewNameInput && (
+                            <Box flexDirection="column" gap="xs" width="100%">
+                                <Box width="40%">
+                                    <TextField
+                                        label="View name"
+                                        value={viewName}
+                                        onChange={setViewName}
+                                        isDisabled={
+                                            isSubmitting || isSystemView
+                                        }
+                                        leadingSlot={
+                                            <EmojiSelect
+                                                container={filterMenuContainer}
+                                                emoji={activeViewEmoji || null}
+                                                triggerMode="axiom-button"
+                                                onEmojiSelect={(emoji) => {
                                                     dispatch(
                                                         updateView(
-                                                            activeView.deleteIn(
-                                                                [
-                                                                    'decoration',
-                                                                    'emoji',
-                                                                ],
+                                                            activeView.mergeDeep(
+                                                                {
+                                                                    decoration:
+                                                                        {
+                                                                            emoji,
+                                                                        },
+                                                                },
                                                             ),
                                                         ),
                                                     )
-                                                }
-                                            }}
-                                        />
-                                    }
-                                />
+                                                }}
+                                                onEmojiClear={() => {
+                                                    if (
+                                                        activeView.get(
+                                                            'decoration',
+                                                        )
+                                                    ) {
+                                                        dispatch(
+                                                            updateView(
+                                                                activeView.deleteIn(
+                                                                    [
+                                                                        'decoration',
+                                                                        'emoji',
+                                                                    ],
+                                                                ),
+                                                            ),
+                                                        )
+                                                    }
+                                                }}
+                                            />
+                                        }
+                                    />
+                                </Box>
                             </Box>
-                        </Box>
+                        )}
                         <Box
                             className={css.filtersBody}
                             flexDirection="column"
@@ -600,133 +647,145 @@ export function ViewPanelFiltersBridge({
                         </Box>
                     </Box>
                 </DisclosurePanel>
-                <Box
-                    className={css.footer}
-                    flexDirection="column"
-                    alignItems="stretch"
-                    gap="xs"
-                >
+                {!hideFooterActions && (
                     <Box
-                        className={css.footerActions}
-                        flexDirection="row"
-                        justifyContent="space-between"
-                        alignItems="center"
+                        className={css.footer}
+                        flexDirection="column"
+                        alignItems="stretch"
                         gap="xs"
-                        flexWrap="wrap"
                     >
                         <Box
+                            className={css.footerActions}
                             flexDirection="row"
+                            justifyContent="space-between"
                             alignItems="center"
                             gap="xs"
                             flexWrap="wrap"
                         >
-                            {isSystemView && isExistingView ? (
-                                <Text
-                                    size="sm"
-                                    color="content-neutral-secondary"
-                                >
-                                    This view cannot be saved.
-                                </Text>
-                            ) : (
-                                <Tooltip
-                                    isDisabled={
-                                        !isSaveDisabled || areFiltersValid
-                                    }
-                                    trigger={
-                                        <div className={css.saveActions}>
-                                            {isExistingView ? (
-                                                <MultiButton>
+                            <Box
+                                flexDirection="row"
+                                alignItems="center"
+                                gap="xs"
+                                flexWrap="wrap"
+                            >
+                                {isSystemView && isExistingView ? (
+                                    <Text
+                                        size="sm"
+                                        color="content-neutral-secondary"
+                                    >
+                                        This view cannot be saved.
+                                    </Text>
+                                ) : (
+                                    <Tooltip
+                                        isDisabled={
+                                            !isSaveDisabled || areFiltersValid
+                                        }
+                                        trigger={
+                                            <div className={css.saveActions}>
+                                                {isExistingView ? (
+                                                    <MultiButton>
+                                                        <Button
+                                                            onClick={
+                                                                handleUpdateClick
+                                                            }
+                                                            isLoading={
+                                                                isSubmitting
+                                                            }
+                                                            isDisabled={
+                                                                isSaveDisabled ||
+                                                                !isExistingView
+                                                            }
+                                                        >
+                                                            Update view
+                                                        </Button>
+                                                        <SaveMenuButton
+                                                            isDisabled={
+                                                                isSaveDisabled
+                                                            }
+                                                            onSaveAsNew={
+                                                                handleSaveAsNew
+                                                            }
+                                                        />
+                                                    </MultiButton>
+                                                ) : (
                                                     <Button
-                                                        onClick={
-                                                            handleUpdateClick
-                                                        }
+                                                        onClick={() => {
+                                                            void handleSaveAsNew()
+                                                        }}
                                                         isLoading={isSubmitting}
-                                                        isDisabled={
-                                                            isSaveDisabled ||
-                                                            !isExistingView
-                                                        }
-                                                    >
-                                                        Update view
-                                                    </Button>
-                                                    <SaveMenuButton
                                                         isDisabled={
                                                             isSaveDisabled
                                                         }
-                                                        onSaveAsNew={
-                                                            handleSaveAsNew
-                                                        }
-                                                    />
-                                                </MultiButton>
-                                            ) : (
-                                                <Button
-                                                    onClick={() => {
-                                                        void handleSaveAsNew()
-                                                    }}
-                                                    isLoading={isSubmitting}
-                                                    isDisabled={isSaveDisabled}
-                                                >
-                                                    Create view
-                                                </Button>
-                                            )}
-                                        </div>
-                                    }
-                                >
-                                    <TooltipContent
-                                        title={invalidFiltersMessage}
-                                    />
-                                </Tooltip>
-                            )}
-                            <Button
-                                variant="secondary"
-                                onClick={handleCancel}
-                                isDisabled={isSubmitting}
-                            >
-                                Cancel
-                            </Button>
-                        </Box>
-                        <Box
-                            flexDirection="row"
-                            alignItems="center"
-                            gap="xs"
-                            flexWrap="wrap"
-                        >
-                            {isExistingView && (
-                                <>
-                                    <Tooltip
-                                        trigger={
-                                            <Button
-                                                variant="secondary"
-                                                aria-label="Export tickets"
-                                                icon="comm-share-i-os-export"
-                                                onClick={() => {
-                                                    void handleExportTickets()
-                                                }}
-                                                isDisabled={
-                                                    isLaunchingExport ||
-                                                    !canExportTickets
-                                                }
-                                                isLoading={isLaunchingExport}
-                                            />
+                                                    >
+                                                        Create view
+                                                    </Button>
+                                                )}
+                                            </div>
                                         }
                                     >
-                                        <TooltipContent title="Export tickets" />
+                                        <TooltipContent
+                                            title={invalidFiltersMessage}
+                                        />
                                     </Tooltip>
-                                    <ViewSharingButton view={activeView} />
-                                </>
-                            )}
-                            {isExistingView && !isSystemView && (
+                                )}
                                 <Button
-                                    intent="destructive"
-                                    variant="primary"
-                                    onClick={() => setIsDeleteConfirmOpen(true)}
-                                    isDisabled={isSubmitting || !isExistingView}
+                                    variant="secondary"
+                                    onClick={handleCancel}
+                                    isDisabled={isSubmitting}
                                 >
-                                    Delete
+                                    Cancel
                                 </Button>
-                            )}
+                            </Box>
+                            <Box
+                                flexDirection="row"
+                                alignItems="center"
+                                gap="xs"
+                                flexWrap="wrap"
+                            >
+                                {isExistingView && (
+                                    <>
+                                        <Tooltip
+                                            trigger={
+                                                <Button
+                                                    variant="secondary"
+                                                    aria-label="Export tickets"
+                                                    icon="comm-share-i-os-export"
+                                                    onClick={() => {
+                                                        void handleExportTickets()
+                                                    }}
+                                                    isDisabled={
+                                                        isLaunchingExport ||
+                                                        !canExportTickets
+                                                    }
+                                                    isLoading={
+                                                        isLaunchingExport
+                                                    }
+                                                />
+                                            }
+                                        >
+                                            <TooltipContent title="Export tickets" />
+                                        </Tooltip>
+                                        <ViewSharingButton view={activeView} />
+                                    </>
+                                )}
+                                {isExistingView && !isSystemView && (
+                                    <Button
+                                        intent="destructive"
+                                        variant="primary"
+                                        onClick={() =>
+                                            setIsDeleteConfirmOpen(true)
+                                        }
+                                        isDisabled={
+                                            isSubmitting || !isExistingView
+                                        }
+                                    >
+                                        Delete
+                                    </Button>
+                                )}
+                            </Box>
                         </Box>
                     </Box>
-                </Box>
+                )}
             </Disclosure>
             <Modal
                 size={ModalSize.Sm}

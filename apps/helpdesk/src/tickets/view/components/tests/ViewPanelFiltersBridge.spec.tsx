@@ -199,6 +199,7 @@ jest.mock('state/views/selectors', () => ({
     areFiltersValid: jest.fn(),
     getActiveView: jest.fn(),
     getLastViewId: jest.fn(),
+    getNavigation: jest.fn(),
     getPristineActiveView: jest.fn(),
     getViewIdToDisplay: jest.fn(),
     isDirty: jest.fn(),
@@ -207,6 +208,7 @@ const {
     areFiltersValid: getAreFiltersValid,
     getActiveView,
     getLastViewId,
+    getNavigation,
     getPristineActiveView,
     getViewIdToDisplay,
     isDirty: getIsDirty,
@@ -214,6 +216,7 @@ const {
     areFiltersValid: unknown
     getActiveView: unknown
     getLastViewId: unknown
+    getNavigation: unknown
     getPristineActiveView: unknown
     getViewIdToDisplay: unknown
     isDirty: unknown
@@ -285,21 +288,32 @@ describe('ViewPanelFiltersBridge', () => {
         payload: 42,
     }
 
-    const renderComponent = ({
-        isExpanded = true,
-        draftFields,
-    }: {
-        isExpanded?: boolean
-        draftFields?: ViewField[]
-    } = {}) =>
-        render(
+    const renderComponent = (
+        isExpandedOrProps:
+            | boolean
+            | Partial<
+                  React.ComponentProps<typeof ViewPanelFiltersBridge>
+              > = true,
+        maybeProps?: Partial<
+            React.ComponentProps<typeof ViewPanelFiltersBridge>
+        >,
+    ) => {
+        const isExpanded =
+            typeof isExpandedOrProps === 'boolean' ? isExpandedOrProps : true
+        const props =
+            typeof isExpandedOrProps === 'boolean'
+                ? maybeProps
+                : isExpandedOrProps
+
+        return render(
             <ViewPanelFiltersBridge
                 viewId={42}
-                draftFields={draftFields}
                 isExpanded={isExpanded}
                 onExpandedChange={onExpandedChange}
+                {...props}
             />,
         )
+    }
 
     beforeEach(() => {
         dispatchMock.mockReset()
@@ -336,6 +350,7 @@ describe('ViewPanelFiltersBridge', () => {
             if (selector === getAreFiltersValid) return true
             if (selector === getIsDirty) return false
             if (selector === getLastViewId) return 3
+            if (selector === getNavigation) return fromJS({})
             if (selector === getCurrentUser) return currentUser
             if (selector === getHasAutomate) return true
             if (selector === getSchemas) return fromJS({})
@@ -1061,6 +1076,162 @@ describe('ViewPanelFiltersBridge', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('renders the default bridge chrome when overrides are omitted', () => {
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', { name: /edit view/i }),
+        ).toBeInTheDocument()
+        expect(screen.getByLabelText(/view name/i)).toBeEnabled()
+        expect(
+            screen.getByRole('button', { name: /update view/i }),
+        ).toBeInTheDocument()
+        expect(
+            screen.getByRole('button', { name: /cancel/i }),
+        ).toBeInTheDocument()
+        expect(screen.queryByText('200 tickets')).not.toBeInTheDocument()
+        expect(screen.queryByText('1 ticket')).not.toBeInTheDocument()
+    })
+
+    it('supports search-mode bridge chrome overrides', () => {
+        renderComponent(true, {
+            title: 'Advanced filters',
+            hideViewNameInput: true,
+            hideFooterActions: true,
+        })
+
+        expect(
+            screen.getByRole('button', { name: /advanced filters/i }),
+        ).toBeInTheDocument()
+        expect(screen.queryByLabelText(/view name/i)).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /update view/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /cancel/i }),
+        ).not.toBeInTheDocument()
+    })
+
+    it('shows the search result count outside search mode', () => {
+        renderComponent(true, { searchResultCount: 200 })
+
+        expect(screen.getByText('200 tickets')).toBeInTheDocument()
+    })
+
+    it('shows the search result count in search mode', () => {
+        renderComponent(true, {
+            isSearchMode: true,
+            searchResultCount: 200,
+        })
+
+        expect(screen.getByText('200 tickets')).toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                'Live ticket updates are paused while filters are being edited',
+            ),
+        ).not.toBeInTheDocument()
+    })
+
+    it('shows the singular search result count in search mode', () => {
+        renderComponent(true, {
+            isSearchMode: true,
+            searchResultCount: 1,
+        })
+
+        expect(screen.getByText('1 ticket')).toBeInTheDocument()
+    })
+
+    it('caps the search result count at 5000+ tickets', () => {
+        renderComponent(true, {
+            isSearchMode: true,
+            searchResultCount: 5000,
+        })
+
+        expect(screen.getByText('5000+ tickets')).toBeInTheDocument()
+    })
+
+    it('hides the search result count when it is unavailable', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return activeView
+            if (selector === getPristineActiveView) return activeView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return true
+            if (selector === getLastViewId) return 3
+            if (selector === getNavigation) return fromJS({})
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            if (typeof selector === 'function') {
+                return selector({} as never)
+            }
+            return undefined
+        })
+
+        renderComponent(true, {
+            title: 'Advanced filters',
+            isSearchMode: true,
+        })
+
+        expect(screen.queryByText('200 tickets')).not.toBeInTheDocument()
+        expect(screen.queryByText('5000+ tickets')).not.toBeInTheDocument()
+        expect(
+            screen.queryByText(
+                'Live ticket updates are paused while filters are being edited',
+            ),
+        ).not.toBeInTheDocument()
+    })
+
+    it('disables the view name input for system views', () => {
+        const systemView = activeView.set('category', 'system')
+
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return systemView
+            if (selector === getPristineActiveView) return systemView
+            if (selector === getAreFiltersValid) return true
+            if (selector === getIsDirty) return false
+            if (selector === getLastViewId) return 3
+            if (selector === getNavigation) return fromJS({})
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            if (typeof selector === 'function') {
+                return selector({} as never)
+            }
+            return undefined
+        })
+
+        renderComponent()
+
+        expect(screen.getByLabelText(/view name/i)).toBeDisabled()
+    })
+
+    it('disables the save actions when filters are invalid', () => {
+        useAppSelectorMock.mockImplementation((selector) => {
+            if (selector === getActiveView) return activeView
+            if (selector === getPristineActiveView) return activeView
+            if (selector === getAreFiltersValid) return false
+            if (selector === getIsDirty) return false
+            if (selector === getLastViewId) return 3
+            if (selector === getNavigation) return fromJS({})
+            if (selector === getCurrentUser) return currentUser
+            if (selector === getHasAutomate) return true
+            if (selector === getSchemas) return fromJS({})
+            if (typeof selector === 'function') {
+                return selector({} as never)
+            }
+            return undefined
+        })
+
+        renderComponent()
+
+        expect(
+            screen.getByRole('button', { name: /update view/i }),
+        ).toBeDisabled()
+        expect(
+            screen.getByRole('button', { name: /more save actions/i }),
+        ).toBeDisabled()
+    })
+
     it('keeps the action row visible when the bridge is collapsed', () => {
         renderComponent({ isExpanded: false })
 
@@ -1088,6 +1259,39 @@ describe('ViewPanelFiltersBridge', () => {
             type: 'views-export-button',
         })
         expect(createJobMock).toHaveBeenCalled()
+    })
+
+    it('disables the export action while the export job is running', async () => {
+        const user = userEvent.setup()
+        let resolveJob: (() => void) | undefined
+
+        dispatchMock.mockImplementation((action) => {
+            if (action === createJobAction) {
+                return new Promise<void>((resolve) => {
+                    resolveJob = resolve
+                })
+            }
+
+            return action
+        })
+
+        renderComponent()
+
+        await user.click(
+            screen.getByRole('button', { name: /export tickets/i }),
+        )
+
+        expect(
+            screen.getByRole('button', { name: /export tickets/i }),
+        ).toBeDisabled()
+
+        resolveJob?.()
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /export tickets/i }),
+            ).toBeEnabled()
+        })
     })
 
     it('does not render export controls when the view does not exist yet', () => {
@@ -1354,6 +1558,35 @@ describe('ViewPanelFiltersBridge', () => {
         expect(
             screen.queryByRole('button', { name: /^delete$/i }),
         ).not.toBeInTheDocument()
+    })
+
+    it('disables delete while a save is in flight', async () => {
+        const user = userEvent.setup()
+        let resolveSubmit: ((value: View) => void) | undefined
+
+        dispatchMock.mockImplementation((action) => {
+            if (action === submitViewAction) {
+                return new Promise<View>((resolve) => {
+                    resolveSubmit = resolve
+                })
+            }
+
+            return action
+        })
+
+        renderComponent()
+
+        await user.click(screen.getByRole('button', { name: /update view/i }))
+
+        expect(screen.getByRole('button', { name: /^delete$/i })).toBeDisabled()
+
+        resolveSubmit?.(updatedResponse)
+
+        await waitFor(() => {
+            expect(
+                screen.getByRole('button', { name: /^delete$/i }),
+            ).toBeEnabled()
+        })
     })
 
     it('does nothing when delete resolves to a non-map destination', async () => {

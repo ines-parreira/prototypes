@@ -6,14 +6,15 @@ import { useHelpdeskV2MS4Dot5Flag } from '@repo/tickets/feature-flags'
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
+import { compressToEncodedURIComponent } from 'lz-string'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { useGetView } from '@gorgias/helpdesk-queries'
-import type { useGetView as useGetViewType } from '@gorgias/helpdesk-queries'
 
 import { BASE_VIEW_ID } from 'constants/view'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
+import useSearchRankScenario from 'hooks/useSearchRankScenario'
 import { ViewField, ViewVisibility } from 'models/view/types'
 import type { StoreState } from 'state/types'
 import { resetView, setViewActive, setViewEditMode } from 'state/views/actions'
@@ -48,6 +49,23 @@ jest.mock('config/views', () => ({
                 })
         }),
     })),
+    getConfigByName: jest.fn(() => ({
+        get: jest.fn((key: string) => {
+            if (key !== 'searchView') {
+                return undefined
+            }
+
+            return (search = '', filters = '') =>
+                fromJS({
+                    id: BASE_VIEW_ID,
+                    type: 'ticket-list',
+                    name: 'Search',
+                    slug: 'search',
+                    search,
+                    filters,
+                })
+        }),
+    })),
 }))
 
 jest.mock('@repo/tickets/feature-flags', () => ({
@@ -61,6 +79,7 @@ jest.mock('@gorgias/helpdesk-queries', () => ({
 const useGetViewMock = assumeMock(useGetView)
 
 const replaceMock = jest.fn()
+const pushMock = jest.fn()
 let mockViewId = 123456
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -74,17 +93,26 @@ jest.mock('hooks/useAppDispatch', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
+jest.mock('hooks/useSearchRankScenario', () => ({
+    __esModule: true,
+    default: jest.fn(),
+    SearchRankSource: {
+        TicketsView: 'tickets_view',
+    },
+}))
 jest.mock('hooks/useAppSelector', () => ({
     __esModule: true,
     default: jest.fn(),
 }))
 const useAppDispatchMock = assumeMock(useAppDispatch)
+const useSearchRankScenarioMock = assumeMock(useSearchRankScenario)
 const useAppSelectorMock = assumeMock(useAppSelector)
 
 jest.mock('state/views/selectors', () => ({
     areFiltersValid: jest.fn(),
     areFiltersValidAst: jest.fn(),
     getActiveView: jest.fn(),
+    getNavigation: jest.fn(),
     getViewPlainJS: jest.fn(),
     isDirty: jest.fn(),
     isEditMode: jest.fn(),
@@ -93,6 +121,7 @@ const {
     areFiltersValid: getAreFiltersValid,
     areFiltersValidAst: getAreFiltersValidAst,
     getActiveView,
+    getNavigation,
     getViewPlainJS,
     isDirty: getIsDirty,
     isEditMode: getIsEditMode,
@@ -100,6 +129,7 @@ const {
     areFiltersValid: jest.Mock
     areFiltersValidAst: jest.Mock
     getActiveView: jest.Mock
+    getNavigation: jest.Mock
     getViewPlainJS: jest.Mock
     isDirty: jest.Mock
     isEditMode: jest.Mock
@@ -123,9 +153,12 @@ type DirtyViewProps = {
 
 type MockViewPanelProps = {
     viewId: number
+    isSearchMode?: boolean
+    onSearchResultCountChange?: (count?: number) => void
     onExpand?: () => void
     onEditView?: () => void
     onFixFilters?: () => void
+    onNavigateToTicket?: () => void
     onApplyMacro?: (ticketIds: number[]) => void
     topContent?: React.ReactNode
     titleOverride?: string
@@ -134,6 +167,18 @@ type MockViewPanelProps = {
     dirtyView?: DirtyViewProps
     draftFields?: ViewField[]
     onDraftFieldsChange?: (fields: ViewField[]) => void
+    searchTracking?: {
+        onRequest?: (request: { query: string; requestTime: number }) => void
+        onResponse?: (response: {
+            responseTime: number
+            numberOfResults: number
+            searchEngine?: string
+        }) => void
+        onSelection?: (selection: {
+            id: number | string
+            index: number
+        }) => void
+    }
 }
 
 function buildCallExpressionAst(operator: string, right: unknown) {
@@ -176,12 +221,13 @@ function getLastSetViewEditModeDraftView() {
 function mockUseGetViewResult(data?: unknown) {
     return {
         data,
-    } as unknown as ReturnType<typeof useGetViewType>
+    } as unknown as ReturnType<typeof useGetView>
 }
 
 function mockSelectors({
     view = null,
     currentActiveView,
+    navigation = fromJS({}),
     isDirty = false,
     isEditMode = false,
     areFiltersValid = true,
@@ -189,6 +235,7 @@ function mockSelectors({
 }: {
     view?: unknown
     currentActiveView?: unknown
+    navigation?: unknown
     isDirty?: boolean
     isEditMode?: boolean
     areFiltersValid?: boolean
@@ -196,6 +243,7 @@ function mockSelectors({
 } = {}) {
     getViewPlainJS.mockReturnValue(view)
     getActiveView.mockReturnValue(currentActiveView)
+    getNavigation.mockReturnValue(navigation)
     getIsDirty.mockReturnValue(isDirty)
     getIsEditMode.mockReturnValue(isEditMode)
     getAreFiltersValid.mockReturnValue(areFiltersValid)
@@ -208,6 +256,8 @@ function mockSelectors({
 const mockViewPanel = jest.fn((props: MockViewPanelProps) => {
     const {
         viewId,
+        isSearchMode,
+        onSearchResultCountChange,
         onExpand,
         onApplyMacro,
         topContent,
@@ -226,6 +276,10 @@ const mockViewPanel = jest.fn((props: MockViewPanelProps) => {
             <p>isDraftView: {String(isDraftView)}</p>
             <p>dirtyView: {JSON.stringify(dirtyView)}</p>
             <p>draftFields: {JSON.stringify(props.draftFields ?? [])}</p>
+            <p>isSearchMode: {String(isSearchMode)}</p>
+            <button onClick={() => onSearchResultCountChange?.(200)}>
+                Set search count
+            </button>
             <button onClick={onExpand}>Expand</button>
             <button onClick={props.onEditView}>Edit view</button>
             <button onClick={() => onApplyMacro?.([1, 2, 3])}>
@@ -281,8 +335,18 @@ const mockViewPanelFiltersBridge = jest.fn(
     ({
         isExpanded,
         draftFields,
+        isSearchMode,
+        hideViewNameInput: __hideViewNameInput,
+        hideFooterActions: __hideFooterActions,
+        searchResultCount,
+        title: __title,
     }: {
         isExpanded: boolean
+        isSearchMode?: boolean
+        hideViewNameInput?: boolean
+        hideFooterActions?: boolean
+        searchResultCount?: number
+        title?: string
         draftFields?: ViewField[]
     }) => (
         <div>
@@ -291,6 +355,8 @@ const mockViewPanelFiltersBridge = jest.fn(
                 ViewPanelFiltersBridge draftFields:{' '}
                 {JSON.stringify(draftFields ?? [])}
             </p>
+            <p>ViewPanelFiltersBridge search: {String(isSearchMode)}</p>
+            <p>ViewPanelFiltersBridge count: {String(searchResultCount)}</p>
         </div>
     ),
 )
@@ -298,12 +364,24 @@ const mockViewPanelFiltersBridge = jest.fn(
 jest.mock('../ViewPanelFiltersBridge', () => ({
     ViewPanelFiltersBridge: (props: {
         isExpanded: boolean
+        isSearchMode?: boolean
+        hideViewNameInput?: boolean
+        hideFooterActions?: boolean
+        searchResultCount?: number
+        title?: string
         draftFields?: ViewField[]
     }) => mockViewPanelFiltersBridge(props),
 }))
 
 describe('ViewPanelEntrypoint', () => {
     const dispatchMock = jest.fn()
+    const searchRankScenario = {
+        isRunning: false,
+        registerResultsRequest: jest.fn(),
+        registerResultsResponse: jest.fn(),
+        registerResultSelection: jest.fn(),
+        endScenario: jest.fn(),
+    }
     const setViewActiveAction = jest.fn() as unknown as ReturnType<
         typeof setViewActive
     >
@@ -331,12 +409,19 @@ describe('ViewPanelEntrypoint', () => {
         mockViewId = 123456
         setIsEnabledMock.mockReset()
         replaceMock.mockReset()
+        pushMock.mockReset()
         dispatchMock.mockReset()
         mockViewPanel.mockClear()
         mockViewPanelFiltersBridge.mockClear()
+        searchRankScenario.registerResultsRequest.mockReset()
+        searchRankScenario.registerResultsResponse.mockReset()
+        searchRankScenario.registerResultSelection.mockReset()
+        searchRankScenario.endScenario.mockReset()
         useAppDispatchMock.mockReturnValue(dispatchMock)
+        useSearchRankScenarioMock.mockReturnValue(searchRankScenario)
         useHistoryMock.mockReturnValue({
             replace: replaceMock,
+            push: pushMock,
         } as unknown as ReturnType<typeof useHistory>)
         useLocationMock.mockReturnValue({
             pathname: '/app/views/123456',
@@ -392,6 +477,272 @@ describe('ViewPanelEntrypoint', () => {
         expect(screen.queryByText('LegacyViewPanel')).not.toBeInTheDocument()
     })
 
+    it('should enable search mode on /app/tickets/search', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/search',
+            search: '?q=hello',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        expect(screen.getByText('isSearchMode: true')).toBeInTheDocument()
+        expect(
+            screen.getByText('titleOverride: Advanced search'),
+        ).toBeInTheDocument()
+        expect(screen.getByText('hideCreateTicket: true')).toBeInTheDocument()
+        await waitFor(() => {
+            expect(setViewActiveMock).toHaveBeenCalled()
+        })
+        expect(setIsEnabledMock).toHaveBeenCalledWith(false)
+        expect(
+            mockViewPanel.mock.calls.at(-1)?.[0]?.onNavigateToTicket,
+        ).toEqual(expect.any(Function))
+        expect(mockViewPanel.mock.calls.at(-1)?.[0]?.searchTracking).toEqual(
+            expect.objectContaining({
+                onRequest: expect.any(Function),
+                onResponse: expect.any(Function),
+                onSelection: expect.any(Function),
+            }),
+        )
+    })
+
+    it('bridges search tracking callbacks to the legacy search-rank scenario', () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/search',
+            search: '?q=hello',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        const searchTracking =
+            mockViewPanel.mock.calls.at(-1)?.[0]?.searchTracking
+
+        expect(searchTracking).toEqual(
+            expect.objectContaining({
+                onRequest: expect.any(Function),
+                onResponse: expect.any(Function),
+                onSelection: expect.any(Function),
+            }),
+        )
+
+        searchTracking?.onRequest?.({
+            query: 'hello',
+            requestTime: 123,
+        })
+        searchTracking?.onResponse?.({
+            responseTime: 456,
+            numberOfResults: 7,
+            searchEngine: 'PG',
+        })
+        searchTracking?.onSelection?.({
+            id: 42,
+            index: 2,
+        })
+
+        expect(searchRankScenario.registerResultsRequest).toHaveBeenCalledWith({
+            query: 'hello',
+            requestTime: 123,
+        })
+        expect(searchRankScenario.registerResultsResponse).toHaveBeenCalledWith(
+            {
+                responseTime: 456,
+                numberOfResults: 7,
+                searchEngine: 'PG',
+            },
+        )
+        expect(searchRankScenario.registerResultSelection).toHaveBeenCalledWith(
+            {
+                id: 42,
+                index: 2,
+            },
+        )
+    })
+
+    it('shows the filters bridge open on initial search load', () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/search',
+            search: '?q=hello',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        expect(
+            screen.getByText('ViewPanelFiltersBridge expanded: true'),
+        ).toBeInTheDocument()
+    })
+
+    it('does not rehydrate the search view from the URL while editing filters', () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/search',
+            search: '?q=hello',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({
+                search: 'draft change',
+                filters: "eq(ticket.channel, 'chat')",
+            }),
+            isEditMode: true,
+        })
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        expect(setViewActiveMock).not.toHaveBeenCalled()
+    })
+
+    it('hydrates the synthetic search view when entering /search from another edited view', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/search',
+            search: '?q=hello',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({
+                id: 999,
+                name: 'Open tickets',
+                search: null,
+                filters: "eq(ticket.status, 'open')",
+                editMode: true,
+            }),
+            isEditMode: true,
+        })
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await waitFor(() => {
+            expect(setViewActiveMock).toHaveBeenCalled()
+        })
+    })
+
+    it('syncs valid search filters back to the URL', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/search',
+            search: '?q=hello',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({
+                id: BASE_VIEW_ID,
+                name: 'Search',
+                search: 'hello',
+                filters: "eq(ticket.channel, 'chat')",
+            }),
+            isEditMode: true,
+        })
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await waitFor(() => {
+            expect(pushMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    pathname: '/app/tickets/search',
+                    search: expect.stringContaining('q=hello'),
+                }),
+            )
+        })
+        expect(pushMock).toHaveBeenCalledWith(
+            expect.objectContaining({
+                pathname: '/app/tickets/search',
+                search: expect.stringContaining('filters='),
+            }),
+        )
+    })
+
+    it('removes empty search params from the URL in search mode', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/search',
+            search: `?q=hello&filters=${compressToEncodedURIComponent("eq(ticket.channel, 'chat')")}`,
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({
+                id: BASE_VIEW_ID,
+                name: 'Search',
+                search: '',
+                filters: '',
+            }),
+            isEditMode: true,
+        })
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await waitFor(() => {
+            expect(pushMock).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    pathname: '/app/tickets/search',
+                    search: '',
+                }),
+            )
+        })
+    })
+
+    it('does not sync invalid search filters back to the URL', async () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/search',
+            search: '?q=hello',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({
+                id: BASE_VIEW_ID,
+                name: 'Search',
+                search: 'hello',
+                filters: "eq(ticket.channel, '')",
+            }),
+            isEditMode: true,
+            areFiltersValid: false,
+        })
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        await waitFor(() => {
+            expect(pushMock).not.toHaveBeenCalled()
+        })
+    })
+
     it('should call setIsEnabled(true) when onExpand is triggered', async () => {
         const user = userEvent.setup()
         useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
@@ -402,6 +753,23 @@ describe('ViewPanelEntrypoint', () => {
         )
         await user.click(screen.getByRole('button', { name: 'Expand' }))
         expect(setIsEnabledMock).toHaveBeenCalledWith(true)
+    })
+
+    it('should call setIsEnabled(false) when a ticket is opened from the table', () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        const props = mockViewPanel.mock.calls.at(-1)?.[0]
+        act(() => {
+            props?.onNavigateToTicket?.()
+        })
+
+        expect(setIsEnabledMock).toHaveBeenCalledWith(false)
     })
 
     it('should open filters in edit mode when onEditView is triggered', () => {
@@ -417,6 +785,30 @@ describe('ViewPanelEntrypoint', () => {
         expect(dispatchMock).toHaveBeenCalledWith(setViewEditModeAction)
     })
 
+    it('should open search filters from the synthetic search view', () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/search',
+            search: '?q=hello',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        const initialProps = mockViewPanel.mock.calls[0]?.[0]
+        initialProps?.onEditView?.()
+
+        const draftView = getLastSetViewEditModeDraftView()
+        expect(draftView.get('id')).toBe(BASE_VIEW_ID)
+        expect(draftView.get('name')).toBe('Search')
+        expect(draftView.get('search')).toBe('hello')
+        expect(draftView.get('filters')).toBe('')
+    })
+
     it('should render the bridge when the view is in edit mode', () => {
         useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
         mockSelectors({ currentActiveView: activeView, isEditMode: true })
@@ -429,6 +821,49 @@ describe('ViewPanelEntrypoint', () => {
 
         expect(
             screen.getByText('ViewPanelFiltersBridge expanded: false'),
+        ).toBeInTheDocument()
+    })
+
+    it('should render search filters bridge chrome for search mode', () => {
+        useHelpdeskV2MS4Dot5FlagMock.mockReturnValue(true)
+        useLocationMock.mockReturnValue({
+            pathname: '/app/tickets/search',
+            search: '?q=hello',
+            state: undefined,
+        } as ReturnType<typeof useLocation>)
+        mockSelectors({
+            currentActiveView: fromJS({
+                id: BASE_VIEW_ID,
+                name: 'Search',
+                search: 'hello',
+                filters: '',
+            }),
+            isEditMode: true,
+        })
+
+        render(
+            <Panels size={1000}>
+                <ViewPanelEntrypoint />
+            </Panels>,
+        )
+
+        const props = mockViewPanel.mock.calls.at(-1)?.[0]
+        act(() => {
+            props?.onSearchResultCountChange?.(200)
+        })
+
+        expect(mockViewPanelFiltersBridge).toHaveBeenCalledWith(
+            expect.objectContaining({
+                isExpanded: true,
+                isSearchMode: true,
+                hideViewNameInput: true,
+                hideFooterActions: true,
+                title: 'Advanced filters',
+                searchResultCount: 200,
+            }),
+        )
+        expect(
+            screen.getByText('ViewPanelFiltersBridge count: 200'),
         ).toBeInTheDocument()
     })
 

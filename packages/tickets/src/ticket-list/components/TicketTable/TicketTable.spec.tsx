@@ -15,11 +15,13 @@ import {
     mockTeam,
     mockUser,
 } from '@gorgias/helpdesk-mocks'
+import { useSearchTickets } from '@gorgias/helpdesk-queries'
 
 import { useCreateTicketTag } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useCreateTicketTag'
 import { useListTagsSearch } from '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch'
 import { createTestQueryClient, render } from '../../../tests/render.utils'
 import { TicketStatus } from '../../../types/ticket'
+import { useTicketSearchUrlState } from '../../hooks/useTicketSearchUrlState'
 import * as useTicketsListModule from '../../hooks/useTicketsList'
 import { useTicketTableBulkActionShortcuts } from '../../hooks/useTicketTableBulkActionShortcuts'
 import { TicketTable } from './TicketTable'
@@ -124,6 +126,20 @@ vi.mock('@repo/preferences', () => ({
     }),
 }))
 
+vi.mock('@gorgias/helpdesk-queries', async () => {
+    const actual = await vi.importActual('@gorgias/helpdesk-queries')
+    return {
+        ...actual,
+        useSearchTickets: vi.fn(() => ({
+            data: undefined,
+            isLoading: false,
+            isFetching: false,
+            error: null,
+            refetch: vi.fn(),
+        })),
+    }
+})
+
 vi.mock(
     '../../../components/InfobarTicketDetails/components/InfobarTicketTags/hooks/useListTagsSearch',
     () => ({
@@ -165,6 +181,16 @@ vi.mock('../../hooks/useSortOrder', () => ({
 
 vi.mock('../../hooks/useTicketTableBulkActionShortcuts', () => ({
     useTicketTableBulkActionShortcuts: vi.fn(),
+}))
+
+vi.mock('../../hooks/useTicketSearchUrlState', () => ({
+    useTicketSearchUrlState: vi.fn(() => ({
+        query: '',
+        filters: '',
+        cursor: undefined,
+        setQuery: vi.fn(),
+        setCursor: vi.fn(),
+    })),
 }))
 
 vi.mock('../../hooks/useTicketsList', () => ({
@@ -378,6 +404,8 @@ async function waitForSelectionToClear() {
 
 const mockUseListTagsSearch = vi.mocked(useListTagsSearch)
 const mockUseCreateTicketTag = vi.mocked(useCreateTicketTag)
+const mockUseSearchTickets = vi.mocked(useSearchTickets)
+const mockUseTicketSearchUrlState = vi.mocked(useTicketSearchUrlState)
 const mockUseTicketTableBulkActionShortcuts = vi.mocked(
     useTicketTableBulkActionShortcuts,
 )
@@ -476,6 +504,20 @@ describe('TicketTable', () => {
         mockState.onLocalColumnChangeSpy.mockReset()
         mockState.saveColumnsForEveryoneSpy.mockReset()
         mockState.saveColumnsForEveryoneSpy.mockResolvedValue(undefined)
+        mockUseTicketSearchUrlState.mockReturnValue({
+            query: '',
+            filters: '',
+            cursor: undefined,
+            setQuery: vi.fn(),
+            setCursor: vi.fn(),
+        })
+        mockUseSearchTickets.mockReturnValue({
+            data: undefined,
+            isLoading: false,
+            isFetching: false,
+            error: null,
+            refetch: vi.fn(),
+        } as unknown as ReturnType<typeof useSearchTickets>)
         vi.mocked(useTicketsListModule.useTicketsList).mockClear()
         mockUseListTagsSearch.mockReturnValue({
             tags: [vipTag, urgentTag],
@@ -535,7 +577,77 @@ describe('TicketTable', () => {
 
         expect(mockState.markAsRead).toHaveBeenCalledWith(1)
         expect(onNavigateToTicket).toHaveBeenCalledTimes(1)
-        expect(pushMock).toHaveBeenCalledWith('/app/views/123/1')
+        expect(pushMock).toHaveBeenCalledWith('/app/ticket/1')
+    })
+
+    it('navigates when a row is clicked without onNavigateToTicket', async () => {
+        mockState.tickets = [
+            { id: 1, subject: 'First ticket', is_unread: true },
+            { id: 2, subject: 'Second ticket', is_unread: false },
+        ]
+        const { user } = renderTicketTable()
+        await waitForTicketTableToBeReady()
+
+        await user.click(screen.getByText('First ticket'))
+
+        expect(mockState.markAsRead).toHaveBeenCalledWith(1)
+        expect(pushMock).toHaveBeenCalledWith('/app/ticket/1')
+    })
+
+    it('opens search results in the standalone ticket route', async () => {
+        mockState.tickets = [
+            { id: 1, subject: 'First ticket', is_unread: true },
+            { id: 2, subject: 'Second ticket', is_unread: false },
+        ]
+        mockUseTicketSearchUrlState.mockReturnValue({
+            query: 'hello',
+            filters: '',
+            cursor: undefined,
+            setQuery: vi.fn(),
+            setCursor: vi.fn(),
+        })
+        mockUseSearchTickets.mockReturnValue({
+            data: {
+                data: {
+                    data: mockState.tickets,
+                    meta: {},
+                },
+                headers: {},
+            },
+            isLoading: false,
+            isFetching: false,
+            error: null,
+            refetch: vi.fn(),
+        } as unknown as ReturnType<typeof useSearchTickets>)
+        const { user } = renderTicketTable({ isSearchMode: true })
+        await waitForTicketTableToBeReady()
+
+        await user.click(screen.getByText('First ticket'))
+
+        expect(mockState.markAsRead).toHaveBeenCalledWith(1)
+        expect(pushMock).toHaveBeenCalledWith('/app/ticket/1')
+    })
+
+    it('tracks the selected search result before navigating', async () => {
+        mockState.tickets = [
+            { id: 1, subject: 'First ticket', is_unread: true },
+            { id: 2, subject: 'Second ticket', is_unread: false },
+        ]
+        const onSelection = vi.fn()
+
+        const { user } = renderTicketTable({
+            searchTracking: {
+                onSelection,
+            },
+        })
+        await waitForTicketTableToBeReady()
+
+        await user.click(screen.getByText('Second ticket'))
+
+        expect(onSelection).toHaveBeenCalledWith({
+            id: 2,
+            index: 1,
+        })
     })
 
     it('does not mark already read tickets as read when a row is clicked', async () => {
@@ -549,7 +661,7 @@ describe('TicketTable', () => {
         await user.click(screen.getByText('First ticket'))
 
         expect(mockState.markAsRead).not.toHaveBeenCalled()
-        expect(pushMock).toHaveBeenCalledWith('/app/views/123/1')
+        expect(pushMock).toHaveBeenCalledWith('/app/ticket/1')
     })
 
     it(
@@ -911,6 +1023,36 @@ describe('TicketTable', () => {
 
         expect(screen.getAllByLabelText('Loading').length).toBeGreaterThan(0)
         expect(screen.queryByRole('table')).not.toBeInTheDocument()
+    })
+
+    it('does not block search mode on the view query loading state', async () => {
+        mockUseTicketSearchUrlState.mockReturnValue({
+            query: 'hello',
+            filters: '',
+            cursor: undefined,
+            setQuery: vi.fn(),
+            setCursor: vi.fn(),
+        })
+        mockUseSearchTickets.mockReturnValue({
+            data: {
+                data: {
+                    data: mockState.tickets,
+                    meta: {},
+                },
+                headers: {},
+            },
+            isLoading: false,
+            isFetching: false,
+            error: null,
+            refetch: vi.fn(),
+        } as unknown as ReturnType<typeof useSearchTickets>)
+
+        renderTicketTable({ isSearchMode: true })
+
+        await waitForTicketTableToBeReady()
+
+        expect(screen.getByRole('table')).toBeInTheDocument()
+        expect(screen.queryByLabelText('Loading')).not.toBeInTheDocument()
     })
 
     it('renders draft views with the table content', async () => {

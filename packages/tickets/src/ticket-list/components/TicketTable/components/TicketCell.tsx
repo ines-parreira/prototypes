@@ -4,36 +4,35 @@ import {
     Icon,
     OverflowTooltip,
     Tag,
-    Text,
 } from '@gorgias/axiom'
-import type {
-    TicketCompact,
-    TicketTranslationCompact,
-} from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import { useTicketDisplayData } from '../../../hooks/useTicketDisplayData'
+import { useTicketOtherAgentsViewing } from '../../../hooks/useTicketDisplayData'
+import type { DisplayTextValue } from '../../../types/display'
 import { TicketListItemAgentsViewing } from '../../TicketListItem/components/TicketListItemAgentsViewing'
+import { DisplayText } from './DisplayText'
 
 export type TicketCellProps = {
-    ticket: TicketCompact
-    translation: TicketTranslationCompact | undefined
-    showTranslatedContent: boolean
+    ticketId: TicketCompact['id']
+    isUnread?: boolean
+    subject: DisplayTextValue
+    excerpt: DisplayTextValue
+    hasFailedMessageTag?: boolean
     currentUserId?: number
 }
 
 export function TicketCell({
-    ticket,
-    translation,
-    showTranslatedContent,
+    ticketId,
+    isUnread = false,
+    subject,
+    excerpt,
+    hasFailedMessageTag = false,
     currentUserId,
 }: TicketCellProps) {
-    const { displaySubject, displayExcerpt, otherAgentsViewing } =
-        useTicketDisplayData({
-            ticket,
-            translation,
-            showTranslatedContent,
-            currentUserId,
-        })
+    const otherAgentsViewing = useTicketOtherAgentsViewing(
+        ticketId,
+        currentUserId,
+    )
 
     return (
         <DataTableBaseCell gap="xs">
@@ -45,14 +44,13 @@ export function TicketCell({
                 alignItems="stretch"
             >
                 <OverflowTooltip placement="right">
-                    <Text
-                        variant={ticket.is_unread ? 'bold' : 'regular'}
+                    <DisplayText
+                        value={subject}
+                        variant={isUnread ? 'bold' : 'regular'}
                         overflow="ellipsis"
-                    >
-                        {displaySubject}
-                    </Text>
+                    />
                 </OverflowTooltip>
-                {ticket.last_sent_message_not_delivered ? (
+                {hasFailedMessageTag ? (
                     <Box alignSelf="flex-start">
                         <Tag
                             color="red"
@@ -63,18 +61,15 @@ export function TicketCell({
                             Last message not delivered
                         </Tag>
                     </Box>
-                ) : (
-                    displayExcerpt && (
-                        <OverflowTooltip placement="right">
-                            <Text
-                                size="sm"
-                                color="content-neutral-secondary"
-                                overflow="ellipsis"
-                            >
-                                {displayExcerpt}
-                            </Text>
-                        </OverflowTooltip>
-                    )
+                ) : !excerpt.text && !excerpt.highlightedHtml ? null : (
+                    <OverflowTooltip placement="right">
+                        <DisplayText
+                            value={excerpt}
+                            size="sm"
+                            color="content-neutral-secondary"
+                            overflow="ellipsis"
+                        />
+                    </OverflowTooltip>
                 )}
             </Box>
             <Box flexShrink={0}>

@@ -13,7 +13,11 @@ const Labels = {
 }
 
 export function DTPTicketHeaderToggle() {
-    const { dtpToggle, dtpEnabled } = useTicketsLegacyBridge()
+    const {
+        dtpToggle,
+        dtpEnabled,
+        ticketViewNavigation: { isSearchView = false },
+    } = useTicketsLegacyBridge()
 
     const { isEnabled, setIsEnabled } = dtpToggle
     const { isEnabled: isToggleEnabled } = dtpEnabled
@@ -29,8 +33,7 @@ export function DTPTicketHeaderToggle() {
         setIsEnabled(!isEnabled)
     }, [isEnabled, setIsEnabled])
 
-    // If the ticket panel is already enabled, don't show the toggle in the ticket header
-    if (isEnabled) {
+    if (isEnabled || isSearchView) {
         return null
     }
 

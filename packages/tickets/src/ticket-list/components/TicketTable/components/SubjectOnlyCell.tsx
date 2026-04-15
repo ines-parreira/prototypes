@@ -1,37 +1,22 @@
-import { DataTableBaseCell, OverflowTooltip, Text } from '@gorgias/axiom'
-import type {
-    TicketCompact,
-    TicketTranslationCompact,
-} from '@gorgias/helpdesk-types'
+import { DataTableBaseCell, OverflowTooltip } from '@gorgias/axiom'
 
-import { useTicketDisplayData } from '../../../hooks/useTicketDisplayData'
+import type { DisplayTextValue } from '../../../types/display'
+import { DisplayText } from './DisplayText'
 
 type Props = {
-    ticket: TicketCompact
-    translation: TicketTranslationCompact | undefined
-    showTranslatedContent: boolean
+    value: DisplayTextValue
+    isUnread?: boolean
 }
 
-export function SubjectOnlyCell({
-    ticket,
-    translation,
-    showTranslatedContent,
-}: Props) {
-    const { displaySubject } = useTicketDisplayData({
-        ticket,
-        translation,
-        showTranslatedContent,
-    })
-
+export function SubjectOnlyCell({ value, isUnread = false }: Props) {
     return (
         <DataTableBaseCell alignItems="stretch">
-            <OverflowTooltip placement="right">
-                <Text
+            <OverflowTooltip>
+                <DisplayText
+                    value={value}
                     overflow="ellipsis"
-                    variant={ticket.is_unread ? 'bold' : 'regular'}
-                >
-                    {displaySubject}
-                </Text>
+                    variant={isUnread ? 'bold' : 'regular'}
+                />
             </OverflowTooltip>
         </DataTableBaseCell>
     )

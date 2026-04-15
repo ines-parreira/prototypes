@@ -1,5 +1,5 @@
 import { DateFormatType, TimeFormatType } from '@repo/utils'
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 
 import { DataTable } from '@gorgias/axiom'
 import {
@@ -11,6 +11,7 @@ import { TicketMessageSourceType } from '@gorgias/helpdesk-types'
 import { useAgentActivity as useAgentActivityMock } from '@gorgias/realtime'
 
 import { render } from '../../../../tests/render.utils'
+import type { SearchTicket } from '../../../types/search'
 import type { TicketTableColumnsParams } from '../TicketTableColumns'
 import { createTicketTableColumns } from '../TicketTableColumns'
 
@@ -187,6 +188,62 @@ describe('createTicketTableColumns', () => {
 
             expect(screen.getByText('1 agents viewing')).toBeInTheDocument()
         })
+
+        it('renders highlighted search values for the subject, excerpt, and customer', () => {
+            const ticket = {
+                ...mockTicketCompact({
+                    id: 1,
+                    subject: 'Original subject',
+                    excerpt: 'Original excerpt',
+                    last_sent_message_not_delivered: false,
+                    customer: mockTicketCompactCustomer({
+                        name: 'Original customer',
+                        email: 'customer@example.com',
+                    }),
+                }),
+                highlights: {
+                    subject: ['<em>Highlighted</em> subject'],
+                    messages: {
+                        body: ['Message <em>match</em>'],
+                        from: {
+                            name: ['<em>Customer</em> Name'],
+                        },
+                    },
+                },
+            } as SearchTicket
+
+            renderColumn(['ticket', 'customer'], ticket)
+
+            const [ticketCell, customerCell] = screen.getAllByRole('cell')
+
+            expect(
+                within(ticketCell).getByText(
+                    (_, node) =>
+                        node?.getAttribute('data-name') === 'text' &&
+                        node.textContent === 'Highlighted subject',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                within(ticketCell).getByText(
+                    (_, node) =>
+                        node?.getAttribute('data-name') === 'text' &&
+                        node.textContent === 'Message match',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                within(customerCell).getByText(
+                    (_, node) =>
+                        node?.getAttribute('data-name') === 'text' &&
+                        node.textContent === 'Customer Name',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Original excerpt'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Original customer'),
+            ).not.toBeInTheDocument()
+        })
     })
 
     describe('subject column (SubjectOnlyCell)', () => {
@@ -218,6 +275,19 @@ describe('createTicketTableColumns', () => {
             )
 
             expect(screen.getByText('No subject')).toBeInTheDocument()
+        })
+    })
+
+    describe('id column', () => {
+        it('renders the ticket id as text', () => {
+            renderColumn(
+                'id',
+                mockTicketCompact({
+                    id: 123,
+                }),
+            )
+
+            expect(screen.getByText('123')).toBeInTheDocument()
         })
     })
 

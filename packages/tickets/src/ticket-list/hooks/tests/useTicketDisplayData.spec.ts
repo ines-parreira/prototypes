@@ -8,7 +8,13 @@ import {
 import type { useAgentActivity } from '@gorgias/realtime'
 import { useAgentActivity as useAgentActivityMock } from '@gorgias/realtime'
 
-import { useTicketDisplayData } from '../useTicketDisplayData'
+import {
+    getTicketCustomerName,
+    getTicketDisplayExcerpt,
+    getTicketDisplaySubject,
+    useTicketDisplayData,
+    useTicketOtherAgentsViewing,
+} from '../useTicketDisplayData'
 
 vi.mock('@gorgias/realtime', () => ({
     useAgentActivity: vi.fn(),
@@ -44,6 +50,81 @@ afterEach(() => {
 })
 
 describe('useTicketDisplayData', () => {
+    describe('getTicketCustomerName', () => {
+        it('returns an empty string when the ticket has no customer', () => {
+            expect(
+                getTicketCustomerName(
+                    mockTicketCompact({ customer: undefined }),
+                ),
+            ).toBe('')
+        })
+    })
+
+    describe('getTicketDisplaySubject', () => {
+        it('prefers the translated subject when translated content is enabled', () => {
+            expect(
+                getTicketDisplaySubject({
+                    ticket: mockTicketCompact({ subject: 'Help with order' }),
+                    showTranslatedContent: true,
+                    translation: mockTicketTranslationCompact({
+                        subject: 'Aide avec la commande',
+                    }),
+                }),
+            ).toBe('Aide avec la commande')
+        })
+
+        it('falls back to "No subject" when the resolved subject is blank', () => {
+            expect(
+                getTicketDisplaySubject({
+                    ticket: mockTicketCompact({ subject: '   ' }),
+                    showTranslatedContent: false,
+                    translation: undefined,
+                }),
+            ).toBe('No subject')
+        })
+    })
+
+    describe('getTicketDisplayExcerpt', () => {
+        it('prefers the translated excerpt when translated content is enabled', () => {
+            expect(
+                getTicketDisplayExcerpt({
+                    ticket: mockTicketCompact({
+                        excerpt: 'I need help with my order',
+                    }),
+                    showTranslatedContent: true,
+                    translation: mockTicketTranslationCompact({
+                        excerpt: 'Besoin aide avec commande',
+                    }),
+                }),
+            ).toBe('Besoin aide avec commande')
+        })
+
+        it('falls back to the ticket excerpt when there is no translated excerpt', () => {
+            expect(
+                getTicketDisplayExcerpt({
+                    ticket: mockTicketCompact({
+                        excerpt: 'I need help with my order',
+                    }),
+                    showTranslatedContent: true,
+                    translation: mockTicketTranslationCompact({
+                        excerpt: '',
+                    }),
+                }),
+            ).toBe('I need help with my order')
+        })
+    })
+
+    describe('useTicketOtherAgentsViewing', () => {
+        it('does not call getTicketActivity when the ticket id is falsy', () => {
+            const { result } = renderHook(() =>
+                useTicketOtherAgentsViewing(0, 1),
+            )
+
+            expect(mockGetTicketActivity).not.toHaveBeenCalled()
+            expect(result.current).toEqual([])
+        })
+    })
+
     describe('otherAgentsViewing', () => {
         const alice = { id: 1, name: 'Alice', email: 'alice@example.com' }
         const bob = { id: 2, name: 'Bob', email: 'bob@example.com' }

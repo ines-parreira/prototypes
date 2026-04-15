@@ -19,46 +19,89 @@ type Params = {
     translation?: TicketTranslationCompact
 }
 
-export function useTicketDisplayData({
+export function getTicketCustomerName(ticket: TicketCompact) {
+    if (!ticket.customer) return ''
+
+    return (
+        ticket.customer.name ||
+        ticket.customer.email ||
+        `Customer #${ticket.customer.id}`
+    )
+}
+
+export function getTicketDisplaySubject({
     ticket,
-    currentUserId,
     showTranslatedContent,
     translation,
-}: Params) {
-    const { getTicketActivity } = useAgentActivityHook()
-    const activity = ticket.id ? getTicketActivity(ticket.id) : { viewing: [] }
+}: Pick<Params, 'ticket' | 'showTranslatedContent' | 'translation'>) {
+    const subject =
+        showTranslatedContent && translation?.subject
+            ? translation.subject
+            : ticket.subject
 
-    const otherAgentsViewing = useMemo(
+    return subject?.trim() ? subject : 'No subject'
+}
+
+export function getTicketDisplayExcerpt({
+    ticket,
+    showTranslatedContent,
+    translation,
+}: Pick<Params, 'ticket' | 'showTranslatedContent' | 'translation'>) {
+    if (showTranslatedContent && translation?.excerpt) {
+        return translation.excerpt
+    }
+
+    return ticket.excerpt || ''
+}
+
+export function useTicketOtherAgentsViewing(
+    ticketId: TicketCompact['id'],
+    currentUserId?: number,
+) {
+    const { getTicketActivity } = useAgentActivityHook()
+    const activity = ticketId ? getTicketActivity(ticketId) : { viewing: [] }
+
+    return useMemo(
         () =>
             activity.viewing.filter(
                 (agent: Agent) => agent.id !== currentUserId,
             ),
         [activity.viewing, currentUserId],
     )
+}
 
-    const customerName = useMemo(() => {
-        if (!ticket.customer) return ''
-        return (
-            ticket.customer.name ||
-            ticket.customer.email ||
-            `Customer #${ticket.customer.id}`
-        )
-    }, [ticket.customer])
+export function useTicketDisplayData({
+    ticket,
+    currentUserId,
+    showTranslatedContent,
+    translation,
+}: Params) {
+    const otherAgentsViewing = useTicketOtherAgentsViewing(
+        ticket.id,
+        currentUserId,
+    )
 
-    const displaySubject = useMemo(() => {
-        const subject =
-            showTranslatedContent && translation?.subject
-                ? translation.subject
-                : ticket.subject
+    const customerName = useMemo(() => getTicketCustomerName(ticket), [ticket])
 
-        return subject?.trim() ? subject : 'No subject'
-    }, [showTranslatedContent, translation?.subject, ticket.subject])
+    const displaySubject = useMemo(
+        () =>
+            getTicketDisplaySubject({
+                ticket,
+                showTranslatedContent,
+                translation,
+            }),
+        [showTranslatedContent, ticket, translation],
+    )
 
-    const displayExcerpt = useMemo(() => {
-        if (showTranslatedContent && translation?.excerpt)
-            return translation.excerpt
-        return ticket.excerpt || ''
-    }, [showTranslatedContent, translation?.excerpt, ticket.excerpt])
+    const displayExcerpt = useMemo(
+        () =>
+            getTicketDisplayExcerpt({
+                ticket,
+                showTranslatedContent,
+                translation,
+            }),
+        [showTranslatedContent, ticket, translation],
+    )
 
     return {
         otherAgentsViewing,

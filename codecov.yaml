@@ -33,6 +33,8 @@ ignore:
   - src/pages/automate/workflows/utils/testVisualBuilderScaffolding.tsx
   - src/tests/mockedReactFlow.ts
   - packages/*/src/tests/render.utils.tsx
+  - packages/*/tests/render.utils.tsx
+  - tests/render.utils.tsx
   - /**/index.ts
   - packages/testing/src/vitest/**/*
 

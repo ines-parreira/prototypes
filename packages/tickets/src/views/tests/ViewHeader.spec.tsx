@@ -129,6 +129,20 @@ describe('ViewHeader', () => {
         ).not.toBeInTheDocument()
     })
 
+    it('hides the split-view toggle and view actions in search mode', () => {
+        render(<ViewHeader viewId={viewId} isSearchMode />)
+
+        expect(
+            screen.queryByRole('button', { name: /show ticket panel/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /edit view/i }),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByRole('button', { name: /create ticket/i }),
+        ).not.toBeInTheDocument()
+    })
+
     it('calls onEditView when the "Edit view" button is clicked', async () => {
         const onEditView = vi.fn()
         const { user } = renderViewHeader({ onEditView })

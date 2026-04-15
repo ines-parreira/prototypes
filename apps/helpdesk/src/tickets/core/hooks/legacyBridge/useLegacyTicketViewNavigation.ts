@@ -58,6 +58,7 @@ export function useLegacyTicketViewNavigation() {
         isSplitTicketViewEnabled && !isSearchView
     )
     return {
+        isSearchView,
         shouldDisplay,
         shouldUseLegacyFunctions,
         previousTicketId,

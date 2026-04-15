@@ -8,6 +8,7 @@ import type { LegacyBridgeContextType } from '../LegacyBridge/context'
 
 const mockTicketViewNavigation: LegacyBridgeContextType['ticketViewNavigation'] =
     {
+        isSearchView: false,
         shouldDisplay: true,
         shouldUseLegacyFunctions: false,
         previousTicketId: undefined,

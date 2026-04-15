@@ -13,6 +13,7 @@ import type {
     TicketTranslationCompact,
 } from '@gorgias/helpdesk-types'
 
+import { getTicketTableDisplayRow } from '../../utils/getTicketTableDisplayRow'
 import { ChannelCell } from './components/ChannelCell'
 import { CustomerCell } from './components/CustomerCell'
 import { DateTimeCell } from './components/DateTimeCell'
@@ -44,6 +45,7 @@ export type TicketTableColumnsParams = {
     shouldShowTranslatedContent: (language?: Language | null) => boolean
     currentUserId?: number
     dateTimePreferences: UserDateTimePreferences
+    isSearchMode?: boolean
 }
 
 export function createTicketTableColumns({
@@ -61,16 +63,29 @@ export function createTicketTableColumns({
             size: 350,
             minSize: 350,
             maxSize: 350,
-            cell: (cell) => (
-                <TicketCell
-                    ticket={cell.row.original}
-                    translation={translationMap[cell.row.original.id]}
-                    showTranslatedContent={shouldShowTranslatedContent(
-                        cell.row.original.language,
-                    )}
-                    currentUserId={currentUserId}
-                />
-            ),
+            cell: (cell) => {
+                const ticket = cell.row.original
+                const displayRow = getTicketTableDisplayRow({
+                    ticket,
+                    translation: translationMap[ticket.id],
+                    showTranslatedContent: shouldShowTranslatedContent(
+                        ticket.language,
+                    ),
+                })
+
+                return (
+                    <TicketCell
+                        ticketId={ticket.id}
+                        isUnread={ticket.is_unread}
+                        subject={displayRow.subject}
+                        excerpt={displayRow.excerpt}
+                        hasFailedMessageTag={
+                            !!ticket.last_sent_message_not_delivered
+                        }
+                        currentUserId={currentUserId}
+                    />
+                )
+            },
         }),
         columnHelper.display({
             id: 'subject',
@@ -78,15 +93,23 @@ export function createTicketTableColumns({
             enableSorting: false,
             size: 240,
             minSize: 200,
-            cell: (cell) => (
-                <SubjectOnlyCell
-                    ticket={cell.row.original}
-                    translation={translationMap[cell.row.original.id]}
-                    showTranslatedContent={shouldShowTranslatedContent(
-                        cell.row.original.language,
-                    )}
-                />
-            ),
+            cell: (cell) => {
+                const ticket = cell.row.original
+                const displayRow = getTicketTableDisplayRow({
+                    ticket,
+                    translation: translationMap[ticket.id],
+                    showTranslatedContent: shouldShowTranslatedContent(
+                        ticket.language,
+                    ),
+                })
+
+                return (
+                    <SubjectOnlyCell
+                        value={displayRow.subject}
+                        isUnread={ticket.is_unread}
+                    />
+                )
+            },
         }),
         columnHelper.display({
             id: 'customer',
@@ -94,7 +117,14 @@ export function createTicketTableColumns({
             enableSorting: false,
             size: 220,
             minSize: 180,
-            cell: (cell) => <CustomerCell ticket={cell.row.original} />,
+            cell: (cell) => {
+                const ticket = cell.row.original
+                const displayRow = getTicketTableDisplayRow({
+                    ticket,
+                })
+
+                return <CustomerCell value={displayRow.customer} />
+            },
         }),
         columnHelper.accessor(
             (ticket) => {
@@ -108,7 +138,9 @@ export function createTicketTableColumns({
                 enableSorting: false,
                 size: 220,
                 minSize: 180,
-                cell: (cell) => <SingleLineTextCell value={cell.getValue()} />,
+                cell: (cell) => (
+                    <SingleLineTextCell value={{ text: cell.getValue() }} />
+                ),
             },
         ),
         columnHelper.display({
@@ -179,7 +211,12 @@ export function createTicketTableColumns({
             enableSorting: false,
             size: 200,
             minSize: 160,
-            cell: (cell) => <SingleLineTextCell value={cell.getValue()} />,
+            cell: (cell) =>
+                cell.getValue() ? (
+                    <SingleLineTextCell value={{ text: cell.getValue() }} />
+                ) : (
+                    <SingleLineTextCell value={null} />
+                ),
         }),
         columnHelper.accessor(
             (ticket) =>
@@ -190,7 +227,12 @@ export function createTicketTableColumns({
                 enableSorting: false,
                 size: 240,
                 minSize: 200,
-                cell: (cell) => <SingleLineTextCell value={cell.getValue()} />,
+                cell: (cell) =>
+                    cell.getValue() ? (
+                        <SingleLineTextCell value={{ text: cell.getValue() }} />
+                    ) : (
+                        <SingleLineTextCell value={null} />
+                    ),
             },
         ),
         columnHelper.accessor((ticket) => String(ticket.id), {
@@ -198,7 +240,13 @@ export function createTicketTableColumns({
             header: 'ID',
             enableSorting: false,
             hug: true,
-            cell: (cell) => <SingleLineTextCell value={cell.getValue()} />,
+            cell: (cell) => {
+                const displayRow = getTicketTableDisplayRow({
+                    ticket: cell.row.original,
+                })
+
+                return <SingleLineTextCell value={displayRow.ticketId} />
+            },
         }),
         columnHelper.accessor(
             (ticket) =>
@@ -212,7 +260,12 @@ export function createTicketTableColumns({
                 enableSorting: false,
                 size: 140,
                 minSize: 120,
-                cell: (cell) => <SingleLineTextCell value={cell.getValue()} />,
+                cell: (cell) =>
+                    cell.getValue() ? (
+                        <SingleLineTextCell value={{ text: cell.getValue() }} />
+                    ) : (
+                        <SingleLineTextCell value={null} />
+                    ),
             },
         ),
         columnHelper.display({

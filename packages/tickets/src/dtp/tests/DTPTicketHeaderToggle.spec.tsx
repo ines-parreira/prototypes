@@ -37,6 +37,17 @@ describe('DTPTicketHeaderToggle', () => {
 
     it('should render the toggle button when ticket panel is not enabled', () => {
         render(<DTPTicketHeaderToggle />, {
+            ticketViewNavigation: {
+                isSearchView: false,
+                shouldDisplay: false,
+                shouldUseLegacyFunctions: false,
+                previousTicketId: undefined,
+                nextTicketId: undefined,
+                legacyGoToPrevTicket: vi.fn(),
+                isPreviousEnabled: false,
+                legacyGoToNextTicket: vi.fn(),
+                isNextEnabled: false,
+            },
             dtpToggle: {
                 isEnabled: false,
                 setIsEnabled: vi.fn(),
@@ -56,6 +67,66 @@ describe('DTPTicketHeaderToggle', () => {
         })
         expect(button).toBeInTheDocument()
         expect(button).toHaveAttribute('aria-describedby', 'Show ticket panel')
+    })
+
+    it('should return null for search view tickets', () => {
+        const { container } = render(<DTPTicketHeaderToggle />, {
+            ticketViewNavigation: {
+                isSearchView: true,
+                shouldDisplay: false,
+                shouldUseLegacyFunctions: false,
+                previousTicketId: undefined,
+                nextTicketId: undefined,
+                legacyGoToPrevTicket: vi.fn(),
+                isPreviousEnabled: false,
+                legacyGoToNextTicket: vi.fn(),
+                isNextEnabled: false,
+            },
+            dtpToggle: {
+                isEnabled: false,
+                setIsEnabled: vi.fn(),
+                previousTicketId: undefined,
+                nextTicketId: undefined,
+                setPrevNextTicketIds: vi.fn(),
+                shouldRedirectToSplitView: false,
+                setShouldRedirectToSplitView: vi.fn(),
+            },
+            dtpEnabled: {
+                isEnabled: true,
+            },
+        })
+
+        expect(container).toBeEmptyDOMElement()
+    })
+
+    it('hides the toggle when search view is active even if the toggle would otherwise be enabled', () => {
+        const { container } = render(<DTPTicketHeaderToggle />, {
+            ticketViewNavigation: {
+                isSearchView: true,
+                shouldDisplay: true,
+                shouldUseLegacyFunctions: false,
+                previousTicketId: undefined,
+                nextTicketId: undefined,
+                legacyGoToPrevTicket: vi.fn(),
+                isPreviousEnabled: false,
+                legacyGoToNextTicket: vi.fn(),
+                isNextEnabled: false,
+            },
+            dtpToggle: {
+                isEnabled: false,
+                setIsEnabled: vi.fn(),
+                previousTicketId: undefined,
+                nextTicketId: undefined,
+                setPrevNextTicketIds: vi.fn(),
+                shouldRedirectToSplitView: false,
+                setShouldRedirectToSplitView: vi.fn(),
+            },
+            dtpEnabled: {
+                isEnabled: true,
+            },
+        })
+
+        expect(container).toBeEmptyDOMElement()
     })
 
     it('should disable the button when dtpEnabled is false', () => {
