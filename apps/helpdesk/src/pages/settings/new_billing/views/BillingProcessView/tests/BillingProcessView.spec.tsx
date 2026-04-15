@@ -1,4 +1,5 @@
 import client from '@repo/api-resources'
+import { useBillingState } from '@repo/billing'
 import { payingWithCreditCard } from '@repo/billing/fixtures'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -7,7 +8,6 @@ import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
 
-import { useBillingState } from 'billing/hooks/useBillingState'
 import {
     AUTOMATION_PRODUCT_ID,
     basicMonthlyAutomationPlan,
@@ -34,7 +34,10 @@ import SummaryTotal from '../../../components/SummaryTotal'
 import useProductCancellations from '../../../hooks/useProductCancellations'
 import { BillingProcessView } from '../BillingProcessView'
 
-jest.mock('billing/hooks/useBillingState')
+jest.mock('@repo/billing', () => ({
+    ...jest.requireActual('@repo/billing'),
+    useBillingState: jest.fn(),
+}))
 const mockUseBillingState = assumeMock(useBillingState)
 
 const mockedDispatch = jest.fn()

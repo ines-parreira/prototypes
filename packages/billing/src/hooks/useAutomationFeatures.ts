@@ -1,12 +1,15 @@
-import flowsIcon from 'assets/img/icons/flows.svg'
-import orderManagementIcon from 'assets/img/icons/order-management.svg'
-import {
-    ARTICLE_RECOMMENDATION,
-    FLOWS,
-    ORDER_MANAGEMENT,
-} from 'pages/automate/common/components/constants'
+export const FLOWS = 'Flows'
+export const ORDER_MANAGEMENT = 'Order Management'
+export const ARTICLE_RECOMMENDATION = 'Article Recommendation'
 
-export default function useAutomationFeatures() {
+type AutomationFeature = {
+    title: string
+    icon?: string
+    iconUrl?: string
+    description: string
+}
+
+export default function useAutomationFeatures(): AutomationFeature[] {
     return [
         {
             title: 'AI Agent',
@@ -15,12 +18,12 @@ export default function useAutomationFeatures() {
         },
         {
             title: FLOWS,
-            iconUrl: flowsIcon,
+            icon: 'account_tree',
             description: 'Build interactive, personalized resolutions',
         },
         {
             title: ORDER_MANAGEMENT,
-            iconUrl: orderManagementIcon,
+            icon: 'shopping_cart',
             description: 'Let customers manage and track orders',
         },
         {

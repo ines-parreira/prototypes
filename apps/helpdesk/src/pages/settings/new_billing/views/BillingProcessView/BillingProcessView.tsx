@@ -6,6 +6,7 @@ import {
     BILLING_BASE_PATH,
     PRICING_DETAILS_URL,
     ProductType,
+    useBillingState,
 } from '@repo/billing'
 import { useEffectOnce } from '@repo/hooks'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -15,7 +16,6 @@ import { dismissNotification } from 'reapop'
 import { Separator } from '@gorgias/axiom'
 import type { CustomerSummary } from '@gorgias/helpdesk-types'
 
-import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { getProductInfo, isYearlyContractPlan } from 'models/billing/utils'

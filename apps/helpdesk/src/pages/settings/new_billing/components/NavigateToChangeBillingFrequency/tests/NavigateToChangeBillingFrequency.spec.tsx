@@ -1,3 +1,4 @@
+import { useBillingState } from '@repo/billing'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
 import { act, screen } from '@testing-library/react'
@@ -5,7 +6,6 @@ import userEvent from '@testing-library/user-event'
 import { fromJS } from 'immutable'
 import { MemoryRouter } from 'react-router-dom'
 
-import { useBillingState } from 'billing/hooks/useBillingState'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -29,7 +29,10 @@ import NavigateToChangeBillingFrequency from '../NavigateToChangeBillingFrequenc
 import css from '../NavigateToChangeBillingFrequency.less'
 
 jest.mock('@repo/logging')
-jest.mock('billing/hooks/useBillingState')
+jest.mock('@repo/billing', () => ({
+    ...jest.requireActual('@repo/billing'),
+    useBillingState: jest.fn(),
+}))
 
 const logEventMock = assumeMock(logEvent)
 const mockUseBillingState = assumeMock(useBillingState)

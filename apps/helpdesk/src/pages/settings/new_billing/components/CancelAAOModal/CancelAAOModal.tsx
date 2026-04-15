@@ -4,6 +4,7 @@ import {
     BILLING_SUPPORT_EMAIL,
     CANCEL_AUTOMATION_REASONS,
     DATE_FORMAT,
+    useAutomationFeatures,
     ZAPIER_REMOVE_AAO_HOOK,
 } from '@repo/billing'
 import moment from 'moment'
@@ -23,7 +24,6 @@ import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentDomain, isTrialing } from 'state/currentAccount/selectors'
 import { getCurrentUser } from 'state/currentUser/selectors'
 
-import useAutomationFeatures from '../../hooks/useAutomationFeatures'
 import { sendRemoveNotificationZap } from '../../utils/sendRemoveNotificationZap'
 import ReasonsAAOModal from './ReasonsAAOModal'
 

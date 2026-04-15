@@ -1,6 +1,7 @@
 import {
     BILLING_PAUSED_TOOLTIP,
     BILLING_PAYMENT_FREQUENCY_PATH,
+    useBillingState,
 } from '@repo/billing'
 import { logEvent } from '@repo/logging'
 import type { SegmentEvent } from '@repo/logging'
@@ -9,7 +10,6 @@ import { Link } from 'react-router-dom'
 import type { LegacyTooltipProps as TooltipProps } from '@gorgias/axiom'
 import { LegacyTooltip as Tooltip } from '@gorgias/axiom'
 
-import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppSelector from 'hooks/useAppSelector'
 import { Cadence } from 'models/billing/types'
 import type { PlanId } from 'models/billing/types'

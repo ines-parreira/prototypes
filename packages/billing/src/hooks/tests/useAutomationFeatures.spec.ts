@@ -4,8 +4,7 @@ import {
     ARTICLE_RECOMMENDATION,
     FLOWS,
     ORDER_MANAGEMENT,
-} from 'pages/automate/common/components/constants'
-
+} from '../useAutomationFeatures'
 import useAutomationFeatures from '../useAutomationFeatures'
 
 describe('useAutomationFeatures', () => {
@@ -20,12 +19,12 @@ describe('useAutomationFeatures', () => {
             },
             {
                 title: FLOWS,
-                iconUrl: 'test-file-stub',
+                icon: 'account_tree',
                 description: 'Build interactive, personalized resolutions',
             },
             {
                 title: ORDER_MANAGEMENT,
-                iconUrl: 'test-file-stub',
+                icon: 'shopping_cart',
                 description: 'Let customers manage and track orders',
             },
             {

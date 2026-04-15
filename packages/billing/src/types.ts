@@ -254,6 +254,8 @@ export type CurrentPlans = {
     convert: ConvertPlan | null
 }
 
+export type BillingPlanName = keyof CurrentPlans
+
 export type BillingState = {
     upcoming_invoice: UpcomingInvoiceSummary | null
     subscription: SubscriptionSummary

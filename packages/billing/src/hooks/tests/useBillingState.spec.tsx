@@ -1,4 +1,5 @@
 import { renderHook } from '@repo/testing'
+import { createTestQueryClient } from '@repo/testing/vitest'
 import { QueryClientProvider } from '@tanstack/react-query'
 import { waitFor } from '@testing-library/react'
 import { HttpResponse } from 'msw'
@@ -7,12 +8,10 @@ import { setupServer } from 'msw/node'
 import { mockGetBillingStateHandler } from '@gorgias/helpdesk-mocks'
 import type { BillingState } from '@gorgias/helpdesk-queries'
 
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
-
 import { useBillingState } from '../useBillingState'
 
 const server = setupServer()
-const queryClient = mockQueryClient()
+const queryClient = createTestQueryClient()
 
 beforeAll(() => server.listen())
 afterEach(() => {
@@ -44,7 +43,7 @@ describe('useBillingState()', () => {
     })
 
     it('should return isFetching as true while the request is loading', async () => {
-        jest.useFakeTimers()
+        vi.useFakeTimers()
         const getStateMock = mockGetBillingStateHandler(async ({ data }) => {
             await new Promise((resolve) => setTimeout(resolve, 1000))
             return HttpResponse.json(data)
@@ -55,7 +54,7 @@ describe('useBillingState()', () => {
         const { result } = renderBillingStateHook()
         expect(result.current.isFetching).toBe(true)
 
-        jest.useRealTimers()
+        vi.useRealTimers()
     })
 
     it('should return undefined if the request fails', async () => {

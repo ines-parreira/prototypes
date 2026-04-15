@@ -2,6 +2,7 @@ import {
     BILLING_PAYMENT_PATH,
     formatAmount,
     getCorrespondingPlanAtCadence,
+    useBillingState,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -14,7 +15,6 @@ import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
-import { useBillingState } from 'billing/hooks/useBillingState'
 import { account } from 'fixtures/account'
 import { billingState } from 'fixtures/billing'
 import {
@@ -61,7 +61,10 @@ const useFlagMock = useFlag as jest.Mock
 jest.mock('@repo/logging')
 const logEventMock = assumeMock(logEvent)
 
-jest.mock('billing/hooks/useBillingState')
+jest.mock('@repo/billing', () => ({
+    ...jest.requireActual('@repo/billing'),
+    useBillingState: jest.fn(),
+}))
 const mockUseBillingState = assumeMock(useBillingState)
 
 const queryClient = mockQueryClient()

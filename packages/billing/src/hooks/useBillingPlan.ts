@@ -1,7 +1,7 @@
 import type { BasePlan } from '@gorgias/helpdesk-queries'
 
-import type { BillingPlanName } from 'billing'
-import { useBillingPlans } from 'billing'
+import type { BillingPlanName } from '../types'
+import { useBillingPlans } from './useBillingPlans'
 
 export function useBillingPlan(
     planName: BillingPlanName,

@@ -6,7 +6,7 @@ import { useBillingPlans } from '../useBillingPlans'
 import type { ResponseBillingState } from '../useBillingState'
 import { useBillingState } from '../useBillingState'
 
-jest.mock('billing/hooks/useBillingState')
+vi.mock('../useBillingState')
 
 const useBillingStateMock = assumeMock(useBillingState)
 

@@ -1,4 +1,7 @@
-import { handleConvertProductRemoved } from '@repo/billing'
+import {
+    handleConvertProductRemoved,
+    useIsCancellationAvailable,
+} from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
 import { assumeMock } from '@repo/testing'
@@ -24,7 +27,6 @@ import {
 import { Cadence, ProductType } from 'models/billing/types'
 import { getProductInfo } from 'models/billing/utils'
 
-import useAutomatedHelpdeskCancellationFlowAvailable from '../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable'
 import CancelAAOModal from '../../CancelAAOModal/CancelAAOModal'
 import CancelProductModal from '../../CancelProductModal/CancelProductModal'
 import type { ProductPlanSelectionProps } from '../ProductPlanSelection'
@@ -44,10 +46,12 @@ const store = mockStore({
     }),
 })
 
-jest.mock('../../../hooks/useAutomatedHelpdeskCancellationFlowAvailable')
-const useAutomatedHelpdeskCancellationFlowAvailableMock = assumeMock(
-    useAutomatedHelpdeskCancellationFlowAvailable,
-)
+jest.mock('@repo/billing', () => ({
+    ...jest.requireActual('@repo/billing'),
+    useIsCancellationAvailable: jest.fn(),
+    handleConvertProductRemoved: jest.fn(),
+}))
+const useIsCancellationAvailableMock = assumeMock(useIsCancellationAvailable)
 
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
@@ -58,10 +62,6 @@ const CancelProductModalMock = assumeMock(CancelProductModal)
 
 jest.mock('@repo/logging')
 jest.mock('../../CancelAAOModal/CancelAAOModal')
-jest.mock('@repo/billing', () => ({
-    ...jest.requireActual('@repo/billing'),
-    handleConvertProductRemoved: jest.fn(),
-}))
 
 const CancelAAOModalMock = assumeMock(CancelAAOModal)
 
@@ -98,10 +98,8 @@ describe('ProductPlanSelection', () => {
             return false
         })
 
-        useAutomatedHelpdeskCancellationFlowAvailableMock.mockReset()
-        useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
-            () => false,
-        )
+        useIsCancellationAvailableMock.mockReset()
+        useIsCancellationAvailableMock.mockImplementation(() => false)
 
         handleConvertProductRemovedMock.mockReset()
     })
@@ -170,9 +168,6 @@ describe('ProductPlanSelection', () => {
     })
 
     it('does not display the cancel auto-renewal button if cancellation is available, but editing is not available', () => {
-        useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
-            () => true,
-        )
         render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} editingAvailable={false} />
@@ -185,9 +180,6 @@ describe('ProductPlanSelection', () => {
     })
 
     it('does not display the cancel auto-renewal button if cancellation is available and editing is available, but subscription is trialing', () => {
-        useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
-            () => true,
-        )
         render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} isTrialing={true} />
@@ -200,9 +192,7 @@ describe('ProductPlanSelection', () => {
     })
 
     it('displays the cancel auto-renewal button if cancellation is available, subscription is active and editing is available', () => {
-        useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
-            () => true,
-        )
+        useIsCancellationAvailableMock.mockImplementation(() => true)
         const { getByRole, getByTestId } = render(
             <Provider store={store}>
                 <ProductPlanSelection {...props} />
@@ -216,9 +206,7 @@ describe('ProductPlanSelection', () => {
     })
 
     it('opens the cancel product modal flow', async () => {
-        useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
-            () => true,
-        )
+        useIsCancellationAvailableMock.mockImplementation(() => true)
         const expectedProps = {
             onClose: expect.any(Function),
             isOpen: false,
@@ -594,9 +582,7 @@ describe('ProductPlanSelection', () => {
             }),
         })
 
-        useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
-            () => false,
-        )
+        useIsCancellationAvailableMock.mockImplementation(() => false)
 
         render(
             <Provider store={storeWithoutHelpdeskPlan}>
@@ -1019,7 +1005,7 @@ describe('ProductPlanSelection', () => {
                 availablePlans: [basicMonthlyHelpdeskPlan],
                 buttonName: 'Cancel auto-renewal',
                 setupMock: () => {
-                    useAutomatedHelpdeskCancellationFlowAvailableMock.mockImplementation(
+                    useIsCancellationAvailableMock.mockImplementation(
                         () => true,
                     )
                     useFlagMock.mockImplementation(() => false)
@@ -1481,9 +1467,7 @@ describe('ProductPlanSelection', () => {
 
     describe('BillingUsageAndPlansCancelAutoRenewalClicked tracking', () => {
         it('should track event when Cancel auto-renewal button is clicked for Helpdesk', async () => {
-            useAutomatedHelpdeskCancellationFlowAvailableMock.mockReturnValue(
-                true,
-            )
+            useIsCancellationAvailableMock.mockReturnValue(true)
 
             render(
                 <Provider store={store}>

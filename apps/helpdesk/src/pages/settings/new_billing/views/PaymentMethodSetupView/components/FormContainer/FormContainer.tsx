@@ -6,6 +6,7 @@ import {
     BILLING_PAYMENT_PATH,
     filterTaxIdsByAddress,
     normalizeStateToCode,
+    useStripeElementPaymentState,
 } from '@repo/billing'
 import { Form } from '@repo/forms'
 import { useEffectOnce } from '@repo/hooks'
@@ -22,7 +23,6 @@ import BackLink from 'pages/settings/new_billing/components/BackLink'
 import { BillingInformationFields } from 'pages/settings/new_billing/components/BillingInformationFields/BillingInformationFields'
 import Card from 'pages/settings/new_billing/components/Card'
 import { FormSubmitButton } from 'pages/settings/new_billing/components/FormSubmitButton/FormSubmitButton'
-import { useStripeElementPaymentState } from 'pages/settings/new_billing/hooks/useStripeElementPaymentState'
 import { getIsMissingBillingInformation } from 'pages/settings/new_billing/utils/getIsMissingBillingInformation'
 import { StripePaymentFields } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/StripePaymentFields/StripePaymentFields'
 import type { ISubscriptionSummaryProps } from 'pages/settings/new_billing/views/PaymentMethodSetupView/components/SubscriptionSummary/SubscriptionSummary'

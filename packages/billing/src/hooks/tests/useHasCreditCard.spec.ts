@@ -10,7 +10,7 @@ import type { ResponseBillingState } from '../useBillingState'
 import { useBillingState } from '../useBillingState'
 import { useHasCreditCard } from '../useHasCreditCard'
 
-jest.mock('billing/hooks/useBillingState')
+vi.mock('../useBillingState')
 
 const useBillingStateMock = assumeMock(useBillingState)
 

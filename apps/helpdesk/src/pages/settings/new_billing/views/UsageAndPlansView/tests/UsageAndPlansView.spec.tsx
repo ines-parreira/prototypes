@@ -2,6 +2,7 @@ import {
     BILLING_PAUSED_TOOLTIP,
     BILLING_PAYMENT_FREQUENCY_PATH,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+    useBillingState,
 } from '@repo/billing'
 import {
     storeWithCanceledSubscription,
@@ -16,7 +17,6 @@ import { fromJS } from 'immutable'
 import { act } from 'react-dom/test-utils'
 
 import { AiAgentNotificationType } from 'automate/notifications/types'
-import { useBillingState } from 'billing/hooks/useBillingState'
 import { account } from 'fixtures/account'
 import { shopifyIntegration } from 'fixtures/integrations'
 import {
@@ -78,7 +78,10 @@ jest.mock(
     }),
 )
 
-jest.mock('billing/hooks/useBillingState')
+jest.mock('@repo/billing', () => ({
+    ...jest.requireActual('@repo/billing'),
+    useBillingState: jest.fn(),
+}))
 jest.mock('pages/aiAgent/hooks/useAiAgentOnboardingNotification')
 jest.mock('pages/aiAgent/hooks/useStoreConfiguration')
 jest.mock('hooks/aiAgent/useGetOrCreateAccountConfiguration')

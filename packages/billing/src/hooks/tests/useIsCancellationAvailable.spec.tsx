@@ -1,73 +1,40 @@
-import type React from 'react'
-
 import { useFlag } from '@repo/feature-flags'
 import { assumeMock, renderHook } from '@repo/testing'
-import { QueryClientProvider } from '@tanstack/react-query'
-import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-
-import useAppSelector from 'hooks/useAppSelector'
-import { mockQueryClient } from 'tests/reactQueryTestingUtils'
 
 import checkIsEnterpriseGMV from '../../utils/checkIsEnterpriseGMV'
 import useAutomatedHelpdeskCancellationFlowAvailable from '../useAutomatedHelpdeskCancellationFlowAvailable'
 import type { useIsCancellationAvailableProps } from '../useIsCancellationAvailable'
 import useIsCancellationAvailable from '../useIsCancellationAvailable'
 
-jest.mock('@repo/feature-flags')
+vi.mock('@repo/feature-flags')
 const mockUseFlag = assumeMock(useFlag)
-jest.mock('hooks/useAppSelector')
-const mockUseAppSelector = assumeMock(useAppSelector)
-jest.mock('../useAutomatedHelpdeskCancellationFlowAvailable')
+vi.mock('../useAutomatedHelpdeskCancellationFlowAvailable')
 const mockUseAutomatedHelpdeskCancellationFlowAvailable = assumeMock(
     useAutomatedHelpdeskCancellationFlowAvailable,
 )
-jest.mock('../../utils/checkIsEnterpriseGMV')
-const mockUseIsEnterpriseGMV = assumeMock(checkIsEnterpriseGMV)
-
-const mockStore = createStore(() => ({}))
-const queryClient = mockQueryClient()
-
-const createWrapper = () => {
-    return ({ children }: { children?: React.ReactNode }) => (
-        <Provider store={mockStore}>
-            <QueryClientProvider client={queryClient}>
-                {children}
-            </QueryClientProvider>
-        </Provider>
-    )
-}
+vi.mock('../../utils/checkIsEnterpriseGMV')
+const mockCheckIsEnterpriseGMV = assumeMock(checkIsEnterpriseGMV)
 
 const renderIsCancellationAvailable = (
     params: useIsCancellationAvailableProps,
 ) => {
-    return renderHook(() => useIsCancellationAvailable(params), {
-        wrapper: createWrapper(),
-    })
+    return renderHook(() => useIsCancellationAvailable(params))
 }
 
 describe('useIsCancellationAvailable', () => {
-    const mockCurrentAccount = {
-        get: jest.fn(),
-    }
-
-    const defaultParams = {
-        helpdeskPlan: { plan_id: 'test-plan' },
+    const defaultParams: useIsCancellationAvailableProps = {
+        helpdeskPlan: {
+            plan_id: 'test-plan',
+        } as useIsCancellationAvailableProps['helpdeskPlan'],
         editingAvailable: true,
         isTrialing: false,
-    } as useIsCancellationAvailableProps
+    }
 
     beforeEach(() => {
-        jest.clearAllMocks()
-        mockUseAppSelector.mockReturnValue(mockCurrentAccount)
+        vi.clearAllMocks()
         mockUseFlag.mockReturnValue(false)
         mockUseAutomatedHelpdeskCancellationFlowAvailable.mockReturnValue(true)
-        mockUseIsEnterpriseGMV.mockReturnValue(false)
-        mockCurrentAccount.get.mockReturnValue(false)
-    })
-
-    afterEach(() => {
-        queryClient.removeQueries()
+        mockCheckIsEnterpriseGMV.mockReturnValue(false)
     })
 
     it('should return true when all conditions are met', () => {
@@ -96,7 +63,7 @@ describe('useIsCancellationAvailable', () => {
 
     it('should return false when disableAutoRenewalCancellationForEnterpriseGMV feature flag is true and customer is EntepriseGMV', () => {
         mockUseFlag.mockReturnValue(true)
-        mockUseIsEnterpriseGMV.mockReturnValue(true)
+        mockCheckIsEnterpriseGMV.mockReturnValue(true)
 
         const { result } = renderIsCancellationAvailable(defaultParams)
         expect(result.current).toBe(false)

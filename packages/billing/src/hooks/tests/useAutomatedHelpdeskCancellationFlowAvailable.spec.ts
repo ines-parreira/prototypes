@@ -1,13 +1,26 @@
 import { renderHook } from '@repo/testing'
 
 import {
-    advancedMonthlyHelpdeskPlan,
     basicMonthlyHelpdeskPlan,
     proMonthlyHelpdeskPlan,
-    starterHelpdeskPlan,
-} from 'fixtures/plans'
-
+} from '../../fixtures.data'
+import type { HelpdeskPlan } from '../../types'
+import { Cadence, HelpdeskPlanTier, ProductType } from '../../types'
 import useAutomatedHelpdeskCancellationFlowAvailable from '../useAutomatedHelpdeskCancellationFlowAvailable'
+
+const starterHelpdeskPlan: HelpdeskPlan = {
+    ...basicMonthlyHelpdeskPlan,
+    plan_id: 'starter-monthly-usd-5',
+    name: 'Starter',
+    tier: HelpdeskPlanTier.STARTER,
+}
+
+const advancedMonthlyHelpdeskPlan: HelpdeskPlan = {
+    ...proMonthlyHelpdeskPlan,
+    plan_id: 'advanced-monthly-usd-5',
+    name: 'Advanced',
+    tier: HelpdeskPlanTier.ADVANCED,
+}
 
 describe('useAutomatedHelpdeskCancellationFlowAvailable', () => {
     it('returns false if helpdeskProduct is null', () => {

@@ -1,7 +1,7 @@
+import { checkIsEnterpriseGMV } from '@repo/billing'
+
 import type { CustomerSummary } from '@gorgias/helpdesk-types'
 import { CustomerFixedGmvBand } from '@gorgias/helpdesk-types'
-
-import checkIsEnterpriseGMV from 'pages/settings/new_billing/utils/checkIsEnterpriseGMV'
 
 describe('checkIsEnterpriseGMV', () => {
     it.each([

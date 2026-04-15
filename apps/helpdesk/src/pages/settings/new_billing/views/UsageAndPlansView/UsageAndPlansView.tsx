@@ -7,6 +7,7 @@ import {
     BILLING_PROCESS_PATH,
     DATE_FORMAT,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+    useBillingState,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -16,7 +17,6 @@ import moment from 'moment'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { AlertBannerTypes } from 'AlertBanners'
-import { useBillingState } from 'billing/hooks/useBillingState'
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
 import { ProductType } from 'models/billing/types'

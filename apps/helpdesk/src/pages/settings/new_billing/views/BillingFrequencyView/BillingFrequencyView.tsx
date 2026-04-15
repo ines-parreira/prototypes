@@ -5,6 +5,7 @@ import {
     BILLING_PAYMENT_PATH,
     getCorrespondingPlanAtCadence,
     PRICING_DETAILS_URL,
+    useBillingState,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { useEffectOnce } from '@repo/hooks'
@@ -12,7 +13,6 @@ import { logEvent, SegmentEvent } from '@repo/logging'
 import { useHistory, useLocation } from 'react-router-dom'
 
 import { ObjectFromEnum } from 'billing/helpers/objectFromEnum'
-import { useBillingState } from 'billing/hooks/useBillingState'
 import type { Plan } from 'models/billing/types'
 import { Cadence, ProductType } from 'models/billing/types'
 import { isOtherCadenceUpgrade } from 'models/billing/utils'

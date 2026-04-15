@@ -18,7 +18,11 @@
         "typecheck": "tsc -p ./tsconfig.json --noEmit true"
     },
     "peerDependencies": {
+        "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
+        "@repo/feature-flags": "workspace:*",
         "@repo/logging": "workspace:*",
+        "@stripe/react-stripe-js": "^2.8.0",
+        "@tanstack/react-query": "catalog:rest-api-sdk",
         "immutable": "3.8.3",
         "moment": "catalog:moment",
         "react": "catalog:react",
@@ -27,8 +31,17 @@
         "reactstrap": "8.9.0"
     },
     "devDependencies": {
+        "@gorgias/helpdesk-queries": "catalog:rest-api-sdk",
+        "@repo/feature-flags": "workspace:*",
         "@repo/logging": "workspace:*",
+        "@stripe/react-stripe-js": "^2.8.0",
         "@stripe/stripe-js": "^4.5.0",
+        "@tanstack/react-query": "catalog:rest-api-sdk",
+        "@gorgias/helpdesk-mocks": "catalog:rest-api-sdk",
+        "msw": "catalog:test",
+        "@repo/testing": "workspace:*",
+        "@testing-library/jest-dom": "catalog:test",
+        "@types/jest": "catalog:test",
         "@testing-library/react": "catalog:test",
         "@gorgias/helpdesk-types": "catalog:rest-api-sdk",
         "@repo/config": "workspace:*",

@@ -8,6 +8,7 @@ import {
     formatNumTickets,
     handleConvertProductRemoved,
     PRODUCT_DISABLED_FOR_TRIALING_USERS_TOOLTIP,
+    useIsCancellationAvailable,
 } from '@repo/billing'
 import { FeatureFlagKey, useFlag } from '@repo/feature-flags'
 import { logEvent, SegmentEvent } from '@repo/logging'
@@ -39,7 +40,6 @@ import { TicketPurpose } from 'state/billing/types'
 import type { CurrentProductsUsages } from 'state/billing/types'
 import { getCurrentAccountState } from 'state/currentAccount/selectors'
 
-import useIsCancellationAvailable from '../../hooks/useIsCancellationAvailable'
 import AutoUpgradeToggle from '../AutoUpgradeToggle'
 import CancelAAOModal from '../CancelAAOModal/CancelAAOModal'
 import CancelProductModal from '../CancelProductModal/CancelProductModal'
