@@ -1,3 +1,5 @@
+import { SYSTEM_VIEW_DEFINITIONS } from '@repo/tickets'
+
 import {
     Box,
     Button,
@@ -21,6 +23,11 @@ type Props = {
 export function TicketListHeader({ viewId, onCollapse, onEditView }: Props) {
     const { data: viewResponse } = useGetView(viewId)
     const viewName = viewResponse?.data?.name
+    const displayName =
+        /* v8 ignore next -- codecov incorrectly reporting partial coverage */
+        viewName && viewName in SYSTEM_VIEW_DEFINITIONS
+            ? SYSTEM_VIEW_DEFINITIONS[viewName].label
+            : viewName
 
     return (
         <Box
@@ -59,7 +66,7 @@ export function TicketListHeader({ viewId, onCollapse, onEditView }: Props) {
                             className={css.viewName}
                             color="content-neutral-default"
                         >
-                            {viewName}
+                            {displayName}
                         </Text>
                     </OverflowTooltip>
                 </Box>

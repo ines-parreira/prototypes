@@ -5,6 +5,7 @@ export type SystemViewDefinition = {
     name: string
     label: string
     icon: IconName
+    additionalPaths?: string[]
 }
 
 export type ViewsVisibilityData = {

@@ -5,6 +5,7 @@ export const SYSTEM_VIEW_DEFINITIONS: Record<string, SystemViewDefinition> = {
         name: 'Inbox',
         label: 'Assigned to me',
         icon: 'user-arrow',
+        additionalPaths: ['/app/views'],
     },
     Unassigned: {
         name: 'Unassigned',

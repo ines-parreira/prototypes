@@ -49,6 +49,10 @@ export function DefaultViews() {
                                 onClick={() =>
                                     dispatch(activeViewIdSet(view.id))
                                 }
+                                additionalActivePaths={
+                                    SYSTEM_VIEW_DEFINITIONS[view.name]
+                                        .additionalPaths
+                                }
                             />
                         ),
                 )}

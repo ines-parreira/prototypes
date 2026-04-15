@@ -172,6 +172,40 @@ describe('TicketNavbarViewLinkItem', () => {
         expect(onClick).toHaveBeenCalledTimes(1)
     })
 
+    it('should be active when the current path matches an additionalActivePath', () => {
+        renderWithRouter(
+            <TicketNavbarViewLinkItem
+                icon="user-arrow"
+                view={{ ...defaultView, id: 999 }}
+                label="Assigned to me"
+                additionalActivePaths={['/app/views']}
+            />,
+            {
+                route: '/app/views',
+                path: '/app/views',
+            },
+        )
+
+        expect(screen.getByRole('link')).toHaveClass('active')
+    })
+
+    it('should not be active when additionalActivePaths does not match the current path', () => {
+        renderWithRouter(
+            <TicketNavbarViewLinkItem
+                icon="user-arrow"
+                view={{ ...defaultView, id: 999 }}
+                label="Assigned to me"
+                additionalActivePaths={['/app/views']}
+            />,
+            {
+                route: '/app/other',
+                path: '/app/other',
+            },
+        )
+
+        expect(screen.getByRole('link')).not.toHaveClass('active')
+    })
+
     it('should pass canduId as data-candu-id attribute on the link', () => {
         const { container } = renderWithRouter(
             <TicketNavbarViewLinkItem

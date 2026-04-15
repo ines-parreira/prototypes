@@ -47,6 +47,28 @@ describe('TicketListHeader', () => {
         })
     })
 
+    it('renders no view name before the view data loads', () => {
+        render(<TicketListHeader viewId={viewId} onCollapse={vi.fn()} />)
+
+        expect(screen.queryByText(viewName)).not.toBeInTheDocument()
+    })
+
+    it('renders the system view label instead of the view name for system views', async () => {
+        server.use(
+            mockGetViewHandler(async () =>
+                HttpResponse.json(
+                    mockGetViewResponse({ id: viewId, name: 'Inbox' }),
+                ),
+            ).handler,
+        )
+
+        render(<TicketListHeader viewId={viewId} onCollapse={vi.fn()} />)
+
+        await waitFor(() => {
+            expect(screen.getByText('Assigned to me')).toBeInTheDocument()
+        })
+    })
+
     it('calls onCollapse when the hide ticket panel button is clicked', async () => {
         const onCollapse = vi.fn()
         const { user } = render(
@@ -58,6 +80,18 @@ describe('TicketListHeader', () => {
         )
 
         expect(onCollapse).toHaveBeenCalledTimes(1)
+    })
+
+    it('renders no view name when the API returns no view data', async () => {
+        server.use(
+            mockGetViewHandler(async () => HttpResponse.json(null)).handler,
+        )
+
+        render(<TicketListHeader viewId={viewId} onCollapse={vi.fn()} />)
+
+        await waitFor(() => {
+            expect(screen.queryByText(viewName)).not.toBeInTheDocument()
+        })
     })
 
     it.each([{ name: /sort view by/i }, { name: /edit view/i }])(

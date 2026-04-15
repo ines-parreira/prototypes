@@ -13,6 +13,7 @@ import { activeViewIdSet } from 'state/ui/views/actions'
 import { renderWithRouter } from 'utils/testing'
 
 import { DefaultViews } from '../DefaultViews'
+import { TicketNavbarViewLinkItem } from '../TicketNavbarViewLinkItem'
 
 jest.mock('@repo/tickets', () => ({
     ...jest.requireActual('@repo/tickets'),
@@ -34,14 +35,9 @@ const activeViewIdSetMock = assumeMock(activeViewIdSet)
 const mockUseCurrentUserRole = assumeMock(useCurrentUserRole)
 
 jest.mock('../TicketNavbarViewLinkItem', () => ({
-    TicketNavbarViewLinkItem: ({
-        label,
-        onClick,
-    }: {
-        label?: string
-        onClick?: () => void
-    }) => <div onClick={onClick}>{label}</div>,
+    TicketNavbarViewLinkItem: jest.fn(),
 }))
+const MockTicketNavbarViewLinkItem = assumeMock(TicketNavbarViewLinkItem)
 
 const mockUseExpandableDefaultViews = assumeMock(useExpandableDefaultViews)
 const MockDefaultViewsMenu = assumeMock(DefaultViewsMenu)
@@ -87,6 +83,11 @@ describe('DefaultViews', () => {
         dispatch = jest.fn()
         useAppDispatchMock.mockReturnValue(dispatch)
         MockDefaultViewsMenu.mockReturnValue(<div>DefaultViewsMenu</div>)
+        MockTicketNavbarViewLinkItem.mockImplementation(
+            ({ label, onClick }: { label?: string; onClick?: () => void }) => (
+                <div onClick={onClick}>{label}</div>
+            ),
+        )
         mockUseCurrentUserRole.mockReturnValue({
             isAdmin: true,
             hasRole: jest.fn(),
@@ -210,6 +211,18 @@ describe('DefaultViews', () => {
             type: 'active-view-id-set',
             payload: inboxView.id,
         })
+    })
+
+    it('should pass additionalActivePaths from SYSTEM_VIEW_DEFINITIONS to the Inbox view item', () => {
+        renderComponent()
+
+        expect(MockTicketNavbarViewLinkItem).toHaveBeenCalledWith(
+            expect.objectContaining({
+                additionalActivePaths:
+                    SYSTEM_VIEW_DEFINITIONS['Inbox'].additionalPaths,
+            }),
+            expect.anything(),
+        )
     })
 
     it('should not render views with missing id or name', () => {

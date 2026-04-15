@@ -19,11 +19,12 @@ type Props = {
         deactivated_datetime?: Maybe<string>
     }
     onClick?: () => void
+    additionalActivePaths?: string[]
 }
 
 export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
     function TicketNavbarViewLinkItem(
-        { canduId, icon, view, label, onClick }: Props,
+        { canduId, icon, view, label, additionalActivePaths, onClick }: Props,
         ref,
     ) {
         const viewCount = useViewCount(view.id)
@@ -34,6 +35,12 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
                 ? `/app/views/:viewId`
                 : `/app/tickets/:viewId?/:slug?/`,
         })
+        const isMatchingAdditionalPath = !!additionalActivePaths?.some((path) =>
+            matchPath(pathname, {
+                path,
+                exact: true,
+            }),
+        )
 
         const viewIdParam = match?.params.viewId
         const viewId = viewIdParam ? parseInt(viewIdParam, 10) : 0
@@ -65,7 +72,7 @@ export const TicketNavbarViewLinkItem = forwardRef<HTMLAnchorElement, Props>(
                         {label ?? view.name}
                     </>
                 }
-                isActive={() => isActiveView}
+                isActive={() => isActiveView || isMatchingAdditionalPath}
                 leadingSlot={icon}
                 trailingSlot={
                     !!view.deactivated_datetime ? (
