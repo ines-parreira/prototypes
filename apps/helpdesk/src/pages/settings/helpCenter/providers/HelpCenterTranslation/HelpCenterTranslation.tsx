@@ -169,7 +169,8 @@ export const HelpCenterTranslationProvider: React.FC<Props> = ({
                 if (contactForm.subject_lines) {
                     updates.subject_lines = {
                         options: contactForm.subject_lines.options,
-                        allow_other: contactForm.subject_lines.allow_other,
+                        allow_other:
+                            contactForm.subject_lines.allow_other ?? true,
                     }
                 }
 

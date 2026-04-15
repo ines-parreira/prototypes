@@ -1,6 +1,6 @@
 import type React from 'react'
 
-import { flushPromises, renderHook } from '@repo/testing'
+import { act, flushPromises, renderHook } from '@repo/testing'
 import { fromJS } from 'immutable'
 import { Provider } from 'react-redux'
 import configureMockStore from 'redux-mock-store'
@@ -165,6 +165,96 @@ describe('useHelpCenterTranslation', () => {
 
             expect(current.emailIntegration.id).toEqual(
                 helpCenter.email_integration?.id,
+            )
+        })
+
+        it('should default allow_other to true when subject_lines.allow_other is undefined', async () => {
+            const contactFormWithUndefinedAllowOther = {
+                ...contactForm,
+                subject_lines: {
+                    options: ['Track order', 'Report issue'],
+                    allow_other: undefined as unknown as boolean,
+                },
+            }
+            const stateWithUndefinedAllowOther: Partial<RootState> = {
+                ...state,
+                entities: {
+                    ...defaultState.entities,
+                    contactForm: {
+                        contactForms: {
+                            contactFormById: {
+                                [contactFormWithUndefinedAllowOther.id]:
+                                    contactFormWithUndefinedAllowOther,
+                            },
+                        },
+                    },
+                } as any,
+            }
+
+            const { result } = renderTestHook({
+                state: stateWithUndefinedAllowOther,
+                currentHelpCenter: helpCenter,
+            })
+
+            await flushPromises()
+
+            await act(async () => {
+                await result.current.updateHelpCenter()
+            })
+
+            expect(mockUpdateContactForm).toHaveBeenCalledWith(
+                111,
+                expect.objectContaining({
+                    subject_lines: {
+                        options: ['Track order', 'Report issue'],
+                        allow_other: true,
+                    },
+                }),
+            )
+        })
+
+        it('should preserve allow_other as false when explicitly set to false', async () => {
+            const contactFormWithAllowOtherFalse = {
+                ...contactForm,
+                subject_lines: {
+                    options: ['Track order'],
+                    allow_other: false,
+                },
+            }
+            const stateWithAllowOtherFalse: Partial<RootState> = {
+                ...state,
+                entities: {
+                    ...defaultState.entities,
+                    contactForm: {
+                        contactForms: {
+                            contactFormById: {
+                                [contactFormWithAllowOtherFalse.id]:
+                                    contactFormWithAllowOtherFalse,
+                            },
+                        },
+                    },
+                } as any,
+            }
+
+            const { result } = renderTestHook({
+                state: stateWithAllowOtherFalse,
+                currentHelpCenter: helpCenter,
+            })
+
+            await flushPromises()
+
+            await act(async () => {
+                await result.current.updateHelpCenter()
+            })
+
+            expect(mockUpdateContactForm).toHaveBeenCalledWith(
+                111,
+                expect.objectContaining({
+                    subject_lines: {
+                        options: ['Track order'],
+                        allow_other: false,
+                    },
+                }),
             )
         })
 
