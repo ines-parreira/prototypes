@@ -1,11 +1,12 @@
-import { IntegrationType } from 'models/integration/constants'
+import { describe, expect, it, vi } from 'vitest'
+
+import { IntegrationType } from '@gorgias/helpdesk-types'
 
 import { getImageSrc, getSizedImageUrl } from '../shopify'
 
-jest.mock(
-    'assets/img/presentationals/shopify-product-default-image.png',
-    () => 'default-image.png',
-)
+vi.mock('../assets/shopify-product-default-image.png', () => ({
+    default: 'default-image.png',
+}))
 
 describe('shopify utils', () => {
     describe('getSizedImageUrl', () => {
@@ -91,7 +92,7 @@ describe('shopify utils', () => {
         it('should return original src if not a Shopify image', () => {
             const image = {
                 src: 'http://example.com/other_image.png',
-                type: 'OTHER_INTEGRATION' as IntegrationType, // Cast for testing non-Shopify type
+                type: 'OTHER_INTEGRATION' as IntegrationType,
             }
             expect(getImageSrc(image)).toBe(
                 'http://example.com/other_image.png',

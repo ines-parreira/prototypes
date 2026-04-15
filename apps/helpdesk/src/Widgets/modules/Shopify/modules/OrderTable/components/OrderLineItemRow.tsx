@@ -2,6 +2,7 @@ import type { RefObject } from 'react'
 import React, { memo, useCallback, useEffect, useState } from 'react'
 
 import { logEvent, SegmentEvent } from '@repo/logging'
+import { getSizedImageUrl } from '@repo/utils'
 import classnames from 'classnames'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
@@ -19,7 +20,6 @@ import MoneyAmount from 'pages/common/components/infobar/Infobar/InfobarCustomer
 import { ProductStockQuantity } from 'pages/common/components/StockQuantity'
 import CheckBox from 'pages/common/forms/CheckBox'
 import NumberInput from 'pages/common/forms/input/NumberInput'
-import { getSizedImageUrl } from 'utils/shopify'
 import DiscountPopover from 'Widgets/modules/Shopify/modules/DiscountPopover'
 import { ShopifyActionType } from 'Widgets/modules/Shopify/types'
 

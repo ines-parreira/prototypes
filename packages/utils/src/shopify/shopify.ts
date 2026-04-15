@@ -1,5 +1,6 @@
-import defaultImage from 'assets/img/presentationals/shopify-product-default-image.png'
-import { IntegrationType } from 'models/integration/constants'
+import { IntegrationType } from '@gorgias/helpdesk-types'
+
+import defaultImage from './assets/shopify-product-default-image.png'
 
 export const getSizedImageUrl = (src: string, size: string) => {
     const match = src.match(

@@ -1,8 +1,9 @@
+import { getImageSrc } from '@repo/utils'
 import classnames from 'classnames'
 
-import type { IntegrationType } from 'models/integration/constants'
+import type { IntegrationType } from '@gorgias/helpdesk-types'
+
 import { ProductStockQuantity } from 'pages/common/components/StockQuantity'
-import { getImageSrc } from 'utils/shopify'
 
 import css from './Result.less'
 

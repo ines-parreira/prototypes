@@ -31,3 +31,4 @@ export {
     notUndefined,
     isValueOfStringEnum,
 } from './typeguards'
+export { getImageSrc, getSizedImageUrl } from './shopify'
