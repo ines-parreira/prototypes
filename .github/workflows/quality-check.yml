@@ -343,41 +343,6 @@ jobs:
             echo "All required package test buckets completed successfully"
           fi
 
-  codecov-notifications:
-    name: 'Codecov notifications'
-    runs-on: gh-actions-small-runner-set
-    needs:
-      - tests
-      - packages-tests-rollup
-    if: ${{ always() && !cancelled() && (inputs.helpdesk-affected == 'true' || inputs.has-other-affected-packages == 'true') }}
-    env:
-      CODECOV_CLI_VERSION: "v10.2.1"
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Install Codecov CLI
-        run: |
-          curl -fsSLO "https://cli.codecov.io/${{ env.CODECOV_CLI_VERSION }}/linux/codecov"
-          curl -fsSLO "https://cli.codecov.io/${{ env.CODECOV_CLI_VERSION }}/linux/codecov.SHA256SUM"
-          curl -fsSLO "https://cli.codecov.io/${{ env.CODECOV_CLI_VERSION }}/linux/codecov.SHA256SUM.sig"
-
-          gpg --batch --no-default-keyring --keyring ./trustedkeys.gpg --import codecov_pgp_key.asc
-          gpgv --keyring ./trustedkeys.gpg codecov.SHA256SUM.sig codecov.SHA256SUM
-          shasum -a 256 -c codecov.SHA256SUM
-
-          chmod +x codecov
-
-      - name: Send Codecov notifications
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-        run: |
-          ./codecov --verbose send-notifications \
-            --fail-on-error \
-            --git-service github \
-            --token "$CODECOV_TOKEN" \
-            --sha "${{ github.sha }}" \
-            --slug "${{ github.repository }}"
-
   no-application-code-changes:
     name: 'No application code changes'
     runs-on: gh-actions-small-runner-set
