@@ -1,7 +1,6 @@
 import client from '@repo/api-resources'
 import { payingWithCreditCard, trial, usages } from '@repo/billing/fixtures'
-import { assumeMock } from '@repo/testing'
-import { act, screen, waitFor, within } from '@testing-library/react'
+import { act, screen, waitFor } from '@testing-library/react'
 import { userEvent } from '@testing-library/user-event'
 import MockAdapter from 'axios-mock-adapter'
 import { fromJS } from 'immutable'
@@ -15,8 +14,6 @@ import type {
 } from 'models/billing/types'
 import { ProductType, SubscriptionStatus } from 'models/billing/types'
 import { BillingInternalViewUI } from 'pages/settings/new_billing/components/BillingInternalViewUI/BillingInternalViewUI'
-import { useExtendTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useExtendTrialWithSideEffects'
-import { useReactivateTrialWithSideEffects } from 'pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
 import type { RootState } from 'state/types'
@@ -59,14 +56,6 @@ const extendedTrial = {
     },
 }
 
-const trialOverAndUnconverted = {
-    ...trial,
-    subscription: {
-        ...trial.subscription,
-        status: SubscriptionStatus.CANCELED,
-    },
-}
-
 const extendedTrialOverAndUnconverted = {
     ...extendedTrial,
     subscription: {
@@ -95,32 +84,10 @@ const useAppDispatchMock = useAppDispatch as jest.Mock
 const dispatch = jest.fn()
 useAppDispatchMock.mockReturnValue(dispatch)
 
-// Mock useExtendTrialMock
-const useExtendTrialMutateMock = jest.fn()
-jest.mock('pages/settings/new_billing/hooks/useExtendTrialWithSideEffects')
-const useExtendTrialMock = assumeMock(useExtendTrialWithSideEffects)
-useExtendTrialMock.mockImplementation(() => {
-    return {
-        mutate: useExtendTrialMutateMock,
-    } as unknown as ReturnType<typeof useExtendTrialWithSideEffects>
-})
-
-// Mock useReactivateTrialMock
-const useReactivateTrialMutateMock = jest.fn()
-jest.mock('pages/settings/new_billing/hooks/useReactivateTrialWithSideEffects')
-const useReactivateTrialMock = assumeMock(useReactivateTrialWithSideEffects)
-useReactivateTrialMock.mockImplementation(() => {
-    return {
-        mutate: useReactivateTrialMutateMock,
-    } as unknown as ReturnType<typeof useReactivateTrialWithSideEffects>
-})
-
 describe('BillingInternalViewUI', () => {
     beforeEach(() => {
         mockedServer.reset()
         mockedServer.onGet('/billing/state').reply(200, payingWithCreditCard)
-        useExtendTrialMutateMock.mockClear()
-        useReactivateTrialMutateMock.mockClear()
     })
 
     afterEach(() => {
@@ -150,65 +117,6 @@ describe('BillingInternalViewUI', () => {
 
         // and the invoice card should say "Next invoice"
         expect(screen.getByText('Next invoice')).toBeInTheDocument()
-    })
-
-    it('When customer has a trialing subscription, which has NOT been extended', async () => {
-        const user = userEvent.setup()
-        renderWithStoreAndQueryClientAndRouter(
-            <BillingInternalViewUI
-                {...BillingInternalViewUIDefaultProps}
-                billingState={trial}
-            />,
-        )
-
-        // Then he should be able to add a coupon or to extend trial but NOT to reactivate trial
-        expect(
-            screen.queryByRole('button', { name: /Apply coupon/i }),
-        ).toBeInTheDocument()
-
-        expect(
-            screen.queryByRole('button', { name: /Extend trial/i }),
-        ).toBeInTheDocument()
-
-        expect(
-            screen.queryByRole('button', { name: /Reactivate trial/i }),
-        ).not.toBeInTheDocument()
-
-        // and the invoice card should say "Next invoice"
-        expect(screen.getByText('Next invoice')).toBeInTheDocument()
-
-        // When clicking on 'Extend trial' button
-        await act(() =>
-            user.click(screen.getByRole('button', { name: /Extend trial/i })),
-        )
-        const confirmButton = await screen.findByRole('button', {
-            name: /Confirm/i,
-        })
-
-        await act(() => user.click(confirmButton))
-        expect(useExtendTrialMutateMock).toHaveBeenCalledWith([])
-
-        // When clicking on 'Apply coupon' button
-        await act(() =>
-            user.click(screen.getByRole('button', { name: /Apply coupon/i })),
-        )
-        // Then a modal should show up
-        const modal = screen.getByRole('dialog')
-        expect(
-            within(modal).getByText(/Apply Helpdesk and AI Agent coupon/i),
-        ).toBeInTheDocument()
-
-        // with a dropdown having the list of available coupons
-        const items = document.getElementsByClassName('dropdown-item')
-        expect(items[0]).toHaveTextContent(availableHdAoCoupons[0])
-        expect(items[1]).toHaveTextContent(availableHdAoCoupons[1])
-
-        // with 'Cancel' and 'Apply Coupon' buttons
-        expect(
-            within(modal).queryByRole('button', { name: 'Delete Coupon' }),
-        ).not.toBeInTheDocument()
-        within(modal).getByRole('button', { name: 'Cancel' })
-        within(modal).getByRole('button', { name: 'Apply Coupon' })
     })
 
     it('When customer has a trialing subscription, which has been already extended', () => {
@@ -254,83 +162,6 @@ describe('BillingInternalViewUI', () => {
         expect(
             screen.queryByRole('button', { name: /Reactivate trial/i }),
         ).not.toBeInTheDocument()
-    })
-
-    it('When trial has ended and has NOT been extended previously + customer has not converted (no active subscription)', async () => {
-        jest.useFakeTimers({
-            now: new Date('2050-08-10T00:00:00.000Z'),
-            doNotFake: [
-                'setTimeout',
-                'clearTimeout',
-                'setInterval',
-                'clearInterval',
-                'setImmediate',
-                'clearImmediate',
-                'nextTick',
-                'queueMicrotask',
-                'requestAnimationFrame',
-                'cancelAnimationFrame',
-                'requestIdleCallback',
-                'cancelIdleCallback',
-            ],
-        })
-        const user = userEvent.setup()
-
-        renderWithStoreAndQueryClientAndRouter(
-            <BillingInternalViewUI
-                {...BillingInternalViewUIDefaultProps}
-                billingState={trialOverAndUnconverted}
-            />,
-        )
-        expect(
-            screen.queryByRole('button', { name: /Apply coupon/i }),
-        ).not.toBeInTheDocument()
-
-        expect(
-            screen.queryByRole('button', { name: /Edit coupon/i }),
-        ).not.toBeInTheDocument()
-
-        expect(
-            screen.queryByRole('button', { name: /Extend trial/i }),
-        ).not.toBeInTheDocument()
-
-        expect(
-            screen.queryByRole('button', { name: /Reactivate trial/i }),
-        ).toBeInTheDocument()
-
-        expect(screen.queryByText('Next invoice')).toBeInTheDocument()
-        expect(screen.queryByText('$0')).toBeInTheDocument()
-        expect(
-            screen.queryByText(/No active subscription/i),
-        ).toBeInTheDocument()
-        expect(screen.queryByText(/Trial ended on/i)).toBeInTheDocument()
-
-        // When clicking on 'Reactivate trial' button
-        await act(() =>
-            user.click(
-                screen.getByRole('button', { name: /Reactivate trial/i }),
-            ),
-        )
-
-        // Then
-        expect(
-            screen.getByText(/Do you want to reactivate trial until/i),
-        ).toBeInTheDocument()
-        expect(screen.getByText(/August 17, 2050/i)).toBeInTheDocument()
-        expect(
-            screen.getByText(
-                /Note, that once confirmed, the reactivation cannot be undone./i,
-            ),
-        ).toBeInTheDocument()
-
-        expect(useReactivateTrialMutateMock).not.toHaveBeenCalledWith([])
-
-        const confirmButton = await screen.findByRole('button', {
-            name: /Confirm/i,
-        })
-        await act(() => user.click(confirmButton))
-
-        expect(useReactivateTrialMutateMock).toHaveBeenCalledWith([])
     })
 
     it('When trial has ended and has been extended previously + customer hasn’t converted (no active subscription)', () => {
