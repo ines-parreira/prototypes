@@ -10,7 +10,10 @@ import { SegmentsSidePanel } from 'AIJourney/components/SegmentsSidePanel/Segmen
 import { useJourneyContext } from 'AIJourney/providers'
 import { useConditionsMetadata } from 'AIJourney/queries'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
-import { useAudienceSegments } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
+import {
+    AudienceListSource,
+    useAudienceSegments,
+} from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
 
 const fieldProps = {
     include: {
@@ -46,8 +49,15 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
     const { data: audienceLists, isLoading: isLoadingAudienceLists } =
         useAudienceLists(currentIntegration?.id)
 
-    const { data: audienceSegments, isLoading: isLoadingAudienceSegments } =
-        useAudienceSegments(currentIntegration?.id)
+    const {
+        data: gorgiasAudienceSegments,
+        isLoading: isLoadingGorgiasAudienceSegments,
+    } = useAudienceSegments(currentIntegration?.id, AudienceListSource.Gorgias)
+
+    const {
+        data: klaviyoAudienceSegments,
+        isLoading: isLoadingKlaviyoAudienceSegments,
+    } = useAudienceSegments(currentIntegration?.id, AudienceListSource.Klaviyo)
 
     const { data: schema } = useConditionsMetadata({
         enabled: !isAiJourneySegmentsEnabled,
@@ -67,18 +77,34 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
             })
         }
 
-        if (audienceSegments && audienceSegments.data.length > 0) {
+        if (
+            gorgiasAudienceSegments &&
+            gorgiasAudienceSegments.data.length > 0
+        ) {
             currentSections.push({
-                id: 'segment',
-                name: 'Segments',
-                items: audienceSegments.data
+                id: 'gorgias-segment',
+                name: 'Gorgias segments',
+                items: gorgiasAudienceSegments.data
+                    .map((e) => ({ id: e.id, name: e.name }))
+                    .filter((e) => !excluded.includes(e.id)),
+            })
+        }
+
+        if (
+            klaviyoAudienceSegments &&
+            klaviyoAudienceSegments.data.length > 0
+        ) {
+            currentSections.push({
+                id: 'klaviyo-segment',
+                name: 'Klaviyo segments',
+                items: klaviyoAudienceSegments.data
                     .map((e) => ({ id: e.id, name: e.name }))
                     .filter((e) => !excluded.includes(e.id)),
             })
         }
 
         return currentSections
-    }, [audienceLists, audienceSegments])
+    }, [audienceLists, gorgiasAudienceSegments, klaviyoAudienceSegments])
 
     return (
         <>
@@ -113,7 +139,9 @@ export const AudienceSelect = ({ type }: { type: 'include' | 'exclude' }) => {
                             items: [],
                         }))}
                         isDisabled={
-                            isLoadingAudienceLists || isLoadingAudienceSegments
+                            isLoadingAudienceLists ||
+                            isLoadingGorgiasAudienceSegments ||
+                            isLoadingKlaviyoAudienceSegments
                         }
                     >
                         {(section) => (

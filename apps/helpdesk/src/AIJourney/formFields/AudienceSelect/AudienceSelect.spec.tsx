@@ -6,7 +6,10 @@ import { FormProvider, useForm } from 'react-hook-form'
 import { useJourneyContext } from 'AIJourney/providers'
 import { useConditionsMetadata } from 'AIJourney/queries'
 import { useAudienceLists } from 'AIJourney/queries/useAudienceLists/useAudienceLists'
-import { useAudienceSegments } from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
+import {
+    AudienceListSource,
+    useAudienceSegments,
+} from 'AIJourney/queries/useAudienceSegments/useAudienceSegments'
 import type { ConditionsSchema } from 'AIJourney/types/conditionField'
 
 import { AudienceSelect } from './AudienceSelect'
@@ -51,6 +54,10 @@ jest.mock('AIJourney/queries/useAudienceLists/useAudienceLists', () => ({
 
 jest.mock('AIJourney/queries/useAudienceSegments/useAudienceSegments', () => ({
     useAudienceSegments: jest.fn(),
+    AudienceListSource: {
+        Gorgias: 'gorgias',
+        Klaviyo: 'klaviyo',
+    },
 }))
 
 const mockSchema: ConditionsSchema = {
@@ -98,10 +105,10 @@ describe('<AudienceSelect />', () => {
             currentIntegration: { id: 123 },
         })
         mockUseAudienceLists.mockReturnValue({ data: null, isLoading: false })
-        mockUseAudienceSegments.mockReturnValue({
+        mockUseAudienceSegments.mockImplementation(() => ({
             data: null,
             isLoading: false,
-        })
+        }))
         mockUseConditionsMetadata.mockReturnValue({ data: undefined })
     })
 
@@ -120,15 +127,32 @@ describe('<AudienceSelect />', () => {
     })
 
     describe('data display', () => {
-        it('shows list and segment sections when data is available', async () => {
+        it('shows list, Gorgias segments, and Klaviyo segments sections when data is available', async () => {
             mockUseAudienceLists.mockReturnValue({
                 data: { data: [{ id: 'list1', name: 'VIP Customers' }] },
                 isLoading: false,
             })
-            mockUseAudienceSegments.mockReturnValue({
-                data: { data: [{ id: 'seg1', name: 'High Value' }] },
-                isLoading: false,
-            })
+            mockUseAudienceSegments.mockImplementation(
+                (integrationId, source) => {
+                    if (source === AudienceListSource.Gorgias) {
+                        return {
+                            data: {
+                                data: [{ id: 'seg1', name: 'Gorgias Segment' }],
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    if (source === AudienceListSource.Klaviyo) {
+                        return {
+                            data: {
+                                data: [{ id: 'seg2', name: 'Klaviyo Segment' }],
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    return { data: null, isLoading: false }
+                },
+            )
 
             const user = userEvent.setup()
             await renderComponent('include')
@@ -139,13 +163,77 @@ describe('<AudienceSelect />', () => {
             })
             await waitFor(() => {
                 expect(screen.getByText('Lists')).toBeInTheDocument()
-                expect(screen.getByText('Segments')).toBeInTheDocument()
+                expect(screen.getByText('Gorgias segments')).toBeInTheDocument()
+                expect(screen.getByText('Klaviyo segments')).toBeInTheDocument()
                 expect(
                     screen.getByRole('option', { name: /VIP Customers/i }),
                 ).toBeInTheDocument()
                 expect(
-                    screen.getByRole('option', { name: /High Value/i }),
+                    screen.getByRole('option', { name: /Gorgias Segment/i }),
                 ).toBeInTheDocument()
+                expect(
+                    screen.getByRole('option', { name: /Klaviyo Segment/i }),
+                ).toBeInTheDocument()
+            })
+        })
+
+        it('shows only Gorgias Segments section when only Gorgias data is available', async () => {
+            mockUseAudienceSegments.mockImplementation(
+                (integrationId, source) => {
+                    if (source === AudienceListSource.Gorgias) {
+                        return {
+                            data: {
+                                data: [{ id: 'seg1', name: 'Gorgias Segment' }],
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    return { data: null, isLoading: false }
+                },
+            )
+
+            const user = userEvent.setup()
+            await renderComponent('include')
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
+            await waitFor(() => {
+                expect(screen.getByText('Gorgias segments')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Klaviyo segments'),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('shows only Klaviyo Segments section when only Klaviyo data is available', async () => {
+            mockUseAudienceSegments.mockImplementation(
+                (integrationId, source) => {
+                    if (source === AudienceListSource.Klaviyo) {
+                        return {
+                            data: {
+                                data: [{ id: 'seg2', name: 'Klaviyo Segment' }],
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    return { data: null, isLoading: false }
+                },
+            )
+
+            const user = userEvent.setup()
+            await renderComponent('include')
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
+            await waitFor(() => {
+                expect(screen.getByText('Klaviyo segments')).toBeInTheDocument()
+                expect(
+                    screen.queryByText('Gorgias segments'),
+                ).not.toBeInTheDocument()
             })
         })
 
@@ -159,10 +247,10 @@ describe('<AudienceSelect />', () => {
                 },
                 isLoading: false,
             })
-            mockUseAudienceSegments.mockReturnValue({
+            mockUseAudienceSegments.mockImplementation(() => ({
                 data: { data: [] },
                 isLoading: false,
-            })
+            }))
 
             const user = userEvent.setup()
             await renderComponent('include', {
@@ -186,6 +274,82 @@ describe('<AudienceSelect />', () => {
             })
         })
 
+        it('filters out Gorgias segments already selected in the opposite field', async () => {
+            mockUseAudienceSegments.mockImplementation(
+                (integrationId, source) => {
+                    if (source === AudienceListSource.Gorgias) {
+                        return {
+                            data: {
+                                data: [
+                                    { id: 'seg1', name: 'Gorgias Included' },
+                                    { id: 'seg2', name: 'Gorgias Available' },
+                                ],
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    return { data: null, isLoading: false }
+                },
+            )
+
+            const user = userEvent.setup()
+            await renderComponent('include', {
+                excluded_audience_list_ids: ['seg1'],
+            })
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: /Gorgias Available/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('option', { name: /Gorgias Included/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
+        it('filters out Klaviyo segments already selected in the opposite field', async () => {
+            mockUseAudienceSegments.mockImplementation(
+                (integrationId, source) => {
+                    if (source === AudienceListSource.Klaviyo) {
+                        return {
+                            data: {
+                                data: [
+                                    { id: 'seg1', name: 'Klaviyo Included' },
+                                    { id: 'seg2', name: 'Klaviyo Available' },
+                                ],
+                            },
+                            isLoading: false,
+                        }
+                    }
+                    return { data: null, isLoading: false }
+                },
+            )
+
+            const user = userEvent.setup()
+            await renderComponent('include', {
+                excluded_audience_list_ids: ['seg1'],
+            })
+            await act(async () => {
+                await user.click(
+                    screen.getByRole('button', { name: /Select audience/i }),
+                )
+            })
+
+            await waitFor(() => {
+                expect(
+                    screen.getByRole('option', { name: /Klaviyo Available/i }),
+                ).toBeInTheDocument()
+                expect(
+                    screen.queryByRole('option', { name: /Klaviyo Included/i }),
+                ).not.toBeInTheDocument()
+            })
+        })
+
         it('filters out items from the included field when rendering exclude type', async () => {
             mockUseAudienceLists.mockReturnValue({
                 data: {
@@ -196,10 +360,10 @@ describe('<AudienceSelect />', () => {
                 },
                 isLoading: false,
             })
-            mockUseAudienceSegments.mockReturnValue({
+            mockUseAudienceSegments.mockImplementation(() => ({
                 data: { data: [] },
                 isLoading: false,
-            })
+            }))
 
             const user = userEvent.setup()
             await renderComponent('exclude', {
@@ -238,11 +402,28 @@ describe('<AudienceSelect />', () => {
             ).toBeDisabled()
         })
 
-        it('is disabled when audience segments are loading', async () => {
-            mockUseAudienceSegments.mockReturnValue({
-                data: null,
-                isLoading: true,
-            })
+        it('is disabled when Gorgias audience segments are loading', async () => {
+            mockUseAudienceSegments.mockImplementation(
+                (integrationId, source) => ({
+                    data: null,
+                    isLoading: source === AudienceListSource.Gorgias,
+                }),
+            )
+
+            await renderComponent('include')
+
+            expect(
+                screen.getByRole('button', { name: /Select audience/i }),
+            ).toBeDisabled()
+        })
+
+        it('is disabled when Klaviyo audience segments are loading', async () => {
+            mockUseAudienceSegments.mockImplementation(
+                (integrationId, source) => ({
+                    data: null,
+                    isLoading: source === AudienceListSource.Klaviyo,
+                }),
+            )
 
             await renderComponent('include')
 
@@ -316,10 +497,10 @@ describe('<AudienceSelect />', () => {
                 data: { data: [{ id: 'list1', name: 'VIP Customers' }] },
                 isLoading: false,
             })
-            mockUseAudienceSegments.mockReturnValue({
+            mockUseAudienceSegments.mockImplementation(() => ({
                 data: { data: [] },
                 isLoading: false,
-            })
+            }))
 
             const onSubmit = jest.fn()
             const user = userEvent.setup()
@@ -365,14 +546,21 @@ describe('<AudienceSelect />', () => {
     })
 
     describe('integration context', () => {
-        it('passes integration id to audience queries', async () => {
+        it('passes integration id to audience queries with correct sources', async () => {
             mockUseJourneyContext.mockReturnValue({
                 currentIntegration: { id: 456 },
             })
             await renderComponent('include')
 
             expect(mockUseAudienceLists).toHaveBeenCalledWith(456)
-            expect(mockUseAudienceSegments).toHaveBeenCalledWith(456)
+            expect(mockUseAudienceSegments).toHaveBeenCalledWith(
+                456,
+                AudienceListSource.Gorgias,
+            )
+            expect(mockUseAudienceSegments).toHaveBeenCalledWith(
+                456,
+                AudienceListSource.Klaviyo,
+            )
         })
 
         it('passes undefined to audience queries when integration is not available', async () => {
@@ -382,7 +570,14 @@ describe('<AudienceSelect />', () => {
             await renderComponent('include')
 
             expect(mockUseAudienceLists).toHaveBeenCalledWith(undefined)
-            expect(mockUseAudienceSegments).toHaveBeenCalledWith(undefined)
+            expect(mockUseAudienceSegments).toHaveBeenCalledWith(
+                undefined,
+                AudienceListSource.Gorgias,
+            )
+            expect(mockUseAudienceSegments).toHaveBeenCalledWith(
+                undefined,
+                AudienceListSource.Klaviyo,
+            )
         })
     })
 
