@@ -751,10 +751,6 @@
         <div class="nav-item secondary" id="nav-outbound">
           <span class="nav-label">Outbound</span>
         </div>
-        <div class="nav-item secondary" id="nav-opportunities" onclick="showOpportunities()">
-          <span class="nav-label">Opportunities</span>
-          <span class="nav-badge">0</span>
-        </div>
         <div class="nav-item secondary" id="nav-knowledge">
           <span class="nav-label">Knowledge</span>
         </div>
@@ -978,6 +974,17 @@
           </div>
 
         </div>
+
+        <!-- Opportunities section -->
+        <div class="attention-section">
+          <div class="attention-header">
+            Opportunities <span class="attention-count">0</span>
+          </div>
+          <div class="opps-empty" style="padding:24px 0 8px;">
+            <div class="opps-empty-desc">Opportunities will be surfaced here</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </main>
@@ -1231,23 +1238,6 @@
     </div><!-- /content-card -->
   </main><!-- /main-performance -->
 
-  <!-- ── Opportunities page ────────────────────────────────────────── -->
-  <main class="main" id="main-opportunities" style="display:none">
-    <div class="content-card" style="justify-content:center;">
-      <div class="opps-empty">
-        <div class="opps-empty-icon">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M10 2.5C10 2.5 5 5.5 5 10.5C5 13.26 7.24 15.5 10 15.5C12.76 15.5 15 13.26 15 10.5C15 5.5 10 2.5 10 2.5Z" stroke="#7e55f6" stroke-width="1.4" stroke-linejoin="round"/>
-            <line x1="10" y1="15.5" x2="10" y2="17.5" stroke="#7e55f6" stroke-width="1.4" stroke-linecap="round"/>
-            <line x1="7.5" y1="17.5" x2="12.5" y2="17.5" stroke="#7e55f6" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-        </div>
-        <div class="opps-empty-title">No opportunities yet</div>
-        <div class="opps-empty-desc">Opportunities will be surfaced here</div>
-      </div>
-    </div>
-  </main><!-- /main-opportunities -->
-
   <!-- ── Chat conversation view ─────────────────────────────────────── -->
   <main class="main" id="main-chat" style="display:none">
     <div class="content-card" style="padding:0; gap:0; overflow:hidden;">
@@ -1372,7 +1362,6 @@
   const NAV_PAGES = {
     'nav-digest':        'main-digest',
     'nav-performance':   'main-performance',
-    'nav-opportunities': 'main-opportunities',
   };
 
   function setActiveNav(activeId) {
@@ -1411,12 +1400,6 @@
     setActiveNav('nav-performance');
   }
 
-  function showOpportunities() {
-    document.getElementById('spike-page').style.display = 'none';
-    document.getElementById('app-shell').style.display = 'flex';
-    showMain('main-opportunities');
-    setActiveNav('nav-opportunities');
-  }
 
   function showSpike() {
     document.getElementById('app-shell').style.display = 'none';
