@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react'
 
 import { useAsyncFn, useDebouncedEffect } from '@repo/hooks'
+import { notUndefined } from '@repo/utils'
 import type { CancelToken } from 'axios'
 import { filter } from 'lodash'
 
@@ -17,7 +18,6 @@ import { tagsFetched } from 'state/entities/tags/actions'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
 import { notify } from 'state/notifications/actions'
 import { NotificationStatus } from 'state/notifications/types'
-import { notUndefined } from 'utils/types'
 
 const ORDER_OPTIONS: { order_by: OrderByOrderDir } = {
     order_by: `${ListTagsOrderBy.Name}:${OrderDirection.Asc}`,

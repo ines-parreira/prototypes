@@ -1,3 +1,5 @@
+import { notUndefined } from '@repo/utils'
+
 import type {
     QueryReturnType,
     RequestedData,
@@ -12,7 +14,6 @@ import { usePostReporting } from 'domains/reporting/models/queries'
 import { ticketCountPerProductAndIntentQueryFactory } from 'domains/reporting/models/queryFactories/voice-of-customer/intentPerProductQueryFactory'
 import type { StatsFilters } from 'domains/reporting/models/stat/types'
 import { OrderDirection } from 'models/api/types'
-import { notUndefined } from 'utils/types'
 
 type TopIntentPerProduct = {
     productId: string

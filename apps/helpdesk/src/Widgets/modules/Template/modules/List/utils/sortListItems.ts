@@ -1,5 +1,6 @@
+import { isRecord } from '@repo/utils'
+
 import { compare } from 'utils'
-import { isRecord } from 'utils/types'
 
 export type OrderBy = {
     key: string

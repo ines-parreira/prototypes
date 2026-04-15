@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react'
 
 import { reportError } from '@repo/logging'
+import { notNull } from '@repo/utils'
 
 import { SentryTeam } from 'common/const/sentryTeamNames'
 import {
@@ -8,7 +9,6 @@ import {
     useGetIngestionLogsList,
 } from 'models/helpCenter/queries'
 import { getShopUrlFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
-import { notNull } from 'utils/types'
 
 import type { IngestionLog } from '../AiAgentScrapedDomainContent/types'
 import { useShopifyIntegrations } from '../Onboarding_V2/hooks/useShopifyIntegrations'

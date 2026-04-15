@@ -24,3 +24,10 @@ export * from './iterators'
 export * from './media'
 export * from './colors'
 export { buildJobMessage } from './notification'
+export {
+    updateRecord,
+    isRecord,
+    notNull,
+    notUndefined,
+    isValueOfStringEnum,
+} from './typeguards'

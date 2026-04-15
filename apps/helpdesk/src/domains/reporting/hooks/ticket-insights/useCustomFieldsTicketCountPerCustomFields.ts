@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { notUndefined } from '@repo/utils'
 import _zip from 'lodash/zip'
 
 import { getPeriodDateTimes } from 'domains/reporting/hooks/helpers'
@@ -28,7 +29,6 @@ import { getCustomFieldsOrder } from 'domains/reporting/state/ui/stats/ticketIns
 import { getFilterDateRange } from 'domains/reporting/utils/reporting'
 import useAppSelector from 'hooks/useAppSelector'
 import type { WithChildren } from 'pages/common/components/table/TableBodyRowExpandable'
-import { notUndefined } from 'utils/types'
 
 const breakdownTimeSeries = (
     timeSeriesData: Record<string, TimeSeriesDataItem[][]>,

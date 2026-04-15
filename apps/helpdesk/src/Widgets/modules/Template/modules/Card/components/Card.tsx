@@ -2,6 +2,7 @@ import type { ComponentProps, ElementType } from 'react'
 import type React from 'react'
 import { useContext, useMemo } from 'react'
 
+import { updateRecord } from '@repo/utils'
 import type { Map } from 'immutable'
 import { fromJS } from 'immutable'
 
@@ -34,7 +35,6 @@ import {
     updateEditedWidget,
 } from 'state/widgets/actions'
 import { getWidgetsState } from 'state/widgets/selectors'
-import { updateRecord } from 'utils/types'
 import { WidgetContext } from 'Widgets/contexts/WidgetContext'
 import { DEFAULT_LIST_ITEM_DISPLAYED_NUMBER } from 'Widgets/modules/Template/config/template'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'

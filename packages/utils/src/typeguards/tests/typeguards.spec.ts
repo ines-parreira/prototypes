@@ -1,4 +1,4 @@
-import { isRecord, updateRecord } from '../types'
+import { isRecord, updateRecord } from '../typeguards'
 
 describe('updateRecord', () => {
     it('should update value of the given object at the given key accordingly with the given value', () => {

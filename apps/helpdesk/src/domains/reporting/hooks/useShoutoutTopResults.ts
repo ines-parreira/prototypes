@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 
+import { notUndefined } from '@repo/utils'
 import _takeWhile from 'lodash/takeWhile'
 
 import type { User } from 'config/types/user'
@@ -9,7 +10,6 @@ import { isMetricForAgent } from 'domains/reporting/pages/common/utils'
 import { agentIdFields } from 'domains/reporting/pages/support-performance/agents/AgentsTableConfig'
 import { getFilteredAgents } from 'domains/reporting/state/ui/stats/agentPerformanceSlice'
 import useAppSelector from 'hooks/useAppSelector'
-import { notUndefined } from 'utils/types'
 
 interface GetShoutoutTopResultsArgs {
     filteredAgents: User[]

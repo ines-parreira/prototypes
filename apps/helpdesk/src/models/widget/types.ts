@@ -1,3 +1,4 @@
+import { isRecord } from '@repo/utils'
 import type { List, Map } from 'immutable'
 
 import type { ApiPaginationParams } from 'models/api/types'
@@ -6,7 +7,6 @@ import type {
     Link,
 } from 'pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/customActions/types'
 import type { THIRD_PARTY_APP_NAME_KEY } from 'state/widgets/constants'
-import { isRecord } from 'utils/types'
 
 import { LEAF_TYPES } from './constants'
 

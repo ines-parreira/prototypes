@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo } from 'react'
 
+import { notUndefined } from '@repo/utils'
 import { filter } from 'lodash'
 import { Link } from 'react-router-dom'
 
@@ -8,7 +9,6 @@ import useAppSelector from 'hooks/useAppSelector'
 import type { FormValues, UpdateValue } from 'pages/aiAgent/types'
 import type { Value } from 'pages/common/forms/SelectField/types'
 import { getEntitiesTags } from 'state/entities/tags/selectors'
-import { notUndefined } from 'utils/types'
 
 import { StoreTagList } from './StoreTagList'
 import { useTicketTagsState } from './useTicketTagsState'

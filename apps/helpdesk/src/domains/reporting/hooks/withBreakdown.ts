@@ -1,3 +1,4 @@
+import { notUndefined } from '@repo/utils'
 import _groupBy from 'lodash/groupBy'
 import _orderBy from 'lodash/orderBy'
 import _zip from 'lodash/zip'
@@ -11,7 +12,6 @@ import {
     TicketCustomFieldsMeasure,
 } from 'domains/reporting/models/cubes/TicketCustomFieldsCube'
 import type { TicketInsightsOrder } from 'domains/reporting/state/ui/stats/ticketInsightsSlice'
-import { notUndefined } from 'utils/types'
 
 export const TAG_SEPARATOR = '::'
 export const BREAKDOWN_FIELD =

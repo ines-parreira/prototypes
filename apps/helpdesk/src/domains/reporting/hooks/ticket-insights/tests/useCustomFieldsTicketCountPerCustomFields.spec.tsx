@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { assumeMock, renderHook } from '@repo/testing'
+import { notUndefined } from '@repo/utils'
 import type { UseQueryResult } from '@tanstack/react-query'
 import _zip from 'lodash/zip'
 import { Provider } from 'react-redux'
@@ -26,7 +27,6 @@ import {
 import { ValueMode } from 'domains/reporting/state/ui/stats/types'
 import { OrderDirection } from 'models/api/types'
 import type { RootState, StoreDispatch } from 'state/types'
-import { notUndefined } from 'utils/types'
 
 const mockStore = configureMockStore<RootState, StoreDispatch>()
 jest.mock('domains/reporting/hooks/timeSeries')
