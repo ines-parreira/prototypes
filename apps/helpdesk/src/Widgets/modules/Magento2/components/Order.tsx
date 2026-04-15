@@ -1,6 +1,7 @@
 import type { ContextType, ReactNode } from 'react'
 import React, { Component } from 'react'
 
+import { getTrackingUrl } from '@repo/utils'
 import type { List, Map } from 'immutable'
 import { fromJS } from 'immutable'
 import type { ConnectedProps } from 'react-redux'
@@ -15,7 +16,6 @@ import { getActiveCustomerIntegrationDataByIntegrationId } from 'state/customers
 import { getIntegrationDataByIntegrationId } from 'state/ticket/selectors'
 import type { RootState } from 'state/types'
 import { devLog, humanizeString, isCurrentlyOnTicket } from 'utils'
-import { getTrackingUrl } from 'utils/delivery'
 import { getValueFromData } from 'Widgets/modules/Template/helpers/fieldDataMappers'
 import type { CardCustomization } from 'Widgets/modules/Template/modules/Card'
 import { StaticField } from 'Widgets/modules/Template/modules/Field'

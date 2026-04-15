@@ -3,6 +3,7 @@ import {
     DateTimeFormatMapper,
     DateTimeFormatType,
     formatDatetime,
+    getTrackingUrl,
 } from '@repo/utils'
 import type { List, Map } from 'immutable'
 
@@ -11,7 +12,6 @@ import { IntegrationType } from 'models/integration/types'
 import { momentToLDMLFormat } from 'pages/common/utils/template'
 import { getDateAndTimeFormatter } from 'state/currentUser/selectors'
 import type { StoreState } from 'state/types'
-import { getTrackingUrl } from 'utils/delivery'
 
 export const MACRO_VARIABLES = {
     type: IntegrationType.Magento2,
