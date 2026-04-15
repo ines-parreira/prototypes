@@ -1,4 +1,9 @@
 import { METRIC_NAMES } from 'domains/reporting/hooks/metricNames'
+import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/ai-agent/HandoverInteractionsCube'
+import {
+    HandoverInteractionsDimension,
+    HandoverInteractionsFilterMember,
+} from 'domains/reporting/models/cubes/ai-agent/HandoverInteractionsCube'
 import type { AIAgentAutomatedInteractionsV2Cube } from 'domains/reporting/models/cubes/automate_v2/AIAgentAutomatedInteractionsV2Cube'
 import {
     AIAgentAutomatedInteractionsV2Dimension,
@@ -25,11 +30,6 @@ import {
     AIAgentDecreaseInResolutionTimeFilterMember,
 } from 'domains/reporting/models/cubes/automate_v2/AIAgentDecreaseInResolutionTimeCube'
 import { AIAgentSkills } from 'domains/reporting/models/cubes/automate_v2/AIAgentIntercationsBySkillDatasetCube'
-import type { HandoverInteractionsCube } from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
-import {
-    HandoverInteractionsDimension,
-    HandoverInteractionsFilterMember,
-} from 'domains/reporting/models/cubes/automate_v2/HandoverInteractionsCube'
 import type { SuccessRateCube } from 'domains/reporting/models/cubes/automate_v2/SuccessRateCube'
 import {
     SuccessRateDimension,
