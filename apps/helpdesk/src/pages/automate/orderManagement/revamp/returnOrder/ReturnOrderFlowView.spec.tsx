@@ -33,6 +33,8 @@ jest.mock(
         useChatPreviewPanel: jest.fn(() => ({
             showPreviewPanel: jest.fn(),
             chatPreviewPortal: null,
+            setConversationMessages: jest.fn(),
+            updateQuickReplies: jest.fn(),
         })),
     }),
 )
@@ -272,6 +274,8 @@ describe('ReturnOrderFlowView', () => {
         mockUseChatPreviewPanel.mockReturnValue({
             showPreviewPanel: mockShowPreviewPanel,
             chatPreviewPortal: null,
+            setConversationMessages: jest.fn(),
+            updateQuickReplies: jest.fn(),
         } as any)
 
         render(<ReturnOrderFlowView />)
@@ -289,5 +293,70 @@ describe('ReturnOrderFlowView', () => {
 
         expect(screen.queryByText('ReturnOrderAction')).not.toBeInTheDocument()
         expect(screen.getByText('ReturnOrderEligibility')).toBeInTheDocument()
+    })
+
+    it('should disable quick replies on mount', () => {
+        render(<ReturnOrderFlowView />)
+
+        const { updateQuickReplies } =
+            mockUseChatPreviewPanel.mock.results[0].value
+        expect(updateQuickReplies).toHaveBeenCalledWith({
+            enabled: false,
+            replies: [],
+        })
+    })
+
+    it('should call setConversationMessages with only the customer message when response text is empty', () => {
+        render(<ReturnOrderFlowView />)
+
+        const { setConversationMessages } =
+            mockUseChatPreviewPanel.mock.results[0].value
+        expect(setConversationMessages).toHaveBeenCalledWith([
+            expect.objectContaining({ fromAgent: false, isHtml: true }),
+        ])
+    })
+
+    it('should call setConversationMessages with both customer and agent messages when response text is non-empty', () => {
+        mockUseReturnOrderFlow.mockReturnValue({
+            ...defaultHookReturn,
+            action: {
+                type: ReturnActionType.AutomatedResponse as const,
+                responseMessageContent: {
+                    html: '<p>Your return has been processed.</p>',
+                    text: 'Your return has been processed.',
+                },
+            },
+        })
+
+        render(<ReturnOrderFlowView />)
+
+        const { setConversationMessages } =
+            mockUseChatPreviewPanel.mock.results[0].value
+        expect(setConversationMessages).toHaveBeenCalledWith([
+            expect.objectContaining({ fromAgent: false, isHtml: true }),
+            expect.objectContaining({
+                fromAgent: true,
+                isHtml: true,
+                text: '<p>Your return has been processed.</p>',
+            }),
+        ])
+    })
+
+    it('should call setConversationMessages with only the customer message when action is LoopReturns', () => {
+        mockUseReturnOrderFlow.mockReturnValue({
+            ...defaultHookReturn,
+            action: {
+                type: ReturnActionType.LoopReturns as const,
+                integrationId: 1,
+            },
+        })
+
+        render(<ReturnOrderFlowView />)
+
+        const { setConversationMessages } =
+            mockUseChatPreviewPanel.mock.results[0].value
+        expect(setConversationMessages).toHaveBeenCalledWith([
+            expect.objectContaining({ fromAgent: false, isHtml: true }),
+        ])
     })
 })

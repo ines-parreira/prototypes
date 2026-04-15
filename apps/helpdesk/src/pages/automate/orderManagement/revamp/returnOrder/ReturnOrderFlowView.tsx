@@ -7,6 +7,7 @@ import { Heading } from '@gorgias/axiom'
 
 import type { LANGUAGE } from 'constants/languages'
 import { useAiAgentAccess } from 'hooks/aiAgent/useAiAgentAccess'
+import { ReturnActionType } from 'models/selfServiceConfiguration/types'
 import useSelfServiceChatChannels from 'pages/automate/common/hooks/useSelfServiceChatChannels'
 import { ChatChannelSelector } from 'pages/automate/connectedChannels/revamp/components/ChatChannelSelector/ChatChannelSelector'
 import { useChatPreviewPanel } from 'pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/hooks/useChatPreviewPanel'
@@ -18,6 +19,7 @@ import { ReturnOrderFlowViewSkeleton } from './components/ReturnOrderFlowViewSke
 import { useReturnOrderFlow } from './hooks/useReturnOrderFlow'
 import type { ReturnOrderFlowViewContextType } from './ReturnOrderFlowViewContext'
 import ReturnOrderFlowViewContext from './ReturnOrderFlowViewContext'
+import { buildReturnOrderSimulationMessages } from './utils/buildReturnOrderSimulationMessages'
 
 import css from './ReturnOrderFlowView.less'
 
@@ -70,14 +72,38 @@ export const ReturnOrderFlowView = () => {
         ) : undefined
     }, [selectedChannelId, chatChannels])
 
-    const { showPreviewPanel, chatPreviewPortal } = useChatPreviewPanel({
+    const {
+        showPreviewPanel,
+        chatPreviewPortal,
+        setConversationMessages,
+        updateQuickReplies,
+    } = useChatPreviewPanel({
         headerActions: PreviewPanelHeaderActions,
         locale: selectedChannelLanguage,
+        initialPage: 'conversation',
     })
 
     useEffect(() => {
         showPreviewPanel(appId)
     }, [showPreviewPanel, appId])
+
+    useEffect(() => {
+        updateQuickReplies({ enabled: false, replies: [] })
+    }, [updateQuickReplies])
+
+    const responseMessageContent =
+        action.type === ReturnActionType.AutomatedResponse
+            ? action.responseMessageContent
+            : undefined
+
+    const simulationMessages = useMemo(
+        () => buildReturnOrderSimulationMessages(responseMessageContent),
+        [responseMessageContent],
+    )
+
+    useEffect(() => {
+        setConversationMessages(simulationMessages)
+    }, [setConversationMessages, simulationMessages])
 
     const [errors, setErrors] = useState<Record<string, true>>({})
 
