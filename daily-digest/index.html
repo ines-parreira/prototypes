@@ -27,7 +27,7 @@
     .product-header { display: flex; align-items: center; justify-content: space-between; padding-left: 2px; }
     .product-logo { display: flex; align-items: center; gap: 2px; }
     .product-icon {
-      width: 32px; height: 32px; background: #7e55f6;
+      width: 32px; height: 32px; background: none;
       border: none; border-radius: 8px;
       display: flex; align-items: center; justify-content: center; flex-shrink: 0;
     }
@@ -722,7 +722,9 @@
       <!-- Product header -->
       <div class="product-header">
         <div class="product-logo">
-          <div class="product-icon" style="font-size:15px; font-weight:700; color:white; font-family:inherit;">U</div>
+          <div class="product-icon">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="32" height="32" rx="8" fill="#213B56"/><path d="M8.00034 7.93848C13.9466 7.93848 15.433 11.9027 15.433 13.8848V26.2461C14.0978 26.2461 12.9885 26.0047 12.0697 25.6055V22.9209L11.0521 22.6084V25.0527C8.66497 23.4581 7.98239 20.6395 8.00034 18.9697V7.93848ZM24.0003 18.9697C24.0267 21.3951 22.5612 26.2461 16.4896 26.2461V13.8848C16.4895 11.9028 17.9918 7.93854 24.0003 7.93848V18.9697ZM13.0863 21.4346L14.1029 21.7871V19.8311L13.0863 19.5186V21.4346ZM11.0521 20.7305L12.0697 21.083V19.166L11.0521 18.8535V20.7305ZM9.0189 20.0664L10.0355 20.418V18.501L9.0189 18.1885V20.0664ZM13.0863 17.6787L14.1029 18.0312V16.0752L13.0863 15.7617V17.6787ZM11.0521 16.9746L12.0697 17.3271V15.4102L11.0521 15.0967V16.9746ZM9.0189 16.3096L10.0355 16.6621V14.7451L9.0189 14.4326V16.3096ZM13.0863 13.9238L14.1029 14.2764V12.3203L13.0863 12.0068V13.9238ZM11.0521 13.2197L12.0697 13.5723V11.6553L11.0521 11.3418V13.2197ZM9.0189 12.5547L10.0355 12.9072V10.9902L9.0189 10.6777V12.5547ZM17.9369 8.95605C17.2849 9.52979 15.9808 10.8807 15.9808 11.6943C15.9808 10.8807 14.6768 9.52987 14.0248 8.95605L15.9808 7L17.9369 8.95605Z" fill="white"/></svg>
+          </div>
           <span class="product-name">UrbanStems</span>
         </div>
         <div class="header-actions">
