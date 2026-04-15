@@ -76,6 +76,12 @@ jest.mock('@repo/navigation', () => ({
     ),
 }))
 
+jest.mock('@repo/tickets/ticket-list', () => ({
+    ViewedTicketsProvider: ({ children }: { children: React.ReactNode }) => (
+        <div data-testid="viewed-tickets-provider">{children}</div>
+    ),
+}))
+
 jest.mock('common/navigation/components/NavBarProvider', () => ({
     NavBarProvider: ({ children }: { children: React.ReactNode }) => (
         <div data-testid="navbar-provider">{children}</div>
@@ -110,6 +116,9 @@ describe('Main', () => {
         expect(screen.getByTestId('cookies-provider')).toBeInTheDocument()
         expect(screen.getByTestId('app')).toBeInTheDocument()
         expect(screen.getByText(childrenText)).toBeInTheDocument()
+        expect(
+            screen.getByTestId('viewed-tickets-provider'),
+        ).toBeInTheDocument()
         expect(
             screen.getByTestId('ably-realtime-app-provider'),
         ).toBeInTheDocument()

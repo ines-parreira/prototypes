@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react'
 
 import { NavigationProvider } from '@repo/navigation'
+import { ViewedTicketsProvider } from '@repo/tickets/ticket-list'
 import { CookiesProvider } from 'react-cookie'
 
 import { BannersContextProvider } from 'AlertBanners'
@@ -27,25 +28,29 @@ export default function Main({ children }: Props) {
                 <NotificationsProvider>
                     <BannersContextProvider>
                         <AblyRealtimeProviders>
-                            <SpotlightProvider>
-                                <VoiceDeviceProvider>
-                                    <SplitTicketViewProvider>
-                                        <CookiesProvider
-                                            defaultSetOptions={{
-                                                path: '/',
-                                            }}
-                                        >
-                                            <NavigationProvider>
-                                                <StandaloneAiProvider>
-                                                    <NavBarProvider>
-                                                        <App>{children}</App>
-                                                    </NavBarProvider>
-                                                </StandaloneAiProvider>
-                                            </NavigationProvider>
-                                        </CookiesProvider>
-                                    </SplitTicketViewProvider>
-                                </VoiceDeviceProvider>
-                            </SpotlightProvider>
+                            <ViewedTicketsProvider>
+                                <SpotlightProvider>
+                                    <VoiceDeviceProvider>
+                                        <SplitTicketViewProvider>
+                                            <CookiesProvider
+                                                defaultSetOptions={{
+                                                    path: '/',
+                                                }}
+                                            >
+                                                <NavigationProvider>
+                                                    <StandaloneAiProvider>
+                                                        <NavBarProvider>
+                                                            <App>
+                                                                {children}
+                                                            </App>
+                                                        </NavBarProvider>
+                                                    </StandaloneAiProvider>
+                                                </NavigationProvider>
+                                            </CookiesProvider>
+                                        </SplitTicketViewProvider>
+                                    </VoiceDeviceProvider>
+                                </SpotlightProvider>
+                            </ViewedTicketsProvider>
                         </AblyRealtimeProviders>
                     </BannersContextProvider>
                 </NotificationsProvider>

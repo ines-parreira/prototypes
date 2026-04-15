@@ -154,6 +154,6 @@ describe('useTickets', () => {
 
     it('should call useViewTickets with visiblePartials', () => {
         renderHook(() => useTickets(123, 'created_datetime:asc'))
-        expect(mockUseViewTickets).toHaveBeenCalledWith(partials, true)
+        expect(mockUseViewTickets).toHaveBeenCalledWith(partials)
     })
 })

@@ -6,13 +6,13 @@ import {
     useCurrentUserLanguagePreferences,
     useTicketsTranslatedProperties,
 } from '@repo/tickets'
+import { useViewedTickets } from '@repo/tickets/ticket-list'
 import classnames from 'classnames'
 import type { List } from 'immutable'
 import { fromJS } from 'immutable'
 import { useLocation, useParams } from 'react-router-dom'
 
 import type { Ticket } from '@gorgias/helpdesk-queries'
-import { useAgentActivity as useAblyAgentActivity } from '@gorgias/realtime'
 
 import useAppDispatch from 'hooks/useAppDispatch'
 import useAppSelector from 'hooks/useAppSelector'
@@ -56,10 +56,16 @@ const TicketList = () => {
         ticket_ids: ticketIds,
     })
 
-    const { viewTickets } = useAblyAgentActivity()
+    const { viewTickets } = useViewedTickets()
     useEffect(() => {
         viewTickets(ticketIds)
     }, [ticketIds, viewTickets])
+
+    useEffect(() => {
+        return () => {
+            viewTickets([])
+        }
+    }, [viewTickets])
 
     const [isMacroModalOpen, setIsMacroModalOpen] = useState(false)
 

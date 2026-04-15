@@ -2,14 +2,14 @@ import { renderHook } from '@repo/testing'
 
 import { useAgentActivity } from '@gorgias/realtime'
 
-import useViewTickets, { DEBOUNCED_VIEW_TICKETS_DELAY } from '../useViewTickets'
+import useViewTickets from '../useViewTickets'
 
 jest.mock('@gorgias/realtime')
 const mockUseAgentActivity = useAgentActivity as jest.Mock
 
 describe('useViewTickets', () => {
     beforeEach(() => {
-        jest.useFakeTimers()
+        jest.clearAllMocks()
     })
 
     it('should call viewTickets with ticket ids', () => {
@@ -22,23 +22,23 @@ describe('useViewTickets', () => {
 
         renderHook(() => useViewTickets(partials))
 
-        jest.advanceTimersByTime(0)
-
         expect(viewTickets).toHaveBeenCalledWith([1, 2])
     })
 
-    it('should debounce the call to viewTickets with ticket ids', () => {
+    it('should clear viewed tickets on unmount', () => {
         const partials = [
-            { id: 3, cursor: '3', updated_datetime: 1 },
-            { id: 4, cursor: '4', updated_datetime: 1 },
+            { id: 5, cursor: '5', updated_datetime: 1 },
+            { id: 6, cursor: '6', updated_datetime: 1 },
         ]
         const viewTickets = jest.fn()
         mockUseAgentActivity.mockReturnValue({ viewTickets })
 
-        renderHook(() => useViewTickets(partials))
+        const { unmount } = renderHook(() => useViewTickets(partials))
 
-        jest.advanceTimersByTime(DEBOUNCED_VIEW_TICKETS_DELAY)
+        unmount()
 
-        expect(viewTickets).toHaveBeenCalledWith([3, 4])
+        expect(viewTickets).toHaveBeenNthCalledWith(1, [])
+        expect(viewTickets).toHaveBeenNthCalledWith(2, [5, 6])
+        expect(viewTickets).toHaveBeenNthCalledWith(3, [])
     })
 })

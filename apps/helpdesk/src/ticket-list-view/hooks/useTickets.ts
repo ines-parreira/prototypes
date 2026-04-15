@@ -90,7 +90,7 @@ export default function useTickets(
         [newPartials, visiblePartialsMap],
     )
 
-    useViewTickets(visiblePartials, true)
+    useViewTickets(visiblePartials)
 
     const visibleStaleTicketIds = useMemo(
         (): number[] =>

@@ -364,6 +364,30 @@ describe('<TicketList />', () => {
         expect(mockViewTickets).toHaveBeenCalledWith([1, 2])
     })
 
+    it('should clear viewed tickets on unmount', () => {
+        const { unmount } = renderWithRouter(
+            <QueryClientProvider client={mockedQueryClient}>
+                <Provider
+                    store={mockStore({
+                        tickets: fromJS({ items: [{ id: 1 }, { id: 2 }] }),
+                        views: fromJS({
+                            active: fixtureView,
+                            _internal: {
+                                selectedItemsIds: [],
+                            },
+                        }),
+                    })}
+                >
+                    <TicketList />
+                </Provider>
+            </QueryClientProvider>,
+        )
+
+        unmount()
+
+        expect(mockViewTickets).toHaveBeenLastCalledWith([])
+    })
+
     describe('ticket translations', () => {
         beforeEach(() => {
             Object.keys(mockTranslationMap).forEach((key) => {
