@@ -6,6 +6,7 @@ export function createConfig(overrides?: Config): Config {
     return mergeConfig(
         {
             test: {
+                env: { TZ: 'UTC' },
                 globals: true,
                 setupFiles: ['@repo/config/vitest/setup.ts'],
                 environment: 'jsdom',
