@@ -38,7 +38,6 @@ import {
 import { ticketFieldDefinitions } from 'fixtures/customField'
 import { useGetTicketChannelsStoreIntegrations } from 'hooks/integrations/useGetTicketChannelsStoreIntegrations'
 import { OrderDirection } from 'models/api/types'
-import useIsSingleStore from 'pages/aiAgent/hooks/useIsSingleStore'
 import type { IntentMetrics } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { IntentTableColumn } from 'pages/aiAgent/insights/IntentTableWidget/types'
 import { useAiAgentTicketNoHandover } from 'pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover'
@@ -56,7 +55,6 @@ jest.mock('domains/reporting/hooks/automate/useAIAgentUserId')
 jest.mock('custom-fields/hooks/queries/useCustomFieldDefinitions')
 jest.mock('hooks/integrations/useGetTicketChannelsStoreIntegrations')
 
-jest.mock('pages/aiAgent/hooks/useIsSingleStore')
 jest.mock('pages/aiAgent/Overview/hooks/kpis/useAiAgentTicketNoHandover')
 
 const useCustomFieldDefinitionsMock = assumeMock(useCustomFieldDefinitions)
@@ -67,7 +65,6 @@ const useMetricPerDimensionMock = assumeMock(useMetricPerDimension)
 const getTicketChannelsStoreIntegrationsMock = assumeMock(
     useGetTicketChannelsStoreIntegrations,
 )
-const useIsSingleStoreMock = assumeMock(useIsSingleStore)
 const useAiAgentTicketNoHandoverMock = assumeMock(useAiAgentTicketNoHandover)
 
 describe('useAiAgentInsightsDataset', () => {
@@ -97,7 +94,6 @@ describe('useAiAgentInsightsDataset', () => {
 
     describe('useAiAgentMetrics', () => {
         it('should calculate ai agent insights correctly for multi store', () => {
-            useIsSingleStoreMock.mockReturnValue(false)
             useMetricPerDimensionMock.mockReturnValue({
                 // aiAgentTickets
                 data: {
@@ -189,7 +185,6 @@ describe('useAiAgentInsightsDataset', () => {
         })
 
         it('should calculate ai agent insights correctly for single store', () => {
-            useIsSingleStoreMock.mockReturnValue(true)
             useMetricPerDimensionMock.mockReturnValue({
                 // aiAgentTickets
                 data: {

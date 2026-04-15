@@ -81,10 +81,6 @@ jest.mock(
     () => () => <div>ActionsPlatformStepsView</div>,
 )
 jest.mock(
-    'pages/automate/common/components/AutomateLandingPageContainer',
-    () => () => <div>AutomateLandingPageContainer</div>,
-)
-jest.mock(
     'pages/convert/onboarding/components/ConvertOnboardingView',
     () => () => <div>ConvertOnboardingView</div>,
 )

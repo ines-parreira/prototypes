@@ -7,7 +7,7 @@ import type { RootState } from 'state/types'
 import { getStateWithHelpdeskPlan } from 'utils/paywallTesting'
 import { mockStore } from 'utils/testing'
 
-import ClickTrackingPaywallView from '../index'
+import ClickTrackingPaywallView from '../ClickTrackingPaywallView'
 
 jest.mock('pages/convert/common/components/ConvertSubscriptionModal', () => {
     return jest.fn(() => {

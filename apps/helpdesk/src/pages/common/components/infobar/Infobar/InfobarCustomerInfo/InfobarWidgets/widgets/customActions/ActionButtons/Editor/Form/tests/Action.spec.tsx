@@ -6,6 +6,14 @@ import { HttpMethod } from 'models/api/types'
 
 import Action from '../Action'
 
+jest.mock('@repo/hooks', () => ({
+    ...jest.requireActual('@repo/hooks'),
+    useTextWidth: (text: string, options: { padding?: number } = {}) => {
+        const baseWidth = text ? text.length * 8 : 0
+        return baseWidth + (options.padding || 0)
+    },
+}))
+
 describe('<Action/>', () => {
     const props = {
         onChange: jest.fn(),

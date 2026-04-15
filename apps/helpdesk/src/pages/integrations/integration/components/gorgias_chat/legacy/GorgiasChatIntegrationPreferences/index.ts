@@ -1,3 +1,0 @@
-import GorgiasChatIntegrationPreferences from './GorgiasChatIntegrationPreferences'
-
-export default GorgiasChatIntegrationPreferences

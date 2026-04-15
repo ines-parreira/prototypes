@@ -6,7 +6,6 @@ import type { Meta, StoryObj } from 'storybook-react-rsbuild'
 import { LegacyButton as Button, MultiButton } from '@gorgias/axiom'
 
 import Wizard, { WizardContext } from './Wizard'
-import WizardProgress from './WizardProgress'
 import WizardStep from './WizardStep'
 
 const storyConfig: Meta = {
@@ -152,14 +151,6 @@ const Template: StoryObj<TemplateProps> = {
                         )}
                     </WizardContext.Consumer>
                 </WizardStep>
-
-                <WizardProgress style={{ marginTop: 8 }}>
-                    {
-                        ((activeStepIndex: number, totalSteps: number) =>
-                            // TODO(React18): Fix this once we upgrade to React 18 types
-                            `${activeStepIndex} out of ${totalSteps}`) as unknown as React.ReactNode
-                    }
-                </WizardProgress>
             </Wizard>
         )
     },

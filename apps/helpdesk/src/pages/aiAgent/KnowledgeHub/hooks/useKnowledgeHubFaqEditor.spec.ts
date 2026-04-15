@@ -18,10 +18,6 @@ jest.mock('./useKnowledgeHubEditor', () => ({
     useKnowledgeHubEditor: jest.fn(),
 }))
 
-jest.mock('./navigationUtils', () => ({
-    updateArticleIdInUrl: jest.fn(),
-}))
-
 const { useHistory, useLocation } = jest.requireMock('react-router-dom')
 const { useKnowledgeHubEditor } = jest.requireMock('./useKnowledgeHubEditor')
 

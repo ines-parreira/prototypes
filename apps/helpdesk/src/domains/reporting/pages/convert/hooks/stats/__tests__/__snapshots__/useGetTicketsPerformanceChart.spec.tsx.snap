@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`useTicketsPerformanceChart should return data in correct format 1`] = `
-{
-  "data": undefined,
-  "isError": false,
-  "isFetching": true,
-}
-`;

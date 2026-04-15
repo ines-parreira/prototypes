@@ -36,6 +36,7 @@
         "typecheck": "nx typecheck",
         "typecheck:all": "nx run-many --target=typecheck",
         "typecheck:affected": "nx affected --target=typecheck",
+        "platform:dead-code-analysis": "tsx scripts/dead-code-analysis/helpdesk.dead-code.ts",
         "platform:deprecated-analysis": "pnpm static-analysis",
         "platform:check-node-engines": "tsx scripts/dependencies-management/dependencies-engines.ts",
         "platform:update:sdk": "scripts/update-sdk.sh",

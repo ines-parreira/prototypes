@@ -1,1 +1,0 @@
-export { StandaloneBanner } from './StandaloneBanner'

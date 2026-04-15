@@ -11,10 +11,10 @@ import {
     FILTER_SELECT_ALL_LABEL,
 } from 'domains/reporting/pages/common/components/Filter/constants'
 import { FilterLabels } from 'domains/reporting/pages/common/filters/constants'
-import { CampaignStatusesFilterFromSavedContext } from 'domains/reporting/pages/convert/components/CampaignStatusesFilter/CampaignStatusesFilter'
 import CampaignStatusesFilter, {
     CampaignStatusesFilterFromContext,
-} from 'domains/reporting/pages/convert/components/CampaignStatusesFilter/index'
+    CampaignStatusesFilterFromSavedContext,
+} from 'domains/reporting/pages/convert/components/CampaignStatusesFilter/CampaignStatusesFilter'
 import * as statsSlice from 'domains/reporting/state/stats/statsSlice'
 import * as filtersActions from 'domains/reporting/state/ui/stats/actions'
 import * as filtersSlice from 'domains/reporting/state/ui/stats/filtersSlice'

@@ -2,9 +2,6 @@ import { userEvent } from '@repo/testing'
 import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 
 import { mockChatChannels } from 'pages/aiAgent/fixtures/chatChannels.fixture'
-import { useHandoverCustomizationChatFallbackSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm'
-import { useHandoverCustomizationChatOfflineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm'
-import { useHandoverCustomizationChatOnlineSettingsForm } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm'
 import { useHandoverCustomizationChatSettings } from 'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings'
 import { renderWithStoreAndQueryClientProvider } from 'tests/renderWithStoreAndQueryClientProvider'
 import { renderWithRouter } from 'utils/testing'
@@ -14,32 +11,38 @@ import { HandoverCustomizationChatSettingsComponent } from '../HandoverCustomiza
 jest.mock(
     'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatSettings',
 )
-jest.mock(
-    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOfflineSettingsForm',
-)
-jest.mock(
-    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatOnlineSettingsForm',
-)
-jest.mock(
-    'pages/aiAgent/hooks/handoverCustomization/useHandoverCustomizationChatFallbackSettingsForm',
-)
 
-// Mock the imported components
-jest.mock('../FormComponents/HandoverCustomizationChatOfflineSettings', () =>
-    jest.fn(() => (
-        <div data-testid="mock-offline-settings">mocked offline settings</div>
-    )),
-)
-jest.mock('../FormComponents/HandoverCustomizationChatOnlineSettings', () =>
-    jest.fn(() => (
-        <div data-testid="mock-online-settings">mocked online settings</div>
-    )),
-)
-jest.mock('../FormComponents/HandoverCustomizationChatFallbackSettings', () =>
-    jest.fn(() => (
-        <div data-testid="mock-fallback-settings">mocked fallback settings</div>
-    )),
-)
+jest.mock('../FormComponents/HandoverCustomizationChatSettingsDrawer', () => {
+    const TITLES = {
+        error: 'When an error occurs',
+        offline: 'When Chat is offline',
+        online: 'When Chat is online',
+    } as const
+
+    type MockDrawerProps = {
+        activeContent: keyof typeof TITLES
+        onClose: () => void
+        open: boolean
+    }
+
+    return {
+        __esModule: true,
+        default: ({ activeContent, onClose, open }: MockDrawerProps) =>
+            open ? (
+                <div
+                    className="drawer-container"
+                    style={{ zIndex: 20 }}
+                    data-testid="mock-handover-settings-drawer"
+                >
+                    <div>{TITLES[activeContent]}</div>
+                    <input aria-label="drawer-input" />
+                    <button onClick={onClose} type="button">
+                        Cancel
+                    </button>
+                </div>
+            ) : null,
+    }
+})
 
 const getRow = (title: string) => {
     return screen.getByTestId(
@@ -66,49 +69,10 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
         isHandoverSectionDisabled: false,
     }
 
-    const mockedUseHandoverCustomizationChatOfflineSettingsFormProps = {
-        isLoading: false,
-        isSaving: false,
-        formValues: {},
-        updateValue: jest.fn(),
-        handleOnSave: jest.fn(),
-        handleOnCancel: jest.fn(),
-    }
-
-    const mockedUseHandoverCustomizationChatOnlineSettingsFormProps = {
-        isLoading: false,
-        isSaving: false,
-        formValues: {},
-        updateValue: jest.fn(),
-        handleOnSave: jest.fn(),
-        handleOnCancel: jest.fn(),
-    }
-
-    const mockedUseHandoverCustomizationChatFallbackSettingsFormProps = {
-        isLoading: false,
-        isSaving: false,
-        formValues: {},
-    }
-
     beforeEach(() => {
         jest.clearAllMocks()
         ;(useHandoverCustomizationChatSettings as jest.Mock).mockReturnValue(
             mockedUseHandoverCustomizationChatSettingsProps,
-        )
-        ;(
-            useHandoverCustomizationChatOfflineSettingsForm as jest.Mock
-        ).mockReturnValue(
-            mockedUseHandoverCustomizationChatOfflineSettingsFormProps,
-        )
-        ;(
-            useHandoverCustomizationChatOnlineSettingsForm as jest.Mock
-        ).mockReturnValue(
-            mockedUseHandoverCustomizationChatOnlineSettingsFormProps,
-        )
-        ;(
-            useHandoverCustomizationChatFallbackSettingsForm as jest.Mock
-        ).mockReturnValue(
-            mockedUseHandoverCustomizationChatFallbackSettingsFormProps,
         )
     })
 
@@ -125,7 +89,7 @@ describe('HandoverCustomizationChatSettingsComponent', () => {
         )
 
         expect(screen.getByText('Handover instructions')).toBeInTheDocument()
-        expect(screen.getAllByText('When Chat is offline').length).toBe(2)
+        expect(screen.getByText('When Chat is offline')).toBeInTheDocument()
         expect(screen.getByText('When Chat is online')).toBeInTheDocument()
         expect(screen.getByText('When an error occurs')).toBeInTheDocument()
     })

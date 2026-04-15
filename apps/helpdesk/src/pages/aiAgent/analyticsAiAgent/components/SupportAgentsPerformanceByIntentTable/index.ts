@@ -1,1 +1,0 @@
-export { SupportAgentsPerformanceByIntentTable } from './SupportAgentsPerformanceByIntentTable'

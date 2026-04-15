@@ -7,7 +7,7 @@ import thunk from 'redux-thunk'
 import type { Meta, StoryFn } from 'storybook-react-rsbuild'
 
 import { withLogicalOperator } from 'domains/reporting/models/queryFactories/utils'
-import CampaignStatusesFilter from 'domains/reporting/pages/convert/components/CampaignStatusesFilter/index'
+import CampaignStatusesFilter from 'domains/reporting/pages/convert/components/CampaignStatusesFilter/CampaignStatusesFilter'
 
 const storyConfig: Meta = {
     title: 'Stats/Filters/CampaignStatusesFilter',

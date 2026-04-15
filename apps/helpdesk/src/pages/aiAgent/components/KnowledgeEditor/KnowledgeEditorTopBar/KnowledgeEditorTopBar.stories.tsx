@@ -4,10 +4,6 @@ import React, { useState } from 'react'
 import type { Meta, StoryFn, StoryObj } from 'storybook-react-rsbuild'
 
 import { KnowledgeEditorTopBar } from './KnowledgeEditorTopBar'
-import {
-    ArticleModes,
-    KnowledgeEditorTopBarHelpCenterArticlesControls,
-} from './KnowledgeEditorTopBarHelpCenterArticlesControls'
 import { KnowledgeEditorTopBarSnippetControls } from './KnowledgeEditorTopBarSnippetControls'
 
 const meta: Meta<typeof KnowledgeEditorTopBar> = {
@@ -49,65 +45,6 @@ const Template: StoryFn<ComponentProps<typeof KnowledgeEditorTopBar>> = (
             />
         </div>
     )
-}
-
-export const ForHelpCenterArticleRead: Story = Template.bind({})
-ForHelpCenterArticleRead.args = {
-    title: 'Some help center article',
-    children: (
-        <KnowledgeEditorTopBarHelpCenterArticlesControls
-            mode={ArticleModes.READ}
-            onEdit={() => {}}
-            onDelete={() => {}}
-            onTest={() => {}}
-            disabled={false}
-        />
-    ),
-}
-
-export const ForHelpCenterArticleEditDraft: Story = Template.bind({})
-ForHelpCenterArticleEditDraft.args = {
-    title: 'Some help center article',
-    onChangeTitle: () => {},
-    children: (
-        <KnowledgeEditorTopBarHelpCenterArticlesControls
-            mode={ArticleModes.EDIT_DRAFT}
-            onCancel={() => {}}
-            onSaveDraft={() => {}}
-            onSaveAndPublish={() => {}}
-            disabled={false}
-        />
-    ),
-}
-
-export const ForHelpCenterArticleEditPublished: Story = Template.bind({})
-ForHelpCenterArticleEditPublished.args = {
-    title: 'Some help center article',
-    onChangeTitle: () => {},
-    children: (
-        <KnowledgeEditorTopBarHelpCenterArticlesControls
-            mode={ArticleModes.EDIT_PUBLISHED}
-            onCancel={() => {}}
-            onSaveAndPublish={() => {}}
-            disabled={false}
-        />
-    ),
-}
-
-export const ForHelpCenterArticleEditDraftWithDisabledButtons: Story =
-    Template.bind({})
-ForHelpCenterArticleEditDraftWithDisabledButtons.args = {
-    title: 'Some help center article',
-    onChangeTitle: () => {},
-    children: (
-        <KnowledgeEditorTopBarHelpCenterArticlesControls
-            mode={ArticleModes.EDIT_DRAFT}
-            onCancel={() => {}}
-            onSaveDraft={undefined}
-            onSaveAndPublish={undefined}
-            disabled={false}
-        />
-    ),
 }
 
 export const ForSnippet: Story = Template.bind({})

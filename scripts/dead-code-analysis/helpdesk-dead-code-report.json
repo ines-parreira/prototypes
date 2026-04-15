@@ -1,0 +1,56 @@
+{
+  "generatedAt": "2026-04-14T17:11:26.457Z",
+  "entryPoints": [
+    "apps/helpdesk/src/main/init/index.tsx",
+    "apps/helpdesk/src/main/serviceWorker/index.ts",
+    "apps/helpdesk/src/services/socketManager/sharedWorker.ts"
+  ],
+  "missingEntryPoints": [],
+  "summary": {
+    "totalModules": 13459,
+    "runtimeReachableModules": 7821,
+    "unreachableAppModules": 29,
+    "rootCandidates": 3,
+    "skippedSupportOnlyHelpers": 21
+  },
+  "notes": [
+    "This analysis only follows static imports resolved by @gorgias/static-analysis.",
+    "Literal require(), import(), and common jest/vi mock specifiers are included, but other string-based registrations and framework conventions still need manual verification before deletion.",
+    "non_runtime_only only applies when a companion test/story in the same dead subtree support closure still references the candidate."
+  ],
+  "roots": [
+    {
+      "filePath": "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/components/ChatPreview/ChatPreviewBootstrapScript.js",
+      "reason": "non_runtime_only",
+      "supportDependents": [
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/components/ChatPreview/ChatPreviewBootstrapScript.spec.js"
+      ],
+      "subtreeSize": 1,
+      "subtreeFiles": [
+        "apps/helpdesk/src/pages/integrations/integration/components/gorgias_chat/revamp/components/ChatPreviewPanel/components/ChatPreview/ChatPreviewBootstrapScript.js"
+      ]
+    },
+    {
+      "filePath": "apps/helpdesk/src/utils/testing.tsx",
+      "reason": "non_runtime_only",
+      "supportDependents": [
+        "apps/helpdesk/src/utils/tests/testing.spec.tsx"
+      ],
+      "subtreeSize": 1,
+      "subtreeFiles": [
+        "apps/helpdesk/src/utils/testing.tsx"
+      ]
+    },
+    {
+      "filePath": "apps/helpdesk/src/utils/waitForDocumentVisible.ts",
+      "reason": "non_runtime_only",
+      "supportDependents": [
+        "apps/helpdesk/src/utils/tests/waitForDocumentVisible.spec.ts"
+      ],
+      "subtreeSize": 1,
+      "subtreeFiles": [
+        "apps/helpdesk/src/utils/waitForDocumentVisible.ts"
+      ]
+    }
+  ]
+}
