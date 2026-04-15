@@ -1,5 +1,3 @@
-import { useRouteMatch } from 'react-router-dom'
-
 import { getShopNameFromStoreIntegration } from 'models/selfServiceConfiguration/utils'
 import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegrations'
 import {
@@ -15,30 +13,22 @@ export const ConnectedChannelsViewContainer = () => {
     const { selectedChannelId, setSelectedChannelId, shopName } =
         useChatSettingsRevampConnectedChannels()
 
-    const isOrderManagementPath = useRouteMatch(
-        '/app/settings/order-management',
-    )
-
     const storeIntegrations = useStoreIntegrations()
     const storeIntegration = storeIntegrations.find(
         (integration) =>
             getShopNameFromStoreIntegration(integration) === shopName,
     )
 
-    const {
-        shouldShowFlowsScreensRevamp,
-        shouldShowOrderManagementScreensRevamp,
-    } = useShouldShowChatSettingsRevamp(storeIntegration, selectedChannelId)
-
-    const shouldShowRevamp = isOrderManagementPath
-        ? shouldShowOrderManagementScreensRevamp
-        : shouldShowFlowsScreensRevamp
+    const { shouldShowFlowsScreensRevamp } = useShouldShowChatSettingsRevamp(
+        storeIntegration,
+        selectedChannelId,
+    )
 
     return (
         <ChatSettingsRevampConnectedChannelsContext.Provider
             value={{ selectedChannelId, setSelectedChannelId }}
         >
-            {shouldShowRevamp ? (
+            {shouldShowFlowsScreensRevamp ? (
                 <ConnectedChannelsViewContainerRevamp />
             ) : (
                 <LegacyConnectedChannelsViewContainer />
