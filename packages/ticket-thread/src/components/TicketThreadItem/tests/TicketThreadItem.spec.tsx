@@ -190,8 +190,11 @@ const actionExecutedEventData = {
     },
 }
 
-function renderItem(item: TicketThreadItem) {
-    return render(<TicketThreadItemComponent item={item} />)
+function renderItem(
+    item: TicketThreadItem,
+    options?: Parameters<typeof render>[1],
+) {
+    return render(<TicketThreadItemComponent item={item} />, options)
 }
 
 function hasExactText(text: string) {
@@ -221,26 +224,77 @@ describe('TicketThreadItem', () => {
     })
 
     it('renders a ticket event item', () => {
+        renderItem(
+            {
+                _tag: TicketThreadItemTag.Events.TicketEvent,
+                data: eventData,
+                datetime: '2024-03-21T11:00:00Z',
+            } as TicketThreadItem,
+            {
+                initialEntries: ['/?show_ticket_events=true'],
+            },
+        )
+
+        expect(screen.getByText(JSON.stringify(eventData))).toBeInTheDocument()
+    })
+
+    it('does not render a ticket event item when ticket events are hidden', () => {
         renderItem({
             _tag: TicketThreadItemTag.Events.TicketEvent,
             data: eventData,
             datetime: '2024-03-21T11:00:00Z',
         } as TicketThreadItem)
 
-        expect(screen.getByText(JSON.stringify(eventData))).toBeInTheDocument()
+        expect(
+            screen.queryByText(JSON.stringify(eventData)),
+        ).not.toBeInTheDocument()
     })
 
     it('renders an action executed event item', () => {
-        renderItem({
-            _tag: TicketThreadItemTag.Events.ActionExecutedEvent,
-            data: actionExecutedEventData,
-            datetime: '2024-03-21T11:00:00Z',
-        } as TicketThreadItem)
+        renderItem(
+            {
+                _tag: TicketThreadItemTag.Events.ActionExecutedEvent,
+                data: actionExecutedEventData,
+                datetime: '2024-03-21T11:00:00Z',
+            } as TicketThreadItem,
+            {
+                initialEntries: ['/?show_ticket_events=true'],
+            },
+        )
 
         expect(screen.getByText('Refund order')).toBeInTheDocument()
     })
 
     it('renders a merged events item', () => {
+        renderItem(
+            {
+                _tag: TicketThreadItemTag.Events.GroupedEvents,
+                datetime: '2024-03-21T11:00:00Z',
+                data: [
+                    {
+                        _tag: TicketThreadItemTag.Events.TicketEvent,
+                        data: eventData,
+                        datetime: '2024-03-21T11:00:00Z',
+                    },
+                    {
+                        _tag: TicketThreadItemTag.Events.PhoneEvent,
+                        data: phoneEventData,
+                        datetime: '2024-03-21T11:00:01Z',
+                    },
+                ],
+            } as TicketThreadItem,
+            {
+                initialEntries: ['/?show_ticket_events=true'],
+            },
+        )
+
+        expect(screen.getByText(JSON.stringify(eventData))).toBeInTheDocument()
+        expect(
+            screen.getByText('Phone conversation started'),
+        ).toBeInTheDocument()
+    })
+
+    it('does not render a merged events item when ticket events are hidden', () => {
         renderItem({
             _tag: TicketThreadItemTag.Events.GroupedEvents,
             datetime: '2024-03-21T11:00:00Z',
@@ -258,10 +312,12 @@ describe('TicketThreadItem', () => {
             ],
         } as TicketThreadItem)
 
-        expect(screen.getByText(JSON.stringify(eventData))).toBeInTheDocument()
         expect(
-            screen.getByText('Phone conversation started'),
-        ).toBeInTheDocument()
+            screen.queryByText(JSON.stringify(eventData)),
+        ).not.toBeInTheDocument()
+        expect(
+            screen.queryByText('Phone conversation started'),
+        ).not.toBeInTheDocument()
     })
 
     it('renders a voice call item', async () => {

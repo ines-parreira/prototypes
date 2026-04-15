@@ -101,7 +101,7 @@ describe('TicketThreadContainer', () => {
                     ticketThreadItems[1],
                     expect.objectContaining({ _tag: 'composer' }),
                 ],
-                defaultItemHeight: 160,
+                defaultItemHeight: 200,
                 increaseViewportBy: { top: 2000, bottom: 0 },
                 initialTopMostItemIndex: { index: 'LAST' },
                 overscan: { main: 0, reverse: 2000 },
@@ -124,7 +124,7 @@ describe('TicketThreadContainer', () => {
         ).toBe('composer:2:123')
     })
 
-    it('wraps the list children in an inner spacing container while preserving Virtuoso styles', () => {
+    it('forwards list children and adds item spacing wrappers', () => {
         render(
             <TicketThreadContainer
                 items={ticketThreadItems}
@@ -169,14 +169,16 @@ describe('TicketThreadContainer', () => {
         )
 
         const child = screen.getByText('List child')
-        const outerList = child.parentElement?.parentElement
+        const outerList = child.parentElement
         const outerItem = screen.getByText('Item child').parentElement
 
         expect(outerList).toHaveStyle({
-            boxSizing: 'border-box',
             paddingBottom: '12px',
         })
-        expect(outerList?.firstElementChild).toContainElement(child)
-        expect(outerItem).toHaveStyle({ top: '16px' })
+        expect(outerList).toContainElement(child)
+        expect(outerItem).toHaveStyle({
+            paddingBottom: 'var(--spacing-xxxs)',
+            paddingTop: 'var(--spacing-xxxs)',
+        })
     })
 })

@@ -216,7 +216,7 @@ describe('useTicketThread', () => {
         ])
     })
 
-    it('excludes events from sorted core items when showTicketEvents is false', () => {
+    it('keeps events in sorted core items when showTicketEvents is false', () => {
         const message = {
             _tag: 'message',
             datetime: '2024-03-21T11:01:00Z',
@@ -239,7 +239,7 @@ describe('useTicketThread', () => {
             useTicketThread({ ticketId: 7, showTicketEvents: false }),
         )
 
-        expect(result.current.ticketThreadItems).toEqual([message])
+        expect(result.current.ticketThreadItems).toEqual([event, message])
     })
 
     it('keeps influenced order items visible when showTicketEvents is false', () => {
@@ -273,6 +273,7 @@ describe('useTicketThread', () => {
         )
 
         expect(result.current.ticketThreadItems).toEqual([
+            event,
             influencedOrder,
             message,
         ])

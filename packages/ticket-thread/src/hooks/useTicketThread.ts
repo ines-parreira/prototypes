@@ -81,7 +81,7 @@ export function useTicketThread({
     const ticketThreadItems = useMemo(() => {
         let items: TicketThreadItem[] = sortTicketThreadItems([
             ...messagesWithAiAgentPseudoEvents,
-            ...(showTicketEvents ? events : []),
+            ...events,
             ...shoppingAssistantItems,
             ...voiceCalls,
             ...satisfactionSurveys,
@@ -99,7 +99,6 @@ export function useTicketThread({
         shoppingAssistantItems,
         voiceCalls,
         satisfactionSurveys,
-        showTicketEvents,
         insertRuleSuggestion,
         insertContactReasonPrediction,
     ])

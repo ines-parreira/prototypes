@@ -46,21 +46,24 @@ export function TicketThreadContainer({
                 item: __item,
                 children,
                 ...props
-            }) => <div {...props}>{children}</div>,
+            }) => (
+                <div
+                    {...props}
+                    style={{
+                        paddingTop: 'var(--spacing-xxxs)',
+                        paddingBottom: 'var(--spacing-xxxs)',
+                    }}
+                >
+                    {children}
+                </div>
+            ),
             List: forwardRef(function TicketThreadList(
                 { context: __context, style, children, ...props },
                 ref: ForwardedRef<HTMLDivElement>,
             ) {
                 return (
-                    <div
-                        {...props}
-                        ref={ref}
-                        style={{
-                            ...style,
-                            boxSizing: 'border-box',
-                        }}
-                    >
-                        <div className={css.threadItemsList}>{children}</div>
+                    <div {...props} ref={ref} style={style}>
+                        {children}
                     </div>
                 )
             }),
@@ -70,23 +73,24 @@ export function TicketThreadContainer({
 
     return (
         <ExpandedMessagesProvider>
-            <Virtuoso<TicketThreadVirtualizedListItem>
-                ref={ticketThreadRef}
-                key={ticketId}
-                alignToBottom
-                aria-label="Ticket thread"
-                className={css.threadItems}
-                components={virtuosoComponents}
-                computeItemKey={getItemKey}
-                data={virtualizedItems}
-                defaultItemHeight={160}
-                initialTopMostItemIndex={{ index: 'LAST' }}
-                itemContent={renderThreadItem}
-                role="list"
-                skipAnimationFrameInResizeObserver
-                increaseViewportBy={{ top: 2000, bottom: 0 }}
-                overscan={{ reverse: 2000, main: 0 }}
-            />
+            <div className={css.threadItemsList}>
+                <Virtuoso<TicketThreadVirtualizedListItem>
+                    ref={ticketThreadRef}
+                    alignToBottom
+                    aria-label="Ticket thread"
+                    className={css.threadItems}
+                    components={virtuosoComponents}
+                    computeItemKey={getItemKey}
+                    data={virtualizedItems}
+                    defaultItemHeight={200}
+                    initialTopMostItemIndex={{ index: 'LAST' }}
+                    itemContent={renderThreadItem}
+                    role="list"
+                    skipAnimationFrameInResizeObserver
+                    increaseViewportBy={{ top: 2000, bottom: 0 }}
+                    overscan={{ reverse: 2000, main: 0 }}
+                />
+            </div>
         </ExpandedMessagesProvider>
     )
 }

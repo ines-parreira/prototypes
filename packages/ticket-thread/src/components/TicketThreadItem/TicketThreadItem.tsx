@@ -1,3 +1,8 @@
+import { useMemo } from 'react'
+
+import { useSearchParams } from '@repo/routing'
+import { TicketSearchParamsKeys } from '@repo/tickets/utils/routing'
+
 import { TicketThreadItemTag } from '../../hooks/types'
 import type { TicketThreadItem } from '../../hooks/types'
 import { assertNever } from '../../utils/assertNever'
@@ -13,7 +18,15 @@ type TicketThreadItemProps = {
     item: TicketThreadItem
 }
 
+const { key: showTicketEventsKey, parse: parseShowTicketEvents } =
+    TicketSearchParamsKeys.showTicketEvents
+
 export function TicketThreadItem({ item }: TicketThreadItemProps) {
+    const [searchParams] = useSearchParams()
+    const showTicketEvents = useMemo(
+        () => parseShowTicketEvents(searchParams.get(showTicketEventsKey)),
+        [searchParams],
+    )
     switch (item._tag) {
         case TicketThreadItemTag.Messages.Message:
         case TicketThreadItemTag.Messages.InternalNote:
@@ -39,10 +52,18 @@ export function TicketThreadItem({ item }: TicketThreadItemProps) {
         case TicketThreadItemTag.Events.AuditLogEvent:
         case TicketThreadItemTag.Events.ActionExecutedEvent:
         case TicketThreadItemTag.Events.SatisfactionSurveyRespondedEvent:
-        case TicketThreadItemTag.Events.PrivateReplyEvent:
-            return <TicketThreadSingleEventItem item={item} />
-        case TicketThreadItemTag.Events.GroupedEvents:
-            return <TicketThreadGroupedEventsItem item={item} />
+        case TicketThreadItemTag.Events.PrivateReplyEvent: {
+            if (showTicketEvents) {
+                return <TicketThreadSingleEventItem item={item} />
+            }
+            return <div />
+        }
+        case TicketThreadItemTag.Events.GroupedEvents: {
+            if (showTicketEvents) {
+                return <TicketThreadGroupedEventsItem item={item} />
+            }
+            return <div />
+        }
         case TicketThreadItemTag.VoiceCalls.VoiceCall:
         case TicketThreadItemTag.VoiceCalls.OutboundVoiceCall:
             return <TicketThreadCallItem item={item} />
