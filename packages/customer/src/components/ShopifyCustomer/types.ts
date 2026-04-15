@@ -85,6 +85,8 @@ export type ShopperEcommerceData = {
 export type MoneySet = {
     shop_money?: { amount: string; currency_code: string }
     presentment_money?: { amount: string; currency_code: string }
+    shopMoney?: { amount: string; currencyCode: string }
+    presentmentMoney?: { amount: string; currencyCode: string }
 }
 
 export type OrderLineItem = {

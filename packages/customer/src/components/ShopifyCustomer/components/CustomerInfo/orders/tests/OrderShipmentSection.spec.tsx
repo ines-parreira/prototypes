@@ -172,6 +172,19 @@ describe('OrderShipmentSection', () => {
             expect(screen.queryByRole('link')).not.toBeInTheDocument()
         })
 
+        it('renders shipping cost with currency symbol', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        currency: 'USD',
+                        shipping_lines: [{ price: '10.00' }],
+                    })}
+                />,
+            )
+
+            expect(screen.getByText('$10.00')).toBeInTheDocument()
+        })
+
         it('shows "-" for tracking number when only tracking_url is provided', () => {
             const trackingUrl =
                 'https://track.amazon.com/tracking/TBA326340941474'
@@ -230,6 +243,130 @@ describe('OrderShipmentSection', () => {
                 <OrderShipmentSection order={makeOrder()} />,
             )
             expect(container).toBeEmptyDOMElement()
+        })
+    })
+
+    describe('multiple shipping entries', () => {
+        it('renders one entry group when both arrays are empty', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [],
+                        shipping_lines: [],
+                    })}
+                />,
+            )
+
+            expect(screen.getAllByText('Tracking URL')).toHaveLength(1)
+            expect(screen.getAllByText('Code')).toHaveLength(1)
+        })
+
+        it('renders entries equal to fulfillments count when fulfillments > shipping_lines', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [
+                            { tracking_number: 'T1' },
+                            { tracking_number: 'T2' },
+                            { tracking_number: 'T3' },
+                        ],
+                        shipping_lines: [{ code: 'STANDARD' }],
+                    })}
+                />,
+            )
+
+            expect(screen.getAllByText('Tracking number')).toHaveLength(3)
+            expect(screen.getByText('T1')).toBeInTheDocument()
+            expect(screen.getByText('T2')).toBeInTheDocument()
+            expect(screen.getByText('T3')).toBeInTheDocument()
+        })
+
+        it('renders entries equal to shipping_lines count when shipping_lines > fulfillments', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [{ tracking_number: 'T1' }],
+                        shipping_lines: [
+                            { code: 'STANDARD' },
+                            { code: 'EXPRESS' },
+                        ],
+                    })}
+                />,
+            )
+
+            expect(screen.getAllByText('Code')).toHaveLength(2)
+            expect(screen.getByText('STANDARD')).toBeInTheDocument()
+            expect(screen.getByText('EXPRESS')).toBeInTheDocument()
+        })
+
+        it('renders entries when shipping_lines is null but fulfillments has items', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [
+                            { tracking_number: 'T1' },
+                            { tracking_number: 'T2' },
+                        ],
+                        shipping_lines: null,
+                    })}
+                />,
+            )
+
+            expect(screen.getAllByText('Tracking number')).toHaveLength(2)
+            expect(screen.getByText('T1')).toBeInTheDocument()
+            expect(screen.getByText('T2')).toBeInTheDocument()
+        })
+
+        it('renders entries when fulfillments is null but shipping_lines has items', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: null,
+                        shipping_lines: [
+                            { code: 'STANDARD' },
+                            { code: 'EXPRESS' },
+                        ],
+                    })}
+                />,
+            )
+
+            expect(screen.getAllByText('Code')).toHaveLength(2)
+            expect(screen.getByText('STANDARD')).toBeInTheDocument()
+            expect(screen.getByText('EXPRESS')).toBeInTheDocument()
+        })
+
+        it('shows data from the correct index for each entry', () => {
+            render(
+                <OrderShipmentSection
+                    order={makeOrder({
+                        fulfillments: [
+                            {
+                                tracking_url: 'https://track.example.com/1',
+                            },
+                            {
+                                tracking_url: 'https://track.example.com/2',
+                            },
+                        ],
+                        shipping_lines: [
+                            { code: 'STANDARD' },
+                            { code: 'EXPRESS' },
+                        ],
+                    })}
+                />,
+            )
+
+            const links = screen.getAllByRole('link')
+            expect(links).toHaveLength(2)
+            expect(links[0]).toHaveAttribute(
+                'href',
+                'https://track.example.com/1',
+            )
+            expect(links[1]).toHaveAttribute(
+                'href',
+                'https://track.example.com/2',
+            )
+            expect(screen.getByText('STANDARD')).toBeInTheDocument()
+            expect(screen.getByText('EXPRESS')).toBeInTheDocument()
         })
     })
 })

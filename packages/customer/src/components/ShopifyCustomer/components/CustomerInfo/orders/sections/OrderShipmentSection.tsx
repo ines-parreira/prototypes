@@ -31,7 +31,11 @@ export function OrderShipmentSection({
 
     if (fields.length === 0) return null
 
-    const context: OrderFieldRenderContext = {
+    const shippingLinesCount = order.shipping_lines?.length ?? 0
+    const fulfillmentsCount = order.fulfillments?.length ?? 0
+    const entryCount = Math.max(shippingLinesCount, fulfillmentsCount, 1)
+
+    const baseContext: OrderFieldRenderContext = {
         order,
         isDraftOrder,
         integrationId,
@@ -50,36 +54,61 @@ export function OrderShipmentSection({
                 </Text>
             </Box>
             <Box flexDirection="column" gap="xs">
-                {fields.map((field) => {
-                    const value = field.getValue(context)
-                    const displayValue =
-                        field.formatValue?.(value, context) ??
-                        String(value ?? '-')
+                {Array.from({ length: entryCount }, (_, entryIndex) => {
+                    const context: OrderFieldRenderContext = {
+                        ...baseContext,
+                        shippingEntryIndex: entryIndex,
+                    }
 
                     return (
                         <Box
-                            key={field.id}
-                            display="grid"
-                            w="100%"
-                            alignItems="flex-start"
+                            key={entryIndex}
+                            flexDirection="column"
                             gap="xs"
-                            className={css.row}
+                            className={
+                                entryIndex > 0 ? css.groupDivider : undefined
+                            }
                         >
-                            <Text as="span" size="md" className={css.label}>
-                                {field.label}
-                            </Text>
-                            {field.id === 'tracking_url' && value ? (
-                                <a
-                                    href={String(value)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={css.trackingUrl}
-                                >
-                                    {String(value)}
-                                </a>
-                            ) : (
-                                <Text size="md">{displayValue}</Text>
-                            )}
+                            {fields.map((field) => {
+                                const value = field.getValue(context)
+                                const displayValue =
+                                    field.formatValue?.(value, context) ??
+                                    String(value ?? '-')
+
+                                return (
+                                    <Box
+                                        key={field.id}
+                                        display="grid"
+                                        w="100%"
+                                        alignItems="flex-start"
+                                        gap="xs"
+                                        className={css.row}
+                                    >
+                                        <Text
+                                            as="span"
+                                            size="md"
+                                            className={css.label}
+                                        >
+                                            {field.label}
+                                        </Text>
+                                        {field.id === 'tracking_url' &&
+                                        value ? (
+                                            <a
+                                                href={String(value)}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={css.trackingUrl}
+                                            >
+                                                {String(value)}
+                                            </a>
+                                        ) : (
+                                            <Text size="md">
+                                                {displayValue}
+                                            </Text>
+                                        )}
+                                    </Box>
+                                )
+                            })}
                         </Box>
                     )
                 })}

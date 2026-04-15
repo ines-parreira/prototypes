@@ -4,6 +4,7 @@ import type { DateFormatType, TimeFormatType } from '@repo/utils'
 
 import type {
     EmailMarketingConsentData,
+    MoneySet,
     PurchaseSummaryData,
     ShopperEcommerceData,
     SmsMarketingConsentData,
@@ -16,6 +17,14 @@ export type {
     ShopperEcommerceData,
     SmsMarketingConsentData,
 } from '../../types'
+
+export type OrderShippingLine = {
+    title?: string
+    code?: string
+    price?: string
+    price_set?: MoneySet
+    [key: string]: unknown
+}
 
 export type SectionKey =
     | 'customer'
@@ -76,11 +85,9 @@ export type OrderDetailsData = {
         province_code?: string | null
         zip?: string | null
     } | null
-    shipping_lines?: Array<{ code?: string; [key: string]: unknown }> | null
+    shipping_lines?: OrderShippingLine[] | null
     total_shipping_price?: string
-    total_shipping_price_set?: {
-        presentment_money?: { amount: string; currency_code: string }
-    } | null
+    total_shipping_price_set?: MoneySet | null
     currency?: string
 }
 
@@ -144,6 +151,7 @@ export type OrderFieldRenderContext = {
     dateFormat: DateFormatType
     timeFormat: TimeFormatType
     timezone: string | undefined
+    shippingEntryIndex?: number
 }
 
 type BaseOrderFieldConfig = {

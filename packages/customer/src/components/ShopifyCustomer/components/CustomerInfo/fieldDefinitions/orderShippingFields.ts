@@ -1,27 +1,44 @@
 import { getMoneySymbol } from '@repo/utils'
 
-import type { OrderFieldConfig } from '../types'
+import type { OrderFieldConfig, OrderFieldRenderContext } from '../types'
+
+export function getFulfillmentValue(
+    ctx: OrderFieldRenderContext,
+    key: 'tracking_url' | 'tracking_number',
+): string | undefined {
+    const i = ctx.shippingEntryIndex ?? 0
+    return ctx.order.fulfillments?.[i]?.[key] ?? undefined
+}
+
+export function getShippingLineCost(
+    ctx: OrderFieldRenderContext,
+): string | undefined {
+    const i = ctx.shippingEntryIndex ?? 0
+    const line = ctx.order.shipping_lines?.[i]
+    return (
+        line?.price_set?.shop_money?.amount ??
+        (line?.price as string | undefined)
+    )
+}
 
 export const SHIPPING_FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
     tracking_url: {
         id: 'tracking_url',
         type: 'readonly',
         label: 'Tracking URL',
-        getValue: (ctx) =>
-            ctx.order.fulfillments?.[0]?.tracking_url ?? undefined,
+        getValue: (ctx) => getFulfillmentValue(ctx, 'tracking_url'),
     },
     tracking_number: {
         id: 'tracking_number',
         type: 'readonly',
         label: 'Tracking number',
-        getValue: (ctx) =>
-            ctx.order.fulfillments?.[0]?.tracking_number ?? undefined,
+        getValue: (ctx) => getFulfillmentValue(ctx, 'tracking_number'),
     },
     shipping_cost: {
         id: 'shipping_cost',
         type: 'readonly',
         label: 'Shipping cost',
-        getValue: (ctx) => ctx.order.total_shipping_price,
+        getValue: (ctx) => getShippingLineCost(ctx),
         formatValue: (value, ctx) => {
             if (value == null) return '-'
             const symbol = ctx.order.currency
@@ -34,6 +51,9 @@ export const SHIPPING_FIELD_DEFINITIONS: Record<string, OrderFieldConfig> = {
         id: 'code',
         type: 'readonly',
         label: 'Code',
-        getValue: (ctx) => ctx.order.shipping_lines?.[0]?.code,
+        getValue: (ctx) => {
+            const i = ctx.shippingEntryIndex ?? 0
+            return ctx.order.shipping_lines?.[i]?.code
+        },
     },
 }

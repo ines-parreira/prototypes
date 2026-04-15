@@ -17,6 +17,7 @@ import { getMoneySymbol } from '@repo/utils'
 import { Box, OverlayContent } from '@gorgias/axiom'
 
 import type { OrderRefund, OrderReturn } from '../../../../types'
+import type { OrderShippingLine } from '../../types'
 import { useOrderFieldPreferences } from '../../widget/useOrderFieldPreferences'
 import { OrderActions } from '../OrderActions'
 import { isRefundedStatus } from '../orderStatusUtils'
@@ -75,7 +76,7 @@ export type OrderData = {
         zip?: string | null
     } | null
     discount_codes?: Array<{ code: string; amount: string; type: string }>
-    shipping_lines?: Array<{ code?: string; [key: string]: unknown }> | null
+    shipping_lines?: OrderShippingLine[] | null
     metafields?: FullShopifyMetafield[]
     refunds?: OrderRefund[]
     returns?: OrderReturn[]
