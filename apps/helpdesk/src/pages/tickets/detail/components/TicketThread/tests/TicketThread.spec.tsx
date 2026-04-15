@@ -1,4 +1,3 @@
-import { forwardRef } from 'react'
 import type { ReactNode } from 'react'
 
 import { userEvent } from '@repo/testing'
@@ -23,46 +22,80 @@ jest.mock(
     'pages/tickets/detail/components/TicketHeaderWrapper/hooks/useCollisionDetection',
     () => jest.fn(),
 )
+
+const mockUseParams = jest.fn()
+
 jest.mock('react-router-dom', () => ({
     ...jest.requireActual('react-router-dom'),
-    useParams: () => ({ ticketId: '1' }),
+    useParams: () => mockUseParams(),
 }))
+
 jest.mock('@repo/routing', () => ({
     useSearchParams: jest.fn(),
 }))
 
-jest.mock('@repo/ticket-thread', () => ({
-    ViewingActivity: ({ agents }: { agents: Array<{ name: string }> }) => (
-        <div>{agents.map((agent) => agent.name).join(', ')}</div>
-    ),
-    TypingActivity: ({
-        agents,
-        customers,
-    }: {
-        agents?: Array<{ name: string }>
-        customers?: Array<{ name: string }>
-    }) => (
-        <div>
-            {`TypingActivity customers=${customers?.map((customer) => customer.name).join(', ') ?? ''} agents=${agents?.map((agent) => agent.name).join(', ') ?? ''}`}
-        </div>
-    ),
-    TicketThreadContainer: forwardRef<HTMLElement, { children: ReactNode }>(
-        function MockTicketThreadContainer({ children }, ref) {
-            return (
-                <section aria-label="Ticket thread container" ref={ref}>
-                    {children}
-                </section>
-            )
-        },
-    ),
-    TicketThreadItemsContainer: ({ children }: { children: ReactNode }) => (
-        <div>{children}</div>
-    ),
-    TicketThreadItem: jest.fn(({ item }: { item: { _tag: string } }) => (
-        <div>{item._tag}</div>
-    )),
-    useTicketThread: jest.fn(),
-}))
+var mockTicketThreadContainer: jest.Mock
+
+jest.mock('@repo/ticket-thread', () => {
+    mockTicketThreadContainer = jest.fn(
+        ({
+            items,
+            renderThreadItem,
+            ticketId,
+        }: {
+            items: Array<{ _tag: string; data?: unknown }>
+            renderThreadItem: (
+                index: number,
+                item: { _tag: string; data?: unknown },
+            ) => ReactNode
+            ticketId?: string
+        }) => (
+            <section
+                aria-label="Ticket thread container"
+                data-ticket-id={ticketId}
+            >
+                {items.map((item, index) => (
+                    <div key={`thread-item-${index}`}>
+                        {renderThreadItem(index, item)}
+                    </div>
+                ))}
+                <div key="composer">
+                    {renderThreadItem(items.length, {
+                        _tag: 'composer',
+                        data: null,
+                    })}
+                </div>
+            </section>
+        ),
+    )
+
+    return {
+        getThreadListItemKey: jest.fn((_item, index) => `thread-item-${index}`),
+        isComposerItem: jest.fn(
+            (item: { _tag: string }) => item._tag === 'composer',
+        ),
+        ViewingActivity: ({ agents }: { agents: Array<{ name: string }> }) => (
+            <div>{agents.map((agent) => agent.name).join(', ')}</div>
+        ),
+        TypingActivity: ({
+            agents,
+            customers,
+        }: {
+            agents?: Array<{ name: string }>
+            customers?: Array<{ name: string }>
+        }) => (
+            <div>
+                {`TypingActivity customers=${customers?.map((customer) => customer.name).join(', ') ?? ''} agents=${agents?.map((agent) => agent.name).join(', ') ?? ''}`}
+            </div>
+        ),
+        TicketThreadContainer: mockTicketThreadContainer,
+        TicketThreadItem: jest.fn(({ item }: { item: { _tag: string } }) => (
+            <div>{item._tag}</div>
+        )),
+        useTicketThread: jest.fn(),
+    }
+})
+
 jest.mock('pages/common/editor/Editor', () =>
     jest.fn(
         ({ onFocus, onBlur }: { onFocus: () => void; onBlur: () => void }) => (
@@ -108,13 +141,14 @@ describe('<TicketThread />', () => {
     const dispatch = jest.fn()
     const submit = jest.fn()
     const initialMacroFilters = { languages: ['en'] }
-    let ticket: { id: number; customer?: { name?: string } }
+    let ticket: { id: number; customer?: { id?: number; name?: string } }
     let ticketState: ReturnType<typeof fromJS>
     let searchParams: URLSearchParams
 
     beforeEach(() => {
         jest.clearAllMocks()
 
+        mockUseParams.mockReturnValue({ ticketId: '1' })
         ticket = {
             id: 1,
             customer: { name: 'Jane Doe' },
@@ -160,7 +194,7 @@ describe('<TicketThread />', () => {
         })
     })
 
-    it('renders the thread feed and passes the expected props to Editor', () => {
+    it('renders the thread feed, composer, and passes wrapper props to the shared container', () => {
         render(<TicketThread submit={submit} />)
 
         expect(
@@ -171,6 +205,17 @@ describe('<TicketThread />', () => {
         expect(
             screen.getByText('TypingActivity customers=Jane Doe agents='),
         ).toBeInTheDocument()
+        expect(mockTicketThreadContainer).toHaveBeenCalledWith(
+            expect.objectContaining({
+                items: [
+                    { _tag: 'Thread feed item 1' },
+                    { _tag: 'Thread feed item 100' },
+                ],
+                renderThreadItem: expect.any(Function),
+                ticketId: '1',
+            }),
+            expect.objectContaining({}),
+        )
         expect(mockEditor).toHaveBeenCalledWith(
             {
                 initialMacroFilters,
@@ -187,8 +232,7 @@ describe('<TicketThread />', () => {
             showTicketEvents: false,
             ticketId: 1,
         })
-        expect(mockTicketThreadItem).toHaveBeenNthCalledWith(
-            1,
+        expect(mockTicketThreadItem).toHaveBeenCalledWith(
             expect.objectContaining({
                 item: { _tag: 'Thread feed item 1' },
             }),
@@ -222,18 +266,11 @@ describe('<TicketThread />', () => {
         expect(mockUseCollisionDetection).toHaveBeenCalledWith(1)
     })
 
-    it('falls back to "Customer" when the ticket customer has no name', () => {
-        ticket = { id: 1, customer: {} }
-
-        render(<TicketThread submit={submit} />)
-
-        expect(
-            screen.getByText('TypingActivity customers=Customer agents='),
-        ).toBeInTheDocument()
-    })
-
-    it('falls back to "Customer" when the ticket has no customer', () => {
-        ticket = { id: 1 }
+    it.each([
+        ['ticket customer has no name', { id: 1, customer: {} }],
+        ['ticket has no customer', { id: 1 }],
+    ])('falls back to "Customer" when the %s', (_label, nextTicket) => {
+        ticket = nextTicket
 
         render(<TicketThread submit={submit} />)
 
@@ -260,7 +297,20 @@ describe('<TicketThread />', () => {
                 'TypingActivity customers=Jane Doe agents=Alice, Bob',
             ),
         ).toBeInTheDocument()
-        expect(mockUseCollisionDetection).toHaveBeenCalledWith(1)
+    })
+
+    it('omits shopper typing participants when the shopper is not typing', () => {
+        ticketState = fromJS({
+            _internal: {
+                isShopperTyping: false,
+            },
+        })
+
+        render(<TicketThread submit={submit} />)
+
+        expect(
+            screen.getByText('TypingActivity customers= agents='),
+        ).toBeInTheDocument()
     })
 
     it('dispatches editor focus state on editor focus and blur', async () => {

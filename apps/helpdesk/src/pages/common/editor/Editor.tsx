@@ -95,6 +95,7 @@ export default function Editor({
 
     return (
         <div
+            data-name="reply-composer"
             className={cn('d-print-none', css.container)}
             onBlur={onBlur}
             onFocus={onFocus}

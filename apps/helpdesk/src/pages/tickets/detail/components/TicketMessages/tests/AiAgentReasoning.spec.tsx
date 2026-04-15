@@ -1,6 +1,10 @@
 import type React from 'react'
 
-import { useCanAccessAIFeedback } from '@repo/ai-agent'
+import {
+    useCanAccessAIFeedback,
+    useFeedbackTracking,
+    useReasoningTracking,
+} from '@repo/ai-agent'
 import { useFlag } from '@repo/feature-flags'
 import { TicketInfobarTab, useTicketInfobarNavigation } from '@repo/navigation'
 import { assumeMock } from '@repo/testing'
@@ -199,6 +203,8 @@ jest.mock('@repo/ai-agent', () => ({
     })),
 }))
 const useCanAccessAIFeedbackMock = assumeMock(useCanAccessAIFeedback)
+const useFeedbackTrackingMock = assumeMock(useFeedbackTracking)
+const useReasoningTrackingMock = assumeMock(useReasoningTracking)
 
 jest.mock('models/knowledgeService/queries', () => ({
     useGetMessageAiReasoning: jest.fn(),
@@ -1091,6 +1097,79 @@ describe('AiAgentReasoning', () => {
                     enabled: false,
                 }),
             )
+        })
+
+        it('should keep reasoning disabled when the ticket store is briefly cleared during navigation', () => {
+            renderComponent()
+
+            useAppSelectorMock.mockImplementation((selector: any) => {
+                if (
+                    selector.name === 'getTicketState' ||
+                    selector.toString().includes('getTicketState')
+                ) {
+                    return Map()
+                }
+                if (
+                    selector.name === 'getCurrentAccountState' ||
+                    selector.toString().includes('getCurrentAccountState')
+                ) {
+                    return fromJS(account)
+                }
+                if (selector.toString().includes('state.currentUser')) {
+                    return fromJS(user)
+                }
+
+                return undefined
+            })
+
+            renderComponent()
+            fireEvent.click(screen.getAllByText('Show reasoning').at(-1)!)
+
+            expect(mockUseGetMessageAiReasoning).toHaveBeenLastCalledWith(
+                expect.objectContaining({
+                    messageId: '1',
+                    objectId: '',
+                }),
+                expect.objectContaining({
+                    enabled: false,
+                }),
+            )
+        })
+
+        it('should default tracking ids to 0 when ticket, account, and current user are unavailable', () => {
+            useAppSelectorMock.mockImplementation((selector: any) => {
+                if (
+                    selector.name === 'getTicketState' ||
+                    selector.toString().includes('getTicketState')
+                ) {
+                    return Map()
+                }
+                if (
+                    selector.name === 'getCurrentAccountState' ||
+                    selector.toString().includes('getCurrentAccountState')
+                ) {
+                    return Map()
+                }
+                if (selector.toString().includes('state.currentUser')) {
+                    return Map()
+                }
+
+                return undefined
+            })
+
+            renderComponent()
+
+            expect(useFeedbackTrackingMock).toHaveBeenLastCalledWith({
+                accountId: 0,
+                ticketId: 0,
+                userId: 0,
+            })
+            expect(useReasoningTrackingMock).toHaveBeenLastCalledWith({
+                accountId: 0,
+                messageId: 1,
+                ticketId: 0,
+                userId: 0,
+            })
         })
     })
 

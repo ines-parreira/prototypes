@@ -74,10 +74,10 @@ export const AiAgentReasoningHelpdeskV2 = ({
         isImpersonated || searchParams.get('showAiAgentExecutionIds') === 'true'
     const shouldShowImpersonationNotice = isImpersonated && isEvoliTicket
 
-    const ticketId: number = ticket.get('id')
-    const accountId: number = account.get('id')
-    const userId: number = currentUser.get('id')
-    const messageId = message.id || 0
+    const ticketId = Number(ticket.get('id') ?? 0)
+    const accountId = Number(account.get('id') ?? 0)
+    const userId = Number(currentUser.get('id') ?? 0)
+    const messageId = Number(message.id ?? 0)
     const isHandover =
         (message.meta as Record<string, unknown>)?.ai_agent_message_type ===
         AiAgentMessageType.HANDOVER_TO_AGENT
@@ -100,6 +100,12 @@ export const AiAgentReasoningHelpdeskV2 = ({
         messageId,
     })
 
+    const isReasoningEnabled =
+        state !== 'collapsed' &&
+        ticketId > 0 &&
+        messageId > 0 &&
+        (!isEvoliTicket || isMessageAfterEvoliCutoff || isImpersonated)
+
     const {
         reasoningContent,
         reasoningResources,
@@ -108,13 +114,10 @@ export const AiAgentReasoningHelpdeskV2 = ({
         storeConfiguration,
         refetch: refetchMessageAiReasoning,
     } = useAiAgentReasoning({
-        objectId: ticketId.toString(),
+        objectId: ticketId > 0 ? ticketId.toString() : '',
         objectType: 'TICKET',
         messageId: messageId.toString(),
-        enabled:
-            state !== 'collapsed' &&
-            !!messageId &&
-            (!isEvoliTicket || isMessageAfterEvoliCutoff || isImpersonated),
+        enabled: isReasoningEnabled,
         isHandover,
     })
 

@@ -9,7 +9,7 @@ type UseListTicketMessagesParams = {
 
 export function useListTicketMessages({
     ticketId,
-}: UseListTicketMessagesParams) {
+}: UseListTicketMessagesParams): TicketMessage[] {
     const { data: messages } = useListMessages(
         { ticket_id: ticketId },
         {
@@ -20,5 +20,5 @@ export function useListTicketMessages({
         },
     )
 
-    return messages
+    return messages ?? []
 }

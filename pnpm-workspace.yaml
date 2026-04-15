@@ -98,6 +98,8 @@ catalogs:
     '@types/react-router-dom': '5.3.3'
     'history': '4.10.1'
     '@types/history': '^4.7.11'
+  react-virtuoso:
+    'react-virtuoso': '4.12.8'
   test:
     '@jest/expect': '29.7.0'
     '@swc/core': '^1.10.11'

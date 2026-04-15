@@ -1,10 +1,12 @@
 import { useCallback, useMemo } from 'react'
 
 import { useSearchParams } from '@repo/routing'
+import type { TicketThreadVirtualizedListItem } from '@repo/ticket-thread'
 import {
+    getThreadListItemKey,
+    isComposerItem,
     TicketThreadContainer,
     TicketThreadItem,
-    TicketThreadItemsContainer,
     TypingActivity,
     useTicketThread,
     ViewingActivity,
@@ -66,6 +68,7 @@ export function TicketThread({ submit }: TicketThreadProps) {
         showTicketEvents,
         pendingMessages,
     })
+
     const internalNotesOnly =
         isStandaloneAiAgent && accessFeaturesMapped.ticketsView.canRead
     const shopperName = useMemo(
@@ -101,35 +104,66 @@ export function TicketThread({ submit }: TicketThreadProps) {
         dispatch(editorFocused(true))
     }, [dispatch])
 
+    const renderThreadItem = useCallback(
+        (index: number, item: TicketThreadVirtualizedListItem) => {
+            const itemKey = getThreadListItemKey(
+                item,
+                index,
+                ticketId,
+                ticketThreadItems.length,
+            )
+
+            return (
+                <div
+                    className={css.threadItem}
+                    data-item-id={itemKey}
+                    role="listitem"
+                >
+                    {isComposerItem(item) ? (
+                        <div className={css.threadComposer}>
+                            <TypingActivity
+                                agents={activityAgentsTyping}
+                                customers={customersTyping}
+                            />
+                            <WhatsAppEditorProvider>
+                                <Editor
+                                    internalNotesOnly={internalNotesOnly}
+                                    initialMacroFilters={initialMacroFilters}
+                                    submit={submit}
+                                    ticket={ticket}
+                                    onFocus={handleFocus}
+                                    onBlur={handleBlur}
+                                />
+                            </WhatsAppEditorProvider>
+                        </div>
+                    ) : (
+                        <TicketThreadItem item={item} />
+                    )}
+                </div>
+            )
+        },
+        [
+            activityAgentsTyping,
+            customersTyping,
+            handleBlur,
+            handleFocus,
+            initialMacroFilters,
+            internalNotesOnly,
+            submit,
+            ticket,
+            ticketId,
+            ticketThreadItems.length,
+        ],
+    )
+
     return (
         <div className={css.wrapper}>
             <ViewingActivity agents={activityAgentsViewing} />
-            <TicketThreadContainer>
-                <TicketThreadItemsContainer>
-                    {ticketThreadItems.map((item, index) => (
-                        <TicketThreadItem
-                            key={`${item._tag}-${index}`}
-                            item={item}
-                        />
-                    ))}
-                </TicketThreadItemsContainer>
-                <div>
-                    <TypingActivity
-                        agents={activityAgentsTyping}
-                        customers={customersTyping}
-                    />
-                    <WhatsAppEditorProvider>
-                        <Editor
-                            internalNotesOnly={internalNotesOnly}
-                            initialMacroFilters={initialMacroFilters}
-                            submit={submit}
-                            ticket={ticket}
-                            onFocus={handleFocus}
-                            onBlur={handleBlur}
-                        />
-                    </WhatsAppEditorProvider>
-                </div>
-            </TicketThreadContainer>
+            <TicketThreadContainer
+                ticketId={ticketId}
+                items={ticketThreadItems}
+                renderThreadItem={renderThreadItem}
+            />
         </div>
     )
 }

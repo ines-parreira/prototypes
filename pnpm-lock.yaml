@@ -222,6 +222,10 @@ catalogs:
     react-router-dom-v5-compat:
       specifier: ^6.30.3
       version: 6.30.3
+  react-virtuoso:
+    react-virtuoso:
+      specifier: 4.12.8
+      version: 4.12.8
   realtime:
     '@gorgias/realtime':
       specifier: 1.2.1
@@ -1088,7 +1092,7 @@ importers:
         specifier: 4.4.2
         version: 4.4.2(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       react-virtuoso:
-        specifier: 4.12.8
+        specifier: catalog:react-virtuoso
         version: 4.12.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       reactstrap:
         specifier: 8.9.0
@@ -3318,6 +3322,9 @@ importers:
       react-router-dom-v5-compat:
         specifier: catalog:react-router
         version: 6.30.3(react-dom@18.2.0(react@18.2.0))(react-router-dom@5.2.0(react@18.2.0))(react@18.2.0)
+      react-virtuoso:
+        specifier: catalog:react-virtuoso
+        version: 4.12.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       typescript:
         specifier: catalog:typescript
         version: 5.9.3
@@ -3491,7 +3498,7 @@ importers:
         specifier: catalog:react-router
         version: 6.30.3(react-dom@18.2.0(react@18.2.0))(react-router-dom@5.2.0(react@18.2.0))(react@18.2.0)
       react-virtuoso:
-        specifier: 4.12.8
+        specifier: catalog:react-virtuoso
         version: 4.12.8(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       reactstrap:
         specifier: 8.9.0

@@ -750,18 +750,16 @@ export const TicketDetailContainer = ({
 
     if (hasUIVisionMS3) {
         return (
-            <TicketThreadLegacyBridge>
-                <TicketThread submit={submit} />
-            </TicketThreadLegacyBridge>
+            <>
+                <TicketThreadLegacyBridge>
+                    <TicketThread submit={submit} />
+                </TicketThreadLegacyBridge>
+                <DrillDownModal isLegacy={false} />
+            </>
         )
     }
 
-    return (
-        <>
-            {ticketView}
-            <DrillDownModal isLegacy={false} />
-        </>
-    )
+    return <>{ticketView}</>
 }
 
 const connector = connect(

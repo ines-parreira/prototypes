@@ -36,7 +36,7 @@ export function useTicketThreadMessages({
     const messages = useListTicketMessages({ ticketId })
 
     return useMemo(() => {
-        const persistedMessages = (messages ?? [])
+        const persistedMessages = messages
             .filter(isTicketMessage)
             .filter(
                 (message) =>

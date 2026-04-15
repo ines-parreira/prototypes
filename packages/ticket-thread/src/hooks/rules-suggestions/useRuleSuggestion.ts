@@ -101,8 +101,6 @@ export function useRuleSuggestion({ ticketId }: UseRuleSuggestionParams) {
             return false
         }
 
-        if (!messages) return false
-
         return !messages.some((message) =>
             isMessageMetaWithRuleSuggestionSlug(message.meta),
         )

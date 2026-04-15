@@ -242,7 +242,7 @@
         "react-select": "1.0.0-beta14",
         "react-slick": "0.28.0",
         "react-transition-group": "4.4.2",
-        "react-virtuoso": "4.12.8",
+        "react-virtuoso": "catalog:react-virtuoso",
         "reactstrap": "8.9.0",
         "reapop": "4.0.3",
         "recharts": "catalog:recharts",

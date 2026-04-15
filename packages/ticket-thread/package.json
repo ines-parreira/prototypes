@@ -42,6 +42,7 @@
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
+        "react-virtuoso": "catalog:react-virtuoso",
         "yet-another-react-lightbox": "catalog:images",
         "zod": "catalog:zod"
     },
@@ -86,6 +87,7 @@
         "react-router": "catalog:react-router",
         "react-router-dom": "catalog:react-router",
         "react-router-dom-v5-compat": "catalog:react-router",
+        "react-virtuoso": "catalog:react-virtuoso",
         "typescript": "catalog:typescript",
         "vitest": "catalog:test",
         "yet-another-react-lightbox": "catalog:images",

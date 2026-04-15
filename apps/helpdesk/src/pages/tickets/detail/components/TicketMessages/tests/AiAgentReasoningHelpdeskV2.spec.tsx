@@ -186,6 +186,7 @@ const onFeedbackTabOpened = jest.fn()
 const onKnowledgeResourceClick = jest.fn()
 const onChangeTab = jest.fn()
 const openPreview = jest.fn()
+let ticketState = ticket
 
 let reasoningState: {
     reasoningContent: string | null
@@ -228,10 +229,11 @@ describe('AiAgentReasoningHelpdeskV2', () => {
             storeConfiguration: { executionId: 'exec-123', shopName: 'acme' },
             refetch,
         }
+        ticketState = ticket
 
         mockUseAppSelector.mockImplementation((selector: unknown) => {
             if (selector === getTicketState) {
-                return ticket
+                return ticketState
             }
 
             if (selector === getCurrentAccountState) {
@@ -384,6 +386,28 @@ describe('AiAgentReasoningHelpdeskV2', () => {
         expect(mockUseAiAgentReasoning).toHaveBeenLastCalledWith(
             expect.objectContaining({
                 enabled: true,
+            }),
+        )
+    })
+
+    it('keeps reasoning disabled when the message id is missing', async () => {
+        const user = userEvent.setup()
+
+        renderComponent(
+            createMessage({
+                id: undefined as unknown as TicketMessage['id'],
+            }),
+        )
+
+        await user.click(
+            screen.getByRole('button', { name: /show reasoning/i }),
+        )
+
+        expect(mockUseAiAgentReasoning).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                enabled: false,
+                messageId: '0',
+                objectId: '123',
             }),
         )
     })
@@ -612,5 +636,50 @@ describe('AiAgentReasoningHelpdeskV2', () => {
                 isHandover: true,
             }),
         )
+    })
+
+    it('does not crash when the ticket store is briefly cleared during navigation', () => {
+        const message = createMessage()
+        const { rerender } = renderComponent(message)
+
+        ticketState = Map()
+
+        expect(() => {
+            rerender(<AiAgentReasoningHelpdeskV2 message={message} />)
+        }).not.toThrow()
+        expect(mockUseAiAgentReasoning).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                enabled: false,
+                objectId: '',
+            }),
+        )
+    })
+
+    it('defaults tracking ids to zero when account and user stores are briefly unavailable', () => {
+        mockUseAppSelector.mockImplementation((selector: unknown) => {
+            if (selector === getTicketState) {
+                return Map()
+            }
+
+            if (selector === getCurrentAccountState) {
+                return Map()
+            }
+
+            return Map()
+        })
+
+        renderComponent()
+
+        expect(mockUseFeedbackTracking).toHaveBeenLastCalledWith({
+            accountId: 0,
+            ticketId: 0,
+            userId: 0,
+        })
+        expect(mockUseReasoningTracking).toHaveBeenLastCalledWith({
+            accountId: 0,
+            messageId: 10,
+            ticketId: 0,
+            userId: 0,
+        })
     })
 })
