@@ -82,7 +82,6 @@ AGENTS.md
 CLAUDE.md
 .claude/commands/
 .claude/skills/
-.claude/settings.json
 .claude/settings.local.json
 .codex/
 .cursor/
