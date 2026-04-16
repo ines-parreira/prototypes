@@ -7,13 +7,9 @@ import {
     Tag,
 } from '@gorgias/axiom'
 import type { DataTableColumnDef } from '@gorgias/axiom'
-import type {
-    Language,
-    TicketCompact,
-    TicketTranslationCompact,
-} from '@gorgias/helpdesk-types'
+import type { TicketCompact } from '@gorgias/helpdesk-types'
 
-import { getTicketTableDisplayRow } from '../../utils/getTicketTableDisplayRow'
+import type { DisplayTextValue } from '../../types/display'
 import { ChannelCell } from './components/ChannelCell'
 import { CustomerCell } from './components/CustomerCell'
 import { DateTimeCell } from './components/DateTimeCell'
@@ -38,22 +34,24 @@ const languageDisplayNames = new Intl.DisplayNames(['en'], {
     type: 'language',
 })
 
-const columnHelper = createColumnHelper<TicketCompact>()
+export type TicketTableRow = TicketCompact & {
+    displayCustomer: DisplayTextValue
+    displaySubject: DisplayTextValue
+    displayExcerpt: DisplayTextValue
+    displayTicketId: DisplayTextValue
+}
+
+const columnHelper = createColumnHelper<TicketTableRow>()
 
 export type TicketTableColumnsParams = {
-    translationMap: Record<number, TicketTranslationCompact>
-    shouldShowTranslatedContent: (language?: Language | null) => boolean
     currentUserId?: number
     dateTimePreferences: UserDateTimePreferences
-    isSearchMode?: boolean
 }
 
 export function createTicketTableColumns({
-    translationMap,
-    shouldShowTranslatedContent,
     currentUserId,
     dateTimePreferences,
-}: TicketTableColumnsParams): DataTableColumnDef<TicketCompact>[] {
+}: TicketTableColumnsParams): DataTableColumnDef<TicketTableRow>[] {
     return [
         columnHelper.display({
             id: 'ticket',
@@ -65,20 +63,13 @@ export function createTicketTableColumns({
             maxSize: 350,
             cell: (cell) => {
                 const ticket = cell.row.original
-                const displayRow = getTicketTableDisplayRow({
-                    ticket,
-                    translation: translationMap[ticket.id],
-                    showTranslatedContent: shouldShowTranslatedContent(
-                        ticket.language,
-                    ),
-                })
 
                 return (
                     <TicketCell
                         ticketId={ticket.id}
                         isUnread={ticket.is_unread}
-                        subject={displayRow.subject}
-                        excerpt={displayRow.excerpt}
+                        subject={ticket.displaySubject}
+                        excerpt={ticket.displayExcerpt}
                         hasFailedMessageTag={
                             !!ticket.last_sent_message_not_delivered
                         }
@@ -95,17 +86,10 @@ export function createTicketTableColumns({
             minSize: 200,
             cell: (cell) => {
                 const ticket = cell.row.original
-                const displayRow = getTicketTableDisplayRow({
-                    ticket,
-                    translation: translationMap[ticket.id],
-                    showTranslatedContent: shouldShowTranslatedContent(
-                        ticket.language,
-                    ),
-                })
 
                 return (
                     <SubjectOnlyCell
-                        value={displayRow.subject}
+                        value={ticket.displaySubject}
                         isUnread={ticket.is_unread}
                     />
                 )
@@ -117,14 +101,9 @@ export function createTicketTableColumns({
             enableSorting: false,
             size: 220,
             minSize: 180,
-            cell: (cell) => {
-                const ticket = cell.row.original
-                const displayRow = getTicketTableDisplayRow({
-                    ticket,
-                })
-
-                return <CustomerCell value={displayRow.customer} />
-            },
+            cell: (cell) => (
+                <CustomerCell value={cell.row.original.displayCustomer} />
+            ),
         }),
         columnHelper.accessor(
             (ticket) => {
@@ -188,8 +167,8 @@ export function createTicketTableColumns({
             minSize: 240,
             cell: (cell) => (
                 <DataTableOverflowListCell<
-                    TicketCompact,
-                    TicketCompact['tags'][number]
+                    TicketTableRow,
+                    TicketTableRow['tags'][number]
                 >
                     {...cell}
                     items={cell.row.original.tags}
@@ -240,13 +219,9 @@ export function createTicketTableColumns({
             header: 'ID',
             enableSorting: false,
             hug: true,
-            cell: (cell) => {
-                const displayRow = getTicketTableDisplayRow({
-                    ticket: cell.row.original,
-                })
-
-                return <SingleLineTextCell value={displayRow.ticketId} />
-            },
+            cell: (cell) => (
+                <SingleLineTextCell value={cell.row.original.displayTicketId} />
+            ),
         }),
         columnHelper.accessor(
             (ticket) =>

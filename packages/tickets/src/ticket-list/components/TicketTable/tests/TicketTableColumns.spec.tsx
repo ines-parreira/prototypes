@@ -12,6 +12,7 @@ import { useAgentActivity as useAgentActivityMock } from '@gorgias/realtime'
 
 import { render } from '../../../../tests/render.utils'
 import type { SearchTicket } from '../../../types/search'
+import { getTicketTableDisplayRow } from '../../../utils/getTicketTableDisplayRow'
 import type { TicketTableColumnsParams } from '../TicketTableColumns'
 import { createTicketTableColumns } from '../TicketTableColumns'
 
@@ -54,26 +55,53 @@ const dateTimePreferences = {
     timezone: undefined,
 }
 
+type RenderColumnParams = Partial<TicketTableColumnsParams> & {
+    translationMap?: Record<
+        number,
+        ReturnType<typeof mockTicketTranslationCompact>
+    >
+    shouldShowTranslatedContent?: (
+        language?: ReturnType<typeof mockTicketCompact>['language'],
+    ) => boolean
+}
+
 const renderColumn = (
     columnId: string | string[],
     ticket: ReturnType<typeof mockTicketCompact>,
-    columnsParams?: Partial<TicketTableColumnsParams>,
+    columnsParams?: RenderColumnParams,
 ) => {
     const ids = Array.isArray(columnId) ? columnId : [columnId]
     const columns = createTicketTableColumns({
-        translationMap: {},
-        shouldShowTranslatedContent: () => false,
         dateTimePreferences,
         ...columnsParams,
     }).filter((c) => ids.includes(c.id!))
-    return render(<DataTable data={[ticket]} columns={columns} />)
+    const displayRow = getTicketTableDisplayRow({
+        ticket,
+        translation: columnsParams?.translationMap?.[ticket.id],
+        showTranslatedContent:
+            columnsParams?.shouldShowTranslatedContent?.(ticket.language) ??
+            false,
+    })
+
+    return render(
+        <DataTable
+            data={[
+                {
+                    ...ticket,
+                    displayCustomer: displayRow.customer,
+                    displaySubject: displayRow.subject,
+                    displayExcerpt: displayRow.excerpt,
+                    displayTicketId: displayRow.ticketId,
+                },
+            ]}
+            columns={columns}
+        />,
+    )
 }
 
 describe('createTicketTableColumns', () => {
     it('keeps the Ticket column visible and outside column editing', () => {
         const columns = createTicketTableColumns({
-            translationMap: {},
-            shouldShowTranslatedContent: () => false,
             dateTimePreferences,
         })
 
@@ -88,8 +116,6 @@ describe('createTicketTableColumns', () => {
 
     it('marks the supported sortable columns as sortable', () => {
         const columns = createTicketTableColumns({
-            translationMap: {},
-            shouldShowTranslatedContent: () => false,
             dateTimePreferences,
         })
 
@@ -242,6 +268,88 @@ describe('createTicketTableColumns', () => {
             ).not.toBeInTheDocument()
             expect(
                 screen.queryByText('Original customer'),
+            ).not.toBeInTheDocument()
+        })
+
+        it('prefers translated subject and excerpt when highlights have no match markup', () => {
+            const ticket = {
+                ...mockTicketCompact({
+                    id: 1,
+                    subject: 'Original subject',
+                    excerpt: 'Original excerpt',
+                    last_sent_message_not_delivered: false,
+                }),
+                highlights: {
+                    subject: ['Highlighted subject'],
+                    messages: {
+                        body: ['Message match'],
+                    },
+                },
+            } as SearchTicket
+
+            renderColumn('ticket', ticket, {
+                translationMap: {
+                    1: mockTicketTranslationCompact({
+                        subject: 'Translated subject',
+                        excerpt: 'Translated excerpt',
+                    }),
+                },
+                shouldShowTranslatedContent: () => true,
+            })
+
+            expect(screen.getByText('Translated subject')).toBeInTheDocument()
+            expect(screen.getByText('Translated excerpt')).toBeInTheDocument()
+            expect(
+                screen.queryByText('Highlighted subject'),
+            ).not.toBeInTheDocument()
+            expect(screen.queryByText('Message match')).not.toBeInTheDocument()
+        })
+
+        it('keeps highlighted subject and excerpt when they contain match markup', () => {
+            const ticket = {
+                ...mockTicketCompact({
+                    id: 1,
+                    subject: 'Original subject',
+                    excerpt: 'Original excerpt',
+                    last_sent_message_not_delivered: false,
+                }),
+                highlights: {
+                    subject: ['<em>Highlighted</em> subject'],
+                    messages: {
+                        body: ['Message <em>match</em>'],
+                    },
+                },
+            } as SearchTicket
+
+            renderColumn('ticket', ticket, {
+                translationMap: {
+                    1: mockTicketTranslationCompact({
+                        subject: 'Translated subject',
+                        excerpt: 'Translated excerpt',
+                    }),
+                },
+                shouldShowTranslatedContent: () => true,
+            })
+
+            expect(
+                screen.getByText(
+                    (_, node) =>
+                        node?.getAttribute('data-name') === 'text' &&
+                        node.textContent === 'Highlighted subject',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.getByText(
+                    (_, node) =>
+                        node?.getAttribute('data-name') === 'text' &&
+                        node.textContent === 'Message match',
+                ),
+            ).toBeInTheDocument()
+            expect(
+                screen.queryByText('Translated subject'),
+            ).not.toBeInTheDocument()
+            expect(
+                screen.queryByText('Translated excerpt'),
             ).not.toBeInTheDocument()
         })
     })

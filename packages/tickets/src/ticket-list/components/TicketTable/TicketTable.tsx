@@ -38,11 +38,13 @@ import { useTicketTableData } from '../../hooks/useTicketTableData'
 import { useViewVisibleTickets } from '../../hooks/useViewVisibleTickets'
 import type { SearchTracking } from '../../types/searchTracking'
 import { getPlaceholderKind } from '../../utils/getPlaceholderKind'
+import { getTicketTableDisplayRow } from '../../utils/getTicketTableDisplayRow'
 import { TicketListEmptyPlaceholder } from '../TicketListEmptyPlaceholder'
 import { parseSortOrder } from '../TicketListHeader/SortOrderDropdown'
 import { TicketTableBulkActions } from './components/TicketTableBulkActions'
 import { TicketTableColumnEditingFooter } from './components/TicketTableColumnEditingFooter'
 import { createTicketTableColumns } from './TicketTableColumns'
+import type { TicketTableRow } from './TicketTableColumns'
 
 import css from './TicketTable.module.less'
 
@@ -174,7 +176,32 @@ function TicketTableComponent({
         ticket_ids: displayedTicketIds,
     })
     const { shouldShowTranslatedContent } = useCurrentUserLanguagePreferences()
+    const showTranslatedContent = shouldShowTranslatedContent as (
+        language?: Language | null,
+    ) => boolean
     const dateTimePreferences = useUserDateTimePreferences()
+
+    const tableItems = useMemo<TicketTableRow[]>(
+        () =>
+            items.map((ticket) => {
+                const displayRow = getTicketTableDisplayRow({
+                    ticket,
+                    translation: translationMap[ticket.id],
+                    showTranslatedContent: showTranslatedContent(
+                        ticket.language,
+                    ),
+                })
+
+                return {
+                    ...ticket,
+                    displayCustomer: displayRow.customer,
+                    displaySubject: displayRow.subject,
+                    displayExcerpt: displayRow.excerpt,
+                    displayTicketId: displayRow.ticketId,
+                }
+            }),
+        [items, showTranslatedContent, translationMap],
+    )
 
     const { markAsRead } = useMarkTicketAsRead()
 
@@ -220,21 +247,10 @@ function TicketTableComponent({
     const columns = useMemo(
         () =>
             createTicketTableColumns({
-                translationMap,
-                shouldShowTranslatedContent: shouldShowTranslatedContent as (
-                    language?: Language | null,
-                ) => boolean,
                 currentUserId,
                 dateTimePreferences,
-                isSearchMode,
             }),
-        [
-            currentUserId,
-            dateTimePreferences,
-            isSearchMode,
-            shouldShowTranslatedContent,
-            translationMap,
-        ],
+        [currentUserId, dateTimePreferences],
     )
 
     const selectedTicketIds = useMemo(
@@ -406,7 +422,7 @@ function TicketTableComponent({
                     enable: true,
                     localStorage: localStoragePersistence,
                 }}
-                data={items}
+                data={tableItems}
                 columns={columns}
                 isLoading={isLoading}
                 onRowClick={handleRowClick}

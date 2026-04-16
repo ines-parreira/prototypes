@@ -35,6 +35,10 @@ function getDisplayTextValue(
     }
 }
 
+function getHighlightedValueWithMatch(highlightedHtml?: string | null) {
+    return highlightedHtml?.includes('<em>') ? highlightedHtml : null
+}
+
 export function getTicketTableDisplayRow({
     ticket,
     translation,
@@ -55,14 +59,20 @@ export function getTicketTableDisplayRow({
     const searchDisplayData = searchTicket.highlights
         ? getTicketSearchDisplayData(searchTicket)
         : null
+    const subjectHighlight = getHighlightedValueWithMatch(
+        searchDisplayData?.subject,
+    )
+    const excerptHighlight = getHighlightedValueWithMatch(
+        searchDisplayData?.excerpt,
+    )
 
     return {
         customer: getDisplayTextValue(
             customerName,
             searchDisplayData?.customer,
         ),
-        subject: getDisplayTextValue(subject, searchDisplayData?.subject),
-        excerpt: getDisplayTextValue(excerpt, searchDisplayData?.excerpt),
+        subject: getDisplayTextValue(subject, subjectHighlight),
+        excerpt: getDisplayTextValue(excerpt, excerptHighlight),
         ticketId: getDisplayTextValue(
             String(ticket.id),
             searchDisplayData?.ticketId,
