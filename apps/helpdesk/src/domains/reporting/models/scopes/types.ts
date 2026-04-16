@@ -237,6 +237,8 @@ export type MeasureName =
     | 'successRate'
     | 'averageDecreaseInFirstResponseTime'
     | 'medianDecreaseInFirstResponseTime'
+    | 'averageDecreaseInResolutionTime'
+    | 'medianDecreaseInResolutionTime'
 
 export type TimeDimensionName =
     | 'createdDatetime'

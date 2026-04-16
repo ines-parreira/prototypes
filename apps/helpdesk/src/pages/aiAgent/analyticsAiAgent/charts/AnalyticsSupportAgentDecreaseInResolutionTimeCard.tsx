@@ -1,11 +1,11 @@
 import { TrendCard } from '@repo/reporting'
 
-import { useDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
+import { useAiAgentSupportAgentDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useAiAgentSupportAgentDecreaseInResolutionTimeTrend'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import { AiAgentDrillDownMetricName } from 'domains/reporting/pages/automate/aiAgent/aiAgentDrillDownMetrics'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
 
-export const AnalyticsAiAgentSupportDecreaseInResolutionTimeCard = ({
+export const AnalyticsSupportAgentDecreaseInResolutionTimeCard = ({
     chartId,
     dashboard,
     chartConfig,
@@ -14,7 +14,7 @@ export const AnalyticsAiAgentSupportDecreaseInResolutionTimeCard = ({
         chartConfig: chartConfig!,
         chartId,
         dashboard,
-        useTrend: useDecreaseInResolutionTimeTrend,
+        useTrend: useAiAgentSupportAgentDecreaseInResolutionTimeTrend,
         isAiAgentTrendCard: true,
         drillDownMetricName:
             AiAgentDrillDownMetricName.SupportAgentResolutionTimeCard,

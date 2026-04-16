@@ -264,7 +264,6 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
                     )
                 }
                 break
-
             case 'score':
             case 'communicationSkills':
             case 'languageProficiency':
@@ -301,6 +300,7 @@ export function createScopeFilters<TMeta extends ScopeMeta>(
             case 'currency':
             case 'orderId':
             case 'ticketId':
+            case 'customField':
                 {
                     const filter = statFilters[filterKey]
                     if (filter && hasFilter(filter)) {

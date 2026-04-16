@@ -1,8 +1,8 @@
 import { TrendCard } from '@repo/reporting'
 
-import { useDecreaseInResolutionTimeTrend } from 'domains/reporting/hooks/automate/useDecreaseInResolutionTimeTrend'
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
+import { useAiAgentOverviewDecreaseInResolutionTimeTrend } from 'pages/aiAgent/analyticsOverview/hooks/useAiAgentOverviewDecreaseInResolutionTimeTrend'
 
 export const AnalyticsOverviewDecreaseInResolutionTimeCard = ({
     chartId,
@@ -13,7 +13,7 @@ export const AnalyticsOverviewDecreaseInResolutionTimeCard = ({
         chartConfig: chartConfig!,
         chartId,
         dashboard,
-        useTrend: useDecreaseInResolutionTimeTrend,
+        useTrend: useAiAgentOverviewDecreaseInResolutionTimeTrend,
         isAiAgentTrendCard: true,
     })
 

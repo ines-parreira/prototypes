@@ -173,6 +173,12 @@ export const METRIC_NAMES = {
         'ai-agent-all-agents-resolution-time-drill-down',
     AI_AGENT_SUPPORT_AGENT_RESOLUTION_TIME_DRILL_DOWN:
         'ai-agent-support-agent-resolution-time-drill-down',
+    AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME:
+        'ai-agent-overview-decrease-in-resolution-time',
+    AI_AGENT_SUPPORT_AGENT_DECREASE_IN_RESOLUTION_TIME:
+        'ai-agent-support-agent-decrease-in-resolution-time',
+    AI_AGENT_ALL_AGENTS_DECREASE_IN_RESOLUTION_TIME:
+        'ai-agent-all-agents-decrease-in-resolution-time',
 
     // AI Journey
     AI_JOURNEY_GMV_INFLUENCED: 'ai-journey-gmv-influenced',
@@ -824,6 +830,8 @@ export enum MetricScope {
     AiAgentAutomatedInteractions = 'ai-agent-automated-interactions',
     AiAgentTimeSaved = 'ai-agent-time-saved',
     AiAgentDecreaseInFirstResponseTime = 'ai-agent-decrease-in-first-response-time',
+    AiAgentDecreaseInResolutionTime = 'ai-agent-decrease-in-resolution-time',
+    OverallDecreaseInResolutionTime = 'overall-decrease-in-resolution-time',
     AiAgentSuccessRate = 'ai-agent-success-rate',
     AiAgentTicketsClosed = 'ai-agent-tickets-closed',
     AiAgentCsat = 'ai-agent-csat',
@@ -1181,6 +1189,13 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_FRT_PER_INTENT,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_DECREASE_IN_FRT,
         METRIC_NAMES.AI_AGENT_DYNAMIC_SUPPORT_AGENT_DECREASE_IN_FRT_TIMESERIES,
+    ],
+    [MetricScope.AiAgentDecreaseInResolutionTime]: [
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_DECREASE_IN_RESOLUTION_TIME,
+        METRIC_NAMES.AI_AGENT_ALL_AGENTS_DECREASE_IN_RESOLUTION_TIME,
+    ],
+    [MetricScope.OverallDecreaseInResolutionTime]: [
+        METRIC_NAMES.AI_AGENT_OVERVIEW_DECREASE_IN_RESOLUTION_TIME,
     ],
     [MetricScope.AiAgentTimeSaved]: [
         METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_TIME_SAVED_PER_CHANNEL,
