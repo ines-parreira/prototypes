@@ -132,6 +132,7 @@ export const METRIC_NAMES = {
         'ai-agent-support-interactions-per-channel',
     AI_AGENT_SUPPORT_INTERACTIONS_TOTAL: 'ai-agent-support-interactions-total',
     AI_AGENT_CSAT_AVERAGE_SCORE: 'ai-agent-csat-average-score',
+    AI_AGENT_SUPPORT_AGENT_AVERAGE_CSAT: 'ai-agent-support-agent-average-csat',
     AI_AGENT_ZERO_TOUCH_TICKETS: 'ai-agent-zero-touch-tickets',
     AI_AGENT_ALL_AGENTS_CLOSED_TICKETS: 'ai-agent-all-agents-closed-tickets',
     AI_AGENT_ALL_AGENTS_ZERO_TOUCH_TICKETS:
@@ -825,6 +826,7 @@ export enum MetricScope {
     AiAgentDecreaseInFirstResponseTime = 'ai-agent-decrease-in-first-response-time',
     AiAgentSuccessRate = 'ai-agent-success-rate',
     AiAgentTicketsClosed = 'ai-agent-tickets-closed',
+    AiAgentCsat = 'ai-agent-csat',
 
     // No FF
     HandoverInteractions = 'handover-interactions',
@@ -1191,6 +1193,10 @@ export const METRIC_NAMES_BY_SCOPE: Record<MetricScope, MetricName[]> = {
     [MetricScope.AiAgentTicketsClosed]: [
         METRIC_NAMES.AI_AGENT_ALL_AGENTS_CLOSED_TICKETS,
         METRIC_NAMES.AI_AGENT_ALL_AGENTS_ZERO_TOUCH_TICKETS,
+    ],
+    [MetricScope.AiAgentCsat]: [
+        METRIC_NAMES.AI_AGENT_CSAT_AVERAGE_SCORE,
+        METRIC_NAMES.AI_AGENT_SUPPORT_AGENT_AVERAGE_CSAT,
     ],
     [MetricScope.FlowDataset]: [
         METRIC_NAMES.FLOW_DATASET_HANDOVER_INTERACTIONS,

@@ -27,7 +27,7 @@ import { AnalyticsAiAgentSupportInteractionsCard } from 'pages/aiAgent/analytics
 import { AnalyticsAiAgentTimeSavedCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentTimeSavedCard'
 import { SupportAgentChannelPerformanceBreakdownTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentChannelPerformanceBreakdownTableWrapper'
 import { SupportAgentIntentPerformanceBreakdownTableWrapper } from 'pages/aiAgent/analyticsAiAgent/components/AiAgentPerformanceBreakdownTable/SupportAgentIntentPerformanceBreakdownTableWrapper'
-import { fetchAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
+import { fetchAiAgentSupportAgentAverageCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentAverageCsatTrend'
 import { fetchAiAgentSupportAgentFRTTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentFRTTrend'
 import { fetchAiAgentSupportAgentSuccessRateTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentSuccessRateTrend'
 import { fetchAiAgentSupportCostSaved } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportCostSaved'
@@ -147,7 +147,7 @@ export const AnalyticsAiAgentSupportAgentReportConfig: ReportConfig<AnalyticsAiA
                 csvProducer: [
                     {
                         type: DataExportFormat.Trend,
-                        fetch: fetchAiAgentSupportAgentCsatTrend,
+                        fetch: fetchAiAgentSupportAgentAverageCsatTrend,
                         metricFormat: 'decimal',
                     },
                 ],

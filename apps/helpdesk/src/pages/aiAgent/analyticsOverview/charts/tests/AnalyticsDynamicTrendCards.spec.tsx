@@ -10,7 +10,7 @@ import type {
     DashboardChartProps,
 } from 'domains/reporting/pages/dashboards/types'
 import { ChartType } from 'domains/reporting/pages/dashboards/types'
-import { AnalyticsAiAgentAllAgentsCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsCsatCard'
+import { AnalyticsAiAgentAllAgentsAverageCsatCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsAverageCsatCard'
 import { AnalyticsAiAgentAllAgentsFRTCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsFRTCard'
 import { AnalyticsAiAgentAllAgentsHandoverInteractionsCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsHandoverInteractionsCard'
 import { AnalyticsAiAgentAllAgentsSuccessRateCard } from 'pages/aiAgent/analyticsAiAgent/charts/AnalyticsAiAgentAllAgentsSuccessRateCard'
@@ -48,7 +48,6 @@ import { AnalyticsAiAgentZeroTouchTicketsCard } from 'pages/aiAgent/analyticsAiA
 import { AnalyticsOverviewAutomationRateCard } from 'pages/aiAgent/analyticsOverview/charts//AnalyticsOverviewAutomationRateCard'
 import { AnalyticsAiAgentHandoverInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsAiAgentHandoverInteractionsCard'
 import { AnalyticsOverviewAutomatedInteractionsCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAutomatedInteractionsCard'
-import { AnalyticsOverviewAverageCsatCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewAverageCsatCard'
 import { AnalyticsOverviewCostSavedCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewCostSavedCard'
 import { AnalyticsOverviewDecreaseInFRTCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInFRTCard'
 import { AnalyticsOverviewDecreaseInResolutionTimeCard } from 'pages/aiAgent/analyticsOverview/charts/AnalyticsOverviewDecreaseInResolutionTimeCard'
@@ -310,8 +309,8 @@ describe('Analytics Dynamic Trend Cards', () => {
             },
         },
         {
-            name: 'AnalyticsOverviewAverageCsatCard',
-            Component: AnalyticsOverviewAverageCsatCard,
+            name: 'AnalyticsAiAgentAllAgentsAverageCsatCard',
+            Component: AnalyticsAiAgentAllAgentsAverageCsatCard,
             config: {
                 label: 'Average CSAT',
                 description:
@@ -326,19 +325,6 @@ describe('Analytics Dynamic Trend Cards', () => {
             Component: AnalyticsAiAgentSupportAgentCsatCard,
             drillDownMetricName:
                 AiAgentDrillDownMetricName.SupportAgentCsatCard,
-            config: {
-                label: 'Average CSAT',
-                description:
-                    'Average CSAT score and rating distribution for surveys sent within the timeframe; surveys are sent following ticket resolution.',
-                metricFormat: 'decimal' as const,
-                value: 4.5,
-                prevValue: 4.3,
-            },
-        },
-        {
-            name: 'AnalyticsAiAgentAllAgentsCsatCard',
-            Component: AnalyticsAiAgentAllAgentsCsatCard,
-            drillDownMetricName: AiAgentDrillDownMetricName.AllAgentsCsatCard,
             config: {
                 label: 'Average CSAT',
                 description:

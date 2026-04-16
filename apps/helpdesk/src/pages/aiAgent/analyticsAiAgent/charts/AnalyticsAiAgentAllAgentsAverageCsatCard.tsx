@@ -2,15 +2,15 @@ import { TrendCard } from '@repo/reporting'
 
 import { useReportingTrendCardProps } from 'domains/reporting/hooks/useReportingTrendCardProps'
 import type { DashboardChartProps } from 'domains/reporting/pages/dashboards/types'
-import { useAiAgentSupportAgentCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentSupportAgentCsatTrend'
+import { useAiAgentAllAgentsAverageCsatTrend } from 'pages/aiAgent/analyticsAiAgent/hooks/useAiAgentAllAgentsAverageCsatTrend'
 
-export const AnalyticsOverviewAverageCsatCard = ({
+export const AnalyticsAiAgentAllAgentsAverageCsatCard = ({
     chartId,
     dashboard,
     chartConfig,
 }: DashboardChartProps) => {
     const trendCardProps = useReportingTrendCardProps({
-        useTrend: useAiAgentSupportAgentCsatTrend,
+        useTrend: useAiAgentAllAgentsAverageCsatTrend,
         chartConfig: chartConfig!,
         chartId,
         isAiAgentTrendCard: true,

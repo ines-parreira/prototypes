@@ -214,6 +214,8 @@ export type MeasureName =
     | 'coverageRate'
     | 'closedTicketsCount'
     | 'zeroTouchTicketsCount'
+    | 'averageCSAT'
+    | 'medianCSAT'
     | 'conversionRate'
     | 'buyThroughRate'
     | 'averageTimeSavedByAgent'
