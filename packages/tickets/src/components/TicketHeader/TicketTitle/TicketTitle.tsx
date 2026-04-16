@@ -4,6 +4,8 @@ import { Breadcrumb, Breadcrumbs } from '@gorgias/axiom'
 
 import { EditableBreadcrumb } from '../../EditableBreadcrumb'
 
+import css from './TicketTitle.less'
+
 type TicketTitleProps = {
     children: React.ReactNode
 }
@@ -23,7 +25,9 @@ export function TicketTitleCustomer({
 }: TicketTitleCustomerProps) {
     return (
         <Breadcrumb>
-            <Link to={customerUrl}>{customerName}</Link>
+            <Link className={css.customerLink} to={customerUrl}>
+                {customerName}
+            </Link>
         </Breadcrumb>
     )
 }
