@@ -8,6 +8,7 @@ import AutoMergeSettings from 'pages/settings/autoMerge/AutoMergeSettings'
 import SatisfactionSurveyView from 'pages/settings/satisfactionSurveys/SatisfactionSurveyView'
 import ManageTags from 'pages/settings/tags/ManageTags'
 import TicketAssignment from 'pages/settings/ticketAssignment/TicketAssignment'
+import { useWorkflowsNavigation } from 'routes/layout/sidebars/WorkflowsSidebar/useWorkflowsNavigation'
 
 import { ConditionalFields } from '../ConditionalFields'
 import { CustomFields } from '../CustomFields'
@@ -54,8 +55,16 @@ jest.mock('../helpers/settingsRenderer', () => ({
     renderAppSettings: jest.fn((Component: () => JSX.Element) => <Component />),
 }))
 
+jest.mock(
+    'routes/layout/sidebars/WorkflowsSidebar/useWorkflowsNavigation',
+    () => ({
+        useWorkflowsNavigation: jest.fn(),
+    }),
+)
+
 const mockedRoute = Route as jest.Mock
 const mockedUseRouteMatch = assumeMock(useRouteMatch)
+const mockedUseWorkflowsNavigation = assumeMock(useWorkflowsNavigation)
 
 const basePath = 'workflows'
 
@@ -145,6 +154,14 @@ describe('Workflows', () => {
         mockedUseRouteMatch.mockReturnValue({
             path: basePath,
         } as ReturnType<typeof useRouteMatch>)
+        mockedUseWorkflowsNavigation.mockReturnValue({
+            sections: [
+                {
+                    id: 'tools',
+                    items: [{ id: 'macros', path: 'macros', label: 'Macros' }],
+                } as any,
+            ],
+        })
     })
 
     it('should call renderer and Route according to the testing map', () => {
@@ -182,5 +199,22 @@ describe('Workflows', () => {
         render(<PaywalledOrderManagement />)
         expect(screen.getByText('AutomatePaywall')).toBeInTheDocument()
         expect(screen.getByText('OrderManagementSettings')).toBeInTheDocument()
+    })
+
+    it('should redirect to first section path from useWorkflowsNavigation', () => {
+        mockedUseWorkflowsNavigation.mockReturnValue({
+            sections: [
+                {
+                    id: 'tools',
+                    items: [{ id: 'rules', path: 'rules', label: 'Rules' }],
+                } as any,
+            ],
+        })
+
+        render(<WorkflowsRoutes />)
+
+        const redirectFn = mockedRoute.mock.calls[0][0].component
+        const redirectEl = redirectFn()
+        expect(redirectEl.props.to).toBe(`${basePath}/rules`)
     })
 })

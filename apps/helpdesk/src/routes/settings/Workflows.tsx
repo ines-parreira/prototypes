@@ -13,6 +13,7 @@ import {
     workflowsRoutes as routes,
     WorkflowsRoute,
 } from 'routes/layout/products/workflows'
+import { useWorkflowsNavigation } from 'routes/layout/sidebars/WorkflowsSidebar/useWorkflowsNavigation'
 import { AutomatePaywall } from 'settings/automate'
 import {
     ArticleRecommendationsSettings,
@@ -49,6 +50,9 @@ export const PaywalledOrderManagement = () => (
 
 export function WorkflowsRoutes() {
     const { path } = useRouteMatch()
+    const { sections } = useWorkflowsNavigation()
+
+    const firstSectionPath = sections[0]?.items[0]?.path
 
     return (
         <Switch>
@@ -56,9 +60,7 @@ export function WorkflowsRoutes() {
                 path={`${path}/`}
                 exact
                 component={() => (
-                    <Redirect
-                        to={`${path}/${routes[WorkflowsRoute.Macros].path}`}
-                    />
+                    <Redirect to={`${path}/${firstSectionPath}`} />
                 )}
             />
             <Route

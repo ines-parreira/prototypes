@@ -197,6 +197,21 @@ describe('SidebarProductHeader', () => {
                 screen.queryByRole('menuitemradio', { name: /Convert/ }),
             ).not.toBeInTheDocument()
         })
+
+        it('should not render AI Agent menu item when user does not have Agent role', async () => {
+            const user = userEvent.setup()
+            mockUseCurrentUserRole.mockReturnValue({
+                isAdmin: false,
+                hasRole: jest.fn().mockReturnValue(false),
+                currentUser: { id: 1, role: { name: 'observer-agent' } },
+            })
+
+            renderComponent()
+
+            const menu = await openProductMenu(user)
+
+            expect(within(menu).queryByText('AI Agent')).not.toBeInTheDocument()
+        })
     })
 
     describe('when sidebar is collapsed', () => {

@@ -29,6 +29,7 @@ import {
 } from 'routes/constants'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
 import { Product } from 'routes/layout/productConfig'
+import { useSettingsNavigation } from 'routes/layout/sidebars/SettingsSidebar/useSettingsNavigation'
 import { WorkflowsRoutes } from 'routes/settings/Workflows'
 import { AutomatePaywall } from 'settings/automate'
 import {
@@ -89,6 +90,9 @@ export function SettingRoutes() {
     const currentProduct = useCurrentRouteProduct()
     const hasWayfindingMS1Flag = useHelpdeskV2WayfindingMS1Flag()
     const { isStandaloneAiAgent } = useStandaloneAiContext()
+    const { sections } = useSettingsNavigation()
+
+    const firstSectionPath = sections[0]?.items[0]?.to
 
     if (hasWayfindingMS1Flag && currentProduct.id === Product.Workflows) {
         return <WorkflowsRoutes />
@@ -104,7 +108,7 @@ export function SettingRoutes() {
                         <Redirect
                             to={
                                 hasWayfindingMS1Flag
-                                    ? `${path}/integrations/mine`
+                                    ? `${path}/${firstSectionPath}`
                                     : `${path}/macros`
                             }
                         />

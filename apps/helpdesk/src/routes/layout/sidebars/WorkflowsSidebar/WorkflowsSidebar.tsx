@@ -4,7 +4,9 @@ import {
     NavigationSectionItem,
     useSidebar,
 } from '@repo/navigation'
+import { matchPath } from 'react-router'
 
+import { SETTINGS_DEFAULT_PATH } from 'routes/layout/products/settings'
 import {
     WORKFLOWS_DEFAULT_PATH,
     WorkflowsSection,
@@ -38,6 +40,12 @@ export function WorkflowsSidebar() {
                         <NavigationSectionItem
                             key={item.id}
                             to={`${WORKFLOWS_DEFAULT_PATH}/${item.path}`}
+                            isActive={(_, { pathname }) =>
+                                !!matchPath(pathname, [
+                                    `${WORKFLOWS_DEFAULT_PATH}/${item.path}`,
+                                    `${SETTINGS_DEFAULT_PATH}/${item.path}`,
+                                ])
+                            }
                             label={item.label}
                         />
                     ))}

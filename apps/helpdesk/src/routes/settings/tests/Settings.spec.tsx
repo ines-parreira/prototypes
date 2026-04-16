@@ -27,6 +27,7 @@ import {
 } from 'routes/constants'
 import { useCurrentRouteProduct } from 'routes/hooks/useCurrentRouteProduct'
 import { Product, productConfig } from 'routes/layout/productConfig'
+import { useSettingsNavigation } from 'routes/layout/sidebars/SettingsSidebar/useSettingsNavigation'
 
 import { Billing } from '../Billing'
 import { Channels } from '../Channels'
@@ -105,6 +106,13 @@ jest.mock('routes/hooks/useCurrentRouteProduct', () => ({
 jest.mock('routes/settings/Workflows', () => ({
     WorkflowsRoutes: () => <div>WorkflowsRoutes</div>,
 }))
+
+jest.mock(
+    'routes/layout/sidebars/SettingsSidebar/useSettingsNavigation',
+    () => ({
+        useSettingsNavigation: jest.fn(),
+    }),
+)
 jest.mock('providers/standalone-ai/StandaloneAiContext', () => ({
     useStandaloneAiContext: jest.fn(() => ({
         isStandaloneAiAgent: false,
@@ -121,6 +129,7 @@ const mockedUseHelpdeskV2WayfindingMS1Flag = assumeMock(
     useHelpdeskV2WayfindingMS1Flag,
 )
 const mockedUseCurrentRouteProduct = assumeMock(useCurrentRouteProduct)
+const mockedUseSettingsNavigation = assumeMock(useSettingsNavigation)
 
 const basePath = 'settings'
 
@@ -364,6 +373,20 @@ describe('Settings', () => {
         mockedUseCurrentRouteProduct.mockReturnValue(
             productConfig[Product.Settings],
         )
+        mockedUseSettingsNavigation.mockReturnValue({
+            sections: [
+                {
+                    id: 'apps',
+                    items: [
+                        {
+                            id: 'installed-apps',
+                            to: 'integrations/mine',
+                            text: 'Installed apps',
+                        },
+                    ],
+                } as any,
+            ],
+        })
     })
 
     it('should call HelpCenterApiClientProvider', () => {
@@ -439,5 +462,39 @@ describe('Settings', () => {
         render(<SettingRoutes />)
         expect(screen.queryByText('WorkflowsRoutes')).not.toBeInTheDocument()
         expect(HelpCenterApiClientProvider).toHaveBeenCalled()
+    })
+
+    it('should redirect to first section path from useSettingsNavigation when wayfinding flag is enabled', () => {
+        mockedUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(true)
+        mockedUseSettingsNavigation.mockReturnValue({
+            sections: [
+                {
+                    id: 'channels',
+                    items: [
+                        {
+                            id: 'help-center',
+                            to: 'help-center',
+                            text: 'Help Center',
+                        },
+                    ],
+                } as any,
+            ],
+        })
+
+        render(<SettingRoutes />)
+
+        const redirectFn = mockedRoute.mock.calls[0][0].component
+        const redirectEl = redirectFn()
+        expect(redirectEl.props.to).toBe(`${basePath}/help-center`)
+    })
+
+    it('should redirect to macros when wayfinding flag is disabled', () => {
+        mockedUseHelpdeskV2WayfindingMS1Flag.mockReturnValue(false)
+
+        render(<SettingRoutes />)
+
+        const redirectFn = mockedRoute.mock.calls[0][0].component
+        const redirectEl = redirectFn()
+        expect(redirectEl.props.to).toBe(`${basePath}/macros`)
     })
 })

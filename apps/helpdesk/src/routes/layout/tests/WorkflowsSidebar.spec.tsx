@@ -12,6 +12,7 @@ import useStoreIntegrations from 'pages/automate/common/hooks/useStoreIntegratio
 import { useIsArticleRecommendationsEnabledWhileSunset } from 'pages/integrations/integration/components/gorgias_chat/legacy/hooks/useIsArticleRecommendationsEnabledWhileSunset'
 import { WorkflowsSidebar } from 'routes/layout/sidebars'
 import { renderWithStoreAndQueryClientAndRouter } from 'tests/renderWithStoreAndQueryClientAndRouter'
+import type { RenderWithRouterParams } from 'utils/testing'
 
 jest.mock('hooks/aiAgent/useAiAgentAccess', () => ({
     useAiAgentAccess: jest.fn(),
@@ -65,12 +66,14 @@ describe('WorkflowsSidebar', () => {
     const renderWorkflowsSidebar = (
         state = defaultState,
         isCollapsed = false,
+        routing?: RenderWithRouterParams,
     ) => {
         return renderWithStoreAndQueryClientAndRouter(
             <MockSidebarProvider isCollapsed={isCollapsed}>
                 <WorkflowsSidebar />
             </MockSidebarProvider>,
             state,
+            routing,
         )
     }
 
@@ -224,6 +227,30 @@ describe('WorkflowsSidebar', () => {
         expect(
             screen.queryByText('Article recommendations'),
         ).not.toBeInTheDocument()
+    })
+
+    it('should mark a sidebar item as active when on its corresponding settings path', async () => {
+        renderWorkflowsSidebar(defaultState, false, {
+            route: '/app/settings/macros',
+        })
+
+        await screen.findByText('Macros')
+
+        expect(screen.getByRole('link', { name: /Macros/i })).toHaveClass(
+            'active',
+        )
+    })
+
+    it('should not mark an unrelated sidebar item as active when on the settings path', async () => {
+        renderWorkflowsSidebar(defaultState, false, {
+            route: '/app/settings/macros',
+        })
+
+        await screen.findByText('Rules')
+
+        expect(screen.getByRole('link', { name: /Rules/i })).not.toHaveClass(
+            'active',
+        )
     })
 
     describe('collapsed state', () => {
