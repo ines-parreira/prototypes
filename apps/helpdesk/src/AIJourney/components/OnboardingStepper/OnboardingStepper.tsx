@@ -11,9 +11,11 @@ import { JOURNEY_ONBOARDING_STEPS } from 'AIJourney/constants'
 export const OnboardingStepper = ({
     step,
     currentStepIndex,
+    onStepClick,
 }: {
     step: STEPS_NAMES
     currentStepIndex: number
+    onStepClick: (stepName: STEPS_NAMES) => void
 }) => {
     const getStepState = (index: number) => {
         if (index < currentStepIndex) return StepperItemState.Done
@@ -23,15 +25,19 @@ export const OnboardingStepper = ({
     return (
         <AxiomStepper selectedItem={step}>
             <StepperTabList>
-                {JOURNEY_ONBOARDING_STEPS.map((s, index) => (
-                    <StepperTabItem
-                        id={s.name}
-                        key={s.name}
-                        stepNumber={s.stepNumber}
-                        label={s.label}
-                        state={getStepState(index)}
-                    />
-                ))}
+                {JOURNEY_ONBOARDING_STEPS.map((s, index) => {
+                    const state = getStepState(index)
+                    return (
+                        <StepperTabItem
+                            id={s.name}
+                            key={s.name}
+                            stepNumber={s.stepNumber}
+                            label={s.label}
+                            state={state}
+                            onClick={() => onStepClick(s.name)}
+                        />
+                    )
+                })}
             </StepperTabList>
         </AxiomStepper>
     )

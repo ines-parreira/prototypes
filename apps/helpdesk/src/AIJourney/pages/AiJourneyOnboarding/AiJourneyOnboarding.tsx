@@ -88,6 +88,14 @@ export const AiJourneyOnboarding = ({
         [step],
     )
 
+    const handleStepClick = (stepName: STEPS_NAMES) => {
+        if (journeyData?.id) {
+            history.push(
+                `/app/ai-journey/${shopName}/${journeyType}/${stepName}/${journeyData.id}`,
+            )
+        }
+    }
+
     const nextStep = useMemo(
         () => JOURNEY_ONBOARDING_STEPS[currentStepIndex + 1]?.name,
         [currentStepIndex],
@@ -242,6 +250,7 @@ export const AiJourneyOnboarding = ({
                     <OnboardingStepper
                         step={step}
                         currentStepIndex={currentStepIndex}
+                        onStepClick={handleStepClick}
                     />
                     {storeSettingsEnabled && (
                         <>

@@ -36,7 +36,11 @@ describe('<OnboardingStepper />', () => {
 
     it('renders all step labels', () => {
         render(
-            <OnboardingStepper step={STEPS_NAMES.SETUP} currentStepIndex={0} />,
+            <OnboardingStepper
+                step={STEPS_NAMES.SETUP}
+                currentStepIndex={0}
+                onStepClick={jest.fn()}
+            />,
         )
 
         expect(screen.getByText('Setup')).toBeInTheDocument()
@@ -50,6 +54,7 @@ describe('<OnboardingStepper />', () => {
                 <OnboardingStepper
                     step={STEPS_NAMES.SETUP}
                     currentStepIndex={0}
+                    onStepClick={jest.fn()}
                 />,
             )
 
@@ -66,6 +71,7 @@ describe('<OnboardingStepper />', () => {
                 <OnboardingStepper
                     step={STEPS_NAMES.PREVIEW}
                     currentStepIndex={1}
+                    onStepClick={jest.fn()}
                 />,
             )
 
@@ -82,6 +88,7 @@ describe('<OnboardingStepper />', () => {
                 <OnboardingStepper
                     step={STEPS_NAMES.ACTIVATE}
                     currentStepIndex={2}
+                    onStepClick={jest.fn()}
                 />,
             )
 
@@ -94,7 +101,11 @@ describe('<OnboardingStepper />', () => {
 
     it('passes correct step numbers to each item', () => {
         render(
-            <OnboardingStepper step={STEPS_NAMES.SETUP} currentStepIndex={0} />,
+            <OnboardingStepper
+                step={STEPS_NAMES.SETUP}
+                currentStepIndex={0}
+                onStepClick={jest.fn()}
+            />,
         )
 
         const calls = mockStepperTabItem.mock.calls
@@ -105,12 +116,55 @@ describe('<OnboardingStepper />', () => {
 
     it('passes correct ids to each item', () => {
         render(
-            <OnboardingStepper step={STEPS_NAMES.SETUP} currentStepIndex={0} />,
+            <OnboardingStepper
+                step={STEPS_NAMES.SETUP}
+                currentStepIndex={0}
+                onStepClick={jest.fn()}
+            />,
         )
 
         const calls = mockStepperTabItem.mock.calls
         expect(calls[0][0].id).toBe(STEPS_NAMES.SETUP)
         expect(calls[1][0].id).toBe(STEPS_NAMES.PREVIEW)
         expect(calls[2][0].id).toBe(STEPS_NAMES.ACTIVATE)
+    })
+
+    describe('onStepClick', () => {
+        it('passes onClick to all steps', () => {
+            const onStepClick = jest.fn()
+            render(
+                <OnboardingStepper
+                    step={STEPS_NAMES.ACTIVATE}
+                    currentStepIndex={2}
+                    onStepClick={onStepClick}
+                />,
+            )
+
+            const calls = mockStepperTabItem.mock.calls
+            expect(calls[0][0].onClick).toBeDefined()
+            expect(calls[1][0].onClick).toBeDefined()
+            expect(calls[2][0].onClick).toBeDefined()
+        })
+
+        it('calls onStepClick with the correct step name when a step is clicked', () => {
+            const onStepClick = jest.fn()
+            render(
+                <OnboardingStepper
+                    step={STEPS_NAMES.ACTIVATE}
+                    currentStepIndex={2}
+                    onStepClick={onStepClick}
+                />,
+            )
+
+            const calls = mockStepperTabItem.mock.calls
+            calls[0][0].onClick?.()
+            expect(onStepClick).toHaveBeenCalledWith(STEPS_NAMES.SETUP)
+
+            calls[1][0].onClick?.()
+            expect(onStepClick).toHaveBeenCalledWith(STEPS_NAMES.PREVIEW)
+
+            calls[2][0].onClick?.()
+            expect(onStepClick).toHaveBeenCalledWith(STEPS_NAMES.ACTIVATE)
+        })
     })
 })

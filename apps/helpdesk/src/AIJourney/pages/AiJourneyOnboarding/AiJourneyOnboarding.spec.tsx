@@ -50,6 +50,25 @@ jest.mock('pages/common/hooks/useCollapsibleColumn', () => ({
     useCollapsibleColumn: jest.fn(),
 }))
 
+let capturedOnStepClick: ((stepName: STEPS_NAMES) => void) | undefined
+
+jest.mock('AIJourney/components', () => ({
+    ...jest.requireActual('AIJourney/components'),
+    OnboardingStepper: ({
+        onStepClick,
+    }: {
+        step: string
+        currentStepIndex: number
+        onStepClick: (stepName: STEPS_NAMES) => void
+    }) => {
+        capturedOnStepClick = onStepClick
+        return null
+    },
+    SmsSenderRequiredBanner: () => (
+        <div>Add sender phone number to activate</div>
+    ),
+}))
+
 const mockPush = jest.fn()
 const mockHandleCreate = jest.fn()
 const mockHandleUpdate = jest.fn()
@@ -1075,6 +1094,37 @@ describe('<AiJourneyOnboarding />', () => {
             expect(
                 screen.getByRole('button', { name: /continue/i }),
             ).not.toBeDisabled()
+        })
+    })
+
+    describe('handleStepClick', () => {
+        it('navigates to the clicked step when journeyData has an id', () => {
+            mockUseJourneyContext.mockReturnValue({
+                ...defaultContextValue,
+                journeyData: { id: 'journey-123', campaign: null },
+            } as any)
+
+            renderComponent({
+                step: STEPS_NAMES.PREVIEW,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            capturedOnStepClick!(STEPS_NAMES.SETUP)
+
+            expect(mockPush).toHaveBeenCalledWith(
+                '/app/ai-journey/test-shop/cart-abandoned/setup/journey-123',
+            )
+        })
+
+        it('does not navigate when journeyData has no id', () => {
+            renderComponent({
+                step: STEPS_NAMES.PREVIEW,
+                journeyType: JOURNEY_TYPES.CART_ABANDONMENT,
+            })
+
+            capturedOnStepClick!(STEPS_NAMES.SETUP)
+
+            expect(mockPush).not.toHaveBeenCalled()
         })
     })
 
